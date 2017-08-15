@@ -117,6 +117,7 @@
 #include "ViewProviderMaterialObject.h"
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderGroupExtension.h"
+#include "ViewProviderLink.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -1571,6 +1572,10 @@ void Application::initTypes(void)
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
+    Gui::ViewProviderLinkObserver               ::init();
+    Gui::LinkView                               ::init();
+    Gui::ViewProviderLink                       ::init();
+    Gui::ViewProviderLinkPython                 ::init();
 
     // Workbench
     Gui::Workbench                              ::init();

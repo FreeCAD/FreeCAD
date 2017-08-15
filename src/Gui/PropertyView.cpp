@@ -207,48 +207,70 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::ClrSelection)
         return;
 
+    std::set<App::DocumentObject *> objSet;
+
     // group the properties by <name,id>
     std::vector<PropInfo> propDataMap;
     std::vector<PropInfo> propViewMap;
     bool checkLink = true;
     ViewProviderDocumentObject *vpLast = 0;
-    const auto &array = Gui::Selection().getCompleteSelection();
+    const auto &array = Gui::Selection().getCompleteSelection(false);
     for(auto &sel : array) {
-        App::DocumentObject *ob=0;
-        ViewProvider *vp=0;
+        if(!sel.pObject) continue;
+        App::DocumentObject *parent = 0;
+        App::DocumentObject *ob = Gui::Selection().resolveObject(sel.pObject,sel.SubName,&parent);
+        if(!ob) continue;
+        if(parent) {
+            auto parentVp = Application::Instance->getViewProvider(parent);
+            if(parentVp) {
+                // For special case where the SubName reference can resolve to
+                // a non-child object (e.g. link array element), the tree view
+                // will select the parent instead.  So we shall show the
+                // property of the parent as well.
+                bool found = false;
+                for(auto child : parentVp->claimChildren()) {
+                    if(ob == child) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found)
+                    ob = parent;
+            }
+        }
+
+        // Do not process an object more than once
+        if(!objSet.insert(ob).second)
+            continue;
 
         std::vector<App::Property*> dataList;
         std::map<std::string, App::Property*> viewList;
-        if (sel.pObject) {
-            ob = sel.pObject;
 
-            // get also the properties of the associated view provider
-            vp = Application::Instance->getViewProvider(sel.pObject);
-            if(!vp) {
-                checkLink = false;
-                ob->getPropertyList(dataList);
-                continue;
-            }
-
-            if(vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-                auto cvp = static_cast<ViewProviderDocumentObject*>(vp);
-                if(vpLast && cvp!=vpLast)
-                    checkLink = false;
-                vpLast = cvp;
-                // try to resolve the linked object
-                auto linked = ob->getLinkedObject(true);
-                if(linked && linked!=ob) {
-                    vp = Application::Instance->getViewProvider(linked);
-                    if(!vp) continue;
-                    ob = linked;
-                }
-            }
-
+        auto vp = Application::Instance->getViewProvider(ob);
+        if(!vp) {
+            checkLink = false;
             ob->getPropertyList(dataList);
-
-            // get the properties as map here because it doesn't matter to have them sorted alphabetically
-            vp->getPropertyMap(viewList);
+            continue;
         }
+
+        if(vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            auto cvp = static_cast<ViewProviderDocumentObject*>(vp);
+            if(vpLast && cvp!=vpLast)
+                checkLink = false;
+            vpLast = cvp;
+            // try to resolve the linked object
+            auto linked = ob->getLinkedObject(true);
+            if(linked && linked!=ob) {
+                vp = Application::Instance->getViewProvider(linked);
+                if(!vp) continue;
+                ob = linked;
+            }
+        }
+
+        ob->getPropertyList(dataList);
+
+        // get the properties as map here because it doesn't matter to have them sorted alphabetically
+        vp->getPropertyMap(viewList);
 
         // store the properties with <name,id> as key in a map
         std::vector<App::Property*>::iterator pt;

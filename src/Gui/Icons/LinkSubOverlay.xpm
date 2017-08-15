@@ -1,0 +1,15 @@
+/* XPM */
+static char *xpm_linksub[] = {
+"8 8 3 1",
+". c None",
+"# c #000000",
+"a c #ffffff",
+".#######",
+".#aaaaa#",
+"######a#",
+"aaaaa#a#",
+"##aaa#a#",
+"#aa#a#a#",
+"aa##a###",
+"##..##.."};
+

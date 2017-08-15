@@ -153,6 +153,13 @@
         <file>colors.svg</file>
         <file>px.svg</file>
         <file>AddonManager.svg</file>
+        <file>Link.svg</file>
+        <file>LinkArray.svg</file>
+        <file>LinkElement.svg</file>
+        <file>LinkGroup.svg</file>
+        <file>LinkOverlay.xpm</file>
+        <file>LinkSubOverlay.xpm</file>
+        <file>LinkSubElement.xpm</file>
     </qresource>
     <!-- Alternative directory names for icons that should be loaded from a theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
