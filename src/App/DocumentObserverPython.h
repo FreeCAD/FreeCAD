@@ -64,6 +64,8 @@ private:
     /** Checks if the given object is about to be removed. */
     void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
+    void slotBeforeChangeObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    /** The property of an observed object has changed */
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     /** Undoes the last transaction of the document */
     void slotUndoDocument(const App::Document& Doc);

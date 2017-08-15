@@ -1140,6 +1140,9 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
+    if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId())
+        signalBeforeChangeObject(*static_cast<App::DocuemntObject*>(Who), *What);
+    
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
 }
