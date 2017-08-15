@@ -134,6 +134,8 @@ public:
     /// signal on deleted Object
     boost::signal<void (const App::DocumentObject&)> signalDeletedObject;
     /// signal on changed Object
+    boost::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChangeObject;
+    /// signal on changed Object
     boost::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
     /// signal on relabeled Object
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
@@ -276,6 +278,7 @@ protected:
     //@{
     void slotNewObject(const App::DocumentObject&);
     void slotDeletedObject(const App::DocumentObject&);
+    void slotBeforeChangeObject(const App::DocumentObject&, const App::Property& Prop);
     void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
     void slotRelabelObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);

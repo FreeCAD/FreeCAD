@@ -418,6 +418,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     // connect the signals to the application for the new document
     _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, _1));
     _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, _1));
+    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, _1, _2));
     _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, _1, _2));
     _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, _1));
     _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
@@ -985,6 +986,11 @@ void Application::slotNewObject(const App::DocumentObject&O)
 void Application::slotDeletedObject(const App::DocumentObject&O)
 {
     this->signalDeletedObject(O);
+}
+
+void Application::slotBeforeChangeObject(const DocumentObject& O, const Property& Prop)
+{
+    this->signalBeforeChangeObject(O, Prop);
 }
 
 void Application::slotChangedObject(const App::DocumentObject&O, const App::Property& P)
