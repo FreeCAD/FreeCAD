@@ -29,13 +29,19 @@ import PathScripts.PathProfileContour as PathProfileContour
 
 from PySide import QtCore
 
+__title__ = "Path Contour Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Contour operation page controller and command implementation."
+
 class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
+    '''Page controller for the contour operation UI.'''
 
     def profileFeatures(self):
-        # I know this looks bad, contour is just the most basic profile op there is
+        '''profileFeatues() ... return 0 - profile doesn't support any of the optional UI features.'''
         return 0
 
-PathOpGui.SetupOperation('Contour',
+Command = PathOpGui.SetupOperation('Contour',
         PathProfileContour.Create,
         TaskPanelOpPage,
         'Path-Contour',
