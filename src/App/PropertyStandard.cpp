@@ -41,6 +41,9 @@
 #include "PropertyStandard.h"
 #include "MaterialPy.h"
 #include "ObjectIdentifier.h"
+#include "Application.h"
+#include "Document.h"
+#include "DocumentObject.h"
 
 using namespace App;
 using namespace Base;
@@ -1492,8 +1495,16 @@ void PropertyString::setPyObject(PyObject *value)
 
 void PropertyString::Save (Base::Writer &writer) const
 {
-    std::string val = encodeAttribute(_cValue);
-    writer.Stream() << writer.ind() << "<String value=\"" <<  val <<"\"/>" << std::endl;
+    std::string val(_cValue);
+    auto obj = dynamic_cast<DocumentObject*>(getContainer());
+    if(obj && obj->getNameInDocument() && 
+       obj->getDocument()->isExporting() && 
+       &obj->Label==this && 
+       _cValue==obj->getNameInDocument())
+    {
+        val = obj->getExportName();
+    }
+    writer.Stream() << writer.ind() << "<String value=\"" << encodeAttribute(val) <<"\"/>" << std::endl;
 }
 
 void PropertyString::Restore(Base::XMLReader &reader)
@@ -1501,7 +1512,11 @@ void PropertyString::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("String");
     // get the value of my Attribute
-    setValue(reader.getAttribute("value"));
+    auto obj = dynamic_cast<DocumentObject*>(getContainer());
+    if(obj && &obj->Label==this)
+        setValue(reader.getName(reader.getAttribute("value")));
+    else
+        setValue(reader.getAttribute("value"));
 }
 
 Property *PropertyString::Copy(void) const
@@ -1943,8 +1958,7 @@ void PropertyMap::setPyObject(PyObject *value)
                 PyObject* unicode = PyUnicode_AsUTF8String(key);
                 keyStr = PyString_AsString(unicode);
                 Py_DECREF(unicode);
-            }
-            if (PyString_Check(key)) {
+            }else if (PyString_Check(key)) {
                 keyStr = PyString_AsString(key);
 #endif
             }

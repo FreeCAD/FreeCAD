@@ -50,6 +50,8 @@ public:
     void SaveDocFile (Base::Writer & w) const;
     void RestoreDocFile(Base::Reader & r);
 
+    const std::map<std::string, std::string> &getNameMap() const {return nameMap;}
+
 private:
     bool guiup;
     bool verbose;

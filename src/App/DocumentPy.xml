@@ -75,14 +75,34 @@
     </Methode>
     <Methode Name="copyObject">
       <Documentation>
-        <UserDocu>copyObject(object, bool with_dependencies = False, bool ignored_argument = False)
-        Copy an object from another document to this document. If with_dependencies is True, all objects this object depends on are copied too.</UserDocu>
+          <UserDocu>
+              copyObject(object, bool with_dependencies=False, bool keep_external=True)
+              Copy an object or objects from another document to this document. 
+              
+              object: can either a single object or sequence of objects
+              with_dependencies: if True, all internal dependent objects are copied too.
+              keep_external: if False, all external linked dependent objects are copied too.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="moveObject">
       <Documentation>
         <UserDocu>moveObject(object, bool with_dependencies = False)
         Transfers an object from another document to this document. If with_dependencies is True, all objects this object depends on are transferred too.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importLinks">
+      <Documentation>
+          <UserDocu>
+              importLinks(object|[object...])
+
+              Import any externally linked object given a list of objects in
+              this document.  Any link type properties of the input objects
+              will be automatically reassigned to the imported object
+
+              If no object is given as input, it import all externally linked
+              object of this document.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="undo">

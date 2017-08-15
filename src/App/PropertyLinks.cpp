@@ -130,7 +130,7 @@ void PropertyLink::setPyObject(PyObject *value)
 
 void PropertyLink::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Link value=\"" <<  (_pcLink?_pcLink->getNameInDocument():"") <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Link value=\"" <<  (_pcLink?_pcLink->getExportName():"") <<"\"/>" << std::endl;
 }
 
 void PropertyLink::Restore(Base::XMLReader &reader)
@@ -138,7 +138,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
     // read my element
     reader.readElement("Link");
     // get the value of my attribute
-    std::string name = reader.getAttribute("value");
+    std::string name = reader.getName(reader.getAttribute("value"));
 
     // Property not in a DocumentObject!
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
@@ -343,7 +343,7 @@ void PropertyLinkList::Save(Base::Writer &writer) const
     for (int i = 0; i<getSize(); i++) {
         DocumentObject* obj = _lValueList[i];
         if (obj)
-            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getNameInDocument() << "\"/>" << endl;
+            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getExportName() << "\"/>" << endl;
         else
             writer.Stream() << writer.ind() << "<Link value=\"\"/>" << endl;
     }
@@ -372,7 +372,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
-        std::string name = reader.getAttribute("value");
+        std::string name = reader.getName(reader.getAttribute("value"));
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ingore this.
@@ -552,17 +552,80 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
 }
 
+static std::string importSubName(Base::XMLReader &reader, const char *sub) {
+    std::ostringstream str;
+    for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) 
+        str << reader.getName(std::string(sub,dot-sub).c_str()) << '.';
+    str << sub;
+    return str.str();
+}
+
+static std::string exportSubName(const App::DocumentObject *obj, const char *sub) 
+{
+    if(!obj || !obj->getNameInDocument() || !obj->getDocument()->isExporting()) 
+        return std::string(sub);
+
+    std::ostringstream str;
+    for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
+        auto name = std::string(sub,dot-sub+1);
+        obj = obj->getSubObject(name.c_str());
+        if(!obj || !obj->getNameInDocument()) {
+            FC_ERR("missing sub object '" << name << "' in '" << sub <<"'");
+            break;
+        }
+        if(name == obj->getNameInDocument()) 
+            str << obj->getExportName() << '.';
+        else
+            str << name << '.';
+    }
+    str << sub;
+    return str.str();
+}
+
+static std::string tryImportSubName(const std::map<std::string,std::string> &nameMap, 
+        const App::DocumentObject *obj, const char *sub)
+{
+    if(!obj || !obj->getNameInDocument()) 
+        return std::string();
+
+    bool changed = false;
+    std::ostringstream str;
+    for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
+        auto name = std::string(sub,dot-sub+1);
+        obj = obj->getSubObject(name.c_str());
+        if(!obj || !obj->getNameInDocument()) {
+            FC_ERR("missing sub object '" << name << "' in '" << sub <<"'");
+            break;
+        }
+        if(name == obj->getNameInDocument()) {
+            auto export_name = obj->getExportName(true);
+            auto it = nameMap.find(export_name);
+            if(it!=nameMap.end() && it->second!=name) {
+                name = it->second;
+                changed = true;
+            }
+        }
+        str << name << '.';
+    }
+    if(changed) {
+        str << sub;
+        return str.str();
+    }
+    return std::string();
+}
+
 void PropertyLinkSub::Save (Base::Writer &writer) const
 {
-    const char* internal_name = "";
+    std::string internal_name;
     // it can happen that the object is still alive but is not part of the document anymore and thus
     // returns 0
     if (_pcLinkSub && _pcLinkSub->getNameInDocument())
-        internal_name = _pcLinkSub->getNameInDocument();
+        internal_name = _pcLinkSub->getExportName();
     writer.Stream() << writer.ind() << "<LinkSub value=\"" <<  internal_name <<"\" count=\"" <<  _cSubList.size() <<"\">" << std::endl;
     writer.incInd();
     for(unsigned int i = 0;i<_cSubList.size(); i++)
-        writer.Stream() << writer.ind() << "<Sub value=\"" <<  _cSubList[i]<<"\"/>" << endl;
+        writer.Stream() << writer.ind() << "<Sub value=\"" << 
+           exportSubName(_pcLinkSub,_cSubList[i].c_str()) <<"\"/>" << endl;
     writer.decInd();
     writer.Stream() << writer.ind() << "</LinkSub>" << endl ;
 }
@@ -572,16 +635,17 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     // read my element
     reader.readElement("LinkSub");
     // get the values of my attributes
-    std::string name = reader.getAttribute("value");
+    std::string name = reader.getName(reader.getAttribute("value"));
     int count = reader.getAttributeAsInteger("count");
 
     // Property not in a DocumentObject!
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     std::vector<std::string> values(count);
+    // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
-        values[i] = reader.getAttribute("value");
+        values[i] = importSubName(reader,reader.getAttribute("value"));
     }
 
     reader.readEndElement("LinkSub");
@@ -601,6 +665,31 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     else {
        setValue(0);
     }
+}
+
+Property *PropertyLinkSub::CopyOnImportExternal(
+        const std::map<std::string,std::string> &nameMap) const
+{
+    if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
+        return 0;
+
+    bool touched = false;
+    std::vector<std::string> ret;
+    for(const auto &sub : _cSubList) {
+        auto new_sub = tryImportSubName(nameMap,_pcLinkSub,sub.c_str());
+        if(new_sub.size()) {
+            touched = true;
+            ret.push_back(new_sub);
+        }else
+            ret.push_back(sub);
+    }
+    if(!touched) 
+        return 0;
+
+    PropertyLinkSub *p= new PropertyLinkSub();
+    p->_pcLinkSub = _pcLinkSub;
+    p->_cSubList.swap(ret);
+    return p;
 }
 
 Property *PropertyLinkSub::Copy(void) const
@@ -947,8 +1036,8 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() <<
             "<Link " <<
-            "obj=\"" << _lValueList[i]->getNameInDocument() << "\" " <<
-            "sub=\"" << _lSubList[i] << "\"/>" << endl;
+            "obj=\"" << _lValueList[i]->getExportName() << "\" " <<
+            "sub=\"" << exportSubName(_lValueList[i],_lSubList[i].c_str()) << "\"/>" << endl;
     }
 
     writer.decInd();
@@ -968,7 +1057,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     SubNames.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
-        std::string name = reader.getAttribute("obj");
+        std::string name = reader.getName(reader.getAttribute("obj"));
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
@@ -976,19 +1065,41 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         DocumentObject* father = static_cast<DocumentObject*>(getContainer());
         App::Document* document = father->getDocument();
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
-        if (child)
+        if (child) {
             values.push_back(child);
-        else if (reader.isVerbose())
+            SubNames.push_back(importSubName(reader,reader.getAttribute("sub")));
+        } else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
-        std::string subName = reader.getAttribute("sub");
-        SubNames.push_back(subName);
     }
 
     reader.readEndElement("LinkSubList");
 
     // assignment
     setValues(values,SubNames);
+}
+
+Property *PropertyLinkSubList::CopyOnImportExternal(
+        const std::map<std::string,std::string> &nameMap) const
+{
+    std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
+    p->_lValueList.reserve(_lValueList.size());
+    p->_lSubList.reserve(_lSubList.size());
+    bool touched = false;
+    for(size_t i=0;i<_lValueList.size();++i) {
+        if(!_lValueList[i] || !_lValueList[i]->getNameInDocument())
+            continue;
+        p->_lValueList.push_back(_lValueList[i]);
+        auto new_sub = tryImportSubName(nameMap,_lValueList[i],_lSubList[i].c_str());
+        if(new_sub.size()) {
+            touched = true;
+            p->_lSubList.push_back(new_sub);
+        }else
+            p->_lSubList.push_back(_lSubList[i]);
+    }
+    if(!touched) 
+        return 0;
+    return p.release();
 }
 
 Property *PropertyLinkSubList::Copy(void) const
@@ -1037,28 +1148,40 @@ public:
     App::Document *pcDoc;
     std::set<PropertyXLink*> links;
 
-    static DocInfoPtr get(const char *filename, App::Document *pDoc, int relative, PropertyXLink *l) {
+    static std::string getDocPath(
+            const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0) 
+    {
+        bool absolute;
+        // make sure the filename is aboluste path
+        QString path = QDir::cleanPath(QString::fromUtf8(filename));
+        if((absolute=QFileInfo(path).isAbsolute())) {
+            if(fullPath)
+                *fullPath = path;
+            if(!relative)
+                return std::string(path.toUtf8().constData());
+        }
+
         const char *docPath = pDoc->FileName.getValue();
         if(!docPath || *docPath==0)
             throw Base::Exception("Owner document not saved");
         
         QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
-
-        // first convert filename to aboluste path
-        QString path = QDir::cleanPath(QString::fromUtf8(filename));
-        if(QFileInfo(path).isRelative()) 
+        if(!absolute) {
             path = QDir::cleanPath(docDir.absoluteFilePath(path));
+            if(fullPath)
+                *fullPath = path;
+        }
 
-        // Now store a path to xlink. We can't use the absolute path key in
-        // _DocInfoMap, because each xlink belongs to a different document will
-        // have different relative path.
-        if(relative<0) {
-            // the path shall be kept as it is
-            l->filePath = filename;
-        }else if(!relative) 
-            l->filePath = path.toUtf8().constData();
+        if(relative)
+            return std::string(docDir.relativeFilePath(path).toUtf8().constData());
         else
-            l->filePath = docDir.relativeFilePath(path).toUtf8().constData();
+            return std::string(path.toUtf8().constData());
+    }
+
+    static DocInfoPtr get(const char *filename, App::Document *pDoc, bool relative, PropertyXLink *l) {
+        QString path;
+        l->filePath = getDocPath(filename,pDoc,relative,&path);
+        l->relativePath = relative;
 
         FC_LOG("finding doc " << filename);
 
@@ -1143,7 +1266,9 @@ public:
                 boost::bind(&DocInfo::onNewObject,this,_1));
         connDeletedObject = doc->signalDeletedObject.connect(
                 boost::bind(&DocInfo::onDeletedObject,this,_1));
-        for(auto link : links) {
+        for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
+            ++itNext;
+            auto link = *it;
             auto obj = doc->getObject(link->objectName.c_str());
             if(!obj) 
                 FC_WARN("object '" << link->objectName << "' not found in document '" 
@@ -1154,7 +1279,9 @@ public:
     }
 
     void onNewObject(const DocumentObject &obj) {
-        for(auto link : links) {
+        for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
+            ++itNext;
+            auto link = *it;
             if(!link->_pcLink && link->objectName==obj.getNameInDocument())
                 link->setValue(const_cast<DocumentObject*>(&obj));
         }
@@ -1179,8 +1306,9 @@ public:
     }
 
     void remove(PropertyXLink *l) {
-        auto owner = static_cast<DocumentObject*>(l->getContainer());
-        FC_LOG("removing " << (owner?owner->getNameInDocument():""));
+        auto owner = dynamic_cast<DocumentObject*>(l->getContainer());
+        if(owner && owner->getNameInDocument())
+            FC_LOG("removing " << owner->getNameInDocument());
         auto it = links.find(l);
         if(it != links.end()) {
             links.erase(it);
@@ -1248,8 +1376,8 @@ public:
     void slotDeleteDocument(const App::Document &doc) {
         for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
             ++itNext;
-            auto ldoc = static_cast<DocumentObject*>((*it)->getContainer())->getDocument();
-            if(ldoc == &doc)
+            auto obj = dynamic_cast<DocumentObject*>((*it)->getContainer());
+            if(obj && obj->getDocument() == &doc)
                 links.erase(it);
         }
         if(links.empty()) {
@@ -1261,6 +1389,15 @@ public:
             link->detach();
         pcDoc = 0;
     }
+
+    bool hasXLink(const App::Document *doc) const{
+        for(auto link : links) {
+            auto obj = dynamic_cast<DocumentObject*>(link->getContainer());
+            if(obj && obj->getDocument() == doc)
+                return true;
+        }
+        return false;
+    }
 };
 
 //**************************************************************************
@@ -1269,11 +1406,10 @@ public:
 
 TYPESYSTEM_SOURCE(App::PropertyXLink , App::PropertyLink)
 
-PropertyXLink::PropertyXLink()
+PropertyXLink::PropertyXLink():relativePath(true)
 {
 
 }
-
 
 PropertyXLink::~PropertyXLink()
 {
@@ -1298,10 +1434,10 @@ void PropertyXLink::detach() {
 }
 
 void PropertyXLink::setValue(App::DocumentObject * lValue) {
-    setValue(lValue,true);
+    setValue(lValue,0,true);
 }
 
-void PropertyXLink::setValue(App::DocumentObject * lValue, bool relative)
+void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, bool relative)
 {
     if(!subname) subname = "";
     if(_pcLink==lValue && subName==subname && relative==relativePath)
@@ -1312,27 +1448,28 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, bool relative)
         return;
     }
 
-    if(!getContainer() || !getContainer()->isDerivedFrom(DocumentObject::getClassTypeId())) 
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    if(!owner || !owner->getNameInDocument()) 
         throw Base::Exception("invalid container");
-
-    auto owner = static_cast<DocumentObject*>(getContainer());
-    if(!owner->getNameInDocument() || !owner->getDocument())
-        throw Base::Exception("owner detached");
 
     if(lValue == owner)
         throw Base::Exception("self linking");
 
     DocInfoPtr info;
     const char *name = "";
+    if(!subname) subname = "";
 
     if(lValue) {
         if(lValue->getDocument() != owner->getDocument()) {
-            if(!docInfo || lValue->getDocument()!=docInfo->pcDoc) {
+            if(!docInfo || 
+               lValue->getDocument()!=docInfo->pcDoc || 
+                relative!=this->relativePath) 
+            {
                 const char *filename = lValue->getDocument()->FileName.getValue();
                 if(!filename || *filename==0) 
                     throw Base::Exception("Linked document not saved");
                 FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
-                info = DocInfo::get(filename,owner->getDocument(),relative?1:0,this);
+                info = DocInfo::get(filename,owner->getDocument(),relative,this);
                 assert(info && info->pcDoc == lValue->getDocument());
             }else
                 info = docInfo;
@@ -1342,9 +1479,9 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, bool relative)
 
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if(_pcLink && !docInfo)
+    if(_pcLink)
         _pcLink->_removeBackLink(owner);
-    if(lValue && !info)
+    if(lValue)
         lValue->_addBackLink(owner);
 #endif
     if(docInfo!=info) {
@@ -1353,42 +1490,47 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, bool relative)
     }
     _pcLink=lValue;
     objectName = name;
+    subName = subname;
     hasSetValue();
 }
 
-void PropertyXLink::setValue(const char *filename, const char *name, int relative) {
+void PropertyXLink::setValue(
+        const char *filename, const char *name, const char *subname, bool relative) 
+{
     if(!name || *name==0) {
         setValue(0);
         return;
     }
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    if(!owner || !owner->getNameInDocument()) 
+        throw Base::Exception("invalid container");
+
     DocumentObject *pObject=0;
     DocInfoPtr info;
     if(filename && *filename!=0) {
-        auto owner = static_cast<DocumentObject*>(getContainer());
         info = DocInfo::get(filename,owner->getDocument(),relative,this);
         if(info->pcDoc) 
             pObject = info->pcDoc->getObject(name);
-    }else{
-        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        Document *document = parent->getDocument();
-        if(document)
-            pObject = document->getObject(name);
-    }
+    }else
+        pObject = owner->getDocument()->getObject(name);
+
     if(pObject || !info) {
-        setValue(pObject);
+        setValue(pObject,subname,relative);
         return;
     }
-    if(docInfo!=info || objectName!=name) {
-        if(_pcLink) 
-            setValue(0);
-        aboutToSetValue();
-        if(docInfo!=info) {
-            unlink();
-            docInfo = info;
-        }
-        objectName = name;
-        hasSetValue();
+    aboutToSetValue();
+#ifndef USE_OLD_DAG
+    if(_pcLink)
+        _pcLink->_removeBackLink(owner);
+#endif
+    _pcLink = 0;
+    if(docInfo!=info) {
+        unlink();
+        docInfo = info;
     }
+    objectName = name;
+    subName = subname;
+    hasSetValue();
 }
 
 App::Document *PropertyXLink::getDocument() const {
@@ -1409,21 +1551,68 @@ bool PropertyXLink::isRestored() const {
         stamp==docInfo->pcDoc->LastModifiedDate.getValue();
 }
 
-void PropertyXLink::Save (Base::Writer &writer) const
-{
+void PropertyXLink::Save (Base::Writer &writer) const {
+    auto owner = dynamic_cast<const DocumentObject *>(getContainer());
+    if(!owner || !owner->getDocument())
+        return;
+    auto exporting = owner->getDocument()->isExporting();
+    if(_pcLink && exporting==Document::Exporting) {
+        // this means, we are exporting with all dependency included. So, store as
+        // local object
+        writer.Stream() << writer.ind() << "<XLink name=\"" << 
+            _pcLink->getExportName() << "\" sub=\"" << 
+            exportSubName(_pcLink,subName.c_str()) << 
+            "\"/>" << std::endl;
+        return;
+    }
+    const char *path = filePath.c_str();
+    std::string _path;
+    if(exporting==Document::ExportKeepExternal && relativePath && filePath.size()) {
+        // if we are exporting while keeping external reference, try to use
+        // aboslute file path for easy transition into document at different
+        // directory
+        if(docInfo) 
+            _path = docInfo->filePath();
+        else {
+            auto pDoc = owner->getDocument();
+            const char *docPath = pDoc->FileName.getValue();
+            if(docPath && docPath[0])
+                _path = PropertyXLink::DocInfo::getDocPath(filePath.c_str(),pDoc,false);
+            else 
+                FC_WARN("PropertXLink export without absolute path");
+        }
+        if(_path.size())
+            path = _path.c_str();
+    }
     writer.Stream() << writer.ind() << 
-        "<XLink file=\"" << filePath << 
+        "<XLink file=\"" << path << 
         "\" stamp=\"" << (docInfo&&docInfo->pcDoc?docInfo->pcDoc->LastModifiedDate.getValue():"") <<
-        "\" name=\"" << objectName <<"\"/>" << std::endl;
+        "\" name=\"" << objectName <<
+        "\" sub=\"" << subName <<
+        "\" relative=\"" << (relativePath?"true":"false") << "\"/>" << std::endl;
 }
 
 void PropertyXLink::Restore(Base::XMLReader &reader)
 {
     // read my element
     reader.readElement("XLink");
-    std::string name = reader.getAttribute("name");
-    std::string stamp = reader.getAttribute("stamp");
-    std::string file = reader.getAttribute("file");
+    std::string stamp,file;
+    if(reader.hasAttribute("stamp"))
+        stamp = reader.getAttribute("stamp");
+    if(reader.hasAttribute("file"))
+        file = reader.getAttribute("file");
+    relativePath = true;
+    if(reader.hasAttribute("relative"))
+        relativePath = strcmp(reader.getAttribute("relative"),"true")==0;
+    std::string name;
+    if(file.empty()) 
+        name = reader.getName(reader.getAttribute("name"));
+    else
+        name = reader.getAttribute("name");
+    std::string subname;
+    if(reader.getAttribute("sub"))
+        subname = importSubName(reader,reader.getAttribute("sub"));
+
 
     // Property not in a DocumentObject!
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
@@ -1435,7 +1624,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
 
     if(file.size()) {
         this->stamp = stamp;
-        setValue(file.c_str(),name.c_str(),-1);
+        setValue(file.c_str(),name.c_str(),subname.c_str(),relativePath);
         return;
     }
 
@@ -1448,7 +1637,34 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
                     "an object was not loaded correctly");
         }
     }
-    setValue(object);
+    setValue(object,subname.c_str(),relativePath);
+}
+
+Property *PropertyXLink::CopyOnImportExternal(
+        const std::map<std::string,std::string> &nameMap) const
+{
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!owner || !_pcLink)
+        return 0;
+    auto linked = _pcLink;
+    auto export_name = linked->getExportName(true);
+    auto it = nameMap.find(export_name);
+    if(it!=nameMap.end()) {
+        linked = owner->getDocument()->getObject(it->second.c_str());
+        if(!linked) {
+            FC_ERR("cannot find imported external object '" << it->second << "' in '" <<
+                    owner->getDocument()->getName());
+            linked = _pcLink;
+        }
+    }
+    auto sub = tryImportSubName(nameMap,_pcLink,subName.c_str());
+
+    if(linked==_pcLink && sub.empty())
+        return 0;
+    auto p = new PropertyXLink;
+    p->_pcLink = linked;
+    p->subName = sub;
+    return p;
 }
 
 Property *PropertyXLink::Copy(void) const
@@ -1457,7 +1673,9 @@ Property *PropertyXLink::Copy(void) const
     p->_pcLink = _pcLink;
     p->docInfo = docInfo;
     p->objectName = objectName;
+    p->subName = subName;
     p->filePath = filePath;
+    p->relativePath = relativePath;
     return p;
 }
 
@@ -1468,8 +1686,69 @@ void PropertyXLink::Paste(const Property &from)
 
     const auto &other = static_cast<const PropertyXLink&>(from);
     if(other._pcLink)
-        setValue(const_cast<DocumentObject*>(other._pcLink));
+        setValue(const_cast<DocumentObject*>(other._pcLink),
+                other.subName.c_str(),other.relativePath);
     else
-        setValue(other.filePath.c_str(),other.objectName.c_str(),-1);
+        setValue(other.filePath.c_str(),other.objectName.c_str(),
+                other.subName.c_str(),other.relativePath);
 }
+
+bool PropertyXLink::hasXLink(const App::Document *doc) {
+    for(auto &v : _DocInfoMap) {
+        if(v.second->hasXLink(doc))
+            return true;
+    }
+    return false;
+}
+
+PyObject *PropertyXLink::getPyObject(void)
+{
+    if(!_pcLink)
+        Py_Return;
+    if(subName.empty())
+        return _pcLink->getPyObject();
+    Py::Tuple ret(2);
+    ret.setItem(0,Py::Object(_pcLink->getPyObject(),true));
+    ret.setItem(1,Py::String(subName.c_str()));
+    return Py::new_reference_to(ret);
+}
+
+void PropertyXLink::setPyObject(PyObject *value) {
+    if(PySequence_Check(value)) {
+        Py::Sequence seq(value);
+        if(seq.size()<2 || seq.size()>3) 
+            throw Base::ValueError("Expect input sequence of size 2 or 3");
+        std::string subname;
+        PyObject *pyObj = seq[0].ptr();
+        PyObject *pySub = seq[1].ptr();
+        PyObject *pyRelative = seq.size()<3?Py_True:seq[2].ptr();
+        if(pyObj == Py_None) {
+            setValue(0);
+            return;
+        } else if(!PyObject_TypeCheck(pyObj, &DocumentObjectPy::Type))
+            throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
+        if (PyUnicode_Check(pySub)) {
+#if PY_MAJOR_VERSION >= 3
+            subname = PyUnicode_AsUTF8(pySub);
+#else
+            PyObject* unicode = PyUnicode_AsUTF8String(pySub);
+            subname = PyString_AsString(unicode);
+            Py_DECREF(unicode);
+        }else if (PyString_Check(pySub)) {
+            subname = PyString_AsString(pySub);
+#endif
+        }else
+            throw Base::TypeError("Expect the second element to be a string");
+        setValue(static_cast<DocumentObjectPy*>(pyObj)->getDocumentObjectPtr(),
+                subname.c_str(),PyObject_IsTrue(pyRelative));
+    } else if(PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
+        setValue(static_cast<DocumentObjectPy*>(value)->getDocumentObjectPtr());
+    } else if (Py_None == value) {
+        setValue(0);
+    } else {
+        throw Base::TypeError("type must be 'DocumentObject', 'None', or '(DocumentObject, SubName)' or "
+                "'DocumentObject, SubName, useRelativePath)', not ");
+    }
+}
+
 

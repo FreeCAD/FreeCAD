@@ -110,6 +110,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Origin.h"
 #include "OriginGroupExtension.h"
 
+FC_LOG_LEVEL_INIT("App::Document", true);
+
 using Base::Console;
 using Base::streq;
 using Base::Writer;
@@ -1369,9 +1371,42 @@ void Document::Restore(Base::XMLReader &reader)
     reader.readEndElement("Document");
 }
 
+static Document::ExportStatus _DocExporting;
+
+// Exception-safe exporting status setter
+class DocumentExporting {
+public:
+    DocumentExporting(bool keepExternal) {
+        _DocExporting = keepExternal?Document::ExportKeepExternal:Document::Exporting;
+    }
+
+    ~DocumentExporting() {
+        _DocExporting = Document::NotExporting;
+    }
+};
+
+// The current implementation choose to use a static variable for exporting
+// status because we can be exporting multiple objects from multiple documents
+// at the same time. I see no benefits in distinguish which documents are
+// exporting, so just use a static variable for global status. But the
+// implementation can easily be changed here if necessary.
+Document::ExportStatus Document::isExporting() const {
+    return _DocExporting;
+}
+
 void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
-                             std::ostream& out)
+                             std::ostream& out, bool keepExternal)
 {
+    DocumentExporting exporting(keepExternal);
+
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        for(auto o : obj) {
+            if(o && o->getNameInDocument())
+                FC_LOG("exporting " << o->getDocument()->getName() <<
+                        '.' << o->getNameInDocument());
+        }
+    }
+
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
@@ -1407,7 +1442,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName()     << "\" "
-        << "name=\"" << (*it)->getNameInDocument()       << "\" ";
+        << "name=\"" << (*it)->getExportName()       << "\" ";
 
         // See DocumentObjectPy::getState
         if ((*it)->testStatus(ObjectStatus::Touch))
@@ -1425,7 +1460,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 
     writer.incInd(); // indentation for 'Object name'
     for (it = obj.begin(); it != obj.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\"";
+        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getExportName() << "\"";
         if((*it)->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
             
@@ -1454,12 +1489,28 @@ Document::readObjects(Base::XMLReader& reader)
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
 
+        // To prevent duplicate name when export/import of objects from
+        // external documents, we append those external object name with
+        // @<doccument name>. Before importing (here means we are called by
+        // importObjects), we shall strip the postfix. What the caller
+        // (MergeDocument) sees is still the unstripped name mapped to a new
+        // internal name, and the rest of the link properties will be able to
+        // correctly unmap the names.
+        auto pos = name.find('@');
+        std::string _obj_name;
+        const char *obj_name;
+        if(pos!=std::string::npos) {
+            _obj_name = name.substr(0,pos);
+            obj_name = _obj_name.c_str();
+        }else
+            obj_name = name.c_str();
+
         try {
             // Use name from XML as is and do NOT remove trailing digits because
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
+            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false);
             if (obj) {
                 objs.push_back(obj);
                 // use this name for the later access because an object with
@@ -1520,16 +1571,18 @@ Document::importObjects(Base::XMLReader& reader)
 
     std::vector<App::DocumentObject*> objs = readObjects(reader);
 
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        for(auto o : objs) {
+            if(o && o->getNameInDocument())
+                FC_LOG("importing " << o->getNameInDocument());
+        }
+    }
+
     reader.readEndElement("Document");
     signalImportObjects(objs, reader);
 
-    // reset all touched
-    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it) {
-        (*it)->onDocumentRestored();
-        (*it)->ExpressionEngine.onDocumentRestored();
-        (*it)->purgeTouched();
-    }
-
+    afterRestore(objs);
+    signalFinishImportObjects(objs);
     setStatus(Document::Restoring, false);
     return objs;
 }
@@ -1757,21 +1810,26 @@ void Document::restore (bool delaySignal)
 }
 
 void Document::afterRestore(bool checkXLink) {
-    // reset all touched
-    for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
-        It->second->connectRelabelSignals();
+    afterRestore(d->objectArray,checkXLink);
+    GetApplication().signalFinishRestoreDocument(*this);
+    setStatus(Document::Restoring, false);
+}
+
+void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkXLink) {
+    for (auto obj : objArray) {
+        obj->connectRelabelSignals();
         try {
-            It->second->onDocumentRestored();
-            It->second->ExpressionEngine.onDocumentRestored();
+            obj->onDocumentRestored();
+            obj->ExpressionEngine.onDocumentRestored();
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Error in %s: %s\n", It->second->Label.getValue(), e.what());
+            Base::Console().Error("Error in %s: %s\n", obj->Label.getValue(), e.what());
         }
 
         bool purge = true;
         if(checkXLink) {
             std::vector<Property*> props;
-            It->second->getPropertyList(props);
+            obj->getPropertyList(props);
             for(auto prop : props) {
                 if(prop->isDerivedFrom(PropertyXLink::getClassTypeId()) &&
                 !static_cast<PropertyXLink*>(prop)->isRestored())
@@ -1782,11 +1840,8 @@ void Document::afterRestore(bool checkXLink) {
             }
         }
         if(purge)
-            It->second->purgeTouched();
+            obj->purgeTouched();
     }
-
-    GetApplication().signalFinishRestoreDocument(*this);
-    setStatus(Document::Restoring, false);
 }
 
 bool Document::isSaved() const
@@ -1904,106 +1959,33 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
-#ifdef USE_OLD_DAG
-namespace boost {
-// recursive helper function to get all dependencies
-void out_edges_recursive(const Vertex& v, const DependencyList& g, std::set<Vertex>& out)
+// This function unifies the old _rebuildDependencyList() and
+// getDependencyList().  The algorithm basically obtains the object dependency
+// by recrusivly visiting the OutList of each object in the given object array.
+// It makes sure to call getOutList() of each object once and only once, which
+// makes it much more efficient than calling getRecursiveOutList() on each
+// individual object.
+//
+// The problem with the original algorithm is that, it assumes the objects
+// inside any OutList are all within the given object array, so it does not
+// recursively call getOutList() on those dependent objects inside. This
+// assumption is broken by the introduction of PropertyXLink which can link to
+// external object.
+//
+// Return true if it found any external dependency
+static bool _buildDependencyList(const std::vector<App::DocumentObject*> &objectArray,
+        bool noExternal, std::vector<App::DocumentObject*> *depObjs, 
+        DependencyList *depList, std::map<DocumentObject*,Vertex> *objectMap)
 {
-    DependencyList::out_edge_iterator j, jend;
-    for (boost::tie(j, jend) = boost::out_edges(v, g); j != jend; ++j) {
-        Vertex n = boost::target(*j, g);
-        std::pair<std::set<Vertex>::iterator, bool> i = out.insert(n);
-        if (i.second)
-            out_edges_recursive(n, g, out);
-    }
-}
-}
-
-std::vector<App::DocumentObject*>
-Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
-{
-    DependencyList DepList;
-    std::map<DocumentObject*,Vertex> ObjectMap;
-    std::map<Vertex,DocumentObject*> VertexMap;
-
-    // Filling up the adjacency List
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
-        // add the object as Vertex and remember the index
-        Vertex v = add_vertex(DepList);
-        ObjectMap[*it] = v;
-        VertexMap[v] = *it;
-    }
-
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
-        std::vector<DocumentObject*> outList = (*it)->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
-            if (*jt) {
-                std::map<DocumentObject*,Vertex>::const_iterator i = ObjectMap.find(*jt);
-
-                if (i == ObjectMap.end()) {
-                    Vertex v = add_vertex(DepList);
-
-                    ObjectMap[*jt] = v;
-                    VertexMap[v] = *jt;
-                }
-            }
-        }
-    }
-
-    // add the edges
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
-        std::vector<DocumentObject*> outList = (*it)->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
-            if (*jt) {
-                add_edge(ObjectMap[*it],ObjectMap[*jt],DepList);
-            }
-        }
-    }
-
-    std::list<Vertex> make_order;
-    DependencyList::out_edge_iterator j, jend;
-
-    try {
-        // this sort gives the execute
-        boost::topological_sort(DepList, std::front_inserter(make_order));
-    }
-    catch (const std::exception& e) {
-        std::stringstream ss;
-        ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
-        ss << e.what();
-        throw Base::RuntimeError(ss.str().c_str());
-    }
-
-    std::set<Vertex> out;
-    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
-        std::map<DocumentObject*,Vertex>::iterator jt = ObjectMap.find(*it);
-        // ok, object is part of this graph
-        if (jt != ObjectMap.end()) {
-            out.insert(jt->second);
-            out_edges_recursive(jt->second, DepList, out);
-        }
-    }
-
-    std::vector<App::DocumentObject*> ary;
-    ary.reserve(out.size());
-    for (std::set<Vertex>::iterator it = out.begin(); it != out.end(); ++it)
-        ary.push_back(VertexMap[*it]);
-    return ary;
-}
-#endif
-
-void Document::_rebuildDependencyList(void)
-{
-#ifdef USE_OLD_DAG
-
-    d->VertexObjectList.clear();
-    d->DepList.clear();
+    bool hasExternal = false;
     std::map<DocumentObject*, std::vector<DocumentObject*> > outLists;
+    std::deque<DocumentObject*> objs;
 
-    // add vertex
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::deque<DocumentObject*> objs;
-        objs.push_back(It->second);
+    if(objectMap) objectMap->clear();
+    if(depList) depList->clear();
+
+    for (auto obj : objectArray) {
+        objs.push_back(obj);
         while(objs.size()) {
             auto obj = objs.front();
             objs.pop_front();
@@ -2011,50 +1993,77 @@ void Document::_rebuildDependencyList(void)
                 continue;
 
             auto it = outLists.find(obj);
-            if(it != outLists.end())
+            if(it!=outLists.end())
                 continue;
 
-            d->VertexObjectList[obj] = add_vertex(d->DepList);
+            if(depObjs) depObjs->push_back(obj);
+            if(objectMap && depList)
+                (*objectMap)[obj] = add_vertex(*depList);
 
             auto &outList = outLists[obj];
-            outList = obj->getOutList();
-
-            objs.insert(objs.end(),outList.begin(),outList.end());
+            for(auto o : obj->getOutList()) {
+                if(o && o->getNameInDocument()) {
+                    if(o->getDocument()!=obj->getDocument()){
+                        hasExternal = true;
+                        if(noExternal) continue;
+                    }
+                    outList.push_back(o);
+                    objs.push_back(o);
+                }
+            }
         }
     }
 
-    // add the edges
-    for (const auto &v : outLists) {
-        for(auto obj : v.second) {
-            if(!obj || !obj->getNameInDocument())
-                continue;
-            add_edge(d->VertexObjectList[v.first],d->VertexObjectList[obj],d->DepList);
+    if(objectMap && depList) {
+        for (const auto &v : outLists) {
+            for(auto obj : v.second) {
+                if(obj && obj->getNameInDocument())
+                    add_edge((*objectMap)[v.first],(*objectMap)[obj],*depList);
+            }
         }
     }
-#endif
+    return hasExternal;
 }
 
-#ifndef USE_OLD_DAG
-std::vector<App::DocumentObject*> Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
+std::vector<App::DocumentObject*> Document::getDependencyList(
+    const std::vector<App::DocumentObject*>& objectArray, 
+    bool noExternal, bool sort, bool *hasExternal)
 {
-    std::vector<App::DocumentObject*> dep;
-    for (auto obj : objs){
-        if(!obj)
-            continue;
-        std::vector<App::DocumentObject*> objDep = obj->getOutListRecursive();
-        dep.insert(dep.end(), objDep.begin(), objDep.end());
-        dep.push_back(obj);
+    bool _hasExternal;
+    if(!hasExternal) hasExternal = &_hasExternal;
+
+    std::vector<App::DocumentObject*> ret;
+    if(!sort) {
+        *hasExternal = _buildDependencyList(objectArray,noExternal,&ret,0,0);
+        return ret;
     }
 
-    // remove duplicate entries and resize the vector
-    std::sort(dep.begin(), dep.end());
-    auto newEnd = std::unique(dep.begin(), dep.end());
-    dep.resize(std::distance(dep.begin(), newEnd));
+    DependencyList depList;
+    std::map<DocumentObject*,Vertex> objectMap;
+    std::map<Vertex,DocumentObject*> vertexMap;
 
-    return dep;
+    *hasExternal = _buildDependencyList(objectArray,noExternal,0,&depList,&objectMap);
+
+    for(auto &v : objectMap)
+        vertexMap[v.second] = v.first;
+
+    std::list<Vertex> make_order;
+    try {
+        boost::topological_sort(depList, std::front_inserter(make_order));
+    } catch (const std::exception& e) {
+        std::cerr << "Document::getDependencyList: " << e.what() << std::endl;
+        return ret;
+    }
+
+    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i)
+        ret.push_back(vertexMap[*i]);
+    return ret;
 }
-#endif // USE_OLD_DAG
 
+void Document::_rebuildDependencyList(void)
+{
+    _buildDependencyList(d->objectArray,false,0,&d->DepList,&d->VertexObjectList);
+}
 
 /**
  * @brief Signal that object identifiers, typically a property or document object has been renamed.
@@ -2814,36 +2823,116 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
     }
 }
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
+std::vector<DocumentObject*> Document::copyObject(
+    const std::vector<DocumentObject*> &objs, bool recursive, bool keepExternal)
 {
-    std::vector<DocumentObject*> objs;
-    objs.push_back(obj);
+    bool hasExternal = false;
+    std::vector<DocumentObject*> deps;
+    if(!recursive)
+        deps = objs;
+    else
+        deps = getDependencyList(objs,keepExternal,false,&hasExternal);
 
+    if(keepExternal && hasExternal && !isSaved())
+        throw Base::RuntimeError(
+                "Document must be saved at least once before link to external objects");
+        
     MergeDocuments md(this);
     // if not copying recursively then suppress possible warnings
     md.setVerbose(recursive);
-    if (recursive) {
-        objs = obj->getDocument()->getDependencyList(objs);
-    }
 
     unsigned int memsize=1000; // ~ for the meta-information
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it)
+    for (std::vector<App::DocumentObject*>::iterator it = deps.begin(); it != deps.end(); ++it)
         memsize += (*it)->getMemSize();
 
     QByteArray res;
     res.reserve(memsize);
     Base::ByteArrayOStreambuf obuf(res);
     std::ostream ostr(&obuf);
-    this->exportObjects(objs, ostr);
+    this->exportObjects(deps, ostr, keepExternal);
 
     Base::ByteArrayIStreambuf ibuf(res);
     std::istream istr(0);
     istr.rdbuf(&ibuf);
-    std::vector<App::DocumentObject*> newObj = md.importObjects(istr);
-    if (newObj.empty())
-        return 0;
-    else
-        return newObj.back();
+    return md.importObjects(istr);
+}
+
+std::vector<App::DocumentObject*> 
+Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
+{
+    std::set<App::DocumentObject*> objSet;
+    std::vector<App::DocumentObject*> objs;
+    for(auto obj : objArray) {
+        if(!obj || !obj->getNameInDocument() || obj->getDocument()!=this)
+            continue;
+        std::vector<App::Property*> props;
+        obj->getPropertyList(props);
+        for(auto prop : props) {
+            auto xlink = dynamic_cast<App::PropertyXLink*>(prop);
+            if(!xlink) continue; 
+            auto linked = xlink->getValue();
+            if(linked && linked->getNameInDocument() && 
+               linked->getDocument()!=this && 
+               objSet.insert(linked).second)
+            {
+                objs.push_back(linked);
+            }
+        }
+    }
+
+    objs = App::Document::getDependencyList(objs,false);
+    if(objs.empty()) {
+        FC_ERR("nothing to import");
+        return objs;
+    }
+
+    Base::FileInfo fi(App::Application::getTempFileName());
+    {
+        // save stuff to temp file
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        MergeDocuments mimeView(this);
+        exportObjects(objs, str, false);
+        str.close();
+    }
+    Base::ifstream str(fi, std::ios::in | std::ios::binary);
+    MergeDocuments mimeView(this);
+    objs = mimeView.importObjects(str);
+    str.close();
+    fi.deleteFile();
+
+    const auto &nameMap = mimeView.getNameMap();
+
+    // First, find all link type properties that needs to be changed
+    std::map<App::Property*,std::unique_ptr<App::Property> > propMap;
+    std::vector<App::Property*> propList;
+    for(auto obj : objArray) {
+        propList.clear();
+        obj->getPropertyList(propList);
+        for(auto prop : propList) {
+#define CHECK_LINK(_type)  \
+            {\
+                auto link = dynamic_cast<App::_type *>(prop);\
+                if(link) {\
+                    auto copy = link->CopyOnImportExternal(nameMap);\
+                    if(copy) propMap[prop].reset(copy);\
+                    continue;\
+                }\
+            }
+            CHECK_LINK(PropertyLinkSub)
+            CHECK_LINK(PropertyLinkSubList)
+            CHECK_LINK(PropertyXLink)
+        }
+    }
+
+    // Then change them in one go. Note that we don't make change in previous
+    // loop, because a changed link property may break other depending link
+    // properties, e.g. a link sub refering to some sub object of an xlink, If
+    // that sub object is imported with a different name, and xlink is changed
+    // before this link sub, it will break.
+    for(auto &v : propMap) 
+        v.first->Paste(*v.second);
+
+    return objs;
 }
 
 DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)

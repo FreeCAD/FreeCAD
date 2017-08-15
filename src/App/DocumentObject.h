@@ -97,6 +97,8 @@ public:
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
+    /// returns the name that is safe to be exported to other document
+    std::string getExportName(bool forced=false) const;
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
     /// gets the document in which this Object is handled

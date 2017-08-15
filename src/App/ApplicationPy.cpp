@@ -139,7 +139,11 @@ PyMethodDef Application::Methods[] = {
      "checkLinkDepth(depth) -- check link recursion depth"},
     {"getLinksTo",       (PyCFunction) Application::sGetLinksTo, 1,
      "getLinksTo(obj,recursive=True,maxCount=0) -- return the objects linked to 'obj'"},
-
+    {"getDependentObjects", (PyCFunction) Application::sGetDependentObjects, 1,
+     "getDependentObjects(obj|[obj,...], noExternal=False, sort=False)\n"
+     "Return a list of dependent objects including the given objects.\n\n"
+     "noExternal: If true, exclude externally linked objects from dependencies.\n"
+     "sort: If True, return the list in topological order."},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -730,4 +734,38 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args, PyObject
         ret.setItem(i++,Py::Object(o->getPyObject(),true));
     return Py::new_reference_to(ret);
 }
+
+PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    PyObject *obj;
+    PyObject *noExternal = Py_False;
+    PyObject *sort = Py_False;
+    if (!PyArg_ParseTuple(args, "O|OO", &obj,&noExternal,&sort))
+        return 0;
+
+    std::vector<App::DocumentObject*> objs;
+    if(PySequence_Check(obj)) {
+        Py::Sequence seq(obj);
+        for(size_t i=0;i<seq.size();++i) {
+            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
+                return 0;
+            }
+            objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+        }
+    }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+        PyErr_SetString(PyExc_TypeError, 
+            "Expect first argument to be either a document object or sequence of document objects");
+        return 0;
+    }else
+        objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+
+    auto ret = App::Document::getDependencyList(objs,PyObject_IsTrue(noExternal),PyObject_IsTrue(sort));
+
+    Py::Tuple tuple(ret.size());
+    for(size_t i=0;i<ret.size();++i) 
+        tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+    return Py::new_reference_to(tuple);
+}
+
 

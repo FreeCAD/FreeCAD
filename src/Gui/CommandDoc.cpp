@@ -953,56 +953,72 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 void StdCmdDuplicateSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    std::set<App::DocumentObject*> unique_objs;
-    std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
-    for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        if (it->pObject && it->pObject->getDocument()) {
-            if (unique_objs.insert(it->pObject).second)
-                objs[it->pObject->getDocument()].push_back(it->pObject);
-        }
+    std::vector<App::DocumentObject*> sel;
+    std::set<App::DocumentObject*> objSet;
+    for(auto &s : Selection().getCompleteSelection()) {
+        if(s.pObject && s.pObject->getNameInDocument() && objSet.insert(s.pObject).second)
+            sel.push_back(s.pObject);
     }
-
-    if (objs.empty())
+    if(sel.empty())
         return;
 
+    bool keepExternal = false;
     Base::FileInfo fi(App::Application::getTempFileName());
     {
-        std::vector<App::DocumentObject*> sel; // selected
-        std::vector<App::DocumentObject*> all; // object sub-graph
-        for (std::map< App::Document*, std::vector<App::DocumentObject*> >::iterator it = objs.begin(); it != objs.end(); ++it) {
-            std::vector<App::DocumentObject*> dep = it->first->getDependencyList(it->second);
-            sel.insert(sel.end(), it->second.begin(), it->second.end());
-            all.insert(all.end(), dep.begin(), dep.end());
-        }
-
-        if (all.size() > sel.size()) {
+        auto internal = App::Document::getDependencyList(sel,true);
+        auto all = App::Document::getDependencyList(sel,false);
+        if (internal.size() > sel.size()) {
             int ret = QMessageBox::question(getMainWindow(),
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
                 qApp->translate("Std_DuplicateSelection","The selected objects have a dependency to unselected objects.\n"
                                                          "Do you want to duplicate them, too?"),
                 QMessageBox::Yes,QMessageBox::No);
-            if (ret == QMessageBox::Yes) {
-                sel = all;
-            }
+            if (ret == QMessageBox::Yes) 
+                sel.swap(internal);
+            else
+                keepExternal = true;
+        }
+        if(!keepExternal && all.size() > sel.size()) {
+            int ret = QMessageBox::question(getMainWindow(),
+                qApp->translate("Std_DuplicateSelection","Object dependencies"),
+                qApp->translate("Std_DuplicateSelection","The selected objects contain dependencies in external documents.\n"
+                                "Do you want to duplicate the external objects, too?"),
+                QMessageBox::Yes,QMessageBox::No);
+            if (ret == QMessageBox::Yes) 
+                sel.swap(all);
+            else
+                keepExternal = true;
         }
 
         // save stuff to file
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(sel, str);
+        doc->exportObjects(sel, str, keepExternal);
         str.close();
     }
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
-        doc->openTransaction("Duplicate");
-        // restore objects from file and add to active document
-        Base::ifstream str(fi, std::ios::in | std::ios::binary);
-        MergeDocuments mimeView(doc);
-        mimeView.importObjects(str);
-        str.close();
-        doc->commitTransaction();
+        bool proceed = true;
+        if(keepExternal && !doc->isSaved()) {
+            int ret = QMessageBox::question(getMainWindow(),
+                qApp->translate("Std_DuplicateSelection","Object dependencies"),
+                qApp->translate("Std_DuplicateSelection",
+                "To link to external objects, the document must be saved at least once.\n"
+                "Do you want to save the document now?"),
+                QMessageBox::Yes,QMessageBox::No);
+            if(ret == QMessageBox::Yes) 
+                proceed = Application::Instance->getDocument(doc)->saveAs();
+        }
+        if(proceed) {
+            doc->openTransaction("Duplicate");
+            // restore objects from file and add to active document
+            Base::ifstream str(fi, std::ios::in | std::ios::binary);
+            MergeDocuments mimeView(doc);
+            mimeView.importObjects(str);
+            str.close();
+            doc->commitTransaction();
+        }
     }
     fi.deleteFile();
 }

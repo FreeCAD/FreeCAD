@@ -138,6 +138,20 @@ const char *DocumentObject::getNameInDocument(void) const
     return pcNameInDocument->c_str();
 }
 
+std::string DocumentObject::getExportName(bool forced) const {
+    if(!pcNameInDocument)
+        return std::string();
+
+    if(!forced && !getDocument()->isExporting())
+        return *pcNameInDocument;
+
+    // '@' is an invalid character for an internal name, which ensures the
+    // following returned name will be unique in any document. Saving external
+    // object like that shall only happens in Document::exportObjects(). We
+    // shall strip out this '@' and the following document name during restoring.
+    return *pcNameInDocument + '@' + getDocument()->getName();
+}
+
 bool DocumentObject::isAttachedToDocument() const
 {
     return (pcNameInDocument != 0);

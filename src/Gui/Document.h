@@ -85,6 +85,7 @@ protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     void slotShowHidden(const App::Document&);
+    void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
     //@}
 
     void addViewProvider(Gui::ViewProviderDocumentObject*);

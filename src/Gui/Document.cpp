@@ -107,6 +107,7 @@ struct DocumentP
     Connection connectShowHidden;
     Connection connectExportObjects;
     Connection connectImportObjects;
+    Connection connectFinishImportObjects;
     Connection connectUndoDocument;
     Connection connectRedoDocument;
     Connection connectTransactionAppend;
@@ -159,6 +160,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
     d->connectImportObjects = pcDocument->signalImportViewObjects.connect
         (boost::bind(&Gui::Document::importObjects, this, _1, _2, _3));
+    d->connectFinishImportObjects = pcDocument->signalFinishImportObjects.connect
+        (boost::bind(&Gui::Document::slotFinishImportObjects, this, _1));
         
     d->connectUndoDocument = pcDocument->signalUndo.connect
         (boost::bind(&Gui::Document::slotUndoDocument, this, _1));
@@ -198,6 +201,7 @@ Document::~Document()
     d->connectShowHidden.disconnect();
     d->connectExportObjects.disconnect();
     d->connectImportObjects.disconnect();
+    d->connectFinishImportObjects.disconnect();
     d->connectUndoDocument.disconnect();
     d->connectRedoDocument.disconnect();
     d->connectTransactionAppend.disconnect();
@@ -1048,8 +1052,12 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
             if (jt != nameMapping.end())
                 name = jt->second;
             Gui::ViewProvider* pObj = this->getViewProviderByName(name.c_str());
-            if (pObj)
+            if (pObj) {
+                pObj->setStatus(Gui::isRestoring,true);
+                auto vpd = dynamic_cast<ViewProviderDocumentObject*>(pObj);
+                if(vpd) vpd->startRestoring();
                 pObj->Restore(xmlReader);
+            }
             xmlReader.readEndElement("ViewProvider");
             if (it == obj.end())
                 break;
@@ -1063,6 +1071,17 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     if (!xmlReader.getFilenames().empty())
         xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
 }
+
+void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {
+    for(auto obj : objs) {
+        auto vp = getViewProvider(obj);
+        if(!vp) continue;
+        vp->setStatus(Gui::isRestoring,false);
+        auto vpd = dynamic_cast<ViewProviderDocumentObject*>(vp);
+        if(vpd) vpd->finishRestoring();
+    }
+}
+
 
 void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& obj, App::DocumentObjectGroup* grp)
 {

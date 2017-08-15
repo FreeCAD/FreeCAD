@@ -1276,38 +1276,46 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
     }
 }
 
+static QLatin1String _MimeDocObj("application/x-documentobject");
+static QLatin1String _MimeDocObjX("application/x-documentobject-x");
+static QLatin1String _MimeDocObjFile("application/x-documentobject-file");
+static QLatin1String _MimeDocObjXFile("application/x-documentobject-x-file");
+
 QMimeData * MainWindow::createMimeDataFromSelection () const
 {
-    std::vector<SelectionSingleton::SelObj> selobj = Selection().getCompleteSelection();
-    std::set<App::DocumentObject*> unique_objs;
-    std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
-    for (std::vector<SelectionSingleton::SelObj>::iterator it = selobj.begin(); it != selobj.end(); ++it) {
-        if (it->pObject && it->pObject->getDocument()) {
-            if (unique_objs.insert(it->pObject).second)
-                objs[it->pObject->getDocument()].push_back(it->pObject);
-        }
+    std::vector<App::DocumentObject*> sel;
+    std::set<App::DocumentObject*> objSet;
+    for(auto &s : Selection().getCompleteSelection()) {
+        if(s.pObject && s.pObject->getNameInDocument() && objSet.insert(s.pObject).second)
+            sel.push_back(s.pObject);
     }
-
-    if (objs.empty())
+    if(sel.empty())
         return 0;
 
-    std::vector<App::DocumentObject*> sel; // selected
-    std::vector<App::DocumentObject*> all; // object sub-graph
-    for (std::map< App::Document*, std::vector<App::DocumentObject*> >::iterator it = objs.begin(); it != objs.end(); ++it) {
-        std::vector<App::DocumentObject*> dep = it->first->getDependencyList(it->second);
-        sel.insert(sel.end(), it->second.begin(), it->second.end());
-        all.insert(all.end(), dep.begin(), dep.end());
-    }
-
-    if (all.size() > sel.size()) {
+    bool keepExternal = false;
+    auto internal = App::Document::getDependencyList(sel,true);
+    auto all = App::Document::getDependencyList(sel,false);
+    if (internal.size() > sel.size()) {
         int ret = QMessageBox::question(getMainWindow(),
             tr("Object dependencies"),
             tr("The selected objects have a dependency to unselected objects.\n"
                "Do you want to copy them, too?"),
             QMessageBox::Yes,QMessageBox::No);
-        if (ret == QMessageBox::Yes) {
-            sel = all;
-        }
+        if (ret == QMessageBox::Yes)
+            sel.swap(internal);
+        else 
+            keepExternal = true;
+    }
+    if(!keepExternal && all.size() > sel.size()) {
+        int ret = QMessageBox::question(getMainWindow(),
+            tr("Object dependencies"),
+            tr("The selected objects contain dependencies in external documents.\n"
+               "Do you want to copy the external objects, too?"),
+            QMessageBox::Yes,QMessageBox::No);
+        if (ret == QMessageBox::Yes) 
+            sel.swap(all);
+        else
+            keepExternal = true;
     }
 
     unsigned int memsize=1000; // ~ for the meta-information
@@ -1327,22 +1335,22 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     WaitCursor wc;
     QString mime;
     if (use_buffer) {
-        mime = QLatin1String("application/x-documentobject");
+        mime = keepExternal?_MimeDocObjX:_MimeDocObj;
         Base::ByteArrayOStreambuf buf(res);
         std::ostream str(&buf);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(sel, str);
+        doc->exportObjects(sel, str, keepExternal);
     }
     else {
-        mime = QLatin1String("application/x-documentobject-file");
+        mime = keepExternal?_MimeDocObjXFile:_MimeDocObjFile;
         static Base::FileInfo fi(App::Application::getTempFileName());
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(sel, str);
+        doc->exportObjects(sel, str, keepExternal);
         str.close();
         res = fi.filePath().c_str();
 
@@ -1361,18 +1369,47 @@ bool MainWindow::canInsertFromMimeData (const QMimeData * source) const
     if (!source)
         return false;
     return source->hasUrls() || 
-        source->hasFormat(QLatin1String("application/x-documentobject")) ||
-        source->hasFormat(QLatin1String("application/x-documentobject-file"));
+        source->hasFormat(_MimeDocObj) || source->hasFormat(_MimeDocObjX) ||
+        source->hasFormat(_MimeDocObjFile) || source->hasFormat(_MimeDocObjXFile);
 }
 
 void MainWindow::insertFromMimeData (const QMimeData * mimeData)
 {
     if (!mimeData)
         return;
-    if (mimeData->hasFormat(QLatin1String("application/x-documentobject"))) {
-        QByteArray res = mimeData->data(QLatin1String("application/x-documentobject"));
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (!doc) doc = App::GetApplication().newDocument();
+    bool fromDoc = false;
+    bool keepExternal = false;
+    QString format;
+    if(mimeData->hasFormat(_MimeDocObj))
+        format = _MimeDocObj;
+    else if(mimeData->hasFormat(_MimeDocObjX)) {
+        format = _MimeDocObjX;
+        keepExternal = true;
+    }else if(mimeData->hasFormat(_MimeDocObjFile))
+        fromDoc = true;
+    else if(mimeData->hasFormat(_MimeDocObjXFile)) {
+        fromDoc = true;
+        keepExternal = true;
+    }else {
+        if (mimeData->hasUrls())
+            loadUrls(App::GetApplication().getActiveDocument(), mimeData->urls());
+        return;
+    }
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if(!doc) doc = App::GetApplication().newDocument();
+
+    if(keepExternal && !doc->isSaved()) {
+        int ret = QMessageBox::question(getMainWindow(),
+            tr("Object dependencies"),
+            tr("To link to external objects, the document must be saved at least once.\n"
+               "Do you want to save the document now?"),
+            QMessageBox::Yes,QMessageBox::No);
+        if(ret != QMessageBox::Yes || !Application::Instance->getDocument(doc)->saveAs())
+            return;
+    }
+    if(!fromDoc) {
+        QByteArray res = mimeData->data(format);
 
         doc->openTransaction("Paste");
         Base::ByteArrayIStreambuf buf(res);
@@ -1388,10 +1425,8 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         }
         doc->commitTransaction();
     }
-    else if (mimeData->hasFormat(QLatin1String("application/x-documentobject-file"))) {
-        QByteArray res = mimeData->data(QLatin1String("application/x-documentobject-file"));
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (!doc) doc = App::GetApplication().newDocument();
+    else {
+        QByteArray res = mimeData->data(format);
 
         doc->openTransaction("Paste");
         Base::FileInfo fi((const char*)res);
@@ -1406,10 +1441,6 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
                 gui->addRootObjectsToGroup(newObj, grp.front());
         }
         doc->commitTransaction();
-    }
-    else if (mimeData->hasUrls()) {
-        // load the files into the active document if there is one, otherwise let create one
-        loadUrls(App::GetApplication().getActiveDocument(), mimeData->urls());
     }
 }
 

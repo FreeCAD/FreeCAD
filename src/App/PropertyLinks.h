@@ -42,7 +42,6 @@ namespace App
 class DocumentObject;
 class Document;
 
-
 /** the general Link Poperty
  *  Main Purpose of this property is to Link Objects and Feautures in a document.
  */
@@ -212,6 +211,9 @@ public:
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
 
+    /// Return a copy of the property if any changes caused by importing external object 
+    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const;
+
     virtual unsigned int getMemSize (void) const{
         return sizeof(App::DocumentObject *);
     }
@@ -286,6 +288,9 @@ public:
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
 
+    /// Return a copy of the property if any changes caused by importing external object 
+    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const;
+
     virtual unsigned int getMemSize (void) const;
 
 private:
@@ -293,7 +298,7 @@ private:
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
 };
-/** Link to an object in the same or different document
+/** Link to an (sub)object in the same or different document
  */
 class AppExport PropertyXLink : public PropertyLink
 {
@@ -305,8 +310,10 @@ public:
     virtual ~PropertyXLink();
 
     void setValue(App::DocumentObject *) override;
-    void setValue(App::DocumentObject *, bool relative);
-    void setValue(const char *filePath, const char *objectName, int relative);
+    void setValue(App::DocumentObject *, const char *subname, bool relative);
+    void setValue(const char *filePath, const char *objectName, const char *subname, bool relative);
+    const char *getSubName() const {return subName.c_str();}
+    bool hasSubName() const {return !subName.empty();}
 
     App::Document *getDocument() const;
     const char *getDocumentPath() const;
@@ -319,9 +326,17 @@ public:
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
 
+    /// Return a copy of the property if any changes caused by importing external object 
+    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const;
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
     class DocInfo;
     friend class DocInfo;
     typedef std::shared_ptr<DocInfo> DocInfoPtr;
+
+    static bool hasXLink(const App::Document *doc);
 
 protected:
     void unlink();
@@ -330,7 +345,9 @@ protected:
 protected:
     std::string filePath;
     std::string objectName;
+    std::string subName;
     std::string stamp;
+    bool relativePath;
 
     DocInfoPtr docInfo;
 };

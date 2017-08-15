@@ -345,6 +345,8 @@ private:
     static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetLinksTo        (PyObject *self,PyObject *args,PyObject *kwd);
 
+    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args,PyObject *kwd);
+
     static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
