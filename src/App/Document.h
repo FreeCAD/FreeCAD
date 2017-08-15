@@ -117,6 +117,8 @@ public:
     //boost::signal<void (const App::DocumentObject&)>     m_sig;
     /// signal on deleted Object
     boost::signal<void (const App::DocumentObject&)> signalDeletedObject;
+    /// signal before changing an Object
+    boost::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed Object
     boost::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
     /// signal on relabeled Object

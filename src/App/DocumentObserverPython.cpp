@@ -76,6 +76,8 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotCreatedObject, this, _1));
     this->connectDocumentDeletedObject = App::GetApplication().signalDeletedObject.connect(boost::bind
         (&DocumentObserverPython::slotDeletedObject, this, _1));
+    this->connectDocumentChangedObject = App::GetApplication().signalBeforeChangeObject.connect(boost::bind
+        (&DocumentObserverPython::slotBeforeChangeObject, this, _1, _2));
     this->connectDocumentChangedObject = App::GetApplication().signalChangedObject.connect(boost::bind
         (&DocumentObserverPython::slotChangedObject, this, _1, _2));
     
@@ -239,6 +241,30 @@ void DocumentObserverPython::slotDeletedObject(const App::DocumentObject& Obj)
             Py::Tuple args(1);
             args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
             method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotBeforeChangeObject(const App::DocumentObject& Obj,
+                                               const App::Property& Prop)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotBeforeChangeObject"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotBeforeChangeObject")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
+            // If a property is touched but not part of a document object then its name is null.
+            // In this case the slot function must not be called.
+            const char* prop_name = Obj.getPropertyName(&Prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                method.apply(args);
+            }
         }
     }
     catch (Py::Exception&) {
