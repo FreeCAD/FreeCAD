@@ -1885,8 +1885,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         ny = DraftVecUtils.project(vec,plane.v)
         ly = ny.Length
         if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-        if techdraw:
-            ly = -ly
+        #if techdraw: buggy - we now simply do it at the end
+        #    ly = -ly
         return Vector(lx,ly,0)
 
     def getDiscretized(edge):
@@ -2161,8 +2161,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(base.x) + ',' + str(base.y+linespacing*i) + ') '
-                svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ')" '
+                svg += ','+ str(base.x) + ',' + str(base.y-linespacing*i) + ') '
+                svg += 'translate(' + str(base.x) + ',' + str(base.y-linespacing*i) + ') '
+                svg += 'scale(1,-1)" '
                 #svg += '" freecad:skip="1"'
                 svg += '>\n' + t + '</text>\n'
         else:
@@ -2178,7 +2179,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             else:
                 svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ')'
             #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-            if flip and (not techdraw):
+            if flip:
                 svg += ' scale(1,-1) '
             else:
                 svg += ' scale(1,1) '
@@ -2499,6 +2500,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
                     svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                    
+    # techdraw expects bottom-to-top coordinates
+    if techdraw:
+        svg = '<g transform ="scale(1,-1)">'+svg+'</g>'
     return svg
 
 def getrgb(color,testbw=True):
