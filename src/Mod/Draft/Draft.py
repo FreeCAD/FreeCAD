@@ -2673,11 +2673,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     for obj in objectslist:
         ok = False
         tp = getType(obj)
-        if tp in ["BSpline","BezCurve"]:
-            FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
-            if deletable: FreeCAD.ActiveDocument.removeObject(deletable.Name)
-            return None
-        elif tp in ["Circle","Ellipse"]:
+        if tp in ["Circle","Ellipse"]:
             if rotation is None:
                 rotation = obj.Placement.Rotation
             edge = obj.Shape.Edges[0]
@@ -2752,6 +2748,14 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                     if closed:
                         constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
                 ok = True
+        elif tp == "BSpline":
+            nobj.addGeometry(obj.Shape.Edges[0].Curve)
+            ok = True
+        elif tp == "BezCurve":
+            bez = obj.Shape.Edges[0].Curve
+            bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter)
+            nobj.addGeometry(bsp)
+            ok = True
         elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
             shape = obj if tp == 'Shape' else obj.Shape
 
