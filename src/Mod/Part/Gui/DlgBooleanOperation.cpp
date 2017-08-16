@@ -485,7 +485,7 @@ void DlgBooleanOperation::accept()
         activeDoc->commitTransaction();
         activeDoc->recompute();
     }
-    catch (const Base::Exception& e) {
+    catch (Base::Exception& e) {
         e.ReportException();
     }
 }

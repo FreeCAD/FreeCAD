@@ -523,6 +523,11 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     return;
     #endif
     
+    #ifdef HAVE_TBB
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("OCC_WITH_TBB"),
+                         QObject::tr("OCC_WITH_TBB"));
+    #endif
+    
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     
@@ -576,14 +581,21 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                     // particularly B-spline GeoID might have changed.
 
                 }
-                catch (const Base::CADKernelError& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                catch (Base::CADKernelError& e) {
+                    e.ReportException(); // By convention, if we catch an exception without rethrowing it, we have to report it.
+                    if(e.getTranslatable()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
+                                            QObject::tr(e.getMessage().c_str()));
+                    }
                     getSelection().clearSelection();
                 }
-                catch (const Base::Exception& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                catch (Base::Exception& e) {
+                    e.ReportException(); // By convention, if we catch an exception without rethrowing it, we have to report it.
+                    if(e.getTranslatable()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
+                                            QObject::tr(e.getMessage().c_str()));
+                    }
+
                     getSelection().clearSelection();
                 }
 

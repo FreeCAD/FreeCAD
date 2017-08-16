@@ -535,12 +535,13 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     }
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = e.getPyObject();
-        
         e.ReportException();
+
+        PyObject *edict = e.getPyObject();
+
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
-        
+
         return NULL;
     }
     catch(const boost::filesystem::filesystem_error& e) // catch boost filesystem exception
@@ -725,9 +726,10 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
+        e.ReportException();
+        
         PyObject *edict = e.getPyObject();
         
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         return NULL;
@@ -755,9 +757,10 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
+        e.ReportException();
+        
         PyObject *edict = e.getPyObject();
         
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         
@@ -797,9 +800,9 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
+        e.ReportException();
         PyObject *edict = e.getPyObject();
         
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         
@@ -828,9 +831,10 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = e.getPyObject();
-        
         e.ReportException();
+        
+        PyObject *edict = e.getPyObject();
+
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         return -1;

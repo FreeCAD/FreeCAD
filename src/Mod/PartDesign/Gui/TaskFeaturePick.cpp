@@ -277,7 +277,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
             index++;
         }
     }
-    catch (const Base::Exception& e) {
+    catch (Base::Exception& e) {
         e.ReportException();
     }
 

@@ -300,7 +300,7 @@ void SelectionView::toPython(void)
             }
         }
     }
-    catch (const Base::Exception& e) {
+    catch (Base::Exception& e) {
         e.ReportException();
     }
 }
@@ -327,7 +327,7 @@ void SelectionView::showPart(void)
                         .arg(elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }
-            catch (const Base::Exception& e) {
+            catch (Base::Exception& e) {
                 e.ReportException();
             }
         }

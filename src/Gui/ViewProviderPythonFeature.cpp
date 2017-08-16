@@ -364,7 +364,7 @@ std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
             }
         }
     }
-    catch (const Base::Exception& e) {
+    catch (Base::Exception& e) {
         e.ReportException();
     }
     catch (Py::Exception&) {
@@ -395,7 +395,7 @@ SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
             }
         }
     }
-    catch (const Base::Exception& e) {
+    catch (Base::Exception& e) {
         e.ReportException();
     }
     catch (Py::Exception&) {
