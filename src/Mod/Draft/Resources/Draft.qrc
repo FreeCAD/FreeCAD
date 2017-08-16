@@ -40,11 +40,13 @@
         <file>icons/Draft_Wipe.svg</file>
         <file>icons/Draft_Draft2Sketch.svg</file>
         <file>icons/Draft_Array.svg</file>
+        <file>icons/Draft_LinkArray.svg</file>
         <file>icons/Draft_Cursor.svg</file>
         <file>icons/Draft_Dot.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_Snap.svg</file>
         <file>icons/Draft_PathArray.svg</file>
+        <file>icons/Draft_PathLinkArray.svg</file>
         <file>icons/Draft_VisGroup.svg</file>
         <file>icons/Snap_Lock.svg</file>
         <file>icons/Snap_Endpoint.svg</file>

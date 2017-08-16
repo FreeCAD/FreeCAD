@@ -1094,7 +1094,7 @@ def makeBlock(objectslist):
         select(obj)
     return obj
 
-def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
+def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array",useLink=False):
     '''makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
     makeArray(object,center,totalangle,totalnum,[name]) for polar array: Creates an array
     of the given object
@@ -1103,8 +1103,13 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
     and ynum. In case of polar array, center is a vector, totalangle is the angle
     to cover (in degrees) and totalnum is the number of objects, including the original.
     The result is a parametric Draft Array.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    _Array(obj)
+
+    if useLink:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name,_Array(None),None,True)
+    else:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+        _Array(obj)
+
     obj.Base = baseobject
     if arg4:
         obj.ArrayType = "ortho"
@@ -1118,23 +1123,29 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
         obj.Angle = arg2
         obj.NumberPolar = arg3
     if gui:
-        _ViewProviderDraftArray(obj.ViewObject)
+        if useLink:
+            _ViewProviderDraftLink(obj.ViewObject)
+        else:
+            _ViewProviderDraftArray(obj.ViewObject)
+            formatObject(obj,obj.Base)
+            if len(obj.Base.ViewObject.DiffuseColor) > 1:
+                FreeCAD.ActiveDocument.recompute()
+                obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         baseobject.ViewObject.hide()
-        formatObject(obj,obj.Base)
-        if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
-            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
-def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs=[]):
-    '''makePathArray(docobj,path,count,xlate,align,pathobjsubs): distribute
+def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs=[],useLink=False):
+    '''makePathArray(docobj,path,count,xlate,align,pathobjsubs,useLink): distribute
     count copies of a document baseobject along a pathobject or subobjects of a
     pathobject. Optionally translates each copy by FreeCAD.Vector xlate direction
     and distance to adjust for difference in shape centre vs shape reference point.
     Optionally aligns baseobject to tangent/normal/binormal of path.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray")
-    _PathArray(obj)
+    if useLink:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray",_PathArray(None),None,True)
+    else:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray")
+        _PathArray(obj)
     obj.Base = baseobject
     obj.PathObj = pathobject
     if pathobjsubs:
@@ -1148,12 +1159,15 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         obj.Xlate = xlate
     obj.Align = align
     if gui:
-        _ViewProviderDraftArray(obj.ViewObject)
+        if useLink:
+            _ViewProviderDraftLink(obj.ViewObject)
+        else:
+            _ViewProviderDraftArray(obj.ViewObject)
+            formatObject(obj,obj.Base)
+            if len(obj.Base.ViewObject.DiffuseColor) > 1:
+                FreeCAD.ActiveDocument.recompute()
+                obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         baseobject.ViewObject.hide()
-        formatObject(obj,obj.Base)
-        if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            FreeCAD.ActiveDocument.recompute()
-            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -3674,7 +3688,8 @@ def makeWorkingPlaneProxy(placement):
 class _DraftObject:
     "The base class for Draft objects"
     def __init__(self,obj,tp="Unknown"):
-        obj.Proxy = self
+        if obj:
+            obj.Proxy = self
         self.Type = tp
 
     def __getstate__(self):
@@ -3836,6 +3851,34 @@ class _ViewProviderDraftPart(_ViewProviderDraftAlt):
     def getIcon(self):
         return ":/icons/Tree_Part.svg"
 
+class _ViewProviderDraftLink:
+    "a view provider for link type object"
+
+    def __init__(self,vobj):
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
+    def attach(self,vobj):
+        self.Object = vobj.Object
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
+    def getIcon(self):
+        tp = self.Object.Proxy.Type
+        if tp == 'Array':
+            return ":/icons/Draft_LinkArray.svg"
+        elif tp == 'PathArray':
+            return ":/icons/Draft_PathLinkArray.svg"
+
+    def claimChildren(self):
+        if not self.Object.ShowElement:
+            return [self.Object.Base]
+        else:
+            return self.Object.ElementList
 
 class _Dimension(_DraftObject):
     "The Draft Dimension object"
@@ -5466,11 +5509,99 @@ class _Shape2DView(_DraftObject):
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
-class _Array(_DraftObject):
+class _DraftLink(_DraftObject):
+
+    def __init__(self,obj,tp):
+        self.useLink = False if obj else True
+        _DraftObject.__init__(self,obj,tp)
+        if obj:
+            self.attach(obj)
+
+    def __getstate__(self):
+        return self.__dict__
+
+    def __setstate__(self,state):
+        if isinstance(state,dict):
+            self.__dict__ = state
+        else:
+            self.useLink = False
+            _DraftObject.__setstate__(self,state)
+
+    def attach(self,obj):
+        if self.useLink:
+            obj.addExtension('App::LinkExtensionPython', None)
+            self.linkSetup(obj)
+
+    def linkSetup(self,obj):
+        obj.configLinkProperty('Placement',LinkedObject='Base')
+
+    def getViewProviderName(self,_obj):
+        if self.useLink:
+            return 'Gui::ViewProviderLinkPython'
+        return ''
+
+    def onDocumentRestored(self, obj):
+        if self.useLink:
+            self.linkSetup(obj)
+            if obj.Shape.isNull():
+                self.buildShape(obj,obj.Placement,obj.PlacementList)
+
+    def buildShape(self,obj,pl,pls):
+        import Part
+        import DraftGeomUtils
+
+        if self.useLink:
+            if not getattr(obj,'ShowElement',True) or obj.Count != len(pls):
+                obj.PlacementList = pls
+                obj.Count = len(pls)
+
+        if obj.Base:
+            if hasattr(obj.Base,'Shape'):
+                shape = obj.Base.Shape
+            else:
+                shape = obj.Base.getSubObject('')
+
+            if not isinstance(shape,Part.Shape) or shape.isNull():
+                FreeCAD.Console.PrintError (
+                    "'{}' cannot build shape of '{}'".format(
+                        obj.Name,obj.Base.Name))
+            else:
+                base = []
+                for i,pla in enumerate(pls):
+                    vis = getattr(obj,'VisibilityList',[])
+                    if len(vis)>i and not vis[i]:
+                        continue;
+                    s = shape.copy()
+                    s.Placement = pla
+                    base.append(s)
+                if getattr(obj,'Fuse',False) and len(base) > 1:
+                    obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
+                else:
+                    obj.Shape = Part.makeCompound(base)
+
+                if not DraftGeomUtils.isNull(pl):
+                    obj.Placement = pl
+
+        if self.useLink:
+            return False # return False to call LinkExtension::execute()
+
+    def onChanged(self, obj, prop):
+        if getattr(obj,'useLink',False):
+            return
+        elif prop == 'Fuse':
+            if obj.Fuse:
+                obj.setPropertyStatus('Shape','-Transient')
+            else:
+                obj.setPropertyStatus('Shape','Transient')
+
+
+class _Array(_DraftLink):
     "The Draft Array object"
 
     def __init__(self,obj):
-        _DraftObject.__init__(self,obj,"Array")
+        _DraftLink.__init__(self,obj,"Array")
+
+    def attach(self, obj):
         obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
         obj.addProperty("App::PropertyEnumeration","ArrayType","Draft",QT_TRANSLATE_NOOP("App::Property","The type of array to create"))
         obj.addProperty("App::PropertyVector","Axis","Draft",QT_TRANSLATE_NOOP("App::Property","The axis direction"))
@@ -5485,6 +5616,13 @@ class _Array(_DraftObject):
         obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","Center point"))
         obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","Angle to cover with copies"))
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if copies must be fused (slower)"))
+        obj.Fuse = False
+        if self.useLink:
+            obj.addProperty("App::PropertyInteger","Count"," Link",'')
+            obj.addProperty("App::PropertyBool","ShowElement"," Link",
+                    QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
+            obj.ShowElement = False
+
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
@@ -5496,83 +5634,78 @@ class _Array(_DraftObject):
         obj.IntervalZ = Vector(0,0,0)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
-        obj.Fuse = False
+
+        _DraftLink.attach(self,obj)
+
+    def linkSetup(self,obj):
+        _DraftLink.linkSetup(self,obj)
+        obj.configLinkProperty('ShowElement',ElementCount='Count')
+        obj.setPropertyStatus('Count','Hidden')
 
     def execute(self,obj):
-        import DraftGeomUtils
-        if hasattr(obj,"Fuse"):
-            fuse = obj.Fuse
-        else:
-            fuse = False
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
-                sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
-                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ,fuse)
+                pls = self.rectArray(obj.Base.Placement,obj.IntervalX,obj.IntervalY,
+                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
-                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av,fuse)
-            obj.Shape = sh
-            if not DraftGeomUtils.isNull(pl):
-                obj.Placement = pl
+                pls = self.polarArray(obj.Base.Placement,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
 
-    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum,fuse=False):
+            return _DraftLink.buildShape(self,obj,pl,pls)
+
+    def rectArray(self,pl,xvector,yvector,zvector,xnum,ynum,znum):
         import Part
-        base = [shape.copy()]
+        base = [pl.copy()]
         for xcount in range(xnum):
             currentxvector=Vector(xvector).multiply(xcount)
             if not xcount==0:
-                nshape = shape.copy()
-                nshape.translate(currentxvector)
-                base.append(nshape)
+                npl = pl.copy()
+                npl.translate(currentxvector)
+                base.append(npl)
             for ycount in range(ynum):
                 currentyvector=FreeCAD.Vector(currentxvector)
                 currentyvector=currentyvector.add(Vector(yvector).multiply(ycount))
                 if not ycount==0:
-                    nshape = shape.copy()
-                    nshape.translate(currentyvector)
-                    base.append(nshape)
+                    npl = pl.copy()
+                    npl.translate(currentyvector)
+                    base.append(npl)
                 for zcount in range(znum):
                     currentzvector=FreeCAD.Vector(currentyvector)
                     currentzvector=currentzvector.add(Vector(zvector).multiply(zcount))
                     if not zcount==0:
-                        nshape = shape.copy()
-                        nshape.translate(currentzvector)
-                        base.append(nshape)
-        if fuse and len(base) > 1:
-            return base[0].multiFuse(base[1:]).removeSplitter()
-        else:
-            return Part.makeCompound(base)
+                        npl = pl.copy()
+                        npl.translate(currentzvector)
+                        base.append(npl)
+        return base
 
-    def polarArray(self,shape,center,angle,num,axis,axisvector,fuse=False):
+    def polarArray(self,pl,center,angle,num,axis,axisvector):
         #print("angle ",angle," num ",num)
         import Part
+        base = [pl.copy()]
         if angle == 360:
             fraction = float(angle)/num
         else:
             if num == 0:
-                return shape
+                return base
             fraction = float(angle)/(num-1)
-        base = [shape.copy()]
         for i in range(num-1):
             currangle = fraction + (i*fraction)
-            nshape = shape.copy()
-            nshape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
+            npl = pl.copy()
+            npl.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
             if axisvector:
                 if not DraftVecUtils.isNull(axisvector):
-                    nshape.translate(FreeCAD.Vector(axisvector).multiply(i+1))
-            base.append(nshape)
-        if fuse and len(base) > 1:
-            return base[0].multiFuse(base[1:]).removeSplitter()
-        else:
-            return Part.makeCompound(base)
+                    npl.translate(FreeCAD.Vector(axisvector).multiply(i+1))
+            base.append(npl)
+        return base
 
-
-class _PathArray(_DraftObject):
+class _PathArray(_DraftLink):
     "The Draft Path Array object"
 
     def __init__(self,obj):
-        _DraftObject.__init__(self,obj,"PathArray")
+        _DraftLink.__init__(self,obj,"PathArray")
+
+    def attach(self,obj):
         obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
         obj.addProperty("App::PropertyLink","PathObj","Draft",QT_TRANSLATE_NOOP("App::Property","The path object along which to distribute objects"))
         obj.addProperty("App::PropertyLinkSubList","PathSubs",QT_TRANSLATE_NOOP("App::Property","Selected subobjects (edges) of PathObj"))
@@ -5583,6 +5716,17 @@ class _PathArray(_DraftObject):
         obj.PathSubs = []
         obj.Xlate = FreeCAD.Vector(0,0,0)
         obj.Align = False
+
+        if self.useLink:
+            obj.addProperty("App::PropertyBool","ShowElement","Link",
+                    QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
+            obj.ShowElement = False
+
+        _DraftLink.attach(self,obj)
+
+    def linkSetup(self,obj):
+        _DraftLink.linkSetup(self,obj)
+        obj.configLinkProperty('ShowElement',ElementCount='Count')
 
     def execute(self,obj):
         import FreeCAD
@@ -5599,9 +5743,8 @@ class _PathArray(_DraftObject):
             else:
                 FreeCAD.Console.PrintLog ("_PathArray.createGeometry: path " + obj.PathObj.Name + " has no edges\n")
                 return
-            obj.Shape = self.pathArray(obj.Base.Shape,w,obj.Count,obj.Xlate,obj.Align)
-            if not DraftGeomUtils.isNull(pl):
-                obj.Placement = pl
+            base = self.pathArray(obj.Base.Placement,w,obj.Count,obj.Xlate,obj.Align)
+            return _DraftLink.buildShape(self,obj,pl,base)
 
     def getWireFromSubs(self,obj):
         '''Make a wire from PathObj subelements'''
@@ -5627,7 +5770,7 @@ class _PathArray(_DraftObject):
             length = offset
         return(edge.getParameterByLength(length))
 
-    def orientShape(self,shape,edge,offset,RefPt,xlate,align,normal=None):
+    def orientShape(self,pl,edge,offset,RefPt,xlate,align,normal=None):
         '''Orient shape to tangent at parm offset along edge.'''
         # http://en.wikipedia.org/wiki/Euler_angles
         import Part
@@ -5637,10 +5780,8 @@ class _PathArray(_DraftObject):
         y = FreeCAD.Vector(0,1,0)                                    # unit +Y
         x = FreeCAD.Vector(1,0,0)                                    # unit +X
         nullv = FreeCAD.Vector(0,0,0)
-        nullPlace =FreeCAD.Placement()
-        ns = shape.copy()
-        ns.Placement.Base = nullPlace.Base                           # reset Placement point so translate goes to right place.
-        ns.Placement.Rotation = shape.Placement.Rotation             # preserve global orientation
+        ns = FreeCAD.Placement()              # reset Placement point so translate goes to right place.
+        ns.Rotation = pl.Rotation             # preserve global orientation
         ns.translate(RefPt+xlate)
         if not align:
             return ns
@@ -5686,7 +5827,7 @@ class _PathArray(_DraftObject):
             ns.rotate(RefPt,b,phi)
         return ns
 
-    def pathArray(self,shape,pathwire,count,xlate,align):
+    def pathArray(self,pl,pathwire,count,xlate,align):
         '''Distribute shapes along a path.'''
         import Part
         import DraftGeomUtils
@@ -5700,14 +5841,14 @@ class _PathArray(_DraftObject):
             ends.append(cdist)
         base = []
         pt = path[0].Vertexes[0].Point                                 # place the start shape
-        ns = self.orientShape(shape,path[0],0,pt,xlate,align,normal)
+        ns = self.orientShape(pl,path[0],0,pt,xlate,align,normal)
         base.append(ns)
         if not(closedpath):                                            # closed path doesn't need shape on last vertex
             pt = path[-1].Vertexes[-1].Point                           # place the end shape
-            ns = self.orientShape(shape,path[-1],path[-1].Length,pt,xlate,align,normal)
+            ns = self.orientShape(pl,path[-1],path[-1].Length,pt,xlate,align,normal)
             base.append(ns)
         if count < 3:
-            return(Part.makeCompound(base))
+            return base
 
         # place the middle shapes
         if closedpath:
@@ -5728,10 +5869,10 @@ class _PathArray(_DraftObject):
             remains = ends[iend] - travel
             offset = path[iend].Length - remains
             pt = path[iend].valueAt(self.getParameterFromV0(path[iend],offset))
-            ns = self.orientShape(shape,path[iend],offset,pt,xlate,align,normal)
+            ns = self.orientShape(pl,path[iend],offset,pt,xlate,align,normal)
             base.append(ns)
             travel += step
-        return(Part.makeCompound(base))
+        return base
 
 class _Point(_DraftObject):
     "The Draft Point object"
