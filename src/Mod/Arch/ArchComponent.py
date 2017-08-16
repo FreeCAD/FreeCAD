@@ -405,9 +405,9 @@ class Component:
                         extrusion = FreeCAD.Vector(0,0,1)
                     else:
                         extrusion = placement.inverse().Rotation.multVec(extrusion)
-                    if hasattr(obj.Base,"LengthForward"):
-                        if obj.Base.LengthForward.Value:
-                            extrusion = extrusion.multiply(obj.Base.LengthForward.Value)
+                    if hasattr(obj.Base,"LengthFwd"):
+                        if obj.Base.LengthFwd.Value:
+                            extrusion = extrusion.multiply(obj.Base.LengthFwd.Value)
                     return (base,extrusion,placement)
             elif obj.Base.isDerivedFrom("Part::MultiFuse"):
                 rshapes = []
@@ -422,9 +422,9 @@ class Component:
                                 extrusion = FreeCAD.Vector(0,0,1)
                             else:
                                 extrusion = placement.inverse().Rotation.multVec(extrusion)
-                            if hasattr(sub,"LengthForward"):
-                                if sub.LengthForward.Value:
-                                    extrusion = extrusion.multiply(sub.LengthForward.Value)
+                            if hasattr(sub,"LengthFwd"):
+                                if sub.LengthFwd.Value:
+                                    extrusion = extrusion.multiply(sub.LengthFwd.Value)
                             placement = obj.Placement.multiply(placement)
                             rshapes.append(base)
                             revs.append(extrusion)
