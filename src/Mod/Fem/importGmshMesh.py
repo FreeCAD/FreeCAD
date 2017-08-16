@@ -34,7 +34,6 @@ import os.path
 import subprocess
 
 import FreeCAD
-import FemGui
 import FemGmshTools
 
 
@@ -54,7 +53,13 @@ def export(objectslist, fileString):
         FreeCAD.Console.PrintError("Object selected is not a FemMeshGmsh type\n")
         return
 
-    gmsh = FemGmshTools.FemGmshTools(obj, FemGui.getActiveAnalysis())
+    if FreeCAD.GuiUp:
+        import FemGui
+        analysis = FemGui.getActiveAnalysis()
+        gmsh = FemGmshTools.FemGmshTools(obj, analysis)
+    else:
+        # it is still possible to lookup analysis object from document
+        gmsh = FemGmshTools.FemGmshTools(obj)
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
         for k in FemGmshTools.FemGmshTools.output_format_suffix:
@@ -70,6 +75,7 @@ def _run_command(comandlist):
     print("Run command: " + ' '.join(comandlist))
     error = None
     try:
+        # FIXME: shell=True, unsafe code, needed by dolfin-convert
         p = subprocess.Popen(comandlist, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = p.communicate()
         print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
