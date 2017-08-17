@@ -34,11 +34,6 @@
 #include "FileInfo.h"
 #include "BaseClass.h"
 
-/* ENABLE TRANSLATION AWARENESS */
-#ifndef QT_TRANSLATE_NOOP
-#define QT_TRANSLATE_NOOP(scope, x) x
-#endif
-
 /* MACROS FOR THROWING EXCEPTIONS */
 
 /// the macros do NOT mark any message for translation
@@ -99,7 +94,7 @@ public:
   virtual const char* what(void) const throw();
 
   /// Reports exception. It includes a mechanism to only report an exception once.
-  virtual void ReportException (void);
+  virtual void ReportException (void) const;
 
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
@@ -115,7 +110,7 @@ public:
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
   
-  inline void setTranslatable(const bool translatable);
+  inline void setTranslatable(bool translatable);
   /// returns a Python dictionary containing the exception data
   virtual PyObject * getPyObject(void);
   /// returns sets the exception data from a Python dictionary
@@ -139,7 +134,7 @@ protected:
   int _line;
   std::string _function;
   bool _isTranslatable;
-  bool _isReported;
+  mutable bool _isReported;
 };
 
 
@@ -225,7 +220,7 @@ public:
   /// Description of the exception
   virtual const char* what() const throw();
   /// Report generation
-  virtual void ReportException (void);
+  virtual void ReportException (void) const;
   /// Get file name for use with tranlatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
@@ -666,7 +661,7 @@ inline void Exception::setDebugInformation(const std::string & file, const int l
     _function = function;
 }
 
-inline void Exception::setTranslatable(const bool translatable)
+inline void Exception::setTranslatable(bool translatable)
 {
     _isTranslatable = translatable;
 }
