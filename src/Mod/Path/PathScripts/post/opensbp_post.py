@@ -194,17 +194,25 @@ def move(command):
 
     if 'F' in command.Parameters:
         speed = command.Parameters['F']
-        if speed != CurrentState['F']:
-            if command.Name in ['G1', 'G01']:  # move
-                movetype = "MS"
-            else:  # jog
-                movetype = "JS"
-            zspeed = ""
-            xyspeed = ""
-            if 'Z' in axis:
-                zspeed = "{:f}".format(GetValue(speed))
-            if ('X' in axis) or ('Y' in axis):
-                xyspeed = "{:f}".format(GetValue(speed))
+        if command.Name in ['G1', 'G01']:  # move
+            movetype = "MS"
+        else:  # jog
+            movetype = "JS"
+        zspeed = ""
+        xyspeed = ""
+        if 'Z' in axis:
+            speedKey = "{}Z".format(movetype)
+            speedVal = GetValue(speed)
+            if CurrentState[speedKey] != speedVal:
+                CurrentState[speedKey] = speedVal
+                zspeed = "{:f}".format(speedVal)
+        if ('X' in axis) or ('Y' in axis):
+            speedKey = "{}XY".format(movetype)
+            speedVal = GetValue(speed)
+            if CurrentState[speedKey] != speedVal:
+                CurrentState[speedKey] = speedVal
+                xyspeed = "{:f}".format(speedVal)
+        if zspeed or xyspeed:
             txt += "{},{},{}\n".format(movetype, xyspeed, zspeed)
 
     if command.Name in ['G0', 'G00']:
