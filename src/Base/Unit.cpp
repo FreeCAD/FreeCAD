@@ -481,11 +481,13 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Force                       )       return QString::fromLatin1("Force"); else
     if(*this == Unit::Work                        )       return QString::fromLatin1("Work"); else
     if(*this == Unit::Power                       )       return QString::fromLatin1("Power"); else
+    if(*this == Unit::SpecificEnergy              )       return QString::fromLatin1("SpecificEnergy"); else
     if(*this == Unit::ThermalConductivity         )       return QString::fromLatin1("ThermalConductivity"); else
     if(*this == Unit::ThermalExpansionCoefficient )       return QString::fromLatin1("ThermalExpansionCoefficient"); else
     if(*this == Unit::SpecificHeat                )       return QString::fromLatin1("SpecificHeat"); else
     if(*this == Unit::ThermalTransferCoefficient  )       return QString::fromLatin1("ThermalTransferCoefficient"); else
     if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux"); else
+    if(*this == Unit::DynamicViscosity            )       return QString::fromLatin1("DynamicViscosity"); else
     if(*this == Unit::KinematicViscosity          )       return QString::fromLatin1("KinematicViscosity"); else
 
     return QString();
@@ -515,9 +517,11 @@ Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);
 Unit Unit::Power   (2,1,-3);
 
+Unit Unit::SpecificEnergy              (2,0,-2);
 Unit Unit::ThermalConductivity         (1,1,-3,0,-1);
 Unit Unit::ThermalExpansionCoefficient (0,0,0,0,-1);
 Unit Unit::SpecificHeat                (2,0,-2,0,-1);
 Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);
+Unit Unit::DynamicViscosity            (-1,1,-1);  // SI unit: kg/m/s
 Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity

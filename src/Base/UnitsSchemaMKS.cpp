@@ -160,6 +160,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         unitString = QString::fromLatin1("W");
         factor = 1000000;
     }
+    else if (unit == Unit::SpecificEnergy) {
+        unitString = QString::fromLatin1("m^2/s^2");
+        factor = 1000000;
+    }
     else if (unit == Unit::HeatFlux) {
         unitString = QString::fromLatin1("W/m^2");
         factor = 1.0;
@@ -167,6 +171,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mm/s");
         factor = 1.0;
+    }
+    else if (unit == Unit::DynamicViscosity) {
+        unitString = QString::fromLatin1("kg/(m*s)");
+        factor = 0.001;
     }
     else {
         // default action for all cases without special treatment:
