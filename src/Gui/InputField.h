@@ -68,7 +68,10 @@ class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
     Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
     Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
+    Q_PROPERTY(int precision READ getPrecision WRITE setPrecision )
+    Q_PROPERTY(QString format READ getFormat WRITE setFormat )
     Q_PROPERTY(Base::Quantity quantity READ getQuantity WRITE setValue )
+    Q_PROPERTY(QString quantityString READ getQuantityString WRITE setQuantityString )
 
 
 public:
@@ -82,6 +85,12 @@ public:
 
     /// get the current value
     Base::Quantity getQuantity(void)const{return this->actQuantity;}
+
+    /// get stored, valid quantity as a string (user string - avoid storing)
+    QString getQuantityString(void) const;
+
+    /// set, validate and display quantity from a string. Must match existing units.
+    void setQuantityString(const QString& text);
 
     /// gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// (shown by the green pixmap), returns false if the input is a unparsable string or has a wrong unit
@@ -119,6 +128,14 @@ public:
     void setUnitText(const QString&);
     /// get the unit as a string (can be used in the *.ui file)  
     QString getUnitText(void); 
+    /// get the value of the precision property
+    int getPrecision(void) const; 
+    /// set the value of the precision property (can be used in the *.ui file)  
+    void setPrecision(const int);
+    /// get the value of the format property: "f" (fixed), "e" (scientific), "g" (general)
+    QString getFormat(void) const; 
+    /// set the value of the format property (can be used in the *.ui file)  
+    void setFormat(const QString&);
     /// set the number portion selected (use after setValue()) 
     void selectNumber(void);
     /// input validation
