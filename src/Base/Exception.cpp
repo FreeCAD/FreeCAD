@@ -38,24 +38,36 @@ TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
 
 
 Exception::Exception(void)
-: _line(0), _isTranslatable(false), _isReported(false)
+  : _line(0)
+  , _isTranslatable(false)
+  , _isReported(false)
 {
   _sErrMsg = "FreeCAD Exception";
 }
 
 Exception::Exception(const Exception &inst)
-  : _sErrMsg(inst._sErrMsg), _file(inst._file),
-  _line(inst._line), _function(inst._function), _isTranslatable(inst._isTranslatable), _isReported(inst._isReported)
+  : _sErrMsg(inst._sErrMsg)
+  , _file(inst._file)
+  , _line(inst._line)
+  , _function(inst._function)
+  , _isTranslatable(inst._isTranslatable)
+  , _isReported(inst._isReported)
 {
 }
 
 Exception::Exception(const char * sMessage)
-: _sErrMsg(sMessage), _line(0), _isTranslatable(false), _isReported(false)
+  : _sErrMsg(sMessage)
+  , _line(0)
+  , _isTranslatable(false)
+  , _isReported(false)
 {
 }
 
 Exception::Exception(const std::string& sMessage)
-: _sErrMsg(sMessage), _line(0), _isTranslatable(false), _isReported(false)
+  : _sErrMsg(sMessage)
+  , _line(0)
+  , _isTranslatable(false)
+  , _isReported(false)
 {
 }
 
@@ -73,15 +85,15 @@ const char* Exception::what(void) const throw()
     return _sErrMsg.c_str();
 }
 
-void Exception::ReportException (void)
+void Exception::ReportException (void) const
 {
-    if(!_isReported) {
+    if (!_isReported) {
         std::string str = "";
 
-        if(!_sErrMsg.empty())
+        if (!_sErrMsg.empty())
             str+= (_sErrMsg + " ");
 
-        if(!_function.empty()) {
+        if (!_function.empty()) {
             str+="In ";
             str+=_function;
             str+= " ";
@@ -89,7 +101,7 @@ void Exception::ReportException (void)
 
         std::string _linestr = std::to_string(_line);
 
-        if(!_file.empty() && !_linestr.empty()) {
+        if (!_file.empty() && !_linestr.empty()) {
             // strip absolute path
             std::size_t pos = _file.find("src");
 
@@ -177,7 +189,7 @@ const char* AbortException::what() const throw()
 
 
 XMLBaseException::XMLBaseException()
-: Exception()
+  : Exception()
 {
 }
 
@@ -192,7 +204,7 @@ XMLBaseException::XMLBaseException(const std::string& sMessage)
 }
 
 XMLBaseException::XMLBaseException(const XMLBaseException &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
@@ -205,7 +217,7 @@ XMLParseException::XMLParseException(const char * sMessage)
 }
 
 XMLParseException::XMLParseException(const std::string& sMessage)
- : Exception(sMessage)
+  : Exception(sMessage)
 {
 }
 
@@ -215,7 +227,7 @@ XMLParseException::XMLParseException()
 }
 
 XMLParseException::XMLParseException(const XMLParseException &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
@@ -250,7 +262,9 @@ FileException::FileException()
 }
 
 FileException::FileException(const FileException &inst)
-: Exception( inst._sErrMsg.c_str() ), file(inst.file), _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
+  : Exception(inst._sErrMsg.c_str())
+  , file(inst.file)
+  , _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
 {
 }
 
@@ -272,15 +286,15 @@ const char* FileException::what() const throw()
     return _sErrMsgAndFileName.c_str();
 }
 
-void FileException::ReportException (void)
+void FileException::ReportException (void) const
 {
-    if(!_isReported) {
+    if (!_isReported) {
         std::string str = "";
         
-        if(!_sErrMsgAndFileName.empty())
+        if (!_sErrMsgAndFileName.empty())
             str+= (_sErrMsgAndFileName + " ");
         
-        if(!_function.empty()) {
+        if (!_function.empty()) {
             str+="In ";
             str+=_function;
             str+= " ";
@@ -288,7 +302,7 @@ void FileException::ReportException (void)
         
         std::string _linestr = std::to_string(_line);
         
-        if(!_file.empty() && !_linestr.empty()) {
+        if (!_file.empty() && !_linestr.empty()) {
             // strip absolute path
             std::size_t pos = _file.find("src");
             
@@ -327,7 +341,7 @@ void FileException::setPyObject( PyObject * pydict)
 
 
 FileSystemError::FileSystemError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -342,7 +356,7 @@ FileSystemError::FileSystemError(const std::string& sMessage)
 }
 
 FileSystemError::FileSystemError(const FileSystemError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
@@ -350,7 +364,7 @@ FileSystemError::FileSystemError(const FileSystemError &inst)
 
 
 BadFormatError::BadFormatError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -365,7 +379,7 @@ BadFormatError::BadFormatError(const std::string& sMessage)
 }
 
 BadFormatError::BadFormatError(const BadFormatError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
@@ -379,9 +393,9 @@ MemoryException::MemoryException()
 
 MemoryException::MemoryException(const MemoryException &inst)
 #if defined (__GNUC__)
- : std::bad_alloc(), Exception(inst) 
+  : std::bad_alloc(), Exception(inst)
 #else
- : Exception(inst)
+  : Exception(inst)
 #endif
 {
 }
@@ -441,7 +455,7 @@ AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTerm
 // ---------------------------------------------------------
 
 UnknownProgramOption::UnknownProgramOption()
-: Exception()
+  : Exception()
 {
 }
 
@@ -463,7 +477,7 @@ UnknownProgramOption::UnknownProgramOption(const UnknownProgramOption &inst)
 // ---------------------------------------------------------
 
 ProgramInformation::ProgramInformation()
-: Exception()
+  : Exception()
 {
 }
 
@@ -478,14 +492,14 @@ ProgramInformation::ProgramInformation(const std::string& sMessage)
 }
 
 ProgramInformation::ProgramInformation(const ProgramInformation &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 TypeError::TypeError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -500,14 +514,14 @@ TypeError::TypeError(const std::string& sMessage)
 }
 
 TypeError::TypeError(const TypeError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 ValueError::ValueError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -522,14 +536,14 @@ ValueError::ValueError(const std::string& sMessage)
 }
 
 ValueError::ValueError(const ValueError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 IndexError::IndexError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -551,7 +565,7 @@ IndexError::IndexError(const IndexError &inst)
 // ---------------------------------------------------------
 
 AttributeError::AttributeError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -566,14 +580,14 @@ AttributeError::AttributeError(const std::string& sMessage)
 }
 
 AttributeError::AttributeError(const AttributeError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 RuntimeError::RuntimeError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -588,14 +602,14 @@ RuntimeError::RuntimeError(const std::string& sMessage)
 }
 
 RuntimeError::RuntimeError(const RuntimeError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 NotImplementedError::NotImplementedError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -610,14 +624,14 @@ NotImplementedError::NotImplementedError(const std::string& sMessage)
 }
 
 NotImplementedError::NotImplementedError(const NotImplementedError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 DivisionByZeroError::DivisionByZeroError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -632,7 +646,7 @@ DivisionByZeroError::DivisionByZeroError(const std::string& sMessage)
 }
 
 DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
@@ -654,14 +668,14 @@ ReferencesError::ReferencesError(const std::string& sMessage)
 }
 
 ReferencesError::ReferencesError(const ReferencesError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 ExpressionError::ExpressionError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -676,14 +690,14 @@ ExpressionError::ExpressionError(const std::string& sMessage)
 }
 
 ExpressionError::ExpressionError(const ExpressionError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 ParserError::ParserError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -698,14 +712,14 @@ ParserError::ParserError(const std::string& sMessage)
 }
 
 ParserError::ParserError(const ParserError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 UnicodeError::UnicodeError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -720,14 +734,14 @@ UnicodeError::UnicodeError(const std::string& sMessage)
 }
 
 UnicodeError::UnicodeError(const UnicodeError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 OverflowError::OverflowError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -749,7 +763,7 @@ OverflowError::OverflowError(const OverflowError &inst)
 // ---------------------------------------------------------
 
 UnderflowError::UnderflowError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -764,14 +778,14 @@ UnderflowError::UnderflowError(const std::string& sMessage)
 }
 
 UnderflowError::UnderflowError(const UnderflowError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 UnitsMismatchError::UnitsMismatchError()
-: Exception()
+  : Exception()
 {
 }
 
@@ -786,29 +800,29 @@ UnitsMismatchError::UnitsMismatchError(const std::string& sMessage)
 }
 
 UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
- : Exception(inst)
+  : Exception(inst)
 {
 }
 
 // ---------------------------------------------------------
 
 CADKernelError::CADKernelError()
-: Exception()
+  : Exception()
 {
 }
 
 CADKernelError::CADKernelError(const char * sMessage)
-: Exception(sMessage)
+  : Exception(sMessage)
 {
 }
 
 CADKernelError::CADKernelError(const std::string& sMessage)
-: Exception(sMessage)
+  : Exception(sMessage)
 {
 }
 
 CADKernelError::CADKernelError(const CADKernelError &inst)
-: Exception(inst)
+  : Exception(inst)
 {
 }
 
