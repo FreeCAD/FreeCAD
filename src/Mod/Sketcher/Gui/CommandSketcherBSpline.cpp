@@ -577,6 +577,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
                 }
                 catch (const Base::CADKernelError& e) {
+                    e.ReportException();
                     if(e.getTranslatable()) {
                         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
                                             QObject::tr(e.getMessage().c_str()));
@@ -584,7 +585,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                     getSelection().clearSelection();
                 }
                 catch (const Base::Exception& e) {
-
+                    e.ReportException();
                     if(e.getTranslatable()) {
                         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
                                             QObject::tr(e.getMessage().c_str()));
