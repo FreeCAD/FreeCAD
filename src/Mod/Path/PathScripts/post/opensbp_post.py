@@ -205,7 +205,7 @@ def move(command):
                 zspeed = "{:f}".format(GetValue(speed))
             if ('X' in axis) or ('Y' in axis):
                 xyspeed = "{:f}".format(GetValue(speed))
-            txt += "{},{},{}\n".format(movetype, zspeed, xyspeed)
+            txt += "{},{},{}\n".format(movetype, xyspeed, zspeed)
 
     if command.Name in ['G0', 'G00']:
         pref = "J"
