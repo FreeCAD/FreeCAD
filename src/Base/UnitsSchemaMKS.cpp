@@ -44,8 +44,8 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
     // now do special treatment on all cases seems necessary:
     if (unit == Unit::Length) {  // Length handling ============================
         if (UnitValue < 0.000000001) {// smaller then 0.001 nm -> scientific notation
-            unitString = QString::fromLatin1("mm");
-            factor = 1.0;
+            unitString = QString::fromLatin1("m");
+            factor = 1000.0;
         }
         else if(UnitValue < 0.001) {
             unitString = QString::fromLatin1("nm");
@@ -68,8 +68,8 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1000000.0;
         }
         else { // bigger then 1000 km -> scientific notation
-            unitString = QString::fromLatin1("mm");
-            factor = 1.0;
+            unitString = QString::fromLatin1("m");
+            factor = 1000.0;
         }
     }
     else if (unit == Unit::Area) {
@@ -91,6 +91,20 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
+    }
+    else if (unit == Unit::Density) {
+        if (UnitValue < 0.0001) {
+            unitString = QString::fromLatin1("kg/m^3");
+            factor = 0.000000001;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("kg/cm^3");
+            factor = 0.001;
+        }
+        else {
+            unitString = QString::fromLatin1("kg/mm^3");
+            factor = 1.0;
+        }
     }
     else if (unit == Unit::Volume) {
         if (UnitValue < 1000000.0) {// smaller than 10 cubic cm
@@ -169,8 +183,8 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1.0;
     }
     else if (unit == Unit::Velocity) {
-        unitString = QString::fromLatin1("mm/s");
-        factor = 1.0;
+        unitString = QString::fromLatin1("m/s");
+        factor = 1000.0;
     }
     else if (unit == Unit::DynamicViscosity) {
         unitString = QString::fromLatin1("kg/(m*s)");
