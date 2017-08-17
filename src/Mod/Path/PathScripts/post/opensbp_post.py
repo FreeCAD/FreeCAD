@@ -230,10 +230,9 @@ def move(command):
         txt += "," + format(GetValue(command.Parameters["Y"]), '.4f')
         txt += "\n"
     elif axis == "XZ":
-        txt += pref + "X"
+        txt += pref + "3"
         txt += "," + format(GetValue(command.Parameters["X"]), '.4f')
-        txt += "\n"
-        txt += pref + "Z"
+        txt += ","
         txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "XYZ":
@@ -243,10 +242,9 @@ def move(command):
         txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "YZ":
-        txt += pref + "Y"
+        txt += pref + "3"
+        txt += ","
         txt += "," + format(GetValue(command.Parameters["Y"]), '.4f')
-        txt += "\n"
-        txt += pref + "Z"
         txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "":
