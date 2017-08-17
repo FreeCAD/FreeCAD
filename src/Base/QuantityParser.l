@@ -130,6 +130,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "rad"      yylval = Quantity::Radian;              return UNIT; // radian         
 "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
 
+"1"        yylval = Quantity(1.0);                 return ONE;
 {DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 "."?{DIGIT}+{EXPO}?                                 {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 {DIGIT}+","?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
