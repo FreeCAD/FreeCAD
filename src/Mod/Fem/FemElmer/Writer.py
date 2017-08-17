@@ -352,6 +352,12 @@ class Writer(object):
                 self._bodyForce(name, "Stress Bodyforce 3", force3)
             self._handled(obj)
 
+    def _getBodyMaterial(self, name):
+        for obj in self._getMember("App::MaterialObject"):
+            if not obj.References or name in obj.References[0][1]:
+                return obj
+        return None
+
     def _handleElasticityMaterial(self, bodies):
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
