@@ -315,14 +315,18 @@ class _DocObserver(object):
         "ElmerResult"
     ]
 
+    def __init__(self):
+        self._saved = {}
+        for doc in App.listDocuments().itervalues():
+            for obj in doc.Objects:
+                if obj.isDerivedFrom("Fem::FemAnalysis"):
+                    self._saved[obj] = obj.Member
+
     @classmethod
     def attach(cls):
         if cls._instance is None:
             cls._instance = cls()
             App.addDocumentObserver(cls._instance)
-
-    def slotNewObject(self, obj):
-        self._checkModel(obj)
 
     def slotDeletedObject(self, obj):
         self._checkModel(obj)
@@ -331,6 +335,8 @@ class _DocObserver(object):
 
     def slotChangedObject(self, obj, prop):
         if prop not in self._BLACKLIST_PROPS:
+            self._checkAnalysis(obj)
+            self._checkEquation(obj)
             self._checkSolver(obj)
             self._checkModel(obj)
 
@@ -354,21 +360,50 @@ class _DocObserver(object):
         thread.daemon = False
         thread.start()
 
+    def _checkEquation(self, obj):
+        for o in obj.Document.Objects:
+            if (FemMisc.isDerivedFrom(o, "Fem::FemSolverObject")
+                    and hasattr(o, "Group") and obj in o.Group):
+                if o in _machines:
+                    _machines[o].reset()
+
     def _checkSolver(self, obj):
         analysis = FemMisc.findAnalysisOfMember(obj)
         for m in _machines.itervalues():
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
 
+    def _checkAnalysis(self, obj):
+        if FemMisc.isDerivedFrom(obj, "Fem::FemAnalysis"):
+            deltaObjs = self._getAdded(obj)
+            if deltaObjs:
+                reset = False
+                for o in deltaObjs:
+                    if self._partOfModel(o):
+                        reset = True
+                if reset:
+                    self._resetAll(obj)
+
     def _checkModel(self, obj):
         if self._partOfModel(obj):
             analysis = FemMisc.findAnalysisOfMember(obj)
-            for m in _machines.itervalues():
-                if analysis == m.analysis:
-                    m.reset()
+            if analysis is not None:
+                self._resetAll(analysis)
+
+    def _getAdded(self, analysis):
+        if analysis not in self._saved:
+            self._saved[analysis] = []
+        delta = set(analysis.Member) - set(self._saved[analysis])
+        self._saved[analysis] = analysis.Member
+        return delta
+
+    def _resetAll(self, analysis):
+        for m in _machines.itervalues():
+            if analysis == m.analysis:
+                m.reset()
 
     def _partOfModel(self, obj):
         for t in self._WHITELIST:
-            if obj.isDerivedFrom(t):
+            if FemMisc.isDerivedFrom(obj, t):
                 return True
         return False
