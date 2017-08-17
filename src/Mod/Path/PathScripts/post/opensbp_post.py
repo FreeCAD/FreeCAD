@@ -345,6 +345,8 @@ def parse(pathobj):
                 output += scommands[command](c)
                 if c.Parameters:
                     CurrentState.update(c.Parameters)
+            elif command[0] == '(':
+                output += "' " + command + "\n"
             else:
                 print("I don't know what the hell the command: ",end='')
                 print(command + " means.  Maybe I should support it.")
