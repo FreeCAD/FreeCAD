@@ -288,6 +288,8 @@ void InputField::newInput(const QString & text)
     double dFactor;
     res.getUserString(dFactor,actUnitStr);
     actUnitValue = res.getValue()/dFactor;
+    // Preserve previous format
+    res.setFormat(this->actQuantity.getFormat());
     actQuantity = res;
 
     // signaling
@@ -439,6 +441,20 @@ const Base::Unit& InputField::getUnit() const
     return actUnit;
 }
 
+/// get stored, valid quantity as a string
+QString InputField::getQuantityString(void) const
+{
+    return actQuantity.getUserString();
+}
+
+/// set, validate and display quantity from a string. Must match existing units.
+void InputField::setQuantityString(const QString& text)
+{
+    // Input and then format the quantity
+    newInput(text);
+    updateText(actQuantity);
+}
+
 /// get the value of the singleStep property
 double InputField::singleStep(void)const
 {
@@ -499,6 +515,37 @@ QString InputField::getUnitText(void)
     return actUnitStr;
 }
 
+int InputField::getPrecision() const
+{
+    return this->actQuantity.getFormat().precision;
+}
+
+void InputField::setPrecision(const int precision)
+{
+    Base::QuantityFormat format = actQuantity.getFormat();
+    format.precision = precision;
+    actQuantity.setFormat(format);
+    updateText(actQuantity);
+}
+
+QString InputField::getFormat() const
+{
+    return QString(QChar::fromLatin1(actQuantity.getFormat().toFormat()));
+}
+
+void InputField::setFormat(const QString& format)
+{
+    Base::QuantityFormat f = this->actQuantity.getFormat();
+    if (format == QString::fromLatin1("f"))
+        f.format = Base::QuantityFormat::NumberFormat::Fixed;
+    else if (format == QString::fromLatin1("e"))
+        f.format = Base::QuantityFormat::NumberFormat::Scientific;
+    else
+        f.format = Base::QuantityFormat::NumberFormat::Default;
+    actQuantity.setFormat(f);
+    updateText(actQuantity);
+}
+
 // get the value of the minimum property
 int InputField::historySize(void)const
 {
@@ -522,6 +569,7 @@ void InputField::selectNumber(void)
     QChar d = locale().decimalPoint();
     QChar g = locale().groupSeparator();
     QChar n = locale().negativeSign();
+    QChar e = locale().exponential();
 
     for (QString::iterator it = str.begin(); it != str.end(); ++it) {
         if (it->isDigit())
@@ -531,6 +579,8 @@ void InputField::selectNumber(void)
         else if (*it == g)
             i++;
         else if (*it == n)
+            i++;
+        else if (*it == e && actQuantity.getFormat().format != Base::QuantityFormat::Fixed)
             i++;
         else // any non-number character
             break;
