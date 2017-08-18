@@ -133,7 +133,7 @@ def export(objectslist, filename, argstring):
 
     # Write the preamble
     if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(begin preamble)\n"
+        gcode += linenumber() + "'(begin preamble)\n"
     for line in PREAMBLE.splitlines(True):
         gcode += linenumber() + line
 
@@ -141,7 +141,7 @@ def export(objectslist, filename, argstring):
 
         # do the pre_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(begin operation: " + obj.Label + ")\n"
+            gcode += linenumber() + "'(begin operation: " + obj.Label + ")\n"
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -149,13 +149,13 @@ def export(objectslist, filename, argstring):
 
         # do the post_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(finish operation: " + obj.Label + ")\n"
+            gcode += linenumber() + "'(finish operation: " + obj.Label + ")\n"
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
     # do the post_amble
     if OUTPUT_COMMENTS:
-        gcode += "(begin postamble)\n"
+        gcode += "'(begin postamble)\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
@@ -338,7 +338,7 @@ def parse(pathobj):
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if OUTPUT_COMMENTS:
-            output += linenumber() + "(compound: " + pathobj.Label + ")\n"
+            output += linenumber() + "'(compound: " + pathobj.Label + ")\n"
         for p in pathobj.Group:
             output += parse(p)
     else:  # parsing simple path
@@ -346,7 +346,7 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return output
         if OUTPUT_COMMENTS:
-            output += linenumber() + "(Path: " + pathobj.Label + ")\n"
+            output += linenumber() + "'(Path: " + pathobj.Label + ")\n"
         for c in pathobj.Path.Commands:
             command = c.Name
             if command in scommands:
