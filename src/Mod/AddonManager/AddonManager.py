@@ -150,9 +150,9 @@ class AddonsInstaller(QtGui.QDialog):
         QtCore.QObject.connect(self.listMacros, QtCore.SIGNAL("currentRowChanged(int)"), self.show_macro)
         QtCore.QObject.connect(self.buttonCheck, QtCore.SIGNAL("clicked()"), self.check_updates)
         QtCore.QMetaObject.connectSlotsByName(self)
-        
+
         self.update()
-        
+
         if not NOGIT:
             try:
                 import git
@@ -160,6 +160,19 @@ class AddonsInstaller(QtGui.QDialog):
                 self.buttonCheck.hide()
             else:
                 self.buttonCheck.show()
+
+    def reject(self):
+        # ensure all threads are finished before closing
+        oktoclose = True
+        for worker in ["update_worker","check_worker","show_worker","showmacro_worker",
+                       "macro_worker","install_worker"]:
+            if hasattr(self,worker):
+                thread = getattr(self,worker)
+                if thread:
+                    if not thread.isFinished():
+                        oktoclose = False
+        if oktoclose:
+            QtGui.QDialog.reject(self)
 
     def retranslateUi(self):
         self.setWindowTitle(translate("AddonsInstaller","Addon manager"))
@@ -439,7 +452,7 @@ class CheckWBWorker(QtCore.QThread):
             return
         self.progressbar_show.emit(True)
         basedir = FreeCAD.ConfigGet("UserAppData")
-        moddir = basedir + os.sep + "Mod" 
+        moddir = basedir + os.sep + "Mod"
         self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
         upds = 0
         gitpython_warning = False
