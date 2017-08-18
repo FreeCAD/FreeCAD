@@ -622,7 +622,13 @@ class Component:
                         if shape.Volume < 0:
                             FreeCAD.Console.PrintError(translate("Arch","Error computing the shape of this object")+"\n")
                             return
-                        shape = shape.removeSplitter()
+                        import Part
+                        try:
+                            r = shape.removeSplitter()
+                        except Part.OCCError:
+                            pass
+                        else:
+                            shape = r
                         obj.Shape = self.spread(obj,shape,placement)
                         if not placement.isNull():
                             obj.Placement = placement
