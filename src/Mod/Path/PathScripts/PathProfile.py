@@ -32,10 +32,9 @@ from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 import PathScripts.PathLog as PathLog
 
-LOG_MODULE = 'PathProfile'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-PathLog.trackModule('PathProfile')
-FreeCAD.setLogLevel('Path.Area', 0)
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule('PathProfile')
+#FreeCAD.setLogLevel('Path.Area', 0)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
