@@ -95,6 +95,16 @@ INSTALL(
 
 INSTALL(
     FILES
+        FemCalculix/__init__.py
+        FemCalculix/SolverObject.py
+        FemCalculix/Tasks.py
+        FemCalculix/Writer.py
+    DESTINATION
+        Mod/Fem/FemCalculix
+)
+
+INSTALL(
+    FILES
         FemElmer/Equations/__init__.py
         FemElmer/Equations/Base.py
         FemElmer/Equations/Linear.py

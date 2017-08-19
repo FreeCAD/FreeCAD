@@ -35,6 +35,7 @@ CUSTOM = "custom"
 
 _ELMER_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
 _GRID_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Grid"
+_CCX_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
 
 
 class _BinaryDlg(object):
@@ -63,6 +64,11 @@ _BINARIES = {
         param=_GRID_PARAM,
         useDefault="UseStandardGridLocation",
         customPath="gridBinaryPath"),
+    "Calculix": _BinaryDlg(
+        default="ccx",
+        param=_CCX_PARAM,
+        useDefault="UseStandardCcxLocation",
+        customPath="ccxBinaryPath"),
 }
 
 
