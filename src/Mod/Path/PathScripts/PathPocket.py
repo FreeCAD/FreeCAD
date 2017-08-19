@@ -32,7 +32,7 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of the Pocket operation."
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
