@@ -26,26 +26,11 @@ from __future__ import print_function
 
 import FreeCAD
 import Part
-import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
-import PathScripts.PathOp as PathOp
+import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore, QtGui
-
-if True:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-
-
-# Qt tanslation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+from PySide import QtCore
 
 __title__ = "Path Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -53,31 +38,27 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
 
 
-class ObjectFace(PathAreaOp.ObjectOp):
+if True:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
+
+class ObjectFace(PathPocketBase.ObjectPocket):
     '''Proxy object for Mill Facing operation.'''
 
-    def areaOpFeatures(self, obj):
-        '''areaOpFeatures(obj) ... mill facing uses FinishDepth and is based on faces.'''
-        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
-
-    def initAreaOp(self, obj):
-        '''initAreaOp(obj) ... create operation specific properties'''
-        # Face Properties
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
-        obj.CutMode = ['Climb', 'Conventional']
-        obj.addProperty("App::PropertyDistance", "PassExtension", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "How far the cutter should extend past the boundary"))
-        obj.addProperty("App::PropertyEnumeration", "StartAt", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Start Faceing at center or boundary"))
-        obj.StartAt = ['Center', 'Edge']
-        obj.addProperty("App::PropertyPercent", "StepOver", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Percent of cutter diameter to step over on each pass"))
-        obj.addProperty("App::PropertyBool", "KeepToolDown", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."))
-        obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Lifts tool at the end of each pass to respect cut mode."))
-        obj.addProperty("App::PropertyBool", "UseZigZag", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use Zig Zag pattern to clear area."))
-        obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"))
+    def initPocketOp(self, obj):
+        '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
         obj.BoundaryShape = ['Perimeter', 'Boundbox']
-        obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "clearing pattern to use"))
-        obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
 
+    def pocketInvertExtraOffset(self):
+        return True
 
     def areaOpOnChanged(self, obj, prop):
         '''areaOpOnChanged(obj, prop) ... facing specific depths calculation.'''
@@ -94,43 +75,6 @@ class ObjectFace(PathAreaOp.ObjectOp):
             obj.SafeHeight = d.safe_height + 1
             obj.StartDepth = d.safe_height
             obj.FinalDepth = d.start_depth
-
-    def areaOpUseProjection(self, obj):
-        '''areaOpUseProjection(obj) ... return False'''
-        return False
-
-    def areaOpAreaParams(self, obj, isHole):
-        '''areaOpAreaPrams(obj, isHole) ... return dictionary with mill facing area parameters'''
-        params = {}
-        params['Fill'] = 0
-        params['Coplanar'] = 0
-        params['PocketMode'] = 1
-        params['SectionCount'] = -1
-        params['Angle'] = obj.ZigZagAngle
-        params['FromCenter'] = (obj.StartAt == "Center")
-        params['PocketStepover'] = (self.radius * 2) * (float(obj.StepOver)/100)
-        params['PocketExtraOffset'] = 0 - obj.PassExtension.Value
-
-        Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
-        params['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
-
-        params['ToolRadius'] = self.radius
-
-        return params
-
-    def areaOpPathParams(self, obj, isHole):
-        '''areaOpPathPrams(obj, isHole) ... return dictionary with mill facing path parameters'''
-        params = {}
-        params['feedrate'] = self.horizFeed
-        params['feedrate_v'] = self.vertFeed
-        params['verbose'] = True
-        params['resume_height'] = obj.StepDown
-        params['retraction'] = obj.ClearanceHeight.Value
-
-        if obj.UseStartPoint and obj.StartPoint is not None:
-            params['start'] = obj.StartPoint
-        
-        return params
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return top face'''

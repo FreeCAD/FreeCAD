@@ -60,13 +60,36 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getForm() ... returns UI, adapted to the resutls from pocketFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
-        if not FeaturePocket & self.pocketFeatures():
-            form.pocketWidget.hide()
-
-        if not FeatureFacing & self.pocketFeatures():
+        if FeatureFacing & self.pocketFeatures():
+            form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
+            form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
+        else:
             form.facingWidget.hide()
 
+        if True:
+            # currently doesn't have an effect
+            form.keepToolDown.hide()
+
         return form
+
+    def updateMinTravel(self, obj, setModel=True):
+        if obj.UseStartPoint:
+            self.form.minTravel.setEnabled(True)
+        else:
+            self.form.minTravel.setChecked(False)
+            self.form.minTravel.setEnabled(False)
+
+        if setModel and obj.MinTravel != self.form.minTravel.isChecked():
+            obj.MinTravel = self.form.minTravel.isChecked()
+
+    def updateZigZagAngle(self, obj, setModel=True):
+        if obj.OffsetPattern in ['Offset', 'Spiral']:
+            self.form.zigZagAngle.setEnabled(False)
+        else:
+            self.form.zigZagAngle.setEnabled(True)
+
+        if setModel:
+            self.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
@@ -76,35 +99,40 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StepOver = self.form.stepOverPercent.value()
         if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
             obj.OffsetPattern = str(self.form.offsetPattern.currentText())
-        self.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
 
+        self.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
+        self.updateZigZagAngle(obj)
 
-        if FeaturePocket & self.pocketFeatures():
-            self.updateInputField(obj, 'MaterialAllowance', self.form.extraOffset)
-            if obj.UseStartPoint != self.form.useStartPoint.isChecked():
-                obj.UseStartPoint = self.form.useStartPoint.isChecked()
+        if obj.UseStartPoint != self.form.useStartPoint.isChecked():
+            obj.UseStartPoint = self.form.useStartPoint.isChecked()
+        if obj.KeepToolDown != self.form.keepToolDown.isChecked():
+            obj.KeepToolDown = self.form.keepToolDown.isChecked()
+
+        self.updateMinTravel(obj)
 
         if FeatureFacing & self.pocketFeatures():
-            self.updateInputField(obj, 'PassExtension', self.form.passExtension)
             if obj.BoundaryShape != str(self.form.boundaryShape.currentText()):
                 obj.BoundaryShape = str(self.form.boundaryShape.currentText())
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
-        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
         self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString)
+        self.form.useStartPoint.setChecked(obj.UseStartPoint)
+        self.form.keepToolDown.setChecked(obj.KeepToolDown)
+
+        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
+        self.updateZigZagAngle(obj, False)
+
+        self.form.minTravel.setChecked(obj.MinTravel)
+        self.updateMinTravel(obj, False)
 
         self.selectInComboBox(obj.OffsetPattern, self.form.offsetPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.setupToolController(obj, self.form.toolController)
 
-        if FeaturePocket & self.pocketFeatures():
-            self.form.useStartPoint.setChecked(obj.UseStartPoint)
-            self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString)
-
         if FeatureFacing & self.pocketFeatures():
-            self.form.passExtension.setText(FreeCAD.Units.Quantity(obj.PassExtension.Value, FreeCAD.Units.Length).UserString)
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
 
     def getSignalsForUpdate(self, obj):
@@ -116,13 +144,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOverPercent.editingFinished)
         signals.append(self.form.zigZagAngle.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
-
-        if FeaturePocket & self.pocketFeatures():
-            signals.append(self.form.extraOffset.editingFinished)
-            signals.append(self.form.useStartPoint.clicked)
+        signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.useStartPoint.clicked)
+        signals.append(self.form.keepToolDown.clicked)
+        signals.append(self.form.minTravel.clicked)
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)
-            signals.append(self.form.passExtension.editingFinished)
 
         return signals
