@@ -184,7 +184,6 @@ private:
 private:
     QLabel* iconLabel;
     QByteArray m_sPrefGrp;
-    std::string ErrorText;
     bool validInput;
 
     /// handle to the parameter group for defaults and history
