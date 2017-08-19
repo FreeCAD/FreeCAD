@@ -505,7 +505,6 @@ class _Structure(ArchComponent.Component):
                                 if len(baseface.Faces) > 1:
                                     baseface = baseface.Faces[0]
                                 normal = baseface.normalAt(0,0)
-                                normal = placement.inverse().Rotation.multVec(normal)
                         if not baseface:
                             for w in obj.Base.Shape.Wires:
                                 w.fix(0.1,0,1) # fixes self-intersecting wires
@@ -516,6 +515,7 @@ class _Structure(ArchComponent.Component):
                                     baseface = f
                                     normal = f.normalAt(0,0)
                         base,placement = self.rebase(baseface)
+                        normal = placement.inverse().Rotation.multVec(normal)
                     elif (len(obj.Base.Shape.Edges) == 1) and (len(obj.Base.Shape.Vertexes) == 1):
                         # closed edge
                         w = Part.Wire(obj.Base.Shape.Edges[0])
