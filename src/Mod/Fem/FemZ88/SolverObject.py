@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,40 +20,70 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandSolverZ88"
+__title__ = "Z88 SolverObject"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandFemSolverZ88
+## @package SolverZ88
 #  \ingroup FEM
 
+import os
+import glob
+
 import FreeCAD
-from .FemCommands import FemCommands
-import FreeCADGui
-import FemGui
-from PySide import QtCore
+import FemSolverObject
+import FemMisc
+import FemRun
+
+import Tasks
+
+if FreeCAD.GuiUp:
+    import FemGui
+
+ANALYSIS_TYPES = ["static"]
 
 
-class _CommandFemSolverZ88(FemCommands):
-    "The FEM_SolverZ88 command definition"
-    def __init__(self):
-        super(_CommandFemSolverZ88, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Solver Z88"),
-                          'Accel': "S, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        FreeCAD.ActiveDocument.openTransaction("Create Z88 Solver-Object")
-        FreeCADGui.addModule("FemZ88.SolverObject")
-        FreeCADGui.doCommand(
-            "App.ActiveDocument.%s.Member += "
-            "[FemZ88.SolverObject.create(App.ActiveDocument)]"
-            % analysis.Name)
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+def create(doc, name="Z88"):
+    return FemMisc.createObject(
+        doc, name, Proxy, ViewProxy)
 
 
-FreeCADGui.addCommand('FEM_SolverZ88', _CommandFemSolverZ88())
+class Proxy(FemSolverObject.Proxy):
+    """The Fem::FemSolver's Proxy python type, add solver specific properties
+    """
+
+    Type = "Fem::FemSolverObjectZ88"
+
+    def __init__(self, obj):
+        super(Proxy, self).__init__(obj)
+        obj.Proxy = self
+
+        # z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
+
+        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
+        obj.AnalysisType = ANALYSIS_TYPES
+        obj.AnalysisType = ANALYSIS_TYPES[0]
+
+    def createMachine(self, obj, directory):
+        return FemRun.Machine(
+            solver=obj, directory=directory,
+            check=Tasks.Check(),
+            prepare=Tasks.Prepare(),
+            solve=Tasks.Solve(),
+            results=Tasks.Results())
+
+    def editSupported(self):
+        return True
+
+    def edit(self, directory):
+        pattern = os.path.join(directory, "*.txt")
+        print pattern
+        f = glob.glob(pattern)[0]
+        FemGui.open(f)
+
+    def execute(self, obj):
+        return
+
+
+class ViewProxy(FemSolverObject.ViewProxy):
+    pass

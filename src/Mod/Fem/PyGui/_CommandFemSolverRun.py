@@ -56,6 +56,8 @@ class _CommandFemSolverRun(FemCommands):
             self._newActivated()
         elif FemMisc.isDerivedFrom(self.solver, "Fem::FemSolverObjectCalculix"):
             self._newActivated()
+        elif FemMisc.isDerivedFrom(self.solver, "Fem::FemSolverObjectZ88"):
+            self._newActivated()
         elif self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
