@@ -206,7 +206,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 bodyName.c_str(), baseFeature->getNameInDocument());
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", 
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PDBODYKEY, bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel
@@ -638,17 +638,18 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
     std::set<App::DocumentObject*> source_bodies;
     for (auto feat : features) {
+        // Note: 'source' can be null which means that the feature doesn't belong to a body.
         PartDesign::Body* source = PartDesign::Body::findBodyOf(feat);
         source_bodies.insert(static_cast<App::DocumentObject*>(source));
     }
-    
-    if(source_bodies.size() != 1) {
+
+    if (source_bodies.size() != 1) {
         //show messagebox and cancel
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
             QObject::tr("Only features of a single source Body can be moved"));
         return;
     }
-     
+
     auto source_body = *source_bodies.begin();
 
     std::vector<App::DocumentObject*> target_bodies;
@@ -681,20 +682,21 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
     openCommand("Move an object");
-    
+
     std::stringstream stream;
     stream << "features_ = [App.ActiveDocument." << features.back()->getNameInDocument();
     features.pop_back();
-    
-    for (auto feat: features)        
+
+    for (auto feat: features)
         stream << ", App.ActiveDocument." << feat->getNameInDocument();
-    
+
     stream << "]";
     doCommand(Doc, stream.str().c_str());
-    doCommand(Doc, "App.ActiveDocument.%s.removeObjects(features_)", source_body->getNameInDocument());
+    if (source_body)
+        doCommand(Doc, "App.ActiveDocument.%s.removeObjects(features_)", source_body->getNameInDocument());
     doCommand(Doc, "App.ActiveDocument.%s.addObjects(features_)", target->getNameInDocument());
     /*
-        
+
         // Find body of this feature
         Part::BodyBase* source = PartDesign::Body::findBodyOf(feat);
         bool featureWasTip = false;
