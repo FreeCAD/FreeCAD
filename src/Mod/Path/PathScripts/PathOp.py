@@ -214,7 +214,7 @@ class ObjectOp(object):
             self.commandlist  ... a list for collecting all commands produced by the operation
 
         Once everything is validated and above variables are set the implementation calls
-        opExectue(obj) - which is expected to add the generated commands to self.commandlist
+        opExecute(obj) - which is expected to add the generated commands to self.commandlist
         Finally the base implementation adds a rapid move to clearance height and assigns
         the receiver's Path property from the command list.
         '''
