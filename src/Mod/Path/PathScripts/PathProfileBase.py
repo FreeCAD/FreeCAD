@@ -29,7 +29,7 @@ import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
 
-__title__ = "Path Contour Operation"
+__title__ = "Base Path Profile Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path profile operations."
@@ -40,21 +40,9 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
-
-
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
-__title__ = "Path Profile Operation"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Base class and properties for all profile operations."
-
-"""Path Profile object and FreeCAD command for operating on sets of features"""
 
 
 class ObjectProfile(PathAreaOp.ObjectOp):

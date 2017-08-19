@@ -24,11 +24,10 @@
 
 import FreeCAD
 import Part
-import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
-import PathScripts.PathOp as PathOp
+import PathScripts.PathPocketBase as PathPocketBase
+import PathScripts.PathUtils as PathUtils
 
-from PathScripts import PathUtils
 from PySide import QtCore
 
 __doc__ = "Class and implementation of the Pocket operation."
@@ -44,60 +43,15 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-class ObjectPocket(PathAreaOp.ObjectOp):
+class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
-    def areaOpFeatures(self, obj):
-        '''areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces'''
-        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
+    def initPocketOp(self, obj):
+        '''initPocketOp(obj) ... setup receiver'''
+        pass
 
-    def initAreaOp(self, obj):
-        '''initAreaOp(obj) ... create pocket specific properties.'''
-        PathLog.track()
-
-        # Pocket Properties
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
-        obj.CutMode = ['Climb', 'Conventional']
-        obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Amount of material to leave"))
-        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Start pocketing at center or boundary"))
-        obj.StartAt = ['Center', 'Edge']
-        obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Percent of cutter diameter to step over on each pass"))
-        obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"))
-        obj.addProperty("App::PropertyEnumeration", "OffsetPattern", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "clearing pattern to use"))
-        obj.OffsetPattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
-        obj.addProperty("App::PropertyBool", "MinTravel", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"))
-
-    def areaOpUseProjection(self, obj):
-        '''areaOpUseProjection(obj) ... return False'''
+    def pocketInvertExtraOffset(self):
         return False
-
-    def areaOpAreaParams(self, obj, isHole):
-        '''areaOpAreaParams(obj, isHole) ... return dictionary with pocket's area parameters'''
-        params = {}
-        params['Fill'] = 0
-        params['Coplanar'] = 0
-        params['PocketMode'] = 1
-        params['SectionCount'] = -1
-        params['Angle'] = obj.ZigZagAngle
-        params['FromCenter'] = (obj.StartAt == "Center")
-        params['PocketStepover'] = (self.radius * 2) * (float(obj.StepOver)/100)
-        params['PocketExtraOffset'] = obj.MaterialAllowance.Value
-        params['ToolRadius'] = self.radius
-
-        Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
-        params['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
-        return params
-
-    def areaOpPathParams(self, obj, isHole):
-        '''areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters'''
-        params = {}
-
-        # if MinTravel is turned on, set path sorting to 3DSort
-        # 3DSort shouldn't be used without a valid start point. Can cause
-        # tool crash without it.
-        if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
-            params['sort_mode'] = 2
-        return params
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
