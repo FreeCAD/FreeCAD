@@ -254,7 +254,6 @@ void InputField::newInput(const QString & text)
     }
     catch(Base::Exception &e){
         ErrorText = e.what();
-        this->setToolTip(QString::fromLatin1(ErrorText.c_str()));
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromLatin1(ErrorText.c_str()));
@@ -267,7 +266,6 @@ void InputField::newInput(const QString & text)
 
     // check if unit fits!
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
-        this->setToolTip(QString::fromLatin1("Wrong unit"));
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromLatin1("Wrong unit"));
@@ -278,19 +276,14 @@ void InputField::newInput(const QString & text)
 
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
-    ErrorText = "";
     validInput = true;
 
     if (res.getValue() > Maximum){
         res.setValue(Maximum);
-        ErrorText = "Maximum reached";
     }
     if (res.getValue() < Minimum){
         res.setValue(Minimum);
-        ErrorText = "Minimum reached";
     }
-
-    this->setToolTip(QString::fromLatin1(ErrorText.c_str()));
 
     double dFactor;
     res.getUserString(dFactor,actUnitStr);
