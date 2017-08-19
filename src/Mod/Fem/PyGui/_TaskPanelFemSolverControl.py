@@ -120,7 +120,9 @@ class ControlTaskPanel(QtCore.QObject):
 
     @QtCore.Slot()
     def edit(self):
-        pass
+        self.machine.reset(FemRun.SOLVE)
+        self.machine.solver.Proxy.edit(
+            self.machine.directory)
 
     @QtCore.Slot()
     def abort(self):
@@ -306,15 +308,15 @@ class ControlWidget(QtGui.QWidget):
             self._runBtt.setText(self.tr("Re-run"))
         if machine.running:
             self._runBtt.setText(self.tr("Abort"))
-        self.setRunning(machine.running)
+        self.setRunning(machine)
 
     @QtCore.Slot()
     def _selectDirectory(self):
         path = QtGui.QFileDialog.getExistingDirectory(self)
         self.setDirectory(path)
 
-    def setRunning(self, isRunning):
-        if isRunning:
+    def setRunning(self, machine):
+        if machine.running:
             self._runBtt.clicked.connect(self.runClicked)
             self._runBtt.clicked.disconnect()
             self._runBtt.clicked.connect(self.abortClicked)
@@ -327,4 +329,6 @@ class ControlWidget(QtGui.QWidget):
             self._runBtt.clicked.connect(self.runClicked)
             self._directoryGrp.setDisabled(False)
             self._writeBtt.setDisabled(False)
-            self._editBtt.setDisabled(False)
+            self._editBtt.setDisabled(
+                not machine.solver.Proxy.editSupported()
+                or machine.state < FemRun.PREPARE)

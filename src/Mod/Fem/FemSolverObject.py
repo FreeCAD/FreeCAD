@@ -55,6 +55,12 @@ class Proxy(object):
         obj.addObject(self.createEquation(
             obj.Document, eqId))
 
+    def editSupported(self):
+        return False
+
+    def edit(self, directory):
+        raise NotImplementedError()
+
     def execute(self, obj):
         return True
 
