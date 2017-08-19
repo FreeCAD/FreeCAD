@@ -37,7 +37,7 @@ from PySide import QtCore, QtGui
 """Dogbone Dressup object and FreeCAD command"""
 
 LOG_MODULE = PathLog.thisModule()
-#PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -675,10 +675,10 @@ class ObjectDressup:
 
         return commands, bones
 
-    def execute(self, obj):
+    def execute(self, obj, forReal=True):
         if not obj.Base:
             return
-        if not obj.Base.isDerivedFrom("Path::Feature"):
+        if forReal and not obj.Base.isDerivedFrom("Path::Feature"):
             return
         if not obj.Base.Path:
             return
@@ -790,11 +790,11 @@ class ObjectDressup:
                 obj.Side = side
 
         self.toolRadius = 5
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
+        tc = obj.ToolController
+        if tc is None or tc.ToolNumber == 0:
             self.toolRadius = 5
         else:
-            tool = toolLoad.Proxy.getTool(toolLoad) #PathUtils.getTool(obj, toolLoad.ToolNumber)
+            tool = tc.Proxy.getTool(tc) #PathUtils.getTool(obj, tc.ToolNumber)
             if not tool or tool.Diameter == 0:
                 self.toolRadius = 5
             else:
