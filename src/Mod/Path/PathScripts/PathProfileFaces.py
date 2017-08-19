@@ -60,7 +60,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
     def areaOpFeatures(self, obj):
         '''baseObject() ... returns super of receiver
         Used to call base implementation in overwritten functions.'''
-        return PathOp.FeatureBaseFaces 
+        return PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels
 
     def initAreaOp(self, obj):
         '''initAreaOp(obj) ... adds properties for hole, circle and perimeter processing.'''
@@ -127,6 +127,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                 env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
                                 shapes.append((env, False))
 
+        PathLog.debug("%d shapes" % len(shapes))
         return shapes
 
     def areaOpSetDefaultValues(self, obj):

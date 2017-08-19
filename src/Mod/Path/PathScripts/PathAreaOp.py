@@ -218,7 +218,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         if self.endVector is not None:
             pathParams['start'] = self.endVector
-        elif obj.UseStartPoint:
+        elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
             pathParams['start'] = obj.StartPoint
 
         obj.PathParams = str({key: value for key, value in pathParams.items() if key != 'shapes'})
@@ -259,10 +259,10 @@ class ObjectOp(PathOp.ObjectOp):
                 final_depth=obj.FinalDepth.Value,
                 user_depths=None)
 
-        if PathOp.FeatureStartPoint and obj.UseStartPoint:
+        if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
             start = obj.StartPoint
         else:
-            start = FreeCAD.Vector()
+            start = None
 
         shapes = self.areaOpShapes(obj)
 
@@ -276,7 +276,14 @@ class ObjectOp(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
 
+            if self.areaOpRetractTool(obj):
+                self.endVector = None
+
         return sims
+
+    def areaOpRetractTool(self, obj):
+        '''areaOpRetractTool(obj) ... return False to keep the tool at current level between shapes. Default is True.'''
+        return True
 
     def areaOpAreaParams(self, obj, isHole):
         '''areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
