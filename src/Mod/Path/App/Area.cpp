@@ -2940,19 +2940,21 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 
-    // absolute mode
-    addGCode(path,"G90");
-    if(abs_center)
-        addGCode(path,"G90.1"); // absolute center for arc move
-
     short currentArcPlane = arc_plane;
-    if(arc_plane==ArcPlaneZX)
-        addGCode(path,"G18");
-    else if(arc_plane==ArcPlaneYZ)
-        addGCode(path,"G19");
-    else {
-        currentArcPlane=ArcPlaneXY;
-        addGCode(path,"G17");
+    if (preamble) {
+      // absolute mode
+      addGCode(path,"G90");
+      if(abs_center)
+          addGCode(path,"G90.1"); // absolute center for arc move
+
+      if(arc_plane==ArcPlaneZX)
+          addGCode(path,"G18");
+      else if(arc_plane==ArcPlaneYZ)
+          addGCode(path,"G19");
+      else {
+          currentArcPlane=ArcPlaneXY;
+          addGCode(path,"G17");
+      }
     }
 
     AxisGetter getter;
