@@ -215,6 +215,8 @@ class ObjectOp(PathOp.ObjectOp):
         pathParams['resume_height'] = obj.StepDown.Value
         pathParams['retraction'] = obj.ClearanceHeight.Value
         pathParams['return_end'] = True
+        # Note that emmitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+        pathParams['preamble'] = False
 
         if self.endVector is not None:
             pathParams['start'] = self.endVector
