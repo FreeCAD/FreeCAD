@@ -535,13 +535,11 @@ QString InputField::getFormat() const
 
 void InputField::setFormat(const QString& format)
 {
+    if (format.isEmpty())
+        return;
+    QChar c = format[0];
     Base::QuantityFormat f = this->actQuantity.getFormat();
-    if (format == QString::fromLatin1("f"))
-        f.format = Base::QuantityFormat::NumberFormat::Fixed;
-    else if (format == QString::fromLatin1("e"))
-        f.format = Base::QuantityFormat::NumberFormat::Scientific;
-    else
-        f.format = Base::QuantityFormat::NumberFormat::Default;
+    f.format = Base::QuantityFormat::toFormat(c.toLatin1());
     actQuantity.setFormat(f);
     updateText(actQuantity);
 }
