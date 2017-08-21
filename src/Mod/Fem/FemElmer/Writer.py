@@ -78,10 +78,10 @@ def convert(quantityStr, unit):
 
 
 def _getAllSubObjects(obj):
-    s = ["Solid" + str(i+1) for i in range(len(obj.Shape.Solids))]
-    s.extend(("Face" + str(i+1) for i in range(len(obj.Shape.Faces))))
-    s.extend(("Edge" + str(i+1) for i in range(len(obj.Shape.Edges))))
-    s.extend(("Vertex" + str(i+1) for i in range(len(obj.Shape.Vertexes))))
+    s = ["Solid" + str(i + 1) for i in range(len(obj.Shape.Solids))]
+    s.extend(("Face" + str(i + 1) for i in range(len(obj.Shape.Faces))))
+    s.extend(("Edge" + str(i + 1) for i in range(len(obj.Shape.Edges))))
+    s.extend(("Vertex" + str(i + 1) for i in range(len(obj.Shape.Vertexes))))
     return s
 
 
@@ -171,11 +171,11 @@ class Writer(object):
         self._simulation("BDF Order", 1)
         self._simulation("Use Mesh Names", True)
         self._simulation(
-                "Steady State Max Iterations",
-                self.solver.SteadyStateMaxIterations)
+            "Steady State Max Iterations",
+            self.solver.SteadyStateMaxIterations)
         self._simulation(
-                "Steady State Min Iterations",
-                self.solver.SteadyStateMinIterations)
+            "Steady State Min Iterations",
+            self.solver.SteadyStateMinIterations)
 
     def _handleHeat(self):
         activeIn = []
@@ -205,7 +205,6 @@ class Writer(object):
         s["Bubbles"] = False
         s["Optimize Bandwidth"] = True
         return s
-
 
     def _handleHeatConstants(self):
         self._constant(
@@ -384,7 +383,6 @@ class Writer(object):
                     name, "Heat expansion Coefficient",
                     convert(m["ThermalExpansionCoefficient"], "O^-1"))
 
-
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
@@ -414,7 +412,7 @@ class Writer(object):
         s["Bubbles"] = False
         s["Optimize Bandwidth"] = True
         return s
-        
+
     def _handleFlowConstants(self):
         gravity = getConstant("Gravity", "L/T^2")
         self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
@@ -523,7 +521,7 @@ class Writer(object):
 
     def _getAllSolids(self):
         obj = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
-        return ["Solid" + str(i+1) for i in range(len(obj.Part.Shape.Solids))]
+        return ["Solid" + str(i + 1) for i in range(len(obj.Part.Shape.Solids))]
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
@@ -553,18 +551,18 @@ class Writer(object):
     def _initial(self, body, key, attr):
         self._builder.initial(body, key, attr)
 
-    def _material(self, body, key , attr):
+    def _material(self, body, key, attr):
         self._builder.material(body, key, attr)
 
-    def _equation(self, body, key , attr):
+    def _equation(self, body, key, attr):
         self._builder.equation(body, key, attr)
 
-    def _bodyForce(self, body, key , attr):
+    def _bodyForce(self, body, key, attr):
         self._builder.bodyForce(body, key, attr)
 
     def _addSolver(self, body, solverSection):
         self._builder.addSolver(body, solverSection)
-        
+
     def _boundary(self, boundary, key, attr):
         self._builder.boundary(boundary, key, attr)
 

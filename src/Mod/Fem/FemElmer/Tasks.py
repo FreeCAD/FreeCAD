@@ -99,7 +99,7 @@ class Solve(FemRun.Solve):
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(
-                "App::TextDocument", self.solver.Name + "Output")
+            "App::TextDocument", self.solver.Name + "Output")
         self.solver.ElmerOutput.Label = self.solver.Label + "Output"
         self.solver.ElmerOutput.ReadOnly = True
         self.analysis.Member += [self.solver.ElmerOutput]
@@ -117,6 +117,6 @@ class Results(FemRun.Results):
 
     def _createResults(self):
         self.solver.ElmerResult = self.analysis.Document.addObject(
-                "Fem::FemPostPipeline", self.solver.Name + "Result")
+            "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
         self.analysis.Member += [self.solver.ElmerResult]

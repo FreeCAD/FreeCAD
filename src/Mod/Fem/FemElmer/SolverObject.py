@@ -26,7 +26,6 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD as App
 import FemSolverObject
 import FemMisc
 import FemRun
@@ -56,17 +55,17 @@ class Proxy(FemSolverObject.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-                "App::PropertyInteger", "SteadyStateMaxIterations",
-                "Steady State", "")
+            "App::PropertyInteger", "SteadyStateMaxIterations",
+            "Steady State", "")
         obj.addProperty(
-                "App::PropertyInteger", "SteadyStateMinIterations",
-                "Steady State", "")
+            "App::PropertyInteger", "SteadyStateMinIterations",
+            "Steady State", "")
         obj.addProperty(
-                "App::PropertyLink", "ElmerResult",
-                "Base", "", 4 | 8)
+            "App::PropertyLink", "ElmerResult",
+            "Base", "", 4 | 8)
         obj.addProperty(
-                "App::PropertyLink", "ElmerOutput",
-                "Base", "", 4 | 8)
+            "App::PropertyLink", "ElmerOutput",
+            "Base", "", 4 | 8)
 
         obj.SteadyStateMaxIterations = 1
         obj.SteadyStateMinIterations = 0

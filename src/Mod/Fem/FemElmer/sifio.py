@@ -37,34 +37,34 @@ COMPONENT = "Component"
 
 
 _VALID_SECTIONS = (
-        SIMULATION,
-        CONSTANTS,
-        BODY,
-        MATERIAL,
-        BODY_FORCE,
-        EQUATION,
-        SOLVER,
-        BOUNDARY_CONDITION,
-        INITIAL_CONDITION,
-        COMPONENT,
+    SIMULATION,
+    CONSTANTS,
+    BODY,
+    MATERIAL,
+    BODY_FORCE,
+    EQUATION,
+    SOLVER,
+    BOUNDARY_CONDITION,
+    INITIAL_CONDITION,
+    COMPONENT,
 )
 
 
 _NUMBERED_SECTIONS = (
-        BODY,
-        MATERIAL,
-        BODY_FORCE,
-        EQUATION,
-        SOLVER,
-        BOUNDARY_CONDITION,
-        INITIAL_CONDITION,
-        COMPONENT,
+    BODY,
+    MATERIAL,
+    BODY_FORCE,
+    EQUATION,
+    SOLVER,
+    BOUNDARY_CONDITION,
+    INITIAL_CONDITION,
+    COMPONENT,
 )
 
 
 _SECTION_DELIM = "End"
 _WHITESPACE = " "
-_INDENT = " "*2
+_INDENT = " " * 2
 _NEWLINE = "\n"
 
 
@@ -128,15 +128,15 @@ class Builder(object):
         section = self._getFromBody(body, INITIAL_CONDITION)
         section[key] = attr
 
-    def material(self, body, key , attr):
+    def material(self, body, key, attr):
         section = self._getFromBody(body, MATERIAL)
         section[key] = attr
 
-    def equation(self, body, key , attr):
+    def equation(self, body, key, attr):
         section = self._getFromBody(body, EQUATION)
         section[key] = attr
 
-    def bodyForce(self, body, key , attr):
+    def bodyForce(self, body, key, attr):
         section = self._getFromBody(body, BODY_FORCE)
         section[key] = attr
 
@@ -145,7 +145,7 @@ class Builder(object):
         if self._ACTIVE_SOLVERS not in section:
             section[self._ACTIVE_SOLVERS] = []
         section[self._ACTIVE_SOLVERS].append(solverSection)
-        
+
     def boundary(self, boundary, key, attr):
         if boundary not in self._boundaries:
             self._boundaries[boundary] = createSection(BOUNDARY_CONDITION)
@@ -203,9 +203,9 @@ class Sif(object):
 
     def write(self, stream):
         self._writeCheckKeywords(stream)
-        stream.write(_NEWLINE*2)
+        stream.write(_NEWLINE * 2)
         self._writeHeader(stream)
-        stream.write(_NEWLINE*2)
+        stream.write(_NEWLINE * 2)
         writeSections(self.sections, stream)
 
     def _writeCheckKeywords(self, stream):

@@ -28,10 +28,6 @@ __url__ = "http://www.freecadweb.org"
 
 from pivy import coin
 
-import FreeCAD as App
-if App.GuiUp:
-    import FreeCADGui as Gui
-
 
 class Proxy(object):
 

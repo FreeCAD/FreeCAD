@@ -29,7 +29,6 @@ __url__ = "http://www.freecadweb.org"
 from PySide import QtGui
 from PySide import QtCore
 
-import FreeCAD as App
 import FreeCADGui as Gui
 
 
@@ -98,7 +97,7 @@ class _Selector(QtGui.QWidget):
                     self._addToWidget(obj, sub)
                     newEntry = (obj, entry[1] + (sub,))
                     self._references[index] = newEntry
-                
+
     def _addToWidget(self, obj, sub):
         identifier = "%s::%s" % (obj.Name, sub)
         item = QtGui.QStandardItem(identifier)
@@ -132,7 +131,7 @@ class BoundarySelector(_Selector):
                 item = (selObj.Object, tuple(selObj.SubElementNames))
                 selection.append(item)
         return selection
-                
+
 
 class SolidSelector(_Selector):
 
@@ -161,13 +160,13 @@ class SolidSelector(_Selector):
         shape = obj.Shape
         for n in names:
             if n.startswith("Face"):
-                objects.append(shape.Faces[int(n[4:])-1])
+                objects.append(shape.Faces[int(n[4:]) - 1])
             elif n.startswith("Edge"):
-                objects.append(shape.Edges[int(n[4:])-1])
+                objects.append(shape.Edges[int(n[4:]) - 1])
             elif n.startswith("Vertex"):
-                objects.append(shape.Vertexes[int(n[6:])-1])
+                objects.append(shape.Vertexes[int(n[6:]) - 1])
             elif n.startswith("Solid"):
-                objects.append(shape.Solids[int(n[5:])-1])
+                objects.append(shape.Solids[int(n[5:]) - 1])
         return objects
 
     def _getSolidOfSub(self, obj, sub):
@@ -175,19 +174,19 @@ class SolidSelector(_Selector):
         if sub.ShapeType == "Solid":
             for solidId, solid in enumerate(obj.Shape.Solids):
                 if sub.isSame(solid):
-                    foundSolids.add("Solid" + str(solidId+1))
+                    foundSolids.add("Solid" + str(solidId + 1))
         elif sub.ShapeType == "Face":
             for solidId, solid in enumerate(obj.Shape.Solids):
                 if(self._findSub(sub, solid.Faces)):
-                    foundSolids.add("Solid" + str(solidId+1))
+                    foundSolids.add("Solid" + str(solidId + 1))
         elif sub.ShapeType == "Edge":
             for solidId, solid in enumerate(obj.Shape.Solids):
                 if(self._findSub(sub, solid.Edges)):
-                    foundSolids.add("Solid" + str(solidId+1))
+                    foundSolids.add("Solid" + str(solidId + 1))
         elif sub.ShapeType == "Vertex":
             for solidId, solid in enumerate(obj.Shape.Solids):
                 if(self._findSub(sub, solid.Vertexes)):
-                    foundSolids.add("Solid" + str(solidId+1))
+                    foundSolids.add("Solid" + str(solidId + 1))
         if len(foundSolids) == 1:
             return iter(foundSolids).next()
         return None

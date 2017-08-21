@@ -120,7 +120,7 @@ def _getBesideBase(solver):
 def _getCustomDir(solver):
     base = _getCustomBase(solver)
     specificPath = os.path.join(
-            base, solver.Document.Name, solver.Label)
+        base, solver.Document.Name, solver.Label)
     specificPath = _getUniquePath(specificPath)
     if not os.path.isdir(specificPath):
         os.makedirs(specificPath)

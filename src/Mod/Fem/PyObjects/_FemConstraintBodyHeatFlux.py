@@ -26,7 +26,6 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemMisc
 import FemConstraint
 
 
@@ -37,5 +36,5 @@ class Proxy(FemConstraint.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-                "App::PropertyFloat", "HeatFlux",
-                "Base", "Body heat flux")
+            "App::PropertyFloat", "HeatFlux",
+            "Base", "Body heat flux")
