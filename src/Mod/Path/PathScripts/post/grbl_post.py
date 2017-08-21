@@ -22,16 +22,36 @@
 #***************************************************************************/
 
 
-'''
-Generate g-code compatible with grbl from a Path.
+TOOLTIP='''
+Generate g-code from a Path that is compatible with the grbl controller.
 
 import grbl_post
 grbl_post.export(object,"/path/to/file.ncc")
 '''
 
+import FreeCAD
+import PathScripts.PostUtils as PostUtils
+import argparse
 import datetime
+import shlex
+
+
 now = datetime.datetime.now()
-from PathScripts import PostUtils
+
+parser = argparse.ArgumentParser(prog='grbl', add_help=False)
+parser.add_argument('--header', action='store_true', help='output headers (default)')
+parser.add_argument('--no-header', action='store_true', help='suppress header output')
+parser.add_argument('--comments', action='store_true', help='output comment (default)')
+parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
+parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
+parser.add_argument('--no-line-numbers', action='store_true', help='don\'t prefix with line numbers (default)')
+parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output (default)')
+parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
+parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
+parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
+parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
+
+TOOLTIP_ARGS=parser.format_help()
 
 #These globals set common customization preferences
 OUTPUT_COMMENTS = True
@@ -48,6 +68,7 @@ UNITS = "G21" #G21 for metric, G20 for us standard
 MACHINE_NAME = "GRBL"
 CORNER_MIN = {'x':0, 'y':0, 'z':0 }
 CORNER_MAX = {'x':500, 'y':300, 'z':300 }
+PRECISION = 4
 
 RAPID_MOVES = ['G0', 'G00']
 
@@ -57,7 +78,6 @@ PREAMBLE = '''G17 G90
 
 #Postamble text will appear following the last operation.
 POSTAMBLE = '''M5
-G00 X-1.0 Y1.0
 G17 G90
 ; M2
 '''
@@ -80,8 +100,50 @@ if open.__module__ == '__builtin__':
     pythonopen = open
 
 
-def export(objectslist,filename,args):
+def processArguments(argstring):
+    global OUTPUT_HEADER
+    global OUTPUT_COMMENTS
+    global OUTPUT_LINE_NUMBERS
+    global SHOW_EDITOR
+    global PRECISION
+    global PREAMBLE
+    global POSTAMBLE
+
+    try:
+        args = parser.parse_args(shlex.split(argstring))
+        if args.no_header:
+            OUTPUT_HEADER = False
+        if args.header:
+            OUTPUT_HEADER = True
+        if args.no_comments:
+            OUTPUT_COMMENTS = False
+        if args.comments:
+            OUTPUT_COMMENTS = True
+        if args.no_line_numbers:
+            OUTPUT_LINE_NUMBERS = False
+        if args.line_numbers:
+            OUTPUT_LINE_NUMBERS = True
+        if args.no_show_editor:
+            SHOW_EDITOR = False
+        if args.show_editor:
+            SHOW_EDITOR = True
+        print("Show editor = %d" % SHOW_EDITOR)
+        PRECISION = args.precision
+        if args.preamble is not None:
+            PREAMBLE = args.preamble
+        if args.postamble is not None:
+            POSTAMBLE = args.postamble
+    except:
+        return False
+
+    return True
+
+def export(objectslist,filename,argstring):
+    if not processArguments(argstring):
+        return None
+
     global UNITS
+
     for obj in objectslist:
         if not hasattr(obj,"Path"):
             print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
@@ -139,7 +201,7 @@ def export(objectslist,filename,args):
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
-    if SHOW_EDITOR:
+    if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
         result = dia.exec_()
@@ -167,6 +229,7 @@ def linenumber():
 def parse(pathobj):
     out = ""
     lastcommand = None
+    precision_string = '.' + str(PRECISION) +'f'
 
     #params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control the order of parameters
     params = ['X','Y','Z','A','B','I','J','F','S','T','Q','R','L'] #linuxcnc doesn't want K properties on XY plane  Arcs need work.
@@ -202,7 +265,7 @@ def parse(pathobj):
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     else:
-                        outstring.append(param + format(c.Parameters[param], '.4f'))
+                        outstring.append(param + format(c.Parameters[param], precision_string))
 
             # store the latest command
             lastcommand = command
