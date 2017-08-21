@@ -28,6 +28,8 @@
 #endif
 
 
+#include <App/DocumentObject.h>
+#include <App/PropertyContainer.h>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -124,9 +126,23 @@ void PropertyPath::SaveDocFile (Base::Writer &) const
 
 void PropertyPath::RestoreDocFile(Base::Reader &reader)
 {
+    App::PropertyContainer *container = getContainer();
+    App::DocumentObject *obj = 0;
+    if (container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        obj = static_cast<App::DocumentObject*>(container);
+    }
+
+    if (obj) {
+        obj->setStatus(App::ObjectStatus::Restore, true);
+    }
+
     aboutToSetValue();
     _Path.RestoreDocFile(reader);
     hasSetValue();
+
+    if (obj) {
+        obj->setStatus(App::ObjectStatus::Restore, false);
+    }
 }
 
 
