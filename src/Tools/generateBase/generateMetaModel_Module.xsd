@@ -43,9 +43,9 @@
 									<xs:attribute name="sq_concat" type="xs:boolean" use="required"/>
 									<xs:attribute name="sq_repeat" type="xs:boolean" use="required"/>
 									<xs:attribute name="sq_item" type="xs:boolean" use="required"/>
-									<xs:attribute name="sq_slice" type="xs:boolean" use="required"/>
+									<xs:attribute name="mp_subscript" type="xs:boolean" use="required"/>
 									<xs:attribute name="sq_ass_item" type="xs:boolean" use="required"/>
-									<xs:attribute name="sq_ass_slice" type="xs:boolean" use="required"/>
+									<xs:attribute name="mp_ass_subscript" type="xs:boolean" use="required"/>
 									<xs:attribute name="sq_contains" type="xs:boolean" use="required"/>
 									<xs:attribute name="sq_inplace_concat" type="xs:boolean" use="required"/>
 									<xs:attribute name="sq_inplace_repeat" type="xs:boolean" use="required"/>
