@@ -182,7 +182,7 @@
 			sq_concat="false"
 			sq_repeat="false"
 			sq_item="true"
-			mp_subscript="false"
+			mp_subscript="true"
 			sq_ass_item="true"
 			mp_ass_subscript="false"
 			sq_contains="false"
