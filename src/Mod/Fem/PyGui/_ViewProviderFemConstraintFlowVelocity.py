@@ -38,7 +38,7 @@ import FemSelectionWidgets
 class ViewProxy(FemConstraint.ViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-constraint-heatflux.svg"
+        return ":/icons/fem-constraint-flow-velocity.svg"
 
     def setEdit(self, vobj, mode=0):
         task = _TaskPanel(vobj.Object)

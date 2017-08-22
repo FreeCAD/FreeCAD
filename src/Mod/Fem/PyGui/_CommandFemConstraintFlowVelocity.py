@@ -38,7 +38,7 @@ class Command(FemCommands.FemCommands):
     def __init__(self):
         super(Command, self).__init__()
         self.resources = {
-            'Pixmap': 'fem-constraint-heatflux',
+            'Pixmap': 'fem-constraint-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
                 "Constraint Velocity"),
