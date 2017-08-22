@@ -34,17 +34,22 @@ from FreeCAD import Units
 import subprocess
 import tempfile
 from platform import system
+from collections import OrderedDict
 
 
 class FemGmshTools():
+    supported_mesh_output_formats = {'Gmsh MSH': 1, 'I-Deas universal': 2, 'Automatic': 10, 'STL surface': 27,
+                                                            'INRIA medit': 30, 'CGNS': 32 , 'Salome mesh': 33, 'Abaqus INP': 39, 'Ploy surface': 42}
+    output_format_suffix = {'Gmsh MSH': '.msh', 'I-Deas universal': '.unv', 'Automatic': '.msh', 'STL surface': '.stl', 
+                                        'INRIA medit': '.mesh', 'CGNS': '.cgns', 'Salome mesh': '.med', 'Abaqus INP': '.inp', 'Ploy surface': '.ply2'}
     def __init__(self, gmsh_mesh_obj, analysis=None):
         self.mesh_obj = gmsh_mesh_obj
         if analysis:
             self.analysis = analysis
-            # group meshing turned on
+            # constraint group meshing turned on
         else:
             self.analysis = None
-            # group meshing turned off
+            # constraint group meshing turned off
 
         # part to mesh
         self.part_obj = self.mesh_obj.Part
@@ -115,6 +120,37 @@ class FemGmshTools():
         else:
             self.algorithm3D = '1'
 
+    def export_mesh(self, output_format, output_filestring=None, scaling=False):
+        # This function aims to export more mesh formats than FemMesh supported
+        _output_format = self.mesh_obj.OutputFormat  # push back the current OutputFormat
+        output_filename = None
+        try:
+            self.mesh_obj.OutputFormat = output_format
+            # same as create_mesh(), without loading mesh into FreeCAD
+            self.get_dimension()
+            self.get_tmp_file_paths()
+            self.get_gmsh_command()
+            self.get_group_data()
+            self.get_region_data()
+            self.get_boundary_layer_data()
+            self.write_part_file()
+            self.write_geo(True)
+            error = self.run_gmsh_with_geo()  # this function will set self.error = True
+            if self.error:
+                print('Gmsh has error during mesh generation for mesh format `{}`'.format(output_format))
+            else:
+                output_filename = self.temp_file_mesh
+                print('Gmsh has generated mesh format `{}` into file: {}'.format(output_format, output_filename))
+                if output_filestring:
+                    import shutil
+                    shutil.move(output_filename, output_filestring)
+                    output_filename = output_filestring
+        except Exception as e:
+            print(e)
+        finally:
+            self.mesh_obj.OutputFormat = _output_format
+        return output_filename
+
     def create_mesh(self):
         print("\nWe gone start GMSH FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
@@ -183,7 +219,8 @@ class FemGmshTools():
         print('  ' + self.temp_file_geometry)
         # mesh file
         self.mesh_name = self.part_obj.Name + '_Mesh_TmpGmsh'
-        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + '.unv'
+        suffix = FemGmshTools.output_format_suffix[self.mesh_obj.OutputFormat]  # '.unv'
+        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + suffix
         print('  ' + self.temp_file_mesh)
         # GMSH input file
         self.temp_file_geo = tmpdir + path_sep + 'shape2mesh.geo'
@@ -222,42 +259,14 @@ class FemGmshTools():
                     self.gmsh_bin = "gmsh"
         print('  ' + self.gmsh_bin)
 
-    def get_group_data(self):
-        self.group_elements = {}
-        # TODO solids, faces, edges and vertexes seam not work together in one group, some print or make them work together
-
-        # mesh groups and groups of analysis member
-        if not self.mesh_obj.MeshGroupList:
-            print ('  No mesh group objects.')
-        else:
-            print ('  Mesh group objects, we need to get the elements.')
-            for mg in self.mesh_obj.MeshGroupList:
-                new_group_elements = FemMeshTools.get_mesh_group_elements(mg, self.part_obj)
-                for ge in new_group_elements:
-                    if ge not in self.group_elements:
-                        self.group_elements[ge] = new_group_elements[ge]
-                    else:
-                        FreeCAD.Console.PrintError("  A group with this name exists already.\n")
-        if self.analysis:
-            print('  Group meshing.')
-            new_group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
-            for ge in new_group_elements:
-                if ge not in self.group_elements:
-                    self.group_elements[ge] = new_group_elements[ge]
-                else:
-                    FreeCAD.Console.PrintError("  A group with this name exists already.\n")
-        else:
-            print('  No anlysis members for group meshing.')
-        print('  {}'.format(self.group_elements))
-
     def get_region_data(self):
         # mesh regions
         self.ele_length_map = {}  # { 'ElementString' : element length }
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
         if not self.mesh_obj.MeshRegionList:
-            print ('  No mesh regions.')
+            print('  No mesh regions.')
         else:
-            print ('  Mesh regions, we need to get the elements.')
+            print('  Mesh regions, we need to get the elements.')
             # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
@@ -316,9 +325,9 @@ class FemGmshTools():
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
         if not self.mesh_obj.MeshBoundaryLayerList:
-            print ('  No mesh boundary layer setting document object.')
+            print('  No mesh boundary layer setting document object.')
         else:
-            print ('  Mesh boundary layers, we need to get the elements.')
+            print('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 err = "GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
@@ -398,58 +407,153 @@ class FemGmshTools():
                     else:
                         line = prefix + '.' + str(k) + ' = ' + str(v) + ';\n'
                         geo.write(line)
-                    print(line)
+                    #print(line)
                 geo.write("BoundaryLayer Field = " + str(field_number) + ";\n")
                 geo.write("// end of this boundary layer setup \n")
                 field_number += 1
             geo.write("\n")
             geo.flush()
-            print('finished in boundary layer setup')
+            #print('finished in boundary layer setup')
         else:
             print('no boundary layer setup is found for this mesh')
             geo.write("// no boundary layer settings for this mesh\n")
 
-    def write_part_file(self):
-        self.part_obj.Shape.exportBrep(self.temp_file_geometry)
+    def get_group_data(self):
+        self.mesh_group_elements = OrderedDict()
+        self.other_group_elements = OrderedDict()
+        # TODO solid, face, edge seam not work together, some print or make it work together
 
-    def write_geo(self):
-        geo = open(self.temp_file_geo, "w")
-        geo.write("// geo file for meshing with GMSH meshing software created by FreeCAD\n")
-        geo.write("\n")
-        geo.write("// open brep geometry\n")
-        geo.write('Merge "' + self.temp_file_geometry + '";\n')
-        geo.write("\n")
-        if self.group_elements:
-            # print('  We gone have found elements to make mesh groups for.')
-            geo.write("// group data\n")
+        # mesh group object of this gmsh mesh object
+        if not self.mesh_obj.MeshGroupList:
+            print('  No mesh group objects.')
+        else:
+            print('  Mesh group objects, we need to get the elements.')
+            for mg in self.mesh_obj.MeshGroupList:
+                new_group_elements = FemMeshTools.get_mesh_group_elements(mg, self.part_obj)
+                for ge in new_group_elements:
+                    if ge not in self.mesh_group_elements:
+                        self.mesh_group_elements[ge] = new_group_elements[ge]
+                    else:
+                        FreeCAD.Console.PrintError("  A group with this name exists already.\n")
+        print('  {}'.format(self.mesh_group_elements))
+
+        self.get_constraint_data()  # collect Fem::Constraint objects
+
+        # collect other memberd with References property
+        if self.analysis:
+            print('  collect all other group except for GmshMeshGroup and Fem::Constraint types')
+            new_group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
+            for ge in new_group_elements:
+                if ge not in self.mesh_group_elements and ge not in self.constraint_objects:
+                    self.other_group_elements[ge] = new_group_elements[ge]
+                else:
+                    FreeCAD.Console.PrintError("  A group with this name exists already.\n")
+        else:
+            print('  No anlysis members for group meshing.')
+
+    def get_constraint_data(self):
+        # group from FemConstraint objects of analysis object
+        self.constraint_objects = OrderedDict()
+        if self.analysis:
+            print(' collect constraint group for analysis object')
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::Constraint"):
+                    if len(m.References):
+                        self.constraint_objects[m.Name] = list(m.References[0][1])
+                    else:
+                        FreeCAD.Console.PrintWarning('Constraint object `{}` has empty References'.format(m.Label))
+            print("self.constraint_objects = ", self.constraint_objects)
+        else:
+            print(' No anlysis is provided to get FemCconstraint group')
+
+    def write_group(self, geo):
+        boundaries = 0
+        domains = 0
+
+        import copy
+        # OrderedDict is used to preserve the element sequence, Fem Constraint must be write first
+        all_group_elements = copy.copy(self.constraint_objects)
+        for k in self.mesh_group_elements:
+            all_group_elements[k] = self.mesh_group_elements[k]
+        for k in self.other_group_elements:
+            all_group_elements[k] = self.other_group_elements[k]
+        print(all_group_elements)
+
+        if all_group_elements:
+            geo.write("// group data \n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
-            for group in self.group_elements:
-                gdata = self.group_elements[group]
-                # print(gdata)
-                # geo.write("// " + group + "\n")
+            for group in all_group_elements:
+                gdata = all_group_elements[group]
                 ele_nr = ''
                 if gdata[0].startswith('Solid'):
                     physical_type = 'Volume'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Solid') + ', ')
+                    if self.dimension == '3':
+                        domains += 1
                 elif gdata[0].startswith('Face'):
                     physical_type = 'Surface'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Face') + ', ')
+                    if self.dimension == '2':
+                        domains += 1
+                    if self.dimension == '3':
+                        boundaries += 1
                 elif gdata[0].startswith('Edge'):
                     physical_type = 'Line'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Edge') + ', ')
+                    if self.dimension == '2':
+                        boundaries += 1
                 elif gdata[0].startswith('Vertex'):
-                    physical_type = 'Point'
-                    for ele in gdata:
-                        ele_nr += (ele.lstrip('Vertex') + ', ')
+                    geo.write("// " + group + " group data not written. Vertexes group data not supported.\n")
+                    print('  Groups for Vertexes reference shapes not handeled yet.')
                 if ele_nr:
                     ele_nr = ele_nr.rstrip(', ')
                     # print(ele_nr)
                     geo.write('Physical ' + physical_type + '("' + group + '") = {' + ele_nr + '};\n')
-            geo.write("\n")
-        geo.write("// Characteristic Length\n")
+
+        # if physical volume for 3D or physical surface for 2D mesh is NOT defined, define a default interior domain for Fenics mesh
+        if domains == 0:
+            if self.dimension == '3':
+                geo.write('Physical Volume("Interior") = {1};\n')
+            if self.dimension == '2':
+                geo.write('Physical Surface("Interior") = {1};\n')
+        else:
+            print("Warning: no subdomain group data are written, thus subdomain nesh will not be exported")
+        if boundaries == 0:
+            print("Warning: no boundary group data are written, thus boundary mesh will not be exported")
+        geo.write("\n\n")
+
+        if self.analysis and self.mesh_obj.OutputFormat == u"I-Deas universal":
+            geo.write("// For each group save not only the elements but the nodes too.;\n")
+            geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
+            # Mesh.SaveGroupsOfNodes: Save groups of nodes for each physical line and surface (UNV mesh format only)
+            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")
+            # belongs to Mesh.SaveAll but anly needed if there are groups
+
+            geo.write("// Ignore Physical definitions and save all elements, if Mesh.SaveAll = 1;\n")
+            geo.write("Mesh.SaveAll = 1;\n")  # ortherwise only surface mesh is written for mesh read back to FreeCAD
+            geo.write("\n\n")
+
+    def write_part_file(self):
+        self.part_obj.Shape.exportBrep(self.temp_file_geometry)
+
+    def write_geo(self, scaling=False):
+        geo = open(self.temp_file_geo, "w")
+
+        geo.write("// geo file for meshing with GMSH meshing software created by FreeCAD\n")
+        geo.write("\n")
+        geo.write("// open brep geometry\n")
+        geo.write('Merge "' + self.temp_file_geometry + '";\n')
+        geo.write("\n")
+
+        if scaling:  # from FreeCAD length unit to MKS
+            unit_shema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units/").GetInt("UserSchema")
+            if unit_shema == 0:  # mm as length unit, default for CAD
+                geo.write("// length scale from current FreeCAD length unit to MKS unit (meter)\n")
+                geo.write("Mesh.ScalingFactor={};\n".format(0.001))
+
         if self.ele_length_map:
             # we use the index FreeCAD which starts with 0, we need to add 1 for the index in GMSH
             geo.write("// Characteristic Length according CharacteristicLengthMap\n")
@@ -459,9 +563,12 @@ class FemGmshTools():
                 geo.write("Characteristic Length { " + ele_nodes + " } = " + str(self.ele_length_map[e]) + ";\n")
             geo.write("\n")
 
+        self.write_group(geo)
+
         # boundary layer generation may need special setup of Gmsh properties, set them in Gmsh TaskPanel
         self.write_boundary_layer(geo)
 
+        geo.write("// Characteristic Length\n")
         geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         if len(self.bl_setting_list):
@@ -470,6 +577,8 @@ class FemGmshTools():
         else:
             geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
         geo.write("\n")
+
+        # mesh control parameter/options
         if hasattr(self.mesh_obj, 'RecombineAll') and self.mesh_obj.RecombineAll is True:
             geo.write("// other mesh options\n")
             geo.write("Mesh.RecombineAll = 1;\n")
@@ -498,14 +607,14 @@ class FemGmshTools():
         geo.write("// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation\n")
         geo.write("// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n")
         if len(self.bl_setting_list) and self.dimension == 3:
-            geo.write("Mesh.Algorithm = " + 'DelQuad' + ";\n")  # Frontal/DelQuad are tested
+            geo.write("Mesh.Algorithm = " + 'DelQuad' + ";\n")  # Frontal/DelQuad are tested to work with BoundaryLayer
         else:
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write("// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n")
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
         geo.write("\n")
 
-        geo.write("// meshing\n")
+        geo.write("// meshing dimension and tolerance\n")
         # remove duplicate vertices, see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
         if hasattr(self.mesh_obj, 'CoherenceMesh') and self.mesh_obj.CoherenceMesh is True:
             geo.write("Geometry.Tolerance = " + str(self.geotol) + "; // set gemetrical tolerance (also used for merging nodes)\n")
@@ -514,16 +623,13 @@ class FemGmshTools():
         else:
             geo.write("Mesh  " + self.dimension + ";\n")
         geo.write("\n")
-        geo.write("// save\n")
-        geo.write("Mesh.Format = 2;\n")  # unv
-        if self.analysis and self.group_elements:
-            geo.write("// For each group save not only the elements but the nodes too.;\n")
-            geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
-            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")  # belongs to Mesh.SaveAll but anly needed if there are groups
-        geo.write("// Ignore Physical definitions and save all elements;\n")
-        geo.write("Mesh.SaveAll = 1;\n")
+
+        # output control
+        geo.write("// output format 1=msh, 2=unv, 10=automatic, 27=stl, 32=cgns, 33=med, 39=inp, 40=ply2\n")
+        geo.write("Mesh.Format = {};\n".format(FemGmshTools.supported_mesh_output_formats[self.mesh_obj.OutputFormat]))
         geo.write('Save "' + self.temp_file_mesh + '";\n')
         geo.write("\n\n")
+
         geo.write("//////////////////////////////////////////////////////////////////////\n")
         geo.write("// GMSH documentation:\n")
         geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
@@ -535,7 +641,7 @@ class FemGmshTools():
         geo.write("//\n")
         geo.write("// to run GMSH and keep file in GMSH GUI (with log), run in bash:\n")
         geo.write("// " + self.gmsh_bin + " " + self.temp_file_geo + "\n")
-        geo.close
+        geo.close()
 
     def run_gmsh_with_geo(self):
         self.error = False

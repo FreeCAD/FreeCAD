@@ -25,6 +25,7 @@ INSTALL(
         readFenicsXDMF.py
         writeFenicsXDMF.py
         importFenicsMesh.py
+        importGmshMesh.py
         importInpMesh.py
         importToolsFem.py
         importVTKResults.py

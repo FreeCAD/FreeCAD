@@ -37,6 +37,8 @@ class _FemMeshGmsh():
     known_element_orders = ['1st', '2nd']
     known_mesh_algorithm_2D = ['Automatic', 'MeshAdapt', 'Delaunay', 'Frontal', 'BAMG', 'DelQuad']
     known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
+    known_mesh_output_format = {'Gmsh MSH':1, 'I-Deas universal':2, 'Automatic':10, 'STL surface':27, 
+                                                    'INRIA medit':30, 'CGNS':32 , 'Salome mesh':33, 'Abaqus INP':39, 'Ploy surface':42}
 
     def __init__(self, obj):
         self.Type = "FemMeshGmsh"
@@ -94,6 +96,10 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyEnumeration", "Algorithm3D", "FEM GMSH Mesh Params", "mesh algorithm 3D")
         obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
         obj.Algorithm3D = 'Automatic'  # ?
+
+        obj.addProperty("App::PropertyEnumeration", "OutputFormat", "FEM GMSH Mesh Params", "mesh output file format")
+        obj.OutputFormat = [ k for k in _FemMeshGmsh.known_mesh_output_format.keys()]
+        obj.OutputFormat = 'I-Deas universal'  # unv is the format supported by Calculix
 
     def execute(self, obj):
         return
