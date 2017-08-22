@@ -56,6 +56,14 @@ DocumentObject::DocumentObject(void)
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
     ADD_PROPERTY_TYPE(ExpressionEngine,(),"Base",Prop_Hidden,"Property expressions");
+
+    ADD_PROPERTY(Visibility, (true));
+
+    // default set Visibility status to hidden and output (no touch) for
+    // compatibitily reason. We use setStatus instead of PropertyType to 
+    // allow user to change its status later
+    Visibility.setStatus(Property::Output,true);
+    Visibility.setStatus(Property::Hidden,true);
 }
 
 DocumentObject::~DocumentObject(void)

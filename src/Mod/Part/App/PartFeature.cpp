@@ -210,7 +210,10 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
             visible = owner->isElementVisible(name.c_str());
         if(visible==0)
             continue;
-        auto shape = getShape(owner,name.c_str(),needSubElement,0,0,false,false);
+        DocumentObject *subObj = 0;
+        auto shape = getShape(owner,name.c_str(),needSubElement,0,&subObj,false,false);
+        if(visible<0 && subObj && !subObj->Visibility.getValue())
+            continue;
         if(!shape.IsNull()) {
             ++count;
             builder.Add(comp,shape);

@@ -261,7 +261,7 @@ public:
      * update. E.g. only the view attribute has changed, or
      * the data has manipulated.
      */
-    void update(const App::Property*);
+    virtual void update(const App::Property*);
     virtual void updateData(const App::Property*);
     bool isUpdatesEnabled () const;
     void setUpdatesEnabled (bool enable);

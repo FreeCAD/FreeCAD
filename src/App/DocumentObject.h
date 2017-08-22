@@ -87,6 +87,9 @@ public:
     PropertyString Label;
     PropertyExpressionEngine ExpressionEngine;
 
+    /// Allow control visibility status in App name space
+    PropertyBool Visibility;
+
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "";

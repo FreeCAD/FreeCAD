@@ -133,6 +133,8 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.getValue() ? show() : hide();
             Visibility.setStatus(App::Property::User2, false);
         }
+        if(getObject() && getObject()->Visibility.getValue()!=Visibility.getValue())
+            getObject()->Visibility.setValue(Visibility.getValue());
     }
 
     ViewProvider::onChanged(prop);
@@ -171,13 +173,17 @@ void ViewProviderDocumentObject::updateView()
     for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
         updateData(it->second);
     }
-    if (vis) ViewProvider::show();
+    if (vis && Visibility.getValue()) ViewProvider::show();
 }
 
 void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 {
     // save Object pointer
     pcObject = pcObj;
+
+    if(pcObj && pcObj->getNameInDocument() &&
+       Visibility.getValue()!=pcObj->Visibility.getValue())
+        pcObj->Visibility.setValue(Visibility.getValue());
 
     // Retrieve the supported display modes of the view provider
     aDisplayModesArray = this->getDisplayModes();
@@ -204,9 +210,15 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
         ext->extensionAttach(pcObj);
 }
 
-void ViewProviderDocumentObject::updateData(const App::Property* prop)
+void ViewProviderDocumentObject::update(const App::Property* prop)
 {
-    ViewProvider::updateData(prop);
+    // bypass view provider update to always allow changing visibility from
+    // document object
+    if(prop == &getObject()->Visibility) {
+        if(!isRestoring() && Visibility.getValue()!=getObject()->Visibility.getValue())
+            Visibility.setValue(!Visibility.getValue());
+    }else
+        ViewProvider::update(prop);
 }
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const
