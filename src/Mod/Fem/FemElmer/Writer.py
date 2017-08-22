@@ -121,7 +121,6 @@ class Writer(object):
                 _ELMERGRID_IFORMAT,
                 _ELMERGRID_OFORMAT,
                 unvPath,
-                "-autoclean",
                 "-out", self.directory]
         subprocess.call(args)
 
