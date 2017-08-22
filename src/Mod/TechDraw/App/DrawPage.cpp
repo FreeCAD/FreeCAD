@@ -116,9 +116,18 @@ void DrawPage::onChanged(const App::Property* prop)
          KeepUpdated.getValue()) {
         if (!isRestoring() &&
             !isDeleting()) {
+            //would be nice if this message was displayed immediately instead of after the recomputeFeature
+            Base::Console().Message("Rebuilding Views for: %s/%s\n",getNameInDocument(),Label.getValue());
             auto views(Views.getValues());
             for (auto& v: views) {
-                v->touch();                   //get all views up to date
+                //check for children of current view 
+                if (v->isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()))  {
+                    auto dvc = static_cast<TechDraw::DrawViewCollection*>(v);
+                    for (auto& vv: dvc->Views.getValues()) {
+                        vv->touch();
+                    }
+                }
+                v->recomputeFeature();                   //get all views up to date
             }
         }
     } else if (prop == &Template) {
@@ -287,6 +296,12 @@ void DrawPage::requestPaint(void)
 
 void DrawPage::onDocumentRestored()
 {
+    //control drawing updates on restore based on Preference
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
+    KeepUpdated.setValue(autoUpdate);
+
     std::vector<App::DocumentObject*> featViews = Views.getValues();
     std::vector<App::DocumentObject*>::const_iterator it = featViews.begin();
     //first, make sure all the Parts have been executed so GeometryObjects exist
@@ -294,11 +309,7 @@ void DrawPage::onDocumentRestored()
         TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
         if (part != nullptr &&
             !part->hasGeometry()) {
-            part->execute();
-//            std::vector<App::DocumentObject*> parent = part->getInList();
-//            for (auto& p: parent) {
-//                p->touch();
-//            }
+            part->touch();
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
@@ -306,7 +317,7 @@ void DrawPage::onDocumentRestored()
         TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
         if (dim != nullptr &&
             !dim->has2DReferences()) {
-            dim->execute();
+            dim->touch();
         }
     }
     recompute();
