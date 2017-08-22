@@ -314,6 +314,7 @@ class ControlWidget(QtGui.QWidget):
     def _selectDirectory(self):
         path = QtGui.QFileDialog.getExistingDirectory(self)
         self.setDirectory(path)
+        self.directoryChanged.emit()
 
     def setRunning(self, machine):
         if machine.running:
