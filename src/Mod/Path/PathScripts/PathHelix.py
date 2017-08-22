@@ -31,7 +31,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PathUtils import fmt
+from .PathUtils import fmt
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Helix Drill operation"
