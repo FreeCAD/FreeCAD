@@ -26,6 +26,8 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+from PySide import QtGui
+
 import FreeCAD as App
 import FemRun
 
@@ -73,7 +75,16 @@ class ViewProxy(object):
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
 
     def setEdit(self, vobj, mode=0):
-        machine = FemRun.getMachine(vobj.Object)
+        try:
+            machine = FemRun.getMachine(vobj.Object)
+        except ValueError:
+            QtGui.QMessageBox.critical(
+                Gui.getMainWindow(),
+                "Can't open Task Panel",
+                "Please save the file before opening the task panel. "
+                "This must be done because the location of the working "
+                "directory is set to \"Beside .fcstd File\".")
+            return True
         task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
