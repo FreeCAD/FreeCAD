@@ -183,7 +183,7 @@ class Writer(object):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllSolids()
+                    activeIn = self._getAllBodies()
                 solverSection = self._getHeatSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
@@ -244,7 +244,7 @@ class Writer(object):
             refs = (
                 obj.References[0][1]
                 if obj.References
-                else self._getAllSolids())
+                else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
                 self._material(
                     name, "Density",
@@ -263,7 +263,7 @@ class Writer(object):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllSolids()
+                    activeIn = self._getAllBodies()
                 solverSection = self._getElasticitySolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
@@ -367,7 +367,7 @@ class Writer(object):
             refs = (
                 obj.References[0][1]
                 if obj.References
-                else self._getAllSolids())
+                else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
                 self._material(
                     name, "Density",
@@ -389,7 +389,7 @@ class Writer(object):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllSolids()
+                    activeIn = self._getAllBodies()
                 solverSection = self._getFlowSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
@@ -427,7 +427,7 @@ class Writer(object):
             refs = (
                 obj.References[0][1]
                 if obj.References
-                else self._getAllSolids())
+                else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
                 if "Density" in m:
                     self._material(
@@ -518,9 +518,17 @@ class Writer(object):
         self._usedVarNames.add(varName)
         return varName
 
-    def _getAllSolids(self):
+    def _getAllBodies(self):
         obj = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
-        return ["Solid" + str(i + 1) for i in range(len(obj.Part.Shape.Solids))]
+        bodyCount = 0
+        t = obj.Part.Shape.ShapeType
+        if t == "Solid":
+            bodyCount = len(obj.Part.Shape.Solids)
+        elif t == "Face":
+            bodyCount = len(obj.Part.Shape.Faces)
+        elif t == "Edge":
+            bodyCount = len(obj.Part.Shape.Edges)
+        return [t + str(i + 1) for i in range(bodyCount)]
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
@@ -529,7 +537,7 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("case")
         s["Vtu Format"] = True
-        for name in self._getAllSolids():
+        for name in self._getAllBodies():
             self._addSolver(name, s)
 
     def _writeSif(self):
