@@ -65,6 +65,7 @@ public:
         Transient = 4, // for property container save
         MaterialEdit = 5, // to turn ON PropertyMaterial edit
         NoMaterialListEdit = 6, // to turn OFF PropertyMaterialList edit
+        Output = 7, // same effect as Prop_Output
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status
