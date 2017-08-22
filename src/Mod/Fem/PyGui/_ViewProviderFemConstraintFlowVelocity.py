@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD as App
 import FemMisc
 import FemConstraint
-import Units
+from FreeCAD import Units
 
 import FreeCADGui as Gui
 import FemSelectionWidgets

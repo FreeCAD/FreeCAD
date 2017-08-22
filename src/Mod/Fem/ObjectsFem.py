@@ -345,12 +345,8 @@ def makeSolverCalculix(doc, name="CalculiX"):
 
 def makeSolverElmer(doc, name="Elmer"):
     '''makeSolverElmer(name): makes a Elmer solver object'''
-    obj = doc.addObject("Fem::FemSolverObjectPython", name)
-    import PyObjects._FemSolverElmer
-    PyObjects._FemSolverElmer._FemSolverElmer(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemSolverElmer
-        PyGui._ViewProviderFemSolverElmer._ViewProviderFemSolverElmer(obj.ViewObject)
+    import FemElmer.SolverObject
+    obj = FemElmer.SolverObject.create(FreeCAD.ActiveDocument, name)
     return obj
 
 

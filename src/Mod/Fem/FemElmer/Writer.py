@@ -31,7 +31,7 @@ import os.path
 import subprocess
 import tempfile
 
-import Units
+from FreeCAD import Units
 import Fem
 import FemMisc
 import FemSettings
