@@ -43,6 +43,7 @@ class Check(FemRun.Check):
         if (self.checkMesh()):
             self.checkMeshType()
         self.checkMaterial()
+        self.checkEquations()
 
     def checkMeshType(self):
         mesh = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
@@ -53,6 +54,14 @@ class Check(FemRun.Check):
             self.fail()
             return False
         return True
+
+    def checkEquations(self):
+        equations = self.solver.Group
+        if not equations:
+            self.report.error(
+                "Solver has no equations. "
+                "Add at least one equation.")
+            self.fail()
 
 
 class Prepare(FemRun.Prepare):
