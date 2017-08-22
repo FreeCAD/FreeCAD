@@ -235,7 +235,7 @@ def read_z88_mesh(z88_mesh_input):
                     input_continues = False
                 elif z88_element_type == 16:
                     # volume16 Z88 --> tetra10 FreeCAD
-                    # N4, N2, N3, N1, N9, N6, N10, N5, N7, N8
+                    # N1, N2, N4, N3, N5, N8, N10, N7, N6, N9, , Z88 to FC is differend as FC to Z88
                     nd1 = int(linecolumns[0])
                     nd2 = int(linecolumns[1])
                     nd3 = int(linecolumns[2])
@@ -246,7 +246,7 @@ def read_z88_mesh(z88_mesh_input):
                     nd8 = int(linecolumns[7])
                     nd9 = int(linecolumns[8])
                     nd10 = int(linecolumns[9])
-                    elements_tetra10[elem_no] = (nd4, nd2, nd3, nd1, nd9, nd6, nd10, nd5, nd7, nd8)
+                    elements_tetra10[elem_no] = (nd1, nd2, nd4, nd3, nd5, nd8, nd10, nd7, nd6, nd9)
                     input_continues = False
                 elif z88_element_type == 1:
                     # volume1 Z88 --> hexa8 FreeCAD
@@ -366,17 +366,17 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
             f.write("{0} {1} {2} {3} {4} {5} {6} {7}\n".format(
                     n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7]))
         elif z88_element_type == 17:
-            # tetra4 FreeCAD --> volume17 Z88#
+            # tetra4 FreeCAD --> volume17 Z88
             # N4, N2, N3, N1
             f.write("{0} {1}\n".format(element, z88_element_type, element))
             f.write("{0} {1} {2} {3}\n".format(
                     n[3], n[1], n[2], n[0]))
         elif z88_element_type == 16:
             # tetra10 FreeCAD --> volume16 Z88
-            # N4, N2, N3, N1, N9, N6, N10, N5, N7, N8
+            # N1, N2, N4, N3, N5, N9, N8, N6, N10, N7, FC to Z88 is differend as Z88 to FC
             f.write("{0} {1}\n".format(element, z88_element_type, element))
             f.write("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}\n".format(
-                    n[3], n[1], n[2], n[0], n[8], n[5], n[9], n[4], n[6], n[7]))
+                    n[0], n[1], n[3], n[2], n[4], n[8], n[7], n[5], n[9], n[6]))
         elif z88_element_type == 1:
             # hexa8 FreeCAD --> volume1 Z88
             # N1, N2, N3, N4, N5, N6, N7, N8
