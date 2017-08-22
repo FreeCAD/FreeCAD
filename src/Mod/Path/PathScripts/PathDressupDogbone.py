@@ -37,7 +37,9 @@ from PySide import QtCore, QtGui
 """Dogbone Dressup object and FreeCAD command"""
 
 LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -1000,8 +1002,9 @@ def Create(base, name = 'DogboneDressup'):
         ViewProviderDressup(obj.ViewObject)
         obj.Base.ViewObject.Visibility = False
 
-    dbo.setup(obj, True)
     obj.ToolController = base.ToolController
+    dbo.setup(obj, True)
+
     return obj
 
 class CommandDressupDogbone:

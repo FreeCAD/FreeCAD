@@ -25,7 +25,9 @@
 import FreeCAD
 import Path
 import PathScripts
-import PathScripts.PathDressupDogbone as Dogbone
+import PathScripts.PathDressupDogbone as PathDressupDogbone
+import PathScripts.PathJob as PathJob
+import PathScripts.PathProfileFaces as PathProfileFaces
 import math
 import unittest
 
@@ -50,26 +52,94 @@ class TestFeature:
     def setEditorMode(self, prop, mode):
         pass
 
-class TestDogbone(PathTestBase):
+class TestDressupDogbone(PathTestBase):
     """Unit tests for the Dogbone dressup."""
 
+    def formatBone(self, bone):
+        return "%d: (%.2f, %.2f)" % (bone[0], bone[1][0], bone[1][1])
+
     def test00(self):
+        '''Verify bones are inserted for simple moves.'''
         path = []
         base = TestProfile('Inside', 'CW', 'G0 X10 Y10 Z10\nG1 Z0\nG1 Y100\nG1 X12\nG1 Y10\nG1 X10\nG1 Z10')
         obj = TestFeature()
-        db = Dogbone.ObjectDressup(obj, base)
+        db = PathDressupDogbone.ObjectDressup(obj, base)
         db.setup(obj, True)
         db.execute(obj, False)
-        for bone in db.bones:
-            print("%d: (%.2f, %.2f)" % (bone[0], bone[1][0], bone[1][1]))
+        self.assertEquals(len(db.bones), 4)
+        self.assertEquals("1: (10.00, 100.00)", self.formatBone(db.bones[0]))
+        self.assertEquals("2: (12.00, 100.00)", self.formatBone(db.bones[1]))
+        self.assertEquals("3: (12.00, 10.00)", self.formatBone(db.bones[2]))
+        self.assertEquals("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
 
     def test01(self):
+        '''Verify bones are inserted if hole ends with rapid move out.'''
         path = []
         base = TestProfile('Inside', 'CW', 'G0 X10 Y10 Z10\nG1 Z0\nG1 Y100\nG1 X12\nG1 Y10\nG1 X10\nG0 Z10')
         obj = TestFeature()
-        db = Dogbone.ObjectDressup(obj, base)
+        db = PathDressupDogbone.ObjectDressup(obj, base)
         db.setup(obj, True)
         db.execute(obj, False)
-        for bone in db.bones:
-            print("%d: (%.2f, %.2f)" % (bone[0], bone[1][0], bone[1][1]))
+        self.assertEquals(len(db.bones), 4)
+        self.assertEquals("1: (10.00, 100.00)", self.formatBone(db.bones[0]))
+        self.assertEquals("2: (12.00, 100.00)", self.formatBone(db.bones[1]))
+        self.assertEquals("3: (12.00, 10.00)", self.formatBone(db.bones[2]))
+        self.assertEquals("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
 
+    def test02(self):
+        '''Verify bones are correctly generated for a Profile.'''
+        doc = FreeCAD.newDocument("TestDressupDogbone")
+
+        # This is a real world test to make sure none of the tool chain broke
+        box0 = doc.addObject('Part::Box', 'Box')
+        box0.Width = 100
+        box0.Length = 100
+        box0.Height = 10
+        box1 = doc.addObject('Part::Box', 'Box')
+        box1.Width = 50
+        box1.Length = 50
+        box1.Height = 20
+        box1.Placement = FreeCAD.Placement(FreeCAD.Vector(25,25,-5), FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        doc.recompute()
+        cut = doc.addObject('Part::Cut', 'Cut')
+        cut.Base = box0
+        cut.Tool = box1
+        doc.recompute()
+
+        for i in range(11):
+            face = "Face%d" % (i+1)
+            f = cut.Shape.getElement(face)
+            if f.Surface.Axis == FreeCAD.Vector(0,0,1) and f.Orientation == 'Forward':
+                break
+
+        job = doc.addObject("Path::FeatureCompoundPython", "Job")
+        PathJob.ObjectPathJob(job, cut, None)
+
+        profile = PathProfileFaces.Create('Profile Faces')
+        profile.Base = (cut, face)
+        profile.StepDown = 5
+        profile.processHoles = True
+        profile.processPerimeter = True
+        doc.recompute()
+
+        dogbone = PathDressupDogbone.Create(profile)
+        doc.recompute()
+
+        dog = dogbone.Proxy
+        locs = sorted([bone[1] for bone in dog.bones], key=lambda (x,y): x * 1000 + y)
+
+        def formatBoneLoc((x, y)):
+            return "(%.2f, %.2f)" % (x, y)
+
+        # Make sure we get 8 bones, 2 in each corner (different heights)
+        self.assertEquals(len(locs), 8)
+        self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[0]))
+        self.assertEquals("(27.50, 27.50)", formatBoneLoc(locs[1]))
+        self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[2]))
+        self.assertEquals("(27.50, 72.50)", formatBoneLoc(locs[3]))
+        self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[4]))
+        self.assertEquals("(72.50, 27.50)", formatBoneLoc(locs[5]))
+        self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[6]))
+        self.assertEquals("(72.50, 72.50)", formatBoneLoc(locs[7]))
+
+        FreeCAD.closeDocument("TestDressupDogbone")
