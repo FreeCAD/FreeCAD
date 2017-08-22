@@ -358,13 +358,9 @@ def makeSolverElmer(doc, name="Elmer"):
 
 
 def makeSolverZ88(doc, name="Z88"):
-    '''makeSolverZ88(document, [name]): makes a Z88 solver object'''
-    obj = doc.addObject("Fem::FemSolverObjectPython", name)
-    import PyObjects._FemSolverZ88
-    PyObjects._FemSolverZ88._FemSolverZ88(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemSolverZ88
-        PyGui._ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
+    '''makeSolverZ88(document, name): makes a Z88 solver object'''
+    import FemZ88.SolverObject
+    obj = FemZ88.SolverObject.create(doc, name)
     return obj
 
 
