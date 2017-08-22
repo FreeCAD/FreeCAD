@@ -59,6 +59,7 @@ class Proxy(Base.Proxy):
             "App::PropertyEnumeration", "LinearSolverType",
             "Linear System", "Select type of solver for linear system")
         obj.LinearSolverType = LINEAR_SOLVER
+        obj.LinearSolverType = "Iterative"
         obj.addProperty(
             "App::PropertyEnumeration", "LinearDirectMethod",
             "Linear System", "Select type of solver for linear system")
@@ -67,6 +68,7 @@ class Proxy(Base.Proxy):
             "App::PropertyEnumeration", "LinearIterativeMethod",
             "Linear System", "Select type of solver for linear system")
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
+        obj.LinearIterativeMethod = "BiCGStab"
         obj.addProperty(
             "App::PropertyInteger", "BiCGstablDegree",
             "Linear System", "Select type of solver for linear system")
@@ -74,6 +76,7 @@ class Proxy(Base.Proxy):
             "App::PropertyEnumeration", "LinearPreconditioning",
             "Linear System", "Select type of solver for linear system")
         obj.LinearPreconditioning = LINEAR_PRECONDITIONING
+        obj.LinearPreconditioning = "ILU0"
         obj.addProperty(
             "App::PropertyFloat", "LinearTolerance",
             "Linear System", "Select type of solver for linear system")
