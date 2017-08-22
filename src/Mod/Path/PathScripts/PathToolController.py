@@ -236,7 +236,7 @@ class CommandPathToolController:
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
         PathScripts.PathToolController.ToolController(obj)
-        if assignViewProvider:
+        if FreeCAD.GuiUp and assignViewProvider:
             PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
 
         if tool is None:
