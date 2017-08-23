@@ -109,10 +109,6 @@ def InitApplications():
 	# to have all the module-paths available in FreeCADGuiInit.py:
 	FreeCAD.__ModDirs__ = list(ModDict.values())
 
-	# this allows importing with:
-	# from FreeCAD.Module import package
-	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir, HomeMod]
-
 	# also add these directories to the sys.path to 
 	# not change the old behaviour. once we have moved to 
 	# proper python modules this can eventuelly be removed.
