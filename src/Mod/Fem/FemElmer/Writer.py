@@ -215,10 +215,28 @@ class Writer(object):
 
     def _handleHeatBndConditions(self):
         for obj in self._getMember("Fem::ConstraintTemperature"):
-            for name in obj.References[0][1]:
-                temp = getFromUi(obj.Temperature, "K", "O")
-                self._boundary(name, "Temperature", temp)
-            self._handled(obj)
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.ConstraintType == "Temperature":
+                        temp = getFromUi(obj.Temperature, "K", "O")
+                        self._boundary(name, "Temperature", temp)
+                    elif obj.ConstraintType == "CFlux":
+                        flux = getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
+                        self._boundary(name, "Temperature Load", flux)
+                self._handled(obj)
+        for obj in self._getMember("Fem::ConstraintHeatflux"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.ConstraintType == "Convection":
+                        film = getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
+                        temp = getFromUi(obj.AmbientTemp, "K", "O")
+                        self._boundary(name, "Heat Transfer Coefficient", film)
+                        self._boundary(name, "External Temperature", temp)
+                    elif obj.ConstraintType == "DFlux":
+                        flux = getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
+                        self._boundary(name, "Heat Flux BC", True)
+                        self._boundary(name, "Heat Flux", flux)
+                self._handled(obj)
 
     def _handleHeatInitial(self, bodies):
         obj = self._getSingleMember("Fem::ConstraintInitialTemperature")
@@ -301,39 +319,42 @@ class Writer(object):
 
     def _handleElasticityBndConditions(self):
         for obj in self._getMember("Fem::ConstraintFixed"):
-            for name in obj.References[0][1]:
-                self._boundary(name, "Displacement 1", 0.0)
-                self._boundary(name, "Displacement 2", 0.0)
-                self._boundary(name, "Displacement 3", 0.0)
-            self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintForce"):
-            for name in obj.References[0][1]:
-                force = getFromUi(obj.Force, "N", "M*L*T^-2")
-                self._boundary(name, "Force 1", obj.DirectionVector.x * force)
-                self._boundary(name, "Force 2", obj.DirectionVector.y * force)
-                self._boundary(name, "Force 3", obj.DirectionVector.z * force)
-                self._boundary(name, "Force 1 Normalize by Area", True)
-                self._boundary(name, "Force 2 Normalize by Area", True)
-                self._boundary(name, "Force 3 Normalize by Area", True)
-            self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintDisplacement"):
-            for name in obj.References[0][1]:
-                if not obj.xFree:
-                    self._boundary(
-                        name, "Displacement 1", obj.xDisplacement * 0.001)
-                elif obj.xFix:
+            if obj.References:
+                for name in obj.References[0][1]:
                     self._boundary(name, "Displacement 1", 0.0)
-                if not obj.yFree:
-                    self._boundary(
-                        name, "Displacement 2", obj.yDisplacement * 0.001)
-                elif obj.yFix:
                     self._boundary(name, "Displacement 2", 0.0)
-                if not obj.zFree:
-                    self._boundary(
-                        name, "Displacement 3", obj.zDisplacement * 0.001)
-                elif obj.zFix:
                     self._boundary(name, "Displacement 3", 0.0)
-            self._handled(obj)
+                self._handled(obj)
+        for obj in self._getMember("Fem::ConstraintForce"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    force = getFromUi(obj.Force, "N", "M*L*T^-2")
+                    self._boundary(name, "Force 1", obj.DirectionVector.x * force)
+                    self._boundary(name, "Force 2", obj.DirectionVector.y * force)
+                    self._boundary(name, "Force 3", obj.DirectionVector.z * force)
+                    self._boundary(name, "Force 1 Normalize by Area", True)
+                    self._boundary(name, "Force 2 Normalize by Area", True)
+                    self._boundary(name, "Force 3 Normalize by Area", True)
+                self._handled(obj)
+        for obj in self._getMember("Fem::ConstraintDisplacement"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if not obj.xFree:
+                        self._boundary(
+                            name, "Displacement 1", obj.xDisplacement * 0.001)
+                    elif obj.xFix:
+                        self._boundary(name, "Displacement 1", 0.0)
+                    if not obj.yFree:
+                        self._boundary(
+                            name, "Displacement 2", obj.yDisplacement * 0.001)
+                    elif obj.yFix:
+                        self._boundary(name, "Displacement 2", 0.0)
+                    if not obj.zFree:
+                        self._boundary(
+                            name, "Displacement 3", obj.zDisplacement * 0.001)
+                    elif obj.zFix:
+                        self._boundary(name, "Displacement 3", 0.0)
+                self._handled(obj)
 
     def _handleElasticityInitial(self, bodies):
         pass
@@ -453,19 +474,20 @@ class Writer(object):
 
     def _handleFlowBndConditions(self):
         for obj in self._getMember("Fem::ConstraintFlowVelocity"):
-            for name in obj.References[0][1]:
-                if obj.VelocityXEnabled:
-                    velocity = getFromUi(obj.VelocityX, "m/s", "L/T")
-                    self._boundary(name, "Velocity 1", velocity)
-                if obj.VelocityYEnabled:
-                    velocity = getFromUi(obj.VelocityY, "m/s", "L/T")
-                    self._boundary(name, "Velocity 2", velocity)
-                if obj.VelocityZEnabled:
-                    velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
-                    self._boundary(name, "Velocity 3", velocity)
-                if obj.NormalToBoundary:
-                    self._boundary(name, "Normal-Tangential Velocity", True)
-            self._handled(obj)
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.VelocityXEnabled:
+                        velocity = getFromUi(obj.VelocityX, "m/s", "L/T")
+                        self._boundary(name, "Velocity 1", velocity)
+                    if obj.VelocityYEnabled:
+                        velocity = getFromUi(obj.VelocityY, "m/s", "L/T")
+                        self._boundary(name, "Velocity 2", velocity)
+                    if obj.VelocityZEnabled:
+                        velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
+                        self._boundary(name, "Velocity 3", velocity)
+                    if obj.NormalToBoundary:
+                        self._boundary(name, "Normal-Tangential Velocity", True)
+                self._handled(obj)
 
     def _handleFlowEquation(self, bodies):
         for b in bodies:
