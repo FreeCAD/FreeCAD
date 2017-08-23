@@ -84,7 +84,7 @@ class ViewProxy(object):
                 "Please save the file before opening the task panel. "
                 "This must be done because the location of the working "
                 "directory is set to \"Beside .fcstd File\".")
-            return True
+            return False
         task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
