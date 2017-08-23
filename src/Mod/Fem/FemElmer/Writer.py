@@ -318,6 +318,14 @@ class Writer(object):
         pass
 
     def _handleElasticityBndConditions(self):
+        for obj in self._getMember("Fem::ConstraintPressure"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    pressure = getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
+                    if not obj.Reversed:
+                        pressure *= -1
+                    self._boundary(name, "Normal Force", pressure)
+                self._handled(obj)
         for obj in self._getMember("Fem::ConstraintFixed"):
             if obj.References:
                 for name in obj.References[0][1]:
