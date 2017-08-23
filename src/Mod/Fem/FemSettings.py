@@ -34,6 +34,7 @@ BESIDE = "beside"
 CUSTOM = "custom"
 
 _ELMER_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
+_GRID_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Grid"
 
 
 class _BinaryDlg(object):
@@ -59,7 +60,7 @@ _BINARIES = {
         customPath="elmerBinaryPath"),
     "ElmerGrid": _BinaryDlg(
         default="ElmerGrid",
-        param=_ELMER_PARAM,
+        param=_GRID_PARAM,
         useDefault="UseStandardGridLocation",
         customPath="gridBinaryPath"),
 }
