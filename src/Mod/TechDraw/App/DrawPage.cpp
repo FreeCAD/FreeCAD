@@ -141,9 +141,11 @@ void DrawPage::onChanged(const App::Property* prop)
         for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
             TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
             if (view != NULL && view->ScaleType.isValue("Page")) {
-                view->Scale.touch();
+                if(std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+                   view->Scale.setValue(Scale.getValue());
+                }
             }
-      }
+        }
     } else if (prop == &ProjectionType) {
       // touch all ortho views in the Page as they may be dependent on Projection Type
       const std::vector<App::DocumentObject*> &vals = Views.getValues();
