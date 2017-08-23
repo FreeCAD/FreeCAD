@@ -227,7 +227,7 @@ PyTypeObject LinePyOld::Type = {
 }
 // --->
 
-PyMOD_INIT_FUNC(Part)
+PyMOD_INIT_FUNC(_Part)
 {
     Base::Console().Log("Module: Part\n");
 
