@@ -406,7 +406,10 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
-        self.formLoc.baseList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        if QtCore.__version_info__[0] == 4:
+            self.formLoc.baseList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        else:
+            self.formLoc.baseList.horizontalHeader().setSectionResizeMode(QtGui.QHeaderView.Stretch)
         self.getPoint = PathGetPoint.TaskPanel(self.formLoc.addRemoveEdit)
         return self.formLoc
 
