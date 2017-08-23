@@ -126,7 +126,7 @@ class TestDressupDogbone(PathTestBase):
         doc.recompute()
 
         dog = dogbone.Proxy
-        locs = sorted([bone[1] for bone in dog.bones], key=lambda (x,y): x * 1000 + y)
+        locs = sorted([bone[1] for bone in dog.bones], key=lambda xy: xy[0] * 1000 + xy[1])
 
         def formatBoneLoc((x, y)):
             return "(%.2f, %.2f)" % (x, y)
