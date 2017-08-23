@@ -23,13 +23,17 @@
 # ***************************************************************************
 
 import FreeCAD
+import PathScripts
 from PathScripts.PathUtils import loopdetect
+from PathScripts.PathUtils import addToJob
+from PathScripts.PathUtils import findParentJob
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
     from DraftTools import translate
 else:
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
 
 __title__="FreeCAD Path Commands"
@@ -38,11 +42,11 @@ __url__ = "http://www.freecadweb.org"
 
 
 class _CommandSelectLoop:
-    "the Arch RemoveShape command definition"
+    "the Path command to complete loop selection definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Path-SelectLoop',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Finish Selecting Loop"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Complete loop selection from two edges"),
+        return {'Pixmap': 'Path-SelectLoop',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Complete loop selection from two edges"),
                 'CmdType': "ForEdit"}
 
     def IsActive(self):
@@ -60,8 +64,6 @@ class _CommandSelectLoop:
         except:
             return False
 
-
-
     def Activated(self):
         sel = FreeCADGui.Selection.getSelectionEx()[0]
         obj = sel.Object
@@ -77,9 +79,37 @@ class _CommandSelectLoop:
                         FreeCADGui.Selection.addSelection(obj, "Edge"+str(elist.index(e)+1))
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_SelectLoop',_CommandSelectLoop())
+    FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
 
-def findShape(shape,subname=None,subtype=None):
+
+class _CloneOperation:
+    "the Path Clone Operation command definition"
+    def GetResources(self):
+        return {'Pixmap': 'Path-OpCopy',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_CloneOperation", "Duplicate the operation in the job"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_CloneOperation", "Create a copy of the operation in the same job"),
+                'CmdType': "ForEdit"}
+
+    def IsActive(self):
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+        except:
+            return False
+
+    def Activated(self):
+        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        jobname = findParentJob(obj).Name
+        addToJob(FreeCAD.ActiveDocument.copyObject(obj, False), jobname)
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Path_CloneOperation', _CloneOperation())
+
+
+def findShape(shape, subname=None, subtype=None):
     '''To find a higher oder shape containing the subshape with subname.
         E.g. to find the wire containing 'Edge1' in shape,
             findShape(shape,'Edge1','Wires')
@@ -88,7 +118,7 @@ def findShape(shape,subname=None,subtype=None):
         return shape
     ret = shape.getElement(subname)
     if not subtype or not ret or ret.isNull():
-        return ret;
+        return ret
     if subname.startswith('Face'):
         tp = 'Faces'
     elif subname.startswith('Edge'):
@@ -97,8 +127,8 @@ def findShape(shape,subname=None,subtype=None):
         tp = 'Vertex'
     else:
         return ret
-    for obj in getattr(shape,subtype):
-        for sobj in getattr(obj,tp):
+    for obj in getattr(shape, subtype):
+        for sobj in getattr(obj, tp):
             if sobj.isEqual(ret):
                 return obj
     return ret
