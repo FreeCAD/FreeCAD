@@ -521,14 +521,17 @@ class Writer(object):
     def _getAllBodies(self):
         obj = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
         bodyCount = 0
-        t = obj.Part.Shape.ShapeType
-        if t == "Solid":
+        prefix = ""
+        if obj.Part.Shape.Solids:
+            prefix = "Solid"
             bodyCount = len(obj.Part.Shape.Solids)
-        elif t == "Face":
+        elif obj.Part.Shape.Faces:
+            prefix = "Face"
             bodyCount = len(obj.Part.Shape.Faces)
-        elif t == "Edge":
+        elif obj.Part.Shape.Edges:
+            prefix = "Edge"
             bodyCount = len(obj.Part.Shape.Edges)
-        return [t + str(i + 1) for i in range(bodyCount)]
+        return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
