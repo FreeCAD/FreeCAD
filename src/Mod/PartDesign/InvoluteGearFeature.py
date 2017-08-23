@@ -21,8 +21,8 @@
 #***************************************************************************
 
 import FreeCAD, Part
-from fcgear import involute
-from fcgear import fcgear
+from freecad.PartDesign.fcgear import involute
+from freecad.PartDesign.fcgear import fcgear
 
 if FreeCAD.GuiUp:
     import FreeCADGui

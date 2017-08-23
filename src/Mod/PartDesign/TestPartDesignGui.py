@@ -26,7 +26,7 @@ import sys
 import unittest
 import Sketcher
 import Part
-import PartDesign
+from freecad import PartDesign
 import PartDesignGui
 import tempfile
 

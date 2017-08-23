@@ -24,26 +24,26 @@
 #---------------------------------------------------------------------------
 
 # datum tools
-from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
-from PartDesignTests.TestShapeBinder import TestShapeBinder
+from freecad.PartDesign.PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane
+from freecad.PartDesign.PartDesignTests.TestShapeBinder import TestShapeBinder
 
 # additive/subtractive features & primitives
-from PartDesignTests.TestPad import TestPad
-from PartDesignTests.TestPocket import TestPocket
-from PartDesignTests.TestRevolve import TestRevolve
-from PartDesignTests.TestPipe import TestPipe
-from PartDesignTests.TestLoft import TestLoft
-from PartDesignTests.TestPrimitive import TestPrimitive
+from freecad.PartDesign.PartDesignTests.TestPad import TestPad
+from freecad.PartDesign.PartDesignTests.TestPocket import TestPocket
+from freecad.PartDesign.PartDesignTests.TestRevolve import TestRevolve
+from freecad.PartDesign.PartDesignTests.TestPipe import TestPipe
+from freecad.PartDesign.PartDesignTests.TestLoft import TestLoft
+from freecad.PartDesign.PartDesignTests.TestPrimitive import TestPrimitive
 
 # transformations and boolean
-from PartDesignTests.TestMirrored import TestMirrored
-from PartDesignTests.TestLinearPattern import TestLinearPattern
-from PartDesignTests.TestPolarPattern import TestPolarPattern
-from PartDesignTests.TestMultiTransform import TestMultiTransform
-from PartDesignTests.TestBoolean import TestBoolean
+from freecad.PartDesign.PartDesignTests.TestMirrored import TestMirrored
+from freecad.PartDesign.PartDesignTests.TestLinearPattern import TestLinearPattern
+from freecad.PartDesign.PartDesignTests.TestPolarPattern import TestPolarPattern
+from freecad.PartDesign.PartDesignTests.TestMultiTransform import TestMultiTransform
+from freecad.PartDesign.PartDesignTests.TestBoolean import TestBoolean
 
 # dressup features
-from PartDesignTests.TestFillet import TestFillet
-from PartDesignTests.TestChamfer import TestChamfer
-from PartDesignTests.TestDraft import TestDraft
-from PartDesignTests.TestThickness import TestThickness
+from freecad.PartDesign.PartDesignTests.TestFillet import TestFillet
+from freecad.PartDesign.PartDesignTests.TestChamfer import TestChamfer
+from freecad.PartDesign.PartDesignTests.TestDraft import TestDraft
+from freecad.PartDesign.PartDesignTests.TestThickness import TestThickness
