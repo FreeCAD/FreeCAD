@@ -269,7 +269,7 @@ class Writer(object):
             for name in (n for n in refs if n in bodies):
                 self._material(
                     name, "Density",
-                    convert(m["Density"], "M/L^3"))
+                    self._getDensity(m))
                 self._material(
                     name, "Heat Conductivity",
                     convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
@@ -365,7 +365,14 @@ class Writer(object):
             for name in bodies:
                 gravity = getConstant("Gravity", "L/T^2")
                 mat = self._getBodyMaterial(name).Material
-                density = convert(mat["Density"], "M/L^3")
+
+                densityQuantity = Units.Quantity(m["Density"])
+                dimention = "M/L^3"
+                if name.startwith("Edge"):
+                    density.Unit = Units.Unit(-2, 1)
+                    dimention = "M/L^2"
+                density = convert(densityQuantity, dimension)
+
                 force1 = gravity * obj.Gravity_x * density
                 force2 = gravity * obj.Gravity_y * density
                 force3 = gravity * obj.Gravity_z * density
@@ -395,16 +402,28 @@ class Writer(object):
             for name in (n for n in refs if n in bodies):
                 self._material(
                     name, "Density",
-                    convert(m["Density"], "M/L^3"))
+                    self._getDensity(m))
                 self._material(
                     name, "Youngs Modulus",
-                    convert(m["YoungsModulus"], "M/(L*T^2)"))
+                    self._getYoungsModulus(m))
                 self._material(
                     name, "Poisson ratio",
                     float(m["PoissonRatio"]))
                 self._material(
                     name, "Heat expansion Coefficient",
                     convert(m["ThermalExpansionCoefficient"], "O^-1"))
+
+    def _getDensity(self, m):
+        density = convert(m["Density"], "M/L^3")
+        if self._getMeshDimension() == 2:
+            density *= 1e3
+        return density
+
+    def _getYoungsModulus(self, m):
+        youngsModulus = convert(m["YoungsModulus"], "M/(L*T^2)")
+        if self._getMeshDimension() == 2:
+            youngsModulus *= 1e3
+        return youngsModulus
 
     def _handleFlow(self):
         activeIn = []
@@ -456,13 +475,13 @@ class Writer(object):
                 if "Density" in m:
                     self._material(
                         name, "Density",
-                        convert(m["Density"], "M/L^3"))
+                        self._getDensity(m))
                 if "ThermalConductivity" in m:
                     self._material(
                         name, "Heat Conductivity",
                         convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
                 if "KinematicViscosity" in m:
-                    density = convert(m["Density"], "M/L^3")
+                    density = self._getDensity(m)
                     kViscosity = convert(m["KinematicViscosity"], "L^2/T")
                     self._material(
                         name, "Viscosity", kViscosity * density)
@@ -557,6 +576,16 @@ class Writer(object):
             prefix = "Edge"
             bodyCount = len(obj.Part.Shape.Edges)
         return [prefix + str(i + 1) for i in range(bodyCount)]
+
+    def _getMeshDimension(self):
+        obj = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        if obj.Part.Shape.Solids:
+            return 3
+        elif obj.Part.Shape.Faces:
+            return 2
+        elif obj.Part.Shape.Edges:
+            return 1
+        return None
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
