@@ -37,6 +37,7 @@ class PathWorkbench (Workbench):
 
         # load the builtin modules
         import Path
+        import PathScripts
         import PathGui
         from PySide import QtGui
         FreeCADGui.addLanguagePath(":/translations")
@@ -86,7 +87,7 @@ class PathWorkbench (Workbench):
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
-        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane", "Path_Stock"]
+        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane", "Path_Stock", "Path_CloneOperation"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
@@ -136,10 +137,12 @@ class PathWorkbench (Workbench):
         Msg("Path workbench deactivated\n")
 
     def ContextMenu(self, recipient):
+        import PathScripts
         if len(FreeCADGui.Selection.getSelection()) == 1:
-            if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
+            obj = FreeCADGui.Selection.getSelection()[0]
+            if obj.isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                selectedName = FreeCADGui.Selection.getSelection()[0].Name
+                selectedName = obj.Name
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
@@ -149,6 +152,8 @@ class PathWorkbench (Workbench):
                         self.appendContextMenu("", [cmd])
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
+            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
+                self.appendContextMenu("", ["Path_CloneOperation"])
 
 Gui.addWorkbench(PathWorkbench())
 
