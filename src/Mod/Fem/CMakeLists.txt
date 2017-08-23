@@ -34,8 +34,6 @@ INSTALL(
         InitGui.py
         FemGmshTools.py
         FemInputWriter.py
-        FemInputWriterCcx.py
-        FemInputWriterZ88.py
         FemMesh2Mesh.py
         FemMeshTools.py
         FemResultTools.py

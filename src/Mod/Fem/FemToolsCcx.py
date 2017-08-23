@@ -85,7 +85,7 @@ class FemToolsCcx(FemTools.FemTools):
             raise Exception('FEM: No active analysis found!')
 
     def write_inp_file(self):
-        import FemInputWriterCcx as iw
+        import FemCalculix.Writer as iw
         import sys
         self.inp_file_name = ""
         try:
