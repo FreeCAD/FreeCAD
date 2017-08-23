@@ -99,6 +99,9 @@ class Writer(object):
         self._builder = sifio.Builder()
         self._handledObjects = set()
 
+    def getHandledConstraints(self):
+        return self._handledObjects
+
     def write(self):
         self._handleSimulation()
         self._handleHeat()

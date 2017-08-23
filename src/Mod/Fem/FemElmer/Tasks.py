@@ -70,7 +70,10 @@ class Prepare(FemRun.Prepare):
         self.pushStatus("Preparing input files...\n")
         writer = Writer.Writer(self.solver, self.directory)
         writer.write()
-
+        handled = writer.getHandledConstraints()
+        allConstraints = FemMisc.getMember(self.analysis, "Fem::Constraint")
+        for obj in set(allConstraints) - handled:
+            self.report.warning("Ignored constraint %s." % obj.Label)
 
 class Solve(FemRun.Solve):
 
