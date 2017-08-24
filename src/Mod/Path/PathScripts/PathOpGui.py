@@ -406,7 +406,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
-        if QtCore.__version_info__[0] == 4:
+        if QtCore.qVersion()[0] == '4':
             self.formLoc.baseList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         else:
             self.formLoc.baseList.horizontalHeader().setSectionResizeMode(QtGui.QHeaderView.Stretch)
