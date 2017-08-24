@@ -25,7 +25,8 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+import PathScripts
+from PySide import QtCore
 import math
 
 """Path Array object and FreeCAD command"""
@@ -240,11 +241,13 @@ class CommandPathArray:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Creates an array from a selected path")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
-        return False
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+        except:
+            return False
 
     def Activated(self):
 
