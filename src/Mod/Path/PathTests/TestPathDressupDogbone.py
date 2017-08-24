@@ -128,8 +128,8 @@ class TestDressupDogbone(PathTestBase):
         dog = dogbone.Proxy
         locs = sorted([bone[1] for bone in dog.bones], key=lambda xy: xy[0] * 1000 + xy[1])
 
-        def formatBoneLoc((x, y)):
-            return "(%.2f, %.2f)" % (x, y)
+        def formatBoneLoc(pt):
+            return "(%.2f, %.2f)" % (pt[0], pt[1])
 
         # Make sure we get 8 bones, 2 in each corner (different heights)
         self.assertEquals(len(locs), 8)
