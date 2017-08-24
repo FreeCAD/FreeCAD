@@ -23,7 +23,6 @@ SET(PathScripts_SRCS
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
-    PathScripts/PathCompoundExtended.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
