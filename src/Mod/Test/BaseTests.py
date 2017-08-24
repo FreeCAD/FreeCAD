@@ -233,3 +233,8 @@ class ParameterTestCase(unittest.TestCase):
         #remove all
         TestPar = FreeCAD.ParamGet("System parameter:Test")
         TestPar.Clear()
+        
+       
+    def testImports(self):
+        """tests the new import structure"""
+        import freecad
