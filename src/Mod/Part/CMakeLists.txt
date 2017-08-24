@@ -50,28 +50,28 @@ fc_copy_sources(Part_COPY_FILES "${CMAKE_BINARY_DIR}/Mod/Part" ${CompoundTools_S
 
 INSTALL(
     FILES
-        Part_SRCS
+        ${Part_SRCS}
     DESTINATION
         Mod/Part
 )
 
 INSTALL(
     FILES
-        AttachmentEditor_SRCS
+        ${AttachmentEditor_SRCS}
     DESTINATION
         Mod/Part/AttachmentEditor
        )
 
 INSTALL(
     FILES
-        BOPTools_SRCS
+        ${BOPTools_SRCS}
     DESTINATION
         Mod/Part/BOPTools
        )
 
 INSTALL(
     FILES
-        CompoundTools_SRCS
+        ${CompoundTools_SRCS}
     DESTINATION
         Mod/Part/CompoundTools
        )
