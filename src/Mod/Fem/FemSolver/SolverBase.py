@@ -21,34 +21,73 @@
 # ***************************************************************************
 
 
-__title__ = "_Linear"
+__title__ = "Elmer Solver Object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+from PySide import QtGui
+
 import FreeCAD as App
-import FemEquation
-import FemMisc
+import FemRun
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    import FemSelectionWidgets
+    import PyGui._TaskPanelFemSolverControl
 
 
-class Proxy(FemEquation.BaseProxy):
+class Proxy(object):
+
+    BaseType = "Fem::FemSolverObjectPython"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyInteger", "Priority",
-            "Base", "Select type of solver for linear system")
+        obj.Proxy = self
+        obj.addExtension("App::GroupExtensionPython", self)
+
+    def createMachine(self, obj, directory):
+        raise NotImplementedError()
+
+    def createEquation(self, obj, eqId):
+        raise NotImplementedError()
+
+    def isSupported(self, equation):
+        raise NotImplementedError()
+
+    def addEquation(self, obj, eqId):
+        obj.addObject(self.createEquation(
+            obj.Document, eqId))
+
+    def editSupported(self):
+        return False
+
+    def edit(self, directory):
+        raise NotImplementedError()
+
+    def execute(self, obj):
+        return True
 
 
-class ViewProxy(FemEquation.BaseViewProxy):
+class ViewProxy(object):
+    """Proxy for FemSolverElmers View Provider."""
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
 
     def setEdit(self, vobj, mode=0):
-        task = _TaskPanel(vobj.Object)
+        try:
+            machine = FemRun.getMachine(vobj.Object)
+        except ValueError:
+            QtGui.QMessageBox.critical(
+                Gui.getMainWindow(),
+                "Can't open Task Panel",
+                "Please save the file before opening the task panel. "
+                "This must be done because the location of the working "
+                "directory is set to \"Beside .fcstd File\".")
+            return False
+        task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
+        return True
 
     def unsetEdit(self, vobj, mode=0):
         Gui.Control.closeDialog()
@@ -59,53 +98,5 @@ class ViewProxy(FemEquation.BaseViewProxy):
         Gui.ActiveDocument.setEdit(vobj.Object.Name)
         return True
 
-    def getTaskWidget(self, vobj):
-        return None
-
-
-class _TaskPanel(object):
-
-    def __init__(self, obj):
-        self._obj = obj
-        self._refWidget = FemSelectionWidgets.SolidSelector()
-        self._refWidget.setReferences(obj.References)
-        propWidget = obj.ViewObject.Proxy.getTaskWidget(
-            obj.ViewObject)
-        if propWidget is None:
-            self.form = self._refWidget
-        else:
-            self.form = [self.refWidget, propWidget]
-        analysis = FemMisc.findAnalysisOfMember(obj)
-        self._mesh = FemMisc.getSingleMember(analysis, "Fem::FemMeshObject")
-        self._part = self._mesh.Part if self._mesh is not None else None
-        self._partVisible = None
-        self._meshVisible = None
-
-    def open(self):
-        if self._mesh is not None and self._part is not None:
-            self._meshVisible = self._mesh.ViewObject.isVisible()
-            self._partVisible = self._part.ViewObject.isVisible()
-            self._mesh.ViewObject.hide()
-            self._part.ViewObject.show()
-
-    def reject(self):
-        self._restoreVisibility()
-        return True
-
-    def accept(self):
-        if self._obj.References != self._refWidget.references():
-            self._obj.References = self._refWidget.references()
-        self._obj.Document.recompute()
-        self._restoreVisibility()
-        return True
-
-    def _restoreVisibility(self):
-        if self._mesh is not None and self._part is not None:
-            if self._meshVisible:
-                self._mesh.ViewObject.show()
-            else:
-                self._mesh.ViewObject.hide()
-            if self._partVisible:
-                self._part.ViewObject.show()
-            else:
-                self._part.ViewObject.hide()
+    def attach(self, vobj):
+        pass

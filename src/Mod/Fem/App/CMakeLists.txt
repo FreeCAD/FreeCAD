@@ -126,13 +126,28 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMaterial.py
 )
 
+SET(FemSolver_SRCS
+    FemSolver/__init__.py
+    FemSolver/SolverBase.py
+    FemSolver/EquationBase.py
+)
+
 SET(FemElmer_SRCS
-    FemElmer/__init__.py
-    FemElmer/sifio.py
-    FemElmer/SolverObject.py
-    FemElmer/Tasks.py
-    FemElmer/Writer.py
-    FemElmer/sifio.py
+    FemSolver/Elmer/__init__.py
+    FemSolver/Elmer/sifio.py
+    FemSolver/Elmer/Object.py
+    FemSolver/Elmer/Tasks.py
+    FemSolver/Elmer/Writer.py
+)
+
+SET(FemEquationsElmer_SRCS
+    FemSolver/Elmer/Equations/__init__.py
+    FemSolver/Elmer/Equations/Base.py
+    FemSolver/Elmer/Equations/Linear.py
+    FemSolver/Elmer/Equations/Nonlinear.py
+    FemSolver/Elmer/Equations/Elasticity.py
+    FemSolver/Elmer/Equations/Heat.py
+    FemSolver/Elmer/Equations/Flow.py
 )
 
 SET(FemCalculix_SRCS
@@ -140,16 +155,6 @@ SET(FemCalculix_SRCS
     FemCalculix/SolverObject.py
     FemCalculix/Tasks.py
     FemCalculix/Writer.py
-)
-
-SET(FemEquationsElmer_SRCS
-    FemElmer/Equations/__init__.py
-    FemElmer/Equations/Base.py
-    FemElmer/Equations/Linear.py
-    FemElmer/Equations/Nonlinear.py
-    FemElmer/Equations/Elasticity.py
-    FemElmer/Equations/Heat.py
-    FemElmer/Equations/Flow.py
 )
 
 SET(FemZ88_SRCS
@@ -368,6 +373,7 @@ fc_target_copy_resource(Fem
     ${FemObjectsScripts_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
+    ${FemSolver_SRCS}
     ${FemElmer_SRCS}
     ${FemCalculix_SRCS}
     ${FemZ88_SRCS}

@@ -352,8 +352,8 @@ def makeSolverCalculix(doc, name="CalculiX"):
 
 def makeSolverElmer(doc, name="Elmer"):
     '''makeSolverElmer(document, name): makes a Elmer solver object'''
-    import FemElmer.SolverObject
-    obj = FemElmer.SolverObject.create(doc, name)
+    import FemSolver.Elmer.Object
+    obj = FemSolver.Elmer.Object.create(doc, name)
     return obj
 
 

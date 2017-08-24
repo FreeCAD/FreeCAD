@@ -21,72 +21,74 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "_Base"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemSolverObject
-import FemMisc
-import FemRun
-
-import Tasks
-import Equations.Heat
-import Equations.Elasticity
-import Equations.Flow
+from pivy import coin
 
 
-def create(doc, name="ElmerSolver"):
-    return FemMisc.createObject(
-        doc, name, Proxy, ViewProxy)
+class BaseProxy(object):
 
-
-class Proxy(FemSolverObject.Proxy):
-    """Proxy for FemSolverElmers Document Object."""
-
-    Type = "Fem::FemSolverObjectElmer"
-
-    _EQUATIONS = {
-        "Heat": Equations.Heat,
-        "Elasticity": Equations.Elasticity,
-        "Flow": Equations.Flow,
-    }
+    BaseType = "App::FeaturePython"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        obj.Proxy = self
         obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMaxIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMinIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyLink", "ElmerResult",
-            "Base", "", 4 | 8)
-        obj.addProperty(
-            "App::PropertyLink", "ElmerOutput",
-            "Base", "", 4 | 8)
+            "App::PropertyLinkSubList", "References",
+            "Base", "")
 
-        obj.SteadyStateMaxIterations = 1
-        obj.SteadyStateMinIterations = 0
-
-    def createMachine(self, obj, directory):
-        return FemRun.Machine(
-            solver=obj, directory=directory,
-            check=Tasks.Check(),
-            prepare=Tasks.Prepare(),
-            solve=Tasks.Solve(),
-            results=Tasks.Results())
-
-    def createEquation(self, doc, eqId):
-        return self._EQUATIONS[eqId].create(doc)
-
-    def isSupported(self, eqId):
-        return eqId in self._EQUATIONS
+    def execute(self, obj):
+        return True
 
 
-class ViewProxy(FemSolverObject.ViewProxy):
-    """Proxy for FemSolverElmers View Provider."""
+class BaseViewProxy(object):
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        default = coin.SoGroup()
+        vobj.addDisplayMode(default, "Default")
+
+    def getDisplayModes(self, obj):
+        "Return a list of display modes."
+        modes = ["Default"]
+        return modes
+
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self, mode):
+        return mode
+
+
+class HeatProxy(BaseProxy):
+    pass
+
+
+class HeatViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-elmer.png"
+        return ":/icons/fem-equation-heat.svg"
+
+
+class ElasticityProxy(BaseProxy):
+    pass
+
+
+class ElasticityViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/fem-equation-elasticity.svg"
+
+
+class FlowProxy(BaseProxy):
+    pass
+
+
+class FlowViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/fem-equation-flow.svg"

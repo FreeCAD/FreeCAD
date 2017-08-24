@@ -26,38 +26,67 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from PySide import QtCore
+import FemSolver.SolverBase
+import FemMisc
+import FemRun
 
-import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
-
-
-class Command(QtCore.QObject):
-
-    def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer Solver-Object")
-        Gui.addModule("FemSolver.Elmer.Object")
-        Gui.doCommand(
-            "App.ActiveDocument.%s.Member += "
-            "[FemSolver.Elmer.Object.create(App.ActiveDocument)]"
-            % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
-
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
-
-    def IsActive(self):
-        analysis = FemGui.getActiveAnalysis()
-        return (analysis is not None
-                and analysis.Document == App.ActiveDocument)
+import Tasks
+import Equations.Heat
+import Equations.Elasticity
+import Equations.Flow
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+def create(doc, name="ElmerSolver"):
+    return FemMisc.createObject(
+        doc, name, Proxy, ViewProxy)
+
+
+class Proxy(FemSolver.SolverBase.Proxy):
+    """Proxy for FemSolverElmers Document Object."""
+
+    Type = "Fem::FemSolverObjectElmer"
+
+    _EQUATIONS = {
+        "Heat": Equations.Heat,
+        "Elasticity": Equations.Elasticity,
+        "Flow": Equations.Flow,
+    }
+
+    def __init__(self, obj):
+        super(Proxy, self).__init__(obj)
+        obj.addProperty(
+            "App::PropertyInteger", "SteadyStateMaxIterations",
+            "Steady State", "")
+        obj.addProperty(
+            "App::PropertyInteger", "SteadyStateMinIterations",
+            "Steady State", "")
+        obj.addProperty(
+            "App::PropertyLink", "ElmerResult",
+            "Base", "", 4 | 8)
+        obj.addProperty(
+            "App::PropertyLink", "ElmerOutput",
+            "Base", "", 4 | 8)
+
+        obj.SteadyStateMaxIterations = 1
+        obj.SteadyStateMinIterations = 0
+
+    def createMachine(self, obj, directory):
+        return FemRun.Machine(
+            solver=obj, directory=directory,
+            check=Tasks.Check(),
+            prepare=Tasks.Prepare(),
+            solve=Tasks.Solve(),
+            results=Tasks.Results())
+
+    def createEquation(self, doc, eqId):
+        return self._EQUATIONS[eqId].create(doc)
+
+    def isSupported(self, eqId):
+        return eqId in self._EQUATIONS
+
+
+class ViewProxy(FemSolver.SolverBase.ViewProxy):
+    """Proxy for FemSolverElmers View Provider."""
+
+    def getIcon(self):
+        return ":/icons/fem-elmer.png"
