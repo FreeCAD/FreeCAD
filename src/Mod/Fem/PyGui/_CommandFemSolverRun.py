@@ -28,7 +28,6 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 from .FemCommands import FemCommands
-import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
 import FemRun

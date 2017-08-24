@@ -193,8 +193,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     self.elmer_free_text = m
                 else:
                     raise Exception(
-                            'FEM: Multiple free text objects '
-                            'in analysis not supported!')
+                        'FEM: Multiple free text objects '
+                        'in analysis not supported!')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m

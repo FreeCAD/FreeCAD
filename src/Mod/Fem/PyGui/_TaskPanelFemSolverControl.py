@@ -86,7 +86,7 @@ class ControlTaskPanel(QtCore.QObject):
         self.machineStatusCleared.connect(self.form.clearStatus)
         self.machineTimeChanged.connect(self.form.setTime)
         self.machineStateChanged.connect(
-                lambda: self.form.updateState(self.machine))
+            lambda: self.form.updateState(self.machine))
         self.machineChanged.connect(self._updateTimer)
 
         # Set initial machine. Signal updates the widget.
