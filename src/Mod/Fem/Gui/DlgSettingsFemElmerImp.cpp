@@ -49,11 +49,6 @@ void DlgSettingsFemElmerImp::saveSettings()
 
     cb_grid_binary_std->onSave();
     fc_grid_binary_path->onSave();
-
-    cb_wd_temp->onSave();
-    cb_wd_beside->onSave();
-    cb_wd_custom->onSave();
-    le_wd_custom->onSave();
 }
 
 void DlgSettingsFemElmerImp::loadSettings()
@@ -63,11 +58,6 @@ void DlgSettingsFemElmerImp::loadSettings()
 
     cb_grid_binary_std->onRestore();
     fc_grid_binary_path->onRestore();
-
-    cb_wd_temp->onRestore();
-    cb_wd_beside->onRestore();
-    cb_wd_custom->onRestore();
-    le_wd_custom->onRestore();
 }
 
 /**
