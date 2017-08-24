@@ -24,9 +24,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 """Path Custom object and FreeCAD command"""
+
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -35,9 +36,8 @@ def translate(context, text, disambig=None):
 
 class ObjectCustom:
 
-
     def __init__(self,obj):
-        obj.addProperty("App::PropertyStringList","Gcode","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The gcode to be inserted"))
+        obj.addProperty("App::PropertyStringList", "Gcode", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -74,8 +74,7 @@ class CommandPathCustom:
         FreeCAD.ActiveDocument.openTransaction("Create Custom Path")
         FreeCADGui.addModule("PathScripts.PathCustom")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Custom")')
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Custom")')
         FreeCADGui.doCommand('PathScripts.PathCustom.ObjectCustom(obj)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
