@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "FemElmerTasks"
+__title__ = "CalculiX Tasks"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -38,7 +38,6 @@ import importCcxFrdResults
 import importCcxDatResults
 
 import Writer
-import FemGui
 
 
 _inputFileName = None

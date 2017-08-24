@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemSolverCalculix"
+__title__ = "CalculiX SolverObject"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemSolverCalculix
+## @package SolverCalculix
 #  \ingroup FEM
 
 import os
