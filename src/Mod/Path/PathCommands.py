@@ -82,12 +82,12 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
 
 
-class _CloneOperation:
-    "the Path Clone Operation command definition"
+class _CopyOperation:
+    "the Path Copy Operation command definition"
     def GetResources(self):
         return {'Pixmap': 'Path-OpCopy',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_CloneOperation", "Duplicate the operation in the job"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_CloneOperation", "Create a copy of the operation in the same job"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
                 'CmdType': "ForEdit"}
 
     def IsActive(self):
@@ -106,7 +106,7 @@ class _CloneOperation:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_CloneOperation', _CloneOperation())
+    FreeCADGui.addCommand('Path_OperationCopy', _CopyOperation())
 
 
 def findShape(shape, subname=None, subtype=None):
