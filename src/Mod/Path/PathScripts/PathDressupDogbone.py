@@ -985,7 +985,7 @@ class ViewProviderDressup:
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(arg1.Object)
-        PathUtils.addObjectToJob(arg1.Object.Base, job)
+        job.addOperation(arg1.Object.Base)
         arg1.Object.Base = None
         return True
 
@@ -996,7 +996,7 @@ def Create(base, name = 'DogboneDressup'):
     obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', 'DogboneDressup')
     dbo = ObjectDressup(obj, base)
     job = PathUtils.findParentJob(base)
-    PathUtils.addObjectToJob(obj, job)
+    job.addOperation(obj)
 
     if FreeCAD.GuiUp:
         ViewProviderDressup(obj.ViewObject)

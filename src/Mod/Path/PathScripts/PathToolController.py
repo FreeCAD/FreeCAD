@@ -35,7 +35,7 @@ import xml.etree.ElementTree as xml
 from FreeCAD import Units
 from PySide import QtCore, QtGui
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -78,6 +78,7 @@ class ToolController:
 
     def assignTemplate(self, obj, template):
         '''assignTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
+        PathLog.track(obj.Label, template)
         if template.get(ToolControllerTemplate.VertFeed):
             obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
         if template.get(ToolControllerTemplate.HorizFeed):
@@ -135,12 +136,13 @@ class ToolController:
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
 
         if 'Path' == prop and 'Restore' not in obj.State:
-            PathLog.debug("--- dirty deeds")
-            job = PathScripts.PathUtils.findParentJob(obj)
-            if job is not None:
-                for g in job.Group:
-                    if not(isinstance(g.Proxy, PathScripts.PathToolController.ToolController)):
-                        g.touch()
+            PathLog.warning('Markus you gotta do something about TC changes')
+        #    PathLog.debug("--- dirty deeds")
+        #    job = PathScripts.PathUtils.findParentJob(obj)
+        #    if job is not None:
+        #        for g in job.Group:
+        #            if not(isinstance(g.Proxy, PathScripts.PathToolController.ToolController)):
+        #                g.touch()
 
     def getTool(self, obj):
         '''returns the tool associated with this tool controller'''
@@ -219,19 +221,8 @@ class CommandPathToolController:
         PathLog.track()
         self.Create()
 
-#         FreeCAD.ActiveDocument.openTransaction(translate("Path_ToolController", "Create Tool Controller Object"))
-
-#         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TC")
-#         PathScripts.PathToolController.ToolController(obj)
-#         PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
-
-#         PathUtils.addToJob(obj)
-
-#         FreeCAD.ActiveDocument.commitTransaction()
-#         FreeCAD.ActiveDocument.recompute()
-
     @staticmethod
-    def Create(jobname=None, assignViewProvider=True, tool=None, toolNumber=1):
+    def Create(assignViewProvider=True, tool=None, toolNumber=1):
         PathLog.track("tool: {} with toolNumber: {}".format(tool, toolNumber))
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
@@ -248,10 +239,10 @@ class CommandPathToolController:
             tool.Material = "HighSpeedSteel"
         obj.Tool = tool
         obj.ToolNumber = toolNumber
-        PathScripts.PathUtils.addToJob(obj, jobname)
+        return obj
 
     @staticmethod
-    def FromTemplate(job, template, assignViewProvider=True):
+    def FromTemplate(template, assignViewProvider=True):
         PathLog.track()
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
@@ -261,7 +252,7 @@ class CommandPathToolController:
 
         tc.assignTemplate(obj, template)
 
-        PathScripts.PathUtils.addToJob(obj, job.Name)
+        return obj
 
 
 class TaskPanel:

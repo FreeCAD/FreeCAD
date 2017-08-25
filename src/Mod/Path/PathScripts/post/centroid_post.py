@@ -153,7 +153,7 @@ def export(objectslist, filename, argstring):
     global UNITS
     global UNIT_FORMAT
 
-    # ISJOB = (len(objectslist) == 1) and isinstance(objectslist[0].Proxy, PathScripts.PathJob.ObjectPathJob)
+    # ISJOB = (len(objectslist) == 1) and isinstance(objectslist[0].Proxy, PathScripts.PathJob.ObjectJob)
     # print("isjob: {} {}".format(ISJOB, len(objectslist)))
 
     # if len(objectslist) > 1:

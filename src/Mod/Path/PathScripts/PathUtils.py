@@ -355,18 +355,14 @@ def changeTool(obj, job):
 
 def getToolControllers(obj):
     '''returns all the tool controllers'''
-    controllers = []
     try:
-        parent = findParentJob(obj)
+        job = findParentJob(obj)
     except:
-        parent = None
+        job = None
 
-    if parent is not None and hasattr(parent, 'Group'):
-        sibs = parent.Group
-        for g in sibs:
-            if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
-                controllers.append(g)
-    return controllers
+    if job:
+        return job.ToolController
+    return []
 
 
 def findToolController(obj, name=None):
@@ -417,7 +413,7 @@ def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     PathLog.track()
     for i in obj.InList:
-        if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
+        if isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
             return i
         if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
             grandParent = findParentJob(i)
@@ -431,32 +427,13 @@ def GetJobs(jobname=None):
     PathLog.track()
     jobs = []
     for o in FreeCAD.ActiveDocument.Objects:
-        if "Proxy" in o.PropertiesList:
-            if isinstance(o.Proxy, PathJob.ObjectPathJob):
-                if jobname is not None:
-                    if o.Name == jobname:
-                        jobs.append(o)
-                else:
+        if hasattr(o, 'Proxy') and isinstance(o.Proxy, PathJob.ObjectJob):
+            if jobname is not None:
+                if o.Name == jobname:
                     jobs.append(o)
+            else:
+                jobs.append(o)
     return jobs
-
-def addObjectToJob(obj, job):
-    '''
-    addObjectToJob(obj, job) ... adds object to given job.
-    '''
-    g = job.Group
-    g.append(obj)
-    job.Group = g
-    return job
-
-def addObjectToJob(obj, job):
-    '''
-    addObjectToJob(obj, job) ... adds object to given job.
-    '''
-    g = job.Group
-    g.append(obj)
-    job.Group = g
-    return job
 
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
@@ -490,7 +467,7 @@ def addToJob(obj, jobname=None):
                 job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
 
     if obj:
-        addObjectToJob(obj, job)
+        job.Proxy.addOperation(obj)
     return job
 
 def rapid(x=None, y=None, z=None):
