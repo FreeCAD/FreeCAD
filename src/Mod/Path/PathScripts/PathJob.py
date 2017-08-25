@@ -103,6 +103,11 @@ class ObjectJob:
         FreeCAD.ActiveDocument.removeObject(obj.Operations.Name)
         obj.Operations = None
 
+    def onChanged(self, obj, prop):
+        if prop == "PostProcessor" and obj.PostProcessor:
+            processor = PostProcessor.load(obj.PostProcessor)
+            self.tooltip = processor.tooltip
+            self.tooltipArgs = processor.tooltipArgs
 
     def assignTemplate(self, obj, template):
         '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
