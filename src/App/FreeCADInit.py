@@ -118,6 +118,13 @@ def InitApplications():
 	# proper python modules this can eventuelly be removed.
 	sys.path = [ModDir, Lib64Dir, LibDir] + sys.path
 
+	# this is necessary to make the "from freecad" imports
+	# work with builds which haven't been installed
+	# if FreeCAD is installed the 'freecad' directory is 
+	# placed in the default python search path (eg.: site-packages)
+	# and this hack is obsolete.
+	sys.path.append(FreeCAD.getHomePath())
+
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)

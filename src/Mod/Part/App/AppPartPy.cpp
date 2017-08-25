@@ -237,7 +237,7 @@ namespace Part {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Part")
+    Module() : Py::ExtensionModule<Module>("_Part")
     {
         add_varargs_method("open",&Module::open,
             "open(string) -- Create a new document and load the file into the document."

@@ -394,7 +394,7 @@ fc_target_copy_resource(Part
     ${CMAKE_BINARY_DIR}/Mod/Part
     ${Part_Scripts})
 
-SET_BIN_DIR(Part Part /Mod/Part)
+SET_BIN_DIR(Part _Part /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)
 
 INSTALL(TARGETS Part DESTINATION ${CMAKE_INSTALL_LIBDIR})
