@@ -59,7 +59,7 @@ public:
     App::PropertyEnumeration Type;                                     //DistanceX,DistanceY,Diameter, etc
 
     /// Properties for Visualisation
-    App::PropertyString  Font;
+    App::PropertyFont  Font;
     App::PropertyFloat   Fontsize;
     App::PropertyString  FormatSpec;
     App::PropertyFloat   LineWidth;
