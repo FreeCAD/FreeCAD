@@ -31,10 +31,9 @@
 
 class PartDesignWorkbench ( Workbench ):
     "PartDesign workbench object"
-    def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/PartDesign/Resources/icons/PartDesignWorkbench.svg"
-        self.__class__.MenuText = "Part Design"
-        self.__class__.ToolTip = "Part Design workbench"
+    Icon = FreeCAD.getResourceDir() + "Mod/PartDesign/Resources/icons/PartDesignWorkbench.svg"
+    MenuText = "Part Design"
+    ToolTip = "Part Design workbench"
 
     def Initialize(self):
         # load the module

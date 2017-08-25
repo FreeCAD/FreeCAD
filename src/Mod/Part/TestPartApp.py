@@ -43,6 +43,16 @@ class PartTestCases(unittest.TestCase):
         FreeCAD.closeDocument("PartTest")
         #print ("omit closing document for debugging")
 
+    def testImport(self):
+        from freecad import Part
+        try:
+            from FreeCAD import Part
+        except ImportError:
+            pass
+        else:
+            raise("'from FreeCAD import Part' should raise an ImportError!)")
+
+
 class PartTestBSplineCurve(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartTest")
