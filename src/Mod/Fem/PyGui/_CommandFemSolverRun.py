@@ -74,7 +74,16 @@ class _CommandFemSolverRun(FemCommands):
     def _newActivated(self):
         solver = self._getSelectedSolver()
         if solver is not None:
-            machine = FemRun.getMachine(solver)
+            try:
+                machine = FemRun.getMachine(solver)
+            except ValueError:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    "Please save the file before executing the solver. "
+                    "This must be done because the location of the working "
+                    "directory is set to \"Beside .fcstd File\".")
+                return
             if not machine.running:
                 machine.reset()
                 machine.target = FemRun.RESULTS
