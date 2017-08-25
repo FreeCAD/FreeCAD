@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PathEdit</class>
+ <widget class="QTabWidget" name="PathEdit">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>608</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Job Edit</string>
+  </property>
+  <property name="currentIndex">
+   <number>1</number>
+  </property>
+  <widget class="QWidget" name="tabGeneral">
+   <attribute name="title">
+    <string>General</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QToolBox" name="tbGeneral">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>477</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Info</string>
+       </attribute>
+       <layout class="QFormLayout" name="formLayout_2">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Label</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="infoLabel"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Model</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="infoModel">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Material      </string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="infoMaterial">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>477</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Template</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="templateGeneral">
+          <property name="title">
+           <string>General</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="templateMaterial">
+             <property name="text">
+              <string>Material</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="templateSetup">
+          <property name="title">
+           <string>Setup</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="templateStock">
+             <property name="text">
+              <string>Stock</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="templatePostProcessor">
+             <property name="text">
+              <string>Post Processor</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="templateTools">
+          <property name="title">
+           <string>Tools</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3"/>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="templateOperations">
+          <property name="title">
+           <string>Operations</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QCheckBox" name="templateDefaultValues">
+             <property name="text">
+              <string>Default Values</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDialogButtonBox" name="buttonBox">
+          <property name="standardButtons">
+           <set>QDialogButtonBox::Save</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tabSetup">
+   <attribute name="title">
+    <string>Setup</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_6">
+    <item>
+     <widget class="QToolBox" name="tbSetup">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>403</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Layout</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="title">
+           <string>Stock</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="1" column="1">
+            <widget class="QLabel" name="stockExtXLabel">
+             <property name="text">
+              <string>Ext. X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="stockExtYLabel">
+             <property name="text">
+              <string>Ext. Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4">
+            <widget class="Gui::InputField" name="stockExtXPlus">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="Gui::InputField" name="stockExtXMinus"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="stockExtZLabel">
+             <property name="text">
+              <string>Ext. Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="Gui::InputField" name="stockExtZMinus"/>
+           </item>
+           <item row="2" column="3">
+            <widget class="Gui::InputField" name="stockExtYMinus"/>
+           </item>
+           <item row="2" column="4">
+            <widget class="Gui::InputField" name="stockExtYPlus"/>
+           </item>
+           <item row="3" column="4">
+            <widget class="Gui::InputField" name="stockExtZPlus"/>
+           </item>
+           <item row="0" column="1" colspan="4">
+            <widget class="QComboBox" name="comboBox"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Orientation</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="orientXAxis">
+             <property name="text">
+              <string>X-Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="orientYAxis">
+             <property name="text">
+              <string>Y-Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="orientZAxis">
+             <property name="text">
+              <string>Z-Axis</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_9">
+          <property name="title">
+           <string>Alignment</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="1" column="0">
+            <widget class="QPushButton" name="setOrigin">
+             <property name="text">
+              <string>Set Origin</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="moveToOrigin">
+             <property name="text">
+              <string>Move to Origin</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="centerInStock">
+             <property name="text">
+              <string>Center in Stock</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="centerInStockXY">
+             <property name="text">
+              <string>XY in Stock</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>403</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Post Processor</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="1" colspan="2">
+         <widget class="QComboBox" name="postProcessor"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Processor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Output File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="postProcessorOutputFile"/>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QLineEdit" name="postProcessorArguments"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Arguments</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="QToolButton" name="postProcessorOutputFile_2">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>403</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Fixtures</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+         <widget class="QLabel" name="label_12">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Coming Soon</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>403</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Vise</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+         <widget class="QLabel" name="label_13">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Coming Soon</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tab">
+   <attribute name="title">
+    <string>Tools</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_8">
+    <item>
+     <widget class="QToolBox" name="toolBox">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_7">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>514</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Tool Controller</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <widget class="QTableWidget" name="toolControllerTable">
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>71</number>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tool</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>H-Feed</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>V-Feed</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Spindle</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_4" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPushButton" name="toolEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Edit</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="toolAdd">
+             <property name="text">
+              <string>Add</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="toolRemove">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Remove</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tab_2">
+   <attribute name="title">
+    <string>Workplan</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_10">
+    <item>
+     <widget class="QToolBox" name="toolBox_2">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_9">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>378</width>
+         <height>477</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Operations</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_11">
+        <item>
+         <widget class="QWidget" name="widget_3" native="true">
+          <layout class="QFormLayout" name="formLayout_3">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>Active Tool </string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="activeToolController"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QListWidget" name="operationsList"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_5" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QPushButton" name="operationEdit">
+             <property name="text">
+              <string>Edit</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="operationDelete">
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_10">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>395</width>
+         <height>462</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Default Values</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <item>
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
+           <string>Operation</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>Milling</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="defaultMillingOp">
+             <item>
+              <property name="text">
+               <string>conventional</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>climb</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="defaultToolCompensation">
+             <property name="text">
+              <string>Tool Compensated</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>Heights</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Safe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::InputField" name="defaultSafeHeight"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>Clearance</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="Gui::InputField" name="defaultClearanceHeight"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>Depths</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>Step Down</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::InputField" name="defaultStepDown"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

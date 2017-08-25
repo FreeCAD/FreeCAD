@@ -159,7 +159,7 @@ class ToolLibraryManager():
         # Get ToolTables from any open CNC jobs
         for o in FreeCAD.ActiveDocument.Objects:
             if hasattr(o, "Proxy"):
-                if isinstance(o.Proxy, PathScripts.PathJob.ObjectPathJob):
+                if isinstance(o.Proxy, PathScripts.PathJob.ObjectJob):
                     tablelist.append(o.Label)
         return tablelist
 
@@ -546,7 +546,7 @@ class EditorPanel():
             tool = self.TLM.getTool(currList, int(toolnum))
             PathLog.debug('tool: {}, toolnum: {}'.format(tool, toolnum))
             for job in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
-                if isinstance(job.Proxy, PathScripts.PathJob.ObjectPathJob) and job.Label == targetlist:
+                if isinstance(job.Proxy, PathScripts.PathJob.ObjectJob) and job.Label == targetlist:
 
                     label = "T{}: {}".format(toolnum, tool.Name)
                     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",label)

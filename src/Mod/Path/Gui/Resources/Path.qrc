@@ -69,6 +69,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
+        <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/SurfaceEdit.ui</file>
         <file>panels/ToolControl.ui</file>
