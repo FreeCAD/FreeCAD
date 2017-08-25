@@ -14,7 +14,7 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>3</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -59,13 +59,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="infoModel">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_8">
           <property name="enabled">
@@ -82,6 +75,9 @@
            <bool>false</bool>
           </property>
          </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="infoModel"/>
         </item>
        </layout>
       </widget>
@@ -222,7 +218,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_3">
        <property name="geometry">
@@ -434,7 +430,7 @@
          </spacer>
         </item>
         <item row="0" column="2">
-         <widget class="QToolButton" name="postProcessorOutputFile_2">
+         <widget class="QToolButton" name="postProcessorSetOutputFile">
           <property name="text">
            <string>...</string>
           </property>
@@ -636,7 +632,11 @@
          <widget class="QWidget" name="widget" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <widget class="QListWidget" name="operationsList"/>
+            <widget class="QListWidget" name="operationsList">
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::InternalMove</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

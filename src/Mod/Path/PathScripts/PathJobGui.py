@@ -46,16 +46,16 @@ class ViewProvider:
         vobj.setEditorMode('Selectable', mode)
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
-        self.taskPanel = None
 
     def attach(self, vobj):
         self.vobj = vobj
         self.obj = vobj.Object
+        self.taskPanel = None
 
-    def __getstate__(self):  # mandatory
+    def __getstate__(self):
         return None
 
-    def __setstate__(self, state):  # mandatory
+    def __setstate__(self, state):
         return None
 
     def deleteObjectsOnReject(self):
@@ -79,20 +79,14 @@ class ViewProvider:
     def getIcon(self):
         return ":/icons/Path-Job.svg"
 
-    def onChanged(self, vobj, prop):
-        mode = 2
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('Selectable', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('Transparency', mode)
-
     def claimChildren(self):
         children = self.obj.ToolController
         children.append(self.obj.Operations)
         return children
 
 class TaskPanel:
+    DataObject = QtCore.Qt.ItemDataRole.UserRole
+
     def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
         self.vobj = vobj
@@ -156,7 +150,7 @@ class TaskPanel:
             self.obj.PostProcessorOutputFile = str(self.form.postProcessorOutputFile.text())
 
             self.obj.Label = str(self.form.infoLabel.text())
-            self.obj.Group = [self.form.operationsList.item(i).data() for i in range(self.form.operationsList.count())]
+            self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
 
             selObj = self.form.infoModel.itemData(self.form.infoModel.currentIndex())
             #if self.form.chkCreateClone.isChecked():
@@ -182,11 +176,11 @@ class TaskPanel:
 
         self.selectComboBoxText(self.form.postProcessor, self.obj.PostProcessor)
         self.form.postProcessorArguments.setText(self.obj.PostProcessorArgs)
-        self.obj.Proxy.onChanged(self.obj, "PostProcessor")
+        #self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
         self.form.operationsList.clear()
-        for child in self.obj.Group:
+        for child in self.obj.Operations.Group:
             item = QtGui.QListWidgetItem(child.Label)
             item.setData(self.DataObject, child)
             self.form.operationsList.addItem(item)
