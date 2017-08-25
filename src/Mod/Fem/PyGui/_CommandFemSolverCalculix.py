@@ -46,7 +46,7 @@ class _CommandFemSolverCalculix(FemCommands):
 
     def Activated(self):
         analysis = FemGui.getActiveAnalysis()
-        FreeCAD.ActiveDocument.openTransaction("Create Elmer Solver-Object")
+        FreeCAD.ActiveDocument.openTransaction("Create CalculiX Solver-Object")
         FreeCADGui.addModule("FemCalculix.SolverObject")
         FreeCADGui.doCommand(
             "App.ActiveDocument.%s.Member += "
