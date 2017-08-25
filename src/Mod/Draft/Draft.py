@@ -1455,14 +1455,15 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj = makeCopy(obj)
             else:
                 newobj = obj
-            sh = obj.Shape.copy()
-            m = FreeCAD.Matrix()
-            m.scale(delta)
-            sh = sh.transformGeometry(m)
-            corr = Vector(center.x,center.y,center.z)
-            corr.scale(delta.x,delta.y,delta.z)
-            corr = (corr.sub(center)).negative()
-            sh.translate(corr)
+            if obj.isDerivedFrom("Part::Feature"):
+                sh = obj.Shape.copy()
+                m = FreeCAD.Matrix()
+                m.scale(delta)
+                sh = sh.transformGeometry(m)
+                corr = Vector(center.x,center.y,center.z)
+                corr.scale(delta.x,delta.y,delta.z)
+                corr = (corr.sub(center)).negative()
+                sh.translate(corr)
             if getType(obj) == "Rectangle":
                 p = []
                 for v in sh.Vertexes: p.append(v.Point)
@@ -1496,8 +1497,10 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             elif (obj.isDerivedFrom("Part::Feature")):
                 newobj.Shape = sh
             elif (obj.TypeId == "App::Annotation"):
-                factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize.Value
-                obj.ViewObject.Fontsize = factor
+                factor = delta.y * obj.ViewObject.FontSize
+                newobj.ViewObject.FontSize = factor
+                d = obj.Position.sub(center)
+                newobj.Position = center.add(Vector(d.x*delta.x,d.y*delta.y,d.z*delta.z))
             if copy: 
                 formatObject(newobj,obj)
             newobjlist.append(newobj)
