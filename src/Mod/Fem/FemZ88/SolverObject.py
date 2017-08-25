@@ -43,7 +43,7 @@ if FreeCAD.GuiUp:
 ANALYSIS_TYPES = ["static"]
 
 
-def create(doc, name="Z88"):
+def create(doc, name="SolverZ88"):
     return FemMisc.createObject(
         doc, name, Proxy, ViewProxy)
 
