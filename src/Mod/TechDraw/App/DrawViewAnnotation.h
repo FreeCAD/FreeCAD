@@ -48,7 +48,7 @@ public:
     virtual ~DrawViewAnnotation();
 
     App::PropertyStringList   Text;
-    App::PropertyString       Font;
+    App::PropertyFont         Font;
     App::PropertyColor        TextColor;
     App::PropertyInteger      TextSize;
     App::PropertyInteger      LineSpace;

@@ -186,6 +186,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
+    requestPaint();
 
     return App::DocumentObject::execute();;
 }
