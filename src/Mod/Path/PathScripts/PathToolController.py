@@ -150,7 +150,7 @@ class ToolController:
         return obj.Tool
 
 
-class _ViewProviderToolController:
+class ViewProvider:
 
     def __init__(self, vobj):
         vobj.Proxy = self
@@ -203,6 +203,37 @@ class _ViewProviderToolController:
         # this is executed when the user cancels or terminates edit mode
         return False
 
+def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
+    PathLog.track(tool, toolNumber)
+
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    ToolController(obj)
+    if assignViewProvider:
+        ViewProvider(obj.ViewObject)
+
+    if tool is None:
+        tool = Path.Tool()
+        tool.Diameter = 5.0
+        tool.Name = "Default Tool"
+        tool.CuttingEdgeHeight = 15.0
+        tool.ToolType = "EndMill"
+        tool.Material = "HighSpeedSteel"
+    obj.Tool = tool
+    obj.ToolNumber = toolNumber
+    return obj
+
+def FromTemplate(template, assignViewProvider=True):
+    PathLog.track()
+
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
+    tc  = ToolController(obj)
+    if assignViewProvider:
+        ViewProvider(obj.ViewObject)
+
+    tc.assignTemplate(obj, template)
+
+    return obj
+
 
 class CommandPathToolController:
     def GetResources(self):
@@ -219,41 +250,7 @@ class CommandPathToolController:
 
     def Activated(self):
         PathLog.track()
-        self.Create()
-
-    @staticmethod
-    def Create(assignViewProvider=True, tool=None, toolNumber=1):
-        PathLog.track("tool: {} with toolNumber: {}".format(tool, toolNumber))
-
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
-        PathScripts.PathToolController.ToolController(obj)
-        if FreeCAD.GuiUp and assignViewProvider:
-            PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
-
-        if tool is None:
-            tool = Path.Tool()
-            tool.Diameter = 5.0
-            tool.Name = "Default Tool"
-            tool.CuttingEdgeHeight = 15.0
-            tool.ToolType = "EndMill"
-            tool.Material = "HighSpeedSteel"
-        obj.Tool = tool
-        obj.ToolNumber = toolNumber
-        return obj
-
-    @staticmethod
-    def FromTemplate(template, assignViewProvider=True):
-        PathLog.track()
-
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
-        tc  = PathScripts.PathToolController.ToolController(obj)
-        if assignViewProvider:
-            PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
-
-        tc.assignTemplate(obj, template)
-
-        return obj
-
+        Create()
 
 class TaskPanel:
     def __init__(self):

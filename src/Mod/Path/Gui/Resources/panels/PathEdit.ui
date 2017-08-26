@@ -14,7 +14,7 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>3</number>
+   <number>2</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -516,9 +516,9 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
-         <widget class="QTableWidget" name="toolControllerTable">
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>71</number>
+         <widget class="QTableWidget" name="toolControllerList">
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
           </attribute>
           <column>
            <property name="text">
@@ -527,7 +527,7 @@
           </column>
           <column>
            <property name="text">
-            <string>Tool</string>
+            <string>Nr.</string>
            </property>
           </column>
           <column>
@@ -551,7 +551,7 @@
          <widget class="QWidget" name="widget_4" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QPushButton" name="toolEdit">
+            <widget class="QPushButton" name="toolControllerEdit">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -561,14 +561,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="toolAdd">
+            <widget class="QPushButton" name="toolControllerAdd">
              <property name="text">
               <string>Add</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="toolRemove">
+            <widget class="QPushButton" name="toolControllerDelete">
              <property name="enabled">
               <bool>false</bool>
              </property>

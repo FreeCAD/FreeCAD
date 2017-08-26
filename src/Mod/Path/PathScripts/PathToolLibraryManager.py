@@ -335,7 +335,8 @@ class ToolLibraryManager():
 
 
 class EditorPanel():
-    def __init__(self):
+
+    def __init__(self, job, cb):
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolLibraryEditor.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolLibraryEditor.ui")
         #self.editform = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolEdit.ui")
@@ -344,6 +345,8 @@ class EditorPanel():
 
         self.loadTable()
         self.form.ToolsList.resizeColumnsToContents()
+        self.job = job
+        self.cb = cb
 
     def accept(self):
         pass
@@ -545,18 +548,18 @@ class EditorPanel():
         for toolnum in tools:
             tool = self.TLM.getTool(currList, int(toolnum))
             PathLog.debug('tool: {}, toolnum: {}'.format(tool, toolnum))
-            for job in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
-                if isinstance(job.Proxy, PathScripts.PathJob.ObjectJob) and job.Label == targetlist:
-
-                    label = "T{}: {}".format(toolnum, tool.Name)
-                    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython",label)
-                    PathScripts.PathToolController.ToolController(obj)
-                    PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
-                    PathUtils.addToJob(obj, job.Name)
-                    FreeCAD.activeDocument().recompute()
-                    obj.Tool = tool.copy()
-                    obj.ToolNumber = int(toolnum)
-                    #obj.recompute()
+            if self.job:
+                label = "T{}: {}".format(toolnum, tool.Name)
+                tc = PathScripts.PathToolController.Create(label, tool=tool, toolNumber=int(toolnum))
+                self.job.Proxy.addToolController(tc)
+            else:
+                for job in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
+                    if isinstance(job.Proxy, PathScripts.PathJob.ObjectJob) and job.Label == targetlist:
+                        label = "T{}: {}".format(toolnum, tool.Name)
+                        tc = PathScripts.PathToolController.Create(label, tool=tool, toolNumber=int(toolnum))
+                        job.Proxy.addToolController(tc)
+        if self.cb:
+            self.cb()
         FreeCAD.ActiveDocument.recompute()
 
     def getStandardButtons(self):
@@ -579,8 +582,8 @@ class EditorPanel():
         self.setFields()
 
 class CommandToolLibraryEdit():
-    def edit(self):
-        editor = EditorPanel()
+    def edit(self, job=None, cb=None):
+        editor = EditorPanel(job, cb)
         editor.setupUi()
 
         r = editor.form.exec_()

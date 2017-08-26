@@ -27,6 +27,7 @@ import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
+import PathScripts.PathToolLibraryManager as PathToolLibraryManager
 import sys
 
 from PathScripts.PathPreferences import PathPreferences
@@ -86,6 +87,7 @@ class ViewProvider:
 
 class TaskPanel:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
+    DataProperty = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
@@ -93,6 +95,9 @@ class TaskPanel:
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
+
+        self.form.toolControllerList.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.Stretch)
+        self.form.toolControllerList.resizeColumnsToContents()
 
         currentPostProcessor = self.obj.PostProcessor
         postProcessors = PathPreferences.allEnabledPostProcessors(['', currentPostProcessor])
@@ -168,6 +173,58 @@ class TaskPanel:
             widget.setCurrentIndex(index)
             widget.blockSignals(False)
 
+    def updateToolController(self):
+        self.form.toolControllerList.blockSignals(True)
+        self.form.toolControllerList.clearContents()
+        self.form.toolControllerList.setRowCount(0)
+
+        self.form.activeToolController.blockSignals(True)
+        index = self.form.activeToolController.currentIndex()
+        select = None if index == -1 else self.form.activeToolController.itemData(index)
+        self.form.activeToolController.clear()
+
+        for row,tc in enumerate(sorted(self.obj.ToolController, key=lambda tc: tc.Label)):
+            self.form.activeToolController.addItem(tc.Label, tc)
+            if tc == select:
+                index = row
+
+            self.form.toolControllerList.insertRow(row)
+
+            item = QtGui.QTableWidgetItem(tc.Label)
+            item.setData(self.DataObject, tc)
+            item.setData(self.DataProperty, 'Label')
+            self.form.toolControllerList.setItem(row, 0, item)
+
+            item = QtGui.QTableWidgetItem("%d" % tc.ToolNumber)
+            item.setTextAlignment(QtCore.Qt.AlignRight)
+            item.setData(self.DataObject, tc)
+            item.setData(self.DataProperty, 'Number')
+            self.form.toolControllerList.setItem(row, 1, item)
+
+            item = QtGui.QTableWidgetItem("%g" % tc.HorizFeed)
+            item.setTextAlignment(QtCore.Qt.AlignRight)
+            item.setData(self.DataObject, tc)
+            item.setData(self.DataProperty, 'HorizFeed')
+            self.form.toolControllerList.setItem(row, 2, item)
+
+            item = QtGui.QTableWidgetItem("%g" % tc.VertFeed)
+            item.setTextAlignment(QtCore.Qt.AlignRight)
+            item.setData(self.DataObject, tc)
+            item.setData(self.DataProperty, 'VertFeed')
+            self.form.toolControllerList.setItem(row, 3, item)
+
+            item = QtGui.QTableWidgetItem("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
+            item.setTextAlignment(QtCore.Qt.AlignRight)
+            item.setData(self.DataObject, tc)
+            item.setData(self.DataProperty, 'Spindle')
+            self.form.toolControllerList.setItem(row, 4, item)
+
+        if index != -1:
+            self.form.activeToolController.setCurrentIndex(index)
+
+        self.form.activeToolController.blockSignals(False)
+        self.form.toolControllerList.blockSignals(False)
+
     def setFields(self):
         '''sets fields in the form to match the object'''
 
@@ -194,6 +251,7 @@ class TaskPanel:
         if baseindex >= 0:
             self.form.infoModel.setCurrentIndex(baseindex)
 
+        self.updateToolController()
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
@@ -207,13 +265,79 @@ class TaskPanel:
         else:
             self.form.operationModify.setEnabled(False)
 
-    def operationDelete(self):
-        for item in self.form.operationsList.selectedItems():
+    def objectDelete(self, widget):
+        for item in widget.selectedItems():
             obj = item.data(self.DataObject)
             if obj.ViewObject and hasattr(obj.ViewObject, 'Proxy') and hasattr(obj.ViewObject.Proxy, 'onDelete'):
                 obj.ViewObject.Proxy.onDelete(obj.ViewObject, None)
             FreeCAD.ActiveDocument.removeObject(obj.Name)
         self.setFields()
+
+    def operationDelete(self):
+        self.objectDelete(self.form.operationsList)
+
+    def toolControllerSelect(self):
+        def canDeleteTC(tc):
+            # if the TC is referenced anywhere but the job we don't want to delete it
+            return len(tc.InList) == 1
+
+        # if anything is selected it can be edited
+        edit = True if self.form.toolControllerList.selectedItems() else False
+        self.form.toolControllerEdit.setEnabled(edit)
+
+        # can only delete what is selected
+        delete = edit
+        # ... but we want to make sure there's at least one TC left
+        if len(self.obj.ToolController) == len(self.form.toolControllerList.selectedItems()):
+            delete = False
+        # ... also don't want to delete any TCs that are already used
+        if delete:
+            for item in self.form.toolControllerList.selectedItems():
+                if not canDeleteTC(item.data(self.DataObject)):
+                    delete = False
+                    break
+        self.form.toolControllerDelete.setEnabled(delete)
+
+    def toolControllerEdit(self):
+        pass
+
+    def toolControllerAdd(self):
+        PathToolLibraryManager.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
+
+    def toolControllerDelete(self):
+        self.objectDelete(self.form.toolControllerList)
+
+    def toolControllerChanged(self, item):
+        tc = item.data(self.DataObject)
+        prop = item.data(self.DataProperty)
+        if 'Label' == prop:
+            tc.Label = item.text()
+            item.setText(tc.Label)
+        elif 'Number' == prop:
+            try:
+                tc.ToolNumber = int(item.text())
+            except:
+                pass
+            item.setText("%d" % tc.ToolNumber)
+        elif 'Spindle' == prop:
+            try:
+                speed = float(item.text())
+                rot = 'Forward'
+                if speed < 0:
+                    rot = 'Reverse'
+                    speed = -speed
+                tc.SpindleDir = rot
+                tc.SpindleSpeed = speed
+            except:
+                pass
+            item.setText("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
+        else:
+            try:
+                val = FreeCAD.Units.Quantity(item.text())
+                setattr(tc, prop, val)
+            except:
+                pass
+            item.setText("%g" % getattr(tc, prop).Value)
 
     def setupUi(self):
         self.setFields()
@@ -232,7 +356,14 @@ class TaskPanel:
         self.form.operationsList.indexesMoved.connect(self.getFields)
         self.form.operationDelete.clicked.connect(self.operationDelete)
 
+        self.form.toolControllerList.itemSelectionChanged.connect(self.toolControllerSelect)
+        self.form.toolControllerList.itemChanged.connect(self.toolControllerChanged)
+        self.form.toolControllerEdit.clicked.connect(self.toolControllerEdit)
+        self.form.toolControllerDelete.clicked.connect(self.toolControllerDelete)
+        self.form.toolControllerAdd.clicked.connect(self.toolControllerAdd)
+
         self.operationSelect()
+        self.toolControllerSelect()
 
 def Create(base, template=None):
     '''Create(base, template) ... creates a job instance for the given base object
