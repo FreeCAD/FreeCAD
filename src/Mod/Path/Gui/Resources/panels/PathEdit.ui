@@ -642,10 +642,13 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="widget_5" native="true">
+         <widget class="QWidget" name="operationModify" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <widget class="QPushButton" name="operationEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Edit</string>
              </property>

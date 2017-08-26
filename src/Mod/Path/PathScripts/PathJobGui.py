@@ -195,16 +195,29 @@ class TaskPanel:
             self.form.infoModel.setCurrentIndex(baseindex)
 
 
-    def open(self):
-        pass
-
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
         if filename and filename[0]:
             self.obj.PostProcessorOutputFile = str(filename[0])
             self.setFields()
 
+    def operationSelect(self):
+        if self.form.operationsList.selectedItems():
+            self.form.operationModify.setEnabled(True)
+        else:
+            self.form.operationModify.setEnabled(False)
+
+    def operationDelete(self):
+        for item in self.form.operationsList.selectedItems():
+            obj = item.data(self.DataObject)
+            if obj.ViewObject and hasattr(obj.ViewObject, 'Proxy') and hasattr(obj.ViewObject.Proxy, 'onDelete'):
+                obj.ViewObject.Proxy.onDelete(obj.ViewObject, None)
+            FreeCAD.ActiveDocument.removeObject(obj.Name)
+        self.setFields()
+
     def setupUi(self):
+        self.setFields()
+
         # Info
         self.form.infoLabel.editingFinished.connect(self.getFields)
         self.form.infoModel.currentIndexChanged.connect(self.getFields)
@@ -215,9 +228,11 @@ class TaskPanel:
         self.form.postProcessorOutputFile.editingFinished.connect(self.getFields)
         self.form.postProcessorSetOutputFile.clicked.connect(self.setPostProcessorOutputFile)
 
+        self.form.operationsList.itemSelectionChanged.connect(self.operationSelect)
         self.form.operationsList.indexesMoved.connect(self.getFields)
+        self.form.operationDelete.clicked.connect(self.operationDelete)
 
-        self.setFields()
+        self.operationSelect()
 
 def Create(base, template=None):
     '''Create(base, template) ... creates a job instance for the given base object
