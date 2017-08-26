@@ -996,7 +996,7 @@ def Create(base, name = 'DogboneDressup'):
     obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', 'DogboneDressup')
     dbo = ObjectDressup(obj, base)
     job = PathUtils.findParentJob(base)
-    job.addOperation(obj)
+    job.Proxy.addOperation(obj)
 
     if FreeCAD.GuiUp:
         ViewProviderDressup(obj.ViewObject)
@@ -1004,7 +1004,6 @@ def Create(base, name = 'DogboneDressup'):
 
     obj.ToolController = base.ToolController
     dbo.setup(obj, True)
-
     return obj
 
 class CommandDressupDogbone:
