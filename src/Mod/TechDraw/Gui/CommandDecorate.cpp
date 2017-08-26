@@ -44,7 +44,7 @@
 # include <Gui/FileDialog.h>
 # include <Gui/ViewProvider.h>
 
-# include <Mod/Part/App/PartFeature.h>
+# include <Mod/part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>

@@ -53,7 +53,7 @@
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintBearing.h>
 #include <Mod/Fem/App/FemTools.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <Base/Console.h>
 

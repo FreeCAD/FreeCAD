@@ -27,7 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Part/Gui/TaskAttacher.h>
+#include <Mod/part/Gui/TaskAttacher.h>
 
 #include "ViewProviderDatum.h"
 

@@ -80,7 +80,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include "DrawUtil.h"
 #include "DrawViewSection.h"

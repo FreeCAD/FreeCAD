@@ -25,7 +25,7 @@
 #define PARTDESIGN_FeatureAdditive_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
+#include <Mod/part/App/PropertyTopoShape.h>
 
 #include "Feature.h"
 

@@ -76,8 +76,8 @@
 #include <App/Application.h>
 #include <App/OriginFeature.h>
 #include <App/Document.h>
-#include <Mod/Part/App/modelRefine.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/part/App/modelRefine.h>
+#include <Mod/part/App/FaceMakerCheese.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"

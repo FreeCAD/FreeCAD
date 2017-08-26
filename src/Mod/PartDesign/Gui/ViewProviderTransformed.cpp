@@ -54,7 +54,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/TopoShape.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 

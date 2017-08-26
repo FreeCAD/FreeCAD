@@ -29,7 +29,7 @@
 
 #include "ViewProviderPrimitive.h"
 #include "TaskPrimitiveParameters.h"
-#include "Mod/Part/Gui/SoBrepFaceSet.h"
+#include "Mod/part/Gui/SoBrepFaceSet.h"
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>

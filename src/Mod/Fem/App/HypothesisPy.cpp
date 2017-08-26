@@ -24,7 +24,7 @@
 #include "HypothesisPy.h"
 #include "FemMeshPy.h"
 #include <Base/Interpreter.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShapePy.h>
 
 #include <sstream>
 #include <StdMeshers_Arithmetic1D.hxx>

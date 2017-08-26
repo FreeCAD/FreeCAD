@@ -46,7 +46,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Annotation.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 using namespace DraftUtils;
 

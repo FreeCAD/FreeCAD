@@ -32,7 +32,7 @@
 #include "FeatureAreaPy.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 FC_LOG_LEVEL_INIT("Path.Area",true,true)
 

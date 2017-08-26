@@ -74,7 +74,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include "ProjectionAlgos.h"
 #include "DrawingExport.h"

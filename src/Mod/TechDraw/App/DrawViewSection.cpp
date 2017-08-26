@@ -72,7 +72,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include "Geometry.h"
 #include "GeometryObject.h"

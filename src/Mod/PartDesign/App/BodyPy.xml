@@ -7,7 +7,7 @@
     TwinPointer="Body"
     Include="Mod/PartDesign/App/Body.h"
     Namespace="PartDesign"
-    FatherInclude="Mod/Part/App/BodyBasePy.h"
+    FatherInclude="Mod/part/App/BodyBasePy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

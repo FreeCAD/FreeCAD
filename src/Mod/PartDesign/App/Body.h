@@ -25,7 +25,7 @@
 #define PARTDESIGN_Body_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/BodyBase.h>
+#include <Mod/part/App/BodyBase.h>
 
 #include <boost/signals.hpp>
 

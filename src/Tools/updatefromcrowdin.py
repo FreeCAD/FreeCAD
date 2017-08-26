@@ -76,7 +76,7 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["Mesh","../Mod/Mesh/Gui/Resources/translations","../Mod/Mesh/Gui/Resources/Mesh.qrc"],
              ["MeshPart","../Mod/MeshPart/Gui/Resources/translations","../Mod/MeshPart/Gui/Resources/MeshPart.qrc"],
              ["OpenSCAD","../Mod/OpenSCAD/Resources/translations","../Mod/OpenSCAD/Resources/OpenSCAD.qrc"],
-             ["Part","../Mod/Part/Gui/Resources/translations","../Mod/Part/Gui/Resources/Part.qrc"],
+             ["Part","../Mod/part/Gui/Resources/translations","../Mod/part/Gui/Resources/Part.qrc"],
              ["PartDesign","../Mod/PartDesign/Gui/Resources/translations","../Mod/PartDesign/Gui/Resources/PartDesign.qrc"],
              ["Points","../Mod/Points/Gui/Resources/translations","../Mod/Points/Gui/Resources/Points.qrc"],
              ["Raytracing","../Mod/Raytracing/Gui/Resources/translations","../Mod/Raytracing/Gui/Resources/Raytracing.qrc"],

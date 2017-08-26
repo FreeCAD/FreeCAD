@@ -39,7 +39,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/TopoShape.h>
 
 #include "FeatureFillet.h"
 

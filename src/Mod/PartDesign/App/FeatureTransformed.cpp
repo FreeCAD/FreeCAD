@@ -50,7 +50,7 @@
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <App/Application.h>
-#include <Mod/Part/App/modelRefine.h>
+#include <Mod/part/App/modelRefine.h>
 
 using namespace PartDesign;
 

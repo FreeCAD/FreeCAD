@@ -36,8 +36,8 @@
 #include <Base/Axis.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/Part2DObject.h>
 #include <App/OriginFeature.h>
 
 using namespace PartDesign;

@@ -36,7 +36,7 @@
 #include <vector>
 #include <App/Material.h>
 #include <App/Part.h>
-#include <Mod/Part/App/FeatureCompound.h>
+#include <Mod/part/App/FeatureCompound.h>
 
 
 class TDF_Label;

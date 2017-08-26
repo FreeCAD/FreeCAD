@@ -7,7 +7,7 @@
     TwinPointer="Feature" 
     Include="Mod/PartDesign/App/Feature.h"
     Namespace="PartDesign"
-    FatherInclude="Mod/Part/App/PartFeaturePy.h"
+    FatherInclude="Mod/part/App/PartFeaturePy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

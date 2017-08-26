@@ -52,7 +52,7 @@
 #include <set>
 #include <bitset>
 
-#include <Mod/Part/App/OpenCascadeAll.h>
+#include <Mod/part/App/OpenCascadeAll.h>
 #include <Python.h>
 
 #elif defined(FC_OS_WIN32)

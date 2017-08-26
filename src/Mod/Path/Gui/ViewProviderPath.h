@@ -29,7 +29,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/part/Gui/SoBrepEdgeSet.h>
 
 class SoCoordinate3;
 class SoDrawStyle;  

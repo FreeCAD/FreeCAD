@@ -30,8 +30,8 @@
 
 #include "PartRef.h"
 #include "Product.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/BodyBase.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/App/BodyBase.h>
 #include <PartRefPy.h>
 #include <TopoDS.hxx>
 #include <GeomAbs_SurfaceType.hxx>

@@ -35,7 +35,7 @@
 
 #include "FemConstraintBearing.h"
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Base/Console.h>
 
 using namespace Fem;

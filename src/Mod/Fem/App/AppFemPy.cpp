@@ -74,7 +74,7 @@
 
 #include <Standard_Real.hxx>
 #include <Base/Vector3D.h>
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/part/App/OCCError.h>
 
 namespace Fem {
 class Module : public Py::ExtensionModule<Module>

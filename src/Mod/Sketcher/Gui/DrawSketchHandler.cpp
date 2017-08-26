@@ -46,7 +46,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/View3DInventor.h>
 
-#include <Mod/Part/App/Geometry.h>
+#include <Mod/part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"

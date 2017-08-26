@@ -44,8 +44,8 @@
 
 #include <Mod/Sketcher/App/SketchObjectSF.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/Attacher.h>
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/part/App/Attacher.h>
+#include <Mod/part/App/Part2DObject.h>
 
 #include "SketchOrientationDialog.h"
 #include "SketchMirrorDialog.h"

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShapePy.h>
 #include <Base/VectorPy.h>
 
 #include "Area.h"

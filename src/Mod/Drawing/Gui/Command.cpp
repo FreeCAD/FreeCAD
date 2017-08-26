@@ -33,7 +33,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 

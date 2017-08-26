@@ -29,8 +29,8 @@
 #include <App/FeaturePython.h>
 #include <Base/Axis.h>
 
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Part/App/PropertyGeometryList.h>
+#include <Mod/part/App/Part2DObject.h>
+#include <Mod/part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
 
 #include "Sketch.h"

@@ -53,7 +53,7 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Points/App/PointsFeature.h>
 #include <Mod/Points/App/PointsGrid.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include "InspectionFeature.h"
 

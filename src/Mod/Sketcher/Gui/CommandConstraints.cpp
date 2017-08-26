@@ -42,7 +42,7 @@
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
 
-#include <Mod/Part/App/Geometry.h>
+#include <Mod/part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Sketch.h>
 

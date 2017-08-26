@@ -28,7 +28,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/part/App/Part2DObject.h>
 
 namespace Sketcher
 {

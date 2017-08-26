@@ -24,9 +24,9 @@
 
 #include <Base/VectorPy.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/GeometryCurvePy.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/GeometryCurvePy.h>
+#include <Mod/part/App/TopoShapePy.h>
 #include <CXX/Objects.hxx>
 
 #include "Sketch.h"

@@ -76,7 +76,7 @@
     #include <Standard_Failure.hxx>
 
     // OpenCascade View
-    #include <Mod/Part/App/OpenCascadeAll.h>
+    #include <Mod/part/App/OpenCascadeAll.h>
 
 #endif //_PreComp_
 

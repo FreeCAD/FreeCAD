@@ -86,9 +86,9 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FaceMakerBullseye.h>
-#include <Mod/Part/App/CrossSection.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/App/FaceMakerBullseye.h>
+#include <Mod/part/App/CrossSection.h>
 #include "Area.h"
 #include "../libarea/Area.h"
 

@@ -39,8 +39,8 @@
 #include <CXX/Objects.hxx>
 
 // Things from the part module
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/TopoShapePy.h>
 
 #include "SketchObjectSF.h"
 

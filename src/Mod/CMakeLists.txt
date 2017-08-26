@@ -22,7 +22,7 @@ if(BUILD_MESH)
 endif(BUILD_MESH)
 
 if(BUILD_PART)
-  add_subdirectory(Part)
+  add_subdirectory(part)
 endif(BUILD_PART)
 
 if(BUILD_MATERIAL)

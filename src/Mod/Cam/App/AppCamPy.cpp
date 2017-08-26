@@ -44,8 +44,8 @@
 
 
 //Part Stuff
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/TopoShapePy.h>
 
 //Mesh Stuff
 #include <Mod/Mesh/App/Core/MeshKernel.h>

@@ -41,7 +41,7 @@
 #include "Body.h"
 #include "Feature.h"
 #include "FeaturePy.h"
-#include "Mod/Part/App/DatumFeature.h"
+#include "Mod/part/App/DatumFeature.h"
 
 #include <Base/Console.h>
 

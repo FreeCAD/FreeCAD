@@ -29,8 +29,8 @@
 
 #include <sstream>
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Points/App/Structured.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>

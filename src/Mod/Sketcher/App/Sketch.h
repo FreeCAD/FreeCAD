@@ -25,8 +25,8 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/TopoShape.h>
 #include "Constraint.h"
 
 #include "planegcs/GCS.h"

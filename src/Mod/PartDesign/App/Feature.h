@@ -25,7 +25,7 @@
 #define PARTDESIGN_Feature_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 class gp_Pnt;
 class gp_Pln;

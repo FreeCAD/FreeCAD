@@ -38,7 +38,7 @@
 #include <Gui/Control.h>
 
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryObject.h>
 #include <Mod/Robot/App/Edge2TracObject.h>

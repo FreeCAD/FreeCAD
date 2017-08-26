@@ -32,7 +32,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
 #include <boost/bind.hpp>

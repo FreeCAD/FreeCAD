@@ -25,7 +25,7 @@
 #define PARTDESIGN_SketchBased_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
 
 class TopoDS_Shape;

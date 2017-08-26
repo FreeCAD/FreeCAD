@@ -26,7 +26,7 @@
 
 #include <QComboBox>
 
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/part/App/Part2DObject.h>
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>

@@ -40,7 +40,7 @@
 #include <Mod/Path/App/FeaturePath.h>
 #include <Mod/Path/App/FeaturePathCompound.h>
 #include <Mod/Path/App/FeaturePathShape.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Path/App/FeatureArea.h>
 
 

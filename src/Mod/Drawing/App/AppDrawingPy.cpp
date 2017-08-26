@@ -29,13 +29,13 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShapePy.h>
 #include "ProjectionAlgos.h"
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
 #include <boost/regex.hpp>
 
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/part/App/OCCError.h>
 
 using namespace std;
 using Part::TopoShapePy;

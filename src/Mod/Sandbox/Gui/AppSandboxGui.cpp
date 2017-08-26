@@ -45,7 +45,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
-#include <Mod/Part/App/PropertyGeometryList.h>
+#include <Mod/part/App/PropertyGeometryList.h>
 
 #include "Workbench.h"
 

@@ -29,7 +29,7 @@
 
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include "LuxFeature.h"
 #include "LuxTools.h"

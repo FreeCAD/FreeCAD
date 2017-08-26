@@ -50,7 +50,7 @@
 #include <set>
 #include <bitset>
 
-#include <Mod/Part/App/OpenCascadeAll.h>
+#include <Mod/part/App/OpenCascadeAll.h>
 #include <BRep_Builder.hxx>
 #include <TopoDS_Compound.hxx>
 #include <GCPnts_AbscissaPoint.hxx>

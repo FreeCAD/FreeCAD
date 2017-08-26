@@ -36,7 +36,7 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-#include <Mod/Part/App/BSplineSurfacePy.h>
+#include <Mod/part/App/BSplineSurfacePy.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Points/App/PointsPy.h>

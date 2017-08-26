@@ -25,7 +25,7 @@
 
 #include <cstring>
 
-#include "Mod/Part/App/Part2DObject.h"
+#include "Mod/part/App/Part2DObject.h"
 #include "Mod/PartDesign/App/Body.h"
 
 // inclusion of the generated files (generated out of ItemPy.xml)

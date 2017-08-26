@@ -37,8 +37,8 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumPoint.h>

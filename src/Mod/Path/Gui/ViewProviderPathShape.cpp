@@ -28,7 +28,7 @@
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Path/App/FeaturePathShape.h>
 #include "ViewProviderPathShape.h"
 

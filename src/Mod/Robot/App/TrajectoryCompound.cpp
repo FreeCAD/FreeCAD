@@ -29,8 +29,8 @@
 #include "TrajectoryCompound.h"
 //#include <App/DocumentObjectPy.h>
 //#include <Base/Placement.h>
-#include <Mod/Part/App/edgecluster.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/edgecluster.h>
+#include <Mod/part/App/PartFeature.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
