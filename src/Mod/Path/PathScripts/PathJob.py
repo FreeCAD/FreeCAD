@@ -35,7 +35,7 @@ from PySide import QtCore
 
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule()
+    PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
@@ -94,6 +94,7 @@ class ObjectJob:
         self.assignTemplate(obj, template)
 
     def onDelete(self, obj, arg2=None):
+        PathLog.track(obj, arg2)
         for tc in obj.ToolController:
             FreeCAD.ActiveDocument.removeObject(tc.Name)
         obj.ToolController = []
@@ -129,9 +130,9 @@ class ObjectJob:
                 if job.get(JobTemplate.Description):
                     obj.Description = job.get(JobTemplate.Description)
             for tc in tree.getroot().iter(JobTemplate.ToolController):
-                tcs.append(PathToolController.CommandPathToolController.FromTemplate(tc))
+                tcs.append(PathToolController.FromTemplate(tc))
         else:
-            tcs.append(PathToolController.CommandPathToolController.Create(obj.Name))
+            tcs.append(PathToolController.Create(obj.Name))
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
         obj.ToolController = tcs
 
@@ -166,6 +167,14 @@ class ObjectJob:
         if op not in group:
             group.append(op)
             self.obj.Operations.Group = group
+
+    def addToolController(self, tc):
+        group = self.obj.ToolController
+        PathLog.info("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
+        if tc.Name not in [str(t.Name) for t in group]:
+            group.append(tc)
+            self.obj.ToolController = group
+
 
     @classmethod
     def baseCandidates(cls):
