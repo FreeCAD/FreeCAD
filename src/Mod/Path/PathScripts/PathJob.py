@@ -152,6 +152,10 @@ class ObjectJob:
         return None
 
     def __setstate__(self, state):
+        for obj in FreeCAD.ActiveDocument.Objects:
+            if hasattr(obj, 'Proxy') and obj.Proxy == self:
+                self.obj = obj
+                break
         return None
 
     def execute(self, obj):
