@@ -674,10 +674,43 @@ bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
         try {
+            std::set<App::Document*> docSet;
+            std::vector<App::Document*> docs;
+            // find all dependent objects, including external ones
+            const auto &deps = App::Document::getDependencyList(
+                    getDocument()->getObjects(),false,true);
+            for(auto obj : deps) {
+                // collect all modified documents
+                auto doc = obj->getDocument();
+                if(docSet.find(doc)!=docSet.end()) 
+                    continue;
+                auto gdoc = Application::Instance->getDocument(doc);
+                if(doc==getDocument() || (gdoc && gdoc->isModified())) {
+                    docSet.insert(doc);
+                    docs.push_back(doc);
+                }
+            }
+            if(docs.size()>1) {
+                int ret = QMessageBox::question(getMainWindow(),
+                        QObject::tr("Save dependent files"),
+                        QObject::tr("The file contain external depencencies. "
+                           "Do you want to save the dependent files, too?"),
+                        QMessageBox::Yes,QMessageBox::No);
+                if (ret != QMessageBox::Yes) {
+                    docs.clear();
+                    docSet.clear();
+                }
+            }
+            // make sure to include this document
+            if(docSet.find(getDocument())==docSet.end())
+                docs.push_back(getDocument());
             Gui::WaitCursor wc;
-            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                           ,d->_pcDocument->getName());
-            setModified(false);
+            // save all documents
+            for(auto doc : docs) {
+                Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
+                auto gdoc = Application::Instance->getDocument(doc);
+                if(gdoc) gdoc->setModified(false);
+            }
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
