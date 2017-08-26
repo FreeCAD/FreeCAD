@@ -208,7 +208,7 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=Tr
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     ToolController(obj)
-    if assignViewProvider:
+    if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
     if tool is None:
@@ -227,7 +227,7 @@ def FromTemplate(template, assignViewProvider=True):
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
     tc  = ToolController(obj)
-    if assignViewProvider:
+    if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
     tc.assignTemplate(obj, template)
