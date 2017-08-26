@@ -55,7 +55,7 @@
 #include <Mod/Mesh/App/Core/Projection.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #ifndef HAVE_ACOSH
 #define HAVE_ACOSH

@@ -26,7 +26,7 @@
 
 #include "ViewProvider.h"
 #include "ViewProviderAddSub.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 

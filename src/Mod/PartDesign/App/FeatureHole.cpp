@@ -56,7 +56,7 @@
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include <Base/Reader.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/TopoShape.h>
 
 #include "FeatureHole.h"
 

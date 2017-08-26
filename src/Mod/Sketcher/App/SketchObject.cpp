@@ -73,9 +73,9 @@
 
 #include <App/OriginFeature.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/BodyBase.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/DatumFeature.h>
+#include <Mod/part/App/BodyBase.h>
 
 #include "SketchObject.h"
 #include "Sketch.h"
@@ -4297,7 +4297,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     //#5  0x7f4b03423d73 in GeomLProp_CurveTool::Value(Handle(Geom_Curve) const&, double, gp_Pnt&) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13
     //#6  0x7f4b03427175 in GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75
     //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
-    //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
+    //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/part/Part.so+0xa7
 
 
 

@@ -39,7 +39,7 @@
 #include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/part/Gui/ViewProvider.h>
 
 #include "TaskFillingVertex.h"
 #include "ui_TaskFillingVertex.h"

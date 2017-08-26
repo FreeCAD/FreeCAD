@@ -30,7 +30,7 @@
 #include "FemMesh.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <SMESH_Gen.hxx>
 #include <SMESH_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>

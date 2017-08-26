@@ -55,7 +55,7 @@
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
 #include <Mod/Fem/App/FemTools.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemSolverObject.h>

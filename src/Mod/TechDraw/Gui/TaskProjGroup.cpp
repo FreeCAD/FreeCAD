@@ -39,7 +39,7 @@
 
 #include <Inventor/SbVec3f.h>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>

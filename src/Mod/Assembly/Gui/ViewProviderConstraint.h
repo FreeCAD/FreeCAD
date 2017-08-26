@@ -24,7 +24,7 @@
 #ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINT_H
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINT_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/part/Gui/ViewProvider.h>
 #include <Base/Placement.h>
 #include <Gui/Selection.h>
 #include <Inventor/nodes/SoAnnotation.h>

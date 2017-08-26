@@ -99,8 +99,8 @@
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/BodyBase.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/BodyBase.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Sketch.h>
 

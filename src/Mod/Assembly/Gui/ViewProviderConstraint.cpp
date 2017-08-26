@@ -26,7 +26,7 @@
 //#include "TaskDlgAssemblyConstraints.h"
 #include "Mod/Assembly/App/Constraint.h"
 #include "Mod/Assembly/App/PartRef.h"
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <Gui/Control.h>

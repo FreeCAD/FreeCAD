@@ -57,7 +57,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <math.h> //OvG: Required for log10

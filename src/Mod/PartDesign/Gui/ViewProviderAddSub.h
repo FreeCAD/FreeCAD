@@ -25,7 +25,7 @@
 #define PARTGUI_ViewProviderAddSub_H
 
 #include "ViewProvider.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 

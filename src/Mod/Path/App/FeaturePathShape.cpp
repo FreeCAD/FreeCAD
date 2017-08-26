@@ -33,8 +33,8 @@
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>

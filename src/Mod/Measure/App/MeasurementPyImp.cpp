@@ -26,7 +26,7 @@
 #endif
 
 #include "Mod/Measure/App/Measurement.h"
-#include <Mod/Part/App/Geometry.h>
+#include <Mod/part/App/Geometry.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>

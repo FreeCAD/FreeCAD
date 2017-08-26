@@ -52,7 +52,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraint.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <Base/Console.h>
 

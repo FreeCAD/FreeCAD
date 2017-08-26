@@ -29,9 +29,9 @@
 #include <boost/shared_ptr.hpp>
 
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/part/App/LinePy.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/DatumFeature.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>

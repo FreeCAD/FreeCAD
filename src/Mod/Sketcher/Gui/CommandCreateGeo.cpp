@@ -47,8 +47,8 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/BodyBase.h>
+#include <Mod/part/App/DatumFeature.h>
+#include <Mod/part/App/BodyBase.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"

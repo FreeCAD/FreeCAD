@@ -853,7 +853,7 @@
 +Copyright: 1998-2007 David Eberly http://www.geometrictools.com
 +License: LGPL-2.1+
 +
-+Files: src/Mod/Part/App/edgecluster.*
++Files: src/Mod/part/App/edgecluster.*
 +Copyright: 2010 Joachim Zettler <Joachim.Zettler@gmx.de>
 +License: LGPL-2+
 +
@@ -890,7 +890,7 @@
 + AND THERE IS NO OBLIGATION WHATSOEVER TO PROVIDE MAINTENANCE,
 + SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 +
-+Files: src/Mod/Part/MakeBottle.py, src/Tools/*
++Files: src/Mod/part/MakeBottle.py, src/Tools/*
 +Copyright: 2002-2008 Jürgen Riegel <juergen.riegel@web.de>,
 + Werner Mayer <wmayer@users.sourceforge.net>
 +License: GPL-2+

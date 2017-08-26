@@ -55,7 +55,7 @@
 #include <SMESHDS_Mesh.hxx>
 #include <SMDSAbs_ElementType.hxx>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
 #include <Mod/Fem/App/FemConstraint.h>

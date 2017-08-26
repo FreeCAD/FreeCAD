@@ -27,7 +27,7 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
-#include "Mod/Part/App/PartFeature.h"
+#include "Mod/part/App/PartFeature.h"
 
 #include "Area.h"
 

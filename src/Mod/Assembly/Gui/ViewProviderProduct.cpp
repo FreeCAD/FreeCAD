@@ -36,7 +36,7 @@
 
 #include <Mod/Assembly/App/Product.h>
 #include <Mod/Assembly/App/ProductRef.h>
-//#include <Mod/Part/App/BodyBase.h>
+//#include <Mod/part/App/BodyBase.h>
 
 using namespace AssemblyGui;
 

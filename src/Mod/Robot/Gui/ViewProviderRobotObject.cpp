@@ -41,8 +41,8 @@
 #include "ViewProviderRobotObject.h"
 
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/Gui/ViewProvider.h>
 #include <App/Document.h>
 #include <App/VRMLObject.h>
 #include <Gui/Application.h>

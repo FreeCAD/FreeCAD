@@ -35,7 +35,7 @@
 #endif
 
 #include "TaskDatumParameters.h"
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/part/Gui/SoBrepEdgeSet.h>
 
 #include "ViewProviderDatumCS.h"
 

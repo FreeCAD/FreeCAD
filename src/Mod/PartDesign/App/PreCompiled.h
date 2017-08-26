@@ -58,7 +58,7 @@
 #include <bitset>
 
 // OpenCasCade =====================================================================================
-#include <Mod/Part/App/OpenCascadeAll.h>
+#include <Mod/part/App/OpenCascadeAll.h>
 
 #include <Python.h>
 

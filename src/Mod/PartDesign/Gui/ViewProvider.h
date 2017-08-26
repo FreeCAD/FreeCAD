@@ -24,7 +24,7 @@
 #ifndef PARTGUI_ViewProvider_H
 #define PARTGUI_ViewProvider_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/part/Gui/ViewProvider.h>
 #include <Gui/ViewProviderPythonFeature.h>
 
 

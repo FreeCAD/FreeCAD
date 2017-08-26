@@ -28,7 +28,7 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/DocumentObserver.h>
 #include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Mod/part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureGeomFillSurface.h>
 #include <GeomFill_FillingStyle.hxx>
 

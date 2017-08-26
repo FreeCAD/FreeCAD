@@ -62,7 +62,7 @@
 #include <Mod/Raytracing/App/RaySegment.h>
 #include <Mod/Raytracing/App/RayProject.h>
 #include <Mod/Raytracing/App/LuxProject.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
   
 #include "FreeCADpov.h"
 

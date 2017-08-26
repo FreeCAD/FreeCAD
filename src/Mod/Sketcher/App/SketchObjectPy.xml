@@ -7,7 +7,7 @@
     TwinPointer="SketchObject"
     Include="Mod/Sketcher/App/SketchObject.h"
     Namespace="Sketcher"
-    FatherInclude="Mod/Part/App/Part2DObjectPy.h"
+    FatherInclude="Mod/part/App/Part2DObjectPy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

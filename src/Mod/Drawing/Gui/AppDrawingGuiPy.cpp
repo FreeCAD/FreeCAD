@@ -35,7 +35,7 @@
 #include <Mod/Drawing/App/FeaturePage.h>
 #include <Mod/Drawing/App/FeatureViewPart.h>
 #include <Mod/Drawing/App/ProjectionAlgos.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

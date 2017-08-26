@@ -27,7 +27,7 @@
 #endif
 
 #include "ViewProviderAddSub.h"
-#include "Mod/Part/Gui/SoBrepFaceSet.h"
+#include "Mod/part/Gui/SoBrepFaceSet.h"
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>

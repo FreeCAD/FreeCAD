@@ -80,12 +80,12 @@
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
-#include <Mod/Part/App/encodeFilename.h>
+#include <Mod/part/Gui/ViewProvider.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/App/ProgressIndicator.h>
+#include <Mod/part/App/ImportIges.h>
+#include <Mod/part/App/ImportStep.h>
+#include <Mod/part/App/encodeFilename.h>
 #include <Mod/Import/App/ImportOCAF.h>
 
 #include <TDataStd.hxx>

@@ -37,18 +37,18 @@
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/GeometryCurvePy.h>
-#include <Mod/Part/App/ArcOfCirclePy.h>
-#include <Mod/Part/App/ArcOfEllipsePy.h>
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/GeometryCurvePy.h>
+#include <Mod/part/App/ArcOfCirclePy.h>
+#include <Mod/part/App/ArcOfEllipsePy.h>
+#include <Mod/part/App/CirclePy.h>
+#include <Mod/part/App/EllipsePy.h>
+#include <Mod/part/App/HyperbolaPy.h>
+#include <Mod/part/App/ArcOfHyperbolaPy.h>
+#include <Mod/part/App/ParabolaPy.h>
+#include <Mod/part/App/ArcOfParabolaPy.h>
+#include <Mod/part/App/LineSegmentPy.h>
+#include <Mod/part/App/BSplineCurvePy.h>
 
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>

@@ -27,7 +27,7 @@
 #include <QString>
 #include <App/PropertyLinks.h>
 #include <App/GeoFeature.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/part/App/DatumFeature.h>
 
 namespace PartDesign
 {

@@ -34,8 +34,8 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/DatumFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 
 #include "Feature.h"

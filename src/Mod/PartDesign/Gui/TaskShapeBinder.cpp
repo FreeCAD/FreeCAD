@@ -35,7 +35,7 @@
 #include <Gui/Selection.h>
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include "ReferenceSelection.h"
 #include "Workbench.h"

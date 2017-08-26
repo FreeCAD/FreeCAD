@@ -64,7 +64,7 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include "Mod/Part/App/PrimitiveFeature.h"
+#include "Mod/part/App/PrimitiveFeature.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

@@ -43,7 +43,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>

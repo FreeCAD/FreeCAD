@@ -28,7 +28,7 @@
 #include <App/PropertyUnits.h>
 
 #include "FeatureAddSub.h"
-#include <Mod/Part/App/AttachExtension.h>
+#include <Mod/part/App/AttachExtension.h>
 
 namespace PartDesign
 {

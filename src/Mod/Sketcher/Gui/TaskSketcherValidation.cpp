@@ -51,7 +51,7 @@
 #include "ui_TaskSketcherValidation.h"
 #include "TaskSketcherValidation.h"
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/Geometry.h>
+#include <Mod/part/App/Geometry.h>
 #include <App/Document.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Application.h>

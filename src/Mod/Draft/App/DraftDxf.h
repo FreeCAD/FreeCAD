@@ -24,7 +24,7 @@
 #define DRAFTDXF_H
 
 #include "dxf.h"
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/TopoShape.h>
 #include <App/Document.h>
 #include <gp_Pnt.hxx>
 

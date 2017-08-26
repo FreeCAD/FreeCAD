@@ -50,7 +50,7 @@
 #include <App/OriginFeature.h>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
 #include "DatumLine.h"

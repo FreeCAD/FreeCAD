@@ -52,7 +52,7 @@
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/part/App/DatumFeature.h>
 
 using namespace PartDesignGui;
 using namespace Attacher;

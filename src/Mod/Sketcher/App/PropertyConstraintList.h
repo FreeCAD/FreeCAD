@@ -30,7 +30,7 @@
 #include <vector>
 #include <string>
 #include <App/Property.h>
-#include <Mod/Part/App/Geometry.h>
+#include <Mod/part/App/Geometry.h>
 #include "Constraint.h"
 #include <boost/signals.hpp>
 #include <boost/unordered/unordered_map.hpp>

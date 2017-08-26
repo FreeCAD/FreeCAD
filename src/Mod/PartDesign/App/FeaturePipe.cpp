@@ -63,7 +63,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/part/App/FaceMakerCheese.h>
 
 //#include "Body.h"
 #include "FeaturePipe.h"

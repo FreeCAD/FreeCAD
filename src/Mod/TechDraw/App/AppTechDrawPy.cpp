@@ -44,11 +44,11 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShapeEdgePy.h>
+#include <Mod/part/App/TopoShapeWirePy.h>
+#include <Mod/part/App/OCCError.h>
 
 #include <Mod/Drawing/App/DrawingExport.h>
 

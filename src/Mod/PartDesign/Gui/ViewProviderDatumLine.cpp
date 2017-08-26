@@ -27,7 +27,7 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 #endif
 
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/part/Gui/SoBrepEdgeSet.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 
 #include "ViewProviderDatumLine.h"

@@ -31,7 +31,7 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
-#include "Mod/Part/App/PropertyTopoShape.h"
+#include "Mod/part/App/PropertyTopoShape.h"
 
 #include "PropertyPath.h"
 #include "FeaturePath.h"

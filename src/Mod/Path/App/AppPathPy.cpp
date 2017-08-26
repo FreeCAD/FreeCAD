@@ -37,9 +37,9 @@
 #include <App/DocumentObjectPy.h>
 #include <App/Application.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/part/App/OCCError.h>
+#include <Mod/part/App/TopoShape.h>
+#include <Mod/part/App/TopoShapePy.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>

@@ -24,7 +24,7 @@
 #ifndef PARTGUI_ViewProviderMainPart_H
 #define PARTGUI_ViewProviderMainPart_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/part/Gui/ViewProvider.h>
 
 
 namespace PartDesignGui {

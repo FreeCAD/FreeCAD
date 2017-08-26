@@ -58,7 +58,7 @@
 
 
 // OpenCasCade =====================================================================================
-#include <Mod/Part/App/OpenCascadeAll.h>
+#include <Mod/part/App/OpenCascadeAll.h>
 
 // Python
 #include <Python.h>

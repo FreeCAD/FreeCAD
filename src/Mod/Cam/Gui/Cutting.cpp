@@ -57,9 +57,9 @@
 #include <BRep_Builder.hxx>
 #include <TopoDS_Compound.hxx>
 #include <Mod/Cam/App/cutting_tools.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/part/Gui/ViewProvider.h>
 
 #include <GCPnts_QuasiUniformDeflection.hxx>
 #include <GCPnts_QuasiUniformAbscissa.hxx>

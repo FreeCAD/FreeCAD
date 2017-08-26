@@ -39,7 +39,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>

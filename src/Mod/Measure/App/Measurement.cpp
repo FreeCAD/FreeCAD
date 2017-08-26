@@ -46,9 +46,9 @@
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/Geometry.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/App/TopoShape.h>
 
 #include "Measurement.h"
 #include "MeasurementPy.h"

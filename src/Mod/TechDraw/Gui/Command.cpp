@@ -50,8 +50,8 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/App/Part2DObject.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>

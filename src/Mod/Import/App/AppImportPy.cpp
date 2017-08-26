@@ -60,11 +60,11 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
-#include <Mod/Part/App/encodeFilename.h>
+#include <Mod/part/App/PartFeature.h>
+#include <Mod/part/App/ProgressIndicator.h>
+#include <Mod/part/App/ImportIges.h>
+#include <Mod/part/App/ImportStep.h>
+#include <Mod/part/App/encodeFilename.h>
 
 namespace Import {
 class Module : public Py::ExtensionModule<Module>

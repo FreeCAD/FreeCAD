@@ -44,7 +44,7 @@
 #include <Gui/ViewProvider.h>
 
 
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/part/App/OCCError.h>
 
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"

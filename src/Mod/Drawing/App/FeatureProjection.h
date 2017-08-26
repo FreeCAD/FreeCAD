@@ -28,7 +28,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/part/App/PartFeature.h>
 
 
 namespace Drawing

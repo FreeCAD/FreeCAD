@@ -26,7 +26,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
+#include <Mod/part/App/FeaturePartSpline.h>
 
 class BRepFill_Filling;
 

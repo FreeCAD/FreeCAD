@@ -51,9 +51,9 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/Part/Gui/AttacherTexts.h>
+#include <Mod/part/Gui/AttacherTexts.h>
 
 #include "ReferenceSelection.h"
 #include "Utils.h"

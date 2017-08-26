@@ -41,12 +41,12 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS.hxx>
 
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeSolidPy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/part/App/TopoShapePy.h>
+#include <Mod/part/App/TopoShapeSolidPy.h>
+#include <Mod/part/App/TopoShapeFacePy.h>
+#include <Mod/part/App/TopoShapeEdgePy.h>
+#include <Mod/part/App/TopoShapeVertexPy.h>
+#include <Mod/part/App/TopoShape.h>
 
 #include "Mod/Fem/App/FemMesh.h"
 
