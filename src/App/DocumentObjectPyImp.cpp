@@ -229,6 +229,22 @@ Py::List DocumentObjectPy::getInListRecursive(void) const
     return ret;    
 }
 
+Py::List DocumentObjectPy::getInListEx(void) const
+{
+    Py::List ret;
+    for(auto obj : getDocumentObjectPtr()->getInListEx(false))
+        ret.append(Py::Object(obj->getPyObject(), true));
+    return ret;    
+}
+
+Py::List DocumentObjectPy::getInListExRecrusive(void) const
+{
+    Py::List ret;
+    for(auto obj : getDocumentObjectPtr()->getInListEx(true))
+        ret.append(Py::Object(obj->getPyObject(), true));
+    return ret;    
+}
+
 Py::List DocumentObjectPy::getOutList(void) const
 {
     Py::List ret;

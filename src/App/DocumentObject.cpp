@@ -252,6 +252,47 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     return result;
 }
 
+// More efficient algorithm to find the recursive inList of an object,
+// including possible external parents.  One shortcoming of this algorithm is
+// it does not detect cyclic reference, althgouth it won't crash either.
+std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
+{
+    std::set<App::DocumentObject*> inList;
+    std::map<DocumentObject*,std::set<App::DocumentObject*> > outLists;
+
+    // collect all objects and their outLists from all documents.
+    for(auto doc : GetApplication().getDocuments()) {
+        for(auto obj : doc->getObjects()) {
+            if(!obj || !obj->getNameInDocument() || obj==this)
+                continue;
+            const auto &outList = obj->getOutList();
+            outLists[obj].insert(outList.begin(),outList.end());
+        }
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while(pendings.size()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for(auto &v : outLists) {
+            if(v.first == obj) continue;
+            auto &outList = v.second;
+            // Check the outList to see if the object is there, and pend the
+            // object for recrusive check if it's not already in the inList
+            if(outList.find(obj)!=outList.end() && 
+               inList.insert(v.first).second &&
+               recursive)
+            {
+                pendings.push(v.first);
+            }
+        }
+    }
+
+    return inList;
+}
+
+
 void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
 {
     for (const auto objIt : obj->getOutList()){

@@ -171,6 +171,8 @@ public:
     std::vector<App::DocumentObject*> getInList(void) const;
     /// get all objects link directly or indirectly to this object 
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
+    /// Get a set of all objects linking to this object, including possible external parent objects
+    std::set<App::DocumentObject*> getInListEx(bool recursive) const;
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
 
