@@ -132,14 +132,15 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         str << Reason.pDocName;
         str << ".";
         str << Reason.pObjectName;
+        App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
+        App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         if (Reason.pSubName[0] != 0 ) {
             str << ".";
             str << Reason.pSubName;
-            list << QString::fromLatin1(Reason.pSubName);
+            auto subObj = obj->getSubObject(Reason.pSubName);
+            if(subObj)
+                obj = subObj;
         }
-
-        App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
-        App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         str << " (";
         str << QString::fromUtf8(obj->Label.getValue());
         str << ")";
@@ -160,14 +161,10 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             str << ".";
             str << Reason.pSubName;
         }
-        App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
-        App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         str << " (";
-        str << QString::fromUtf8(obj->Label.getValue());
-        str << ")";
 
         // remove all items
-        QList<QListWidgetItem *> l = selectionView->findItems(selObject,Qt::MatchExactly);
+        QList<QListWidgetItem *> l = selectionView->findItems(selObject,Qt::MatchStartsWith);
         if (l.size() == 1)
             delete l[0];
 
@@ -186,14 +183,15 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             str << it->DocName;
             str << ".";
             str << it->FeatName;
+            App::Document* doc = App::GetApplication().getDocument(it->DocName);
+            App::DocumentObject* obj = doc->getObject(it->FeatName);
             if (it->SubName && it->SubName[0] != '\0') {
                 str << ".";
                 str << it->SubName;
-                list << QString::fromLatin1(it->SubName);
+                auto subObj = obj->getSubObject(Reason.pSubName);
+                if(subObj)
+                    obj = subObj;
             }
-
-            App::Document* doc = App::GetApplication().getDocument(it->DocName);
-            App::DocumentObject* obj = doc->getObject(it->FeatName);
             str << " (";
             str << QString::fromUtf8(obj->Label.getValue());
             str << ")";
@@ -224,6 +222,9 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                 if (sel.SubName[0] != 0 ) {
                     str << ".";
                     str << sel.SubName;
+                    auto subObj = obj->getSubObject(sel.SubName);
+                    if(subObj)
+                        obj = subObj;
                 }
                 str << " (";
                 str << QString::fromUtf8(obj->Label.getValue());
