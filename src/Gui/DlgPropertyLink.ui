@@ -14,6 +14,21 @@
    <string>Link</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="headerHidden">
+      <bool>true</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -38,9 +53,6 @@
       <string>Show all object types</string>
      </property>
     </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QListWidget" name="listWidget"/>
    </item>
    <item row="6" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">

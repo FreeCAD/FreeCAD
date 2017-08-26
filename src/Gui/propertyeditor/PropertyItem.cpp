@@ -366,14 +366,30 @@ void PropertyItem::setPropertyName(const QString& name)
     displayText = str;
 }
 
-void PropertyItem::setPropertyValue(const QString& value)
+void PropertyItem::setPropertyValue(const QString& value, bool transaction)
 {
+    std::set<App::Document*> docs;
+
     for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
         it != propertyItems.end(); ++it) {
         App::PropertyContainer* parent = (*it)->getContainer();
         if (parent && !parent->isReadOnly(*it) && !(*it)->testStatus(App::Property::ReadOnly)) {
             QString cmd = QString::fromLatin1("%1 = %2").arg(pythonIdentifier(*it)).arg(value);
             try {
+                if(transaction) {
+                    auto obj = dynamic_cast<App::DocumentObject*>(parent);
+                    if(obj) {
+                        if(docs.insert(obj->getDocument()).second)
+                            obj->getDocument()->openTransaction("Set property");
+                    }else{
+                        auto vp = dynamic_cast<ViewProviderDocumentObject*>(parent);
+                        if(vp) {
+                            auto doc = vp->getDocument()->getDocument();
+                            if(docs.insert(doc).second)
+                                doc->openTransaction("Set property");
+                        }
+                    }
+                }
                 Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
             }
             catch (Base::PyException &e) {
@@ -388,6 +404,9 @@ void PropertyItem::setPropertyValue(const QString& value)
             }
         }
     }
+
+    for(auto doc : docs) 
+        doc->commitTransaction();
 }
 
 QVariant PropertyItem::data(int column, int role) const
@@ -3364,7 +3383,8 @@ void LinkSelection::select()
 {
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection((const char*)link[0].toLatin1(),
-                                  (const char*)link[1].toLatin1());
+                                  (const char*)link[1].toLatin1(),
+                                  link.size()>=6?(const char*)link[5].toUtf8():0);
     this->deleteLater();
 }
 
@@ -3459,7 +3479,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()));
 
-    isXLink = prop->getTypeId().isDerivedFrom(App::PropertyXLink::getClassTypeId());
+    auto xlink = dynamic_cast<const App::PropertyXLink*>(prop);
+    isXLink = xlink!=0;
 
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::PropertyContainer* c = prop_link->getContainer();
@@ -3469,7 +3490,19 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     if (obj) {
         list << QString::fromLatin1(obj->getDocument()->getName());
         list << QString::fromLatin1(obj->getNameInDocument());
-        list << QString::fromUtf8(obj->Label.getValue());
+        if(xlink && xlink->getSubName()[0]) {
+            auto subObj = obj->getSubObject(xlink->getSubName());
+            if(subObj)
+                list << QString::fromLatin1("%1 (%2.%3)").
+                    arg(QString::fromUtf8(subObj->Label.getValue())).
+                    arg(QString::fromLatin1(obj->getNameInDocument())).
+                    arg(QString::fromUtf8(xlink->getSubName()));
+            else
+                list << QString::fromLatin1("%1.%2").
+                    arg(QString::fromLatin1(obj->getNameInDocument())).
+                    arg(QString::fromUtf8(xlink->getSubName()));
+        }else
+            list << QString::fromUtf8(obj->Label.getValue());
     }
     else {
         // no object assigned
@@ -3491,11 +3524,16 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     // the name of this object
     if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
+        list << QString::fromLatin1(obj->getDocument()->getName());
         list << QString::fromLatin1(obj->getNameInDocument());
     }
     else {
-        list << QString::fromLatin1("Null");
+        list << QString::fromLatin1("");
+        list << QString::fromLatin1("");
     }
+
+    if(xlink)
+        list << QString::fromUtf8(xlink->getSubName());
 
     return QVariant(list);
 }
@@ -3511,9 +3549,12 @@ void PropertyLinkItem::setValue(const QVariant& value)
         QString data;
         if ( o.isEmpty() )
             data = QString::fromLatin1("None");
-        else
+        else if(isXLink && items.size()>=6) {
+            data = QString::fromLatin1("(App.getDocument('%1').getObject('%2'),'%3')").
+                    arg(d).arg(o).arg(items[5]);
+        }else
             data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
-        setPropertyValue(data);
+        setPropertyValue(data,true);
     }
 }
 

@@ -44,13 +44,16 @@ private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
     void on_searchBox_textChanged(const QString&);
     void on_comboBox_currentIndexChanged(const QString&);
+    void onItemExpanded(QTreeWidgetItem * item);
 
 private:
     void findObjects(bool on);
+    void createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
 
 private:
     QStringList link;
     Ui_DlgPropertyLink* ui;
+    std::set<App::DocumentObject*> inList;
 };
 
 } // namespace Dialog
