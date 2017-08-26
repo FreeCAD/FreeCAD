@@ -29,6 +29,7 @@ import FemToolsCcx
 import FemResultTools
 import FreeCAD
 import ObjectsFem
+import FemRun
 import tempfile
 import unittest
 import os
@@ -49,6 +50,8 @@ static_analysis_dir = temp_dir + 'FEM_static/'
 static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
 static_expected_values = test_file_dir + "cube_static_expected_values"
+static2_analysis_dir = temp_dir + 'FEM_static2/'
+static2_save_fc_file = static2_analysis_dir + static_base_name + '2.fcstd'
 
 frequency_base_name = 'cube_frequency'
 frequency_analysis_dir = temp_dir + 'FEM_frequency/'
@@ -548,6 +551,30 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
+
+        # use new solver frame work solver
+        fcc_print('Checking FEM new solver...')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        solver_ccx2_object.GeometricalNonlinearity = 'linear'
+        solver_ccx2_object.ThermoMechSteadyState = False
+        solver_ccx2_object.MatrixSolverType = 'default'
+        solver_ccx2_object.IterationsControlParameterTimeUse = False
+        solver_ccx2_object.EigenmodesCount = 10
+        solver_ccx2_object.EigenmodeHighLimit = 1000000.0
+        solver_ccx2_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_ccx2_object, "FemTest of new solver failed")
+        analysis.Member = analysis.Member + [solver_ccx2_object]
+
+        machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
+        machine.target = FemRun.PREPARE
+        machine.start()
+        machine.join()  # wait for the machine to finish.
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))
+        ret = compare_inp_files(static_analysis_inp_file, static2_analysis_dir + "/" + mesh_name + '.inp')
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+
+        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(static2_save_fc_file))
+        self.active_doc.saveAs(static2_save_fc_file)
 
         fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
 
