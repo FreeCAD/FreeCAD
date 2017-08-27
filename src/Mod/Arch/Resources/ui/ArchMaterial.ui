@@ -35,7 +35,7 @@
      <item>
       <widget class="QComboBox" name="comboBox_FromExisting">
        <property name="toolTip">
-        <string>Copy values from an existing mateiral in the document</string>
+        <string>Copy values from an existing material in the document</string>
        </property>
        <item>
         <property name="text">
