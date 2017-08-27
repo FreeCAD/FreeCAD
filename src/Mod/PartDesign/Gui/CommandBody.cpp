@@ -184,7 +184,7 @@ void CmdPartDesignBody::activated(int iMsg)
 
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                QObject::tr("Body may be based no more than on one feature."));
+                QObject::tr("Body may be based on no more than one feature."));
             return;
         }
     }
