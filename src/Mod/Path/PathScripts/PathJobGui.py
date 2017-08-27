@@ -177,6 +177,9 @@ class TaskPanel:
             widget.blockSignals(False)
 
     def updateToolController(self):
+        tcRow = self.form.toolControllerList.currentRow()
+        tcCol = self.form.toolControllerList.currentColumn()
+
         self.form.toolControllerList.blockSignals(True)
         self.form.toolControllerList.clearContents()
         self.form.toolControllerList.setRowCount(0)
@@ -224,6 +227,8 @@ class TaskPanel:
 
         if index != -1:
             self.form.activeToolController.setCurrentIndex(index)
+        if tcRow != -1 and tcCol != -1:
+            self.form.toolControllerList.setCurrentCell(tcRow, tcCol)
 
         self.form.activeToolController.blockSignals(False)
         self.form.toolControllerList.blockSignals(False)
@@ -302,7 +307,12 @@ class TaskPanel:
         self.form.toolControllerDelete.setEnabled(delete)
 
     def toolControllerEdit(self):
-        pass
+        for item in self.form.toolControllerList.selectedItems():
+            tc = item.data(self.DataObject)
+            dlg = PathToolController.DlgToolControllerEdit(tc)
+            dlg.exec_()
+        self.setFields()
+        self.toolControllerSelect()
 
     def toolControllerAdd(self):
         PathToolLibraryManager.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
