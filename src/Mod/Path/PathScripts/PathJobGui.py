@@ -96,6 +96,10 @@ class TaskPanel:
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
 
+        vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
+        self.form.toolControllerList.horizontalHeaderItem(1).setText('#')
+        self.form.toolControllerList.horizontalHeaderItem(2).setText(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(3).setText(vUnit)
         self.form.toolControllerList.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.Stretch)
         self.form.toolControllerList.resizeColumnsToContents()
 
@@ -109,7 +113,6 @@ class TaskPanel:
 
         for o in PathJob.ObjectJob.baseCandidates():
             self.form.infoModel.addItem(o.Label, o)
-
 
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()

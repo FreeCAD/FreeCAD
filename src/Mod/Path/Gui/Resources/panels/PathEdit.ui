@@ -86,8 +86,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>477</height>
+         <width>294</width>
+         <height>309</height>
         </rect>
        </property>
        <attribute name="label">
@@ -225,8 +225,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>403</height>
+         <width>368</width>
+         <height>399</height>
         </rect>
        </property>
        <attribute name="label">
@@ -443,8 +443,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>403</height>
+         <width>142</width>
+         <height>41</height>
         </rect>
        </property>
        <attribute name="label">
@@ -468,8 +468,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>403</height>
+         <width>142</width>
+         <height>41</height>
         </rect>
        </property>
        <attribute name="label">
@@ -532,12 +532,18 @@
           </column>
           <column>
            <property name="text">
-            <string>H-Feed</string>
+            <string>Feed</string>
+           </property>
+           <property name="icon">
+            <iconset theme="object-flip-horizontal"/>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>V-Feed</string>
+            <string>Feed</string>
+           </property>
+           <property name="icon">
+            <iconset theme="object-flip-vertical"/>
            </property>
           </column>
           <column>
@@ -744,15 +750,15 @@
            <item row="0" column="1">
             <widget class="Gui::InputField" name="defaultSafeHeight"/>
            </item>
+           <item row="1" column="1">
+            <widget class="Gui::InputField" name="defaultClearanceHeight"/>
+           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_15">
              <property name="text">
               <string>Clearance</string>
              </property>
             </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="Gui::InputField" name="defaultClearanceHeight"/>
            </item>
           </layout>
          </widget>
@@ -780,6 +786,46 @@
             <widget class="Gui::InputField" name="defaultStepDown"/>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Rapid Speed</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Horizontal</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::InputField" name="lineEdit"/>
+           </item>
+           <item row="1" column="1">
+            <widget class="Gui::InputField" name="lineEdit_2"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Vertical</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+          <zorder>label_15</zorder>
+          <zorder>label_3</zorder>
+          <zorder>lineEdit</zorder>
+          <zorder>lineEdit_2</zorder>
+          <zorder>label_4</zorder>
          </widget>
         </item>
         <item>
