@@ -47,6 +47,7 @@ def translate(context, text, disambig=None):
 
 class ToolControllerTemplate:
     '''Attribute and sub element strings for template export/import.'''
+    Name         = 'name'
     Label        = 'label'
     ToolNumber   = 'nr'
     VertFeed     = 'vfeed'
@@ -78,7 +79,9 @@ class ToolController:
 
     def assignTemplate(self, obj, template):
         '''assignTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
-        PathLog.track(obj.Label, template)
+        PathLog.track(obj.Name, template)
+        if template.get(ToolControllerTemplate.Label):
+            obj.Label = template.get(ToolControllerTemplate.Label)
         if template.get(ToolControllerTemplate.VertFeed):
             obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
         if template.get(ToolControllerTemplate.HorizFeed):
@@ -102,6 +105,7 @@ class ToolController:
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template.'''
         attrs = {}
+        attrs[ToolControllerTemplate.Name]         = ("%s" % (obj.Name))
         attrs[ToolControllerTemplate.Label]        = ("%s" % (obj.Label))
         attrs[ToolControllerTemplate.ToolNumber]   = ("%d" % (obj.ToolNumber))
         attrs[ToolControllerTemplate.VertFeed]     = ("%s" % (obj.VertFeed))
@@ -224,7 +228,8 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=Tr
 def FromTemplate(template, assignViewProvider=True):
     PathLog.track()
 
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", template.get(ToolControllerTemplate.Label))
+    name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     tc  = ToolController(obj)
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
@@ -285,7 +290,6 @@ class ToolControllerEditor:
             return matslist[material]
 
     def updateUi(self):
-        PathLog.info("updateUI")
         tc = self.obj
         self.form.tcName.setText(tc.Label)
         self.form.tcNumber.setValue(tc.ToolNumber)
@@ -309,7 +313,6 @@ class ToolControllerEditor:
         self.form.toolCuttingEdgeHeight.setText(FreeCAD.Units.Quantity(tc.Tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
 
     def updateToolController(self):
-        PathLog.info("updateToolController")
         tc = self.obj
         try:
             tc.Label = self.form.tcName.text()
@@ -412,6 +415,25 @@ class TaskPanel:
         self.editor.setupUi()
 
 
+class DlgToolControllerEdit:
+    def __init__(self, obj):
+        self.editor = ToolControllerEditor(obj, True)
+        self.editor.updateUi()
+        self.editor.setupUi()
+        self.obj = obj
+
+    def exec_(self):
+        restoreTC   = self.obj.Proxy.templateAttrs(self.obj)
+        restoreTool = self.obj.Tool.Content
+
+        rc = False
+        if not self.editor.form.exec_():
+            PathLog.info("revert")
+            root = xml.Element('ToolController', restoreTC)
+            root.append(xml.fromstring(restoreTool))
+            self.obj.Proxy.assignTemplate(self.obj, root)
+            rc = True
+        return rc
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
