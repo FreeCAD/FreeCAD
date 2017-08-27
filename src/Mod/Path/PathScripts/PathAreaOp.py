@@ -132,7 +132,7 @@ class ObjectOp(PathOp.ObjectOp):
                             obj.Side = "Inside"
 
                 except Exception as e:
-                    PathLog.error(translate("PatArea", "Error in calculating depths: %s" % e))
+                    PathLog.error(translate("PatArea", "Error in calculating depths: %s") % e)
                     obj.StartDepth = 5.0
                     obj.ClearanceHeight = 10.0
                     obj.SafeHeight = 8.0
