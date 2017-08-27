@@ -2842,7 +2842,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error opening save file: %1</source>
+        <source>Error opening saved file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

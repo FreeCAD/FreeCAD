@@ -672,7 +672,7 @@ class DraftToolBar:
         
         self.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.wplabel.text())
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
-        self.colorButton.setToolTip(translate("draft", "Curreont line color"))
+        self.colorButton.setToolTip(translate("draft", "Current line color"))
         self.facecolorButton.setToolTip(translate("draft", "Current face color"))
         self.widthButton.setToolTip(translate("draft", "Current line width"))
         self.fontsizeButton.setToolTip(translate("draft", "Current font size"))

@@ -2380,7 +2380,7 @@ Values with differences below this value will be treated as same.</source>
     </message>
     <message>
         <location filename="preferences-dxf.ui" line="533"/>
-        <source>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
+        <source>If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2460,7 +2460,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     </message>
 </context>
 <context>
-    <name>draft</name>
+    <name>Draft</name>
     <message>
         <location filename="DraftGui.py" line="284"/>
         <source>Draft Command Bar</source>
@@ -3705,7 +3705,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     </message>
     <message>
         <location filename="DraftGui.py" line="619"/>
-        <source>Curreont line color</source>
+        <source>Current line color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
