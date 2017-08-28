@@ -83,6 +83,7 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
                     tbegin = twhat[0].second;
                 }
                 EditableTexts.setValues(eds);
+                requestPaint();
             }
         }
     }
@@ -119,6 +120,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 
     }
     Symbol.setValue(newsvg);
+    requestPaint();
     return DrawView::execute();
 }
 
@@ -159,6 +161,20 @@ bool DrawViewSymbol::checkFit(TechDraw::DrawPage* p) const
     bool result = true;
     return result;
 }
+
+short DrawViewSymbol::mustExecute() const
+{
+    short result = 0;
+    if (!isRestoring()) {
+        result  =  (Scale.isTouched()  ||
+                    EditableTexts.isTouched());
+    }
+    if ((bool) result) {
+        return result;
+    }
+    return DrawView::mustExecute();
+}
+
 
 PyObject *DrawViewSymbol::getPyObject(void)
 {
