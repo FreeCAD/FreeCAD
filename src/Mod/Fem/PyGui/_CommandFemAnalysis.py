@@ -51,7 +51,7 @@ class _CommandFemAnalysis(FemCommands):
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
 
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", True)
+        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
         if use_old_solver_frame_work:
             FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixOld(FreeCAD.ActiveDocument)")
         else:
