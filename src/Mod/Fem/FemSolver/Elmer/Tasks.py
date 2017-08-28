@@ -75,6 +75,9 @@ class Prepare(FemRun.Prepare):
         except Writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
+        except IOError as e:
+            self.report.error("Can't access working directory.")
+            self.fail()
 
     def checkHandled(self, writer):
         handled = writer.getHandledConstraints()
