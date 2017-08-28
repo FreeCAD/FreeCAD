@@ -120,7 +120,10 @@ class Writer(object):
         groups.extend(self._builder.getBodyNames())
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
-        args = [FemSettings.getBinary("ElmerGrid"),
+        binary = FemSettings.getBinary("ElmerGrid")
+        if binary is None:
+            raise WriteError("Couldn't find ElmerGrid binary.")
+        args = [binary,
                 _ELMERGRID_IFORMAT,
                 _ELMERGRID_OFORMAT,
                 unvPath,
@@ -646,3 +649,7 @@ class Writer(object):
 
     def _getSingleMember(self, t):
         return FemMisc.getSingleMember(self.analysis, t)
+
+
+class WriteError(Exception):
+    pass

@@ -69,27 +69,39 @@ class Prepare(FemRun.Prepare):
     def run(self):
         self.pushStatus("Preparing input files...\n")
         writer = Writer.Writer(self.solver, self.directory)
-        writer.write()
+        try:
+            writer.write()
+            self.checkHandled(writer)
+        except Writer.WriteError as e:
+            self.report.error(str(e))
+            self.fail()
+
+    def checkHandled(self, writer):
         handled = writer.getHandledConstraints()
         allConstraints = FemMisc.getMember(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
+
 
 class Solve(FemRun.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
         binary = FemSettings.getBinary("ElmerSolver")
-        self._process = subprocess.Popen(
-            [binary], cwd=self.directory,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
-        self._process.communicate()
-        self.signalAbort.remove(self._process.terminate)
-        if not self.aborted:
-            self._updateOutput(output)
+        if binary is not None:
+            self._process = subprocess.Popen(
+                [binary], cwd=self.directory,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+            self.signalAbort.add(self._process.terminate)
+            output = self._observeSolver(self._process)
+            self._process.communicate()
+            self.signalAbort.remove(self._process.terminate)
+            if not self.aborted:
+                self._updateOutput(output)
+        else:
+            self.report.error("ElmerSolver executable not found.")
+            self.fail()
 
     def _observeSolver(self, process):
         output = ""

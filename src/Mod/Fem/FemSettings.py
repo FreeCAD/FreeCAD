@@ -26,6 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+import distutils.spawn
 import FreeCAD as App
 
 
@@ -49,9 +50,10 @@ class _BinaryDlg(object):
 
     def getBinary(self):
         paramObj = App.ParamGet(self.param)
-        if paramObj.GetBool(self.useDefault):
-            return self.default
-        return paramObj.GetString(self.customPath)
+        binary = self.default
+        if not paramObj.GetBool(self.useDefault):
+            binary = paramObj.GetString(self.customPath)
+        return distutils.spawn.find_executable(binary)
 
 
 _BINARIES = {
