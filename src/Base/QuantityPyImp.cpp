@@ -631,19 +631,11 @@ void  QuantityPy::setFormat(Py::Tuple arg)
 #endif
     if (fmtstr.size() != 1)
         throw Py::ValueError("Invalid format character");
-    switch (fmtstr.front()) {
-    case 'f':
-        fmt.format = QuantityFormat::Fixed;
-        break;
-    case 'e':
-        fmt.format = QuantityFormat::Scientific;
-        break;
-    case 'g':
-        fmt.format = QuantityFormat::Default;
-        break;
-    default:
+
+    bool ok;
+    fmt.format = Base::QuantityFormat::toFormat(fmtstr.front(), &ok);
+    if (!ok)
         throw Py::ValueError("Invalid format character");
-    }
 
     getQuantityPtr()->setFormat(fmt);
 }

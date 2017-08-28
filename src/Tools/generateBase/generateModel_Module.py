@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Thu Apr 27 21:48:12 2017 by generateDS.py.
+# Generated Mon Aug 21 13:00:21 2017 by generateDS.py.
 # Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 #
 # WARNING! All changes made in this file will be lost!
@@ -744,14 +744,14 @@ class Attribute:
 
 class Sequence:
     subclass = None
-    def __init__(self, sq_slice=0, sq_item=0, sq_concat=0, sq_inplace_repeat=0, sq_ass_slice=0, sq_contains=0, sq_ass_item=0, sq_repeat=0, sq_length=0, sq_inplace_concat=0, valueOf_=''):
-        self.sq_slice = sq_slice
+    def __init__(self, sq_ass_item=0, sq_item=0, sq_concat=0, sq_inplace_repeat=0, mp_ass_subscript=0, mp_subscript=0, sq_contains=0, sq_repeat=0, sq_length=0, sq_inplace_concat=0, valueOf_=''):
+        self.sq_ass_item = sq_ass_item
         self.sq_item = sq_item
         self.sq_concat = sq_concat
         self.sq_inplace_repeat = sq_inplace_repeat
-        self.sq_ass_slice = sq_ass_slice
+        self.mp_ass_subscript = mp_ass_subscript
+        self.mp_subscript = mp_subscript
         self.sq_contains = sq_contains
-        self.sq_ass_item = sq_ass_item
         self.sq_repeat = sq_repeat
         self.sq_length = sq_length
         self.sq_inplace_concat = sq_inplace_concat
@@ -762,20 +762,20 @@ class Sequence:
         else:
             return Sequence(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def getSq_slice(self): return self.sq_slice
-    def setSq_slice(self, sq_slice): self.sq_slice = sq_slice
+    def getSq_ass_item(self): return self.sq_ass_item
+    def setSq_ass_item(self, sq_ass_item): self.sq_ass_item = sq_ass_item
     def getSq_item(self): return self.sq_item
     def setSq_item(self, sq_item): self.sq_item = sq_item
     def getSq_concat(self): return self.sq_concat
     def setSq_concat(self, sq_concat): self.sq_concat = sq_concat
     def getSq_inplace_repeat(self): return self.sq_inplace_repeat
     def setSq_inplace_repeat(self, sq_inplace_repeat): self.sq_inplace_repeat = sq_inplace_repeat
-    def getSq_ass_slice(self): return self.sq_ass_slice
-    def setSq_ass_slice(self, sq_ass_slice): self.sq_ass_slice = sq_ass_slice
+    def getMp_ass_subscript(self): return self.mp_ass_subscript
+    def setMp_ass_subscript(self, mp_ass_subscript): self.mp_ass_subscript = mp_ass_subscript
+    def getMp_subscript(self): return self.mp_subscript
+    def setMp_subscript(self, mp_subscript): self.mp_subscript = mp_subscript
     def getSq_contains(self): return self.sq_contains
     def setSq_contains(self, sq_contains): self.sq_contains = sq_contains
-    def getSq_ass_item(self): return self.sq_ass_item
-    def setSq_ass_item(self, sq_ass_item): self.sq_ass_item = sq_ass_item
     def getSq_repeat(self): return self.sq_repeat
     def setSq_repeat(self, sq_repeat): self.sq_repeat = sq_repeat
     def getSq_length(self): return self.sq_length
@@ -793,13 +793,13 @@ class Sequence:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Sequence'):
-        outfile.write(' sq_slice="%s"' % (self.getSq_slice(), ))
+        outfile.write(' sq_ass_item="%s"' % (self.getSq_ass_item(), ))
         outfile.write(' sq_item="%s"' % (self.getSq_item(), ))
         outfile.write(' sq_concat="%s"' % (self.getSq_concat(), ))
         outfile.write(' sq_inplace_repeat="%s"' % (self.getSq_inplace_repeat(), ))
-        outfile.write(' sq_ass_slice="%s"' % (self.getSq_ass_slice(), ))
+        outfile.write(' mp_ass_subscript="%s"' % (self.getMp_ass_subscript(), ))
+        outfile.write(' mp_subscript="%s"' % (self.getMp_subscript(), ))
         outfile.write(' sq_contains="%s"' % (self.getSq_contains(), ))
-        outfile.write(' sq_ass_item="%s"' % (self.getSq_ass_item(), ))
         outfile.write(' sq_repeat="%s"' % (self.getSq_repeat(), ))
         outfile.write(' sq_length="%s"' % (self.getSq_length(), ))
         outfile.write(' sq_inplace_concat="%s"' % (self.getSq_inplace_concat(), ))
@@ -811,7 +811,7 @@ class Sequence:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('sq_slice = "%s",\n' % (self.getSq_slice(),))
+        outfile.write('sq_ass_item = "%s",\n' % (self.getSq_ass_item(),))
         showIndent(outfile, level)
         outfile.write('sq_item = "%s",\n' % (self.getSq_item(),))
         showIndent(outfile, level)
@@ -819,11 +819,11 @@ class Sequence:
         showIndent(outfile, level)
         outfile.write('sq_inplace_repeat = "%s",\n' % (self.getSq_inplace_repeat(),))
         showIndent(outfile, level)
-        outfile.write('sq_ass_slice = "%s",\n' % (self.getSq_ass_slice(),))
+        outfile.write('mp_ass_subscript = "%s",\n' % (self.getMp_ass_subscript(),))
+        showIndent(outfile, level)
+        outfile.write('mp_subscript = "%s",\n' % (self.getMp_subscript(),))
         showIndent(outfile, level)
         outfile.write('sq_contains = "%s",\n' % (self.getSq_contains(),))
-        showIndent(outfile, level)
-        outfile.write('sq_ass_item = "%s",\n' % (self.getSq_ass_item(),))
         showIndent(outfile, level)
         outfile.write('sq_repeat = "%s",\n' % (self.getSq_repeat(),))
         showIndent(outfile, level)
@@ -840,13 +840,13 @@ class Sequence:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
-        if attrs.get('sq_slice'):
-            if attrs.get('sq_slice').value in ('true', '1'):
-                self.sq_slice = 1
-            elif attrs.get('sq_slice').value in ('false', '0'):
-                self.sq_slice = 0
+        if attrs.get('sq_ass_item'):
+            if attrs.get('sq_ass_item').value in ('true', '1'):
+                self.sq_ass_item = 1
+            elif attrs.get('sq_ass_item').value in ('false', '0'):
+                self.sq_ass_item = 0
             else:
-                raise ValueError('Bad boolean attribute (sq_slice)')
+                raise ValueError('Bad boolean attribute (sq_ass_item)')
         if attrs.get('sq_item'):
             if attrs.get('sq_item').value in ('true', '1'):
                 self.sq_item = 1
@@ -868,13 +868,20 @@ class Sequence:
                 self.sq_inplace_repeat = 0
             else:
                 raise ValueError('Bad boolean attribute (sq_inplace_repeat)')
-        if attrs.get('sq_ass_slice'):
-            if attrs.get('sq_ass_slice').value in ('true', '1'):
-                self.sq_ass_slice = 1
-            elif attrs.get('sq_ass_slice').value in ('false', '0'):
-                self.sq_ass_slice = 0
+        if attrs.get('mp_ass_subscript'):
+            if attrs.get('mp_ass_subscript').value in ('true', '1'):
+                self.mp_ass_subscript = 1
+            elif attrs.get('mp_ass_subscript').value in ('false', '0'):
+                self.mp_ass_subscript = 0
             else:
-                raise ValueError('Bad boolean attribute (sq_ass_slice)')
+                raise ValueError('Bad boolean attribute (mp_ass_subscript)')
+        if attrs.get('mp_subscript'):
+            if attrs.get('mp_subscript').value in ('true', '1'):
+                self.mp_subscript = 1
+            elif attrs.get('mp_subscript').value in ('false', '0'):
+                self.mp_subscript = 0
+            else:
+                raise ValueError('Bad boolean attribute (mp_subscript)')
         if attrs.get('sq_contains'):
             if attrs.get('sq_contains').value in ('true', '1'):
                 self.sq_contains = 1
@@ -882,13 +889,6 @@ class Sequence:
                 self.sq_contains = 0
             else:
                 raise ValueError('Bad boolean attribute (sq_contains)')
-        if attrs.get('sq_ass_item'):
-            if attrs.get('sq_ass_item').value in ('true', '1'):
-                self.sq_ass_item = 1
-            elif attrs.get('sq_ass_item').value in ('false', '0'):
-                self.sq_ass_item = 0
-            else:
-                raise ValueError('Bad boolean attribute (sq_ass_item)')
         if attrs.get('sq_repeat'):
             if attrs.get('sq_repeat').value in ('true', '1'):
                 self.sq_repeat = 1
@@ -1971,14 +1971,14 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             done = 1
         elif name == 'Sequence':
             obj = Sequence.factory()
-            val = attrs.get('sq_slice', None)
+            val = attrs.get('sq_ass_item', None)
             if val is not None:
                 if val in ('true', '1'):
-                    obj.setSq_slice(1)
+                    obj.setSq_ass_item(1)
                 elif val in ('false', '0'):
-                    obj.setSq_slice(0)
+                    obj.setSq_ass_item(0)
                 else:
-                    self.reportError('"sq_slice" attribute must be boolean ("true", "1", "false", "0")')
+                    self.reportError('"sq_ass_item" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('sq_item', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -2003,14 +2003,22 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setSq_inplace_repeat(0)
                 else:
                     self.reportError('"sq_inplace_repeat" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_ass_slice', None)
+            val = attrs.get('mp_ass_subscript', None)
             if val is not None:
                 if val in ('true', '1'):
-                    obj.setSq_ass_slice(1)
+                    obj.setMp_ass_subscript(1)
                 elif val in ('false', '0'):
-                    obj.setSq_ass_slice(0)
+                    obj.setMp_ass_subscript(0)
                 else:
-                    self.reportError('"sq_ass_slice" attribute must be boolean ("true", "1", "false", "0")')
+                    self.reportError('"mp_ass_subscript" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('mp_subscript', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setMp_subscript(1)
+                elif val in ('false', '0'):
+                    obj.setMp_subscript(0)
+                else:
+                    self.reportError('"mp_subscript" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('sq_contains', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -2019,14 +2027,6 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setSq_contains(0)
                 else:
                     self.reportError('"sq_contains" attribute must be boolean ("true", "1", "false", "0")')
-            val = attrs.get('sq_ass_item', None)
-            if val is not None:
-                if val in ('true', '1'):
-                    obj.setSq_ass_item(1)
-                elif val in ('false', '0'):
-                    obj.setSq_ass_item(0)
-                else:
-                    self.reportError('"sq_ass_item" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('sq_repeat', None)
             if val is not None:
                 if val in ('true', '1'):

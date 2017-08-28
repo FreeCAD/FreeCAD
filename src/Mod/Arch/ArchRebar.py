@@ -92,7 +92,7 @@ class _CommandRebar:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Rebar',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
                 'Accel': "R, B",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
 

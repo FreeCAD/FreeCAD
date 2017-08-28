@@ -94,7 +94,6 @@ class CommandPathHop:
     def GetResources(self):
         return {'Pixmap': 'Path-Hop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
-                'Accel': "P, H",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object")}
 
     def IsActive(self):

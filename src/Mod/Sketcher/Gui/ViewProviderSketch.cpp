@@ -111,6 +111,7 @@
 #include "DrawSketchHandler.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
+#include "CommandConstraints.h"
 
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...
@@ -768,14 +769,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                
-                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                            
-                                if(autoRecompute)
-                                    Gui::Command::updateActive();
-                                else
-                                    getSketchObject()->solve();
+
+                                tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -807,13 +802,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                            
-                                if(autoRecompute)
-                                    Gui::Command::updateActive();
-                                else
-                                    getSketchObject()->solve();
+
+                                tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -2793,6 +2783,12 @@ void ViewProviderSketch::drawConstraintIcons()
             multipleIcons = true;
             break;
         default:
+            break;
+        }
+
+        // Double-check that we can safely access the Inventor nodes
+        if (constrId >= edit->constrGroup->getNumChildren()) {
+            Base::Console().Warning("Can't update constraint icons because view is not in sync with sketch\n");
             break;
         }
 
@@ -5811,6 +5807,11 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             signalConstraintsChanged();
             signalElementsChanged();
         }
+        
+        // Notes on solving and recomputing:
+        //
+        // This function is generally called from StdCmdDelete::activated
+        // Since 2015-05-03 that function includes a recompute at the end.
         
         /*this->drawConstraintIcons();
         this->updateColor();*/

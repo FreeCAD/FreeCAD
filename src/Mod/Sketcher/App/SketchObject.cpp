@@ -57,6 +57,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
+//# include <QtGlobal>
 #endif
 
 #include <boost/bind.hpp>
@@ -159,48 +160,28 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
         delConstraintsToExternal();
     }
 
-    // We should have an updated Sketcher geometry or this execute should not have happened
-    // therefore we update our sketch object geometry with the SketchObject one.
-    //
-    // set up a sketch (including dofs counting and diagnosing of conflicts)    
-    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  getExternalGeometryCount());
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
+    // This includes a regular solve including full geometry update, except when an error
+    // ensues
+    int err = this->solve(true);
     
-    lastSolveTime=0.0;
-    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
-    
-    solverNeedsUpdate=false;
-    
-    if (lastDoF < 0) { // over-constrained sketch
+    if (err == -4) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
         appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    if (lastHasConflict) { // conflicting constraints
+    else if (err == -3) { // conflicting constraints
         std::string msg="Sketch with conflicting constraints\n";
         appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    if (lastHasRedundancies) { // redundant constraints
+    else if (err == -2) { // redundant constraints
         std::string msg="Sketch with redundant constraints\n";
         appendRedundantMsg(lastRedundant, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    // solve the sketch
-    lastSolverStatus=solvedSketch.solve();
-    lastSolveTime=solvedSketch.SolveTime;
-    
-    if (lastSolverStatus != 0)
+    else if (err == -1) { // Solver failed
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
-
-    std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
-    Geometry.setValues(geomlist);
-    for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it)
-        if (*it) delete *it;
+    }
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of 
     // the objects that depend on this sketch (like pads)
@@ -225,44 +206,52 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
     // the solver needs to be updated.
     
-    // We should have an updated Sketcher geometry or this solver should not have happened
-    // therefore we update our sketch object geometry with the SketchObject one.
+    // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have happened
+    // therefore we update our sketch solver geometry with the SketchObject one.
     //
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
-    
+
+    // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
+    // Some examples:
+    // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines
+    // Conflicting: a 80 degrees angle between a vertical line and another line, then adding a horizontal constraint to that other line
+    // OverConstrained: a conflicting constraint when all other DoF are already constraint (it has more constrains than parameters and the extra constraints are not redundant)
+
     solverNeedsUpdate=false;
-    
+
     lastHasConflict = solvedSketch.hasConflicts();
-    
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();
+    lastSolveTime=0.0;
+
+    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+
     int err=0;
+
+    // redundancy is a lower priority problem than conflict/over-constraint/solver error
+    // we set it here because we are indeed going to solve, as we can. However, we still want to
+    // provide the right error code.
+    if (lastHasRedundancies) { // redundant constraints
+        err = -2;
+    }
+    
     if (lastDoF < 0) { // over-constrained sketch
-        err = -3;
-        // if lastDoF<0, then an over-constrained situation has ensued.
-        // Geometry is not to be updated, as geometry can not follow the constraints.
-        // However, solver information must be updated.
-        this->Constraints.touch();
+        err = -4;
     }
     else if (lastHasConflict) { // conflicting constraints
+        // The situation is exactly the same as in the over-constrained situation.
         err = -3;
     }
     else {
         lastSolverStatus=solvedSketch.solve();
         if (lastSolverStatus != 0){ // solving
-            err = -2;
-            // if solver failed, geometry was never updated, but invalid constraints were likely added before
-            // solving (see solve in addConstraint), so solver information is definitely invalid.
-            this->Constraints.touch();
-            
+            err = -1;
         }
-            
     }
     
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
     lastSolveTime=solvedSketch.SolveTime;
 
     if (err == 0 && updateGeoAfterSolving) {
@@ -271,6 +260,11 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         Geometry.setValues(geomlist);
         for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
             if (*it) delete *it;
+    }
+    else if(err <0) {
+        // if solver failed, invalid constraints were likely added before solving
+        // (see solve in addConstraint), so solver information is definitely invalid.
+        this->Constraints.touch();
     }
 
     return err;
@@ -4140,37 +4134,36 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
     #if OCC_VERSION_HEX < 0x060900
-    Base::Console().Error("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher\n");
-    return false;
+        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher\n"))
     #endif
     
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        THROWM(Base::ValueError,"BSpline GeoId is out of bounds.")
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline GeoId is out of bounds."))
     
     if (multiplicityincr == 0) // no change in multiplicity
-        THROWM(Base::ValueError,"You are requesting no change in knot multiplicity.")
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "You are requesting no change in knot multiplicity."))
     
     const Part::Geometry *geo = getGeometry(GeoId);
     
     if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        THROWM(Base::TypeError,"The GeoId provided is not a B-spline curve.");
+        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The GeoId provided is not a B-spline curve."))
     
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
     
     int degree = bsp->getDegree();
     
     if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
-        THROWM(Base::ValueError,"The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.");
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero."))
 
     Part::GeomBSplineCurve *bspline;
 
     int curmult = bsp->getMultiplicity(knotIndex);
     
     if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
-        THROWM(Base::ValueError,"The multiplicity cannot be increased beyond the degree of the b-spline.");
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."))
     
     if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
-        THROWM(Base::ValueError,"The multiplicity cannot be decreased beyond zero.");
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."))
     
     try {
 
@@ -4183,7 +4176,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr,1E6);
 
             if(!result)
-                THROWM(Base::CADKernelError, "OCC is unable to decrease the multiplicity within the maximum tolerance.");
+                THROWMT(Base::CADKernelError, QT_TRANSLATE_NOOP("Exceptions", "OCC is unable to decrease the multiplicity within the maximum tolerance."))
         }
     }
     catch (const Base::Exception& e) {

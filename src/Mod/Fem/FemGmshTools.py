@@ -58,7 +58,7 @@ class FemGmshTools():
         self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
 
         # geotol, GeometryTolerance: float, 0.0 = 1e-08
-        self.geotol = Units.Quantity(self.mesh_obj.GeometryTolerance).Value
+        self.geotol = self.mesh_obj.GeometryTolerance
         if self.geotol == 0.0:
             self.geotol = 1e-08
 
@@ -224,8 +224,7 @@ class FemGmshTools():
 
     def get_group_data(self):
         self.group_elements = {}
-        # TODO solid, face, edge seam not work together, some print or make it work together
-        # TODO handle groups for Edges and Vertexes
+        # TODO solids, faces, edges and vertexes seam not work together in one group, some print or make them work together
 
         # mesh groups and groups of analysis member
         if not self.mesh_obj.MeshGroupList:
@@ -437,9 +436,14 @@ class FemGmshTools():
                     physical_type = 'Surface'
                     for ele in gdata:
                         ele_nr += (ele.lstrip('Face') + ', ')
-                elif gdata[0].startswith('Edge') or gdata[0].startswith('Vertex'):
-                    geo.write("// " + group + " group data not written. Edges or Vertexes group data not supported.\n")
-                    print('  Groups for Edges or Vertexes reference shapes not handeled yet.')
+                elif gdata[0].startswith('Edge'):
+                    physical_type = 'Line'
+                    for ele in gdata:
+                        ele_nr += (ele.lstrip('Edge') + ', ')
+                elif gdata[0].startswith('Vertex'):
+                    physical_type = 'Point'
+                    for ele in gdata:
+                        ele_nr += (ele.lstrip('Vertex') + ', ')
                 if ele_nr:
                     ele_nr = ele_nr.rstrip(', ')
                     # print(ele_nr)

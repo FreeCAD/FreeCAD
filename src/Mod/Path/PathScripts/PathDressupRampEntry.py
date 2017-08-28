@@ -38,8 +38,7 @@ def translate(text, context="PathDressup_RampEntry", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ObjectDressup:

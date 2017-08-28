@@ -36,7 +36,6 @@ class CommandPathSimpleCopy:
     def GetResources(self):
         return {'Pixmap': 'Path-SimpleCopy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
-                'Accel': "P, Y",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Creates a non-parametric copy of another path")}
 
     def IsActive(self):

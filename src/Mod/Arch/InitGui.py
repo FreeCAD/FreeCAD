@@ -54,7 +54,7 @@ class ArchWorkbench(Workbench):
         else:
             class RebarGroupCommand:
                 def GetCommands(self):
-                    return tuple(["Arch_Rebar"]+RebarTools.RebarCommands)
+                    return tuple(RebarTools.RebarCommands+["Arch_Rebar"])
                 def GetResources(self):
                     return { 'MenuText': 'Rebar tools',
                              'ToolTip': 'Rebar tools'

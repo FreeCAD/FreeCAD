@@ -93,7 +93,6 @@ class CommandPathStock:
     def GetResources(self):
         return {'Pixmap': 'Path-Stock',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathStock", "Stock"),
-                'Accel': "P, S",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathStock", "Creates a 3D object to represent raw stock to mill the part out of")}
 
     def IsActive(self):

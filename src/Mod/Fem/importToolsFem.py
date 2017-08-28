@@ -33,6 +33,20 @@ from math import pow, sqrt
 import numpy as np
 
 
+def get_FemMeshObjectMeshGroups(fem_mesh_obj):
+    """
+        Get mesh groups from mesh. This also throws no exception if there
+        is no Groups property at all (e.g. Netgen meshes).
+    """
+    fem_mesh = fem_mesh_obj.FemMesh
+    try:
+        gmshgroups = fem_mesh.Groups
+    except:
+        gmshgroups = ()
+
+    return gmshgroups
+
+
 def get_FemMeshObjectOrder(fem_mesh_obj):
     """
         Gets element order. Element order counting based on number of nodes on
@@ -56,7 +70,6 @@ def get_FemMeshObjectOrder(fem_mesh_obj):
             presumable_order = [el - 1 for el in edges_length_set]
     else:
         print("Found no edges in mesh: Element order determination does not work without them.")
-    print(presumable_order)
 
     return presumable_order
 

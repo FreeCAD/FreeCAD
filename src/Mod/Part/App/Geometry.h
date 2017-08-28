@@ -727,12 +727,27 @@ class PartExport GeomSurface : public Geometry
 {
     TYPESYSTEM_HEADER();
 public:
+    enum Curvature {
+        Maximum,
+        Minimum,
+        Mean,
+        Gaussian
+    };
+
     GeomSurface();
     virtual ~GeomSurface();
 
     TopoDS_Shape toShape() const;
     bool tangentU(double u, double v, gp_Dir& dirU) const;
     bool tangentV(double u, double v, gp_Dir& dirV) const;
+    bool normal(double u, double v, gp_Dir& dir) const;
+
+    /** @name Curvature information */
+    //@{
+    bool isUmbillic(double u, double v) const;
+    double curvature(double u, double v, Curvature) const;
+    void curvatureDirections(double u, double v, gp_Dir& maxD, gp_Dir& minD) const;
+    //@}
 };
 
 class PartExport GeomBezierSurface : public GeomSurface

@@ -41,6 +41,14 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const;
     bool onDelete(const std::vector<std::string> &);
 
+    /// drag and drop
+    bool canDragObjects() const;
+    bool canDragObject(App::DocumentObject*) const;
+    void dragObject(App::DocumentObject*);
+    bool canDropObjects() const;
+    bool canDropObject(App::DocumentObject*) const;
+    void dropObject(App::DocumentObject*);
+
 protected:
     void updateData(const App::Property*);
 };

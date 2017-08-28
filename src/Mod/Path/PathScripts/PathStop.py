@@ -104,7 +104,6 @@ class CommandPathStop:
     def GetResources(self):
         return {'Pixmap': 'Path-Stop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Stop"),
-                'Accel': "P, C",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Add Optional or Mandatory Stop to the program")}
 
     def IsActive(self):

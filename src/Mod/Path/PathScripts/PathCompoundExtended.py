@@ -95,7 +95,6 @@ class CommandCompoundExtended:
     def GetResources(self):
         return {'Pixmap': 'Path-Compound',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_CompoundExtended", "Compound"),
-                'Accel': "P, C",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_CompoundExtended", "Creates a Path Compound object")}
 
     def IsActive(self):

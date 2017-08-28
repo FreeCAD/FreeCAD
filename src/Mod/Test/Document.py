@@ -156,6 +156,13 @@ class DocumentBasicCases(unittest.TestCase):
   def testMem(self):
     self.Doc.MemSize
 
+  def testDuplicateLinks(self):
+    obj = self.Doc.addObject("App::FeatureTest","obj")
+    grp = self.Doc.addObject("App::DocumentObjectGroup","group")
+    grp.Group = [obj,obj]
+    self.Doc.removeObject(obj.Name)
+    self.assertListEqual(grp.Group, [])
+
   def testAddRemove(self):
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
     # must delete object

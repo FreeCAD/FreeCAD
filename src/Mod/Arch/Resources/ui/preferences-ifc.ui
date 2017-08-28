@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>699</height>
+    <height>728</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -350,6 +350,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSkip</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_20">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_14">
+          <property name="toolTip">
+           <string>Fit view during import on the imported objects. This will slow down the import, but one can watch the import.</string>
+          </property>
+          <property name="text">
+           <string>Fit view while importing</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcFitViewOnImport</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

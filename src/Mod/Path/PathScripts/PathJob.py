@@ -239,7 +239,7 @@ class TaskPanel:
         self.obj.PostProcessor = currentPostProcessor
 
         for o in ObjectPathJob.baseCandidates():
-            self.form.cboBaseObject.addItem(o.Label)
+            self.form.cboBaseObject.addItem(o.Label, o)
 
 
         self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
@@ -298,8 +298,7 @@ class TaskPanel:
                         newlist.append(olditem)
             self.obj.Group = newlist
 
-            objName = self.form.cboBaseObject.currentText()
-            selObj = FreeCAD.ActiveDocument.getObject(objName)
+            selObj = self.form.cboBaseObject.itemData(self.form.cboBaseObject.currentIndex())
             if self.form.chkCreateClone.isChecked():
                 selObj = Draft.clone(selObj)
             self.obj.Base = selObj
@@ -429,7 +428,7 @@ class CommandJobCreate:
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
-                #'Accel': "P, J",
+                'Accel': "P, J",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
 
     def IsActive(self):
@@ -468,7 +467,6 @@ class CommandJobExportTemplate:
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
-                #'Accel': "P, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 
     def IsActive(self):

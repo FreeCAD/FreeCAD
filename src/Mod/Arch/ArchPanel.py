@@ -503,7 +503,7 @@ class _Panel(ArchComponent.Component):
                     v3 = Vector(l2,w2,layeroffset)
                     v4 = Vector(-l2,w2,layeroffset)
                     base = Part.makePolygon([v1,v2,v3,v4,v1])
-                    basepofile = Part.Face(base)
+                    baseprofile = Part.Face(base)
                     base = baseprofile.extrude(n)
                     shps.append(base)
                     layeroffset += l

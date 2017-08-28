@@ -134,8 +134,8 @@ class ToolController:
     def onChanged(self, obj, prop):
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
 
-
-        if 'Restore' not in obj.State:
+        if 'Path' == prop and 'Restore' not in obj.State:
+            PathLog.debug("--- dirty deeds")
             job = PathScripts.PathUtils.findParentJob(obj)
             if job is not None:
                 for g in job.Group:
@@ -236,7 +236,7 @@ class CommandPathToolController:
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
         PathScripts.PathToolController.ToolController(obj)
-        if assignViewProvider:
+        if FreeCAD.GuiUp and assignViewProvider:
             PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
 
         if tool is None:

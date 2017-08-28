@@ -64,22 +64,33 @@ def insert(filename, docname):
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM mechanical result object in the ActiveDocument
     '''
+    import importZ88Mesh
     import importToolsFem
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
-    m = read_z88_disp(filename)
-    if len(m['Nodes']) > 0:
+    disp_read = read_z88_disp(filename)
+    result_mesh_object = None
+    if len(disp_read['Nodes']) > 0:
         if analysis:
-            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
+            analysis_object = analysis
 
-        for result_set in m['Results']:
+        # read result mesh
+        if filename.endswith('z88o2.txt'):
+            mesh_file = filename.replace('o2', 'i1')
+            mesh_data = importZ88Mesh.read_z88_mesh(mesh_file)
+            femmesh = importToolsFem.make_femmesh(mesh_data)
+            result_mesh_object = ObjectsFem.makeMeshResult('Result_mesh')
+            result_mesh_object.FemMesh = femmesh
+        else:
+            FreeCAD.Console.PrintError('Z88 mesh file z88i1.txt not found!')
+
+        # create result obj
+        for result_set in disp_read['Results']:
             results_name = result_name_prefix + 'results'
+
             results = ObjectsFem.makeResultMechanical(results_name)
-            for m in analysis_object.Member:  # TODO analysis could have multiple mesh objects in the future
-                if m.isDerivedFrom("Fem::FemMeshObject"):
-                    results.Mesh = m
-                    break
+            results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
             if analysis:
                 analysis_object.Member = analysis_object.Member + [results]
