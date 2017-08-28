@@ -130,7 +130,7 @@ def _getCustomDir(solver):
 def _getCustomBase(solver):
     path = FemSettings.getCustomDir()
     if not os.path.isdir(path):
-        raise ValueError("Invalid path")
+        raise DirectoryDoesNotExist("Invalid path")
     return path
 
 
@@ -410,4 +410,8 @@ class _DocObserver(object):
 
 
 class MustSaveError(Exception):
+    pass
+
+
+class DirectoryDoesNotExist(Exception):
     pass

@@ -85,6 +85,12 @@ class ViewProxy(object):
                 "This must be done because the location of the working "
                 "directory is set to \"Beside .fcstd File\".")
             return False
+        except FemRun.DirectoryDoesNotExist:
+            QtGui.QMessageBox.critical(
+                Gui.getMainWindow(),
+                "Can't open Task Panel",
+                "Selected working directory doesn't exist.")
+            return False
         task = PyGui._TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
