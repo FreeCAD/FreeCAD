@@ -37,6 +37,12 @@ from PySide import QtCore, QtGui
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+if True:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule)
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 class ViewProvider:
 
     def __init__(self, vobj):
@@ -63,16 +69,12 @@ class ViewProvider:
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
     def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
         self.taskPanel = TaskPanel(vobj, self.deleteObjectsOnReject())
+        FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(self.taskPanel)
         self.taskPanel.setupUi()
         self.deleteOnReject = False
         return True
-
-    def unsetEdit(self, vobj, mode):
-        if self.taskPanel:
-            self.taskPanel.reject()
 
     def resetTaskPanel(self):
         self.taskPanel = None
@@ -121,27 +123,43 @@ class TaskPanel:
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
+        self.baseVisibility = False
+        self.baseOrigVisibilty = False
+        if self.obj.Base and self.obj.Base.ViewObject:
+            self.baseVisibility = self.obj.Base.ViewObject.Visibility
+            self.obj.Base.ViewObject.Visibility = True
+            self.baseOrigVisibility = self.obj.Base.Objects[0].ViewObject.Visibility
+            self.obj.Base.Objects[0].ViewObject.Visibility = False
+
+    def preCleanup(self):
+        if self.obj.Base and self.obj.Base.ViewObject:
+            self.obj.Base.ViewObject.Visibility = self.baseVisibility
+            self.obj.Base.Objects[0].ViewObject.Visibility = self.baseOrigVisibility
+
     def accept(self):
         PathLog.debug('accept')
+        self.preCleanup()
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
-        self.vobj.Proxy.resetTaskPanel()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
+        self.cleanup()
 
     def reject(self):
         PathLog.debug('reject')
-        FreeCADGui.Control.closeDialog()
+        self.preCleanup()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             PathLog.info("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-        self.vobj.Proxy.resetTaskPanel()
+        self.cleanup()
         return True
+
+    def cleanup(self):
+        self.vobj.Proxy.resetTaskPanel()
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
 
     def updateTooltips(self):
         if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "tooltip") and self.obj.Proxy.tooltip:
