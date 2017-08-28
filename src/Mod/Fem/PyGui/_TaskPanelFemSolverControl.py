@@ -137,8 +137,9 @@ class ControlTaskPanel(QtCore.QObject):
 
     @QtCore.Slot()
     def updateMachine(self):
-        path = self.form.directory()
-        self.machine = FemRun.getMachine(self.machine.solver, path)
+        if self.form.directory() != self.machine.directory:
+            self.machine = FemRun.getMachine(
+                self.machine.solver, self.form.directory())
 
     @QtCore.Slot()
     def _updateTimer(self):

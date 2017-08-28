@@ -93,6 +93,9 @@ def _createMachine(solver, path):
         path = _getCustomDir(solver)
         _dirTypes[path] = FemSettings.CUSTOM
     m = solver.Proxy.createMachine(solver, path)
+    oldMachine = _machines.get(solver)
+    if oldMachine is not None:
+        del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m
 
