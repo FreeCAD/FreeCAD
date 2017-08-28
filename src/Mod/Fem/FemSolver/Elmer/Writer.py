@@ -206,8 +206,8 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
         s["Variable"] = self._getUniqueVarName("Temperature")
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = True
-        s["Bubbles"] = False
+        s["Stabilize"] = equation.Stabilize
+        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
@@ -312,8 +312,8 @@ class Writer(object):
         s["Calculate Pangle"] = equation.CalculatePangle
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = True
-        s["Bubbles"] = False
+        s["Stabilize"] = equation.Stabilize
+        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
@@ -461,8 +461,8 @@ class Writer(object):
         #s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = True
-        s["Bubbles"] = False
+        s["Stabilize"] = equation.Stabilize
+        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 

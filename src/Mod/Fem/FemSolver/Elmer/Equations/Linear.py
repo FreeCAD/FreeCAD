@@ -89,6 +89,14 @@ class Proxy(Base.Proxy):
             "App::PropertyFloat", "SteadyStateTolerance",
             "Steady State", "Select type of solver for linear system")
         obj.SteadyStateTolerance = 1e-5
+        obj.addProperty(
+            "App::PropertyBool", "Stabilize",
+            "Base", "Select type of solver for linear system")
+        obj.Stabilize = True
+        obj.addProperty(
+            "App::PropertyBool", "Bubbles",
+            "Base", "Select type of solver for linear system")
+        obj.Bubbles = False
 
 
 class ViewProxy(Base.ViewProxy):
