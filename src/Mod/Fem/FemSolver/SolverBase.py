@@ -77,7 +77,7 @@ class ViewProxy(object):
     def setEdit(self, vobj, mode=0):
         try:
             machine = FemRun.getMachine(vobj.Object)
-        except ValueError:
+        except FemRun.MustSaveError:
             QtGui.QMessageBox.critical(
                 Gui.getMainWindow(),
                 "Can't open Task Panel",

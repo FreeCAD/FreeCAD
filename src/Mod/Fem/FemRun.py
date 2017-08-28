@@ -113,7 +113,7 @@ def _getBesideDir(solver):
 def _getBesideBase(solver):
     fcstdPath = solver.Document.FileName
     if fcstdPath == "":
-        raise ValueError("must save")
+        raise MustSaveError()
     return os.path.splitext(fcstdPath)[0]
 
 
@@ -407,3 +407,7 @@ class _DocObserver(object):
             if FemMisc.isDerivedFrom(obj, t):
                 return True
         return False
+
+
+class MustSaveError(Exception):
+    pass
