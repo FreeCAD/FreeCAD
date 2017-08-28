@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 import ArchPanel
+import Draft
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
@@ -104,11 +105,45 @@ class ObjectJob:
         FreeCAD.ActiveDocument.removeObject(obj.Operations.Name)
         obj.Operations = None
 
+    def isResourceClone(self, obj, propName, resourceName):
+        if hasattr(obj, propName):
+            prop =  getattr(obj, propName)
+            if hasattr(prop, 'PathResource') and resourceName == getattr(prop, 'PathResource'):
+                return True
+        return False
+
+    def fixupResourceClone(self, obj, name):
+        if not self.isResourceClone(obj, name, name):
+            orig = getattr(obj, name)
+            if orig:
+                clone = Draft.clone(orig)
+                clone.Label = name
+                clone.addProperty('App::PropertyString', 'PathResource')
+                clone.PathResource = name
+                setattr(obj, name, clone)
+
+    def onBeforeChange(self, obj, prop):
+        PathLog.track(obj.Label, prop)
+        if prop == 'Base' and obj.Base and hasattr(obj.Base, 'PathResource'):
+            PathLog.info('removing old base clone')
+            obj.Base.removeProperty('PathResource')
+            obj.Document.removeObject(obj.Base.Name)
+
     def onChanged(self, obj, prop):
+        PathLog.track(obj.Label, prop)
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
+
+        if prop == 'Base':
+            self.fixupResourceClone(obj, 'Base')
+        if prop == 'Stock':
+            self.fixupResourceClone(obj, 'Stock')
+
+    def onDocumentRestored(self, obj):
+        self.fixupResourceClone(obj, 'Base')
+        self.fixupResourceClone(obj, 'Stock')
 
     def assignTemplate(self, obj, template):
         '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.

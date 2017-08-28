@@ -86,8 +86,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>294</width>
-         <height>309</height>
+         <width>378</width>
+         <height>477</height>
         </rect>
        </property>
        <attribute name="label">
@@ -218,15 +218,15 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_3">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>368</width>
-         <height>399</height>
+         <width>378</width>
+         <height>403</height>
         </rect>
        </property>
        <attribute name="label">
@@ -234,7 +234,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <widget class="QGroupBox" name="groupBox_10">
+         <widget class="QGroupBox" name="stockGroup">
           <property name="title">
            <string>Stock</string>
           </property>
@@ -404,10 +404,18 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="postProcessorOutputFile"/>
+         <widget class="QLineEdit" name="postProcessorOutputFile">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="1" colspan="2">
-         <widget class="QLineEdit" name="postProcessorArguments"/>
+         <widget class="QLineEdit" name="postProcessorArguments">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_11">
@@ -535,7 +543,9 @@
             <string>Feed</string>
            </property>
            <property name="icon">
-            <iconset theme="object-flip-horizontal"/>
+            <iconset theme="object-flip-horizontal">
+             <normaloff/>
+            </iconset>
            </property>
           </column>
           <column>
@@ -543,7 +553,9 @@
             <string>Feed</string>
            </property>
            <property name="icon">
-            <iconset theme="object-flip-vertical"/>
+            <iconset theme="object-flip-vertical">
+             <normaloff/>
+            </iconset>
            </property>
           </column>
           <column>
@@ -600,7 +612,7 @@
     <item>
      <widget class="QToolBox" name="toolBox_2">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_9">
        <property name="geometry">
@@ -685,49 +697,6 @@
         <string>Default Values</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_14">
-        <item>
-         <widget class="QGroupBox" name="groupBox_7">
-          <property name="title">
-           <string>Operation</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="text">
-              <string>Milling</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="defaultMillingOp">
-             <item>
-              <property name="text">
-               <string>conventional</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>climb</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QCheckBox" name="defaultToolCompensation">
-             <property name="text">
-              <string>Tool Compensated</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
         <item>
          <widget class="QGroupBox" name="groupBox_5">
           <property name="title">
@@ -821,11 +790,49 @@
             </widget>
            </item>
           </layout>
-          <zorder>label_15</zorder>
-          <zorder>label_3</zorder>
-          <zorder>lineEdit</zorder>
-          <zorder>lineEdit_2</zorder>
-          <zorder>label_4</zorder>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
+           <string>Operation</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>Milling</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="defaultMillingOp">
+             <item>
+              <property name="text">
+               <string>conventional</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>climb</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="defaultToolCompensation">
+             <property name="text">
+              <string>Tool Compensated</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>

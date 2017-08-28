@@ -83,6 +83,10 @@ class ViewProvider:
     def claimChildren(self):
         children = self.obj.ToolController
         children.append(self.obj.Operations)
+        if self.obj.Base:
+            children.append(self.obj.Base)
+        if self.obj.Stock:
+            children.append(self.obj.Stock)
         return children
 
 class TaskPanel:
