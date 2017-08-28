@@ -143,7 +143,7 @@ namespace App
             /*!
              * Returns -1 if the enumeration is not valid according to isValid()
              */
-            int maxValue(void) const {return _maxVal;};
+            int maxValue(void) const {return _maxVal;}
 
             /// Assignment operator
             Enumeration & operator=(const Enumeration &other);
@@ -161,7 +161,7 @@ namespace App
             bool operator==(const char *other) const;
         protected:
             /// Returns true if instance was not initialized via static string list
-            bool isCustom(void) const {return _ownEnumArray;};
+            bool isCustom(void) const {return _ownEnumArray;}
 
             /// Updates _maxVal
             void findMaxVal(void);
