@@ -210,7 +210,7 @@ protected:
      * If this view provider is not added nothing happens.
      */
     void slotDeleteObject    (const Gui::ViewProviderDocumentObject&, bool boradcast);
-    void slotChangeObject    (const Gui::ViewProviderDocumentObject&, bool boradcast);
+    void slotChangeObject    (const Gui::ViewProviderDocumentObject&, const App::Property &prop, bool boradcast);
     void slotRenameObject    (const Gui::ViewProviderDocumentObject&);
     void slotActiveObject    (const Gui::ViewProviderDocumentObject&);
     void slotInEdit          (const Gui::ViewProviderDocumentObject&);

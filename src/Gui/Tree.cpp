@@ -711,9 +711,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 if(!parentItem->object()->canDragObjects() || 
                    !parentItem->object()->canDragObject(item->object()->getObject()))
                 {
-                    FC_WARN("'" << item->object()->getObject()->getNameInDocument() << 
-                            "' cannot be dragged out of '" << 
-                            parentItem->object()->getObject()->getNameInDocument() << "'");
+                    FC_ERR("'" << item->object()->getObject()->getNameInDocument() << 
+                           "' cannot be dragged out of '" << 
+                           parentItem->object()->getObject()->getNameInDocument() << "'");
                     return;
                 }
             }
@@ -757,9 +757,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if(!parentItem->object()->canDragObjects() || 
                !parentItem->object()->canDragObject(item->object()->getObject()))
             {
-                FC_WARN("'" << item->object()->getObject()->getNameInDocument() << 
-                        "' cannot be dragged out of '" << 
-                        parentItem->object()->getObject()->getNameInDocument() << "'");
+                FC_ERR("'" << item->object()->getObject()->getNameInDocument() << 
+                       "' cannot be dragged out of '" << 
+                       parentItem->object()->getObject()->getNameInDocument() << "'");
                 return;
             }
         }
@@ -1188,7 +1188,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     // Setup connections
     connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
     connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1, true));
-    connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1, true));
+    connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1, _2, true));
     connectRenObject = doc->signalRelabelObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
     connectActObject = doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
@@ -1485,44 +1485,47 @@ void DocumentItem::checkRemoveChildrenFromRoot(const Gui::ViewProviderDocumentOb
     }
 }
 
-void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view, bool broadcast)
+void DocumentItem::slotChangeObject(
+    const Gui::ViewProviderDocumentObject& view, const App::Property &prop, bool broadcast)
 {
+    auto obj = view.getObject();
+    if(!obj || !obj->getNameInDocument())
+        return;
+
+    // Let's not waste time on the newly added Visibility property in
+    // DocumentObject.
+    if(&prop == &obj->Visibility)
+        return;
+
     if(broadcast) {
         for(auto &v : getTree()->DocumentMap)
-            v.second->slotChangeObject(view,false);
+            v.second->slotChangeObject(view,prop,false);
         return;
     }
 
-    auto it = ObjectMap.find(view.getObject());
+    auto it = ObjectMap.find(obj);
     if(it == ObjectMap.end())
         return;
 
-    bool changeLabel = false;
-    const char *label = view.getObject()->Label.getValue();
-    if(it->second->label != label) {
-        changeLabel = true;
-        it->second->label = label;
+    if(&prop == &obj->Label) {
+        const char *label = obj->Label.getValue();
+        if(it->second->label!=label) {
+            it->second->label = label;
+            auto displayName = QString::fromUtf8(label);
+            for(auto item : it->second->items)
+                item->setText(0, displayName);
+        }
+        return;
     }
-    auto children = view.claimChildren();
+
+    const auto &children = view.claimChildren();
     bool removeChildrenFromRoot = view.canRemoveChildrenFromRoot();
-    bool doPopulate = false;
     if(removeChildrenFromRoot!=it->second->removeChildrenFromRoot || 
        children!=it->second->children) 
     {
-        doPopulate = true;
         it->second->removeChildrenFromRoot = removeChildrenFromRoot;
-        it->second->children.swap(children);
-    }
-    if(!changeLabel && !doPopulate) return;
-
-    QString displayName;
-    if(changeLabel)
-        displayName = QString::fromUtf8(label);
-
-    for(auto item : it->second->items) {
-        if(changeLabel)
-            item->setText(0, displayName);
-        if(doPopulate)
+        it->second->children = children;
+        for(auto item : it->second->items)
             populateItem(item,true);
     }
 }
