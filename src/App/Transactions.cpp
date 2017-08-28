@@ -114,6 +114,15 @@ bool Transaction::hasObject(const TransactionalObject *Obj) const
     return false;
 }
 
+void Transaction::removeProperty(TransactionalObject *Obj,
+                                 const Property* pcProp)
+{
+    for (auto it : _Objects) {
+        if (it.first == Obj)
+            it.second->removeProperty(pcProp);
+    }
+}
+
 //**************************************************************************
 // separator for other implemetation aspects
 
@@ -275,6 +284,15 @@ void TransactionObject::setProperty(const Property* pcProp)
     std::map<const Property*, Property*>::iterator pos = _PropChangeMap.find(pcProp);
     if (pos == _PropChangeMap.end())
         _PropChangeMap[pcProp] = pcProp->Copy();
+}
+
+void TransactionObject::removeProperty(const Property* pcProp)
+{
+    std::map<const Property*, Property*>::iterator pos = _PropChangeMap.find(pcProp);
+    if (pos != _PropChangeMap.end()) {
+        delete pos->second;
+        _PropChangeMap.erase(pos);
+    }
 }
 
 unsigned int TransactionObject::getMemSize (void) const

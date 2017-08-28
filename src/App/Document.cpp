@@ -869,6 +869,17 @@ bool Document::redo(void)
     return false;
 }
 
+void Document::removePropertyOfObject(TransactionalObject* obj, const char* name)
+{
+    Property* prop = obj->getDynamicPropertyByName(name);
+    if (prop) {
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->removeProperty(obj, prop);
+        for (auto it : mUndoTransactions)
+            it->removeProperty(obj, prop);
+    }
+}
+
 bool Document::isPerformingTransaction() const
 {
     return d->undoing || d->rollback;
