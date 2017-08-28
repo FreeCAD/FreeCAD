@@ -34,7 +34,7 @@ from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -120,6 +120,8 @@ class ObjectJob:
                 clone.Label = name
                 clone.addProperty('App::PropertyString', 'PathResource')
                 clone.PathResource = name
+                if clone.ViewObject:
+                    clone.ViewObject.Visibility = False
                 setattr(obj, name, clone)
 
     def onBeforeChange(self, obj, prop):
