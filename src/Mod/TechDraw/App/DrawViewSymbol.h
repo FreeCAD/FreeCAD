@@ -60,6 +60,9 @@ public:
     virtual QRectF getRect() const override;
     virtual bool checkFit(TechDraw::DrawPage* p) const override;
 
+    //return PyObject as DrawViewSymbolPy
+    virtual PyObject *getPyObject(void);
+
 
 protected:
     virtual void onChanged(const App::Property* prop) override;

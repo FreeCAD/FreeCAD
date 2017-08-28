@@ -38,6 +38,8 @@
 #include "DrawPage.h"
 #include "DrawViewSymbol.h"
 
+#include <Mod/TechDraw/App/DrawViewSymbolPy.h>  // generated from DrawViewSymbolPy.xml
+
 using namespace TechDraw;
 using namespace std;
 
@@ -158,7 +160,14 @@ bool DrawViewSymbol::checkFit(TechDraw::DrawPage* p) const
     return result;
 }
 
-
+PyObject *DrawViewSymbol::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawViewSymbolPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 // Python Drawing feature ---------------------------------------------------------
 
