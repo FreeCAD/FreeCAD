@@ -121,7 +121,8 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                                          SourceName.c_str(),paramStr.str().c_str());
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
-        }
+    }
+    requestPaint();
     return DrawView::execute();
 }
 

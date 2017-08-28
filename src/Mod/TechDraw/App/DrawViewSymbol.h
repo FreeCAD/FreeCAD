@@ -63,6 +63,8 @@ public:
     //return PyObject as DrawViewSymbolPy
     virtual PyObject *getPyObject(void);
 
+    virtual short mustExecute() const;
+
 
 protected:
     virtual void onChanged(const App::Property* prop) override;
