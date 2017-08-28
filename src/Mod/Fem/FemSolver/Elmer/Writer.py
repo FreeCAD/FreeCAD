@@ -372,13 +372,13 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 gravity = getConstant("Gravity", "L/T^2")
-                mat = self._getBodyMaterial(name).Material
+                m = self._getBodyMaterial(name).Material
 
                 densityQuantity = Units.Quantity(m["Density"])
-                dimention = "M/L^3"
-                if name.startwith("Edge"):
+                dimension = "M/L^3"
+                if name.startswith("Edge"):
                     density.Unit = Units.Unit(-2, 1)
-                    dimention = "M/L^2"
+                    dimension = "M/L^2"
                 density = convert(densityQuantity, dimension)
 
                 force1 = gravity * obj.Gravity_x * density
