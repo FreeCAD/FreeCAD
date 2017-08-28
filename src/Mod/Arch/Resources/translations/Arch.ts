@@ -529,7 +529,7 @@
     </message>
     <message>
         <location filename="ArchRebar.py" line="166"/>
-        <source>The distance between the border of the beam and the fist bar (concrete cover).</source>
+        <source>The distance between the border of the beam and the first bar (concrete cover).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
