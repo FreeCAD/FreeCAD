@@ -501,6 +501,17 @@ class Writer(object):
                     if value > 0:
                         self._material(
                             name, "Heat expansion Coefficient", value)
+                if "ReferencePressure" in m:
+                    pressure = convert(m["ReferencePressure"], "M/(L*T^2)")
+                    self._material(name, "Reference Pressure", pressure)
+                if "SpecificHeatRatio" in m:
+                    self._material(
+                        name, "Specific Heat Ratio",
+                        float(m["SpecificHeatRatio"]))
+                if "CompressibilityModel" in m:
+                    self._material(
+                        name, "Compressibility Model",
+                        m["CompressibilityModel"])
 
     def _handleFlowBndConditions(self):
         for obj in self._getMember("Fem::ConstraintFlowVelocity"):
