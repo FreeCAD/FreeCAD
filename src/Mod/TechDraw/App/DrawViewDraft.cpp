@@ -124,6 +124,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
         }
+    requestPaint();
     return DrawView::execute();
 }
 
