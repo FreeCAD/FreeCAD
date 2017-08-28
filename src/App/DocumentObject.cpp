@@ -402,6 +402,12 @@ void DocumentObject::setDocument(App::Document* doc)
     onSettingDocument();
 }
 
+void DocumentObject::onAboutToRemoveProperty(const char* prop)
+{
+    if (_pDoc)
+        _pDoc->removePropertyOfObject(this, prop);
+}
+
 void DocumentObject::onBeforeChange(const Property* prop)
 {
     // Store current name in oldLabel, to be able to easily retrieve old name of document object later

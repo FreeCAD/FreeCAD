@@ -255,6 +255,8 @@ protected:
     void resetError(void){StatusBits.reset(ObjectStatus::Error);}
     void setDocument(App::Document* doc);
 
+    /// \internal get called when removing a property of name \a prop
+    void onAboutToRemoveProperty(const char* prop);
     /// get called before the value is changed
     virtual void onBeforeChange(const Property* prop);
     /// get called by the container when a property was changed

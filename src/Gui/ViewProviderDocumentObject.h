@@ -126,6 +126,8 @@ protected:
     /** @name Transaction handling
      */
     //@{
+    /// \internal get called when removing a property of name \a prop
+    void onAboutToRemoveProperty(const char* prop);
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
     //@}

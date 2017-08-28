@@ -94,6 +94,15 @@ const char* ViewProviderDocumentObject::detachFromDocument()
     return "";
 }
 
+void ViewProviderDocumentObject::onAboutToRemoveProperty(const char* prop)
+{
+    // transactions of view providers are also managed in App::Document.
+    App::DocumentObject* docobject = getObject();
+    App::Document* document = docobject ? docobject->getDocument() : nullptr;
+    if (document)
+        document->removePropertyOfObject(this, prop);
+}
+
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 {
     if (isAttachedToDocument()) {
