@@ -268,7 +268,7 @@
              </widget>
             </item>
             <item>
-             <widget class="Gui::PrefLineEdit" name="le_wd_custom">
+             <widget class="Gui::PrefFileChooser" name="le_wd_custom">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -278,8 +278,8 @@
                 <height>16777215</height>
                </size>
               </property>
-              <property name="placeholderText">
-               <string>/path/to/directory</string>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
               </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/Elmer</cstring>
