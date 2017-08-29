@@ -435,22 +435,31 @@ class TaskPanel:
             FreeCADGui.Selection.addSelection(selObject, selFeature)
 
     def alignSetOrigin(self):
-        pass
+        (obj, by) = self.alignMoveToOrigin()
+        if obj == self.obj.Base and self.obj.Stock:
+            Draft.move(self.obj.Stock, by)
+        if obj == self.obj.Stock and self.obj.Base:
+            Draft.move(self.obj.Base, by)
+        placement = FreeCADGui.ActiveDocument.ActiveView.viewPosition()
+        placement.Base = placement.Base + by
+        FreeCADGui.ActiveDocument.ActiveView.viewPosition(placement, 0)
 
     def alignMoveToOrigin(self):
         selObject = None
         selFeature = None
+        p = None
         for sel in FreeCADGui.Selection.getSelectionEx():
             selObject = sel.Object
             for feature in sel.SubElementNames:
                 selFeature = feature
                 sub = sel.Object.Shape.getElement(feature)
                 if 'Vertex' == sub.ShapeType:
-                    p = sub.Point
-                    Draft.move(sel.Object, FreeCAD.Vector() - p)
+                    p = FreeCAD.Vector() - sub.Point
+                    Draft.move(sel.Object, p)
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
+        return (selObject, p)
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
