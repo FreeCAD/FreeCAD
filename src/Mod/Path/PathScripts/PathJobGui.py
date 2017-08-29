@@ -436,8 +436,21 @@ class TaskPanel:
 
     def alignSetOrigin(self):
         pass
+
     def alignMoveToOrigin(self):
-        pass
+        selObject = None
+        selFeature = None
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            selObject = sel.Object
+            for feature in sel.SubElementNames:
+                selFeature = feature
+                sub = sel.Object.Shape.getElement(feature)
+                if 'Vertex' == sub.ShapeType:
+                    p = sub.Point
+                    Draft.move(sel.Object, FreeCAD.Vector() - p)
+        if selObject and selFeature:
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(selObject, selFeature)
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
