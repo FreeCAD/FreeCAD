@@ -22,14 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Draft
+import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
+import math
 import sys
 
+from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 
@@ -183,8 +187,6 @@ class TaskPanel:
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
 
             selObj = self.form.infoModel.itemData(self.form.infoModel.currentIndex())
-            #if self.form.chkCreateClone.isChecked():
-            #    selObj = Draft.clone(selObj)
             self.obj.Base = selObj
 
             self.updateTooltips()
@@ -374,6 +376,32 @@ class TaskPanel:
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
+    def orientSelected(self, axis):
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            for sub in sel.SubObjects:
+                if hasattr(sub, 'Surface'):
+                    n = sub.Surface.Axis
+                    if sub.Orientation == 'Reversed':
+                        n = FreeCAD.Vector() - n
+                        PathLog.debug("(%.2f, %.2f, %.2f) -> reversed (%s)" % (n.x, n.y, n.z, sub.Orientation))
+                    else:
+                        PathLog.debug("(%.2f, %.2f, %.2f) -> forward  (%s)" % (n.x, n.y, n.z, sub.Orientation))
+
+                    if PathGeom.pointsCoincide(axis, n):
+                        PathLog.debug("face properly oriented (%.2f, %.2f, %.2f)" % (n.x, n.y, n.z))
+                    else:
+                        p = sel.Object.Placement
+                        loc = sel.Object.Placement.Base
+                        if PathGeom.pointsCoincide(axis, FreeCAD.Vector() - n):
+                            PathLog.debug("flip")
+                            rot = FreeCAD.Rotation(FreeCAD.Vector(1-axis.x, 1-axis.y, 1-axis.z), 180)
+                            sel.Object.Placement = FreeCAD.Placement(loc, p.Rotation.multiply(rot))
+                        else:
+                            r = axis.cross(n) # rotation axis
+                            a = DraftVecUtils.angle(n, axis, r) * 180 / math.pi
+                            PathLog.debug("oh boy: (%.2f, %.2f, %.2f) -> %.2f" % (r.x, r.y, r.z, a))
+                            Draft.rotate(sel.Object, a, axis=r)
+
     def setupUi(self):
         self.setFields()
 
@@ -399,6 +427,11 @@ class TaskPanel:
 
         self.operationSelect()
         self.toolControllerSelect()
+
+        self.form.stockGroup.hide()
+        self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
+        self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
+        self.form.orientZAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 0, 1)))
 
 def Create(base, template=None):
     '''Create(base, template) ... creates a job instance for the given base object
