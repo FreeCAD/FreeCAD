@@ -43,7 +43,7 @@ def translate(context, text, disambig=None):
 
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule)
+    PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
@@ -82,6 +82,10 @@ class ViewProvider:
 
     def resetTaskPanel(self):
         self.taskPanel = None
+
+    def unsetEdit(self, arg1, arg2):
+        if self.taskPanel:
+            self.taskPanel.reject(False)
 
     def getIcon(self):
         return ":/icons/Path-Job.svg"
@@ -136,19 +140,21 @@ class TaskPanel:
             self.obj.Base.Objects[0].ViewObject.Visibility = False
 
     def preCleanup(self):
+        PathLog.track()
+        FreeCADGui.Selection.removeObserver(self)
         if self.obj.Base and self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = self.baseVisibility
             self.obj.Base.Objects[0].ViewObject.Visibility = self.baseOrigVisibility
 
-    def accept(self):
-        PathLog.debug('accept')
+    def accept(self, resetEdit=True):
+        PathLog.track()
         self.preCleanup()
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup()
+        self.cleanup(resetEdit)
 
-    def reject(self):
-        PathLog.debug('reject')
+    def reject(self, resetEdit=True):
+        PathLog.track()
         self.preCleanup()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
@@ -156,13 +162,15 @@ class TaskPanel:
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup()
+        self.cleanup(resetEdit)
         return True
 
-    def cleanup(self):
+    def cleanup(self, resetEdit):
+        PathLog.track()
         self.vobj.Proxy.resetTaskPanel()
         FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
+        if resetEdit:
+            FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
 
     def updateTooltips(self):
@@ -426,6 +434,27 @@ class TaskPanel:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
 
+    def alignSetOrigin(self):
+        pass
+    def alignMoveToOrigin(self):
+        pass
+
+    def updateSelection(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) == 1 and len(sel[0].SubObjects) == 1:
+            if 'Vertex' == sel[0].SubObjects[0].ShapeType:
+                self.form.orientGroup.setEnabled(False)
+                self.form.alignGroup.setEnabled(True)
+                self.form.setOrigin.setEnabled(True)
+                self.form.moveToOrigin.setEnabled(True)
+            else:
+                self.form.orientGroup.setEnabled(True)
+                self.form.setOrigin.setEnabled(False)
+                self.form.moveToOrigin.setEnabled(False)
+        else:
+            self.form.orientGroup.setEnabled(False)
+            self.form.alignGroup.setEnabled(False)
+
     def setupUi(self):
         self.setFields()
 
@@ -452,10 +481,31 @@ class TaskPanel:
         self.operationSelect()
         self.toolControllerSelect()
 
+        # Stock, Orientation and Alignment
         self.form.stockGroup.hide()
+        self.form.centerInStock.hide()
+        self.form.centerInStockXY.hide()
+
         self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
         self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
         self.form.orientZAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 0, 1)))
+
+        self.form.setOrigin.clicked.connect(self.alignSetOrigin)
+        self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
+        self.updateSelection()
+
+    def open(self):
+        FreeCADGui.Selection.addObserver(self)
+
+    # SelectionObserver interface
+    def addSelection(self, doc, obj, sub, pnt):
+        self.updateSelection()
+    def removeSelection(self, doc, obj, sub):
+        self.updateSelection()
+    def setSelection(self, doc):
+        self.updateSelection()
+    def clearSelection(self, doc):
+        self.updateSelection()
 
 def Create(base, template=None):
     '''Create(base, template) ... creates a job instance for the given base object
