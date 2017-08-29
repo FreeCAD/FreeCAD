@@ -26,12 +26,9 @@ import TestSketcherApp
 
 App = FreeCAD
 
-
 class TestHole(unittest.TestCase):
     def setUp(self):
-        self.Doc = FreeCAD.newDocument("PartDesignTestBoolean")
-
-    def testPlainHole(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestHole")
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
         self.Box.Length=10
@@ -50,6 +47,8 @@ class TestHole(unittest.TestCase):
         self.Hole.Profile = self.HoleSketch
         self.Body.addObject(self.Hole)
         self.Doc.recompute()
+
+    def testPlainHole(self):
         self.Hole.Diameter = 6
         self.Hole.Depth = 10
         # self.Hole.DrillPointAngle = 118.000000
@@ -65,8 +64,58 @@ class TestHole(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 10)
 
+    def testTaperedHole(self):
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 5
+        self.Hole.TaperedAngle = 45
+        self.Hole.ThreadType = 0
+        self.Hole.HoleCutType = 0
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+        self.Hole.Tapered = 1
+        self.Doc.recompute()
+        self.assertEqual(len(self.Hole.Shape.Faces), 8)
+
+    def testAngledDrillHole(self):
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 10
+        self.Hole.DrillPointAngle = 118
+        self.Hole.ThreadType = 0
+        self.Hole.HoleCutType = 0
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 1
+        self.Hole.Tapered = 0
+        self.Doc.recompute()
+        self.assertEqual(len(self.Hole.Shape.Faces), 8)
+
+    def testCounterboreHole(self):
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 10
+        self.Hole.ThreadType = 0
+        self.Hole.HoleCutType = 1
+        self.Hole.HoleCutDiameter = 8
+        self.Hole.HoleCutDepth = 5
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+        self.Hole.Tapered = 0
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 5 - pi * 4**2 * 5)
+
+    def testCountersinkHole(self):
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 10
+        self.Hole.ThreadType = 0
+        self.Hole.HoleCutType = 2
+        self.Hole.HoleCutDiameter = 9
+        self.Hole.HoleCutCountersinkAngle = 90
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+        self.Hole.Tapered = 0
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 10 - 24.7400421)
+
     def tearDown(self):
         #closing doc
-        FreeCAD.closeDocument("PartDesignTestBoolean")
+        FreeCAD.closeDocument("PartDesignTestHole")
         #print ("omit closing document for debugging")
 
