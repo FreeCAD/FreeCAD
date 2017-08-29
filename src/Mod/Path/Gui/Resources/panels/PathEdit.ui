@@ -14,7 +14,7 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>1</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -86,8 +86,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>477</height>
+         <width>294</width>
+         <height>309</height>
         </rect>
        </property>
        <attribute name="label">
@@ -378,8 +378,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>403</height>
+         <width>233</width>
+         <height>135</height>
         </rect>
        </property>
        <attribute name="label">
@@ -619,8 +619,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>378</width>
-         <height>477</height>
+         <width>255</width>
+         <height>234</height>
         </rect>
        </property>
        <attribute name="label">
