@@ -90,6 +90,7 @@ SET(FemScripts_SRCS
     FemInputWriterZ88.py
     FemMesh2Mesh.py
     FemMeshTools.py
+    FemResultTools.py
     FemSelectionObserver.py
     FemTools.py
     FemToolsCcx.py
