@@ -196,6 +196,15 @@ PropertyLinkList::~PropertyLinkList()
 
 void PropertyLinkList::setSize(int newSize)
 {
+    for(int i=newSize;i<(int)_lValueList.size();++i) {
+        auto obj = _lValueList[i];
+        if(!obj && !obj->getNameInDocument())
+            continue;
+        _nameMap.erase(obj->getNameInDocument());
+#ifndef USE_OLD_DAG
+        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+#endif
+    }
     _lValueList.resize(newSize);
 }
 
@@ -204,7 +213,7 @@ int PropertyLinkList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-void  PropertyLinkList::set1Value(const int idx, DocumentObject* value) {
+void PropertyLinkList::set1Value(int idx, DocumentObject* const &value, bool touch) {
     assert(idx>=0 && idx<static_cast<int>(_lValueList.size()));
     auto obj = _lValueList[idx];
     if(obj == value) return;
