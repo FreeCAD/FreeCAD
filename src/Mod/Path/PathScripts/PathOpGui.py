@@ -653,7 +653,7 @@ class TaskPanel(object):
         return self.isdirty
 
     def setClean(self):
-        '''setClean() ... set the reciever and all its pages clean.'''
+        '''setClean() ... set the receiver and all its pages clean.'''
         self.isdirty = False
         for page in self.featurePages:
             page.setClean()
@@ -781,7 +781,7 @@ class CommandSetStartPoint:
 
 def Create(res):
     '''Create(res) ... generic implementation of a create function.
-    res is an instance of CommandResources. It is not excpected that the user invokes
+    res is an instance of CommandResources. It is not expected that the user invokes
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
@@ -838,8 +838,8 @@ def SetupOperation(name,
         accelKey = None):
     '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, accelKey=None)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
-    When activated it creates a model with proxy (by invoking objFactory), assign a view provider to it
-    (see ViewProvider in this module) and starts the editor specif for theis operation (driven by opPageClass).
+    When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
+    (see ViewProvider in this module) and starts the editor specifically for this operation (driven by opPageClass).
     This is an internal function that is automatically called by the intialisation code for each operation.
     It is not expected to be called manually.
     '''

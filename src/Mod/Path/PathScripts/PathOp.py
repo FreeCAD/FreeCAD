@@ -161,7 +161,7 @@ class ObjectOp(object):
 
     def opSetDefaultValues(self, obj):
         '''opSetDefaultValues(obj) ... overwrite to set initial default values.
-        Called after the reciever has been fully created with all properties.
+        Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses.'''
         pass
      
