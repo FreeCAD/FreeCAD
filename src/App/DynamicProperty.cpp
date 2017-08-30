@@ -271,6 +271,8 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
 {
     std::map<std::string,PropData>::iterator it = props.find(name);
     if (it != props.end()) {
+        if(it->second.property->testStatus(Property::LockDynamic))
+            throw Base::RuntimeError("property is locked");
         GetApplication().signalRemoveDynamicProperty(*it->second.property);
         delete it->second.property;
         props.erase(it);
