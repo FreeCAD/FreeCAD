@@ -608,6 +608,7 @@ void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
     assert(d->_ViewProviderMap.find(vp->getObject()) == d->_ViewProviderMap.end());
     vp->setStatus(Detach, false);
     d->_ViewProviderMap[vp->getObject()] = vp;
+    d->_CoinMap[vp->getRoot()] = vp;
 }
 
 void Document::setModified(bool b)
