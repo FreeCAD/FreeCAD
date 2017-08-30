@@ -1003,12 +1003,18 @@ SoFCSelectionRoot::ContextPtr *SoFCSelectionRoot::getContext(
         if(stack.size()>1)
             key.push_back(stack.front());
         SoFCSelectionRoot *back = static_cast<SoFCSelectionRoot*>(stack.back());
-        return &back->contextMap2[key];
+        if(pdef)
+            return &back->contextMap2[key];
+        back->contextMap2.erase(key);
+        return 0;
     }
 
     SoFCSelectionRoot *front = static_cast<SoFCSelectionRoot*>(stack.front());
     stack.front() = node;
-    return &front->contextMap[stack];
+    if(pdef) 
+        return &front->contextMap[stack];
+    front->contextMap.erase(stack);
+    return 0;
 }
 
 #define DEFINE_RENDER(_name) \

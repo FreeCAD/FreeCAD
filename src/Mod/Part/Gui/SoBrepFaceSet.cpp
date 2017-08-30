@@ -92,7 +92,6 @@ class SoBrepFaceSet::SelContext {
 public:
     int highlightIndex;
     std::set<int> selectionIndex;
-    bool hasSecondary;
 
 #ifdef RENDER_GLARRAYS
     std::vector<int32_t> index_array;
@@ -101,7 +100,7 @@ public:
     SbColor selectionColor;
     SbColor highlightColor;
 
-    SelContext():highlightIndex(-1),hasSecondary(false)
+    SelContext():highlightIndex(-1)
     {}
 
     void removeIndex(int index) {
@@ -241,6 +240,14 @@ void SoBrepFaceSet::doAction(SoAction* action)
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
+
+        if(selaction->isSecondary() && selaction->getType() == Gui::SoSelectionElementAction::None) {
+            Gui::SoFCSelectionRoot::removeActionContext(action,this);
+            PRIVATE(this)->updateVbo = true;
+            touch();
+            return;
+        }
+
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
         ctx->selectionColor = selaction->getColor();
         if (selaction->getType() == Gui::SoSelectionElementAction::All) {
@@ -253,13 +260,11 @@ void SoBrepFaceSet::doAction(SoAction* action)
             return;
         }
         else if (selaction->getType() == Gui::SoSelectionElementAction::None) {
-            ctx->hasSecondary = false;
             ctx->selectionIndex.clear();
             PRIVATE(this)->updateVbo = true;
             touch();
             return;
         }
-        ctx->hasSecondary = selaction->isSecondary();
 
         const SoDetail* detail = selaction->getElement();
         if (detail) {
@@ -342,7 +347,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
-    if(ctx2 && ctx2->hasSecondary && ctx2->selectionIndex.empty())
+    if(ctx2 && ctx2->selectionIndex.empty())
         return;
 
     int32_t hl_idx = ctx?ctx->highlightIndex:-1;
@@ -504,12 +509,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
-    if(ctx2) {
-        if(ctx2->hasSecondary && ctx2->selectionIndex.empty())
-            return;
-        if(ctx2->selectionIndex.empty())
-            ctx2.reset();
-    }
+    if(ctx2 && ctx2->selectionIndex.empty())
+        ctx2.reset();
     if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
         ctx.reset();
 

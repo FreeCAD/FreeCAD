@@ -67,7 +67,7 @@ SO_NODE_SOURCE(SoBrepEdgeSet);
 
 class SoBrepEdgeSet::SelContext {
 public:
-    SelContext():highlightIndex(-1),hasSecondary(false)
+    SelContext():highlightIndex(-1)
     {}
      
     bool removeIndex(int index) {
@@ -87,8 +87,6 @@ public:
     std::vector<int32_t> hl, sl;
     SbColor selectionColor;
     SbColor highlightColor;
-
-    bool hasSecondary;
 };
 
 void SoBrepEdgeSet::initClass()
@@ -109,7 +107,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
-    if(ctx2 && ctx2->hasSecondary && ctx2->selectionIndex.empty())
+    if(ctx2 && ctx2->selectionIndex.empty())
         return;
 
     renderHighlight(action,ctx);
@@ -305,6 +303,13 @@ void SoBrepEdgeSet::doAction(SoAction* action)
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
+
+        if(selaction->isSecondary() && selaction->getType() == Gui::SoSelectionElementAction::None) {
+            Gui::SoFCSelectionRoot::removeActionContext(action,this);
+            touch();
+            return;
+        }
+
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
         ctx->selectionColor = selaction->getColor();
         if (selaction->getType() == Gui::SoSelectionElementAction::All) {
@@ -316,13 +321,11 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             return;
         }
         else if (selaction->getType() == Gui::SoSelectionElementAction::None) {
-            ctx->hasSecondary = false;
             ctx->selectionIndex.clear();
             ctx->sl.clear();
             touch();
             return;
         }
-        ctx->hasSecondary = selaction->isSecondary();
 
         const SoDetail* detail = selaction->getElement();
         if (detail) {

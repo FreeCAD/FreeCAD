@@ -204,6 +204,10 @@ public:
         return std::static_pointer_cast<T>(ctx);
     }
 
+    static void removeActionContext(SoAction *action, SoNode *node) {
+        getContext(action,node,0);
+    }
+
     static SoNode *getCurrentRoot(bool front, SoNode *def);
 
     void resetContext();
