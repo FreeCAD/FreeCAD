@@ -116,11 +116,13 @@ public:
     static Unit Work;
     static Unit Power;
 
+    static Unit SpecificEnergy;
     static Unit ThermalConductivity;
     static Unit ThermalExpansionCoefficient;
     static Unit SpecificHeat;
     static Unit ThermalTransferCoefficient;
     static Unit HeatFlux;
+    static Unit DynamicViscosity;
     static Unit KinematicViscosity;
 
     //@}

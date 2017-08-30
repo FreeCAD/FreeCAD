@@ -142,7 +142,6 @@ bool ExpressionBinding::apply(const std::string & propName)
 
         if (!docObj)
             throw Base::RuntimeError("Document object not found.");
-
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', u'%s')",
                                 docObj->getDocument()->getName(),
                                 docObj->getNameInDocument(),
@@ -180,6 +179,10 @@ bool ExpressionBinding::apply()
     if (!docObj)
         throw Base::RuntimeError("Document object not found.");
 
+    /* Skip updating read-only properties */
+    if (prop->isReadOnly())
+        return true;
+    
     std::string name = docObj->getNameInDocument();
 
     return apply("App.ActiveDocument." + name + "." + getPath().toEscapedString());

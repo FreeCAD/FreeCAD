@@ -74,7 +74,7 @@ DocumentObject::~DocumentObject(void)
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     // set/unset the execution bit
-    ObjectStatusLocker exe(App::Recompute, this);
+    ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
     return this->execute();
 }
 
@@ -400,6 +400,12 @@ void DocumentObject::setDocument(App::Document* doc)
 {
     _pDoc=doc;
     onSettingDocument();
+}
+
+void DocumentObject::onAboutToRemoveProperty(const char* prop)
+{
+    if (_pDoc)
+        _pDoc->removePropertyOfObject(this, prop);
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)

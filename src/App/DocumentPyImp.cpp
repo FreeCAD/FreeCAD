@@ -403,9 +403,15 @@ PyObject*  DocumentPy::clearUndos(PyObject * args)
 PyObject*  DocumentPy::recompute(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
-    int objectCount = getDocumentPtr()->recompute();
-    return Py::new_reference_to(Py::Int(objectCount));
+        return NULL;                    // NULL triggers exception
+    try {
+        int objectCount = getDocumentPtr()->recompute();
+        return Py::new_reference_to(Py::Int(objectCount));
+    }
+    catch (const Base::RuntimeError& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
+    }
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)

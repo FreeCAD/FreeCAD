@@ -186,7 +186,9 @@ before_install:
 
           brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
           brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
-
+          # qt4 bottle contains postgresql plugin even when --with-postgresql option is not specified
+          # and so postgresql dep is not installed. Delete it because the plugin is not included with qt5 bottle.
+          sudo rm -f /usr/local/lib/qt4/plugins/sqldrivers/libqsqlpsql.dylib
        elif [ "${QT}" == "Qt5" ]; then
           # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
           brew ls --versions cartr/qt4/qt > /dev/null && \

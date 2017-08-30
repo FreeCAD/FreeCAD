@@ -383,6 +383,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     std::string diamSym = hGrp->GetASCII("DiameterSymbol","\xe2\x8c\x80");
+    diamSym = diamSym.substr (0,79);                                            //coverity 156593
     const char * format = "%value%";
     char formatSpec[80];
     std::strcpy (formatSpec,diamSym.c_str());

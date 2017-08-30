@@ -18,10 +18,11 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
+    PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
+    PathScripts/PathCircularHoleBase.py
+    PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
-    PathScripts/PathCompoundExtended.py
-    PathScripts/PathContour.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
@@ -29,28 +30,44 @@ SET(PathScripts_SRCS
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
     PathScripts/PathDressupRampEntry.py
+    PathScripts/PathDressupTag.py
+    PathScripts/PathDressupTagGui.py
+    PathScripts/PathDressupTagPreferences.py
     PathScripts/PathDrilling.py
+    PathScripts/PathDrillingGui.py
     PathScripts/PathEngrave.py
-    PathScripts/PathFacePocket.py
-    PathScripts/PathFaceProfile.py
+    PathScripts/PathEngraveGui.py
     PathScripts/PathFixture.py
-    PathScripts/PathFromShape.py
     PathScripts/PathGeom.py
+    PathScripts/PathGetPoint.py
     PathScripts/PathHelix.py
+    PathScripts/PathHelixGui.py
     PathScripts/PathHop.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
+    PathScripts/PathMillFaceGui.py
+    PathScripts/PathOp.py
+    PathScripts/PathOpGui.py
     PathScripts/PathPlane.py
     PathScripts/PathPocket.py
+    PathScripts/PathPocketBase.py
+    PathScripts/PathPocketBaseGui.py
+    PathScripts/PathPocketGui.py
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathProfile.py
+    PathScripts/PathProfileBase.py
+    PathScripts/PathProfileBaseGui.py
+    PathScripts/PathProfileContour.py
+    PathScripts/PathProfileContourGui.py
     PathScripts/PathProfileEdges.py
+    PathScripts/PathProfileEdgesGui.py
+    PathScripts/PathProfileFaces.py
+    PathScripts/PathProfileFacesGui.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSimpleCopy.py
@@ -64,7 +81,6 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PostUtils.py
     PathScripts/__init__.py
-    PathScripts/kdtree.py
 )
 
 SET(PathScripts_post_SRCS
@@ -94,6 +110,7 @@ SET(PathTests_SRCS
     PathTests/test_linuxcnc_00.ngc
     PathTests/TestPathCore.py
     PathTests/TestPathDepthParams.py
+    PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
     PathTests/TestPathLog.py

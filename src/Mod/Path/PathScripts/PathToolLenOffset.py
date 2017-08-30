@@ -121,7 +121,6 @@ class CommandPathToolLenOffset:
     def GetResources(self):
         return {'Pixmap': 'Path-LengthOffset',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolLenOffset", "Tool Length Offset"),
-                'Accel': "P, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolLenOffset", "Create a Tool Length Offset object")}
 
     def IsActive(self):

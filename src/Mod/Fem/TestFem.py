@@ -30,40 +30,42 @@ import FreeCAD
 import ObjectsFem
 import tempfile
 import unittest
+import os
 
 mesh_name = 'Mesh'
 stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
 
 home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir() + '/FEM_unittests'
-test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
-
+temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
+if not os.path.exists(temp_dir):
+    os.makedirs(temp_dir)
+test_file_dir = home_path + 'Mod/Fem/test_files/ccx/'
 
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
 static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + '/FEM_static'
-static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
-static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
-static_expected_values = test_file_dir + "/cube_static_expected_values"
+static_analysis_dir = temp_dir + 'FEM_static/'
+static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
+static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
+static_expected_values = test_file_dir + "cube_static_expected_values"
 
 frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + '/FEM_frequency'
-frequency_save_fc_file = frequency_analysis_dir + '/' + frequency_base_name + '.fcstd'
-frequency_analysis_inp_file = test_file_dir + '/' + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "/cube_frequency_expected_values"
+frequency_analysis_dir = temp_dir + 'FEM_frequency/'
+frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
+frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
+frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
 
 thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + '/FEM_thermomech'
-thermomech_save_fc_file = thermomech_analysis_dir + '/' + thermomech_base_name + '.fcstd'
-thermomech_analysis_inp_file = test_file_dir + '/' + thermomech_base_name + '.inp'
-thermomech_expected_values = test_file_dir + "/spine_thermomech_expected_values"
+thermomech_analysis_dir = temp_dir + 'FEM_thermomech/'
+thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
+thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
+thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
 
 Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + '/FEM_Flow1D_thermomech'
-Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + '/' + Flow1D_thermomech_base_name + '.fcstd'
-Flow1D_thermomech_analysis_inp_file = test_file_dir + '/' + Flow1D_thermomech_base_name + '.inp'
-Flow1D_thermomech_expected_values = test_file_dir + "/Flow1D_thermomech_expected_values"
+Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_Flow1D_thermomech/'
+Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
+Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
+Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
 
 
 class FemTest(unittest.TestCase):
@@ -75,6 +77,38 @@ class FemTest(unittest.TestCase):
         finally:
             FreeCAD.setActiveDocument("FemTest")
         self.active_doc = FreeCAD.ActiveDocument
+
+    def test_mesh_seg2_python(self):
+        seg2 = Fem.FemMesh()
+        seg2.addNode(0, 0, 0, 1)
+        seg2.addNode(2, 0, 0, 2)
+        seg2.addNode(4, 0, 0, 3)
+        seg2.addEdge([1, 2])
+        seg2.addEdge([2, 3], 2)
+
+        node_data = [seg2.NodeCount, seg2.Nodes]
+        edge_data = [seg2.EdgeCount, seg2.Edges[0], seg2.getElementNodes(seg2.Edges[0]), seg2.Edges[1], seg2.getElementNodes(seg2.Edges[1])]
+        expected_nodes = [3, {1: FreeCAD.Vector(0.0, 0.0, 0.0), 2: FreeCAD.Vector(2.0, 0.0, 0.0), 3: FreeCAD.Vector(4.0, 0.0, 0.0)}]
+        expected_edges = [2, 1, (1, 2), 2, (2, 3)]
+        self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg2 element are unexpected")
+        self.assertEqual(edge_data, expected_edges, "Edges of Python created seg2 element are unexpected")
+
+    def test_mesh_seg3_python(self):
+        seg3 = Fem.FemMesh()
+        seg3.addNode(0, 0, 0, 1)
+        seg3.addNode(1, 0, 0, 2)
+        seg3.addNode(2, 0, 0, 3)
+        seg3.addNode(3, 0, 0, 4)
+        seg3.addNode(4, 0, 0, 5)
+        seg3.addEdge([1, 3, 2])
+        seg3.addEdge([3, 5, 4], 2)
+
+        node_data = [seg3.NodeCount, seg3.Nodes]
+        edge_data = [seg3.EdgeCount, seg3.Edges[0], seg3.getElementNodes(seg3.Edges[0]), seg3.Edges[1], seg3.getElementNodes(seg3.Edges[1])]
+        expected_nodes = [5, {1: FreeCAD.Vector(0.0, 0.0, 0.0), 2: FreeCAD.Vector(1.0, 0.0, 0.0), 3: FreeCAD.Vector(2.0, 0.0, 0.0), 4: FreeCAD.Vector(3.0, 0.0, 0.0), 5: FreeCAD.Vector(4.0, 0.0, 0.0)}]
+        expected_edges = [2, 1, (1, 3, 2), 2, (3, 5, 4)]
+        self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg3 element are unexpected")
+        self.assertEqual(edge_data, expected_edges, "Edges of Python created seg3 element are unexpected")
 
     def test_unv_save_load(self):
         tetra10 = Fem.FemMesh()
@@ -125,6 +159,223 @@ class FemTest(unittest.TestCase):
         expected = [expected_lin, expected_win]
         self.assertTrue(True if read_node_line in expected else False,
                         "Problem in test_writeAbaqus_precision, \n{0}\n{1}".format(read_node_line, expected))
+
+    def test_read_frd_massflow_networkpressure(self):
+        # read data from frd file
+        frd_file = test_file_dir + 'Flow1D_thermomech.frd'
+        import importCcxFrdResults
+        frd_content = importCcxFrdResults.readResult(frd_file)
+
+        # do something with the read data
+        frd_content_len = []
+        for key in sorted(frd_content.keys()):
+            frd_content_len.append(len(frd_content[key]))
+        print('read data')
+        print(frd_content_len)
+        print(sorted(frd_content.keys()))
+        # print(frd_content)
+        read_mflow = frd_content['Results'][12]['mflow']
+        read_npressure = frd_content['Results'][12]['npressure']
+        res_len = [
+            len(read_mflow),
+            len(read_npressure)
+        ]
+        print(res_len)
+        print(read_mflow)
+        print(read_npressure)
+
+        # create the expected data
+        print('\nexpected data')
+        efc = {}  # expected frd content
+        efc['Nodes'] = {
+            2: FreeCAD.Vector(0.0, 0.0, -50.0),
+            3: FreeCAD.Vector(0.0, 0.0, -4300.0),
+            4: FreeCAD.Vector(4950.0, 0.0, -4300.0),
+            5: FreeCAD.Vector(5000.0, 0.0, -4300.0),
+            6: FreeCAD.Vector(8535.53, 0.0, -7835.53),
+            7: FreeCAD.Vector(8569.88, 0.0, -7870.88),
+            8: FreeCAD.Vector(12105.4, 0.0, -11406.4),
+            9: FreeCAD.Vector(12140.8, 0.0, -11441.8),
+            10: FreeCAD.Vector(13908.5, 0.0, -13209.5),
+            11: FreeCAD.Vector(13943.9, 0.0, -13244.9),
+            12: FreeCAD.Vector(15047.0, 0.0, -14348.0),
+            13: FreeCAD.Vector(15047.0, 0.0, -7947.97),
+            15: FreeCAD.Vector(0.0, 0.0, 0.0),
+            16: FreeCAD.Vector(0.0, 0.0, -2175.0),
+            17: FreeCAD.Vector(2475.0, 0.0, -4300.0),
+            18: FreeCAD.Vector(4975.0, 0.0, -4300.0),
+            19: FreeCAD.Vector(6767.77, 0.0, -6067.77),
+            20: FreeCAD.Vector(8552.71, 0.0, -7853.21),
+            21: FreeCAD.Vector(10337.6, 0.0, -9638.64),
+            22: FreeCAD.Vector(12123.1, 0.0, -11424.1),
+            23: FreeCAD.Vector(13024.6, 0.0, -12325.6),
+            24: FreeCAD.Vector(13926.2, 0.0, -13227.2),
+            25: FreeCAD.Vector(14495.4, 0.0, -13796.4),
+            26: FreeCAD.Vector(15047.0, 0.0, -11148.0),
+            27: FreeCAD.Vector(15047.0, 0.0, -7897.97)
+        }
+        efc['Seg2Elem'] = {
+            1: (15, 2),
+            13: (13, 27)
+        }
+        efc['Seg3Elem'] = {}
+        '''   deleted during reading because of the inout file
+        efc['Seg3Elem'] = {
+            2: (2, 16, 3),
+            3: (3, 17, 4),
+            4: (4, 18, 5),
+            5: (5, 19, 6),
+            6: (6, 20, 7),
+            7: (7, 21, 8),
+            8: (8, 22, 9),
+            9: (9, 23, 10),
+            10: (10, 24, 11),
+            11: (11, 25, 12),
+            12: (12, 26, 13)
+        }
+        '''
+        efc['Tria3Elem'] = efc['Tria6Elem'] = efc['Quad4Elem'] = efc['Quad8Elem'] = {}  # faces
+        efc['Tetra4Elem'] = efc['Tetra10Elem'] = efc['Hexa8Elem'] = efc['Hexa20Elem'] = efc['Penta6Elem'] = efc['Penta15Elem'] = {}  # volumes
+        efc['Results'] = [
+            {'time': 0.00390625},
+            {'time': 0.0078125},
+            {'time': 0.0136719},
+            {'time': 0.0224609},
+            {'time': 0.0356445},
+            {'time': 0.0554199},
+            {'time': 0.085083},
+            {'time': 0.129578},
+            {'time': 0.19632},
+            {'time': 0.296432},
+            {'time': 0.446602},
+            {'time': 0.671856},
+            {
+                'number': 0,
+                'time': 1.0,
+                'mflow': {
+                    1: 78.3918,  # added during reading because of the inout file
+                    2: 78.3918,
+                    3: 78.3918,
+                    4: 78.3918,
+                    5: 78.3918,
+                    6: 78.3918,
+                    7: 78.3918,
+                    8: 78.3918,
+                    9: 78.3918,
+                    10: 78.3918,
+                    11: 78.3918,
+                    12: 78.3918,
+                    13: 78.3918,
+                    15: 78.3918,
+                    16: 78.3918,
+                    17: 78.3918,
+                    18: 78.3918,
+                    19: 78.3918,
+                    20: 78.3918,
+                    21: 78.3918,
+                    22: 78.3918,
+                    23: 78.3918,
+                    24: 78.3918,
+                    25: 78.3918,
+                    26: 78.3918,
+                    27: 78.3918,
+                    28: 78.3918  # added during reading because of the inout file
+                },
+                'npressure': {
+                    1: 0.1,  # added during reading because of the inout file
+                    2: 0.1,
+                    3: 0.134840,
+                    4: 0.128261,
+                    5: 0.127949,
+                    6: 0.155918,
+                    7: 0.157797,
+                    8: 0.191647,
+                    9: 0.178953,
+                    10: 0.180849,
+                    11: 0.161476,
+                    12: 0.162658,
+                    13: 0.1,
+                    15: 0.1,
+                    16: 0.117420,
+                    17: 0.131551,
+                    18: 0.128105,
+                    19: 0.141934,
+                    20: 0.156857,
+                    21: 0.174722,
+                    22: 0.185300,
+                    23: 0.179901,
+                    24: 0.171162,
+                    25: 0.162067,
+                    26: 0.131329,
+                    27: 0.1,
+                    28: 0.1  # added during reading because of the inout file
+                }
+            }
+        ]
+        expected_frd_content = efc
+
+        # do something with the expected data
+        expected_frd_content_len = []
+        for key in sorted(expected_frd_content.keys()):
+            expected_frd_content_len.append(len(expected_frd_content[key]))
+        print(expected_frd_content_len)
+        print(sorted(expected_frd_content.keys()))
+        # expected results
+        expected_mflow = expected_frd_content['Results'][12]['mflow']
+        expected_npressure = expected_frd_content['Results'][12]['npressure']
+        expected_res_len = [
+            len(expected_mflow),
+            len(expected_npressure)
+        ]
+        print(expected_res_len)
+        print(expected_mflow)
+        print(expected_npressure)
+
+        # tests
+        self.assertEqual(frd_content_len, expected_frd_content_len, "Length's of read frd data values are unexpected")
+        self.assertEqual(frd_content['Nodes'], expected_frd_content['Nodes'], "Values of read node data are unexpected")
+        self.assertEqual(frd_content['Seg2Elem'], expected_frd_content['Seg2Elem'], "Values of read Seg2 data are unexpected")
+        self.assertEqual(frd_content['Seg3Elem'], expected_frd_content['Seg3Elem'], "Values of read Seg3 data are unexpected")
+        self.assertEqual(res_len, expected_res_len, "Length's of read result data values are unexpected")
+        self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
+        self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
+
+    def test_pyimport_all_FEM_modules(self):
+        # collect all Python modules in Fem
+        # Mod/Fem/
+        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/'
+        fcc_print(pydir)
+        pymodules = []
+        for pyfile in sorted(os.listdir(pydir)):
+            if pyfile.endswith(".py") and not pyfile.startswith('Init'):
+                pymodules.append(os.path.splitext(os.path.basename(pyfile))[0])
+
+        # Mod/Fem/PyObjects/
+        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/PyObjects/'
+        fcc_print(pydir)
+        for pyfile in sorted(os.listdir(pydir)):
+            if pyfile.endswith(".py"):
+                pymodules.append('PyObjects.' + os.path.splitext(os.path.basename(pyfile))[0])
+
+        # Mod/Fem/PyOGui/
+        if FreeCAD.GuiUp:
+            pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/PyGui/'
+            fcc_print(pydir)
+            for pyfile in sorted(os.listdir(pydir)):
+                if pyfile.endswith(".py"):
+                    pymodules.append('PyGui.' + os.path.splitext(os.path.basename(pyfile))[0])
+
+        # import all collected modules
+        # fcc_print(pymodules)
+        for mod in pymodules:
+            fcc_print('Try importing {0} ...'.format(mod))
+            try:
+                im = __import__('{0}'.format(mod))
+            except:
+                im = False
+            if not im:
+                __import__('{0}'.format(mod))  # to get an error message what was going wrong
+            self.assertTrue(im, 'Problem importing {0}'.format(mod))
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
@@ -256,13 +507,15 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
-        ret = compare_stats(fea, static_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
+        ret = compare_stats(fea, static_expected_values)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
 
         # frequency
+        fcc_print('Reset Statik analysis')
+        fea.reset_all()
         fcc_print('Setting analysis type to \'frequency\"')
         fea.set_analysis_type("frequency")
         self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting anlysis type to \'frequency\' failed")
@@ -304,7 +557,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
-        ret = compare_stats(fea, frequency_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
+        ret = compare_stats(fea, frequency_expected_values)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
@@ -432,7 +685,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for thermomech analysis...')
-        ret = compare_stats(fea, thermomech_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])
+        ret = compare_stats(fea, thermomech_expected_values)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(thermomech_save_fc_file))
@@ -703,7 +956,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for Flow1D thermomech analysis...')
-        ret = compare_stats(fea, Flow1D_thermomech_expected_values, ["U1", "U2", "U3", "Uabs", "Sabs"])  # TODO use all result stats
+        ret = compare_stats(fea, Flow1D_thermomech_expected_values, stat_types, 'CalculiX_thermomech_time_1_0_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(Flow1D_thermomech_save_fc_file))
@@ -745,7 +998,7 @@ def compare_inp_files(file_name1, file_name2):
     return result
 
 
-def compare_stats(fea, stat_file=None, loc_stat_types=None):
+def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
     if not loc_stat_types:
         loc_stat_types = stat_types
     if stat_file:
@@ -759,7 +1012,11 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None):
         sf_content = force_unix_line_ends(sf_content)
     stats = []
     for s in loc_stat_types:
-        stats.append("{}: {}\n".format(s, fea.get_stats(s)))
+        if res_obj_name:
+            statval = fea.get_stats(s, res_obj_name)
+        else:
+            statval = fea.get_stats(s)
+        stats.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     if sf_content != stats:
         fcc_print("Expected stats from {}".format(stat_file))
         fcc_print(sf_content)
@@ -794,10 +1051,8 @@ def create_test_results():
     # run FEM unit tests
     runTestFem()
 
-    import os
     import shutil
     import FemGui
-    import FemToolsCcx
 
     # static and frequency cube
     FreeCAD.open(static_save_fc_file)
@@ -807,23 +1062,21 @@ def create_test_results():
     # static
     fea.reset_all()
     fea.run()
-
     fea.load_results()
     stats_static = []  # we only have one result object so we are fine
     for s in stat_types:
-        stats_static.append("{}: {}\n".format(s, fea.get_stats(s)))
-    static_expected_values_file = static_analysis_dir + '/cube_static_expected_values'
+        statval = fea.get_stats(s)
+        stats_static.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
+    static_expected_values_file = static_analysis_dir + 'cube_static_expected_values'
     f = open(static_expected_values_file, 'w')
     for s in stats_static:
         f.write(s)
     f.close()
-
     # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
-
-    frd_static_test_result_file = static_analysis_dir + '/cube_static.frd'
-    dat_static_test_result_file = static_analysis_dir + '/cube_static.dat'
+    frd_static_test_result_file = static_analysis_dir + 'cube_static.frd'
+    dat_static_test_result_file = static_analysis_dir + 'cube_static.dat'
     shutil.copyfile(frd_result_file, frd_static_test_result_file)
     shutil.copyfile(dat_result_file, dat_static_test_result_file)
 
@@ -832,19 +1085,18 @@ def create_test_results():
     fea.set_analysis_type('frequency')
     fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
-
     fea.load_results()
     stats_frequency = []  # since we set eigenmodeno. we only have one result object so we are fine
     for s in stat_types:
-        stats_frequency.append("{}: {}\n".format(s, fea.get_stats(s)))
-    frequency_expected_values_file = frequency_analysis_dir + '/cube_frequency_expected_values'
+        statval = fea.get_stats(s)
+        stats_frequency.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
+    frequency_expected_values_file = frequency_analysis_dir + 'cube_frequency_expected_values'
     f = open(frequency_expected_values_file, 'w')
     for s in stats_frequency:
         f.write(s)
     f.close()
-
-    frd_frequency_test_result_file = frequency_analysis_dir + '/cube_frequency.frd'
-    dat_frequency_test_result_file = frequency_analysis_dir + '/cube_frequency.dat'
+    frd_frequency_test_result_file = frequency_analysis_dir + 'cube_frequency.frd'
+    dat_frequency_test_result_file = frequency_analysis_dir + 'cube_frequency.dat'
     shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
     shutil.copyfile(dat_result_file, dat_frequency_test_result_file)
 
@@ -854,28 +1106,49 @@ def create_test_results():
     fea = FemToolsCcx.FemToolsCcx()
     fea.reset_all()
     fea.run()
-
     fea.load_results()
     stats_thermomech = []  # we only have one result object so we are fine
     for s in stat_types:
-        stats_thermomech.append("{}: {}\n".format(s, fea.get_stats(s)))
-    thermomech_expected_values_file = thermomech_analysis_dir + '/spine_thermomech_expected_values'
+        statval = fea.get_stats(s)
+        stats_thermomech.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
+    thermomech_expected_values_file = thermomech_analysis_dir + 'spine_thermomech_expected_values'
     f = open(thermomech_expected_values_file, 'w')
     for s in stats_thermomech:
         f.write(s)
     f.close()
-
     # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
-
-    frd_thermomech_test_result_file = thermomech_analysis_dir + '/spine_thermomech.frd'
-    dat_thermomech_test_result_file = thermomech_analysis_dir + '/spine_thermomech.dat'
+    frd_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.frd'
+    dat_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.dat'
     shutil.copyfile(frd_result_file, frd_thermomech_test_result_file)
     shutil.copyfile(dat_result_file, dat_thermomech_test_result_file)
-
     print('Results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
+    # Flow1D
+    FreeCAD.open(Flow1D_thermomech_save_fc_file)
+    FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
+    fea = FemToolsCcx.FemToolsCcx()
+    fea.reset_all()
+    fea.run()
+    fea.load_results()
+    stats_flow1D = []  # be carefule if we have more than one result object !
+    for s in stat_types:
+        statval = fea.get_stats(s, 'CalculiX_thermomech_time_1_0_results')
+        stats_flow1D.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
+    Flow1D_thermomech_expected_values_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech_expected_values'
+    f = open(Flow1D_thermomech_expected_values_file, 'w')
+    for s in stats_flow1D:
+        f.write(s)
+    f.close()
+    # could be added in FemToolsCcx to the self object as an Attribut
+    frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
+    dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
+    frd_Flow1D_thermomech_test_result_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.frd'
+    dat_Flow1D_thermomech_test_result_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.dat'
+    shutil.copyfile(frd_result_file, frd_Flow1D_thermomech_test_result_file)
+    shutil.copyfile(dat_result_file, dat_Flow1D_thermomech_test_result_file)
+    print('Flow1D thermomech results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
 '''
 update the results of FEM unit tests:

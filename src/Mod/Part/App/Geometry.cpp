@@ -3657,7 +3657,7 @@ TopoDS_Shape GeomSurface::toShape() const
 bool GeomSurface::tangentU(double u, double v, gp_Dir& dirU) const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
-    GeomLProp_SLProps prop(s,u,v,1,Precision::Confusion());
+    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
     if (prop.IsTangentUDefined()) {
         prop.TangentU(dirU);
         return true;
@@ -3669,13 +3669,75 @@ bool GeomSurface::tangentU(double u, double v, gp_Dir& dirU) const
 bool GeomSurface::tangentV(double u, double v, gp_Dir& dirV) const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
-    GeomLProp_SLProps prop(s,u,v,1,Precision::Confusion());
+    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
     if (prop.IsTangentVDefined()) {
         prop.TangentV(dirV);
         return true;
     }
 
     return false;
+}
+
+bool GeomSurface::normal(double u, double v, gp_Dir& dir) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
+    if (prop.IsNormalDefined()) {
+        dir = prop.Normal();
+        return true;
+    }
+
+    return false;
+}
+
+bool GeomSurface::isUmbillic(double u, double v) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
+    if (prop.IsCurvatureDefined()) {
+        return prop.IsUmbilic();
+    }
+
+    throw Base::RuntimeError("No curvature defined");
+}
+
+double GeomSurface::curvature(double u, double v, Curvature type) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
+    if (prop.IsCurvatureDefined()) {
+        double value = 0;
+        switch (type) {
+        case Maximum:
+            value = prop.MaxCurvature();
+            break;
+        case Minimum:
+            value = prop.MinCurvature();
+            break;
+        case Mean:
+            value = prop.MeanCurvature();
+            break;
+        case Gaussian:
+            value = prop.GaussianCurvature();
+            break;
+        }
+
+        return value;
+    }
+
+    throw Base::RuntimeError("No curvature defined");
+}
+
+void GeomSurface::curvatureDirections(double u, double v, gp_Dir& maxD, gp_Dir& minD) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
+    if (prop.IsCurvatureDefined()) {
+        prop.CurvatureDirections(maxD, minD);
+        return;
+    }
+
+    throw Base::RuntimeError("No curvature defined");
 }
 
 // -------------------------------------------------

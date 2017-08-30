@@ -173,7 +173,8 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         //double t0, t1,t2,t3;
         float t0, t1,t2,t3;
         if(line.find("<!-- Title block") != std::string::npos) {
-            sscanf(line.c_str(), "%*s %*s %*s %f %f %f %f", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
+            (void) sscanf(line.c_str(), "%*s %*s %*s %f %f %f %f", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
+                                                                                           //coverity 151677
             blockDimensions = QRectF(t0, t1, t2 - t0, t3 - t1);
         }
 

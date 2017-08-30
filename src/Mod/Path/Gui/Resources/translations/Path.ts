@@ -468,12 +468,12 @@
     </message>
     <message>
         <location filename="PathStock.py" line="47"/>
-        <source>extra allowance from part width</source>
+        <source>Extra allowance from part width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="PathStock.py" line="47"/>
-        <source>extra allownace from part width</source>
+        <source>Extra allowance from part width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2237,7 +2237,7 @@
     <name>Height Allowance</name>
     <message>
         <location filename="PathStock.py" line="45"/>
-        <source>extra allownace from part width</source>
+        <source>Extra allowance from part width</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2266,7 +2266,7 @@
     <name>Length Allowance</name>
     <message>
         <location filename="PathStock.py" line="43"/>
-        <source>extra allownace from part width</source>
+        <source>Extra allowance from part width</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2680,7 +2680,7 @@
     <name>Width Allowance</name>
     <message>
         <location filename="PathStock.py" line="44"/>
-        <source>extra allownace from part width</source>
+        <source>Extra allowance from part width</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

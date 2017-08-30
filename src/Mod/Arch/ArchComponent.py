@@ -405,9 +405,9 @@ class Component:
                         extrusion = FreeCAD.Vector(0,0,1)
                     else:
                         extrusion = placement.inverse().Rotation.multVec(extrusion)
-                    if hasattr(obj.Base,"LengthForward"):
-                        if obj.Base.LengthForward.Value:
-                            extrusion = extrusion.multiply(obj.Base.LengthForward.Value)
+                    if hasattr(obj.Base,"LengthFwd"):
+                        if obj.Base.LengthFwd.Value:
+                            extrusion = extrusion.multiply(obj.Base.LengthFwd.Value)
                     return (base,extrusion,placement)
             elif obj.Base.isDerivedFrom("Part::MultiFuse"):
                 rshapes = []
@@ -422,9 +422,9 @@ class Component:
                                 extrusion = FreeCAD.Vector(0,0,1)
                             else:
                                 extrusion = placement.inverse().Rotation.multVec(extrusion)
-                            if hasattr(sub,"LengthForward"):
-                                if sub.LengthForward.Value:
-                                    extrusion = extrusion.multiply(sub.LengthForward.Value)
+                            if hasattr(sub,"LengthFwd"):
+                                if sub.LengthFwd.Value:
+                                    extrusion = extrusion.multiply(sub.LengthFwd.Value)
                             placement = obj.Placement.multiply(placement)
                             rshapes.append(base)
                             revs.append(extrusion)
@@ -622,7 +622,13 @@ class Component:
                         if shape.Volume < 0:
                             FreeCAD.Console.PrintError(translate("Arch","Error computing the shape of this object")+"\n")
                             return
-                        shape = shape.removeSplitter()
+                        import Part
+                        try:
+                            r = shape.removeSplitter()
+                        except Part.OCCError:
+                            pass
+                        else:
+                            shape = r
                         obj.Shape = self.spread(obj,shape,placement)
                         if not placement.isNull():
                             obj.Placement = placement

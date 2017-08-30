@@ -530,7 +530,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_5">
           <property name="toolTip">
-           <string>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</string>
+           <string>If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</string>
           </property>
           <property name="text">
            <string>Export Drawing Views as blocks</string>

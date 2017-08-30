@@ -154,7 +154,7 @@ CmdPartDesignPlane::CmdPartDesignPlane()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a datum plane");
     sToolTipText    = QT_TR_NOOP("Create a new datum plane");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Plane";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Plane";
 }
@@ -182,7 +182,7 @@ CmdPartDesignLine::CmdPartDesignLine()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a datum line");
     sToolTipText    = QT_TR_NOOP("Create a new datum line");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Line";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Line";
 }
@@ -210,7 +210,7 @@ CmdPartDesignPoint::CmdPartDesignPoint()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a datum point");
     sToolTipText    = QT_TR_NOOP("Create a new datum point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Point";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Point";
 }
@@ -242,7 +242,7 @@ CmdPartDesignShapeBinder::CmdPartDesignShapeBinder()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a shape binder");
     sToolTipText    = QT_TR_NOOP("Create a new shape binder");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_ShapeBinder";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_ShapeBinder";
 }
@@ -310,7 +310,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create sketch");
     sToolTipText    = QT_TR_NOOP("Create a new sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_NewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_NewSketch";
 }
@@ -859,7 +859,10 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     auto* pcActiveBody = PartDesignGui::getBody(false);
     if (pcActiveBody && !bNoSketchWasSelected && ext) {
 
-        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, true);
+        // getPartFor() already has reported an error
+        if (!pcActivePart)
+            return;
 
         QDialog* dia = new QDialog;
         Ui_Dialog dlg;
@@ -1000,7 +1003,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
     sToolTipText  = QT_TR_NOOP("Create a pocket with the selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Pocket";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
 }
@@ -1031,6 +1034,52 @@ void CmdPartDesignPocket::activated(int iMsg)
 }
 
 bool CmdPartDesignPocket::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_Hole
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignHole);
+
+CmdPartDesignHole::CmdPartDesignHole()
+  : Command("PartDesign_Hole")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Hole");
+    sToolTipText  = QT_TR_NOOP("Create a hole with the selected sketch");
+    sWhatsThis    = "PartDesign_Hole";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Hole";
+}
+
+void CmdPartDesignHole::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+                return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+
+        if (FeatName.empty()) return;
+
+        finishProfileBased(cmd, sketch, FeatName);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(this, "Hole", worker);
+}
+
+bool CmdPartDesignHole::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1167,7 +1216,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive pipe");
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
-    sWhatsThis    = "PartDesign_Additive_Pipe";
+    sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Pipe";
 }
@@ -1217,7 +1266,7 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive pipe");
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
-    sWhatsThis    = "PartDesign_Subtractive_Pipe";
+    sWhatsThis    = "PartDesign_SubtractivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Subtractive_Pipe";
 }
@@ -1267,7 +1316,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive loft");
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections");
-    sWhatsThis    = "PartDesign_Additive_Loft";
+    sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Loft";
 }
@@ -1317,7 +1366,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive loft");
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections and remove it from the body");
-    sWhatsThis    = "PartDesign_Subtractive_Loft";
+    sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Subtractive_Loft";
 }
@@ -1470,7 +1519,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Fillet");
     sToolTipText  = QT_TR_NOOP("Make a fillet on an edge, face or body");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Fillet";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Fillet";
 }
@@ -1498,7 +1547,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Chamfer");
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Chamfer";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Chamfer";
 }
@@ -1725,8 +1774,8 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
-    sToolTipText  = QT_TR_NOOP("create a mirrored feature");
-    sWhatsThis    = sToolTipText;
+    sToolTipText  = QT_TR_NOOP("Create a mirrored feature");
+    sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
 }
@@ -2075,7 +2124,7 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Boolean operation");
     sToolTipText    = QT_TR_NOOP("Boolean operation with two or more bodies");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Boolean";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Boolean";
 }
@@ -2135,6 +2184,7 @@ void CreatePartDesignCommands(void)
 
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
+    rcCmdMgr.addCommand(new CmdPartDesignHole());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
     rcCmdMgr.addCommand(new CmdPartDesignGroove());
     rcCmdMgr.addCommand(new CmdPartDesignAdditivePipe);

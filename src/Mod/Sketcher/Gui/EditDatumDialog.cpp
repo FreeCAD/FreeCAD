@@ -42,6 +42,8 @@
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
 #include "EditDatumDialog.h"
+#include "CommandConstraints.h"
+
 
 using namespace SketcherGui;
 
@@ -164,17 +166,13 @@ void EditDatumDialog::exec(bool atCursor)
                     }
 
                     Gui::Command::commitCommand();
-                    
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
                     if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
                         sketch->ExpressionEngine.execute();
                         sketch->solve();
                     }
 
-                    if(autoRecompute)
-                        Gui::Command::updateActive();
+                    tryAutoRecompute();
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));

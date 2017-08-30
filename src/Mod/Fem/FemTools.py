@@ -66,22 +66,29 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def purge_results(self):
         for m in self.analysis.Member:
             if (m.isDerivedFrom('Fem::FemResultObject')):
+                if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
+                    self.analysis.Document.removeObject(m.Mesh.Name)
                 self.analysis.Document.removeObject(m.Name)
         self.results_present = False
+        FreeCAD.ActiveDocument.recompute()
 
     ## Resets mesh deformation
     #  @param self The python object self
     def reset_mesh_deformation(self):
-        if self.mesh:
-            self.mesh.ViewObject.applyDisplacement(0.0)
+        if FreeCAD.GuiUp:
+            if self.mesh:
+                self.mesh.ViewObject.applyDisplacement(0.0)
 
     ## Resets mesh color
     #  @param self The python object self
     def reset_mesh_color(self):
-        if self.mesh:
-            self.mesh.ViewObject.NodeColor = {}
-            self.mesh.ViewObject.ElementColor = {}
-            self.mesh.ViewObject.setNodeColorByScalars()
+        if FreeCAD.GuiUp:
+            if self.mesh:
+                self.mesh.ViewObject.NodeColor = {}
+                self.mesh.ViewObject.ElementColor = {}
+                node_numbers = self.mesh.FemMesh.Nodes.keys()
+                zero_values = [0] * len(node_numbers)
+                self.mesh.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
 
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
@@ -90,15 +97,17 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
             self.purge_results()
-        self.reset_mesh_color()
-        self.reset_mesh_deformation()
+        if FreeCAD.GuiUp:
+            self.reset_mesh_color()
+            self.reset_mesh_deformation()
 
     ## Resets mesh color, deformation and removes all result objects
     #  @param self The python object self
     def reset_all(self):
         self.purge_results()
-        self.reset_mesh_color()
-        self.reset_mesh_deformation()
+        if FreeCAD.GuiUp:
+            self.reset_mesh_color()
+            self.reset_mesh_deformation()
 
     ## Sets mesh color using selected type of results (Sabs by default)
     #  @param self The python object self
@@ -143,9 +152,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, filtered_values)
 
     def show_displacement(self, displacement_factor=0.0):
-        self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers,
-                                                          self.result_object.DisplacementVectors)
-        self.mesh.ViewObject.applyDisplacement(displacement_factor)
+        if FreeCAD.GuiUp:
+            self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers,
+                                                              self.result_object.DisplacementVectors)
+            self.mesh.ViewObject.applyDisplacement(displacement_factor)
 
     def update_objects(self):
         # [{'Object':materials_linear}, {}, ...]
@@ -533,7 +543,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if inp_file_name is not None:
             self.inp_file_name = inp_file_name
         else:
-            self.inp_file_name = self.working_dir + '/' + self.base_name + '.inp'
+            # self.working_dir does have a slash at the end
+            self.inp_file_name = self.working_dir + self.base_name + '.inp'
 
     ## Sets analysis type.
     #  @param self The python object self
@@ -570,6 +581,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                         self.working_dir = self.solver.WorkingDir
                     except:
                         print('Could not set working directory to solver working directory.')
+
+        # check working_dir has a slash at the end, if not add one
+        self.working_dir = os.path.join(self.working_dir, '')
 
         if not (os.path.isdir(self.working_dir)):
             try:
@@ -624,27 +638,27 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - MFlow - MassFlowRate
     #  - NPress - NetworkPressure
     #  - None - always return (0.0, 0.0, 0.0)
-    def get_stats(self, result_type):
+    def get_stats(self, result_type, results_name=None):
+        self.use_results(results_name)
+        m = self.result_object
         stats = (0.0, 0.0, 0.0)
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject"):
-                match_table = {
-                    "U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
-                    "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
-                    "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
-                    "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
-                    "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
-                    "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
-                    "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
-                    "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
-                    "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
-                    "Peeq": (m.Stats[27], m.Stats[28], m.Stats[29]),
-                    "Temp": (m.Stats[30], m.Stats[31], m.Stats[32]),
-                    "MFlow": (m.Stats[33], m.Stats[34], m.Stats[35]),
-                    "NPress": (m.Stats[36], m.Stats[37], m.Stats[38]),
-                    "None": (0.0, 0.0, 0.0)
-                }
-                stats = match_table[result_type]
+        match_table = {
+            "U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
+            "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
+            "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
+            "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
+            "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
+            "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
+            "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
+            "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
+            "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
+            "Peeq": (m.Stats[27], m.Stats[28], m.Stats[29]),
+            "Temp": (m.Stats[30], m.Stats[31], m.Stats[32]),
+            "MFlow": (m.Stats[33], m.Stats[34], m.Stats[35]),
+            "NPress": (m.Stats[36], m.Stats[37], m.Stats[38]),
+            "None": (0.0, 0.0, 0.0)
+        }
+        stats = match_table[result_type]
         return stats
 
 

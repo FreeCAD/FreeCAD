@@ -573,6 +573,8 @@ class _Wall(ArchComponent.Component):
                 if Draft.getType(p) == "Floor":
                     if p.Height.Value:
                         height = p.Height.Value
+        if not height:
+            return None
         if obj.Normal == Vector(0,0,0):
             normal = Vector(0,0,1)
         else:

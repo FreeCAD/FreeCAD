@@ -227,6 +227,33 @@ public:
     /// the boundary struct
     struct Constraints {
         long LowerBound, UpperBound, StepSize;
+        Constraints()
+            : LowerBound(0)
+            , UpperBound(0)
+            , StepSize(0)
+            , candelete(false)
+        {
+        }
+        Constraints(long l, long u, long s)
+            : LowerBound(l)
+            , UpperBound(u)
+            , StepSize(s)
+            , candelete(false)
+        {
+        }
+        ~Constraints()
+        {
+        }
+        void setDeletable(bool on)
+        {
+            candelete = on;
+        }
+        bool isDeletable() const
+        {
+            return candelete;
+        }
+    private:
+        bool candelete;
     };
     /** setting the boundaries
      * This sets the constraint struct. It can be dynamically 
@@ -495,6 +522,33 @@ public:
     /// the boundary struct
     struct Constraints {
         double LowerBound, UpperBound, StepSize;
+        Constraints()
+            : LowerBound(0)
+            , UpperBound(0)
+            , StepSize(0)
+            , candelete(false)
+        {
+        }
+        Constraints(double l, double u, double s)
+            : LowerBound(l)
+            , UpperBound(u)
+            , StepSize(s)
+            , candelete(false)
+        {
+        }
+        ~Constraints()
+        {
+        }
+        void setDeletable(bool on)
+        {
+            candelete = on;
+        }
+        bool isDeletable() const
+        {
+            return candelete;
+        }
+    private:
+        bool candelete;
     };
     /** setting the boundaries
      * This sets the constraint struct. It can be dynamcly 

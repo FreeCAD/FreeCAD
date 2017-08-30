@@ -324,6 +324,14 @@ void Gui::QuantitySpinBox::onChange() {
 bool QuantitySpinBox::apply(const std::string & propName)
 {
     if (!ExpressionBinding::apply(propName)) {
+        if (isBound()) {
+            const App::ObjectIdentifier & path = getPath();
+            const Property * prop = path.getProperty();
+            
+            /* Skip update if property is bound and we know it is read-only */
+            if (prop && prop->isReadOnly())
+                return true;
+        }
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value().getValue());
         return true;
     }

@@ -48,7 +48,7 @@ namespace App {
  * extend other objects. A extended object gets all the properties and methods of the extension. 
  * Therefore it is like c++ multiple inheritance, which is indeed used to achieve this on c++ side, 
  * but provides a few important additional functionalities:
- * - Property persistance is handled, save and restore work out of the box
+ * - Property persistence is handled, save and restore work out of the box
  * - The objects python API gets extended too with the extension python API
  * - Extensions can be added from c++ and python, even from both together
  *

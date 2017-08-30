@@ -869,6 +869,17 @@ bool Document::redo(void)
     return false;
 }
 
+void Document::removePropertyOfObject(TransactionalObject* obj, const char* name)
+{
+    Property* prop = obj->getDynamicPropertyByName(name);
+    if (prop) {
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->removeProperty(obj, prop);
+        for (auto it : mUndoTransactions)
+            it->removeProperty(obj, prop);
+    }
+}
+
 bool Document::isPerformingTransaction() const
 {
     return d->undoing || d->rollback;
@@ -2007,6 +2018,11 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
 #ifdef USE_OLD_DAG
 int Document::recompute()
 {
+    if (testStatus(Document::Recomputing)) {
+        // this is clearly a bug in the calling instance
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
     int objectCount = 0;
     
     // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
@@ -2014,6 +2030,8 @@ int Document::recompute()
     bool skip = testStatus(Document::SkipRecompute);
     if (skip)
         return 0;
+
+    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
     for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
@@ -2100,6 +2118,7 @@ int Document::recompute()
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
+        if (!Cur || !isIn(Cur)) continue;
 
         if (recomputeList.find(Cur) != recomputeList.end() ||
                 Cur->ExpressionEngine.depsAreTouched()) {
@@ -2683,15 +2702,14 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                     link->setValues(std::vector<DocumentObject*>());
                 }
                 else {
-                    // copy the list (not the objects)
-                    std::vector<DocumentObject*> linked = link->getValues();
-                    for (std::vector<DocumentObject*>::iterator fIt = linked.begin(); fIt != linked.end(); ++fIt) {
-                        if ((*fIt) == pcObject) {
-                            // reassign the the list without the object to be deleted
-                            linked.erase(fIt);
-                            link->setValues(linked);
-                            break;
+                    const auto &links = link->getValues();
+                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
+                        std::vector<DocumentObject*> newLinks;
+                        for(auto obj : links) {
+                            if (obj != pcObject) 
+                                newLinks.push_back(obj);
                         }
+                        link->setValues(newLinks);
                     }
                 }
             }

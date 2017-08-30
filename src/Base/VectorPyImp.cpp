@@ -235,6 +235,63 @@ int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *valu
     return 0;
 }
 
+// http://renesd.blogspot.de/2009/07/python3-c-api-simple-slicing-sqslice.html
+PyObject * VectorPy::mapping_subscript(PyObject *self, PyObject *item)
+{
+    if (PyIndex_Check(item)) {
+        Py_ssize_t i = PyNumber_AsSsize_t(item, PyExc_IndexError);
+        if (i == -1 && PyErr_Occurred())
+            return NULL;
+        if (i < 0)
+            i += sequence_length(self);
+        return sequence_item(self, i);
+    }
+    else if (PySlice_Check(item)) {
+        Py_ssize_t start, stop, step, slicelength, cur, i;
+#if PY_MAJOR_VERSION < 3
+        PySliceObject* slice = reinterpret_cast<PySliceObject*>(item);
+#else
+        PyObject* slice = item;
+#endif
+
+        if (PySlice_GetIndicesEx(slice,
+                         sequence_length(self),
+                         &start, &stop, &step, &slicelength) < 0) {
+            return NULL;
+        }
+
+        if (slicelength <= 0) {
+            return PyTuple_New(0);
+        }
+        else if (start == 0 && step == 1 &&
+                 slicelength == sequence_length(self) &&
+                 PyObject_TypeCheck(self, &(VectorPy::Type))) {
+            Base::Vector3d v = static_cast<VectorPy*>(self) ->value();
+            Py::Tuple xyz(3);
+            xyz.setItem(0, Py::Float(v.x));
+            xyz.setItem(1, Py::Float(v.y));
+            xyz.setItem(2, Py::Float(v.z));
+            return Py::new_reference_to(xyz);
+        }
+        else if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
+            Base::Vector3d v = static_cast<VectorPy*>(self) ->value();
+            Py::Tuple xyz(slicelength);
+
+            for (cur = start, i = 0; i < slicelength;
+                 cur += step, i++) {
+                xyz.setItem(i, Py::Float(v[cur]));
+            }
+
+            return Py::new_reference_to(xyz);
+        }
+    }
+
+    PyErr_Format(PyExc_TypeError,
+                 "Vector indices must be integers or slices, not %.200s",
+                 Py_TYPE(item)->tp_name);
+    return NULL;
+}
+
 PyObject*  VectorPy::add(PyObject *args)
 {
     PyObject *obj;

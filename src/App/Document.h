@@ -66,7 +66,8 @@ public:
         SkipRecompute = 0,
         KeepTrailingDigits = 1,
         Closable = 2,
-        Restoring = 3
+        Restoring = 3,
+        Recomputing = 4
     };
 
     /** @name Properties */
@@ -308,6 +309,8 @@ public:
     bool redo() ;
     /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
     bool isPerformingTransaction() const;
+    /// \internal remove property from a transactional object with name \a name
+    void removePropertyOfObject(TransactionalObject*, const char*);
     //@}
 
     /** @name dependency stuff */

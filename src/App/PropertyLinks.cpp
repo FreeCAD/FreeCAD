@@ -24,7 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#   include <assert.h>
+# include <assert.h>
+# include <sstream>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -309,7 +310,15 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
     reader.readElement("LinkList");
     // get the value of my attribute
     int count = reader.getAttributeAsInteger("count");
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
+    App::PropertyContainer* container = getContainer();
+    if (!container)
+        throw Base::RuntimeError("Property is not part of a container");
+    if (!container->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        std::stringstream str;
+        str << "Container is not a document object ("
+            << container->getTypeId().getName() << ")";
+        throw Base::TypeError(str.str());
+    }
 
     std::vector<DocumentObject*> values;
     values.reserve(count);

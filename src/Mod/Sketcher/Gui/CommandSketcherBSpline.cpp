@@ -410,14 +410,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
         commitCommand();
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-
+    tryAutoRecomputeIfNotSolve(Obj);
 }
 
 bool CmdSketcherConvertToNURB::isActive(void)
@@ -480,16 +473,9 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
     commitCommand();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    tryAutoRecomputeIfNotSolve(Obj);
 
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-    
     getSelection().clearSelection();
-
 }
 
 bool CmdSketcherIncreaseDegree::isActive(void)
@@ -577,13 +563,20 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
                 }
                 catch (const Base::CADKernelError& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                    e.ReportException();
+                    if(e.getTranslatable()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
+                                            QObject::tr(e.getMessage().c_str()));
+                    }
                     getSelection().clearSelection();
                 }
                 catch (const Base::Exception& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                    e.ReportException();
+                    if(e.getTranslatable()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
+                                            QObject::tr(e.getMessage().c_str()));
+                    }
+
                     getSelection().clearSelection();
                 }
 
@@ -638,15 +631,9 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     else {
         commitCommand();
     }
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-    
+
+    tryAutoRecomputeIfNotSolve(Obj);
+
     getSelection().clearSelection();
     
 }
@@ -791,17 +778,10 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     else {
         commitCommand();
     }
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
-    if (autoRecompute)
-        Gui::Command::updateActive();
-    else
-        Obj->solve();
-    
+
+    tryAutoRecomputeIfNotSolve(Obj);
+
     getSelection().clearSelection();
-    
 }
 
 bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)

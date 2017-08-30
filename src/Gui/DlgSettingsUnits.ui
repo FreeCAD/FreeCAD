@@ -61,6 +61,11 @@
             <string>Building US (ft-in/sqft/cuft)</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Metric small parts &amp; CNC(mm, mm/min)</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

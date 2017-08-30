@@ -87,7 +87,7 @@ CmdPartDesignPart::CmdPartDesignPart()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Create part");
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Part";
     sStatusTip    = sToolTipText;
     sPixmap       = "Tree_Annotation";
 }
@@ -130,7 +130,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Create body");
     sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Body_Create_New";
 }
@@ -184,7 +184,7 @@ void CmdPartDesignBody::activated(int iMsg)
 
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                QObject::tr("Body may be based no more than on one feature."));
+                QObject::tr("Body may be based on no more than one feature."));
             return;
         }
     }
@@ -206,7 +206,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 bodyName.c_str(), baseFeature->getNameInDocument());
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", 
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PDBODYKEY, bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel
@@ -258,7 +258,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Migrate");
     sToolTipText  = QT_TR_NOOP("Migrate document to the modern partdesign workflow");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
 }
 
@@ -472,7 +472,7 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Set tip");
     sToolTipText  = QT_TR_NOOP("Move the tip of the body");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_MoveTip";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MoveTip";
 }
@@ -552,7 +552,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Duplicate selected object");
     sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_DuplicateSelection";
     sStatusTip      = sToolTipText;
 }
 
@@ -608,7 +608,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Move object to other body");
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
     sPixmap         = "";
 }
@@ -638,17 +638,18 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
     std::set<App::DocumentObject*> source_bodies;
     for (auto feat : features) {
+        // Note: 'source' can be null which means that the feature doesn't belong to a body.
         PartDesign::Body* source = PartDesign::Body::findBodyOf(feat);
         source_bodies.insert(static_cast<App::DocumentObject*>(source));
     }
-    
-    if(source_bodies.size() != 1) {
+
+    if (source_bodies.size() != 1) {
         //show messagebox and cancel
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
             QObject::tr("Only features of a single source Body can be moved"));
         return;
     }
-     
+
     auto source_body = *source_bodies.begin();
 
     std::vector<App::DocumentObject*> target_bodies;
@@ -681,20 +682,21 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
     openCommand("Move an object");
-    
+
     std::stringstream stream;
     stream << "features_ = [App.ActiveDocument." << features.back()->getNameInDocument();
     features.pop_back();
-    
-    for (auto feat: features)        
+
+    for (auto feat: features)
         stream << ", App.ActiveDocument." << feat->getNameInDocument();
-    
+
     stream << "]";
     doCommand(Doc, stream.str().c_str());
-    doCommand(Doc, "App.ActiveDocument.%s.removeObjects(features_)", source_body->getNameInDocument());
+    if (source_body)
+        doCommand(Doc, "App.ActiveDocument.%s.removeObjects(features_)", source_body->getNameInDocument());
     doCommand(Doc, "App.ActiveDocument.%s.addObjects(features_)", target->getNameInDocument());
     /*
-        
+
         // Find body of this feature
         Part::BodyBase* source = PartDesign::Body::findBodyOf(feat);
         bool featureWasTip = false;
@@ -769,7 +771,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Move object after other object");
     sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
     sPixmap         = "";
 }

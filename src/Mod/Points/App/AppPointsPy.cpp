@@ -161,9 +161,19 @@ private:
                 pcFeature->purgeTouched();
             }
             else {
-                Points::Feature *pcFeature = static_cast<Points::Feature*>
-                    (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                if (reader->isStructured()) {
+                    Structured* structured = new Points::Structured();
+                    structured->Width.setValue(reader->getWidth());
+                    structured->Height.setValue(reader->getHeight());
+                    pcFeature = structured;
+                }
+                else {
+                    pcFeature = new Points::Feature();
+                }
+
+                // delayed adding of the points feature
                 pcFeature->Points.setValue(reader->getPoints());
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
                 pcDoc->recomputeFeature(pcFeature);
                 pcFeature->purgeTouched();
             }

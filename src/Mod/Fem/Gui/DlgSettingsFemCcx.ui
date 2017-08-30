@@ -457,6 +457,29 @@
             </property>
            </widget>
           </item>
+           <item row="5" column="1">
+           <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
+            <property name="text">
+             <string>3D Output, unchecked for 2D</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>BeamShellOutput</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="l_BeamShellOutput">
+            <property name="text">
+             <string>Beam, shell element 3D output format </string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>

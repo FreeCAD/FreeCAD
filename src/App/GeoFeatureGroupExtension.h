@@ -83,7 +83,7 @@ public:
      * system to the local coordinate system of this geo feature group. If this group has a no parent
      * GeoFeatureGroup the returned placement is the one of this group. For multiple stacked 
      * GeoFeatureGroups the returned Placement is the combination of all parent placements including 
-     * ths one of this group.
+     * the one of this group.
      * @return Base::Placement The transformation from global reference system to the groups local system
      */
     Base::Placement globalGroupPlacement();

@@ -1,14 +1,14 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.05
+version 2.07
 QT theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
 It might work with other software that uses QT styling.
 
 
 LICENSE
 ============================================================================================================
-Copyright (c) 2016 Pablo Gil Fernández
+Copyright (c) 2017 Pablo Gil Fernández
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
@@ -18,7 +18,7 @@ INSTALLATION
 ============================================================================================================
 1) Place the .qss files and /images/ folder in the path that fits your OS:
     OSX = /Users/[YOUR_USER_NAME]/Library/Preferences/FreeCAD/Gui/Stylesheets/
-    WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/fStylesheets/
+    WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
 2) In order to display correctly images:
@@ -644,7 +644,7 @@ QDockWidget QListView,
 QDockWidget QTableView {
     margin: 6px;
     border: 1px solid #505050; /* same as regular QTreeView, QListView and QTableView */
-    min-height: 40px; /* necessary in some areas of FreeCAD */
+    min-height: 40px; /* neccesary in some areas of FreeCAD */
 }
 
 /* Buttons to scroll tabs if there is not space to show all of them: */
@@ -772,6 +772,12 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
     background-color: transparent;
     selection-color: transparent;
     selection-background-color: transparent;
+}
+
+/* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
+	color: black;
+	background-color: #cbd8e6;
 }
 
 /* hack to disable margin inside Property values to following elements */
@@ -1158,6 +1164,11 @@ QDateTimeEdit {
     padding: 1px 2px; /* temporal: could don't be compatible with elements inside Tree/List view */
 }
 
+/* more contrast for QTexEdits */
+QTextEdit {
+    color: black;
+}
+
 /* shifts text/number editable field to the left to make space for the up/down or drop-down buttons */
 QComboBox,
 QAbstractSpinBox,
@@ -1349,6 +1360,7 @@ QDateTimeEdit::down-arrow:disabled {
 }
 
 /* ComboBox */
+
 QComboBox::drop-down {
     background-color: #505050; /* same color as up/down QSpinBox ... QDateTimeView background-color */
     subcontrol-origin: border; /* important */
@@ -1666,7 +1678,7 @@ QTreeView::indicator {
     border-radius:2px;
 }
 
-/* fix for QTreeView::indicator losing its margin */
+/* fix for QTreeView::indicator loosing its margin */
 QTreeView::indicator {
     margin: 3px;
 }
@@ -1680,8 +1692,8 @@ QListWidget::indicator:checked:selected,
 QListWidget::indicator:indeterminate:selected,
 QTreeView::indicator:checked:selected,
 QTreeView::indicator:indeterminate:selected {
-    background-color: #7cabf9; /* slightly lighter than default */
-    border-color: #2053c0; /* slightly darker than default */
+    background-color: #7cabf9; /* slighly lighter than default */
+    border-color: #2053c0; /* slighly darker than default */
 }
 
 QListWidget::indicator:pressed,
@@ -2077,23 +2089,95 @@ QTableView > QWidget > QDateTimeEdit:read-only {
     border-color: transparent;
 }
 
+
 /*==================================================================================================
-Navigation indicator (and other potential future QPushButtons in status bar)
+TABBAR widget (3rd party plugin)
 ==================================================================================================*/
-QStatusBar > QPushButton {
-    text-align: left;
-    background-color: transparent;
-    border: none;
-    padding: 4px 4px;
+QToolBar:horizontal#Selector,
+QToolBar:vertical#Selector {
+    background-color: rgba(0,0,0,120);
+    margin: 0px;
+    padding: 0px;
 }
+
+QToolBar::handle:top#Selector,
+QToolBar::handle:bottom#Selector,
+QToolBar::handle:horizontal#Selector {
+    alignment: bottom left;
+}
+
+QToolBar::handle:left#Selector,
+QToolBar::handle:right#Selector,
+QToolBar::handle:vertical#Selector {
+    width: 100%;
+    alignment: center left;
+}
+
+QToolBar:top#Selector QToolButton,
+QToolBar:bottom#Selector QToolButton,
+QToolBar:horizontal#Selector QToolButton {
+    alignment: bottom left;
+}
+
+QToolBar:left#Selector QToolButton,
+QToolBar:right#Selector QToolButton,
+QToolBar:vertical#Selector QToolButton {
+    alignment: center left;
+}
+
+QToolButton[toolbar_orientation="horizontal"] {
+    /* nothing, when Horizontal there's no need to add special parameters */
+}
+
+QToolButton[toolbar_orientation="vertical"] {
+    width: 100%;
+}
+
+QToolBar#Selector QToolButton {
+    border: none;
+    margin: 0px;
+    padding: 2px 6px;
+    border-radius: 0px;
+}
+
+/* Active tab */
+QToolBar#Selector QToolButton:checked {
+    color: white;
+    background-color: #6e6e6e;
+}
+
+/* Unactive tabs */
+QToolBar#Selector QToolButton:!checked {
+    color: rgba(255,255,255,160);
+    background-color: transparent;
+    margin: 0px;
+}
+
+/* Unactive tabs (hover) */
+QToolBar#Selector QToolButton:!checked:hover {
+    color: rgba(255,255,255,255);
+    background-color: rgba(255,255,255,20);
+}
+
+/* Unactive tabs (pressed) */
+QToolBar#Selector QToolButton:!checked:pressed {
+    background-color: rgba(255,255,255,40);
+}
+
 
 /*==================================================================================================
 EXPERIMENTAL
 ==================================================================================================*/
 
-/* Fix for preventing elements in different rows to accidentally overlap */
+/* Fix for preventing elements in different rows to accidentaly overlap */
 QDialog QGroupBox QFrame {
     margin: 2px 0px;
 }
 
 *[mandatoryField="true"] { background-color: cyan }
+
+/* Hack to avoid QPushButton text partially hidden under menu-indicator */
+QPushButton#NavigationIndicator::menu-indicator {
+    image: none;
+    width: 0px;
+}

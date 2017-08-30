@@ -2307,7 +2307,7 @@ class Move(Modifier):
                 onlyarchgroups = False
         if not onlyarchgroups:
             # arch groups can be moved, no need to add their children
-            self.sel = Draft.getGroupContents(self.sel,spaces=True)
+            self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
@@ -2319,11 +2319,10 @@ class Move(Modifier):
     def finish(self,closed=False,cont=False):
         if self.ghost:
             self.ghost.finalize()
-        Modifier.finish(self)
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
 
     def move(self,delta,copy=False):
         "moving the real shapes"
@@ -2463,11 +2462,11 @@ class Rotate(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.step = 0
         self.center = None
         self.ui.arcUi()
-        self.ui.isCopy.show()
+        self.ui.modUi()
         self.ui.setTitle("Rotate")
         self.arctrack = arcTracker()
         self.ghost = ghostTracker(self.sel)
@@ -2476,17 +2475,16 @@ class Rotate(Modifier):
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
-        Modifier.finish(self)
         if self.arctrack:
             self.arctrack.finalize()
         if self.ghost:
             self.ghost.finalize()
-        if self.doc:
-            self.doc.recompute()
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
+        if self.doc:
+            self.doc.recompute()
 
     def rot (self,angle,copy=False):
         "rotating the real shapes"
@@ -3596,12 +3594,20 @@ class Scale(Modifier):
         Modifier.finish(self)
         if self.ghost:
             self.ghost.finalize()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
 
-    def scale(self,delta,copy=False):
+    def scale(self,x,y,z,rel,mode):
+        delta = Vector(x,y,z)
+        if rel:
+            delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(delta)
+        if mode == 0:
+            copy = False
+            legacy = False
+        elif mode == 1:
+            copy = False
+            legacy = True
+        elif mode == 2:
+            copy = True
+            legacy = True
         "moving the real shapes"
         sel = '['
         for o in self.sel:
@@ -3610,14 +3616,22 @@ class Scale(Modifier):
             sel += 'FreeCAD.ActiveDocument.'+o.Name
         sel += ']'
         FreeCADGui.addModule("Draft")
-        if copy:
-            self.commit(translate("draft","Copy"),
-                        ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        else:
-            self.commit(translate("draft","Scale"),
-                        ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')',
-                         'FreeCAD.ActiveDocument.recompute()'])
+        self.commit(translate("draft","Copy"),
+                    ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+',legacy='+str(legacy)+')',
+                     'FreeCAD.ActiveDocument.recompute()'])
+        self.finish()
+
+    def scaleGhost(self,x,y,z,rel):
+        delta = Vector(x,y,z)
+        if rel:
+            delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(delta)
+        self.ghost.scale(delta)
+        # calculate a correction factor depending on the scaling center
+        corr = Vector(self.node[0].x,self.node[0].y,self.node[0].z)
+        corr.scale(delta.x,delta.y,delta.z)
+        corr = (corr.sub(self.node[0])).negative()
+        self.ghost.move(corr)
+        self.ghost.on()
 
     def action(self,arg):
         "scene event handler"
@@ -3628,63 +3642,24 @@ class Scale(Modifier):
             if self.ghost:
                 self.ghost.off()
             self.point,ctrlPoint,info = getPoint(self,arg,sym=True)
-            if (len(self.node) > 0):
-                last = self.node[len(self.node)-1]
-                delta = self.point.sub(last)
-                delta = FreeCAD.Vector(delta.x,delta.y,1)
-                if self.ghost:
-                    self.ghost.scale(delta)
-                    # calculate a correction factor depending on the scaling center
-                    corr = Vector(self.node[0].x,self.node[0].y,self.node[0].z)
-                    corr.scale(delta.x,delta.y,delta.z)
-                    corr = (corr.sub(self.node[0])).negative()
-                    self.ghost.move(corr)
-                    self.ghost.on()
-                    self.ui.zValue.setText("1")
-            if self.extendedCopy:
-                if not hasMod(arg,MODALT): self.finish()
-            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
                     self.ui.redraw()
-                    if (self.node == []):
-                        self.node.append(self.point)
-                        self.ui.isRelative.setChecked(True)
-                        self.ui.isCopy.show()
-                        if self.ghost:
-                            self.ghost.on()
-                        msg(translate("draft", "Pick scale factor:\n"))
-                    else:
-                        last = self.node[0]
-                        delta = self.point.sub(last)
-                        delta = FreeCAD.Vector(delta.x,delta.y,1)
-                        if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
-                            self.scale(delta,True)
-                        else:
-                            self.scale(delta)
-                        if hasMod(arg,MODALT):
-                            self.extendedCopy = True
-                        else:
-                            self.finish(cont=True)
+                    self.numericInput(self.point.x,self.point.y,self.point.z)
 
     def numericInput(self,numx,numy,numz):
-        "this function gets called by the toolbar when valid x, y, and z have been entered there"
+        "this function gets called by the toolbar when a valid base point has been entered"
         self.point = Vector(numx,numy,numz)
-        if not self.node:
-            self.node.append(self.point)
-            self.ui.isRelative.show()
-            self.ui.isCopy.show()
-            if self.ghost:
-                self.ghost.on()
-            msg(translate("draft", "Pick scale factor:\n"))
-        else:
-            last = self.node[-1]
-            if self.ui.isCopy.isChecked():
-                self.scale(self.point.sub(last),True)
-            else:
-                self.scale(self.point.sub(last))
-            self.finish(cont=True)
+        self.node.append(self.point)
+        self.ui.offUi()
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+        task = DraftGui.ScaleTaskPanel()
+        task.sourceCmd = self
+        DraftGui.todo.delay(FreeCADGui.Control.showDialog,task)
+        if self.ghost:
+            self.ghost.on()
 
 
 class ToggleConstructionMode():

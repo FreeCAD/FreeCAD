@@ -328,6 +328,8 @@ public:
         TRUNC,
         CEIL,
         FLOOR,
+        HYPOT,
+        CATH,
 
         // Aggregates
         AGGREGATES,

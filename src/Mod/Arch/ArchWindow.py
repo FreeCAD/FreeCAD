@@ -393,11 +393,6 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 class _CommandWindow:
     "the Arch Window command definition"
 
-    def __init__(self):
-        # hack for inputwidgets
-        global setArchWindowParamFunction
-        setArchWindowParamFunction = self.setParams
-
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
@@ -424,42 +419,43 @@ class _CommandWindow:
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
-            if obj.isDerivedFrom("Part::Part2DObject"):
-                FreeCADGui.Control.closeDialog()
-                host = None
-                if hasattr(obj,"Support"):
-                    if obj.Support:
-                        if isinstance(obj.Support,tuple):
-                            host = obj.Support[0]
-                        elif isinstance(obj.Support,list):
-                            host = obj.Support[0][0]
-                        else:
-                            host = obj.Support
-                        obj.Support = None # remove
-                elif Draft.isClone(obj,"Window"):
-                    if obj.Objects[0].Inlist:
-                        host = obj.Objects[0].Inlist[0]
-
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                if host and self.Include:
-                    if self.RemoveExternal:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
-                    else:
-                        # make a new object to avoid circular references
-                        FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host)")
-                    siblings = host.Proxy.getSiblings(host)
-                    for sibling in siblings:
+            if obj.isDerivedFrom("Part::Feature"):
+                if obj.Shape.Wires and not obj.Shape.Faces:
+                    FreeCADGui.Control.closeDialog()
+                    host = None
+                    if hasattr(obj,"Support"):
+                        if obj.Support:
+                            if isinstance(obj.Support,tuple):
+                                host = obj.Support[0]
+                            elif isinstance(obj.Support,list):
+                                host = obj.Support[0][0]
+                            else:
+                                host = obj.Support
+                            obj.Support = None # remove
+                    elif Draft.isClone(obj,"Window"):
+                        if obj.Objects[0].Inlist:
+                            host = obj.Objects[0].Inlist[0]
+    
+                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+                    FreeCADGui.addModule("Arch")
+                    FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                    if host and self.Include:
                         if self.RemoveExternal:
-                            FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+                            FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
                         else:
-                            FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
+                            # make a new object to avoid circular references
+                            FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
                             FreeCADGui.doCommand("Arch.removeComponents(win,host)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-                return
+                        siblings = host.Proxy.getSiblings(host)
+                        for sibling in siblings:
+                            if self.RemoveExternal:
+                                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+                            else:
+                                FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
+                                FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCAD.ActiveDocument.recompute()
+                    return
         
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -586,11 +582,13 @@ class _CommandWindow:
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
             i += 1
+            valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
-            exec("""def valueChanged(d):
-                setArchWindowParamFunction('"""+param+"""',d)""")
-            QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"),valueChanged)
+            QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
         return w
+
+    def getValueChanged(self,p):
+      return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
         self.Sill = d
@@ -689,7 +687,6 @@ class _Window(ArchComponent.Component):
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
                             pass
-                        FreeCAD.ActiveDocument.recompute()
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -717,7 +714,7 @@ class _Window(ArchComponent.Component):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = []
                         rotdata = None
-                        for i in range(len(obj.WindowParts)/5):
+                        for i in range(int(len(obj.WindowParts)/5)):
                             wires = []
                             hinge = None
                             omode = None
@@ -1082,56 +1079,58 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
-        self.form = QtGui.QWidget()
-        self.form.setObjectName("TaskPanel")
-        self.grid = QtGui.QGridLayout(self.form)
+        self.baseform = QtGui.QWidget()
+        self.baseform.setObjectName("TaskPanel")
+        self.grid = QtGui.QGridLayout(self.baseform)
         self.grid.setObjectName("grid")
-        self.title = QtGui.QLabel(self.form)
+        self.title = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.title, 0, 0, 1, 7)
+        basepanel = ArchComponent.ComponentTaskPanel()
+        self.form = [self.baseform,basepanel.baseform]
         
         # base object
-        self.tree = QtGui.QTreeWidget(self.form)
+        self.tree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.tree, 1, 0, 1, 7)
         self.tree.setColumnCount(1)
         self.tree.setMaximumSize(QtCore.QSize(500,24))
         self.tree.header().hide()
         
         # hole
-        self.holeLabel = QtGui.QLabel(self.form)
+        self.holeLabel = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.holeLabel, 2, 0, 1, 1)
 
-        self.holeNumber = QtGui.QLineEdit(self.form)
+        self.holeNumber = QtGui.QLineEdit(self.baseform)
         self.grid.addWidget(self.holeNumber, 2, 2, 1, 3)
 
-        self.holeButton = QtGui.QPushButton(self.form)
+        self.holeButton = QtGui.QPushButton(self.baseform)
         self.grid.addWidget(self.holeButton, 2, 6, 1, 1)
         self.holeButton.setEnabled(True)
 
         # trees
-        self.wiretree = QtGui.QTreeWidget(self.form)
+        self.wiretree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.wiretree, 3, 0, 1, 3)
         self.wiretree.setColumnCount(1)
         self.wiretree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
 
-        self.comptree = QtGui.QTreeWidget(self.form)
+        self.comptree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.comptree, 3, 4, 1, 3)
         self.comptree.setColumnCount(1)
 
         # buttons
-        self.addButton = QtGui.QPushButton(self.form)
+        self.addButton = QtGui.QPushButton(self.baseform)
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
         self.grid.addWidget(self.addButton, 4, 0, 1, 1)
         self.addButton.setMaximumSize(QtCore.QSize(70,40))
 
-        self.editButton = QtGui.QPushButton(self.form)
+        self.editButton = QtGui.QPushButton(self.baseform)
         self.editButton.setObjectName("editButton")
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
         self.grid.addWidget(self.editButton, 4, 2, 1, 3)
         self.editButton.setMaximumSize(QtCore.QSize(60,40))
         self.editButton.setEnabled(False)
 
-        self.delButton = QtGui.QPushButton(self.form)
+        self.delButton = QtGui.QPushButton(self.baseform)
         self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 4, 6, 1, 1)
@@ -1141,22 +1140,22 @@ class _ArchWindowTaskPanel:
         # add new
 
         ui = FreeCADGui.UiLoader()
-        self.newtitle = QtGui.QLabel(self.form)
-        self.new1 = QtGui.QLabel(self.form)
-        self.new2 = QtGui.QLabel(self.form)
-        self.new3 = QtGui.QLabel(self.form)
-        self.new4 = QtGui.QLabel(self.form)
-        self.new5 = QtGui.QLabel(self.form)
-        self.new6 = QtGui.QLabel(self.form)
-        self.new7 = QtGui.QLabel(self.form)
-        self.field1 = QtGui.QLineEdit(self.form)
-        self.field2 = QtGui.QComboBox(self.form)
-        self.field3 = QtGui.QLineEdit(self.form)
+        self.newtitle = QtGui.QLabel(self.baseform)
+        self.new1 = QtGui.QLabel(self.baseform)
+        self.new2 = QtGui.QLabel(self.baseform)
+        self.new3 = QtGui.QLabel(self.baseform)
+        self.new4 = QtGui.QLabel(self.baseform)
+        self.new5 = QtGui.QLabel(self.baseform)
+        self.new6 = QtGui.QLabel(self.baseform)
+        self.new7 = QtGui.QLabel(self.baseform)
+        self.field1 = QtGui.QLineEdit(self.baseform)
+        self.field2 = QtGui.QComboBox(self.baseform)
+        self.field3 = QtGui.QLineEdit(self.baseform)
         self.field4 = ui.createWidget("Gui::InputField")
         self.field5 = ui.createWidget("Gui::InputField")
-        self.field6 = QtGui.QPushButton(self.form)
-        self.field7 = QtGui.QComboBox(self.form)
-        self.createButton = QtGui.QPushButton(self.form)
+        self.field6 = QtGui.QPushButton(self.baseform)
+        self.field7 = QtGui.QComboBox(self.baseform)
+        self.createButton = QtGui.QPushButton(self.baseform)
         self.createButton.setObjectName("createButton")
         self.createButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
         self.grid.addWidget(self.newtitle, 7, 0, 1, 7)
@@ -1297,7 +1296,7 @@ class _ArchWindowTaskPanel:
                 else:
                     self.holeNumber.setText("0")
                         
-                self.retranslateUi(self.form)
+                self.retranslateUi(self.baseform)
 
     def addElement(self):
         'opens the component creation dialog'
@@ -1452,7 +1451,7 @@ class _ArchWindowTaskPanel:
         return True
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire", None))
         self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick selected", None))

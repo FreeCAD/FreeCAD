@@ -529,7 +529,7 @@
     </message>
     <message>
         <location filename="ArchRebar.py" line="166"/>
-        <source>The distance between the border of the beam and the fist bar (concrete cover).</source>
+        <source>The distance between the border of the beam and the first bar (concrete cover).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2488,7 +2488,7 @@ Site creation aborted.</source>
     </message>
     <message>
         <location filename="ArchMaterial.ui" line="38"/>
-        <source>Copy values from an existing mateiral in the document</source>
+        <source>Copy values from an existing material in the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3559,7 +3559,7 @@ Site creation aborted.</source>
     </message>
     <message>
         <location filename="preferences-arch.ui" line="223"/>
-        <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
+        <source>Tolerance value to use when checking if 2 adjacent faces are planar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

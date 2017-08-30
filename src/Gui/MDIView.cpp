@@ -92,10 +92,13 @@ void MDIView::deleteSelf()
     // #0001023: Crash when quitting after using Windows > Tile
     // Use deleteLater() instead of delete operator.
     QWidget* parent = this->parentWidget();
-    if (qobject_cast<QMdiSubWindow*>(parent))
-        parent->deleteLater();
-    else
-        this->deleteLater();
+    if (qobject_cast<QMdiSubWindow*>(parent)) {
+        // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
+        parent->close();
+    }
+    else {
+        this->close();
+    }
 
     // detach from document
     if (_pcDocument)

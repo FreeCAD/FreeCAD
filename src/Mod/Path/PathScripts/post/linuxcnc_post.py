@@ -33,30 +33,36 @@ import linuxcnc_post
 linuxcnc_post.export(object,"/path/to/file.ncc","")
 '''
 
-TOOLTIP_ARGS='''
-Arguments for linuxcnc:
-    --header,--no-header             ... output headers (--header)
-    --comments,--no-comments         ... output comments (--comments)
-    --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
-    --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
-    --output-precision=4             ... number of digits of precision.  Default=4
-'''
 import FreeCAD
 from FreeCAD import Units
+import argparse
 import datetime
+import shlex
 from PathScripts import PostUtils
 from PathScripts import PathUtils
 
 now = datetime.datetime.now()
 
+parser = argparse.ArgumentParser(prog='linuxcnc', add_help=False)
+parser.add_argument('--header', action='store_true', help='output headers (default)')
+parser.add_argument('--no-header', action='store_true', help='suppress header output')
+parser.add_argument('--comments', action='store_true', help='output comment (default)')
+parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
+parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
+parser.add_argument('--no-line-numbers', action='store_true', help='don\'t prefix with line numbers (default)')
+parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output (default)')
+parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
+parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
+parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
+parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
+
+TOOLTIP_ARGS=parser.format_help()
+
 # These globals set common customization preferences
 OUTPUT_COMMENTS = True
 OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
-if FreeCAD.GuiUp:
-    SHOW_EDITOR = True
-else:
-    SHOW_EDITOR = False
+SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -75,7 +81,6 @@ PREAMBLE = '''G17 G90
 
 # Postamble text will appear following the last operation.
 POSTAMBLE = '''M05
-G00 X-1.0 Y1.0
 G17 G90
 M2
 '''
@@ -101,36 +106,48 @@ def processArguments(argstring):
     global OUTPUT_LINE_NUMBERS
     global SHOW_EDITOR
     global PRECISION
+    global PREAMBLE
+    global POSTAMBLE
 
-    for arg in argstring.split():
-        if arg == '--header':
-            OUTPUT_HEADER = True
-        elif arg == '--no-header':
+    try:
+        args = parser.parse_args(shlex.split(argstring))
+        if args.no_header:
             OUTPUT_HEADER = False
-        elif arg == '--comments':
-            OUTPUT_COMMENTS = True
-        elif arg == '--no-comments':
+        if args.header:
+            OUTPUT_HEADER = True
+        if args.no_comments:
             OUTPUT_COMMENTS = False
-        elif arg == '--line-numbers':
-            OUTPUT_LINE_NUMBERS = True
-        elif arg == '--no-line-numbers':
+        if args.comments:
+            OUTPUT_COMMENTS = True
+        if args.no_line_numbers:
             OUTPUT_LINE_NUMBERS = False
-        elif arg == '--show-editor':
-            SHOW_EDITOR = True
-        elif arg == '--no-show-editor':
+        if args.line_numbers:
+            OUTPUT_LINE_NUMBERS = True
+        if args.no_show_editor:
             SHOW_EDITOR = False
-        elif arg.split('=')[0] == '--output-precision':
-            PRECISION = arg.split('=')[1]
+        if args.show_editor:
+            SHOW_EDITOR = True
+        print("Show editor = %d" % SHOW_EDITOR)
+        PRECISION = args.precision
+        if args.preamble is not None:
+            PREAMBLE = args.preamble
+        if args.postamble is not None:
+            POSTAMBLE = args.postamble
+    except:
+        return False
+
+    return True
 
 def export(objectslist, filename, argstring):
-    processArguments(argstring)
+    if not processArguments(argstring):
+        return None
     global UNITS
     global UNIT_FORMAT
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
-            return
+            return None
 
     print("postprocessing...")
     gcode = ""
@@ -144,8 +161,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines(False):
+        gcode += linenumber() + line + "\n"
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
@@ -188,7 +205,7 @@ def export(objectslist, filename, argstring):
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
-    if SHOW_EDITOR:
+    if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
         result = dia.exec_()

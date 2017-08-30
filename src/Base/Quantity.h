@@ -63,6 +63,22 @@ struct QuantityFormat {
             return 'g';
         }
     }
+    static inline NumberFormat toFormat(char c, bool* ok = 0) {
+        if (ok)
+            *ok = true;
+        switch (c) {
+        case 'f':
+            return Fixed;
+        case 'e':
+            return Scientific;
+        case 'g':
+            return Default;
+        default:
+            if (ok)
+                *ok = false;
+            return Default;
+        }
+    }
 };
 
 /**

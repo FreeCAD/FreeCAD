@@ -148,6 +148,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemSetNodesObject          ::init();
 
     Fem::Constraint                 ::init();
+    Fem::ConstraintPython           ::init();
     Fem::ConstraintBearing          ::init();
     Fem::ConstraintFixed            ::init();
     Fem::ConstraintForce            ::init();

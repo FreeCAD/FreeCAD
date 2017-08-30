@@ -41,6 +41,7 @@ using namespace TechDrawGui;
 
 QGIHighlight::QGIHighlight()
 {
+    m_refText = "";
     m_refSize = 0.0;
     m_circle = new QGraphicsEllipseItem();
     addToGroup(m_circle);

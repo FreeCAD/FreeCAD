@@ -4,9 +4,15 @@ import FreeCAD
 import unittest
 import math
 
-
 def tu(str):
     return FreeCAD.Units.Quantity(str).Value
+
+def ts(q):
+    return q.UserString
+
+def ts2(q):
+    return FreeCAD.Units.Quantity(q.UserString).UserString
+
 
 #---------------------------------------------------------------------------
 # define the functions to test the FreeCAD UnitApi code
@@ -35,6 +41,14 @@ class UnitBasicCases(unittest.TestCase):
         self.failUnless(compare(tu('3/8in'), 9.525))
         #self.failUnless(compare(tu('1fo(3+7/16)in'),392.112500))thisgivesaparsersyntaxerror!!!
         self.failUnless(compare(tu('1\'(3+7/16)"'), 392.112500))
+
+    def testSelfConsistency(self):
+        qu = FreeCAD.Units.Quantity("0.23 W/m/K")
+        self.assertTrue(ts(qu), ts2(qu))
+        qu = FreeCAD.Units.Quantity("237 mm*kg/(s^3*K)")
+        self.assertTrue(ts(qu), ts2(qu))
+        qu = FreeCAD.Units.Quantity("237.000 W/mm/K")
+        self.assertTrue(ts(qu), ts2(qu))
 
     def testTrigonometric(self):
         #tu=FreeCAD.Units.translateUnit

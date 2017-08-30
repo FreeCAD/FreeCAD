@@ -50,7 +50,22 @@ if(BUILD_QT5)
   set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/Current")
 endif(BUILD_QT5)
 
-install(DIRECTORY ${QT_PLUGINS_DIR}/ DESTINATION ${CMAKE_INSTALL_LIBDIR}/qtplugins )
+# Ensure the actual plugin files are installed instead of symlinks.
+file(GLOB _subdirs RELATIVE "${QT_PLUGINS_DIR}" "${QT_PLUGINS_DIR}/*")
+
+foreach(_subdir ${_subdirs})
+    if(IS_DIRECTORY "${QT_PLUGINS_DIR}/${_subdir}")
+        set(_resolved_files "")
+        file(GLOB _plugin_files RELATIVE "${QT_PLUGINS_DIR}/${_subdir}" "${QT_PLUGINS_DIR}/${_subdir}/*")
+
+        foreach(_plugin_file ${_plugin_files})
+            get_filename_component(_resolved_file "${QT_PLUGINS_DIR}/${_subdir}/${_plugin_file}" REALPATH)
+            list(APPEND _resolved_files ${_resolved_file})
+        endforeach()
+
+        install(FILES ${_resolved_files} DESTINATION "${CMAKE_INSTALL_LIBDIR}/qtplugins/${_subdir}")
+    endif()
+endforeach()
 
 #files installed by homebrew do not have write permission for regular user
 install(CODE "execute_process(COMMAND chmod -R a+w ${CMAKE_INSTALL_LIBDIR})")

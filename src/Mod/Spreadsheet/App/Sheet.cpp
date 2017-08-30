@@ -113,7 +113,7 @@ void Sheet::clearAll()
     std::vector<std::string> propNames = props.getDynamicPropertyNames();
 
     for (std::vector<std::string>::const_iterator i = propNames.begin(); i != propNames.end(); ++i)
-        props.removeDynamicProperty((*i).c_str());
+        this->removeDynamicProperty((*i).c_str());
 
     propAddress.clear();
     cellErrors.clear();
@@ -460,7 +460,7 @@ void Sheet::removeAliases()
     std::map<CellAddress, std::string>::iterator i = removedAliases.begin();
 
     while (i != removedAliases.end()) {
-        props.removeDynamicProperty(i->second.c_str());
+        this->removeDynamicProperty(i->second.c_str());
         ++i;
     }
     removedAliases.clear();
@@ -491,7 +491,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
 
     if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
         if (prop) {
-            props.removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
         floatProp = freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
@@ -522,7 +522,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
 
     if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
         if (prop) {
-            props.removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
         Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient);
@@ -556,7 +556,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 
     if (!stringProp) {
         if (prop) {
-            props.removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
         stringProp = freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
@@ -590,7 +590,7 @@ void Sheet::updateAlias(CellAddress key)
         if (aliasProp) {
             // Type of alias and property must always be the same
             if (aliasProp->getTypeId() != prop->getTypeId()) {
-                props.removeDynamicProperty(alias.c_str());
+                this->removeDynamicProperty(alias.c_str());
                 aliasProp = 0;
             }
         }
@@ -882,7 +882,7 @@ void Sheet::clear(CellAddress address, bool /*all*/)
     // Remove alias, if defined
     std::string aliasStr;
     if (cell && cell->getAlias(aliasStr))
-        props.removeDynamicProperty(aliasStr.c_str());
+        this->removeDynamicProperty(aliasStr.c_str());
 
     cells.clear(address);
 
@@ -896,7 +896,7 @@ void Sheet::clear(CellAddress address, bool /*all*/)
     docDeps.setValues(dv);
 
     propAddress.erase(prop);
-    props.removeDynamicProperty(addr.c_str());
+    this->removeDynamicProperty(addr.c_str());
 }
 
 /**

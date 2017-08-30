@@ -134,8 +134,8 @@ class ToolController:
     def onChanged(self, obj, prop):
         PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
 
-
-        if 'Restore' not in obj.State:
+        if 'Path' == prop and 'Restore' not in obj.State:
+            PathLog.debug("--- dirty deeds")
             job = PathScripts.PathUtils.findParentJob(obj)
             if job is not None:
                 for g in job.Group:
@@ -236,7 +236,7 @@ class CommandPathToolController:
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Default Tool")
         PathScripts.PathToolController.ToolController(obj)
-        if assignViewProvider:
+        if FreeCAD.GuiUp and assignViewProvider:
             PathScripts.PathToolController._ViewProviderToolController(obj.ViewObject)
 
         if tool is None:
@@ -314,10 +314,10 @@ class TaskPanel:
     def setFields(self):
         self.form.tcoName.setText(self.obj.Label)
         self.form.uiToolNum.setValue(self.obj.ToolNumber)
-        self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
-        self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
-        self.form.vertRapid.setText(str(self.obj.VertRapid.Value))
-        self.form.horizRapid.setText(str(self.obj.HorizRapid.Value))
+        self.form.vertFeed.setText(self.obj.VertFeed.UserString)
+        self.form.horizFeed.setText(self.obj.HorizFeed.UserString)
+        self.form.vertRapid.setText(self.obj.VertRapid.UserString)
+        self.form.horizRapid.setText(self.obj.HorizRapid.UserString)
 
         self.form.spindleSpeed.setValue(self.obj.SpindleSpeed)
 

@@ -438,8 +438,7 @@ def export(selection, filename, argstring):
                                 outstring.append(
                                     'Y' + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
                             else:
-                                outstring.append(
-                                    param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
+                                print("parameter " + param + " for command " + command + " ignored")
 
                             if param in MODALPARAMS:
                                 modalParamsDict[str(param)] = c.Parameters[

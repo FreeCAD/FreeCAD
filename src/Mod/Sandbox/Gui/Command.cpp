@@ -1031,13 +1031,22 @@ public:
     QPaintEngine *paintEngine() const { return 0; }
 protected:
     void paintEvent(QPaintEvent *event) {
+#if QT_VERSION < 0x050000
         HDC hdc = getDC();
+#else
+        HWND hWnd = (HWND)this->winId();
+        HDC hdc = GetDC(hWnd);
+#endif
         SelectObject(hdc, GetSysColorBrush(COLOR_WINDOW));
         Rectangle(hdc, 0, 0, width(), height());
         RECT rect = {0, 0, width(), height() };
         DrawText(hdc, "Hello World!", 12, &rect,
         DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+#if QT_VERSION < 0x050000
         releaseDC(hdc);
+#else
+        ReleaseDC(hWnd, hdc);
+#endif
     }
 };
 #endif

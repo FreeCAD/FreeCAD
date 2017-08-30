@@ -491,6 +491,9 @@ Thickness::Thickness()
     Join.setEnums(JoinEnums);
     ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Intersection");
     ADD_PROPERTY_TYPE(SelfIntersection,(false),"Thickness",App::Prop_None,"Self Intersection");
+
+    // Value should have length as unit
+    Value.setUnit(Base::Unit::Length);
 }
 
 short Thickness::mustExecute() const
@@ -508,6 +511,17 @@ short Thickness::mustExecute() const
     if (SelfIntersection.isTouched())
         return 1;
     return 0;
+}
+
+void Thickness::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if (prop == &Value && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat v;
+
+        v.Restore(reader);
+
+        Value.setValue(v.getValue());
+    }
 }
 
 App::DocumentObjectExecReturn *Thickness::execute(void)

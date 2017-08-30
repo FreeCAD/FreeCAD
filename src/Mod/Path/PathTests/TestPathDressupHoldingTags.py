@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 import PathScripts
 import math

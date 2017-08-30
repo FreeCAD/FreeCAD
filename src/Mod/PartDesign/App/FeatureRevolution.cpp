@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -103,7 +104,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
 
     // update Axis from ReferenceAxis
-    updateAxis();
+    try {
+        updateAxis();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
     // get revolve axis
     Base::Vector3d b = Base.getValue();
@@ -179,7 +184,12 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
 bool Revolution::suggestReversed(void)
 {
-    updateAxis();
+    try {
+        updateAxis();
+    } catch (const Base::Exception&) {
+        return false;
+    }
+
     return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
 }
 

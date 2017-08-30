@@ -32,7 +32,9 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_ListOfShape.hxx>
-#include <BRep_Tool.hxx>
+# include <BRep_Tool.hxx>
+# include <ShapeFix_Shape.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -112,7 +114,14 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
         if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+            ShapeFix_ShapeTolerance aSFT;
+            aSFT.LimitTolerance(shape, Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
+            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape);
+            aSfs->Perform();
+            shape = aSfs->Shape();
+            if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+            }
         }
 
         this->Shape.setValue(getSolid(shape));
