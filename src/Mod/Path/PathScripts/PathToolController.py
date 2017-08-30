@@ -176,7 +176,7 @@ class ViewProvider:
         return None
 
     def getIcon(self):
-        return ":/icons/Path-LengthOffset.svg"
+        return ":/icons/Path-ToolController.svg"
 
     def onChanged(self, vobj, prop):
         mode = 2
