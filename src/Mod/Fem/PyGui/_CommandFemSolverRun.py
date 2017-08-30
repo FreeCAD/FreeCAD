@@ -76,13 +76,19 @@ class _CommandFemSolverRun(FemCommands):
         if solver is not None:
             try:
                 machine = FemRun.getMachine(solver)
-            except ValueError:
+            except FemRun.MustSaveError:
                 QtGui.QMessageBox.critical(
                     FreeCADGui.getMainWindow(),
                     "Can't start Solver",
                     "Please save the file before executing the solver. "
                     "This must be done because the location of the working "
                     "directory is set to \"Beside .fcstd File\".")
+                return
+            except FemRun.DirectoryDoesNotExist:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    "Selected working directory doesn't exist.")
                 return
             if not machine.running:
                 machine.reset()
