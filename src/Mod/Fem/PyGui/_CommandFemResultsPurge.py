@@ -28,8 +28,9 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 from .FemCommands import FemCommands
-import FemTools
+import FemResultTools
 import FreeCADGui
+import FemGui
 from PySide import QtCore
 
 
@@ -44,9 +45,7 @@ class _CommandFemResultsPurge(FemCommands):
         self.is_active = 'with_results'
 
     def Activated(self):
-        fea = FemTools.FemTools()
-        fea.reset_all()
-        self.hide_meshes_show_parts_constraints()
+        FemResultTools.purge_results(FemGui.getActiveAnalysis())
 
 
 FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())
