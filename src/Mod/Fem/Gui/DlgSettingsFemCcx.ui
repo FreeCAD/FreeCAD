@@ -214,7 +214,7 @@
                <string>sdfsdfsdfds</string>
               </property>
               <property name="text">
-               <string>Depreciated</string>
+               <string>Deprecated</string>
               </property>
               <property name="checked">
                <bool>true</bool>
