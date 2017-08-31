@@ -111,6 +111,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemConstraintSelfWeight.py
     PyObjects/_FemConstraintBodyHeatFlux.py
     PyObjects/_FemConstraintFlowVelocity.py
+    PyObjects/_FemConstraintInitialFlowVelocity.py
     PyObjects/_FemElementFluid1D.py
     PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemElementGeometry2D.py
@@ -171,6 +172,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandFemConstraintSelfWeight.py
     PyGui/_CommandFemConstraintBodyHeatFlux.py
     PyGui/_CommandFemConstraintFlowVelocity.py
+    PyGui/_CommandFemConstraintInitialFlowVelocity.py
     PyGui/_CommandFemElementFluid1D.py
     PyGui/_CommandFemElementGeometry1D.py
     PyGui/_CommandFemElementGeometry2D.py
@@ -207,6 +209,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemConstraintBodyHeatFlux.py
     PyGui/_ViewProviderFemConstraintFlowVelocity.py
+    PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
     PyGui/_ViewProviderFemElementGeometry2D.py
@@ -232,6 +235,7 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemResultShow.ui
     PyGui/TaskPanelFemSolverCalculix.ui
     PyGui/TaskPanelFemFlowVelocity.ui
+    PyGui/TaskPanelFemInitialFlowVelocity.ui
 )
 
 SET(FemTests_SRCS

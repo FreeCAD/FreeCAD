@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Constraint Properties</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+   </property>
+   <item row="1" column="0">
+    <widget class="QLabel" name="volocityXLbl">
+     <property name="text">
+      <string>Velocity x:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="Gui::InputField" name="velocityXTxt">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="unit" stdset="0">
+        <string>m/s</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="velocityXBox">
+       <property name="text">
+        <string>unspecified</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="velocityYLbl">
+     <property name="text">
+      <string>Velocity y:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="Gui::InputField" name="velocityYTxt">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="unit" stdset="0">
+        <string>m/s</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="velocityYBox">
+       <property name="text">
+        <string>unspecified</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="velocityZLbl">
+     <property name="text">
+      <string>Velocity z:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="Gui::InputField" name="velocityZTxt">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="unit" stdset="0">
+        <string>m/s</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="velocityZBox">
+       <property name="text">
+        <string>unspecified</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>velocityXBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>velocityXTxt</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>velocityXBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>velocityXTxt</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>velocityYBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>velocityYTxt</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>velocityYBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>velocityYTxt</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>velocityZBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>velocityZTxt</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>velocityZBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>velocityZTxt</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -450,6 +450,7 @@ class Writer(object):
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
+            self._handleFlowInitialVelocity(activeIn)
             #self._handleFlowInitial(activeIn)
             #self._handleFlowBodyForces(activeIn)
             self._handleFlowMaterial(activeIn)
@@ -512,6 +513,23 @@ class Writer(object):
                     self._material(
                         name, "Compressibility Model",
                         m["CompressibilityModel"])
+
+
+    def _handleFlowInitialVelocity(self, bodies):
+        obj = self._getSingleMember("Fem::ConstraintInitialFlowVelocity")
+        if obj is not None:
+            for name in bodies:
+                if obj.VelocityXEnabled:
+                    velocity = getFromUi(obj.VelocityX, "m/s", "L/T")
+                    self._initial(name, "Velocity 1", velocity)
+                if obj.VelocityYEnabled:
+                    velocity = getFromUi(obj.VelocityY, "m/s", "L/T")
+                    self._initial(name, "Velocity 2", velocity)
+                if obj.VelocityZEnabled:
+                    velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
+                    self._initial(name, "Velocity 3", velocity)
+            self._handled(obj)
+
 
     def _handleFlowBndConditions(self):
         for obj in self._getMember("Fem::ConstraintFlowVelocity"):
