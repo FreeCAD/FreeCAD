@@ -58,6 +58,8 @@ def InitApplications():
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
 	ModDir = FreeCAD.getHomePath()+'Mod'
 	ModDir = os.path.realpath(ModDir)
+	ExtDir = FreeCAD.getHomePath()+'Ext'
+	ExtDir = os.path.realpath(ExtDir)
 	BinDir = FreeCAD.getHomePath()+'bin'
 	BinDir = os.path.realpath(BinDir)
 	LibDir = FreeCAD.getHomePath()+'lib'
@@ -75,6 +77,9 @@ def InitApplications():
 	#print FreeCAD.getHomePath()
 	if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
 		sys.path.append(FreeCAD.getHomePath()+'src\\Tools')
+
+
+
 	# Searching for module dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
 	# Use dict to handle duplicated module names
 	ModDict = {}
@@ -116,7 +121,7 @@ def InitApplications():
 	# also add these directories to the sys.path to 
 	# not change the old behaviour. once we have moved to 
 	# proper python modules this can eventuelly be removed.
-	sys.path = [ModDir, Lib64Dir, LibDir] + sys.path
+	sys.path = [ModDir, Lib64Dir, LibDir, ExtDir] + sys.path
 
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
@@ -140,6 +145,24 @@ def InitApplications():
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
 				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
+
+	extension_modules = []
+	import pkgutil
+	import importlib
+	import freecad
+	for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
+		if freecad_module_ispkg:
+			Log('Init: Initializing ' + freecad_module_name + '\n')
+			freecad_module = importlib.import_module(freecad_module_name)
+			extension_modules += [freecad_module_name]
+			if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
+				try:
+					importlib.import_module(freecad_module_name + '.init')
+					Log('Init: Initializing ' + freecad_module_name + '... done\n')
+				except ImportError as error:
+					Err('During initialization the error ' + str(error) + ' occurred in ' + freecad_module_name + '\n')
+			else:
+				Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
 
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
