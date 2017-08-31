@@ -44,52 +44,56 @@ class BaseProxy(object):
         return True
 
 
-class BaseViewProxy(object):
+if FreeCAD.GuiUp:
+    class BaseViewProxy(object):
 
-    def __init__(self, vobj):
-        vobj.Proxy = self
+        def __init__(self, vobj):
+            vobj.Proxy = self
 
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
+        def attach(self, vobj):
+            default = coin.SoGroup()
+            vobj.addDisplayMode(default, "Default")
 
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
+        def getDisplayModes(self, obj):
+            "Return a list of display modes."
+            modes = ["Default"]
+            return modes
 
-    def getDefaultDisplayMode(self):
-        return "Default"
+        def getDefaultDisplayMode(self):
+            return "Default"
 
-    def setDisplayMode(self, mode):
-        return mode
+        def setDisplayMode(self, mode):
+            return mode
 
 
 class HeatProxy(BaseProxy):
     pass
 
 
-class HeatViewProxy(BaseViewProxy):
+if FreeCAD.GuiUp:
+    class HeatViewProxy(BaseViewProxy):
 
-    def getIcon(self):
-        return ":/icons/fem-equation-heat.svg"
+        def getIcon(self):
+        r   eturn ":/icons/fem-equation-heat.svg"
 
 
 class ElasticityProxy(BaseProxy):
     pass
 
 
-class ElasticityViewProxy(BaseViewProxy):
+if FreeCAD.GuiUp:
+    class ElasticityViewProxy(BaseViewProxy):
 
-    def getIcon(self):
-        return ":/icons/fem-equation-elasticity.svg"
+        def getIcon(self):
+            return ":/icons/fem-equation-elasticity.svg"
 
 
 class FlowProxy(BaseProxy):
     pass
 
 
-class FlowViewProxy(BaseViewProxy):
+if FreeCAD.GuiUp:
+    class FlowViewProxy(BaseViewProxy):
 
-    def getIcon(self):
-        return ":/icons/fem-equation-flow.svg"
+        def getIcon(self):
+            return ":/icons/fem-equation-flow.svg"

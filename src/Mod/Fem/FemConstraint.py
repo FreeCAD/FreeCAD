@@ -26,10 +26,6 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-if FreeCAD.GuiUp:
-    from pivy import coin
-
-
 class Proxy(object):
 
     BaseType = "Fem::ConstraintPython"
@@ -38,23 +34,26 @@ class Proxy(object):
         obj.Proxy = self
 
 
-class ViewProxy(object):
-    """Proxy for FemSolverElmers View Provider."""
+if FreeCAD.GuiUp:
+    from pivy import coin
 
-    def __init__(self, vobj):
-        vobj.Proxy = self
+    class ViewProxy(object):
+        """Proxy for FemSolverElmers View Provider."""
 
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
+        def __init__(self, vobj):
+            vobj.Proxy = self
 
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
+        def attach(self, vobj):
+            default = coin.SoGroup()
+            vobj.addDisplayMode(default, "Default")
 
-    def getDefaultDisplayMode(self):
-        return "Default"
+        def getDisplayModes(self, obj):
+            "Return a list of display modes."
+            modes = ["Default"]
+            return modes
 
-    def setDisplayMode(self, mode):
-        return mode
+        def getDefaultDisplayMode(self):
+            return "Default"
+
+        def setDisplayMode(self, mode):
+            return mode
