@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>698</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -196,28 +196,57 @@
           <item row="0" column="0">
            <widget class="QLabel" name="l_editor_3">
             <property name="text">
-             <string>FreeCAD solver frame work</string>
+             <string>Solver frame work to run CalculiX</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_use_old_solver_frame_work">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>Use old frame work to run ccx</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>useOldSolverFrameWork</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_old">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="accessibleDescription">
+               <string>sdfsdfsdfds</string>
+              </property>
+              <property name="text">
+               <string>Depreciated</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem/Ccx</cstring>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>useOldSolverFrameWork</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_new">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>New</string>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem/Ccx</cstring>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>useNewSolverFrameWork</cstring>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -721,6 +750,11 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

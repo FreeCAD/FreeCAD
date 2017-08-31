@@ -47,7 +47,8 @@ class _CommandFemSolverCalculix(FemCommands):
     def Activated(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
         use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
-        if use_old_solver_frame_work:
+        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
+        if use_old_solver_frame_work and not use_new_solver_frame_work:
             has_nonlinear_material_obj = False
             for m in FemGui.getActiveAnalysis().Member:
                 if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
