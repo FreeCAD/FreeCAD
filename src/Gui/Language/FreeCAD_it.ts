@@ -2221,6 +2221,10 @@ Specificare un&apos;altra cartella.</translation>
         <source>Save AutoRecovery information every</source>
         <translation>Salva le informazioni di autorecupero ogni</translation>
     </message>
+    <message>
+        <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -2585,6 +2589,10 @@ Specificare un&apos;altra cartella.</translation>
         <source>Building US (ft-in/sqft/cuft)</source>
         <translation>Sistema americano (ft-in/sqft/cuft)</translation>
     </message>
+    <message>
+        <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2855,7 +2863,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation>Errore di apertura del file salvato: %1</translation>
+        <translation type="obsolete">Errore di apertura del file salvato: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2900,6 +2908,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <source>Error opening saved file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3652,6 +3664,34 @@ Si desidera salvare le modifiche?</translation>
         <source>PDF format</source>
         <translation>Formato PDF</translation>
     </message>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished">Graphviz non trovato</translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read more about it here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished">Percorso di installazione di Graphviz</translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished">Graphviz ha fallito</translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
+        <translation type="unfinished">Graphviz non è riuscito a creare un file immagine</translation>
+    </message>
 </context>
 <context>
     <name>Gui::InputField</name>
@@ -4290,6 +4330,33 @@ Vuoi specificare un&apos;altra cartella?</translation>
     <message>
         <source>edit selection</source>
         <translation>Modifica selezione</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TextDocumentEditorView</name>
+    <message>
+        <source>Text updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes, reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved document</source>
+        <translation type="unfinished">Documento non salvato</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished">Se non vengono salvate, le modifiche andranno perse.</translation>
     </message>
 </context>
 <context>
@@ -6953,17 +7020,17 @@ Do you want to duplicate them, too?</source>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation>Graphviz non trovato</translation>
+        <translation type="obsolete">Graphviz non trovato</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation>Graphviz non può essere trovato sul vostro sistema.
+        <translation type="obsolete">Graphviz non può essere trovato sul vostro sistema.
 Si vuole specificare il percorso di installazione se è già installato?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation>Percorso di installazione di Graphviz</translation>
+        <translation type="obsolete">Percorso di installazione di Graphviz</translation>
     </message>
     <message>
         <source>Dependency graph</source>
@@ -6971,11 +7038,11 @@ Si vuole specificare il percorso di installazione se è già installato?</transl
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation>Graphviz ha fallito</translation>
+        <translation type="obsolete">Graphviz ha fallito</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation>Graphviz non è riuscito a creare un file immagine</translation>
+        <translation type="obsolete">Graphviz non è riuscito a creare un file immagine</translation>
     </message>
 </context>
 <context>

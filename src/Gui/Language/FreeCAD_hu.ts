@@ -2221,6 +2221,10 @@ Kérem válasszon másik könyvtárat.</translation>
         <source>Save AutoRecovery information every</source>
         <translation>Helyreállítási adatok mentése minden</translation>
     </message>
+    <message>
+        <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -2585,6 +2589,10 @@ Kérem válasszon másik könyvtárat.</translation>
         <source>Building US (ft-in/sqft/cuft)</source>
         <translation>Épület US (ft-ban/négyzetláb/cu-ft)</translation>
     </message>
+    <message>
+        <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2857,7 +2865,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation>Mentett fájl megnyitási hiba: %1</translation>
+        <translation type="obsolete">Mentett fájl megnyitási hiba: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2902,6 +2910,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <source>Error opening saved file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3654,6 +3666,34 @@ El akarja menteni a változásokat?</translation>
         <source>PDF format</source>
         <translation>PDF formátum</translation>
     </message>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished">Nem található grafikonszerk</translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read more about it here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished">Grafikusszerk telepítési hely elérési útja</translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished">Nem sikerült Graphviz</translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
+        <translation type="unfinished">Nem sikerült létrehozni egy kép fájl Grafikonszerkesztőhöz</translation>
+    </message>
 </context>
 <context>
     <name>Gui::InputField</name>
@@ -4292,6 +4332,33 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
         <source>edit selection</source>
         <translation>kijelölés szerkesztése</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TextDocumentEditorView</name>
+    <message>
+        <source>Text updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes, reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved document</source>
+        <translation type="unfinished">Nem mentett dokumentum</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished">Ha nem menti, a módosítások elvesznek.</translation>
     </message>
 </context>
 <context>
@@ -6952,16 +7019,16 @@ Do you want to duplicate them, too?</source>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation>Nem található grafikonszerk</translation>
+        <translation type="obsolete">Nem található grafikonszerk</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation>Grafikonszerk nem található a rendszeren. Megadja a telepítési elérési utat, ha már telepítve van?</translation>
+        <translation type="obsolete">Grafikonszerk nem található a rendszeren. Megadja a telepítési elérési utat, ha már telepítve van?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation>Grafikusszerk telepítési hely elérési útja</translation>
+        <translation type="obsolete">Grafikusszerk telepítési hely elérési útja</translation>
     </message>
     <message>
         <source>Dependency graph</source>
@@ -6969,11 +7036,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation>Nem sikerült Graphviz</translation>
+        <translation type="obsolete">Nem sikerült Graphviz</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation>Nem sikerült létrehozni egy kép fájl Grafikonszerkesztőhöz</translation>
+        <translation type="obsolete">Nem sikerült létrehozni egy kép fájl Grafikonszerkesztőhöz</translation>
     </message>
 </context>
 <context>

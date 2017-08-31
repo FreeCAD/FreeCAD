@@ -2219,6 +2219,10 @@ Specify another directory, please.</source>
         <source>Save AutoRecovery information every</source>
         <translation>自動修復の情報を常に保存</translation>
     </message>
+    <message>
+        <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -2583,6 +2587,10 @@ Specify another directory, please.</source>
         <source>Building US (ft-in/sqft/cuft)</source>
         <translation>建築 US （フィート-インチ/平方フィート/立法フィート）</translation>
     </message>
+    <message>
+        <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2855,7 +2863,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation>保存ファイルを開けません: %1</translation>
+        <translation type="obsolete">保存ファイルを開けません: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2900,6 +2908,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <source>Error opening saved file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3651,6 +3663,34 @@ Do you want to save your changes?</source>
         <source>PDF format</source>
         <translation>PDF形式</translation>
     </message>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished">Graphviz が見つかりません</translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read more about it here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished">Graphvizのインストール パス</translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished">Graphvizに失敗しました</translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
+        <translation type="unfinished">Graphvizはイメージファイルを作成できませんでした</translation>
+    </message>
 </context>
 <context>
     <name>Gui::InputField</name>
@@ -4286,6 +4326,33 @@ Do you want to specify another directory?</source>
     <message>
         <source>edit selection</source>
         <translation>選択されたものを編集します</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TextDocumentEditorView</name>
+    <message>
+        <source>Text updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes, reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved document</source>
+        <translation type="unfinished">未保存のドキュメント</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished">保存しない場合、変更内容は失われます。</translation>
     </message>
 </context>
 <context>
@@ -6946,16 +7013,16 @@ Do you want to duplicate them, too?</source>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation>Graphviz が見つかりません</translation>
+        <translation type="obsolete">Graphviz が見つかりません</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation>Graphviz がシステムに見つかりませんでした。既にインストールされているならインストール パスを指定しますか？</translation>
+        <translation type="obsolete">Graphviz がシステムに見つかりませんでした。既にインストールされているならインストール パスを指定しますか？</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation>Graphvizのインストール パス</translation>
+        <translation type="obsolete">Graphvizのインストール パス</translation>
     </message>
     <message>
         <source>Dependency graph</source>
@@ -6963,11 +7030,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation>Graphvizに失敗しました</translation>
+        <translation type="obsolete">Graphvizに失敗しました</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation>Graphvizはイメージファイルを作成できませんでした</translation>
+        <translation type="obsolete">Graphvizはイメージファイルを作成できませんでした</translation>
     </message>
 </context>
 <context>
