@@ -553,8 +553,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.saveAs(frequency_save_fc_file)
 
         # use new solver frame work solver
-        fcc_print('Checking FEM new solver...')
-        solver_ccx2_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        fcc_print('Checking FEM new solver for new solver frame work...')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix('SolverCalculiX')
         solver_ccx2_object.GeometricalNonlinearity = 'linear'
         solver_ccx2_object.ThermoMechSteadyState = False
         solver_ccx2_object.MatrixSolverType = 'default'
@@ -565,6 +565,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(solver_ccx2_object, "FemTest of new solver failed")
         analysis.Member = analysis.Member + [solver_ccx2_object]
 
+        fcc_print('Checking inpfile writing for new solver frame work...')
         machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
         machine.target = FemRun.PREPARE
         machine.start()
