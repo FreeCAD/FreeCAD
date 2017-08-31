@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "_CommandFemConstraintBodyHeatFlux"
+__title__ = "_CommandFemEquation"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -80,7 +80,19 @@ class Elasticity(_Base):
         return {
             'Pixmap': 'fem-equation-elasticity',
             'MenuText': "Elasticity Equation",
-            'ToolTip': "Creates a FEM constraint body heat flux"
+            'ToolTip': "Creates a FEM constraint for elasticity"
+        }
+
+class Electrostatic(_Base):
+
+    def getSpecifier(self):
+        return "Electrostatic"
+
+    def GetResources(self):
+        return {
+            'Pixmap': 'fem-equation-electrostatic',
+            'MenuText': "Electrostatic Equation",
+            'ToolTip': "Creates a FEM equation for electrostatic"
         }
 
 
@@ -99,4 +111,5 @@ class Flow(_Base):
 
 Gui.addCommand('FEM_AddEquationHeat', Heat())
 Gui.addCommand('FEM_AddEquationElasticity', Elasticity())
+Gui.addCommand('FEM_AddEquationElectrostatic', Electrostatic())
 Gui.addCommand('FEM_AddEquationFlow', Flow())

@@ -86,6 +86,15 @@ class ElasticityViewProxy(BaseViewProxy):
         return ":/icons/fem-equation-elasticity.svg"
 
 
+class ElectrostaticViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/fem-equation-electrostatic.svg"
+
+class ElectrostaticProxy(BaseProxy):
+    pass
+
+
 class FlowProxy(BaseProxy):
     pass
 

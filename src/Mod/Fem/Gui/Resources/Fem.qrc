@@ -63,6 +63,7 @@
         <file>icons/fem-sphere.svg</file>
         <file>icons/fem-equation-heat.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
+        <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-flow.svg</file>
         <file>icons/fem-static-analysis.svg</file>
         <file>icons/fem-thermomechanical-analysis.svg</file>
