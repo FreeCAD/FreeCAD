@@ -43,6 +43,7 @@ SET(PathScripts_SRCS
     PathScripts/PathHelix.py
     PathScripts/PathHelixGui.py
     PathScripts/PathHop.py
+    PathScripts/PathIconViewProvider.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathJobCmd.py
