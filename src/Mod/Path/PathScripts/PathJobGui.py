@@ -99,6 +99,11 @@ class ViewProvider:
             children.append(self.obj.Stock)
         return children
 
+    def onDelete(self, vobj, arg2=None):
+        PathLog.track(vobj.Object.Label, arg2)
+        self.obj.Proxy.onDelete(self.obj, arg2)
+        return True
+
 class TaskPanel:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
     DataProperty = QtCore.Qt.ItemDataRole.UserRole + 1

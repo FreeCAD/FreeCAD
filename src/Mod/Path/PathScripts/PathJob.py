@@ -97,15 +97,23 @@ class ObjectJob:
         self.assignTemplate(obj, template)
 
     def onDelete(self, obj, arg2=None):
-        PathLog.track(obj, arg2)
+        '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
+        PathLog.track(obj.Label, arg2)
+        doc = obj.Document
         for tc in obj.ToolController:
-            FreeCAD.ActiveDocument.removeObject(tc.Name)
+            doc.removeObject(tc.Name)
         obj.ToolController = []
-        for op in obj.Operations.Group:
-            FreeCAD.ActiveDocument.removeObject(op.Name)
+        while obj.Operations.Group:
+            doc.removeObject(obj.Operations.Group[0].Name)
         obj.Operations.Group = []
-        FreeCAD.ActiveDocument.removeObject(obj.Operations.Name)
+        doc.removeObject(obj.Operations.Name)
         obj.Operations = None
+        if obj.Base:
+            doc.removeObject(obj.Base.Name)
+            obj.Base = None
+        if obj.Stock:
+            doc.removeObject(obj.Stock.Name)
+            obj.Stock = None
 
     def isResourceClone(self, obj, propName, resourceName):
         if hasattr(obj, propName):
