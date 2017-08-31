@@ -126,7 +126,9 @@ class TaskPanel:
         self.obj.PostProcessor = currentPostProcessor
 
         for o in PathJob.ObjectJob.baseCandidates():
-            self.form.infoModel.addItem(o.Label, o)
+            if o != self.obj.Base:
+                self.form.infoModel.addItem(o.Label, o)
+        self.selectComboBoxText(self.form.infoModel, self.obj.Proxy.baseObject(self.obj).Label)
 
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
@@ -135,16 +137,29 @@ class TaskPanel:
         self.baseOrigVisibilty = False
         if self.obj.Base and self.obj.Base.ViewObject:
             self.baseVisibility = self.obj.Base.ViewObject.Visibility
-            self.obj.Base.ViewObject.Visibility = True
-            self.baseOrigVisibility = self.obj.Base.Objects[0].ViewObject.Visibility
-            self.obj.Base.Objects[0].ViewObject.Visibility = False
+            self.baseObjectSaveVisibility(self.obj)
+
+    def baseObjectViewObject(self, obj):
+        base = obj.Proxy.baseObject(obj)
+        body = base.getParentGeoFeatureGroup()
+        return body.ViewObject if body else base.ViewObject
+
+    def baseObjectSaveVisibility(self, obj):
+        baseVO = self.baseObjectViewObject(self.obj)
+        self.baseOrigVisibility = baseVO.Visibility
+        baseVO.Visibility = False
+        obj.Base.ViewObject.Visibility = True
+
+    def baseObjectRestoreVisibility(self, obj):
+        baseVO = self.baseObjectViewObject(self.obj)
+        baseVO.Visibility = self.baseOrigVisibility
 
     def preCleanup(self):
         PathLog.track()
         FreeCADGui.Selection.removeObserver(self)
         if self.obj.Base and self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = self.baseVisibility
-            self.obj.Base.Objects[0].ViewObject.Visibility = self.baseOrigVisibility
+            self.baseObjectRestoreVisibility(self.obj)
 
     def accept(self, resetEdit=True):
         PathLog.track()
@@ -195,7 +210,11 @@ class TaskPanel:
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
 
             selObj = self.form.infoModel.itemData(self.form.infoModel.currentIndex())
-            self.obj.Base = selObj
+            if self.obj.Proxy.baseObject(self.obj) != selObj:
+                self.baseObjectRestoreVisibility(self.obj)
+                self.obj.Document.removeObject(self.obj.Base.Name)
+                self.obj.Proxy.createResourceClone(self.obj, selObj, 'Base')
+                self.baseObjectSaveVisibility(self.obj)
 
             self.updateTooltips()
 
