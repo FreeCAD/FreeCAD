@@ -121,6 +121,7 @@ QRectF DrawViewAnnotation::getRect() const
 
 App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)
 {
+    requestPaint();
     return TechDraw::DrawView::execute();
 }
 

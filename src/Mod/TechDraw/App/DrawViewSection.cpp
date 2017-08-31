@@ -214,8 +214,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
-    (void) DrawView::execute();          //make sure Scale is up to date
-
     gp_Pln pln = getSectionPlane();
     gp_Dir gpNormal = pln.Axis().Direction();
     Base::Vector3d orgPnt = SectionOrigin.getValue();
@@ -303,6 +301,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
 
+    requestPaint();
     return App::DocumentObject::StdReturn;
 }
 

@@ -172,8 +172,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
-    (void) DrawView::execute();          //make sure Scale is up to date
-
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
     double radius = getFudgeRadius();
@@ -272,6 +270,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
+    requestPaint();
 
     return App::DocumentObject::StdReturn;
 }

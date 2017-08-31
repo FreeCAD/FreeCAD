@@ -107,8 +107,6 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    touch();
-
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
@@ -117,6 +115,7 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
         }
     }
 
+    requestPaint();
     return DrawView::execute();
 }
 
