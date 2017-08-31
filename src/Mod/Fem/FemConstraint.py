@@ -26,6 +26,9 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+import FreeCAD
+
+
 class Proxy(object):
 
     BaseType = "Fem::ConstraintPython"

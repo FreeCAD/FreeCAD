@@ -26,6 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+import FreeCAD
 if FreeCAD.GuiUp:
     from pivy import coin
 
@@ -74,7 +75,7 @@ if FreeCAD.GuiUp:
     class HeatViewProxy(BaseViewProxy):
 
         def getIcon(self):
-        r   eturn ":/icons/fem-equation-heat.svg"
+            return ":/icons/fem-equation-heat.svg"
 
 
 class ElasticityProxy(BaseProxy):

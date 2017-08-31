@@ -26,6 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
+import FreeCAD
 if FreeCAD.GuiUp:
     from pivy import coin
 
