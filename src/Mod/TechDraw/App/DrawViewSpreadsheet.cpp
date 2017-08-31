@@ -114,6 +114,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
 
     Symbol.setValue(getSheetImage());
 
+    requestPaint();
     return TechDraw::DrawView::execute();
 }
 
