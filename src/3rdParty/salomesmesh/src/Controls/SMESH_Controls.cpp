@@ -4293,7 +4293,7 @@ bool ElementsOnShape::TClassifier::isOutOfFace  (const gp_Pnt& p)
   if ( myProjFace.IsDone() && myProjFace.LowerDistance() <= myTol )
   {
     // check relatively to the face
-    Quantity_Parameter u, v;
+    Standard_Real u, v;
     myProjFace.LowerDistanceParameters(u, v);
     gp_Pnt2d aProjPnt (u, v);
     BRepClass_FaceClassifier aClsf ( TopoDS::Face( myShape ), aProjPnt, myTol );
