@@ -102,10 +102,13 @@ class _Frame(ArchComponent.Component):
         obj.addProperty("App::PropertyInteger","BasePoint","Arch",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."))
         obj.addProperty("App::PropertyPlacement","ProfilePlacement","Arch",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"))
         obj.addProperty("App::PropertyAngle","Rotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"))
+        obj.addProperty("App::PropertyEnumeration","Edges","Arch",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"))
+        obj.addProperty("App::PropertyBool","Fuse","Arch",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"))
         self.Type = "Frame"
         obj.Align = True
         obj.Role = Roles
         obj.Role = "Railing"
+        obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
 
     def execute(self,obj):
         
@@ -153,7 +156,27 @@ class _Frame(ArchComponent.Component):
             shapes = []
             normal = DraftGeomUtils.getNormal(obj.Base.Shape)
             #for wire in obj.Base.Shape.Wires:
-            for e in obj.Base.Shape.Edges:
+            edges = obj.Base.Shape.Edges
+            if hasattr(obj,"Edges"):
+                if obj.Edges == "Vertical edges":
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
+                elif obj.Edges == "Horizontal edges":
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
+                elif obj.Edges == "Top Horizontal edges":
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
+                    edges = sorted(edges,key=lambda x: x.CenterOfMass.z,reverse=True)
+                    z = edges[0].CenterOfMass.z
+                    edges = [e for e in edges if abs(e.CenterOfMass.z-z) < 0.00001]
+                elif obj.Edges == "Bottom Horizontal edges":
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
+                    edges = sorted(edges,key=lambda x: x.CenterOfMass.z)
+                    z = edges[0].CenterOfMass.z
+                    edges = [e for e in edges if abs(e.CenterOfMass.z-z) < 0.00001]
+            for e in edges:
                 #e = wire.Edges[0]
                 bvec = DraftGeomUtils.vec(e)
                 bpoint = e.Vertexes[0].Point
@@ -189,6 +212,14 @@ class _Frame(ArchComponent.Component):
                         profile.translate(obj.Offset)
                 shapes.append(profile)
             if shapes:
+                if hasattr(obj,"Fuse"):
+                    if obj.Fuse:
+                        if len(shapes) > 1:
+                            s = shapes[0].multiFuse(shapes[1:])
+                            s = s.removeSplitter()
+                            obj.Shape = s
+                            obj.Placement = pl
+                            return
                 obj.Shape = Part.makeCompound(shapes)
                 obj.Placement = pl
 

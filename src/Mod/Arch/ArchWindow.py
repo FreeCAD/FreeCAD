@@ -420,7 +420,7 @@ class _CommandWindow:
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
             if obj.isDerivedFrom("Part::Feature"):
-                if obj.Shape.Wires and not obj.Shape.Faces:
+                if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
                     if hasattr(obj,"Support"):
@@ -650,8 +650,13 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
         obj.addProperty("App::PropertyPercent","Opening","Arch",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
         obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
+        obj.addProperty("App::PropertyBool","SymbolPlan","Arch",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
+        obj.addProperty("App::PropertyBool","SymbolElevation","Arch",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
         obj.setEditorMode("Preset",2)
         obj.setEditorMode("WindowParts",2)
+        obj.setEditorMode("VerticalArea",2)
+        obj.setEditorMode("HorizontalArea",2)
+        obj.setEditorMode("PerimeterLength",2)
         self.Type = "Window"
         obj.Role = Roles
         obj.Role = "Window"
@@ -752,7 +757,10 @@ class _Window(ArchComponent.Component):
                                     e = obj.Base.Shape.Edges[hinge]
                                     ev1 = e.Vertexes[0].Point
                                     ev2 = e.Vertexes[-1].Point
-                                    if ev2.z < ev1.z:
+                                    if (ev2.z - ev1.z) < 0.1**Draft.precision():
+                                        if ev2.y < ev1.y:
+                                            ev1,ev2 = ev2,ev1
+                                    elif ev2.z < ev1.z:
                                         ev1,ev2 = ev2,ev1
                                     p = None
                                     d = 0
@@ -765,11 +773,10 @@ class _Window(ArchComponent.Component):
                                         chord = p.sub(ev1)
                                         enorm = ev2.sub(ev1)
                                         proj = DraftVecUtils.project(chord,enorm)
+                                        v1 = ev1
                                         if proj.Length > 0:
-                                            v1 = ev1.add(proj)
-                                            chord = p.sub(v1)
-                                        else:
-                                            v1 = ev1
+                                            chord = p.sub(ev1.add(proj))
+                                            p = v1.add(chord)
                                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
                                         if omode == 1: # Arc 90
                                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
@@ -901,8 +908,22 @@ class _Window(ArchComponent.Component):
         base = self.processSubShapes(obj,base)
         if base:
             if not base.isNull():
+                b = []
                 if self.sshapes:
-                    base = Part.makeCompound([base]+self.sshapes+self.vshapes)
+                    if hasattr(obj,"SymbolPlan"):
+                        if obj.SymbolPlan:
+                            b.extend(self.sshapes)
+                    else:
+                        b.extend(self.sshapes)
+                if self.vshapes:
+                    if hasattr(obj,"SymbolElevation"):
+                        if obj.SymbolElevation:
+                            b.extend(self.vshapes)
+                    else:
+                        b.extend(self.vshapes)
+                if b:
+                    base = Part.makeCompound([base]+b)
+                    #base = Part.makeCompound([base]+self.sshapes+self.vshapes)
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
                 obj.Placement = pl
         if hasattr(obj,"Area"):
@@ -986,6 +1007,9 @@ class _Window(ArchComponent.Component):
                 f.Placement = obj.Placement
             return f
         return None
+
+    def computeAreas(self,obj):
+        return
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
