@@ -3960,7 +3960,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="+172"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="+204"/>
         <location line="+19"/>
         <location line="+28"/>
         <location line="+52"/>
@@ -4841,7 +4841,7 @@ Do you want to continue?</source>
         <translation>대칭 평면을 편집</translation>
     </message>
     <message>
-        <location line="+304"/>
+        <location line="+300"/>
         <source>Edit chamfer edges</source>
         <translation>모따기 모서리 편집</translation>
     </message>
@@ -4860,7 +4860,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Transform</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+201"/>
+        <location filename="../../AppPartGui.cpp" line="+207"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>부품 설계</translation>
@@ -4896,7 +4896,7 @@ Do you want to continue?</source>
         <translation>두 개의 모서리 또는 두 개의 와이어를 선택 해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="-332"/>
+        <location filename="../../ViewProviderMirror.cpp" line="-330"/>
         <source>Edit fillet edges</source>
         <translation>필렛 모서리 편집</translation>
     </message>
@@ -5207,18 +5207,18 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskDimension.cpp" line="+552"/>
-        <location line="+1042"/>
+        <location line="+1046"/>
         <source>Selections</source>
         <translation>선택</translation>
     </message>
     <message>
-        <location line="-1035"/>
-        <location line="+1042"/>
+        <location line="-1039"/>
+        <location line="+1046"/>
         <source>Control</source>
         <translation type="unfinished">Control</translation>
     </message>
     <message>
-        <location line="-265"/>
+        <location line="-269"/>
         <source>Reset Dialog</source>
         <translation>대화창 재설정</translation>
     </message>

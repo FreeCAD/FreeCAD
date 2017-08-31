@@ -2219,6 +2219,10 @@ Specify another directory, please.</source>
         <source>Save AutoRecovery information every</source>
         <translation type="unfinished">Save AutoRecovery information every</translation>
     </message>
+    <message>
+        <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -2583,6 +2587,10 @@ Specify another directory, please.</source>
         <source>Building US (ft-in/sqft/cuft)</source>
         <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
     </message>
+    <message>
+        <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2855,7 +2863,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation>Eroare la deschiderea fișierului salvat: %1</translation>
+        <translation type="obsolete">Eroare la deschiderea fișierului salvat: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2900,6 +2908,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>MB</source>
         <translation>MO</translation>
+    </message>
+    <message>
+        <source>Error opening saved file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3651,6 +3663,34 @@ Doriți să salvați modificările?</translation>
         <source>PDF format</source>
         <translation type="unfinished">PDF format</translation>
     </message>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished">Pachetul Graphviz nu a fost gasit</translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read more about it here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished">Calea pachetului Graphviz</translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished">Graphviz a esuat</translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
+        <translation type="unfinished">Graphviz nu a reusit sa creeze un fisier de imagine</translation>
+    </message>
 </context>
 <context>
     <name>Gui::InputField</name>
@@ -4288,6 +4328,33 @@ Doriţi să specificaţi un alt director?</translation>
     <message>
         <source>edit selection</source>
         <translation>Editare selectie</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TextDocumentEditorView</name>
+    <message>
+        <source>Text updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes, reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved document</source>
+        <translation type="unfinished">Document nesalvat</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
 </context>
 <context>
@@ -6949,17 +7016,17 @@ Doriți să fie duplicat și acesta?</translation>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation>Pachetul Graphviz nu a fost gasit</translation>
+        <translation type="obsolete">Pachetul Graphviz nu a fost gasit</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation>Pachetul Graphviz nu a putut fi gasit pe sistemul dvs. 
+        <translation type="obsolete">Pachetul Graphviz nu a putut fi gasit pe sistemul dvs. 
 Doriti să specificati calea de instalare (daca este deja instalat)?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation>Calea pachetului Graphviz</translation>
+        <translation type="obsolete">Calea pachetului Graphviz</translation>
     </message>
     <message>
         <source>Dependency graph</source>
@@ -6967,11 +7034,11 @@ Doriti să specificati calea de instalare (daca este deja instalat)?</translatio
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation>Graphviz a esuat</translation>
+        <translation type="obsolete">Graphviz a esuat</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation>Graphviz nu a reusit sa creeze un fisier de imagine</translation>
+        <translation type="obsolete">Graphviz nu a reusit sa creeze un fisier de imagine</translation>
     </message>
 </context>
 <context>

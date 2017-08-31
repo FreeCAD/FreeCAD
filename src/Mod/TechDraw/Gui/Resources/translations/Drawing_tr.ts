@@ -334,7 +334,7 @@
 <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-        <location filename="../../CommandCreateDims.cpp" line="+852"/>
+        <location filename="../../CommandCreateDims.cpp" line="+853"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -366,7 +366,7 @@
 <context>
     <name>CmdTechDrawNewDiameterDimension</name>
     <message>
-        <location line="-431"/>
+        <location line="-432"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -402,7 +402,7 @@
 <context>
     <name>CmdTechDrawNewDistanceXDimension</name>
     <message>
-        <location line="+429"/>
+        <location line="+430"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -540,7 +540,7 @@
 <context>
     <name>CmdTechDrawNewRadiusDimension</name>
     <message>
-        <location filename="../../CommandCreateDims.cpp" line="-188"/>
+        <location filename="../../CommandCreateDims.cpp" line="-189"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -832,7 +832,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+194"/>
+        <location filename="../../ViewProviderPage.cpp" line="+195"/>
         <source>Drawing viewer</source>
         <translation type="unfinished">Çizim görüntüleyici</translation>
     </message>
@@ -931,7 +931,7 @@
         <location filename="../../CommandCreateDims.cpp" line="-51"/>
         <location line="+94"/>
         <location line="+89"/>
-        <location line="+119"/>
+        <location line="+120"/>
         <location line="+110"/>
         <location line="+111"/>
         <location line="+89"/>
@@ -943,12 +943,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-702"/>
+        <location line="-703"/>
         <source>Can&apos;t make a Dimension from this selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+612"/>
+        <location line="+613"/>
         <source>Can&apos;t make an angle Dimension from this selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1965,12 +1965,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Try to match Primary Direction to 3D view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="+55"/>
         <source>Return Primary Direction to Initial Value</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1985,7 +1980,12 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-3"/>
+        <source>This function is temporarily unavailable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Rotate down</source>
         <translation type="unfinished"></translation>
     </message>

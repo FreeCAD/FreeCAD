@@ -3957,7 +3957,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="+172"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="+204"/>
         <location line="+19"/>
         <location line="+28"/>
         <location line="+52"/>
@@ -4839,7 +4839,7 @@ Do you want to continue?</source>
         <translation>鏡像面を編集</translation>
     </message>
     <message>
-        <location line="+304"/>
+        <location line="+300"/>
         <source>Edit chamfer edges</source>
         <translation>面取りエッジを編集</translation>
     </message>
@@ -4858,7 +4858,7 @@ Do you want to continue?</source>
         <translation type="obsolete">変換</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+201"/>
+        <location filename="../../AppPartGui.cpp" line="+207"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>部品設計</translation>
@@ -4894,7 +4894,7 @@ Do you want to continue?</source>
         <translation>2 つのエッジまたは 2 本のワイヤを選択する必要があります。</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="-332"/>
+        <location filename="../../ViewProviderMirror.cpp" line="-330"/>
         <source>Edit fillet edges</source>
         <translation>フィレットエッジを編集</translation>
     </message>
@@ -5206,18 +5206,18 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskDimension.cpp" line="+552"/>
-        <location line="+1042"/>
+        <location line="+1046"/>
         <source>Selections</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location line="-1035"/>
-        <location line="+1042"/>
+        <location line="-1039"/>
+        <location line="+1046"/>
         <source>Control</source>
         <translation type="unfinished">Control</translation>
     </message>
     <message>
-        <location line="-265"/>
+        <location line="-269"/>
         <source>Reset Dialog</source>
         <translation>ダイアログのリセット</translation>
     </message>
