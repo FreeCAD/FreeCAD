@@ -765,7 +765,7 @@ bool SMESH_MesherHelper::CheckNodeUV(const TopoDS_Face&   F,
         MESSAGE( "SMESH_MesherHelper::CheckNodeUV() failed to project" );
         return false;
       }
-      Quantity_Parameter U,V;
+      Standard_Real U,V;
       projector.LowerDistanceParameters(U,V);
       uv.SetCoord( U,V );
       surfPnt = surface->Value( U, V );
@@ -1071,7 +1071,7 @@ bool SMESH_MesherHelper::CheckNodeU(const TopoDS_Edge&   E,
           MESSAGE( "SMESH_MesherHelper::CheckNodeU() failed to project" );
           return false;
         }
-        Quantity_Parameter U = projector->LowerDistanceParameter();
+        Standard_Real U = projector->LowerDistanceParameter();
         u = double( U );
         MESSAGE(" f " << f << " l " << l << " u " << u);
         curvPnt = curve->Value( u );
