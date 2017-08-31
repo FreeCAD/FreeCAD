@@ -25,6 +25,7 @@
 import ArchPanel
 import Draft
 import FreeCAD
+import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
@@ -39,6 +40,7 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
 
 """Path Job object and FreeCAD command"""
 
@@ -89,7 +91,7 @@ class ObjectJob:
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
-        obj.Base = base
+        self.createResourceClone(obj, base, 'Base')
         obj.Proxy = self
 
         self.assignTemplate(obj, template)
@@ -107,45 +109,36 @@ class ObjectJob:
 
     def isResourceClone(self, obj, propName, resourceName):
         if hasattr(obj, propName):
-            prop =  getattr(obj, propName)
-            if hasattr(prop, 'PathResource') and resourceName == getattr(prop, 'PathResource'):
+            propLink =  getattr(obj, propName)
+            if hasattr(propLink, 'PathResource') and resourceName == propLink.PathResource:
                 return True
         return False
+
+    def createResourceClone(self, obj, orig, name):
+        clone = Draft.clone(orig)
+        clone.Label = "%s-%s" % (name, orig.Label)
+        clone.addProperty('App::PropertyString', 'PathResource')
+        clone.PathResource = name
+        if clone.ViewObject:
+            PathIconViewProvider.ViewProvider(clone.ViewObject, 'BaseGeometry')
+            clone.ViewObject.Visibility = False
+        setattr(obj, name, clone)
 
     def fixupResourceClone(self, obj, name):
         if not self.isResourceClone(obj, name, name):
             orig = getattr(obj, name)
             if orig:
-                clone = Draft.clone(orig)
-                clone.Label = name
-                clone.addProperty('App::PropertyString', 'PathResource')
-                clone.PathResource = name
-                if clone.ViewObject:
-                    clone.ViewObject.Visibility = False
-                setattr(obj, name, clone)
-
-    def onBeforeChange(self, obj, prop):
-        PathLog.track(obj.Label, prop)
-        if prop == 'Base' and obj.Base and hasattr(obj.Base, 'PathResource'):
-            PathLog.info('removing old base clone')
-            obj.Base.removeProperty('PathResource')
-            obj.Document.removeObject(obj.Base.Name)
-
-    def onChanged(self, obj, prop):
-        PathLog.track(obj.Label, prop)
-        if prop == "PostProcessor" and obj.PostProcessor:
-            processor = PostProcessor.load(obj.PostProcessor)
-            self.tooltip = processor.tooltip
-            self.tooltipArgs = processor.tooltipArgs
-
-        if prop == 'Base':
-            self.fixupResourceClone(obj, 'Base')
-        if prop == 'Stock':
-            self.fixupResourceClone(obj, 'Stock')
+                self.createResourceClone(obj, orig, name)
 
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base')
         self.fixupResourceClone(obj, 'Stock')
+
+    def baseObject(self, obj):
+        '''Return the base object, not its clone.'''
+        if self.isResourceClone(obj, 'Base', 'Base'):
+            return obj.Base.Objects[0]
+        return obj.Base
 
     def assignTemplate(self, obj, template):
         '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
