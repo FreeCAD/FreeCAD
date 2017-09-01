@@ -338,9 +338,8 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
 

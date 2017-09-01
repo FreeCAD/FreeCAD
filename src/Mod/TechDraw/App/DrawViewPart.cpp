@@ -192,10 +192,9 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         try {
             extractFaces();
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e4 = Standard_Failure::Caught();
-            Base::Console().Log("LOG - DVP::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4->GetMessageString());
-            return new App::DocumentObjectExecReturn(e4->GetMessageString());
+        catch (Standard_Failure& e4) {
+            Base::Console().Log("LOG - DVP::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+            return new App::DocumentObjectExecReturn(e4.GetMessageString());
         }
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES

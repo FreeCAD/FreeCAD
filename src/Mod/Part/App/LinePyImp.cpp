@@ -105,9 +105,9 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             this_curv->SetLin(that_curv->Lin());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
         catch (...) {
@@ -168,9 +168,9 @@ void LinePy::setLocation(Py::Object arg)
         Handle(Geom_Line) that_curv = ms.Value();
         this_curv->SetLin(that_curv->Lin());
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        throw Py::Exception(e.GetMessageString());
     }
 }
 
@@ -218,9 +218,9 @@ void LinePy::setDirection(Py::Object arg)
         Handle(Geom_Line) that_curv = ms.Value();
         this_curv->SetLin(that_curv->Lin());
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        throw Py::Exception(e.GetMessageString());
     }
 }
 
