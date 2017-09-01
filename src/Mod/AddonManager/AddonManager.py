@@ -743,7 +743,9 @@ class InstallWorker(QtCore.QThread):
                     self.download(self.repos[self.idx][1],clonedir)
                 answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
                 # symlink any macro contained in the module to the macros folder
-                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
+                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
+                if not os.path.exists(macrodir):
+                    os.makedirs(macrodir)
                 for f in os.listdir(clonedir):
                     if f.lower().endswith(".fcmacro"):
                         symlink(clonedir+os.sep+f,macrodir+os.sep+f)
