@@ -30,6 +30,7 @@
 # include <climits>
 # include <QString>
 # include <Standard_Version.hxx>
+# include <NCollection_Vector.hxx>
 # include <BRep_Builder.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
