@@ -120,6 +120,8 @@ const char* AttachEngine::eMapModeStrings[]= {
 
     "InertialCS",
 
+    "FaceNormal",
+
     NULL};
 
 //this list must be in sync with eRefType enum.
@@ -1565,6 +1567,8 @@ AttachEngineLine::AttachEngineLine()
     modeRefTypes[mm1AxisInertia2] = modeRefTypes[mm1AxisInertia1];
     modeRefTypes[mm1AxisInertia3] = modeRefTypes[mm1AxisInertia1];
 
+    modeRefTypes[mm1FaceNormal] = attacher3D.modeRefTypes[mmTangentPlane];
+
 
 
     this->EnableAllSupportedModes();
@@ -1612,6 +1616,9 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         break;
     case mm1Tangent:
         mmode = mmNormalToPath;
+        break;
+    case mm1FaceNormal:
+        mmode = mmTangentPlane;
         break;
     default:
         bReUsed = false;
