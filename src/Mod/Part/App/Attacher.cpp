@@ -1221,6 +1221,13 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         if (d.Magnitude()<Precision::Confusion())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: path curve derivative is below 1e-7, too low, can't align");
 
+        //Set origin. Note that it will be overridden later for mmConcentric and mmRevolutionSection
+        if (bThruVertex) {
+            SketchBasePoint = p_in;
+        } else {
+            SketchBasePoint = p;
+        }
+
         if (mmode == mmRevolutionSection
                 || mmode == mmConcentric
                 || mmode == mmFrenetNB
@@ -1247,12 +1254,6 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
                 B = gp_Vec(0.,0.,0.);//redundant, just for consistency
             }
 
-            //Set origin. Note that it will be overridden later for mmConcentric and mmRevolutionSection
-            if (bThruVertex) {
-                SketchBasePoint = p_in;
-            } else {
-                SketchBasePoint = p;
-            }
 
             switch (mmode){
             case mmFrenetNB:
@@ -1289,7 +1290,6 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         } else if (mmode == mmNormalToPath){//mmNormalToPath
             //align sketch origin to the origin of support
             SketchNormal = gp_Dir(d.Reversed());//sketch normal looks at user. It is natural to have the curve directed away from user, so reversed.
-            SketchBasePoint = p;
         }
 
     } break;
