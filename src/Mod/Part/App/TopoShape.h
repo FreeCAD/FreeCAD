@@ -245,6 +245,7 @@ public:
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);
+    void getDomains(std::vector<Domain>&) const;
     //@}
 
 private:

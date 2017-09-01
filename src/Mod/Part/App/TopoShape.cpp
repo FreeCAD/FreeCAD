@@ -2853,6 +2853,54 @@ TopoDS_Shape TopoShape::removeSplitter() const
     return _Shape;
 }
 
+void TopoShape::getDomains(std::vector<Domain>& domains) const
+{
+    std::size_t countFaces = 0;
+    for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
+        ++countFaces;
+    }
+    domains.reserve(countFaces);
+
+    for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
+        TopoDS_Face face = TopoDS::Face(xp.Current());
+
+        TopLoc_Location loc;
+        Handle(Poly_Triangulation) theTriangulation = BRep_Tool::Triangulation(face, loc);
+        if (theTriangulation.IsNull())
+            continue;
+
+        Domain domain;
+        // copy the points
+        const TColgp_Array1OfPnt& points = theTriangulation->Nodes();
+        domain.points.reserve(points.Length());
+        for (int i = 1; i <= points.Length(); i++) {
+            gp_Pnt p = points(i);
+            p.Transform(loc.Transformation());
+            Standard_Real X, Y, Z;
+            p.Coord (X, Y, Z);
+            domain.points.push_back(Base::Vector3d(X, Y, Z));
+        }
+
+        // copy the triangles
+        const TopAbs_Orientation anOrientation = face.Orientation();
+        bool flip = (anOrientation == TopAbs_REVERSED);
+        const Poly_Array1OfTriangle& faces = theTriangulation->Triangles();
+        domain.facets.reserve(faces.Length());
+        for (int i = 1; i <= faces.Length(); i++) {
+            Standard_Integer N1, N2, N3;
+            faces(i).Get(N1, N2, N3);
+
+            Facet tria;
+            tria.I1 = N1-1; tria.I2 = N2-1; tria.I3 = N3-1;
+            if (flip)
+                std::swap(tria.I1, tria.I2);
+            domain.facets.push_back(tria);
+        }
+
+        domains.push_back(domain);
+    }
+}
+
 namespace Part {
 struct MeshVertex
 {
@@ -2863,22 +2911,22 @@ struct MeshVertex
         : x(X),y(Y),z(Z),i(0)
     {
     }
-    MeshVertex(const gp_Pnt& p)
-        : x(p.X()),y(p.Y()),z(p.Z()),i(0)
+    MeshVertex(const Base::Vector3d& p)
+        : x(p.x),y(p.y),z(z),i(0)
     {
     }
 
-    gp_Pnt toPoint() const
-    { return gp_Pnt(x,y,z); }
+    Base::Vector3d toPoint() const
+    { return Base::Vector3d(x,y,z); }
 
-    bool operator < (const MeshVertex &rclPt) const
+    bool operator < (const MeshVertex &v) const
     {
-        if (fabs ( this->x - rclPt.x) >= MESH_MIN_PT_DIST)
-            return this->x < rclPt.x;
-        if (fabs ( this->y - rclPt.y) >= MESH_MIN_PT_DIST)
-            return this->y < rclPt.y;
-        if (fabs ( this->z - rclPt.z) >= MESH_MIN_PT_DIST)
-            return this->z < rclPt.z;
+        if (fabs ( this->x - v.x) >= MESH_MIN_PT_DIST)
+            return this->x < v.x;
+        if (fabs ( this->y - v.y) >= MESH_MIN_PT_DIST)
+            return this->y < v.y;
+        if (fabs ( this->z - v.z) >= MESH_MIN_PT_DIST)
+            return this->z < v.z;
         return false; // points are considered to be equal
     }
 
@@ -2891,73 +2939,75 @@ private:
 //const double Vertex::MESH_MIN_PT_DIST = 1.0e-6;
 const double MeshVertex::MESH_MIN_PT_DIST = gp::Resolution();
 
-#include <StlTransfer.hxx>
-#include <StlMesh_Mesh.hxx>
-#include <StlMesh_MeshExplorer.hxx>
-
 void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
                          std::vector<Facet> &aTopo,
                          float accuracy, uint16_t /*flags*/) const
 {
     if (this->_Shape.IsNull())
         return;
+
+    // get the meshes of all faces and then merge them
+    BRepMesh_IncrementalMesh aMesh(this->_Shape, accuracy);
+    std::vector<Domain> domains;
+    getDomains(domains);
+
     std::set<MeshVertex> vertices;
     Standard_Real x1, y1, z1;
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
 
-    Handle(StlMesh_Mesh) aMesh = new StlMesh_Mesh();
-#if OCC_VERSION_HEX >= 0x060801
-    BRepMesh_IncrementalMesh bMesh(this->_Shape, accuracy);
-    StlTransfer::RetrieveMesh(this->_Shape,aMesh);
-#else
-    StlTransfer::BuildIncrementalMesh(this->_Shape, accuracy,
-#if OCC_VERSION_HEX >= 0x060503
-        Standard_True,
-#endif
-        aMesh);
-#endif
-    StlMesh_MeshExplorer xp(aMesh);
-    for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
-        for (xp.InitTriangle (nbd); xp.MoreTriangle (); xp.NextTriangle ()) {
-            xp.TriangleVertices (x1,y1,z1,x2,y2,z2,x3,y3,z3);
-            Data::ComplexGeoData::Facet face;
-            std::set<MeshVertex>::iterator it;
+    for (std::vector<Domain>::const_iterator it = domains.begin(); it != domains.end(); ++it) {
+        const Domain& domain = *it;
+        for (std::vector<Facet>::const_iterator jt = domain.facets.begin(); jt != domain.facets.end(); ++jt) {
+            x1 = domain.points[jt->I1].x;
+            y1 = domain.points[jt->I1].y;
+            z1 = domain.points[jt->I1].z;
+
+            x2 = domain.points[jt->I2].x;
+            y2 = domain.points[jt->I2].y;
+            z2 = domain.points[jt->I2].z;
+
+            x3 = domain.points[jt->I3].x;
+            y3 = domain.points[jt->I3].y;
+            z3 = domain.points[jt->I3].z;
+
+            TopoShape::Facet face;
+            std::set<MeshVertex>::iterator vIt;
 
             // 1st vertex
             MeshVertex v1(x1,y1,z1);
-            it = vertices.find(v1);
-            if (it == vertices.end()) {
+            vIt = vertices.find(v1);
+            if (vIt == vertices.end()) {
                 v1.i = vertices.size();
                 face.I1 = v1.i;
                 vertices.insert(v1);
             }
             else {
-                face.I1 = it->i;
+                face.I1 = vIt->i;
             }
 
             // 2nd vertex
             MeshVertex v2(x2,y2,z2);
-            it = vertices.find(v2);
-            if (it == vertices.end()) {
+            vIt = vertices.find(v2);
+            if (vIt == vertices.end()) {
                 v2.i = vertices.size();
                 face.I2 = v2.i;
                 vertices.insert(v2);
             }
             else {
-                face.I2 = it->i;
+                face.I2 = vIt->i;
             }
 
             // 3rd vertex
             MeshVertex v3(x3,y3,z3);
-            it = vertices.find(v3);
-            if (it == vertices.end()) {
+            vIt = vertices.find(v3);
+            if (vIt == vertices.end()) {
                 v3.i = vertices.size();
                 face.I3 = v3.i;
                 vertices.insert(v3);
             }
             else {
-                face.I3 = it->i;
+                face.I3 = vIt->i;
             }
 
             // make sure that we don't insert invalid facets
@@ -2968,12 +3018,11 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
         }
     }
 
-    std::vector<gp_Pnt> points;
+    std::vector<Base::Vector3d> points;
     points.resize(vertices.size());
     for (std::set<MeshVertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
         points[it->i] = it->toPoint();
-    for (std::vector<gp_Pnt>::iterator it = points.begin(); it != points.end(); ++it)
-        aPoints.push_back(Base::Vector3d(it->X(),it->Y(),it->Z()));
+    aPoints.swap(points);
 }
 
 void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
@@ -3147,67 +3196,76 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
 }
 
 void TopoShape::getFacesFromSubelement(const Data::Segment* element,
-                                       std::vector<Base::Vector3d> &Points,
-                                       std::vector<Base::Vector3d> &PointNormals,
+                                       std::vector<Base::Vector3d> &points,
+                                       std::vector<Base::Vector3d> &pointNormals,
                                        std::vector<Facet> &faces) const
 {
     if (element->getTypeId() == ShapeSegment::getClassTypeId()) {
         const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
         if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE)
             return;
+
+        // get the meshes of all faces and then merge them
+        std::vector<Domain> domains;
+        TopoShape(shape).getDomains(domains);
+
         std::set<MeshVertex> vertices;
         Standard_Real x1, y1, z1;
         Standard_Real x2, y2, z2;
         Standard_Real x3, y3, z3;
 
-        Handle(StlMesh_Mesh) aMesh = new StlMesh_Mesh();
-#if OCC_VERSION_HEX >= 0x060801
-        StlTransfer::RetrieveMesh(shape, aMesh);
-#else
-        throw Base::AttributeError("getFacesFromSubelement is available only in OCC 6.8.1 and up.");
-#endif
+        for (std::vector<Domain>::const_iterator it = domains.begin(); it != domains.end(); ++it) {
+            const Domain& domain = *it;
+            for (std::vector<Facet>::const_iterator jt = domain.facets.begin(); jt != domain.facets.end(); ++jt) {
+                x1 = domain.points[jt->I1].x;
+                y1 = domain.points[jt->I1].y;
+                z1 = domain.points[jt->I1].z;
 
-        StlMesh_MeshExplorer xp(aMesh);
-        for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
-            for (xp.InitTriangle (nbd); xp.MoreTriangle (); xp.NextTriangle ()) {
-                xp.TriangleVertices (x1,y1,z1,x2,y2,z2,x3,y3,z3);
-                Data::ComplexGeoData::Facet face;
-                std::set<MeshVertex>::iterator it;
+                x2 = domain.points[jt->I2].x;
+                y2 = domain.points[jt->I2].y;
+                z2 = domain.points[jt->I2].z;
+
+                x3 = domain.points[jt->I3].x;
+                y3 = domain.points[jt->I3].y;
+                z3 = domain.points[jt->I3].z;
+
+                TopoShape::Facet face;
+                std::set<MeshVertex>::iterator vIt;
 
                 // 1st vertex
                 MeshVertex v1(x1,y1,z1);
-                it = vertices.find(v1);
-                if (it == vertices.end()) {
+                vIt = vertices.find(v1);
+                if (vIt == vertices.end()) {
                     v1.i = vertices.size();
                     face.I1 = v1.i;
                     vertices.insert(v1);
                 }
                 else {
-                    face.I1 = it->i;
+                    face.I1 = vIt->i;
                 }
 
                 // 2nd vertex
                 MeshVertex v2(x2,y2,z2);
-                it = vertices.find(v2);
-                if (it == vertices.end()) {
+                vIt = vertices.find(v2);
+                if (vIt == vertices.end()) {
                     v2.i = vertices.size();
                     face.I2 = v2.i;
                     vertices.insert(v2);
                 }
                 else {
-                    face.I2 = it->i;
+                    face.I2 = vIt->i;
                 }
 
                 // 3rd vertex
                 MeshVertex v3(x3,y3,z3);
-                it = vertices.find(v3);
-                if (it == vertices.end()) {
+                vIt = vertices.find(v3);
+                if (vIt == vertices.end()) {
                     v3.i = vertices.size();
                     face.I3 = v3.i;
                     vertices.insert(v3);
                 }
                 else {
-                    face.I3 = it->i;
+                    face.I3 = vIt->i;
                 }
 
                 // make sure that we don't insert invalid facets
@@ -3218,12 +3276,11 @@ void TopoShape::getFacesFromSubelement(const Data::Segment* element,
             }
         }
 
-        (void)PointNormals; // leave this empty
-        std::vector<gp_Pnt> points;
-        points.resize(vertices.size());
+        (void)pointNormals; // leave this empty
+        std::vector<Base::Vector3d> meshPoints;
+        meshPoints.resize(vertices.size());
         for (std::set<MeshVertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
-            points[it->i] = it->toPoint();
-        for (std::vector<gp_Pnt>::iterator it = points.begin(); it != points.end(); ++it)
-            Points.push_back(Base::Vector3d(it->X(),it->Y(),it->Z()));
+            meshPoints[it->i] = it->toPoint();
+        points.swap(meshPoints);
     }
 }
