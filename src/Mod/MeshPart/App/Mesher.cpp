@@ -28,13 +28,11 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Part/App/TopoShape.h>
 
 #include <TopoDS_Shape.hxx>
 #include <BRepTools.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
-#include <StlTransfer.hxx>
-#include <StlMesh_Mesh.hxx>
-#include <StlMesh_MeshExplorer.hxx>
 #include <Standard_Version.hxx>
 
 #ifdef HAVE_SMESH
@@ -172,31 +170,26 @@ Mesh::MeshObject* Mesher::createMesh() const
 {
     // OCC standard mesher
     if (method == Standard) {
-        Handle(StlMesh_Mesh) aMesh = new StlMesh_Mesh();
-
         if (!shape.IsNull()) {
             BRepTools::Clean(shape);
-#if OCC_VERSION_HEX >= 0x060801
-            BRepMesh_IncrementalMesh bMesh(shape, deflection, Standard_False, angularDeflection);
-            StlTransfer::RetrieveMesh(shape,aMesh);
-#else
-            StlTransfer::BuildIncrementalMesh(shape, deflection,
-#if OCC_VERSION_HEX >= 0x060503
-                Standard_True,
-#endif
-                aMesh);
-#endif
+            BRepMesh_IncrementalMesh aMesh(shape, deflection, Standard_False, angularDeflection);
         }
+
+        std::vector<Part::TopoShape::Domain> domains;
+        Part::TopoShape(shape).getDomains(domains);
 
         std::map<uint32_t, std::vector<std::size_t> > colorMap;
         for (std::size_t i=0; i<colors.size(); i++) {
             colorMap[colors[i]].push_back(i);
         }
 
-        bool createSegm = (static_cast<int>(colors.size()) == aMesh->NbDomains());
+        bool createSegm = (colors.size() == domains.size());
 
         MeshCore::MeshFacetArray faces;
-        faces.reserve(aMesh->NbTriangles());
+        std::size_t numTriangles = 0;
+        for (auto it : domains)
+            numTriangles += it.facets.size();
+        faces.reserve(numTriangles);
 
         std::set<Vertex> vertices;
         Standard_Real x1, y1, z1;
@@ -205,11 +198,24 @@ Mesh::MeshObject* Mesher::createMesh() const
 
         std::vector< std::vector<unsigned long> > meshSegments;
         std::size_t numMeshFaces = 0;
-        StlMesh_MeshExplorer xp(aMesh);
-        for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
+
+        for (std::size_t i = 0; i < domains.size(); ++i) {
             std::size_t numDomainFaces = 0;
-            for (xp.InitTriangle(nbd); xp.MoreTriangle(); xp.NextTriangle()) {
-                xp.TriangleVertices(x1,y1,z1,x2,y2,z2,x3,y3,z3);
+            const Part::TopoShape::Domain& domain = domains[i];
+            for (std::size_t j = 0; j < domain.facets.size(); ++j) {
+                const Part::TopoShape::Facet& tria = domain.facets[j];
+                x1 = domain.points[tria.I1].x;
+                y1 = domain.points[tria.I1].y;
+                z1 = domain.points[tria.I1].z;
+
+                x2 = domain.points[tria.I2].x;
+                y2 = domain.points[tria.I2].y;
+                z2 = domain.points[tria.I2].z;
+
+                x3 = domain.points[tria.I3].x;
+                y3 = domain.points[tria.I3].y;
+                z3 = domain.points[tria.I3].z;
+
                 std::set<Vertex>::iterator it;
                 MeshCore::MeshFacet face;
 

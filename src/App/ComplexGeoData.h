@@ -62,6 +62,10 @@ class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 public:
     struct Line  {uint32_t I1; uint32_t I2;};
     struct Facet {uint32_t I1; uint32_t I2; uint32_t I3;};
+    struct Domain {
+        std::vector<Base::Vector3d> points;
+        std::vector<Facet> facets;
+    };
 
     /// Constructor
     ComplexGeoData(void);
