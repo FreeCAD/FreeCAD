@@ -29,6 +29,7 @@
 # include <Python.h>
 # include <climits>
 # include <Standard_Version.hxx>
+# include <NCollection_Vector.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
 # include <TDocStd_Document.hxx>

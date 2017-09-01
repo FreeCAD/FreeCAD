@@ -123,26 +123,6 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     PyObject *pCone;
-    double dist;
-    static char* keywords_cd[] = {"Cone","Distance",NULL};
-    PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd,
-                                        &(ConePy::Type), &pCone, &dist)) {
-        ConePy* pcCone = static_cast<ConePy*>(pCone);
-        Handle(Geom_ConicalSurface) pcone = Handle(Geom_ConicalSurface)::DownCast
-            (pcCone->getGeometryPtr()->handle());
-        GC_MakeConicalSurface mc(pcone->Cone(), dist);
-        if (!mc.IsDone()) {
-            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
-            return -1;
-        }
-
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast
-            (getGeometryPtr()->handle());
-        cone->SetCone(mc.Value()->Cone());
-        return 0;
-    }
-
     static char* keywords_c[] = {"Cone",NULL};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_c,
