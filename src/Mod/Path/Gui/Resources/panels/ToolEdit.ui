@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>361</width>
-    <height>450</height>
+    <width>422</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -207,13 +207,13 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="singleStep">
+        <property name="singleStep" stdset="0">
          <double>0.125000000000000</double>
         </property>
-        <property name="maximum">
+        <property name="maximum" stdset="0">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum">
+        <property name="minimum" stdset="0">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -226,10 +226,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum">
+        <property name="maximum" stdset="0">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum">
+        <property name="minimum" stdset="0">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -242,10 +242,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum">
+        <property name="maximum" stdset="0">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum">
+        <property name="minimum" stdset="0">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -258,10 +258,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum">
+        <property name="maximum" stdset="0">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum">
+        <property name="minimum" stdset="0">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -274,10 +274,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum">
+        <property name="maximum" stdset="0">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum">
+        <property name="minimum" stdset="0">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -314,6 +314,18 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>NameField</tabstop>
+  <tabstop>TypeField</tabstop>
+  <tabstop>MaterialField</tabstop>
+  <tabstop>DiameterField</tabstop>
+  <tabstop>LengthOffsetField</tabstop>
+  <tabstop>FlatRadiusField</tabstop>
+  <tabstop>CornerRadiusField</tabstop>
+  <tabstop>CuttingEdgeAngleField</tabstop>
+  <tabstop>CuttingEdgeHeightField</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
