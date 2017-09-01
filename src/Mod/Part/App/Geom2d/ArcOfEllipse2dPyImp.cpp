@@ -73,9 +73,9 @@ int ArcOfEllipse2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             getGeom2dArcOfEllipsePtr()->setHandle(arc.Value());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
         catch (...) {

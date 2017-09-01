@@ -264,10 +264,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         extractFaces();
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e1 = Standard_Failure::Caught();
-        Base::Console().Log("LOG - DVS::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1->GetMessageString());
-        return new App::DocumentObjectExecReturn(e1->GetMessageString());
+    catch (Standard_Failure& e1) {
+        Base::Console().Log("LOG - DVS::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1.GetMessageString());
+        return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
     try {
@@ -295,10 +294,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         }
         sectionFaces = newFaces;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e2 = Standard_Failure::Caught();
-        Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2->GetMessageString());
-        return new App::DocumentObjectExecReturn(e2->GetMessageString());
+    catch (Standard_Failure& e2) {
+        Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2.GetMessageString());
+        return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
 
     return App::DocumentObject::StdReturn;

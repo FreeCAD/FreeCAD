@@ -101,9 +101,9 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkWire.Wire());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -144,9 +144,9 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkWire.Wire());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -181,9 +181,9 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
         getTopoShapePtr()->setShape(mkWire.Wire());
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -215,9 +215,9 @@ PyObject* TopoShapeWirePy::fixWire(PyObject *args)
 
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -249,9 +249,9 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
             TopoDS_Shape shape = this->getTopoShapePtr()->makePipe(profile);
             return new TopoShapePy(new TopoShape(shape));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -285,9 +285,9 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                 transition);
             return new TopoShapePy(new TopoShape(shape));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return NULL;
         }
     }
@@ -314,9 +314,9 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
             return wire;
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
