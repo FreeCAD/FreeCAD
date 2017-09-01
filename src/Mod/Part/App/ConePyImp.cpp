@@ -167,9 +167,8 @@ PyObject* ConePy::uIso(PyObject * args)
         this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -186,9 +185,8 @@ PyObject* ConePy::vIso(PyObject * args)
         Handle(Geom_Curve) c = cone->VIso(v);
         return new CirclePy(new GeomCircle(Handle(Geom_Circle)::DownCast(c)));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
