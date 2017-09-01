@@ -132,9 +132,9 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkEdge.Edge());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -165,9 +165,9 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkEdge.Edge());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -243,9 +243,9 @@ PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
             return PyFloat_FromDouble(par);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -286,9 +286,9 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
         prop.Normal(V);
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -307,9 +307,9 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
         double C = prop.Curvature();
         return Py::new_reference_to(Py::Float(C));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -329,9 +329,9 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
         prop.CentreOfCurvature(V);
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -350,9 +350,9 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
         const gp_Vec& V = prop.D1();
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -371,9 +371,9 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
         const gp_Vec& V = prop.D2();
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -392,9 +392,9 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
         const gp_Vec& V = prop.D3();
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -630,9 +630,9 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
 
         return new TopoShapeWirePy(new TopoShape(mkWire.Shape()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -651,9 +651,9 @@ PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
         Standard_Boolean ok = sa.IsSeam(e, f);
         return PyBool_FromLong(ok ? 1 : 0);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

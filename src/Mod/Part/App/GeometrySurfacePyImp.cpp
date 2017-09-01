@@ -268,9 +268,9 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
             return new TopoShapeFacePy(new TopoShape(sh));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -291,9 +291,9 @@ PyObject* GeometrySurfacePy::value(PyObject *args)
             return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -325,9 +325,9 @@ PyObject* GeometrySurfacePy::tangent(PyObject *args)
             return Py::new_reference_to(tuple);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -353,9 +353,9 @@ PyObject* GeometrySurfacePy::normal(PyObject *args)
             }
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -376,9 +376,9 @@ PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
             return PyBool_FromLong(val ? 1 : 0);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -404,9 +404,9 @@ PyObject* GeometrySurfacePy::curvatureDirections(PyObject *args)
             return Py::new_reference_to(tuple);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -446,9 +446,9 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
             return PyFloat_FromDouble(c);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -476,9 +476,9 @@ PyObject* GeometrySurfacePy::parameter(PyObject *args)
             return Py::new_reference_to(tuple);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -530,9 +530,9 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
             return Py::new_reference_to(makeGeometryCurvePy(c));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -564,9 +564,9 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
             return Py::new_reference_to(makeGeometryCurvePy(c));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -626,9 +626,9 @@ PyObject* GeometrySurfacePy::UPeriod(PyObject * args)
         Standard_Real val = surf->UPeriod();
         return PyFloat_FromDouble(val);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -644,9 +644,9 @@ PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
         Standard_Real val = surf->VPeriod();
         return PyFloat_FromDouble(val);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -738,9 +738,9 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
             Standard_Failure::Raise("Cannot convert to B-Spline surface");
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
     }
 
     return 0;
@@ -783,9 +783,9 @@ PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
             return Py::new_reference_to(result);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
 
@@ -820,9 +820,9 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
             }
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
 

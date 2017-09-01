@@ -4796,9 +4796,9 @@ void SketchObject::rebuildExternalGeometry(void)
                 const Part::TopoShape& refShape=refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
-            catch (Standard_Failure) {
-                Handle(Standard_Failure) e = Standard_Failure::Caught();
-                throw Base::Exception(e->GetMessageString());
+            catch (Standard_Failure& e) {
+        
+                throw Base::Exception(e.GetMessageString());
             }
         } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
             const App::Plane* pl = static_cast<const App::Plane*>(Obj);
@@ -5065,9 +5065,9 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
                     }
-                    catch (Standard_Failure) {
-                        Handle(Standard_Failure) e = Standard_Failure::Caught();
-                        throw Base::Exception(e->GetMessageString());
+                    catch (Standard_Failure& e) {
+                
+                        throw Base::Exception(e.GetMessageString());
                     }
                 }
             }

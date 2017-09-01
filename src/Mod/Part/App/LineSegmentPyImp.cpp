@@ -164,9 +164,9 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
         catch (...) {
@@ -195,9 +195,9 @@ PyObject* LineSegmentPy::setParameterRange(PyObject *args)
             (this->getGeomLineSegmentPtr()->handle());
         this_curve->SetTrim(first, last);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     }
 
@@ -255,9 +255,9 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
         this_line->SetLin(that_line->Lin());
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        throw Py::Exception(e.GetMessageString());
     }
 }
 
@@ -312,9 +312,9 @@ void LineSegmentPy::setEndPoint(Py::Object arg)
         this_line->SetLin(that_line->Lin());
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        throw Py::Exception(e.GetMessageString());
     }
 }
 
