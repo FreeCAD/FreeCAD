@@ -191,7 +191,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             return TwoStrings(qApp->translate("Attacher1D", "Tangent","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line tangent to an edge. Optional vertex link defines where.","AttachmentLine mode tooltip"));
         case mm1Normal:
-            return TwoStrings(qApp->translate("Attacher1D", "Normal","AttachmentLine mode caption"),
+            return TwoStrings(qApp->translate("Attacher1D", "Normal to edge","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.","AttachmentLine mode tooltip"));
         case mm1Binormal:
             return TwoStrings(qApp->translate("Attacher1D", "Binormal","AttachmentLine mode caption"),
@@ -220,6 +220,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mm1AxisInertia3:
             return TwoStrings(qApp->translate("Attacher1D", "3rd principal axis","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line follows third principal axis of inertia.","AttachmentLine mode tooltip"));
+        case mm1FaceNormal:
+            return TwoStrings(qApp->translate("Attacher1D", "Normal to surface","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line perpendicular to surface at point set by vertex.","AttachmentLine mode tooltip"));
         default:
             break;
         }
