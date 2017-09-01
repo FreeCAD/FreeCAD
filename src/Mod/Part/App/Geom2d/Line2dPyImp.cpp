@@ -103,9 +103,9 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             this_line->SetLin2d(that_line->Lin2d());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
         catch (...) {
@@ -170,9 +170,9 @@ void Line2dPy::setLocation(Py::Object arg)
         Handle(Geom2d_Line) that_line = ms.Value();
         this_line->SetLin2d(that_line->Lin2d());
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        throw Py::Exception(e.GetMessageString());
     }
 }
 
@@ -225,9 +225,9 @@ void Line2dPy::setDirection(Py::Object arg)
         Handle(Geom2d_Line) that_line = ms.Value();
         this_line->SetLin2d(that_line->Lin2d());
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        throw Py::Exception(e.GetMessageString());
     }
 }
 

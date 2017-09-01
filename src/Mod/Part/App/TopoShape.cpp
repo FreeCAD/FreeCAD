@@ -515,9 +515,8 @@ void TopoShape::importIges(const char *FileName)
         this->_Shape = aReader.OneShape();
         pi->EndScope();
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 }
 
@@ -539,9 +538,8 @@ void TopoShape::importStep(const char *FileName)
         this->_Shape = aReader.OneShape();
         pi->EndScope();
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 }
 
@@ -562,9 +560,8 @@ void TopoShape::importBrep(const char *FileName)
 #endif
         this->_Shape = aShape;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 }
 
@@ -585,9 +582,8 @@ void TopoShape::importBrep(std::istream& str)
 #endif
         this->_Shape = aShape;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
     catch (const std::exception& e) {
         throw Base::Exception(e.what());
@@ -657,9 +653,8 @@ void TopoShape::exportIges(const char *filename) const
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone)
             throw Base::Exception("Writing of IGES failed");
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 }
 
@@ -690,9 +685,8 @@ void TopoShape::exportStep(const char *filename) const
             throw Base::Exception("Writing of STEP failed");
         pi->EndScope();
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 }
 
