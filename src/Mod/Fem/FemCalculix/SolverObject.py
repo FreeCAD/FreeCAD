@@ -44,6 +44,7 @@ ANALYSIS_TYPES = ["static", "frequency", "thermomech"]
 
 
 def create(doc, name="SolverCalculiX"):
+    print('we are inside create to create the solver object')
     return FemMisc.createObject(
         doc, name, Proxy, ViewProxy)
 

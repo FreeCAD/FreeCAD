@@ -555,7 +555,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         # use new solver frame work solver
         fcc_print('Checking FEM new solver for new solver frame work...')
         # py3 travie fails on the next line ...
-        # solver_ccx2_object = ObjectsFem.makeSolverCalculix('SolverCalculiX')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix('SolverCalculiX')
 
         '''
         solver_ccx2_object.GeometricalNonlinearity = 'linear'

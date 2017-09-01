@@ -30,6 +30,7 @@ import FreeCAD as App
 
 
 def createObject(doc, name, proxy, viewProxy):
+    print('this is used to create objects, including the solver ones')
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
     if App.GuiUp:
