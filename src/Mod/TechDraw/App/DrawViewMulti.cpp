@@ -130,13 +130,17 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 
     //Base::Console().Message("TRACE - DVM::execute() - %s/%s\n",getNameInDocument(),Label.getValue());
 
-    (void) DrawView::execute();          //make sure Scale is up to date
-
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
     for (auto& l:links) {
+        if (!l->isDerivedFrom(Part::Feature::getClassTypeId())){
+            continue;     //not a part
+        } 
         const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
+        if (partTopo.isNull()) {
+            continue;    //has no shape
+        }
         BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
         TopoDS_Shape shape = BuilderCopy.Shape();
         builder.Add(comp, shape);
@@ -162,6 +166,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
+    requestPaint();
     return App::DocumentObject::StdReturn;
 }
 
