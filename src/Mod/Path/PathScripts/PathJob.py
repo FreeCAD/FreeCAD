@@ -27,6 +27,7 @@ import Draft
 import FreeCAD
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
+import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import xml.etree.ElementTree as xml
@@ -57,6 +58,24 @@ class JobTemplate:
     GeometryTolerance = 'tol'
     Description = 'desc'
     ToolController = 'ToolController'
+
+def isResourceClone(obj, propName, resourceName):
+    '''isResourceClone(obj, propName, resourceName) ... Return True if the given property of obj is a clone of type resourceName.'''
+    if hasattr(obj, propName):
+        propLink =  getattr(obj, propName)
+        if hasattr(propLink, 'PathResource') and resourceName == propLink.PathResource:
+            return True
+    return False
+
+def createResourceClone(obj, orig, name, icon):
+    clone = Draft.clone(orig)
+    clone.Label = "%s-%s" % (name, orig.Label)
+    clone.addProperty('App::PropertyString', 'PathResource')
+    clone.PathResource = name
+    if clone.ViewObject:
+        PathIconViewProvider.ViewProvider(clone.ViewObject, icon)
+        clone.ViewObject.Visibility = False
+    return clone
 
 class ObjectJob:
 
@@ -91,10 +110,14 @@ class ObjectJob:
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
-        self.createResourceClone(obj, base, 'Base')
+        obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
         self.assignTemplate(obj, template)
+        if not obj.Stock:
+            obj.Stock = PathStock.CreateFromBase(obj)
+        if obj.Stock.ViewObject:
+            obj.Stock.ViewObject.Visibility = False
 
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
@@ -115,36 +138,18 @@ class ObjectJob:
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
 
-    def isResourceClone(self, obj, propName, resourceName):
-        if hasattr(obj, propName):
-            propLink =  getattr(obj, propName)
-            if hasattr(propLink, 'PathResource') and resourceName == propLink.PathResource:
-                return True
-        return False
-
-    def createResourceClone(self, obj, orig, name):
-        clone = Draft.clone(orig)
-        clone.Label = "%s-%s" % (name, orig.Label)
-        clone.addProperty('App::PropertyString', 'PathResource')
-        clone.PathResource = name
-        if clone.ViewObject:
-            PathIconViewProvider.ViewProvider(clone.ViewObject, 'BaseGeometry')
-            clone.ViewObject.Visibility = False
-        setattr(obj, name, clone)
-
-    def fixupResourceClone(self, obj, name):
-        if not self.isResourceClone(obj, name, name):
+    def fixupResourceClone(self, obj, name, icon):
+        if not isResourceClone(obj, name, name):
             orig = getattr(obj, name)
             if orig:
-                self.createResourceClone(obj, orig, name)
+                setattr(obj, name, createResourceClone(obj, orig, name, icon))
 
     def onDocumentRestored(self, obj):
-        self.fixupResourceClone(obj, 'Base')
-        self.fixupResourceClone(obj, 'Stock')
+        self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
 
     def baseObject(self, obj):
         '''Return the base object, not its clone.'''
-        if self.isResourceClone(obj, 'Base', 'Base'):
+        if isResourceClone(obj, 'Base', 'Base'):
             return obj.Base.Objects[0]
         return obj.Base
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>608</height>
+    <height>924</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
     <item>
      <widget class="QToolBox" name="tbGeneral">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
@@ -226,67 +226,184 @@
          <x>0</x>
          <y>0</y>
          <width>378</width>
-         <height>403</height>
+         <height>719</height>
         </rect>
        </property>
        <attribute name="label">
         <string>Layout</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <widget class="QGroupBox" name="stockGroup">
           <property name="title">
            <string>Stock</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout_8">
-           <item row="1" column="1">
-            <widget class="QLabel" name="stockExtXLabel">
-             <property name="text">
-              <string>Ext. X</string>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QComboBox" name="stock">
+             <property name="currentIndex">
+              <number>2</number>
              </property>
+             <item>
+              <property name="text">
+               <string>Create Box</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Create Cylinder</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Extend Base Bound Box</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Use Existing</string>
+              </property>
+             </item>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLabel" name="stockExtYLabel">
-             <property name="text">
-              <string>Ext. Y</string>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>6</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QFrame" name="stockFromExisting">
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="1">
+               <widget class="QComboBox" name="stockExisting"/>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="1" column="4">
-            <widget class="Gui::InputField" name="stockExtXPlus">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item>
+            <widget class="QFrame" name="stockFromBase">
+             <layout class="QGridLayout" name="gridLayout_9">
+              <item row="1" column="3">
+               <widget class="Gui::InputField" name="stockExtYpos"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="stockExtXLabel">
+                <property name="text">
+                 <string>Ext. X</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="Gui::InputField" name="stockExtXpos">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="stockExtYLabel">
+                <property name="text">
+                 <string>Ext. Y</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockExtXneg"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="stockExtZLabel">
+                <property name="text">
+                 <string>Ext. Z</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="Gui::InputField" name="stockExtZneg"/>
+              </item>
+              <item row="2" column="3">
+               <widget class="Gui::InputField" name="stockExtZpos"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockExtYneg"/>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="1" column="3">
-            <widget class="Gui::InputField" name="stockExtXMinus"/>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="stockExtZLabel">
-             <property name="text">
-              <string>Ext. Z</string>
-             </property>
+           <item>
+            <widget class="QFrame" name="stockCreateCylinder">
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockCylinderRadius"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockCylinderHeight"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="stockCylinderRadiusLabel">
+                <property name="text">
+                 <string>Radius</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="stockCylinderHeightLabel">
+                <property name="text">
+                 <string>Height</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
-           <item row="3" column="3">
-            <widget class="Gui::InputField" name="stockExtZMinus"/>
-           </item>
-           <item row="2" column="3">
-            <widget class="Gui::InputField" name="stockExtYMinus"/>
-           </item>
-           <item row="2" column="4">
-            <widget class="Gui::InputField" name="stockExtYPlus"/>
-           </item>
-           <item row="3" column="4">
-            <widget class="Gui::InputField" name="stockExtZPlus"/>
-           </item>
-           <item row="0" column="1" colspan="4">
-            <widget class="QComboBox" name="comboBox"/>
+           <item>
+            <widget class="QFrame" name="stockCreateBox">
+             <layout class="QGridLayout" name="gridLayout_11">
+              <item row="0" column="1">
+               <widget class="QLabel" name="stockBoxLengthLabel">
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="stockBoxWidthLabel">
+                <property name="text">
+                 <string>Width</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockBoxLength"/>
+              </item>
+              <item row="2" column="2">
+               <widget class="Gui::InputField" name="stockBoxHeight"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockBoxWidth"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="stockBoxHeightLabel">
+                <property name="text">
+                 <string>Height</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -612,7 +729,7 @@
     <item>
      <widget class="QToolBox" name="toolBox_2">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_9">
        <property name="geometry">
@@ -862,6 +979,63 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>infoLabel</tabstop>
+  <tabstop>infoModel</tabstop>
+  <tabstop>infoMaterial</tabstop>
+  <tabstop>stock</tabstop>
+  <tabstop>stockExisting</tabstop>
+  <tabstop>stockExtXneg</tabstop>
+  <tabstop>stockExtXpos</tabstop>
+  <tabstop>stockExtYneg</tabstop>
+  <tabstop>stockExtYpos</tabstop>
+  <tabstop>stockExtZneg</tabstop>
+  <tabstop>stockExtZpos</tabstop>
+  <tabstop>stockCylinderRadius</tabstop>
+  <tabstop>stockCylinderHeight</tabstop>
+  <tabstop>stockBoxLength</tabstop>
+  <tabstop>stockBoxWidth</tabstop>
+  <tabstop>stockBoxHeight</tabstop>
+  <tabstop>orientXAxis</tabstop>
+  <tabstop>orientYAxis</tabstop>
+  <tabstop>orientZAxis</tabstop>
+  <tabstop>setOrigin</tabstop>
+  <tabstop>moveToOrigin</tabstop>
+  <tabstop>centerInStock</tabstop>
+  <tabstop>centerInStockXY</tabstop>
+  <tabstop>postProcessorOutputFile</tabstop>
+  <tabstop>postProcessorSetOutputFile</tabstop>
+  <tabstop>postProcessor</tabstop>
+  <tabstop>postProcessorArguments</tabstop>
+  <tabstop>templateDefaultValues</tabstop>
+  <tabstop>templatePostProcessor</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>templateGeneral</tabstop>
+  <tabstop>templateMaterial</tabstop>
+  <tabstop>templateSetup</tabstop>
+  <tabstop>templateStock</tabstop>
+  <tabstop>templateOperations</tabstop>
+  <tabstop>templateTools</tabstop>
+  <tabstop>toolControllerList</tabstop>
+  <tabstop>toolControllerEdit</tabstop>
+  <tabstop>toolControllerAdd</tabstop>
+  <tabstop>toolControllerDelete</tabstop>
+  <tabstop>activeToolController</tabstop>
+  <tabstop>operationsList</tabstop>
+  <tabstop>operationEdit</tabstop>
+  <tabstop>operationDelete</tabstop>
+  <tabstop>groupBox_5</tabstop>
+  <tabstop>defaultSafeHeight</tabstop>
+  <tabstop>defaultClearanceHeight</tabstop>
+  <tabstop>groupBox_6</tabstop>
+  <tabstop>defaultStepDown</tabstop>
+  <tabstop>groupBox</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>groupBox_7</tabstop>
+  <tabstop>defaultMillingOp</tabstop>
+  <tabstop>defaultToolCompensation</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
