@@ -75,7 +75,7 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version >= 3 or utf8_decode:
+        if sys.version_info.major >= 3 or utf8_decode:
             return QtGui.QApplication.translate(context, text, None)
         else:
             return QtGui.QApplication.translate(context, text, None).encode("utf8")
