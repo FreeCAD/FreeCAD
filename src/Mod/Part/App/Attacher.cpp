@@ -122,6 +122,13 @@ const char* AttachEngine::eMapModeStrings[]= {
 
     "FaceNormal",
 
+    "OZX",
+    "OZY",
+    "OXY",
+    "OXZ",
+    "OYZ",
+    "OYX",
+
     NULL};
 
 //this list must be in sync with eRefType enum.
@@ -943,6 +950,17 @@ AttachEngine3D::AttachEngine3D()
     modeRefTypes[mmThreePointsPlane].push_back(s);
     modeRefTypes[mmThreePointsNormal].push_back(s);
 
+    //------------origin-axis-axis modes
+    for (int mmode = mmOZX; mmode <= mmOYX; ++mmode){
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtVertex, rtVertex));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtVertex, rtLine));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtLine, rtVertex));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtLine, rtLine));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtVertex));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtLine));
+    }
+
+
     modeRefTypes[mmFolding].push_back(cat(rtLine, rtLine, rtLine, rtLine));
 
     this->EnableAllSupportedModes();
@@ -1447,6 +1465,84 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
 
         SketchBasePoint = p;
 
+    } break;
+    case mmOZX:
+    case mmOZY:
+    case mmOXY:
+    case mmOXZ:
+    case mmOYZ:
+    case mmOYX: {
+        const char orderStrings[6][4] = {
+            "ZXY",
+            "ZYX",
+            "XYZ",
+            "XZY",
+            "YZX",
+            "YXZ",
+        };
+        const char* orderString = orderStrings[mmode - mmOZX];
+
+        enum dirIndex {
+            X,
+            Y,
+            Z
+        };
+        int order[3];
+        for(int i = 0; i < 3; ++i){
+            order[i] = orderString[i] - 'X';
+        }
+
+        if (shapes.size() < 2)
+            THROWM(Base::ValueError, "AttachEngine3D::calculateAttachedPlacement: not enough shapes linked (at least two are required).");
+
+        gp_Vec dirs[3];
+
+        //read out origin
+        if (shapes[0]->IsNull())
+            THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: null shape!")
+        if (shapes[0]->ShapeType() != TopAbs_VERTEX)
+            THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: first reference must be a vertex, it's not")
+        SketchBasePoint = BRep_Tool::Pnt(TopoDS::Vertex(*(shapes[0])));
+
+        //read out axes directions
+        for(int i = 1; i < 3 && i < shapes.size(); ++i){
+            if (shapes[i]->IsNull())
+                THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: null shape!")
+            if (shapes[i]->ShapeType() == TopAbs_VERTEX){
+                gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(*(shapes[i])));
+                dirs[order[i-1]] = gp_Vec(SketchBasePoint, p);
+            } else if (shapes[i]->ShapeType() == TopAbs_EDGE){
+                const TopoDS_Edge &e = TopoDS::Edge(*(shapes[i]));
+                BRepAdaptor_Curve crv(e);
+                double u1 = crv.FirstParameter();
+                double u2 = crv.LastParameter();
+                if ( Precision::IsInfinite(u1)
+                     || Precision::IsInfinite(u2) ){
+                    u1 = 0.0;
+                    u2 = 1.0;
+                }
+                gp_Pnt p1 = crv.Value(u1);
+                gp_Pnt p2 = crv.Value(u2);
+                dirs[order[i-1]] = gp_Vec(p1,p2);
+            }
+        }
+
+        //make the placement
+        Base::Rotation rot =
+                Base::Rotation::makeRotationByAxes(
+                    Base::Vector3d(dirs[0].X(), dirs[0].Y(), dirs[0].Z()),
+                    Base::Vector3d(dirs[1].X(), dirs[1].Y(), dirs[1].Z()),
+                    Base::Vector3d(dirs[2].X(), dirs[2].Y(), dirs[2].Z()),
+                    orderString
+                );
+        if(this->mapReverse){
+            rot = rot * Base::Rotation(Base::Vector3d(0,1,0),180);
+        }
+
+        Base::Placement plm =
+                Base::Placement(Base::Vector3d(SketchBasePoint.X(), SketchBasePoint.Y(), SketchBasePoint.Z()), rot);
+        plm *= this->superPlacement;
+        return plm;
     } break;
     default:
         throwWrongMode(mmode);
