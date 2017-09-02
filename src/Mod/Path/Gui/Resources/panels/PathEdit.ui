@@ -264,7 +264,7 @@
              </item>
              <item>
               <property name="text">
-               <string>Use Existing</string>
+               <string>Use Existing Solid</string>
               </property>
              </item>
             </widget>
