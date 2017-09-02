@@ -23,7 +23,6 @@
 '''used to create material stock around a machined part- for visualization '''
 
 import FreeCAD
-import FreeCADGui
 import Part
 import PathIconViewProvider
 
@@ -127,64 +126,5 @@ def CreateCylinder(job, radius=None, height=None, at=None):
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
     SetupStockObject(obj, False)
     return obj
-
-
-class _ViewProviderStock:
-
-    def __init__(self, obj):  # mandatory
-        #        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
-        obj.Proxy = self
-
-    def __getstate__(self):  # mandatory
-        return None
-
-    def __setstate__(self, state):  # mandatory
-        return None
-
-    def getIcon(self):  # optional
-        return ":/icons/Path-Stock.svg"
-
-    def attach(self, vobj):  # optional
-        self.Object = vobj.Object
-
-
-class CommandPathStock:
-
-    def GetResources(self):
-        return {'Pixmap': 'Path-Stock',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathStock", "Stock"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathStock", "Creates a 3D object to represent raw stock to mill the part out of")}
-
-    def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Stock", "Creates a 3D object to represent raw stock to mill the part out of"))
-        FreeCADGui.addModule("PathScripts.PathStock")
-        snippet = '''
-import FreeCADGui
-if len(FreeCADGui.Selection.getSelection())>0:
-    sel=FreeCADGui.Selection.getSelection()
-    o = sel[0]
-    if "Shape" in o.PropertiesList:
-        obj =FreeCAD.ActiveDocument.addObject('Part::FeaturePython',sel[0].Name+('_Stock'))
-        PathScripts.PathStock.Stock(obj)
-        PathScripts.PathStock._ViewProviderStock(obj.ViewObject)
-        PathScripts.PathUtils.addToJob(obj)
-        baseobj = sel[0]
-        obj.Base = baseobj
-        FreeCADGui.ActiveDocument.getObject(sel[0].Name+("_Stock")).ShapeColor = (0.3333,0.6667,1.0000)
-        FreeCADGui.ActiveDocument.getObject(sel[0].Name+("_Stock")).Transparency = 75
-        FreeCAD.ActiveDocument.recompute()
-    else:
-        FreeCAD.Console.PrintMessage("Select a Solid object and try again.\\n")
-else:
-    FreeCAD.Console.PrintMessage("Select the object you want to show stock for and try again.\\n")
-        '''
-        FreeCADGui.doCommand(snippet)
-
-if FreeCAD.GuiUp:
-    # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Stock', CommandPathStock())
 
 FreeCAD.Console.PrintLog("Loading PathStock... done\n")
