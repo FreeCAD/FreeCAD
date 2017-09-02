@@ -301,18 +301,23 @@ class StockFromExistingEdit(StockEdit):
                 stock.Proxy.execute(stock)
                 self.setStock(obj, stock)
 
+    def candidates(self, obj):
+        solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
+        if obj.Base in solids:
+            # always a resource clone
+            solids.remove(obj.Base)
+        if obj.Stock in solids:
+            # regardless, what stock is/was, it's not a valid choice
+            solids.remove(obj.Stock)
+        return sorted(solids, key=lambda c: c.Label)
+
     def setFields(self, obj):
         self.form.stockExisting.clear()
-
-        candidates = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        candidates.remove(obj.Base)  # always a resource clone
-        candidates.remove(obj.Stock) # regardless, what stock is/was, it's not a valid choice
         stockName = obj.Stock.Label if obj.Stock else None
-
         index = -1
-        for i, o in enumerate(sorted(candidates, key=lambda c: c.Label)):
-            self.form.stockExisting.addItem(o.Label, o)
-            if o.Label == stockName:
+        for i, solid in enumerate(self.candidates(obj)):
+            self.form.stockExisting.addItem(solid.Label, solid)
+            if solid.Label == stockName:
                 index = i
         self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
@@ -736,30 +741,27 @@ class TaskPanel:
             self.form.alignGroup.setEnabled(False)
 
     def updateStockEditor(self, index):
-        PathLog.track(self.obj.Label, index)
         def setupFromBaseEdit():
-            PathLog.track()
             if not self.stockFromBase:
                 self.stockFromBase = StockFromBaseBoundBoxEdit(self.obj, self.form)
             self.stockEdit = self.stockFromBase
         def setupCreateBoxEdit():
-            PathLog.track()
             if not self.stockCreateBox:
                 self.stockCreateBox = StockCreateBoxEdit(self.obj, self.form)
             self.stockEdit = self.stockCreateBox
         def setupCreateCylinderEdit():
-            PathLog.track()
             if not self.stockCreateCylinder:
                 self.stockCreateCylinder = StockCreateCylinderEdit(self.obj, self.form)
             self.stockEdit = self.stockCreateCylinder
         def setupFromExisting():
-            PathLog.track()
             if not self.stockFromExisting:
                 self.stockFromExisting = StockFromExistingEdit(self.obj, self.form)
-            self.stockEdit = self.stockFromExisting
+            if self.stockFromExisting.candidates(self.obj):
+                self.stockEdit = self.stockFromExisting
+                return True
+            return False
 
         if index == -1:
-            PathLog.track('wtf')
             if self.obj.Stock is None or StockFromBaseBoundBoxEdit.IsStock(self.obj):
                 setupFromBaseEdit()
             elif StockCreateBoxEdit.IsStock(self.obj):
@@ -771,7 +773,6 @@ class TaskPanel:
             else:
                 PathLog.error(translate('PathJob', "Unsupported stock object %s") % self.obj.Stock.Label)
         else:
-            PathLog.track(self.obj.Label, index)
             if index == StockFromBaseBoundBoxEdit.Index:
                 setupFromBaseEdit()
             elif index == StockCreateBoxEdit.Index:
@@ -779,7 +780,9 @@ class TaskPanel:
             elif index == StockCreateCylinderEdit.Index:
                 setupCreateCylinderEdit()
             elif index == StockFromExistingEdit.Index:
-                setupFromExisting()
+                if not setupFromExisting():
+                    setupFromBaseEdit()
+                    index = -1
             else:
                 PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
         self.stockEdit.activate(self.obj, index == -1)
