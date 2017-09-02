@@ -150,6 +150,32 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
+    PyErr_Clear();
+    PyObject *v3;
+    char *priority = nullptr;
+    if (PyArg_ParseTuple(args, "O!O!O!|s", &(Base::VectorPy::Type), &v1,
+                                       &(Base::VectorPy::Type), &v2,
+                                       &(Base::VectorPy::Type), &v3,
+                                       &priority                         )) {
+        Py::Vector xdir(v1, false);
+        Py::Vector ydir(v2, false);
+        Py::Vector zdir(v3, false);
+        if (!priority)
+            priority = "ZXY";
+        try {
+            *getRotationPtr() = (Rotation::makeRotationByAxes(xdir.toVector(), ydir.toVector(), zdir.toVector(), priority));
+        } catch(Base::Exception &e) {
+            std::string str;
+            str += "FreeCAD exception thrown (";
+            str += e.what();
+            str += ")";
+            PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
+            return -1;
+        }
+
+        return 0;
+    }
+
     PyErr_SetString(PyExc_TypeError, "Rotation constructor accepts:\n"
         "-- empty parameter list\n"
         "-- Rotation object"
@@ -160,6 +186,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         "-- Matrix object\n"
         "-- 16 floats (4x4 matrix)\n"
         "-- 9 floats (3x3 matrix)\n"
+        "-- 3 vectors + optional string"
        );
     return -1;
 }
