@@ -302,17 +302,17 @@ class StockFromExistingEdit(StockEdit):
                 self.setStock(obj, stock)
 
     def setFields(self, obj):
+        self.form.stockExisting.clear()
+
         candidates = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        candidates.remove(obj.Base)
-        if PathJob.isResourceClone(obj, 'Stock', 'Stock'):
-            candidates.remove(obj.Stock)
+        candidates.remove(obj.Base)  # always a resource clone
+        candidates.remove(obj.Stock) # regardless, what stock is/was, it's not a valid choice
         stockName = obj.Stock.Label if obj.Stock else None
 
-        self.form.stockExisting.clear()
         index = -1
-        for i, c in enumerate(candidates):
-            self.form.stockExisting.addItem(c.Label, c)
-            if c.Label == stockName:
+        for i, o in enumerate(sorted(candidates, key=lambda c: c.Label)):
+            self.form.stockExisting.addItem(o.Label, o)
+            if o.Label == stockName:
                 index = i
         self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
