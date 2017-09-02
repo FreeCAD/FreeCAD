@@ -440,19 +440,11 @@ class _CommandWindow:
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
                     if host and self.Include:
-                        if self.RemoveExternal:
-                            FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
-                        else:
-                            # make a new object to avoid circular references
-                            FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
-                            FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                        FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
                         siblings = host.Proxy.getSiblings(host)
                         for sibling in siblings:
-                            if self.RemoveExternal:
-                                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
-                            else:
-                                FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
-                                FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                            if not sibling in win.Hosts:
+                                FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
@@ -495,18 +487,10 @@ class _CommandWindow:
         FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
         if obj and self.Include:
             if Draft.getType(obj) in AllowedHosts:
-                if self.RemoveExternal:
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
-                else:
-                    FreeCADGui.doCommand("host=Arch.make"+Draft.getType(obj)+"(FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
                 siblings = obj.Proxy.getSiblings(obj)
                 for sibling in siblings:
-                    if self.RemoveExternal:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
-                    else:
-                        FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                    FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return
@@ -637,6 +621,7 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
+        obj.addProperty("App::PropertyLinkList","Hosts","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
         obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
         obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
@@ -665,6 +650,11 @@ class _Window(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
+        if prop == "Hosts":
+            if hasattr(obj,"Hosts"):
+                for host in obj.Hosts:
+                    # mark host to recompute so it can detect this object
+                    host.touch()
         if not "Restore" in obj.State:
             if prop in ["Base","WindowParts"]:
                 self.execute(obj)
@@ -1109,8 +1099,8 @@ class _ArchWindowTaskPanel:
         self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.title, 0, 0, 1, 7)
-        basepanel = ArchComponent.ComponentTaskPanel()
-        self.form = [self.baseform,basepanel.baseform]
+        self.basepanel = ArchComponent.ComponentTaskPanel()
+        self.form = [self.baseform,self.basepanel.baseform]
         
         # base object
         self.tree = QtGui.QTreeWidget(self.baseform)
@@ -1320,7 +1310,9 @@ class _ArchWindowTaskPanel:
                 else:
                     self.holeNumber.setText("0")
                         
-                self.retranslateUi(self.baseform)
+            self.retranslateUi(self.baseform)
+            self.basepanel.obj = self.obj
+            self.basepanel.update()
 
     def addElement(self):
         'opens the component creation dialog'

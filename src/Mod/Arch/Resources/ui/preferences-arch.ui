@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>396</width>
-    <height>694</height>
+    <height>689</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,77 +98,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>applyconstructionStyle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_7">
-     <property name="title">
-      <string>Tree behaviour</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_7">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="toolTip">
-           <string>If these options are checked, the respective components will appear under their host object in the tree view. Otherwise, next to them.</string>
-          </property>
-          <property name="text">
-           <string>Swallow </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_5">
-          <property name="text">
-           <string>Additions</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>swallowAdditions</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_6">
-          <property name="text">
-           <string>Subtractions</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>swallowSubtractions</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_4">
-          <property name="text">
-           <string>Windows</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>swallowWindows</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

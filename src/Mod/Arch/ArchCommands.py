@@ -154,7 +154,6 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
-                    fixDAG(o)
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
                             setAsSubcomponent(o)
@@ -243,23 +242,6 @@ def setAsSubcomponent(obj):
             if hasattr(obj.ViewObject,"Transparency"):
                 obj.ViewObject.Transparency = int(color[3]*100)
             obj.ViewObject.hide()
-
-def fixDAG(obj,force=False):
-    '''fixDAG(object): Fixes non-DAG problems in windows and rebars
-    by removing supports and external geometry from underlying sketches'''
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    if p.GetBool("archRemoveExternal",False) or force:
-        if Draft.getType(obj) in ["Window","Rebar"]:
-            if obj.Base:
-                if hasattr(obj.Base,"Support"):
-                    if obj.Base.Support:
-                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                        obj.Base.Support = None
-                if hasattr(obj.Base,"ExternalGeometry"):
-                    if obj.Base.ExternalGeometry:
-                        for g in obj.Base.ExternalGeometry:
-                            obj.Base.delExternal(0)
-                            FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external reference to avoid cross-referencing"))
 
 def copyProperties(obj1,obj2):
     '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
