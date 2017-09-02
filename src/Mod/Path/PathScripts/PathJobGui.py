@@ -28,8 +28,10 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
+import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
+import PathScripts.PathUtil as PathUtil
 import math
 import sys
 
@@ -104,6 +106,223 @@ class ViewProvider:
         self.obj.Proxy.onDelete(self.obj, arg2)
         return True
 
+class StockEdit(object):
+
+    def __init__(self, obj, form):
+        self.obj = obj
+        self.form = form
+        self.setupUi(obj)
+
+    def activate(self, obj, select = False):
+        PathLog.track(obj.Label, select)
+        def showHide(widget, activeWidget):
+            if widget == activeWidget:
+                widget.show()
+            else:
+                widget.hide()
+        if select:
+            self.form.stock.setCurrentIndex(self.Index)
+        editor = self.editorFrame()
+        showHide(self.form.stockFromExisting, editor)
+        showHide(self.form.stockFromBase, editor)
+        showHide(self.form.stockCreateBox, editor)
+        showHide(self.form.stockCreateCylinder, editor)
+        self.setFields(obj)
+
+    def setStock(self, obj, stock):
+        if obj.Stock:
+            obj.Document.removeObject(self.obj.Stock.Name)
+        obj.Stock = stock
+
+    def setLengthField(self, widget, prop):
+        widget.setText(FreeCAD.Units.Quantity(prop.Value, FreeCAD.Units.Length).UserString)
+
+class StockFromBaseBoundBoxEdit(StockEdit):
+    Index = 2
+    StockType = 'FromBase'
+
+    @classmethod
+    def IsStock(cls, obj):
+        return hasattr(obj.Stock, 'ExtXneg') and hasattr(obj.Stock, 'ExtZpos')
+
+    def editorFrame(self):
+        return self.form.stockFromBase
+
+    def getFields(self, obj, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
+        PathLog.track(obj.Label, fields)
+        if self.IsStock(obj):
+            if 'xneg' in fields:
+                obj.Stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
+            if 'xpos' in fields:
+                obj.Stock.ExtXpos = FreeCAD.Units.Quantity(self.form.stockExtXpos.text())
+            if 'yneg' in fields:
+                obj.Stock.ExtYneg = FreeCAD.Units.Quantity(self.form.stockExtYneg.text())
+            if 'ypos' in fields:
+                obj.Stock.ExtYpos = FreeCAD.Units.Quantity(self.form.stockExtYpos.text())
+            if 'zneg' in fields:
+                obj.Stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
+            if 'zpos' in fields:
+                obj.Stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
+        else:
+            PathLog.error(translate('PathJob', 'Stock not from Base bound box!'))
+
+    def setFields(self, obj):
+        if not self.IsStock(obj):
+            self.setStock(obj, PathStock.CreateFromBase(obj))
+        self.setLengthField(self.form.stockExtXneg, obj.Stock.ExtXneg)
+        self.setLengthField(self.form.stockExtXpos, obj.Stock.ExtXpos)
+        self.setLengthField(self.form.stockExtYneg, obj.Stock.ExtYneg)
+        self.setLengthField(self.form.stockExtYpos, obj.Stock.ExtYpos)
+        self.setLengthField(self.form.stockExtZneg, obj.Stock.ExtZneg)
+        self.setLengthField(self.form.stockExtZpos, obj.Stock.ExtZpos)
+
+    def setupUi(self, obj):
+        self.setFields(obj)
+        self.checkXpos()
+        self.checkYpos()
+        self.checkZpos()
+        self.form.stockExtXneg.editingFinished.connect(self.updateXpos)
+        self.form.stockExtYneg.editingFinished.connect(self.updateYpos)
+        self.form.stockExtZneg.editingFinished.connect(self.updateZpos)
+        self.form.stockExtXpos.editingFinished.connect(self.checkXpos)
+        self.form.stockExtYpos.editingFinished.connect(self.checkYpos)
+        self.form.stockExtZpos.editingFinished.connect(self.checkZpos)
+
+    def checkXpos(self):
+        self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
+        self.getFields(self.obj, ['xpos'])
+    def checkYpos(self):
+        self.trackYpos = self.form.stockExtYneg.text() == self.form.stockExtYpos.text()
+        self.getFields(self.obj, ['ypos'])
+    def checkZpos(self):
+        self.trackZpos = self.form.stockExtZneg.text() == self.form.stockExtZpos.text()
+        self.getFields(self.obj, ['zpos'])
+
+    def updateXpos(self):
+        fields = ['xneg']
+        if self.trackXpos:
+            self.form.stockExtXpos.setText(self.form.stockExtXneg.text())
+            fields.append('xpos')
+        self.getFields(self.obj, fields)
+    def updateYpos(self):
+        fields = ['yneg']
+        if self.trackYpos:
+            self.form.stockExtYpos.setText(self.form.stockExtYneg.text())
+            fields.append('ypos')
+        self.getFields(self.obj, fields)
+    def updateZpos(self):
+        fields = ['zneg']
+        if self.trackZpos:
+            self.form.stockExtZpos.setText(self.form.stockExtZneg.text())
+            fields.append('zpos')
+        self.getFields(self.obj, fields)
+
+class StockCreateBoxEdit(StockEdit):
+    Index = 0
+    StockType = 'CreateBox'
+
+    @classmethod
+    def IsStock(cls, obj):
+        return hasattr(obj.Stock, 'Length') and hasattr(obj.Stock, 'Width') and hasattr(obj.Stock, 'Height') and not StockFromBaseBoundBoxEdit.IsStock(obj)
+
+    def editorFrame(self):
+        return self.form.stockCreateBox
+
+    def getFields(self, obj, fields = ['length', 'widht', 'height']):
+        if self.IsStock(obj):
+            if 'length' in fields:
+                obj.Stock.Length = FreeCAD.Units.Quantity(self.form.stockBoxLength.text())
+            if 'width' in fields:
+                obj.Stock.Width  = FreeCAD.Units.Quantity(self.form.stockBoxWidth.text())
+            if 'height' in fields:
+                obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
+        else:
+            PathLog.error(translate('PathJob', 'Stock not a box!'))
+
+    def setFields(self, obj):
+        if not self.IsStock(obj):
+            self.setStock(obj, PathStock.CreateBox(obj))
+        self.setLengthField(self.form.stockBoxLength, obj.Stock.Length)
+        self.setLengthField(self.form.stockBoxWidth,  obj.Stock.Width)
+        self.setLengthField(self.form.stockBoxHeight, obj.Stock.Height)
+
+    def setupUi(self, obj):
+        self.setFields(obj)
+        self.form.stockBoxLength.editingFinished.connect(lambda: self.getFields(obj, ['length']))
+        self.form.stockBoxWidth.editingFinished.connect(lambda:  self.getFields(obj, ['width']))
+        self.form.stockBoxHeight.editingFinished.connect(lambda: self.getFields(obj, ['height']))
+
+class StockCreateCylinderEdit(StockEdit):
+    Index = 1
+
+    @classmethod
+    def IsStock(cls, obj):
+        return hasattr(obj.Stock, 'Radius') and hasattr(obj.Stock, 'Height')
+
+    def editorFrame(self):
+        return self.form.stockCreateCylinder
+
+    def getFields(self, obj, fields = ['radius', 'height']):
+        if self.IsStock(obj):
+            if 'radius' in fields:
+                obj.Stock.Radius = FreeCAD.Units.Quantity(self.form.stockCylinderRadius.text())
+            if 'height' in fields:
+                obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
+        else:
+            PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
+
+    def setFields(self, obj):
+        if not self.IsStock(obj):
+            self.setStock(obj, PathStock.CreateCylinder(obj))
+        self.setLengthField(self.form.stockCylinderRadius, obj.Stock.Radius)
+        self.setLengthField(self.form.stockCylinderHeight, obj.Stock.Height)
+
+    def setupUi(self, obj):
+        self.setFields(obj)
+        self.form.stockCylinderRadius.editingFinished.connect(lambda: self.getFields(obj, ['radius']))
+        self.form.stockCylinderHeight.editingFinished.connect(lambda: self.getFields(obj, ['height']))
+
+class StockFromExistingEdit(StockEdit):
+    Index = 3
+
+    def IsStock(cls, obj):
+        return PathJob.isResourceClone(obj, 'Stock', 'Stock')
+
+    def editorFrame(self):
+        return self.form.stockFromExisting
+
+    def getFields(self, obj):
+        stock = self.form.stockExisting.itemData(self.form.stockExisting.currentIndex())
+        if not (hasattr(obj.Stock, 'Objects') and len(obj.Stock.Objects) == 1 and obj.Stock.Objects[0] == stock): 
+            if stock:
+                stock = PathJob.createResourceClone(obj, stock, 'Stock', 'Stock')
+                stock.ViewObject.Visibility = True
+                PathStock.SetupStockObject(stock, False)
+                stock.Proxy.execute(stock)
+                self.setStock(obj, stock)
+
+    def setFields(self, obj):
+        candidates = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
+        candidates.remove(obj.Base)
+        if PathJob.isResourceClone(obj, 'Stock', 'Stock'):
+            candidates.remove(obj.Stock)
+        stockName = obj.Stock.Label if obj.Stock else None
+
+        self.form.stockExisting.clear()
+        index = -1
+        for i, c in enumerate(candidates):
+            self.form.stockExisting.addItem(c.Label, c)
+            if c.Label == stockName:
+                index = i
+        self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
+
+        if not self.IsStock(obj):
+            self.getFields(obj)
+
+    def setupUi(self, obj):
+        self.setFields(obj)
+        self.form.stockExisting.currentIndexChanged.connect(lambda: self.getFields(obj))
+
 class TaskPanel:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
     DataProperty = QtCore.Qt.ItemDataRole.UserRole + 1
@@ -144,6 +363,17 @@ class TaskPanel:
             self.baseVisibility = self.obj.Base.ViewObject.Visibility
             self.baseObjectSaveVisibility(self.obj)
 
+        self.stockVisibility = False
+        if self.obj.Stock and self.obj.Stock.ViewObject:
+            self.stockVisibility = self.obj.Stock.ViewObject.Visibility
+            self.obj.Stock.ViewObject.Visibility = True
+
+        self.stockFromBase = None
+        self.stockFromExisting = None
+        self.stockCreateBox = None
+        self.stockCreateCylinder = None
+        self.stockEdit = None
+
     def baseObjectViewObject(self, obj):
         base = obj.Proxy.baseObject(obj)
         body = base.getParentGeoFeatureGroup()
@@ -165,6 +395,8 @@ class TaskPanel:
         if self.obj.Base and self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = self.baseVisibility
             self.baseObjectRestoreVisibility(self.obj)
+        if self.obj.Stock and self.obj.Stock.ViewObject:
+            self.obj.Stock.ViewObject.Visibility = self.stockVisibility
 
     def accept(self, resetEdit=True):
         PathLog.track()
@@ -222,8 +454,8 @@ class TaskPanel:
                 self.baseObjectSaveVisibility(self.obj)
 
             self.updateTooltips()
-
-        self.obj.Proxy.execute(self.obj)
+            self.stockEdit.getFields(self.obj)
+            self.obj.Proxy.execute(self.obj)
 
     def selectComboBoxText(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -316,6 +548,8 @@ class TaskPanel:
             self.form.infoModel.setCurrentIndex(baseindex)
 
         self.updateToolController()
+        self.stockEdit.setFields(self.obj)
+
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
@@ -501,7 +735,58 @@ class TaskPanel:
             self.form.orientGroup.setEnabled(False)
             self.form.alignGroup.setEnabled(False)
 
+    def updateStockEditor(self, index):
+        PathLog.track(self.obj.Label, index)
+        def setupFromBaseEdit():
+            PathLog.track()
+            if not self.stockFromBase:
+                self.stockFromBase = StockFromBaseBoundBoxEdit(self.obj, self.form)
+            self.stockEdit = self.stockFromBase
+        def setupCreateBoxEdit():
+            PathLog.track()
+            if not self.stockCreateBox:
+                self.stockCreateBox = StockCreateBoxEdit(self.obj, self.form)
+            self.stockEdit = self.stockCreateBox
+        def setupCreateCylinderEdit():
+            PathLog.track()
+            if not self.stockCreateCylinder:
+                self.stockCreateCylinder = StockCreateCylinderEdit(self.obj, self.form)
+            self.stockEdit = self.stockCreateCylinder
+        def setupFromExisting():
+            PathLog.track()
+            if not self.stockFromExisting:
+                self.stockFromExisting = StockFromExistingEdit(self.obj, self.form)
+            self.stockEdit = self.stockFromExisting
+
+        if index == -1:
+            PathLog.track('wtf')
+            if self.obj.Stock is None or StockFromBaseBoundBoxEdit.IsStock(self.obj):
+                setupFromBaseEdit()
+            elif StockCreateBoxEdit.IsStock(self.obj):
+                setupCreateBoxEdit()
+            elif StockCreateCylinderEdit.IsStock(self.obj):
+                setupCreateCylinderEdit()
+            elif StockFromExistingEdit.IsStock(self.obj):
+                setupFromExisting()
+            else:
+                PathLog.error(translate('PathJob', "Unsupported stock object %s") % self.obj.Stock.Label)
+        else:
+            PathLog.track(self.obj.Label, index)
+            if index == StockFromBaseBoundBoxEdit.Index:
+                setupFromBaseEdit()
+            elif index == StockCreateBoxEdit.Index:
+                setupCreateBoxEdit()
+            elif index == StockCreateCylinderEdit.Index:
+                setupCreateCylinderEdit()
+            elif index == StockFromExistingEdit.Index:
+                setupFromExisting()
+            else:
+                PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
+        self.stockEdit.activate(self.obj, index == -1)
+
+
     def setupUi(self):
+        self.updateStockEditor(-1)
         self.setFields()
 
         # Info
@@ -528,9 +813,10 @@ class TaskPanel:
         self.toolControllerSelect()
 
         # Stock, Orientation and Alignment
-        self.form.stockGroup.hide()
         self.form.centerInStock.hide()
         self.form.centerInStockXY.hide()
+
+        self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
 
         self.form.orientXAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(1, 0, 0)))
         self.form.orientYAxis.clicked.connect(lambda: self.orientSelected(FreeCAD.Vector(0, 1, 0)))
