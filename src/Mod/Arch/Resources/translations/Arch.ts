@@ -834,12 +834,12 @@
     </message>
     <message>
         <location filename="ArchSpace.py" line="261"/>
-        <source>The electric power needed by the equipments of this space in Watts</source>
+        <source>The electric power needed by the equipment of this space in Watts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ArchSpace.py" line="262"/>
-        <source>If True, Equipment Power will be automatically filled by the equipments included in this space</source>
+        <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
