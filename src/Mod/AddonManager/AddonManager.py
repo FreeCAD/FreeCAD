@@ -454,7 +454,7 @@ class CheckWBWorker(QtCore.QThread):
         basedir = FreeCAD.ConfigGet("UserAppData")
         moddir = basedir + os.sep + "Mod"
         self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
-        upds = 0
+        upds = []
         gitpython_warning = False
         for repo in self.repos:
             if repo[2] == 1: #installed
@@ -480,10 +480,10 @@ class CheckWBWorker(QtCore.QThread):
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
                         self.mark.emit(repo[0])
-                        upds += 1
+                        upds.append(repo[0])
         self.progressbar_show.emit(False)
         if upds:
-            self.info_label.emit(str(upds)+" "+translate("AddonsInstaller", "update(s) available"))
+            self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds))
         else:
             self.info_label.emit(translate("AddonsInstaller","Everything is up to date"))
         self.stop = True
