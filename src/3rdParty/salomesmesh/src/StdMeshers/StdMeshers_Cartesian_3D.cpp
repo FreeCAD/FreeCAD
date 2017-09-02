@@ -2914,7 +2914,7 @@ namespace
       proj.Perform( testPnt );
       if ( proj.IsDone() && proj.NbPoints() > 0 )       
       {
-        Quantity_Parameter u,v;
+        Standard_Real u,v;
         proj.LowerDistanceParameters( u,v );
 
         if ( proj.LowerDistance() <= 0.1 * _grid->_tol )

@@ -30,6 +30,7 @@
 # include <climits>
 # include <QString>
 # include <Standard_Version.hxx>
+# include <NCollection_Vector.hxx>
 # include <BRep_Builder.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
@@ -364,9 +365,8 @@ private:
                     aReader.Transfer(hDoc);
                     pi->EndScope();
                 }
-                catch (OSD_Exception) {
-                    Handle(Standard_Failure) e = Standard_Failure::Caught();
-                    Base::Console().Error("%s\n", e->GetMessageString());
+                catch (OSD_Exception& e) {
+                    Base::Console().Error("%s\n", e.GetMessageString());
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc,Utf8Name.c_str());
@@ -400,9 +400,8 @@ private:
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
                 }
-                catch (OSD_Exception) {
-                    Handle(Standard_Failure) e = Standard_Failure::Caught();
-                    Base::Console().Error("%s\n", e->GetMessageString());
+                catch (OSD_Exception& e) {
+                    Base::Console().Error("%s\n", e.GetMessageString());
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc,Utf8Name.c_str());
@@ -426,9 +425,8 @@ private:
             pcDoc->recompute();
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -602,9 +600,8 @@ private:
 
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -696,9 +693,8 @@ private:
             browse.load(dlg->findChild<QTreeWidget*>());
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());

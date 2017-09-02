@@ -203,9 +203,8 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         }
 #endif
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
-        throw Base::Exception(aFail->GetMessageString());
+    catch (Standard_Failure& e) {
+        throw Base::Exception(e.GetMessageString());
     }
 
     return 0;

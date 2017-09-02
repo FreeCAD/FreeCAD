@@ -617,9 +617,8 @@ private:
                 }
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
 
         return Py::asObject(new TopoShapeCompoundPy(new TopoShape(Comp)));
@@ -654,9 +653,8 @@ private:
                 shape = sewShell.ApplySewing(shell);
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
 
         return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
@@ -711,9 +709,8 @@ private:
 
             throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
 
-        } catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        } catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         } catch (Base::Exception &e){
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
         }
@@ -773,9 +770,8 @@ private:
                 throw Py::Exception(PartExceptionOCCError, "Failed to created face by filling edges");
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeSolid(const Py::Tuple& args)
@@ -1065,9 +1061,8 @@ private:
 
             return Py::asObject(new TopoShapeWirePy(new TopoShape(mkPoly.Wire())));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeCircle(const Py::Tuple& args)
@@ -1245,9 +1240,8 @@ private:
                                                 anIsLeft, anIsVertHeight);
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeLongHelix(const Py::Tuple& args)
@@ -1265,9 +1259,8 @@ private:
             TopoDS_Shape wire = helix.makeLongHelix(pitch, height, radius, angle, anIsLeft);
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeThread(const Py::Tuple& args)
@@ -1281,9 +1274,8 @@ private:
             TopoDS_Shape wire = helix.makeThread(pitch, depth, height, radius);
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeRevolution(const Py::Tuple& args)
@@ -1447,9 +1439,8 @@ private:
             TopoDS_Shape face = myShape.makeTube(radius, tolerance, cont, maxdegree, maxsegment);
             return Py::asObject(new TopoShapeFacePy(new TopoShape(face)));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeSweepSurface(const Py::Tuple& args)
@@ -1472,9 +1463,8 @@ private:
             TopoDS_Shape face = myShape.makeSweep(prof_shape, tolerance, fillMode);
             return Py::asObject(new TopoShapeFacePy(new TopoShape(face)));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeLoft(const Py::Tuple& args)

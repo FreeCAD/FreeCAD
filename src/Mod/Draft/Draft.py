@@ -6238,6 +6238,8 @@ class ViewProviderWorkingPlaneProxy:
     "A View Provider for working plane proxies"
 
     def __init__(self,vobj):
+        # ViewData: 0,1,2: position; 3,4,5,6: rotation; 7: near dist; 8: far dist, 9:aspect ratio;
+        # 10: focal dist; 11: height (ortho) or height angle (persp); 12: ortho (0) or persp (1)
         vobj.addProperty("App::PropertyLength","DisplaySize","Arch",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
         vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
@@ -6278,19 +6280,20 @@ class ViewProviderWorkingPlaneProxy:
         if hasattr(self,"Object"):
             from pivy import coin
             n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+            cdata = list(n.position.getValue().getValue())
+            cdata.extend(list(n.orientation.getValue().getValue()))
+            cdata.append(n.nearDistance.getValue())
+            cdata.append(n.farDistance.getValue())
+            cdata.append(n.aspectRatio.getValue())
+            cdata.append(n.focalDistance.getValue())
             if isinstance(n,coin.SoOrthographicCamera):
-                FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
-                #print FreeCADGui.ActiveDocument.ActiveView.getCamera()
-                cdata = list(n.position.getValue().getValue())
-                cdata.extend(list(n.orientation.getValue().getValue()))
-                cdata.append(n.nearDistance.getValue())
-                cdata.append(n.farDistance.getValue())
-                cdata.append(n.aspectRatio.getValue())
-                cdata.append(n.focalDistance.getValue())
                 cdata.append(n.height.getValue())
-                self.Object.ViewObject.ViewData = cdata
-            else:
-                FreeCAD.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft","Only orthographic views are supported")+"\n")
+                cdata.append(0.0) # orthograhic camera
+            elif isinstance(n,coin.SoPerspectiveCamera):
+                cdata.append(n.heightAngle.getValue())
+                cdata.append(1.0) # perspective camera
+            self.Object.ViewObject.ViewData = cdata
             
     def writeState(self):
         if hasattr(self,"Object"):

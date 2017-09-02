@@ -191,9 +191,9 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         }
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("General error in RuledSurface::execute()");
@@ -285,9 +285,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled,isClosed));
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
 
@@ -382,7 +382,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 return new App::DocumentObjectExecReturn("Spine is neither an edge nor a wire.");
             }
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn("Invalid spine.");
         }
     }
@@ -465,9 +465,9 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         this->Shape.setValue(mkPipeShell.Shape());
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
