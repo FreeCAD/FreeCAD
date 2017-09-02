@@ -2203,10 +2203,19 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
                                         bool selfInter, short offsetMode, short join,
                                         bool fill) const
 {
+#if OCC_VERSION_HEX < 0x070200
     BRepOffsetAPI_MakeOffsetShape mkOffset(this->_Shape, offset, tol, BRepOffset_Mode(offsetMode),
         intersection ? Standard_True : Standard_False,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
+#else
+    BRepOffsetAPI_MakeOffsetShape mkOffset;
+    mkOffset.PerformByJoin(this->_Shape, offset, tol, BRepOffset_Mode(offsetMode),
+                           intersection ? Standard_True : Standard_False,
+                           selfInter ? Standard_True : Standard_False,
+                           GeomAbs_JoinType(join));
+#endif
+
     if (!mkOffset.IsDone())
         Standard_Failure::Raise("BRepOffsetAPI_MakeOffsetShape not done");
     const TopoDS_Shape& res = mkOffset.Shape();
@@ -2612,10 +2621,19 @@ TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
                                        double offset, double tol, bool intersection,
                                        bool selfInter, short offsetMode, short join) const
 {
+#if OCC_VERSION_HEX < 0x070200
     BRepOffsetAPI_MakeThickSolid mkThick(this->_Shape, remFace, offset, tol, BRepOffset_Mode(offsetMode),
         intersection ? Standard_True : Standard_False,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
+#else
+    BRepOffsetAPI_MakeThickSolid mkThick;
+    mkThick.MakeThickSolidByJoin(this->_Shape, remFace, offset, tol, BRepOffset_Mode(offsetMode),
+        intersection ? Standard_True : Standard_False,
+        selfInter ? Standard_True : Standard_False,
+        GeomAbs_JoinType(join));
+#endif
+
     return mkThick.Shape();
 }
 
@@ -2912,7 +2930,7 @@ struct MeshVertex
     {
     }
     MeshVertex(const Base::Vector3d& p)
-        : x(p.x),y(p.y),z(z),i(0)
+        : x(p.x),y(p.y),z(p.z),i(0)
     {
     }
 
