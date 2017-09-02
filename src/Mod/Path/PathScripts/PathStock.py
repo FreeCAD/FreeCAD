@@ -96,9 +96,9 @@ def CreateBox(job, extent=None, at=None):
         obj.Height = extent.z
     elif job.Base:
         bb = job.Base.Shape.BoundBox
-        obj.Length = bb.XLength
-        obj.Width  = bb.YLength
-        obj.Height = bb.ZLength
+        obj.Length = max(bb.XLength, 1)
+        obj.Width  = max(bb.YLength, 1)
+        obj.Height = max(bb.ZLength, 1)
     if at:
         obj.Placement = FreeCAD.Placement(at, FreeCAD.Vector(), 0)
     else:
@@ -117,7 +117,7 @@ def CreateCylinder(job, radius=None, height=None, at=None):
     elif job.Base:
         bb = job.Base.Shape.BoundBox
         obj.Radius = max(bb.XLength, bb.YLength) * 0.7072 # 1/sqrt(2)
-        obj.Height = bb.ZLength
+        obj.Height = max(bb.ZLength, 1)
     if at:
         obj.Placement = FreeCAD.Placement(at, FreeCAD.Vector(), 0)
     else:
