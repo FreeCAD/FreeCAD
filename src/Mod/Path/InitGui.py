@@ -68,7 +68,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathProfileFacesGui
         from PathScripts import PathSanity
         from PathScripts import PathSimpleCopy
-        from PathScripts import PathStock
         from PathScripts import PathStop
         from PathScripts import PathSurface
         from PathScripts import PathToolController
@@ -84,7 +83,7 @@ class PathWorkbench (Workbench):
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
-        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane", "Path_Stock"]
+        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
