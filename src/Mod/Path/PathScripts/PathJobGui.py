@@ -724,22 +724,6 @@ class TaskPanel:
             FreeCADGui.Selection.addSelection(selObject, selFeature)
         return (selObject, p)
 
-    def updateSelection(self):
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1 and len(sel[0].SubObjects) == 1:
-            if 'Vertex' == sel[0].SubObjects[0].ShapeType:
-                self.form.orientGroup.setEnabled(False)
-                self.form.alignGroup.setEnabled(True)
-                self.form.setOrigin.setEnabled(True)
-                self.form.moveToOrigin.setEnabled(True)
-            else:
-                self.form.orientGroup.setEnabled(True)
-                self.form.setOrigin.setEnabled(False)
-                self.form.moveToOrigin.setEnabled(False)
-        else:
-            self.form.orientGroup.setEnabled(False)
-            self.form.alignGroup.setEnabled(False)
-
     def updateStockEditor(self, index):
         def setupFromBaseEdit():
             if not self.stockFromBase:
@@ -787,6 +771,48 @@ class TaskPanel:
                 PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
         self.stockEdit.activate(self.obj, index == -1)
 
+    def centerInStock(self):
+        bbb = self.obj.Base.Shape.BoundBox
+        bbs = self.obj.Stock.Shape.BoundBox
+        by = bbs.Center - bbb.Center
+        Draft.move(self.obj.Base, by)
+
+    def centerInStockXY(self):
+        bbb = self.obj.Base.Shape.BoundBox
+        bbs = self.obj.Stock.Shape.BoundBox
+        by = bbs.Center - bbb.Center
+        by.z = 0
+        Draft.move(self.obj.Base, by)
+
+    def updateSelection(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+
+        PathLog.track(len(sel))
+        if len(sel) == 1 and len(sel[0].SubObjects) == 1:
+            if 'Vertex' == sel[0].SubObjects[0].ShapeType:
+                self.form.orientGroup.setEnabled(False)
+                self.form.setOrigin.setEnabled(True)
+                self.form.moveToOrigin.setEnabled(True)
+            else:
+                self.form.orientGroup.setEnabled(True)
+                self.form.setOrigin.setEnabled(False)
+                self.form.moveToOrigin.setEnabled(False)
+        else:
+            self.form.orientGroup.setEnabled(False)
+            self.form.setOrigin.setEnabled(False)
+            self.form.moveToOrigin.setEnabled(False)
+
+        if len(sel) == 1 and sel[0].Object == self.obj.Base:
+            self.form.centerInStock.setEnabled(True)
+            self.form.centerInStockXY.setEnabled(True)
+        else:
+            if len(sel) == 1:
+                PathLog.info("sel = %s / %s" % (sel[0].Object.Label, self.obj.Base.Label))
+            else:
+                PathLog.info("sel len = %d" % len(sel))
+            self.form.centerInStock.setEnabled(False)
+            self.form.centerInStockXY.setEnabled(False)
+
 
     def setupUi(self):
         self.updateStockEditor(-1)
@@ -816,8 +842,8 @@ class TaskPanel:
         self.toolControllerSelect()
 
         # Stock, Orientation and Alignment
-        self.form.centerInStock.hide()
-        self.form.centerInStockXY.hide()
+        self.form.centerInStock.clicked.connect(self.centerInStock)
+        self.form.centerInStockXY.clicked.connect(self.centerInStockXY)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
 
