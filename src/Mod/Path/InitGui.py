@@ -141,15 +141,17 @@ class PathWorkbench (Workbench):
                 selectedName = obj.Name
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
+                if "Remote" in selectedName:
+                    self.appendContextMenu("", ["Refresh_Path"])
+            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
+                self.appendContextMenu("", ["Path_OperationCopy"])
+            if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
+                    self.appendContextMenu("", "Separator")
                     #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
-                if "Remote" in selectedName:
-                    self.appendContextMenu("", ["Refresh_Path"])
-            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
-                self.appendContextMenu("", ["Path_CloneOperation"])
 
 Gui.addWorkbench(PathWorkbench())
 
