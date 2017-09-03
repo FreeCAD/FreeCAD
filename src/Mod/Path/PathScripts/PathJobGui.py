@@ -565,8 +565,13 @@ class TaskPanel:
     def operationSelect(self):
         if self.form.operationsList.selectedItems():
             self.form.operationModify.setEnabled(True)
+            self.form.operationMove.setEnabled(True)
+            row = self.form.operationsList.currentRow()
+            self.form.operationUp.setEnabled(row > 0)
+            self.form.operationDown.setEnabled(row < self.form.operationsList.count() - 1)
         else:
             self.form.operationModify.setEnabled(False)
+            self.form.operationMove.setEnabled(False)
 
     def objectDelete(self, widget):
         for item in widget.selectedItems():
@@ -578,6 +583,22 @@ class TaskPanel:
 
     def operationDelete(self):
         self.objectDelete(self.form.operationsList)
+
+    def operationMoveUp(self):
+        row = self.form.operationsList.currentRow()
+        if row > 0:
+            item = self.form.operationsList.takeItem(row)
+            self.form.operationsList.insertItem(row-1, item)
+            self.form.operationsList.setCurrentRow(row-1)
+            self.getFields()
+
+    def operationMoveDown(self):
+        row = self.form.operationsList.currentRow()
+        if row < self.form.operationsList.count() - 1:
+            item = self.form.operationsList.takeItem(row)
+            self.form.operationsList.insertItem(row+1, item)
+            self.form.operationsList.setCurrentRow(row+1)
+            self.getFields()
 
     def toolControllerSelect(self):
         def canDeleteTC(tc):
@@ -828,10 +849,15 @@ class TaskPanel:
         self.form.postProcessorOutputFile.editingFinished.connect(self.getFields)
         self.form.postProcessorSetOutputFile.clicked.connect(self.setPostProcessorOutputFile)
 
+        # Workplan
         self.form.operationsList.itemSelectionChanged.connect(self.operationSelect)
         self.form.operationsList.indexesMoved.connect(self.getFields)
         self.form.operationDelete.clicked.connect(self.operationDelete)
+        self.form.operationUp.clicked.connect(self.operationMoveUp)
+        self.form.operationDown.clicked.connect(self.operationMoveDown)
+        self.form.operationEdit.hide() # not supported yet
 
+        # Tool controller
         self.form.toolControllerList.itemSelectionChanged.connect(self.toolControllerSelect)
         self.form.toolControllerList.itemChanged.connect(self.toolControllerChanged)
         self.form.toolControllerEdit.clicked.connect(self.toolControllerEdit)
