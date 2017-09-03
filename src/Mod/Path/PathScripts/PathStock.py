@@ -82,7 +82,9 @@ def SetupStockObject(obj, addVPProxy):
 
 def CreateFromBase(job):
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockFromBase(obj, job.Base)
+    # don't want to use the resrouce clone - we want the real object so 
+    # Base and Stock can be placed independently
+    proxy = StockFromBase(obj, job.Proxy.baseObject(job))
     SetupStockObject(obj, True)
     proxy.execute(obj)
     obj.purgeTouched()
