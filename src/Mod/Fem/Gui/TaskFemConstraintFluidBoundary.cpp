@@ -31,6 +31,8 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
+# include <Standard_PrimitiveTypes.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <Geom_Plane.hxx>
 # include <gp_Pln.hxx>
@@ -54,9 +56,11 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
+#include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
-
+#include <Mod/Part/App/PropertyTopoShape.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 #include "ActiveAnalysisObserver.h"
@@ -169,7 +173,44 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     // Get the feature data
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
 
-    Fem::FemSolverObject* pcSolver = NULL;
+    Fem::FemMeshObject* pcMesh = NULL;
+    if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
+        Fem::FemAnalysis* pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
+        std::vector<App::DocumentObject*> fem = pcAnalysis->Member.getValues();
+        for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
+            if ((*it)->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+                pcMesh = static_cast<Fem::FemMeshObject*>(*it);
+        }
+    }
+    else {
+        Base::Console().Warning("active FemAnalysis object is not activated, mesh dimension is unknown\n");
+        dimension = -1;  // unknown dimension of mesh
+    }
+    if (pcMesh != NULL) {
+        if (pcMesh->getPropertyByName("Part")) {  // PropertyLink
+            App::PropertyLink* pcLink= static_cast<App::PropertyLink*>(pcMesh->getPropertyByName("Part"));
+            Part::Feature* pcPart = static_cast<Part::Feature*>(pcLink->getValue());
+            if (pcPart) {  // deduct dimension from part_obj.Shape.ShapeType
+                const TopoDS_Shape & pShape = pcPart->Shape.getShape().getShape();
+                const TopAbs_ShapeEnum shapeType = pShape.ShapeType();
+                if (shapeType == TopAbs_SOLID || shapeType ==TopAbs_COMPSOLID)  // COMPSOLID is solids conected by faces
+                    dimension =3;
+                else if (shapeType == TopAbs_FACE || shapeType == TopAbs_SHELL)
+                    dimension =2;
+                else if (shapeType == TopAbs_EDGE || shapeType == TopAbs_WIRE)
+                    dimension =1;
+                else
+                    dimension =-1;  // Vertex (0D) can not make mesh, Compound type might contain any types
+            }
+            //Base::Console().Message("mesh dimension deducted from Part object of FemMeshObject is \n");
+        }
+    }
+    else {
+        Base::Console().Warning("FemMeshObject is missing from FemAnalysis object, mesh dimension is unknown\n");
+        dimension = -1;  // unknown dimension of mesh
+    }
+
+    pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject* 
     if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
         Fem::FemAnalysis* pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
         //Fem::FemSolverObject is derived from DocumentObject
@@ -218,7 +259,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
     else {
-        Base::Console().Message("Warning: No solver object inside FemAnalysis object\n");
+        Base::Console().Warning("No solver object inside FemAnalysis object, default to non-thermal, non-turbulence\n");
     }
     ui->tabWidget->setTabText(0, tr("Basic"));
     ui->tabWidget->setTabText(1, tr("Turbulence"));
@@ -444,8 +485,12 @@ void TaskFemConstraintFluidBoundary::onSelectionChanged(const Gui::SelectionChan
                 }
             }
             else {
-                if ((subName.substr(0,4) != "Face")) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked for fluid boundary"));
+                if ((subName.substr(0,4) != "Face"  && dimension == 3)) {
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked for fluid boundary of 3D geometry"));
+                    return;
+                }
+                if ((subName.substr(0,4) != "Edge"  && dimension == 2)) {
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only edges can be picked for fluid boundary of 2D geometry"));
                     return;
                 }
             }
@@ -473,15 +518,21 @@ void TaskFemConstraintFluidBoundary::onSelectionChanged(const Gui::SelectionChan
             // Turn off reference selection mode
             onButtonReference(false);
         }
-        else if (selectionMode == seldir) {
-            if (subName.substr(0,4) == "Face") {
+        else if (selectionMode == seldir) {  // select direction, can be Edge or Face(Face normal)
+            if (subName.substr(0,4) == "Face" && dimension ==3) {
                 if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked for 3D"));
+                    return;
+                }
+            }
+            else if (subName.substr(0,4) == "Edge") {  // 2D or 3D can use edge as direction vector
+                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only planar edges can be picked for 2D"));
                     return;
                 }
             }
             else {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                QMessageBox::warning(this, tr("Selection error"), tr("Only faces for 3D part or edges for 2D can be picked"));
                 return;
             }
             pcConstraint->Direction.setValue(obj, references);
@@ -731,7 +782,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         scale = boundary->getScale();  //OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
 
-        //solver specific setting
+        // solver specific setting
         Fem::FemSolverObject* pcSolver = NULL;
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
             Fem::FemAnalysis* pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
@@ -742,6 +793,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
                     pcSolver = static_cast<Fem::FemSolverObject*>(*it);
             }
         }
+
         if (pcSolver) {
             App::PropertyBool* pHeatTransfering = NULL;
             App::PropertyEnumeration* pTurbulenceModel = NULL;

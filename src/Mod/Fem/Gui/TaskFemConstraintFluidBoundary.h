@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemSolverObject.h>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
@@ -95,6 +96,8 @@ private:
 
 private:
     Ui_TaskFemConstraintFluidBoundary* ui;
+    int dimension;  // -1: unknow, 2 for 2D and 3 for 3D
+    Fem::FemSolverObject* pcSolver;
     App::PropertyBool* pHeatTransfering;
     App::PropertyEnumeration* pTurbulenceModel;
 };
