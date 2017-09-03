@@ -43,6 +43,7 @@
 #include <Gui/Selection.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include "QGITemplate.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
@@ -86,6 +87,19 @@ std::vector<std::string> ViewProviderTemplate::getDisplayModes(void) const
 
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
+    if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+        auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
+        if (prop == &(t->Template)) {
+            Gui::MDIView* gmdi = getActiveView();
+            if (gmdi != nullptr) {
+                MDIViewPage*  mdi = dynamic_cast<MDIViewPage*>(gmdi);
+                if (mdi != nullptr) {
+                    mdi->attachTemplate(t);
+                    mdi->viewAll();
+                }
+            }
+       }
+    }
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 

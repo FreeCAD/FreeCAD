@@ -133,7 +133,7 @@ void DrawPage::onChanged(const App::Property* prop)
     } else if (prop == &Template) {
         if (!isRestoring() &&
             !isDeleting()) {
-            Template.getValue()->touch();
+            //nothing to page to do??
         }
     } else if(prop == &Scale) {
         // touch all views in the Page as they may be dependent on this scale
@@ -248,8 +248,6 @@ int DrawPage::addView(App::DocumentObject *docObj)
     if(!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()))
         return -1;
     DrawView* view = static_cast<DrawView*>(docObj);
-//TODO: replace list of views with PropertyLink to Page in subordinate DrawView
-//    view->Page.setValue(this);
 
     //position all new views in center of Page (exceptDVDimension)
     if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
