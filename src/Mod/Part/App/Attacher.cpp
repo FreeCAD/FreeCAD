@@ -1505,7 +1505,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         SketchBasePoint = BRep_Tool::Pnt(TopoDS::Vertex(*(shapes[0])));
 
         //read out axes directions
-        for(int i = 1; i < 3 && i < shapes.size(); ++i){
+        for(size_t i = 1; i < 3 && i < shapes.size(); ++i){
             if (shapes[i]->IsNull())
                 THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: null shape!")
             if (shapes[i]->ShapeType() == TopAbs_VERTEX){
