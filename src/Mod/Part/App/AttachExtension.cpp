@@ -48,6 +48,7 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(Support, (0,0), "Attachment",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapMode, (mmDeactivated), "Attachment", App::Prop_None, "Mode of attachment to other object");
+    MapMode.setEditorName("PartGui::PropertyEnumAttacherItem");
     MapMode.setEnums(AttachEngine::eMapModeStrings);
     //a rough test if mode string list in Attacher.cpp is in sync with eMapMode enum.
     assert(MapMode.getEnumVector().size() == mmDummy_NumberOfModes);
@@ -57,6 +58,11 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter, (0.0), "Attachment", App::Prop_None, "Sets point of curve to map the sketch to. 0..1 = start..end");
 
     EXTENSION_ADD_PROPERTY_TYPE(superPlacement, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
+
+    // Only show these properties when applicable. Controlled by extensionOnChanged
+    this->MapPathParameter.setStatus(App::Property::Status::Hidden, true);
+    this->MapReversed.setStatus(App::Property::Status::Hidden, true);
+    this->superPlacement.setStatus(App::Property::Status::Hidden, true);
 
     setAttacher(new AttachEngine3D);//default attacher
     initExtensionType(AttachExtension::getExtensionClassTypeId());
@@ -172,8 +178,23 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
                 Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
             }
 
+            // Hide properties when not applicable to reduce user confusion
+
             eMapMode mmode = eMapMode(this->MapMode.getValue());
-            this->superPlacement.setReadOnly(!bAttached);
+
+            bool modeIsPointOnCurve = mmode == mmNormalToPath ||
+                mmode == mmFrenetNB || mmode == mmFrenetTN || mmode == mmFrenetTB ||
+                mmode == mmRevolutionSection || mmode == mmConcentric;
+
+            // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
+            bool hasOneRef = false;
+            if (_attacher && _attacher->references.getSubValues().size() == 1) {
+                hasOneRef = true;
+            }
+
+            this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+            this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
+            this->superPlacement.setStatus(App::Property::Status::Hidden, !bAttached);
             getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
 
