@@ -539,6 +539,15 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     this->touch();
                 }
             } // picked point
+            else if (!pp) {
+                // user clicked onto empty space but in case Ctrl key was pressed
+                // then mark the action as handled to avoid that the navigation style
+                // processes the action and clears the selection
+                if (event->wasCtrlDown()) {
+                    action->setHandled();
+                }
+
+            }
         } // mouse release
     }
 
