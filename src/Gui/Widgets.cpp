@@ -870,6 +870,7 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(button);
 
     connect(button, SIGNAL(clicked()), this, SLOT(browse()));
+    connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClicked()));
 }
 
 LabelButton::~LabelButton()
@@ -901,6 +902,15 @@ void LabelButton::setValue(const QVariant& val)
     _val = val;
     showValue(_val);
     valueChanged(_val);
+}
+
+void LabelButton::showValue(const QVariant& data)
+{
+    label->setText(data.toString());
+}
+
+void LabelButton::browse()
+{
 }
 
 // ----------------------------------------------------------------------

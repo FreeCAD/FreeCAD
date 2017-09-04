@@ -202,7 +202,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     visibilityAutomation(true);
     updateSuperplacementUI();
     updateReferencesUI();
-    updateListOfModes(eMapMode(pcAttach->MapMode.getValue()));
+    updateListOfModes();
+    selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
     updatePreview();
 
     // connect object deletion with slot
@@ -296,6 +297,8 @@ bool TaskAttacher::updatePreview()
     }
     QString splmLabelText = attached ? tr("Extra placement:") : tr("Extra placement (inactive - not attached):");
     ui->groupBox_superplacement->setTitle(splmLabelText);
+    ui->groupBox_superplacement->setEnabled(attached);
+
     return attached;
 }
 
@@ -357,7 +360,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         try {
             pcAttach->Support.setValues(refs, refnames);
             updateListOfModes();
-            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if no modes are available
+            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
             if(mmode == mmDeactivated){
                 //error = true;
                 this->completed = false;
@@ -365,6 +368,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
                 this->completed = true;
             }
             pcAttach->MapMode.setValue(mmode);
+            selectMapMode(mmode);
             updatePreview();
         }
         catch(Base::Exception& e) {
@@ -524,6 +528,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         pcAttach->Support.setValues(newrefs, newrefnames);
         updateListOfModes();
         pcAttach->MapMode.setValue(getActiveMapMode());
+        selectMapMode(getActiveMapMode());
 
         updatePreview();
 
@@ -605,6 +610,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();
     pcAttach->MapMode.setValue(getActiveMapMode());
+    selectMapMode(getActiveMapMode());
 
     updateReferencesUI();
 }
@@ -695,22 +701,24 @@ void TaskAttacher::updateSuperplacementUI()
     ui->superplacementRoll->blockSignals(bBlock);
 }
 
-void TaskAttacher::updateListOfModes(eMapMode curMode)
+void TaskAttacher::updateListOfModes()
 {
     //first up, remember currently selected mode.
-    if (curMode == mmDeactivated){
-        auto sel = ui->listOfModes->selectedItems();
-        if (sel.count() > 0)
-            curMode = modesInList[ui->listOfModes->row(sel[0])];
-    }
+    eMapMode curMode = mmDeactivated;
+    auto sel = ui->listOfModes->selectedItems();
+    if (sel.count() > 0)
+        curMode = modesInList[ui->listOfModes->row(sel[0])];
 
     //obtain list of available modes:
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     this->lastSuggestResult.bestFitMode = mmDeactivated;
     size_t lastValidModeItemIndex = mmDummy_NumberOfModes;
+
     if (pcAttach->Support.getSize() > 0){
         pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
         modesInList = this->lastSuggestResult.allApplicableModes;
+        modesInList.insert(modesInList.begin(), mmDeactivated); // always have the option to choose Deactivated mode
+
         //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
         lastValidModeItemIndex = modesInList.size()-1;
         for(std::pair<const eMapMode, refTypeStringList> &rm: this->lastSuggestResult.reachableModes){
@@ -719,6 +727,8 @@ void TaskAttacher::updateListOfModes(eMapMode curMode)
     } else {
         //no references - display all modes
         modesInList.clear();
+        modesInList.push_back(mmDeactivated);
+
         for(  int mmode = 0  ;  mmode < mmDummy_NumberOfModes  ;  mmode++){
             if (pcAttach->attacher().modeEnabled[mmode])
                 modesInList.push_back(eMapMode(mmode));
@@ -735,10 +745,15 @@ void TaskAttacher::updateListOfModes(eMapMode curMode)
             std::vector<QString> mstr = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),mmode);
             ui->listOfModes->addItem(mstr[0]);
             QListWidgetItem* item = ui->listOfModes->item(i);
-            item->setToolTip(mstr[1] + QString::fromLatin1("\n\n") +
-                             tr("Reference combinations:\n") +
-                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
-            if (mmode == curMode)
+            QString tooltip = mstr[1];
+
+            if (mmode != mmDeactivated) {
+                tooltip += tr("\n\nReference combinations:\n") +
+                   AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n"));
+            }
+            item->setToolTip(tooltip);
+
+            if (mmode == curMode && curMode != mmDeactivated)
                 iSelect = ui->listOfModes->item(i);
             if (i > lastValidModeItemIndex){
                 //potential mode - can be reached by selecting more stuff
@@ -767,10 +782,23 @@ void TaskAttacher::updateListOfModes(eMapMode curMode)
 
         }
     }
+
     //restore selection
-    ui->listOfModes->selectedItems().clear();
     if (iSelect)
         iSelect->setSelected(true);
+
+    ui->listOfModes->blockSignals(false);
+}
+
+void TaskAttacher::selectMapMode(eMapMode mmode) {
+    ui->listOfModes->blockSignals(true);
+    
+    for (size_t i = 0;  i < modesInList.size(); ++i) {
+        if (modesInList[i] == mmode) {
+            ui->listOfModes->item(i)->setSelected(true);
+        }
+    }
+    
     ui->listOfModes->blockSignals(false);
 }
 

@@ -29,6 +29,7 @@
 #include <Mod/Part/App/PropertyTopoShape.h>
 
 #include "AttacherTexts.h"
+#include "PropertyEnumAttacherItem.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepPointSet.h"
@@ -139,6 +140,7 @@ PyMOD_INIT_FUNC(PartGui)
     Py_INCREF(pAttachEngineTextsModule);
     PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
+    PartGui::PropertyEnumAttacherItem       ::init();
     PartGui::SoBrepFaceSet                  ::initClass();
     PartGui::SoBrepEdgeSet                  ::initClass();
     PartGui::SoBrepPointSet                 ::initClass();
