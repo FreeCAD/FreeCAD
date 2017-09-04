@@ -80,6 +80,10 @@ class StockFromBase:
 
         obj.Shape = Part.makeBox(self.length, self.width, self.height, self.origin)
 
+    def onChanged(self, obj, prop):
+        if prop in ['ExtXneg', 'ExtXpos', 'ExtYneg', 'ExtYpos', 'ExtZneg', 'ExtZpos'] and not 'Restore' in obj.State:
+            self.execute(obj)
+
 def SetupStockObject(obj, addVPProxy):
     if FreeCAD.GuiUp and obj.ViewObject:
         if addVPProxy:
