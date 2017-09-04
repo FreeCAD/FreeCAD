@@ -178,7 +178,7 @@ class ObjectJob:
             for stock in tree.getroot().iter(JobTemplate.Stock):
                 obj.Stock = PathStock.CreateFromTemplate(self, stock)
         else:
-            tcs.append(PathToolController.Create(obj.Name))
+            tcs.append(PathToolController.Create())
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
         obj.ToolController = tcs
 
