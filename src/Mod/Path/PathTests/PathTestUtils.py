@@ -43,6 +43,12 @@ class PathTestBase(unittest.TestCase):
         self.assertRoughly(pt1.y, pt2.y)
         self.assertRoughly(pt1.z, pt2.z)
 
+    def assertPlacement(self, p1, p2):
+        """Verify that two placements are roughly identical."""
+        self.assertCoincide(p1.Base, p2.Base)
+        self.assertCoincide(p1.Rotation.Axis, p2.Rotation.Axis)
+        self.assertRoughly(p1.Rotation.Angle, p2.Rotation.Angle)
+
     def assertLine(self, edge, pt1, pt2):
         """Verify that edge is a line from pt1 to pt2."""
         # Depending on the setting of LineOld ....
