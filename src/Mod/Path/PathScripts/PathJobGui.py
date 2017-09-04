@@ -319,7 +319,7 @@ class StockFromExistingEdit(StockEdit):
             if stock:
                 stock = PathJob.createResourceClone(obj, stock, 'Stock', 'Stock')
                 stock.ViewObject.Visibility = True
-                PathStock.SetupStockObject(stock, False)
+                PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
                 stock.Proxy.execute(stock)
                 self.setStock(obj, stock)
 
