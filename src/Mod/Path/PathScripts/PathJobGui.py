@@ -113,6 +113,10 @@ class StockEdit(object):
         self.form = form
         self.setupUi(obj)
 
+    @classmethod
+    def IsStock(cls, obj):
+        return PathStock.StockType.FromStock(obj.Stock) == cls.StockType
+
     def activate(self, obj, select = False):
         PathLog.track(obj.Label, select)
         def showHide(widget, activeWidget):
@@ -139,11 +143,7 @@ class StockEdit(object):
 
 class StockFromBaseBoundBoxEdit(StockEdit):
     Index = 2
-    StockType = 'FromBase'
-
-    @classmethod
-    def IsStock(cls, obj):
-        return hasattr(obj.Stock, 'ExtXneg') and hasattr(obj.Stock, 'ExtZpos')
+    StockType = PathStock.StockType.FromBase
 
     def editorFrame(self):
         return self.form.stockFromBase
@@ -219,11 +219,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
 
 class StockCreateBoxEdit(StockEdit):
     Index = 0
-    StockType = 'CreateBox'
-
-    @classmethod
-    def IsStock(cls, obj):
-        return hasattr(obj.Stock, 'Length') and hasattr(obj.Stock, 'Width') and hasattr(obj.Stock, 'Height') and not StockFromBaseBoundBoxEdit.IsStock(obj)
+    StockType = PathStock.StockType.CreateBox
 
     def editorFrame(self):
         return self.form.stockCreateBox
@@ -254,10 +250,7 @@ class StockCreateBoxEdit(StockEdit):
 
 class StockCreateCylinderEdit(StockEdit):
     Index = 1
-
-    @classmethod
-    def IsStock(cls, obj):
-        return hasattr(obj.Stock, 'Radius') and hasattr(obj.Stock, 'Height')
+    StockType = PathStock.StockType.CreateCylinder
 
     def editorFrame(self):
         return self.form.stockCreateCylinder
@@ -284,9 +277,7 @@ class StockCreateCylinderEdit(StockEdit):
 
 class StockFromExistingEdit(StockEdit):
     Index = 3
-
-    def IsStock(cls, obj):
-        return PathJob.isResourceClone(obj, 'Stock', 'Stock')
+    StockType = PathStock.StockType.Unknown
 
     def editorFrame(self):
         return self.form.stockFromExisting

@@ -53,6 +53,7 @@
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
+        <file>panels/DlgJobTemplateExport.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>

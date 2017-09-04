@@ -26,6 +26,7 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
+import PathScripts.PathStock as PathStock
 import glob
 import os
 import xml.etree.ElementTree as xml
@@ -126,7 +127,73 @@ class CommandJobCreate:
             template = 'None'
         FreeCADGui.doCommand('PathScripts.PathJobGui.Create(App.ActiveDocument.%s, %s)' % (base.Name, template))
 
-class CommandJobExportTemplate:
+
+class DlgJobTemplateExport:
+    DataObject = QtCore.Qt.ItemDataRole.UserRole
+
+    def __init__(self, job, parent=None):
+        self.job = job
+        self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobTemplateExport.ui")
+
+        if job.PostProcessor:
+            ppHint = "%s %s %s" % (job.PostProcessor, job.PostProcessorArgs, job.PostProcessorOutputFile)
+            self.dialog.postProcessingHint.setText(ppHint)
+        else:
+            self.dialog.postProcessingGroup.setEnabled(False)
+            self.dialog.postProcessingGroup.setChecked(False)
+
+        if job.Stock and not PathJob.isResourceClone(job, 'Stock', 'Stock'):
+            if hasattr(job.Stock, 'ExtXNeg'):
+                seHint = translate('PathJob', "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f") % (job.Stock.ExtXneg, job.Stock.ExtXpos, job.Stock.ExtYneg, job.Stock.ExtYpos, job.Stock.ExtZneg, job.Stock.ExtZpos)
+                self.dialog.stockPlacement.setChecked(False)
+            elif hasattr(job.Stock, 'Length') and hasattr(job.Stock, 'Width'):
+                seHint = translate('PathJob', "Box: %.2f x %.2f x %.2f") % (job.Stock.Length, job.Stock.Width, job.Stock.Height)
+            elif hasattr(job.Stock, 'Radius'):
+                seHint = translate('PathJob', "Cylinder: %.2f x %.2f") % (job.Stock.Radius, job.Stock.Height)
+            else:
+                seHint = '-'
+                PathLog.error(translate('PathJob', 'Unsupported stock type'))
+            self.dialog.stockExtentHint.setText(seHint)
+            spHint = "%s" % job.Stock.Placement
+            self.dialog.stockPlacementHint.setText(spHint)
+
+        for tc in sorted(job.ToolController, key=lambda o: o.Label):
+            item = QtGui.QListWidgetItem(tc.Label)
+            item.setData(self.DataObject, tc)
+            item.setCheckState(QtCore.Qt.CheckState.Checked)
+            self.dialog.toolsList.addItem(item)
+
+        self.dialog.toolsGroup.clicked.connect(self.checkUncheckTools)
+
+    def checkUncheckTools(self):
+        state = QtCore.Qt.CheckState.Checked if self.dialog.toolsGroup.isChecked() else QtCore.Qt.CheckState.Unchecked
+        for i in range(self.dialog.toolsList.count()):
+            self.dialog.toolsList.item(i).setCheckState(state)
+
+    def includePostProcessing(self):
+        return self.dialog.postProcessingGroup.isChecked()
+
+    def includeToolControllers(self):
+        tcs = []
+        for i in range(self.dialog.toolsList.count()):
+            item = self.dialog.toolsList.item(i)
+            if item.checkState() == QtCore.Qt.CheckState.Checked:
+                tcs.append(item.data(self.DataObject))
+        return tcs
+
+    def includeStock(self):
+        return self.dialog.stockGroup.isChecked()
+
+    def includeStockExtent(self):
+        return self.dialog.stockExtent.isChecked()
+
+    def includeStockPlacement(self):
+        return self.dialog.stockPlacement.isChecked()
+
+    def exec_(self):
+        return self.dialog.exec_()
+
+class CommandJobTemplateExport:
     '''
     Command to export a template of a given job.
     Opens a dialog to select the file to store the template in. If the template is stored in Path's
@@ -144,27 +211,39 @@ class CommandJobExportTemplate:
 
     def Activated(self):
         job = FreeCADGui.Selection.getSelection()[0]
-        foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
-                "Path - Job Template",
-                PathPreferences.filePath(),
-                "job_*.xml")[0]
-        if foo: 
-            self.Execute(job, foo)
+        dialog = DlgJobTemplateExport(job)
+        if dialog.exec_() == 1:
+            foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
+                    "Path - Job Template",
+                    PathPreferences.filePath(),
+                    "job_*.xml")[0]
+            if foo: 
+                self.Execute(job, foo, dialog)
 
     @classmethod
-    def Execute(cls, job, path):
+    def Execute(cls, job, path, dialog=None):
         root = xml.Element('PathJobTemplate')
-        xml.SubElement(root, JobTemplate.Job, job.Proxy.templateAttrs(job))
-        for obj in job.Group:
-            if hasattr(obj, 'Tool') and hasattr(obj, 'SpindleDir'):
-                tc = xml.SubElement(root, JobTemplate.ToolController, obj.Proxy.templateAttrs(obj))
-                tc.append(xml.fromstring(obj.Tool.Content))
+        jobAttributes = job.Proxy.templateAttrs(job)
+        if dialog and not dialog.includePostProcessing():
+            jobAttributes.pop(PathJob.JobTemplate.PostProcessor, None)
+            jobAttributes.pob(PathJob.JobTemplate.PostProcessorArgs, None)
+            jobAttributes.pob(PathJob.JobTemplate.PostProcessorOutputFile, None)
+        xml.SubElement(root, PathJob.JobTemplate.Job, jobAttributes)
+        tcs = dialog.includeToolControllers() if dialog else job.ToolController
+        for tc in tcs:
+            element = xml.SubElement(root, PathJob.JobTemplate.ToolController, tc.Proxy.templateAttrs(tc))
+            element.append(xml.fromstring(tc.Tool.Content))
+        if dialog:
+            if dialog.includeStock():
+                xml.SubElement(root, PathJob.JobTemplate.Stock, PathStock.TemplateAttributes(job.Stock, dialog.includeStockExtent(), dialog.includeStockPlacement()))
+        else:
+            xml.SubElement(root, PathJob.JobTemplate.Stock, PathStock.TemplateAttributes(job.Stock))
         xml.ElementTree(root).write(path)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Job', CommandJobCreate())
-    FreeCADGui.addCommand('Path_ExportTemplate', CommandJobExportTemplate())
+    FreeCADGui.addCommand('Path_ExportTemplate', CommandJobTemplateExport())
 
 FreeCAD.Console.PrintLog("Loading PathJobGui... done\n")
 
