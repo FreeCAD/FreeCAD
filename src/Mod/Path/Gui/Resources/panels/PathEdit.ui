@@ -573,7 +573,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_11">
         <item>
-         <widget class="QWidget" name="widget_3" native="true">
+         <widget class="QWidget" name="activeToolGroup" native="true">
           <layout class="QFormLayout" name="formLayout_3">
            <property name="fieldGrowthPolicy">
             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
