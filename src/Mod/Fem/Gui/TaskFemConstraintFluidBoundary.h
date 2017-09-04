@@ -53,6 +53,8 @@ public:
     TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = 0);
     virtual ~TaskFemConstraintFluidBoundary();
 
+    const Fem::FemSolverObject* getFemSolver(void) const;
+
     std::string getBoundaryType(void) const;
     std::string getSubtype(void) const;
     double getBoundaryValue(void) const;
