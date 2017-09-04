@@ -24,9 +24,16 @@
 
 import FreeCAD
 import Part
-import PathIconViewProvider
+import PathScripts.PathIconViewProvider as PathIconViewProvider
+import PathScripts.PathLog as PathLog
+import math
 
 from PySide import QtCore
+
+
+if True:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -80,53 +87,180 @@ def SetupStockObject(obj, addVPProxy):
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 
-def CreateFromBase(job):
+def CreateFromBase(job, neg=None, pos=None, placement=None):
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     # don't want to use the resrouce clone - we want the real object so 
     # Base and Stock can be placed independently
     proxy = StockFromBase(obj, job.Proxy.baseObject(job))
+    if neg:
+        obj.ExtXneg = neg.x
+        obj.ExtYneg = neg.y
+        obj.ExtZneg = neg.z
+    if pos:
+        obj.ExtXpos = pos.x
+        obj.ExtYpos = pos.y
+        obj.ExtZpos = pos.z
+    if placement:
+        obj.Placement = placement
     SetupStockObject(obj, True)
     proxy.execute(obj)
     obj.purgeTouched()
     return obj
 
-def CreateBox(job, extent=None, at=None):
+def CreateBox(job, extent=None, placement=None):
+    base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::Box', 'Stock')
     if extent:
         obj.Length = extent.x
         obj.Width  = extent.y
         obj.Height = extent.z
-    elif job.Base:
-        bb = job.Base.Shape.BoundBox
+    elif base:
+        bb = base.Shape.BoundBox
         obj.Length = max(bb.XLength, 1)
         obj.Width  = max(bb.YLength, 1)
         obj.Height = max(bb.ZLength, 1)
-    if at:
-        obj.Placement = FreeCAD.Placement(at, FreeCAD.Vector(), 0)
-    else:
-        bb = job.Base.Shape.BoundBox
+    if placement:
+        obj.Placement = placement
+    elif base:
+        bb = base.Shape.BoundBox
         origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
     SetupStockObject(obj, False)
     return obj
 
-def CreateCylinder(job, radius=None, height=None, at=None):
+def CreateCylinder(job, radius=None, height=None, placement=None):
+    base = job.Base if job and hasattr(job, 'Base') else None
     obj = FreeCAD.ActiveDocument.addObject('Part::Cylinder', 'Stock')
     if radius:
         obj.Radius = radius
     if height:
         obj.Height = height
-    elif job.Base:
-        bb = job.Base.Shape.BoundBox
-        obj.Radius = max(bb.XLength, bb.YLength) * 0.7072 # 1/sqrt(2)
+    elif base:
+        bb = base.Shape.BoundBox
+        obj.Radius = math.sqrt(bb.XLength ** 2 + bb.YLength ** 2) / 2.0
         obj.Height = max(bb.ZLength, 1)
-    if at:
-        obj.Placement = FreeCAD.Placement(at, FreeCAD.Vector(), 0)
-    else:
-        bb = job.Base.Shape.BoundBox
+    if placement:
+        obj.Placement = placement
+    elif base:
+        bb = base.Shape.BoundBox
         origin = FreeCAD.Vector((bb.XMin + bb.XMax)/2, (bb.YMin + bb.YMax)/2, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
     SetupStockObject(obj, False)
     return obj
+
+class StockType:
+    NoStock        = 'None'
+    FromBase       = 'FromBase'
+    CreateBox      = 'CreateBox'
+    CreateCylinder = 'CreateCylinder'
+    Unknown        = 'Unknown'
+
+    @classmethod
+    def FromStock(cls, stock):
+        '''FromStock(stock) ... Answer a string representing the type of stock.'''
+        if not stock:
+            return cls.NoStock
+        if hasattr(stock, 'ExtXneg') and hasattr(stock, 'ExtZpos'):
+            return cls.FromBase
+        if hasattr(stock, 'Length') and hasattr(stock, 'Width'):
+            return cls.CreateBox
+        if hasattr(stock, 'Radius') and hasattr(stock, 'Height'):
+            return cls.CreateCylinder
+        return cls.Unknown
+
+def TemplateAttributes(stock, includeExtent=True, includePlacement=True):
+    attrs = {}
+    if stock:
+        stockType = StockType.FromStock(stock)
+        attrs['create'] = stockType
+
+        if includeExtent:
+            if stockType == StockType.FromBase:
+                attrs['xneg'] = ("%s" % stock.ExtXneg)
+                attrs['xpos'] = ("%s" % stock.ExtXpos)
+                attrs['yneg'] = ("%s" % stock.ExtYneg)
+                attrs['ypos'] = ("%s" % stock.ExtYpos)
+                attrs['zneg'] = ("%s" % stock.ExtZneg)
+                attrs['zpos'] = ("%s" % stock.ExtZpos)
+            if stockType == StockType.CreateBox:
+                attrs['length'] = ("%s" % stock.Length)
+                attrs['width']  = ("%s" % stock.Width)
+                attrs['height'] = ("%s" % stock.Height)
+            if stockType == StockType.CreateCylinder:
+                attrs['radius'] = ("%s" % stock.Radius)
+                attrs['height'] = ("%s" % stock.Height)
+
+        if includePlacement:
+            pos = stock.Placement.Base
+            attrs['posX'] = ("%f" % pos.x)
+            attrs['posY'] = ("%f" % pos.y)
+            attrs['posZ'] = ("%f" % pos.z)
+            rot = stock.Placement.Rotation
+            attrs['rotX'] = ("%f" % rot.Q[0])
+            attrs['rotY'] = ("%f" % rot.Q[1])
+            attrs['rotZ'] = ("%f" % rot.Q[2])
+            attrs['rotW'] = ("%f" % rot.Q[3])
+
+    return attrs
+
+def CreateFromTemplate(job, template):
+    stockType = template.get('create')
+    if stockType:
+        placement = None
+        posX = template.get('posX')
+        posY = template.get('posY')
+        posZ = template.get('posZ')
+        rotX = template.get('rotX')
+        rotY = template.get('rotY')
+        rotZ = template.get('rotZ')
+        rotW = template.get('rotW')
+        if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
+            pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
+            rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
+            placement = FreeCAD.Placement(pos, rot)
+        elif posX is not None or posY is not None or posZ is not None or rotX is not None or rotY is not None or rotZ is not None or rotW is not None:
+            PathLog.warning(translate('PathStock', 'Corrupted or incomplete placement information in template - ignoring'))
+
+        if stockType == StockType.FromBase:
+            xneg = template.get('xneg')
+            xpos = template.get('xpos')
+            yneg = template.get('yneg')
+            ypos = template.get('ypos')
+            zneg = template.get('zneg')
+            zpos = template.get('zpos')
+            neg = None
+            pos = None
+            if xneg is not None and xpos is not None and yneg is not None and ypos is not None and zneg is not None and zpos is not None:
+                neg = FreeCAD.Vector(FreeCAD.Units.Quantity(xneg).Value, FreeCAD.Units.Quantity(yneg).Value, FreeCAD.Units.Quantity(zneg).Value)
+                pos = FreeCAD.Vector(FreeCAD.Units.Quantity(xpos).Value, FreeCAD.Units.Quantity(ypos).Value, FreeCAD.Units.Quantity(zpos).Value)
+            elif xneg is not None or xpos is not None or yneg is not None or ypos is not None or zneg is not None or zpos is not None:
+                PathLog.error(translate('PathStock', 'Corrupted or incomplete specification for creating stock from base - ignoring extent'))
+            return CreateFromBase(job, neg, pos, placement)
+
+        if stockType == StockType.CreateBox:
+            length = template.get('length')
+            width  = template.get('width')
+            height = template.get('height')
+            extent = None
+            if length is not None and width is not None and height is not None:
+                extent = FreeCAD.Vector(FreeCAD.Units.Quantity(length).Value, FreeCAD.Units.Quantity(width).Value, FreeCAD.Units.Quantity(height).Value)
+            elif length is not None or width is not None or height is not None:
+                PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock box - ignoring size'))
+            return CreateBox(job, extent, placement)
+
+        if stockType == StockType.CreateCylinder:
+            radius = template.get('radius')
+            height = template.get('height')
+            if radius is not None and height is not None:
+                pass
+            elif radius is not None or height is not None:
+                radius = None
+                height = None
+                PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock cylinder - ignoring size'))
+            return CreateCylinder(job, radius, height, placement)
+
+        PathLog.error(translate('PathStock', 'Unsupported stock type named %s'), stockType)
+        return None
+
 
 FreeCAD.Console.PrintLog("Loading PathStock... done\n")

@@ -58,6 +58,7 @@ class JobTemplate:
     GeometryTolerance = 'tol'
     Description = 'desc'
     ToolController = 'ToolController'
+    Stock = 'Stock'
 
 def isResourceClone(obj, propName, resourceName):
     '''isResourceClone(obj, propName, resourceName) ... Return True if the given property of obj is a clone of type resourceName.'''
@@ -174,6 +175,8 @@ class ObjectJob:
                     obj.Description = job.get(JobTemplate.Description)
             for tc in tree.getroot().iter(JobTemplate.ToolController):
                 tcs.append(PathToolController.FromTemplate(tc))
+            for stock in tree.getroot().iter(JobTemplate.Stock):
+                obj.Stock = PathStock.CreateFromTemplate(self, stock)
         else:
             tcs.append(PathToolController.Create(obj.Name))
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
