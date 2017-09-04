@@ -435,7 +435,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
         ui->tabBasicBoundary->setEnabled(true);
     }
     else {
-        Base::Console().Error("Fluid boundary type `%s` is not defined\n", boundaryType);
+        Base::Console().Error("Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
     }
 }
 
@@ -458,7 +458,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         ui->labelTurbulentLengthValue->setText(tr("Hydraulic Diameter [m]"));
     }
     else {
-        Base::Console().Error("turbulence Spec type `%s` is not defined\n", turbulenceSpec);
+        Base::Console().Error("turbulence Spec type `%s` is not defined\n", turbulenceSpec.c_str());
     }
 }
 
@@ -497,7 +497,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
         ui->spinTemperatureValue->setEnabled(true);
     }
     else {
-        Base::Console().Error("Thermal boundary type `%s` is not defined\n", thermalBoundaryType);
+        Base::Console().Error("Thermal boundary type `%s` is not defined\n", thermalBoundaryType.c_str());
     }
 }
 
