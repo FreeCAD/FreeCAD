@@ -14,7 +14,7 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>3</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -82,6 +82,14 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pagePostProcessor">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>233</width>
+         <height>135</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Post Processing</string>
        </attribute>
@@ -618,7 +626,8 @@
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="go-up"/>
+                 <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                  <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
                 </property>
                </widget>
               </item>
@@ -628,7 +637,8 @@
                  <string>...</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="go-down"/>
+                 <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                  <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
                 </property>
                </widget>
               </item>
@@ -908,6 +918,8 @@
   <tabstop>defaultMillingOp</tabstop>
   <tabstop>defaultToolCompensation</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../../../../Gui/Icons/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
