@@ -48,7 +48,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         switch (mmode){
         case mmDeactivated:
             return TwoStrings(qApp->translate("Attacher3D", "Deactivated","Attachment3D mode caption"),
-                              qApp->translate("Attacher3D", "Attachment is disabled. CS can be moved by editing Placement property.","Attachment3D mode tooltip"));
+                              qApp->translate("Attacher3D", "Attachment is disabled. Object can be moved by editing Placement property.","Attachment3D mode tooltip"));
         case mmTranslate:
             return TwoStrings(qApp->translate("Attacher3D", "Translate origin","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Origin is aligned to match Vertex. Orientation is controlled by Placement property.","Attachment3D mode tooltip"));
@@ -123,7 +123,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         switch (mmode){
         case mmDeactivated:
             return TwoStrings(qApp->translate("Attacher2D", "Deactivated","AttachmentPlane mode caption"),
-                              qApp->translate("Attacher2D", "Attachment is disabled. Plane can be moved by editing Placement property.","AttachmentPlane mode tooltip"));
+                              qApp->translate("Attacher2D", "Attachment is disabled. Object can be moved by editing Placement property.","AttachmentPlane mode tooltip"));
         case mmTranslate:
             return TwoStrings(qApp->translate("Attacher2D", "Translate origin","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Origin is aligned to match Vertex. Orientation is controlled by Placement property.","AttachmentPlane mode tooltip"));

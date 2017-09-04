@@ -108,12 +108,14 @@ private:
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
-     * current set of references.
-     * @param curMode the mode to select in the list. If the mode isn't
-     * contained in the list, nothing is selected. If mmDeactivated is passed,
-     * currently selected mode is kept.
+     * current set of references. Maintains selection when possible.
      */
-    void updateListOfModes(Attacher::eMapMode curMode = Attacher::mmDeactivated);
+    void updateListOfModes();
+    
+    /**
+     * @brief selectMapMode Select the given mode in the list widget
+     */
+    void selectMapMode(Attacher::eMapMode mmode);
 
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
