@@ -29,7 +29,7 @@
     </message>
     <message>
         <location filename="NavigationIndicatorGui.py" line="49"/>
-        <source>navigation style</source>
+        <source>Navigation style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
