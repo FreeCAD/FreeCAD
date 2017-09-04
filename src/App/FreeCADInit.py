@@ -252,6 +252,8 @@ App.Units.PSI           = App.Units.Quantity('psi')
 App.Units.Watt          = App.Units.Quantity('W')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
 
+App.Units.Volt          = App.Units.Quantity('V')
+
 App.Units.Joule         = App.Units.Quantity('J')
 App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
