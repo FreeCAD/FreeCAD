@@ -210,6 +210,7 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=Tr
     PathLog.track(tool, toolNumber)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    obj.Label = name
     ToolController(obj)
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
