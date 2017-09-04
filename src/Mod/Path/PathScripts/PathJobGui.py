@@ -38,12 +38,13 @@ import sys
 from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
+from pivy import coin
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -65,6 +66,34 @@ class ViewProvider:
         self.obj = vobj.Object
         self.taskPanel = None
 
+        # setup the axis display at the origin
+        self.switch = coin.SoSwitch()
+        self.sep = coin.SoSeparator()
+        self.axs = coin.SoType.fromName('SoAxisCrossKit').createInstance()
+        self.axs.set('xHead.transform', 'scaleFactor 2 3 2')
+        self.axs.set('yHead.transform', 'scaleFactor 2 3 2')
+        self.axs.set('zHead.transform', 'scaleFactor 2 3 2')
+        self.sca = coin.SoType.fromName('SoShapeScale').createInstance()
+        self.sca.setPart('shape', self.axs)
+        self.sca.scaleFactor.setValue(0.5)
+        self.mat = coin.SoMaterial()
+        self.mat.diffuseColor = coin.SbColor(0.9, 0, 0.9)
+        self.mat.transparency = 0.85
+        self.sph = coin.SoSphere()
+        self.scs = coin.SoType.fromName('SoShapeScale').createInstance()
+        self.scs.setPart('shape', self.sph)
+        self.scs.scaleFactor.setValue(10)
+        self.sep.addChild(self.sca)
+        self.sep.addChild(self.mat)
+        self.sep.addChild(self.scs)
+        self.switch.addChild(self.sep)
+        vobj.RootNode.addChild(self.switch)
+        self.showOriginAxis(False)
+
+    def showOriginAxis(self, yes):
+        sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
+        self.switch.whichChild = sw
+
     def __getstate__(self):
         return None
 
@@ -80,9 +109,11 @@ class ViewProvider:
         FreeCADGui.Control.showDialog(self.taskPanel)
         self.taskPanel.setupUi()
         self.deleteOnReject = False
+        self.showOriginAxis(True)
         return True
 
     def resetTaskPanel(self):
+        self.showOriginAxis(False)
         self.taskPanel = None
 
     def unsetEdit(self, arg1, arg2):
