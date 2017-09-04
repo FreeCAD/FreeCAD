@@ -39,10 +39,34 @@ if True:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+class StockType:
+    NoStock        = 'None'
+    FromBase       = 'FromBase'
+    CreateBox      = 'CreateBox'
+    CreateCylinder = 'CreateCylinder'
+    Unknown        = 'Unknown'
+
+    @classmethod
+    def FromStock(cls, stock):
+        '''FromStock(stock) ... Answer a string representing the type of stock.'''
+        if not stock:
+            return cls.NoStock
+        if hasattr(stock, 'StockType'):
+            return stock.StockType
+
+        # fallback in case somebody messed with internals
+        if hasattr(stock, 'ExtXneg') and hasattr(stock, 'ExtZpos'):
+            return cls.FromBase
+        if hasattr(stock, 'Length') and hasattr(stock, 'Width'):
+            return cls.CreateBox
+        if hasattr(stock, 'Radius') and hasattr(stock, 'Height'):
+            return cls.CreateCylinder
+        return cls.Unknown
+
 
 class StockFromBase:
 
-    def __init__(self, obj, base):
+    def __init__(self, obj, base, placement):
         "Make stock"
         obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("PathStock", "The base object this stock is derived from"))
         obj.addProperty("App::PropertyLength", "ExtXneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative X direction"))
@@ -60,11 +84,11 @@ class StockFromBase:
         obj.ExtZneg= 1.0
         obj.ExtZpos= 1.0
 
+        obj.Placement = placement
         obj.Proxy = self
 
     def __getstate__(self):
         return None
-
     def __setstate__(self, state):
         return None
 
@@ -78,16 +102,72 @@ class StockFromBase:
         self.width  = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
         self.height = bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value
 
-        obj.Shape = Part.makeBox(self.length, self.width, self.height, self.origin)
+        shape = Part.makeBox(self.length, self.width, self.height, self.origin)
+        shape.Placement = obj.Placement
+        obj.Shape = shape
 
     def onChanged(self, obj, prop):
         if prop in ['ExtXneg', 'ExtXpos', 'ExtYneg', 'ExtYpos', 'ExtZneg', 'ExtZpos'] and not 'Restore' in obj.State:
             self.execute(obj)
 
-def SetupStockObject(obj, addVPProxy):
+
+class StockCreateBox:
+    def __init__(self, obj):
+        obj.addProperty('App::PropertyLength', 'Length', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Length of this stock box"))
+        obj.addProperty('App::PropertyLength', 'Width', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Width of this stock box"))
+        obj.addProperty('App::PropertyLength', 'Height', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Height of this stock box"))
+
+        obj.Length = 10
+        obj.Width  = 10
+        obj.Height = 10
+
+        obj.Proxy = self
+
+    def __getstate__(self):
+        return None
+    def __setstate__(self, state):
+        return None
+
+    def execute(self, obj):
+        shape = Part.makeBox(obj.Length, obj.Width, obj.Height)
+        shape.Placement = obj.Placement
+        obj.Shape = shape
+
+    def onChanged(self, obj, prop):
+        if prop in ['Length', 'Width', 'Height'] and not 'Restore' in obj.State:
+            self.execute(obj)
+
+class StockCreateCylinder:
+    def __init__(self, obj):
+        obj.addProperty('App::PropertyLength', 'Radius', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Radius of this stock cylinder"))
+        obj.addProperty('App::PropertyLength', 'Height', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Height of this stock cylinder"))
+
+        obj.Radius = 2
+        obj.Height = 10
+
+        obj.Proxy = self
+
+    def __getstate__(self):
+        return None
+    def __setstate__(self, state):
+        return None
+
+    def execute(self, obj):
+        shape = Part.makeCylinder(obj.Radius, obj.Height)
+        shape.Placement = obj.Placement
+        obj.Shape = shape
+
+    def onChanged(self, obj, prop):
+        if prop in ['Radius', 'Height'] and not 'Restore' in obj.State:
+            self.execute(obj)
+
+def SetupStockObject(obj, stockType):
     if FreeCAD.GuiUp and obj.ViewObject:
-        if addVPProxy:
-            PathIconViewProvider.ViewProvider(obj.ViewObject, 'Stock')
+        obj.addProperty('App::PropertyString', 'StockType', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Internal representation of stock type"))
+        obj.StockType = stockType
+        obj.setEditorMode('StockType', 2) # hide
+
+        PathIconViewProvider.ViewProvider(obj.ViewObject, 'Stock')
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 
@@ -95,7 +175,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     # don't want to use the resrouce clone - we want the real object so 
     # Base and Stock can be placed independently
-    proxy = StockFromBase(obj, job.Proxy.baseObject(job))
+    proxy = StockFromBase(obj, job.Proxy.baseObject(job), job.Base.Placement)
     if neg:
         obj.ExtXneg = neg.x
         obj.ExtYneg = neg.y
@@ -106,14 +186,15 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
         obj.ExtZpos = pos.z
     if placement:
         obj.Placement = placement
-    SetupStockObject(obj, True)
+    SetupStockObject(obj, StockType.FromBase)
     proxy.execute(obj)
     obj.purgeTouched()
     return obj
 
 def CreateBox(job, extent=None, placement=None):
     base = job.Base if job and hasattr(job, 'Base') else None
-    obj = FreeCAD.ActiveDocument.addObject('Part::Box', 'Stock')
+    obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
+    proxy = StockCreateBox(obj)
     if extent:
         obj.Length = extent.x
         obj.Width  = extent.y
@@ -129,12 +210,13 @@ def CreateBox(job, extent=None, placement=None):
         bb = base.Shape.BoundBox
         origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
-    SetupStockObject(obj, False)
+    SetupStockObject(obj, StockType.CreateBox)
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
     base = job.Base if job and hasattr(job, 'Base') else None
-    obj = FreeCAD.ActiveDocument.addObject('Part::Cylinder', 'Stock')
+    obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
+    proxy = StockCreateCylinder(obj)
     if radius:
         obj.Radius = radius
     if height:
@@ -149,28 +231,8 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
         bb = base.Shape.BoundBox
         origin = FreeCAD.Vector((bb.XMin + bb.XMax)/2, (bb.YMin + bb.YMax)/2, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
-    SetupStockObject(obj, False)
+    SetupStockObject(obj, StockType.CreateCylinder)
     return obj
-
-class StockType:
-    NoStock        = 'None'
-    FromBase       = 'FromBase'
-    CreateBox      = 'CreateBox'
-    CreateCylinder = 'CreateCylinder'
-    Unknown        = 'Unknown'
-
-    @classmethod
-    def FromStock(cls, stock):
-        '''FromStock(stock) ... Answer a string representing the type of stock.'''
-        if not stock:
-            return cls.NoStock
-        if hasattr(stock, 'ExtXneg') and hasattr(stock, 'ExtZpos'):
-            return cls.FromBase
-        if hasattr(stock, 'Length') and hasattr(stock, 'Width'):
-            return cls.CreateBox
-        if hasattr(stock, 'Radius') and hasattr(stock, 'Height'):
-            return cls.CreateCylinder
-        return cls.Unknown
 
 def TemplateAttributes(stock, includeExtent=True, includePlacement=True):
     attrs = {}
