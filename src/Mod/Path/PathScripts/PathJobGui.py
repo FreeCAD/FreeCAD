@@ -877,7 +877,11 @@ class TaskPanel:
         self.form.operationDelete.clicked.connect(self.operationDelete)
         self.form.operationUp.clicked.connect(self.operationMoveUp)
         self.form.operationDown.clicked.connect(self.operationMoveDown)
+
         self.form.operationEdit.hide() # not supported yet
+        self.form.activeToolGroup.hide() # not supported yet
+        self.form.tbWorkplan.widget(1).hide() # default values not supported yet
+        self.form.tbWorkplan.removeItem(1) # default values not supported yet
 
         # Tool controller
         self.form.toolControllerList.itemSelectionChanged.connect(self.toolControllerSelect)
