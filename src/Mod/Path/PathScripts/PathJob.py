@@ -124,20 +124,30 @@ class ObjectJob:
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
         PathLog.track(obj.Label, arg2)
         doc = obj.Document
-        for tc in obj.ToolController:
-            doc.removeObject(tc.Name)
-        obj.ToolController = []
+        # the first to tear down are the ops, they depend on other resources
+        PathLog.debug('taking down ops: %s' % [o.Name for o in self.allOperations()])
         while obj.Operations.Group:
-            doc.removeObject(obj.Operations.Group[0].Name)
+            op = obj.Operations.Group[0]
+            if not op.ViewObject or not hasattr(op.ViewObject.Proxy, 'onDelete') or op.ViewObject.Proxy.onDelete(op.ViewObject, ()):
+                doc.removeObject(op.Name)
         obj.Operations.Group = []
         doc.removeObject(obj.Operations.Name)
         obj.Operations = None
-        if obj.Base:
-            doc.removeObject(obj.Base.Name)
-            obj.Base = None
+        # stock could depend on Base
         if obj.Stock:
+            PathLog.debug('taking down stock')
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
+        # base doesn't depend on anything inside job
+        if obj.Base:
+            PathLog.debug('taking down base')
+            doc.removeObject(obj.Base.Name)
+            obj.Base = None
+        # Tool controllers don't depend on anything
+        PathLog.debug('taking down tool controller')
+        for tc in obj.ToolController:
+            doc.removeObject(tc.Name)
+        obj.ToolController = []
 
     def fixupResourceClone(self, obj, name, icon):
         if not isResourceClone(obj, name, name):
