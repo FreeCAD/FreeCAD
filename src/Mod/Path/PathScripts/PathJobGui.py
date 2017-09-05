@@ -512,7 +512,7 @@ class TaskPanel:
             if self.obj.Proxy.baseObject(self.obj) != selObj:
                 self.baseObjectRestoreVisibility(self.obj)
                 self.obj.Document.removeObject(self.obj.Base.Name)
-                self.obj.Proxy.createResourceClone(self.obj, selObj, 'Base')
+                self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
                 self.baseObjectSaveVisibility(self.obj)
 
             self.updateTooltips()
@@ -885,10 +885,10 @@ class TaskPanel:
             self.form.centerInStock.setEnabled(True)
             self.form.centerInStockXY.setEnabled(True)
         else:
-            if len(sel) == 1:
-                PathLog.info("sel = %s / %s" % (sel[0].Object.Label, self.obj.Base.Label))
+            if len(sel) == 1 and self.obj.Base:
+                PathLog.debug("sel = %s / %s" % (sel[0].Object.Label, self.obj.Base.Label))
             else:
-                PathLog.info("sel len = %d" % len(sel))
+                PathLog.debug("sel len = %d" % len(sel))
             self.form.centerInStock.setEnabled(False)
             self.form.centerInStockXY.setEnabled(False)
 
