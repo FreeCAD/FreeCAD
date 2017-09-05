@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import importlib
+
 __title__ = "Path Icon ViewProvider"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
@@ -39,11 +41,34 @@ class ViewProvider(object):
         self.obj = vobj.Object
 
     def __getstate__(self):
-        return {'icon': self.icon }
+        attrs = {'icon': self.icon }
+        if hasattr(self, 'editModule'):
+            attrs['editModule'] = self.editModule
+            attrs['editCallback'] = self.editCallback
+        return attrs
 
     def __setstate__(self, state):
         self.icon = state['icon']
+        if state.get('editModule', None):
+            self.editModule = state['editModule']
+            self.editCallback = state['editCallback']
 
     def getIcon(self):
         return ":/icons/Path-{}.svg".format(self.icon)
+
+    def onEdit(self, callback):
+        self.editModule = callback.__module__
+        self.editCallback = callback.__name__
+
+    def _onEditCallback(self, edit):
+        if hasattr(self, 'editModule'):
+            mod = importlib.import_module(self.editModule)
+            callback = getattr(mod, self.editCallback)
+            callback(self.obj, self.vobj, edit)
+
+    def setEdit(self, vobj, mode=0):
+        self._onEditCallback(True)
+
+    def unsetEdit(self, arg1, arg2):
+        self._onEditCallback(False)
 
