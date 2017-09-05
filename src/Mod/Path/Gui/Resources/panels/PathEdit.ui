@@ -612,6 +612,45 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>jobLabel</tabstop>
+  <tabstop>jobModel</tabstop>
+  <tabstop>jobDescription</tabstop>
+  <tabstop>postProcessorOutputFile</tabstop>
+  <tabstop>postProcessorSetOutputFile</tabstop>
+  <tabstop>postProcessor</tabstop>
+  <tabstop>postProcessorArguments</tabstop>
+  <tabstop>stock</tabstop>
+  <tabstop>stockExisting</tabstop>
+  <tabstop>stockExtXneg</tabstop>
+  <tabstop>stockExtXpos</tabstop>
+  <tabstop>stockExtYneg</tabstop>
+  <tabstop>stockExtYpos</tabstop>
+  <tabstop>stockExtZneg</tabstop>
+  <tabstop>stockExtZpos</tabstop>
+  <tabstop>stockCylinderRadius</tabstop>
+  <tabstop>stockCylinderHeight</tabstop>
+  <tabstop>stockBoxLength</tabstop>
+  <tabstop>stockBoxWidth</tabstop>
+  <tabstop>stockBoxHeight</tabstop>
+  <tabstop>orientXAxis</tabstop>
+  <tabstop>orientYAxis</tabstop>
+  <tabstop>orientZAxis</tabstop>
+  <tabstop>setOrigin</tabstop>
+  <tabstop>moveToOrigin</tabstop>
+  <tabstop>centerInStock</tabstop>
+  <tabstop>centerInStockXY</tabstop>
+  <tabstop>toolControllerList</tabstop>
+  <tabstop>toolControllerEdit</tabstop>
+  <tabstop>toolControllerAdd</tabstop>
+  <tabstop>toolControllerDelete</tabstop>
+  <tabstop>activeToolController</tabstop>
+  <tabstop>operationsList</tabstop>
+  <tabstop>operationDelete</tabstop>
+  <tabstop>operationEdit</tabstop>
+  <tabstop>operationUp</tabstop>
+  <tabstop>operationDown</tabstop>
+ </tabstops>
  <resources>
   <include location="../../../../../Gui/Icons/resource.qrc"/>
  </resources>
