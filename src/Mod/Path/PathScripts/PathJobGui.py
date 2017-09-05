@@ -32,6 +32,7 @@ import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathToolLibraryManager as PathToolLibraryManager
 import PathScripts.PathUtil as PathUtil
+import PathScripts.PathUtils as PathUtils
 import math
 import sys
 
@@ -44,11 +45,19 @@ from pivy import coin
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+def _OpenCloseResourceEditor(obj, vobj, edit):
+    job = PathUtils.findParentJob(obj)
+    if job and job.ViewObject and job.ViewObject.Proxy:
+        if edit:
+            job.ViewObject.Proxy.editObject(obj)
+        else:
+            job.ViewObject.Proxy.uneditObject(obj)
 
 class ViewProvider:
 
@@ -104,13 +113,16 @@ class ViewProvider:
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
     def setEdit(self, vobj, mode=0):
-        self.taskPanel = TaskPanel(vobj, self.deleteObjectsOnReject())
+        self.openTaskPanel()
+        return True
+
+    def openTaskPanel(self, activate=None):
+        self.taskPanel = TaskPanel(self.vobj, self.deleteObjectsOnReject())
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(self.taskPanel)
-        self.taskPanel.setupUi()
+        self.taskPanel.setupUi(activate)
         self.deleteOnReject = False
         self.showOriginAxis(True)
-        return True
 
     def resetTaskPanel(self):
         self.showOriginAxis(False)
@@ -119,6 +131,18 @@ class ViewProvider:
     def unsetEdit(self, arg1, arg2):
         if self.taskPanel:
             self.taskPanel.reject(False)
+
+    def editObject(self, obj):
+        if obj:
+            if obj == self.obj.Base:
+                return self.openTaskPanel('Base')
+            if obj == self.obj.Stock:
+                return self.openTaskPanel('Stock')
+            PathLog.info("Expected a specific object to edit - %s not recognized" % obj.Label)
+        return self.openTaskPanel()
+
+    def uneditObject(self):
+        self.unsetEdit(None, None)
 
     def getIcon(self):
         return ":/icons/Path-Job.svg"
@@ -136,6 +160,14 @@ class ViewProvider:
         PathLog.track(vobj.Object.Label, arg2)
         self.obj.Proxy.onDelete(self.obj, arg2)
         return True
+
+    def updateData(self, obj, prop):
+        PathLog.track(obj.Label, prop)
+        # make sure the resource view providers are setup properly
+        if prop == 'Base' and self.obj.Base and self.obj.Base.ViewObject and self.obj.Base.ViewObject.Proxy:
+            self.obj.Base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
+        if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
+            self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
 class StockEdit(object):
 
@@ -168,6 +200,8 @@ class StockEdit(object):
         if obj.Stock:
             obj.Document.removeObject(self.obj.Stock.Name)
         obj.Stock = stock
+        if stock.ViewObject and stock.ViewObject.Proxy:
+            stock.ViewObject.Proxy.onEdit(OpenCloseResourceEditor)
 
     def setLengthField(self, widget, prop):
         widget.setText(FreeCAD.Units.Quantity(prop.Value, FreeCAD.Units.Length).UserString)
@@ -378,8 +412,8 @@ class TaskPanel:
 
         for o in PathJob.ObjectJob.baseCandidates():
             if o != self.obj.Base:
-                self.form.infoModel.addItem(o.Label, o)
-        self.selectComboBoxText(self.form.infoModel, self.obj.Proxy.baseObject(self.obj).Label)
+                self.form.jobModel.addItem(o.Label, o)
+        self.selectComboBoxText(self.form.jobModel, self.obj.Proxy.baseObject(self.obj).Label)
 
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
@@ -470,10 +504,11 @@ class TaskPanel:
             self.obj.PostProcessorArgs = str(self.form.postProcessorArguments.displayText())
             self.obj.PostProcessorOutputFile = str(self.form.postProcessorOutputFile.text())
 
-            self.obj.Label = str(self.form.infoLabel.text())
+            self.obj.Label = str(self.form.jobLabel.text())
+            self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
 
-            selObj = self.form.infoModel.itemData(self.form.infoModel.currentIndex())
+            selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
             if self.obj.Proxy.baseObject(self.obj) != selObj:
                 self.baseObjectRestoreVisibility(self.obj)
                 self.obj.Document.removeObject(self.obj.Base.Name)
@@ -551,9 +586,10 @@ class TaskPanel:
     def setFields(self):
         '''sets fields in the form to match the object'''
 
-        self.form.infoLabel.setText(self.obj.Label)
-        self.form.postProcessorOutputFile.setText(self.obj.PostProcessorOutputFile)
+        self.form.jobLabel.setText(self.obj.Label)
+        self.form.jobDescription.setPlainText(self.obj.Description)
 
+        self.form.postProcessorOutputFile.setText(self.obj.PostProcessorOutputFile)
         self.selectComboBoxText(self.form.postProcessor, self.obj.PostProcessor)
         self.form.postProcessorArguments.setText(self.obj.PostProcessorArgs)
         #self.obj.Proxy.onChanged(self.obj, "PostProcessor")
@@ -567,12 +603,12 @@ class TaskPanel:
 
         baseindex = -1
         if self.obj.Base:
-            baseindex = self.form.infoModel.findText(self.obj.Base.Label, QtCore.Qt.MatchFixedString)
+            baseindex = self.form.jobModel.findText(self.obj.Base.Label, QtCore.Qt.MatchFixedString)
         else:
             for o in FreeCADGui.Selection.getCompleteSelection():
-                baseindex = self.form.infoModel.findText(o.Label, QtCore.Qt.MatchFixedString)
+                baseindex = self.form.jobModel.findText(o.Label, QtCore.Qt.MatchFixedString)
         if baseindex >= 0:
-            self.form.infoModel.setCurrentIndex(baseindex)
+            self.form.jobModel.setCurrentIndex(baseindex)
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
@@ -857,13 +893,13 @@ class TaskPanel:
             self.form.centerInStockXY.setEnabled(False)
 
 
-    def setupUi(self):
+    def setupUi(self, activate):
         self.updateStockEditor(-1)
         self.setFields()
 
         # Info
-        self.form.infoLabel.editingFinished.connect(self.getFields)
-        self.form.infoModel.currentIndexChanged.connect(self.getFields)
+        self.form.jobLabel.editingFinished.connect(self.getFields)
+        self.form.jobModel.currentIndexChanged.connect(self.getFields)
 
         # Post Processor
         self.form.postProcessor.currentIndexChanged.connect(self.getFields)
@@ -880,8 +916,6 @@ class TaskPanel:
 
         self.form.operationEdit.hide() # not supported yet
         self.form.activeToolGroup.hide() # not supported yet
-        self.form.tbWorkplan.widget(1).hide() # default values not supported yet
-        self.form.tbWorkplan.removeItem(1) # default values not supported yet
 
         # Tool controller
         self.form.toolControllerList.itemSelectionChanged.connect(self.toolControllerSelect)
@@ -907,6 +941,18 @@ class TaskPanel:
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
         self.updateSelection()
 
+        # set active page
+        if activate in ['General', 'Base']:
+            self.form.setCurrentIndex(0)
+        if activate in ['Output', 'Post Processor']:
+            self.form.setCurrentIndex(1)
+        if activate in ['Layout', 'Stock']:
+            self.form.setCurrentIndex(2)
+        if activate in ['Tools', 'Tool Controller']:
+            self.form.setCurrentIndex(3)
+        if activate in ['Workplan', 'Operations']:
+            self.form.setCurrentIndex(4)
+
     def open(self):
         FreeCADGui.Selection.addObserver(self)
 
@@ -929,6 +975,8 @@ def Create(base, template=None):
         obj = PathJob.Create('Job', base, template)
         ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.commitTransaction()
+        obj.ViewObject.Proxy.editObject(obj.Stock)
+        return obj
     except:
         PathLog.error(sys.exc_info())
         FreeCAD.ActiveDocument.abortTransaction()
