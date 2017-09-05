@@ -136,18 +136,6 @@ class ToolController:
         if obj.ViewObject:
             obj.ViewObject.Visibility = True
 
-    def onChanged(self, obj, prop):
-        PathLog.track('prop: {}  state: {}'.format(prop, obj.State))
-
-        if 'Path' == prop and 'Restore' not in obj.State:
-            PathLog.warning('Markus you gotta do something about TC changes')
-        #    PathLog.debug("--- dirty deeds")
-        #    job = PathScripts.PathUtils.findParentJob(obj)
-        #    if job is not None:
-        #        for g in job.Group:
-        #            if not(isinstance(g.Proxy, PathScripts.PathToolController.ToolController)):
-        #                g.touch()
-
     def getTool(self, obj):
         '''returns the tool associated with this tool controller'''
         PathLog.track()
@@ -395,9 +383,6 @@ class TaskPanel:
         length = tool.CuttingEdgeHeight
         t = Part.makeCylinder(radius, length)
         self.toolrep.Shape = t
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
 
     def edit(self, item, column):
         if not self.updating:
