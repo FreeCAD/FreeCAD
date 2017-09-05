@@ -221,6 +221,20 @@ class ObjectJob:
             group.append(tc)
             self.obj.ToolController = group
 
+    def allOperations(self):
+        ops = []
+        def collectBaseOps(op):
+            if op.TypeId == 'Path::FeaturePython':
+                ops.append(op)
+                if hasattr(op, 'Base'):
+                    collectBaseOps(op.Base)
+            if op.TypeId == 'Path::FeatureCompoundPython':
+                ops.append(op)
+                for sub in op.Group:
+                    collectBaseOps(sub)
+        for op in self.obj.Operations.Group:
+            collectBaseOps(op)
+        return ops
 
     @classmethod
     def baseCandidates(cls):
