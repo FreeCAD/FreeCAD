@@ -118,6 +118,7 @@ SET(PathTests_SRCS
     PathTests/TestPathGeom.py
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
+    PathTests/TestPathStock.py
     PathTests/TestPathUtil.py
 )
 
