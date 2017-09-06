@@ -246,12 +246,12 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.checkXpos()
         self.checkYpos()
         self.checkZpos()
-        self.form.stockExtXneg.editingFinished.connect(self.updateXpos)
-        self.form.stockExtYneg.editingFinished.connect(self.updateYpos)
-        self.form.stockExtZneg.editingFinished.connect(self.updateZpos)
-        self.form.stockExtXpos.editingFinished.connect(self.checkXpos)
-        self.form.stockExtYpos.editingFinished.connect(self.checkYpos)
-        self.form.stockExtZpos.editingFinished.connect(self.checkZpos)
+        self.form.stockExtXneg.textChanged.connect(self.updateXpos)
+        self.form.stockExtYneg.textChanged.connect(self.updateYpos)
+        self.form.stockExtZneg.textChanged.connect(self.updateZpos)
+        self.form.stockExtXpos.textChanged.connect(self.checkXpos)
+        self.form.stockExtYpos.textChanged.connect(self.checkYpos)
+        self.form.stockExtZpos.textChanged.connect(self.checkZpos)
 
     def checkXpos(self):
         self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
@@ -309,9 +309,9 @@ class StockCreateBoxEdit(StockEdit):
 
     def setupUi(self, obj):
         self.setFields(obj)
-        self.form.stockBoxLength.editingFinished.connect(lambda: self.getFields(obj, ['length']))
-        self.form.stockBoxWidth.editingFinished.connect(lambda:  self.getFields(obj, ['width']))
-        self.form.stockBoxHeight.editingFinished.connect(lambda: self.getFields(obj, ['height']))
+        self.form.stockBoxLength.textChanged.connect(lambda: self.getFields(obj, ['length']))
+        self.form.stockBoxWidth.textChanged.connect(lambda:  self.getFields(obj, ['width']))
+        self.form.stockBoxHeight.textChanged.connect(lambda: self.getFields(obj, ['height']))
 
 class StockCreateCylinderEdit(StockEdit):
     Index = 1
@@ -337,8 +337,8 @@ class StockCreateCylinderEdit(StockEdit):
 
     def setupUi(self, obj):
         self.setFields(obj)
-        self.form.stockCylinderRadius.editingFinished.connect(lambda: self.getFields(obj, ['radius']))
-        self.form.stockCylinderHeight.editingFinished.connect(lambda: self.getFields(obj, ['height']))
+        self.form.stockCylinderRadius.textChanged.connect(lambda: self.getFields(obj, ['radius']))
+        self.form.stockCylinderHeight.textChanged.connect(lambda: self.getFields(obj, ['height']))
 
 class StockFromExistingEdit(StockEdit):
     Index = 3
