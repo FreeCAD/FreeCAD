@@ -33,7 +33,7 @@ class FakeJobProxy:
     def baseObject(self, obj):
         return obj.Base
 
-R = 223.606798
+R = 223.606798 / 2
 
 
 class TestPathStock(PathTestBase):
