@@ -97,6 +97,9 @@ protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
     bool showUnits() const;
+    bool useDecimals() const;
+    std::string getPrefix() const;
+    std::string getDefaultFormatSpec() const;
 
 protected:
     Measure::Measurement *measurement;

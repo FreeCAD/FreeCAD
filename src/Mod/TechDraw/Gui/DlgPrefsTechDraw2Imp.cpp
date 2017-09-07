@@ -53,6 +53,9 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     pcbSectionStyle->onSave();
     colSectionLine->onSave();
     pcbArrow->onSave();
+    cbGlobalDecimals->onSave();
+    sbAltDecimals->onSave();
+    dsbArrowSize->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -67,6 +70,9 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     pcbSectionStyle->onRestore();
     colSectionLine->onRestore();
     pcbArrow->onRestore();
+    cbGlobalDecimals->onRestore();
+    sbAltDecimals->onRestore();
+    dsbArrowSize->onRestore();
 }
 
 /**
