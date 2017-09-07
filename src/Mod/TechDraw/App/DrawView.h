@@ -87,6 +87,7 @@ public:
     bool keepUpdated(void);
     boost::signal<void (const DrawView*)> signalGuiPaint;
     virtual double getScale(void) const;
+    void checkScale(void);
 
 protected:
     void onChanged(const App::Property* prop);
