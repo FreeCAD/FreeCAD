@@ -412,16 +412,11 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     QString oldName = item->text(0);
     QFileInfo oldfi(dir, oldName);
     QFile oldfile(oldfi.absoluteFilePath());
-    if (!oldfile.open(QFile::ReadWrite)) {
-        QMessageBox::warning(this, tr("System reports read-only file"),
-            tr("Can not rename '%1'.").arg(oldfi.absoluteFilePath()));
-        return;
-    }
 
     // query new name
     QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
         tr("Enter new name:"), QLineEdit::Normal, oldName, 0);
-    if (!fn.isEmpty()) {
+    if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
             fn += QLatin1String(".FCMacro");
@@ -430,15 +425,16 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
         if (fi.exists()) {
             QMessageBox::warning(this, tr("Existing file"),
                 tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
-        } else {
-            QFile file(fi.absoluteFilePath());
-            if (!oldfile.rename(fi.absoluteFilePath())) {
-                QMessageBox::warning(this, tr("Rename Failed"),
-                    tr("Failed to rename to '%1'.\nPerhaps a file permission error?").arg(fi.absoluteFilePath()));
-                return;
-            }
         }
-        fillUpList();
+        else if (!oldfile.rename(fi.absoluteFilePath())) {
+            QMessageBox::warning(this, tr("Rename Failed"),
+                tr("Failed to rename to '%1'.\nPerhaps a file permission error?").arg(fi.absoluteFilePath()));
+        }
+        else {
+            // keep the item selected although it's not necessarily in alphabetic order
+            item->setText(0, fn);
+            LineEditMacroName->setText(fn);
+        }
     }
 }
 
