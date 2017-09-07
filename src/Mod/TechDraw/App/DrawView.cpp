@@ -94,12 +94,20 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-//    TechDraw::DrawPage *page = findParentPage();
-//    if(page &&
-//       keepUpdated()) {
-//        //nothing for DrawView to do
-//    }
     return App::DocumentObject::StdReturn;                //DO::execute returns 0
+}
+
+void DrawView::checkScale(void)
+{
+    TechDraw::DrawPage *page = findParentPage();
+    if(page &&
+       keepUpdated()) {
+        if (ScaleType.isValue("Page")) {
+            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+                Scale.setValue(page->Scale.getValue());
+            }
+        }
+    }
 }
 
 void DrawView::onChanged(const App::Property* prop)
@@ -136,9 +144,6 @@ void DrawView::onChanged(const App::Property* prop)
         } else if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
                    prop == &Y) {
             requestPaint();
-//            if (isMouseMove()) {     //actually "has mouse moved this item?"
-//                setAutoPos(false);
-//            }
         }
     }
     App::DocumentObject::onChanged(prop);

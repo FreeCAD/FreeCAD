@@ -267,6 +267,8 @@ int DrawPage::addView(App::DocumentObject *docObj)
         view->ScaleType.setValue("Automatic");
     }
 
+    view->checkScale();
+
     return Views.getSize();
 }
 
