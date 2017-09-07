@@ -42,6 +42,7 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
 #include <Mod/Measure/App/Measurement.h>
@@ -96,14 +97,15 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Format",App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
-    ADD_PROPERTY_TYPE(FormatSpec,("%value%") ,"Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
+    ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
+                  "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
     ADD_PROPERTY_TYPE(LineWidth,(0.5)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
     //ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
-    ADD_PROPERTY(MeasureType, ((long)0));                           //True or Projected measurement
+    ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
 
 
     //hide the properties the user can't edit in the property editor
@@ -193,7 +195,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
 std::string  DrawViewDimension::getFormatedValue()
 {
-    QString str = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
+    std::string result;
+    QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());
 
     Base::Quantity qVal;
@@ -204,31 +207,50 @@ std::string  DrawViewDimension::getFormatedValue()
         qVal.setUnit(Base::Unit::Length);
     }
     QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
-    QRegExp rx2(QString::fromUtf8("\\D*$"));
+    QRegExp rxUnits(QString::fromUtf8("\\D*$"));                          //any non digits at end of string
+
     QString userVal = userStr;
-    userVal.remove(rx2);
+    userVal.remove(rxUnits);                                              //getUserString(defaultDecimals) without units
 
-    QRegExp rx(QString::fromUtf8("%(\\w+)%"));                        //any word bracketed by %
-    QStringList list;
+    QString userUnits;
     int pos = 0;
+    if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
+        userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
+    }
 
-    while ((pos = rx.indexIn(str, pos)) != -1) {
-        list << rx.cap(0);
-        pos += rx.matchedLength();
+    std::string prefixSym = getPrefix();                                      //get Radius/Diameter/... symbol
+
+    //have dimensionVal, whole userString, val(userString), units(userString), prefixSymbol
+
+    //find the %x.y tag in FormatSpec
+    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.[0-9]*[aefgAEFG]"));     //printf double format spec 
+    QString match;
+    QString specVal = Base::Tools::fromStdString("%.2f");                    //sensible default
+    pos = 0;
+    if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
+        match = rxFormat.cap(0);                                          //entire capture of rx
+        QString qs2;
+        specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),val);
     }
 
     QString repl = userVal;
-    if (showUnits()) {
-        repl = userStr;
-    }
-
-    for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
-        if(*it == QString::fromUtf8("%value%")){
-            str.replace(*it,repl);
-//        } else {                                                       //insert additional placeholder replacement logic here
+    if (useDecimals()) {
+        if (showUnits()) {
+            repl = userStr;
+        } else {
+            repl = userVal;
+        }
+    } else {
+        if (showUnits()) {
+            repl = specVal + userUnits;
+        } else {
+            repl = specVal;
         }
     }
-    return str.toUtf8().constData();
+    repl = Base::Tools::fromStdString(getPrefix()) + repl;
+    specStr.replace(match,repl);
+
+    return specStr.toUtf8().constData();
 }
 
 
@@ -251,26 +273,6 @@ double DrawViewDimension::getDimValue()
             return result;
         }
 
-        if(Type.isValue("Distance")) {
-            result = measurement->delta().Length();
-        } else if(Type.isValue("DistanceX")){
-            Base::Vector3d delta = measurement->delta();
-            result = delta.x;
-        } else if(Type.isValue("DistanceY")){
-            Base::Vector3d delta = measurement->delta();
-            result = delta.y;
-        } else if(Type.isValue("DistanceZ")){
-            Base::Vector3d delta = measurement->delta();
-            result = delta.z;
-        } else if(Type.isValue("Radius")){
-            result =  measurement->radius();
-        } else if(Type.isValue("Diameter")){
-            result =  measurement->radius() * 2.0;
-        } else if(Type.isValue("Angle")){
-            result = measurement->angle();
-        } else {
-            throw Base::Exception("getDimValue() - Unknown Dimension Type (1)");
-        }
     } else {
         // Projected Values
         const std::vector<App::DocumentObject*> &objects = References2D.getValues();
@@ -665,6 +667,56 @@ bool DrawViewDimension::showUnits() const
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     result = hGrp->GetBool("ShowUnits", true);
     return result;
+}
+
+bool DrawViewDimension::useDecimals() const
+{
+    bool result = false;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    result = hGrp->GetBool("UseGlobalDecimals", true);
+    return result;
+}
+
+std::string DrawViewDimension::getPrefix() const
+{
+    std::string result = "";
+    if(Type.isValue("Distance")) {
+        result = "";
+    } else if(Type.isValue("DistanceX")){
+        result = "";
+    } else if(Type.isValue("DistanceY")){
+        result = "";
+    } else if(Type.isValue("DistanceZ")){
+        result = "";
+    } else if(Type.isValue("Radius")){
+        result =  "R";
+    } else if(Type.isValue("Diameter")){
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+        std::string diamSym = hGrp->GetASCII("DiameterSymbol","\xe2\x8c\x80");
+        result = diamSym;
+    } else if(Type.isValue("Angle")){
+        result = "";
+    }
+    return result;
+}
+
+std::string DrawViewDimension::getDefaultFormatSpec() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    QString format1 = Base::Tools::fromStdString("%.");
+    QString format2 = Base::Tools::fromStdString("f");
+    int precision;
+    if (useDecimals()) {
+        precision = Base::UnitsApi::getDecimals();
+    } else {
+        precision = hGrp->GetInt("AltDecimals", 2);
+    }
+    QString formatPrecision = QString::number(precision);
+    QString formatSpec = format1 + formatPrecision + format2;
+    return Base::Tools::toStdString(formatSpec);
 }
 
 PyObject *DrawViewDimension::getPyObject(void)
