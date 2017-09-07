@@ -200,9 +200,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         this->Shape.setValue(revolve);
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
 

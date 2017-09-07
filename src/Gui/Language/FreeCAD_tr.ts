@@ -2220,6 +2220,10 @@ Lütfen başka bir dizin belirtin.</translation>
         <source>Save AutoRecovery information every</source>
         <translation type="unfinished">Save AutoRecovery information every</translation>
     </message>
+    <message>
+        <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -2584,6 +2588,10 @@ Lütfen başka bir dizin belirtin.</translation>
         <source>Building US (ft-in/sqft/cuft)</source>
         <translation type="unfinished">Building US (ft-in/sqft/cuft)</translation>
     </message>
+    <message>
+        <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2856,7 +2864,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="obsolete">Error opening save file: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2901,6 +2909,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>MB</source>
         <translation type="unfinished">MB</translation>
+    </message>
+    <message>
+        <source>Error opening saved file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3650,6 +3662,34 @@ Do you want to save your changes?</source>
         <source>PDF format</source>
         <translation type="unfinished">PDF format</translation>
     </message>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished">Graphviz bulunamadı</translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read more about it here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished">Graphviz yükleme yolu</translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished">Graphviz başarısız oldu</translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
+        <translation type="unfinished">Graphviz görüntü dosyası oluşturulamadı</translation>
+    </message>
 </context>
 <context>
     <name>Gui::InputField</name>
@@ -4289,6 +4329,33 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <message>
         <source>edit selection</source>
         <translation>Seçimi Düzenle</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TextDocumentEditorView</name>
+    <message>
+        <source>Text updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes, reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved document</source>
+        <translation type="unfinished">Kaydedilmemiş belge</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
 </context>
 <context>
@@ -6947,16 +7014,16 @@ Do you want to duplicate them, too?</translation>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation>Graphviz bulunamadı</translation>
+        <translation type="obsolete">Graphviz bulunamadı</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation>Graphviz sisteminizde bulunamadı. Eğer yüklüyse, yükleme yolunu belirtmek ister misiniz?</translation>
+        <translation type="obsolete">Graphviz sisteminizde bulunamadı. Eğer yüklüyse, yükleme yolunu belirtmek ister misiniz?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation>Graphviz yükleme yolu</translation>
+        <translation type="obsolete">Graphviz yükleme yolu</translation>
     </message>
     <message>
         <source>Dependency graph</source>
@@ -6964,11 +7031,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation>Graphviz başarısız oldu</translation>
+        <translation type="obsolete">Graphviz başarısız oldu</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation>Graphviz görüntü dosyası oluşturulamadı</translation>
+        <translation type="obsolete">Graphviz görüntü dosyası oluşturulamadı</translation>
     </message>
 </context>
 <context>

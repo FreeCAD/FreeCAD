@@ -183,7 +183,7 @@ extern FILE *yyin, *yyout;
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        yy_size_t yyless_macro_arg = (n); \
+        int yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		*yy_cp = (yy_hold_char); \
 		YY_RESTORE_YY_MORE_OFFSET \
@@ -211,7 +211,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	yy_size_t yy_n_chars;
+	int yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -281,7 +281,7 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
+static int yy_n_chars;		/* number of characters read into yy_ch_buf */
 yy_size_t yyleng;
 
 /* Points to current character in buffer. */
@@ -377,8 +377,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 100
-#define YY_END_OF_BUFFER 101
+#define YY_NUM_RULES 101
+#define YY_END_OF_BUFFER 102
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -388,26 +388,26 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[190] =
     {   0,
-        0,    0,    0,    0,  101,   99,    4,    5,   38,   40,
-        6,   99,    7,   99,   77,   76,   27,   99,   99,   67,
-       31,   99,   51,   99,   99,   99,   65,    1,   99,   99,
-       99,   82,   99,   21,   26,   99,   99,   17,   15,   99,
-       99,   99,   99,   24,   23,   99,   99,   99,   99,    3,
-      100,    2,    5,   80,   78,   79,   77,   77,    0,   70,
-        0,   30,   53,    0,   68,   55,    0,   66,   71,    0,
+        0,    0,    0,    0,  102,  100,    4,    5,   38,   40,
+        6,  100,    7,  100,   78,   77,   27,  100,  100,   68,
+       31,  100,   51,  100,  100,   67,   65,    1,  100,  100,
+      100,   83,  100,   21,   26,  100,  100,   17,   15,  100,
+      100,  100,  100,   24,   23,  100,  100,  100,  100,    3,
+      101,    2,    5,   81,   79,   80,   78,   78,    0,   71,
+        0,   30,   53,    0,   69,   55,    0,   66,   72,    0,
         0,    0,    0,   36,   13,    0,    0,    0,   14,    0,
        39,    0,   37,   29,   52,    0,   22,   16,    0,   45,
         0,   28,   32,   54,    0,   20,   44,   12,    0,    9,
 
-       47,   81,    0,    0,    0,    0,    0,   48,    0,    0,
-       34,    0,   18,   10,   43,   72,    0,    0,    0,    0,
-       79,    0,   77,    0,    0,   77,   58,   57,    0,   69,
-       89,    0,    0,    0,   87,   49,   73,   88,   75,   56,
-       64,   50,   46,   91,    0,   42,   25,   90,   35,   93,
-       63,   74,   94,    0,   96,    0,    0,   33,    0,   19,
-       11,    8,    0,   80,    0,   78,    0,   79,    0,   77,
-       59,   83,   84,   85,    0,    0,   95,   98,   97,   41,
-        0,    0,   86,   92,   60,   61,    0,   62,    0
+       47,   82,    0,    0,    0,    0,    0,   48,    0,    0,
+       34,    0,   18,   10,   43,   73,    0,    0,    0,    0,
+       80,    0,   78,    0,    0,   78,   58,   57,    0,   70,
+       90,    0,    0,    0,   88,   49,   74,   89,   76,   56,
+       64,   50,   46,   92,    0,   42,   25,   91,   35,   94,
+       63,   75,   95,    0,   97,    0,    0,   33,    0,   19,
+       11,    8,    0,   81,    0,   79,    0,   80,    0,   78,
+       59,   84,   85,   86,    0,    0,   96,   99,   98,   41,
+        0,    0,   87,   93,   60,   61,    0,   62,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
@@ -1030,17 +1030,17 @@ yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal
 case 28:
 YY_RULE_SETUP
 #line 69 "QuantityParser.l"
-yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere         
+yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 70 "QuantityParser.l"
-yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere         
+yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 71 "QuantityParser.l"
-yylval = Quantity::MegaAmpere;          return UNIT; // Mega Ampere         
+yylval = Quantity::MegaAmpere;          return UNIT; // Mega Ampere
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
@@ -1050,27 +1050,27 @@ yylval = Quantity::Kelvin;              return UNIT; // Kelvin         (internal
 case 32:
 YY_RULE_SETUP
 #line 74 "QuantityParser.l"
-yylval = Quantity::MilliKelvin;         return UNIT; // Kelvin         
+yylval = Quantity::MilliKelvin;         return UNIT; // Kelvin
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 75 "QuantityParser.l"
-yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
+yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 76 "QuantityParser.l"
-yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
+yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 78 "QuantityParser.l"
-yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)        
+yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 80 "QuantityParser.l"
-yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)        
+yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
@@ -1150,249 +1150,254 @@ yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
 case 52:
 YY_RULE_SETUP
 #line 102 "QuantityParser.l"
-yylval = Quantity::KiloNewton;          return UNIT; // Newton 
+yylval = Quantity::KiloNewton;          return UNIT; // Newton
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 103 "QuantityParser.l"
-yylval = Quantity::MegaNewton;          return UNIT; // Newton 
+yylval = Quantity::MegaNewton;          return UNIT; // Newton
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
 #line 104 "QuantityParser.l"
-yylval = Quantity::MilliNewton;         return UNIT; // Newton 
+yylval = Quantity::MilliNewton;         return UNIT; // Newton
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 106 "QuantityParser.l"
-yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m*s^2 or N/m^2) 
+yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
 #line 107 "QuantityParser.l"
-yylval = Quantity::KiloPascal;          return UNIT; // Pascal 
+yylval = Quantity::KiloPascal;          return UNIT; // Pascal
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
 #line 108 "QuantityParser.l"
-yylval = Quantity::MegaPascal;          return UNIT; // Pascal  
+yylval = Quantity::MegaPascal;          return UNIT; // Pascal
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
 #line 109 "QuantityParser.l"
-yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
+yylval = Quantity::GigaPascal;          return UNIT; // Pascal
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
 #line 111 "QuantityParser.l"
-yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 ) 
+yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 )
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
 #line 112 "QuantityParser.l"
-yylval = Quantity::mTorr;               return UNIT; //  
+yylval = Quantity::mTorr;               return UNIT; //
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
 #line 113 "QuantityParser.l"
-yylval = Quantity::yTorr;               return UNIT; //  
+yylval = Quantity::yTorr;               return UNIT; //
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
 #line 114 "QuantityParser.l"
-yylval = Quantity::yTorr;               return UNIT; //  
+yylval = Quantity::yTorr;               return UNIT; //
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
 #line 116 "QuantityParser.l"
-yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
+yylval = Quantity::PSI;                 return UNIT; // pounds/in^2
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
 #line 117 "QuantityParser.l"
-yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2 
+yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 119 "QuantityParser.l"
-yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
+yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 120 "QuantityParser.l"
-yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 
+yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 122 "QuantityParser.l"
-yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2) 
+yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 123 "QuantityParser.l"
-yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule 
+#line 124 "QuantityParser.l"
+yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 124 "QuantityParser.l"
-yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule 
+#line 125 "QuantityParser.l"
+yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 125 "QuantityParser.l"
-yylval = Quantity::WattSecond;          return UNIT; //  
+#line 126 "QuantityParser.l"
+yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 126 "QuantityParser.l"
-yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule 
+#line 127 "QuantityParser.l"
+yylval = Quantity::WattSecond;          return UNIT; //
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
 #line 128 "QuantityParser.l"
-yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
+yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 129 "QuantityParser.l"
+#line 130 "QuantityParser.l"
 yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 130 "QuantityParser.l"
-yylval = Quantity::Radian;              return UNIT; // radian         
+#line 131 "QuantityParser.l"
+yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 131 "QuantityParser.l"
-yylval = Quantity::Gon;                 return UNIT; // gon         
+#line 132 "QuantityParser.l"
+yylval = Quantity::Radian;              return UNIT; // radian
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 133 "QuantityParser.l"
-yylval = Quantity(1.0);                 return ONE;
+yylval = Quantity::Gon;                 return UNIT; // gon
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 134 "QuantityParser.l"
-{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
+#line 135 "QuantityParser.l"
+yylval = Quantity(1.0);                 return ONE;
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 135 "QuantityParser.l"
+#line 136 "QuantityParser.l"
 {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 136 "QuantityParser.l"
-{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
+#line 137 "QuantityParser.l"
+{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 137 "QuantityParser.l"
+#line 138 "QuantityParser.l"
 {  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 140 "QuantityParser.l"
-{yylval = Quantity(M_PI)          ; return NUM;} // constant pi
+#line 139 "QuantityParser.l"
+{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 141 "QuantityParser.l"
-{yylval = Quantity(M_E)           ; return NUM;} // constant e
+#line 142 "QuantityParser.l"
+{yylval = Quantity(M_PI)          ; return NUM;} // constant pi
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
 #line 143 "QuantityParser.l"
-return ACOS;
+{yylval = Quantity(M_E)           ; return NUM;} // constant e
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 144 "QuantityParser.l"
-return ASIN;
+#line 145 "QuantityParser.l"
+return ACOS;
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 145 "QuantityParser.l"
-return ATAN;
+#line 146 "QuantityParser.l"
+return ASIN;
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 146 "QuantityParser.l"
-return ATAN2;
+#line 147 "QuantityParser.l"
+return ATAN;
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 147 "QuantityParser.l"
-return COS;
+#line 148 "QuantityParser.l"
+return ATAN2;
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 148 "QuantityParser.l"
-return EXP;
+#line 149 "QuantityParser.l"
+return COS;
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 149 "QuantityParser.l"
-return ABS;
+#line 150 "QuantityParser.l"
+return EXP;
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 150 "QuantityParser.l"
-return MOD;
+#line 151 "QuantityParser.l"
+return ABS;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 151 "QuantityParser.l"
-return LOG;
+#line 152 "QuantityParser.l"
+return MOD;
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 152 "QuantityParser.l"
-return LOG10;
+#line 153 "QuantityParser.l"
+return LOG;
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 153 "QuantityParser.l"
-return POW;
+#line 154 "QuantityParser.l"
+return LOG10;
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 154 "QuantityParser.l"
-return SIN;
+#line 155 "QuantityParser.l"
+return POW;
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 155 "QuantityParser.l"
-return SINH;
+#line 156 "QuantityParser.l"
+return SIN;
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 156 "QuantityParser.l"
-return TAN;
+#line 157 "QuantityParser.l"
+return SINH;
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 157 "QuantityParser.l"
-return TANH;
+#line 158 "QuantityParser.l"
+return TAN;
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 158 "QuantityParser.l"
-return SQRT;
+#line 159 "QuantityParser.l"
+return TANH;
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
 #line 160 "QuantityParser.l"
-return *yytext;
+return SQRT;
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 161 "QuantityParser.l"
+#line 162 "QuantityParser.l"
+return *yytext;
+	YY_BREAK
+case 101:
+YY_RULE_SETUP
+#line 163 "QuantityParser.l"
 ECHO;
 	YY_BREAK
-#line 1396 "QuantityLexer.c"
+#line 1401 "QuantityLexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -1581,7 +1586,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1650,9 +1655,9 @@ static int yy_get_next_buffer (void)
 	else
 		ret_val = EOB_ACT_CONTINUE_SCAN;
 
-	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+	if ((int) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
-		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
+		int new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
 		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
@@ -2032,7 +2037,7 @@ static void yyensure_buffer_stack (void)
 		 * scanner will even need a stack. We use 2 instead of 1 to avoid an
 		 * immediate realloc on the next call.
          */
-      num_to_alloc = 1; /* After all that talk, this was set to 1 anyways... */
+		num_to_alloc = 1; /* After all that talk, this was set to 1 anyways... */
 		(yy_buffer_stack) = (struct yy_buffer_state**)yyalloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
@@ -2168,7 +2173,7 @@ static void yy_fatal_error (yyconst char* msg )
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        yy_size_t yyless_macro_arg = (n); \
+        int yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		yytext[yyleng] = (yy_hold_char); \
 		(yy_c_buf_p) = yytext + yyless_macro_arg; \
@@ -2358,4 +2363,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 161 "QuantityParser.l"
+#line 163 "QuantityParser.l"

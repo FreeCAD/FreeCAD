@@ -892,12 +892,11 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
             return false;
     return true;
   }
-  catch (Standard_Failure)
+  catch (Standard_Failure& e)
   {
-    Handle(Standard_Failure) e = Standard_Failure::Caught();
     std::ostringstream stream;
-    if (!e.IsNull() && e->GetMessageString())
-      stream << "FaceTypedBSpline::isEqual: OCC Error: " << e->GetMessageString() << std::endl;
+    if (e.GetMessageString())
+      stream << "FaceTypedBSpline::isEqual: OCC Error: " << e.GetMessageString() << std::endl;
     else
       stream << "FaceTypedBSpline::isEqual: Unknown OCC Error" << std::endl;
     Base::Console().Message(stream.str().c_str());

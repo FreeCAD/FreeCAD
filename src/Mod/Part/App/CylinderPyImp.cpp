@@ -178,9 +178,8 @@ PyObject* CylinderPy::uIso(PyObject * args)
         PyErr_SetString(PyExc_NotImplementedError, "this type of conical curve is not implemented");
         return 0;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -205,9 +204,8 @@ PyObject* CylinderPy::vIso(PyObject * args)
         PyErr_SetString(PyExc_NotImplementedError, "this type of conical curve is not implemented");
         return 0;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

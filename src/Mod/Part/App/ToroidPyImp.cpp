@@ -78,9 +78,9 @@ PyObject* ToroidPy::uIso(PyObject * args)
         Handle(Geom_Circle) c = Handle(Geom_Circle)::DownCast(torus->UIso(u));
         return new CirclePy(new GeomCircle(c));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -97,9 +97,9 @@ PyObject* ToroidPy::vIso(PyObject * args)
         Handle(Geom_Circle) c = Handle(Geom_Circle)::DownCast(torus->VIso(v));
         return new CirclePy(new GeomCircle(c));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

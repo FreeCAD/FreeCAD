@@ -50,7 +50,7 @@ class ObjectOp(PathOp.ObjectOp):
     '''Base class for all Path.Area based operations.
     Provides standard features including debugging properties AreaParams,
     PathParams and removalshape, all hidding.
-    The main reason for existance is to implement the standard interface
+    The main reason for existence is to implement the standard interface
     to Path.Area so subclasses only have to provide the shapes for the
     operations.'''
 
@@ -77,7 +77,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def areaOpShapeForDepths(self, obj):
         '''areaOpShapeForDepths(obj) ... returns the shape used to make an initial calculation for the depths being used.
-        The default implementation retuns the job's Base.Shape'''
+        The default implementation returns the job's Base.Shape'''
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
@@ -215,7 +215,7 @@ class ObjectOp(PathOp.ObjectOp):
         pathParams['resume_height'] = obj.StepDown.Value
         pathParams['retraction'] = obj.ClearanceHeight.Value
         pathParams['return_end'] = True
-        # Note that emmitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+        # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams['preamble'] = False
 
         if self.endVector is not None:

@@ -346,13 +346,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     }
                     support = current; // Use result of this operation for fuse/cut of next original
                 }
-            } catch (Standard_Failure) {
+            } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
                 // fuse operation of the transformation result will also fail
-                Handle(Standard_Failure) e = Standard_Failure::Caught();
+        
                 std::string msg("Transformation: Intersection check failed");
-                if (e->GetMessageString() != NULL)
-                    msg += std::string(": '") + e->GetMessageString() + "'";
+                if (e.GetMessageString() != NULL)
+                    msg += std::string(": '") + e.GetMessageString() + "'";
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }

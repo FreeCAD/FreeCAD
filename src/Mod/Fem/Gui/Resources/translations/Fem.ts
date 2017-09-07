@@ -129,6 +129,19 @@
     </message>
 </context>
 <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+        <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
+        <source>FEM mesh boundary layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
+        <source>Creates a FEM mesh boundary layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FEM_MeshClear</name>
     <message>
         <location filename="_CommandFemMeshClear.py" line="41"/>

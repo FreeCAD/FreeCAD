@@ -2220,6 +2220,10 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
         <source>Save AutoRecovery information every</source>
         <translation>AutoWiederherstellen-Informationen speichern alle</translation>
     </message>
+    <message>
+        <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -2584,6 +2588,10 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
         <source>Building US (ft-in/sqft/cuft)</source>
         <translation>Maßsystem angloamerikanisch (ft-in/sqft/cuft)</translation>
     </message>
+    <message>
+        <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2854,7 +2862,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation>Fehler beim Öffnen der gespeicherten Datei: %1</translation>
+        <translation type="obsolete">Fehler beim Öffnen der gespeicherten Datei: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2899,6 +2907,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <source>Error opening saved file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3651,6 +3663,34 @@ Sollen die Änderungen gespeichert werden?</translation>
         <source>PDF format</source>
         <translation>PDF-Format</translation>
     </message>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished">Graphviz nicht gefunden</translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read more about it here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished">Graphviz-Installationspfad</translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished">Graphviz ist fehlgeschlagen</translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
+        <translation type="unfinished">Graphviz konnte keine Bild-Datei erstellen</translation>
+    </message>
 </context>
 <context>
     <name>Gui::InputField</name>
@@ -4290,6 +4330,33 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
         <source>edit selection</source>
         <translation>Selektion bearbeiten</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TextDocumentEditorView</name>
+    <message>
+        <source>Text updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes, reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved document</source>
+        <translation type="unfinished">Nicht gespeichertes Dokument</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished">Wenn Sie nicht speichern, gehen Ihre Änderungen verloren.</translation>
     </message>
 </context>
 <context>
@@ -6954,16 +7021,16 @@ Möchten sie diese ebenfalls kopieren?</translation>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation>Graphviz nicht gefunden</translation>
+        <translation type="obsolete">Graphviz nicht gefunden</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation>Graphviz konnte nicht auf Ihrem System gefunden werden. Möchten Sie den Installationspfad angeben, wenn es bereits installiert ist?</translation>
+        <translation type="obsolete">Graphviz konnte nicht auf Ihrem System gefunden werden. Möchten Sie den Installationspfad angeben, wenn es bereits installiert ist?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation>Graphviz-Installationspfad</translation>
+        <translation type="obsolete">Graphviz-Installationspfad</translation>
     </message>
     <message>
         <source>Dependency graph</source>
@@ -6971,11 +7038,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation>Graphviz ist fehlgeschlagen</translation>
+        <translation type="obsolete">Graphviz ist fehlgeschlagen</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation>Graphviz konnte keine Bild-Datei erstellen</translation>
+        <translation type="obsolete">Graphviz konnte keine Bild-Datei erstellen</translation>
     </message>
 </context>
 <context>

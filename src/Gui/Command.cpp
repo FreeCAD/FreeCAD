@@ -743,18 +743,18 @@ void MacroCommand::activated(int iMsg)
     Q_UNUSED(iMsg); 
 
     QDir d;
-    if(!systemMacro) {
-	std::string cMacroPath;
-	
-	cMacroPath = App::GetApplication().GetParameterGroupByPath
+    if (!systemMacro) {
+        std::string cMacroPath;
+
+        cMacroPath = App::GetApplication().GetParameterGroupByPath
                              ("User parameter:BaseApp/Preferences/Macro")->GetASCII("MacroPath",
                                      App::Application::getUserMacroDir().c_str());
-			     
-	d = QDir(QString::fromUtf8(cMacroPath.c_str()));
+
+        d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-	QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
-	d = QDir(dirstr);
+        QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+        d = QDir(dirstr);
     }
     
     QFileInfo fi(d, QString::fromUtf8(sScriptName));

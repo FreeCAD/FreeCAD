@@ -28,6 +28,7 @@
 #ifndef _PreComp_
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
+# include <NCollection_Vector.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Common.hxx>
@@ -593,7 +594,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
                 aShapeTool->SetShape(faceLabel, xp.Current());
 
                 const App::Color& color = colors[index-1];
-                Quantity_Parameter mat[3];
+                Standard_Real mat[3];
                 mat[0] = color.r;
                 mat[1] = color.g;
                 mat[2] = color.b;
@@ -605,7 +606,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     }
     else if (!colors.empty()) {
         App::Color color = colors.front();
-        Quantity_Parameter mat[3];
+        Standard_Real mat[3];
         mat[0] = color.r;
         mat[1] = color.g;
         mat[2] = color.b;
@@ -681,7 +682,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
                         // TDF_Label faceLabel= TDF_TagSource::NewChild(label);
                         aShapeTool->SetShape(faceLabel, xp.Current());
                         const App::Color& color = colors[index-1];
-                        Quantity_Parameter mat[3];
+                        Standard_Real mat[3];
                         mat[0] = color.r;
                         mat[1] = color.g;
                         mat[2] = color.b;
@@ -694,7 +695,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
             }
             else if (!colors.empty()) {
                 App::Color color = colors.front();
-                Quantity_Parameter mat[3];
+                Standard_Real mat[3];
                 mat[0] = color.r;
                 mat[1] = color.g;
                 mat[2] = color.b;

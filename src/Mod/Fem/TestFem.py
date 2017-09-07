@@ -26,6 +26,7 @@
 
 import Fem
 import FemToolsCcx
+import FemResultTools
 import FreeCAD
 import ObjectsFem
 import tempfile
@@ -507,7 +508,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
-        ret = compare_stats(fea, static_expected_values)
+        ret = compare_stats(fea, static_expected_values, 'CalculiX_static_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
@@ -557,7 +558,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
-        ret = compare_stats(fea, frequency_expected_values)
+        ret = compare_stats(fea, frequency_expected_values, 'CalculiX_frequency_mode_1_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
@@ -685,7 +686,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for thermomech analysis...')
-        ret = compare_stats(fea, thermomech_expected_values)
+        ret = compare_stats(fea, thermomech_expected_values, 'CalculiX_thermomech_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(thermomech_save_fc_file))
@@ -1013,9 +1014,10 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
     stats = []
     for s in loc_stat_types:
         if res_obj_name:
-            statval = fea.get_stats(s, res_obj_name)
+            statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject(res_obj_name), s)
         else:
-            statval = fea.get_stats(s)
+            print('No result object name given')
+            return False
         stats.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     if sf_content != stats:
         fcc_print("Expected stats from {}".format(stat_file))
@@ -1048,7 +1050,7 @@ def runTestFem():
 
 
 def create_test_results():
-    # run FEM unit tests
+    print("run FEM unit tests")
     runTestFem()
 
     import shutil
@@ -1059,20 +1061,19 @@ def create_test_results():
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = FemToolsCcx.FemToolsCcx()
 
-    # static
+    print("create static result files")
     fea.reset_all()
     fea.run()
     fea.load_results()
-    stats_static = []  # we only have one result object so we are fine
+    stats_static = []
     for s in stat_types:
-        statval = fea.get_stats(s)
+        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_results'), s)
         stats_static.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     static_expected_values_file = static_analysis_dir + 'cube_static_expected_values'
     f = open(static_expected_values_file, 'w')
     for s in stats_static:
         f.write(s)
     f.close()
-    # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
     frd_static_test_result_file = static_analysis_dir + 'cube_static.frd'
@@ -1080,15 +1081,15 @@ def create_test_results():
     shutil.copyfile(frd_result_file, frd_static_test_result_file)
     shutil.copyfile(dat_result_file, dat_static_test_result_file)
 
-    # frequency
+    print("create frequency result files")
     fea.reset_all()
     fea.set_analysis_type('frequency')
     fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
     fea.load_results()
-    stats_frequency = []  # since we set eigenmodeno. we only have one result object so we are fine
+    stats_frequency = []
     for s in stat_types:
-        statval = fea.get_stats(s)
+        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_mode_1_results'), s)  # FIXME for some reason result obj name has static
         stats_frequency.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     frequency_expected_values_file = frequency_analysis_dir + 'cube_frequency_expected_values'
     f = open(frequency_expected_values_file, 'w')
@@ -1100,23 +1101,22 @@ def create_test_results():
     shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
     shutil.copyfile(dat_result_file, dat_frequency_test_result_file)
 
-    # thermomech
+    print("create thermomech result files")
     FreeCAD.open(thermomech_save_fc_file)
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = FemToolsCcx.FemToolsCcx()
     fea.reset_all()
     fea.run()
     fea.load_results()
-    stats_thermomech = []  # we only have one result object so we are fine
+    stats_thermomech = []
     for s in stat_types:
-        statval = fea.get_stats(s)
+        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_thermomech_results'), s)
         stats_thermomech.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     thermomech_expected_values_file = thermomech_analysis_dir + 'spine_thermomech_expected_values'
     f = open(thermomech_expected_values_file, 'w')
     for s in stats_thermomech:
         f.write(s)
     f.close()
-    # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
     frd_thermomech_test_result_file = thermomech_analysis_dir + 'spine_thermomech.frd'
@@ -1125,23 +1125,22 @@ def create_test_results():
     shutil.copyfile(dat_result_file, dat_thermomech_test_result_file)
     print('Results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
-    # Flow1D
+    print("create Flow1D result files")
     FreeCAD.open(Flow1D_thermomech_save_fc_file)
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = FemToolsCcx.FemToolsCcx()
     fea.reset_all()
     fea.run()
     fea.load_results()
-    stats_flow1D = []  # be carefule if we have more than one result object !
+    stats_flow1D = []
     for s in stat_types:
-        statval = fea.get_stats(s, 'CalculiX_thermomech_time_1_0_results')
+        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_thermomech_time_1_0_results'), s)
         stats_flow1D.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     Flow1D_thermomech_expected_values_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech_expected_values'
     f = open(Flow1D_thermomech_expected_values_file, 'w')
     for s in stats_flow1D:
         f.write(s)
     f.close()
-    # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
     frd_Flow1D_thermomech_test_result_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.frd'

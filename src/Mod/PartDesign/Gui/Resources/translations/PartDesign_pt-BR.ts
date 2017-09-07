@@ -4,7 +4,7 @@
 <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-        <location filename="../../Command.cpp" line="+1265"/>
+        <location filename="../../Command.cpp" line="+1316"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -15,8 +15,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Loft a selected profile through other profile sections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Sweep a selected sketch along a path or to other profiles</source>
-        <translation>Arrastar (sweep) um esboço selecionado ao longo de um caminho ou até outros perfis</translation>
+        <translation type="obsolete">Arrastar (sweep) um esboço selecionado ao longo de um caminho ou até outros perfis</translation>
     </message>
 </context>
 <context>
@@ -172,9 +176,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignHole</name>
+    <message>
+        <location line="-108"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">PartDesign</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hole</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a hole with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignLine</name>
     <message>
-        <location line="-927"/>
+        <location line="-870"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -192,7 +214,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+1606"/>
+        <location line="+1655"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -243,8 +265,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>Criar um espelhamento</translation>
+        <translation type="obsolete">Criar um espelhamento</translation>
     </message>
 </context>
 <context>
@@ -268,7 +294,7 @@
 <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-        <location line="+138"/>
+        <location line="+161"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -286,7 +312,7 @@
 <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-        <location line="-278"/>
+        <location line="-301"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -330,7 +356,7 @@
 <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-        <location line="-1655"/>
+        <location line="-1704"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -348,7 +374,7 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="+629"/>
+        <location line="+632"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -384,7 +410,7 @@
 <context>
     <name>CmdPartDesignPlane</name>
     <message>
-        <location filename="../../Command.cpp" line="-789"/>
+        <location filename="../../Command.cpp" line="-792"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -402,7 +428,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+844"/>
+        <location line="+847"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -424,7 +450,7 @@
 <context>
     <name>CmdPartDesignPoint</name>
     <message>
-        <location line="-792"/>
+        <location line="-795"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -442,7 +468,7 @@
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+1644"/>
+        <location line="+1693"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -504,7 +530,7 @@
 <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-        <location line="-1683"/>
+        <location line="-1732"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -522,7 +548,7 @@
 <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-        <location line="+1073"/>
+        <location line="+1122"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -533,8 +559,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Loft a selected profile through other profile sections and remove it from the body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-        <translation>Arrastar (sweep) um esboço selecionado ao longo de um caminho ou para outros perfis e removê-lo do corpo</translation>
+        <translation type="obsolete">Arrastar (sweep) um esboço selecionado ao longo de um caminho ou para outros perfis e removê-lo do corpo</translation>
     </message>
 </context>
 <context>
@@ -587,7 +617,7 @@
         <translation>Criar uma primitiva aditiva</translation>
     </message>
     <message>
-        <location line="+97"/>
+        <location line="+113"/>
         <source>Additive Box</source>
         <translation>Cubo Aditivo</translation>
     </message>
@@ -641,7 +671,7 @@
         <translation>Criar uma primitiva subtrativa</translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+111"/>
         <source>Subtractive Box</source>
         <translation>Cubo subtrativo</translation>
     </message>
@@ -1308,7 +1338,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="+795"/>
+        <location filename="../../TaskPipeParameters.cpp" line="+796"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -1571,39 +1601,67 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-        <location filename="../../TaskHoleParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Formulário</translation>
+        <translation type="obsolete">Formulário</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Type:</source>
-        <translation>Tipo:</translation>
+        <translation type="obsolete">Tipo:</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Dimension</source>
-        <translation>Dimensão</translation>
+        <translation type="obsolete">Dimensão</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Up to last</source>
-        <translation>Até o último</translation>
+        <translation type="obsolete">Até o último</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Up to first</source>
-        <translation>Até o primeiro</translation>
+        <translation type="obsolete">Até o primeiro</translation>
     </message>
     <message>
-        <location line="+12"/>
         <source>Size:</source>
-        <translation>Tamanho:</translation>
+        <translation type="obsolete">Tamanho:</translation>
+    </message>
+    <message>
+        <source>TaskHoleParameters</source>
+        <translation type="obsolete">Parâmetros do TaskHole</translation>
     </message>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
-        <source>TaskHoleParameters</source>
-        <translation>Parâmetros do TaskHole</translation>
+        <source>Hole parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>None</source>
+        <translation type="unfinished">Nenhum</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>ISO metric coarse profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>ISO metric fine profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>UTS coarse profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>UTS fine profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>UTS extra fine profile</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2081,19 +2139,27 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Frenet</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Auxillery</source>
-        <translation type="unfinished">Auxillery</translation>
+        <translation type="obsolete">Auxillery</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Binormal</source>
         <translation type="unfinished">Binormal</translation>
     </message>
     <message>
-        <location line="+20"/>
         <source>Curvelinear equivalenz</source>
-        <translation type="unfinished">Curvelinear equivalenz</translation>
+        <translation type="obsolete">Curvelinear equivalenz</translation>
+    </message>
+    <message>
+        <location line="-5"/>
+        <source>Auxiliary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Curvelinear equivalence</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2136,7 +2202,7 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="-502"/>
+        <location filename="../../TaskPipeParameters.cpp" line="-503"/>
         <source>Section orientation</source>
         <translation>Orientação de secção</translation>
     </message>
@@ -2737,19 +2803,27 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="-168"/>
         <source>Create an additive box by its with, height and length</source>
-        <translation>Criar um Cubo aditivo pela largura, altura e comprimento</translation>
+        <translation type="obsolete">Criar um Cubo aditivo pela largura, altura e comprimento</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../../CommandPrimitive.cpp" line="-180"/>
         <source>Create an additive cylinder by its radius, height and angle</source>
         <translation>Criar um cilindro aditivo pelo seu raio, altura e ângulo</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>Create an additive sphere by its radius and varius angles</source>
-        <translation>Criar uma esfera aditiva pelo seu raio e vários ângulos</translation>
+        <translation type="obsolete">Criar uma esfera aditiva pelo seu raio e vários ângulos</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Create an additive box by its width, height and length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Create an additive sphere by its radius and various angles</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2780,19 +2854,27 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
-        <location line="+113"/>
         <source>Create an subtractive box by its with, height and length</source>
-        <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+        <translation type="obsolete">Create an subtractive box by its with, height and length</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+133"/>
         <source>Create an subtractive cylinder by its radius, height and angle</source>
         <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>Create an subtractive sphere by its radius and varius angles</source>
-        <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+        <translation type="obsolete">Create an subtractive sphere by its radius and varius angles</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Create an subtractive box by its width, height and length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Create an subtractive sphere by its radius and various angles</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2823,7 +2905,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-        <location filename="../../CommandBody.cpp" line="+576"/>
+        <location filename="../../CommandBody.cpp" line="+586"/>
         <source>Select body</source>
         <translation>Selecionar corpo</translation>
     </message>
@@ -2836,7 +2918,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-        <location line="+137"/>
+        <location line="+150"/>
         <source>Select feature</source>
         <translation>Selecione o recurso</translation>
     </message>
@@ -2979,7 +3061,7 @@ Create the sketch on a face.</source>
         <translation type="obsolete">Editar chanfro</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-1562"/>
+        <location filename="../../Command.cpp" line="-1613"/>
         <source>Invalid selection</source>
         <translation>Seleção inválida</translation>
     </message>
@@ -2993,13 +3075,19 @@ Create the sketch on a face.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
+        <location line="+3"/>
         <location line="+2"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location line="+243"/>
+        <location line="-5"/>
+        <source>There is no active body. Please make a body active before inserting a datum entity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+248"/>
         <source>Several sub-elements selected</source>
         <translation>Vários sub-elementos selecionados</translation>
     </message>
@@ -3040,30 +3128,32 @@ Create the sketch on a face.</source>
     </message>
     <message>
         <location line="+13"/>
-        <location line="+290"/>
-        <location line="+781"/>
+        <location line="+293"/>
+        <location line="+827"/>
         <location filename="../../ViewProvider.cpp" line="+101"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+74"/>
         <location filename="../../ViewProviderDatum.cpp" line="+251"/>
+        <location filename="../../ViewProviderHole.cpp" line="+81"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="+83"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="+92"/>
         <source>A dialog is already open in the task panel</source>
         <translation>Uma caixa de diálogo já está aberta no painel de tarefas</translation>
     </message>
     <message>
-        <location line="-1070"/>
-        <location line="+290"/>
-        <location line="+781"/>
+        <location line="-1119"/>
+        <location line="+293"/>
+        <location line="+827"/>
         <location filename="../../ViewProvider.cpp" line="+1"/>
         <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
         <location filename="../../ViewProviderDatum.cpp" line="+1"/>
+        <location filename="../../ViewProviderHole.cpp" line="+1"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="+1"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="+1"/>
         <source>Do you want to close this dialog?</source>
         <translation>Deseja fechar este diálogo?</translation>
     </message>
     <message>
-        <location line="-849"/>
+        <location line="-898"/>
         <source>No sketch to work on</source>
         <translation type="unfinished">No sketch to work on</translation>
     </message>
@@ -3073,7 +3163,7 @@ Create the sketch on a face.</source>
         <translation type="unfinished">No sketch is available in the document</translation>
     </message>
     <message>
-        <location line="+551"/>
+        <location line="+600"/>
         <source>Select an edge, face or body.</source>
         <translation type="unfinished">Select an edge, face or body.</translation>
     </message>
@@ -3183,7 +3273,7 @@ Create the sketch on a face.</source>
         <translation type="obsolete">Editar revolução</translation>
     </message>
     <message>
-        <location filename="../../CommandBody.cpp" line="-736"/>
+        <location filename="../../CommandBody.cpp" line="-759"/>
         <source>Part creation failed</source>
         <translation type="unfinished">Part creation failed</translation>
     </message>
@@ -3226,9 +3316,13 @@ Create the sketch on a face.</source>
         <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Body may be based no more than on one feature.</source>
-        <translation type="unfinished">Body may be based no more than on one feature.</translation>
+        <translation type="obsolete">Body may be based no more than on one feature.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Body may be based on no more than one feature.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+101"/>
@@ -3242,27 +3336,25 @@ Create the sketch on a face.</source>
     </message>
     <message>
         <location line="+148"/>
-        <location line="+287"/>
         <source>Sketch plane cannot be migrated</source>
         <translation type="unfinished">Sketch plane cannot be migrated</translation>
     </message>
     <message>
-        <location line="-286"/>
-        <location line="+287"/>
+        <location line="+1"/>
         <source>Please edit &apos;%1&apos; and redefine it to use a Base or Datum plane as the sketch plane.</source>
         <translation type="unfinished">Please edit &apos;%1&apos; and redefine it to use a Base or Datum plane as the sketch plane.</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="+62"/>
         <location line="+4"/>
         <location line="+5"/>
-        <location line="+266"/>
+        <location line="+289"/>
         <location line="+7"/>
         <source>Selection error</source>
         <translation>Erro de seleção</translation>
     </message>
     <message>
-        <location line="-281"/>
+        <location line="-304"/>
         <source>Select exactly one PartDesign feature or a body.</source>
         <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
     </message>
@@ -3282,22 +3374,28 @@ Create the sketch on a face.</source>
     </message>
     <message>
         <location line="+116"/>
-        <location line="+27"/>
+        <location line="+22"/>
+        <location line="+15"/>
         <source>Features cannot be moved</source>
         <translation type="unfinished">Features cannot be moved</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="-36"/>
         <source>Some of the selected features have dependencies in the source body</source>
         <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+22"/>
+        <source>Only features of a single source Body can be moved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>There are no other bodies to move to</source>
         <translation type="unfinished">There are no other bodies to move to</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+135"/>
         <source>Impossible to move the base feature of a body.</source>
         <translation type="unfinished">Impossible to move the base feature of a body.</translation>
     </message>
@@ -3312,7 +3410,7 @@ Create the sketch on a face.</source>
         <translation type="unfinished">Beginning of the body</translation>
     </message>
     <message>
-        <location filename="../../CommandPrimitive.cpp" line="-100"/>
+        <location filename="../../CommandPrimitive.cpp" line="-116"/>
         <source>No previous feature found</source>
         <translation type="unfinished">No previous feature found</translation>
     </message>
@@ -3344,14 +3442,20 @@ Create the sketch on a face.</source>
         <translation>Face</translation>
     </message>
     <message>
-        <location filename="../../Utils.cpp" line="+72"/>
+        <location filename="../../Utils.cpp" line="+80"/>
         <source>No active Body</source>
         <translation type="unfinished">No active Body</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-        <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+        <translation type="obsolete">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+
+If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3437,12 +3541,12 @@ This feature is broken and can&apos;t be edited.</source>
 This feature is broken and can&apos;t be edited.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderLoft.cpp" line="+69"/>
+        <location filename="../../ViewProviderLoft.cpp" line="+77"/>
         <source>Edit loft</source>
         <translation type="unfinished">Edit loft</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPipe.cpp" line="+69"/>
+        <location filename="../../ViewProviderPipe.cpp" line="+80"/>
         <source>Edit pipe</source>
         <translation type="unfinished">Edit pipe</translation>
     </message>
@@ -3496,6 +3600,11 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
         <location line="+9"/>
         <source>Migrate manually</source>
         <translation type="unfinished">Migrate manually</translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderHole.cpp" line="-18"/>
+        <source>Edit hole</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3625,6 +3734,157 @@ Although you will be able to migrate any moment later with &apos;Part Design-&gt
         <location line="+18"/>
         <source>Thread length</source>
         <translation type="unfinished">Thread length</translation>
+    </message>
+</context>
+<context>
+    <name>TaskHoleParameters</name>
+    <message>
+        <location filename="../../TaskHoleParameters.ui" line="+14"/>
+        <source>Task Hole Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <location line="+251"/>
+        <source>Type</source>
+        <translation type="unfinished">Tipo</translation>
+    </message>
+    <message>
+        <location line="-244"/>
+        <location line="+260"/>
+        <source>Diameter</source>
+        <translation type="unfinished">Diâmetro</translation>
+    </message>
+    <message>
+        <location line="-253"/>
+        <location line="+269"/>
+        <source>Depth</source>
+        <translation type="unfinished">Depth</translation>
+    </message>
+    <message>
+        <location line="-259"/>
+        <source>Cutoff inner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Tapered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Direction</source>
+        <translation type="unfinished">Direção</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Flat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Angled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Pitch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Right hand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Left hand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Model actual thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Threaded</source>
+        <translation type="unfinished">Threaded</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Angle</source>
+        <translation type="unfinished">Ângulo</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Profile</source>
+        <translation type="unfinished">Perfil</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Countersink angle</source>
+        <translation type="unfinished">Countersink angle</translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <source>Dimension</source>
+        <translation type="unfinished">Dimensão</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Through all</source>
+        <translation type="unfinished">Atravessando tudo</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Standard fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Close fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Cutoff outer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>&lt;b&gt;Misc&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

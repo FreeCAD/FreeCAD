@@ -56,8 +56,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.solver = None
         if self.analysis:
             self.update_objects()
-            self.results_present = False
-            self.result_object = None
         else:
             raise Exception('FEM: No active analysis found!')
 
@@ -69,26 +67,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
                     self.analysis.Document.removeObject(m.Mesh.Name)
                 self.analysis.Document.removeObject(m.Name)
-        self.results_present = False
         FreeCAD.ActiveDocument.recompute()
-
-    ## Resets mesh deformation
-    #  @param self The python object self
-    def reset_mesh_deformation(self):
-        if FreeCAD.GuiUp:
-            if self.mesh:
-                self.mesh.ViewObject.applyDisplacement(0.0)
-
-    ## Resets mesh color
-    #  @param self The python object self
-    def reset_mesh_color(self):
-        if FreeCAD.GuiUp:
-            if self.mesh:
-                self.mesh.ViewObject.NodeColor = {}
-                self.mesh.ViewObject.ElementColor = {}
-                node_numbers = self.mesh.FemMesh.Nodes.keys()
-                zero_values = [0] * len(node_numbers)
-                self.mesh.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
 
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
@@ -97,65 +76,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
             self.purge_results()
-        if FreeCAD.GuiUp:
-            self.reset_mesh_color()
-            self.reset_mesh_deformation()
 
     ## Resets mesh color, deformation and removes all result objects
     #  @param self The python object self
     def reset_all(self):
         self.purge_results()
-        if FreeCAD.GuiUp:
-            self.reset_mesh_color()
-            self.reset_mesh_deformation()
-
-    ## Sets mesh color using selected type of results (Sabs by default)
-    #  @param self The python object self
-    #  @param result_type Type of FEM result, allowed are:
-    #  - U1, U2, U3 - deformation
-    #  - Uabs - absolute deformation
-    #  - Sabs - Von Mises stress
-    #  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hot spots.
-    def show_result(self, result_type="Sabs", limit=None):
-        self.update_objects()
-        if result_type == "None":
-            self.reset_mesh_color()
-            return
-        if self.result_object:
-            if FreeCAD.GuiUp:
-                if self.result_object.Mesh.ViewObject.Visibility is False:
-                    self.result_object.Mesh.ViewObject.Visibility = True
-            if result_type == "Sabs":
-                values = self.result_object.StressValues
-            elif result_type == "Uabs":
-                values = self.result_object.DisplacementLengths
-            else:
-                match = {"U1": 0, "U2": 1, "U3": 2}
-                d = zip(*self.result_object.DisplacementVectors)
-                values = list(d[match[result_type]])
-            self.show_color_by_scalar_with_cutoff(values, limit)
-
-    ## Sets mesh color using list of values. Internally used by show_result function.
-    #  @param self The python object self
-    #  @param values list of values
-    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
-    def show_color_by_scalar_with_cutoff(self, values, limit=None):
-        if limit:
-            filtered_values = []
-            for v in values:
-                if v > limit:
-                    filtered_values.append(limit)
-                else:
-                    filtered_values.append(v)
-        else:
-            filtered_values = values
-        self.mesh.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, filtered_values)
-
-    def show_displacement(self, displacement_factor=0.0):
-        if FreeCAD.GuiUp:
-            self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers,
-                                                              self.result_object.DisplacementVectors)
-            self.mesh.ViewObject.applyDisplacement(displacement_factor)
 
     def update_objects(self):
         # [{'Object':materials_linear}, {}, ...]
@@ -596,70 +521,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         print('FemTools.setup_working_dir()  -->  self.working_dir = ' + self.working_dir)
         # Update inp file name
         self.set_inp_file_name()
-
-    ## Set the analysis result object
-    #  if no result object is provided, check if the analysis has result objects
-    #  if the analysis has exact one result object use this result object
-    #  @param self The python object self
-    #  @param result object name
-    def use_results(self, results_name=None):
-        self.result_object = None
-        if results_name is not None:
-            for m in self.analysis.Member:
-                if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
-                    self.result_object = m
-                    break
-            if not self.result_object:
-                raise Exception("{} doesn't exist".format(results_name))
-        else:
-            has_results = False
-            for m in self.analysis.Member:
-                if m.isDerivedFrom("Fem::FemResultObject"):
-                    self.result_object = m
-                    if has_results is True:
-                        self.result_object = None
-                        raise Exception("No result name was provided, but more than one result objects in the analysis.")
-                    has_results = True
-            if not self.result_object:
-                raise Exception("No result object found in the analysis")
-
-    ## Returns minimum, average and maximum value for provided result type
-    #  @param self The python object self
-    #  @param result_type Type of FEM result, allowed are:
-    #  - U1, U2, U3 - deformation
-    #  - Uabs - absolute deformation
-    #  - Sabs - Von Mises stress
-    #  - Prin1 - Principal stress 1
-    #  - Prin2 - Principal stress 2
-    #  - Prin3 - Principal stress 3
-    #  - MaxSear - maximum shear stress
-    #  - Peeq - peeq strain
-    #  - Temp - Temperature
-    #  - MFlow - MassFlowRate
-    #  - NPress - NetworkPressure
-    #  - None - always return (0.0, 0.0, 0.0)
-    def get_stats(self, result_type, results_name=None):
-        self.use_results(results_name)
-        m = self.result_object
-        stats = (0.0, 0.0, 0.0)
-        match_table = {
-            "U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
-            "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
-            "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
-            "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
-            "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
-            "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
-            "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
-            "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
-            "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
-            "Peeq": (m.Stats[27], m.Stats[28], m.Stats[29]),
-            "Temp": (m.Stats[30], m.Stats[31], m.Stats[32]),
-            "MFlow": (m.Stats[33], m.Stats[34], m.Stats[35]),
-            "NPress": (m.Stats[36], m.Stats[37], m.Stats[38]),
-            "None": (0.0, 0.0, 0.0)
-        }
-        stats = match_table[result_type]
-        return stats
 
 
 # helper

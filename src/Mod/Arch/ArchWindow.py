@@ -420,7 +420,7 @@ class _CommandWindow:
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
             if obj.isDerivedFrom("Part::Feature"):
-                if obj.Shape.Wires and not obj.Shape.Faces:
+                if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
                     if hasattr(obj,"Support"):
@@ -440,19 +440,11 @@ class _CommandWindow:
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
                     if host and self.Include:
-                        if self.RemoveExternal:
-                            FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
-                        else:
-                            # make a new object to avoid circular references
-                            FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
-                            FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                        FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
                         siblings = host.Proxy.getSiblings(host)
                         for sibling in siblings:
-                            if self.RemoveExternal:
-                                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
-                            else:
-                                FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
-                                FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                            if not sibling in win.Hosts:
+                                FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
@@ -495,18 +487,10 @@ class _CommandWindow:
         FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
         if obj and self.Include:
             if Draft.getType(obj) in AllowedHosts:
-                if self.RemoveExternal:
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
-                else:
-                    FreeCADGui.doCommand("host=Arch.make"+Draft.getType(obj)+"(FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
                 siblings = obj.Proxy.getSiblings(obj)
                 for sibling in siblings:
-                    if self.RemoveExternal:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
-                    else:
-                        FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host)")
+                    FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return
@@ -637,6 +621,7 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
+        obj.addProperty("App::PropertyLinkList","Hosts","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
         obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
         obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
@@ -650,8 +635,13 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
         obj.addProperty("App::PropertyPercent","Opening","Arch",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
         obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
+        obj.addProperty("App::PropertyBool","SymbolPlan","Arch",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
+        obj.addProperty("App::PropertyBool","SymbolElevation","Arch",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
         obj.setEditorMode("Preset",2)
         obj.setEditorMode("WindowParts",2)
+        obj.setEditorMode("VerticalArea",2)
+        obj.setEditorMode("HorizontalArea",2)
+        obj.setEditorMode("PerimeterLength",2)
         self.Type = "Window"
         obj.Role = Roles
         obj.Role = "Window"
@@ -660,6 +650,11 @@ class _Window(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
+        if prop == "Hosts":
+            if hasattr(obj,"Hosts"):
+                for host in obj.Hosts:
+                    # mark host to recompute so it can detect this object
+                    host.touch()
         if not "Restore" in obj.State:
             if prop in ["Base","WindowParts"]:
                 self.execute(obj)
@@ -752,7 +747,10 @@ class _Window(ArchComponent.Component):
                                     e = obj.Base.Shape.Edges[hinge]
                                     ev1 = e.Vertexes[0].Point
                                     ev2 = e.Vertexes[-1].Point
-                                    if ev2.z < ev1.z:
+                                    if (ev2.z - ev1.z) < 0.1**Draft.precision():
+                                        if ev2.y < ev1.y:
+                                            ev1,ev2 = ev2,ev1
+                                    elif ev2.z < ev1.z:
                                         ev1,ev2 = ev2,ev1
                                     p = None
                                     d = 0
@@ -765,11 +763,10 @@ class _Window(ArchComponent.Component):
                                         chord = p.sub(ev1)
                                         enorm = ev2.sub(ev1)
                                         proj = DraftVecUtils.project(chord,enorm)
+                                        v1 = ev1
                                         if proj.Length > 0:
-                                            v1 = ev1.add(proj)
-                                            chord = p.sub(v1)
-                                        else:
-                                            v1 = ev1
+                                            chord = p.sub(ev1.add(proj))
+                                            p = v1.add(chord)
                                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
                                         if omode == 1: # Arc 90
                                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
@@ -901,8 +898,22 @@ class _Window(ArchComponent.Component):
         base = self.processSubShapes(obj,base)
         if base:
             if not base.isNull():
+                b = []
                 if self.sshapes:
-                    base = Part.makeCompound([base]+self.sshapes+self.vshapes)
+                    if hasattr(obj,"SymbolPlan"):
+                        if obj.SymbolPlan:
+                            b.extend(self.sshapes)
+                    else:
+                        b.extend(self.sshapes)
+                if self.vshapes:
+                    if hasattr(obj,"SymbolElevation"):
+                        if obj.SymbolElevation:
+                            b.extend(self.vshapes)
+                    else:
+                        b.extend(self.vshapes)
+                if b:
+                    base = Part.makeCompound([base]+b)
+                    #base = Part.makeCompound([base]+self.sshapes+self.vshapes)
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
                 obj.Placement = pl
         if hasattr(obj,"Area"):
@@ -986,6 +997,9 @@ class _Window(ArchComponent.Component):
                 f.Placement = obj.Placement
             return f
         return None
+
+    def computeAreas(self,obj):
+        return
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
@@ -1085,8 +1099,8 @@ class _ArchWindowTaskPanel:
         self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.title, 0, 0, 1, 7)
-        basepanel = ArchComponent.ComponentTaskPanel()
-        self.form = [self.baseform,basepanel.baseform]
+        self.basepanel = ArchComponent.ComponentTaskPanel()
+        self.form = [self.baseform,self.basepanel.baseform]
         
         # base object
         self.tree = QtGui.QTreeWidget(self.baseform)
@@ -1296,7 +1310,9 @@ class _ArchWindowTaskPanel:
                 else:
                     self.holeNumber.setText("0")
                         
-                self.retranslateUi(self.baseform)
+            self.retranslateUi(self.baseform)
+            self.basepanel.obj = self.obj
+            self.basepanel.update()
 
     def addElement(self):
         'opens the component creation dialog'

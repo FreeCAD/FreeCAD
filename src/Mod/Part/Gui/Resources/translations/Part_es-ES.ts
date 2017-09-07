@@ -3960,7 +3960,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="+172"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="+204"/>
         <location line="+19"/>
         <location line="+28"/>
         <location line="+52"/>
@@ -4842,7 +4842,7 @@ Do you want to continue?</source>
         <translation>Editar plano de simetría</translation>
     </message>
     <message>
-        <location line="+304"/>
+        <location line="+300"/>
         <source>Edit chamfer edges</source>
         <translation>Editar bordes del chaflán</translation>
     </message>
@@ -4861,7 +4861,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Transformar</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+201"/>
+        <location filename="../../AppPartGui.cpp" line="+207"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Diseño de piezas</translation>
@@ -4897,7 +4897,7 @@ Do you want to continue?</source>
         <translation>Tiene que seleccionar dos aristas o dos alambres.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="-332"/>
+        <location filename="../../ViewProviderMirror.cpp" line="-330"/>
         <source>Edit fillet edges</source>
         <translation>Editar aristas redondeadas</translation>
     </message>
@@ -5208,18 +5208,18 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskDimension.cpp" line="+552"/>
-        <location line="+1042"/>
+        <location line="+1046"/>
         <source>Selections</source>
         <translation>Selecciones</translation>
     </message>
     <message>
-        <location line="-1035"/>
-        <location line="+1042"/>
+        <location line="-1039"/>
+        <location line="+1046"/>
         <source>Control</source>
         <translation>Control</translation>
     </message>
     <message>
-        <location line="-265"/>
+        <location line="-269"/>
         <source>Reset Dialog</source>
         <translation>Restablecer diálogo</translation>
     </message>
