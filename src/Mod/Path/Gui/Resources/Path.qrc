@@ -53,7 +53,9 @@
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
+        <file>panels/DlgJobTemplateExport.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
+        <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
@@ -69,6 +71,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
+        <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/SurfaceEdit.ui</file>
         <file>panels/ToolControl.ui</file>

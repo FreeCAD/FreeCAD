@@ -43,8 +43,11 @@ SET(PathScripts_SRCS
     PathScripts/PathHelix.py
     PathScripts/PathHelixGui.py
     PathScripts/PathHop.py
+    PathScripts/PathIconViewProvider.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
+    PathScripts/PathJobCmd.py
+    PathScripts/PathJobGui.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathMillFaceGui.py
@@ -115,6 +118,7 @@ SET(PathTests_SRCS
     PathTests/TestPathGeom.py
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
+    PathTests/TestPathStock.py
     PathTests/TestPathUtil.py
 )
 

@@ -58,7 +58,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathHelixGui
         from PathScripts import PathHop
         from PathScripts import PathInspect
-        from PathScripts import PathJob
+        from PathScripts import PathJobCmd
         from PathScripts import PathMillFaceGui
         from PathScripts import PathPlane
         from PathScripts import PathPocketGui
@@ -68,7 +68,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathProfileFacesGui
         from PathScripts import PathSanity
         from PathScripts import PathSimpleCopy
-        from PathScripts import PathStock
         from PathScripts import PathStop
         from PathScripts import PathSurface
         from PathScripts import PathToolController
@@ -84,7 +83,7 @@ class PathWorkbench (Workbench):
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
-        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane", "Path_Stock"]
+        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
@@ -142,15 +141,17 @@ class PathWorkbench (Workbench):
                 selectedName = obj.Name
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
+                if "Remote" in selectedName:
+                    self.appendContextMenu("", ["Refresh_Path"])
+            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
+                self.appendContextMenu("", ["Path_OperationCopy"])
+            if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
+                    self.appendContextMenu("", "Separator")
                     #self.appendContextMenu("", ["Set_StartPoint"])
                     #self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
-                if "Remote" in selectedName:
-                    self.appendContextMenu("", ["Refresh_Path"])
-            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
-                self.appendContextMenu("", ["Path_CloneOperation"])
 
 Gui.addWorkbench(PathWorkbench())
 

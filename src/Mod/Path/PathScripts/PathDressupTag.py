@@ -242,7 +242,7 @@ def Create(baseObject, name = 'DressupTag'):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TagDressup")
     dbo = ObjectDressup(obj, baseObject)
     job = PathUtils.findParentJob(baseObject)
-    PathUtils.addObjectToJob(obj, job)
+    job.adddOperation(obj)
     dbo.assignDefaultValues()
     return obj
 
