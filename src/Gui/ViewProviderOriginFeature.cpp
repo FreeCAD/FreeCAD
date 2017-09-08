@@ -69,8 +69,6 @@ ViewProviderOriginFeature::ViewProviderOriginFeature () {
     pLabel = new SoAsciiText();
     pLabel->ref();
     pLabel->width.setValue(-1);
-
-    sPixmap = "view-measurement";
 }
 
 

@@ -310,10 +310,10 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             //independent copies don't have links and are not attached
             if(independent && (
-                prop->getTypeId() == App::PropertyLink::getClassTypeId() ||
-                prop->getTypeId() == App::PropertyLinkList::getClassTypeId() ||
-                prop->getTypeId() == App::PropertyLinkSub::getClassTypeId() ||
-                prop->getTypeId() == App::PropertyLinkSubList::getClassTypeId()||
+                prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()) ||
+                prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()) ||
+                prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()) ||
+                prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())||
                 ( prop->getGroup() && strcmp(prop->getGroup(),"Attachment")==0) ))    {
 
                 ++it;

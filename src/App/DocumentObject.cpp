@@ -34,6 +34,7 @@
 #include "PropertyLinks.h"
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
+#include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
@@ -73,6 +74,10 @@ DocumentObject::~DocumentObject(void)
 
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
+    //check if the links are valid before making the recompute
+    if(!GeoFeatureGroupExtension::areLinksValid(this))
+        return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
+
     // set/unset the execution bit
     ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
     return this->execute();
@@ -573,7 +578,11 @@ void DocumentObject::unsetupObject()
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
 #ifndef USE_OLD_DAG
-       _inList.erase(std::remove(_inList.begin(), _inList.end(), rmvObj), _inList.end());
+    //do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
+    //single one.
+    auto it = std::find(_inList.begin(), _inList.end(), rmvObj);
+    if(it != _inList.end())
+        _inList.erase(it);
 #else
     (void)rmvObj;
 #endif
@@ -582,8 +591,11 @@ void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
 #ifndef USE_OLD_DAG
-    if ( std::find(_inList.begin(), _inList.end(), newObj) == _inList.end() )
-       _inList.push_back(newObj);
+    //we need to add all links, even if they are available multiple times. The reason for this is the
+    //removal: If a link loses this object it removes the backlink. If we would have added it only once
+    //this removal would clear the object from the inlist, even though there may be other link properties 
+    //from this object that link to us.
+    _inList.push_back(newObj);
 #else
     (void)newObj;
 #endif //USE_OLD_DAG    

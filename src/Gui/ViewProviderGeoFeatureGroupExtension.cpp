@@ -33,7 +33,6 @@
 #include "Application.h"
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
-#include <Base/Console.h>
 #include <Inventor/nodes/SoGroup.h>
 
 using namespace Gui;
@@ -76,8 +75,22 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         //object in the tree
         std::vector<App::DocumentObject*> claim;
         auto objs = ext->Group.getValues();
-        for(auto obj : objs) {            
-            if(obj->getInList().size()<=1)
+        
+        for(auto obj : objs) {  
+            
+            auto vin = obj->getInList();
+            
+            //we don't want to count objects that are deleted or part of other geo feature groups. 
+            //Second criteria is actually not possible in normal operation, but only in some error
+            //condition. But then it is needed to understand the problem for the user
+            auto grp = getExtendedViewProvider()->getObject();
+            vin.erase(std::remove_if(vin.begin(), vin.end(), [&](App::DocumentObject* obj)->bool {
+                return obj->isDeleting() || 
+                       obj == grp ||
+                       App::GeoFeatureGroupExtension::getGroupOfObject(obj)!=grp;
+            }), vin.end());
+            
+            if(vin.empty())
                 claim.push_back(obj);
         }
         return claim;

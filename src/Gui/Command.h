@@ -61,6 +61,7 @@ void CreateFeatCommands(void);
 void CreateMacroCommands(void);
 void CreateViewStdCommands(void);
 void CreateWindowStdCommands(void);
+void CreateStructureCommands(void);
 void CreateTestCommands(void);
 
 

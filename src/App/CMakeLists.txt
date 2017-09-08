@@ -15,7 +15,7 @@ ENDIF(DOCDIR)
 add_definitions(-DBOOST_${Boost_VERSION})
 
 #if you want to use the old DAG structure uncomment this line
-add_definitions(-DUSE_OLD_DAG)
+#add_definitions(-DUSE_OLD_DAG)
 
 #write relevant cmake variables to a file for later access with python. Exportet are all variables 
 #starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 

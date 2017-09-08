@@ -33,6 +33,7 @@
 #include "TaskLinearPatternParameters.h"
 #include "TaskPolarPatternParameters.h"
 #include "TaskScaledParameters.h"
+#include "Utils.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -49,8 +50,8 @@
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/PartDesign/App/FeatureScaled.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -258,7 +259,8 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
 
     Gui::Command::openCommand("Mirrored");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::Mirrored\",\"%s\")",
+                            PartDesignGui::getBody(false)->getNameInDocument(), newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
@@ -274,7 +276,8 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
 
     Gui::Command::openCommand("LinearPattern");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::LinearPattern\",\"%s\")",
+                            PartDesignGui::getBody(false), newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
@@ -292,7 +295,8 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
 
     Gui::Command::openCommand("PolarPattern");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::PolarPattern\",\"%s\")",
+                            PartDesignGui::getBody(false)->getNameInDocument(), newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
@@ -310,7 +314,8 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
 
     Gui::Command::openCommand("Scaled");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Scaled\",\"%s\")",newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::Scaled\",\"%s\")",
+                            PartDesignGui::getBody(false)->getNameInDocument(), newFeatName.c_str());
     //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Factor = 2", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());

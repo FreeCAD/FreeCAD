@@ -51,6 +51,8 @@ using namespace std;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLink , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkChild , App::PropertyLink)
+TYPESYSTEM_SOURCE(App::PropertyLinkGlobal , App::PropertyLink)
 
 //**************************************************************************
 // Construction/Destruction
@@ -75,11 +77,13 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
 {
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    // maintain the back link in the DocumentObject class
-    if(_pcLink)
-        _pcLink->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if(lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    // maintain the back link in the DocumentObject class if it is from a document object
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if(_pcLink)
+            _pcLink->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if(lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     _pcLink=lValue;
     hasSetValue();
@@ -179,6 +183,8 @@ void PropertyLink::Paste(const Property &from)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkListChild , App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal , App::PropertyLinkList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -208,10 +214,12 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
 {
 #ifndef USE_OLD_DAG   
     //maintain the back link in the DocumentObject class
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if(lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if(lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     if (lValue){
@@ -232,10 +240,12 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue)
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     //maintain the back link in the DocumentObject class
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    for(auto *obj : lValue)
-        obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        for(auto *obj : lValue)
+            obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     _lValueList = lValue;
     hasSetValue();
@@ -367,6 +377,8 @@ unsigned int PropertyLinkList::getMemSize(void) const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubChild , App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal , App::PropertyLinkSub)
 
 //**************************************************************************
 // Construction/Destruction
@@ -391,10 +403,12 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
 {
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if (_pcLinkSub)
-        _pcLinkSub->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
-    if (lValue)
-        lValue->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if (_pcLinkSub)
+            _pcLinkSub->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
+        if (lValue)
+            lValue->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
+    }
 #endif
     _pcLinkSub=lValue;
     _cSubList = SubList;
@@ -557,6 +571,8 @@ void PropertyLinkSub::Paste(const Property &from)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild , App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal , App::PropertyLinkSubList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -587,10 +603,12 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 {
 #ifndef USE_OLD_DAG
     //maintain backlinks
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if (lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if (lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     if (lValue) {
@@ -615,15 +633,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
-    //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
-    //object to ensure that this works
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    
-    //maintain backlinks. lValue can contain items multiple times, but we trust the document 
-    //object to ensure that the backlink is only added once
-    for(auto *obj : lValue)
-        obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    //maintain backlinks. 
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        
+        //_lValueList can contain items multiple times, but we trust the document 
+        //object to ensure that this works
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        
+        //maintain backlinks. lValue can contain items multiple times, but we trust the document 
+        //object to ensure that the backlink is only added once
+        for(auto *obj : lValue)
+            obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     aboutToSetValue();
@@ -641,15 +663,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
 #ifndef USE_OLD_DAG
-    //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
-    //object to ensure that this works
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    
-    //maintain backlinks. lValue can contain items multiple times, but we trust the document 
-    //object to ensure that the backlink is only added once
-    for(auto *obj : lValue)
-        obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    //maintain backlinks. 
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        
+        //_lValueList can contain items multiple times, but we trust the document 
+        //object to ensure that this works
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        
+        //maintain backlinks. lValue can contain items multiple times, but we trust the document 
+        //object to ensure that the backlink is only added once
+        for(auto *obj : lValue)
+            obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     aboutToSetValue();
@@ -660,16 +686,20 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
-#ifndef USE_OLD_DAG    
-    //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
-    //object to ensure that this works
-    for(auto *obj : _lValueList)
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    
-    //maintain backlinks. lValue can contain items multiple times, but we trust the document 
-    //object to ensure that the backlink is only added once
-    if(lValue)
-        lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+#ifndef USE_OLD_DAG   
+    //maintain backlinks.
+    if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        
+        //_lValueList can contain items multiple times, but we trust the document 
+        //object to ensure that this works
+        for(auto *obj : _lValueList)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        
+        //maintain backlinks. lValue can contain items multiple times, but we trust the document 
+        //object to ensure that the backlink is only added once
+        if(lValue)
+            lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+    }
 #endif
     
     aboutToSetValue();

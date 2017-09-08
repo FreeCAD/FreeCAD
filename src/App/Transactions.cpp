@@ -339,9 +339,18 @@ TransactionDocumentObject::~TransactionDocumentObject()
 void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcObj)
 {
     if (status == Del) {
-        // simply filling in the saved object
+        
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
-        Doc._remObject(obj);
+
+        //Make sure the backlinks of all linked objects are updated. As the links of the removed
+        //object are never set to [] they also do not remove the backlink. But as they are 
+        //not in the document anymore we need to remove them anyway to ensure a correct graph
+        auto list = obj->getOutList();
+        for(auto link : list)
+            link->_removeBackLink(obj);
+        
+        // simply filling in the saved object
+        Doc._remObject(obj);       
     }
 }
 
@@ -350,6 +359,11 @@ void TransactionDocumentObject::applyNew(Document &Doc, TransactionalObject *pcO
     if (status == New) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
+        
+        //make sure the backlinks of all linked objects are updated
+        auto list = obj->getOutList();
+        for(auto link : list)
+            link->_addBackLink(obj);
     }
 }
 
