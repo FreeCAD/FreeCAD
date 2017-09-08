@@ -965,6 +965,8 @@ class DocumentPlatformCases(unittest.TestCase):
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PlatformTests")
+
+
 class DocumentFileIncludeCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("FileIncludeTests")
@@ -1102,6 +1104,17 @@ class DocumentPropertyCases(unittest.TestCase):
     self.Doc.saveAs(tempFile)
     FreeCAD.closeDocument("PropertyTests")
     self.Doc = FreeCAD.open(tempFile)
+
+  def testRemoveProperty(self):
+    prop = 'Something'
+    self.Obj.addProperty('App::PropertyFloat', prop)
+    self.Obj.Something = 0.01
+    self.Doc.recompute()
+    self.Doc.openTransaction('modify and remove property')
+    self.Obj.Something = 0.00
+    self.Obj.removeProperty(prop)
+    self.Obj.recompute()
+    self.Doc.abortTransaction()
 
   def tearDown(self):
     #closing doc
