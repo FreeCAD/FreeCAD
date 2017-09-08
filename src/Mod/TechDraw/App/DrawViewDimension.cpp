@@ -229,8 +229,12 @@ std::string  DrawViewDimension::getFormatedValue()
     pos = 0;
     if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
         match = rxFormat.cap(0);                                          //entire capture of rx
+#if QT_VERSION >= 0x050000
+        specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),val);
+#else
         QString qs2;
         specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),val);
+#endif
     }
 
     QString repl = userVal;
