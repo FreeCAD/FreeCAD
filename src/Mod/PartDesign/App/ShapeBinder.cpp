@@ -149,3 +149,11 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::
     }
     return base;
 }
+
+void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    // The type of Support was App::PropertyLinkSubList in the past
+    if (prop == &Support && strcmp(TypeName, "App::PropertyLinkSubList") == 0) {
+        Support.Restore(reader);
+    }
+}

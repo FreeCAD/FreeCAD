@@ -149,4 +149,13 @@ void Boolean::onChanged(const App::Property* prop) {
     PartDesign::Feature::onChanged(prop);
 }
 
+void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    // The App::PropertyLinkList property was Bodies in the past
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Group.getClassTypeId() == type && strcmp(PropName, "Bodies") == 0) {
+        Group.Restore(reader);
+    }
+}
+
 }
