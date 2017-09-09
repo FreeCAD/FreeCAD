@@ -42,9 +42,9 @@ BodyBase::BodyBase()
 {
     ADD_PROPERTY(Tip         , (0) );
     Tip.setScope(App::LinkScope::Child);
-    
+
     ADD_PROPERTY(BaseFeature , (0) );
-    
+
     App::OriginGroupExtension::initExtension(this);
 }
 

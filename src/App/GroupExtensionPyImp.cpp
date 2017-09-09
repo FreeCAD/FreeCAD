@@ -133,11 +133,11 @@ PyObject* GroupExtensionPy::addObjects(PyObject *args) {
 
 
 PyObject* GroupExtensionPy::setObjects(PyObject *args) {
-    
+
     PyObject *object;
     if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
-        
+
     if (PyTuple_Check(object) || PyList_Check(object)) {
         Py::Sequence list(object);
         Py::Sequence::size_type size = list.size();
@@ -167,7 +167,7 @@ PyObject* GroupExtensionPy::setObjects(PyObject *args) {
     std::string error = std::string("type must be list of 'DocumentObject', not ");
     error += object->ob_type->tp_name;
     throw Base::TypeError(error);
-};
+}
 
 PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 {
@@ -196,7 +196,7 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 }
 
 PyObject* GroupExtensionPy::removeObjects(PyObject *args) {
-    
+
     PyObject *object;
     if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
@@ -226,11 +226,11 @@ PyObject* GroupExtensionPy::removeObjects(PyObject *args) {
 
         return Py::new_reference_to(result);
     }
-    
+
     std::string error = std::string("type must be list of 'DocumentObject', not ");
     error += object->ob_type->tp_name;
     throw Base::TypeError(error);
-};
+}
 
 PyObject*  GroupExtensionPy::removeObjectsFromDocument(PyObject *args)
 {
@@ -294,4 +294,3 @@ int GroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*
 {
     return 0;
 }
-
