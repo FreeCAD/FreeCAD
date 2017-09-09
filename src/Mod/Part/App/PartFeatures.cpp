@@ -28,6 +28,7 @@
 # include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
+# include <BRepLib_MakeWire.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
@@ -78,66 +79,92 @@ void RuledSurface::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
+App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub& link,
+                                                      TopoDS_Shape& shape) const
+{
+    App::DocumentObject* obj = link.getValue();
+    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        return new App::DocumentObjectExecReturn("No shape linked.");
+
+    // if no explicit sub-shape is selected use the whole part
+    const std::vector<std::string>& element = link.getSubValues();
+    if (element.empty()) {
+        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+        return nullptr;
+    }
+    else if (element.size() != 1) {
+        return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+    }
+
+    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
+    if (!part.getShape().IsNull()) {
+        if (!element[0].empty()) {
+            shape = part.getSubShape(element[0].c_str());
+        }
+        else {
+            // the sub-element is an empty string, so use the whole part
+            shape = part.getShape();
+        }
+    }
+
+    return nullptr;
+}
+
 App::DocumentObjectExecReturn *RuledSurface::execute(void)
 {
     try {
-        App::DocumentObject* c1 = Curve1.getValue();
-        if (!(c1 && c1->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-            return new App::DocumentObjectExecReturn("No shape linked.");
-        const std::vector<std::string>& element1 = Curve1.getSubValues();
-        if (element1.size() != 1)
-            return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
-        App::DocumentObject* c2 = Curve2.getValue();
-        if (!(c2 && c2->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-            return new App::DocumentObjectExecReturn("No shape linked.");
-        const std::vector<std::string>& element2 = Curve2.getSubValues();
-        if (element2.size() != 1)
-            return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+        App::DocumentObjectExecReturn* ret;
 
-        TopoDS_Shape curve1;
-        const Part::TopoShape& shape1 = static_cast<Part::Feature*>(c1)->Shape.getValue();
-        if (!shape1.getShape().IsNull()) {
-            if (!element1[0].empty()) {
-                curve1 = shape1.getSubShape(element1[0].c_str());
-            }
-            else {
-                if (shape1.getShape().ShapeType() == TopAbs_EDGE)
-                    curve1 = shape1.getShape();
-                else if (shape1.getShape().ShapeType() == TopAbs_WIRE)
-                    curve1 = shape1.getShape();
-            }
-        }
+        // get the first input shape
+        TopoDS_Shape S1;
+        ret = getShape(Curve1, S1);
+        if (ret) return ret;
 
-        TopoDS_Shape curve2;
-        const Part::TopoShape& shape2 = static_cast<Part::Feature*>(c2)->Shape.getValue();
-        if (!shape2.getShape().IsNull()) {
-            if (!element2[0].empty()) {
-                curve2 = shape2.getSubShape(element2[0].c_str());
-            }
-            else {
-                if (shape2.getShape().ShapeType() == TopAbs_EDGE)
-                    curve2 = shape2.getShape();
-                else if (shape2.getShape().ShapeType() == TopAbs_WIRE)
-                    curve2 = shape2.getShape();
-            }
-        }
+        // get the second input shape
+        TopoDS_Shape S2;
+        ret = getShape(Curve2, S2);
+        if (ret) return ret;
 
-        if (curve1.IsNull() || curve2.IsNull())
+        // check for expected type
+        if (S1.IsNull() || S2.IsNull())
             return new App::DocumentObjectExecReturn("Linked shapes are empty.");
+
+        if (S1.ShapeType() != TopAbs_EDGE && S1.ShapeType() != TopAbs_WIRE)
+            return new App::DocumentObjectExecReturn("Linked shape is neither edge nor wire.");
+
+        if (S2.ShapeType() != TopAbs_EDGE && S2.ShapeType() != TopAbs_WIRE)
+            return new App::DocumentObjectExecReturn("Linked shape is neither edge nor wire.");
+
+        // make both shapes to have the same type
+        Standard_Boolean isWire = Standard_False;
+        if (S1.ShapeType() == TopAbs_WIRE)
+            isWire = Standard_True;
+
+        if (isWire) {
+            if (S2.ShapeType() == TopAbs_EDGE)
+                S2 = BRepLib_MakeWire(TopoDS::Edge(S2));
+        }
+        else {
+            // S1 is an edge, if S2 is a wire convert S1 to a wire, too
+            if (S2.ShapeType() == TopAbs_WIRE) {
+                S1 = BRepLib_MakeWire(TopoDS::Edge(S1));
+                isWire = Standard_True;
+            }
+        }
 
         if (Orientation.getValue() == 0) {
             // Automatic
             Handle(Adaptor3d_HCurve) a1;
             Handle(Adaptor3d_HCurve) a2;
-            if (curve1.ShapeType() == TopAbs_EDGE && curve2.ShapeType() == TopAbs_EDGE) {
-                BRepAdaptor_Curve adapt1(TopoDS::Edge(curve1));
-                BRepAdaptor_Curve adapt2(TopoDS::Edge(curve2));
+            if (!isWire) {
+                BRepAdaptor_Curve adapt1(TopoDS::Edge(S1));
+                BRepAdaptor_Curve adapt2(TopoDS::Edge(S2));
                 a1 = new BRepAdaptor_HCurve(adapt1);
                 a2 = new BRepAdaptor_HCurve(adapt2);
             }
-            else if (curve1.ShapeType() == TopAbs_WIRE && curve2.ShapeType() == TopAbs_WIRE) {
-                BRepAdaptor_CompCurve adapt1(TopoDS::Wire(curve1));
-                BRepAdaptor_CompCurve adapt2(TopoDS::Wire(curve2));
+            else {
+                BRepAdaptor_CompCurve adapt1(TopoDS::Wire(S1));
+                BRepAdaptor_CompCurve adapt2(TopoDS::Wire(S2));
                 a1 = new BRepAdaptor_HCompCurve(adapt1);
                 a2 = new BRepAdaptor_HCompCurve(adapt2);
             }
@@ -146,14 +173,14 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
                 // get end points of 1st curve
                 gp_Pnt p1 = a1->Value(a1->FirstParameter());
                 gp_Pnt p2 = a1->Value(a1->LastParameter());
-                if (curve1.Orientation() == TopAbs_REVERSED) {
+                if (S1.Orientation() == TopAbs_REVERSED) {
                     std::swap(p1, p2);
                 }
 
                 // get end points of 2nd curve
                 gp_Pnt p3 = a2->Value(a2->FirstParameter());
                 gp_Pnt p4 = a2->Value(a2->LastParameter());
-                if (curve2.Orientation() == TopAbs_REVERSED) {
+                if (S2.Orientation() == TopAbs_REVERSED) {
                     std::swap(p3, p4);
                 }
 
@@ -169,25 +196,22 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
                 gp_Vec n2 = v3.Crossed(v4);
 
                 if (n1.Dot(n2) < 0) {
-                    curve2.Reverse();
+                    S2.Reverse();
                 }
             }
         }
         else if (Orientation.getValue() == 2) {
             // Reverse
-            curve2.Reverse();
+            S2.Reverse();
         }
 
-        if (curve1.ShapeType() == TopAbs_EDGE && curve2.ShapeType() == TopAbs_EDGE) {
-            TopoDS_Face face = BRepFill::Face(TopoDS::Edge(curve1), TopoDS::Edge(curve2));
+        if (!isWire) {
+            TopoDS_Face face = BRepFill::Face(TopoDS::Edge(S1), TopoDS::Edge(S2));
             this->Shape.setValue(face);
         }
-        else if (curve1.ShapeType() == TopAbs_WIRE && curve2.ShapeType() == TopAbs_WIRE) {
-            TopoDS_Shell shell = BRepFill::Shell(TopoDS::Wire(curve1), TopoDS::Wire(curve2));
-            this->Shape.setValue(shell);
-        }
         else {
-            return new App::DocumentObjectExecReturn("Curves must either be both edges or both wires.");
+            TopoDS_Shell shell = BRepFill::Shell(TopoDS::Wire(S1), TopoDS::Wire(S2));
+            this->Shape.setValue(shell);
         }
         return App::DocumentObject::StdReturn;
     }

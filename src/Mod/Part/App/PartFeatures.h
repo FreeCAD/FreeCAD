@@ -56,6 +56,9 @@ protected:
     void onChanged (const App::Property* prop);
 
 private:
+    App::DocumentObjectExecReturn* getShape(const App::PropertyLinkSub& link, TopoDS_Shape&) const;
+
+private:
     static const char* OrientationEnums[];
 };
 
