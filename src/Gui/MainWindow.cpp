@@ -1296,9 +1296,8 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
         sel.insert(sel.end(), it->second.begin(), it->second.end());
         all.insert(all.end(), dep.begin(), dep.end());
     }
-    
+
     if (all.size() > sel.size()) {
-        
         //check if selection are only geofeaturegroup objects, for them it is intuitive and wanted to copy the 
         //dependencies
         bool hasGroup = false, hasNormal = false;

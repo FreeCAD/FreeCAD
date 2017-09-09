@@ -54,7 +54,7 @@ Boolean::Boolean()
 {
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
-    
+
     initExtension(this);
 }
 
@@ -82,7 +82,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     Part::TopoShape baseTopShape = baseFeature->Shape.getShape();
     if (baseTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
-      
+
     //get the body this boolean feature belongs to
     Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
 
@@ -145,10 +145,8 @@ void Boolean::onChanged(const App::Property* prop) {
     
     if(strcmp(prop->getName(), "Group") == 0)
         touch();
-        
+
     PartDesign::Feature::onChanged(prop);
 }
-
-
 
 }

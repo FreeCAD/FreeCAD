@@ -173,22 +173,22 @@ DocumentObject *GroupExtension::getObject(const char *Name) const
 
 bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
 {
-    
+
     if(obj == getExtendedObject())
         return false;
-    
+
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (auto child : grp) {
-        
+
         if(!child)
             continue;
-        
+
         if (child == obj) {
             return true;
         } else if (child == getExtendedObject()) {
             Base::Exception("Cyclic dependencies detected: Search cannot be performed");
         } else if ( recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
-                       
+
             App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
                                     child->getExtension(GroupExtension::getExtensionClassTypeId()));
             std::vector<const GroupExtension*> history;
@@ -210,25 +210,25 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
     //we store every group we processed on the current leave of the tree, and if we reach an 
     //already processed group we know that it not really is a tree but a cycle.
     history.push_back(this);
-    
+
     //we use hasObject with out recursion to allow override in derived classes
     if(group->hasObject(obj, false))
         return true;
-    
+
     //we checked for the searched object already with hasObject and did not find it, now we need to
     //do the same for all subgroups
     for (auto child : group->Group.getValues()) {
-        
+
         if(!child)
             continue;
-        
+
         if ( child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
-            
+
             auto ext = child->getExtensionByType<GroupExtension>();
             
             if(std::find(history.begin(), history.end(), ext) != history.end())
                 Base::Exception("Cyclic dependencies detected: Search cannot be performed");
-            
+
             if (recursiveHasObject(obj, ext, history)) {
                 return true;
             }
@@ -289,7 +289,7 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 }
 
 PyObject* GroupExtension::getExtensionPyObject(void) {
-    
+
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         auto grp = new GroupExtensionPy(this);
@@ -299,16 +299,16 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
 }
 
 void GroupExtension::extensionOnChanged(const Property* p) {
-    
+
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
     if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId()) &&
        (strcmp(p->getName(), "Group")==0)) {
-     
+
         bool error = false;
         auto corrected = Group.getValues();
         for(auto obj : Group.getValues()) {
-            
+
             //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
             //would return anyone of it and hence it is possible that we miss an error. We need a custom check
             auto list = obj->getInList();
@@ -320,14 +320,14 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 }
             }
         }
-        
+
         //if an error was found we need to correct the values and inform the user
         if(error) {
             Group.setValues(corrected);
             throw Base::Exception("Object can only be in a single Group");
         }
     }
-    
+
     App::Extension::extensionOnChanged(p);
 }
 

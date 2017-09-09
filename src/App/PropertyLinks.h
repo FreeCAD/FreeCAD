@@ -389,7 +389,7 @@ public:
     virtual void Paste(const Property &from);
 
     virtual unsigned int getMemSize (void) const;
-    
+
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;

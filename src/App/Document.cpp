@@ -664,7 +664,6 @@ void Document::exportGraphviz(std::ostream& out) const
                             edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
                         if (GraphList[*It2])
                             edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
-                        
                     }
                 }
 
@@ -771,11 +770,10 @@ void Document::exportGraphviz(std::ostream& out) const
         }
         
         void markOutOfScopeLinks() {
-            
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
 
-            for( auto obj : objects) {            
-                       
+            for( auto obj : objects) {
+
                 std::vector<App::DocumentObject*> invalids;
                 GeoFeatureGroupExtension::getInvalidLinkObjects(obj, invalids);
                 //isLinkValid returns true for non-link properties
@@ -785,7 +783,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     if(res.second)
                         edgeAttrMap[res.first]["color"] = "red";
                 }
-            }                
+            }
         }
 
         const struct DocumentP* d;
@@ -2176,7 +2174,7 @@ int Document::recompute()
     //do we have anything to do?
     if(d->objectMap.empty())
         return 0;
-    
+
     // get the sorted vector of all objects in the document and go though it from the end
     vector<DocumentObject*> topoSortedObjects = topologicalSort();
 
@@ -2209,7 +2207,7 @@ int Document::recompute()
     }
 #endif
 
-        return objectCount;
+    return objectCount;
 }
 
 #endif // USE_OLD_DAG
@@ -2227,7 +2225,7 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
         auto in = objectIt.second->getInList();
         std::sort(in.begin(), in.end());
         in.erase(std::unique(in.begin(), in.end()), in.end());
-        
+
         countMap[objectIt.second] = in.size();
     }
 
@@ -2242,7 +2240,7 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 
     while (rootObjeIt != countMap.end()){
         rootObjeIt->second = rootObjeIt->second - 1;
-        
+
         //we need outlist with unique entries
         auto out = rootObjeIt->first->getOutList();
         std::sort(out.begin(), out.end());
@@ -2650,7 +2648,7 @@ void Document::remObject(const char* sName)
     // remove from adjancy list
     //remove_vertex(_DepConMap[pos->second],_DepList);
     //_DepConMap.erase(pos->second);
-    
+
     pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 }

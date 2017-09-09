@@ -52,7 +52,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDocument
 ViewProviderPart::ViewProviderPart()
 { 
     initExtension(this);
-    
+
     sPixmap = "Geofeaturegroup.svg";
 }
 

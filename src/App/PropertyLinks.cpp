@@ -635,19 +635,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 #ifndef USE_OLD_DAG
     //maintain backlinks. 
     if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        
+
         //_lValueList can contain items multiple times, but we trust the document 
         //object to ensure that this works
         for(auto *obj : _lValueList)
             obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-        
+
         //maintain backlinks. lValue can contain items multiple times, but we trust the document 
         //object to ensure that the backlink is only added once
         for(auto *obj : lValue)
             obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
     }
 #endif
-    
+
     aboutToSetValue();
     _lValueList = lValue;
     _lSubList.resize(lSubNames.size());
@@ -665,19 +665,19 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 #ifndef USE_OLD_DAG
     //maintain backlinks. 
     if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        
+
         //_lValueList can contain items multiple times, but we trust the document 
         //object to ensure that this works
         for(auto *obj : _lValueList)
             obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-        
+
         //maintain backlinks. lValue can contain items multiple times, but we trust the document 
         //object to ensure that the backlink is only added once
         for(auto *obj : lValue)
             obj->_addBackLink(static_cast<DocumentObject*>(getContainer()));
     }
 #endif
-    
+
     aboutToSetValue();
     _lValueList = lValue;
     _lSubList   = lSubNames;
@@ -689,19 +689,19 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
 #ifndef USE_OLD_DAG   
     //maintain backlinks.
     if(getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        
+
         //_lValueList can contain items multiple times, but we trust the document 
         //object to ensure that this works
         for(auto *obj : _lValueList)
             obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-        
+
         //maintain backlinks. lValue can contain items multiple times, but we trust the document 
         //object to ensure that the backlink is only added once
         if(lValue)
             lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
     }
 #endif
-    
+
     aboutToSetValue();
     std::size_t size = SubList.size();
     this->_lValueList.clear();

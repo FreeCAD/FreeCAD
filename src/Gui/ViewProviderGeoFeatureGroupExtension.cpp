@@ -55,7 +55,7 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(void) const {
-    
+
     //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(ext) {        
@@ -66,7 +66,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 }
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
- 
+
     //we must be careful which objects to claim, as there might be stacked relations inside the coordinate system,
     //like pad/sketch
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
@@ -75,11 +75,11 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         //object in the tree
         std::vector<App::DocumentObject*> claim;
         auto objs = ext->Group.getValues();
-        
+
         for(auto obj : objs) {  
-            
+
             auto vin = obj->getInList();
-            
+
             //we don't want to count objects that are deleted or part of other geo feature groups. 
             //Second criteria is actually not possible in normal operation, but only in some error
             //condition. But then it is needed to understand the problem for the user

@@ -35,12 +35,12 @@
 
 using namespace App;
 
-EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtension);
+EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtension)
 
 OriginGroupExtension::OriginGroupExtension () {
-    
+
     initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
-    
+
     EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
     Origin.setScope(LinkScope::Child);
 }
@@ -67,7 +67,7 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 }
 
 App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj) {
-    
+
     if(!obj)
         return nullptr;
     
@@ -186,18 +186,18 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
 }
 
 std::vector< DocumentObject* > OriginGroupExtension::addObjects(std::vector<DocumentObject*> objs) {
-    
+
     for(auto obj : objs)
         relinkToOrigin(obj);
-    
+
     return App::GeoFeatureGroupExtension::addObjects(objs);
 }
 
 bool OriginGroupExtension::hasObject(const DocumentObject* obj, bool recursive) const {
-    
+
     if(Origin.getValue() && (obj == getOrigin() || getOrigin()->hasObject(obj)))
         return true;
-    
+
     return App::GroupExtension::hasObject(obj, recursive);
 }
 

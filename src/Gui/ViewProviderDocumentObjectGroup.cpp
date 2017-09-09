@@ -59,7 +59,7 @@ ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
     setDefaultMode(SO_SWITCH_ALL);
 #endif
     ViewProviderGroupExtension::initExtension(this);
-    
+
     sPixmap = "Group.svg";
 }
 
