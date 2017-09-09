@@ -2043,7 +2043,7 @@ int Document::recompute()
 
     int objectCount = 0;
     
-    // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
     bool skip = testStatus(Document::SkipRecompute);
     if (skip)
@@ -2165,7 +2165,21 @@ int Document::recompute()
 
 int Document::recompute()
 {
+    if (testStatus(Document::Recomputing)) {
+        // this is clearly a bug in the calling instance
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
     int objectCount = 0;
+
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
+    // time expensive recomputes
+    bool skip = testStatus(Document::SkipRecompute);
+    if (skip)
+        return 0;
+
+    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+
     // delete recompute log
     for (auto LogEntry: _RecomputeLog)
         delete LogEntry;
