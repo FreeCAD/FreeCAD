@@ -59,7 +59,22 @@ FaceUnwrapper* FaceUnwrapper_constructor(py::object face)
         const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
         return new FaceUnwrapper(myFace);
     }
-    throw std::invalid_argument("FaceUnwrapper should be initialized with Part.Face");
+    else
+        throw std::invalid_argument("FaceUnwrapper should be initialized with Part.Face");
+}
+
+ColMat<double, 3> interpolateNurbsFacePy(FaceUnwrapper& instance, py::object face)
+{
+    std::cout << face.ptr()->ob_type->tp_name << std::endl;
+    std::cout << Part::TopoShapeFacePy::Type.tp_name << std::endl;
+    if (PyObject_TypeCheck(face.ptr(), &(Part::TopoShapeFacePy::Type)))
+    {
+        const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face.ptr());
+        const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
+        return instance.interpolateNurbsFace(myFace);
+    }
+    else
+        throw std::invalid_argument("FaceUnwrapper.interpolateNurbs should be initialized with Part.Face");
 }
 
 PYBIND11_MODULE(flatmesh, m)
@@ -99,11 +114,12 @@ PYBIND11_MODULE(flatmesh, m)
 
     py::class_<FaceUnwrapper>(m, "FaceUnwrapper")
         .def(py::init(&FaceUnwrapper_constructor))
+        .def("findFlatNodes", &FaceUnwrapper::findFlatNodes)
+        .def("interpolateNurbsFace", &interpolateNurbsFacePy)
         .def_readonly("tris", &FaceUnwrapper::tris)
         .def_readonly("nodes", &FaceUnwrapper::xyz_nodes)
         .def_readonly("uv_nodes", &FaceUnwrapper::uv_nodes)
         .def_readonly("ze_nodes", &FaceUnwrapper::ze_nodes)
         .def_readonly("ze_poles", &FaceUnwrapper::ze_poles)
-        .def_readonly("A", &FaceUnwrapper::A)
-        .def("find_ze", &FaceUnwrapper::find_ze);
+        .def_readonly("A", &FaceUnwrapper::A);
 };

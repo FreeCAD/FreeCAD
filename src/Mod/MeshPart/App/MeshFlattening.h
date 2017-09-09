@@ -51,9 +51,8 @@ class FaceUnwrapper{
 	nurbs::NurbsBase2D nu;
 public:
 	FaceUnwrapper(const TopoDS_Face & face);
-
-	TopoDS_Face face;
-	TopoDS_Face mapped_face;
+	void findFlatNodes();
+	ColMat<double, 3> interpolateNurbsFace(const TopoDS_Face& face);
 
 	bool use_nurbs = true;
 	// the mesh
@@ -64,13 +63,10 @@ public:
 	ColMat<double, 2> ze_nodes;  // copute
 
 	// nurbs
-	ColMat<double, 3> xyz_poles;  // input
 	ColMat<double, 2> ze_poles;   // compute
 	spMat A; // mapping between nurbs(poles) and mesh(vertices) computed with nurbs-basis-functions and uv_mesh
 
 	//
-	void find_ze(); // initial guess for ze_mesh (direct)
-	void find_poles_ze(); //find the poles for ze
 
 };
 

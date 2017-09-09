@@ -31,17 +31,16 @@
 FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
 {
     int i = 0;
-    this->face = face;
-//  1: transform to nurbs:
+//  transform to nurbs:
     TopLoc_Location location;
     
-//  2: triangulate:
-    const Handle(Poly_Triangulation) &triangulation = BRep_Tool::Triangulation(this->face, location);
+//  triangulate:
+    const Handle(Poly_Triangulation) &triangulation = BRep_Tool::Triangulation(face, location);
 
     if (triangulation.IsNull())
         throw std::runtime_error("null triangulation in face construction");
 
-//  3: compute uv coordinates
+//  compute uv coordinates
     if (triangulation->HasUVNodes())
     {
         const TColgp_Array1OfPnt2d &_uv_nodes = triangulation->UVNodes();
@@ -73,27 +72,33 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
         this->tris.row(i) << n1-1, n2-1, n3-1;
         i++;
     }
+}
 
-//  4: extract xyz poles, knots, weights, degree
-    
-    const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(this->face);
+void FaceUnwrapper::findFlatNodes()
+{
+    std::vector<long> fixed_pins;
+    LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
+    mesh_flattener.lscm();
+    mesh_flattener.relax(0.9);
+    this->ze_nodes = mesh_flattener.flat_vertices.transpose();
+}
+
+ColMat<double, 3> FaceUnwrapper::interpolateNurbsFace(const TopoDS_Face& face)
+{
+    // extract xyz poles, knots, weights, degree
+    const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
-    const NCollection_Array2<gp_Pnt> &_poles = _bspline->Poles();
-    const NCollection_Array2<double> *_weights = _bspline->Weights();
     const TColStd_Array1OfReal &_uknots = _bspline->UKnotSequence();
     const TColStd_Array1OfReal &_vknots = _bspline->VKnotSequence();    
     
     Eigen::VectorXd weights;
-    weights.resize(_weights->Size());
-    this->xyz_poles.resize(_poles.Size(), 3);
-    i = 0;
-    for (int u=1; u <= _poles.ColLength(); u++)
+    weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());
+    int i = 0;
+    for (int u=1; u <= _bspline->NbUPoles(); u++)
     {
-        for (int v=1; v <= _poles.RowLength(); v++)
+        for (int v=1; v <= _bspline->NbVPoles(); v++)
         {
-            gp_Pnt point = _poles.Value(u, v);
-            this->xyz_poles.row(i) << point.X(), point.Y(), point.Z();
-            weights[i] = _weights->Value(u, v);
+            weights[i] = _bspline->Weight(u, v);
             i++;
         }
     }
@@ -112,22 +117,22 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     }
     
 
-    this->nu = nurbs::NurbsBase2D(u_knots, v_knots, weights, _bspline->UDegree(), _bspline->VDegree());
-    this->A = nu.getInfluenceMatrix(this->uv_nodes);
-}
-
-
-void FaceUnwrapper::find_ze()
-{
-    std::vector<long> fixed_pins;
-    LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
-    mesh_flattener.lscm();
-    mesh_flattener.relax(0.9);
-    this->ze_nodes = mesh_flattener.flat_vertices.transpose();
+    nu = nurbs::NurbsBase2D(u_knots, v_knots, weights, _bspline->UDegree(), _bspline->VDegree());
+    A = nu.getInfluenceMatrix(this->uv_nodes);
+    
     Eigen::LeastSquaresConjugateGradient<spMat > solver;
-    solver.compute(this->A);
-    this->ze_poles = solver.solve(this->ze_nodes);
+    solver.compute(A);
+    ColMat<double, 2> ze_poles;
+    ColMat<double, 3> flat_poles;
+    ze_poles.resize(weights.rows(), 2);
+    flat_poles.resize(weights.rows(), 3);
+    flat_poles.setZero();
+    ze_poles = solver.solve(ze_nodes);
+    flat_poles.col(0) << ze_poles.col(0);
+    flat_poles.col(1) << ze_poles.col(1);
+    return flat_poles;    
 }
+
 
 
 
