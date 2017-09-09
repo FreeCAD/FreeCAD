@@ -342,29 +342,14 @@ class FemTest(unittest.TestCase):
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
 
     def test_pyimport_all_FEM_modules(self):
-        # collect all Python modules in Fem
-        # Mod/Fem/
-        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/'
-        fcc_print(pydir)
+        # we gone try to import all python modules from FreeCAD Fem
         pymodules = []
-        for pyfile in sorted(os.listdir(pydir)):
-            if pyfile.endswith(".py") and not pyfile.startswith('Init'):
-                pymodules.append(os.path.splitext(os.path.basename(pyfile))[0])
 
-        # Mod/Fem/PyObjects/
-        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/PyObjects/'
-        fcc_print(pydir)
-        for pyfile in sorted(os.listdir(pydir)):
-            if pyfile.endswith(".py"):
-                pymodules.append('PyObjects.' + os.path.splitext(os.path.basename(pyfile))[0])
-
-        # Mod/Fem/PyOGui/
+        # collect all Python modules in Fem
+        pymodules += collect_python_modules('')  # Fem main dir
+        pymodules += collect_python_modules('PyObjects')
         if FreeCAD.GuiUp:
-            pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/PyGui/'
-            fcc_print(pydir)
-            for pyfile in sorted(os.listdir(pydir)):
-                if pyfile.endswith(".py"):
-                    pymodules.append('PyGui.' + os.path.splitext(os.path.basename(pyfile))[0])
+            pymodules += collect_python_modules('PyGui')
 
         # import all collected modules
         # fcc_print(pymodules)
@@ -1037,11 +1022,25 @@ def force_unix_line_ends(line_list):
     return new_line_list
 
 
+def collect_python_modules(femsubdir=None):
+    if not femsubdir:
+        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/'
+    else:
+        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/' + femsubdir + '/'
+    collected_modules = []
+    fcc_print(pydir)
+    for pyfile in sorted(os.listdir(pydir)):
+        if pyfile.endswith(".py") and not pyfile.startswith('Init'):
+            if not femsubdir:
+                collected_modules.append(os.path.splitext(os.path.basename(pyfile))[0])
+            else:
+                collected_modules.append(femsubdir.replace('/','.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
+    return collected_modules
+
+
 def runTestFem():
     '''run FEM unit test
-    for more information on how to run a specific test class or a test def see
-    file src/Mod/Test/__init__
-    https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
+    for more information on how to run a specific test class or a test def see comment at file end
     '''
     import Test
     import sys
@@ -1163,4 +1162,14 @@ if FEM unit test is fine --> commit new FEM unit test results
 
 TODO compare the inp file of the helper with the inp file of FEM unit tests
 TODO the better way: move the result creation inside the TestFem and add some preference to deactivate this because it needs ccx
+
+
+for more information on how to run a specific test class or a test def see
+file src/Mod/Test/__init__
+https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
+
+import unittest
+mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_pyimport_all_FEM_modules")
+unittest.TextTestRunner().run(mytest)
+
 '''
