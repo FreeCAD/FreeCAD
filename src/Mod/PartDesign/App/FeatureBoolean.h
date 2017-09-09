@@ -58,6 +58,9 @@ public:
     virtual void onChanged(const App::Property* prop);
     //@}
 
+protected:
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+
 private:
     static const char* TypeEnums[];
 

@@ -939,8 +939,8 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
         // Property not in an object!
-        DocumentObject* father = static_cast<DocumentObject*>(getContainer());
-        App::Document* document = father->getDocument();
+        DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
+        App::Document* document = father ? father->getDocument() : 0;
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
             values.push_back(child);

@@ -57,6 +57,7 @@ public:
     }
 
 protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
     virtual short int mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
 };
