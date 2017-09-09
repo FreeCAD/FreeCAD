@@ -135,6 +135,21 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         if (S2.ShapeType() != TopAbs_EDGE && S2.ShapeType() != TopAbs_WIRE)
             return new App::DocumentObjectExecReturn("Linked shape is neither edge nor wire.");
 
+        // https://forum.freecadweb.org/viewtopic.php?f=8&t=24052
+        //
+        // if both shapes are sub-elements of one common shape then the fill algorithm
+        // leads to problems if the shape has set a placement
+        // The workaround is to reset the placement before calling BRepFill and then
+        // applying the placement to the output shape
+        TopLoc_Location Loc;
+        if (Curve1.getValue() == Curve2.getValue()) {
+            Loc = S1.Location();
+            if (!Loc.IsIdentity() && Loc == S2.Location()) {
+                S1.Location(TopLoc_Location());
+                S2.Location(TopLoc_Location());
+            }
+        }
+
         // make both shapes to have the same type
         Standard_Boolean isWire = Standard_False;
         if (S1.ShapeType() == TopAbs_WIRE)
@@ -205,14 +220,29 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
             S2.Reverse();
         }
 
+        TopoDS_Shape ruledShape;
         if (!isWire) {
-            TopoDS_Face face = BRepFill::Face(TopoDS::Edge(S1), TopoDS::Edge(S2));
-            this->Shape.setValue(face);
+            ruledShape = BRepFill::Face(TopoDS::Edge(S1), TopoDS::Edge(S2));
         }
         else {
-            TopoDS_Shell shell = BRepFill::Shell(TopoDS::Wire(S1), TopoDS::Wire(S2));
-            this->Shape.setValue(shell);
+            ruledShape = BRepFill::Shell(TopoDS::Wire(S1), TopoDS::Wire(S2));
         }
+
+        // re-apply the placement in case we reset it
+        if (!Loc.IsIdentity())
+            ruledShape.Move(Loc);
+        Loc = ruledShape.Location();
+
+        if (!Loc.IsIdentity()) {
+            // reset the placement of the shape because the Placement
+            // property will be changed
+            ruledShape.Location(TopLoc_Location());
+            Base::Matrix4D transform;
+            TopoShape::convertToMatrix(Loc.Transformation(), transform);
+            this->Placement.setValue(Base::Placement(transform));
+        }
+
+        this->Shape.setValue(ruledShape);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
