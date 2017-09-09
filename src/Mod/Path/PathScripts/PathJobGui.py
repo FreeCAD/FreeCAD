@@ -539,6 +539,8 @@ class TaskPanel:
         select = None if index == -1 else self.form.activeToolController.itemData(index)
         self.form.activeToolController.clear()
 
+        vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
+
         for row,tc in enumerate(sorted(self.obj.ToolController, key=lambda tc: tc.Label)):
             self.form.activeToolController.addItem(tc.Label, tc)
             if tc == select:
@@ -557,13 +559,13 @@ class TaskPanel:
             item.setData(self.DataProperty, 'Number')
             self.form.toolControllerList.setItem(row, 1, item)
 
-            item = QtGui.QTableWidgetItem("%g" % tc.HorizFeed)
+            item = QtGui.QTableWidgetItem("%g" % tc.HorizFeed.getValueAs(vUnit))
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, 'HorizFeed')
             self.form.toolControllerList.setItem(row, 2, item)
 
-            item = QtGui.QTableWidgetItem("%g" % tc.VertFeed)
+            item = QtGui.QTableWidgetItem("%g" % tc.VertFeed.getValueAs(vUnit))
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, 'VertFeed')
