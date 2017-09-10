@@ -172,7 +172,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../../../Documents/CAD/DrawingModule/Resources/TechDraw.qrc"/>
+  <include location="Resources/TechDraw.qrc"/>
  </resources>
  <connections/>
 </ui>
