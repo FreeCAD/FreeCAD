@@ -341,7 +341,6 @@ void Workbench::activated()
 
     const char* NoSel[] = {
         "PartDesign_Body",
-        "PartDesign_Part",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
@@ -436,8 +435,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    *part << "PartDesign_Part"
-          << "PartDesign_Body"
+    *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
@@ -504,8 +502,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Helper");
-    *part << "PartDesign_Part"
-          << "PartDesign_Body"
+    *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
           << "Sketcher_MapSketch"

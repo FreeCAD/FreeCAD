@@ -44,7 +44,7 @@ namespace App
  *   also be added to the GeoFeatureGroup
  * - Objects can be only in a single GeoFeatureGroup. It is not allowed to have a document object in 
  *   multiple GeoFeatureGroups
- * - PropertyLinks between different GeoFeatureGroups are forbidden. There are special link proeprties 
+ * - PropertyLinks between different GeoFeatureGroups are forbidden. There are special link properties 
  *   that allow such cross-CS links.
  * - Expressions can cross GeoFeatureGroup borders
  */
@@ -68,6 +68,8 @@ public:
     /// Constructor
     GeoFeatureGroupExtension(void);
     virtual ~GeoFeatureGroupExtension();
+    
+    virtual void extensionOnChanged(const Property* p);
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
@@ -97,22 +99,37 @@ public:
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
-    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
-    /// including their links (recursively) except GeoFeatureGroups, where the recursion stops. Expressions
-    /// links are ignored. An exception is thrown when there are dependency loops.
-    static void getCSOutList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
-    /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
-    /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
-    /// links are ignored. An exception is thrown when there are dependency loops.
-    static void getCSInList(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
-    static void getCSRelevantLinks(App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    static std::vector<App::DocumentObject*> getCSRelevantLinks(const App::DocumentObject* obj);
+    /// Checks if the links of the given object comply with all GeoFeatureGroup requrirements, that means
+    /// if normal links are only withing the parent GeoFeatureGroup. 
+    static bool areLinksValid(const App::DocumentObject* obj);
+    /// Checks if the given link complies with all GeoFeatureGroup requrirements, that means
+    /// if normal links are only withing the parent GeoFeatureGroup. 
+    static bool isLinkValid(App::Property* link);
+    //Returns all objects that are wrongly linked from this object, meaning which are out of scope of the 
+    //links of obj
+    static void getInvalidLinkObjects(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
-    static std::vector<App::DocumentObject*> getObjectsFromLinks(App::DocumentObject*);
+    static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(const App::DocumentObject*, LinkScope scope = LinkScope::Local);
+    static std::vector<App::DocumentObject*> getScopedObjectsFromLink(App::Property*, LinkScope scope = LinkScope::Local);
+
+    /// Collects GeoFeatureGroup relevant objects that are linked from the given one. That means all linked objects
+    /// except GeoFeatureGroups. Expressions links are ignored. Only local scope links are considered. There is no 
+    /// recursion. An exception is thrown when there are dependency loops.
+    static void getCSOutList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    /// Collects GeoFeatureGroup relevant objects that link to the given one. That means all objects
+    /// except GeoFeatureGroups. Expression links are ignored. Only local scope links are relevant, and 
+    /// there is no recursion. An exception is thrown when there are dependency loops.
+    static void getCSInList(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+    
+    static void recursiveCSRelevantLinks(const App::DocumentObject* obj,
+                                         std::vector<App::DocumentObject*>& vec);
+ 
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
