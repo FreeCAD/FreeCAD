@@ -354,8 +354,8 @@ class FemTest(unittest.TestCase):
         if FreeCAD.GuiUp:
             pymodules += collect_python_modules('PyGui')
         pymodules += collect_python_modules('FemSolver')  # subdirectories are not added
-        pymodules += collect_python_modules('FemCalculix')
         pymodules += collect_python_modules('FemZ88')
+        pymodules += collect_python_modules('FemCalculix')
 
         # import all collected modules
         # fcc_print(pymodules)
