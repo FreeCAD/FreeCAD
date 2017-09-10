@@ -24,13 +24,15 @@
 
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
+import PathScripts.PathUtils as PathUtils
 import importlib
 
-from PathScripts import PathUtils
+from PathScripts.PathGeom import PathGeom
 from PySide import QtCore, QtGui
 
 __title__ = "Path Operation UI base classes"
@@ -105,6 +107,10 @@ class ViewProvider(object):
     def clearTaskPanel(self):
         '''clearTaskPanel() ... internal callback function when editing has finished.'''
         self.panel = None
+
+    def unsetEdit(self, arg1, arg2):
+        if self.panel:
+            self.panel.reject(False)
 
     def __getstate__(self):
         '''__getstate__() ... callback before receiver is saved to a file.
@@ -243,6 +249,10 @@ class TaskPanelPage(object):
         This can happen if a subclass unconditionally transfers all values in getFields(obj) to the model and just calls setFields(obj) in this callback.
         In such a scenario the first property assignment will cause all changes in the UI of the other fields to be overwritten by setFields(obj).
         You have been warned.'''
+        pass
+    def updateSelection(self, obj, sel):
+        '''updateSelection(obj, sel) ... overwrite to customize UI depending on current selection.
+        Can safely be overwritten by subclasses.'''
         pass
 
     # helpers
@@ -557,6 +567,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         if PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
+        self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
@@ -566,9 +577,39 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if PathOp.FeatureFinishDepth & self.features:
             signals.append(self.form.finishDepth.editingFinished)
         return signals
+    def registerSignalHandlers(self, obj):
+        self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.startDepth))
+        self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.finalDepth))
     def pageUpdateData(self, obj, prop):
         if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
             self.setFields(obj)
+
+    def depthSet(self, obj, widget):
+        z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
+        if z is not None:
+            PathLog.info("depthSet(%.2f)" % z)
+            widget.setText(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString)
+            self.getFields(obj)
+        else:
+            PathLog.info("depthSet(-)")
+    def selectionZLevel(self, sel):
+        if len(sel) == 1 and len(sel[0].SubObjects) == 1:
+            sub = sel[0].SubObjects[0]
+            if 'Vertex' == sub.ShapeType:
+                return sub.Z
+            if 'Edge' == sub.ShapeType and PathGeom.isRoughly(sub.Vertexes[0].Z, sub.Vertexes[1].Z):
+                return sub.Vertexes[0].Z
+            if 'Face' == sub.ShapeType and PathGeom.isRoughly(sub.BoundBox.ZLength, 0):
+                return sub.BoundBox.ZMax
+        return None
+
+    def updateSelection(self, obj, sel):
+        if self.selectionZLevel(sel) is not None:
+            self.form.startDepthSet.setEnabled(True)
+            self.form.finalDepthSet.setEnabled(True)
+        else:
+            self.form.startDepthSet.setEnabled(False)
+            self.form.finalDepthSet.setEnabled(False)
 
 class TaskPanel(object):
     '''
@@ -658,30 +699,36 @@ class TaskPanel(object):
         for page in self.featurePages:
             page.setClean()
 
-    def accept(self):
+    def accept(self, resetEdit=True):
         '''accept() ... callback invoked when user presses the task panel OK button.'''
-        FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup()
+        self.preCleanup()
         if self.isDirty:
             self.panelGetFields()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.commitTransaction()
+        self.cleanup(resetEdit)
 
-    def reject(self):
+    def reject(self, resetEdit=True):
         '''reject() ... callback invoked when user presses the task panel Cancel button.'''
+        self.preCleanup()
         FreeCAD.ActiveDocument.abortTransaction()
-        self.cleanup()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path", "Uncreate AreaOp Operation"))
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.cleanup(resetEdit)
+        return True
 
-    def cleanup(self):
+    def preCleanup(self):
+        FreeCADGui.Selection.removeObserver(self)
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
         self.obj.ViewObject.Proxy.clearTaskPanel()
         FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Selection.removeObserver(self.s)
+        if resetEdit:
+            FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
 
     def clicked(self, button):
         '''clicked(button) ... callback invoked when the user presses any of the task panel buttons.'''
@@ -710,8 +757,8 @@ class TaskPanel(object):
     def open(self):
         '''open() ... callback invoked when the task panel is opened.'''
         self.s = SelObserver(self.selectionFactory)
-        # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
+        FreeCADGui.Selection.addObserver(self)
 
     def getStandardButtons(self):
         '''getStandardButtons() ... returns the Buttons for the task panel.'''
@@ -740,6 +787,22 @@ class TaskPanel(object):
 
     def needsFullSpace(self):
         return True
+
+    def updateSelection(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+        for page in self.featurePages:
+            page.updateSelection(self.obj, sel)
+
+    # SelectionObserver interface
+    def addSelection(self, doc, obj, sub, pnt):
+        self.updateSelection()
+    def removeSelection(self, doc, obj, sub):
+        self.updateSelection()
+    def setSelection(self, doc):
+        self.updateSelection()
+    def clearSelection(self, doc):
+        self.updateSelection()
+
 
 class SelObserver:
     '''Implementation of the selection observer used by the task panel.
