@@ -334,13 +334,13 @@ def makeSolverZ88(name="Z88"):
 
 
 '''
-# print supportedTypes
+# get the supportedTypes
 App.newDocument()
 module = 'Fem'
 FreeCADGui.doCommand('import ' + module)
 for s in sorted(App.ActiveDocument.supportedTypes()):
     if s.startswith(module):
-        print s
+        print(s)
 '''
 
 ##  @}
