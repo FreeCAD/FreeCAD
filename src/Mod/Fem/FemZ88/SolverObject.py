@@ -43,7 +43,6 @@ if FreeCAD.GuiUp:
 ANALYSIS_TYPES = ["static"]
 
 
-'''
 def create(doc, name="SolverZ88"):
     return FemMisc.createObject(
         doc, name, Proxy, ViewProxy)
@@ -88,4 +87,3 @@ class Proxy(FemSolverObject.Proxy):
 
 class ViewProxy(FemSolverObject.ViewProxy):
     pass
-'''
