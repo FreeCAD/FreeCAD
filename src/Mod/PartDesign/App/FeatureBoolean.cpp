@@ -100,9 +100,16 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         // so that the placement will be right
         if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
             return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
-        
+
         TopoDS_Shape shape = static_cast<Part::Feature*>(tool)->Shape.getValue();
         TopoDS_Shape boolOp;
+
+        // Must not pass null shapes to the boolean operations
+        if (result.IsNull())
+            return new App::DocumentObjectExecReturn("Base shape is null");
+
+        if (shape.IsNull())
+            return new App::DocumentObjectExecReturn("Tool shape is null");
 
         if (type == "Fuse") {
             BRepAlgoAPI_Fuse mkFuse(result, shape);
