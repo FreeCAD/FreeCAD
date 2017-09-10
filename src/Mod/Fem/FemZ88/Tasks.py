@@ -36,7 +36,7 @@ import FemSettings
 import FemMisc
 import importZ88O2Results
 
-import Writer
+import FemZ88.Writer
 
 
 _inputFileName = None

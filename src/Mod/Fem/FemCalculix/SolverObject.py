@@ -35,7 +35,7 @@ import FemSolverObject
 import FemMisc
 import FemRun
 
-import Tasks
+import FemCalculix.Tasks
 
 if FreeCAD.GuiUp:
     import FemGui
