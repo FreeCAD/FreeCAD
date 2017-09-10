@@ -260,7 +260,7 @@ def readResult(frd_input):
                 # hexa20 import works with the following frd file node assignment
                 elements_hexa20[elem] = (nd8, nd5, nd6, nd7, nd4, nd1, nd2, nd3, nd20, nd17,
                                          nd18, nd19, nd12, nd9, nd10, nd11, nd16, nd13, nd14, nd15)
-                # print elements_hexa20[elem]
+                # print(elements_hexa20[elem])
             elif elemType == 5 and input_continues is False:
                 # first line
                 # C3D15 Calculix --> penta15 FreeCAD

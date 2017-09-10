@@ -312,7 +312,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             mat_obj = m['Object']
             if mat_obj.Category == 'Solid':
                 if 'YoungsModulus' in mat_map:
-                    # print Units.Quantity(mat_map['YoungsModulus']).Value
+                    # print(Units.Quantity(mat_map['YoungsModulus']).Value)
                     if not Units.Quantity(mat_map['YoungsModulus']).Value:
                         message += "Value of YoungsModulus is set to 0.0.\n"
                 else:
