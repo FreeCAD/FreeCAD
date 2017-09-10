@@ -23,6 +23,8 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <boost/signals.hpp>
+
 #include <QRectF>
 
 #include <App/DocumentObject.h>
@@ -75,19 +77,24 @@ public:
 
     DrawPage* findParentPage() const;
     bool allowAutoPos() {return autoPos;};                //sb in DPGI??
-    void setAutoPos(bool state) {autoPos = state;};
+    void setAutoPos(bool state) {autoPos = state;};       //autopos is obsolete
     bool isMouseMove() {return mouseMove;};
     void setMouseMove(bool state) {mouseMove = state;};
     virtual QRectF getRect() const;                       //must be overridden by derived class
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y);
+    bool keepUpdated(void);
+    boost::signal<void (const DrawView*)> signalGuiPaint;
+    virtual double getScale(void) const;
+    void checkScale(void);
 
 protected:
     void onChanged(const App::Property* prop);
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;
+    void requestPaint(void);
 
 private:
     static const char* ScaleTypeEnums[];

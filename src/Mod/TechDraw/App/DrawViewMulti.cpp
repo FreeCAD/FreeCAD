@@ -118,6 +118,10 @@ void DrawViewMulti::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     const std::vector<App::DocumentObject*>& links = Sources.getValues();
     if (links.empty())  {
         Base::Console().Log("INFO - DVM::execute - No Sources - creation?\n");
@@ -126,13 +130,17 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 
     //Base::Console().Message("TRACE - DVM::execute() - %s/%s\n",getNameInDocument(),Label.getValue());
 
-    (void) DrawView::execute();          //make sure Scale is up to date
-
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
     for (auto& l:links) {
+        if (!l->isDerivedFrom(Part::Feature::getClassTypeId())){
+            continue;     //not a part
+        } 
         const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
+        if (partTopo.isNull()) {
+            continue;    //has no shape
+        }
         BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
         TopoDS_Shape shape = BuilderCopy.Shape();
         builder.Add(comp, shape);
@@ -145,7 +153,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
                                                      Direction.getValue());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(comp,
                                                     inputCenter,
-                                                    Scale.getValue());
+                                                    getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
@@ -158,6 +166,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
+    requestPaint();
     return App::DocumentObject::StdReturn;
 }
 

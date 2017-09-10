@@ -612,9 +612,11 @@ void QGIViewDimension::draw()
         datumLabel->setRotation((angle * 180 / M_PI) + angleOption);
 
         aHead1->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead1->setSize(QGIArrow::getPrefArrowSize());
         aHead1->draw();
         aHead2->flip(true);
         aHead2->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead2->setSize(QGIArrow::getPrefArrowSize());
         aHead2->draw();
         angle = atan2f(dir.y,dir.x);
         float arrowAngle = angle * 180 / M_PI;
@@ -827,12 +829,12 @@ void QGIViewDimension::draw()
             path.lineTo(arrow2Tip.x, arrow2Tip.y);
         }
 
-
-
         aHead1->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead1->setSize(QGIArrow::getPrefArrowSize());
         aHead1->draw();
         aHead2->flip(true);
         aHead2->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead2->setSize(QGIArrow::getPrefArrowSize());
         aHead2->draw();
 
         float arAngle = atan2(dirDimLine.y, dirDimLine.x) * 180 / M_PI;
@@ -1062,6 +1064,7 @@ void QGIViewDimension::draw()
         dimLines->setPath(dLinePath);
 
         aHead1->setStyle(QGIArrow::getPrefArrowStyle());
+        aHead1->setSize(QGIArrow::getPrefArrowSize());
         aHead1->draw();
 
         Base::Vector3d ar1Pos = pointOnCurve;
@@ -1259,8 +1262,10 @@ void QGIViewDimension::draw()
 
                 aHead1->flip(true);
                 aHead1->setStyle(QGIArrow::getPrefArrowStyle());
+                aHead1->setSize(QGIArrow::getPrefArrowSize());
                 aHead1->draw();
                 aHead2->setStyle(QGIArrow::getPrefArrowStyle());
+                aHead2->setSize(QGIArrow::getPrefArrowSize());
                 aHead2->draw();
 
                 Base::Vector3d norm1 = p1-p0; //(-dir1.y, dir1.x, 0.);

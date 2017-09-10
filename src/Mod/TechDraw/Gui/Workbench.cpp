@@ -34,14 +34,6 @@
 
 using namespace TechDrawGui;
 
-#if 0 // needed for Qt's lupdate utility
-//    qApp->translate("Workbench", "TechDraw");
-    qApp->translate("Workbench", "TechDraw Pages");
-    qApp->translate("Workbench", "TechDraw Views");
-    qApp->translate("Workbench", "TechDraw Dimensions");
-#endif
-
-/// @namespace TechDrawGui @class Workbench
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench()
@@ -130,6 +122,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
+    *decor << "TechDraw_RedrawPage";
     return root;
 }
 
@@ -180,6 +173,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
+    *decor << "TechDraw_RedrawPage";
 
     return root;
 }

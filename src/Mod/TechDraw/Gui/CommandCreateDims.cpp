@@ -202,20 +202,12 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,dimType.c_str());
 
-    std::string contentStr;
-    if (dimType == "Radius") {
-        contentStr = "R%value%";
-    }
-    doCommand(Doc,"App.activeDocument().%s.FormatSpec = '%s'",FeatName.c_str()
-                                                          ,contentStr.c_str());
-
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::Exception("CmdTechDrawNewDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
 
@@ -295,7 +287,6 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Radius");
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'R%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -303,7 +294,6 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -380,20 +370,10 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         return;
     }
     
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    std::string diamSym = hGrp->GetASCII("DiameterSymbol","\xe2\x8c\x80");
-    diamSym = diamSym.substr (0,79);                                            //coverity 156593
-    const char * format = "%value%";
-    char formatSpec[80];
-    std::strcpy (formatSpec,diamSym.c_str());
-    std::strcat (formatSpec,format);
-    
     openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%s'", FeatName.c_str(),formatSpec);
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -401,7 +381,6 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -510,9 +489,6 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
-
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -621,9 +597,6 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
-
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -731,9 +704,6 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
-
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -821,7 +791,6 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();

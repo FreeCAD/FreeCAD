@@ -114,6 +114,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
 
     Symbol.setValue(getSheetImage());
 
+    requestPaint();
     return TechDraw::DrawView::execute();
 }
 
@@ -290,7 +291,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth
                        << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
-                       << LineWidth.getValue()/Scale.getValue() << ";stroke:" << c.asCSSString() << ";\" />" << endl;
+                       << LineWidth.getValue()/getScale() << ";stroke:" << c.asCSSString() << ";\" />" << endl;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + TextSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)

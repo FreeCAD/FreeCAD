@@ -59,7 +59,7 @@ public:
     App::PropertyEnumeration Type;                                     //DistanceX,DistanceY,Diameter, etc
 
     /// Properties for Visualisation
-    App::PropertyString  Font;
+    App::PropertyFont  Font;
     App::PropertyFloat   Fontsize;
     App::PropertyString  FormatSpec;
     App::PropertyFloat   LineWidth;
@@ -97,6 +97,9 @@ protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
     bool showUnits() const;
+    bool useDecimals() const;
+    std::string getPrefix() const;
+    std::string getDefaultFormatSpec() const;
 
 protected:
     Measure::Measurement *measurement;
