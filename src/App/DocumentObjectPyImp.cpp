@@ -37,7 +37,10 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string DocumentObjectPy::representation(void) const
 {
-    return std::string("<Document object>");
+    DocumentObject* object = this->getDocumentObjectPtr();
+    std::stringstream str;
+    str << "<" << object->getTypeId().getName() << " object>";
+    return str.str();
 }
 
 Py::String DocumentObjectPy::getName(void) const
