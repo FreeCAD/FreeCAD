@@ -164,10 +164,10 @@ class Proxy(FemSolverObject.Proxy):
     def createMachine(self, obj, directory):
         return FemRun.Machine(
             solver=obj, directory=directory,
-            check=Tasks.Check(),
-            prepare=Tasks.Prepare(),
-            solve=Tasks.Solve(),
-            results=Tasks.Results())
+            check=FemCalculix.Tasks.Check(),
+            prepare=FemCalculix.Tasks.Prepare(),
+            solve=FemCalculix.Tasks.Solve(),
+            results=FemCalculix.Tasks.Results())
 
     def editSupported(self):
         return True
