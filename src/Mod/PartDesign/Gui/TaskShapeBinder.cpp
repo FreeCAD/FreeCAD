@@ -226,18 +226,34 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
         //change the references 
         std::string subName(msg.pSubName);
 
+        Part::Feature* selectedObj = nullptr;
         Part::Feature* obj = nullptr;
         std::vector<std::string> refs;
                 
         PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);
-    
-        //if we already have a object we need to ensure th new selected subref belongs to it
-        if(obj && strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
+
+        // get selected object
+        auto docObj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
+        if (docObj && docObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            selectedObj = static_cast<Part::Feature*>(docObj);
+        }
+
+        // ensure we have a valid object
+        if (!selectedObj) {
             return false;
-        
-        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+        }
+        if (!obj) {
+            // Support has not been set before
+            obj = selectedObj;
+        }
 
         if(selectionMode != refObjAdd) {
+            // ensure the new selected subref belongs to the same object
+            if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
+                return false;
+
+            std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+
             if (selectionMode == refAdd) {
                 if (f == refs.end())
                     refs.push_back(subName);
@@ -251,7 +267,9 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
             }
         }
         else {
+            // change object
             refs.clear();
+            obj = selectedObj;
         }
         
         static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support.setValue(obj, refs);
