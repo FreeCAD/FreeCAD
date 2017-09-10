@@ -35,7 +35,7 @@ import FemSolverObject
 import FemMisc
 import FemRun
 
-import FemCalculix.Tasks
+import FemCalculix.Tasks as tasks
 
 if FreeCAD.GuiUp:
     import FemGui
@@ -164,10 +164,10 @@ class Proxy(FemSolverObject.Proxy):
     def createMachine(self, obj, directory):
         return FemRun.Machine(
             solver=obj, directory=directory,
-            check=FemCalculix.Tasks.Check(),
-            prepare=FemCalculix.Tasks.Prepare(),
-            solve=FemCalculix.Tasks.Solve(),
-            results=FemCalculix.Tasks.Results())
+            check=tasks.Check(),
+            prepare=tasks.Prepare(),
+            solve=tasks.Solve(),
+            results=tasks.Results())
 
     def editSupported(self):
         return True

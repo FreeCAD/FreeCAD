@@ -37,7 +37,7 @@ import FemMisc
 import importCcxFrdResults
 import importCcxDatResults
 
-import FemCalculix.Writer
+import FemCalculix.Writer as writer
 
 
 _inputFileName = None
@@ -57,7 +57,7 @@ class Prepare(FemRun.Prepare):
         global _inputFileName
         self.pushStatus("Preparing input files...\n")
         c = _Container(self.analysis)
-        writer = FemCalculix.Writer.FemInputWriterCcx(
+        writer = writer.FemInputWriterCcx(
             self.analysis, self.solver, c.mesh, c.materials_linear,
             c.materials_nonlinear, c.fixed_constraints,
             c.displacement_constraints, c.contact_constraints,
