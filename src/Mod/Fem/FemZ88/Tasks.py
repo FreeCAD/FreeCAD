@@ -56,7 +56,7 @@ class Prepare(FemRun.Prepare):
         global _inputFileName
         self.pushStatus("Preparing input files...\n")
         c = _Container(self.analysis)
-        writer = writer.FemInputWriterZ88(
+        w = writer.FemInputWriterZ88(
             self.analysis, self.solver, c.mesh, c.materials_linear,
             c.materials_nonlinear, c.fixed_constraints,
             c.displacement_constraints, c.contact_constraints,
@@ -66,7 +66,7 @@ class Prepare(FemRun.Prepare):
             c.heatflux_constraints, c.initialtemperature_constraints,
             c.beam_sections, c.shell_thicknesses, c.fluid_sections,
             self.solver.AnalysisType, self.directory)
-        path = writer.write_z88_input()
+        path = w.write_z88_input()
         _inputFileName = os.path.splitext(os.path.basename(path))[0]  # AFAIK empty for z88
         print(path)
         print(_inputFileName)
