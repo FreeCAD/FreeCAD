@@ -198,12 +198,13 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         dimension = -1;  // unknown dimension of mesh
     }
     if (pcMesh != NULL) {
-        if (pcMesh->getPropertyByName("Part")) {  // PropertyLink
-            App::PropertyLink* pcLink= static_cast<App::PropertyLink*>(pcMesh->getPropertyByName("Part"));
-            Part::Feature* pcPart = static_cast<Part::Feature*>(pcLink->getValue());
+        App::Property* prop = pcMesh->getPropertyByName("Shape");  // PropertyLink
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+            App::PropertyLink* pcLink = static_cast<App::PropertyLink*>(prop);
+            Part::Feature* pcPart = dynamic_cast<Part::Feature*>(pcLink->getValue());
             if (pcPart) {  // deduct dimension from part_obj.Shape.ShapeType
                 const TopoDS_Shape & pShape = pcPart->Shape.getShape().getShape();
-                const TopAbs_ShapeEnum shapeType = pShape.ShapeType();
+                const TopAbs_ShapeEnum shapeType = pShape.IsNull() ? TopAbs_SHAPE : pShape.ShapeType();
                 if (shapeType == TopAbs_SOLID || shapeType ==TopAbs_COMPSOLID)  // COMPSOLID is solids conected by faces
                     dimension =3;
                 else if (shapeType == TopAbs_FACE || shapeType == TopAbs_SHELL)
