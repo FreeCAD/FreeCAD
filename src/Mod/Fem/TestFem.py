@@ -555,10 +555,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
 
-        '''
         # use new solver frame work solver
         fcc_print('Checking FEM new solver for new solver frame work...')
-        # py3 travie fails on the next line ...
         solver_ccx2_object = ObjectsFem.makeSolverCalculix('SolverCalculiX')
 
         solver_ccx2_object.GeometricalNonlinearity = 'linear'
@@ -582,7 +580,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(static2_save_fc_file))
         self.active_doc.saveAs(static2_save_fc_file)
-        '''
 
         fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
 
