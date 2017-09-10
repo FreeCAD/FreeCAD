@@ -251,8 +251,8 @@ class FemToolsCcx(FemTools.FemTools):
             nonpositive_jacobian_elenodes = []
             for line in self.ccx_stdout.splitlines():
                 if 'determinant in element' in line:
-                    # print line
-                    # print line.split()
+                    # print(line)
+                    # print(line.split())
                     non_posjac_ele = int(line.split()[3])
                     # print(non_posjac_ele)
                     if non_posjac_ele not in nonpositive_jacobian_elements:
