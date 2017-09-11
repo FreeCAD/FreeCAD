@@ -72,6 +72,20 @@ INSTALL(
 
 INSTALL(
     FILES
+        femsolver/__init__.py
+        femsolver/solverbase.py
+        femsolver/report.py
+        femsolver/reportdialog.py
+        femsolver/settings.py
+        femsolver/task.py
+        femsolver/run.py
+        femsolver/signal.py
+    DESTINATION
+        Mod/Fem/femsolver
+)
+
+INSTALL(
+    FILES
         PyGui/FemCommands.py
         PyGui/FemSelectionObserver.py
         PyGui/__init__.py
@@ -107,6 +121,7 @@ INSTALL(
         PyGui/_TaskPanelFemMeshRegion.py
         PyGui/_TaskPanelFemResultShow.py
         PyGui/_TaskPanelFemSolverCalculix.py
+        PyGui/_TaskPanelFemSolverControl.py
         PyGui/_ViewProviderFemConstraintSelfWeight.py
         PyGui/_ViewProviderFemElementFluid1D.py
         PyGui/_ViewProviderFemElementGeometry1D.py
