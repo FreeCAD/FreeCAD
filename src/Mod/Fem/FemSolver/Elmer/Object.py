@@ -30,7 +30,7 @@ import FemSolver.SolverBase
 import FemMisc
 import FemRun
 
-import Tasks
+import FemSolver.Elmer.Tasks as tasks
 import Equations.Heat
 import Equations.Elasticity
 import Equations.Electrostatic
@@ -75,10 +75,10 @@ class Proxy(FemSolver.SolverBase.Proxy):
     def createMachine(self, obj, directory):
         return FemRun.Machine(
             solver=obj, directory=directory,
-            check=Tasks.Check(),
-            prepare=Tasks.Prepare(),
-            solve=Tasks.Solve(),
-            results=Tasks.Results())
+            check=tasks.Check(),
+            prepare=tasks.Prepare(),
+            solve=tasks.Solve(),
+            results=tasks.Results())
 
     def createEquation(self, doc, eqId):
         return self._EQUATIONS[eqId].create(doc)

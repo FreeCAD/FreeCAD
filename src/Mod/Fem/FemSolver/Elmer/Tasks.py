@@ -33,7 +33,7 @@ import FemRun
 import FemSettings
 import FemMisc
 
-import Writer
+import FemSolver.Elmer.Writer as writer
 
 
 class Check(FemRun.Check):
@@ -68,10 +68,10 @@ class Prepare(FemRun.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        writer = Writer.Writer(self.solver, self.directory)
+        w = writer.Writer(self.solver, self.directory)
         try:
-            writer.write()
-            self.checkHandled(writer)
+            w.write()
+            self.checkHandled(w)
         except Writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
@@ -79,8 +79,8 @@ class Prepare(FemRun.Prepare):
             self.report.error("Can't access working directory.")
             self.fail()
 
-    def checkHandled(self, writer):
-        handled = writer.getHandledConstraints()
+    def checkHandled(self, w):
+        handled = w.getHandledConstraints()
         allConstraints = FemMisc.getMember(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
