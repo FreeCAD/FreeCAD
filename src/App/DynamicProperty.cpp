@@ -47,6 +47,8 @@ DynamicProperty::DynamicProperty(PropertyContainer* p) : pc(p)
 
 DynamicProperty::~DynamicProperty()
 {
+    for(auto &v : props)
+        delete v.second.property;
 }
 
 void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
