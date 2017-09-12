@@ -52,7 +52,9 @@ class _CommandFemSolverRun(FemCommands):
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
-        if self.solver.SolverType == "FemSolverCalculix":
+        if FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectZ88"):
+            self._newActivated()
+        elif self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()

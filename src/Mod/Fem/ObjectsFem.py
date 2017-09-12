@@ -321,14 +321,10 @@ def makeSolverCalculix(doc, name="CalculiX"):
     return obj
 
 
-def makeSolverZ88(doc, name="Z88"):
+def makeSolverZ88(doc, name="SolverZ88"):
     '''makeSolverZ88(document, [name]): makes a Z88 solver object'''
-    obj = doc.addObject("Fem::FemSolverObjectPython", name)
-    import PyObjects._FemSolverZ88
-    PyObjects._FemSolverZ88._FemSolverZ88(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemSolverZ88
-        PyGui._ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
+    import femsolver.z88.solver
+    obj = femsolver.z88.solver.create(doc, name)
     return obj
 
 

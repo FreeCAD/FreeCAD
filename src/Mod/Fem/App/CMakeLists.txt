@@ -129,6 +129,13 @@ SET(FemSolver_SRCS
     femsolver/signal.py
 )
 
+SET(FemZ88_SRCS
+    femsolver/z88/__init__.py
+    femsolver/z88/solver.py
+    femsolver/z88/tasks.py
+    femsolver/z88/writer.py
+)
+
 SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
     PyGui/FemSelectionObserver.py
@@ -332,6 +339,7 @@ fc_target_copy_resource(Fem
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
     ${FemSolver_SRCS}
+    ${FemZ88_SRCS}
 )
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)
