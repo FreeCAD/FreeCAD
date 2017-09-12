@@ -39,7 +39,7 @@ if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
-    PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -88,6 +88,10 @@ class ObjectOp(object):
     implementation - otherwise the base functionality might be broken.
     '''
 
+    def addBaseProperty(self, obj):
+        obj.addProperty("App::PropertyLinkSubListGlobal", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"))
+
+
     def __init__(self, obj):
         PathLog.track()
 
@@ -98,7 +102,7 @@ class ObjectOp(object):
         features = self.opFeatures(obj)
 
         if FeatureBaseGeometry & features:
-            obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"))
+            self.addBaseProperty(obj)
 
         if FeatureLocations & features:
             obj.addProperty("App::PropertyVectorList", "Locations", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Base locations for this operation"))
@@ -128,6 +132,16 @@ class ObjectOp(object):
 
         obj.Proxy = self
         self.setDefaultValues(obj)
+
+    def onDocumentRestored(self, obj):
+        if FeatureBaseGeometry & self.opFeatures(obj) and 'App::PropertyLinkSubList' == obj.getTypeIdOfProperty('Base'):
+            PathLog.info("Replacing link property with global link (%s)." % obj.State)
+            base = obj.Base
+            obj.removeProperty('Base')
+            self.addBaseProperty(obj)
+            obj.Base = base
+            obj.touch()
+            obj.Document.recompute()
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
