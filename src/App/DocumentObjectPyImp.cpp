@@ -189,7 +189,12 @@ Py::Object DocumentObjectPy::getViewObject(void) const
         arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
         Py::Object doc = method.apply(arg);
         method = doc.getAttr("getObject");
-        arg.setItem(0, Py::String(getDocumentObjectPtr()->getNameInDocument()));
+        const char* internalName = getDocumentObjectPtr()->getNameInDocument();
+        if (!internalName) {
+            throw Py::RuntimeError("Object has been removed from document");
+        }
+
+        arg.setItem(0, Py::String(internalName));
         Py::Object obj = method.apply(arg);
         return obj;
     }
