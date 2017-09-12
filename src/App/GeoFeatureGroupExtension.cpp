@@ -220,7 +220,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLinks(const DocumentObject* obj, LinkScope scope) {
 
     if(!obj)
-        std::vector< DocumentObject* >();
+        return std::vector< DocumentObject* >();
 
     //we get all linked objects. We can't use outList() as this includes the links from expressions
     std::vector< App::DocumentObject* > result;
@@ -231,7 +231,7 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
         result.insert(result.end(), vec.begin(), vec.end());
     }
 
-    //clear all null objects and douplicates
+    //clear all null objects and duplicates
     std::sort(result.begin(), result.end());
     result.erase(std::unique(result.begin(), result.end()), result.end());
 
