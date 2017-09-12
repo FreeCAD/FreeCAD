@@ -721,10 +721,10 @@ class TaskPanel(object):
     def preCleanup(self):
         FreeCADGui.Selection.removeObserver(self)
         FreeCADGui.Selection.removeObserver(self.s)
+        self.obj.ViewObject.Proxy.clearTaskPanel()
 
     def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
-        self.obj.ViewObject.Proxy.clearTaskPanel()
         FreeCADGui.Control.closeDialog()
         if resetEdit:
             FreeCADGui.ActiveDocument.resetEdit()
