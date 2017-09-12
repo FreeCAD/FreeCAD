@@ -16,6 +16,7 @@
         <file>icons/fem-constraint-contact.svg</file>
         <file>icons/fem-constraint-displacement.svg</file>
         <file>icons/fem-constraint-fixed.svg</file>
+        <file>icons/fem-constraint-flow-velocity.svg</file>
         <file>icons/fem-constraint-fluid-boundary.svg</file>
         <file>icons/fem-constraint-force.svg</file>
         <file>icons/fem-constraint-gear.svg</file>
