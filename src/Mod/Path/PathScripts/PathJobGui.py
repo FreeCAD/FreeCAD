@@ -478,8 +478,6 @@ class TaskPanel:
             if self.obj.ViewObject.Proxy.onDelete(self.obj.ViewObject, None):
                 FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
-        else:
-            PathLog.info("don't uncreate Job")
         self.cleanup(resetEdit)
         return True
 
