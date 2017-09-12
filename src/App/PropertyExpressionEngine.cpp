@@ -124,47 +124,52 @@ void PropertyExpressionEngine::Paste(const Property &from)
     AtomicPropertyChange signaller(*this);
 
 #ifndef USE_OLD_DAG
-    //maintain backlinks
-    ExpressionMap::const_iterator i = expressions.begin();
-    while (i != expressions.end()) {
-        std::set<ObjectIdentifier> deps;
-        i->second.expression->getDeps(deps);
+    //maintain backlinks, verify that this property is owned by a DocumentObject
+    App::DocumentObject* parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    if (parent) {
+        ExpressionMap::const_iterator i = expressions.begin();
+        while (i != expressions.end()) {
+            std::set<ObjectIdentifier> deps;
+            i->second.expression->getDeps(deps);
 
-        std::set<ObjectIdentifier>::const_iterator j = deps.begin();
-        while (j != deps.end()) {
-            const ObjectIdentifier & p = *j;
-            DocumentObject* docObj = p.getDocumentObject();
+            std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+            while (j != deps.end()) {
+                const ObjectIdentifier & p = *j;
+                DocumentObject* docObj = p.getDocumentObject();
 
-            if (docObj)
-                docObj->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
+                if (docObj)
+                    docObj->_removeBackLink(parent);
 
-            ++j;
+                ++j;
+            }
+            ++i;
         }
-        ++i;
     }
 #endif
     expressions.clear();
 
     for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it) {
         expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()), it->second.comment.c_str());
-        
+
 #ifndef USE_OLD_DAG
-        //maintain backlinks
-        std::set<ObjectIdentifier> deps;
-        it->second.expression->getDeps(deps);
+        if (parent) {
+            //maintain backlinks
+            std::set<ObjectIdentifier> deps;
+            it->second.expression->getDeps(deps);
 
-        std::set<ObjectIdentifier>::const_iterator j = deps.begin();
-        while (j != deps.end()) {
-            const ObjectIdentifier & p = *j;
-            DocumentObject* docObj = p.getDocumentObject();
+            std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+            while (j != deps.end()) {
+                const ObjectIdentifier & p = *j;
+                DocumentObject* docObj = p.getDocumentObject();
 
-            if (docObj)
-                docObj->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
+                if (docObj)
+                    docObj->_addBackLink(parent);
 
-            ++j;
+                ++j;
+            }
         }
 #endif
-        
+
         expressionChanged(it->first);
     }
 
@@ -406,40 +411,50 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         
 #ifndef USE_OLD_DAG
         //maintain the backlinks in the documentobject graph datastructure
-        std::set<ObjectIdentifier> deps;
-        expr->getDeps(deps);
-        std::set<ObjectIdentifier>::const_iterator j = deps.begin();
-        while (j != deps.end()) {
-            const ObjectIdentifier & p = *j;
-            DocumentObject* docObj = p.getDocumentObject();
-            if (docObj)
-                docObj->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
+        //verify that this property is owned by a DocumentObject
+        App::DocumentObject* parent = dynamic_cast<App::DocumentObject*>(getContainer());
+        if (parent) {
+            std::set<ObjectIdentifier> deps;
+            expr->getDeps(deps);
+            std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+            while (j != deps.end()) {
+                const ObjectIdentifier & p = *j;
+                DocumentObject* docObj = p.getDocumentObject();
+                if (docObj)
+                    docObj->_addBackLink(parent);
 
-            ++j;
+                ++j;
+            }
         }
 #endif
-        
+
         expressionChanged(usePath);
     }
     else {
         AtomicPropertyChange signaller(*this);
-        expressions.erase(usePath);
-        
-#ifndef USE_OLD_DAG
-        //maintain the backlinks in the documentobject graph datastructure
-        std::set<ObjectIdentifier> deps;
-        expressions[usePath].expression->getDeps(deps);
-        std::set<ObjectIdentifier>::const_iterator j = deps.begin();
-        while (j != deps.end()) {
-            const ObjectIdentifier & p = *j;
-            DocumentObject* docObj = p.getDocumentObject();
-            if (docObj)
-                docObj->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
 
-            ++j;
+#ifndef USE_OLD_DAG
+        //verify that this property is owned by a DocumentObject
+        //verify that the ObjectIdentifier usePath is part of the expression map and
+        //that the expression is not null
+        App::DocumentObject* parent = dynamic_cast<App::DocumentObject*>(getContainer());
+        if (parent && it != expressions.end() && it->second.expression) {
+            //maintain the backlinks in the documentobject graph datastructure
+            std::set<ObjectIdentifier> deps;
+            it->second.expression->getDeps(deps);
+            std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+            while (j != deps.end()) {
+                const ObjectIdentifier & p = *j;
+                DocumentObject* docObj = p.getDocumentObject();
+                if (docObj)
+                    docObj->_removeBackLink(parent);
+
+                ++j;
+            }
         }
 #endif
 
+        expressions.erase(usePath);
         expressionChanged(usePath);
     }
 }
