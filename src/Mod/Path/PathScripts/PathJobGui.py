@@ -69,6 +69,7 @@ class ViewProvider:
         vobj.setEditorMode('Selectable', mode)
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
+        self.deleteOnReject = True
 
     def attach(self, vobj):
         self.vobj = vobj
@@ -458,6 +459,7 @@ class TaskPanel:
             self.baseObjectRestoreVisibility(self.obj)
         if self.obj.Stock and self.obj.Stock.ViewObject:
             self.obj.Stock.ViewObject.Visibility = self.stockVisibility
+        self.vobj.Proxy.resetTaskPanel()
 
     def accept(self, resetEdit=True):
         PathLog.track()
@@ -473,14 +475,16 @@ class TaskPanel:
         if self.deleteOnReject:
             PathLog.info("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
-            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            if self.obj.ViewObject.Proxy.onDelete(self.obj.ViewObject, None):
+                FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            PathLog.info("don't uncreate Job")
         self.cleanup(resetEdit)
         return True
 
     def cleanup(self, resetEdit):
         PathLog.track()
-        self.vobj.Proxy.resetTaskPanel()
         FreeCADGui.Control.closeDialog()
         if resetEdit:
             FreeCADGui.ActiveDocument.resetEdit()
