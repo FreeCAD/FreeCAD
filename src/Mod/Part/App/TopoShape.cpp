@@ -3090,8 +3090,6 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     aSewingTool.Load(aComp);
     aSewingTool.Perform();
     _Shape = aSewingTool.SewedShape();
-    // TopAbs_Orientation o = _Shape.Orientation();
-    _Shape.Reverse(); // seems that we have to reverse the orientation
     if (_Shape.IsNull())
         _Shape = aComp;
 }
