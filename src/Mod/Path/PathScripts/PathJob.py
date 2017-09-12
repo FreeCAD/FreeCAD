@@ -76,6 +76,7 @@ def createResourceClone(obj, orig, name, icon):
     if clone.ViewObject:
         PathIconViewProvider.ViewProvider(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
+    obj.Document.recompute() # necessary to create the clone shape
     return clone
 
 class ObjectJob:
