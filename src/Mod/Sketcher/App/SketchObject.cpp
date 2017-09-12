@@ -5722,6 +5722,12 @@ void SketchObject::onDocumentRestored()
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
+        // this may happen when saving a sketch directly in edit mode
+        // but never performed a recompute before
+        if (Shape.getValue().IsNull() && hasConflicts() == 0) {
+            if (this->solve(true) == 0)
+                Shape.setValue(solvedSketch.toShape());
+        }
     }
     catch (...) {
     }
