@@ -83,3 +83,19 @@ class TestPathTool(PathTestBase):
         self.assertEqual(t0.CuttingEdgeAngle, t1.CuttingEdgeAngle)
         self.assertEqual(t0.CuttingEdgeHeight, t1.CuttingEdgeHeight)
 
+    def test02(self):
+        '''Verify template dictionary construction'''
+
+        t0 = self.test00()
+        t1 = Path.Tool(t0.templateAttrs())
+
+        self.assertEqual(t0.Name, t1.Name)
+        self.assertEqual(t0.ToolType, t1.ToolType)
+        self.assertEqual(t0.Material, t1.Material)
+        self.assertEqual(t0.Diameter, t1.Diameter)
+        self.assertEqual(t0.LengthOffset, t1.LengthOffset)
+        self.assertEqual(t0.FlatRadius, t1.FlatRadius)
+        self.assertEqual(t0.CornerRadius, t1.CornerRadius)
+        self.assertEqual(t0.CuttingEdgeAngle, t1.CuttingEdgeAngle)
+        self.assertEqual(t0.CuttingEdgeHeight, t1.CuttingEdgeHeight)
+
