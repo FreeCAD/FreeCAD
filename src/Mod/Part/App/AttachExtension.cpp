@@ -118,7 +118,9 @@ bool AttachExtension::positionBySupport()
     if (!_attacher)
         throw Base::RuntimeError("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
-    try{
+    try {
+        if (_attacher->mapMode == mmDeactivated)
+            return false;
         getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
         return true;
     } catch (ExceptionCancel) {
