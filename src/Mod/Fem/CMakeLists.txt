@@ -90,7 +90,7 @@ INSTALL(
     FILES
         FemSolver/elmer/__init__.py
         FemSolver/elmer/sifio.py
-        FemSolver/elmer/object.py
+        FemSolver/elmer/solver.py
         FemSolver/elmer/tasks.py
         FemSolver/elmer/writer.py
     DESTINATION
@@ -114,7 +114,7 @@ INSTALL(
 INSTALL(
     FILES
         FemSolver/calculix/__init__.py
-        FemSolver/calculix/object.py
+        FemSolver/calculix/solver.py
         FemSolver/calculix/oasks.py
         FemSolver/calculix/writer.py
     DESTINATION
@@ -124,7 +124,7 @@ INSTALL(
 INSTALL(
     FILES
         FemSolver/z88/__init__.py
-        FemSolver/z88/object.py
+        FemSolver/z88/solver.py
         FemSolver/z88/tasks.py
         FemSolver/z88/writer.py
     DESTINATION

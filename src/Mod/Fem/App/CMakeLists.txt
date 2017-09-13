@@ -134,7 +134,7 @@ SET(FemSolver_SRCS
 SET(FemElmer_SRCS
     FemSolver/elmer/__init__.py
     FemSolver/elmer/sifio.py
-    FemSolver/elmer/object.py
+    FemSolver/elmer/solver.py
     FemSolver/elmer/tasks.py
     FemSolver/elmer/writer.py
 )
@@ -152,14 +152,14 @@ SET(FemEquationsElmer_SRCS
 
 SET(FemCalculix_SRCS
     FemSolver/calculix/__init__.py
-    FemSolver/calculix/object.py
+    FemSolver/calculix/solver.py
     FemSolver/calculix/tasks.py
     FemSolver/calculix/writer.py
 )
 
 SET(FemZ88_SRCS
     FemSolver/z88/__init__.py
-    FemSolver/z88/object.py
+    FemSolver/z88/solver.py
     FemSolver/z88/tasks.py
     FemSolver/z88/writer.py
 )
