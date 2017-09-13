@@ -99,7 +99,7 @@ class ToolController:
 
         for t in template.iter(ToolControllerTemplate.Tool):
             tool = Path.Tool()
-            tool.fromTemplate(xml.tostring(t))
+            tool.setFromTemplate(xml.tostring(t))
             obj.Tool = tool
 
     def templateAttrs(self, obj):
