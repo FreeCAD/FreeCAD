@@ -2641,6 +2641,7 @@ void Document::remObject(const char* sName)
     }
 
     // do no transactions if we do a rollback!
+    std::unique_ptr<DocumentObject> tobedestroyed;
     if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction) {
@@ -2648,8 +2649,9 @@ void Document::remObject(const char* sName)
             d->activeUndoTransaction->addObjectNew(pos->second);
         }
         else {
-            // if not saved in undo -> delete object
-            delete pos->second;
+            // if not saved in undo -> delete object later
+            std::unique_ptr<DocumentObject> delobj(pos->second);
+            tobedestroyed.swap(delobj);
         }
     }
 
@@ -2659,9 +2661,6 @@ void Document::remObject(const char* sName)
             break;
         }
     }
-    // remove from adjancy list
-    //remove_vertex(_DepConMap[pos->second],_DepList);
-    //_DepConMap.erase(pos->second);
 
     pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
