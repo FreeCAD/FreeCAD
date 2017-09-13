@@ -70,9 +70,18 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
 
     static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" ,NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|sssOOOOOO", kwlist,
-                                     &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei ))
-        return -1;
+    PyObject *dict = 0;
+    if (!kwd && PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
+        PyObject *arg = PyTuple_New(0);
+        if (!PyArg_ParseTupleAndKeywords(arg, dict, "|sssOOOOOO", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei)) {
+            return -1;
+        }
+    } else {
+        PyErr_Clear();
+        if (!PyArg_ParseTupleAndKeywords(args, kwd, "|sssOOOOOO", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei)) {
+            return -1;
+        }
+    }
 
     getToolPtr()->Name = name;
     std::string typeStr(type);
@@ -291,7 +300,6 @@ PyObject* ToolPy::copy(PyObject * args)
 PyObject* ToolPy::setFromTemplate(PyObject * args)
 {
     char *pstr = 0;
-    PyObject *dict = 0;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         // embed actual string in dummy tag so XMLReader can consume that on construction
         std::ostringstream os;
@@ -301,13 +309,10 @@ PyObject* ToolPy::setFromTemplate(PyObject * args)
         getToolPtr()->Restore(reader);
         Py_Return ;
     }
-    
-    if (PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
-        PyErr_Clear(); // it's not a string, need to clear that exception
-        PyObject *arg = PyTuple_New(0);
-        if (!PyInit(arg, dict)) {
-            Py_Return ;
-        }
+
+    PyErr_Clear();
+    if (!PyInit(args, 0)) {
+        Py_Return ;
     }
 
     PyErr_SetString(PyExc_TypeError, "argument must be a string or dictionary");
