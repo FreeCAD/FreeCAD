@@ -120,7 +120,7 @@ void OriginGroupExtension::onExtendedSetupObject () {
 void OriginGroupExtension::onExtendedUnsetupObject () {
     App::DocumentObject *origin = Origin.getValue ();
     if (origin && !origin->isRemoving ()) {
-        origin->getDocument ()->remObject (origin->getNameInDocument());
+        origin->getDocument ()->removeObject (origin->getNameInDocument());
     }
 
     GeoFeatureGroupExtension::onExtendedUnsetupObject ();

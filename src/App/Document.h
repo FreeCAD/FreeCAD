@@ -192,7 +192,7 @@ public:
      */
     std::vector<DocumentObject *>addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew=true);
     /// Remove a feature out of the document
-    void remObject(const char* sName);
+    void removeObject(const char* sName);
     /** Add an existing feature with sName (ASCII) to this document and set it active.
      * Unicode names are set through the Label property.
      * This is an overloaded function of the function above and can be used to create
@@ -353,7 +353,7 @@ protected:
     /// Construction
     Document(void);
 
-    void _remObject(DocumentObject* pcObject);
+    void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcObject);

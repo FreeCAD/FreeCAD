@@ -424,7 +424,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
             if( projPtr ) {
                 if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
                     removeView(projPtr);                                        // Remove from collection
-                    getDocument()->remObject( it->getNameInDocument() );        // Remove from the document
+                    getDocument()->removeObject( it->getNameInDocument() );        // Remove from the document
                     moveToCentre();
                     return Views.getValues().size();
                 }

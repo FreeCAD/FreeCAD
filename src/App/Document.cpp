@@ -2589,7 +2589,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 }
 
 /// Remove an object out of the document
-void Document::remObject(const char* sName)
+void Document::removeObject(const char* sName)
 {
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
 
@@ -2669,9 +2669,9 @@ void Document::remObject(const char* sName)
 }
 
 /// Remove an object out of the document (internal)
-void Document::_remObject(DocumentObject* pcObject)
+void Document::_removeObject(DocumentObject* pcObject)
 {
-    // TODO Refactoring: share code with Document::remObject() (2015-09-01, Fat-Zer)
+    // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
@@ -2833,7 +2833,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     // all object of the other document that refer to this object must be nullified
     that->breakDependency(obj, false);
     std::string objname = getUniqueObjectName(obj->getNameInDocument());
-    that->_remObject(obj);
+    that->_removeObject(obj);
     this->_addObject(obj, objname.c_str());
     obj->setDocument(this);
 

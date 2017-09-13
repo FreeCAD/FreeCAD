@@ -209,7 +209,7 @@ void TaskMultiTransformParameters::onTransformDelete()
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     App::DocumentObject* feature = transformFeatures[row];
-    pcMultiTransform->getDocument()->remObject(feature->getNameInDocument());
+    pcMultiTransform->getDocument()->removeObject(feature->getNameInDocument());
     closeSubTask();
 
     transformFeatures.erase(transformFeatures.begin() + row);
