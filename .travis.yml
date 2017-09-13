@@ -250,6 +250,8 @@ jobs:
           - PYTHON_MAJOR_VERSION=2
 
       - stage: Deploy dmg to GitHub Releases
+        # Prevent deploy job from appearing in tests unless commit is tagged
+        if: tag IS present
         <<: *osx_base
         deploy:
           provider: script
