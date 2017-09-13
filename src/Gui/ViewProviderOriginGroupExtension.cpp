@@ -135,7 +135,7 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
     
-    if(getExtendedViewProvider()->getObject()->isDeleting() ||
+    if(getExtendedViewProvider()->getObject()->isRemoving() ||
        getExtendedViewProvider()->getObject()->getDocument()->testStatus(App::Document::Restoring))
         return;
     

@@ -2602,7 +2602,7 @@ void Document::remObject(const char* sName)
         d->activeObject = 0;
 
     // Mark the object as about to be deleted
-    pos->second->setStatus(ObjectStatus::Delete, true);
+    pos->second->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pos->second->unsetupObject();
     }
@@ -2662,7 +2662,7 @@ void Document::remObject(const char* sName)
         }
     }
 
-    pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
+    pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 }
 
@@ -2678,8 +2678,8 @@ void Document::_remObject(DocumentObject* pcObject)
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
-    // Mark the object as about to be deleted
-    pcObject->setStatus(ObjectStatus::Delete, true);
+    // Mark the object as about to be removed
+    pcObject->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pcObject->unsetupObject();
     }
@@ -2705,7 +2705,7 @@ void Document::_remObject(DocumentObject* pcObject)
     }
 
     // remove from map
-    pcObject->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
+    pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
