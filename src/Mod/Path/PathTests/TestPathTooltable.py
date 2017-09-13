@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,16 +22,52 @@
 # *                                                                         *
 # ***************************************************************************
 
-import TestApp
+import FreeCAD
+import Path
 
-from PathTests.TestPathLog   import TestPathLog
-from PathTests.TestPathCore  import TestPathCore
-#from PathTests.TestPathPost  import PathPostTestCases
-from PathTests.TestPathGeom  import TestPathGeom
-from PathTests.TestPathUtil  import TestPathUtil
-from PathTests.TestPathDepthParams        import depthTestCases
-from PathTests.TestPathDressupHoldingTags import TestHoldingTags
-from PathTests.TestPathDressupDogbone import TestDressupDogbone
-from PathTests.TestPathStock import TestPathStock
-from PathTests.TestPathTool import TestPathTool
-from PathTests.TestPathTooltable import TestPathTooltable
+from PathTests.PathTestUtils import PathTestBase
+
+class TestPathTooltable(PathTestBase):
+
+    def test00(self):
+        '''Verify templateAttrs'''
+
+        t = Path.Tool(name='t', diameter=1.2)
+        u = Path.Tool(name='u', diameter=3.4)
+        v = Path.Tool(name='v', diameter=5.6)
+
+        tt = Path.Tooltable()
+        tt.setTool(3, t)
+        tt.setTool(1, u)
+        tt.addTools(v)
+
+        attrs = tt.templateAttrs()
+        self.assertEqual(3, len(attrs))
+        self.assertTrue(1 in attrs)
+        self.assertFalse(2 in attrs)
+        self.assertTrue(3 in attrs)
+        self.assertTrue(4 in attrs)
+
+        self.assertEqual(attrs[1]['name'], 'u')
+        self.assertEqual(attrs[1]['diameter'], 3.4)
+        self.assertEqual(attrs[3]['name'], 't')
+        self.assertEqual(attrs[3]['diameter'], 1.2)
+        self.assertEqual(attrs[4]['name'], 'v')
+        self.assertEqual(attrs[4]['diameter'], 5.6)
+        return tt
+
+    def test01(self):
+        '''Verify setFromTemplate roundtrip.'''
+        tt = self.test00()
+        uu = Path.Tooltable()
+        uu.setFromTemplate(tt.templateAttrs())
+
+        self.assertEqual(tt.Content, uu.Content)
+
+
+    def test02(self):
+        '''Verify template constructor.'''
+        tt = self.test00()
+        uu = Path.Tooltable(tt.templateAttrs())
+        self.assertEqual(tt.Content, uu.Content)
+
