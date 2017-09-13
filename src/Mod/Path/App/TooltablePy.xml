@@ -52,5 +52,15 @@ deletes the tool found at the given position</UserDocu>
         <!--<ClassDeclarations>
             bool touched;
         </ClassDeclarations>-->
+        <Methode Name="setFromTemplate">
+            <Documentation>
+                <UserDocu>setFromTemplate(dict) ... restores receiver from given template attribute dictionary</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="templateAttrs">
+            <Documentation>
+                <UserDocu>templateAttrs() ... returns a dictionary representing the receivers attributes for a template</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>
