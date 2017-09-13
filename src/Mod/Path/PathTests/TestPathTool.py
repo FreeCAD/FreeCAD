@@ -71,7 +71,7 @@ class TestPathTool(PathTestBase):
 
         t0 = self.test00()
         t1 = Path.Tool()
-        t1.fromTemplate(t0.templateAttrs())
+        t1.setFromTemplate(t0.templateAttrs())
 
         self.assertEqual(t0.Name, t1.Name)
         self.assertEqual(t0.ToolType, t1.ToolType)
