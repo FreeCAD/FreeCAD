@@ -362,11 +362,11 @@ public:
         return _lValueList;
     }
 
-    const std::string getPyReprString();
+    const std::string getPyReprString() const;
 
     /**
      * @brief getValue emulates the action of a single-object link.
-     * @return reference to object, if the link os to only one object. NULL if
+     * @return reference to object, if the link is to only one object. NULL if
      * the link is empty, or links to subelements of more than one documant
      * object.
      */
@@ -375,6 +375,12 @@ public:
     const std::vector<std::string> &getSubValues(void) const {
         return _lSubList;
     }
+
+    /**
+     * @brief Removes all occurrences of \a lValue in the property
+     * together with its sub-elements and returns the number of entries removed.
+     */
+    int removeValue(App::DocumentObject *lValue);
 
     void setSubListValues(const std::vector<SubSet>&);
     std::vector<SubSet> getSubListValues() const;

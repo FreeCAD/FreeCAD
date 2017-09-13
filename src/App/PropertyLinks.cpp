@@ -719,7 +719,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     hasSetValue();
 }
 
-const string PropertyLinkSubList::getPyReprString()
+const string PropertyLinkSubList::getPyReprString() const
 {
     assert(this->_lValueList.size() == this->_lSubList.size());
 
@@ -758,6 +758,30 @@ DocumentObject *PropertyLinkSubList::getValue() const
             return 0;
     }
     return ret;
+}
+
+int PropertyLinkSubList::removeValue(App::DocumentObject *lValue)
+{
+    assert(this->_lValueList.size() == this->_lSubList.size());
+
+    std::size_t num = std::count(this->_lValueList.begin(), this->_lValueList.end(), lValue);
+    if (num == 0)
+        return 0;
+
+    std::vector<DocumentObject*> links;
+    std::vector<std::string> subs;
+    links.reserve(this->_lValueList.size() - num);
+    subs.reserve(this->_lSubList.size() - num);
+
+    for (std::size_t i=0; i<this->_lValueList.size(); ++i) {
+        if (this->_lValueList[i] != lValue) {
+            links.push_back(this->_lValueList[i]);
+            subs.push_back(this->_lSubList[i]);
+        }
+    }
+
+    setValues(links, subs);
+    return static_cast<int>(num);
 }
 
 void PropertyLinkSubList::setSubListValues(const std::vector<PropertyLinkSubList::SubSet>& values)
