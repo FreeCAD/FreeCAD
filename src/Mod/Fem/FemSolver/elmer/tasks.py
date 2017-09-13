@@ -33,7 +33,7 @@ import FemRun
 import FemSettings
 import FemMisc
 
-import FemSolver.Elmer.Writer as writer
+import FemSolver.elmer.writer as writer
 
 
 class Check(FemRun.Check):
@@ -72,7 +72,7 @@ class Prepare(FemRun.Prepare):
         try:
             w.write()
             self.checkHandled(w)
-        except Writer.WriteError as e:
+        except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
         except IOError as e:

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,49 +20,58 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Z88 SolverObject"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "Elmer"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package SolverZ88
-#  \ingroup FEM
 
-import os
-import glob
-
-import FreeCAD
-import FemSolver.SolverBase
 import FemMisc
 import FemRun
 
-import FemSolver.Z88.Tasks as tasks
+import FemSolver.solverbase as solverbase
+import FemSolver.elmer.tasks as tasks
 
-if FreeCAD.GuiUp:
-    import FemGui
+import Equations.Heat
+import Equations.Elasticity
+import Equations.Electrostatic
+import Equations.Flow
 
-ANALYSIS_TYPES = ["static"]
 
-
-def create(doc, name="SolverZ88"):
+def create(doc, name="ElmerSolver"):
     return FemMisc.createObject(
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(FemSolver.SolverBase.Proxy):
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
+class Proxy(solverbase.Proxy):
+    """Proxy for FemSolverElmers Document Object."""
 
-    Type = "Fem::FemSolverObjectZ88"
+    Type = "Fem::FemSolverObjectElmer"
+
+    _EQUATIONS = {
+        "Heat": Equations.Heat,
+        "Elasticity": Equations.Elasticity,
+        "Electrostatic": Equations.Electrostatic,
+        "Flow": Equations.Flow,
+    }
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.Proxy = self
+        obj.addProperty(
+            "App::PropertyInteger", "SteadyStateMaxIterations",
+            "Steady State", "")
+        obj.addProperty(
+            "App::PropertyInteger", "SteadyStateMinIterations",
+            "Steady State", "")
+        obj.addProperty(
+            "App::PropertyLink", "ElmerResult",
+            "Base", "", 4 | 8)
+        obj.addProperty(
+            "App::PropertyLink", "ElmerOutput",
+            "Base", "", 4 | 8)
 
-        # z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
-
-        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        obj.AnalysisType = ANALYSIS_TYPES
-        obj.AnalysisType = ANALYSIS_TYPES[0]
+        obj.SteadyStateMaxIterations = 1
+        obj.SteadyStateMinIterations = 0
 
     def createMachine(self, obj, directory):
         return FemRun.Machine(
@@ -72,18 +81,15 @@ class Proxy(FemSolver.SolverBase.Proxy):
             solve=tasks.Solve(),
             results=tasks.Results())
 
-    def editSupported(self):
-        return True
+    def createEquation(self, doc, eqId):
+        return self._EQUATIONS[eqId].create(doc)
 
-    def edit(self, directory):
-        pattern = os.path.join(directory, "*.txt")
-        print(pattern)
-        f = glob.glob(pattern)[0]
-        FemGui.open(f)
-
-    def execute(self, obj):
-        return
+    def isSupported(self, eqId):
+        return eqId in self._EQUATIONS
 
 
-class ViewProxy(FemSolver.SolverBase.ViewProxy):
-    pass
+class ViewProxy(solverbase.ViewProxy):
+    """Proxy for FemSolverElmers View Provider."""
+
+    def getIcon(self):
+        return ":/icons/fem-elmer.png"

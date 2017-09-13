@@ -80,7 +80,7 @@ INSTALL(
 INSTALL(
     FILES
         FemSolver/__init__.py
-        FemSolver/SolverBase.py
+        FemSolver/solverbase.py
         FemSolver/EquationBase.py
     DESTINATION
         Mod/Fem/FemSolver
@@ -88,47 +88,47 @@ INSTALL(
 
 INSTALL(
     FILES
-        FemSolver/Elmer/__init__.py
-        FemSolver/Elmer/sifio.py
-        FemSolver/Elmer/Object.py
-        FemSolver/Elmer/Tasks.py
-        FemSolver/Elmer/Writer.py
+        FemSolver/elmer/__init__.py
+        FemSolver/elmer/sifio.py
+        FemSolver/elmer/object.py
+        FemSolver/elmer/tasks.py
+        FemSolver/elmer/writer.py
     DESTINATION
-        Mod/Fem/FemSolver/Elmer
+        Mod/Fem/FemSolver/elmer
 )
 
 INSTALL(
     FILES
-        FemSolver/Elmer/Equations/__init__.py
-        FemSolver/Elmer/Equations/Base.py
-        FemSolver/Elmer/Equations/Linear.py
-        FemSolver/Elmer/Equations/Nonlinear.py
-        FemSolver/Elmer/Equations/Elasticity.py
-        FemSolver/Elmer/Equations/Electrostatic.py
-        FemSolver/Elmer/Equations/Heat.py
-        FemSolver/Elmer/Equations/Flow.py
+        FemSolver/elmer/Equations/__init__.py
+        FemSolver/elmer/Equations/Base.py
+        FemSolver/elmer/Equations/Linear.py
+        FemSolver/elmer/Equations/Nonlinear.py
+        FemSolver/elmer/Equations/Elasticity.py
+        FemSolver/elmer/Equations/Electrostatic.py
+        FemSolver/elmer/Equations/Heat.py
+        FemSolver/elmer/Equations/Flow.py
     DESTINATION
-        Mod/Fem/FemSolver/Elmer/Equations
+        Mod/Fem/FemSolver/elmer/Equations
 )
 
 INSTALL(
     FILES
-        FemSolver/Calculix/__init__.py
-        FemSolver/Calculix/Object.py
-        FemSolver/Calculix/Tasks.py
-        FemSolver/Calculix/Writer.py
+        FemSolver/calculix/__init__.py
+        FemSolver/calculix/object.py
+        FemSolver/calculix/oasks.py
+        FemSolver/calculix/writer.py
     DESTINATION
-        Mod/Fem/FemCalculix
+        Mod/Fem/calculix
 )
 
 INSTALL(
     FILES
-        FemSolver/Z88/__init__.py
-        FemSolver/Z88/Object.py
-        FemSolver/Z88/Tasks.py
-        FemSolver/Z88/Writer.py
+        FemSolver/z88/__init__.py
+        FemSolver/z88/object.py
+        FemSolver/z88/tasks.py
+        FemSolver/z88/writer.py
     DESTINATION
-        Mod/Fem/FemSolver/Z88
+        Mod/Fem/FemSolver/z88
 )
 
 INSTALL(

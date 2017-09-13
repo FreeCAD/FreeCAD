@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 
-__title__ = "CalculiX Tasks"
-__author__ = "Markus Hovorka"
+__title__ = "Z88 Tasks"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
@@ -34,10 +34,9 @@ import FreeCAD as App
 import FemRun
 import FemSettings
 import FemMisc
-import importCcxFrdResults
-import importCcxDatResults
+import importZ88O2Results
 
-import FemSolver.Calculix.Writer as writer
+import FemSolver.z88.writer as writer
 
 
 _inputFileName = None
@@ -57,7 +56,7 @@ class Prepare(FemRun.Prepare):
         global _inputFileName
         self.pushStatus("Preparing input files...\n")
         c = _Container(self.analysis)
-        w = writer.FemInputWriterCcx(
+        w = writer.FemInputWriterZ88(
             self.analysis, self.solver, c.mesh, c.materials_linear,
             c.materials_nonlinear, c.fixed_constraints,
             c.displacement_constraints, c.contact_constraints,
@@ -67,17 +66,33 @@ class Prepare(FemRun.Prepare):
             c.heatflux_constraints, c.initialtemperature_constraints,
             c.beam_sections, c.shell_thicknesses, c.fluid_sections,
             self.solver.AnalysisType, self.directory)
-        path = w.write_calculix_input_file()
-        _inputFileName = os.path.splitext(os.path.basename(path))[0]
+        path = w.write_z88_input()
+        _inputFileName = os.path.splitext(os.path.basename(path))[0]  # AFAIK empty for z88
+        print(path)
+        print(_inputFileName)
 
 
 class Solve(FemRun.Solve):
 
     def run(self):
-        self.pushStatus("Executing solver...\n")
-        binary = FemSettings.getBinary("Calculix")
+        # AFAIK z88r needs to be run twice, once in test mode ond once in real solve mode
+        # the subprocess was just copied, it seams to work :-)
+        self.pushStatus("Executing test solver...\n")
+        binary = FemSettings.getBinary("Z88")
         self._process = subprocess.Popen(
-            [binary, "-i", _inputFileName],
+            [binary, "-t", "-choly"],
+            cwd=self.directory,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        self.signalAbort.add(self._process.terminate)
+        output = self._observeSolver(self._process)
+        self._process.communicate()
+        self.signalAbort.remove(self._process.terminate)
+
+        self.pushStatus("Executing real solver...\n")
+        binary = FemSettings.getBinary("Z88")
+        self._process = subprocess.Popen(
+            [binary, "-c", "-choly"],
             cwd=self.directory,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
@@ -107,8 +122,7 @@ class Results(FemRun.Results):
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
-        self.load_results_ccxfrd()
-        self.load_results_ccxdat()
+        self.load_results_z88o2()
 
     def purge_results(self):
         for m in FemMisc.getMember(self.analysis, "Fem::FemResultObject"):
@@ -117,32 +131,16 @@ class Results(FemRun.Results):
             self.analysis.Document.removeObject(m.Name)
         App.ActiveDocument.recompute()
 
-    def load_results_ccxfrd(self):
-        frd_result_file = os.path.join(
-            self.directory, _inputFileName + '.frd')
-        if os.path.isfile(frd_result_file):
-            result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
-            importCcxFrdResults.importFrd(
-                frd_result_file, self.analysis, result_name_prefix)
+    def load_results_z88o2(self):
+        disp_result_file = os.path.join(
+            self.directory, 'z88o2.txt')
+        if os.path.isfile(disp_result_file):
+            result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
+            importZ88O2Results.import_z88_disp(
+                disp_result_file, self.analysis, result_name_prefix)
         else:
             raise Exception(
-                'FEM: No results found at {}!'.format(frd_result_file))
-
-    def load_results_ccxdat(self):
-        dat_result_file = os.path.join(
-            self.directory, _inputFileName + '.dat')
-        if os.path.isfile(dat_result_file):
-            mode_frequencies = importCcxDatResults.import_dat(
-                dat_result_file, self.analysis)
-        else:
-            raise Exception(
-                'FEM: No .dat results found at {}!'.format(dat_result_file))
-        if mode_frequencies:
-            for m in FemMisc.getMember(self.analysis, "Fem::FemResultObject"):
-                if m.Eigenmode > 0:
-                    for mf in mode_frequencies:
-                        if m.Eigenmode == mf['eigenmode']:
-                            m.EigenmodeFrequency = mf['frequency']
+                'FEM: No results found at {}!'.format(disp_result_file))
 
 
 class _Container(object):

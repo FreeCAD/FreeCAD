@@ -355,22 +355,22 @@ def makeSolverCalculixOld(doc, name="CalculiX"):
 
 def makeSolverCalculix(doc, name="SolverCalculiX"):
     '''makeSolverCalculix(document, name): makes a Calculix solver object'''
-    import FemCalculix.SolverObject
-    obj = FemCalculix.SolverObject.create(doc, name)
+    import FemSolver.calculix.object
+    obj = FemSolver.calculix.object.create(doc, name)
     return obj
 
 
 def makeSolverElmer(doc, name="Elmer"):
     '''makeSolverElmer(document, name): makes a Elmer solver object'''
-    import FemSolver.Elmer.Object
-    obj = FemSolver.Elmer.Object.create(doc, name)
+    import FemSolver.elmer.object
+    obj = FemSolver.elmer.object.create(doc, name)
     return obj
 
 
 def makeSolverZ88(doc, name="Z88"):
     '''makeSolverZ88(document, name): makes a Z88 solver object'''
-    import FemZ88.SolverObject
-    obj = FemZ88.SolverObject.create(doc, name)
+    import FemSolver.z88.object
+    obj = FemSolver.z88.object.create(doc, name)
     return obj
 
 

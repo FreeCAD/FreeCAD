@@ -36,7 +36,7 @@ import Fem
 import FemMisc
 import FemSettings
 import FemGmshTools
-import FemsSolver.Elmer.sifio as sifio
+import FemSolver.elmer.sifio as sifio
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
