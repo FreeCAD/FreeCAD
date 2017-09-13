@@ -146,32 +146,7 @@ void ToolPy::setName(Py::String arg)
 
 Py::String ToolPy::getToolType(void) const
 {
-    if(getToolPtr()->Type == Tool::DRILL)
-        return Py::String("Drill");
-    else if(getToolPtr()->Type == Tool::CENTERDRILL)
-        return Py::String("CenterDrill");
-    else if(getToolPtr()->Type == Tool::COUNTERSINK)
-        return Py::String("CounterSink");
-    else if(getToolPtr()->Type == Tool::COUNTERBORE)
-        return Py::String("CounterBore");
-    else if(getToolPtr()->Type == Tool::REAMER)
-        return Py::String("Reamer");
-    else if(getToolPtr()->Type == Tool::TAP)
-        return Py::String("Tap");
-    else if(getToolPtr()->Type == Tool::ENDMILL)
-        return Py::String("EndMill");
-    else if(getToolPtr()->Type == Tool::SLOTCUTTER)
-        return Py::String("SlotCutter");
-    else if(getToolPtr()->Type == Tool::BALLENDMILL)
-        return Py::String("BallEndMill");
-    else if(getToolPtr()->Type == Tool::CHAMFERMILL)
-        return Py::String("ChamferMill");
-    else if(getToolPtr()->Type == Tool::CORNERROUND)
-        return Py::String("CornerRound");
-    else if(getToolPtr()->Type == Tool::ENGRAVER)
-        return Py::String("Engraver");
-    else
-        return Py::String("Undefined");
+  return Py::String(Tool::TypeName(getToolPtr()->Type));
 }
 
 void ToolPy::setToolType(Py::String arg)
@@ -208,22 +183,7 @@ void ToolPy::setToolType(Py::String arg)
 
 Py::String ToolPy::getMaterial(void) const
 {
-    if(getToolPtr()->Material == Tool::HIGHSPEEDSTEEL)
-        return Py::String("HighSpeedSteel");
-    else if(getToolPtr()->Material == Tool::CARBIDE)
-        return Py::String("Carbide");
-    else if(getToolPtr()->Material == Tool::HIGHCARBONTOOLSTEEL)
-        return Py::String("HighCarbonToolSteel");
-    else if(getToolPtr()->Material == Tool::CASTALLOY)
-        return Py::String("CastAlloy");
-    else if(getToolPtr()->Material == Tool::CERAMICS)
-        return Py::String("Ceramics");
-    else if(getToolPtr()->Material == Tool::DIAMOND)
-        return Py::String("Diamond");
-    else if(getToolPtr()->Material == Tool::SIALON)
-        return Py::String("Sialon");
-    else
-        return Py::String("Undefined");
+  return Py::String(Tool::MaterialName(getToolPtr()->Material));
 }
 
 void ToolPy::setMaterial(Py::String arg)
@@ -331,6 +291,7 @@ PyObject* ToolPy::copy(PyObject * args)
 PyObject* ToolPy::fromTemplate(PyObject * args)
 {
     char *pstr = 0;
+    PyObject *dict = 0;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         // embed actual string in dummy tag so XMLReader can consume that on construction
         std::ostringstream os;
@@ -340,10 +301,42 @@ PyObject* ToolPy::fromTemplate(PyObject * args)
         getToolPtr()->Restore(reader);
         Py_Return ;
     }
-    PyErr_SetString(PyExc_TypeError, "argument must be a string");
+    
+    if (PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
+        PyErr_Clear(); // it's not a string, need to clear that exception
+        PyObject *arg = PyTuple_New(0);
+        if (!PyInit(arg, dict)) {
+            Py_Return ;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "argument must be a string or dictionary");
     return 0;
 }
 
+#if PY_MAJOR_VERSION >= 3
+#  define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
+#else
+#  define PYSTRING_FROMSTRING(str)  PyString_FromString(str)
+#endif
+
+PyObject* ToolPy::templateAttrs(PyObject * args)
+{
+    if (PyArg_ParseTuple(args, "")) {
+        PyObject *dict = PyDict_New();
+        PyDict_SetItemString(dict, "name", PYSTRING_FROMSTRING(getToolPtr()->Name.c_str()));
+        PyDict_SetItemString(dict, "tooltype",PYSTRING_FROMSTRING(Tool::TypeName(getToolPtr()->Type)));
+        PyDict_SetItemString(dict, "material", PYSTRING_FROMSTRING(Tool::MaterialName(getToolPtr()->Material)));
+        PyDict_SetItemString(dict, "diameter", PyFloat_FromDouble(getToolPtr()->Diameter));
+        PyDict_SetItemString(dict, "lengthOffset", PyFloat_FromDouble(getToolPtr()->LengthOffset));
+        PyDict_SetItemString(dict, "flatRadius",  PyFloat_FromDouble(getToolPtr()->FlatRadius));
+        PyDict_SetItemString(dict, "cornerRadius", PyFloat_FromDouble(getToolPtr()->CornerRadius));
+        PyDict_SetItemString(dict, "cuttingEdgeAngle", PyFloat_FromDouble(getToolPtr()->CuttingEdgeAngle));
+        PyDict_SetItemString(dict, "cuttingEdgeHeight", PyFloat_FromDouble(getToolPtr()->CuttingEdgeHeight));
+        return dict;
+    }
+    throw Py::Exception("This method accepts no argument");
+}
 
 // TooltablePy
 
