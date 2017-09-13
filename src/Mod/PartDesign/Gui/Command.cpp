@@ -257,9 +257,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
-        // TODO probably we not should handle edit here (2015-10-26, Fat-Zer)
-        std::string tmp = std::string("Edit ShapeBinder");
-        openCommand(tmp.c_str());
+        openCommand("Edit ShapeBinder");
         doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",
                 support.getValue()->getNameInDocument());
     } else {
@@ -268,13 +266,15 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
             return;
 
         std::string FeatName = getUniqueObjectName("ShapeBinder");
-        std::string tmp = std::string("Create ShapeBinder");
 
-        openCommand(tmp.c_str());
-
+        openCommand("Create ShapeBinder");
         doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject('%s','%s')",
                     pcActiveBody->getNameInDocument(), "PartDesign::ShapeBinder",FeatName.c_str());
-        
+
+        // remove the body from links in case it's selected as
+        // otherwise a cyclic dependency will be created
+        support.removeValue(pcActiveBody);
+
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
             doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
