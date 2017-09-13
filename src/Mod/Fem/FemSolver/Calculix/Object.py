@@ -31,11 +31,11 @@ import os
 import glob
 
 import FreeCAD
-import FemSolverObject
+import FemSolver.SolverBase
 import FemMisc
 import FemRun
 
-import FemCalculix.Tasks as tasks
+import FemSolver.Calculix.Tasks as tasks
 
 if FreeCAD.GuiUp:
     import FemGui
@@ -48,7 +48,7 @@ def create(doc, name="SolverCalculiX"):
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(FemSolverObject.Proxy):
+class Proxy(FemSolver.SolverBase.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
@@ -182,5 +182,5 @@ class Proxy(FemSolverObject.Proxy):
         return
 
 
-class ViewProxy(FemSolverObject.ViewProxy):
+class ViewProxy(FemSolver.SolverBase.ViewProxy):
     pass

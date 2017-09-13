@@ -114,10 +114,10 @@ INSTALL(
 
 INSTALL(
     FILES
-        FemCalculix/__init__.py
-        FemCalculix/SolverObject.py
-        FemCalculix/Tasks.py
-        FemCalculix/Writer.py
+        FemSolver/Calculix/__init__.py
+        FemSolver/Calculix/Object.py
+        FemSolver/Calculix/Tasks.py
+        FemSolver/Calculix/Writer.py
     DESTINATION
         Mod/Fem/FemCalculix
 )

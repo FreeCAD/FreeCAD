@@ -37,7 +37,7 @@ import FemMisc
 import importCcxFrdResults
 import importCcxDatResults
 
-import FemCalculix.Writer as writer
+import FemSolver.Calculix.Writer as writer
 
 
 _inputFileName = None
