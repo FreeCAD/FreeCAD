@@ -175,7 +175,7 @@ void Origin::unsetupObject () {
         const auto &objsLnk = OriginFeatures.getValues ();
         if ( std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
             if ( ! obj->isRemoving() ) {
-                obj->getDocument()->remObject (obj->getNameInDocument());
+                obj->getDocument()->removeObject (obj->getNameInDocument());
             }
         }
     }

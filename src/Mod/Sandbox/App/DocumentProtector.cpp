@@ -95,7 +95,7 @@ public:
     }
     void execute()
     {
-        doc->remObject(this->name.c_str());
+        doc->removeObject(this->name.c_str());
     }
 
 protected:

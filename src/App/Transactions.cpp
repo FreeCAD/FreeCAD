@@ -349,7 +349,7 @@ void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcO
             link->_removeBackLink(obj);
 
         // simply filling in the saved object
-        Doc._remObject(obj);       
+        Doc._removeObject(obj);
     }
 }
 
