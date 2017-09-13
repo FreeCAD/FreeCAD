@@ -159,10 +159,10 @@ SET(FemCalculix_SRCS
 )
 
 SET(FemZ88_SRCS
-    FemZ88/__init__.py
-    FemZ88/SolverObject.py
-    FemZ88/Tasks.py
-    FemZ88/Writer.py
+    FemSolver/Z88/__init__.py
+    FemSolver/Z88/Object.py
+    FemSolver/Z88/Tasks.py
+    FemSolver/Z88/Writer.py
 )
 
 SET(FemGuiScripts_SRCS
