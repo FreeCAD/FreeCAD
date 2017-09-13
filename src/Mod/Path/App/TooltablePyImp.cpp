@@ -288,7 +288,7 @@ PyObject* ToolPy::copy(PyObject * args)
 }
 
 
-PyObject* ToolPy::fromTemplate(PyObject * args)
+PyObject* ToolPy::setFromTemplate(PyObject * args)
 {
     char *pstr = 0;
     PyObject *dict = 0;
