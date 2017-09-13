@@ -119,7 +119,7 @@ void OriginGroupExtension::onExtendedSetupObject () {
 
 void OriginGroupExtension::onExtendedUnsetupObject () {
     App::DocumentObject *origin = Origin.getValue ();
-    if (origin && !origin->isDeleting ()) {
+    if (origin && !origin->isRemoving ()) {
         origin->getDocument ()->remObject (origin->getNameInDocument());
     }
 

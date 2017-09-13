@@ -85,7 +85,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
             //condition. But then it is needed to understand the problem for the user
             auto grp = getExtendedViewProvider()->getObject();
             vin.erase(std::remove_if(vin.begin(), vin.end(), [&](App::DocumentObject* obj)->bool {
-                return obj->isDeleting() || 
+                return obj->isRemoving() ||
                        obj == grp ||
                        App::GeoFeatureGroupExtension::getGroupOfObject(obj)!=grp;
             }), vin.end());

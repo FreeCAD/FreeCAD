@@ -48,8 +48,9 @@ enum ObjectStatus {
     New = 2,
     Recompute = 3,
     Restore = 4,
-    Delete = 5,
+    Remove = 5,
     PythonCall = 6,
+    Destroy = 7,
     Expand = 16
 };
 
@@ -122,8 +123,8 @@ public:
     bool isRecomputing() const {return StatusBits.test(ObjectStatus::Recompute);}
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const {return StatusBits.test(ObjectStatus::Restore);}
-    /// returns true if this objects is currently restoring from file
-    bool isDeleting() const {return StatusBits.test(ObjectStatus::Delete);}
+    /// returns true if this objects is currently removed from the document
+    bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
