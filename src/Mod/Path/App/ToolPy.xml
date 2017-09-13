@@ -88,7 +88,12 @@ HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined</UserDocu>
         </Methode>
         <Methode Name="fromTemplate">
             <Documentation>
-                <UserDocu>fromTemplate(xmlString) ... fills receiver with values from the template string</UserDocu>
+                <UserDocu>fromTemplate(xmlString|dictionary) ... fills receiver with values from the template string or dictionary</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="templateAttrs">
+            <Documentation>
+                <UserDocu>templateAttrs() ... returns a dictionary with all attributes</UserDocu>
             </Documentation>
         </Methode>
         <!--<ClassDeclarations>

@@ -89,52 +89,10 @@ void Tool::Save (Writer &writer) const
                     << "flat=\"" <<  FlatRadius << "\" "
                     << "corner=\"" << CornerRadius << "\" "
                     << "angle=\"" << CuttingEdgeAngle << "\" "
-                    << "height=\"" << CuttingEdgeHeight << "\" ";
-                    
-    if(Type == Tool::ENDMILL)
-        writer.Stream() << " type=\"EndMill\" ";
-    else if(Type == Tool::DRILL)
-        writer.Stream() << " type=\"Drill\" ";
-    else if(Type == Tool::CENTERDRILL)
-        writer.Stream() << " type=\"CenterDrill\" ";
-    else if(Type == Tool::COUNTERSINK)
-        writer.Stream() << " type=\"CounterSink\" ";
-    else if(Type == Tool::COUNTERBORE)
-        writer.Stream() << " type=\"CounterBore\" ";
-    else if(Type == Tool::REAMER)
-        writer.Stream() << " type=\"Reamer\" ";
-    else if(Type == Tool::TAP)
-        writer.Stream() << " type=\"Tap\" ";
-    else if(Type == Tool::SLOTCUTTER)
-        writer.Stream() << " type=\"SlotCutter\" ";
-    else if(Type == Tool::BALLENDMILL)
-        writer.Stream() << " type=\"BallEndMill\" ";
-    else if(Type == Tool::CHAMFERMILL)
-        writer.Stream() << " type=\"ChamferMill\" ";
-    else if(Type == Tool::CORNERROUND)
-        writer.Stream() << " type=\"CornerRound\" ";
-    else if(Type == Tool::ENGRAVER)
-        writer.Stream() << " type=\"Engraver\" ";
-    else
-        writer.Stream() << " type=\"Undefined\" ";
-        
-    if(Material == Tool::CARBIDE)
-        writer.Stream() << " mat=\"Carbide\" /> ";
-    else if(Material == Tool::HIGHSPEEDSTEEL)
-        writer.Stream() << " mat=\"HighSpeedSteel\" /> ";
-    else if(Material == Tool::HIGHCARBONTOOLSTEEL)
-        writer.Stream() << " mat=\"HighCarbonToolSteel\" /> ";
-    else if(Material == Tool::CASTALLOY)
-        writer.Stream() << " mat=\"CastAlloy\" /> ";
-    else if(Material == Tool::CERAMICS)
-        writer.Stream() << " mat=\"Ceramics\" /> ";
-    else if(Material == Tool::DIAMOND)
-        writer.Stream() << " mat=\"Diamond\" /> ";
-    else if(Material == Tool::SIALON)
-        writer.Stream() << " mat=\"Sialon\" /> ";
-    else
-        writer.Stream() << " mat=\"Undefined\" /> ";
-    writer.Stream()<< std::endl;
+                    << "height=\"" << CuttingEdgeHeight << "\" "
+                    << "type=\"" << TypeName(Type) << "\" "
+                    << "mat=\"" << MaterialName(Material) << "\" "
+                    << "/>" << std::endl;
 }
 
 void Tool::Restore(XMLReader &reader)
@@ -195,7 +153,60 @@ void Tool::Restore(XMLReader &reader)
         Material = Tool::MATUNDEFINED;
 }
 
+const char* Tool::TypeName(Tool::ToolType typ) {
+    switch (typ) {
+      case Tool::DRILL:
+        return "Drill";
+      case Tool::CENTERDRILL:
+        return "CenterDrill";
+      case Tool::COUNTERSINK:
+        return "CounterSink";
+      case Tool::COUNTERBORE:
+        return "CounterBore";
+      case Tool::REAMER:
+        return "Reamer";
+      case Tool::TAP:
+        return "Tap";
+      case Tool::ENDMILL:
+        return "EndMill";
+      case Tool::SLOTCUTTER:
+        return "SlotCutter";
+      case Tool::BALLENDMILL:
+        return "BallEndMill";
+      case Tool::CHAMFERMILL:
+        return "ChamferMill";
+      case Tool::CORNERROUND:
+        return "CornerRound";
+      case Tool::ENGRAVER:
+        return "Engraver";
+      case Tool::UNDEFINED:
+        return "Undefined";
+    }
+    return "Undefined";
+}
 
+const char* Tool::MaterialName(Tool::ToolMaterial mat)
+{
+  switch (mat) {
+    case Tool::HIGHSPEEDSTEEL:
+        return "HighSpeedSteel";
+    case Tool::CARBIDE:
+        return "Carbide";
+    case Tool::HIGHCARBONTOOLSTEEL:
+        return "HighCarbonToolSteel";
+    case Tool::CASTALLOY:
+        return "CastAlloy";
+    case Tool::CERAMICS:
+        return "Ceramics";
+    case Tool::DIAMOND:
+        return "Diamond";
+    case Tool::SIALON:
+        return "Sialon";
+    case Tool::MATUNDEFINED:
+        return "Undefined";
+  }
+  return "Undefined";
+}
 
 // TOOLTABLE
 
