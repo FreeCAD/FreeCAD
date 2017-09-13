@@ -1242,6 +1242,7 @@ Document::~Document()
 
     d->objectArray.clear();
     for (it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+        it->second->setStatus(ObjectStatus::Destroy, true);
         delete(it->second);
     }
 
@@ -2652,6 +2653,7 @@ void Document::remObject(const char* sName)
             // if not saved in undo -> delete object later
             std::unique_ptr<DocumentObject> delobj(pos->second);
             tobedestroyed.swap(delobj);
+            tobedestroyed->setStatus(ObjectStatus::Destroy, true);
         }
     }
 
@@ -2717,6 +2719,7 @@ void Document::_remObject(DocumentObject* pcObject)
 
     // for a rollback delete the object
     if (d->rollback) {
+        pcObject->setStatus(ObjectStatus::Destroy, true);
         delete pcObject;
     }
 }
