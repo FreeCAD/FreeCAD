@@ -301,7 +301,7 @@ class Writer(object):
 
     def _getElectrostaticSolver(self, equation):
         s = self._createLinearSolver(equation)
-        s["Equation"] = "Stat Elec Solver" # equation.Name
+        s["Equation"] = "Stat Elec Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("StatElecSolve/StatElecSolver")
         s["Variable"] = self._getUniqueVarName("Potential")
         s["Variable DOFs"] = 1
@@ -333,7 +333,6 @@ class Writer(object):
                     self._material(
                         name, "Relative Permittivity",
                         float(m["RelativePermittivity"]))
-
 
     def _handleElasticity(self):
         activeIn = []
@@ -569,7 +568,6 @@ class Writer(object):
                         name, "Compressibility Model",
                         m["CompressibilityModel"])
 
-
     def _handleFlowInitialVelocity(self, bodies):
         obj = self._getSingleMember("Fem::ConstraintInitialFlowVelocity")
         if obj is not None:
@@ -584,7 +582,6 @@ class Writer(object):
                     velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
                     self._initial(name, "Velocity 3", velocity)
             self._handled(obj)
-
 
     def _handleFlowBndConditions(self):
         for obj in self._getMember("Fem::ConstraintFlowVelocity"):

@@ -32,7 +32,6 @@ import FemConstraint
 from FreeCAD import Units
 
 import FreeCADGui as Gui
-import FemSelectionWidgets
 
 
 class ViewProxy(FemConstraint.ViewProxy):
@@ -110,7 +109,6 @@ class _TaskPanel(object):
             not self._obj.VelocityYEnabled)
         self._paramWidget.velocityZBox.setChecked(
             not self._obj.VelocityZEnabled)
-
 
     def _applyWidgetChanges(self):
         unit = "m/s"

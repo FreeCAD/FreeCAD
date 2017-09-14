@@ -91,6 +91,7 @@ class ElectrostaticViewProxy(BaseViewProxy):
     def getIcon(self):
         return ":/icons/fem-equation-electrostatic.svg"
 
+
 class ElectrostaticProxy(BaseProxy):
     pass
 

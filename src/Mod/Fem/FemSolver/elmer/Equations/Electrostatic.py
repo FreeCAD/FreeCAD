@@ -54,12 +54,14 @@ class Proxy(Linear.Proxy, FemSolver.EquationBase.ElectrostaticProxy):
         obj.addProperty(
             "App::PropertyBool", "CalculateSurfaceCharge",
             "Electrostatic", "Select type of solver for linear system")
+        '''
         #obj.addProperty(
             #"App::PropertyBool", "CalculateCapacitanceMatrix",
             #"Electrostatic", "Select type of solver for linear system")
         #obj.addProperty(
             #"App::PropertyInteger", "CapacitanceBodies",
             #"Electrostatic", "Select type of solver for linear system")
+        '''
 
         obj.Priority = 10
 

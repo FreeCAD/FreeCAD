@@ -83,6 +83,7 @@ class Elasticity(_Base):
             'ToolTip': "Creates a FEM constraint for elasticity"
         }
 
+
 class Electrostatic(_Base):
 
     def getSpecifier(self):
