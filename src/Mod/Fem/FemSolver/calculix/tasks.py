@@ -85,8 +85,8 @@ class Solve(FemRun.Solve):
         output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
-        if not self.aborted:
-            self._updateOutput(output)
+        # if not self.aborted:
+        #     self._updateOutput(output)
 
     def _observeSolver(self, process):
         output = ""
