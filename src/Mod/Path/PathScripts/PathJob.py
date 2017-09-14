@@ -115,7 +115,7 @@ class ObjectJob:
         obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
-        self.assignTemplate(obj, template)
+        self.setFromTemplate(obj, template)
         if not obj.Stock:
             obj.Stock = PathStock.CreateFromBase(obj)
         if obj.Stock.ViewObject:
@@ -165,8 +165,8 @@ class ObjectJob:
             return obj.Base.Objects[0]
         return obj.Base
 
-    def assignTemplate(self, obj, template):
-        '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
+    def setFromTemplate(self, obj, template):
+        '''setFromTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
         This will also create any TCs stored in the template.'''
         tcs = []
         if template:
