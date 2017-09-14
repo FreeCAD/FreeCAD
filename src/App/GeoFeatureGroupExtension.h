@@ -50,12 +50,12 @@ namespace App
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
-    EXTENSION_PROPERTY_HEADER(App::GeoFeatureGroupExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeatureGroupExtension);
 
 public:
     PropertyPlacement& placement();
     
-    virtual void initExtension(ExtensionContainer* obj);
+    virtual void initExtension(ExtensionContainer* obj) override;
 
     /**
      * @brief transformPlacement applies transform to placement of this shape.
@@ -69,7 +69,7 @@ public:
     GeoFeatureGroupExtension(void);
     virtual ~GeoFeatureGroupExtension();
     
-    virtual void extensionOnChanged(const Property* p);
+    virtual void extensionOnChanged(const Property* p) override;
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
