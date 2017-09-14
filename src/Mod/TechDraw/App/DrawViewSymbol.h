@@ -61,9 +61,9 @@ public:
     virtual bool checkFit(TechDraw::DrawPage* p) const override;
 
     //return PyObject as DrawViewSymbolPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual short mustExecute() const;
+    virtual short mustExecute() const override;
 
 
 protected:

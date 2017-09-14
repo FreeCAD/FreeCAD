@@ -62,7 +62,7 @@ public:
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onDocumentRestored();
-    virtual short mustExecute() const;
+    virtual short mustExecute() const override;
     //@}
     void Restore(Base::XMLReader &reader);
 
@@ -73,14 +73,14 @@ public:
         return "TechDrawGui::ViewProviderDrawingView";
     }
     //return PyObject as DrawViewPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     DrawPage* findParentPage() const;
-    bool allowAutoPos() {return autoPos;};                //sb in DPGI??
-    void setAutoPos(bool state) {autoPos = state;};       //autopos is obsolete
-    bool isMouseMove() {return mouseMove;};
-    void setMouseMove(bool state) {mouseMove = state;};
-    virtual QRectF getRect() const;                       //must be overridden by derived class
+    bool allowAutoPos() {return autoPos;}                //sb in DPGI??
+    void setAutoPos(bool state) {autoPos = state;}       //autopos is obsolete
+    bool isMouseMove() {return mouseMove;}
+    void setMouseMove(bool state) {mouseMove = state;}
+    virtual QRectF getRect() const;                      //must be overridden by derived class
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y);

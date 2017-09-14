@@ -106,7 +106,7 @@ public:
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
     
-    virtual PyObject* getExtensionPyObject(void);
+    virtual PyObject* getExtensionPyObject(void) override;
 
     virtual void extensionOnChanged(const Property* p) override;
     
