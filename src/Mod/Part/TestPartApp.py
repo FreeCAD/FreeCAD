@@ -34,10 +34,23 @@ class PartTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("PartTest")
 
     def testBoxCase(self):
-        self.Box = App.ActiveDocument.addObject("Part::Box","Box")
+        self.Box = self.Doc.addObject("Part::Box","Box")
         self.Doc.recompute()
         self.failUnless(len(self.Box.Shape.Faces)==6)
-        
+
+    def testIssue2985(self):
+        v1 = App.Vector(0.0,0.0,0.0)
+        v2 = App.Vector(10.0,0.0,0.0)
+        v3 = App.Vector(10.0,0.0,10.0)
+        v4 = App.Vector(0.0,0.0,10.0)
+        edge1 = Part.makeLine(v1, v2)
+        edge2 = Part.makeLine(v2, v3)
+        edge3 = Part.makeLine(v3, v4)
+        edge4 = Part.makeLine(v4, v1)
+        result = Part.makeFilledFace([edge1,edge2,edge3,edge4])
+        self.Doc.addObject("Part::Feature","Face").Shape = result
+        self.assertTrue(isinstance(result.Surface, Part.BSplineSurface))
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartTest")
