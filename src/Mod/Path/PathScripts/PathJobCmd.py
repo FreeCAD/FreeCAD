@@ -28,8 +28,8 @@ import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
 import glob
+import json
 import os
-import xml.etree.ElementTree as xml
 
 from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
@@ -80,9 +80,9 @@ class DlgJobCreate:
 
     def templateFilesIn(self, path):
         '''templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
-        PathJob template files are name job_*.xml'''
+        PathJob template files are name job_*.json'''
         PathLog.track(path)
-        return glob.glob(path + '/job_*.xml')
+        return glob.glob(path + '/job_*.json')
 
     def getModel(self):
         '''answer the base model selected for the job'''
@@ -197,7 +197,7 @@ class CommandJobTemplateExport:
     '''
     Command to export a template of a given job.
     Opens a dialog to select the file to store the template in. If the template is stored in Path's
-    file path (see preferences) and named in accordance with job_*.xml it will automatically be found
+    file path (see preferences) and named in accordance with job_*.json it will automatically be found
     on Job creation and be available for selection.
     '''
 
@@ -216,29 +216,31 @@ class CommandJobTemplateExport:
             foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
                     "Path - Job Template",
                     PathPreferences.filePath(),
-                    "job_*.xml")[0]
+                    "job_*.json")[0]
             if foo: 
                 self.Execute(job, foo, dialog)
 
     @classmethod
     def Execute(cls, job, path, dialog=None):
-        root = xml.Element('PathJobTemplate')
-        jobAttributes = job.Proxy.templateAttrs(job)
+        attrs = job.Proxy.templateAttrs(job)
         if dialog and not dialog.includePostProcessing():
-            jobAttributes.pop(PathJob.JobTemplate.PostProcessor, None)
-            jobAttributes.pob(PathJob.JobTemplate.PostProcessorArgs, None)
-            jobAttributes.pob(PathJob.JobTemplate.PostProcessorOutputFile, None)
-        xml.SubElement(root, PathJob.JobTemplate.Job, jobAttributes)
-        tcs = dialog.includeToolControllers() if dialog else job.ToolController
-        for tc in tcs:
-            element = xml.SubElement(root, PathJob.JobTemplate.ToolController, tc.Proxy.templateAttrs(tc))
-            element.append(xml.fromstring(tc.Tool.Content))
+            attrs.pop(PathJob.JobTemplate.PostProcessor, None)
+            attrs.pob(PathJob.JobTemplate.PostProcessorArgs, None)
+            attrs.pob(PathJob.JobTemplate.PostProcessorOutputFile, None)
+        toolControllers = dialog.includeToolControllers() if dialog else job.ToolController
+        if toolControllers:
+            tcAttrs = [tc.Proxy.templateAttrs(tc) for tc in toolControllers]
+            attrs[PathJob.JobTemplate.ToolController] = tcAttrs
+        stockAttrs = None
         if dialog:
             if dialog.includeStock():
-                xml.SubElement(root, PathJob.JobTemplate.Stock, PathStock.TemplateAttributes(job.Stock, dialog.includeStockExtent(), dialog.includeStockPlacement()))
+                stockAttrs = PathStock.TemplateAttributes(job.Stock, dialog.includeStockExtent(), dialog.includeStockPlacement())
         else:
-            xml.SubElement(root, PathJob.JobTemplate.Stock, PathStock.TemplateAttributes(job.Stock))
-        xml.ElementTree(root).write(path)
+            stockAttrs = PathStock.TemplateAttributes(job.Stock)
+        if stockAttrs:
+            attrs[PathJob.JobTemplate.Stock] = stockAttrs
+        with open(unicode(path), 'wb') as fp:
+            json.dump(attrs, fp, sort_keys=True, indent=2)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
