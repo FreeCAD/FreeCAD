@@ -354,10 +354,10 @@ class FemTest(unittest.TestCase):
         if FreeCAD.GuiUp:
             pymodules += collect_python_modules('PyGui')
         pymodules += collect_python_modules('FemSolver')
-        pymodules += collect_python_modules('FemSolver/Elmer')
-        pymodules += collect_python_modules('FemSolver/Elmer/Equations')
-        pymodules += collect_python_modules('FemZ88')
-        pymodules += collect_python_modules('FemCalculix')
+        pymodules += collect_python_modules('FemSolver/elmer')
+        pymodules += collect_python_modules('FemSolver/elmer/Equations')
+        pymodules += collect_python_modules('FemSolver/z88')
+        pymodules += collect_python_modules('FemSolver/calculix')
 
         # import all collected modules
         # fcc_print(pymodules)
