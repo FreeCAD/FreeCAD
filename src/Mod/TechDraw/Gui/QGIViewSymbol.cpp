@@ -107,9 +107,7 @@ void QGIViewSymbol::draw()
     }
 
     drawSvg();
-    if (borderVisible) {
-        drawBorder();
-    }
+    QGIView::draw();
 }
 
 void QGIViewSymbol::drawSvg()
