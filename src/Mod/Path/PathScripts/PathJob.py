@@ -30,7 +30,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
-import xml.etree.ElementTree as xml
+import json
 
 from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
@@ -81,7 +81,7 @@ def createResourceClone(obj, orig, name, icon):
 
 class ObjectJob:
 
-    def __init__(self, obj, base, template = None):
+    def __init__(self, obj, base, templateFile = None):
         self.obj = obj
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
@@ -115,7 +115,7 @@ class ObjectJob:
         obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
-        self.setFromTemplate(obj, template)
+        self.setFromTemplateFile(obj, templateFile)
         if not obj.Stock:
             obj.Stock = PathStock.CreateFromBase(obj)
         if obj.Stock.ViewObject:
@@ -165,29 +165,33 @@ class ObjectJob:
             return obj.Base.Objects[0]
         return obj.Base
 
-    def setFromTemplate(self, obj, template):
-        '''setFromTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
+    def setFromTemplateFile(self, obj, template):
+        '''setFromTemplateFile(obj, template) ... extract the properties from the given template file and assign to receiver.
         This will also create any TCs stored in the template.'''
         tcs = []
         if template:
-            tree = xml.parse(template)
-            for job in tree.getroot().iter(JobTemplate.Job):
-                if job.get(JobTemplate.GeometryTolerance):
-                    obj.GeometryTolerance = float(job.get(JobTemplate.GeometryTolerance))
-                if job.get(JobTemplate.PostProcessor):
-                    obj.PostProcessor = job.get(JobTemplate.PostProcessor)
-                    if job.get(JobTemplate.PostProcessorArgs):
-                        obj.PostProcessorArgs = job.get(JobTemplate.PostProcessorArgs)
-                    else:
-                        obj.PostProcessorArgs = ''
-                if job.get(JobTemplate.PostProcessorOutputFile):
-                    obj.PostProcessorOutputFile = job.get(JobTemplate.PostProcessorOutputFile)
-                if job.get(JobTemplate.Description):
-                    obj.Description = job.get(JobTemplate.Description)
-            for tc in tree.getroot().iter(JobTemplate.ToolController):
-                tcs.append(PathToolController.FromTemplate(tc))
-            for stock in tree.getroot().iter(JobTemplate.Stock):
-                obj.Stock = PathStock.CreateFromTemplate(self, stock)
+            with open(unicode(template), 'rb') as fp:
+                attrs = json.load(fp)
+
+            if attrs.get(JobTemplate.GeometryTolerance):
+                obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
+            if attrs.get(JobTemplate.PostProcessor):
+                obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
+                if attrs.get(JobTemplate.PostProcessorArgs):
+                    obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
+                else:
+                    obj.PostProcessorArgs = ''
+            if attrs.get(JobTemplate.PostProcessorOutputFile):
+                obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
+            if attrs.get(JobTemplate.Description):
+                obj.Description = attrs.get(JobTemplate.Description)
+
+
+            if attrs.get(JobTemplate.ToolController):
+                for tc in attrs.get(JobTemplate.ToolController):
+                    tcs.append(PathToolController.FromTemplate(tc))
+            if attrs.get(JobTemplate.Stock):
+                obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
         else:
             tcs.append(PathToolController.Create())
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
@@ -258,8 +262,10 @@ class ObjectJob:
         '''Answer true if the given object can be used as a Base for a job.'''
         return PathUtil.isValidBaseObject(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
 
-def Create(name, base, template = None):
+def Create(name, base, templateFile = None):
+    '''Create(name, base, templateFile=None) ... creates a new job and all it's resources.
+    If a template file is specified the new job is initialized with the values from the template.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectJob(obj, base, template)
+    proxy = ObjectJob(obj, base, templateFile)
     return obj
 

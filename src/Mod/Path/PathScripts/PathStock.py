@@ -258,14 +258,14 @@ def TemplateAttributes(stock, includeExtent=True, includePlacement=True):
 
         if includePlacement:
             pos = stock.Placement.Base
-            attrs['posX'] = ("%f" % pos.x)
-            attrs['posY'] = ("%f" % pos.y)
-            attrs['posZ'] = ("%f" % pos.z)
+            attrs['posX'] = pos.x
+            attrs['posY'] = pos.y
+            attrs['posZ'] = pos.z
             rot = stock.Placement.Rotation
-            attrs['rotX'] = ("%f" % rot.Q[0])
-            attrs['rotY'] = ("%f" % rot.Q[1])
-            attrs['rotZ'] = ("%f" % rot.Q[2])
-            attrs['rotW'] = ("%f" % rot.Q[3])
+            attrs['rotX'] = rot.Q[0]
+            attrs['rotY'] = rot.Q[1]
+            attrs['rotZ'] = rot.Q[2]
+            attrs['rotW'] = rot.Q[3]
 
     return attrs
 
