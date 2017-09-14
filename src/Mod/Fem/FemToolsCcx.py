@@ -557,7 +557,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.set_inp_file_name()
 
     def write_inp_file(self):
-        import FemCalculix.Writer as iw
+        import FemSolver.calculix.writer as iw
         import sys
         self.inp_file_name = ""
         try:
