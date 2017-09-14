@@ -291,6 +291,11 @@ public:
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
+    // return the immediate decendent of the common ancestor of this item and
+    // 'cousin'.
+    App::DocumentObject *getRelativeParent(std::ostringstream &str,
+            DocumentObjectItem *cousin) const;
+
     // return the top most linked group owner's name, and subname.  This method
     // is necssary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
@@ -309,6 +314,7 @@ public:
 
 private:
     DocumentObjectDataPtr myData;
+    std::string mySub;
     int previousStatus;
     int selected;
     bool populated;

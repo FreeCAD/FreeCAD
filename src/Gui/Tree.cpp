@@ -1132,7 +1132,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
             // To avoid a cylic dependency it must be made sure to not allow to
             // drag'n'drop a tree item onto a child or grandchild item of it.
-            if (static_cast<DocumentObjectItem*>(targetitem)->isChildOfItem(item)) {
+            if (targetItemObj->isChildOfItem(item)) {
                 event->ignore();
                 return;
             }
@@ -1144,9 +1144,17 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             }
 
             auto obj = item->object()->getObject();
+            if(item->mySub.size()) {
+                auto subObj = obj->getSubObject(item->mySub.c_str());
+                if(subObj) 
+                    obj = subObj;
+                else
+                    FC_WARN("invalid trailing subname " << item->mySub);
+            }
 
             std::ostringstream str;
-            auto owner = item->getFullSubName(str);
+            auto owner = item->getRelativeParent(str,targetItemObj);
+            str << item->mySub;
 
             // let the view provider decide to accept the object or ignore it
             if (!vp->canDropObjectEx(obj,owner,str.str().c_str())) {
@@ -1225,9 +1233,16 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto item = static_cast<DocumentObjectItem*>(*it);
             Gui::ViewProviderDocumentObject* vpc = item->object();
             App::DocumentObject* obj = vpc->getObject();
-
+            if(item->mySub.size()) {
+                auto subObj = obj->getSubObject(item->mySub.c_str());
+                if(subObj) 
+                    obj = subObj;
+                else
+                    FC_WARN("invalid trailing subname " << item->mySub);
+            }
             std::ostringstream str;
-            auto owner = item->getFullSubName(str);
+            auto owner = item->getRelativeParent(str,targetItemObj);
+            str << item->mySub;
             std::string subname = str.str();
 
             if(!dropOnly && vp->canDragAndDropObject(obj)) {
@@ -1288,6 +1303,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
         gui->commitCommand();
     }
+
+    // Because the existence of subname, we must de-select the drag the
+    // object manually. Just do a complete clear here for simplicity
+    Selection().clearCompleteSelection();
 }
 
 void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const
@@ -2209,6 +2228,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     bool selected = item->isSelected();
     if((selected && item->selected) || (!selected && !item->selected)) 
         return;
+    item->mySub.clear();
     item->selected = selected;
 
     std::ostringstream str;
@@ -2258,6 +2278,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
 
     if(!subname || *subname==0) {
         item->selected=2;
+        item->mySub.clear();
         return;
     }
 
@@ -2270,6 +2291,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         nextsub = dot+1;
     else {
         item->selected=2;
+        item->mySub = subname;
         return;
     }
 
@@ -2278,8 +2300,11 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     if(!subObj) {
         FC_WARN("sub object not found " << item->getName() << '.' << name.c_str());
         item->selected = 2;
+        item->mySub = name;
         return;
     }
+
+    item->mySub.clear();
 
     if(!item->populated && sync) {
         //force populate the item
@@ -2302,6 +2327,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     // Select the current object instead.
     FC_TRACE("element " << subname << " not found");
     item->selected=2;
+    item->mySub = subname;
 }
 
 void DocumentItem::selectItems(bool sync) {
@@ -2817,6 +2843,52 @@ App::DocumentObject *DocumentObjectItem::getFullSubName(
     auto ret = pi->getFullSubName(str,parent);
     str << getName() << '.';
     return ret;
+}
+
+App::DocumentObject *DocumentObjectItem::getRelativeParent(
+        std::ostringstream &str, DocumentObjectItem *cousin) const
+{
+    std::vector<DocumentObjectItem*> parents,parents2;
+    auto pi = parent();
+    for(; pi ; pi = pi->parent()) {
+        if(pi->type()!=TreeWidget::ObjectType)
+            break;
+        auto pitem = static_cast<DocumentObjectItem*>(pi);
+        if(!pitem->isGroup())
+            break;
+        parents.push_back(pitem);
+    }
+    if(parents.empty())
+        return 0;
+
+    auto pi2 = cousin->parent();
+    for(; pi2 ; pi2 = pi2->parent()) {
+        if(pi2->type()!=TreeWidget::ObjectType)
+            break;
+        auto pitem = static_cast<DocumentObjectItem*>(pi2);
+        if(!pitem->isGroup())
+            break;
+        parents2.push_back(pitem);
+    }
+
+    if(pi->type()==TreeWidget::ObjectType || pi==pi2) {
+        while(parents.size() && parents2.size()) {
+            if(parents.back() != parents2.back())
+                break;
+            parents.pop_back();
+            parents2.pop_back();
+        }
+    }
+    if(parents.empty())
+        return 0;
+    auto ret = parents.back();
+    parents.pop_back();
+    while(parents.size()) {
+        str << parents.back()->getName() << '.';
+        parents.pop_back();
+    }
+    str << getName() << '.';
+    return ret->object()->getObject();
 }
 
 DocumentItem *DocumentObjectItem::getParentDocument() const {
