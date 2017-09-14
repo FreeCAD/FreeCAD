@@ -44,12 +44,12 @@ public:
             App::TextDocument* textDocument,
             QPlainTextEdit* editor, QWidget* parent);
     ~TextDocumentEditorView();
-    const char *getName() const { return "TextDocumentEditorView"; }
-    bool onMsg(const char* msg, const char**);
-    bool onHasMsg(const char* msg) const;
+    const char *getName() const override { return "TextDocumentEditorView"; }
+    bool onMsg(const char* msg, const char**) override;
+    bool onHasMsg(const char* msg) const override;
     bool canClose() override;
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
     QPlainTextEdit* getEditor() const { return editor; }
     App::TextDocument* getTextObject() const { return textDocument; }
