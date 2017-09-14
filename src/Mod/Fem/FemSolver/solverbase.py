@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer Solver Object"
+__title__ = "General Solver Object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
