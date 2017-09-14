@@ -291,15 +291,18 @@ class StockCreateBoxEdit(StockEdit):
         return self.form.stockCreateBox
 
     def getFields(self, obj, fields = ['length', 'widht', 'height']):
-        if self.IsStock(obj):
-            if 'length' in fields:
-                obj.Stock.Length = FreeCAD.Units.Quantity(self.form.stockBoxLength.text())
-            if 'width' in fields:
-                obj.Stock.Width  = FreeCAD.Units.Quantity(self.form.stockBoxWidth.text())
-            if 'height' in fields:
-                obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
-        else:
-            PathLog.error(translate('PathJob', 'Stock not a box!'))
+        try:
+            if self.IsStock(obj):
+                if 'length' in fields:
+                    obj.Stock.Length = FreeCAD.Units.Quantity(self.form.stockBoxLength.text())
+                if 'width' in fields:
+                    obj.Stock.Width  = FreeCAD.Units.Quantity(self.form.stockBoxWidth.text())
+                if 'height' in fields:
+                    obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
+            else:
+                PathLog.error(translate('PathJob', 'Stock not a box!'))
+        except:
+            pass
 
     def setFields(self, obj):
         if not self.IsStock(obj):
@@ -322,13 +325,16 @@ class StockCreateCylinderEdit(StockEdit):
         return self.form.stockCreateCylinder
 
     def getFields(self, obj, fields = ['radius', 'height']):
-        if self.IsStock(obj):
-            if 'radius' in fields:
-                obj.Stock.Radius = FreeCAD.Units.Quantity(self.form.stockCylinderRadius.text())
-            if 'height' in fields:
-                obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
-        else:
-            PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
+        try:
+            if self.IsStock(obj):
+                if 'radius' in fields:
+                    obj.Stock.Radius = FreeCAD.Units.Quantity(self.form.stockCylinderRadius.text())
+                if 'height' in fields:
+                    obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
+            else:
+                PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
+        except:
+            pass
 
     def setFields(self, obj):
         if not self.IsStock(obj):
