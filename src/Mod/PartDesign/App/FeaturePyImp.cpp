@@ -34,7 +34,10 @@ using namespace PartDesign;
 // returns a string which represent the object e.g. when printed in python
 std::string FeaturePy::representation(void) const
 {
-    return std::string("<PartDesign::Feature>");
+    App::DocumentObject* object = this->getFeaturePtr();
+    std::stringstream str;
+    str << "<" << object->getTypeId().getName() << ">";
+    return str.str();
 }
 
 PyObject *FeaturePy::getCustomAttributes(const char* ) const

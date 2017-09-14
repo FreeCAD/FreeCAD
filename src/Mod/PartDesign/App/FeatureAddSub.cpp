@@ -26,7 +26,9 @@
 #endif
 
 
+#include <App/FeaturePythonPyImp.h>
 #include "FeatureAddSub.h"
+#include "FeaturePy.h"
 
 
 using namespace PartDesign;
@@ -45,6 +47,53 @@ FeatureAddSub::FeatureAddSub()
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
 {
     return addSubType;
+}
+
+}
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(PartDesign::FeatureAddSubPython, PartDesign::FeatureAddSub)
+template<> const char* PartDesign::FeatureAddSubPython::getViewProviderName(void) const {
+    return "PartDesignGui::ViewProviderPython";
+}
+template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+/// @endcond
+
+// explicit template instantiation
+template class PartDesignExport FeaturePythonT<PartDesign::FeatureAddSub>;
+}
+
+
+namespace PartDesign {
+
+PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPython)
+
+FeatureAdditivePython::FeatureAdditivePython()
+{
+    addSubType = Additive;
+}
+
+FeatureAdditivePython::~FeatureAdditivePython()
+{
+}
+
+
+PROPERTY_SOURCE(PartDesign::FeatureSubtractivePython, PartDesign::FeatureAddSubPython)
+
+FeatureSubtractivePython::FeatureSubtractivePython()
+{
+    addSubType = Subtractive;
+}
+
+FeatureSubtractivePython::~FeatureSubtractivePython()
+{
 }
 
 }
