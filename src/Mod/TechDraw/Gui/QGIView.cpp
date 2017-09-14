@@ -376,6 +376,8 @@ void QGIView::drawBorder()
     double labelWidth = m_label->boundingRect().width();
     double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
 
+    QBrush b(Qt::NoBrush);
+    m_border->setBrush(b);
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
 
