@@ -32,10 +32,10 @@ import FemRun
 import FemSolver.solverbase as solverbase
 import FemSolver.elmer.tasks as tasks
 
-import Equations.Heat
-import Equations.Elasticity
-import Equations.Electrostatic
-import Equations.Flow
+import FemSolver.elmer.Equations.Heat as Heat
+import FemSolver.elmer.Equations.Elasticity as Elasticity
+import FemSolver.elmer.Equations.Electrostatic as Electrostatic
+import FemSolver.elmer.Equations.Flow as Flow
 
 
 def create(doc, name="ElmerSolver"):
@@ -49,10 +49,10 @@ class Proxy(solverbase.Proxy):
     Type = "Fem::FemSolverObjectElmer"
 
     _EQUATIONS = {
-        "Heat": Equations.Heat,
-        "Elasticity": Equations.Elasticity,
-        "Electrostatic": Equations.Electrostatic,
-        "Flow": Equations.Flow,
+        "Heat": Heat,
+        "Elasticity": Elasticity,
+        "Electrostatic": Electrostatic,
+        "Flow": Flow,
     }
 
     def __init__(self, obj):
