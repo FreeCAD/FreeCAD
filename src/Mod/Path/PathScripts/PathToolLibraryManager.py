@@ -23,16 +23,19 @@
 # ***************************************************************************
 
 from __future__ import print_function
+
 import FreeCAD
-import xml.sax
 import FreeCADGui
 import Path
-import os
-from PySide import QtCore, QtGui
 import PathScripts
-from PathScripts import PathUtils
-
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtils as PathUtils
+import json
+import os
+import xml.sax
+
+from PySide import QtCore, QtGui
+
 
 LOG_MODULE = 'PathToolLibraryManager'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -146,7 +149,8 @@ class ToolLibraryManager():
 
     def saveMainLibrary(self, tooltable):
         '''Persists the permanent library to FreeCAD user preferences'''
-        tmpstring = tooltable.Content
+        attrs = tooltable.templateAttrs()
+        tmpstring = json.dumps(attrs)
         self.prefs.SetString("ToolLibrary", tmpstring)
         return True
 
@@ -167,10 +171,20 @@ class ToolLibraryManager():
         tt = None
         if listname == "<Main>":
             tmpstring = self.prefs.GetString("ToolLibrary", "")
-            if tmpstring != "":
-                Handler = FreeCADTooltableHandler()
-                xml.sax.parseString(tmpstring, Handler)
-                tt = Handler.tooltable
+            if tmpstring:
+                if tmpstring[0] == '{':
+                    stringattrs = json.loads(tmpstring)
+                    attrs = {}
+                    for key, val in stringattrs.iteritems():
+                        attrs[int(key)] = val
+                    tt = Path.Tooltable(attrs)
+                elif tmpstring[0] == '<':
+                    # legacy XML table
+                    Handler = FreeCADTooltableHandler()
+                    xml.sax.parseString(tmpstring, Handler)
+                    tt = Handler.tooltable
+                    # store new format
+                    self.saveMainLibrary(tt)
             else:
                 tt = Path.Tooltable()
         else:
