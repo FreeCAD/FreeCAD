@@ -118,7 +118,7 @@ INSTALL(
         FemSolver/calculix/tasks.py
         FemSolver/calculix/writer.py
     DESTINATION
-        Mod/Fem/calculix
+        Mod/Fem/FemSolver/calculix
 )
 
 INSTALL(
