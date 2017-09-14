@@ -202,7 +202,7 @@ class StockEdit(object):
             obj.Document.removeObject(self.obj.Stock.Name)
         obj.Stock = stock
         if stock.ViewObject and stock.ViewObject.Proxy:
-            stock.ViewObject.Proxy.onEdit(OpenCloseResourceEditor)
+            stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
     def setLengthField(self, widget, prop):
         widget.setText(FreeCAD.Units.Quantity(prop.Value, FreeCAD.Units.Length).UserString)
