@@ -115,7 +115,7 @@ INSTALL(
     FILES
         FemSolver/calculix/__init__.py
         FemSolver/calculix/solver.py
-        FemSolver/calculix/oasks.py
+        FemSolver/calculix/tasks.py
         FemSolver/calculix/writer.py
     DESTINATION
         Mod/Fem/calculix
