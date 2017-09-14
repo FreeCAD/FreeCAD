@@ -112,6 +112,8 @@ class StockFromBase:
 
 
 class StockCreateBox:
+    MinExtent = 0.001
+
     def __init__(self, obj):
         obj.addProperty('App::PropertyLength', 'Length', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Length of this stock box"))
         obj.addProperty('App::PropertyLength', 'Width', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Width of this stock box"))
@@ -129,6 +131,13 @@ class StockCreateBox:
         return None
 
     def execute(self, obj):
+        if obj.Length < self.MinExtent:
+            obj.Length = self.MinExtent
+        if obj.Width < self.MinExtent:
+            obj.Width = self.MinExtent
+        if obj.Height < self.MinExtent:
+            obj.Height = self.MinExtent
+
         shape = Part.makeBox(obj.Length, obj.Width, obj.Height)
         shape.Placement = obj.Placement
         obj.Shape = shape
@@ -138,6 +147,8 @@ class StockCreateBox:
             self.execute(obj)
 
 class StockCreateCylinder:
+    MinExtent = 0.001
+
     def __init__(self, obj):
         obj.addProperty('App::PropertyLength', 'Radius', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Radius of this stock cylinder"))
         obj.addProperty('App::PropertyLength', 'Height', 'Stock', QtCore.QT_TRANSLATE_NOOP("PathStock", "Height of this stock cylinder"))
@@ -153,6 +164,11 @@ class StockCreateCylinder:
         return None
 
     def execute(self, obj):
+        if obj.Radius < self.MinExtent:
+            obj.Radius = self.MinExtent
+        if obj.Height < self.MinExtent:
+            obj.Height = self.MinExtent
+
         shape = Part.makeCylinder(obj.Radius, obj.Height)
         shape.Placement = obj.Placement
         obj.Shape = shape
