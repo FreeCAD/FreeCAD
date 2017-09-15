@@ -152,10 +152,25 @@ class ToolLibraryManager():
         self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
         return
 
+    def templateAttrs(self, tooltable):
+        attrs = {}
+        attrs['Version'] = 1
+        attrs['Tools'] = tooltable.templateAttrs()
+        return attrs
+
+    def tooltableFromAttrs(self, stringattrs):
+        if stringattrs.get('Version') and 1 == int(stringattrs['Version']):
+            attrs = {}
+            for key, val in stringattrs['Tools'].iteritems():
+                attrs[int(key)] = val
+            return Path.Tooltable(attrs)
+        else:
+            PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable template version %s") % stringattrs.get('Version'))
+        return None
+
     def saveMainLibrary(self, tooltable):
         '''Persists the permanent library to FreeCAD user preferences'''
-        attrs = tooltable.templateAttrs()
-        tmpstring = json.dumps(attrs)
+        tmpstring = json.dumps(self.templateAttrs(tooltable))
         self.prefs.SetString("ToolLibrary", tmpstring)
         return True
 
@@ -178,11 +193,7 @@ class ToolLibraryManager():
             tmpstring = self.prefs.GetString("ToolLibrary", "")
             if tmpstring:
                 if tmpstring[0] == '{':
-                    stringattrs = json.loads(tmpstring)
-                    attrs = {}
-                    for key, val in stringattrs.iteritems():
-                        attrs[int(key)] = val
-                    tt = Path.Tooltable(attrs)
+                    tt = self.tooltableFromAttrs(json.loads(tmpstring))
                 elif tmpstring[0] == '<':
                     # legacy XML table
                     Handler = FreeCADTooltableHandler()
@@ -261,11 +272,7 @@ class ToolLibraryManager():
                 ht = xmlHandler.tooltable
             else:
                 with open(unicode(filename[0]), "rb") as fp:
-                    stringAttrs = json.load(fp)
-                attrs = {}
-                for key, val in stringAttrs.iteritems():
-                    attrs[int(key)] = val
-                ht = Path.Tooltable(attrs)
+                    ht = self.tooltableFromAttrs(json.load(fp))
 
             tt = self._findList(listname)
             for t in ht.Tools:
@@ -300,8 +307,7 @@ class ToolLibraryManager():
                         fp.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
                 else:
                     fp,fname = openFileWithExtension(filename[0], '.json')
-                    attrs = tt.templateAttrs()
-                    json.dump(attrs, fp, sort_keys=True, indent=2)
+                    json.dump(self.templateAttrs(tt), fp, sort_keys=True, indent=2)
 
                 fp.close()
                 print("Written ", unicode(fname))
@@ -313,6 +319,8 @@ class ToolLibraryManager():
         "adds a new tool at the end of the table"
         print(listname, tool, position)
         tt = self._findList(listname)
+        if not tt:
+            tt = Path.Tooltable()
         if position is None:
             tt.addTools(tool)
             newID = tt.Tools.keys()[-1]

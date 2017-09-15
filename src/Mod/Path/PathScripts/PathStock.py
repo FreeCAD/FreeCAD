@@ -253,6 +253,7 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
 def TemplateAttributes(stock, includeExtent=True, includePlacement=True):
     attrs = {}
     if stock:
+        attrs['version'] = 1
         stockType = StockType.FromStock(stock)
         attrs['create'] = stockType
 
@@ -286,62 +287,65 @@ def TemplateAttributes(stock, includeExtent=True, includePlacement=True):
     return attrs
 
 def CreateFromTemplate(job, template):
-    stockType = template.get('create')
-    if stockType:
-        placement = None
-        posX = template.get('posX')
-        posY = template.get('posY')
-        posZ = template.get('posZ')
-        rotX = template.get('rotX')
-        rotY = template.get('rotY')
-        rotZ = template.get('rotZ')
-        rotW = template.get('rotW')
-        if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
-            pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
-            rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
-            placement = FreeCAD.Placement(pos, rot)
-        elif posX is not None or posY is not None or posZ is not None or rotX is not None or rotY is not None or rotZ is not None or rotW is not None:
-            PathLog.warning(translate('PathStock', 'Corrupted or incomplete placement information in template - ignoring'))
+    if template.get('version') and 1 == int(template['version']):
+        stockType = template.get('create')
+        if stockType:
+            placement = None
+            posX = template.get('posX')
+            posY = template.get('posY')
+            posZ = template.get('posZ')
+            rotX = template.get('rotX')
+            rotY = template.get('rotY')
+            rotZ = template.get('rotZ')
+            rotW = template.get('rotW')
+            if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
+                pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
+                rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
+                placement = FreeCAD.Placement(pos, rot)
+            elif posX is not None or posY is not None or posZ is not None or rotX is not None or rotY is not None or rotZ is not None or rotW is not None:
+                PathLog.warning(translate('PathStock', 'Corrupted or incomplete placement information in template - ignoring'))
 
-        if stockType == StockType.FromBase:
-            xneg = template.get('xneg')
-            xpos = template.get('xpos')
-            yneg = template.get('yneg')
-            ypos = template.get('ypos')
-            zneg = template.get('zneg')
-            zpos = template.get('zpos')
-            neg = None
-            pos = None
-            if xneg is not None and xpos is not None and yneg is not None and ypos is not None and zneg is not None and zpos is not None:
-                neg = FreeCAD.Vector(FreeCAD.Units.Quantity(xneg).Value, FreeCAD.Units.Quantity(yneg).Value, FreeCAD.Units.Quantity(zneg).Value)
-                pos = FreeCAD.Vector(FreeCAD.Units.Quantity(xpos).Value, FreeCAD.Units.Quantity(ypos).Value, FreeCAD.Units.Quantity(zpos).Value)
-            elif xneg is not None or xpos is not None or yneg is not None or ypos is not None or zneg is not None or zpos is not None:
-                PathLog.error(translate('PathStock', 'Corrupted or incomplete specification for creating stock from base - ignoring extent'))
-            return CreateFromBase(job, neg, pos, placement)
+            if stockType == StockType.FromBase:
+                xneg = template.get('xneg')
+                xpos = template.get('xpos')
+                yneg = template.get('yneg')
+                ypos = template.get('ypos')
+                zneg = template.get('zneg')
+                zpos = template.get('zpos')
+                neg = None
+                pos = None
+                if xneg is not None and xpos is not None and yneg is not None and ypos is not None and zneg is not None and zpos is not None:
+                    neg = FreeCAD.Vector(FreeCAD.Units.Quantity(xneg).Value, FreeCAD.Units.Quantity(yneg).Value, FreeCAD.Units.Quantity(zneg).Value)
+                    pos = FreeCAD.Vector(FreeCAD.Units.Quantity(xpos).Value, FreeCAD.Units.Quantity(ypos).Value, FreeCAD.Units.Quantity(zpos).Value)
+                elif xneg is not None or xpos is not None or yneg is not None or ypos is not None or zneg is not None or zpos is not None:
+                    PathLog.error(translate('PathStock', 'Corrupted or incomplete specification for creating stock from base - ignoring extent'))
+                return CreateFromBase(job, neg, pos, placement)
 
-        if stockType == StockType.CreateBox:
-            length = template.get('length')
-            width  = template.get('width')
-            height = template.get('height')
-            extent = None
-            if length is not None and width is not None and height is not None:
-                extent = FreeCAD.Vector(FreeCAD.Units.Quantity(length).Value, FreeCAD.Units.Quantity(width).Value, FreeCAD.Units.Quantity(height).Value)
-            elif length is not None or width is not None or height is not None:
-                PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock box - ignoring size'))
-            return CreateBox(job, extent, placement)
+            if stockType == StockType.CreateBox:
+                length = template.get('length')
+                width  = template.get('width')
+                height = template.get('height')
+                extent = None
+                if length is not None and width is not None and height is not None:
+                    extent = FreeCAD.Vector(FreeCAD.Units.Quantity(length).Value, FreeCAD.Units.Quantity(width).Value, FreeCAD.Units.Quantity(height).Value)
+                elif length is not None or width is not None or height is not None:
+                    PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock box - ignoring size'))
+                return CreateBox(job, extent, placement)
 
-        if stockType == StockType.CreateCylinder:
-            radius = template.get('radius')
-            height = template.get('height')
-            if radius is not None and height is not None:
-                pass
-            elif radius is not None or height is not None:
-                radius = None
-                height = None
-                PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock cylinder - ignoring size'))
-            return CreateCylinder(job, radius, height, placement)
+            if stockType == StockType.CreateCylinder:
+                radius = template.get('radius')
+                height = template.get('height')
+                if radius is not None and height is not None:
+                    pass
+                elif radius is not None or height is not None:
+                    radius = None
+                    height = None
+                    PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock cylinder - ignoring size'))
+                return CreateCylinder(job, radius, height, placement)
 
-        PathLog.error(translate('PathStock', 'Unsupported stock type named %s'), stockType)
+            PathLog.error(translate('PathStock', 'Unsupported stock type named %s'), stockType)
+        else:
+            PathLog.error(translate('PathStock', 'Unsupported PathStock template version %s'), template.get('version'))
         return None
 
 

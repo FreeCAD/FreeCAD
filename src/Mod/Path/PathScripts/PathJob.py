@@ -52,13 +52,14 @@ def translate(context, text, disambig=None):
 class JobTemplate:
     '''Attribute and sub element strings for template export/import.'''
     Job = 'Job'
-    PostProcessor = 'post'
-    PostProcessorArgs = 'post_args'
-    PostProcessorOutputFile = 'output'
-    GeometryTolerance = 'tol'
-    Description = 'desc'
+    PostProcessor = 'Post'
+    PostProcessorArgs = 'PostArgs'
+    PostProcessorOutputFile = 'Output'
+    GeometryTolerance = 'Tolerance'
+    Description = 'Desc'
     ToolController = 'ToolController'
     Stock = 'Stock'
+    Version = 'Version'
 
 def isResourceClone(obj, propName, resourceName):
     '''isResourceClone(obj, propName, resourceName) ... Return True if the given property of obj is a clone of type resourceName.'''
@@ -173,25 +174,29 @@ class ObjectJob:
             with open(unicode(template), 'rb') as fp:
                 attrs = json.load(fp)
 
-            if attrs.get(JobTemplate.GeometryTolerance):
-                obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
-            if attrs.get(JobTemplate.PostProcessor):
-                obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
-                if attrs.get(JobTemplate.PostProcessorArgs):
-                    obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
-                else:
-                    obj.PostProcessorArgs = ''
-            if attrs.get(JobTemplate.PostProcessorOutputFile):
-                obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
-            if attrs.get(JobTemplate.Description):
-                obj.Description = attrs.get(JobTemplate.Description)
+            if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
+                if attrs.get(JobTemplate.GeometryTolerance):
+                    obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
+                if attrs.get(JobTemplate.PostProcessor):
+                    obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
+                    if attrs.get(JobTemplate.PostProcessorArgs):
+                        obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
+                    else:
+                        obj.PostProcessorArgs = ''
+                if attrs.get(JobTemplate.PostProcessorOutputFile):
+                    obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
+                if attrs.get(JobTemplate.Description):
+                    obj.Description = attrs.get(JobTemplate.Description)
 
 
-            if attrs.get(JobTemplate.ToolController):
-                for tc in attrs.get(JobTemplate.ToolController):
-                    tcs.append(PathToolController.FromTemplate(tc))
-            if attrs.get(JobTemplate.Stock):
-                obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
+                if attrs.get(JobTemplate.ToolController):
+                    for tc in attrs.get(JobTemplate.ToolController):
+                        tcs.append(PathToolController.FromTemplate(tc))
+                if attrs.get(JobTemplate.Stock):
+                    obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
+            else:
+                PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
+                tcs.append(PathToolController.Create())
         else:
             tcs.append(PathToolController.Create())
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
@@ -200,6 +205,7 @@ class ObjectJob:
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file.'''
         attrs = {}
+        attrs[JobTemplate.Version] = 1
         if obj.PostProcessor:
             attrs[JobTemplate.PostProcessor]           = obj.PostProcessor
             attrs[JobTemplate.PostProcessorArgs]       = obj.PostProcessorArgs
