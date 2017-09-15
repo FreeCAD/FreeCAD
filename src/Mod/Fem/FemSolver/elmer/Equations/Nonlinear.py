@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import .Linear
+import FemSolver.elmer.Equations.Linear as Linear
 
 
 class Proxy(Linear.Proxy):
