@@ -197,7 +197,7 @@ class ObjectOp(PathOp.ObjectOp):
         pathParams['feedrate'] = self.horizFeed
         pathParams['feedrate_v'] = self.vertFeed
         pathParams['verbose'] = True
-        pathParams['resume_height'] = obj.StepDown.Value
+        pathParams['resume_height'] = obj.SafeHeight.Value
         pathParams['retraction'] = obj.ClearanceHeight.Value
         pathParams['return_end'] = True
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
@@ -237,12 +237,13 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track()
         self.endVector = None
 
+        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
         self.depthparams = PathUtils.depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
                 safe_height=obj.SafeHeight.Value,
                 start_depth=obj.StartDepth.Value,
                 step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
+                z_finish_step=finish_step,
                 final_depth=obj.FinalDepth.Value,
                 user_depths=None)
 
