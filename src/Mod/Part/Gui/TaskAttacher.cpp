@@ -876,7 +876,11 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                 ).toLatin1();
                 Base::Interpreter().runString(code_2.constData());
         }
-        catch (Base::Exception &e){
+        catch (const Base::Exception &e){
+            e.ReportException();
+        }
+        catch (const Py::Exception&) {
+            Base::PyException e;
             e.ReportException();
         }
     }

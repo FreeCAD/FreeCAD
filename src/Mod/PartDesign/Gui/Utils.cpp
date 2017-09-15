@@ -63,10 +63,10 @@ PartDesign::Body *getBody(bool messageIfNot)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
-    bool singleBodyDocument = activeView->getAppDocument()->
-        countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
 
     if (activeView) {
+        bool singleBodyDocument = activeView->getAppDocument()->
+            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
         if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 

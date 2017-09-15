@@ -6030,6 +6030,7 @@ public:
         , EditCurve(2)
         , BaseGeoId(-1)
         , ExtendFromStart(false)
+        , Increment(0)
     {
     }
     virtual ~DrawSketchHandlerExtend()

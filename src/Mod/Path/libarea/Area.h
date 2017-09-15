@@ -34,6 +34,7 @@ struct CAreaPocketParams
 		from_center = From_center;
 		mode = Mode;
 		zig_angle = Zig_angle;
+		only_cut_first_offset = false;
 	}
 };
 

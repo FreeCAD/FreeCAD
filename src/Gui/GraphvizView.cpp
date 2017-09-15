@@ -221,7 +221,8 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     flatProc->setEnvironment(QProcess::systemEnvironment());
     do {
         flatProc->start(unflatten, flatArgs);
-        flatProc->waitForStarted();
+        bool value = flatProc->waitForStarted();
+        Q_UNUSED(value); // quieten code analyzer
         dotProc->start(dot, args);
         if (!dotProc->waitForStarted()) {
             int ret = QMessageBox::warning(Gui::getMainWindow(),
