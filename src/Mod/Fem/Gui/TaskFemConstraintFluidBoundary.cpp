@@ -127,6 +127,7 @@ void initComboBox(QComboBox* combo, const std::vector<std::string>& textItems, c
 /* TRANSLATOR FemGui::TaskFemConstraintFluidBoundary */
 TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent)
     : TaskFemConstraint(ConstraintView, parent, "fem-constraint-fluid-boundary")
+    , dimension(-1)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

@@ -3380,7 +3380,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) { 
-            const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(*it);
+            const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(*it);
             Handle(Geom_TrimmedCurve) curve = Handle(Geom_TrimmedCurve)::DownCast(aoh->handle());
 
             double startangle, endangle;
@@ -3413,7 +3413,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(center);
         } 
         else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) { 
-            const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(*it);
+            const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(*it);
             Handle(Geom_TrimmedCurve) curve = Handle(Geom_TrimmedCurve)::DownCast(aop->handle());
 
             double startangle, endangle;

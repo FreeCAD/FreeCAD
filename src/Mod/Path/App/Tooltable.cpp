@@ -51,7 +51,7 @@ Tool::Tool(const char* name,
            double cornerradius,
            double cuttingedgeangle,
            double cuttingedgeheight)
-:Name(name),Type(type),Diameter(diameter),LengthOffset(lengthoffset),
+:Name(name),Type(type),Material(MATUNDEFINED),Diameter(diameter),LengthOffset(lengthoffset),
 FlatRadius(flatradius),CornerRadius(cornerradius),CuttingEdgeAngle(cuttingedgeangle),
 CuttingEdgeHeight(cuttingedgeheight)
 {
@@ -59,6 +59,14 @@ CuttingEdgeHeight(cuttingedgeheight)
 
 Tool::Tool()
 {
+    Type = UNDEFINED;
+    Material = MATUNDEFINED;
+    Diameter = 0;
+    LengthOffset = 0;
+    FlatRadius = 0;
+    CornerRadius = 0;
+    CuttingEdgeAngle = 0;
+    CuttingEdgeHeight = 0;
 }
 
 Tool::~Tool()
