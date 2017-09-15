@@ -277,7 +277,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
 
     Gui::Command::openCommand("LinearPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::LinearPattern\",\"%s\")",
-                            PartDesignGui::getBody(false), newFeatName.c_str());
+                            PartDesignGui::getBody(false)->getNameInDocument(), newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
