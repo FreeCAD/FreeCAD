@@ -78,7 +78,7 @@ public:
     void setScope(LinkScope scope) {_pcScope = scope;};    
     /**
      * @brief Get the links scope
-     * Retreive what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
+     * Retrieve what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
      * all Childs or to all objects within the Glocal scope.
      */
     LinkScope getScope() {return _pcScope;};
