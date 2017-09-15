@@ -708,7 +708,7 @@ Py::Float TopoShapeEdgePy::getLength(void) const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
-    return Py::Float(GCPnts_AbscissaPoint::Length(adapt));
+    return Py::Float(GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion()));
 }
 
 #include <App/Application.h>
