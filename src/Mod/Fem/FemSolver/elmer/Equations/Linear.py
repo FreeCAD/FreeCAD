@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import Base
+import FemSolver.elmer.Equations.Base as Base
 
 
 LINEAR_SOLVER = ["Direct", "Iterative"]
