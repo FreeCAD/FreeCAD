@@ -67,8 +67,9 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
     PyObject *cor = 0;
     PyObject *ang = 0;
     PyObject *hei = 0;
+    int version = 1;
 
-    static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" ,NULL};
+    static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" , "version", NULL};
 
     PyObject *dict = 0;
     if (!kwd && (PyObject_TypeCheck(args, &PyDict_Type) || PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict))) {
@@ -76,7 +77,7 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
         if (PyObject_TypeCheck(args, &PyDict_Type)) {
           dict = args;
         }
-        if (!PyArg_ParseTupleAndKeywords(arg, dict, "|sssOOOOOO", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei)) {
+        if (!PyArg_ParseTupleAndKeywords(arg, dict, "|sssOOOOOOi", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei, &version)) {
             return -1;
         }
     } else {
@@ -84,6 +85,11 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
         if (!PyArg_ParseTupleAndKeywords(args, kwd, "|sssOOOOOO", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei)) {
             return -1;
         }
+    }
+
+    if (1 != version) {
+        PyErr_SetString(PyExc_TypeError, "Unsupported Tool template version");
+        return -1;
     }
 
     getToolPtr()->Name = name;
@@ -338,6 +344,7 @@ PyObject* ToolPy::templateAttrs(PyObject * args)
 {
     if (!args || PyArg_ParseTuple(args, "")) {
         PyObject *dict = PyDict_New();
+        PyDict_SetItemString(dict, "version", PYINT_FROMLONG(1));
         PyDict_SetItemString(dict, "name", PYSTRING_FROMSTRING(getToolPtr()->Name.c_str()));
         PyDict_SetItemString(dict, "tooltype",PYSTRING_FROMSTRING(Tool::TypeName(getToolPtr()->Type)));
         PyDict_SetItemString(dict, "material", PYSTRING_FROMSTRING(Tool::MaterialName(getToolPtr()->Material)));
