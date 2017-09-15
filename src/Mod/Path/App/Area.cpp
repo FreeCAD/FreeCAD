@@ -2998,18 +2998,10 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         threshold = Precision::Confusion();
     threshold *= threshold;
 
-    resume_height = fabs(resume_height);
-    if(resume_height < Precision::Confusion())
-        resume_height = stepdown_hint;
-
-    retraction = fabs(retraction);
-    if(retraction < Precision::Confusion())
-        retraction = (pstart.*getter)()+resume_height;
-
     // in case the user didn't specify feed start, sortWire() will choose one
     // based on the bound. We'll further adjust that according to resume height
     if(!_pstart || pstart.SquareDistance(*_pstart)>Precision::SquareConfusion())
-        (pstart.*setter)((pstart.*getter)()+resume_height);
+        (pstart.*setter)(resume_height);
 
     gp_Pnt plast,p;
     // initial vertial rapid pull up to retraction (or start Z height if higher)

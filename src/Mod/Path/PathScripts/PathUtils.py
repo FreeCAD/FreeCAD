@@ -816,7 +816,7 @@ class depth_params:
             raise ValueError('z_finish_step must be less than step_down')
 
         self.__clearance_height = clearance_height
-        self.__safe_height = math.fabs(safe_height)
+        self.__safe_height = safe_height
         self.__start_depth = start_depth
         self.__step_down = math.fabs(step_down)
         self.__z_finish_step = math.fabs(z_finish_step)
