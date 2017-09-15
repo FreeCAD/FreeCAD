@@ -103,11 +103,11 @@ public:
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
     static std::vector<App::DocumentObject*> getCSRelevantLinks(const App::DocumentObject* obj);
-    /// Checks if the links of the given object comply with all GeoFeatureGroup requrirements, that means
-    /// if normal links are only withing the parent GeoFeatureGroup. 
+    /// Checks if the links of the given object comply with all GeoFeatureGroup requirements, that means
+    /// if normal links are only within the parent GeoFeatureGroup. 
     static bool areLinksValid(const App::DocumentObject* obj);
-    /// Checks if the given link complies with all GeoFeatureGroup requrirements, that means
-    /// if normal links are only withing the parent GeoFeatureGroup. 
+    /// Checks if the given link complies with all GeoFeatureGroup requirements, that means
+    /// if normal links are only within the parent GeoFeatureGroup. 
     static bool isLinkValid(App::Property* link);
     //Returns all objects that are wrongly linked from this object, meaning which are out of scope of the 
     //links of obj

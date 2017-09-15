@@ -205,7 +205,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
             if (pcPart) {  // deduct dimension from part_obj.Shape.ShapeType
                 const TopoDS_Shape & pShape = pcPart->Shape.getShape().getShape();
                 const TopAbs_ShapeEnum shapeType = pShape.IsNull() ? TopAbs_SHAPE : pShape.ShapeType();
-                if (shapeType == TopAbs_SOLID || shapeType ==TopAbs_COMPSOLID)  // COMPSOLID is solids conected by faces
+                if (shapeType == TopAbs_SOLID || shapeType ==TopAbs_COMPSOLID)  // COMPSOLID is solids connected by faces
                     dimension =3;
                 else if (shapeType == TopAbs_FACE || shapeType == TopAbs_SHELL)
                     dimension =2;
