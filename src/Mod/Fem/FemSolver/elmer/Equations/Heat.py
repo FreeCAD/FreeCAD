@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FemMisc
-import Nonlinear
+import .Nonlinear
 import FemEquation
 
 

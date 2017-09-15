@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FemMisc
 import FemEquation
-import Linear
+import .Linear
 
 
 def create(doc, name="Elasticity"):
