@@ -230,12 +230,21 @@ void ViewProvider::setBodyMode(bool bodymode) {
     std::vector<App::Property*> props;
     getPropertyList(props);
     
+    auto vp = getBodyViewProvider();
+    if(!vp)
+        return;
+    
     for(App::Property* prop : props) {
         
+        //we keep visibility and selectibility per object
         if(prop == &Visibility ||
            prop == &Selectable)
             continue;
         
+        //we hide only properties which are available in the body, not special ones
+        if(!vp->getPropertyByName(prop->getName()))
+            continue;
+            
         prop->setStatus(App::Property::Hidden, bodymode);
     }
 }
@@ -260,6 +269,20 @@ PyObject* ViewProvider::getPyObject()
     pyViewObject->IncRef();
     return pyViewObject;
 }
+
+ViewProviderBody* ViewProvider::getBodyViewProvider() {
+
+    auto body = PartDesign::Body::findBodyOf(getObject());
+    auto doc = getDocument();
+    if(body && doc) {
+        auto vp = doc->getViewProvider(body);
+        if(vp && vp->isDerivedFrom(ViewProviderBody::getClassTypeId()))
+           return static_cast<ViewProviderBody*>(vp);
+    }
+    
+    return nullptr;
+}
+
 
 
 namespace Gui {
