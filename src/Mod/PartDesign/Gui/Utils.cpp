@@ -382,7 +382,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 {
     if (feat->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         auto prim = static_cast<PartDesign::Feature*>(feat);
-        App::DocumentObject* bf = prim->BaseFeature.getValue();
+        App::DocumentObject* bf = prim->getBaseObject(true);
         if (bf)
             return false;
     }

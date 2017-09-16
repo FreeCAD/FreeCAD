@@ -52,7 +52,7 @@ int FeaturePy::setCustomAttributes(const char* , PyObject *)
 
 PyObject* FeaturePy::getBaseObject(PyObject * /*args*/)
 {
-    App::DocumentObject* base = getFeaturePtr()->getBaseObject();
+    App::DocumentObject* base = getFeaturePtr()->getBaseObject(true);
     if (base)
         return base->getPyObject();
     else

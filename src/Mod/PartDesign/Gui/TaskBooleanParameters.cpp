@@ -181,8 +181,8 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
         PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
         Gui::Document* doc = BooleanView->getDocument();
         BooleanView->hide();
-        if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue())
-            doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
+        if (pcBoolean->Group.getValues().empty() && pcBoolean->getBaseObject(true))
+            doc->setHide(pcBoolean->getBaseObject(true)->getNameInDocument());
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
     } else {
