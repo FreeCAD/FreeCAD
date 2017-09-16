@@ -363,7 +363,7 @@ public:
             "makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."
         );
         add_varargs_method("makeLoft",&Module::makeLoft,
-            "makeLoft(list of wires,[solid=False,ruled=False,closed=False]) -- Create a loft shape."
+            "makeLoft(list of wires,[solid=False,ruled=False,closed=False,maxDegree=5]) -- Create a loft shape."
         );
         add_varargs_method("makeWireString",&Module::makeWireString,
             "makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."
@@ -1517,10 +1517,12 @@ private:
         PyObject *psolid=Py_False;
         PyObject *pruled=Py_False;
         PyObject *pclosed=Py_False;
-        if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!", &pcObj,
+        int degMax = 5;
+        if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!i", &pcObj,
                                               &(PyBool_Type), &psolid,
                                               &(PyBool_Type), &pruled,
-                                              &(PyBool_Type), &pclosed)) {
+                                              &(PyBool_Type), &pclosed,
+                                              &degMax)) {
             throw Py::Exception();
         }
 
@@ -1539,7 +1541,7 @@ private:
         Standard_Boolean anIsSolid = PyObject_IsTrue(psolid) ? Standard_True : Standard_False;
         Standard_Boolean anIsRuled = PyObject_IsTrue(pruled) ? Standard_True : Standard_False;
         Standard_Boolean anIsClosed = PyObject_IsTrue(pclosed) ? Standard_True : Standard_False;
-        TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled,anIsClosed);
+        TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled, anIsClosed, degMax);
         return Py::asObject(new TopoShapePy(new TopoShape(aResult)));
 #endif
     }
