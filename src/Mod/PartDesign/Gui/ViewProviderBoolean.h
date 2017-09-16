@@ -41,13 +41,19 @@ public:
     /// destructor
     virtual ~ViewProviderBoolean();
 
+    App::PropertyEnumeration Display;
+    
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);
+    virtual void attach(App::DocumentObject*);
+    virtual void onChanged(const App::Property* prop);
 
 protected:
     virtual bool setEdit(int ModNum);
+    
+    static const char* DisplayEnum[];
 
 };
 

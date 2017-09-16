@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProvider_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include "ViewProviderBody.h"
 #include <Gui/ViewProviderPythonFeature.h>
 
 
@@ -59,6 +60,9 @@ public:
     //shape of this viewprovider from other viewproviders without doing anything to the 
     //document and properties.
     void makeTemporaryVisible(bool);
+    
+    //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
+    ViewProviderBody* getBodyViewProvider();
 
     virtual PyObject* getPyObject(void);
 
