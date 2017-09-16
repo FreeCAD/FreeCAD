@@ -48,14 +48,14 @@ class PartDesignExport Feature : public Part::Feature
 public:
     Feature();
 
-    /// Base feature which this feature will be fused into or cut out of
-    App::PropertyLink   BaseFeature;
-
     short mustExecute() const;
 
     /// Check whether the given feature is a datum feature
     static bool isDatum(const App::DocumentObject* feature);
 
+    /// Returns the body it belongs to, or nullptr if not in a body
+    PartDesign::Body* getFeatureBody() const;
+    
     /**
      * Returns the BaseFeature property's object (if any)
      * @param silent if couldn't determine the base feature and silent == true,

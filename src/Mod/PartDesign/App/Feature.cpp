@@ -53,13 +53,12 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 
 Feature::Feature()
 {
-    ADD_PROPERTY(BaseFeature,(0));
     Placement.setStatus(App::Property::Hidden, true);
 }
 
 short Feature::mustExecute() const
 {
-    if (BaseFeature.isTouched())
+    if (isTouched())
         return 1;
     return Part::Feature::mustExecute();
 }
@@ -93,7 +92,11 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 }
 
 Part::Feature* Feature::getBaseObject(bool silent) const {
-    App::DocumentObject* BaseLink = BaseFeature.getValue();
+    Body* body = getFeatureBody();
+    if(!body)
+        return nullptr;
+    
+    App::DocumentObject* BaseLink = body->getPrevSolidFeature(this);
     Part::Feature* BaseObject = nullptr;
     const char *err = nullptr;
 
@@ -153,6 +156,19 @@ bool Feature::isDatum(const App::DocumentObject* feature)
     return feature->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
            feature->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId());
 }
+
+Body* Feature::getFeatureBody() const {
+    
+    auto list = getInList();
+    for (auto in : list) {
+        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
+           static_cast<Body*>(in)->hasObject(this)) {   //is not a non-body grouping link?
+              return static_cast<Body*>(in);
+        }
+    }
+    return nullptr;
+}
+
 
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
