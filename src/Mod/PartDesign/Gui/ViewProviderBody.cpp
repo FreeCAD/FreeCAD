@@ -200,9 +200,6 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
     if (body->Origin.getValue()) { // Clame for the Origin
         Result.push_back (body->Origin.getValue());
     }
-    if (body->BaseFeature.getValue()) { // Clame for the base feature
-        Result.push_back (body->BaseFeature.getValue());
-    }
 
     // claim for rest content not claimed by any other features
     std::remove_copy_if (model.begin(), model.end(), std::back_inserter (Result),

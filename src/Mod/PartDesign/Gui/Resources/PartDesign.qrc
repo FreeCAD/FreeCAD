@@ -49,6 +49,7 @@
         <file>icons/PartDesign_Subtractive_Ellipsoid.svg</file>
         <file>icons/PartDesign_Subtractive_Prism.svg</file>	
         <file>icons/PartDesign_Subtractive_Wedge.svg</file>
+        <file>icons/PartDesign_BaseFeature.svg</file>
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_fi.qm</file>
