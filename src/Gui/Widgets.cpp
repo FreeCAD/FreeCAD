@@ -867,6 +867,9 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(label);
 
     button = new QPushButton(QLatin1String("..."), this);
+#if defined (Q_OS_MAC)
+    button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#endif
     layout->addWidget(button);
 
     connect(button, SIGNAL(clicked()), this, SLOT(browse()));
@@ -880,6 +883,7 @@ LabelButton::~LabelButton()
 void LabelButton::resizeEvent(QResizeEvent* e)
 {
     button->setFixedWidth(e->size().height());
+    button->setFixedHeight(e->size().height());
 }
 
 QLabel *LabelButton::getLabel() const
@@ -1298,7 +1302,9 @@ LabelEditor::LabelEditor (QWidget * parent)
             this, SLOT(validateText(const QString &)));
 
     button = new QPushButton(QLatin1String("..."), this);
-    button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
+#if defined (Q_OS_MAC)
+    button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#endif
     layout->addWidget(button);
 
     connect(button, SIGNAL(clicked()), this, SLOT(changeText()));
@@ -1308,6 +1314,12 @@ LabelEditor::LabelEditor (QWidget * parent)
 
 LabelEditor::~LabelEditor()
 {
+}
+
+void LabelEditor::resizeEvent(QResizeEvent* e)
+{
+    button->setFixedWidth(e->size().height());
+    button->setFixedHeight(e->size().height());
 }
 
 QString LabelEditor::text() const

@@ -3382,6 +3382,9 @@ LinkLabel::LinkLabel (QWidget * parent) : QWidget(parent)
     layout->addWidget(label);
 
     editButton = new QPushButton(QLatin1String("..."), this);
+#if defined (Q_OS_MAC)
+    editButton->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#endif
     editButton->setToolTip(tr("Change the linked object"));
     layout->addWidget(editButton);
     
@@ -3440,6 +3443,7 @@ void LinkLabel::onEditClicked ()
 void LinkLabel::resizeEvent(QResizeEvent* e)
 {
     editButton->setFixedWidth(e->size().height());
+    editButton->setFixedHeight(e->size().height());
 }
 
 

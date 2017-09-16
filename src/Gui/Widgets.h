@@ -437,6 +437,9 @@ Q_SIGNALS:
 private Q_SLOTS:
     void changeText();
 
+protected:
+    void resizeEvent(QResizeEvent*);
+
 private:
     InputType type;
     QString plainText;
