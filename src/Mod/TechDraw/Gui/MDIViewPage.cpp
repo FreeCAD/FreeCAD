@@ -385,7 +385,7 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
 
     // if dv doesn't have a graphic, make one
     for (auto& dv: pChildren) {
-        if (dv->isDeleting()) {
+        if (dv->isRemoving()) {
             continue;
         }
         QGIView* qv = m_view->findQViewForDocObj(dv);
@@ -1063,7 +1063,7 @@ void MDIViewPage::selectionChanged()
             }
         } else {
             TechDraw::DrawView *viewObj = itemView->getViewObject();
-            if (viewObj && !viewObj->isDeleting()) {
+            if (viewObj && !viewObj->isRemoving()) {
                 std::string doc_name = viewObj->getDocument()->getName();
                 std::string obj_name = viewObj->getNameInDocument();
 
