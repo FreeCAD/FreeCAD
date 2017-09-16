@@ -104,7 +104,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         if PathOp.FeatureBaseGeometry & self.opFeatures(obj):
             if prop == 'Base' and len(obj.Base) == 1:
-                PathLog.info("opOnChanged(%s, %s)" % (obj.Label, prop))
+                PathLog.debug("opOnChanged(%s, %s)" % (obj.Label, prop))
                 try:
                     (base, sub) = obj.Base[0]
                     bb = base.Shape.BoundBox  # parent boundbox
@@ -146,7 +146,7 @@ class ObjectOp(PathOp.ObjectOp):
         The base implementation sets the depths and heights based on the
         areaOpShapeForDepths() return value.
         Do not overwrite, overwrite areaOpSetDefaultValues(obj) instead.'''
-        PathLog.info("opSetDefaultValues(%s)" % (obj.Label))
+        PathLog.debug("opSetDefaultValues(%s)" % (obj.Label))
         if PathOp.FeatureDepths & self.opFeatures(obj):
             try:
                 shape = self.areaOpShapeForDepths(obj)
