@@ -67,7 +67,21 @@ PropertyLink::PropertyLink()
 
 PropertyLink::~PropertyLink()
 {
-
+    
+    //in case this property gets dynamically removed
+#ifndef USE_OLD_DAG
+    // maintain the back link in the DocumentObject class if it is from a document object
+    if (_pcLink && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        // before accessing internals make sure the object is not about to be destroyed
+        // as otherwise the backlink contains dangling pointers
+        if (!parent->testStatus(ObjectStatus::Destroy)) {
+            if (_pcLink)
+                _pcLink->_removeBackLink(parent);
+        }
+    }
+#endif
+    
 }
 
 //**************************************************************************
@@ -202,6 +216,19 @@ PropertyLinkList::PropertyLinkList()
 
 PropertyLinkList::~PropertyLinkList()
 {
+    //in case this property gety dynamically removed
+#ifndef USE_OLD_DAG   
+    //maintain the back link in the DocumentObject class
+    if (!_lValueList.empty() && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        // before accessing internals make sure the object is not about to be destroyed
+        // as otherwise the backlink contains dangling pointers
+        if (!parent->testStatus(ObjectStatus::Destroy)) {
+            for(auto *obj : _lValueList)
+                obj->_removeBackLink(parent);
+        }
+    }
+#endif
 
 }
 
@@ -408,7 +435,18 @@ PropertyLinkSub::PropertyLinkSub()
 
 PropertyLinkSub::~PropertyLinkSub()
 {
-
+    //in case this property is dynamically removed
+#ifndef USE_OLD_DAG
+    if (_pcLinkSub && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        // before accessing internals make sure the object is not about to be destroyed
+        // as otherwise the backlink contains dangling pointers
+        if (!parent->testStatus(ObjectStatus::Destroy)) {
+            if (_pcLinkSub)
+                _pcLinkSub->_removeBackLink(parent);
+        }
+    }
+#endif
 }
 
 //**************************************************************************
@@ -605,7 +643,19 @@ PropertyLinkSubList::PropertyLinkSubList()
 
 PropertyLinkSubList::~PropertyLinkSubList()
 {
-
+    //in case this property is dynamically removed
+#ifndef USE_OLD_DAG
+    //maintain backlinks
+    if (!_lValueList.empty() && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        // before accessing internals make sure the object is not about to be destroyed
+        // as otherwise the backlink contains dangling pointers
+        if (!parent->testStatus(ObjectStatus::Destroy)) {
+            for(auto *obj : _lValueList)
+                obj->_removeBackLink(parent);
+        }
+    }
+#endif
 }
 
 void PropertyLinkSubList::setSize(int newSize)
