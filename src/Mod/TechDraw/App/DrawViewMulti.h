@@ -67,6 +67,8 @@ public:
     virtual void onChanged(const App::Property* prop);
     //@}
 
+    virtual TopoDS_Shape getSourceShape(void) const override; 
+
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewPart";
