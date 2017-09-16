@@ -36,6 +36,7 @@
 # include <QRadioButton>
 # include <QStyle>
 # include <QUrl>
+# include <QResizeEvent>
 #endif
 
 #include <Base/Parameter.h>
@@ -589,7 +590,7 @@ FileChooser::FileChooser ( QWidget * parent )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
-    layout->setSpacing( 6 );
+    layout->setSpacing( 2 );
 
     lineEdit = new QLineEdit ( this );
     completer = new QCompleter ( this );
@@ -607,7 +608,11 @@ FileChooser::FileChooser ( QWidget * parent )
     connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(editingFinished()));
 
     button = new QPushButton(QLatin1String("..."), this);
-    button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
+
+#if defined (Q_OS_MAC)
+    button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#endif
+
     layout->addWidget(button);
 
     connect( button, SIGNAL(clicked()), this, SLOT(chooseFile()));
@@ -617,6 +622,12 @@ FileChooser::FileChooser ( QWidget * parent )
 
 FileChooser::~FileChooser()
 {
+}
+
+void FileChooser::resizeEvent(QResizeEvent* e)
+{
+    button->setFixedWidth(e->size().height());
+    button->setFixedHeight(e->size().height());
 }
 
 /**
