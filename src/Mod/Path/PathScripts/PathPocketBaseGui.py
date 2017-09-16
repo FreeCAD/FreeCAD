@@ -60,11 +60,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getForm() ... returns UI, adapted to the resutls from pocketFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
-        if FeatureFacing & self.pocketFeatures():
+        if not FeatureFacing & self.pocketFeatures():
+            form.facingWidget.hide()
+
+        if FeaturePocket & self.pocketFeatures():
             form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
             form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
-        else:
-            form.facingWidget.hide()
 
         if True:
             # currently doesn't have an effect
