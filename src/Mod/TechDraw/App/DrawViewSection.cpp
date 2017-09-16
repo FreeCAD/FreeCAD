@@ -154,7 +154,6 @@ short DrawViewSection::mustExecute() const
 void DrawViewSection::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //Base::Console().Message("TRACE - DVS::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
         if (prop == &SectionSymbol) {
             std::string lblText = "Section " +
                                   std::string(SectionSymbol.getValue()) +
@@ -164,8 +163,9 @@ void DrawViewSection::onChanged(const App::Property* prop)
         }
         if (prop == &SectionOrigin) {
             App::DocumentObject* base = BaseView.getValue();
-            if (base != nullptr) {
-                base->touch();
+            TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(base);
+            if (dv != nullptr) {
+                dv->requestPaint();
             }
         }
     }
@@ -195,60 +195,60 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    App::DocumentObject* link = Source.getValue();
     App::DocumentObject* base = BaseView.getValue();
-    if (!link || !base)  {
-        Base::Console().Log("INFO - DVS::execute - No Source or Link - creation?\n");
-        return DrawView::execute();
-    }
-
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Source object is not a Part object");
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
-    //Base::Console().Message("TRACE - DVS::execute() - %s/%s\n",getNameInDocument(),Label.getValue());
+    TopoDS_Shape baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShape();
+    if (baseShape.IsNull()) {
+        Base::Console().Log("DVS::execute - baseShape is Null\n");
+    }
 
-    const Part::TopoShape &partTopo = static_cast<Part::Feature*>(link)->Shape.getShape();
-
-    if (partTopo.getShape().IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
+    //is SectionOrigin valid?
+    Bnd_Box centerBox;
+    BRepBndLib::Add(baseShape, centerBox);
+    centerBox.SetGap(0.0);
 
     gp_Pln pln = getSectionPlane();
     gp_Dir gpNormal = pln.Axis().Direction();
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
-    Base::BoundBox3d bb = partTopo.getBoundBox();
-    if(!isReallyInBox(orgPnt, bb)) {
-        Base::Console().Warning("DVS: Section Plane doesn't intersect part in %s\n",getNameInDocument());
+    if(!isReallyInBox(gp_Pnt(orgPnt.x,orgPnt.y,orgPnt.z), centerBox)) {
+        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n",getNameInDocument());
         Base::Console().Warning("DVS: Using center of bounding box.\n");
-        orgPnt = bb.GetCenter();
+        double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
+        centerBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
+        orgPnt = Base::Vector3d((Xmax + Xmin)/2.0,
+                                (Ymax + Ymin)/2.0,
+                                (Zmax + Zmin)/2.0);
         SectionOrigin.setValue(orgPnt);
     }
 
     // Make the extrusion face
-    double dMax = bb.CalcDiagonalLength();
+    double dMax = sqrt(centerBox.SquareExtent());
     BRepBuilderAPI_MakeFace mkFace(pln, -dMax,dMax,-dMax,dMax);
     TopoDS_Face aProjFace = mkFace.Face();
-    if(aProjFace.IsNull())
+    if(aProjFace.IsNull()) {
         return new App::DocumentObjectExecReturn("DrawViewSection - Projected face is NULL");
+    }
     gp_Vec extrudeDir = dMax * gp_Vec(gpNormal);
     TopoDS_Shape prism = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
 
     // We need to copy the shape to not modify the BRepstructure
-    BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
+    BRepBuilderAPI_Copy BuilderCopy(baseShape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
     BRepAlgoAPI_Cut mkCut(myShape, prism);
-    if (!mkCut.IsDone())
+    if (!mkCut.IsDone()) {
         return new App::DocumentObjectExecReturn("Section cut has failed");
+    }
 
     TopoDS_Shape rawShape = mkCut.Shape();
     Bnd_Box testBox;
     BRepBndLib::Add(rawShape, testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {                        //prism & input don't intersect.  rawShape is garbage, don't bother.
-        Base::Console().Log("INFO - DVS::execute - prism & input don't intersect\n");
+        Base::Console().Message("INFO - DVS::execute - prism & input don't intersect\n");
         return DrawView::execute();
     }
 
@@ -321,7 +321,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 {
     TopoDS_Compound result;
     if(shape.IsNull()){
-        Base::Console().Log("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
+        Base::Console().Warning("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
         return result;
     }
 
@@ -473,6 +473,8 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 }
 
 //this should really be in BoundBox.h
+//!check if point is in box or on boundary of box
+//!compare to isInBox which doesn't allow on boundary
 bool DrawViewSection::isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const
 {
     if (v.x <= bb.MinX || v.x >= bb.MaxX)
@@ -482,6 +484,11 @@ bool DrawViewSection::isReallyInBox (const Base::Vector3d v, const Base::BoundBo
     if (v.z <= bb.MinZ || v.z >= bb.MaxZ)
         return false;
     return true;
+}
+
+bool DrawViewSection::isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const
+{
+    return !bb.IsOut(p);
 }
 
 //! calculate the section Normal/Projection Direction given baseView projection direction and section name

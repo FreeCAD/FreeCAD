@@ -152,24 +152,40 @@ DrawViewPart::~DrawViewPart()
     delete geometryObject;
 }
 
+//does this need all the validation logic?
+//how to 
+TopoDS_Shape DrawViewPart::getSourceShape(void) const
+{
+    TopoDS_Shape result;
+    App::DocumentObject *link = Source.getValue();
+    if (!link) {
+        Base::Console().Error("DVP - No Source object linked - %s\n",getNameInDocument());
+    } else if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        Base::Console().Error("DVP - Linked object is not a Part object - %s\n",getNameInDocument());
+    } else {
+        result = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
+    }
+    return result;
+}
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-    App::DocumentObject *link = Source.getValue();
-    if (!link) {
-        return new App::DocumentObjectExecReturn("DVP - No Source object linked");
-    }
+//    App::DocumentObject *link = Source.getValue();
+//    if (!link) {
+//        return new App::DocumentObjectExecReturn("DVP - No Source object linked");
+//    }
 
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        return new App::DocumentObjectExecReturn("DVP - Linked object is not a Part object");
-    }
+//    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+//        return new App::DocumentObjectExecReturn("DVP - Linked object is not a Part object");
+//    }
 
-    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
+    TopoDS_Shape shape = getSourceShape();
+//    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     if (shape.IsNull()) {
-        return new App::DocumentObjectExecReturn("DVP - Linked shape object is empty");
+        return new App::DocumentObjectExecReturn("DVP - Linked shape object is invalid");
     }
 
     gp_Pnt inputCenter;
@@ -204,6 +220,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
 //   Base::Console().Message("TRACE _ DVP::exec - %s/%s u: %s v: %s w: %s\n",getNameInDocument(),Label.getValue(),
 //                           DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(),DrawUtil::formatVector(getWDir()).c_str());
+    Base::Console().Message("TRACE - DVP::execute - requesting paint\n");
     requestPaint();
     return App::DocumentObject::StdReturn;
 }
@@ -234,6 +251,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
+    Base::Console().Message("TRACE - DVP::buildGO - shape.IsNull: %d\n",shape.IsNull());
     TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
 

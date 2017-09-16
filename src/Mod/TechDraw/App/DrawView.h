@@ -88,13 +88,13 @@ public:
     boost::signal<void (const DrawView*)> signalGuiPaint;
     virtual double getScale(void) const;
     void checkScale(void);
+    void requestPaint(void);
 
 protected:
     void onChanged(const App::Property* prop) override;
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;
-    void requestPaint(void);
 
 private:
     static const char* ScaleTypeEnums[];
