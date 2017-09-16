@@ -51,6 +51,7 @@ FeatureHeights      = 0x0004     # ClearanceHeight, SafeHeight
 FeatureStartPoint   = 0x0008     # StartPoint
 FeatureFinishDepth  = 0x0010     # FinishDepth
 FeatureStepDown     = 0x0020     # StepDown
+FeatureNoFinalDepth = 0x0040     # edit or not edit FinalDepth
 FeatureBaseVertexes = 0x0100     # Base
 FeatureBaseEdges    = 0x0200     # Base
 FeatureBaseFaces    = 0x0400     # Base
@@ -75,6 +76,7 @@ class ObjectOp(object):
         FeatureStartPoint    ... Supports setting a start point
         FeatureFinishDepth   ... Operation supports a finish depth
         FeatureStepDown      ... Support for step down
+        FeatureNoFinalDepth  ... Disable support for final depth modifications
         FeatureBaseVertexes  ... Base geometry support for vertexes
         FeatureBaseEdges     ... Base geometry support for edges
         FeatureBaseFaces     ... Base geometry support for faces
@@ -113,6 +115,8 @@ class ObjectOp(object):
         if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+            if FeatureNoFinalDepth & features:
+                obj.setEditorMode('FinalDepth', 2) # hide
 
         if FeatureStepDown & features:
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))

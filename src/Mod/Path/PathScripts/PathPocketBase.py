@@ -48,7 +48,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def areaOpFeatures(self, obj):
         '''areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces'''
-        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth
+        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
+
+    def pocketOpFeatures(self, obj):
+        return 0
 
     def initAreaOp(self, obj):
         '''initAreaOp(obj) ... create pocket specific properties.
