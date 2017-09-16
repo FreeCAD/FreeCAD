@@ -67,11 +67,14 @@ short Boolean::mustExecute() const
 
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
+    // Get the operation type
+    std::string type = Type.getValueAsString();
+   
     // Check the parameters
     const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
 
-    if (!baseFeature) {
-        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid BaseFeature");
+    if (!baseFeature && type == "Cut") {
+        return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
     }
 
     std::vector<App::DocumentObject*> tools = Group.getValues();
@@ -79,7 +82,18 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         return App::DocumentObject::StdReturn;
 
     // Get the base shape to operate on
-    Part::TopoShape baseTopShape = baseFeature->Shape.getShape();
+    Part::TopoShape baseTopShape;
+    if(baseFeature)
+        baseTopShape = baseFeature->Shape.getShape();
+    else {
+        auto feature = tools.back();
+        if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
+        
+        baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        tools.pop_back();
+    }
+        
     if (baseTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
 
@@ -91,13 +105,8 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 
     TopoDS_Shape result = baseTopShape.getShape();
 
-    // Get the operation type
-    std::string type = Type.getValueAsString();
-
     for (auto tool : tools)
     {
-        // Extract the body shape. Its important to get the actual feature that provides the last solid in the body
-        // so that the placement will be right
         if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
             return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
 
