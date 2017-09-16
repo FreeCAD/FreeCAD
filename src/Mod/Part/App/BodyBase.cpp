@@ -86,18 +86,21 @@ bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentOb
 }
 
 void BodyBase::onBeforeChange (const App::Property* prop) {
-    // If we are changing the base feature and tip point to it reset it
+    
+    //Tip can't point outside the body, hence no base feature tip
+    /*// If we are changing the base feature and tip point to it reset it
     if ( prop == &BaseFeature && BaseFeature.getValue() == Tip.getValue() && BaseFeature.getValue() ) {
         Tip.setValue( nullptr );
-    }
+    }*/
     Part::Feature::onBeforeChange ( prop );
 }
 
 void BodyBase::onChanged (const App::Property* prop) {
-    // If the tip is zero and we are adding a base feature to the body set it to be the tip
+    //Tip can't point outside the body, hence no base feature tip
+    /*// If the tip is zero and we are adding a base feature to the body set it to be the tip
     if ( prop == &BaseFeature && !Tip.getValue() && BaseFeature.getValue() ) {
         Tip.setValue( BaseFeature.getValue () );
-    }
+    }*/
     Part::Feature::onChanged ( prop );
 }
 

@@ -56,6 +56,9 @@ public:
     /// Check whether the given feature is a datum feature
     static bool isDatum(const App::DocumentObject* feature);
 
+    /// Returns the body the feature is in, or none
+    Body* getFeatureBody();
+    
     /**
      * Returns the BaseFeature property's object (if any)
      * @param silent if couldn't determine the base feature and silent == true,
