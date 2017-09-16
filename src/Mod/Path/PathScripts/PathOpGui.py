@@ -544,6 +544,11 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
     def initPage(self, obj):
+        if PathOp.FeatureNoFinalDepth & self.features:
+            self.form.finalDepth.hide()
+            self.form.finalDepthLabel.hide()
+            self.form.finalDepthSet.hide()
+
         if not PathOp.FeatureStepDown & self.features:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
@@ -555,14 +560,16 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return translate("PathOp", "Depths")
     def getFields(self, obj):
         self.updateInputField(obj, 'StartDepth', self.form.startDepth)
-        self.updateInputField(obj, 'FinalDepth', self.form.finalDepth)
+        if not PathOp.FeatureNoFinalDepth & self.features:
+            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth)
         if PathOp.FeatureStepDown & self.features:
             self.updateInputField(obj, 'StepDown', self.form.stepDown)
         if PathOp.FeatureFinishDepth & self.features:
             self.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
-        self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        if not PathOp.FeatureNoFinalDepth & self.features:
+            self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
         if PathOp.FeatureStepDown & self.features:
             self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         if PathOp.FeatureFinishDepth & self.features:
@@ -571,7 +578,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
-        signals.append(self.form.finalDepth.editingFinished)
+        if not PathOp.FeatureNoFinalDepth & self.features:
+            signals.append(self.form.finalDepth.editingFinished)
         if PathOp.FeatureStepDown & self.features:
             signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
@@ -579,7 +587,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return signals
     def registerSignalHandlers(self, obj):
         self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.startDepth))
-        self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.finalDepth))
+        if not PathOp.FeatureNoFinalDepth & self.features:
+            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.finalDepth))
     def pageUpdateData(self, obj, prop):
         if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
             self.setFields(obj)
@@ -592,6 +601,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.getFields(obj)
         else:
             PathLog.info("depthSet(-)")
+
     def selectionZLevel(self, sel):
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             sub = sel[0].SubObjects[0]
