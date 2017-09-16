@@ -44,7 +44,7 @@ class gp_Ax2;
 //class TopoDS_Edge;
 //class TopoDS_Vertex;
 //class TopoDS_Wire;
-//class TopoDS_Shape;
+class TopoDS_Shape;
 
 namespace TechDrawGeometry
 {
@@ -127,7 +127,7 @@ public:
     const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
     const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
     const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
-    const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
+    virtual const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction,
@@ -154,7 +154,7 @@ public:
     
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
-
+    virtual TopoDS_Shape getSourceShape(void) const; 
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
