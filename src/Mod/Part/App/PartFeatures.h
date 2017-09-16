@@ -73,6 +73,7 @@ public:
     App::PropertyBool Solid;
     App::PropertyBool Ruled;
     App::PropertyBool Closed;
+    App::PropertyInteger MaxDegree;
 
     /** @name methods override feature */
     //@{
