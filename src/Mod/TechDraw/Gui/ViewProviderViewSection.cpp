@@ -68,7 +68,7 @@ ViewProviderViewSection::~ViewProviderViewSection()
 void ViewProviderViewSection::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
+    ViewProviderViewPart::attach(pcFeat);
 }
 
 void ViewProviderViewSection::setDisplayMode(const char* ModeName)
