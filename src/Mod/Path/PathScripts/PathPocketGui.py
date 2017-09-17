@@ -44,7 +44,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Pocket',
         PathPocket.Create,
         TaskPanelOpPage,
-        'Path-Pocket',
+        'Path-3DPocket',
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
 
