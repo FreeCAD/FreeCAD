@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FemMisc
 from . import Nonlinear
-import FemEquation
+from ... import EquationBase
 
 
 def create(doc, name="Flow"):
@@ -36,7 +36,7 @@ def create(doc, name="Flow"):
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(Nonlinear.Proxy, FemEquation.FlowProxy):
+class Proxy(Nonlinear.Proxy, EquationBase.FlowProxy):
 
     Type = "Fem::FemEquationElmerFlow"
 
@@ -45,5 +45,5 @@ class Proxy(Nonlinear.Proxy, FemEquation.FlowProxy):
         obj.Priority = 10
 
 
-class ViewProxy(Nonlinear.ViewProxy, FemEquation.FlowViewProxy):
+class ViewProxy(Nonlinear.ViewProxy, EquationBase.FlowViewProxy):
     pass

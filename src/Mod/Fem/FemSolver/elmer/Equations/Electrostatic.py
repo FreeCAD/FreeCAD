@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FemMisc
-import FemSolver.EquationBase
+from ... import EquationBase
 from . import Linear
 
 
@@ -36,7 +36,7 @@ def create(doc, name="Electrostatic"):
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(Linear.Proxy, FemSolver.EquationBase.ElectrostaticProxy):
+class Proxy(Linear.Proxy, EquationBase.ElectrostaticProxy):
 
     Type = "Fem::FemEquationElmerElectrostatic"
 
@@ -66,5 +66,5 @@ class Proxy(Linear.Proxy, FemSolver.EquationBase.ElectrostaticProxy):
         obj.Priority = 10
 
 
-class ViewProxy(Linear.ViewProxy, FemSolver.EquationBase.ElectrostaticViewProxy):
+class ViewProxy(Linear.ViewProxy, EquationBase.ElectrostaticViewProxy):
     pass

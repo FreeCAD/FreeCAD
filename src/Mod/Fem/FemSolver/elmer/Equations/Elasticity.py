@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FemMisc
-import FemEquation
+from ... import EquationBase
 from . import Linear
 
 
@@ -36,7 +36,7 @@ def create(doc, name="Elasticity"):
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(Linear.Proxy, FemEquation.ElasticityProxy):
+class Proxy(Linear.Proxy, EquationBase.ElasticityProxy):
 
     Type = "Fem::FemEquationElmerElasticity"
 
@@ -64,5 +64,5 @@ class Proxy(Linear.Proxy, FemEquation.ElasticityProxy):
         obj.Priority = 10
 
 
-class ViewProxy(Linear.ViewProxy, FemEquation.ElasticityViewProxy):
+class ViewProxy(Linear.ViewProxy, EquationBase.ElasticityViewProxy):
     pass
