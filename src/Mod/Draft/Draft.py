@@ -55,8 +55,11 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
+    from DraftTools import translate
 else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    def translate(ctx,txt):
         return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
@@ -881,7 +884,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
-    from DraftTools import msg,translate
+    from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
@@ -2623,7 +2626,6 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     import Part, DraftGeomUtils
     from Sketcher import Constraint
     import Sketcher
-    from DraftTools import translate
     import math
 
     StartPoint = 1
@@ -3102,7 +3104,7 @@ def upgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg,translate
+    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3463,7 +3465,7 @@ def downgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg,translate
+    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3694,7 +3696,6 @@ class _ViewProviderDraft:
     "The base class for Draft Viewproviders"
 
     def __init__(self, vobj):
-        from DraftTools import translate
         vobj.Proxy = self
         self.Object = vobj.Object
         vobj.addProperty("App::PropertyEnumeration","Pattern","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a hatch pattern"))
@@ -5147,7 +5148,7 @@ class _BSpline(_DraftObject):
 
     def execute(self, obj):
         import Part
-        from DraftTools import msg,translate
+        from DraftTools import msg
         self.assureProperties(obj)
         if obj.Points:
             self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
