@@ -168,6 +168,7 @@ def select(op):
     opsel['Helix'] = drillselect
     opsel['MillFace'] = pocketselect
     opsel['Pocket'] = pocketselect
+    opsel['Pocket Shape'] = pocketselect
     opsel['Profile Edges'] = eselect
     opsel['Profile Faces'] = profileselect
     opsel['Surface'] = surfaceselect
