@@ -86,7 +86,7 @@ public:
      */
     double getPageHeight() const;
     const char* getPageOrientation() const;
-    bool isDeleting(void) { return nowDeleting; }
+    bool isUnsetting(void) { return nowUnsetting; }
     void requestPaint(void);
 
 
@@ -99,7 +99,7 @@ protected:
 
 private:
     static const char* ProjectionTypeEnums[];
-    bool nowDeleting;
+    bool nowUnsetting;
     static App::PropertyFloatConstraint::Constraints scaleRange;
 
 };
