@@ -61,6 +61,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathMillFaceGui
         from PathScripts import PathPlane
         from PathScripts import PathPocketGui
+        from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
         from PathScripts import PathProfileContourGui
         from PathScripts import PathProfileEdgesGui
@@ -78,7 +79,7 @@ class PathWorkbench (Workbench):
         projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
         toolcmdlist = ["Path_ToolLibraryEdit"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_Custom", "Path_Shape"]
-        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
+        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket", "Path_Surfacing"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]

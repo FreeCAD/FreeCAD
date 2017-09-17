@@ -57,6 +57,8 @@ SET(PathScripts_SRCS
     PathScripts/PathPocketBase.py
     PathScripts/PathPocketBaseGui.py
     PathScripts/PathPocketGui.py
+    PathScripts/PathPocketShape.py
+    PathScripts/PathPocketShapeGui.py
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
