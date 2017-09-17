@@ -59,7 +59,7 @@ short DressUp::mustExecute() const
 
 void DressUp::positionByBaseFeature(void)
 {
-    Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
+    Part::Feature *base = static_cast<Part::Feature*>(getBaseObject());
     if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         this->Placement.setValue(base->Placement.getValue());
 }
@@ -158,19 +158,6 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
 
 void DressUp::onChanged(const App::Property* prop)
 {
-    // the BaseFeature property should track the Base and vice-versa as long as
-    // the feature is inside a body (aka BaseFeature is nonzero)
-    if (prop == &BaseFeature) {
-        if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
-            Base.setValue (BaseFeature.getValue());
-        }
-    } else if (prop == &Base) {
-        // track the vice-versa changes
-        if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
-            BaseFeature.setValue (Base.getValue());
-        }
-    }
-
     Feature::onChanged(prop);
 }
 

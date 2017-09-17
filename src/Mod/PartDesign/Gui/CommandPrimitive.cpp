@@ -115,8 +115,8 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     Gui::Command::updateActive();
 
     auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
-    if (prm->BaseFeature.getValue())
-       doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
+    if (prm->getBaseObject(true))
+       doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->getBaseObject(true)->getNameInDocument());
 
     Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
 }

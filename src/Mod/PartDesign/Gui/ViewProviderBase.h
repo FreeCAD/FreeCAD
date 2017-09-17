@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,40 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef PARTGUI_ViewProviderBase_H
+#define PARTGUI_ViewProviderBase_H
 
-#include "Feature.h"
+#include "ViewProvider.h"
 
-// inclusion of the generated files (generated out of FeaturePy.xml)
-#include "FeaturePy.h"
-#include "FeaturePy.cpp"
+namespace PartDesignGui {
 
-using namespace PartDesign;
-
-// returns a string which represent the object e.g. when printed in python
-std::string FeaturePy::representation(void) const
+class PartDesignGuiExport ViewProviderBase : public ViewProvider
 {
-    App::DocumentObject* object = this->getFeaturePtr();
-    std::stringstream str;
-    str << "<" << object->getTypeId().getName() << ">";
-    return str.str();
-}
+    PROPERTY_HEADER(PartDesignGui::ViewProviderBase);
 
-PyObject *FeaturePy::getCustomAttributes(const char* ) const
-{
-    return 0;
-}
+public:
+    /// constructor
+    ViewProviderBase();
+    /// destructor
+    virtual ~ViewProviderBase();
+      
+};
 
-int FeaturePy::setCustomAttributes(const char* , PyObject *)
-{
-    return 0; 
-}
+} // namespace PartDesignGui
 
-PyObject* FeaturePy::getBaseObject(PyObject * /*args*/)
-{
-    App::DocumentObject* base = getFeaturePtr()->getBaseObject(true);
-    if (base)
-        return base->getPyObject();
-    else
-        return Py::new_reference_to(Py::None());
-}
+
+#endif // PARTGUI_ViewProviderBase_H

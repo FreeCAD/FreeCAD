@@ -129,18 +129,20 @@ protected:
       * Return the solid feature before the given feature, or before the Tip feature
       * That is, sketches and datum features are skipped
       */
-    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL);
+    App::DocumentObject *getPrevSolidFeature(const App::DocumentObject *start = NULL) const;
 
     /**
       * Return the next solid feature after the given feature, or after the Tip feature
       * That is, sketches and datum features are skipped
       */
-    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
+    App::DocumentObject *getNextSolidFeature(const App::DocumentObject* start = NULL) const;
 
     /// Creates the corresponding Origin object
     virtual void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject () override;
+    
+    friend class PartDesign::Feature;
 
 private:
     boost::signals::scoped_connection connection;

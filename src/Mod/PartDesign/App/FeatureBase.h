@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,40 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef PARTDESIGN_FeatureBase_H
+#define PARTDESIGN_FeatureBase_H
 
+#include <App/PropertyStandard.h>
 #include "Feature.h"
 
-// inclusion of the generated files (generated out of FeaturePy.xml)
-#include "FeaturePy.h"
-#include "FeaturePy.cpp"
 
-using namespace PartDesign;
-
-// returns a string which represent the object e.g. when printed in python
-std::string FeaturePy::representation(void) const
+/// Base class of all additive features in PartDesign
+namespace PartDesign
 {
-    App::DocumentObject* object = this->getFeaturePtr();
-    std::stringstream str;
-    str << "<" << object->getTypeId().getName() << ">";
-    return str.str();
-}
 
-PyObject *FeaturePy::getCustomAttributes(const char* ) const
+class PartDesignExport FeatureBase : public PartDesign::Feature
 {
-    return 0;
-}
+    PROPERTY_HEADER(PartDesign::FeatureBase);
 
-int FeaturePy::setCustomAttributes(const char* , PyObject *)
-{
-    return 0; 
-}
+public:
+    FeatureBase();
+   
+    App::PropertyLinkGlobal BaseFeature;
+    
+    virtual short int mustExecute(void) const;
+    
+    virtual Part::Feature* getBaseObject(bool silent=false) const;
+        
+    virtual const char* getViewProviderName() const {
+        return "PartDesignGui::ViewProviderBase";
+    }
+    
+    virtual void onChanged(const App::Property* prop);
+    virtual App::DocumentObjectExecReturn* execute(void);   
+};
 
-PyObject* FeaturePy::getBaseObject(PyObject * /*args*/)
-{
-    App::DocumentObject* base = getFeaturePtr()->getBaseObject(true);
-    if (base)
-        return base->getPyObject();
-    else
-        return Py::new_reference_to(Py::None());
-}
+} //namespace PartDesign
+
+
+#endif // PARTDESIGN_FeatureBase_H

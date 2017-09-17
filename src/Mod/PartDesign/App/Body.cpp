@@ -47,6 +47,7 @@
 #include "ShapeBinder.h"
 
 #include "Body.h"
+#include "FeatureBase.h"
 #include "BodyPy.h"
 
 using namespace PartDesign;
@@ -109,8 +110,7 @@ void Body::onChanged(const App::Property *prop)
 
 short Body::mustExecute() const
 {
-    if ( Tip.isTouched() ||
-         BaseFeature.isTouched() ) {
+    if ( Tip.isTouched() ) {
         return 1;
     }
     return Part::BodyBase::mustExecute();
@@ -131,20 +131,15 @@ App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
     return *it;
 }
 
-App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
+App::DocumentObject* Body::getPrevSolidFeature(const App::DocumentObject *start) const
 {
-    App::DocumentObject* baseFeature = BaseFeature.getValue();
-
     if ( !start ) { // default to tip
         start = Tip.getValue();
     }
 
-    if ( !start ) { // No Tip
-        return nullptr;
-    } else if ( start == baseFeature ) { // The base feature always considered as the first solid
+    if ( !start || start == baseFeature ) { // The base feature always considered as the first solid
         return nullptr;
     }
-
     if (!hasObject(start))
         return nullptr;
 
@@ -156,15 +151,13 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
 
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
-    } else { // if solid is not present in the list the previous one is baseFeature
-        return baseFeature; // return it either it's set or nullptr
     }
+    
+    return nullptr;
 }
 
-App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
+App::DocumentObject* Body::getNextSolidFeature(const App::DocumentObject *start) const
 {
-    App::DocumentObject* baseFeature = BaseFeature.getValue();
-
     if ( !start ) { // default to tip
         start = Tip.getValue();
     }
@@ -178,14 +171,9 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
     const std::vector<App::DocumentObject*> & features = Group.getValues();
     std::vector<App::DocumentObject*>::const_iterator startIt;
 
-    if ( start == baseFeature ) {
-        // Handle the base feature, it's always considered to be solid
-        startIt = features.begin();
-    } else {
-        startIt = std::find ( features.begin(), features.end(), start );
-        assert ( startIt != features.end() );
-        startIt++;
-    }
+    startIt = std::find ( features.begin(), features.end(), start );
+    assert ( startIt != features.end() );
+    startIt++;
 
     if (startIt == features.end() ) { // features list is empty
         return nullptr;
@@ -195,9 +183,9 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
 
     if (rvIt != features.end()) { // the solid found in model list
         return *rvIt;
-    } else {
-        return nullptr;
     }
+    
+    return nullptr;
 }
 
 bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
@@ -299,18 +287,8 @@ std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentO
 
 void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after)
 {
-    if (target) {
-        if (target == BaseFeature.getValue()) {
-            // Handle the insertion relative to the base feature in a special way
-            if (after) {
-                target = nullptr;
-            } else {
-                throw Base::Exception("Body: impossible to insert before the base object");
-            }
-        } else if (!hasObject (target)) {
-            // Check if the target feature belongs to the body
-            throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
-        }
+    if (target && !hasObject (target)) {
+        throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
     }
     
     //ensure that all origin links are ok
@@ -340,22 +318,11 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     model.insert (insertInto, feature);
 
     Group.setValues (model);
-
-    // Set the BaseFeature property
-    if (Body::isSolidFeature(feature)) {
-        // Set BaseFeature property to previous feature (this might be the Tip feature)
-        App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
-        // NULL is ok here, it just means we made the current one fiature the base solid
-        static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
-
-        // Reroute the next solid feature's BaseFeature property to this feature
-        App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
-        if (nextSolidFeature) {
-            assert ( nextSolidFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
-        }
-    }
-
+    
+    //touch the next feature to ensure it gets recomputed
+    auto next = getNextSolidFeature(feature);
+    if(next)
+        next->touch();
 }
 
 
@@ -363,16 +330,10 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 {
     App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
     App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
-    // This method must be called BEFORE the feature is removed from the Document!
-    if (isSolidFeature(feature)) {
-        // This is a solid feature
-        // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
-        if (nextSolidFeature) {
-            assert ( nextSolidFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            // Note: It's ok to remove the first solid feature, that just mean the next feature become the base one
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(prevSolidFeature);
-        }
-    }
+    
+    //touch the next feature to ensure recompute
+    if(nextSolidFeature)
+        nextSolidFeature->touch();
 
     std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
@@ -420,8 +381,7 @@ App::DocumentObjectExecReturn *Body::execute(void)
 
     Part::TopoShape tipShape;
     if ( tip ) {
-        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() )
-                && tip != BaseFeature.getValue () ) {
+        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) ) {
             return new App::DocumentObjectExecReturn ( "Linked object is not a PartDesign feature" );
         }
 
@@ -454,12 +414,32 @@ void Body::onSettingDocument() {
 
 void Body::onChanged (const App::Property* prop) {
     if ( prop == &BaseFeature ) {
-        App::DocumentObject *baseFeature = BaseFeature.getValue();
-        App::DocumentObject *nextSolid = getNextSolidFeature ( baseFeature );
-        if ( nextSolid ) {
-            assert ( nextSolid->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            static_cast<PartDesign::Feature*>(nextSolid)->BaseFeature.setValue( baseFeature );
+        
+        auto next = getNextSolidFeature(BaseFeature.getValue());
+        if(next)
+            next->touch();
+         
+            //setup the FeatureBase if needed
+            if(!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {            
+                bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
+                insertObject(bf, first, false);
+                if(!Tip.getValue())
+                    Tip.setValue(bf);
+            }
+            else 
+                bf = static_cast<FeatureBase*>(first);
         }
+        
+        if(bf && (bf->BaseFeature.getValue() != BaseFeature.getValue()))
+            bf->BaseFeature.setValue(BaseFeature.getValue());   
+    }
+    else if( prop == &Group ) {
+    
+        //if the FeatureBase was deleted we set the BaseFeature link to nullptr
+        if(BaseFeature.getValue() && 
+           (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
+            
+                BaseFeature.setValue(nullptr);
     }
 
     Part::BodyBase::onChanged ( prop );

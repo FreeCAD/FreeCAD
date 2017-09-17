@@ -286,7 +286,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         setDisplayMaskMode(displayMode.c_str());
     }
     
-    App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->BaseFeature.getValue();
+    App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->getBaseObject(true);
     if(obj)
         static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))->makeTemporaryVisible(onoff);
 }

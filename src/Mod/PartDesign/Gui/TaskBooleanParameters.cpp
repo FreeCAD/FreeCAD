@@ -126,7 +126,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 if (bodies.size() == 1) {
                     // Hide base body and added body
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
+                                Gui::Application::Instance->getViewProvider(pcBoolean->getBaseObject()));
                     if (vp != NULL)
                         vp->hide();
                     vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
@@ -165,7 +165,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     vp->show();
                 if (bodies.size() == 0) {
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
+                                Gui::Application::Instance->getViewProvider(pcBoolean->getBaseObject()));
                     if (vp != NULL)
                         vp->show();
                     BooleanView->hide();
@@ -181,8 +181,8 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
         PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
         Gui::Document* doc = BooleanView->getDocument();
         BooleanView->hide();
-        if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue())
-            doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
+        if (pcBoolean->Group.getValues().empty() && pcBoolean->getBaseObject(true))
+            doc->setHide(pcBoolean->getBaseObject(true)->getNameInDocument());
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
     } else {
@@ -251,7 +251,7 @@ void TaskBooleanParameters::onBodyDeleted(void)
         vp->show();
     if (bodies.empty()) {
         Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                    Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
+                    Gui::Application::Instance->getViewProvider(pcBoolean->getBaseObject()));
         if (vp != NULL)
             vp->show();
         BooleanView->hide();
@@ -349,8 +349,8 @@ bool TaskDlgBooleanParameters::reject()
     PartDesign::Boolean* obj = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc != NULL) {
-        if (obj->BaseFeature.getValue() != NULL) {
-            doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
+        if (obj->getBaseObject() != NULL) {
+            doc->setShow(obj->getBaseObject()->getNameInDocument());
             std::vector<App::DocumentObject*> bodies = obj->Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
                 doc->setShow((*b)->getNameInDocument());
