@@ -114,7 +114,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     static const char *group = "Projection";
     static const char *fgroup = "Format";
     static const char *sgroup = "Show";
-    nowDeleting = false;
+    nowUnsetting = false;
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -199,12 +199,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                                                   getScale());
 
      gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
-//     Base::Console().Message("Removing Hidden Lines from %s/%s\n",getNameInDocument(),Label.getValue());
      geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
-//     Base::Console().Message("Finished Removing Hidden Lines\n");
-     
-     //Base::Console().Message("TRACE - DVP::execute - u: %s v: %s w: %s\n",
-     //         DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(), DrawUtil::formatVector(getWDir()).c_str());
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {
@@ -218,9 +213,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
-//   Base::Console().Message("TRACE _ DVP::exec - %s/%s u: %s v: %s w: %s\n",getNameInDocument(),Label.getValue(),
-//                           DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(),DrawUtil::formatVector(getWDir()).c_str());
-    Base::Console().Message("TRACE - DVP::execute - requesting paint\n");
     requestPaint();
     return App::DocumentObject::StdReturn;
 }
@@ -251,7 +243,6 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
-    Base::Console().Message("TRACE - DVP::buildGO - shape.IsNull: %d\n",shape.IsNull());
     TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
 
@@ -524,7 +515,6 @@ std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int id
 
 std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
 {
-//    Base::Console().Message("TRACE - DVP::getWireForFace(%d)\n",idx);
     std::vector<TopoDS_Wire> result;
     std::vector<TopoDS_Edge> edges;
     const std::vector<TechDrawGeometry::Face *>& faces = getFaceGeometry();
@@ -542,7 +532,6 @@ std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
         result.push_back(occwire);
     }
  
-//    Base::Console().Message("TRACE - DVP::getWireForFace(%d) returns %d wires\n",idx,result.size());
     return result;
 }
 
@@ -617,7 +606,6 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
 
 void DrawViewPart::saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis)
 {
-    //Base::Console().Message("TRACE - DVP::saveParamSpace()\n");
     (void)xAxis;
     Base::Vector3d origin(0.0,0.0,0.0);
     gp_Ax2 viewAxis = getViewAxis(origin,direction);
@@ -677,7 +665,6 @@ void DrawViewPart::getRunControl()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 0l);
     m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
-    //Base::Console().Message("TRACE - DVP::getRunControl - handleFaces: %d\n",m_handleFaces);
 }
 
 bool DrawViewPart::handleFaces(void)
@@ -694,7 +681,7 @@ bool DrawViewPart::showSectionEdges(void)
 //! hatches, geomhatches, dimensions,... 
 void DrawViewPart::unsetupObject()
 {
-    nowDeleting = true;
+    nowUnsetting = true;
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
 

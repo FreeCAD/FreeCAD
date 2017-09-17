@@ -135,7 +135,7 @@ void ViewProviderPage::updateData(const App::Property* prop)
        if (getDrawPage()->KeepUpdated.getValue()) {
            sPixmap = "TechDraw_Tree_Page";
            if (!m_mdiView.isNull() &&
-               !getDrawPage()->isDeleting()) {
+               !getDrawPage()->isUnsetting()) {
                m_mdiView->updateDrawing();
            }
        } else {
@@ -146,13 +146,13 @@ void ViewProviderPage::updateData(const App::Property* prop)
     //if a view is added/deleted, rebuild the visual
     if (prop == &(getDrawPage()->Views)) {
         if(!m_mdiView.isNull() &&
-           !getDrawPage()->isDeleting()) {
+           !getDrawPage()->isUnsetting()) {
             m_mdiView->updateDrawing();
         }
     //if the template is changed, rebuild the visual
     } else if (prop == &(getDrawPage()->Template)) {
        if(m_mdiView && 
-          !getDrawPage()->isDeleting()) {
+          !getDrawPage()->isUnsetting()) {
             m_mdiView->updateTemplate();
         }
     }
@@ -359,7 +359,7 @@ void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp)
 {
     if (dp == getDrawPage()) {
         if(!m_mdiView.isNull() &&
-           !getDrawPage()->isDeleting()) {
+           !getDrawPage()->isUnsetting()) {
             m_mdiView->updateDrawing();
         }
     }

@@ -150,7 +150,7 @@ public:
     }
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
-    bool isDeleting(void) { return nowDeleting; }
+    bool isUnsetting(void) { return nowUnsetting; }
     
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
@@ -178,7 +178,7 @@ protected:
     bool m_handleFaces;
 
 private:
-    bool nowDeleting;
+    bool nowUnsetting;
 
 };
 

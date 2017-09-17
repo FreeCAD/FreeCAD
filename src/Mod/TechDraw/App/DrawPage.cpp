@@ -73,7 +73,7 @@ const char* DrawPage::ProjectionTypeEnums[] = { "First Angle",
 DrawPage::DrawPage(void)
 {
     static const char *group = "Page";
-    nowDeleting = false;
+    nowUnsetting = false;
     
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
@@ -115,7 +115,7 @@ void DrawPage::onChanged(const App::Property* prop)
     if ((prop == &KeepUpdated)  &&
          KeepUpdated.getValue()) {
         if (!isRestoring() &&
-            !isDeleting()) {
+            !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
             Base::Console().Message("Rebuilding Views for: %s/%s\n",getNameInDocument(),Label.getValue());
             auto views(Views.getValues());
@@ -132,7 +132,7 @@ void DrawPage::onChanged(const App::Property* prop)
         }
     } else if (prop == &Template) {
         if (!isRestoring() &&
-            !isDeleting()) {
+            !isUnsetting()) {
             //nothing to page to do??
         }
     } else if(prop == &Scale) {
@@ -328,7 +328,7 @@ void DrawPage::onDocumentRestored()
 
 void DrawPage::unsetupObject()
 {
-    nowDeleting = true;
+    nowUnsetting = true;
 
     // Remove the Page's views & template from document
     App::Document* doc = getDocument();
