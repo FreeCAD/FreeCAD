@@ -29,13 +29,13 @@ __url__ = "http://www.freecadweb.org"
 import FemMisc
 import FemRun
 
-import FemSolver.solverbase as solverbase
-import FemSolver.elmer.tasks as tasks
+from .. import solverbase
+from . import tasks
 
-import FemSolver.elmer.Equations.Heat as Heat
-import FemSolver.elmer.Equations.Elasticity as Elasticity
-import FemSolver.elmer.Equations.Electrostatic as Electrostatic
-import FemSolver.elmer.Equations.Flow as Flow
+from .Equations import Heat
+from .Equations import  Elasticity
+from .Equations import  Electrostatic
+from .Equations import  Flow
 
 
 def create(doc, name="ElmerSolver"):

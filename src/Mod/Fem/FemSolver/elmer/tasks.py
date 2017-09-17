@@ -33,8 +33,7 @@ import FemRun
 import FemSettings
 import FemMisc
 
-import FemSolver.elmer.writer as writer
-
+from . import writer
 
 class Check(FemRun.Check):
 

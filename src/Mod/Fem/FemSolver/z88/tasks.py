@@ -36,7 +36,7 @@ import FemSettings
 import FemMisc
 import importZ88O2Results
 
-import FemSolver.z88.writer as writer
+from . import writer
 
 
 _inputFileName = None

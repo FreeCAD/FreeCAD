@@ -34,8 +34,8 @@ import FreeCAD
 import FemMisc
 import FemRun
 
-import FemSolver.solverbase as solverbase
-import FemSolver.z88.tasks as tasks
+from .. import solverbase
+from . import tasks
 
 if FreeCAD.GuiUp:
     import FemGui
