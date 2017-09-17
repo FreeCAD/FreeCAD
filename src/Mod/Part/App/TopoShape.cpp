@@ -2089,10 +2089,12 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 
                                  Standard_Boolean isSolid,
                                  Standard_Boolean isRuled,
-                                 Standard_Boolean isClosed) const
+                                 Standard_Boolean isClosed,
+                                 Standard_Integer MaxDegree) const
 {
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator (isSolid,isRuled);
+    aGenerator.SetMaxDegree(MaxDegree);
 
     TopTools_ListIteratorOfListOfShape it;
     int countShapes = 0;
