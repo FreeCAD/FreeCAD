@@ -55,14 +55,15 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
-    from DraftTools import translate
+    #from DraftGui import translate
 else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
-    def translate(ctx,txt):
-        return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
+
+def translate(ctx,txt):
+    return txt
 
 arrowtypes = ["Dot","Circle","Arrow","Tick"]
 
