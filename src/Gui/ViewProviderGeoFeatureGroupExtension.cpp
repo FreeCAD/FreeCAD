@@ -67,35 +67,32 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
 
-    //we must be careful which objects to claim, as there might be stacked relations inside the coordinate system,
-    //like pad/sketch
-    auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    if(ext) {   
-        //filter out all objects with more than one inlink, as they are most likely hold by another
-        //object in the tree
-        std::vector<App::DocumentObject*> claim;
-        auto objs = ext->Group.getValues();
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    const std::vector<App::DocumentObject*> &model = group->Group.getValues ();
+    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
 
-        for(auto obj : objs) {  
+    // search for objects handled (claimed) by the features
+    for( auto obj: model){
+        //stuff in annother geofeaturegroup is not in the model anyway
+        if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
+        
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
+        if (!vp || vp == getExtendedViewProvider()) { continue; }
 
-            auto vin = obj->getInList();
-
-            //we don't want to count objects that are deleted or part of other geo feature groups. 
-            //Second criteria is actually not possible in normal operation, but only in some error
-            //condition. But then it is needed to understand the problem for the user
-            auto grp = getExtendedViewProvider()->getObject();
-            vin.erase(std::remove_if(vin.begin(), vin.end(), [&](App::DocumentObject* obj)->bool {
-                return obj->isRemoving() ||
-                       obj == grp ||
-                       App::GeoFeatureGroupExtension::getGroupOfObject(obj)!=grp;
-            }), vin.end());
-            
-            if(vin.empty())
-                claim.push_back(obj);
-        }
-        return claim;
+        auto children = vp->claimChildren();
+        std::remove_copy ( children.begin (), children.end (), std::inserter (outSet, outSet.begin () ), nullptr);
     }
-    return std::vector<App::DocumentObject*>();
+
+    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
+    std::vector<App::DocumentObject*> Result;
+
+    // claim for rest content not claimed by any other features
+    std::remove_copy_if (model.begin(), model.end(), std::back_inserter (Result),
+            [outSet] (App::DocumentObject* obj) {
+                return outSet.find (obj) != outSet.end();
+            } );
+
+    return Result;
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)
