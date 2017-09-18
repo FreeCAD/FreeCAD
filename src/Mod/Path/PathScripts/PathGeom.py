@@ -29,10 +29,15 @@ import Path
 import PathScripts.PathLog as PathLog
 
 from FreeCAD import Vector
+from PySide import QtCore
 
 PathGeomTolerance = 0.000001
 
 #PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Side:
     """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
@@ -133,14 +138,42 @@ class PathGeom:
         return a
 
     @classmethod
-    def isVertical(cls, vector):
-        '''isVertical(vector) ... answer True if vector points into Z'''
-        return PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, 1)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, -1))
+    def isVertical(cls, obj):
+        '''isVertical(obj) ... answer True if obj points into Z'''
+        if type(obj) == FreeCAD.Vector:
+            return PathGeom.isRoughly(obj.x, 0) and PathGeom.isRoughly(obj.y, 0)
+        if obj.ShapeType == 'Face':
+            if type(obj.Surface) == Part.Plane:
+                return cls.isHorizontal(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Cylinder:
+                return cls.isVertical(obj.Surface.Axis)
+            PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % type(obj.Surface))
+        if obj.ShapeType == 'Edge':
+            if type(obj.Curve) == Part.Line:
+                return cls.isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
+            if type(obj.Curve) == Part.Circle:
+                return cls.isHorizontal(obj.Curve.Axis)
+            PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % type(obj.Curve))
+        PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
 
     @classmethod
-    def isHorizontal(cls, vector):
-        '''isHorizontal(vector) ... answer True if vector points into X or Y'''
-        return PathGeom.pointsCoincide(vector, FreeCAD.Vector(1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(-1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 1, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, -1, 0))
+    def isHorizontal(cls, obj):
+        '''isHorizontal(obj) ... answer True if obj points into X or Y'''
+        if type(obj) == FreeCAD.Vector:
+            return PathGeom.isRoughly(obj.z, 0)
+        if obj.ShapeType == 'Face':
+            if type(obj.Surface) == Part.Plane:
+                return cls.isVertical(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Cylinder:
+                return cls.isHorizontal(obj.Surface.Axis)
+            PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % type(obj.Surface))
+        if obj.ShapeType == 'Edge':
+            if type(obj.Curve) == Part.Line:
+                return cls.isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
+            if type(obj.Curve) == Part.Circle:
+                return cls.isVertical(obj.Curve.Axis)
+            PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % type(obj.Curve))
+        PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
 
 
     @classmethod

@@ -73,6 +73,92 @@ class TestPathGeom(PathTestBase):
         self.assertRoughly(PathGeom.diffAngle(-math.pi/4, +3*math.pi/4, 'CCW') / math.pi, 4/4.)
         self.assertRoughly(PathGeom.diffAngle(-math.pi/4, -1*math.pi/4, 'CCW') / math.pi, 0/4.)
 
+    def test02(self):
+        """Verify isVertical/isHorizontal for Vector"""
+        self.assertTrue(PathGeom.isVertical(Vector(0, 0, 1)))
+        self.assertTrue(PathGeom.isVertical(Vector(0, 0, -1)))
+        self.assertFalse(PathGeom.isVertical(Vector(1, 0, 1)))
+        self.assertFalse(PathGeom.isVertical(Vector(1, 0, -1)))
+
+        self.assertTrue(PathGeom.isHorizontal(Vector( 1,  0, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector(-1,  0, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector( 0,  1, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector( 0, -1, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector( 1,  1, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector(-1,  1, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector( 1, -1, 0)))
+        self.assertTrue(PathGeom.isHorizontal(Vector(-1, -1, 0)))
+
+        self.assertFalse(PathGeom.isHorizontal(Vector(0,  1,  1)))
+        self.assertFalse(PathGeom.isHorizontal(Vector(0, -1,  1)))
+        self.assertFalse(PathGeom.isHorizontal(Vector(0,  1, -1)))
+        self.assertFalse(PathGeom.isHorizontal(Vector(0, -1, -1)))
+
+    def test03(self):
+        """Verify isVertical/isHorizontal for Edges"""
+
+        # lines
+        self.assertTrue(PathGeom.isVertical(Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(-1, -1, 8)))))
+        self.assertFalse(PathGeom.isVertical(Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(1, -1, 8)))))
+        self.assertFalse(PathGeom.isVertical(Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(-1, 1, 8)))))
+
+        self.assertTrue(PathGeom.isHorizontal(Part.Edge(Part.LineSegment(Vector(1, -1, -1), Vector(-1, -1, -1)))))
+        self.assertTrue(PathGeom.isHorizontal(Part.Edge(Part.LineSegment(Vector(-1, 1, -1), Vector(-1, -1, -1)))))
+        self.assertTrue(PathGeom.isHorizontal(Part.Edge(Part.LineSegment(Vector(1, 1, -1), Vector(-1, -1, -1)))))
+        self.assertFalse(PathGeom.isHorizontal(Part.Edge(Part.LineSegment(Vector(1, -1, -1), Vector(1, -1, 8)))))
+        self.assertFalse(PathGeom.isHorizontal(Part.Edge(Part.LineSegment(Vector(-1, 1, -1), Vector(-1, 1, 8)))))
+
+        # circles
+        self.assertTrue(PathGeom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 1, 0)))))
+        self.assertTrue(PathGeom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 0)))))
+        self.assertTrue(PathGeom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 0)))))
+        self.assertFalse(PathGeom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1)))))
+
+        self.assertTrue(PathGeom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 0, 1)))))
+        self.assertFalse(PathGeom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 1, 1)))))
+        self.assertFalse(PathGeom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 1)))))
+        self.assertFalse(PathGeom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1)))))
+
+    def test04(self):
+        """Verify isVertical/isHorizontal for faces"""
+
+        # planes
+        xPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 0))
+        yPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 0))
+        zPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(0, 0, 1))
+        xyPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(1, 1, 0))
+        xzPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 1))
+        yzPlane = Part.makePlane(100, 100, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 1))
+
+        self.assertTrue(PathGeom.isVertical(xPlane))
+        self.assertTrue(PathGeom.isVertical(yPlane))
+        self.assertFalse(PathGeom.isVertical(zPlane))
+        self.assertTrue(PathGeom.isVertical(xyPlane))
+        self.assertFalse(PathGeom.isVertical(xzPlane))
+        self.assertFalse(PathGeom.isVertical(yzPlane))
+
+        self.assertFalse(PathGeom.isHorizontal(xPlane))
+        self.assertFalse(PathGeom.isHorizontal(yPlane))
+        self.assertTrue(PathGeom.isHorizontal(zPlane))
+        self.assertFalse(PathGeom.isHorizontal(xyPlane))
+        self.assertFalse(PathGeom.isHorizontal(xzPlane))
+        self.assertFalse(PathGeom.isHorizontal(yzPlane))
+
+        # cylinders
+        xCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
+        yCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
+        zCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(0, 0, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
+        xyCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(1, 1, 0)).Faces if type(f.Surface) == Part.Cylinder][0]
+        xzCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(1, 0, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
+        yzCylinder = [f for f in Part.makeCylinder(1, 1, FreeCAD.Vector(), FreeCAD.Vector(0, 1, 1)).Faces if type(f.Surface) == Part.Cylinder][0]
+
+        self.assertTrue(PathGeom.isHorizontal(xCylinder))
+        self.assertTrue(PathGeom.isHorizontal(yCylinder))
+        self.assertFalse(PathGeom.isHorizontal(zCylinder))
+        self.assertTrue(PathGeom.isHorizontal(xyCylinder))
+        self.assertFalse(PathGeom.isHorizontal(xzCylinder))
+        self.assertFalse(PathGeom.isHorizontal(yzCylinder))
+
     def test10(self):
         """Verify proper geometry objects for G1 and G01 commands are created."""
         spt = Vector(1,2,3)
