@@ -144,39 +144,39 @@ PyObject *PropertyPartShape::getPyObject(void)
     Base::PyObjectBase* prop;
     const TopoDS_Shape& sh = _Shape.getShape();
     if (sh.IsNull()) {
-        prop = new TopoShapePy(new TopoShape(sh));
+        prop = new TopoShapePy(new TopoShape(_Shape));
     }
     else {
         TopAbs_ShapeEnum type = sh.ShapeType();
         switch (type)
         {
         case TopAbs_COMPOUND:
-            prop = new TopoShapeCompoundPy(new TopoShape(sh));
+            prop = new TopoShapeCompoundPy(new TopoShape(_Shape));
             break;
         case TopAbs_COMPSOLID:
-            prop = new TopoShapeCompSolidPy(new TopoShape(sh));
+            prop = new TopoShapeCompSolidPy(new TopoShape(_Shape));
             break;
         case TopAbs_SOLID:
-            prop = new TopoShapeSolidPy(new TopoShape(sh));
+            prop = new TopoShapeSolidPy(new TopoShape(_Shape));
             break;
         case TopAbs_SHELL:
-            prop = new TopoShapeShellPy(new TopoShape(sh));
+            prop = new TopoShapeShellPy(new TopoShape(_Shape));
             break;
         case TopAbs_FACE:
-            prop = new TopoShapeFacePy(new TopoShape(sh));
+            prop = new TopoShapeFacePy(new TopoShape(_Shape));
             break;
         case TopAbs_WIRE:
-            prop = new TopoShapeWirePy(new TopoShape(sh));
+            prop = new TopoShapeWirePy(new TopoShape(_Shape));
             break;
         case TopAbs_EDGE:
-            prop = new TopoShapeEdgePy(new TopoShape(sh));
+            prop = new TopoShapeEdgePy(new TopoShape(_Shape));
             break;
         case TopAbs_VERTEX:
-            prop = new TopoShapeVertexPy(new TopoShape(sh));
+            prop = new TopoShapeVertexPy(new TopoShape(_Shape));
             break;
         case TopAbs_SHAPE:
         default:
-            prop = new TopoShapePy(new TopoShape(sh));
+            prop = new TopoShapePy(new TopoShape(_Shape));
             break;
         }
     }

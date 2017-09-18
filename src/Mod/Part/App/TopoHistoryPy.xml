@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy" 
+      Name="TopoHistoryPy" 
+      Twin="TopoHistory" 
+      TwinPointer="TopoHistory" 
+      Include="Mod/Part/App/TopoHistory.h" 
+      FatherInclude="Base/BaseClassPy.h" 
+      Namespace="Part" 
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Ajinkya Dahale" EMail="ajinkyadahale@gmail.com" />
+      <UserDocu>TopoHistory describes how a newer shape is developed from an older
+      shape</UserDocu>
+    </Documentation>
+    
+    <Methode Name="modified" Const="true">
+      <Documentation>
+        <UserDocu>Returns the sub-shapes within this shape that were modified from the
+argument while building this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="generated" Const="true">
+      <Documentation>
+        <UserDocu>Returns the sub-shapes within this shape that were generated from the
+argument while building this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isDeleted">
+      <Documentation>
+        <UserDocu>Returns if the argument was deleted while building this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    
+  </PythonExport>
+</GenerateModel>

@@ -30,6 +30,8 @@
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
 
+#include "TopoHistory.h"
+
 class gp_Ax1;
 class gp_Ax2;
 class gp_Vec;
@@ -63,6 +65,8 @@ public:
     TopoShape(const TopoShape&);
     ~TopoShape();
 
+    PyObject* getPyObject();
+
     inline void setShape(const TopoDS_Shape& shape) {
         this->_Shape = shape;
     }
@@ -72,6 +76,7 @@ public:
     }
 
     void operator = (const TopoShape&);
+    operator TopoDS_Shape() const {return _Shape;}
 
     /** @name Placement control */
     //@{
@@ -163,6 +168,10 @@ public:
     TopoDS_Shape oldFuse(TopoDS_Shape) const;
     TopoDS_Shape section(TopoDS_Shape) const;
     TopoDS_Shape section(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoShape cut(const TopoShape&, bool withHistory = true) const;
+    TopoShape common(const TopoShape&, bool withHistory = true) const;
+    TopoShape fuse(const TopoShape&, bool withHistory = true) const;
+    TopoShape section(const TopoShape&, bool withHistory = true) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
     TopoDS_Compound slices(const Base::Vector3d&, const std::vector<double>&) const;
     /**
@@ -194,7 +203,7 @@ public:
     TopoDS_Shape makePipe(const TopoDS_Shape& profile) const;
     TopoDS_Shape makePipeShell(const TopTools_ListOfShape& profiles, const Standard_Boolean make_solid,
         const Standard_Boolean isFrenet = Standard_False, int transition=0) const;
-    TopoDS_Shape makePrism(const gp_Vec&) const;
+    TopoShape makePrism(const gp_Vec&, bool withHistory = true) const;
     ///revolve shape. Note: isSolid is deprecated (instead, use some Part::FaceMaker to make a face, first).
     TopoDS_Shape revolve(const gp_Ax1&, double d, Standard_Boolean isSolid=Standard_False) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
@@ -225,7 +234,7 @@ public:
     void transformGeometry(const Base::Matrix4D &rclMat);
     TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
     void transformShape(const Base::Matrix4D&, bool copy);
-    TopoDS_Shape mirror(const gp_Ax2&) const;
+    TopoShape mirror(const gp_Ax2&, bool withHistory=false) const;
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
@@ -247,6 +256,8 @@ public:
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
     //@}
+
+    TopoHistory history;
 
 private:
     TopoDS_Shape _Shape;

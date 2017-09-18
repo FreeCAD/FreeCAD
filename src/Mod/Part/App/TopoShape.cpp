@@ -185,6 +185,11 @@
 #include "TopoShapeFacePy.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeVertexPy.h"
+#include "TopoShapeCompoundPy.h"
+#include "TopoShapeCompSolidPy.h"
+#include "TopoShapeSolidPy.h"
+#include "TopoShapeShellPy.h"
+#include "TopoShapeWirePy.h"
 #include "ProgressIndicator.h"
 #include "modelRefine.h"
 #include "Tools.h"
@@ -243,8 +248,55 @@ TopoShape::TopoShape(const TopoDS_Shape& shape)
 }
 
 TopoShape::TopoShape(const TopoShape& shape)
-  : _Shape(shape._Shape)
+  : history(shape.history), _Shape(shape._Shape)
 {
+}
+
+PyObject* TopoShape::getPyObject()
+{
+    PyObject* ret = 0;
+    if (!_Shape.IsNull()) {
+        TopAbs_ShapeEnum type = _Shape.ShapeType();
+        switch (type)
+        {
+        case TopAbs_COMPOUND:
+            ret = new TopoShapeCompoundPy(new TopoShape(*this));
+            break;
+        case TopAbs_COMPSOLID:
+            ret = new TopoShapeCompSolidPy(new TopoShape(*this));
+            break;
+        case TopAbs_SOLID:
+            ret = new TopoShapeSolidPy(new TopoShape(*this));
+            break;
+        case TopAbs_SHELL:
+            ret = new TopoShapeShellPy(new TopoShape(*this));
+            break;
+        case TopAbs_FACE:
+            ret = new TopoShapeFacePy(new TopoShape(*this));
+            break;
+        case TopAbs_WIRE:
+            ret = new TopoShapeWirePy(new TopoShape(*this));
+            break;
+        case TopAbs_EDGE:
+            ret = new TopoShapeEdgePy(new TopoShape(*this));
+            break;
+        case TopAbs_VERTEX:
+            ret = new TopoShapeVertexPy(new TopoShape(*this));
+            break;
+        case TopAbs_SHAPE:
+            ret = new TopoShapePy(new TopoShape(*this));
+            break;
+        default:
+            //shouldn't happen
+            ret = new TopoShapePy(new TopoShape(*this));
+            break;
+        }
+    } else {
+        ret = new TopoShapePy(new TopoShape(*this));
+    }
+    assert(ret);
+
+    return ret;
 }
 
 std::vector<const char*> TopoShape::getElementTypes(void) const
@@ -346,12 +398,12 @@ PyObject * TopoShape::getPySubShape(const char* Type) const
         return new TopoShapeVertexPy(new TopoShape(Shape));
     else 
         return 0;
-
 }
 
 void TopoShape::operator = (const TopoShape& sh)
 {
     if (this != &sh) {
+        this->history = sh.history;
         this->_Shape = sh._Shape;
     }
 }
@@ -1398,6 +1450,20 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
     return mkCut.Shape();
 }
 
+TopoShape TopoShape::cut(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Cut> mkCut(new BRepAlgoAPI_Cut(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkCut->Shape());
+    if (withHistory) {
+        resShape.history.shapeMaker = mkCut;
+    }
+    return resShape;
+}
+
 TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1444,6 +1510,20 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
     return mkCommon.Shape();
 }
 
+TopoShape TopoShape::common(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Common> mkCommon(new BRepAlgoAPI_Common(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkCommon->Shape());
+    if (withHistory) {
+        resShape.history.shapeMaker = mkCommon;
+    }
+    return resShape;
+}
+
 TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1488,6 +1568,20 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
     return mkFuse.Shape();
+}
+
+TopoShape TopoShape::fuse(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Fuse> mkFuse(new BRepAlgoAPI_Fuse(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkFuse->Shape());
+    if (withHistory) {
+        resShape.history.shapeMaker = mkFuse;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -1557,6 +1651,20 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
         Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
     return mkSection.Shape();
+}
+
+TopoShape TopoShape::section(const TopoShape &shape, bool withHistory) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.getShape().IsNull())
+        Standard_Failure::Raise("Tool shape is null");
+    std::shared_ptr<BRepAlgoAPI_Section> mkSection(new BRepAlgoAPI_Section(this->_Shape, shape.getShape()));
+    TopoShape resShape(mkSection->Shape());
+    if (withHistory) {
+        resShape.history.shapeMaker = mkSection;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -2158,11 +2266,16 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     return aGenerator.Shape();
 }
 
-TopoDS_Shape TopoShape::makePrism(const gp_Vec& vec) const
+TopoShape TopoShape::makePrism(const gp_Vec& vec, bool withHistory) const
 {
     if (this->_Shape.IsNull()) Standard_Failure::Raise("cannot sweep empty shape");
-    BRepPrimAPI_MakePrism mkPrism(this->_Shape, vec);
-    return mkPrism.Shape();
+    std::shared_ptr<BRepPrimAPI_MakePrism>
+            mkPrism(new BRepPrimAPI_MakePrism(this->_Shape, vec));
+    TopoShape resShape(mkPrism->Shape());
+    if (withHistory) {
+        resShape.history.shapeMaker = mkPrism;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean isSolid) const
@@ -2689,12 +2802,17 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
     this->_Shape = mkTrf.Shape();
 }
 
-TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
+TopoShape TopoShape::mirror(const gp_Ax2& ax2, bool withHistory) const
 {
     gp_Trsf mat;
     mat.SetMirror(ax2);
-    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat);
-    return mkTrf.Shape();
+    std::shared_ptr<BRepBuilderAPI_Transform>
+            mkTrf(new BRepBuilderAPI_Transform(this->_Shape, mat));
+    TopoShape resShape(mkTrf->Shape());
+    if (withHistory) {
+        resShape.history.shapeMaker = mkTrf;
+    }
+    return resShape;
 }
 
 TopoDS_Shape TopoShape::toNurbs() const

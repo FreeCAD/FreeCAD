@@ -80,7 +80,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         if (ToolShape.IsNull())
             throw Base::Exception("Tool shape is null");
 
-        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
+        std::shared_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
             return new App::DocumentObjectExecReturn("Boolean operation failed");
         }
@@ -99,8 +99,8 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         }
 
         std::vector<ShapeHistory> history;
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
+        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, BaseShape));
+        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, ToolShape));
 
         if (hGrp->GetBool("RefineModel", false)) {
             try {
@@ -116,7 +116,11 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             }
         }
 
-        this->Shape.setValue(resShape);
+        TopoShape resTopoShape(resShape);
+        // TODO: Add keepHistory Property to Part::Feature
+//        resTopoShape.history.modShapeMaker = mkBool;
+
+        this->Shape.setValue(resTopoShape);
         this->History.setValues(history);
         return App::DocumentObject::StdReturn;
     }

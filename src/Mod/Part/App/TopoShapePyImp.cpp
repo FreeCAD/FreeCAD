@@ -74,6 +74,7 @@
 #include "TopoShape.h"
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapePy.cpp>
+#include <Mod/Part/App/TopoHistoryPy.h>
 
 #include "OCCError.h"
 #include <Mod/Part/App/GeometryPy.h>
@@ -632,14 +633,20 @@ PyObject*  TopoShapePy::exportStl(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapePy::extrude(PyObject *args)
+PyObject* TopoShapePy::extrude(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"vec", "withHistory", NULL};
     PyObject *pVec;
-    if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &pVec)) {
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|O!", kwlist,
+                                    &(Base::VectorPy::Type), &pVec,
+                                    &(PyBool_Type), &withHistory)) {
         try {
             Base::Vector3d vec = static_cast<Base::VectorPy*>(pVec)->value();
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePrism(gp_Vec(vec.x,vec.y,vec.z));
-            TopAbs_ShapeEnum type = shape.ShapeType();
+            TopoShape shape = this->getTopoShapePtr()
+                    ->makePrism(gp_Vec(vec.x,vec.y,vec.z),
+                                PyObject_IsTrue(withHistory)?true:false);
+            TopAbs_ShapeEnum type = shape.getShape().ShapeType();
             switch (type)
             {
             case TopAbs_COMPOUND:
@@ -759,15 +766,22 @@ PyObject*  TopoShapePy::check(PyObject *args)
     Py_Return; 
 }
 
-PyObject*  TopoShapePy::fuse(PyObject *args)
+PyObject*  TopoShapePy::fuse(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a fuse operation:
-            TopoDS_Shape fusShape = this->getTopoShapePtr()->fuse(shape);
-            return new TopoShapePy(new TopoShape(fusShape));
+            TopoShape fusShape = this->getTopoShapePtr()
+                    ->fuse(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return fusShape.getPyObject();//new TopoShapePy(new TopoShape(fusShape));
         }
         catch (Standard_Failure& e) {
     
@@ -781,8 +795,11 @@ PyObject*  TopoShapePy::fuse(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -793,7 +810,7 @@ PyObject*  TopoShapePy::fuse(PyObject *args)
             else {
                 PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
                 return 0;
-           }
+            }
         }
         try {
             TopoDS_Shape multiFusedShape = this->getTopoShapePtr()->fuse(shapeVec,tolerance);
@@ -870,15 +887,22 @@ PyObject*  TopoShapePy::oldFuse(PyObject *args)
     }
 }
 
-PyObject*  TopoShapePy::common(PyObject *args)
+PyObject*  TopoShapePy::common(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a common operation:
-            TopoDS_Shape comShape = this->getTopoShapePtr()->common(shape);
-            return new TopoShapePy(new TopoShape(comShape));
+            TopoShape comShape = this->getTopoShapePtr()
+                    ->common(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return comShape.getPyObject();
         }
         catch (Standard_Failure& e) {
     
@@ -892,8 +916,11 @@ PyObject*  TopoShapePy::common(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -925,15 +952,22 @@ PyObject*  TopoShapePy::common(PyObject *args)
     return 0;
 }
 
-PyObject*  TopoShapePy::section(PyObject *args)
+PyObject*  TopoShapePy::section(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a section operation:
-            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape);
-            return new TopoShapePy(new TopoShape(secShape));
+            TopoShape secShape = this->getTopoShapePtr()
+                    ->section(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return secShape.getPyObject();
         }
         catch (Standard_Failure& e) {
     
@@ -947,8 +981,11 @@ PyObject*  TopoShapePy::section(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -1035,15 +1072,22 @@ PyObject*  TopoShapePy::slices(PyObject *args)
     }
 }
 
-PyObject*  TopoShapePy::cut(PyObject *args)
+PyObject*  TopoShapePy::cut(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"tools", "tolerance", "withHistory", NULL};
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj)) {
-        TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+    double tolerance = 0.0;
+    PyObject *withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O!|dO!", kwlist,
+                                    &(TopoShapePy::Type), &pcObj,
+                                    &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
+        TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         try {
             // Let's call algorithm computing a cut operation:
-            TopoDS_Shape cutShape = this->getTopoShapePtr()->cut(shape);
-            return new TopoShapePy(new TopoShape(cutShape));
+            TopoShape cutShape = this->getTopoShapePtr()
+                    ->cut(*shape, PyObject_IsTrue(withHistory)?true:false);
+            return cutShape.getPyObject();
         }
         catch (Standard_Failure& e) {
     
@@ -1057,8 +1101,11 @@ PyObject*  TopoShapePy::cut(PyObject *args)
     }
 
     PyErr_Clear();
-    double tolerance = 0.0;
-    if (PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance)) {
+    tolerance = 0.0;
+    withHistory = Py_False;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "O|dO!", kwlist,
+                                    &pcObj, &tolerance,
+                                    &(PyBool_Type), &withHistory)) {
         std::vector<TopoDS_Shape> shapeVec;
         Py::Sequence shapeSeq(pcObj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -1311,11 +1358,15 @@ PyObject*  TopoShapePy::removeInternalWires(PyObject *args)
     }
 }
 
-PyObject*  TopoShapePy::mirror(PyObject *args)
+PyObject*  TopoShapePy::mirror(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"base", "norm", "withHistory", NULL};
     PyObject *v1, *v2;
-    if (!PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type),&v1,
-                                        &(Base::VectorPy::Type),&v2))
+    PyObject *withHistory = Py_False;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!O!|O!", kwlist,
+                                     &(Base::VectorPy::Type),&v1,
+                                     &(Base::VectorPy::Type),&v2,
+                                     &(PyBool_Type), &withHistory))
         return NULL;
 
     Base::Vector3d base = Py::Vector(v1,false).toVector();
@@ -1323,8 +1374,9 @@ PyObject*  TopoShapePy::mirror(PyObject *args)
 
     try {
         gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
-        TopoDS_Shape shape = this->getTopoShapePtr()->mirror(ax2);
-        return new TopoShapePy(new TopoShape(shape));
+        TopoShape outShape = this->getTopoShapePtr()
+                ->mirror(ax2, PyObject_IsTrue(withHistory)?true:false);
+        return outShape.getPyObject();
     }
     catch (Standard_Failure& e) {
 
@@ -1524,6 +1576,91 @@ PyObject* TopoShapePy::makeFillet(PyObject *args)
     return NULL;
 }
 
+PyObject* TopoShapePy::makeFillet2(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"edges", "radius", "withHistory", NULL};
+    PyObject* edges;
+    PyObject* withHistory = Py_False;
+    // use one radius for all edges
+    double radius;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "dO|O!", kwlist,
+                                    &radius, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeFillet>
+                    mkFillet(new BRepFilletAPI_MakeFillet(shape));
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        mkFillet->Add(radius, TopoDS::Edge(edge));
+                    }
+                }
+            }
+            TopoShape resShape(mkFillet->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkFillet;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_Clear();
+    // use two radii for all edges
+    PyObject* _radii;
+    double radius1, radius2;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "OO|O!", kwlist,
+                                    &_radii, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeFillet>
+                    mkFillet(new BRepFilletAPI_MakeFillet(shape));
+            Py::Sequence radii(_radii);
+            if (radii.length() != 2 && radii[0].isNumeric() && radii[1].isNumeric()) {
+                Standard_Failure::Raise("One radius or a tuple of two radii expected as first argument.");
+            }
+            radius1 = PyFloat_AsDouble(radii[0].ptr());
+            radius2 = PyFloat_AsDouble(radii[1].ptr());
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        mkFillet->Add(radius1, radius2, TopoDS::Edge(edge));
+                    }
+                }
+            }
+            TopoShape resShape(mkFillet->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkFillet;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "This method accepts:\n"
+        "-- one radius, a list of edges and optionally a boolean to store history\n"
+        "-- one tuple of two radii, a list of edges and optionally a boolean to\n"
+        "store history");
+    return NULL;
+}
+
+
 PyObject* TopoShapePy::makeChamfer(PyObject *args)
 {
     // use two radii for all edges
@@ -1584,6 +1721,99 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
         catch (Standard_Failure& e) {
     
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "This method accepts:\n"
+        "-- one radius and a list of edges\n"
+        "-- two radii and a list of edges");
+    return NULL;
+}
+
+PyObject* TopoShapePy::makeChamfer2(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"edges", "radius", "withHistory", NULL};
+    PyObject* edges;
+    PyObject* withHistory = Py_False;
+    // use one radius for all edges
+    double radius;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "dO|O!", kwlist,
+                                    &radius, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeChamfer>
+                    mkChamfer(new BRepFilletAPI_MakeChamfer(shape));
+            TopTools_IndexedMapOfShape mapOfEdges;
+            TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+            TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+            TopExp::MapShapes(shape, TopAbs_EDGE, mapOfEdges);
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+                        mkChamfer->Add(radius, TopoDS::Edge(edge), face);
+                    }
+                }
+            }
+            TopoShape resShape(mkChamfer->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkChamfer;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return NULL;
+        }
+    }
+
+    PyErr_Clear();
+    // use two radii for all edges
+    PyObject* _radii;
+    double radius1, radius2;
+    if (PyArg_ParseTupleAndKeywords(args, keywds, "OO|O!", kwlist,
+                                    &_radii, &edges,
+                                    &(PyBool_Type), &withHistory)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+            std::shared_ptr<BRepFilletAPI_MakeChamfer>
+                    mkChamfer(new BRepFilletAPI_MakeChamfer(shape));
+            TopTools_IndexedMapOfShape mapOfEdges;
+            TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+            TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+            TopExp::MapShapes(shape, TopAbs_EDGE, mapOfEdges);
+            Py::Sequence radii(_radii);
+            if (radii.length() != 2 && radii[0].isNumeric() && radii[1].isNumeric()) {
+                Standard_Failure::Raise("One radius or a tuple of two radii expected as first argument.");
+            }
+            radius1 = PyFloat_AsDouble(radii[0].ptr());
+            radius2 = PyFloat_AsDouble(radii[1].ptr());
+            Py::Sequence list(edges);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    if (edge.ShapeType() == TopAbs_EDGE) {
+                        //Add edge to fillet algorithm
+                        const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+                        mkChamfer->Add(radius1, radius2, TopoDS::Edge(edge), face);
+                    }
+                }
+            }
+            TopoShape resShape(mkChamfer->Shape());
+            if (PyObject_IsTrue(withHistory)) {
+                resShape.history.shapeMaker = mkChamfer;
+            }
+            return resShape.getPyObject();
+        }
+        catch (Standard_Failure) {
+            Handle(Standard_Failure) e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return NULL;
         }
     }
@@ -2679,6 +2909,11 @@ Py::String TopoShapePy::getShapeType(void) const
     }
 
     return Py::String(name);
+}
+
+Py::Object TopoShapePy::getHistory(void) const
+{
+    return Py::asObject(new TopoHistoryPy(new TopoHistory(this->getTopoShapePtr()->history)));
 }
 
 Py::String TopoShapePy::getOrientation(void) const

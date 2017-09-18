@@ -88,9 +88,17 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="extrude" Const="true">
+    <Methode Name="extrude" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Extrude the shape along a direction.</UserDocu>
+        <UserDocu>Extrude the shape along a direction.
+extrude(vec, [withHistory=False]) -> Shape
+
+Parameters:
+vec: Vector object indicating direnction and length of extrusion
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.
+</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="revolve" Const="true">
@@ -138,14 +146,20 @@ Part.show(r)
 This is a more detailed check as done in isValid().</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="fuse" Const="true">
+    <Methode Name="fuse" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Union of this and a given (list of) topo shape.
-fuse(tool) -> Shape
-  or
-fuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        <UserDocu>Union of this and a given (list of) toposhape(s). History
+storage supported (with single tool only). Be aware that storing history is
+extremely memory intensive.
+fuse(tools, [tolerance=0.0, withHistory=False]) -> Shape
 
-Union of this and a given list of topo shapes.
+Parameters:
+tools: can either be a single Shape or a sequence of shapes (OCCT >= 6.9.0)
+tolerance: global tolerance for fuzzy Boolean operations (ignored if tools is a
+single shape)
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.
 
 Supports (OCCT 6.9.0 and above):
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
@@ -175,14 +189,18 @@ Deprecated: use fuse() instead.</UserDocu>
         <UserDocu>Union of this and a given topo shape (old algorithm).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="common" Const="true">
+    <Methode Name="common" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Intersection of this and a given (list of) topo shape.
-common(tool) -> Shape
-  or
-common((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        <UserDocu>Intersection of this and a given (list of) topo shape(s).
+common(tools, [tolerance=0.0, withHistory=False]) -> Shape
 
-Intersection of this and a given list of topo shapes.
+Parameters:
+tools: can either be a single Shape or a sequence of shapes (OCCT >= 6.9.0)
+tolerance: global tolerance for fuzzy Boolean operations (ignored if tools is a
+single shape)
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.
 
 Supports:
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
@@ -192,12 +210,18 @@ Supports:
 OCC 6.9.0 or later is required.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="section" Const="true">
+    <Methode Name="section" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Section of this with a given (list of) topo shape.
-section(tool) -> Shape
-  or
-section((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        <UserDocu>Section of this with a given (list of) topo shape(s).
+section(tools, [tolerance=0.0, withHistory=False]) -> Shape
+
+Parameters:
+tools: can either be a single Shape or a sequence of shapes (OCCT >= 6.9.0)
+tolerance: global tolerance for fuzzy Boolean operations (ignored if tools is a
+single shape)
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.
 
 Section of this and a given list of topo shapes.
 
@@ -219,14 +243,18 @@ OCC 6.9.0 or later is required.</UserDocu>
         <UserDocu>Make single slice of this shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="cut" Const="true">
+    <Methode Name="cut" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Difference of this and a given (list of) topo shape
-cut(tool) -> Shape
-  or
-cut((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        <UserDocu>Difference of this and a given (list of) topo shape(s).
+cut((tools, [tolerance=0.0, withHistory=False]) -> Shape
 
-Substraction of this and a given list of topo shapes.
+Parameters:
+tools: can either be a single Shape or a sequence of shapes (OCCT >= 6.9.0)
+tolerance: global tolerance for fuzzy Boolean operations (ignored if tools is a
+single shape)
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.
 
 Supports:
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
@@ -295,10 +323,19 @@ For a sub-shape of this shape get its ancestors of a type.
         <UserDocu>Removes internal wires (also holes) from the shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="mirror" Const="true">
+    <Methode Name="mirror" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Mirror this shape on a given plane.
-The plane is given with its base point and its normal direction.</UserDocu>
+The plane is given with its base point and its normal direction.
+mirror(base, norm, [withHistory=False]) -> Shape
+
+Parameters:
+base: Vector indicating base point of reflection plane
+norm: Vector indicating normal direction of reflection plane
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.
+</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="transformGeometry" Const="true">
@@ -355,9 +392,35 @@ transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
         <UserDocu>Make fillet.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeFillet2" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Make fillet: alternate version with history.
+makeFillet2(radius, edges, [withHistory=False]) -> Shape
+
+Parameters:
+radius: single number or a tuple of two numbers.
+edges: sequence of edges to be filleted.
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="makeChamfer" Const="true">
       <Documentation>
         <UserDocu>Make chamfer.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeChamfer2" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Make chamfer: alternate version with history.
+makeChamfer2(radius, edges, [withHistory=False]) -> Shape
+
+Parameters:
+radius: single number or a tuple of two numbers.
+edges: sequence of edges to be filleted.
+withHistory: True if history is needed to be stored, false otherwise. Be aware
+that storing history is extremely memory intensive. Currently only supported if
+tools is a single Shape, otherwise ignored.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeThickness" Const="true">
@@ -703,6 +766,12 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>Returns the type of the shape.</UserDocu>
       </Documentation>
       <Parameter Name="ShapeType" Type="String"/>
+    </Attribute>
+    <Attribute Name="History" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the history of the shape, if stored.</UserDocu>
+      </Documentation>
+      <Parameter Name="History" Type="Object" />
     </Attribute>
     <Attribute Name="Orientation" ReadOnly="false">
       <Documentation>
