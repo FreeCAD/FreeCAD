@@ -50,6 +50,14 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
+def isVertical(vector):
+    '''isVertical(vector) ... answer True if vector points into Z'''
+    return PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, 1)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, -1))
+
+def isHorizontal(vector):
+    '''isHorizontal(vector) ... answer True if vector points into X or Y'''
+    return PathGeom.pointsCoincide(vector, FreeCAD.Vector(1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(-1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 1, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, -1, 0))
+
 class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
@@ -60,6 +68,23 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def pocketInvertExtraOffset(self):
         return False
 
+    def combineConnectedShapes(self, shapes):
+        done = False
+        while not done:
+            done = True
+            combined = []
+            for shape in shapes:
+                connected = [f for f in combined if PathGeom.isRoughly(shape.distToShape(f)[0], 0,0)]
+                if connected:
+                    combined = [f for f in combined if f not in connected]
+                    connected.append(shape)
+                    combined.append(Part.makeCompound(connected))
+                    done = False
+                else:
+                    combined.append(shape)
+            shapes = combined
+        return shapes
+
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
@@ -68,40 +93,47 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             PathLog.debug("base items exist.  Processing...")
             removalshapes = []
             horizontal = []
+            vertical = []
             for o in obj.Base:
                 PathLog.debug("Base item: {}".format(o))
                 base = o[0]
                 for sub in o[1]:
                     if "Face" in sub:
                         face = base.Shape.getElement(sub)
-                        if type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
+                        if type(face.Surface) == Part.Plane and isVertical(face.Surface.Axis):
                             # it's a flat horizontal face
                             horizontal.append(face)
-                        elif type(face.Surface) == Part.Cylinder and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
+                        elif type(face.Surface) == Part.Cylinder and isVertical(face.Surface.Axis):
                             # vertical cylinder wall
-                            circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
-                            disk = Part.Face(Part.Wire(circle))
-                            horizontal.append(disk)
+                            if any(e.isClosed() for e in face.Edges):
+                                # complete cylinder
+                                circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
+                                disk = Part.Face(Part.Wire(circle))
+                                horizontal.append(disk)
+                            else:
+                                # partial cylinder wall
+                                vertical.append(face)
+                        elif type(face.Surface) == Part.Plane and isHorizontal(face.Surface.Axis):
+                            vertical.append(face)
+                        else:
+                            PathLog.error(translate('PathPocket', "Pocket does not support shape %s.%s") % (base.Label, sub))
+
+            vertical = self.combineConnectedShapes(vertical)
+            vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in vertical]
+            for wire in vWires:
+                face = Part.Face(wire)
+                if PathGeom.isRoughly(face.Area, 0):
+                    PathLog.error(translate('PathPocket', 'Vertical faces do not form a loop - ignoring'))
+                else:
+                    horizontal.append(face)
+
 
             # move all horizontal faces to FinalDepth
             for face in horizontal:
                 face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
 
             # check all faces and see if they are touching/overlapping and combine those into a compound
-            done = False
-            while not done:
-                done = True
-                combined = []
-                for face in horizontal:
-                    overlapping = [f for f in combined if PathGeom.isRoughly(face.distToShape(f)[0], 0,0)]
-                    if overlapping:
-                        combined = [f for f in combined if f not in overlapping]
-                        overlapping.append(face)
-                        combined.append(Part.makeCompound(overlapping))
-                        done = False
-                    else:
-                        combined.append(face)
-                horizontal = combined
+            horizontal = self.combineConnectedShapes(horizontal)
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
