@@ -29,6 +29,7 @@ import numpy
 import Part
 import Path
 import PathScripts
+import TechDraw
 
 from DraftGeomUtils import geomType
 from FreeCAD import Vector
@@ -216,13 +217,54 @@ def loopdetect(obj, edge1, edge2):
     loopwire = next(x for x in loop)[1]
     return loopwire
 
-def horizontalLoop(obj, edge):
-    '''horizontalLoopWire(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
+def horizontalEdgeLoop(obj, edge):
+    '''horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
     h = edge.hashCode()
     wires = [w for w in obj.Shape.Wires if any(e.hashCode() == h for e in w.Edges)]
-    loops = [w for w in wires if PathGeom.isVertical(Part.Face(w).Surface.Axis)]
+    loops = [w for w in wires if PathGeom.isHorizontal(Part.Face(w))]
     if len(loops) == 1:
         return loops[0]
+    return None
+
+def horizontalFaceLoop(obj, face):
+    '''horizontalFaceLoop(obj, face) ... returns a list of face names which form the walls of a vertical hole face is a part of.'''
+
+    if not face and not obj:
+        sel = FreeCADGui.Selection.getSelectionEx()[0]
+        obj = sel.Object
+        face = sel.SubObjects[0]
+
+    wires = [horizontalEdgeLoop(obj, e) for e in face.Edges]
+    # Not sure if sorting by Area is a premature optimization - but it seems
+    # the loop we're looking for is typically the biggest of the them all.
+    wires = sorted([w for w in wires if w], key=lambda w: Part.Face(w).Area)
+
+    for wire in wires:
+        hashes = [e.hashCode() for e in wire.Edges]
+
+        #find all faces that share a an edge with the wire and are vertical
+        faces = ["Face%d"%(i+1) for i,f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
+
+        # verify they form a valid hole by getting the outline and comparing
+        # the resulting XY footprint with that of the faces
+        comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
+        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0,0,1))
+
+        # findShapeOutline always returns closed wires, by removing the
+        # trace-backs single edge spikes don't contriubte to the bound box
+        uniqueEdges = []
+        for edge in outline.Edges:
+            if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
+                continue
+            uniqueEdges.append(edge)
+        w = Part.Wire(uniqueEdges)
+
+        # if the faces really form the walls of a hole then the resulting
+        # wire is still closed and it still has the same footprint
+        bb1 = comp.BoundBox
+        bb2 = w.BoundBox
+        if w.isClosed() and PathGeom.isRoughly(bb1.XMin, bb2.XMin) and PathGeom.isRoughly(bb1.XMax, bb2.XMax) and PathGeom.isRoughly(bb1.YMin, bb2.YMin) and PathGeom.isRoughly(bb1.YMax, bb2.YMax):
+            return faces
     return None
 
 def filterArcs(arcEdge):
