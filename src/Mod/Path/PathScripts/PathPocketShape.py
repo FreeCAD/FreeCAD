@@ -147,6 +147,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         '''areaOpSetDefaultValues(obj) ... set default values'''
         obj.StepOver = 100
         obj.ZigZagAngle = 45
+        job = PathUtils.findParentJob(obj)
+        if job and job.Stock:
+            bb = job.Stock.Shape.BoundBox
+            obj.FinalDepth = bb.ZMin
+            obj.StartDepth = bb.ZMax
 
     def areaOpOnChanged(self, obj, prop):
         if 'Base' == prop and obj.Base and not 'Restore' in obj.State:
@@ -185,6 +190,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 obj.CearanceHeight = clearance
             if not PathGeom.isRoughly(safe, obj.SafeHeight.Value):
                 obj.SafeHeight = safe
+
+        if prop in ['Base', 'Stock'] and not obj.Base and not 'Restore' in obj.State:
+            job = PathUtils.findParentJob(obj)
+            if job and job.Stock:
+                bb = job.Stock.Shape.BoundBox
+                obj.FinalDepth = bb.ZMin
+                obj.StartDepth = bb.ZMax
 
 
 def Create(name):
