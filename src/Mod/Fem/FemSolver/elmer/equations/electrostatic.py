@@ -21,48 +21,50 @@
 # ***************************************************************************
 
 
-__title__ = "Elasticity"
+__title__ = "Electrostatic"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
 import FemUtils
-from ... import EquationBase
-from . import Linear
+from ... import equationbase
+from . import linear
 
 
-def create(doc, name="Elasticity"):
+def create(doc, name="Electrostatic"):
     return FemUtils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(Linear.Proxy, EquationBase.ElasticityProxy):
+class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
 
-    Type = "Fem::FemEquationElmerElasticity"
+    Type = "Fem::FemEquationElmerElectrostatic"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyBool", "DoFrequencyAnalysis",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool", "CalculateElectricField",
+            "Electrostatic", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyInteger", "EigenmodesCount",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool", "CalculateElectricFlux",
+            "Electrostatic", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyBool", "CalculateStrains",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool", "CalculateElectricEnergy",
+            "Electrostatic", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyBool", "CalculateStresses",
-            "Elasticity", "Select type of solver for linear system")
-        obj.addProperty(
-            "App::PropertyBool", "CalculatePricipal",
-            "Elasticity", "Select type of solver for linear system")
-        obj.addProperty(
-            "App::PropertyBool", "CalculatePangle",
-            "Elasticity", "Select type of solver for linear system")
-        obj.EigenmodesCount = 5
+            "App::PropertyBool", "CalculateSurfaceCharge",
+            "Electrostatic", "Select type of solver for linear system")
+        '''
+        #obj.addProperty(
+            #"App::PropertyBool", "CalculateCapacitanceMatrix",
+            #"Electrostatic", "Select type of solver for linear system")
+        #obj.addProperty(
+            #"App::PropertyInteger", "CapacitanceBodies",
+            #"Electrostatic", "Select type of solver for linear system")
+        '''
+
         obj.Priority = 10
 
 
-class ViewProxy(Linear.ViewProxy, EquationBase.ElasticityViewProxy):
+class ViewProxy(linear.ViewProxy, equationbase.ElectrostaticViewProxy):
     pass

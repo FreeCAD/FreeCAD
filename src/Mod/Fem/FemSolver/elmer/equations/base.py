@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD as App
-from ... import EquationBase
+from ... import equationbase
 import FemUtils
 
 if App.GuiUp:
@@ -35,7 +35,7 @@ if App.GuiUp:
     import FemSelectionWidgets
 
 
-class Proxy(EquationBase.BaseProxy):
+class Proxy(equationbase.BaseProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
@@ -44,7 +44,7 @@ class Proxy(EquationBase.BaseProxy):
             "Base", "Select type of solver for linear system")
 
 
-class ViewProxy(EquationBase.BaseViewProxy):
+class ViewProxy(equationbase.BaseViewProxy):
 
     def setEdit(self, vobj, mode=0):
         task = _TaskPanel(vobj.Object)

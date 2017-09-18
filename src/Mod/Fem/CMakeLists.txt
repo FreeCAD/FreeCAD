@@ -80,7 +80,7 @@ INSTALL(
     FILES
         FemSolver/__init__.py
         FemSolver/solverbase.py
-        FemSolver/EquationBase.py
+        FemSolver/equationbase.py
     DESTINATION
         Mod/Fem/FemSolver
 )
@@ -98,16 +98,16 @@ INSTALL(
 
 INSTALL(
     FILES
-        FemSolver/elmer/Equations/__init__.py
-        FemSolver/elmer/Equations/Base.py
-        FemSolver/elmer/Equations/Linear.py
-        FemSolver/elmer/Equations/Nonlinear.py
-        FemSolver/elmer/Equations/Elasticity.py
-        FemSolver/elmer/Equations/Electrostatic.py
-        FemSolver/elmer/Equations/Heat.py
-        FemSolver/elmer/Equations/Flow.py
+        FemSolver/elmer/equations/__init__.py
+        FemSolver/elmer/equations/base.py
+        FemSolver/elmer/equations/linear.py
+        FemSolver/elmer/equations/nonlinear.py
+        FemSolver/elmer/equations/elasticity.py
+        FemSolver/elmer/equations/electrostatic.py
+        FemSolver/elmer/equations/heat.py
+        FemSolver/elmer/equations/flow.py
     DESTINATION
-        Mod/Fem/FemSolver/elmer/Equations
+        Mod/Fem/FemSolver/elmer/equations
 )
 
 INSTALL(

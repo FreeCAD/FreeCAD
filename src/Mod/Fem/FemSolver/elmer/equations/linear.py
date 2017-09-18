@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from . import Base
+from . import base
 
 
 LINEAR_SOLVER = ["Direct", "Iterative"]
@@ -51,7 +51,7 @@ LINEAR_PRECONDITIONING = [
 ]
 
 
-class Proxy(Base.Proxy):
+class Proxy(base.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
@@ -99,5 +99,5 @@ class Proxy(Base.Proxy):
         obj.Bubbles = False
 
 
-class ViewProxy(Base.ViewProxy):
+class ViewProxy(base.ViewProxy):
     pass

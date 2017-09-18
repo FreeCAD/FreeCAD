@@ -21,39 +21,48 @@
 # ***************************************************************************
 
 
-__title__ = "_NonLinear"
+__title__ = "Elasticity"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-from . import Linear
+import FemUtils
+from ... import equationbase
+from . import linear
 
 
-class Proxy(Linear.Proxy):
+def create(doc, name="Elasticity"):
+    return FemUtils.createObject(
+        doc, name, Proxy, ViewProxy)
+
+
+class Proxy(linear.Proxy, equationbase.ElasticityProxy):
+
+    Type = "Fem::FemEquationElmerElasticity"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearTolerance",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyBool", "DoFrequencyAnalysis",
+            "Elasticity", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyInteger", "NonlinearIterations",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyInteger", "EigenmodesCount",
+            "Elasticity", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyFloat", "RelaxationFactor",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyBool", "CalculateStrains",
+            "Elasticity", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyInteger", "NonlinearNewtonAfterIterations",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyBool", "CalculateStresses",
+            "Elasticity", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearNewtonAfterTolerance",
-            "Nonlinear System", "Select type of solver for linear system")
-        obj.NonlinearTolerance = 1e-8
-        obj.NonlinearIterations = 500
-        obj.RelaxationFactor = 1
-        obj.NonlinearNewtonAfterIterations = 3
-        obj.NonlinearNewtonAfterTolerance = 1e-3
+            "App::PropertyBool", "CalculatePricipal",
+            "Elasticity", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyBool", "CalculatePangle",
+            "Elasticity", "Select type of solver for linear system")
+        obj.EigenmodesCount = 5
+        obj.Priority = 10
 
 
-class ViewProxy(Linear.ViewProxy):
+class ViewProxy(linear.ViewProxy, equationbase.ElasticityViewProxy):
     pass

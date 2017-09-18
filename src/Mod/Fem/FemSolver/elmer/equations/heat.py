@@ -21,50 +21,29 @@
 # ***************************************************************************
 
 
-__title__ = "Electrostatic"
+__title__ = "Heat"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
 import FemUtils
-from ... import EquationBase
-from . import Linear
+from . import nonlinear
+from ... import equationbase
 
 
-def create(doc, name="Electrostatic"):
+def create(doc, name="Heat"):
     return FemUtils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(Linear.Proxy, EquationBase.ElectrostaticProxy):
+class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
 
-    Type = "Fem::FemEquationElmerElectrostatic"
+    Type = "Fem::FemEquationElmerHeat"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyBool", "CalculateElectricField",
-            "Electrostatic", "Select type of solver for linear system")
-        obj.addProperty(
-            "App::PropertyBool", "CalculateElectricFlux",
-            "Electrostatic", "Select type of solver for linear system")
-        obj.addProperty(
-            "App::PropertyBool", "CalculateElectricEnergy",
-            "Electrostatic", "Select type of solver for linear system")
-        obj.addProperty(
-            "App::PropertyBool", "CalculateSurfaceCharge",
-            "Electrostatic", "Select type of solver for linear system")
-        '''
-        #obj.addProperty(
-            #"App::PropertyBool", "CalculateCapacitanceMatrix",
-            #"Electrostatic", "Select type of solver for linear system")
-        #obj.addProperty(
-            #"App::PropertyInteger", "CapacitanceBodies",
-            #"Electrostatic", "Select type of solver for linear system")
-        '''
-
-        obj.Priority = 10
+        obj.Priority = 20
 
 
-class ViewProxy(Linear.ViewProxy, EquationBase.ElectrostaticViewProxy):
+class ViewProxy(nonlinear.ViewProxy, equationbase.HeatViewProxy):
     pass

@@ -21,29 +21,39 @@
 # ***************************************************************************
 
 
-__title__ = "Heat"
+__title__ = "_NonLinear"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemUtils
-from . import Nonlinear
-from ... import EquationBase
+from . import linear
 
 
-def create(doc, name="Heat"):
-    return FemUtils.createObject(
-        doc, name, Proxy, ViewProxy)
-
-
-class Proxy(Nonlinear.Proxy, EquationBase.HeatProxy):
-
-    Type = "Fem::FemEquationElmerHeat"
+class Proxy(linear.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.Priority = 20
+        obj.addProperty(
+            "App::PropertyFloat", "NonlinearTolerance",
+            "Nonlinear System", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyInteger", "NonlinearIterations",
+            "Nonlinear System", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyFloat", "RelaxationFactor",
+            "Nonlinear System", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyInteger", "NonlinearNewtonAfterIterations",
+            "Nonlinear System", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyFloat", "NonlinearNewtonAfterTolerance",
+            "Nonlinear System", "Select type of solver for linear system")
+        obj.NonlinearTolerance = 1e-8
+        obj.NonlinearIterations = 500
+        obj.RelaxationFactor = 1
+        obj.NonlinearNewtonAfterIterations = 3
+        obj.NonlinearNewtonAfterTolerance = 1e-3
 
 
-class ViewProxy(Nonlinear.ViewProxy, EquationBase.HeatViewProxy):
+class ViewProxy(linear.ViewProxy):
     pass

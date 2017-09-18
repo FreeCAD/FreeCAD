@@ -355,7 +355,7 @@ class FemTest(unittest.TestCase):
             pymodules += collect_python_modules('PyGui')
         pymodules += collect_python_modules('FemSolver')
         pymodules += collect_python_modules('FemSolver/elmer')
-        pymodules += collect_python_modules('FemSolver/elmer/Equations')
+        pymodules += collect_python_modules('FemSolver/elmer/equations')
         pymodules += collect_python_modules('FemSolver/z88')
         pymodules += collect_python_modules('FemSolver/calculix')
 
