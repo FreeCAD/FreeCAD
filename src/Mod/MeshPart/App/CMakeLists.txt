@@ -80,6 +80,9 @@ SET_PYTHON_PREFIX_SUFFIX(MeshPart)
 
 INSTALL(TARGETS MeshPart DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
+
+
+################################ flat mesh ###############################
 SET(FLATMESH_SRCS
     MeshFlatteningPy.cpp
     MeshFlattening.cpp
@@ -91,9 +94,11 @@ SET(FLATMESH_SRCS
 )
 
 
+
 add_library(flatmesh SHARED ${FLATMESH_SRCS})
 SET_PYTHON_PREFIX_SUFFIX(flatmesh)
 target_link_libraries(flatmesh ${PYTHON_LIBRARIES} ${MeshPart_LIBS})
 
 SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
 install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
+############################################################################
