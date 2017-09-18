@@ -137,7 +137,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
                 const ObjectIdentifier & p = *j;
                 DocumentObject* docObj = p.getDocumentObject();
 
-                if (docObj)
+                if (docObj && (docObj != parent))
                     docObj->_removeBackLink(parent);
 
                 ++j;
@@ -162,7 +162,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
                 const ObjectIdentifier & p = *j;
                 DocumentObject* docObj = p.getDocumentObject();
 
-                if (docObj)
+                if (docObj && (docObj != parent))
                     docObj->_addBackLink(parent);
 
                 ++j;
@@ -420,7 +420,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
             while (j != deps.end()) {
                 const ObjectIdentifier & p = *j;
                 DocumentObject* docObj = p.getDocumentObject();
-                if (docObj)
+                if (docObj && (docObj != parent))
                     docObj->_addBackLink(parent);
 
                 ++j;
@@ -446,7 +446,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
             while (j != deps.end()) {
                 const ObjectIdentifier & p = *j;
                 DocumentObject* docObj = p.getDocumentObject();
-                if (docObj)
+                if (docObj && (docObj != parent))
                     docObj->_removeBackLink(parent);
 
                 ++j;
