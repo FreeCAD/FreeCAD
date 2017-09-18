@@ -133,6 +133,17 @@ class PathGeom:
         return a
 
     @classmethod
+    def isVertical(cls, vector):
+        '''isVertical(vector) ... answer True if vector points into Z'''
+        return PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, 1)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, -1))
+
+    @classmethod
+    def isHorizontal(cls, vector):
+        '''isHorizontal(vector) ... answer True if vector points into X or Y'''
+        return PathGeom.pointsCoincide(vector, FreeCAD.Vector(1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(-1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 1, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, -1, 0))
+
+
+    @classmethod
     def commandEndPoint(cls, cmd, defaultPoint = Vector(), X='X', Y='Y', Z='Z'):
         """(cmd, [defaultPoint=Vector()], [X='X'], [Y='Y'], [Z='Z'])
         Extracts the end point from a Path Command."""
