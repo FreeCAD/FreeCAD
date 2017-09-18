@@ -28,9 +28,104 @@
 #include <Geom_Surface.hxx>
 #include <Geom_BSplineSurface.hxx>
 
+#include <set>
+#include <map>
+#include <vector>
+#include <exception>
+
+std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris)
+{
+    // get a hashtable for all edges
+    // e: v1, v2, num
+    std::map<std::set<long>, std::vector<long>> hash_map;
+    std::vector<std::set<long>> hash_list;
+    std::map<long, std::vector<long>> neighbour_map;
+    std::vector<long> edge_vector_0;
+    std::vector<std::vector<long>> edge_vector;
+    
+
+    for (long i=0; i<tris.rows(); i++)
+    {
+        for (long j=0; j<3; j++)
+        {
+            long k = j + 1;
+            if (k == 3)
+                k = 0;
+            long v1 = tris(i, j);
+            long v2 = tris(i, k);
+            std::set<long> hash {v1, v2};
+            hash_list.push_back(hash);
+            if (v1 < v2)
+                hash_map[hash] = std::vector<long>{v1, v2, 0};
+            else
+                hash_map[hash] = std::vector<long>{v2, v1, 0};
+        }
+    }
+    for (auto & hash: hash_list)
+        hash_map[hash][2] += 1;
+
+    for (auto &hash: hash_map)
+    {
+        if (hash.second[2] == 1)
+        {
+            long v0 = hash.second[0];
+            long v1 = hash.second[1];
+
+	    neighbour_map[v0].push_back(v1);
+	    neighbour_map[v1].push_back(v0);
+        }
+    }
+
+
+    while (neighbour_map.size() != 0)
+    {
+        long start_index = neighbour_map.begin()->first;
+        long close_index = start_index;
+        long next_index = neighbour_map[start_index][1];
+        long temporary_next;
+        edge_vector_0.clear();
+        edge_vector_0.push_back(close_index);
+        edge_vector_0.push_back(start_index);
+	neighbour_map.erase(start_index);
+        edge_vector_0.push_back(next_index);
+        while (next_index != close_index)
+        {
+            temporary_next = neighbour_map[next_index][0];
+            if (temporary_next != start_index)
+            {
+                start_index = next_index;
+                next_index = temporary_next;
+            }
+            else
+            {
+                start_index = next_index;
+                next_index = neighbour_map[start_index][1];
+            }
+            neighbour_map.erase(start_index);
+            edge_vector_0.push_back(next_index);
+            
+        }
+        edge_vector.push_back(edge_vector_0);
+    }
+    std::vector<ColMat<double, 3>> edges;
+    for (auto &edge: edge_vector)
+    {
+        ColMat<double, 3> edge_vertices;
+        edge_vertices.resize(edge.size(), 3);
+        int i = 0;
+        for (auto index: edge)
+        {
+            edge_vertices.row(i) = vertices.row(index);
+            i++;
+        }
+        edges.push_back(edge_vertices);
+    }
+    return edges;
+}
+
 FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
 {
-    int i = 0;
+    long i = 0;
 //  transform to nurbs:
     TopLoc_Location location;
     
@@ -76,15 +171,18 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
 
 void FaceUnwrapper::findFlatNodes()
 {
-    std::vector<long> fixed_pins;
+    std::vector<long> fixed_pins;  //TODO: INPUT
     LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
     mesh_flattener.lscm();
     mesh_flattener.relax(0.9);
     this->ze_nodes = mesh_flattener.flat_vertices.transpose();
 }
 
-ColMat<double, 3> FaceUnwrapper::interpolateNurbsFace(const TopoDS_Face& face)
+ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
 {
+    if (this->uv_nodes.size() == 0)
+        throw(std::runtime_error("no uv-coordinates found, interpolating with nurbs is only possible if the Flattener was constructed with a nurbs."));
+    
     // extract xyz poles, knots, weights, degree
     const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
@@ -93,10 +191,10 @@ ColMat<double, 3> FaceUnwrapper::interpolateNurbsFace(const TopoDS_Face& face)
     
     Eigen::VectorXd weights;
     weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());
-    int i = 0;
-    for (int u=1; u <= _bspline->NbUPoles(); u++)
+    long i = 0;
+    for (long u=1; u <= _bspline->NbUPoles(); u++)
     {
-        for (int v=1; v <= _bspline->NbVPoles(); v++)
+        for (long v=1; v <= _bspline->NbVPoles(); v++)
         {
             weights[i] = _bspline->Weight(u, v);
             i++;
@@ -107,11 +205,11 @@ ColMat<double, 3> FaceUnwrapper::interpolateNurbsFace(const TopoDS_Face& face)
     Eigen::VectorXd v_knots;
     u_knots.resize(_uknots.Size());
     v_knots.resize(_vknots.Size());
-    for (int u=1; u <= _uknots.Size(); u++)
+    for (long u=1; u <= _uknots.Size(); u++)
     {
         u_knots[u - 1] = _uknots.Value(u);
     }
-    for (int v=1; v <= _vknots.Size(); v++)
+    for (long v=1; v <= _vknots.Size(); v++)
     {
         v_knots[v - 1] = _vknots.Value(v);
     }
@@ -134,9 +232,22 @@ ColMat<double, 3> FaceUnwrapper::interpolateNurbsFace(const TopoDS_Face& face)
 }
 
 
+FaceUnwrapper::FaceUnwrapper(ColMat< double, int(3) > xyz_nodes, ColMat< long int, int(3) > tris)
+{
+    this->tris = tris;
+    this->xyz_nodes = xyz_nodes;
+    
+}
 
+std::vector<ColMat<double, 3>> FaceUnwrapper::getFlatBoundaryNodes()
+{
+    if (this->ze_nodes.size() == 0)
+        throw(std::runtime_error("flat vertices not xet computed"));
 
-
-
-
-
+    ColMat<double, 3> flat_vertices;
+    flat_vertices.resize(this->ze_nodes.rows(), 3);
+    flat_vertices.setZero();
+    flat_vertices.col(0) << this->ze_nodes.col(0);
+    flat_vertices.col(1) << this->ze_nodes.col(1);
+    return getBoundaries(flat_vertices, this->tris);
+}
