@@ -20,6 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+// idea:
+// - unwrap any meshed shells and output a 2d face (meshing is done externally)
+// - unwrap faces which are nurbs and return nurbs (no cuts, meshing internally)
+
+
 #ifndef MESHFLATTENING
 #define MESHFLATTENING
 
@@ -32,6 +37,8 @@
 #include <Eigen/IterativeLinearSolvers>
 #include <Eigen/SparseCore>
 #include <Eigen/QR>
+
+#include <vector>
 
 
 typedef Eigen::Vector3d Vector3;
@@ -47,12 +54,17 @@ using RowMat = Eigen::Matrix<type, size, Eigen::Dynamic>;
 typedef Eigen::Triplet<double> trip;
 typedef Eigen::SparseMatrix<double> spMat;
 
+
+std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris);
+
 class FaceUnwrapper{
 	nurbs::NurbsBase2D nu;
 public:
 	FaceUnwrapper(const TopoDS_Face & face);
+        FaceUnwrapper(ColMat<double, 3> xyz_nodes, ColMat<long, 3> tris);
 	void findFlatNodes();
-	ColMat<double, 3> interpolateNurbsFace(const TopoDS_Face& face);
+	ColMat<double, 3> interpolateFlatFace(const TopoDS_Face& face);
+        std::vector<ColMat<double, 3>> getFlatBoundaryNodes();
 
 	bool use_nurbs = true;
 	// the mesh
