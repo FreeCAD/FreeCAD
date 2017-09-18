@@ -35,6 +35,7 @@ from FreeCAD import Vector
 from PathScripts import PathJob
 from PathScripts import PathJobCmd
 from PathScripts import PathLog
+from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 from PySide import QtGui
 
@@ -215,6 +216,14 @@ def loopdetect(obj, edge1, edge2):
     loopwire = next(x for x in loop)[1]
     return loopwire
 
+def horizontalLoop(obj, edge):
+    '''horizontalLoopWire(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
+    h = edge.hashCode()
+    wires = [w for w in obj.Shape.Wires if any(e.hashCode() == h for e in w.Edges)]
+    loops = [w for w in wires if PathGeom.isVertical(Part.Face(w).Surface.Axis)]
+    if len(loops) == 1:
+        return loops[0]
+    return None
 
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''

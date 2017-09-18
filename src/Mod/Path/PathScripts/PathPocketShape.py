@@ -50,14 +50,6 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-def isVertical(vector):
-    '''isVertical(vector) ... answer True if vector points into Z'''
-    return PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, 1)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 0, -1))
-
-def isHorizontal(vector):
-    '''isHorizontal(vector) ... answer True if vector points into X or Y'''
-    return PathGeom.pointsCoincide(vector, FreeCAD.Vector(1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(-1, 0, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, 1, 0)) or PathGeom.pointsCoincide(vector, FreeCAD.Vector(0, -1, 0))
-
 class ObjectPocket(PathPocketBase.ObjectPocket):
     '''Proxy object for Pocket operation.'''
 
@@ -100,10 +92,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 for sub in o[1]:
                     if "Face" in sub:
                         face = base.Shape.getElement(sub)
-                        if type(face.Surface) == Part.Plane and isVertical(face.Surface.Axis):
+                        if type(face.Surface) == Part.Plane and PathGeom.isVertical(face.Surface.Axis):
                             # it's a flat horizontal face
                             horizontal.append(face)
-                        elif type(face.Surface) == Part.Cylinder and isVertical(face.Surface.Axis):
+                        elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
                             # vertical cylinder wall
                             if any(e.isClosed() for e in face.Edges):
                                 # complete cylinder
@@ -113,7 +105,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             else:
                                 # partial cylinder wall
                                 vertical.append(face)
-                        elif type(face.Surface) == Part.Plane and isHorizontal(face.Surface.Axis):
+                        elif type(face.Surface) == Part.Plane and PathGeom.isHorizontal(face.Surface.Axis):
                             vertical.append(face)
                         else:
                             PathLog.error(translate('PathPocket', "Pocket does not support shape %s.%s") % (base.Label, sub))
