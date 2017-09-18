@@ -77,6 +77,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         if type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
                             # it's a flat horizontal face
                             horizontal.append(face)
+                        elif type(face.Surface) == Part.Cylinder and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
+                            # vertical cylinder wall
+                            circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
+                            disk = Part.Face(Part.Wire(circle))
+                            horizontal.append(disk)
 
             # move all horizontal faces to FinalDepth
             for face in horizontal:
