@@ -75,11 +75,32 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     if "Face" in sub:
                         face = base.Shape.getElement(sub)
                         if type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
+                            # it's a flat horizontal face
                             horizontal.append(face)
 
+            # move all horizontal faces to FinalDepth
             for face in horizontal:
                 face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
-                removalshapes.append((face.extrude(FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)), False))
+
+            # check all faces and see if they are touching/overlapping and combine those into a compound
+            done = False
+            while not done:
+                done = True
+                combined = []
+                for face in horizontal:
+                    overlapping = [f for f in combined if PathGeom.isRoughly(face.distToShape(f)[0], 0,0)]
+                    if overlapping:
+                        combined = [f for f in combined if f not in overlapping]
+                        overlapping.append(face)
+                        combined.append(Part.makeCompound(overlapping))
+                        done = False
+                    else:
+                        combined.append(face)
+                horizontal = combined
+
+            # extrude all faces up to StartDepth and those are the removal shapes
+            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
+            removalshapes = [(face.extrude(extent), False) for face in horizontal]
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
