@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD as App
-import FemMisc
+import FemUtils
 import FemConstraint
 from FreeCAD import Units
 
@@ -64,8 +64,8 @@ class _TaskPanel(object):
             App.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemFlowVelocity.ui")
         self._initParamWidget()
         self.form = [self._refWidget, self._paramWidget]
-        analysis = FemMisc.findAnalysisOfMember(obj)
-        self._mesh = FemMisc.getSingleMember(analysis, "Fem::FemMeshObject")
+        analysis = FemUtils.findAnalysisOfMember(obj)
+        self._mesh = FemUtils.getSingleMember(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None

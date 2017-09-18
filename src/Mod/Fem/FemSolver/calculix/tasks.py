@@ -33,7 +33,7 @@ import os.path
 import FreeCAD as App
 import FemRun
 import FemSettings
-import FemMisc
+import FemUtils
 import importCcxFrdResults
 import importCcxDatResults
 
@@ -113,8 +113,8 @@ class Results(FemRun.Results):
         self.load_results_ccxdat()
 
     def purge_results(self):
-        for m in FemMisc.getMember(self.analysis, "Fem::FemResultObject"):
-            if FemMisc.isOfType(m.Mesh, "FemMeshResult"):
+        for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
+            if FemUtils.isOfType(m.Mesh, "FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         App.ActiveDocument.recompute()
@@ -140,7 +140,7 @@ class Results(FemRun.Results):
             raise Exception(
                 'FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            for m in FemMisc.getMember(self.analysis, "Fem::FemResultObject"):
+            for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:

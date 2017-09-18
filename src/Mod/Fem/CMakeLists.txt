@@ -41,7 +41,7 @@ INSTALL(
         ObjectsFem.py
         FemReport.py
         FemReportDialog.py
-        FemMisc.py
+        FemUtils.py
         FemSettings.py
         FemTask.py
         FemRun.py

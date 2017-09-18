@@ -26,13 +26,13 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemMisc
+import FemUtils
 from ... import EquationBase
 from . import Linear
 
 
 def create(doc, name="Electrostatic"):
-    return FemMisc.createObject(
+    return FemUtils.createObject(
         doc, name, Proxy, ViewProxy)
 
 

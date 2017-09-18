@@ -31,7 +31,7 @@ import os
 import glob
 
 import FreeCAD
-import FemMisc
+import FemUtils
 import FemRun
 
 from .. import solverbase
@@ -44,7 +44,7 @@ ANALYSIS_TYPES = ["static", "frequency", "thermomech"]
 
 
 def create(doc, name="SolverCalculiX"):
-    return FemMisc.createObject(
+    return FemUtils.createObject(
         doc, name, Proxy, ViewProxy)
 
 

@@ -30,7 +30,7 @@ from PySide import QtCore
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import FemMisc
+import FemUtils
 
 
 class _Base(QtCore.QObject):
@@ -40,7 +40,7 @@ class _Base(QtCore.QObject):
 
     def Activated(self):
         s = Gui.Selection.getSelection()
-        if len(s) == 1 and FemMisc.isDerivedFrom(s[0], "Fem::FemSolverObject"):
+        if len(s) == 1 and FemUtils.isDerivedFrom(s[0], "Fem::FemSolverObject"):
             App.ActiveDocument.openTransaction(
                 "Add %s equation to %s"
                 % (self.getSpecifier(), s[0].Label))
@@ -53,7 +53,7 @@ class _Base(QtCore.QObject):
 
     def IsActive(self):
         s = Gui.Selection.getSelection()
-        if len(s) == 1 and FemMisc.isDerivedFrom(s[0], "Fem::FemSolverObject"):
+        if len(s) == 1 and FemUtils.isDerivedFrom(s[0], "Fem::FemSolverObject"):
             return s[0].Proxy.isSupported(self.getSpecifier())
         return False
 

@@ -31,7 +31,7 @@ import os.path
 
 import FemRun
 import FemSettings
-import FemMisc
+import FemUtils
 
 from . import writer
 
@@ -45,8 +45,8 @@ class Check(FemRun.Check):
         self.checkEquations()
 
     def checkMeshType(self):
-        mesh = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
-        if not FemMisc.isOfType(mesh, "FemMeshGmsh"):
+        mesh = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        if not FemUtils.isOfType(mesh, "FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
                 "Mesh must be created with gmsh.")
@@ -80,7 +80,7 @@ class Prepare(FemRun.Prepare):
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()
-        allConstraints = FemMisc.getMember(self.analysis, "Fem::Constraint")
+        allConstraints = FemUtils.getMember(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
 

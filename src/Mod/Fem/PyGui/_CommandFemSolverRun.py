@@ -31,7 +31,7 @@ from .FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore, QtGui
 import FemRun
-import FemMisc
+import FemUtils
 
 
 class _CommandFemSolverRun(FemCommands):
@@ -52,11 +52,11 @@ class _CommandFemSolverRun(FemCommands):
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
-        if FemMisc.isDerivedFrom(self.solver, "Fem::FemSolverObjectZ88"):
+        if FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectZ88"):
             self._newActivated()
-        elif FemMisc.isDerivedFrom(self.solver, "Fem::FemSolverObjectElmer"):
+        elif FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectElmer"):
             self._newActivated()
-        elif FemMisc.isDerivedFrom(self.solver, "Fem::FemSolverObjectCalculix"):
+        elif FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectCalculix"):
             self._newActivated()
         elif self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx

@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemMisc
+import FemUtils
 import FemRun
 
 from .. import solverbase
@@ -39,7 +39,7 @@ from .Equations import  Flow
 
 
 def create(doc, name="ElmerSolver"):
-    return FemMisc.createObject(
+    return FemUtils.createObject(
         doc, name, Proxy, ViewProxy)
 
 

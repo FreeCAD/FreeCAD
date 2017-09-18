@@ -33,7 +33,7 @@ import tempfile
 
 from FreeCAD import Units
 import Fem
-import FemMisc
+import FemUtils
 import FemSettings
 import FemGmshTools
 from . import sifio
@@ -91,7 +91,7 @@ def getConstant(name, dimension):
 class Writer(object):
 
     def __init__(self, solver, directory):
-        self.analysis = FemMisc.findAnalysisOfMember(solver)
+        self.analysis = FemUtils.findAnalysisOfMember(solver)
         self.solver = solver
         self.directory = directory
         self._usedVarNames = set()
@@ -114,7 +114,7 @@ class Writer(object):
         self._writeStartinfo()
 
     def _writeMesh(self):
-        mesh = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        mesh = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
         unvPath = os.path.join(self.directory, "mesh.unv")
         groups = []
         groups.extend(self._builder.getBodyNames())
@@ -185,7 +185,7 @@ class Writer(object):
     def _handleHeat(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemMisc.isOfType(equation, "Fem::FemEquationElmerHeat"):
+            if FemUtils.isOfType(equation, "Fem::FemEquationElmerHeat"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -283,7 +283,7 @@ class Writer(object):
     def _handleElectrostatic(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemMisc.isOfType(equation, "Fem::FemEquationElmerElectrostatic"):
+            if FemUtils.isOfType(equation, "Fem::FemEquationElmerElectrostatic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -336,7 +336,7 @@ class Writer(object):
     def _handleElasticity(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemMisc.isOfType(equation, "Fem::FemEquationElmerElasticity"):
+            if FemUtils.isOfType(equation, "Fem::FemEquationElmerElasticity"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -492,7 +492,7 @@ class Writer(object):
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemMisc.isOfType(equation, "Fem::FemEquationElmerFlow"):
+            if FemUtils.isOfType(equation, "Fem::FemEquationElmerFlow"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -654,7 +654,7 @@ class Writer(object):
         return varName
 
     def _getAllBodies(self):
-        obj = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        obj = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
         bodyCount = 0
         prefix = ""
         if obj.Part.Shape.Solids:
@@ -669,7 +669,7 @@ class Writer(object):
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def _getMeshDimension(self):
-        obj = FemMisc.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        obj = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
         if obj.Part.Shape.Solids:
             return 3
         elif obj.Part.Shape.Faces:
@@ -725,10 +725,10 @@ class Writer(object):
         self._builder.addSection(section)
 
     def _getMember(self, t):
-        return FemMisc.getMember(self.analysis, t)
+        return FemUtils.getMember(self.analysis, t)
 
     def _getSingleMember(self, t):
-        return FemMisc.getSingleMember(self.analysis, t)
+        return FemUtils.getSingleMember(self.analysis, t)
 
 
 class WriteError(Exception):

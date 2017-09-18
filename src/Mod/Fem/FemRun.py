@@ -34,7 +34,7 @@ import shutil
 
 import FreeCAD as App
 import FemSettings
-import FemMisc
+import FemUtils
 import FemSignal
 import FemTask
 
@@ -156,7 +156,7 @@ class BaseTask(FemTask.Thread):
 
     @property
     def analysis(self):
-        return FemMisc.findAnalysisOfMember(self.solver)
+        return FemUtils.findAnalysisOfMember(self.solver)
 
 
 class Machine(BaseTask):
@@ -254,7 +254,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = FemMisc.getMember(
+        meshes = FemUtils.getMember(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -269,7 +269,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = FemMisc.getMember(
+        matObjs = FemUtils.getMember(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(
@@ -281,10 +281,10 @@ class Check(BaseTask):
 
     def checkSupported(self, allSupported):
         for m in self.analysis.Member:
-            if FemMisc.isOfType(m, "Fem::Constraint"):
+            if FemUtils.isOfType(m, "Fem::Constraint"):
                 supported = False
                 for sc in allSupported:
-                    if FemMisc.isOfType(m, *sc):
+                    if FemUtils.isOfType(m, *sc):
                         supported = True
                 if not supported:
                     self.report.warning(
@@ -365,19 +365,19 @@ class _DocObserver(object):
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
-            if (FemMisc.isDerivedFrom(o, "Fem::FemSolverObject")
+            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject")
                     and hasattr(o, "Group") and obj in o.Group):
                 if o in _machines:
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
-        analysis = FemMisc.findAnalysisOfMember(obj)
+        analysis = FemUtils.findAnalysisOfMember(obj)
         for m in _machines.itervalues():
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
 
     def _checkAnalysis(self, obj):
-        if FemMisc.isDerivedFrom(obj, "Fem::FemAnalysis"):
+        if FemUtils.isDerivedFrom(obj, "Fem::FemAnalysis"):
             deltaObjs = self._getAdded(obj)
             if deltaObjs:
                 reset = False
@@ -389,7 +389,7 @@ class _DocObserver(object):
 
     def _checkModel(self, obj):
         if self._partOfModel(obj):
-            analysis = FemMisc.findAnalysisOfMember(obj)
+            analysis = FemUtils.findAnalysisOfMember(obj)
             if analysis is not None:
                 self._resetAll(analysis)
 
@@ -407,7 +407,7 @@ class _DocObserver(object):
 
     def _partOfModel(self, obj):
         for t in self._WHITELIST:
-            if FemMisc.isDerivedFrom(obj, t):
+            if FemUtils.isDerivedFrom(obj, t):
                 return True
         return False
 

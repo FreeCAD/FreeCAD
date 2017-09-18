@@ -33,7 +33,7 @@ import os.path
 import FreeCAD as App
 import FemRun
 import FemSettings
-import FemMisc
+import FemUtils
 import importZ88O2Results
 
 from . import writer
@@ -127,8 +127,8 @@ class Results(FemRun.Results):
         self.load_results_z88o2()
 
     def purge_results(self):
-        for m in FemMisc.getMember(self.analysis, "Fem::FemResultObject"):
-            if FemMisc.isOfType(m.Mesh, "FemMeshResult"):
+        for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
+            if FemUtils.isOfType(m.Mesh, "FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         App.ActiveDocument.recompute()
