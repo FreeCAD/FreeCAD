@@ -189,28 +189,31 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single GeoFeatureGroup
     if((strcmp(p->getName(), "Group")==0)) {
+    
+        if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
+                
+            bool error = false;
+            auto corrected = Group.getValues();
+            for(auto obj : Group.getValues()) {
 
-        bool error = false;
-        auto corrected = Group.getValues();
-        for(auto obj : Group.getValues()) {
-
-            //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
-            //would return anyone of it and hence it is possible that we miss an error. We need a custom check
-            auto list = obj->getInList();
-            for (auto in : list) {
-                if(in->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) && //is GeoFeatureGroup?
-                   in != getExtendedObject() &&                                                  //is a different one?
-                   in->getExtensionByType<App::GeoFeatureGroupExtension>()->hasObject(obj)) {    //is not a non-grouping link?
-                      error = true;
-                      corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
+                //would return anyone of it and hence it is possible that we miss an error. We need a custom check
+                auto list = obj->getInList();
+                for (auto in : list) {
+                    if(in->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) && //is GeoFeatureGroup?
+                    in != getExtendedObject() &&                                                  //is a different one?
+                    in->getExtensionByType<App::GeoFeatureGroupExtension>()->hasObject(obj)) {    //is not a non-grouping link?
+                        error = true;
+                        corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                    }
                 }
             }
-        }
 
-        //if an error was found we need to correct the values and inform the user
-        if(error) {
-            Group.setValues(corrected);
-            throw Base::Exception("Object can only be in a single GeoFeatureGroup");
+            //if an error was found we need to correct the values and inform the user
+            if(error) {
+                Group.setValues(corrected);
+                throw Base::Exception("Object can only be in a single GeoFeatureGroup");
+            }
         }
     }
 
