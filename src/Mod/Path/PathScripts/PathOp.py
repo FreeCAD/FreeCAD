@@ -229,6 +229,7 @@ class ObjectOp(object):
         It also sets the following instance variables that can and should be safely be used by
         implementation of opExecute():
             self.baseobject   ... Base object of the Job itself
+            self.stock        ... Stock object fo the Job itself
             self.vertFeed     ... vertical feed rate of assigned tool
             self.vertRapid    ... vertical rapid rate of assigned tool
             self.horizFeed    ... horizontal feed rate of assigned tool
@@ -259,6 +260,7 @@ class ObjectOp(object):
             PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
             return
         self.baseobject = job.Base
+        self.stock = job.Stock
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
