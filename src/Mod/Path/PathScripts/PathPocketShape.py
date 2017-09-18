@@ -28,6 +28,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
+import TechDraw
 import sys
 
 from PathScripts.PathGeom import PathGeom
@@ -38,7 +39,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -66,24 +67,28 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
             removalshapes = []
-            for b in obj.Base:
-                PathLog.debug("Base item: {}".format(b))
-                for sub in b[1]:
+            horizontal = []
+            for o in obj.Base:
+                PathLog.debug("Base item: {}".format(o))
+                base = o[0]
+                for sub in o[1]:
                     if "Face" in sub:
-                        shape = Part.makeCompound([getattr(b[0].Shape, sub)])
-                    else:
-                        edges = [getattr(b[0].Shape, sub) for sub in b[1]]
-                        shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
+                        face = base.Shape.getElement(sub)
+                        if type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
+                            horizontal.append(face)
 
-                    env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=shape, depthparams=self.depthparams)
-                    obj.removalshape = env.cut(self.baseobject.Shape)
-                    obj.removalshape.tessellate(0.1)
-                    removalshapes.append((obj.removalshape, False))
+            for face in horizontal:
+                face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
+                removalshapes.append((face.extrude(FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)), False))
+
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
+            self.outline = Part.Face(TechDraw.findShapeOutline(self.baseobject.Shape, 1, FreeCAD.Vector(0, 0, 1)))
+            stockBB = self.stock.Shape.BoundBox
 
-            env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=None, depthparams=self.depthparams)
-            obj.removalshape = env.cut(self.baseobject.Shape)
+            self.outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
+            self.body  = self.outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
+            obj.removalshape = self.stock.Shape.cut(self.body)
             obj.removalshape.tessellate(0.1)
             removalshapes = [(obj.removalshape, False)]
         return removalshapes

@@ -24,7 +24,7 @@
 
 import FreeCAD
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathPocket as PathPocket
+import PathScripts.PathPocketShape as PathPocketShape
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore
@@ -42,7 +42,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         return PathPocketBaseGui.FeaturePocket
 
 Command = PathOpGui.SetupOperation('Pocket Shape',
-        PathPocket.Create,
+        PathPocketShape.Create,
         TaskPanelOpPage,
         'Path-Pocket',
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket Shape"),
