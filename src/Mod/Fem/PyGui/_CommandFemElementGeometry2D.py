@@ -46,7 +46,7 @@ class _CommandFemElementGeometry2D(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry2D")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeElementGeometry2D()]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeElementGeometry2D(FreeCAD.ActiveDocument)]")
 
 
 FreeCADGui.addCommand('FEM_ElementGeometry2D', _CommandFemElementGeometry2D())

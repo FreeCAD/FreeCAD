@@ -72,7 +72,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             analysis_object = analysis
 
         mesh = importToolsFem.make_femmesh(m)
-        result_mesh_object = ObjectsFem.makeMeshResult('Result_mesh')
+        result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
         result_mesh_object.FemMesh = mesh
 
         positions = []
@@ -97,7 +97,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             else:
                 results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(results_name)
+            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
             results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
             if analysis:
