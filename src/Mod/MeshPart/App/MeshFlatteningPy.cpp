@@ -63,7 +63,7 @@ FaceUnwrapper* FaceUnwrapper_constructor(py::object face)
         throw std::invalid_argument("FaceUnwrapper should be initialized with Part.Face");
 }
 
-ColMat<double, 3> interpolateNurbsFacePy(FaceUnwrapper& instance, py::object face)
+ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object face)
 {
     std::cout << face.ptr()->ob_type->tp_name << std::endl;
     std::cout << Part::TopoShapeFacePy::Type.tp_name << std::endl;
@@ -71,7 +71,7 @@ ColMat<double, 3> interpolateNurbsFacePy(FaceUnwrapper& instance, py::object fac
     {
         const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face.ptr());
         const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
-        return instance.interpolateNurbsFace(myFace);
+        return instance.interpolateFlatFace(myFace);
     }
     else
         throw std::invalid_argument("FaceUnwrapper.interpolateNurbs should be initialized with Part.Face");
@@ -114,8 +114,10 @@ PYBIND11_MODULE(flatmesh, m)
 
     py::class_<FaceUnwrapper>(m, "FaceUnwrapper")
         .def(py::init(&FaceUnwrapper_constructor))
+        .def(py::init<ColMat<double, 3>, ColMat<long, 3>>())
         .def("findFlatNodes", &FaceUnwrapper::findFlatNodes)
-        .def("interpolateNurbsFace", &interpolateNurbsFacePy)
+        .def("interpolateFlatFace", &interpolateFlatFacePy)
+        .def("getFlatBoundaryNodes", &FaceUnwrapper::getFlatBoundaryNodes)
         .def_readonly("tris", &FaceUnwrapper::tris)
         .def_readonly("nodes", &FaceUnwrapper::xyz_nodes)
         .def_readonly("uv_nodes", &FaceUnwrapper::uv_nodes)

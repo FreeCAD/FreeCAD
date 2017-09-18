@@ -30,7 +30,6 @@
 #***************************************************************************/
 
 
-
 class MeshPartWorkbench ( Workbench ):
 	"MeshPart workbench object"
 	Icon = """
