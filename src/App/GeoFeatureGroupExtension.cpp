@@ -112,6 +112,9 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
 
 Base::Placement GeoFeatureGroupExtension::globalGroupPlacement() {
     
+    if(getExtendedObject()->isRecomputing())
+        throw Base::Exception("Global placement cannot be calculated on recompute");
+    
     return recursiveGroupPlacement(this);
 }
 
