@@ -47,7 +47,7 @@ class _CommandFemElementFluid1D(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementFluid1D")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeElementFluid1D()]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeElementFluid1D(FreeCAD.ActiveDocument)]")
 
 
 FreeCADGui.addCommand('FEM_ElementFluid1D', _CommandFemElementFluid1D())

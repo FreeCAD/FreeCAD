@@ -384,11 +384,11 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('--------------- Start of FEM tests ---------------')
         box = self.active_doc.addObject("Part::Box", "Box")
         fcc_print('Checking FEM new analysis...')
-        analysis = ObjectsFem.makeAnalysis('Analysis')
+        analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
@@ -400,7 +400,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new material...')
-        new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
+        new_material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
         mat = new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
@@ -558,11 +558,11 @@ class FemCcxAnalysisTest(unittest.TestCase):
         box.Width = 25.4
         box.Length = 203.2
         fcc_print('Checking FEM new analysis...')
-        analysis = ObjectsFem.makeAnalysis('Analysis')
+        analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -573,7 +573,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new material...')
-        new_material_object = ObjectsFem.makeMaterialSolid('MechanicalMaterial')
+        new_material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
         mat = new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
@@ -712,11 +712,11 @@ class FemCcxAnalysisTest(unittest.TestCase):
         points = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27]
         line = Draft.makeWire(points, closed=False, face=False, support=None)
         fcc_print('Checking FEM new analysis...')
-        analysis = ObjectsFem.makeAnalysis('Analysis')
+        analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix('CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -727,7 +727,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new material...')
-        new_material_object = ObjectsFem.makeMaterialFluid('FluidMaterial')
+        new_material_object = ObjectsFem.makeMaterialFluid(self.active_doc, 'FluidMaterial')
         mat = new_material_object.Material
         mat['Name'] = "Water"
         mat['Density'] = "998 kg/m^3"
