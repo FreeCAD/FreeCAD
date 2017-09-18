@@ -2090,11 +2090,11 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                                  Standard_Boolean isSolid,
                                  Standard_Boolean isRuled,
                                  Standard_Boolean isClosed,
-                                 Standard_Integer MaxDegree) const
+                                 Standard_Integer maxDegree) const
 {
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator (isSolid,isRuled);
-    aGenerator.SetMaxDegree(MaxDegree);
+    aGenerator.SetMaxDegree(maxDegree);
 
     TopTools_ListIteratorOfListOfShape it;
     int countShapes = 0;
@@ -2116,7 +2116,8 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     }
 
     if (countShapes < 2) {
-        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face"); }
+        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
+    }
     else {
         // close loft by duplicating initial profile as last profile.  not perfect. 
         if (isClosed) {
@@ -2125,8 +2126,9 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
             - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
-            if (profiles.Last().ShapeType() == TopAbs_VERTEX)  {
-                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n"); }
+            if (profiles.Last().ShapeType() == TopAbs_VERTEX) {
+                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
+            }
             else {
                 // repeat Add logic above for first profile
                 const TopoDS_Shape& firstProfile = profiles.First();
@@ -2135,12 +2137,12 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                     countShapes++;
                 }
                 else if (firstProfile.ShapeType() == TopAbs_EDGE)  {
-                 aGenerator.AddWire(TopoDS::Wire (firstProfile));
-                 countShapes++;
+                    aGenerator.AddWire(TopoDS::Wire (firstProfile));
+                    countShapes++;
                 }
                 else if (firstProfile.ShapeType() == TopAbs_WIRE)  {
-                 aGenerator.AddWire(TopoDS::Wire (firstProfile));
-                 countShapes++;
+                    aGenerator.AddWire(TopoDS::Wire (firstProfile));
+                    countShapes++;
                 }
             }     
         }
@@ -2151,7 +2153,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     aGenerator.Build();
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
-    
+
     //Base::Console().Message("DEBUG: TopoShape::makeLoft returns.\n");
     return aGenerator.Shape();
 }

@@ -208,7 +208,7 @@ public:
     TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
         Standard_Real height, Standard_Real radius) const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid,
-        Standard_Boolean isRuled, Standard_Boolean isClosed = Standard_False, Standard_Integer MaxDegree = 5) const;
+        Standard_Boolean isRuled, Standard_Boolean isClosed = Standard_False, Standard_Integer maxDegree = 5) const;
     TopoDS_Shape makeOffsetShape(double offset, double tol,
         bool intersection = false, bool selfInter = false,
         short offsetMode = 0, short join = 0, bool fill = false) const;
