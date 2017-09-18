@@ -29,6 +29,7 @@
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepLib_MakeWire.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
@@ -256,6 +257,8 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
 // ----------------------------------------------------------------------------
 
+App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2,Geom_BSplineSurface::MaxDegree(),1};
+
 PROPERTY_SOURCE(Part::Loft, Part::Feature)
 
 Loft::Loft()
@@ -266,6 +269,7 @@ Loft::Loft()
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Ruled surface");
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree,(5),"Loft",App::Prop_None,"Maximum Degree");
+    MaxDegree.setConstraints(&Degrees);
 }
 
 short Loft::mustExecute() const
