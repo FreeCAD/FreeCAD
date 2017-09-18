@@ -50,7 +50,7 @@ class _CommandFemMeshRegion(FemCommands):
         if (len(sel) == 1):
             sobj = sel[0]
             if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(App.ActiveDocument." + sobj.Name + ")")
+                FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + sobj.Name + ")")
 
         FreeCADGui.Selection.clearSelection()
 

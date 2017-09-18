@@ -46,7 +46,7 @@ class _CommandFemConstraintSelfWeight(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemConstraintSelfWeight")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeConstraintSelfWeight()]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeConstraintSelfWeight(FreeCAD.ActiveDocument)]")
 
 
 FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeight())
