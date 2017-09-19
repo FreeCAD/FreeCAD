@@ -510,7 +510,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,&ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
-        ctx2.reset();
+        return;
     if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
         ctx.reset();
 
