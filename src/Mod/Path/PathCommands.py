@@ -58,7 +58,7 @@ class _CommandSelectLoop:
             sel = FreeCADGui.Selection.getSelectionEx()[0]
             sub1 = sel.SubElementNames[0]
             if sub1[0:4] != 'Edge':
-                if len(sel.SubElementNames) == 1 and sub1[0:4] == 'Face' and horizontalFaceLoop(sel.Object, sel.SubObjects[0]):
+                if sub1[0:4] == 'Face' and horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames):
                     return True
                 return False
             if len(sel.SubElementNames) == 1 and horizontalEdgeLoop(sel.Object, sel.SubObjects[0]):
@@ -74,15 +74,14 @@ class _CommandSelectLoop:
         sel = FreeCADGui.Selection.getSelectionEx()[0]
         obj = sel.Object
         edge1 = sel.SubObjects[0]
-        if len(sel.SubObjects) == 1:
-            if 'Face' in sel.SubElementNames[0]:
-                loop = horizontalFaceLoop(sel.Object, sel.SubObjects[0])
-                if loop:
-                    FreeCADGui.Selection.clearSelection()
-                    FreeCADGui.Selection.addSelection(sel.Object, loop)
-                loopwire = []
-            else:
-                loopwire = horizontalEdgeLoop(obj, edge1)
+        if 'Face' in sel.SubElementNames[0]:
+            loop = horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            if loop:
+                FreeCADGui.Selection.clearSelection()
+                FreeCADGui.Selection.addSelection(sel.Object, loop)
+            loopwire = []
+        elif len(sel.SubObjects) == 1:
+            loopwire = horizontalEdgeLoop(obj, edge1)
         else:
             edge2 = sel.SubObjects[1]
             loopwire = loopdetect(obj, edge1, edge2)
