@@ -740,9 +740,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [new_material_object]
 
         fcc_print('Checking FEM Flow1D inlet constraint...')
-        Flow1d_inlet = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_inlet)
+        Flow1d_inlet = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_inlet.SectionType = 'Liquid'
         Flow1d_inlet.LiquidSectionType = 'PIPE INLET'
         Flow1d_inlet.InletPressure = 0.1
@@ -751,9 +749,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_inlet]
 
         fcc_print('Checking FEM new Flow1D entrance constraint...')
-        Flow1d_entrance = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_entrance)
+        Flow1d_entrance = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_entrance.SectionType = 'Liquid'
         Flow1d_entrance.LiquidSectionType = 'PIPE ENTRANCE'
         Flow1d_entrance.EntrancePipeArea = 31416.00
@@ -763,9 +759,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_entrance]
 
         fcc_print('Checking FEM new Flow1D manning constraint...')
-        Flow1d_manning = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_manning)
+        Flow1d_manning = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_manning.SectionType = 'Liquid'
         Flow1d_manning.LiquidSectionType = 'PIPE MANNING'
         Flow1d_manning.ManningArea = 31416
@@ -776,9 +770,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_manning]
 
         fcc_print('Checking FEM new Flow1D bend constraint...')
-        Flow1d_bend = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_bend)
+        Flow1d_bend = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_bend.SectionType = 'Liquid'
         Flow1d_bend.LiquidSectionType = 'PIPE BEND'
         Flow1d_bend.BendPipeArea = 31416
@@ -790,9 +782,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_bend]
 
         fcc_print('Checking FEM new Flow1D enlargement constraint...')
-        Flow1d_enlargement = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_enlargement)
+        Flow1d_enlargement = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_enlargement.SectionType = 'Liquid'
         Flow1d_enlargement.LiquidSectionType = 'PIPE ENLARGEMENT'
         Flow1d_enlargement.EnlargeArea1 = 31416.00
@@ -802,9 +792,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_enlargement]
 
         fcc_print('Checking FEM new Flow1D manning constraint...')
-        Flow1d_manning1 = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_manning1)
+        Flow1d_manning1 = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_manning1.SectionType = 'Liquid'
         Flow1d_manning1.LiquidSectionType = 'PIPE MANNING'
         Flow1d_manning1.ManningArea = 70686.00
@@ -815,9 +803,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_manning1]
 
         fcc_print('Checking FEM new Flow1D contraction constraint...')
-        Flow1d_contraction = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_contraction)
+        Flow1d_contraction = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_contraction.SectionType = 'Liquid'
         Flow1d_contraction.LiquidSectionType = 'PIPE CONTRACTION'
         Flow1d_contraction.ContractArea1 = 70686
@@ -827,9 +813,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_contraction]
 
         fcc_print('Checking FEM new Flow1D manning constraint...')
-        Flow1d_manning2 = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_manning2)
+        Flow1d_manning2 = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_manning2.SectionType = 'Liquid'
         Flow1d_manning2.LiquidSectionType = 'PIPE MANNING'
         Flow1d_manning2.ManningArea = 17671.00
@@ -840,9 +824,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_manning2]
 
         fcc_print('Checking FEM new Flow1D gate valve constraint...')
-        Flow1d_gate_valve = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_gate_valve)
+        Flow1d_gate_valve = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_gate_valve.SectionType = 'Liquid'
         Flow1d_gate_valve.LiquidSectionType = 'PIPE GATE VALVE'
         Flow1d_gate_valve.GateValvePipeArea = 17671
@@ -852,9 +834,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_gate_valve]
 
         fcc_print('Checking FEM new Flow1D enlargement constraint...')
-        Flow1d_enlargement1 = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_enlargement1)
+        Flow1d_enlargement1 = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_enlargement1.SectionType = 'Liquid'
         Flow1d_enlargement1.LiquidSectionType = 'PIPE ENLARGEMENT'
         Flow1d_enlargement1.EnlargeArea1 = 17671
@@ -864,9 +844,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_enlargement1]
 
         fcc_print('Checking FEM Flow1D outlet constraint...')
-        Flow1d_outlet = self.active_doc.addObject("Fem::FeaturePython", "ElementFluid1D")
-        import PyObjects._FemElementFluid1D
-        PyObjects._FemElementFluid1D._FemElementFluid1D(Flow1d_outlet)
+        Flow1d_outlet = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
         Flow1d_outlet.SectionType = 'Liquid'
         Flow1d_outlet.LiquidSectionType = 'PIPE OUTLET'
         Flow1d_outlet.OutletPressure = 0.1
@@ -875,9 +853,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [Flow1d_outlet]
 
         fcc_print('Checking FEM self weight constraint...')
-        Flow1d_self_weight = self.active_doc.addObject("Fem::FeaturePython", "ConstraintSelfWeight")
-        import PyObjects._FemConstraintSelfWeight
-        PyObjects._FemConstraintSelfWeight._FemConstraintSelfWeight(Flow1d_self_weight)
+        Flow1d_self_weight = ObjectsFem.makeConstraintSelfWeight(self.active_doc, "ConstraintSelfWeight")
         Flow1d_self_weight.Gravity_x = 0.0
         Flow1d_self_weight.Gravity_y = 0.0
         Flow1d_self_weight.Gravity_z = -1.0
