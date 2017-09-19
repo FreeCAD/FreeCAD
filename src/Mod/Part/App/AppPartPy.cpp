@@ -259,7 +259,7 @@ public:
             "read(string) -- Load the file and return the shape."
         );
         add_varargs_method("show",&Module::show,
-            "show(shape) -- Add the shape to the active document or create one if no document exists."
+            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists."
         );
         add_varargs_method("makeCompound",&Module::makeCompound,
             "makeCompound(list) -- Create a compound out of a list of shapes."
@@ -607,15 +607,16 @@ private:
     }
     Py::Object show(const Py::Tuple& args)
     {
-        PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(TopoShapePy::Type), &pcObj))
+        PyObject *pcObj = 0;
+        char *name = "Shape";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
             throw Py::Exception();
 
         App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
-        Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", "Shape");
+        Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", name);
         // copy the data
         //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
         pcFeature->Shape.setValue(pShape->getTopoShapePtr()->getShape());
