@@ -52,12 +52,12 @@ class _CommandFemMeshGmshFromShape(FemCommands):
                 mesh_obj_name = 'FEMMeshGMSH'
                 # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
                 FreeCADGui.addModule("ObjectsFem")
-                FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh('" + mesh_obj_name + "')")
-                FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Part = App.ActiveDocument." + sel[0].Name)
+                FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument." + sel[0].Name)
                 if FemGui.getActiveAnalysis():
                     FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
-                FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)")
+                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FreeCAD.ActiveDocument.ActiveObject]")
+                FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
 
         FreeCADGui.Selection.clearSelection()
 

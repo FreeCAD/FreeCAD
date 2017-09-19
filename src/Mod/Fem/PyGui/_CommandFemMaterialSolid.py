@@ -50,9 +50,9 @@ class _CommandFemMaterialSolid(FemCommands):
             FreeCADGui.setActiveDocument(femDoc)
         FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid('SolidMaterial')")
-        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
-        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid(FreeCAD.ActiveDocument, 'SolidMaterial')")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".Member = FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".Member + [FreeCAD.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
 
 
 FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())
