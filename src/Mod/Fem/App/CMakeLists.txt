@@ -97,7 +97,6 @@ SET(FemScripts_SRCS
     FemSettings.py
     FemTask.py
     FemRun.py
-    FemSelectionWidgets.py
     FemSignal.py
     FemConstraint.py
     TestFem.py
@@ -166,6 +165,7 @@ SET(FemZ88_SRCS
 SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
     PyGui/FemSelectionObserver.py
+    PyGui/FemSelectionWidgets.py
     PyGui/__init__.py
     PyGui/_CommandFemAnalysis.py
     PyGui/_CommandFemConstraintSelfWeight.py

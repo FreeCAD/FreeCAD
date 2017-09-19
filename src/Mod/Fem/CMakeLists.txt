@@ -45,7 +45,6 @@ INSTALL(
         FemSettings.py
         FemTask.py
         FemRun.py
-        FemSelectionWidgets.py
         FemSignal.py
         FemConstraint.py
         TestFem.py
@@ -134,6 +133,7 @@ INSTALL(
     FILES
         PyGui/FemCommands.py
         PyGui/FemSelectionObserver.py
+        PyGui/FemSelectionWidgets.py
         PyGui/__init__.py
         PyGui/_CommandFemSolverElmer.py
         PyGui/_CommandFemEquation.py

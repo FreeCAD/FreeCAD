@@ -32,7 +32,7 @@ import FemConstraint
 from FreeCAD import Units
 
 import FreeCADGui as Gui
-import FemSelectionWidgets
+from . import FemSelectionWidgets
 
 
 class ViewProxy(FemConstraint.ViewProxy):
