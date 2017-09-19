@@ -433,6 +433,36 @@ Base::Matrix4D TopoShape::getTransform(void) const
     return mtrx;
 }
 
+void TopoShape::setPlacement(const Base::Placement& rclTrf)
+{
+    const Base::Vector3d& pos = rclTrf.getPosition();
+    Base::Vector3d axis;
+    double angle;
+    rclTrf.getRotation().getValue(axis, angle);
+
+    gp_Trsf trsf;
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0.,0.,0.), gp_Dir(axis.x, axis.y, axis.z)), angle);
+    trsf.SetTranslationPart(gp_Vec(pos.x, pos.y, pos.z));
+    TopLoc_Location loc(trsf);
+    _Shape.Location(loc);
+}
+
+Base::Placement TopoShape::getPlacemet(void) const
+{
+    TopLoc_Location loc = _Shape.Location();
+    gp_Trsf trsf = loc.Transformation();
+    gp_XYZ pos = trsf.TranslationPart();
+
+    gp_XYZ axis;
+    Standard_Real angle;
+    trsf.GetRotation(axis, angle);
+
+    Base::Rotation rot(Base::Vector3d(axis.X(), axis.Y(), axis.Z()), angle);
+    Base::Placement placement(Base::Vector3d(pos.X(), pos.Y(), pos.Z()), rot);
+
+    return placement;
+}
+
 void TopoShape::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
