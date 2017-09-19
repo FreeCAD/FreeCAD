@@ -67,8 +67,22 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
         ShapeBinder::getFilteredReferences(&Support, obj, subs);
         //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
         if(obj) {
-            Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs).getShape());
-            Placement.setValue(obj->Placement.getValue());
+			TopoDS_Shape shape = ShapeBinder::buildShapeFromReferences(obj, subs).getShape();
+				
+			TopLoc_Location loc = shape.Location();
+			gp_Trsf trsf = loc.Transformation();
+			gp_XYZ transl = trsf.TranslationPart();
+			
+			gp_XYZ xyz_rot;
+			Standard_Real theAngle;
+			trsf.GetRotation(xyz_rot, theAngle);
+
+			Base::Vector3d vect_rot(xyz_rot.X(), xyz_rot.Y(), xyz_rot.Z());
+			Base::Rotation rot(vect_rot, theAngle);
+			Base::Placement place(Base::Vector3d(transl.X(), transl.Y(), transl.Z()), rot);
+			
+			Shape.setValue(shape);
+			Placement.setValue(place);
         }
     }
 
