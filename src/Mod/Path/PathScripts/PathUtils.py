@@ -226,13 +226,9 @@ def horizontalEdgeLoop(obj, edge):
         return loops[0]
     return None
 
-def horizontalFaceLoop(obj, face):
-    '''horizontalFaceLoop(obj, face) ... returns a list of face names which form the walls of a vertical hole face is a part of.'''
-
-    if not face and not obj:
-        sel = FreeCADGui.Selection.getSelectionEx()[0]
-        obj = sel.Object
-        face = sel.SubObjects[0]
+def horizontalFaceLoop(obj, face, faceList=None):
+    '''horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
+    All face names listed in faceList must be part of the hole for the solution to be returned.'''
 
     wires = [horizontalEdgeLoop(obj, e) for e in face.Edges]
     # Not sure if sorting by Area is a premature optimization - but it seems
@@ -244,6 +240,9 @@ def horizontalFaceLoop(obj, face):
 
         #find all faces that share a an edge with the wire and are vertical
         faces = ["Face%d"%(i+1) for i,f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
+
+        if faceList and not all(f in faces for f in faceList):
+            continue
 
         # verify they form a valid hole by getting the outline and comparing
         # the resulting XY footprint with that of the faces
