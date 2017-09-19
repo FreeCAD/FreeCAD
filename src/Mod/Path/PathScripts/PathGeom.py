@@ -148,12 +148,14 @@ class PathGeom:
             if type(obj.Surface) == Part.Cylinder:
                 return cls.isVertical(obj.Surface.Axis)
             PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % type(obj.Surface))
+            return None
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line:
                 return cls.isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-            if type(obj.Curve) == Part.Circle:
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse:
                 return cls.isHorizontal(obj.Curve.Axis)
             PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % type(obj.Curve))
+            return None
         PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
 
     @classmethod
@@ -167,12 +169,14 @@ class PathGeom:
             if type(obj.Surface) == Part.Cylinder:
                 return cls.isHorizontal(obj.Surface.Axis)
             PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % type(obj.Surface))
+            return None
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line:
                 return cls.isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-            if type(obj.Curve) == Part.Circle:
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse:
                 return cls.isVertical(obj.Curve.Axis)
             PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % type(obj.Curve))
+            return None
         PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
 
 
