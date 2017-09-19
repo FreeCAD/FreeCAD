@@ -2277,7 +2277,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         return;
 
     if(!subname || *subname==0) {
-        item->selected=2;
+        item->selected+=2;
         item->mySub.clear();
         return;
     }
@@ -2290,7 +2290,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     if((dot=strchr(subname,'.'))) 
         nextsub = dot+1;
     else {
-        item->selected=2;
+        item->selected+=2;
         item->mySub = subname;
         return;
     }
@@ -2299,7 +2299,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     auto subObj = item->object()->getObject()->getSubObject(name.c_str());
     if(!subObj) {
         FC_WARN("sub object not found " << item->getName() << '.' << name.c_str());
-        item->selected = 2;
+        item->selected += 2;
         item->mySub = name;
         return;
     }
@@ -2326,7 +2326,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     // The sub object is not found. Maybe it is a non-object sub-element.
     // Select the current object instead.
     FC_TRACE("element " << subname << " not found");
-    item->selected=2;
+    item->selected+=2;
     item->mySub = subname;
 }
 
@@ -2356,12 +2356,10 @@ void DocumentItem::selectItems(bool sync) {
             item->selected = 0;
             item->setSelected(false);
         }else if(item->selected) {
+            if(!first && item->selected==2) 
+                first = item;
             item->selected = 1;
             item->setSelected(true);
-            if(first) 
-                sync = false;
-            else
-                first = item;
         }
     END_FOREACH_ITEM;
 
