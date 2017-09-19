@@ -221,7 +221,7 @@ def horizontalEdgeLoop(obj, edge):
     '''horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
     h = edge.hashCode()
     wires = [w for w in obj.Shape.Wires if any(e.hashCode() == h for e in w.Edges)]
-    loops = [w for w in wires if PathGeom.isHorizontal(Part.Face(w))]
+    loops = [w for w in wires if all(PathGeom.isHorizontal(e) for e in w.Edges) and PathGeom.isHorizontal(Part.Face(w))]
     if len(loops) == 1:
         return loops[0]
     return None
