@@ -46,6 +46,16 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
     return obj
 
 
+def makeConstraintBodyHeatSource(name="BodyHeatSource"):
+    obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintBodyHeatSource
+    PyObjects._FemConstraintBodyHeatSource.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintBodyHeatSource
+        PyGui._ViewProviderFemConstraintBodyHeatSource.ViewProxy(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(doc, name="ConstraintContact"):
     '''makeConstraintContact(document, [name]): makes a Fem ConstraintContact object'''
     obj = doc.addObject("Fem::ConstraintContact", name)
@@ -70,6 +80,16 @@ def makeConstraintFluidBoundary(doc, name="ConstraintFluidBoundary"):
     return obj
 
 
+def makeConstraintFlowVelocity(doc, name="FlowVelocity"):
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintFlowVelocity
+    PyObjects._FemConstraintFlowVelocity.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintFlowVelocity
+        PyGui._ViewProviderFemConstraintFlowVelocity.ViewProxy(obj.ViewObject)
+    return obj
+
+
 def makeConstraintForce(doc, name="ConstraintForce"):
     '''makeConstraintForce(document, [name]): makes a Fem ConstraintForce object'''
     obj = doc.addObject("Fem::ConstraintForce", name)
@@ -85,6 +105,16 @@ def makeConstraintGear(doc, name="ConstraintGear"):
 def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
     '''makeConstraintHeatflux(document, [name]): makes a Fem ConstraintHeatflux object'''
     obj = doc.addObject("Fem::ConstraintHeatflux", name)
+    return obj
+
+
+def makeConstraintInitialFlowVelocity(doc,name="InitialFlowVelocity"):
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintInitialFlowVelocity
+    PyObjects._FemConstraintInitialFlowVelocity.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintInitialFlowVelocity
+        PyGui._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy(obj.ViewObject)
     return obj
 
 
@@ -120,36 +150,6 @@ def makeConstraintSelfWeight(doc, name="ConstraintSelfWeight"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemConstraintSelfWeight
         PyGui._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
-    return obj
-
-
-def makeConstraintBodyHeatSource(doc, name="BodyHeatSource"):
-    obj = doc.addObject("Fem::ConstraintPython", name)
-    import PyObjects._FemConstraintBodyHeatSource
-    PyObjects._FemConstraintBodyHeatSource.Proxy(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemConstraintBodyHeatSource
-        PyGui._ViewProviderFemConstraintBodyHeatSource.ViewProxy(obj.ViewObject)
-    return obj
-
-
-def makeConstraintFlowVelocity(doc, name="FlowVelocity"):
-    obj = doc.addObject("Fem::ConstraintPython", name)
-    import PyObjects._FemConstraintFlowVelocity
-    PyObjects._FemConstraintFlowVelocity.Proxy(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemConstraintFlowVelocity
-        PyGui._ViewProviderFemConstraintFlowVelocity.ViewProxy(obj.ViewObject)
-    return obj
-
-
-def makeConstraintInitialFlowVelocity(name="InitialFlowVelocity"):
-    obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPython", name)
-    import PyObjects._FemConstraintInitialFlowVelocity
-    PyObjects._FemConstraintInitialFlowVelocity.Proxy(obj)
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemConstraintInitialFlowVelocity
-        PyGui._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy(obj.ViewObject)
     return obj
 
 
