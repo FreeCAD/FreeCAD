@@ -835,7 +835,7 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
 {
-    if(updateDevicePixelRatio()) {
+    if (updateDevicePixelRatio()) {
         qreal dev_pix_ratio = devicePixelRatio();
         int width = static_cast<int>(dev_pix_ratio * this->width());
         int height = static_cast<int>(dev_pix_ratio * this->height());

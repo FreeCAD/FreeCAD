@@ -48,7 +48,7 @@ using namespace SIM::Coin3D::Quarter;
   devices.
 */
 
-InputDevice::InputDevice(void)
+InputDevice::InputDevice(void) : quarter(nullptr)
 {
   this->mousepos = SbVec2s(0, 0);
 }
