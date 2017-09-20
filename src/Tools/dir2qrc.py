@@ -20,7 +20,7 @@ Examples:
   
    dir2qrc  -v -o resource.qrc -d "d:/Develop/Resources"
  
-Autor:
+Author:
   (c) 2007 Juergen Riegel
   juergen.riegel@web.de
   Licence: GPL
