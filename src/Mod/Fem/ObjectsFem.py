@@ -342,7 +342,7 @@ def makeResultMechanical(doc, name="MechanicalResult"):
 
 
 ########## solver objects ##########
-def makeSolverCalculixOld(doc, name="CalculiX"):
+def makeSolverCalculixOld(doc, name="CalculiXOld"):
     '''makeSolverCalculixOld(document, name): makes a Calculix solver object'''
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
     import PyObjects._FemSolverCalculix
@@ -360,14 +360,14 @@ def makeSolverCalculix(doc, name="SolverCalculiX"):
     return obj
 
 
-def makeSolverElmer(doc, name="Elmer"):
+def makeSolverElmer(doc, name="SolverElmer"):
     '''makeSolverElmer(document, name): makes a Elmer solver object'''
     import femsolver.elmer.solver
     obj = femsolver.elmer.solver.create(doc, name)
     return obj
 
 
-def makeSolverZ88(doc, name="Z88"):
+def makeSolverZ88(doc, name="SolverZ88"):
     '''makeSolverZ88(document, name): makes a Z88 solver object'''
     import femsolver.z88.solver
     obj = femsolver.z88.solver.create(doc, name)
