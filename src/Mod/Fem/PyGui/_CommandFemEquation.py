@@ -110,7 +110,7 @@ class Flow(_Base):
         }
 
 
-Gui.addCommand('FEM_AddEquationHeat', Heat())
-Gui.addCommand('FEM_AddEquationElasticity', Elasticity())
-Gui.addCommand('FEM_AddEquationElectrostatic', Electrostatic())
-Gui.addCommand('FEM_AddEquationFlow', Flow())
+Gui.addCommand('FEM_EquationHeat', Heat())
+Gui.addCommand('FEM_EquationElasticity', Elasticity())
+Gui.addCommand('FEM_EquationElectrostatic', Electrostatic())
+Gui.addCommand('FEM_EquationFlow', Flow())
