@@ -53,7 +53,7 @@ class Command(FemCommands.FemCommands):
         Gui.addModule("ObjectsFem")
         Gui.doCommand(
             "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintBodyHeatSource()]")
+            "[ObjectsFem.makeConstraintBodyHeatSource(FreeCAD.ActiveDocument)]")
 
 
 Gui.addCommand('FEM_ConstraintBodyHeatSource', Command())

@@ -53,7 +53,7 @@ class Command(FemCommands.FemCommands):
         Gui.addModule("ObjectsFem")
         Gui.doCommand(
             "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintInitialFlowVelocity()]")
+            "[ObjectsFem.makeConstraintInitialFlowVelocity(FreeCAD.ActiveDocument)]")
 
 
 Gui.addCommand('FEM_ConstraintInitialFlowVelocity', Command())
