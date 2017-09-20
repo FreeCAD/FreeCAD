@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "the constraint body heat flux object"
+__title__ = "the constraint body heat source object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -31,10 +31,10 @@ import FemConstraint
 
 class Proxy(FemConstraint.Proxy):
 
-    Type = "Fem::FemConstraintBodyHeatFlux"
+    Type = "Fem::FemConstraintBodyHeatSource"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat", "HeatFlux",
-            "Base", "Body heat flux")
+            "App::PropertyFloat", "HeatSource",
+            "Base", "Body heat source")

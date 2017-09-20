@@ -21,15 +21,39 @@
 # ***************************************************************************
 
 
-__title__ = "view provider for constraint body heat flux object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__title__ = "AddConstraintBodyHeatSource"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemConstraint
+from PySide import QtCore
+
+import FreeCAD as App
+import FreeCADGui as Gui
+from PyGui import FemCommands
 
 
-class ViewProxy(FemConstraint.ViewProxy):
+class Command(FemCommands.FemCommands):
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-heatflux.svg"
+    def __init__(self):
+        super(Command, self).__init__()
+        self.resources = {
+            'Pixmap': 'fem-constraint-heatflux',
+            'MenuText': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintBodyHeatSource",
+                "Constraint body heat source"),
+            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintBodyHeatFlux",
+                "Creates a FEM constraint body heat source")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        App.ActiveDocument.openTransaction(
+            "Create FemConstraintBodyHeatSource")
+        Gui.addModule("ObjectsFem")
+        Gui.doCommand(
+            "FemGui.getActiveAnalysis().Member += "
+            "[ObjectsFem.makeConstraintBodyHeatSource()]")
+
+
+Gui.addCommand('FEM_ConstraintBodyHeatSource', Command())

@@ -172,8 +172,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Separator"
              << "FEM_ConstraintHeatflux"
              << "FEM_ConstraintTemperature"
-
-             << "FEM_AddConstraintBodyHeatFlux";
+             << "FEM_ConstraintBodyHeatSource";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");

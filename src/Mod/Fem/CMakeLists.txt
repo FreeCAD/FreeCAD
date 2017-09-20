@@ -56,7 +56,7 @@ INSTALL(
     FILES
         PyObjects/__init__.py
         PyObjects/_FemConstraintSelfWeight.py
-        PyObjects/_FemConstraintBodyHeatFlux.py
+        PyObjects/_FemConstraintBodyHeatSource.py
         PyObjects/_FemConstraintFlowVelocity.py
         PyObjects/_FemConstraintInitialFlowVelocity.py
         PyObjects/_FemElementFluid1D.py
@@ -137,7 +137,7 @@ INSTALL(
         PyGui/__init__.py
         PyGui/_CommandFemSolverElmer.py
         PyGui/_CommandFemEquation.py
-        PyGui/_CommandFemConstraintBodyHeatFlux.py
+        PyGui/_CommandFemConstraintBodyHeatSource.py
         PyGui/_CommandFemConstraintFlowVelocity.py
         PyGui/_CommandFemConstraintInitialFlowVelocity.py
         PyGui/_CommandFemAnalysis.py
@@ -174,7 +174,7 @@ INSTALL(
         PyGui/_TaskPanelFemSolverCalculix.py
         PyGui/_TaskPanelFemSolverControl.py
         PyGui/_ViewProviderFemConstraintSelfWeight.py
-        PyGui/_ViewProviderFemConstraintBodyHeatFlux.py
+        PyGui/_ViewProviderFemConstraintBodyHeatSource.py
         PyGui/_ViewProviderFemConstraintFlowVelocity.py
         PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
         PyGui/_ViewProviderFemElementFluid1D.py
