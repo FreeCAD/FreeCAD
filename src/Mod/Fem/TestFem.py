@@ -559,7 +559,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         # use new solver frame work solver
         fcc_print('Checking FEM new solver for new solver frame work...')
-        solver_ccx2_object = ObjectsFem.makeSolverCalculix('SolverCalculiX')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
         solver_ccx2_object.GeometricalNonlinearity = 'linear'
         solver_ccx2_object.ThermoMechSteadyState = False
         solver_ccx2_object.MatrixSolverType = 'default'

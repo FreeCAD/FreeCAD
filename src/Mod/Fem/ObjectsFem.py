@@ -46,8 +46,8 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
     return obj
 
 
-def makeConstraintBodyHeatSource(name="BodyHeatSource"):
-    obj = FreeCAD.ActiveDocument.addObject("Fem::ConstraintPython", name)
+def makeConstraintBodyHeatSource(doc, name="BodyHeatSource"):
+    obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintBodyHeatSource
     PyObjects._FemConstraintBodyHeatSource.Proxy(obj)
     if FreeCAD.GuiUp:
@@ -108,7 +108,7 @@ def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
     return obj
 
 
-def makeConstraintInitialFlowVelocity(doc,name="InitialFlowVelocity"):
+def makeConstraintInitialFlowVelocity(doc, name="InitialFlowVelocity"):
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintInitialFlowVelocity
     PyObjects._FemConstraintInitialFlowVelocity.Proxy(obj)
