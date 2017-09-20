@@ -38,10 +38,10 @@ class Command(QtCore.QObject):
     def Activated(self):
         analysis = FemGui.getActiveAnalysis()
         App.ActiveDocument.openTransaction("Create Elmer solver object")
-        Gui.addModule("femsolver.elmer.solver")
+        Gui.addModule("ObjectsFem")
         Gui.doCommand(
-            "App.ActiveDocument.%s.Member += "
-            "[femsolver.elmer.solver.create(App.ActiveDocument)]"
+            "FreeCAD.ActiveDocument.%s.Member += "
+            "[ObjectsFem.makeSolverElmer(FreeCAD.ActiveDocument)]"
             % analysis.Name)
         App.ActiveDocument.commitTransaction()
         App.ActiveDocument.recompute()
