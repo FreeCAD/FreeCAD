@@ -35,13 +35,14 @@
 
 #include <Quarter/Basic.h>
 #include <Inventor/SbVec2s.h>
-#include <Quarter/QuarterWidget.h>
 
 class QEvent;
 class SoEvent;
 class QInputEvent;
 
 namespace SIM { namespace Coin3D { namespace Quarter {
+
+class QuarterWidget;
 
 class QUARTER_DLL_API InputDevice {
 public:
