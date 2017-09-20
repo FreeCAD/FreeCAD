@@ -56,4 +56,4 @@ class Command(FemCommands.FemCommands):
             "[ObjectsFem.makeConstraintFlowVelocity()]")
 
 
-Gui.addCommand('FEM_AddConstraintFlowVelocity', Command())
+Gui.addCommand('FEM_ConstraintFlowVelocity', Command())
