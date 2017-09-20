@@ -68,8 +68,8 @@ class _CommandFemSolverCalculix(FemCommands):
             FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
             FreeCADGui.addModule("femsolver.calculix.solver")
             FreeCADGui.doCommand(
-                "App.ActiveDocument.%s.Member += "
-                "[femsolver.calculix.solver.create(App.ActiveDocument)]"
+                "FreeCAD.ActiveDocument.%s.Member += "
+                "[femsolver.calculix.solver.create(FreeCAD.ActiveDocument)]"
                 % analysis.Name)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
