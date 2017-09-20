@@ -343,7 +343,7 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
     std::map<App::DocumentObject*,SelectionObject> SortMap;
 
     // check the type
-    if (typeId == Base::Type::badType()) 
+    if (typeId == Base::Type::badType())
         return temp;
 
     App::Document *pcDoc;
@@ -479,41 +479,43 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     if (DocName != "")
         rmvPreselect();
 
-    if (ActiveGate) {
-        App::Document* pDoc = getDocument(pDocName);
-        if (pDoc) {
-            if (pObjectName) {
-                App::DocumentObject* pObject = pDoc->getObject(pObjectName);
-                if (!ActiveGate->allow(pDoc,pObject,pSubName)) {
-                    QString msg;
-                    if (ActiveGate->notAllowedReason.length() > 0){
-                        msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
-                    } else {
-                        msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
-                    }
-                    msg.append(
-                                QObject::tr(" %1.%2.%3 ")
-                               .arg(QString::fromLatin1(pDocName))
-                               .arg(QString::fromLatin1(pObjectName))
-                               .arg(QString::fromLatin1(pSubName))
-                                );
-
-                    if (getMainWindow()) {
-                        getMainWindow()->showMessage(msg);
-                        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                        mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
-                    }
-                    return false;
-                }
-
-            }
-            else
-                return ActiveGate->allow(pDoc,0,0);
-        }
-        else
+    App::Document* pDoc = getDocument(pDocName);
+    // No point hanging around if there's nothing to do:
+    if (!pDoc) return false;
+    if (!pObjectName) {
+        if (ActiveGate) {
+            return ActiveGate->allow(pDoc,0,0);
+        } else {
             return false;
-
+        }
     }
+
+    App::DocumentObject* pObject = pDoc->getObject(pObjectName);
+
+    // selection filtered?
+    if (ActiveGate && !ActiveGate->allow(pDoc,pObject,pSubName)) {
+        QString msg;
+        if (ActiveGate->notAllowedReason.length() > 0){
+            msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+        } else {
+            msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
+        }
+        msg.append(
+                    QObject::tr(" %1.%2.%3 (%4)")
+                   .arg(QString::fromLatin1(pDocName))
+                   .arg(QString::fromLatin1(pObjectName))
+                   .arg(QString::fromLatin1(pSubName))
+                   .arg(QString::fromLatin1(pObject->Label.getStrValue().c_str()))
+                    );
+
+        if (getMainWindow()) {
+            getMainWindow()->showMessage(msg);
+            Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
+        }
+        return false;
+    }
+    // selection allowed...
 
     DocName = pDocName;
     FeatName= pObjectName;
@@ -536,18 +538,21 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     // set the current preselection
     CurrentPreselection = Chng;
 
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",Chng.pDocName
+
+    snprintf(buf,512,"Preselected: %s; %s.%s.%s (%f,%f,%f)"
+                                                       ,pObject->Label.getStrValue().c_str()
+                                                       ,Chng.pDocName
                                                        ,Chng.pObjectName
                                                        ,Chng.pSubName
                                                        ,x,y,z);
 
     //FIXME: We shouldn't replace the possibly defined edit cursor
     //with the arrow cursor. But it seems that we don't even have to.
-    //if (getMainWindow()){
-    //    getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+    if (getMainWindow()){
+        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
     //    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     //    mdi->restoreOverrideCursor();
-    //}
+    }
 
     Notify(Chng);
     signalSelectionChanged(Chng);
@@ -560,7 +565,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
 
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 {
-    static char buf[513];
+    //static char buf[513];
 
     // if nothing is in preselect ignore
     if(!CurrentPreselection.pObjectName) return;
@@ -568,7 +573,8 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.x = x;
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
-
+/*
+ * seems noisy and pointless...
     snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",CurrentPreselection.pDocName
                                                        ,CurrentPreselection.pObjectName
                                                        ,CurrentPreselection.pSubName
@@ -576,6 +582,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 
     if (getMainWindow())
         getMainWindow()->showMessage(QString::fromLatin1(buf));
+*/
 }
 
 void SelectionSingleton::rmvPreselect()
@@ -626,7 +633,7 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate)
 {
     if (ActiveGate)
         rmvSelectionGate();
-    
+
     ActiveGate = gate;
 
 }
@@ -669,7 +676,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             temp.pObject = temp.pDoc->getObject(pObjectName);
         else
             temp.pObject = 0;
-        
+
         // check for a Selection Gate
         if (ActiveGate) {
             if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
@@ -725,7 +732,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         return true;
     }
     else {
-        // neither an existing nor active document available 
+        // neither an existing nor active document available
         // this can often happen when importing .iv files
         Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
         return false;
@@ -776,7 +783,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         return true;
     }
     else {
-        // neither an existing nor active document available 
+        // neither an existing nor active document available
         // this can often happen when importing .iv files
         Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
         return false;
@@ -810,7 +817,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
 
             Notify(Chng);
             signalSelectionChanged(Chng);
-      
+
             rmvList.push_back(Chng);
 #ifdef FC_DEBUG
             Base::Console().Log("Sel : Rmv Selection \"%s.%s.%s\"\n",pDocName,pObjectName,pSubName);
@@ -1028,7 +1035,7 @@ void SelectionSingleton::destruct (void)
 
 // SelectionSingleton Methods  // Methods structure
 PyMethodDef SelectionSingleton::Methods[] = {
-    {"addSelection",         (PyCFunction) SelectionSingleton::sAddSelection, 1, 
+    {"addSelection",         (PyCFunction) SelectionSingleton::sAddSelection, 1,
      "addSelection(object,[string,float,float,float]) -- Add an object to the selection\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, 1,
@@ -1141,7 +1148,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
     PyObject *object;
     char* subname=0;
     if (!PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type),&object,&subname))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
@@ -1160,7 +1167,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
 PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     char *documentName=0;
-    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     documentName ? Selection().clearSelection(documentName) : Selection().clearCompleteSelection();
     Py_Return;
@@ -1171,7 +1178,7 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, P
     PyObject *object;
     char* subname=0;
     if (!PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type), &object, &subname))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     App::DocumentObjectPy* docObj = static_cast<App::DocumentObjectPy*>(object);
     bool ok = Selection().isSelected(docObj->getDocumentObjectPtr(), subname);
@@ -1196,7 +1203,7 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
 PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     char *documentName=0;
-    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionSingleton::SelObj> sel;
@@ -1216,7 +1223,7 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args,
 
 PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionSingleton::SelObj> sel;
@@ -1237,7 +1244,7 @@ PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObjec
 PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     char *documentName=0;
-    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionObject> sel;
@@ -1347,7 +1354,7 @@ PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *a
 PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     PY_TRY {
         Selection().rmvSelectionGate();
