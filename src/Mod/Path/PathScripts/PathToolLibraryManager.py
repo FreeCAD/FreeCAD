@@ -148,6 +148,9 @@ class ToolLibraryManager():
     TooltableTypeHeekscad = translate("TooltableEditor", "HeeksCAD tooltable (*.tooltable)")
     TooltableTypeLinuxCNC = translate("TooltableEditor", "LinuxCNC tooltable (*.tbl)")
 
+    PreferenceMainLibraryXML = "ToolLibrary"
+    PreferenceMainLibraryJSON = "ToolLibrary-Main"
+
     def __init__(self):
         self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
         return
@@ -171,7 +174,7 @@ class ToolLibraryManager():
     def saveMainLibrary(self, tooltable):
         '''Persists the permanent library to FreeCAD user preferences'''
         tmpstring = json.dumps(self.templateAttrs(tooltable))
-        self.prefs.SetString("ToolLibrary", tmpstring)
+        self.prefs.SetString(self.PreferenceMainLibraryJSON, tmpstring)
         return True
 
     def getLists(self):
@@ -190,7 +193,9 @@ class ToolLibraryManager():
     def _findList(self, listname):
         tt = None
         if listname == "<Main>":
-            tmpstring = self.prefs.GetString("ToolLibrary", "")
+            tmpstring = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
+            if not tmpstring:
+                tmpstring = self.prefs.GetString(self.PreferenceMainLibraryXML, "")
             if tmpstring:
                 if tmpstring[0] == '{':
                     tt = self.tooltableFromAttrs(json.loads(tmpstring))
