@@ -45,6 +45,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "WhatsThis.h"
+#include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 
@@ -209,6 +210,7 @@ ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
 {
     _group = new QActionGroup(this);
     connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
+    connect(_group, SIGNAL(hovered(QAction*)), this, SLOT(onHovered(QAction*)));
 }
 
 ActionGroup::~ActionGroup()
@@ -349,6 +351,12 @@ void ActionGroup::onActivated (QAction* a)
 
     _pcCmd->invoke(index);
 }
+
+void ActionGroup::onHovered (QAction *a) 
+{
+    Gui::ToolTip::showText(QCursor::pos(), a->toolTip());
+}
+
 
 // --------------------------------------------------------------------
 
