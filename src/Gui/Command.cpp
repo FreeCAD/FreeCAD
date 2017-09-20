@@ -1281,18 +1281,19 @@ void PythonGroupCommand::languageChange()
     QList<QAction*> a = pcAction->actions();
     for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
         Gui::Command* cmd = rcCmdMgr.getCommandByName((*it)->property("CommandName").toByteArray());
-        // Python command use getName as context
-        if (dynamic_cast<PythonCommand*>(cmd)) {
+        if (cmd) {
+            // Python command use getName as context
+            const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
+            const char *tooltip = cmd->getToolTipText();
+            const char *statustip = cmd->getStatusTip();
+            if (!statustip || '\0' == *statustip) {
+                statustip = tooltip;
+            }
+
             (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
-            (*it)->setText(QApplication::translate(cmd->getName(), cmd->getMenuText()));
-            (*it)->setToolTip(QApplication::translate(cmd->getName(), cmd->getToolTipText()));
-            (*it)->setStatusTip(QApplication::translate(cmd->getName(), cmd->getStatusTip()));
-        }
-        else if (cmd) {
-            (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
-            (*it)->setText(QApplication::translate(cmd->className(), cmd->getMenuText()));
-            (*it)->setToolTip(QApplication::translate(cmd->className(), cmd->getToolTipText()));
-            (*it)->setStatusTip(QApplication::translate(cmd->className(), cmd->getStatusTip()));
+            (*it)->setText(QApplication::translate(context, cmd->getMenuText()));
+            (*it)->setToolTip(QApplication::translate(context, tooltip));
+            (*it)->setStatusTip(QApplication::translate(context, statustip));
         }
     }
 }
