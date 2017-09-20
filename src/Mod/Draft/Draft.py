@@ -5793,10 +5793,19 @@ class _Clone(_DraftObject):
                     return
         objs = getGroupContents(obj.Objects)
         for o in objs:
+            sh = None
             if o.isDerivedFrom("Part::Feature"):
-                if o.Shape.isNull():
-                    return
-                sh = o.Shape.copy()
+                if not o.Shape.isNull():
+                    sh = o.Shape.copy()
+            elif o.isDerivedFrom("App::Part"):
+                shps = []
+                for so in o.Group:
+                    if so.isDerivedFrom("Part::Feature"):
+                        if not so.Shape.isNull():
+                            shps.append(so.Shape)
+                if shps:
+                    sh = Part.makeCompound(shps)
+            if sh:
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
                     sx,sy,sz = obj.Scale
