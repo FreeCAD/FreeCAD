@@ -124,42 +124,42 @@ SET(FemObjectsScripts_SRCS
 )
 
 SET(FemSolver_SRCS
-    FemSolver/__init__.py
-    FemSolver/solverbase.py
-    FemSolver/equationbase.py
+    femsolver/__init__.py
+    femsolver/solverbase.py
+    femsolver/equationbase.py
 )
 
 SET(FemElmer_SRCS
-    FemSolver/elmer/__init__.py
-    FemSolver/elmer/sifio.py
-    FemSolver/elmer/solver.py
-    FemSolver/elmer/tasks.py
-    FemSolver/elmer/writer.py
+    femsolver/elmer/__init__.py
+    femsolver/elmer/sifio.py
+    femsolver/elmer/solver.py
+    femsolver/elmer/tasks.py
+    femsolver/elmer/writer.py
 )
 
 SET(FemEquationsElmer_SRCS
-    FemSolver/elmer/equations/__init__.py
-    FemSolver/elmer/equations/base.py
-    FemSolver/elmer/equations/linear.py
-    FemSolver/elmer/equations/nonlinear.py
-    FemSolver/elmer/equations/elasticity.py
-    FemSolver/elmer/equations/electrostatic.py
-    FemSolver/elmer/equations/heat.py
-    FemSolver/elmer/equations/flow.py
+    femsolver/elmer/equations/__init__.py
+    femsolver/elmer/equations/base.py
+    femsolver/elmer/equations/linear.py
+    femsolver/elmer/equations/nonlinear.py
+    femsolver/elmer/equations/elasticity.py
+    femsolver/elmer/equations/electrostatic.py
+    femsolver/elmer/equations/heat.py
+    femsolver/elmer/equations/flow.py
 )
 
 SET(FemCalculix_SRCS
-    FemSolver/calculix/__init__.py
-    FemSolver/calculix/solver.py
-    FemSolver/calculix/tasks.py
-    FemSolver/calculix/writer.py
+    femsolver/calculix/__init__.py
+    femsolver/calculix/solver.py
+    femsolver/calculix/tasks.py
+    femsolver/calculix/writer.py
 )
 
 SET(FemZ88_SRCS
-    FemSolver/z88/__init__.py
-    FemSolver/z88/solver.py
-    FemSolver/z88/tasks.py
-    FemSolver/z88/writer.py
+    femsolver/z88/__init__.py
+    femsolver/z88/solver.py
+    femsolver/z88/tasks.py
+    femsolver/z88/writer.py
 )
 
 SET(FemGuiScripts_SRCS

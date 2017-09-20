@@ -47,10 +47,10 @@ class _CommandFemSolverZ88(FemCommands):
     def Activated(self):
         analysis = FemGui.getActiveAnalysis()
         FreeCAD.ActiveDocument.openTransaction("Create Z88 solver object")
-        FreeCADGui.addModule("FemSolver.z88.solver")
+        FreeCADGui.addModule("femsolver.z88.solver")
         FreeCADGui.doCommand(
             "App.ActiveDocument.%s.Member += "
-            "[FemSolver.z88.solver.create(App.ActiveDocument)]"
+            "[femsolver.z88.solver.create(App.ActiveDocument)]"
             % analysis.Name)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
