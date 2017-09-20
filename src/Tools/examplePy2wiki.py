@@ -16,7 +16,7 @@ The python comments get translated to text and the code blocks get indended to
 show up us code in the wiki.
 
 
-Autor:
+Author:
   (c) 2009 Juergen Riegel
   juergen.riegel@web.de
   Licence: GPL V2
