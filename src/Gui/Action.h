@@ -114,6 +114,7 @@ public Q_SLOTS:
     void onActivated ();
     void onActivated (int);
     void onActivated (QAction*);
+    void onHovered   (QAction*);
 
 protected:
     QActionGroup* _group;
