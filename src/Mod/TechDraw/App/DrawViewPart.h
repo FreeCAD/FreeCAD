@@ -76,7 +76,7 @@ public:
     DrawViewPart(void);
     virtual ~DrawViewPart();
 
-    App::PropertyLink   Source;                                        //Part Feature
+    App::PropertyLinkGlobal   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;

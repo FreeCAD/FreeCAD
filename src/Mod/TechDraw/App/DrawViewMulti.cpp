@@ -81,6 +81,7 @@ DrawViewMulti::DrawViewMulti()
 
     //Source is replaced by Sources in Multi
     Source.setStatus(App::Property::ReadOnly,true);
+    Source.setStatus(App::Property::Hidden,true);
 
     geometryObject = nullptr;
 }
@@ -152,7 +153,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
     const std::vector<App::DocumentObject*>& links = Sources.getValues();
     if (links.empty())  {
         Base::Console().Log("INFO - DVM::execute - No Sources - creation?\n");
-        return DrawViewPart::execute();
+        return DrawView::execute();
     }
 
     m_compound = TopoDS::Compound(getSourceShape());

@@ -166,6 +166,11 @@ double DrawProjGroupItem::getRotateAngle()
 double DrawProjGroupItem::getScale(void) const
 {
     double result = Scale.getValue();
+//TODO: should always use DPG.Scale?
+//    auto pgroup = getPGroup();
+//    if (pgroup != nullptr) {
+//        result = pgroup->Scale.getValue();
+//    }
     return result;
 }
 
