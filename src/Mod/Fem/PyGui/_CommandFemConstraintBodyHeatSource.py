@@ -38,12 +38,12 @@ class Command(FemCommands.FemCommands):
     def __init__(self):
         super(Command, self).__init__()
         self.resources = {
-            'Pixmap': 'fem-constraint-heatflux',
+            'Pixmap': 'fem-constraint-heatflux',  # the heatflux icon is used
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintBodyHeatSource",
                 "Constraint body heat source"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintBodyHeatFlux",
+                "FEM_ConstraintBodyHeatSource",
                 "Creates a FEM constraint body heat source")}
         self.is_active = 'with_analysis'
 

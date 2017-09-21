@@ -41,10 +41,10 @@ class Command(FemCommands.FemCommands):
             'Pixmap': 'fem-constraint-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Constraint Velocity"),
+                "Constraint Flow Velocity"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Creates a FEM constraint body heat flux")}
+                "Creates a FEM constraint flow velocity")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
