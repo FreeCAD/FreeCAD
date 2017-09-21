@@ -40,6 +40,11 @@ NotValidBaseTypeIds = ['Sketcher::SketchObject']
 
 def isValidBaseObject(obj):
     '''isValidBaseObject(obj) ... returns true if the object can be used as a base for a job.'''
+    if hasattr(obj, 'getParentGeoFeatureGroup') and obj.getParentGeoFeatureGroup():
+        # Can't link to anything inside a geo feature group anymore
+        return False
+    if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
+        return obj.Group and any(hasattr(o, 'Shape') for o in obj.Group)
     if not hasattr(obj, 'Shape'):
         return False
     if obj.TypeId in NotValidBaseTypeIds:
@@ -58,6 +63,10 @@ def isSolid(obj):
         if obj.Shape.ShapeType == 'Compound':
             if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
                 return isSolid(obj.Base) and isSolid(obj.Tool)
+    if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
+        if not obj.Group or any(hasattr(o, 'Shape') and not isSolid(o) for o in obj.Group):
+            return False
+        return True
     return False
 
 def toolControllerForOp(op):

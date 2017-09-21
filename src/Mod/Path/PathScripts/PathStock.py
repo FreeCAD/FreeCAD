@@ -63,6 +63,18 @@ class StockType:
             return cls.CreateCylinder
         return cls.Unknown
 
+def shapeBoundBox(obj):
+    if hasattr(obj, 'Shape'):
+        return obj.Shape.BoundBox
+    if 'App::Part' == obj.TypeId:
+        bounds = [shapeBoundBox(o) for o in obj.Group]
+        if bounds:
+            bb = bounds[0]
+            for b in bounds[1:]:
+                bb = bb.united(b)
+            return bb
+    PathLog.error(translate('PathStock', 'Invalid base object - no shape found'))
+    return None
 
 class StockFromBase:
 
@@ -93,7 +105,7 @@ class StockFromBase:
         return None
 
     def execute(self, obj):
-        bb = obj.Base.Shape.BoundBox
+        bb = shapeBoundBox(obj.Base)
 
         origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
         self.origin = origin - FreeCAD.Vector(obj.ExtXneg.Value, obj.ExtYneg.Value, obj.ExtZneg.Value)
@@ -216,14 +228,14 @@ def CreateBox(job, extent=None, placement=None):
         obj.Width  = extent.y
         obj.Height = extent.z
     elif base:
-        bb = base.Shape.BoundBox
+        bb = shapeBoundBox(base)
         obj.Length = max(bb.XLength, 1)
         obj.Width  = max(bb.YLength, 1)
         obj.Height = max(bb.ZLength, 1)
     if placement:
         obj.Placement = placement
     elif base:
-        bb = base.Shape.BoundBox
+        bb = shapeBoundBox(base)
         origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
     SetupStockObject(obj, StockType.CreateBox)
@@ -238,13 +250,13 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
     if height:
         obj.Height = height
     elif base:
-        bb = base.Shape.BoundBox
+        bb = shapeBoundBox(base)
         obj.Radius = math.sqrt(bb.XLength ** 2 + bb.YLength ** 2) / 2.0
         obj.Height = max(bb.ZLength, 1)
     if placement:
         obj.Placement = placement
     elif base:
-        bb = base.Shape.BoundBox
+        bb = shapeBoundBox(base)
         origin = FreeCAD.Vector((bb.XMin + bb.XMax)/2, (bb.YMin + bb.YMax)/2, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
     SetupStockObject(obj, StockType.CreateCylinder)
