@@ -30,7 +30,7 @@ from PySide import QtCore
 
 import FreeCAD as App
 import FreeCADGui as Gui
-from PyGui import FemCommands
+from .FemCommands import FemCommands
 
 
 class Command(FemCommands.FemCommands):
