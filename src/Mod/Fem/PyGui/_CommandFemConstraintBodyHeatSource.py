@@ -25,18 +25,19 @@ __title__ = "AddConstraintBodyHeatSource"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandFemConstraintBodyHeatSource
+#  \ingroup FEM
 
+import FreeCAD
+from .FemCommands import FemCommands
+import FreeCADGui
 from PySide import QtCore
 
-import FreeCAD as App
-import FreeCADGui as Gui
-from .FemCommands import FemCommands
 
-
-class Command(FemCommands.FemCommands):
-
+class _CommandFemConstraintBodyHeatSource(FemCommands):
+    "The FEM_ConstraintBodyHeatSource command definition"
     def __init__(self):
-        super(Command, self).__init__()
+        super(_CommandFemConstraintBodyHeatSource, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-heatflux',  # the heatflux icon is used
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
@@ -48,12 +49,12 @@ class Command(FemCommands.FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        App.ActiveDocument.openTransaction(
+        FreeCAD.ActiveDocument.openTransaction(
             "Create FemConstraintBodyHeatSource")
-        Gui.addModule("ObjectsFem")
-        Gui.doCommand(
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().Member += "
             "[ObjectsFem.makeConstraintBodyHeatSource(FreeCAD.ActiveDocument)]")
 
 
-Gui.addCommand('FEM_ConstraintBodyHeatSource', Command())
+FreeCADGui.addCommand('FEM_ConstraintBodyHeatSource', _CommandFemConstraintBodyHeatSource())
