@@ -163,7 +163,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
     // Add move Tip Command
     if ( selection.size () >= 1 ) {
         App::DocumentObject *feature = selection.front().pObject;
-        PartDesign::Body *body =  PartDesignGui::getBodyFor ( feature, false );
+        PartDesign::Body *body =  PartDesignGui::getBodyFor (feature, false, false);
         // lote of assertion so feature should be marked as a tip
         if ( selection.size () == 1 && feature && (
             feature->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||

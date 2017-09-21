@@ -59,7 +59,15 @@ using namespace Attacher;
 
 namespace PartDesignGui {
 
-PartDesign::Body *getBody(bool messageIfNot)
+/*!
+ * \brief Return active body or show a warning message.
+ * If \a autoActivate is true (the default) then if there is
+ * only single body in the document it will be activated.
+ * \param messageIfNot
+ * \param autoActivate
+ * \return Body
+ */
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
@@ -70,7 +78,7 @@ PartDesign::Body *getBody(bool messageIfNot)
         if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-            if (!activeBody && singleBodyDocument) {
+            if (!activeBody && singleBodyDocument && autoActivate) {
                 Gui::Command::doCommand( Gui::Command::Gui,
                     "Gui.activeView().setActiveObject('pdbody',App.ActiveDocument.findObjects('PartDesign::Body')[0])");
                 activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
@@ -114,13 +122,13 @@ PartDesign::Body * makeBody(App::Document *doc)
     return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 }
 
-PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot, bool autoActivate)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody( /*messageIfNot =*/ false);
-    if(rv && rv->hasObject(obj))
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate);
+    if (rv && rv->hasObject(obj))
         return rv;
 
     rv = PartDesign::Body::findBodyOf(obj);
