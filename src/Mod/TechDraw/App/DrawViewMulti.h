@@ -57,13 +57,13 @@ public:
     DrawViewMulti(void);
     virtual ~DrawViewMulti();
 
-    App::PropertyLinkList Sources;
+    App::PropertyLinkListGlobal Sources;
 
     virtual short mustExecute() const;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onChanged(const App::Property* prop);
     //@}
 
