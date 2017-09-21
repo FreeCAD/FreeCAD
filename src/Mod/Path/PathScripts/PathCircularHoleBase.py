@@ -25,6 +25,7 @@
 import ArchPanel
 import FreeCAD
 import DraftGeomUtils
+import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -45,6 +46,8 @@ def translate(context, text, disambig=None):
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class ObjectOp(PathOp.ObjectOp):
     '''Base class for proxy objects of all operations on circular holes.'''
@@ -95,6 +98,9 @@ class ObjectOp(PathOp.ObjectOp):
         shape = base.Shape.getElement(sub)
         if shape.ShapeType == 'Vertex':
             return 0
+
+        if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
+            return shape.Curve.Radius * 2
 
         # for all other shapes the diameter is just the dimension in X
         return shape.BoundBox.XLength
