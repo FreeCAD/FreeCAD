@@ -916,7 +916,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
         file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py  "from PySide2.QtGui import *\n"
-                                                            "from PySide2.QtWidgets import *\n")
+                                                            "from PySide2.QtWidgets import *\n"
+                                                            "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
         file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
 	if(APPLE)
