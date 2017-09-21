@@ -152,8 +152,6 @@ DrawViewPart::~DrawViewPart()
     delete geometryObject;
 }
 
-//does this need all the validation logic?
-//how to 
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
     TopoDS_Shape result;
@@ -173,17 +171,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-//    App::DocumentObject *link = Source.getValue();
-//    if (!link) {
-//        return new App::DocumentObjectExecReturn("DVP - No Source object linked");
-//    }
-
-//    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-//        return new App::DocumentObjectExecReturn("DVP - Linked object is not a Part object");
-//    }
 
     TopoDS_Shape shape = getSourceShape();
-//    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("DVP - Linked shape object is invalid");
     }
