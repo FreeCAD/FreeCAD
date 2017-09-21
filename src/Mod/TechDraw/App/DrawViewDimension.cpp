@@ -276,7 +276,19 @@ double DrawViewDimension::getDimValue()
         if (!measurement->has3DReferences()) {
             return result;
         }
-
+        if ( Type.isValue("Distance")  ||
+             Type.isValue("DistanceX") ||
+             Type.isValue("DistanceY") )  {
+            result = measurement->length();
+        } else if(Type.isValue("Radius")){
+            result = measurement->radius();
+        } else if(Type.isValue("Diameter")){
+            result = 2.0 * measurement->radius();
+        } else if(Type.isValue("Angle")){
+            result = measurement->angle();
+        } else {  //tarfu
+            throw Base::Exception("getDimValue() - Unknown Dimension Type (3)");
+        }
     } else {
         // Projected Values
         const std::vector<App::DocumentObject*> &objects = References2D.getValues();
