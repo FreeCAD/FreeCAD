@@ -46,7 +46,7 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
     return obj
 
 
-def makeConstraintBodyHeatSource(doc, name="BodyHeatSource"):
+def makeConstraintBodyHeatSource(doc, name="ConstraintBodyHeatSource"):
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintBodyHeatSource
     PyObjects._FemConstraintBodyHeatSource.Proxy(obj)
@@ -80,7 +80,7 @@ def makeConstraintFluidBoundary(doc, name="ConstraintFluidBoundary"):
     return obj
 
 
-def makeConstraintFlowVelocity(doc, name="FlowVelocity"):
+def makeConstraintFlowVelocity(doc, name="ConstraintFlowVelocity"):
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintFlowVelocity
     PyObjects._FemConstraintFlowVelocity.Proxy(obj)
@@ -108,7 +108,7 @@ def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
     return obj
 
 
-def makeConstraintInitialFlowVelocity(doc, name="InitialFlowVelocity"):
+def makeConstraintInitialFlowVelocity(doc, name="ConstraintInitialFlowVelocity"):
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintInitialFlowVelocity
     PyObjects._FemConstraintInitialFlowVelocity.Proxy(obj)
