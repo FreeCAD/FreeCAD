@@ -28,6 +28,7 @@
 #include <Geom_Surface.hxx>
 #include <Geom_BSplineSurface.hxx>
 
+#include <set>
 #include <map>
 #include <vector>
 #include <exception>
@@ -36,11 +37,12 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
 {
     // get a hashtable for all edges
     // e: v1, v2, num
-    std::map<long, std::vector<long>> hash_map;
-    std::vector<long> hash_list;
+    std::map<std::set<long>, std::vector<long>> hash_map;
+    std::vector<std::set<long>> hash_list;
     std::map<long, std::vector<long>> neighbour_map;
     std::vector<long> edge_vector_0;
     std::vector<std::vector<long>> edge_vector;
+    
 
     for (long i=0; i<tris.rows(); i++)
     {
@@ -49,9 +51,9 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
             long k = j + 1;
             if (k == 3)
                 k = 0;
-            long v1 = vertices(i, j);
-            long v2 = vertices(i, k);
-            long hash = (v1 + v2) * (v1 + v2 + 1) / 2 + v2; 
+            long v1 = tris(i, j);
+            long v2 = tris(i, k);
+            std::set<long> hash {v1, v2};
             hash_list.push_back(hash);
             if (v1 < v2)
                 hash_map[hash] = std::vector<long>{v1, v2, 0};
@@ -59,42 +61,37 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
                 hash_map[hash] = std::vector<long>{v2, v1, 0};
         }
     }
-    for (auto hash: hash_list)
+    for (auto & hash: hash_list)
         hash_map[hash][2] += 1;
 
-    for (auto hash: hash_list)
+    for (auto &hash: hash_map)
     {
-        if (hash_map[hash][2] == 1)
+        if (hash.second[2] == 1)
         {
-            long v0 = hash_map[hash][0];
-            long v1 = hash_map[hash][1];
+            long v0 = hash.second[0];
+            long v1 = hash.second[1];
 
-            edge_vector.push_back(std::vector<long>{v0, v1});
+	    neighbour_map[v0].push_back(v1);
+	    neighbour_map[v1].push_back(v0);
         }
     }
 
-    for (auto edge: edge_vector)
-    {
-        long v1 = edge[0];
-        long v2 = edge[1];
-        neighbour_map[v1].push_back(v2);
-        neighbour_map[v2].push_back(v1);
-    }
 
     while (neighbour_map.size() != 0)
     {
         long start_index = neighbour_map.begin()->first;
-        long close_index = neighbour_map[start_index][0];
+        long close_index = start_index;
         long next_index = neighbour_map[start_index][1];
         long temporary_next;
         edge_vector_0.clear();
         edge_vector_0.push_back(close_index);
         edge_vector_0.push_back(start_index);
+	neighbour_map.erase(start_index);
+        edge_vector_0.push_back(next_index);
         while (next_index != close_index)
         {
-	    edge_vector_0.push_back(next_index);
             temporary_next = neighbour_map[next_index][0];
-            if (next_index != start_index)
+            if (temporary_next != start_index)
             {
                 start_index = next_index;
                 next_index = temporary_next;
@@ -104,19 +101,21 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
                 start_index = next_index;
                 next_index = neighbour_map[start_index][1];
             }
+            neighbour_map.erase(start_index);
+            edge_vector_0.push_back(next_index);
             
         }
         edge_vector.push_back(edge_vector_0);
     }
     std::vector<ColMat<double, 3>> edges;
-    for (auto edge: edge_vector)
+    for (auto &edge: edge_vector)
     {
         ColMat<double, 3> edge_vertices;
-        edge.resize(edge.size());
+        edge_vertices.resize(edge.size(), 3);
         int i = 0;
         for (auto index: edge)
         {
-            edge_vertices.row(i) << vertices(index);
+            edge_vertices.row(i) = vertices.row(index);
             i++;
         }
         edges.push_back(edge_vertices);
@@ -249,6 +248,6 @@ std::vector<ColMat<double, 3>> FaceUnwrapper::getFlatBoundaryNodes()
     flat_vertices.resize(this->ze_nodes.rows(), 3);
     flat_vertices.setZero();
     flat_vertices.col(0) << this->ze_nodes.col(0);
-    flat_vertices.col(1) << this->ze_nodes.col(0);
+    flat_vertices.col(1) << this->ze_nodes.col(1);
     return getBoundaries(flat_vertices, this->tris);
 }
