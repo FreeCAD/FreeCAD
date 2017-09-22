@@ -117,6 +117,8 @@ class ObjectOp(object):
         if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
+            obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Start Depth will not be automatically updated when geometry changes"))
+            obj.addProperty("App::PropertyBool", "FinalDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Final Depth will not be automatically updated when geometry changes"))
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('FinalDepth', 2) # hide
 
@@ -148,6 +150,13 @@ class ObjectOp(object):
             obj.Base = base
             obj.touch()
             obj.Document.recompute()
+        if FeatureDepths & self.opFeatures(ojb):
+            if not hasattr(obj, 'StartDepthLock'):
+                obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Start Depth will not be automatically updated when geometry changes"))
+                obj.StartDepthLock = False
+            if not hasattr(obj, 'FinalDepthLock'):
+                obj.addProperty("App::PropertyBool", "FinalDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Final Depth will not be automatically updated when geometry changes"))
+                obj.FinalDepthLock = False
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
@@ -198,6 +207,10 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
+
+        if not 'Restore' in obj.State and prop in ['Base','StartDepth', 'StartDepthLock', 'FinalDepth', 'FinalDepthLock']:
+            self.updateDepths(obj)
+
         self.opOnChanged(obj, prop)
 
     def setDefaultValues(self, obj):
@@ -214,7 +227,9 @@ class ObjectOp(object):
 
         if FeatureDepths & features:
             obj.StartDepth      =  1.0
+            obj.StartDepthLock  =  False
             obj.FinalDepth      =  0.0
+            obj.FinalDepthLock  =  False
 
         if FeatureStepDown & features:
             obj.StepDown        =  1.0
@@ -227,6 +242,17 @@ class ObjectOp(object):
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj)
+
+    def _setBaseAndStock(self, obj):
+        job = PathUtils.findParentJob(obj)
+        if not job:
+            PathLog.error(translate("Path", "No parent job found for operation."))
+            return
+        if not job.Base:
+            PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
+            return
+        self.baseobject = job.Base
+        self.stock = job.Stock
 
     def updateDepths(self, obj):
         '''updateDepths(obj) ... base implementation calculating depths depending on base geometry.
@@ -246,7 +272,8 @@ class ObjectOp(object):
         zmin = -sys.maxint
         zmax = -sys.maxint
 
-        if hasattr(obj, 'Base'):
+        self._setBaseAndStock(obj)
+        if hasattr(obj, 'Base') and obj.Base:
             for base, sublist in obj.Base:
                 bb = base.Shape.BoundBox
                 zmax = max(zmax, bb.ZMax)
@@ -266,10 +293,19 @@ class ObjectOp(object):
             else:
                 zmax = zmin + 1
 
+        safeDepths = True
         if hasattr(obj, 'StartDepth') and not PathGeom.isRoughly(obj.StartDepth.Value, zmax):
-            obj.StartDepth = zmax
+            if obj.StartDepthLock:
+                if obj.StartDepth.Value < zmax:
+                    safeDepths = False
+            else:
+                obj.StartDepth = zmax
         if hasattr(obj, 'FinalDepth') and not PathGeom.isRoughly(obj.FinalDepth.Value, zmin):
-            obj.FinalDepth = zmin
+            if obj.FinalDepthLock:
+                if obj.FinalDepth.Value < zmin:
+                    safeDepths = False
+            else:
+                obj.FinalDepth = zmin
 
         clearance = obj.StartDepth.Value + 5.0
         safe = obj.StartDepth.Value + 3
@@ -277,6 +313,8 @@ class ObjectOp(object):
             obj.ClearanceHeight = clearance
         if hasattr(obj, 'SafeHeight') and not PathGeom.isRoughly(safe, obj.SafeHeight.Value):
             obj.SafeHeight = safe
+
+        return safeDepths
 
     @waiting_effects
     def execute(self, obj):
@@ -308,15 +346,7 @@ class ObjectOp(object):
                 obj.ViewObject.Visibility = False
             return
 
-        job = PathUtils.findParentJob(obj)
-        if not job:
-            PathLog.error(translate("Path", "No parent job found for operation."))
-            return
-        if not job.Base:
-            PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
-            return
-        self.baseobject = job.Base
-        self.stock = job.Stock
+        self._setBaseAndStock(obj)
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController

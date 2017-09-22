@@ -283,12 +283,16 @@ class TaskPanelPage(object):
         if obj.ToolController != tc:
             obj.ToolController = tc
 
-    def updateInputField(self, obj, prop, widget):
+    def updateInputField(self, obj, prop, widget, onBeforeChange = None):
         '''updateInputField(obj, prop, widget) ... helper function to update obj's property named prop with the value from widget, if it has changed.'''
         value = FreeCAD.Units.Quantity(widget.text()).Value
         if getattr(obj, prop) != value:
             PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
+            if onBeforeChange:
+                onBeforeChange(obj)
             setattr(obj, prop, value)
+            return True
+        return False
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
@@ -543,10 +547,12 @@ class TaskPanelDepthsPage(TaskPanelPage):
     '''Page controller for depths.'''
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
+
     def initPage(self, obj):
         if PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.hide()
             self.form.finalDepthLabel.hide()
+            self.form.finalDepthLock.hide()
             self.form.finalDepthSet.hide()
 
         if not PathOp.FeatureStepDown & self.features:
@@ -556,47 +562,69 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if not PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
+
     def getTitle(self, obj):
         return translate("PathOp", "Depths")
+
+    def lockStartDepth(self, obj):
+        if not obj.StartDepthLock:
+            obj.StartDepthLock = True
+    def lockFinalDepth(self, obj):
+        if not obj.FinalDepthLock:
+            obj.FinalDepthLock = True
+
     def getFields(self, obj):
-        self.updateInputField(obj, 'StartDepth', self.form.startDepth)
+        if obj.StartDepthLock != self.form.startDepthLock.isChecked():
+            obj.StartDepthLock = self.form.startDepthLock.isChecked()
+        if obj.FinalDepthLock != self.form.finalDepthLock.isChecked():
+            obj.FinalDepthLock = self.form.finalDepthLock.isChecked()
+
+        self.updateInputField(obj, 'StartDepth', self.form.startDepth, self.lockStartDepth)
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth)
+            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth, self.lockFinalDepth)
         if PathOp.FeatureStepDown & self.features:
             self.updateInputField(obj, 'StepDown', self.form.stepDown)
         if PathOp.FeatureFinishDepth & self.features:
             self.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
+
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.startDepthLock.setChecked(obj.StartDepthLock)
         if not PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+            self.form.finalDepthLock.setChecked(obj.FinalDepthLock)
         if PathOp.FeatureStepDown & self.features:
             self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         if PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
+
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
+        signals.append(self.form.startDepthLock.clicked)
         if not PathOp.FeatureNoFinalDepth & self.features:
             signals.append(self.form.finalDepth.editingFinished)
+            signals.append(self.form.finalDepthLock.clicked)
         if PathOp.FeatureStepDown & self.features:
             signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
             signals.append(self.form.finishDepth.editingFinished)
         return signals
+
     def registerSignalHandlers(self, obj):
         self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.startDepth))
         if not PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.finalDepth))
+
     def pageUpdateData(self, obj, prop):
-        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
+        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth', 'FinalDepthLock', 'StartDepthLock']:
             self.setFields(obj)
 
     def depthSet(self, obj, widget):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
         if z is not None:
-            PathLog.info("depthSet(%.2f)" % z)
+            PathLog.debug("depthSet(%.2f)" % z)
             widget.setText(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString)
             self.getFields(obj)
         else:
