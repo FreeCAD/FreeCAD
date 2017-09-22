@@ -29,14 +29,12 @@ import numpy
 import Part
 import Path
 import PathScripts
-import TechDraw
 
 from DraftGeomUtils import geomType
 from FreeCAD import Vector
 from PathScripts import PathJob
 from PathScripts import PathJobCmd
 from PathScripts import PathLog
-from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 from PySide import QtGui
 
@@ -131,57 +129,60 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
     drillable = False
-    if candidate.ShapeType == 'Face':
-        face = candidate
-        # eliminate flat faces
-        if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
-            for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
-                if (isinstance(edge.Curve, Part.Line)):
-                    PathLog.debug("candidate is a circle")
-                    v0 = edge.Vertexes[0].Point
-                    v1 = edge.Vertexes[1].Point
-                    #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
-                    if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
-                            (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
-                        drillable = True
-                        # vector of top center
-                        lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
-                        # vector of bottom center
-                        lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
-                        # check if the cylindrical 'lids' are inside the base
-                        # object.  This eliminates extruded circles but allows
-                        # actual holes.
-                        if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
-                            PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
-                            drillable = False
-                        # eliminate elliptical holes
-                        elif not hasattr(face.Surface, "Radius"):
-                            PathLog.debug("candidate face has no radius attribute")
-                            drillable = False
-                        else:
-                            if tooldiameter is not None:
-                                drillable = face.Surface.Radius >= tooldiameter/2
+    try:
+        if candidate.ShapeType == 'Face':
+            face = candidate
+            # eliminate flat faces
+            if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
+                for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
+                    if (isinstance(edge.Curve, Part.Line)):
+                        PathLog.debug("candidate is a circle")
+                        v0 = edge.Vertexes[0].Point
+                        v1 = edge.Vertexes[1].Point
+                        #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
+                        if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
+                                (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
+                            drillable = True
+                            # vector of top center
+                            lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
+                            # vector of bottom center
+                            lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
+                            # check if the cylindrical 'lids' are inside the base
+                            # object.  This eliminates extruded circles but allows
+                            # actual holes.
+                            if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
+                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
+                                drillable = False
+                            # eliminate elliptical holes
+                            elif not hasattr(face.Surface, "Radius"):
+                                PathLog.debug("candidate face has no radius attribute")
+                                drillable = False
                             else:
-                                drillable = True
-    else:
-        for edge in candidate.Edges:
-            if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
-                PathLog.debug("candidate is a circle or ellipse")
-                if not hasattr(edge.Curve, "Radius"):
-                    PathLog.debug("No radius.  Ellipse.")
-                    drillable = False
-                else:
-                    PathLog.debug("Has Radius, Circle")
-                    if tooldiameter is not None:
-                        drillable = edge.Curve.Radius >= tooldiameter/2
-                        if not drillable:
-                            FreeCAD.Console.PrintMessage(
-                                    "Found a drillable hole with diameter: {}: "
-                                    "too small for the current tool with "
-                                    "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                                if tooldiameter is not None:
+                                    drillable = face.Surface.Radius >= tooldiameter/2
+                                else:
+                                    drillable = True
+        else:
+            for edge in candidate.Edges:
+                if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
+                    PathLog.debug("candidate is a circle or ellipse")
+                    if not hasattr(edge.Curve, "Radius"):
+                        PathLog.debug("No radius.  Ellipse.")
+                        drillable = False
                     else:
-                        drillable = True
-    PathLog.debug("candidate is drillable: {}".format(drillable))
+                        PathLog.debug("Has Radius, Circle")
+                        if tooldiameter is not None:
+                            drillable = edge.Curve.Radius >= tooldiameter/2
+                            if not drillable:
+                                FreeCAD.Console.PrintMessage(
+                                        "Found a drillable hole with diameter: {}: "
+                                        "too small for the current tool with "
+                                        "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                        else:
+                            drillable = True
+        PathLog.debug("candidate is drillable: {}".format(drillable))
+    except Exception as ex:
+        PathLog.warning(translate("PathUtils", "Issue determining drillability: {}").format(ex))
     return drillable
 
 
@@ -217,54 +218,6 @@ def loopdetect(obj, edge1, edge2):
     loopwire = next(x for x in loop)[1]
     return loopwire
 
-def horizontalEdgeLoop(obj, edge):
-    '''horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
-    h = edge.hashCode()
-    wires = [w for w in obj.Shape.Wires if any(e.hashCode() == h for e in w.Edges)]
-    loops = [w for w in wires if all(PathGeom.isHorizontal(e) for e in w.Edges) and PathGeom.isHorizontal(Part.Face(w))]
-    if len(loops) == 1:
-        return loops[0]
-    return None
-
-def horizontalFaceLoop(obj, face, faceList=None):
-    '''horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
-    All face names listed in faceList must be part of the hole for the solution to be returned.'''
-
-    wires = [horizontalEdgeLoop(obj, e) for e in face.Edges]
-    # Not sure if sorting by Area is a premature optimization - but it seems
-    # the loop we're looking for is typically the biggest of the them all.
-    wires = sorted([w for w in wires if w], key=lambda w: Part.Face(w).Area)
-
-    for wire in wires:
-        hashes = [e.hashCode() for e in wire.Edges]
-
-        #find all faces that share a an edge with the wire and are vertical
-        faces = ["Face%d"%(i+1) for i,f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
-
-        if faceList and not all(f in faces for f in faceList):
-            continue
-
-        # verify they form a valid hole by getting the outline and comparing
-        # the resulting XY footprint with that of the faces
-        comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
-        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0,0,1))
-
-        # findShapeOutline always returns closed wires, by removing the
-        # trace-backs single edge spikes don't contriubte to the bound box
-        uniqueEdges = []
-        for edge in outline.Edges:
-            if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
-                continue
-            uniqueEdges.append(edge)
-        w = Part.Wire(uniqueEdges)
-
-        # if the faces really form the walls of a hole then the resulting
-        # wire is still closed and it still has the same footprint
-        bb1 = comp.BoundBox
-        bb2 = w.BoundBox
-        if w.isClosed() and PathGeom.isRoughly(bb1.XMin, bb2.XMin) and PathGeom.isRoughly(bb1.XMax, bb2.XMax) and PathGeom.isRoughly(bb1.YMin, bb2.YMin) and PathGeom.isRoughly(bb1.YMax, bb2.YMax):
-            return faces
-    return None
 
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''
