@@ -44,6 +44,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "Utils.h"
@@ -209,6 +210,24 @@ void CmdPartDesignBody::activated(int iMsg)
     if (actPart) {
         doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
                  actPart->getNameInDocument(), bodyName.c_str());
+    }
+
+    // check if a proxy object has been created for the base feature inside the body
+    if (baseFeature) {
+        PartDesign::Body* body = dynamic_cast<PartDesign::Body*>
+                (baseFeature->getDocument()->getObject(bodyName.c_str()));
+        if (body) {
+            std::vector<App::DocumentObject*> links = body->Group.getValues();
+            for (auto it : links) {
+                if (it->getTypeId().isDerivedFrom(PartDesign::FeatureBase::getClassTypeId())) {
+                    PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
+                    if (base && base->BaseFeature.getValue() == baseFeature) {
+                        Gui::Application::Instance->hideViewProvider(baseFeature);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions

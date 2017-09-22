@@ -49,12 +49,14 @@
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeatureBase.h>
 
 #include "ViewProviderDatum.h"
 #include "Utils.h"
 
 #include "ViewProviderBody.h"
 #include "ViewProvider.h"
+#include <Gui/Application.h>
 #include <Gui/MDIView.h>
 
 using namespace PartDesignGui;
@@ -455,4 +457,16 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
     body->BaseFeature.setValue(obj);
     App::Document* doc  = body->getDocument();
     doc->recompute();
+
+    // check if a proxy object has been created for the base feature
+    std::vector<App::DocumentObject*> links = body->Group.getValues();
+    for (auto it : links) {
+        if (it->getTypeId().isDerivedFrom(PartDesign::FeatureBase::getClassTypeId())) {
+            PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
+            if (base && base->BaseFeature.getValue() == obj) {
+                Gui::Application::Instance->hideViewProvider(obj);
+                break;
+            }
+        }
+    }
 }
