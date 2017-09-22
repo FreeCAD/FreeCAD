@@ -416,3 +416,43 @@ std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
     modes.erase(modes.begin());
     return modes;
 }
+
+bool ViewProviderBody::canDropObjects() const
+{
+    // if the BaseFeature property is marked as hidden or read-only then
+    // it's not allowed to modify it.
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
+        return false;
+    if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
+        return false;
+    return true;
+}
+
+bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
+{
+    if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return false;
+    }
+    else if (PartDesign::Body::findBodyOf(obj)) {
+        return false;
+    }
+    else if (obj->isDerivedFrom (Part::BodyBase::getClassTypeId())) {
+        return false;
+    }
+
+    App::Part *actPart = PartDesignGui::getActivePart();
+    App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
+    if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
+        return false;
+
+    return true;
+}
+
+void ViewProviderBody::dropObject(App::DocumentObject* obj)
+{
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    body->BaseFeature.setValue(obj);
+    App::Document* doc  = body->getDocument();
+    doc->recompute();
+}
