@@ -48,6 +48,7 @@
 
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include <TopExp_Explorer.hxx>
 
 
 //===========================================================================
@@ -135,7 +136,44 @@ void CmdPartDesignBody::activated(int iMsg)
                             QObject::tr("Base feature (%1) belongs to other part.")
                                          .arg(QString::fromUtf8(baseFeature->Label.getValue())));
                     baseFeature = nullptr;
-                };
+                }
+                // if a standard Part feature (not a PartDesign feature) is selected then check
+                // the number of solids/shells
+                else if (!baseFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    const TopoDS_Shape& shape = static_cast<Part::Feature*>(baseFeature)->Shape.getValue();
+                    if (!shape.IsNull()) {
+                        int numSolids = 0;
+                        int numShells = 0;
+                        for (TopExp_Explorer xp(shape, TopAbs_SOLID); xp.More(); xp.Next()) {
+                            numSolids++;
+                        }
+                        for (TopExp_Explorer xp(shape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+                            numShells++;
+                        }
+
+                        QString warning;
+                        if (numSolids > 1 && numShells == 0) {
+                            warning = QObject::tr("The selected shape consists of multiple solids.\n"
+                                                  "This may lead to unexpected results.");
+                        }
+                        else if (numShells > 1 && numSolids == 0) {
+                            warning = QObject::tr("The selected shape consists of multiple shells.\n"
+                                                  "This may lead to unexpected results.");
+                        }
+                        else if (numShells == 1 && numSolids == 0) {
+                            warning = QObject::tr("The selected shape consists of only a shell.\n"
+                                                  "This may lead to unexpected results.");
+                        }
+                        else if (numSolids + numShells > 1) {
+                            warning = QObject::tr("The selected shape consists of multiple solids or shells.\n"
+                                                  "This may lead to unexpected results.");
+                        }
+
+                        if (!warning.isEmpty()) {
+                            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Base feature"), warning);
+                        }
+                    }
+                }
             }
 
         } else {
