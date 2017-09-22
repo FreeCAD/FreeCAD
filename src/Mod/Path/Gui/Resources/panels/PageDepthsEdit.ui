@@ -14,24 +14,17 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="startDepthLabel">
-     <property name="text">
-      <string>Start Depth</string>
+   <item row="0" column="2">
+    <widget class="Gui::InputField" name="startDepth">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="1" column="2">
     <widget class="Gui::InputField" name="finalDepth">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="Gui::InputField" name="finishDepth">
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
@@ -39,6 +32,62 @@
     <widget class="QLabel" name="finishDepthLabel">
      <property name="text">
       <string>Finish Depth</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="Gui::InputField" name="finishDepth">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="startDepthSet">
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../../Gui/Icons/resource.qrc">
+       <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QToolButton" name="finalDepthSet">
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../../Gui/Icons/resource.qrc">
+       <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="startDepthLabel">
+     <property name="text">
+      <string>Start Depth</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="4">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="2">
+    <widget class="Gui::InputField" name="stepDown">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
@@ -56,54 +105,31 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="Gui::InputField" name="stepDown">
+   <item row="1" column="1">
+    <widget class="QRadioButton" name="finalDepthLock">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lock Start Depth to specified value, prevent automatic recalculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="Gui::InputField" name="startDepth">
+    <widget class="QRadioButton" name="startDepthLock">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lock Start Depth to specified value, prevent automatic recalculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QToolButton" name="startDepthSet">
      <property name="text">
-      <string>...</string>
+      <string/>
      </property>
-     <property name="icon">
-      <iconset resource="../../../../../Gui/Icons/resource.qrc">
-       <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QToolButton" name="finalDepthSet">
-     <property name="text">
-      <string>...</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../../../../Gui/Icons/resource.qrc">
-       <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
+     <property name="autoExclusive">
+      <bool>false</bool>
      </property>
     </widget>
-   </item>
-   <item row="4" column="0" colspan="3">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
@@ -119,6 +145,10 @@
   <tabstop>finalDepth</tabstop>
   <tabstop>finishDepth</tabstop>
   <tabstop>stepDown</tabstop>
+  <tabstop>startDepthSet</tabstop>
+  <tabstop>finalDepthSet</tabstop>
+  <tabstop>startDepthLock</tabstop>
+  <tabstop>finalDepthLock</tabstop>
  </tabstops>
  <resources>
   <include location="../../../../../Gui/Icons/resource.qrc"/>
