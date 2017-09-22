@@ -26,7 +26,9 @@ import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
+import sys
 
+from PathScripts.PathGeom import PathGeom
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
@@ -182,6 +184,10 @@ class ObjectOp(object):
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses.'''
         pass
+
+    def opUpdateDepths(self, obj):
+        '''opUpdateDepths(obj) ... overwrite to implement special depths calculation.
+        Can safely be overwritten by subclass.'''
      
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
@@ -221,6 +227,56 @@ class ObjectOp(object):
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj)
+
+    def updateDepths(self, obj):
+        '''updateDepths(obj) ... base implementation calculating depths depending on base geometry.
+        Can safely be overwritten.'''
+
+        def faceZmin(bb, fbb):
+            if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+                return bb.ZMin
+            elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax: # vertical face, full cut
+                return fbb.ZMin
+            elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+                return fbb.ZMin
+            elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin: # face/shelf
+                return fbb.ZMin
+            return bb.ZMin
+
+        zmin = -sys.maxint
+        zmax = -sys.maxint
+
+        if hasattr(obj, 'Base'):
+            for base, sublist in obj.Base:
+                bb = base.Shape.BoundBox
+                zmax = max(zmax, bb.ZMax)
+                for sub in sublist:
+                    fbb = base.Shape.getElement(sub).BoundBox
+                    zmin = max(zmin, faceZmin(bb, fbb))
+                    zmax = max(zmax, fbb.ZMax)
+        else:
+            bb = self.baseobject.Shape.BoundBox
+            zmin = bb.ZMin
+            zmax = bb.ZMax
+
+        zmax = max(zmax, self.stock.Shape.BoundBox.ZMax)
+        if PathGeom.isRoughly(zmin, zmax):
+            if hasattr(obj, 'StepDown') and not PathGeom.isRoughly(obj.StepDown.Value, 0):
+                zmax = zmin + obj.StepDown.Value
+            else:
+                zmax = zmin + 1
+
+        if hasattr(obj, 'StartDepth') and not PathGeom.isRoughly(obj.StartDepth.Value, zmax):
+            obj.StartDepth = zmax
+        if hasattr(obj, 'FinalDepth') and not PathGeom.isRoughly(obj.FinalDepth.Value, zmin):
+            obj.FinalDepth = zmin
+
+        clearance = obj.StartDepth.Value + 5.0
+        safe = obj.StartDepth.Value + 3
+        if hasattr(obj, 'ClearanceHeight') and not PathGeom.isRoughly(clearance, obj.ClearanceHeight.Value):
+            obj.ClearanceHeight = clearance
+        if hasattr(obj, 'SafeHeight') and not PathGeom.isRoughly(safe, obj.SafeHeight.Value):
+            obj.SafeHeight = safe
 
     @waiting_effects
     def execute(self, obj):
@@ -279,6 +335,8 @@ class ObjectOp(object):
                 else:
                     self.radius = tool.Diameter/2
                     self.tool = tool
+
+        self.updateDepths(obj)
 
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))
