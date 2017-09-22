@@ -114,6 +114,10 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject('%s','%s')", pcActiveBody->getNameInDocument(), 
                           fullTypeName.c_str(),FeatName.c_str());
 
+            // remove the body from links in case it's selected as
+            // otherwise a cyclic dependency will be created
+            support.removeValue(pcActiveBody);
+
             //test if current selection fits a mode.
             if (support.getSize() > 0) {
                 Part::AttachExtension* pcDatum = cmd.getDocument()->getObject(FeatName.c_str())->getExtensionByType<Part::AttachExtension>();
