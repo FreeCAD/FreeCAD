@@ -147,22 +147,26 @@ def InitApplications():
 				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
 
 	extension_modules = []
-	import pkgutil
-	import importlib
-	import freecad
-	for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
-		if freecad_module_ispkg:
-			Log('Init: Initializing ' + freecad_module_name + '\n')
-			freecad_module = importlib.import_module(freecad_module_name)
-			extension_modules += [freecad_module_name]
-			if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-				try:
-					importlib.import_module(freecad_module_name + '.init')
-					Log('Init: Initializing ' + freecad_module_name + '... done\n')
-				except ImportError as error:
-					Err('During initialization the error ' + str(error) + ' occurred in ' + freecad_module_name + '\n')
-			else:
-				Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
+
+	try:
+		import pkgutil
+		import importlib
+		import freecad
+		for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
+			if freecad_module_ispkg:
+				Log('Init: Initializing ' + freecad_module_name + '\n')
+				freecad_module = importlib.import_module(freecad_module_name)
+				extension_modules += [freecad_module_name]
+				if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
+					try:
+						importlib.import_module(freecad_module_name + '.init')
+						Log('Init: Initializing ' + freecad_module_name + '... done\n')
+					except ImportError as error:
+						Err('During initialization the error ' + str(error) + ' occurred in ' + freecad_module_name + '\n')
+				else:
+					Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
+	except ImportError as inst:
+		Err('During initialization the error ' + str(inst) + ' occurred\n')
 
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
