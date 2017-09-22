@@ -29,7 +29,7 @@ import FemToolsCcx
 import FemResultTools
 import FreeCAD
 import ObjectsFem
-import FemRun
+import femsolver.run
 import tempfile
 import unittest
 import os
@@ -574,7 +574,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         if not os.path.exists(static2_analysis_dir):
             os.makedirs(static2_analysis_dir)
         machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
-        machine.target = FemRun.PREPARE
+        machine.target = femsolver.run.PREPARE
         machine.start()
         machine.join()  # wait for the machine to finish.
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))

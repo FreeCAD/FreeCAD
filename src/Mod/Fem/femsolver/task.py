@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "FemTask"
+__title__ = "task"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -29,8 +29,8 @@ __url__ = "http://www.freecadweb.org"
 import threading
 import time
 
-import FemReport
-import FemSignal
+from . import report
+from . import signal
 
 
 class Task(object):
@@ -79,15 +79,15 @@ class Task(object):
         return "".join(self._status)
 
     def start(self):
-        self.report = FemReport.Report()
+        self.report = report.Report()
         self.clearStatus()
         self._aborted = False
         self._failed = False
         self.stopTime = None
         self.startTime = time.time()
         self.running = True
-        FemSignal.notify(self.signalStarting)
-        FemSignal.notify(self.signalStarted)
+        signal.notify(self.signalStarting)
+        signal.notify(self.signalStarted)
 
     def run(self):
         raise NotImplementedError()
@@ -97,18 +97,18 @@ class Task(object):
 
     def abort(self):
         self._aborted = True
-        FemSignal.notify(self.signalAbort)
+        signal.notify(self.signalAbort)
 
     def fail(self):
         self._failed = True
 
     def pushStatus(self, line):
         self._status.append(line)
-        FemSignal.notify(self.signalStatus, line)
+        signal.notify(self.signalStatus, line)
 
     def clearStatus(self):
         self._status = []
-        FemSignal.notify(self.signalStatusCleared)
+        signal.notify(self.signalStatusCleared)
 
     def protector(self):
         try:
@@ -139,8 +139,8 @@ class Thread(Task):
     def _attachObserver(self):
         def waitForStop():
             self._thread.join()
-            FemSignal.notify(self.signalStoping)
-            FemSignal.notify(self.signalStoped)
+            signal.notify(self.signalStoping)
+            signal.notify(self.signalStoped)
         thread = threading.Thread(target=waitForStop)
         thread.daemon = True
         thread.start()

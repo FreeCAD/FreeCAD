@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "Fem Settings"
+__title__ = "settings"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 

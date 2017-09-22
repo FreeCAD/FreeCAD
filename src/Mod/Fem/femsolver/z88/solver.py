@@ -32,10 +32,11 @@ import glob
 
 import FreeCAD
 import FemUtils
-import FemRun
 
+from .. import run
 from .. import solverbase
 from . import tasks
+
 
 if FreeCAD.GuiUp:
     import FemGui
@@ -65,7 +66,7 @@ class Proxy(solverbase.Proxy):
         obj.AnalysisType = ANALYSIS_TYPES[0]
 
     def createMachine(self, obj, directory):
-        return FemRun.Machine(
+        return run.Machine(
             solver=obj, directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),

@@ -28,14 +28,13 @@ __url__ = "http://www.freecadweb.org"
 
 import subprocess
 import os.path
-
-import FemRun
-import FemSettings
 import FemUtils
 
+from .. import run
+from .. import settings
 from . import writer
 
-class Check(FemRun.Check):
+class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
@@ -63,7 +62,7 @@ class Check(FemRun.Check):
             self.fail()
 
 
-class Prepare(FemRun.Prepare):
+class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
@@ -85,11 +84,11 @@ class Prepare(FemRun.Prepare):
             self.report.warning("Ignored constraint %s." % obj.Label)
 
 
-class Solve(FemRun.Solve):
+class Solve(run.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
-        binary = FemSettings.getBinary("ElmerSolver")
+        binary = settings.getBinary("ElmerSolver")
         if binary is not None:
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
@@ -131,7 +130,7 @@ class Solve(FemRun.Solve):
         self.analysis.Member += [self.solver.ElmerOutput]
 
 
-class Results(FemRun.Results):
+class Results(run.Results):
 
     def run(self):
         if self.solver.ElmerResult is None:

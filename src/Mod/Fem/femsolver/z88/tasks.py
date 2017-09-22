@@ -31,18 +31,18 @@ import subprocess
 import os.path
 
 import FreeCAD as App
-import FemRun
-import FemSettings
 import FemUtils
 import importZ88O2Results
 
+from .. import run
+from .. import settings
 from . import writer
 
 
 _inputFileName = None
 
 
-class Check(FemRun.Check):
+class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
@@ -50,7 +50,7 @@ class Check(FemRun.Check):
         self.checkMaterial()
 
 
-class Prepare(FemRun.Prepare):
+class Prepare(run.Prepare):
 
     def run(self):
         global _inputFileName
@@ -72,13 +72,13 @@ class Prepare(FemRun.Prepare):
         print(_inputFileName)
 
 
-class Solve(FemRun.Solve):
+class Solve(run.Solve):
 
     def run(self):
         # AFAIK z88r needs to be run twice, once in test mode ond once in real solve mode
         # the subprocess was just copied, it seams to work :-)
         self.pushStatus("Executing test solver...\n")
-        binary = FemSettings.getBinary("Z88")
+        binary = settings.getBinary("Z88")
         self._process = subprocess.Popen(
             [binary, "-t", "-choly"],
             cwd=self.directory,
@@ -90,7 +90,7 @@ class Solve(FemRun.Solve):
         self.signalAbort.remove(self._process.terminate)
 
         self.pushStatus("Executing real solver...\n")
-        binary = FemSettings.getBinary("Z88")
+        binary = settings.getBinary("Z88")
         self._process = subprocess.Popen(
             [binary, "-c", "-choly"],
             cwd=self.directory,
@@ -117,7 +117,7 @@ class Solve(FemRun.Solve):
         return output
 
 
-class Results(FemRun.Results):
+class Results(run.Results):
 
     def run(self):
         prefs = App.ParamGet(

@@ -91,13 +91,7 @@ SET(FemScripts_SRCS
     FemResultTools.py
     FemToolsCcx.py
     ObjectsFem.py
-    FemReport.py
-    FemReportDialog.py
     FemUtils.py
-    FemSettings.py
-    FemTask.py
-    FemRun.py
-    FemSignal.py
     FemConstraint.py
     TestFem.py
 )
@@ -127,6 +121,12 @@ SET(FemSolver_SRCS
     femsolver/__init__.py
     femsolver/solverbase.py
     femsolver/equationbase.py
+    femsolver/report.py
+    femsolver/reportdialog.py
+    femsolver/settings.py
+    femsolver/task.py
+    femsolver/run.py
+    femsolver/signal.py
 )
 
 SET(FemElmer_SRCS

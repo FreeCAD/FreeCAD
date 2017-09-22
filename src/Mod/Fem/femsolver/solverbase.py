@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 from PySide import QtGui
 
 import FreeCAD as App
-import FemRun
+from . import run
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -76,8 +76,8 @@ class ViewProxy(object):
 
     def setEdit(self, vobj, mode=0):
         try:
-            machine = FemRun.getMachine(vobj.Object)
-        except FemRun.MustSaveError:
+            machine = run.getMachine(vobj.Object)
+        except run.MustSaveError:
             QtGui.QMessageBox.critical(
                 Gui.getMainWindow(),
                 "Can't open Task Panel",
@@ -85,7 +85,7 @@ class ViewProxy(object):
                 "This must be done because the location of the working "
                 "directory is set to \"Beside .fcstd File\".")
             return False
-        except FemRun.DirectoryDoesNotExist:
+        except run.DirectoryDoesNotExist:
             QtGui.QMessageBox.critical(
                 Gui.getMainWindow(),
                 "Can't open Task Panel",

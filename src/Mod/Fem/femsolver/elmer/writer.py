@@ -34,8 +34,8 @@ import tempfile
 from FreeCAD import Units
 import Fem
 import FemUtils
-import FemSettings
 import FemGmshTools
+from .. import settings
 from . import sifio
 
 
@@ -121,7 +121,7 @@ class Writer(object):
         groups.extend(self._builder.getBodyNames())
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
-        binary = FemSettings.getBinary("ElmerGrid")
+        binary = settings.getBinary("ElmerGrid")
         if binary is None:
             raise WriteError("Couldn't find ElmerGrid binary.")
         args = [binary,

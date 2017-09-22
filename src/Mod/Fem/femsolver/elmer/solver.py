@@ -27,8 +27,8 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FemUtils
-import FemRun
 
+from .. import run
 from .. import solverbase
 from . import tasks
 
@@ -74,7 +74,7 @@ class Proxy(solverbase.Proxy):
         obj.SteadyStateMinIterations = 0
 
     def createMachine(self, obj, directory):
-        return FemRun.Machine(
+        return run.Machine(
             solver=obj, directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),

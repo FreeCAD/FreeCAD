@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "FemSolve"
+__title__ = "run"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -33,10 +33,10 @@ import threading
 import shutil
 
 import FreeCAD as App
-import FemSettings
 import FemUtils
-import FemSignal
-import FemTask
+from . import settings
+from . import signal
+from . import task
 
 
 CHECK = 0
@@ -60,18 +60,18 @@ def getMachine(solver, path=None):
 
 def _isPathValid(m, path):
     t = _dirTypes[m.directory]
-    setting = FemSettings.getDirSetting()
+    setting = settings.getDirSetting()
     if path is not None:
         return t is None and m.directory == path
-    if setting == FemSettings.BESIDE:
-        if t == FemSettings.BESIDE:
+    if setting == settings.BESIDE:
+        if t == settings.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
             return base == _getBesideBase(m.solver)
         return False
-    if setting == FemSettings.TEMPORARY:
-        return t == FemSettings.TEMPORARY
-    if setting == FemSettings.CUSTOM:
-        if t == FemSettings.CUSTOM:
+    if setting == settings.TEMPORARY:
+        return t == settings.TEMPORARY
+    if setting == settings.CUSTOM:
+        if t == settings.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
             return customBase == _getCustomBase(m.solver)
@@ -80,18 +80,18 @@ def _isPathValid(m, path):
 
 def _createMachine(solver, path):
     global _dirTypes
-    setting = FemSettings.getDirSetting()
+    setting = settings.getDirSetting()
     if path is not None:
         _dirTypes[path] = None
-    elif setting == FemSettings.BESIDE:
+    elif setting == settings.BESIDE:
         path = _getBesideDir(solver)
-        _dirTypes[path] = FemSettings.BESIDE
-    elif setting == FemSettings.TEMPORARY:
+        _dirTypes[path] = settings.BESIDE
+    elif setting == settings.TEMPORARY:
         path = _getTempDir(solver)
-        _dirTypes[path] = FemSettings.TEMPORARY
-    elif setting == FemSettings.CUSTOM:
+        _dirTypes[path] = settings.TEMPORARY
+    elif setting == settings.CUSTOM:
         path = _getCustomDir(solver)
-        _dirTypes[path] = FemSettings.CUSTOM
+        _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path)
     oldMachine = _machines.get(solver)
     if oldMachine is not None:
@@ -131,7 +131,7 @@ def _getCustomDir(solver):
 
 
 def _getCustomBase(solver):
-    path = FemSettings.getCustomDir()
+    path = settings.getCustomDir()
     if not os.path.isdir(path):
         raise DirectoryDoesNotExist("Invalid path")
     return path
@@ -147,7 +147,7 @@ def _getUniquePath(path):
     return path
 
 
-class BaseTask(FemTask.Thread):
+class BaseTask(task.Thread):
 
     def __init__(self):
         super(BaseTask, self).__init__()
@@ -205,7 +205,7 @@ class Machine(BaseTask):
         if newState < state:
             self._isReset = True
             self._state = newState
-            FemSignal.notify(self.signalState)
+            signal.notify(self.signalState)
 
     def _confTasks(self):
         tasks = [
@@ -221,7 +221,7 @@ class Machine(BaseTask):
     def _applyPending(self):
         if not self._isReset:
             self._state = self._pendingState
-            FemSignal.notify(self.signalState)
+            signal.notify(self.signalState)
         self._isReset = False
         self._pendingState = None
 
@@ -354,7 +354,7 @@ class _DocObserver(object):
 
         def delegate():
             m.join()
-            if t == FemSettings.TEMPORARY:
+            if t == settings.TEMPORARY:
                 shutil.rmtree(m.directory)
             del _dirTypes[m.directory]
             del _machines[obj]

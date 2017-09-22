@@ -31,19 +31,19 @@ import subprocess
 import os.path
 
 import FreeCAD as App
-import FemRun
-import FemSettings
 import FemUtils
 import importCcxFrdResults
 import importCcxDatResults
 
+from .. import run
+from .. import settings
 from . import writer
 
 
 _inputFileName = None
 
 
-class Check(FemRun.Check):
+class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
@@ -51,7 +51,7 @@ class Check(FemRun.Check):
         self.checkMaterial()
 
 
-class Prepare(FemRun.Prepare):
+class Prepare(run.Prepare):
 
     def run(self):
         global _inputFileName
@@ -71,11 +71,11 @@ class Prepare(FemRun.Prepare):
         _inputFileName = os.path.splitext(os.path.basename(path))[0]
 
 
-class Solve(FemRun.Solve):
+class Solve(run.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
-        binary = FemSettings.getBinary("Calculix")
+        binary = settings.getBinary("Calculix")
         self._process = subprocess.Popen(
             [binary, "-i", _inputFileName],
             cwd=self.directory,
@@ -102,7 +102,7 @@ class Solve(FemRun.Solve):
         return output
 
 
-class Results(FemRun.Results):
+class Results(run.Results):
 
     def run(self):
         prefs = App.ParamGet(

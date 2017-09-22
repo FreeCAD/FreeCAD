@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "FemReport"
+__title__ = "report"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -43,10 +43,10 @@ def display(report, title=None, text=None):
 
 def displayGui(report, title=None, text=None):
     import FreeCADGui as Gui
-    import FemReportDialog
+    from . import reportdialog
     if not report.isEmpty():
         mw = Gui.getMainWindow()
-        dialog = FemReportDialog.ReportDialog(
+        dialog = reportdialog.ReportDialog(
             report, title, text, mw)
         dialog.exec_()
 
