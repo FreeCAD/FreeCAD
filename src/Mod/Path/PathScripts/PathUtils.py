@@ -131,57 +131,60 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
     drillable = False
-    if candidate.ShapeType == 'Face':
-        face = candidate
-        # eliminate flat faces
-        if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
-            for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
-                if (isinstance(edge.Curve, Part.Line)):
-                    PathLog.debug("candidate is a circle")
-                    v0 = edge.Vertexes[0].Point
-                    v1 = edge.Vertexes[1].Point
-                    #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
-                    if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
-                            (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
-                        drillable = True
-                        # vector of top center
-                        lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
-                        # vector of bottom center
-                        lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
-                        # check if the cylindrical 'lids' are inside the base
-                        # object.  This eliminates extruded circles but allows
-                        # actual holes.
-                        if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
-                            PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
-                            drillable = False
-                        # eliminate elliptical holes
-                        elif not hasattr(face.Surface, "Radius"):
-                            PathLog.debug("candidate face has no radius attribute")
-                            drillable = False
-                        else:
-                            if tooldiameter is not None:
-                                drillable = face.Surface.Radius >= tooldiameter/2
+    try:
+        if candidate.ShapeType == 'Face':
+            face = candidate
+            # eliminate flat faces
+            if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
+                for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
+                    if (isinstance(edge.Curve, Part.Line)):
+                        PathLog.debug("candidate is a circle")
+                        v0 = edge.Vertexes[0].Point
+                        v1 = edge.Vertexes[1].Point
+                        #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
+                        if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
+                                (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
+                            drillable = True
+                            # vector of top center
+                            lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
+                            # vector of bottom center
+                            lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
+                            # check if the cylindrical 'lids' are inside the base
+                            # object.  This eliminates extruded circles but allows
+                            # actual holes.
+                            if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
+                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
+                                drillable = False
+                            # eliminate elliptical holes
+                            elif not hasattr(face.Surface, "Radius"):
+                                PathLog.debug("candidate face has no radius attribute")
+                                drillable = False
                             else:
-                                drillable = True
-    else:
-        for edge in candidate.Edges:
-            if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
-                PathLog.debug("candidate is a circle or ellipse")
-                if not hasattr(edge.Curve, "Radius"):
-                    PathLog.debug("No radius.  Ellipse.")
-                    drillable = False
-                else:
-                    PathLog.debug("Has Radius, Circle")
-                    if tooldiameter is not None:
-                        drillable = edge.Curve.Radius >= tooldiameter/2
-                        if not drillable:
-                            FreeCAD.Console.PrintMessage(
-                                    "Found a drillable hole with diameter: {}: "
-                                    "too small for the current tool with "
-                                    "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                                if tooldiameter is not None:
+                                    drillable = face.Surface.Radius >= tooldiameter/2
+                                else:
+                                    drillable = True
+        else:
+            for edge in candidate.Edges:
+                if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
+                    PathLog.debug("candidate is a circle or ellipse")
+                    if not hasattr(edge.Curve, "Radius"):
+                        PathLog.debug("No radius.  Ellipse.")
+                        drillable = False
                     else:
-                        drillable = True
-    PathLog.debug("candidate is drillable: {}".format(drillable))
+                        PathLog.debug("Has Radius, Circle")
+                        if tooldiameter is not None:
+                            drillable = edge.Curve.Radius >= tooldiameter/2
+                            if not drillable:
+                                FreeCAD.Console.PrintMessage(
+                                        "Found a drillable hole with diameter: {}: "
+                                        "too small for the current tool with "
+                                        "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                        else:
+                            drillable = True
+        PathLog.debug("candidate is drillable: {}".format(drillable))
+    except Exception as ex:
+        PathLog.warning("PathUtils", "Issue determine drillability: {}".format(ex))
     return drillable
 
 
