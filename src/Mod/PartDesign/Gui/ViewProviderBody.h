@@ -78,6 +78,13 @@ public:
      */
     SbBox3f getBoundBox ();
 
+    /** Check whether objects can be added to the view provider by drag and drop */
+    virtual bool canDropObjects() const;
+    /** Check whether the object can be dropped to the view provider by drag and drop */
+    virtual bool canDropObject(App::DocumentObject*) const;
+    /** Add an object to the view provider by drag and drop */
+    virtual void dropObject(App::DocumentObject*);
+
 protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
     void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
