@@ -54,6 +54,7 @@
 # include <GProp_PGProps.hxx>
 # include <GProp_PrincipalProps.hxx>
 # include <BRepGProp.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 #endif
 #include <BRepLProp_SLProps.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -1119,15 +1120,25 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         if (face.IsNull())
             throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
 
+        gp_Pln plane;
         BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane)
-            throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        if (adapt.GetType() == GeomAbs_Plane) {
+            plane = adapt.Plane();
+        }
+        else {
+            TopLoc_Location loc;
+            Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+            GeomLib_IsPlanarSurface check(surf);
+            if (check.IsPlanar())
+                plane = check.Plan();
+            else
+                throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        }
 
         bool Reverse = false;
         if (face.Orientation() == TopAbs_REVERSED)
             Reverse = true;
 
-        gp_Pln plane = adapt.Plane();
         Standard_Boolean ok = plane.Direct();
         if (!ok) {
             // toggle if plane has a left-handed coordinate system

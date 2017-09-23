@@ -27,7 +27,10 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRep_Tool.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopLoc_Location.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <QMessageBox>
 # include <Inventor/nodes/SoCamera.h>
 #endif
@@ -398,10 +401,14 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             }
 
             BRepAdaptor_Surface adapt(face);
-            if (adapt.GetType() != GeomAbs_Plane){
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-                    QObject::tr("You need a planar face as support for a sketch!"));
-                return;
+            if (adapt.GetType() != GeomAbs_Plane) {
+                TopLoc_Location loc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                if (surf.IsNull() || !GeomLib_IsPlanarSurface(surf).IsPlanar()) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
+                        QObject::tr("You need a planar face as support for a sketch!"));
+                    return;
+                }
             }
 
             supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
