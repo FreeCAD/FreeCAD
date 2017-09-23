@@ -163,7 +163,7 @@ class JobPreferencesPage:
         foo = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),
                 "Path - Job Template",
                 path,
-                "job_*.xml")[0]
+                "job_*.json")[0]
         if foo:
             self.form.leDefaultJobTemplate.setText(foo)
 

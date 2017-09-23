@@ -118,7 +118,10 @@ class PathPreferences:
 
     @classmethod
     def defaultJobTemplate(cls):
-        return cls.preferences().GetString(cls.DefaultJobTemplate)
+        template = cls.preferences().GetString(cls.DefaultJobTemplate)
+        if 'xml' not in template:
+            return template
+        return ''
 
     @classmethod
     def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance):
