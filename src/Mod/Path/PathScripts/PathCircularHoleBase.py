@@ -169,11 +169,8 @@ class ObjectOp(PathOp.ObjectOp):
                             if PathUtils.isDrillable(self.baseobject, edge, tooldiameter):
                                 PathLog.debug('Found drillable hole edges: {}'.format(edge))
                                 features.append((self.baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
-
-                self.setDepths(obj, None, None, self.baseobject.Shape.BoundBox)
             else:
                 features = self.findHoles(obj, self.baseobject)
-                self.setupDepthsFrom(obj, features, self.baseobject)
             obj.Base = features
             obj.Disabled = []
 
@@ -198,60 +195,6 @@ class ObjectOp(PathOp.ObjectOp):
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses.'''
         pass
-
-    def opOnChanged(self, obj, prop):
-        '''opOnChange(obj, prop) ... implements depth calculation if Base changes.
-        Do not overwrite.'''
-        if 'Base' == prop and not 'Restore' in obj.State and obj.Base:
-            features = []
-            for base, subs in obj.Base:
-                for sub in subs:
-                    features.append((base, sub))
-
-            job = PathUtils.findParentJob(obj)
-            if not job or not job.Base:
-                return
-
-            self.setupDepthsFrom(obj, features, job.Base)
-
-    def setupDepthsFrom(self, obj, features, baseobject):
-        '''setupDepthsFrom(obj, features, baseobject) ... determins the min and max Z values necessary.
-        Note that the algorithm calculates "safe" values,
-          it determines the highest top Z value of all features
-          and it also determines the highest bottom Z value of all features.
-        The result is that all features can be drilled safely and the operation
-        does not drill deeper than any of the features requires.'''
-        zmax = None
-        zmin = None
-        if not self.baseIsArchPanel(obj, baseobject):
-            for base,sub in features:
-                shape = base.Shape.getElement(sub)
-                bb = shape.BoundBox
-                # find the highes zmax and the highes zmin levels, those provide
-                # the safest values for StartDepth and FinalDepth
-                if zmax is None or zmax < bb.ZMax:
-                    zmax = bb.ZMax
-                if zmin is None or zmin < bb.ZMin:
-                    zmin = bb.ZMin
-        self.setDepths(obj, zmax, zmin, baseobject.Shape.BoundBox)
-
-    def setDepths(self, obj, zmax, zmin, bb):
-        '''setDepths(obj, zmax, zmin, bb) ... set properties according to the provided values.'''
-        PathLog.track(obj.Label, zmax, zmin, bb)
-        if zmax is None:
-            zmax = bb.ZMax
-        if zmin is None:
-            zmin = bb.ZMin
-
-        if zmin > zmax:
-            zmax = zmin
-
-        PathLog.debug("setDepths(%s): z=%.2f -> %.2f bb.z=%.2f -> %.2f" % (obj.Label, zmin, zmax, bb.ZMin, bb.ZMax))
-
-        obj.StartDepth = zmax
-        obj.ClearanceHeight = max(bb.ZMax, zmax) + 5.0
-        obj.SafeHeight = max(bb.ZMax, zmax) + 3.0
-        obj.FinalDepth = zmin
 
     def findHoles(self, obj, baseobject):
         '''findHoles(obj, baseobject) ... inspect baseobject and identify all features that resemble a straight cricular hole.'''
