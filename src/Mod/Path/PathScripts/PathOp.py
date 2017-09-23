@@ -26,7 +26,6 @@ import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
-import sys
 
 from PathScripts.PathGeom import PathGeom
 from PathScripts.PathUtils import waiting_effects
@@ -272,11 +271,12 @@ class ObjectOp(object):
                 return fbb.ZMin
             return bb.ZMin
 
-        zmin = -sys.maxint
-        zmax = -sys.maxint
-
         if not self._setBaseAndStock(obj, ignoreErrors):
             return False
+
+        stockBB = self.stock.Shape.BoundBox
+        zmin = stockBB.ZMin
+        zmax = stockBB.ZMax
 
         if hasattr(obj, 'Base') and obj.Base:
             for base, sublist in obj.Base:
@@ -287,30 +287,39 @@ class ObjectOp(object):
                     zmin = max(zmin, faceZmin(bb, fbb))
                     zmax = max(zmax, fbb.ZMax)
         else:
-            bb = self.baseobject.Shape.BoundBox
-            zmin = bb.ZMin
-            zmax = bb.ZMax
-
-        zmax = max(zmax, self.stock.Shape.BoundBox.ZMax)
-        if PathGeom.isRoughly(zmin, zmax):
-            if hasattr(obj, 'StepDown') and not PathGeom.isRoughly(obj.StepDown.Value, 0):
-                zmax = zmin + obj.StepDown.Value
-            else:
-                zmax = zmin + 1
+            # clearing with stock boundaries
+            pass
 
         safeDepths = True
-        if hasattr(obj, 'StartDepth') and not PathGeom.isRoughly(obj.StartDepth.Value, zmax):
-            if obj.StartDepthLock:
-                if obj.StartDepth.Value < zmax:
-                    safeDepths = False
-            else:
-                obj.StartDepth = zmax
-        if hasattr(obj, 'FinalDepth') and not PathGeom.isRoughly(obj.FinalDepth.Value, zmin):
-            if obj.FinalDepthLock:
-                if obj.FinalDepth.Value < zmin:
-                    safeDepths = False
-            else:
-                obj.FinalDepth = zmin
+        if FeatureDepths & self.opFeatures(obj):
+            # first set update final depth, it's value is not negotiable
+            if not PathGeom.isRoughly(obj.FinalDepth.Value, zmin):
+                if not obj.FinalDepthLock:
+                    obj.FinalDepth = zmin
+                else:
+                    if obj.FinalDepth.Value < zmin:
+                        safeDepths = False
+            zmin = obj.FinalDepth.Value
+
+            def minZmax(z):
+                if hasattr(obj, 'StepDown') and not PathGeom.isRoughly(obj.StepDown.Value, 0):
+                    return z + obj.StepDown.Value
+                else:
+                    return z + 1
+
+            # ensure zmax is higher than zmin
+            if (zmax - 0.0001) <= zmin:
+                zmax = minZmax(zmin)
+
+            # update start depth if requested and required
+            if not PathGeom.isRoughly(obj.StartDepth.Value, zmax):
+                if not obj.StartDepthLock:
+                    obj.StartDepth = zmax
+                elif (obj.StartDepth.Value - 0.0001) <= obj.FinalDepth.Value:
+                    obj.StartDepth = minZmax(obj.FinalDepth.Value)
+                else:
+                    if obj.StartDepth.Value < zmax:
+                        safeDepths = False
 
         clearance = obj.StartDepth.Value + 5.0
         safe = obj.StartDepth.Value + 3
