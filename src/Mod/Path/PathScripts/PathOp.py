@@ -150,7 +150,7 @@ class ObjectOp(object):
             obj.Base = base
             obj.touch()
             obj.Document.recompute()
-        if FeatureDepths & self.opFeatures(ojb):
+        if FeatureDepths & self.opFeatures(obj):
             if not hasattr(obj, 'StartDepthLock'):
                 obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Start Depth will not be automatically updated when geometry changes"))
                 obj.StartDepthLock = False
@@ -208,8 +208,8 @@ class ObjectOp(object):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
 
-        if not 'Restore' in obj.State and prop in ['Base','StartDepth', 'StartDepthLock', 'FinalDepth', 'FinalDepthLock']:
-            self.updateDepths(obj)
+        if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'StartDepthLock', 'FinalDepth', 'FinalDepthLock']:
+            self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
 
@@ -243,18 +243,21 @@ class ObjectOp(object):
 
         self.opSetDefaultValues(obj)
 
-    def _setBaseAndStock(self, obj):
+    def _setBaseAndStock(self, obj, ignoreErrors=False):
         job = PathUtils.findParentJob(obj)
         if not job:
-            PathLog.error(translate("Path", "No parent job found for operation."))
-            return
+            if not ignoreErrors:
+                PathLog.error(translate("Path", "No parent job found for operation."))
+            return False
         if not job.Base:
-            PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
-            return
+            if not ignoreErrors:
+                PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
+            return False
         self.baseobject = job.Base
         self.stock = job.Stock
+        return True
 
-    def updateDepths(self, obj):
+    def updateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... base implementation calculating depths depending on base geometry.
         Can safely be overwritten.'''
 
@@ -272,7 +275,9 @@ class ObjectOp(object):
         zmin = -sys.maxint
         zmax = -sys.maxint
 
-        self._setBaseAndStock(obj)
+        if not self._setBaseAndStock(obj, ignoreErrors):
+            return False
+
         if hasattr(obj, 'Base') and obj.Base:
             for base, sublist in obj.Base:
                 bb = base.Shape.BoundBox
@@ -346,7 +351,8 @@ class ObjectOp(object):
                 obj.ViewObject.Visibility = False
             return
 
-        self._setBaseAndStock(obj)
+        if not self._setBaseAndStock(obj):
+            return
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
