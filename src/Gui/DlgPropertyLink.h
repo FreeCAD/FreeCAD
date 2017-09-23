@@ -48,7 +48,7 @@ private Q_SLOTS:
     void on_searchBox_textChanged(const QString&);
 
 private:
-    void findObjects(bool on);
+    void findObjects(bool on, const QString& searchText);
 
 private:
     QStringList link;
