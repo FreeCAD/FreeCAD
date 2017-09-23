@@ -105,8 +105,8 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QRadioButton" name="finalDepthLock">
+   <item row="0" column="1">
+    <widget class="QCheckBox" name="startDepthLock">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lock Start Depth to specified value, prevent automatic recalculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -118,8 +118,8 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QRadioButton" name="startDepthLock">
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="finalDepthLock">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lock Start Depth to specified value, prevent automatic recalculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
