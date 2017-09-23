@@ -61,15 +61,22 @@ class JobTemplate:
     Stock = 'Stock'
     Version = 'Version'
 
-def isResourceClone(obj, propName, resourceName):
+def isArchPanelSheet(obj):
+    return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
+
+def isResourceClone(obj, propName, resourceName=None):
     '''isResourceClone(obj, propName, resourceName) ... Return True if the given property of obj is a clone of type resourceName.'''
     if hasattr(obj, propName):
         propLink =  getattr(obj, propName)
-        if hasattr(propLink, 'PathResource') and resourceName == propLink.PathResource:
+        if hasattr(propLink, 'PathResource') and ((resourceName and resourceName == propLink.PathResource) or (resourceName is None and propName == propLink.PathResource)):
             return True
     return False
 
 def createResourceClone(obj, orig, name, icon):
+    if isArchPanelSheet(orig):
+        # can't clone panel sheets - they have to be panel sheets
+        return orig
+
     clone = Draft.clone(orig)
     clone.Label = "%s-%s" % (name, orig.Label)
     clone.addProperty('App::PropertyString', 'PathResource')
@@ -143,7 +150,8 @@ class ObjectJob:
         # base doesn't depend on anything inside job
         if obj.Base:
             PathLog.debug('taking down base')
-            doc.removeObject(obj.Base.Name)
+            if isResourceClone(obj, 'Base'):
+                doc.removeObject(obj.Base.Name)
             obj.Base = None
         # Tool controllers don't depend on anything
         PathLog.debug('taking down tool controller')
@@ -152,7 +160,7 @@ class ObjectJob:
         obj.ToolController = []
 
     def fixupResourceClone(self, obj, name, icon):
-        if not isResourceClone(obj, name, name):
+        if not isResourceClone(obj, name, name) and not isArchPanelSheet(obj):
             orig = getattr(obj, name)
             if orig:
                 setattr(obj, name, createResourceClone(obj, orig, name, icon))
@@ -266,7 +274,7 @@ class ObjectJob:
     @classmethod
     def isBaseCandidate(cls, obj):
         '''Answer true if the given object can be used as a Base for a job.'''
-        return PathUtil.isValidBaseObject(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
+        return PathUtil.isValidBaseObject(obj) or isArchPanelSheet(obj)
 
 def Create(name, base, templateFile = None):
     '''Create(name, base, templateFile=None) ... creates a new job and all it's resources.

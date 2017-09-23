@@ -166,7 +166,8 @@ class ViewProvider:
         PathLog.track(obj.Label, prop)
         # make sure the resource view providers are setup properly
         if prop == 'Base' and self.obj.Base and self.obj.Base.ViewObject and self.obj.Base.ViewObject.Proxy:
-            self.obj.Base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
+            if not PathJob.isArchPanelSheet(self.obj.Base):
+                self.obj.Base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
@@ -379,8 +380,7 @@ class StockFromExistingEdit(StockEdit):
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        if obj.Base in solids:
-            # always a resource clone
+        if obj.Base in solids and PathJob.isResourceClone(obj, 'Base'):
             solids.remove(obj.Base)
         if obj.Stock in solids:
             # regardless, what stock is/was, it's not a valid choice
@@ -430,8 +430,10 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
+        base = self.obj.Base if PathJob.isResourceClone(self.obj, 'Base') else None
+        stock = self.obj.Stock
         for o in PathJob.ObjectJob.baseCandidates():
-            if o != self.obj.Base:
+            if o != base and o != stock:
                 self.form.jobModel.addItem(o.Label, o)
         self.selectComboBoxText(self.form.jobModel, self.obj.Proxy.baseObject(self.obj).Label)
 
@@ -532,7 +534,8 @@ class TaskPanel:
             selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
             if self.obj.Proxy.baseObject(self.obj) != selObj:
                 self.baseObjectRestoreVisibility(self.obj)
-                self.obj.Document.removeObject(self.obj.Base.Name)
+                if PathJob.isResourceClone(self.obj, 'Base'):
+                    self.obj.Document.removeObject(self.obj.Base.Name)
                 self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
                 self.baseObjectSaveVisibility(self.obj)
 
