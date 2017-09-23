@@ -217,6 +217,8 @@ public:
     virtual void Paste(const Property &from);
 
     virtual unsigned int getMemSize(void) const;
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
 private:
     std::vector<DocumentObject*> _lValueList;

@@ -59,19 +59,28 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
  */
 DlgPropertyLink::~DlgPropertyLink()
 {
-  // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgPropertyLink::setSelectionMode(QAbstractItemView::SelectionMode mode)
+{
+    ui->listWidget->setSelectionMode(mode);
+    ui->listWidget->clear();
+    findObjects(ui->checkObjectType->isChecked());
 }
 
 void DlgPropertyLink::accept()
 {
-    QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
-    if (items.isEmpty()) {
-        QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+    if (ui->listWidget->selectionMode() == QAbstractItemView::SingleSelection) {
+        QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
+        if (items.isEmpty()) {
+            QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+            return;
+        }
     }
-    else {
-        QDialog::accept();
-    }
+
+    QDialog::accept();
 }
 
 QStringList DlgPropertyLink::propertyLink() const
@@ -88,6 +97,27 @@ QStringList DlgPropertyLink::propertyLink() const
             list[2] = QString::fromUtf8("");
         return list;
     }
+}
+
+QVariantList DlgPropertyLink::propertyLinkList() const
+{
+    QVariantList varList;
+    QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
+    if (items.isEmpty()) {
+        varList << link;
+    }
+    else {
+        for (QList<QListWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            QStringList list = link;
+            list[1] = (*it)->data(Qt::UserRole).toString();
+            list[2] = (*it)->text();
+            if (list[1].isEmpty())
+                list[2] = QString::fromUtf8("");
+            varList << list;
+        }
+    }
+
+    return varList;
 }
 
 void DlgPropertyLink::findObjects(bool on)
@@ -129,10 +159,12 @@ void DlgPropertyLink::findObjects(bool on)
         }
 
         // Add a "None" entry on top
-        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-        item->setText(tr("None (Remove link)"));
-        QByteArray ba("");
-        item->setData(Qt::UserRole, ba);
+        if (ui->listWidget->selectionMode() == QAbstractItemView::SingleSelection) {
+            QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+            item->setText(tr("None (Remove link)"));
+            QByteArray ba("");
+            item->setData(Qt::UserRole, ba);
+        }
 
         std::vector<App::DocumentObject*> obj = doc->getObjectsOfType(baseType);
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
