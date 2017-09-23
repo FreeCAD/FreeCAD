@@ -161,16 +161,24 @@ class TaskPanelPage(object):
         Do not overwrite, implement initPage(obj) instead.'''
         self.obj = obj
         self.form = self.getForm()
+        self.signalDirtyChanged = None
         self.setDirty()
         self.setTitle('-')
         self.features = features
 
+    def onDirtyChanged(self, callback):
+        '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
+        self.signalDirtyChanged = callback
     def setDirty(self):
         '''setDirty() ... mark receiver as dirty, causing the model to be recalculated if OK or Apply is pressed.'''
         self.isdirty = True
+        if self.signalDirtyChanged:
+            self.signalDirtyChanged(self)
     def setClean(self):
         '''setClean() ... mark receiver as clean, indicating there is no need to recalculate the model even if the user presses OK or Apply.'''
         self.isdirty = False
+        if self.signalDirtyChanged:
+            self.signalDirtyChanged(self)
 
     def pageGetFields(self):
         '''pageGetFields() ... internal callback.
@@ -375,12 +383,14 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
             #self.obj.Proxy.execute(self.obj)
             self.setFields(self.obj)
+            self.setDirty()
 
     def deleteBase(self):
         PathLog.track()
         selected = self.form.baseList.selectedItems()
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
+            self.setDirty()
         self.updateBase()
         #self.obj.Proxy.execute(self.obj)
         #FreeCAD.ActiveDocument.recompute()
@@ -401,6 +411,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def clearBase(self):
         self.obj.Base = []
+        self.setDirty()
 
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
@@ -697,6 +708,7 @@ class TaskPanel(object):
 
         for page in self.featurePages:
             page.initPage(obj)
+            page.onDirtyChanged(self.pageDirtyChanged)
 
         if TaskPanelLayout < 2:
             toolbox = QtGui.QToolBox()
@@ -769,6 +781,10 @@ class TaskPanel(object):
             FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
 
+    def pageDirtyChanged(self, page):
+        '''pageDirtyChanged(page) ... internal callback'''
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(self.isDirty())
+
     def clicked(self, button):
         '''clicked(button) ... callback invoked when the user presses any of the task panel buttons.'''
         if button == QtGui.QDialogButtonBox.Apply:
@@ -778,6 +794,7 @@ class TaskPanel(object):
 
     def modifyStandardButtons(self, buttonBox):
         '''modifyStandarButtons(buttonBox) ... callback in case the task panel buttons need to be modified.'''
+        self.buttonBox = buttonBox
         for page in self.featurePages:
             page.modifyStandardButtons(buttonBox)
 
