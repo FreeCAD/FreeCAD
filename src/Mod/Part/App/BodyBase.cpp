@@ -104,6 +104,20 @@ void BodyBase::onChanged (const App::Property* prop) {
     Part::Feature::onChanged ( prop );
 }
 
+void BodyBase::handleChangedPropertyName(Base::XMLReader &reader,
+                                         const char * TypeName,
+                                         const char *PropName)
+{
+    // The App::PropertyLinkList property was Model in the past (#0002642)
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Group.getClassTypeId() == type && strcmp(PropName, "Model") == 0) {
+        Group.Restore(reader);
+    }
+    else {
+        Part::Feature::handleChangedPropertyName(reader, TypeName, PropName);
+    }
+}
+
 PyObject* BodyBase::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
