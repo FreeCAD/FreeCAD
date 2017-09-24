@@ -770,6 +770,8 @@ class TaskPanel(object):
         return True
 
     def preCleanup(self):
+        for page in self.featurePages:
+            page.onDirtyChanged(None)
         FreeCADGui.Selection.removeObserver(self)
         FreeCADGui.Selection.removeObserver(self.s)
         self.obj.ViewObject.Proxy.clearTaskPanel()
