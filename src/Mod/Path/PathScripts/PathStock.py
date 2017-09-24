@@ -355,9 +355,9 @@ def CreateFromTemplate(job, template):
                     PathLog.error(translate('PathStock', 'Corrupted or incomplete size for creating a stock cylinder - ignoring size'))
                 return CreateCylinder(job, radius, height, placement)
 
-            PathLog.error(translate('PathStock', 'Unsupported stock type named %s'), stockType)
+            PathLog.error(translate('PathStock', 'Unsupported stock type named {}').format(stockType))
         else:
-            PathLog.error(translate('PathStock', 'Unsupported PathStock template version %s'), template.get('version'))
+            PathLog.error(translate('PathStock', 'Unsupported PathStock template version {}').format(template.get('version')))
         return None
 
 
