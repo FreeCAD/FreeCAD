@@ -116,7 +116,7 @@ class TaskPanel:
                 self.pointAcceptAndContinue()
 
         def cancel():
-            self.pointCancel()
+            self.pointReject()
 
         self.pointWhenDone = whenDone
         self.formOrig.hide()
