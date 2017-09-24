@@ -57,11 +57,21 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement circularHoleFeatures(obj) instead'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | self.circularHoleFeatures(obj)
 
+    def circularHoleFeatures(self, obj):
+        '''circularHoleFeatures(obj) ... overwrite to add operations specific features.
+        Can safely be overwritten by subclasses.'''
+        return 0
+
     def initOperation(self, obj):
         '''initOperation(obj) ... adds Disabled properties and calls initCircularHoleOperation(obj).
         Do not overwrite, implement initCircularHoleOperation(obj) instead.'''
         obj.addProperty("App::PropertyStringList", "Disabled", "Base", QtCore.QT_TRANSLATE_NOOP("Path", "List of disabled features"))
         self.initCircularHoleOperation(obj)
+
+    def initCircularHoleOperation(self, obj):
+        '''initCircularHoleOperation(obj) ... overwrite if the subclass nees initialisation.
+        Can safely be overwritten by subclasses.'''
+        pass
 
     def baseIsArchPanel(self, obj, base):
         '''baseIsArchPanel(obj, base) ... return true if op deals with an Arch.Panel.'''

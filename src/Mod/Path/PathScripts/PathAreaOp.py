@@ -60,6 +60,11 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
 
+    def areaOpFeatures(self, obj):
+        '''areaOpFeatures(obj) ... overwrite to add operation specific features.
+        Can safely be overwritten by subclasses.'''
+        return 0
+
     def initOperation(self, obj):
         '''initOperation(obj) ... sets up standard Path.Area properties and calls initAreaOp().
         Do not overwrite, overwrite initAreaOp(obj) instead.'''
@@ -74,6 +79,11 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('removalshape', 2)  # hide
 
         self.initAreaOp(obj)
+
+    def initAreaOp(self, obj):
+        '''initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
+        Can safely be overwritten by subclasses.'''
+        pass
 
     def areaOpShapeForDepths(self, obj):
         '''areaOpShapeForDepths(obj) ... returns the shape used to make an initial calculation for the depths being used.
