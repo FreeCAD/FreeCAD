@@ -264,7 +264,7 @@ class ToolLibraryManager():
             if fileExtension == '.tooltable':
                 xmlHandler = HeeksTooltableHandler()
             if fileExtension == '.xml':
-                xmlHandler = FeeCADTooltableHandler()
+                xmlHandler = FreeCADTooltableHandler()
 
             if xmlHandler:
                 parser = xml.sax.make_parser()
