@@ -171,6 +171,8 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
 class StockEdit(object):
+    Index = -1
+    StockType = PathStock.StockType.Unknown
 
     def __init__(self, obj, form):
         self.obj = obj
@@ -206,6 +208,14 @@ class StockEdit(object):
 
     def setLengthField(self, widget, prop):
         widget.setText(FreeCAD.Units.Quantity(prop.Value, FreeCAD.Units.Length).UserString)
+
+    # the following members must be overwritten by subclasses
+    def editorFrame(self):
+        return None
+    def setFields(self, obj):
+        pass
+    def setupUi(self, obj):
+        pass
 
 class StockFromBaseBoundBoxEdit(StockEdit):
     Index = 2

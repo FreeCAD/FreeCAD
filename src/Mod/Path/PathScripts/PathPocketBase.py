@@ -53,6 +53,16 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def pocketOpFeatures(self, obj):
         return 0
 
+    def initPocketOp(self, obj):
+        '''initPocketOp(obj) ... overwrite to initialize subclass.
+        Can safely be overwritten by subclass.'''
+        pass
+
+    def pocketInvertExtraOffset(self):
+        '''pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.
+        Can safely be overwritten by subclass.'''
+        return False
+
     def initAreaOp(self, obj):
         '''initAreaOp(obj) ... create pocket specific properties.
         Do not overwrite, implement initPocketOp(obj) instead.'''

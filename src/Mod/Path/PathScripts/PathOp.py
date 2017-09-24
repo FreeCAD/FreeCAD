@@ -183,6 +183,12 @@ class ObjectOp(object):
         Can safely be overwritten by subclasses.'''
         pass
      
+    def opExecute(self, obj):
+        '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
+        See documentation of execute() for a list of base functionality provided.
+        Should be overwritten by subclasses.'''
+        pass
+
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
