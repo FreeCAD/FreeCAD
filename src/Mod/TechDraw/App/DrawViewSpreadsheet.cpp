@@ -198,6 +198,9 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
                 for (int j=rows.back()+1; j<=endrow; ++j) {
                     rows.push_back(j);
                 }
+
+                // after the first digit there will be no letter any more
+                break;
             }
         }
     } catch (std::exception) {
