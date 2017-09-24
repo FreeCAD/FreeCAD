@@ -324,7 +324,7 @@ class PathDressupTagTaskPanel:
                 self.pointAcceptAndContinue()
 
         def cancel():
-            self.pointCancel()
+            self.pointReject()
 
         self.pointWhenDone = whenDone
         self.formTags.hide()
