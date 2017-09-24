@@ -298,8 +298,12 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
                     result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\"" << coloffset + cellwidth/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
                     result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\"" << coloffset + (cellwidth - TextSize.getValue()/2) << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
-                result << Font.getValue() << "\"" << " font-size=\"" << TextSize.getValue() << "\""
-                       << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
+                if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT) ||
+                    (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER) ||
+                    (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
+                    result << Font.getValue() << "\"" << " font-size=\"" << TextSize.getValue() << "\""
+                           << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
+                }
             }
             rowoffset = rowoffset + cellheight;
         }
