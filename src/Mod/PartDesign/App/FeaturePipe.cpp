@@ -73,7 +73,7 @@ using namespace PartDesign;
 
 const char* Pipe::TypeEnums[] = {"FullPath","UpToFace",NULL};
 const char* Pipe::TransitionEnums[] = {"Transformed","Right corner", "Round corner",NULL};
-const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxillery", "Binormal", NULL};
+const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxiliary", "Binormal", NULL};
 const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", NULL};
 
 
@@ -112,7 +112,6 @@ short Pipe::mustExecute() const
 
 App::DocumentObjectExecReturn *Pipe::execute(void)
 {
-    
     std::vector<TopoDS_Wire> wires;
     try {
         wires = getProfileWires();
@@ -126,12 +125,12 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     else {
         //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could 
         //not use the current simulate approach and build the start and end face from the wires. As the shell 
-        //beginns always at the spine and not the profile, the sketchshape cannot be used directly as front face. 
-        //We would need a method to translate the frontshape to match the shell starting position somehow...
+        //begins always at the spine and not the profile, the sketchshape cannot be used directly as front face.
+        //We would need a method to translate the front shape to match the shell starting position somehow...
         TopoDS_Face face = TopoDS::Face(sketchshape);
         BRepAdaptor_Surface adapt(face);
         if(adapt.GetType() != GeomAbs_Plane)
-            return new App::DocumentObjectExecReturn("Pipe: Only planar faces supportet");
+            return new App::DocumentObjectExecReturn("Pipe: Only planar faces supported");
     }
 
     // if the Base property has a valid shape, fuse the pipe into it
@@ -153,25 +152,27 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         App::DocumentObject* spine = Spine.getValue();
         if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
             return new App::DocumentObjectExecReturn("No spine linked.");
+
         std::vector<std::string> subedge = Spine.getSubValues();
         TopoDS_Shape path;
         const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
         buildPipePath(shape, subedge, path);
         path.Move(invObjLoc);
-        
-        
+
+
+        // auxiliary
         TopoDS_Shape auxpath;
         if(Mode.getValue()==3) {
             App::DocumentObject* auxspine = AuxillerySpine.getValue();
             if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
                 return new App::DocumentObjectExecReturn("No auxillery spine linked.");
             std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
-            TopoDS_Shape path;
+
             const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
             buildPipePath(auxshape, auxsubedge, auxpath);
             auxpath.Move(invObjLoc);
-        }        
-        
+        }
+
         //build up multisections
         auto multisections = Sections.getValues();
         std::vector<std::vector<TopoDS_Wire>> wiresections;
@@ -193,15 +194,15 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 TopExp_Explorer ex;
                 size_t i=0;
                 for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next()) {
-                    wiresections[i].push_back(TopoDS::Wire(ex.Current()));
                     if(i>=wiresections.size())
                         return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
-                    
+                    wiresections[i].push_back(TopoDS::Wire(ex.Current()));
+
                     ++i;
                 }
+
                 if(i<wiresections.size())
-                        return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
-                
+                    return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
             }
         }
         /*//build the law functions instead
@@ -246,8 +247,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             }
 
             if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn("pipe could not be build");
-            
+                return new App::DocumentObjectExecReturn("Pipe could not be built");
+
             //build the shell use simulate to get the top and bottom wires in an easy way
             shells.push_back(mkPS.Shape());
             TopTools_ListOfShape sim;
@@ -255,7 +256,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             frontwires.push_back(TopoDS::Wire(sim.First()));
             backwires.push_back(TopoDS::Wire(sim.Last()));            
         }
-        
+
         //build the top and bottom face, sew the shell and build the final solid
         TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
         TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
@@ -274,24 +275,24 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
         if(!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Result is not a solid");
-        
+
         TopoDS_Shape result = mkSolid.Shape();
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
-        if ( SC.State() == TopAbs_IN) {
+        if (SC.State() == TopAbs_IN) {
             result.Reverse();
         }
-        
+
         //result.Move(invObjLoc);
         AddSubShape.setValue(result);
-        
+
         if(base.IsNull()) {
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
-        
+
         if(getAddSubType() == FeatureAddSub::Additive) {
-                        
+
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the pipe failed");
@@ -300,12 +301,12 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-            
+
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
-            
+
             BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
@@ -314,7 +315,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-            
+
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
@@ -428,7 +429,7 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
             if (!subedge.empty()) {
                 //if(SpineTangent.getValue())
                     //getContiniusEdges(shape, subedge);
-                
+
                 BRepBuilderAPI_MakeWire mkWire;
                 for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
                     TopoDS_Shape subshape = shape.getSubShape(it->c_str());
@@ -486,5 +487,3 @@ PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe() {
     addSubType = Subtractive;
 }
-
-
