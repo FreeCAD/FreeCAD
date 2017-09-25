@@ -165,7 +165,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         if(Mode.getValue()==3) {
             App::DocumentObject* auxspine = AuxillerySpine.getValue();
             if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-                return new App::DocumentObjectExecReturn("No auxillery spine linked.");
+                return new App::DocumentObjectExecReturn("No auxiliary spine linked.");
             std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
 
             const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
@@ -333,41 +333,41 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
 void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape) {
 
-        mkPipeShell.SetTolerance(Precision::Confusion());
+    mkPipeShell.SetTolerance(Precision::Confusion());
 
-        switch(Transition.getValue()) {
-            case 0:
-                mkPipeShell.SetTransitionMode(BRepBuilderAPI_Transformed);
-                break;
-            case 1:
-                mkPipeShell.SetTransitionMode(BRepBuilderAPI_RightCorner);
-                break;
-            case 2:
-                mkPipeShell.SetTransitionMode(BRepBuilderAPI_RoundCorner);
-                break;
-        }
+    switch(Transition.getValue()) {
+        case 0:
+            mkPipeShell.SetTransitionMode(BRepBuilderAPI_Transformed);
+            break;
+        case 1:
+            mkPipeShell.SetTransitionMode(BRepBuilderAPI_RightCorner);
+            break;
+        case 2:
+            mkPipeShell.SetTransitionMode(BRepBuilderAPI_RoundCorner);
+            break;
+    }
+
+    bool auxiliary = false;
+    const Base::Vector3d& bVec = Binormal.getValue();
+    switch(Mode.getValue()) {
+        case 1:
+            mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0,0,0), gp_Dir(0,0,1), gp_Dir(1,0,0)));
+            break;
+        case 2:
+            mkPipeShell.SetMode(true);
+            break;
+        case 3:
+            auxiliary = true;
+            break;
+        case 4:
+            mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
+            break;
+    }
         
-        bool auxillery = false;
-        const Base::Vector3d& bVec = Binormal.getValue();
-        switch(Mode.getValue()) {
-            case 1:
-                mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0,0,0), gp_Dir(0,0,1), gp_Dir(1,0,0)));
-                break;
-            case 2:
-                mkPipeShell.SetMode(true);
-                break;
-            case 3:
-                auxillery = true;
-                break;
-            case 4:
-                mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
-                break;
-        }
-        
-        if(auxillery) {            
-                mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
-              //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
-        }
+    if(auxiliary) {
+        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
+        //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
+    }
 }
 
 
