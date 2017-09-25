@@ -25,7 +25,6 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
-    PathScripts/PathDressup.py
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
