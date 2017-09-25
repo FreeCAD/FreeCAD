@@ -33,6 +33,7 @@ import PathScripts
 from DraftGeomUtils import geomType
 from FreeCAD import Vector
 from PathScripts import PathJob
+from PathScripts import PathJobCmd
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
@@ -450,7 +451,7 @@ def addToJob(obj, jobname=None):
     else:
         jobs = GetJobs()
         if len(jobs) == 0:
-            job = PathJob.CommandJob.Create()
+            job = PathJobCmd.CommandJobCreate().Activated()
 
         elif len(jobs) == 1:
             job = jobs[0]
@@ -823,7 +824,7 @@ class depth_params:
         The amount of material to remove on the finish pass.  If given, the
         final pass will remove exactly this amount.
         """
-        return self.__z_finish_depth
+        return self.__z_finish_step
 
     @property
     def final_depth(self):
@@ -878,9 +879,9 @@ class depth_params:
         than max_size.'''
 
         steps_needed = math.ceil((start - stop) / max_size)
-        depths = numpy.linspace(stop, start, steps_needed, endpoint=False)
+        depths = list(numpy.linspace(stop, start, steps_needed, endpoint=False))
 
-        return depths.tolist()
+        return depths
 
     def __fixed_steps(self, start, stop, size):
         '''returns a list of depths beginning with the bottom (included), ending
@@ -890,11 +891,11 @@ class depth_params:
 
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)
-        depths = numpy.linspace(last_step, start, fullsteps, endpoint=False)
+        depths = list(numpy.linspace(last_step, start, fullsteps, endpoint=False))
 
         if last_step == stop:
-            return depths.tolist()
+            return depths
         else:
-            return [stop] + depths.tolist()
+            return [stop] + depths
 
 
