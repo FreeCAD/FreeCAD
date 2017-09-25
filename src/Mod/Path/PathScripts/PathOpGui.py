@@ -671,14 +671,15 @@ class TaskPanel(object):
             page.initPage(obj)
 
         if TaskPanelLayout < 2:
-            self.form = QtGui.QToolBox()
+            toolbox = QtGui.QToolBox()
             if TaskPanelLayout == 0:
                 for page in self.featurePages:
-                    self.form.addItem(page.form, page.getTitle(obj))
-                self.form.setCurrentIndex(len(self.featurePages)-1)
+                    toolbox.addItem(page.form, page.getTitle(obj))
+                toolbox.setCurrentIndex(len(self.featurePages)-1)
             else:
                 for page in reversed(self.featurePages):
-                    self.form.addItem(page.form, page.getTitle(obj))
+                    toolbox.addItem(page.form, page.getTitle(obj))
+            self.form = toolbox
         elif TaskPanelLayout == 2:
             forms = []
             for page in self.featurePages:
