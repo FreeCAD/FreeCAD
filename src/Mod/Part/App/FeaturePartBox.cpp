@@ -75,12 +75,11 @@ App::DocumentObjectExecReturn *Box::execute(void)
         BRepPrimAPI_MakeBox mkBox(L, W, H);
         TopoDS_Shape ResultShape = mkBox.Shape();
         this->Shape.setValue(ResultShape);
+        return Primitive::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
-
-    return App::DocumentObject::StdReturn;
 }
 
 /**
