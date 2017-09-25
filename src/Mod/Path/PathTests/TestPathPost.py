@@ -25,7 +25,7 @@
 import FreeCAD
 import PathScripts
 import PathScripts.post
-import PathScripts.PathContour
+import PathScripts.PathProfileContour
 import PathScripts.PathJob
 import PathScripts.PathPost
 import PathScripts.PathToolController
