@@ -47,7 +47,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathComment
         # from PathScripts import PathCompoundExtended
         from PathScripts import PathCustom
-        from PathScripts import PathDressup
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
