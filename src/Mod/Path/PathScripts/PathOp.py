@@ -294,7 +294,7 @@ class ObjectOp(object):
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
             if not PathGeom.isRoughly(obj.FinalDepth.Value, zmin):
-                if not obj.FinalDepthLock:
+                if not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
                     obj.FinalDepth = zmin
                 else:
                     if obj.FinalDepth.Value < zmin:
@@ -313,7 +313,7 @@ class ObjectOp(object):
 
             # update start depth if requested and required
             if not PathGeom.isRoughly(obj.StartDepth.Value, zmax):
-                if not obj.StartDepthLock:
+                if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
                     obj.StartDepth = zmax
                 elif (obj.StartDepth.Value - 0.0001) <= obj.FinalDepth.Value:
                     obj.StartDepth = minZmax(obj.FinalDepth.Value)
