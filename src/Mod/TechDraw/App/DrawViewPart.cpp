@@ -37,6 +37,8 @@
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+# include <BRep_Builder.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
@@ -75,6 +77,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -158,13 +161,40 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
     App::DocumentObject *link = Source.getValue();
     if (!link) {
         Base::Console().Error("DVP - No Source object linked - %s\n",getNameInDocument());
-    } else if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        Base::Console().Error("DVP - Linked object is not a Part object - %s\n",getNameInDocument());
-    } else {
+    } else if (link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         result = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
+    } else if (link->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+        result = getShapeFromPart(static_cast<App::Part*>(link));
+    } else {        Base::Console().Error("DVP - Can't handle this Source - %s\n",getNameInDocument());
     }
     return result;
 }
+
+TopoDS_Shape DrawViewPart::getShapeFromPart(App::Part* ap) const
+{
+    TopoDS_Shape result;
+    std::vector<App::DocumentObject*> objs = ap->Group.getValues();
+    std::vector<TopoDS_Shape> shapes;
+    for (auto& d: objs) {
+        if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            shapes.push_back(static_cast<Part::Feature*>(d)->Shape.getShape().getShape());
+        }
+    }
+    if (!shapes.empty()) {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        for (auto& s: shapes) {
+            BRepBuilderAPI_Copy BuilderCopy(s);
+            TopoDS_Shape shape = BuilderCopy.Shape();
+            builder.Add(comp, shape);
+        }
+        result = comp;
+    }
+    return result;
+}
+
+
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
