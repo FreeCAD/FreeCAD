@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/Part.h>
 #include <App/PropertyGeo.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -254,10 +255,16 @@ void CmdTechDrawNewView::activated(int iMsg)
     }
 
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.empty()) {
+    std::vector<App::DocumentObject*> parts = getSelection().getObjectsOfType(App::Part::getClassTypeId());
+    if ((shapes.empty()) && 
+        (parts.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least 1 Part object."));
+            QObject::tr("Select at least 1 object with a Shape."));
         return;
+    }
+    
+    if (!parts.empty()) {
+        shapes.insert(shapes.end(),parts.begin(),parts.end());
     }
 
     std::string PageName = page->getNameInDocument();
@@ -337,11 +344,6 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     }
     App::DocumentObject* dObj = *(shapes.begin());
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(dObj);
-//    if (dvp->getSectionRef()) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("This View already has a related Section. Choose another."));
-//        return;
-//    }
 
     std::string PageName = page->getNameInDocument();
 
@@ -471,11 +473,24 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     }
 
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.size() != 1) {
+//    if (shapes.size() != 1) {
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select exactly 1 Part object."));
+//        return;
+//    }
+
+    std::vector<App::DocumentObject*> parts = getSelection().getObjectsOfType(App::Part::getClassTypeId());
+    if ((shapes.empty()) && 
+        (parts.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly 1 Part object."));
+            QObject::tr("Select at least 1 object with a Shape."));
         return;
     }
+
+    if (!parts.empty()) {
+        shapes.insert(shapes.end(),parts.begin(),parts.end());
+    }
+
     std::string PageName = page->getNameInDocument();
 
     Gui::WaitCursor wc;
@@ -534,11 +549,22 @@ void CmdTechDrawNewMulti::activated(int iMsg)
         return;
     }
 
-    const std::vector<App::DocumentObject*>& shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.empty()) {
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+//    if (shapes.empty()) {
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select at least 1 Part object."));
+//        return;
+//    }
+    std::vector<App::DocumentObject*> parts = getSelection().getObjectsOfType(App::Part::getClassTypeId());
+    if ((shapes.empty()) && 
+        (parts.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least 1 Part object."));
+            QObject::tr("Select at least 1 object with a Shape."));
         return;
+    }
+    
+    if (!parts.empty()) {
+        shapes.insert(shapes.end(),parts.begin(),parts.end());
     }
 
     std::string PageName = page->getNameInDocument();
@@ -880,6 +906,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         return;
     }
 
+//TODO: shouldn't this be checking for a Draft object only?
     std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -905,6 +932,7 @@ bool CmdTechDrawDraftView::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
+//TODO: shouldn't this be checking for an Arch object only?
 //===========================================================================
 // TechDraw_ArchView
 //===========================================================================
