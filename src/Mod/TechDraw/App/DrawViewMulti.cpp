@@ -51,6 +51,7 @@
 
 #include <App/Application.h>
 #include <App/Material.h>
+#include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -128,17 +129,24 @@ TopoDS_Shape DrawViewMulti::getSourceShape(void) const
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
         for (auto& l:links) {
-            if (!l->isDerivedFrom(Part::Feature::getClassTypeId())){
-                continue;     //not a part
-            } 
-            const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
-            if (partTopo.isNull()) {
-                continue;    //has no shape
+            if (l->isDerivedFrom(Part::Feature::getClassTypeId())){
+                const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
+                if (partTopo.isNull()) {
+                    continue;    //has no shape
+                }
+                BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
+                TopoDS_Shape shape = BuilderCopy.Shape();
+                builder.Add(comp, shape);
+            } else if (l->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+                TopoDS_Shape s = getShapeFromPart(static_cast<App::Part*>(l));
+                if (s.IsNull()) {
+                    continue;
+                }
+                BRepBuilderAPI_Copy BuilderCopy(s);
+                TopoDS_Shape shape = BuilderCopy.Shape();
+                builder.Add(comp, shape);
             }
-            BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
-            TopoDS_Shape shape = BuilderCopy.Shape();
-            builder.Add(comp, shape);
-        }
+        }        
         result = comp;
     }
     return result;

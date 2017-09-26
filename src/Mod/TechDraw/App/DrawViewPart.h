@@ -46,6 +46,11 @@ class gp_Ax2;
 //class TopoDS_Wire;
 class TopoDS_Shape;
 
+namespace App
+{
+class Part;
+}
+
 namespace TechDrawGeometry
 {
 class GeometryObject;
@@ -155,7 +160,8 @@ public:
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
     virtual TopoDS_Shape getSourceShape(void) const; 
-
+    virtual TopoDS_Shape getShapeFromPart(App::Part* ap) const;
+    
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
