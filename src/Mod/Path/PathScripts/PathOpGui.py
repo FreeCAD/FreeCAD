@@ -103,10 +103,18 @@ class ViewProvider(object):
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(panel)
         panel.setupUi()
+        job = self.Object.Proxy.getJob(self.Object)
+        if job:
+            job.ViewObject.Proxy.setupEditVisibility(job)
+        else:
+            PathLog.info("did not find no job")
 
     def clearTaskPanel(self):
         '''clearTaskPanel() ... internal callback function when editing has finished.'''
         self.panel = None
+        job = self.Object.Proxy.getJob(self.Object)
+        if job:
+            job.ViewObject.Proxy.resetEditVisibility(job)
 
     def unsetEdit(self, arg1, arg2):
         if self.panel:
