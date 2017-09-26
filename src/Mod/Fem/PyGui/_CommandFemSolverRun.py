@@ -72,7 +72,7 @@ class _CommandFemSolverRun(FemCommands):
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
     def _newActivated(self):
-        solver = self._getSelectedSolver()
+        solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
         if solver is not None:
             try:
                 machine = femsolver.run.getMachine(solver)
@@ -94,12 +94,6 @@ class _CommandFemSolverRun(FemCommands):
                 machine.reset()
                 machine.target = femsolver.run.RESULTS
                 machine.start()
-
-    def _getSelectedSolver(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
-            return sel[0]
-        return None
 
 
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())
