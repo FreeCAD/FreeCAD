@@ -48,7 +48,7 @@ __doc__ = "Base classes and framework for Path operation's UI"
 TaskPanelLayout = 0
 
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -294,7 +294,9 @@ class TaskPanelPage(object):
     def updateInputField(self, obj, prop, widget, onBeforeChange = None):
         '''updateInputField(obj, prop, widget) ... helper function to update obj's property named prop with the value from widget, if it has changed.'''
         value = FreeCAD.Units.Quantity(widget.text()).Value
-        if getattr(obj, prop) != value:
+        attr = getattr(obj, prop)
+        attrValue = attr.Value if hasattr(attr, 'Value') else attr
+        if not PathGeom.isRoughly(attrValue, value):
             PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
             if onBeforeChange:
                 onBeforeChange(obj)
