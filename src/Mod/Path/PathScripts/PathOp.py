@@ -258,6 +258,13 @@ class ObjectOp(object):
         self.stock = job.Stock
         return True
 
+    def getJob(self, obj):
+        '''getJob(obj) ... return the job this operation is part of.'''
+        if not hasattr(self, 'job'):
+            if not self._setBaseAndStock(obj):
+                return None
+        return self.job
+
     def updateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... base implementation calculating depths depending on base geometry.
         Can safely be overwritten.'''
@@ -406,10 +413,7 @@ class ObjectOp(object):
 
         if self._setBaseAndStock(obj):
             if base == self.job.Proxy.baseObject(self.job):
-                PathLog.info("this is it")
                 base = self.baseobject
-            else:
-                PathLog.info("no, base=%s job.base=%s" % (base, self.job.Proxy.baseObject(self.job)))
             baselist = obj.Base
             if baselist is None:
                 baselist = []
