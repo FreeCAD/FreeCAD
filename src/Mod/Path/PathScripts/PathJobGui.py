@@ -458,9 +458,7 @@ class TaskPanel:
         self.stockEdit = None
 
     def baseObjectViewObject(self, obj):
-        base = obj.Proxy.baseObject(obj)
-        body = base.getParentGeoFeatureGroup()
-        return body.ViewObject if body else base.ViewObject
+        return PathUtil.getPublicObject(obj.Proxy.baseObject(obj)).ViewObject
 
     def baseObjectSaveVisibility(self, obj):
         baseVO = self.baseObjectViewObject(self.obj)
