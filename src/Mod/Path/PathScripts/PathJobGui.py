@@ -171,6 +171,41 @@ class ViewProvider:
         if prop == 'Stock' and self.obj.Stock and self.obj.Stock.ViewObject and self.obj.Stock.ViewObject.Proxy:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
+    def baseObjectViewObject(self, obj):
+        return PathUtil.getPublicObject(self.obj.Proxy.baseObject(obj)).ViewObject
+
+    def baseObjectSaveVisibility(self, obj):
+        baseVO = self.baseObjectViewObject(self.obj)
+        if baseVO:
+            self.baseOrigVisibility = baseVO.Visibility
+            baseVO.Visibility = False
+        if obj.Base and obj.Base.ViewObject:
+            obj.Base.ViewObject.Visibility = True
+
+    def baseObjectRestoreVisibility(self, obj):
+        baseVO = self.baseObjectViewObject(self.obj)
+        if baseVO:
+            baseVO.Visibility = self.baseOrigVisibility
+
+    def setupEditVisibility(self, obj):
+        self.baseVisibility = False
+        self.baseOrigVisibility = False
+        if obj.Base and obj.Base.ViewObject:
+            self.baseVisibility = obj.Base.ViewObject.Visibility
+            self.baseObjectSaveVisibility(obj)
+
+        self.stockVisibility = False
+        if obj.Stock and obj.Stock.ViewObject:
+            self.stockVisibility = obj.Stock.ViewObject.Visibility
+            self.obj.Stock.ViewObject.Visibility = True
+
+    def resetEditVisibility(self, obj):
+        if obj.Base and obj.Base.ViewObject:
+            obj.Base.ViewObject.Visibility = self.baseVisibility
+        self.baseObjectRestoreVisibility(obj)
+        if obj.Stock and obj.Stock.ViewObject:
+            obj.Stock.ViewObject.Visibility = self.stockVisibility
+
 class StockEdit(object):
     Index = -1
     StockType = PathStock.StockType.Unknown
@@ -411,6 +446,7 @@ class TaskPanel:
     def __init__(self, vobj, deleteOnReject):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
         self.vobj = vobj
+        self.vproxy = vobj.Proxy
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
@@ -440,16 +476,7 @@ class TaskPanel:
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
-        self.baseVisibility = False
-        self.baseOrigVisibilty = False
-        if self.obj.Base and self.obj.Base.ViewObject:
-            self.baseVisibility = self.obj.Base.ViewObject.Visibility
-            self.baseObjectSaveVisibility(self.obj)
-
-        self.stockVisibility = False
-        if self.obj.Stock and self.obj.Stock.ViewObject:
-            self.stockVisibility = self.obj.Stock.ViewObject.Visibility
-            self.obj.Stock.ViewObject.Visibility = True
+        self.vproxy.setupEditVisibility(self.obj)
 
         self.stockFromBase = None
         self.stockFromExisting = None
@@ -457,28 +484,11 @@ class TaskPanel:
         self.stockCreateCylinder = None
         self.stockEdit = None
 
-    def baseObjectViewObject(self, obj):
-        return PathUtil.getPublicObject(obj.Proxy.baseObject(obj)).ViewObject
-
-    def baseObjectSaveVisibility(self, obj):
-        baseVO = self.baseObjectViewObject(self.obj)
-        self.baseOrigVisibility = baseVO.Visibility
-        baseVO.Visibility = False
-        obj.Base.ViewObject.Visibility = True
-
-    def baseObjectRestoreVisibility(self, obj):
-        baseVO = self.baseObjectViewObject(self.obj)
-        baseVO.Visibility = self.baseOrigVisibility
-
     def preCleanup(self):
         PathLog.track()
         FreeCADGui.Selection.removeObserver(self)
-        if self.obj.Base and self.obj.Base.ViewObject:
-            self.obj.Base.ViewObject.Visibility = self.baseVisibility
-            self.baseObjectRestoreVisibility(self.obj)
-        if self.obj.Stock and self.obj.Stock.ViewObject:
-            self.obj.Stock.ViewObject.Visibility = self.stockVisibility
-        self.vobj.Proxy.resetTaskPanel()
+        self.vproxy.resetEditVisibility(self.obj)
+        self.vproxy.resetTaskPanel()
 
     def accept(self, resetEdit=True):
         PathLog.track()
@@ -531,11 +541,11 @@ class TaskPanel:
 
             selObj = self.form.jobModel.itemData(self.form.jobModel.currentIndex())
             if self.obj.Proxy.baseObject(self.obj) != selObj:
-                self.baseObjectRestoreVisibility(self.obj)
+                self.vproxy.baseObjectRestoreVisibility(self.obj)
                 if PathJob.isResourceClone(self.obj, 'Base'):
                     self.obj.Document.removeObject(self.obj.Base.Name)
                 self.obj.Base = PathJob.createResourceClone(self.obj, selObj, 'Base', 'Base')
-                self.baseObjectSaveVisibility(self.obj)
+                self.vproxy.baseObjectSaveVisibility(self.obj)
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
