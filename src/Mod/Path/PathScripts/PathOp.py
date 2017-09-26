@@ -25,6 +25,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
 from PathScripts.PathGeom import PathGeom
@@ -252,6 +253,7 @@ class ObjectOp(object):
             if not ignoreErrors:
                 PathLog.error(translate("Path", "Parent job %s doesn't have a base object") % job.Label)
             return False
+        self.job = job
         self.baseobject = job.Base
         self.stock = job.Stock
         return True
@@ -400,13 +402,21 @@ class ObjectOp(object):
 
     def addBase(self, obj, base, sub):
         PathLog.track()
-        baselist = obj.Base
-        if baselist is None:
-            baselist = []
-        item = (base, sub)
-        if item in baselist:
-            PathLog.notice(translate("Path", "this object already in the list" + "\n"))
-        else:
-            baselist.append(item)
-            obj.Base = baselist
+        base = PathUtil.getPublicObject(base)
+
+        if self._setBaseAndStock(obj):
+            if base == self.job.Proxy.baseObject(self.job):
+                PathLog.info("this is it")
+                base = self.baseobject
+            else:
+                PathLog.info("no, base=%s job.base=%s" % (base, self.job.Proxy.baseObject(self.job)))
+            baselist = obj.Base
+            if baselist is None:
+                baselist = []
+            item = (base, sub)
+            if item in baselist:
+                PathLog.notice(translate("Path", "this object already in the list" + "\n"))
+            else:
+                baselist.append(item)
+                obj.Base = baselist
 
