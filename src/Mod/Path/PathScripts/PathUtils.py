@@ -184,7 +184,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                             drillable = True
         PathLog.debug("candidate is drillable: {}".format(drillable))
     except Exception as ex:
-        PathLog.warning("PathUtils", "Issue determine drillability: {}".format(ex))
+        PathLog.warning(translate("PathUtils", "Issue determine drillability: {}").format(ex))
     return drillable
 
 
