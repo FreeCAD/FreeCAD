@@ -249,30 +249,42 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn("Pipe could not be built");
 
-            //build the shell use simulate to get the top and bottom wires in an easy way
             shells.push_back(mkPS.Shape());
-            TopTools_ListOfShape sim;
-            mkPS.Simulate(2, sim);
-            frontwires.push_back(TopoDS::Wire(sim.First()));
-            backwires.push_back(TopoDS::Wire(sim.Last()));            
+            
+            if (!mkPS.Shape().Closed()) {
+                // shell is not closed - use simulate to get the end wires
+                TopTools_ListOfShape sim;
+                mkPS.Simulate(2, sim);
+
+                frontwires.push_back(TopoDS::Wire(sim.First()));
+                backwires.push_back(TopoDS::Wire(sim.Last()));
+            }
         }
 
-        //build the top and bottom face, sew the shell and build the final solid
-        TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-        TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
-        
-        BRepBuilderAPI_Sewing sewer;
-        sewer.SetTolerance(Precision::Confusion());
-        sewer.Add(front);
-        sewer.Add(back);
-        for(TopoDS_Shape& s : shells)
-            sewer.Add(s);      
-        
-        sewer.Perform();
-        
-        //build the solid
         BRepBuilderAPI_MakeSolid mkSolid;
-        mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+
+        if (!frontwires.empty()) {
+            // build the end faces, sew the shell and build the final solid
+            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+            TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
+
+            BRepBuilderAPI_Sewing sewer;
+            sewer.SetTolerance(Precision::Confusion());
+            sewer.Add(front);
+            sewer.Add(back);
+
+            for(TopoDS_Shape& s : shells)
+                sewer.Add(s);
+
+            sewer.Perform();
+            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+        } else {
+            // shells are already closed - add them directly
+            for (TopoDS_Shape& s : shells) {
+                mkSolid.Add(TopoDS::Shell(s));
+            }
+        }
+
         if(!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Result is not a solid");
 
