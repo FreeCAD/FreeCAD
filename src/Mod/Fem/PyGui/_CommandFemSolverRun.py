@@ -52,13 +52,7 @@ class _CommandFemSolverRun(FemCommands):
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
-        if FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectZ88"):
-            self._newActivated()
-        elif FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectElmer"):
-            self._newActivated()
-        elif FemUtils.isDerivedFrom(self.solver, "Fem::FemSolverObjectCalculix"):
-            self._newActivated()
-        elif self.solver.SolverType == "FemSolverCalculix":
+        if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
@@ -69,13 +63,8 @@ class _CommandFemSolverRun(FemCommands):
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
-            QtGui.QMessageBox.critical(None, "Not known solver type", message)
-
-    def _newActivated(self):
-        solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
-        if solver is not None:
             try:
-                machine = femsolver.run.getMachine(solver)
+                machine = femsolver.run.getMachine(self.solver)
             except femsolver.run.MustSaveError:
                 QtGui.QMessageBox.critical(
                     FreeCADGui.getMainWindow(),
