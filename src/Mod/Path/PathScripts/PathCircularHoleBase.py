@@ -156,7 +156,6 @@ class ObjectOp(PathOp.ObjectOp):
             return False
 
         if len(obj.Base) == 0 and not haveLocations(self, obj):
-            # Arch PanelSheet
             features = []
             if self.baseIsArchPanel(obj, self.baseobject):
                 holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
