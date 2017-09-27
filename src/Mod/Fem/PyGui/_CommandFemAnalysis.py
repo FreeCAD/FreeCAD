@@ -57,10 +57,6 @@ class _CommandFemAnalysis(FemCommands):
         else:
             FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FreeCAD.ActiveDocument.ActiveObject]")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FreeCAD.ActiveDocument." + sel[0].Name + "]")
-        FreeCADGui.Selection.clearSelection()
+
 
 FreeCADGui.addCommand('FEM_Analysis', _CommandFemAnalysis())
