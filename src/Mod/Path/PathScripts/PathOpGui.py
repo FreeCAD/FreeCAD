@@ -654,12 +654,13 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def selectionZLevel(self, sel):
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             sub = sel[0].SubObjects[0]
-            if 'Vertex' == sub.ShapeType:
-                return sub.Z
-            if 'Edge' == sub.ShapeType and PathGeom.isRoughly(sub.Vertexes[0].Z, sub.Vertexes[1].Z):
-                return sub.Vertexes[0].Z
-            if 'Face' == sub.ShapeType and PathGeom.isRoughly(sub.BoundBox.ZLength, 0):
-                return sub.BoundBox.ZMax
+            if PathGeom.isHorizontal(sub):
+                if 'Vertex' == sub.ShapeType:
+                    return sub.Z
+                if 'Edge' == sub.ShapeType:
+                    return sub.Vertexes[0].Z
+                if 'Face' == sub.ShapeType:
+                    return sub.BoundBox.ZMax
         return None
 
     def updateSelection(self, obj, sel):
