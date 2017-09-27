@@ -189,7 +189,6 @@ INSTALL(
         PyGui/_ViewProviderFemMeshResult.py
         PyGui/_ViewProviderFemResultMechanical.py
         PyGui/_ViewProviderFemSolverCalculix.py
-        PyGui/_ViewProviderFemSolverZ88.py
         PyGui/TaskPanelFemElementFluid1D.ui
         PyGui/TaskPanelFemElementGeometry1D.ui
         PyGui/TaskPanelFemElementGeometry2D.ui
