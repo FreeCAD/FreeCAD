@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/Path-3DPocket.svg</file>
         <file>icons/Path-3DSurface.svg</file>
         <file>icons/Path-Array.svg</file>
         <file>icons/Path-Axis.svg</file>

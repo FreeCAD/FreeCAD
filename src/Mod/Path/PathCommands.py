@@ -25,6 +25,8 @@
 import FreeCAD
 import PathScripts
 from PathScripts.PathUtils import loopdetect
+from PathScripts.PathUtils import horizontalEdgeLoop
+from PathScripts.PathUtils import horizontalFaceLoop
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
 
@@ -56,7 +58,11 @@ class _CommandSelectLoop:
             sel = FreeCADGui.Selection.getSelectionEx()[0]
             sub1 = sel.SubElementNames[0]
             if sub1[0:4] != 'Edge':
+                if sub1[0:4] == 'Face' and horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames):
+                    return True
                 return False
+            if len(sel.SubElementNames) == 1 and horizontalEdgeLoop(sel.Object, sel.SubObjects[0]):
+                return True
             sub2 = sel.SubElementNames[1]
             if sub2[0:4] != 'Edge':
                 return False
@@ -68,9 +74,19 @@ class _CommandSelectLoop:
         sel = FreeCADGui.Selection.getSelectionEx()[0]
         obj = sel.Object
         edge1 = sel.SubObjects[0]
-        edge2 = sel.SubObjects[1]
-        loopwire = loopdetect(obj, edge1, edge2)
-        if loopwire is not None:
+        if 'Face' in sel.SubElementNames[0]:
+            loop = horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            if loop:
+                FreeCADGui.Selection.clearSelection()
+                FreeCADGui.Selection.addSelection(sel.Object, loop)
+            loopwire = []
+        elif len(sel.SubObjects) == 1:
+            loopwire = horizontalEdgeLoop(obj, edge1)
+        else:
+            edge2 = sel.SubObjects[1]
+            loopwire = loopdetect(obj, edge1, edge2)
+
+        if loopwire:
             FreeCADGui.Selection.clearSelection()
             elist = obj.Shape.Edges
             for e in elist:

@@ -29,10 +29,15 @@ import Path
 import PathScripts.PathLog as PathLog
 
 from FreeCAD import Vector
+from PySide import QtCore
 
 PathGeomTolerance = 0.000001
 
 #PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Side:
     """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
@@ -131,6 +136,64 @@ class PathGeom:
                 a2 += 2*math.pi
             a = a2 - a1
         return a
+
+    @classmethod
+    def isVertical(cls, obj):
+        '''isVertical(obj) ... answer True if obj points into Z'''
+        if type(obj) == FreeCAD.Vector:
+            return PathGeom.isRoughly(obj.x, 0) and PathGeom.isRoughly(obj.y, 0)
+        if obj.ShapeType == 'Face':
+            if type(obj.Surface) == Part.Plane:
+                return cls.isHorizontal(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Cylinder:
+                return cls.isVertical(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Sphere:
+                return True
+            if type(obj.Surface) == Part.SurfaceOfExtrusion:
+                return cls.isVertical(obj.Surface.Direction)
+            PathLog.error(translate('PathGeom', "face isVertical(%s) not supported") % type(obj.Surface))
+            return None
+        if obj.ShapeType == 'Edge':
+            if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
+                return cls.isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse:
+                return cls.isHorizontal(obj.Curve.Axis)
+            if type(obj.Curve) == Part.BezierCurve:
+                # the current assumption is that a bezier curve is vertical if its end points are vertical
+                return cls.isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
+            PathLog.error(translate('PathGeom', "edge isVertical(%s) not supported") % type(obj.Curve))
+            return None
+        PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
+        return None
+
+    @classmethod
+    def isHorizontal(cls, obj):
+        '''isHorizontal(obj) ... answer True if obj points into X or Y'''
+        if type(obj) == FreeCAD.Vector:
+            return PathGeom.isRoughly(obj.z, 0)
+        if obj.ShapeType == 'Face':
+            if type(obj.Surface) == Part.Plane:
+                return cls.isVertical(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Cylinder:
+                return cls.isHorizontal(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Sphere:
+                return True
+            if type(obj.Surface) == Part.SurfaceOfExtrusion:
+                return cls.isHorizontal(obj.Surface.Direction)
+            PathLog.error(translate('PathGeom', "face isHorizontal(%s) not supported") % type(obj.Surface))
+            return None
+        if obj.ShapeType == 'Edge':
+            if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
+                return cls.isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse:
+                return cls.isVertical(obj.Curve.Axis)
+            if type(obj.Curve) == Part.BezierCurve:
+                return cls.isRoughly(obj.BoundBox.ZLength, 0)
+            PathLog.error(translate('PathGeom', "edge isHorizontal(%s) not supported") % type(obj.Curve))
+            return None
+        PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
+        return None
+
 
     @classmethod
     def commandEndPoint(cls, cmd, defaultPoint = Vector(), X='X', Y='Y', Z='Z'):

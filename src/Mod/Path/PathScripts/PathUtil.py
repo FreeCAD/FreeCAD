@@ -70,10 +70,20 @@ def isSolid(obj):
     return False
 
 def toolControllerForOp(op):
+    '''toolControllerForOp(op) ... return the tool controller used by the op.
+    If the op doesn't have its own tool controller but has a Base object, return its tool controller.
+    Otherwise return None.'''
     if hasattr(op, 'ToolController'):
         return op.ToolController
     if hasattr(op, 'Base'):
         return toolControllerForOp(op.Base)
     return None
 
+def getPublicObject(obj):
+    '''getPublicObject(obj) ... returns the object which should be used to reference a feature of the given object.'''
+    if hasattr(obj, 'getParentGeoFeatureGroup'):
+        body = obj.getParentGeoFeatureGroup()
+        if body:
+            return getPublicObject(body)
+    return obj
 

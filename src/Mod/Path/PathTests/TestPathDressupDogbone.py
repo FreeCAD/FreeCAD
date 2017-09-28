@@ -117,6 +117,12 @@ class TestDressupDogbone(PathTestBase):
         profile = PathProfileFaces.Create('Profile Faces')
         profile.Base = (cut, face)
         profile.StepDown = 5
+        # set start and final depth in order to eliminate effects of stock (and its default values)
+        profile.StartDepthLock = True
+        profile.StartDepth = 10
+        profile.FinalDepthLock = True
+        profile.FinalDepth = 0
+
         profile.processHoles = True
         profile.processPerimeter = True
         doc.recompute()

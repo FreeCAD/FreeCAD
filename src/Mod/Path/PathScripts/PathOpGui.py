@@ -48,7 +48,7 @@ __doc__ = "Base classes and framework for Path operation's UI"
 TaskPanelLayout = 0
 
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -103,10 +103,18 @@ class ViewProvider(object):
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(panel)
         panel.setupUi()
+        job = self.Object.Proxy.getJob(self.Object)
+        if job:
+            job.ViewObject.Proxy.setupEditVisibility(job)
+        else:
+            PathLog.info("did not find no job")
 
     def clearTaskPanel(self):
         '''clearTaskPanel() ... internal callback function when editing has finished.'''
         self.panel = None
+        job = self.Object.Proxy.getJob(self.Object)
+        if job:
+            job.ViewObject.Proxy.resetEditVisibility(job)
 
     def unsetEdit(self, arg1, arg2):
         if self.panel:
@@ -161,16 +169,24 @@ class TaskPanelPage(object):
         Do not overwrite, implement initPage(obj) instead.'''
         self.obj = obj
         self.form = self.getForm()
+        self.signalDirtyChanged = None
         self.setDirty()
         self.setTitle('-')
         self.features = features
 
+    def onDirtyChanged(self, callback):
+        '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
+        self.signalDirtyChanged = callback
     def setDirty(self):
         '''setDirty() ... mark receiver as dirty, causing the model to be recalculated if OK or Apply is pressed.'''
         self.isdirty = True
+        if self.signalDirtyChanged:
+            self.signalDirtyChanged(self)
     def setClean(self):
         '''setClean() ... mark receiver as clean, indicating there is no need to recalculate the model even if the user presses OK or Apply.'''
         self.isdirty = False
+        if self.signalDirtyChanged:
+            self.signalDirtyChanged(self)
 
     def pageGetFields(self):
         '''pageGetFields() ... internal callback.
@@ -283,12 +299,18 @@ class TaskPanelPage(object):
         if obj.ToolController != tc:
             obj.ToolController = tc
 
-    def updateInputField(self, obj, prop, widget):
+    def updateInputField(self, obj, prop, widget, onBeforeChange = None):
         '''updateInputField(obj, prop, widget) ... helper function to update obj's property named prop with the value from widget, if it has changed.'''
         value = FreeCAD.Units.Quantity(widget.text()).Value
-        if getattr(obj, prop) != value:
+        attr = getattr(obj, prop)
+        attrValue = attr.Value if hasattr(attr, 'Value') else attr
+        if not PathGeom.isRoughly(attrValue, value):
             PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
+            if onBeforeChange:
+                onBeforeChange(obj)
             setattr(obj, prop, value)
+            return True
+        return False
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
@@ -371,12 +393,14 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
             #self.obj.Proxy.execute(self.obj)
             self.setFields(self.obj)
+            self.setDirty()
 
     def deleteBase(self):
         PathLog.track()
         selected = self.form.baseList.selectedItems()
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
+            self.setDirty()
         self.updateBase()
         #self.obj.Proxy.execute(self.obj)
         #FreeCAD.ActiveDocument.recompute()
@@ -397,6 +421,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def clearBase(self):
         self.obj.Base = []
+        self.setDirty()
 
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
@@ -543,10 +568,12 @@ class TaskPanelDepthsPage(TaskPanelPage):
     '''Page controller for depths.'''
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
+
     def initPage(self, obj):
         if PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.hide()
             self.form.finalDepthLabel.hide()
+            self.form.finalDepthLock.hide()
             self.form.finalDepthSet.hide()
 
         if not PathOp.FeatureStepDown & self.features:
@@ -556,47 +583,69 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if not PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
+
     def getTitle(self, obj):
         return translate("PathOp", "Depths")
+
+    def lockStartDepth(self, obj):
+        if not obj.StartDepthLock:
+            obj.StartDepthLock = True
+    def lockFinalDepth(self, obj):
+        if not obj.FinalDepthLock:
+            obj.FinalDepthLock = True
+
     def getFields(self, obj):
-        self.updateInputField(obj, 'StartDepth', self.form.startDepth)
+        if obj.StartDepthLock != self.form.startDepthLock.isChecked():
+            obj.StartDepthLock = self.form.startDepthLock.isChecked()
+        if obj.FinalDepthLock != self.form.finalDepthLock.isChecked():
+            obj.FinalDepthLock = self.form.finalDepthLock.isChecked()
+
+        self.updateInputField(obj, 'StartDepth', self.form.startDepth, self.lockStartDepth)
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth)
+            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth, self.lockFinalDepth)
         if PathOp.FeatureStepDown & self.features:
             self.updateInputField(obj, 'StepDown', self.form.stepDown)
         if PathOp.FeatureFinishDepth & self.features:
             self.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
+
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.startDepthLock.setChecked(obj.StartDepthLock)
         if not PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+            self.form.finalDepthLock.setChecked(obj.FinalDepthLock)
         if PathOp.FeatureStepDown & self.features:
             self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
         if PathOp.FeatureFinishDepth & self.features:
             self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
+
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
+        signals.append(self.form.startDepthLock.clicked)
         if not PathOp.FeatureNoFinalDepth & self.features:
             signals.append(self.form.finalDepth.editingFinished)
+            signals.append(self.form.finalDepthLock.clicked)
         if PathOp.FeatureStepDown & self.features:
             signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
             signals.append(self.form.finishDepth.editingFinished)
         return signals
+
     def registerSignalHandlers(self, obj):
         self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.startDepth))
         if not PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.finalDepth))
+
     def pageUpdateData(self, obj, prop):
-        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
+        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth', 'FinalDepthLock', 'StartDepthLock']:
             self.setFields(obj)
 
     def depthSet(self, obj, widget):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
         if z is not None:
-            PathLog.info("depthSet(%.2f)" % z)
+            PathLog.debug("depthSet(%.2f)" % z)
             widget.setText(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString)
             self.getFields(obj)
         else:
@@ -605,12 +654,13 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def selectionZLevel(self, sel):
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             sub = sel[0].SubObjects[0]
-            if 'Vertex' == sub.ShapeType:
-                return sub.Z
-            if 'Edge' == sub.ShapeType and PathGeom.isRoughly(sub.Vertexes[0].Z, sub.Vertexes[1].Z):
-                return sub.Vertexes[0].Z
-            if 'Face' == sub.ShapeType and PathGeom.isRoughly(sub.BoundBox.ZLength, 0):
-                return sub.BoundBox.ZMax
+            if PathGeom.isHorizontal(sub):
+                if 'Vertex' == sub.ShapeType:
+                    return sub.Z
+                if 'Edge' == sub.ShapeType:
+                    return sub.Vertexes[0].Z
+                if 'Face' == sub.ShapeType:
+                    return sub.BoundBox.ZMax
         return None
 
     def updateSelection(self, obj, sel):
@@ -669,6 +719,7 @@ class TaskPanel(object):
 
         for page in self.featurePages:
             page.initPage(obj)
+            page.onDirtyChanged(self.pageDirtyChanged)
 
         if TaskPanelLayout < 2:
             toolbox = QtGui.QToolBox()
@@ -730,6 +781,8 @@ class TaskPanel(object):
         return True
 
     def preCleanup(self):
+        for page in self.featurePages:
+            page.onDirtyChanged(None)
         FreeCADGui.Selection.removeObserver(self)
         FreeCADGui.Selection.removeObserver(self.s)
         self.obj.ViewObject.Proxy.clearTaskPanel()
@@ -741,6 +794,10 @@ class TaskPanel(object):
             FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
 
+    def pageDirtyChanged(self, page):
+        '''pageDirtyChanged(page) ... internal callback'''
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(self.isDirty())
+
     def clicked(self, button):
         '''clicked(button) ... callback invoked when the user presses any of the task panel buttons.'''
         if button == QtGui.QDialogButtonBox.Apply:
@@ -750,6 +807,7 @@ class TaskPanel(object):
 
     def modifyStandardButtons(self, buttonBox):
         '''modifyStandarButtons(buttonBox) ... callback in case the task panel buttons need to be modified.'''
+        self.buttonBox = buttonBox
         for page in self.featurePages:
             page.modifyStandardButtons(buttonBox)
 

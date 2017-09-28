@@ -23,49 +23,29 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import PathScripts.PathSurface as PathSurface
 import PathScripts.PathOpGui as PathOpGui
-#import PathScripts.PathPocketBaseGui as PathPocketBaseGui
+import PathScripts.PathPocketShape as PathPocketShape
+import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore
 
-__title__ = "Path Surface Operation UI"
+__title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-__doc__ = "Surface operation page controller and command implementation."
+__doc__ = "Pocket Shape operation page controller and command implementation."
 
-class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Surface operation.'''
+class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
+    '''Page controller class for Pocket operation'''
 
-    def getForm(self):
-        '''getForm() ... returns UI'''
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpSurfaceEdit.ui")
+    def pocketFeatures(self):
+        '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
+        return PathPocketBaseGui.FeaturePocket
 
-    def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
-        # if obj.StartVertex != self.form.startVertex.value():
-        #     obj.StartVertex = self.form.startVertex.value()
-        self.updateToolController(obj, self.form.toolController)
-
-    def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
-        #self.form.startVertex.setValue(obj.StartVertex)
-        self.setupToolController(obj, self.form.toolController)
-
-    def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
-        signals = []
-        #signals.append(self.form.startVertex.editingFinished)
-        signals.append(self.form.toolController.currentIndexChanged)
-        return signals
-
-Command = PathOpGui.SetupOperation('Surface',
-        PathSurface.Create,
+Command = PathOpGui.SetupOperation('Pocket Shape',
+        PathPocketShape.Create,
         TaskPanelOpPage,
-        'Path-3DSurface',
-        QtCore.QT_TRANSLATE_NOOP("Surface", "3D Surface"),
-        QtCore.QT_TRANSLATE_NOOP("Surface", "Create a 3D Surface Operation from a model"))
+        'Path-Pocket',
+        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket Shape"),
+        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
 
-FreeCAD.Console.PrintLog("Loading PathSurfaceGui... done\n")
-
+FreeCAD.Console.PrintLog("Loading PathPocketShapeGui... done\n")
