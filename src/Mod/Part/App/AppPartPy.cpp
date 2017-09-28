@@ -76,6 +76,7 @@
 # include <TColgp_HArray2OfPnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <Precision.hxx>
 # include <Standard_Version.hxx>
 #endif
