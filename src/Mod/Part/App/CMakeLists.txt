@@ -275,6 +275,8 @@ SET(Python_SRCS
     TopoShapeWirePyImp.cpp
     BRepOffsetAPI_MakePipeShellPy.xml
     BRepOffsetAPI_MakePipeShellPyImp.cpp
+    PartPyCXX.cpp
+    PartPyCXX.h
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
