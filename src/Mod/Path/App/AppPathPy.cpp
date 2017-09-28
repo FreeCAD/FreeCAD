@@ -113,7 +113,7 @@ public:
             "read(filename,[document]): Imports a GCode file into the given document"
         );
         add_varargs_method("show",&Module::show,
-            "show(path): Add the path to the active document or create one if no document exists"
+            "show(path,[string]): Add the path to the active document or create one if no document exists"
         );
         add_varargs_method("fromShape",&Module::fromShape,
             "fromShape(Shape): Returns a Path object from a Part Shape"
@@ -217,15 +217,16 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(PathPy::Type), &pcObj))
+        char *name = "Path";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PathPy::Type), &pcObj, &name))
             throw Py::Exception();
 
         try {
-            App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+            App::Document *pcDoc = App::GetApplication().getActiveDocument();
             if (!pcDoc)
                 pcDoc = App::GetApplication().newDocument();
             PathPy* pPath = static_cast<PathPy*>(pcObj);
-            Path::Feature *pcFeature = (Path::Feature *)pcDoc->addObject("Path::Feature", "Path");
+            Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("Path::Feature", name));
             Path::Toolpath* pa = pPath->getToolpathPtr();
             if (!pa) {
                 throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid path");
