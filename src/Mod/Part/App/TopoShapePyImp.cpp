@@ -72,6 +72,7 @@
 #include <CXX/Extensions.hxx>
 
 #include "TopoShape.h"
+#include "PartPyCXX.h"
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapePy.cpp>
 
@@ -96,13 +97,8 @@ using namespace Part;
     #define M_PI_2  1.57079632679489661923 /* pi/2 */
 #endif
 
-namespace Py {
-    typedef ExtensionObject<TopoShapePy> TopoShape;
-    template<>
-    bool TopoShape::accepts (PyObject *pyob) const
-    {
-        return (pyob && PyObject_TypeCheck(pyob, &(Part::TopoShapePy::Type)));
-    }
+namespace Part {
+extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
 }
 
 // returns a string which represents the object e.g. when printed in python
@@ -156,56 +152,6 @@ int TopoShapePy::PyInit(PyObject* args, PyObject*)
 
     return 0;
 }
-
-namespace Part {
-//common code.. maybe put somewhere else?
-PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape)
-{
-    PyObject* ret = 0;
-    if (!shape.IsNull()) {
-        TopAbs_ShapeEnum type = shape.ShapeType();
-        switch (type)
-        {
-        case TopAbs_COMPOUND:
-            ret = new TopoShapeCompoundPy(new TopoShape(shape));
-            break;
-        case TopAbs_COMPSOLID:
-            ret = new TopoShapeCompSolidPy(new TopoShape(shape));
-            break;
-        case TopAbs_SOLID:
-            ret = new TopoShapeSolidPy(new TopoShape(shape));
-            break;
-        case TopAbs_SHELL:
-            ret = new TopoShapeShellPy(new TopoShape(shape));
-            break;
-        case TopAbs_FACE:
-            ret = new TopoShapeFacePy(new TopoShape(shape));
-            break;
-        case TopAbs_WIRE:
-            ret = new TopoShapeWirePy(new TopoShape(shape));
-            break;
-        case TopAbs_EDGE:
-            ret = new TopoShapeEdgePy(new TopoShape(shape));
-            break;
-        case TopAbs_VERTEX:
-            ret = new TopoShapeVertexPy(new TopoShape(shape));
-            break;
-        case TopAbs_SHAPE:
-            ret = new TopoShapePy(new TopoShape(shape));
-            break;
-        default:
-            //shouldn't happen
-            ret = new TopoShapePy(new TopoShape(shape));
-            break;
-        }
-    } else {
-        ret = new TopoShapePy(new TopoShape(shape));
-    }
-    assert(ret);
-
-    return Py::asObject(ret);
-}
-} //namespace Part
 
 PyObject* TopoShapePy::copy(PyObject *args)
 {
