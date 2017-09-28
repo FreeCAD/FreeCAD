@@ -103,7 +103,7 @@ public:
         );
 #endif
         add_varargs_method("show",&Module::show,
-            "show(shape) -- Add the shape to the active document or create one if no document exists."
+            "show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."
         );
         initialize("This module is the Fem module."); // register with Python
     }
@@ -299,7 +299,8 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(FemMeshPy::Type), &pcObj))
+        char *name = "Mesh";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(FemMeshPy::Type), &pcObj, &name))
             throw Py::Exception();
 
         App::Document *pcDoc = App::GetApplication().getActiveDocument();
@@ -307,9 +308,9 @@ private:
             pcDoc = App::GetApplication().newDocument();
 
         FemMeshPy* pShape = static_cast<FemMeshPy*>(pcObj);
-        Fem::FemMeshObject *pcFeature = (Fem::FemMeshObject *)pcDoc->addObject("Fem::FemMeshObject", "Mesh");
+        Fem::FemMeshObject *pcFeature = static_cast<Fem::FemMeshObject*>
+                (pcDoc->addObject("Fem::FemMeshObject", name));
         // copy the data
-        //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
         pcFeature->FemMesh.setValue(*(pShape->getFemMeshPtr()));
         pcDoc->recompute();
 

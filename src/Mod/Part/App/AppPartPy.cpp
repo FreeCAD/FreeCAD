@@ -616,9 +616,8 @@ private:
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
-        Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", name);
+        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
         // copy the data
-        //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
         pcFeature->Shape.setValue(pShape->getTopoShapePtr()->getShape());
         pcDoc->recompute();
 
