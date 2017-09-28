@@ -80,3 +80,16 @@ PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape)
     return Py::asObject(ret);
 }
 } //namespace Part
+
+
+namespace Py {
+    template<>
+    bool TopoShape::accepts (PyObject *pyob) const
+    {
+        return (pyob && PyObject_TypeCheck(pyob, &(Part::TopoShapePy::Type)));
+    }
+
+    // explicit template instantiation
+    template class PartExport ExtensionObject<Part::TopoShapePy>;
+}
+
