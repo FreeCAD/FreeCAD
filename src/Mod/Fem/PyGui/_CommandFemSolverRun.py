@@ -82,6 +82,7 @@ class _CommandFemSolverRun(FemCommands):
                 machine.reset()
                 machine.target = femsolver.run.RESULTS
                 machine.start()
+                machine.join()  # wait for the machine to finish.
 
         FreeCADGui.Selection.clearSelection()
 
