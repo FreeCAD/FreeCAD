@@ -65,7 +65,7 @@ public:
     DrawProjGroup* getPGroup(void) const;
     double getRotateAngle();
 
-    /// returns the type name of the ViewProvider
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }

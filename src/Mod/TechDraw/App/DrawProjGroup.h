@@ -90,8 +90,7 @@ public:
     int removeProjection(const char *viewProjType);
 
     int purgeProjections();
-    /// Automatically position child views
-    bool distributeProjections(void);
+    Base::Vector3d getXYPosition(const char *viewTypeCStr);
 
     short mustExecute() const override;
     /** @name methods overide Feature */
@@ -164,9 +163,10 @@ protected:
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
-    void updateChildren(double scale);
+    void updateChildren(void);
     void setPropsFromCube(void);
     void setCubeFromProps(void);
+    int getViewIndex(const char *viewTypeCStr) const;
     
     TechDraw::Cube* m_cube;
 };
