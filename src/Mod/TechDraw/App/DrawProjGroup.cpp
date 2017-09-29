@@ -106,10 +106,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             } else {
                 //Source has been changed to null! Why? What to do?
             }
-        } else if (prop == &AutoDistribute  &&
-            AutoDistribute.getValue()) {
-            distributeProjections();
-
         }
     }
     if (isRestoring() && (prop == &CubeDirs)) {
@@ -163,21 +159,19 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
             newScale = calculateAutomaticScale();
             if(std::abs(getScale() - newScale) > FLT_EPSILON) {
                 Scale.setValue(newScale);
-                updateChildren(newScale);
+                updateChildren();
             }
          }
     } else if (ScaleType.isValue("Page")) {                 //don't really need this any more.
         newScale = page->Scale.getValue();
         if(std::abs(getScale() - newScale) > FLT_EPSILON) {
             Scale.setValue(newScale);
-            updateChildren(newScale);
+            updateChildren();
         }
     } else if (ScaleType.isValue("Custom")) {
         //don't have to do anything special
-        updateChildren(newScale);
+        updateChildren();
     }
-
-    distributeProjections();
 
     if (page != nullptr) {
         page->requestPaint();
@@ -403,7 +397,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         if (view != getAnchor()) {                //anchor is done elsewhere
             view->recomputeFeature();
         }
-        distributeProjections();
     }
 
     return view;
@@ -430,7 +423,6 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
                 }
             }
         }
-        distributeProjections();
     }
 
     return -1;
@@ -455,6 +447,164 @@ int DrawProjGroup::purgeProjections()
     }
 
     return Views.getValues().size();
+}
+
+Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
+{
+    Base::Vector3d result;
+    const int idxCount = 10;
+    DrawProjGroupItem *viewPtrs[idxCount];
+    arrangeViewPointers(viewPtrs);
+    int viewIndex = getViewIndex(viewTypeCStr);
+
+        //TODO: bounding boxes do not take view orientation into account
+        //      ie X&Y widths might be swapped on page
+
+    if (AutoDistribute.getValue()) {
+        std::vector<Base::Vector3d> position(idxCount);
+        int idx = 0;
+        for (;idx < idxCount; idx++) {
+            if (viewPtrs[idx]) {
+                position[idx].x = viewPtrs[idx]->X.getValue();
+                position[idx].y = viewPtrs[idx]->Y.getValue();
+            }
+        }
+
+        // Calculate bounding boxes for each displayed view
+        Base::BoundBox3d bboxes[10];
+        makeViewBbs(viewPtrs, bboxes);
+
+        double xSpacing = spacingX.getValue();    //in mm/scale
+        double ySpacing = spacingY.getValue();    //in mm/scale
+
+        double bigRow    = 0.0;
+        double bigCol    = 0.0;
+        for (auto& b: bboxes) {
+            if (!b.IsValid()) {
+                continue;
+            }
+            if (b.LengthX() > bigCol) {
+                bigCol = b.LengthX();
+            }
+            if (b.LengthY() > bigRow) {
+                bigRow = b.LengthY();
+            }
+        }
+
+        //if we have iso's, make sure they fit the grid.
+        if (viewPtrs[0] || viewPtrs[2]  || viewPtrs[7] ||  viewPtrs[9]) {
+            bigCol = std::max(bigCol,bigRow);
+            bigRow = bigCol;
+        }
+
+        if (viewPtrs[0] && 
+            bboxes[0].IsValid()) {
+            position[0].x = -bigCol - xSpacing;
+            position[0].y = bigRow + ySpacing;
+        }
+        if (viewPtrs[1] && 
+            bboxes[1].IsValid()) {
+            position[1].y = bigRow + ySpacing;
+        }
+        if (viewPtrs[2] && 
+            bboxes[2].IsValid()) {
+            position[2].x = bigCol + xSpacing;
+            position[2].y = bigRow + ySpacing;
+        }
+        if (viewPtrs[3] && 
+            bboxes[3].IsValid() &&
+            bboxes[4].IsValid()) {
+            position[3].x = -bigCol - xSpacing;
+        }
+        if (viewPtrs[5] && 
+            bboxes[5].IsValid() &&
+            bboxes[4].IsValid()) {
+            position[5].x = bigCol + xSpacing;
+        }
+        if (viewPtrs[6] && 
+            bboxes[6].IsValid()) {    //"Rear"
+            if (viewPtrs[5] &&
+                bboxes[5].IsValid()) {
+                position[6].x = position[5].x + bigCol + xSpacing;
+            }else if (viewPtrs[4] &&
+                bboxes[4].IsValid()) {
+                position[6].x = bigCol + xSpacing;
+            }
+        }
+        if (viewPtrs[7] && 
+            bboxes[7].IsValid()) {
+            position[7].x = -bigCol - xSpacing;
+            position[7].y = -bigRow - ySpacing;
+        }
+        if (viewPtrs[8] && 
+            bboxes[8].IsValid() &&
+            bboxes[4].IsValid()) {
+            position[8].y = -bigRow - ySpacing;
+        }
+        if (viewPtrs[9] && 
+            bboxes[9].IsValid()) {
+            position[9].x = bigCol + xSpacing;
+            position[9].y = -bigRow - ySpacing;
+        }
+        result.x = position[viewIndex].x;
+        result.y = position[viewIndex].y;
+    } else {
+        result.x = viewPtrs[viewIndex]->X.getValue();
+        result.y = viewPtrs[viewIndex]->Y.getValue();
+    }
+    return result;
+}
+
+
+int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
+{
+    int result = 4;                                        //default to front view's position
+    // Determine layout - should be either "First Angle" or "Third Angle"
+    const char* projType;
+    if (ProjectionType.isValue("Default")) {
+        projType = findParentPage()->ProjectionType.getValueAsString();
+    } else {
+        projType = ProjectionType.getValueAsString();
+    }
+
+    if ( strcmp(projType, "Third Angle") == 0 ||
+         strcmp(projType, "First Angle") == 0    ) {
+        //   Third Angle:  FTL  T  FTRight          0  1  2
+        //                  L   F   Right   Rear    3  4  5  6
+        //                 FBL  B  FBRight          7  8  9
+        //
+        //   First Angle:  FBRight  B  FBL          0  1  2
+        //                  Right   F   L  Rear     3  4  5  6
+        //                 FTRight  T  FTL          7  8  9
+
+        bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
+        if (strcmp(viewTypeCStr, "Front") == 0) {
+            result = 4;
+        } else if (strcmp(viewTypeCStr, "Left") == 0) {
+            result = thirdAngle ? 3 : 5;
+        } else if (strcmp(viewTypeCStr, "Right") == 0) {
+            result = thirdAngle ? 5 : 3;
+        } else if (strcmp(viewTypeCStr, "Top") == 0) {
+            result = thirdAngle ? 1 : 8;
+        } else if (strcmp(viewTypeCStr, "Bottom") == 0) {
+            result = thirdAngle ? 8 : 1;
+        } else if (strcmp(viewTypeCStr, "Rear") == 0) {
+            result = 6;
+        } else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
+            result = thirdAngle ? 0 : 9;
+        } else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
+            result = thirdAngle ? 2 : 7;
+        } else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
+            result = thirdAngle ? 7 : 2;
+        } else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
+            result = thirdAngle ? 9 : 0;
+        } else {
+            throw Base::Exception("Unknown view type in DrawProjGroup::getViewIndex()");
+        }
+    } else {
+        throw Base::Exception("Unknown Projection convention in DrawProjGroup::getViewIndex()");
+    }
+    return result;
 }
 
 void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
@@ -539,119 +689,14 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
         }
 }
 
-bool DrawProjGroup::distributeProjections()
-{
-    //TODO: bounding boxes do not take view orientation into account
-    //      ie X&Y widths might be swapped on page
-    if (!AutoDistribute.getValue()) {
-        return true;
-    }
-    DrawProjGroupItem *viewPtrs[10];
-    arrangeViewPointers(viewPtrs);
-
-    // TODO: Work on not requiring the front view...
-    //WF: there is always a "Front" view. That's in the nature of the ProjGroup!
-    if (!viewPtrs[4]) {
-        return false;
-    }
-
-    // Calculate bounding boxes for each displayed view
-    Base::BoundBox3d bboxes[10];
-    makeViewBbs(viewPtrs, bboxes);
-
-    double xSpacing = spacingX.getValue();    //in mm/scale
-    double ySpacing = spacingY.getValue();    //in mm/scale
-
-    double bigRow    = 0.0;
-    double bigCol    = 0.0;
-    for (auto& b: bboxes) {
-        if (!b.IsValid()) {
-            continue;
-        }
-        if (b.LengthX() > bigCol) {
-            bigCol = b.LengthX();
-        }
-        if (b.LengthY() > bigRow) {
-            bigRow = b.LengthY();
-        }
-    }
-
-    //if we have iso's, make sure they fit the grid.
-    if (viewPtrs[0] || viewPtrs[2]  || viewPtrs[7] ||  viewPtrs[9]) {
-        bigCol = std::max(bigCol,bigRow);
-        bigRow = bigCol;
-    }
-
-        //viewPtrs
-        // 0  1  2
-        // 3  4  5  6
-        // 7  8  9
-
-    if (viewPtrs[0] && viewPtrs[0]->allowAutoPos() &&
-        bboxes[0].IsValid()) {
-        viewPtrs[0]->X.setValue(-bigCol - xSpacing);
-        viewPtrs[0]->Y.setValue(bigRow + ySpacing);
-    }
-    if (viewPtrs[1] && viewPtrs[1]->allowAutoPos() &&
-        bboxes[1].IsValid()) {
-        viewPtrs[1]->Y.setValue(bigRow + ySpacing);
-    }
-    if (viewPtrs[2] && viewPtrs[2]->allowAutoPos()
-        ) {
-        viewPtrs[2]->X.setValue(bigCol + xSpacing);
-        viewPtrs[2]->Y.setValue(bigRow + ySpacing);
-    }
-    if (viewPtrs[3] && viewPtrs[3]->allowAutoPos() &&
-        bboxes[3].IsValid() &&
-        bboxes[4].IsValid()) {
-        viewPtrs[3]->X.setValue(-bigCol - xSpacing);
-    }
-    if (viewPtrs[4]) {  // TODO: Move this check above, and figure out a sane bounding box based on other existing views
-    }
-
-    if (viewPtrs[5] && viewPtrs[5]->allowAutoPos() &&
-        bboxes[5].IsValid() &&
-        bboxes[4].IsValid()) {
-        viewPtrs[5]->X.setValue(bigCol + xSpacing);
-    }
-    if (viewPtrs[6] && viewPtrs[6]->allowAutoPos() &&
-        bboxes[6].IsValid()) {    //"Rear"
-        if (viewPtrs[5] &&
-            bboxes[5].IsValid()) {
-            viewPtrs[6]->X.setValue(viewPtrs[5]->X.getValue() + bigCol + xSpacing);
-        }else if (viewPtrs[4] &&
-            bboxes[4].IsValid()) {
-            viewPtrs[6]->X.setValue(bigCol + xSpacing);
-        }
-    }
-    if (viewPtrs[7] && viewPtrs[7]->allowAutoPos() &&
-        bboxes[7].IsValid()) {
-        viewPtrs[7]->X.setValue(-bigCol - xSpacing);
-        viewPtrs[7]->Y.setValue(-bigRow - ySpacing);
-    }
-    if (viewPtrs[8] && viewPtrs[8]->allowAutoPos() &&
-        bboxes[8].IsValid() &&
-        bboxes[4].IsValid()) {
-        viewPtrs[8]->Y.setValue(-bigRow - ySpacing);
-    }
-    if (viewPtrs[9] && viewPtrs[9]->allowAutoPos() &&
-        bboxes[9].IsValid()) {
-        viewPtrs[9]->X.setValue(bigCol + xSpacing);
-        viewPtrs[9]->Y.setValue(-bigRow - ySpacing);
-    }
-    return true;
-}
-
 //! tell children DPGIs that parent DPG has changed ?Scale?
-void DrawProjGroup::updateChildren(double scale)
+void DrawProjGroup::updateChildren(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
-            if(std::abs(view->getScale() - scale) > FLT_EPSILON) {
-                view->Scale.setValue(scale);
                 view->recomputeFeature();
-            }
+                view->purgeTouched();
         }
     }
 }

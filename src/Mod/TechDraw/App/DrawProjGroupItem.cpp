@@ -63,10 +63,10 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     ADD_PROPERTY_TYPE(RotationVector ,(1.0,0.0,0.0)    ,"Base",App::Prop_None,"Controls rotation of item in view. ");
 
     //projection group controls these
-//    Direction.setStatus(App::Property::ReadOnly,true);
-//    RotationVector.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::ReadOnly,true);
+    Direction.setStatus(App::Property::ReadOnly,true);
+    RotationVector.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
 }
 
 short DrawProjGroupItem::mustExecute() const
@@ -75,9 +75,7 @@ short DrawProjGroupItem::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     RotationVector.isTouched() ||
-                    Source.isTouched()  ||
-                    Scale.isTouched() ||
-                    ScaleType.isTouched());
+                    Source.isTouched()  );
     }
 
     if (result) {
@@ -96,9 +94,25 @@ DrawProjGroupItem::~DrawProjGroupItem()
 {
 }
 
+App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
+{
+    DrawViewPart::execute();
+
+    auto pgroup = getPGroup();
+    Base::Vector3d newPos;
+    if ((pgroup != nullptr) && 
+        (pgroup->AutoDistribute.getValue())) {
+         newPos = pgroup->getXYPosition(Type.getValueAsString());
+         X.setValue(newPos.x);
+         Y.setValue(newPos.y);
+         requestPaint();
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
 void DrawProjGroupItem::onDocumentRestored()
 {
-//    setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
     App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
     if (rc) {
         delete rc;
@@ -162,15 +176,13 @@ double DrawProjGroupItem::getRotateAngle()
     return angle;
 }
 
-//TODO: getScale is no longer needed and could revert to Scale.getValue
 double DrawProjGroupItem::getScale(void) const
 {
-    double result = Scale.getValue();
-//TODO: should always use DPG.Scale?
-//    auto pgroup = getPGroup();
-//    if (pgroup != nullptr) {
-//        result = pgroup->Scale.getValue();
-//    }
+    double result = 1.0;
+    auto pgroup = getPGroup();
+    if (pgroup != nullptr) {
+        result = pgroup->Scale.getValue();
+    }
     return result;
 }
 
