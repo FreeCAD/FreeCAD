@@ -55,7 +55,7 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool", "CalculateStresses",
             "Elasticity", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyBool", "CalculatePricipal",
+            "App::PropertyBool", "CalculatePrincipal",
             "Elasticity", "Select type of solver for linear system")
         obj.addProperty(
             "App::PropertyBool", "CalculatePangle",
