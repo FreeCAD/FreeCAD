@@ -25,6 +25,8 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathStock as PathStock
+import json
 
 from FreeCAD import Units
 from PySide import QtCore, QtGui
@@ -61,6 +63,31 @@ class JobPreferencesPage:
         path = str(self.form.leOutputFile.text())
         policy = str(self.form.cboOutputPolicy.currentText())
         PathPreferences.setOutputFileDefaults(path, policy)
+        self.saveStockSettings()
+
+    def saveStockSettings(self):
+        if self.form.stockGroup.isChecked():
+            attrs = {}
+            attrs['version'] = 1
+            typ = [PathStock.StockType.CreateBox, PathStock.StockType.CreateCylinder, PathStock.StockType.FromBase][self.form.stock.currentIndex()]
+            attrs['create'] = typ
+            if typ == PathStock.StockType.CreateBox:
+                attrs['length'] = FreeCAD.Units.Quantity(self.form.stockBoxLength.text()).UserString
+                attrs['width'] = FreeCAD.Units.Quantity(self.form.stockBoxWidth.text()).UserString
+                attrs['height'] = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text()).UserString
+            if typ == PathStock.StockType.CreateCylinder:
+                attrs['radius'] = FreeCAD.Units.Quantity(self.form.stockCylinderRadius.text()).UserString
+                attrs['height'] = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text()).UserString
+            if typ == PathStock.StockType.FromBase:
+                attrs['xneg'] = FreeCAD.Units.Quantity(self.form.stockExtXneg.text()).UserString
+                attrs['xpos'] = FreeCAD.Units.Quantity(self.form.stockExtXpos.text()).UserString
+                attrs['yneg'] = FreeCAD.Units.Quantity(self.form.stockExtYneg.text()).UserString
+                attrs['ypos'] = FreeCAD.Units.Quantity(self.form.stockExtYpos.text()).UserString
+                attrs['zneg'] = FreeCAD.Units.Quantity(self.form.stockExtZneg.text()).UserString
+                attrs['zpos'] = FreeCAD.Units.Quantity(self.form.stockExtZpos.text()).UserString
+            PathPreferences.setDefaultStockTemplate(json.dumps(attrs))
+        else:
+            PathPreferences.setDefaultStockTemplate('')
 
     def selectComboEntry(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -119,6 +146,60 @@ class JobPreferencesPage:
         self.form.postProcessorList.itemChanged.connect(self.verifyAndUpdateDefaultPostProcessor)
         self.form.defaultPostProcessor.currentIndexChanged.connect(self.updateDefaultPostProcessorToolTip)
         self.form.tbOutputFile.clicked.connect(self.browseOutputFile)
+
+        self.loadStockSettings()
+
+    def loadStockSettings(self):
+        stock = PathPreferences.defaultStockTemplate()
+        index = -1
+        if stock:
+            attrs = json.loads(stock)
+            if attrs.get('version') and 1 == int(attrs['version']):
+                stockType = attrs.get('create')
+                if stockType == PathStock.StockType.FromBase:
+                    index = 2
+                elif stockType == PathStock.StockType.CreateBox:
+                    index = 0
+                elif stockType == PathStock.StockType.CreateCylinder:
+                    index = 1
+                else:
+                    index = -1
+        if -1 == index:
+            attrs = {}
+            self.form.stockGroup.setChecked(False)
+        else:
+            self.form.stockGroup.setChecked(True)
+            self.form.stock.setCurrentIndex(index)
+
+        # this either sets the default value or the value from the template for each field
+        self.form.stockExtXneg.setText(attrs.get('xneg', '1 mm'))
+        self.form.stockExtXpos.setText(attrs.get('xpos', '1 mm'))
+        self.form.stockExtYneg.setText(attrs.get('yneg', '1 mm'))
+        self.form.stockExtYpos.setText(attrs.get('ypos', '1 mm'))
+        self.form.stockExtZneg.setText(attrs.get('zneg', '1 mm'))
+        self.form.stockExtZpos.setText(attrs.get('zpos', '1 mm'))
+        self.form.stockBoxLength.setText(attrs.get('length', '10 mm'))
+        self.form.stockBoxWidth.setText(attrs.get('width', '10 mm'))
+        self.form.stockBoxHeight.setText(attrs.get('height', '10 mm'))
+        self.form.stockCylinderRadius.setText(attrs.get('radius', '5 mm'))
+        self.form.stockCylinderHeight.setText(attrs.get('height', '10 mm'))
+
+        self.setupStock(index)
+        self.form.stock.currentIndexChanged.connect(self.setupStock)
+
+    def setupStock(self, index):
+        if 0 == index:
+            self.form.stockFromBase.hide()
+            self.form.stockCreateBox.show()
+            self.form.stockCreateCylinder.hide()
+        elif 1 == index:
+            self.form.stockFromBase.hide()
+            self.form.stockCreateBox.hide()
+            self.form.stockCreateCylinder.show()
+        else:
+            self.form.stockFromBase.show()
+            self.form.stockCreateBox.hide()
+            self.form.stockCreateCylinder.hide()
 
     def getPostProcessor(self, name):
         if not name in self.processor.keys():
