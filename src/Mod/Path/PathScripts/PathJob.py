@@ -125,7 +125,11 @@ class ObjectJob:
 
         self.setFromTemplateFile(obj, templateFile)
         if not obj.Stock:
-            obj.Stock = PathStock.CreateFromBase(obj)
+            stockTemplate = PathPreferences.defaultStockTemplate()
+            if stockTemplate:
+                obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
+            if not obj.Stock:
+                obj.Stock = PathStock.CreateFromBase(obj)
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
