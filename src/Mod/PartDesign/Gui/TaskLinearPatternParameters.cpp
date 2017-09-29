@@ -248,15 +248,19 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
-            App::DocumentObject* selObj;
+            App::DocumentObject* selObj = nullptr;
             PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-            getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-            // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
-                pcLinearPattern->Direction.setValue(selObj, directions);
+            if (pcLinearPattern) {
+                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
 
-                recomputeFeature();
-                updateUI();
+                // Note: ReferenceSelection has already checked the selection for validity
+                if (selObj && (selectionMode == reference ||
+                               selObj->isDerivedFrom(App::Line::getClassTypeId()))) {
+                    pcLinearPattern->Direction.setValue(selObj, directions);
+
+                    recomputeFeature();
+                    updateUI();
+                }
             }
         }
     }
