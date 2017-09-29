@@ -362,7 +362,7 @@ class Writer(object):
         s["Eigen System Values"] = equation.EigenmodesCount
         s["Calculate Strains"] = equation.CalculateStrains
         s["Calculate Stresses"] = equation.CalculateStresses
-        s["Calculate Pricipal"] = equation.CalculatePricipal
+        s["Calculate Principal"] = equation.CalculatePrincipal
         s["Calculate Pangle"] = equation.CalculatePangle
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
