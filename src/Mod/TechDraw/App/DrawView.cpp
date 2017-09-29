@@ -113,7 +113,9 @@ void DrawView::checkScale(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &ScaleType) {
+        if (this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId()))  {
+            //do nothing. DPGI/DPG handles itself
+        } else if (prop == &ScaleType) {
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
@@ -141,8 +143,9 @@ void DrawView::onChanged(const App::Property* prop)
                     }
                 }
             }
-        } else if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
-                   prop == &Y) {
+        }
+        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
+            prop == &Y) {
             requestPaint();
         }
     }
