@@ -163,7 +163,10 @@ void TaskLinearPatternParameters::setupUI()
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        this->fillAxisCombo(dirLinks,static_cast<Part::Part2DObject*>(sketch));
+        this->fillAxisCombo(dirLinks, static_cast<Part::Part2DObject*>(sketch));
+    }
+    else {
+        this->fillAxisCombo(dirLinks, nullptr);
     }
 
     //show the parts coordinate system axis for selection
