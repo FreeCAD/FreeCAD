@@ -1177,7 +1177,10 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
     App::GeoFeatureGroupExtension* grp = nullptr;
     if (item->object()->getObject()->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
         grp = item->object()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    
+
+    // When removing a child element then it must either be moved to a new
+    // parent or deleted. Just removing and leaving breaks the Qt internal
+    // notification (See #0003201).
     for (++i;item->childCount()>i;) {
         QTreeWidgetItem *childItem = item->child(i);
         item->removeChild(childItem);
@@ -1194,11 +1197,10 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
                 // We only make a difference for geofeaturegroups, 
                 // as otherwise it comes to confusing behavior to the user when things 
                 // get claimed within the group (e.g. pad/sketch, or group)
-                if (grp && grp->hasObject(obj->object()->getObject(), true))
+                if (!grp || !grp->hasObject(obj->object()->getObject(), true)) {
+                    this->addChild(childItem);
                     continue;
-            
-                this->addChild(childItem);
-                continue;
+                }
             }
         }
 
