@@ -69,7 +69,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.initCircularHoleOperation(obj)
 
     def initCircularHoleOperation(self, obj):
-        '''initCircularHoleOperation(obj) ... overwrite if the subclass nees initialisation.
+        '''initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
         Can safely be overwritten by subclasses.'''
         pass
 
