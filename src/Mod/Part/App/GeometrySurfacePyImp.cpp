@@ -40,6 +40,7 @@
 # include <Standard_Version.hxx>
 # include <ShapeAnalysis_Surface.hxx>
 # include <GeomAPI_IntSS.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -448,6 +449,30 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
     }
     catch (Standard_Failure& e) {
 
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
+    return 0;
+}
+
+PyObject* GeometrySurfacePy::isPlanar(PyObject *args)
+{
+    try {
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)
+            ::DownCast(getGeometryPtr()->handle());
+        if (!surf.IsNull()) {
+            double tol = Precision::Confusion();
+            if (!PyArg_ParseTuple(args, "|d", &tol))
+                return 0;
+
+            GeomLib_IsPlanarSurface check(surf, tol);
+            Standard_Boolean val = check.IsPlanar();
+            return PyBool_FromLong(val ? 1 : 0);
+        }
+    }
+    catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
