@@ -191,6 +191,13 @@ void TaskMultiTransformParameters::onFeatureDeleted(void)
     recomputeFeature();
 }
 
+void TaskMultiTransformParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    if (Obj.getObject() == this->subFeature)
+        this->subFeature = nullptr;
+    TaskTransformedParameters::slotDeletedObject(Obj);
+}
+
 void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
@@ -209,6 +216,8 @@ void TaskMultiTransformParameters::onTransformDelete()
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     App::DocumentObject* feature = transformFeatures[row];
+    if (feature == this->subFeature)
+        this->subFeature = nullptr;
     pcMultiTransform->getDocument()->removeObject(feature->getNameInDocument());
     closeSubTask();
 

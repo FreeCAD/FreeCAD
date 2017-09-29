@@ -61,7 +61,9 @@ public:
     const std::vector<App::DocumentObject*> getTransformFeatures(void) const;
 
     /// Return the currently active subFeature
-    PartDesign::Transformed* getSubFeature(void) { return subFeature; }
+    PartDesign::Transformed* getSubFeature(void) {
+        return subFeature;
+    }
 
     virtual void apply();
 
@@ -81,6 +83,8 @@ private Q_SLOTS:
     // a subFeature so as to revert the changes of an edit operation
     virtual void onUpdateView(bool);
     virtual void onFeatureDeleted(void);
+    /** Notifies when the object is about to be removed. */
+    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
 
 protected:
     virtual void changeEvent(QEvent *e);
