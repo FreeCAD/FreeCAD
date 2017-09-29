@@ -1673,7 +1673,9 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
         }
         str << "]";
 
-        Gui::Command::openCommand((std::string("Make ") + which + " feature").c_str());
+        std::string msg("Make ");
+        msg += which;
+        Gui::Command::openCommand(msg.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::%s\",\"%s\")",
                                 PartDesignGui::getBody(false)->getNameInDocument(), which.c_str(), FeatName.c_str());
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like

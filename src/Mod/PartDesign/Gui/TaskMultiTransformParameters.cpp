@@ -36,6 +36,7 @@
 #include "Utils.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Origin.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -281,17 +282,30 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
 
 void TaskMultiTransformParameters::onTransformAddLinearPattern()
 {
+    // See CmdPartDesignLinearPattern
+    //
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
 
-    Gui::Command::openCommand("LinearPattern");
+    Gui::Command::openCommand("Make LinearPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::LinearPattern\",\"%s\")",
                             PartDesignGui::getBody(false)->getNameInDocument(), newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch)
+    if (sketch) {
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
                                 newFeatName.c_str(), sketch->getNameInDocument());
+    }
+    else {
+        // set Direction value before filling up the combo box to avoid creating an empty item
+        // inside updateUI()
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
+        if (body) {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])",
+                                    newFeatName.c_str(), body->getOrigin()->getX()->getNameInDocument());
+        }
+    }
+
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Length = 100", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
