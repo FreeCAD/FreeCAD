@@ -21,43 +21,40 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "Command Solver Elmer"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandFemSolverZ88
+#  \ingroup FEM
 
+import FreeCAD
+from .FemCommands import FemCommands
+import FreeCADGui
+import FemGui
 from PySide import QtCore
 
-import FreeCAD as App
-import FreeCADGui as Gui
-import FemGui
 
-
-class Command(QtCore.QObject):
+class _CommandFemSolverElmer(FemCommands):
+    "The FEM_SolverElmer command definition"
+    def __init__(self):
+        super(_CommandFemSolverElmer, self).__init__()
+        self.resources = {'Pixmap': 'fem-elmer',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Solver Elmer"),
+                          'Accel': "S, E",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Creates a FEM solver Elmer")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         analysis = FemGui.getActiveAnalysis()
-        App.ActiveDocument.openTransaction("Create Elmer solver object")
-        Gui.addModule("femsolver.elmer.solver")
-        Gui.doCommand(
-            "App.ActiveDocument.%s.Member += "
-            "[femsolver.elmer.solver.create(App.ActiveDocument)]"
+        FreeCAD.ActiveDocument.openTransaction("Create Elmer solver object")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.%s.Member += "
+            "[ObjectsFem.makeSolverElmer(FreeCAD.ActiveDocument)]"
             % analysis.Name)
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
-
-    def GetResources(self):
-        return {
-            'Pixmap': 'fem-elmer',
-            'MenuText': "Solver Elmer",
-            'Accel': "S, E",
-            'ToolTip': "Creates a FEM solver Elmer"
-        }
-
-    def IsActive(self):
-        analysis = FemGui.getActiveAnalysis()
-        return (analysis is not None
-                and analysis.Document == App.ActiveDocument)
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 
-Gui.addCommand('FEM_SolverElmer', Command())
+FreeCADGui.addCommand('FEM_SolverElmer', _CommandFemSolverElmer())
