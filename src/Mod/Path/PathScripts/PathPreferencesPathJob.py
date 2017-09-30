@@ -40,6 +40,7 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 class JobPreferencesPage:
     def __init__(self, parent=None):
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
+        self.form.toolBox.setCurrentIndex(0) # Take that qt designer!
 
         self.postProcessorDefaultTooltip = self.form.defaultPostProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.defaultPostProcessorArgs.toolTip()
