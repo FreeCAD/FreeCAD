@@ -148,6 +148,7 @@ Mesher::Mesher(const TopoDS_Shape& s)
   , angularDeflection(0.5)
   , minLen(0)
   , maxLen(0)
+  , relative(false)
   , regular(false)
   , segments(false)
 #if defined (HAVE_NETGEN)
@@ -172,7 +173,7 @@ Mesh::MeshObject* Mesher::createMesh() const
     if (method == Standard) {
         if (!shape.IsNull()) {
             BRepTools::Clean(shape);
-            BRepMesh_IncrementalMesh aMesh(shape, deflection, Standard_False, angularDeflection);
+            BRepMesh_IncrementalMesh aMesh(shape, deflection, relative, angularDeflection);
         }
 
         std::vector<Part::TopoShape::Domain> domains;
