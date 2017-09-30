@@ -30,7 +30,6 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from .FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
@@ -45,15 +44,9 @@ class _CommandFemSolverZ88(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
-        FreeCAD.ActiveDocument.openTransaction("Create Z88 solver object")
+        FreeCAD.ActiveDocument.openTransaction("Create SolverZ88")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FreeCAD.ActiveDocument.%s.Member += "
-            "[ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument)]"
-            % analysis.Name)
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument)]")
 
 
 FreeCADGui.addCommand('FEM_SolverZ88', _CommandFemSolverZ88())
