@@ -1021,9 +1021,17 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     else
         parent->insertChild(index,item);
 
-    item->setIcon(0, obj.getIcon());
-    item->setText(0, QString::fromUtf8(displayName.c_str()));
-    populateItem(item);
+    // Couldn't be added and thus don't continue populating it
+    // and delete it again
+    if (!item->parent()) {
+        delete item;
+    }
+    else {
+        item->setIcon(0, obj.getIcon());
+        item->setText(0, QString::fromUtf8(displayName.c_str()));
+        populateItem(item);
+    }
+
     return true;
 }
 
@@ -1135,6 +1143,9 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             if (j!=i) { // fix index if it is changed
                 item->removeChild(ci);
                 item->insertChild(i,ci);
+                if (!ci->parent()) {
+                    delete ci;
+                }
             }
             break;
         }
@@ -1171,6 +1182,9 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
 
             this->removeChild(childItem);
             item->insertChild(i,childItem);
+            if (!childItem->parent()) {
+                delete childItem;
+            }
         }
     }
 
