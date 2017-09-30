@@ -33,7 +33,7 @@ from PySide import QtCore
 
 PathGeomTolerance = 0.000001
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -443,4 +443,24 @@ class PathGeom:
             arc = cls.helixToArc(edge, 0)
             aes = cls.splitArcAt(arc, Vector(pt.x, pt.y, 0))
             return [cls.arcToHelix(aes[0], p1.z, p2.z), cls.arcToHelix(aes[1], p2.z, p3.z)]
+
+    @classmethod
+    def combineConnectedShapes(cls, shapes):
+        done = False
+        while not done:
+            done = True
+            combined = []
+            PathLog.debug("shapes: {}".format(shapes))
+            for shape in shapes:
+                connected = [f for f in combined if cls.isRoughly(shape.distToShape(f)[0], 0.0)]
+                PathLog.debug("  {}: connected: {} dist: {}".format(len(combined), connected, [shape.distToShape(f)[0] for f in combined]))
+                if connected:
+                    combined = [f for f in combined if f not in connected]
+                    connected.append(shape)
+                    combined.append(Part.makeCompound(connected))
+                    done = False
+                else:
+                    combined.append(shape)
+            shapes = combined
+        return shapes
 

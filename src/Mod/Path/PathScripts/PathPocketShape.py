@@ -60,30 +60,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def pocketInvertExtraOffset(self):
         return False
 
-    def combineConnectedShapes(self, shapes):
-        done = False
-        while not done:
-            done = True
-            combined = []
-            for shape in shapes:
-                connected = [f for f in combined if PathGeom.isRoughly(shape.distToShape(f)[0], 0,0)]
-                if connected:
-                    combined = [f for f in combined if f not in connected]
-                    connected.append(shape)
-                    combined.append(Part.makeCompound(connected))
-                    done = False
-                else:
-                    combined.append(shape)
-            shapes = combined
-        return shapes
-
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
 
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
-            removalshapes = []
+            self.removalshapes = []
             horizontal = []
             vertical = []
             for o in obj.Base:
@@ -110,8 +93,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         else:
                             PathLog.error(translate('PathPocket', "Pocket does not support shape %s.%s") % (base.Label, sub))
 
-            vertical = self.combineConnectedShapes(vertical)
-            vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in vertical]
+            self.vertical = PathGeom.combineConnectedShapes(vertical)
+            vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
             for wire in vWires:
                 face = Part.Face(wire)
                 if PathGeom.isRoughly(face.Area, 0):
@@ -125,11 +108,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
 
             # check all faces and see if they are touching/overlapping and combine those into a compound
-            horizontal = self.combineConnectedShapes(horizontal)
+            self.horizontal = PathGeom.combineConnectedShapes(horizontal)
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
-            removalshapes = [(face.extrude(extent), False) for face in horizontal]
+            self.removalshapes = [(face.extrude(extent), False) for face in self.horizontal]
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
@@ -139,9 +122,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
             self.body  = self.outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
             obj.removalshape = self.stock.Shape.cut(self.body)
-            obj.removalshape.tessellate(0.1)
-            removalshapes = [(obj.removalshape, False)]
-        return removalshapes
+            self.removalshapes = [(obj.removalshape, False)]
+
+        for (shape,hole) in self.removalshapes:
+            shape.tessellate(0.1)
+
+        return self.removalshapes
 
     def areaOpSetDefaultValues(self, obj):
         '''areaOpSetDefaultValues(obj) ... set default values'''
