@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>515</height>
+    <height>669</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
         <x>0</x>
         <y>0</y>
         <width>422</width>
-        <height>404</height>
+        <height>558</height>
        </rect>
       </property>
       <attribute name="label">
@@ -133,7 +133,7 @@
         <x>0</x>
         <y>0</y>
         <width>422</width>
-        <height>404</height>
+        <height>558</height>
        </rect>
       </property>
       <attribute name="label">
@@ -502,6 +502,88 @@
             </layout>
            </widget>
           </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="stockPlacementGroup">
+            <property name="title">
+             <string>Placement</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockAngle"/>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Position</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Axis</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="Gui::InputField" name="stockPositionX"/>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Angle</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="Gui::InputField" name="stockPositionY"/>
+             </item>
+             <item row="4" column="4">
+              <widget class="Gui::InputField" name="stockPositionZ"/>
+             </item>
+             <item row="3" column="2">
+              <widget class="QDoubleSpinBox" name="stockAxisX">
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::NoButtons</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QDoubleSpinBox" name="stockAxisY">
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::NoButtons</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="4">
+              <widget class="QDoubleSpinBox" name="stockAxisZ">
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::NoButtons</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -513,7 +595,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>8</height>
+           <height>13</height>
           </size>
          </property>
         </spacer>
@@ -558,6 +640,14 @@
   <tabstop>stockBoxLength</tabstop>
   <tabstop>stockBoxWidth</tabstop>
   <tabstop>stockBoxHeight</tabstop>
+  <tabstop>stockPlacementGroup</tabstop>
+  <tabstop>stockAngle</tabstop>
+  <tabstop>stockAxisX</tabstop>
+  <tabstop>stockAxisY</tabstop>
+  <tabstop>stockAxisZ</tabstop>
+  <tabstop>stockPositionX</tabstop>
+  <tabstop>stockPositionY</tabstop>
+  <tabstop>stockPositionZ</tabstop>
  </tabstops>
  <resources/>
  <connections/>
