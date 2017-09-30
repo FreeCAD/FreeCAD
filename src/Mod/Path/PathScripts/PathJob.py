@@ -171,6 +171,12 @@ class ObjectJob:
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
 
+    def onChanged(self, obj, prop):
+        if prop == "PostProcessor" and obj.PostProcessor:
+            processor = PostProcessor.load(obj.PostProcessor)
+            self.tooltip = processor.tooltip
+            self.tooltipArgs = processor.tooltipArgs
+
     def baseObject(self, obj):
         '''Return the base object, not its clone.'''
         if isResourceClone(obj, 'Base', 'Base'):
