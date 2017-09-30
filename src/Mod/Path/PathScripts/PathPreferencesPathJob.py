@@ -85,6 +85,17 @@ class JobPreferencesPage:
                 attrs['ypos'] = FreeCAD.Units.Quantity(self.form.stockExtYpos.text()).UserString
                 attrs['zneg'] = FreeCAD.Units.Quantity(self.form.stockExtZneg.text()).UserString
                 attrs['zpos'] = FreeCAD.Units.Quantity(self.form.stockExtZpos.text()).UserString
+            if self.form.stockPlacementGroup.isChecked():
+                angle = FreeCAD.Units.Quantity(self.form.stockAngle.text()).Value
+                axis = FreeCAD.Vector(self.form.stockAxisX.value(), self.form.stockAxisY.value(), self.form.stockAxisZ.value())
+                rot = FreeCAD.Rotation(axis, angle)
+                attrs['rotX'] = rot.Q[0]
+                attrs['rotY'] = rot.Q[1]
+                attrs['rotZ'] = rot.Q[2]
+                attrs['rotW'] = rot.Q[3]
+                attrs['posX'] = FreeCAD.Units.Quantity(self.form.stockPositionX.text()).Value
+                attrs['posY'] = FreeCAD.Units.Quantity(self.form.stockPositionY.text()).Value
+                attrs['posZ'] = FreeCAD.Units.Quantity(self.form.stockPositionZ.text()).Value
             PathPreferences.setDefaultStockTemplate(json.dumps(attrs))
         else:
             PathPreferences.setDefaultStockTemplate('')
@@ -183,6 +194,30 @@ class JobPreferencesPage:
         self.form.stockBoxHeight.setText(attrs.get('height', '10 mm'))
         self.form.stockCylinderRadius.setText(attrs.get('radius', '5 mm'))
         self.form.stockCylinderHeight.setText(attrs.get('height', '10 mm'))
+
+        posX = attrs.get('posX')
+        posY = attrs.get('posY')
+        posZ = attrs.get('posZ')
+        rotX = attrs.get('rotX')
+        rotY = attrs.get('rotY')
+        rotZ = attrs.get('rotZ')
+        rotW = attrs.get('rotW')
+        if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
+            pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
+            rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
+            placement = FreeCAD.Placement(pos, rot)
+            self.form.stockPlacementGroup.setChecked(True)
+        else:
+            placement = FreeCAD.Placement()
+            self.form.stockPlacementGroup.setChecked(False)
+
+        self.form.stockAngle.setText(FreeCAD.Units.Quantity("%f rad" % placement.Rotation.Angle).UserString)
+        self.form.stockAxisX.setValue(placement.Rotation.Axis.x)
+        self.form.stockAxisY.setValue(placement.Rotation.Axis.y)
+        self.form.stockAxisZ.setValue(placement.Rotation.Axis.z)
+        self.form.stockPositionX.setText(FreeCAD.Units.Quantity(placement.Base.x, FreeCAD.Units.Length).UserString)
+        self.form.stockPositionY.setText(FreeCAD.Units.Quantity(placement.Base.y, FreeCAD.Units.Length).UserString)
+        self.form.stockPositionZ.setText(FreeCAD.Units.Quantity(placement.Base.z, FreeCAD.Units.Length).UserString)
 
         self.setupStock(index)
         self.form.stock.currentIndexChanged.connect(self.setupStock)
