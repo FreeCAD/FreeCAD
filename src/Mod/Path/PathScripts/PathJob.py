@@ -41,7 +41,6 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
 
 """Path Job object and FreeCAD command"""
 
