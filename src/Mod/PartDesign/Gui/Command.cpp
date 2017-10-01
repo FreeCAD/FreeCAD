@@ -299,6 +299,49 @@ bool CmdPartDesignShapeBinder::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Clone
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignClone)
+
+CmdPartDesignClone::CmdPartDesignClone()
+  :Command("PartDesign_Clone")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a clone");
+    sToolTipText    = QT_TR_NOOP("Create a new clone");
+    sWhatsThis      = "PartDesign_Clone";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Clone";
+}
+
+void CmdPartDesignClone::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::string FeatName = getUniqueObjectName("Clone");
+    std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
+            (Part::Feature::getClassTypeId());
+    if (objs.size() == 1) {
+        openCommand("Create Clone");
+        doCommand(Command::Doc,"App.ActiveDocument.addObject('PartDesign::FeatureBase','%s')",
+                  FeatName.c_str());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.BaseFeature = App.ActiveDocument.%s",
+                  objs.front()->getNameInDocument());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.Placement = App.ActiveDocument.%s.Placement",
+                  objs.front()->getNameInDocument());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.setEditorMode('Placement',0)");
+        commitCommand();
+        updateActive();
+    }
+}
+
+bool CmdPartDesignClone::isActive(void)
+{
+    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
+}
+
+//===========================================================================
 // PartDesign_Sketch
 //===========================================================================
 
@@ -2158,6 +2201,7 @@ void CreatePartDesignCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdPartDesignShapeBinder());
+    rcCmdMgr.addCommand(new CmdPartDesignClone());
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());
     rcCmdMgr.addCommand(new CmdPartDesignPoint());

@@ -447,11 +447,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Line"
           << "PartDesign_Plane"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_Clone"
           << "Separator"
-          << "PartDesign_Pad"         
-          << "PartDesign_Revolution"          
+          << "PartDesign_Pad"
+          << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"          
+          << "PartDesign_AdditivePipe"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
@@ -510,14 +511,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Point"
           << "PartDesign_Line"
           << "PartDesign_Plane"
-          << "PartDesign_ShapeBinder";
-          
+          << "PartDesign_ShapeBinder"
+          << "PartDesign_Clone";
+
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");
-    *part << "PartDesign_Pad"         
-          << "PartDesign_Revolution"          
+    *part << "PartDesign_Pad"
+          << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"          
+          << "PartDesign_AdditivePipe"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"

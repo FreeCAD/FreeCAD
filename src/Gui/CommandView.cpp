@@ -2538,6 +2538,13 @@ void StdBoxSelection::activated(int iMsg)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
+            // #0002931: Box select misbehaves with touchpad navigation style
+            // Notify the navigation style to cleanup internal states
+            int mode = viewer->navigationStyle()->getViewingMode();
+            if (mode != Gui::NavigationStyle::IDLE) {
+                SoKeyboardEvent ev;
+                viewer->navigationStyle()->processEvent(&ev);
+            }
             viewer->startSelection(View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
             SoNode* root = viewer->getSceneGraph();
