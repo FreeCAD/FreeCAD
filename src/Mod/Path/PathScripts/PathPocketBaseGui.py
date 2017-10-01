@@ -68,8 +68,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
 
         if True:
-            # currently doesn't have an effect
+            # currently doesn't have an effect or is experimental
             form.keepToolDown.hide()
+            form.minTravel.hide()
 
         return form
 
