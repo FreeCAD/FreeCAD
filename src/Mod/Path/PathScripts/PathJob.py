@@ -243,7 +243,7 @@ class ObjectJob:
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
                 tcs.append(PathToolController.Create())
-        else:
+        if not tcs:
             tcs.append(PathToolController.Create())
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
         obj.ToolController = tcs
