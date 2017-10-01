@@ -126,12 +126,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             self.outline.translate(FreeCAD.Vector(0, 0, stockBB.ZMin - 1))
             self.body  = self.outline.extrude(FreeCAD.Vector(0, 0, stockBB.ZLength + 2))
-            obj.removalshape = self.stock.Shape.cut(self.body)
-            self.removalshapes = [(obj.removalshape, False)]
+            self.removalshapes = [(self.stock.Shape.cut(self.body), False)]
 
         for (shape,hole) in self.removalshapes:
             shape.tessellate(0.1)
 
+        if self.removalshapes:
+            obj.removalshape = self.removalshapes[0][0]
         return self.removalshapes
 
     def areaOpSetDefaultValues(self, obj):
