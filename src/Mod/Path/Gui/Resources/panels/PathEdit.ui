@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>924</height>
+    <height>673</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>4</number>
+   <number>3</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -393,81 +393,207 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWidget" name="tab">
+   <attribute name="title">
+    <string>Defaults</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Tool Rapid Feed</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="2">
+        <widget class="Gui::InputField" name="defaultRapidHorizontal">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal feed rate assigned to new Tool Controllers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="defaultRapidHorizontalIcon">
+         <property name="text">
+          <string>Hori</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="defaultRapidVerticalIcon">
+         <property name="text">
+          <string>Vert</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="Gui::InputField" name="defaultRapidVertical">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical feed rate assigned to new Tool Controllers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Horizontal</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Vertical</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Operation Heights</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Safe Extra</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Clearance Extra</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="defaultHeightSafe">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra height for Safe Heights, measured from the operations Start Depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="defaultHeightClearance">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra height for Clearance Heights, measured from the operations Start Depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>415</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
   <widget class="QWidget" name="tabTools">
    <attribute name="title">
     <string>Tools</string>
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QTableWidget" name="toolControllerList">
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>Name</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nr.</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Feed</string>
-       </property>
-       <property name="icon">
-        <iconset theme="object-flip-horizontal">
-         <normaloff/>
-        </iconset>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Feed</string>
-       </property>
-       <property name="icon">
-        <iconset theme="object-flip-vertical">
-         <normaloff/>
-        </iconset>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Spindle</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_4" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <widget class="QFrame" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QPushButton" name="toolControllerEdit">
-         <property name="enabled">
+        <widget class="QTableWidget" name="toolControllerList">
+         <attribute name="verticalHeaderVisible">
           <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Edit</string>
-         </property>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Nr.</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Feed</string>
+          </property>
+          <property name="icon">
+           <iconset theme="object-flip-horizontal">
+            <normaloff/>
+           </iconset>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Feed</string>
+          </property>
+          <property name="icon">
+           <iconset theme="object-flip-vertical">
+            <normaloff/>
+           </iconset>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Spindle</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="toolControllerAdd">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="toolControllerDelete">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Remove</string>
-         </property>
+        <widget class="QWidget" name="widget_4" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="toolControllerEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="toolControllerAdd">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="toolControllerDelete">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -640,7 +766,6 @@
   <tabstop>moveToOrigin</tabstop>
   <tabstop>centerInStock</tabstop>
   <tabstop>centerInStockXY</tabstop>
-  <tabstop>toolControllerList</tabstop>
   <tabstop>toolControllerEdit</tabstop>
   <tabstop>toolControllerAdd</tabstop>
   <tabstop>toolControllerDelete</tabstop>
