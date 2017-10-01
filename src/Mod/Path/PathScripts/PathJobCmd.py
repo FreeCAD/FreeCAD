@@ -183,12 +183,17 @@ class DlgJobTemplateExport:
 
     def includeStock(self):
         return self.dialog.stockGroup.isChecked()
-
     def includeStockExtent(self):
         return self.dialog.stockExtent.isChecked()
-
     def includeStockPlacement(self):
         return self.dialog.stockPlacement.isChecked()
+
+    def includeDefaults(self):
+        return self.dialog.defaultsGroup.isChecked()
+    def includeDefaultToolRapid(self):
+        return self.dialog.defaultToolRapid.isChecked()
+    def includeDefaultOperationHeights(self):
+        return self.dialog.defaultOperationHeights.isChecked()
 
     def exec_(self):
         return self.dialog.exec_()
@@ -223,14 +228,20 @@ class CommandJobTemplateExport:
     @classmethod
     def Execute(cls, job, path, dialog=None):
         attrs = job.Proxy.templateAttrs(job)
+
+        # post processor settings
         if dialog and not dialog.includePostProcessing():
             attrs.pop(PathJob.JobTemplate.PostProcessor, None)
-            attrs.pob(PathJob.JobTemplate.PostProcessorArgs, None)
-            attrs.pob(PathJob.JobTemplate.PostProcessorOutputFile, None)
+            attrs.pop(PathJob.JobTemplate.PostProcessorArgs, None)
+            attrs.pop(PathJob.JobTemplate.PostProcessorOutputFile, None)
+
+        # tool controller settings
         toolControllers = dialog.includeToolControllers() if dialog else job.ToolController
         if toolControllers:
             tcAttrs = [tc.Proxy.templateAttrs(tc) for tc in toolControllers]
             attrs[PathJob.JobTemplate.ToolController] = tcAttrs
+
+        # stock settings
         stockAttrs = None
         if dialog:
             if dialog.includeStock():
@@ -239,6 +250,16 @@ class CommandJobTemplateExport:
             stockAttrs = PathStock.TemplateAttributes(job.Stock)
         if stockAttrs:
             attrs[PathJob.JobTemplate.Stock] = stockAttrs
+
+        # defaults settings
+        if dialog and not (dialog.includeDefaults() and dialog.includeDefaultToolRapid()):
+            attrs.pop(PathJob.JobTemplate.DefaultVertRapid, None)
+            attrs.pop(PathJob.JobTemplate.DefaultHorizRapid, None)
+        if dialog and not (dialog.includeDefaults() and dialog.includeDefaultOperationHeights()):
+            attrs.pop(PathJob.JobTemplate.DefaultSafeHeight, None)
+            attrs.pop(PathJob.JobTemplate.DefaultClearanceHeight, None)
+
+        # write template
         with open(unicode(path), 'wb') as fp:
             json.dump(attrs, fp, sort_keys=True, indent=2)
 
