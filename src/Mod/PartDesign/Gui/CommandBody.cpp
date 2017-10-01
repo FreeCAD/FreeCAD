@@ -31,8 +31,10 @@
 #endif
 
 #include <Base/Console.h>
+#include <App/Origin.h>
 #include <App/Part.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
 #include <Gui/ActiveObjectList.h>
@@ -48,6 +50,7 @@
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "Utils.h"
+#include "TaskFeaturePick.h"
 #include "WorkflowManager.h"
 #include <TopExp_Explorer.hxx>
 
@@ -105,6 +108,7 @@ void CmdPartDesignBody::activated(int iMsg)
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     App::DocumentObject* baseFeature = nullptr;
     bool viewAll = features.empty();
+    bool addtogroup = false;
 
 
     if (!features.empty()) {
@@ -137,6 +141,10 @@ void CmdPartDesignBody::activated(int iMsg)
                             QObject::tr("Base feature (%1) belongs to other part.")
                                          .arg(QString::fromUtf8(baseFeature->Label.getValue())));
                     baseFeature = nullptr;
+                }
+                else if (baseFeature->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                    // Add sketcher to the body's group property
+                    addtogroup = true;
                 }
                 // if a standard Part feature (not a PartDesign feature) is selected then check
                 // the number of solids/shells
@@ -197,8 +205,14 @@ void CmdPartDesignBody::activated(int iMsg)
             doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                     partOfBaseFeature->getNameInDocument(), baseFeature->getNameInDocument());
         }
-        doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
-                bodyName.c_str(), baseFeature->getNameInDocument());
+        if (addtogroup) {
+            doCommand(Doc,"App.activeDocument().%s.Group = [App.activeDocument().%s]",
+                    bodyName.c_str(), baseFeature->getNameInDocument());
+        }
+        else {
+            doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
+                    bodyName.c_str(), baseFeature->getNameInDocument());
+        }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
     doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
@@ -224,6 +238,57 @@ void CmdPartDesignBody::activated(int iMsg)
                     if (base && base->BaseFeature.getValue() == baseFeature) {
                         Gui::Application::Instance->hideViewProvider(baseFeature);
                         break;
+                    }
+                }
+            }
+
+            // for sketches open the feature dialog to rebase it to a new pane
+            // as requested in issue #0002862
+            if (addtogroup) {
+                std::vector<App::DocumentObject*> planes;
+                std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
+                unsigned validPlaneCount = 0;
+                for (auto plane: body->getOrigin ()->planes()) {
+                    planes.push_back (plane);
+                    status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
+                    validPlaneCount++;
+                }
+
+                if (validPlaneCount > 1) {
+                    // Determines if user made a valid selection in dialog
+                    auto accepter = [](const std::vector<App::DocumentObject*>& features) -> bool {
+                        return !features.empty();
+                    };
+
+                    // Called by dialog when user hits "OK" and accepter returns true
+                    std::string FeatName = baseFeature->getNameInDocument();
+                    auto worker = [FeatName](const std::vector<App::DocumentObject*>& features) {
+                        // may happen when the user switched to an empty document while the
+                        // dialog is open
+                        if (features.empty())
+                            return;
+                        App::Plane* plane = static_cast<App::Plane*>(features.front());
+                        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
+                                                    ", [''])";
+
+                        Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
+                        Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
+                        Gui::Command::updateActive();
+                    };
+
+                    // Called by dialog for "Cancel", or "OK" if accepter returns false
+                    std::string docname = getDocument()->getName();
+                    auto quitter = [docname]() {
+                        Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
+                        if (document)
+                            document->abortCommand();
+                    };
+
+                    // Show dialog and let user pick plane
+                    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+                    if (!dlg) {
+                        Gui::Selection().clearSelection();
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
                     }
                 }
             }
