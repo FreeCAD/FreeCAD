@@ -25,6 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathSelection as PathSelection
@@ -91,7 +92,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.zigZagAngle.setEnabled(True)
 
         if setModel:
-            self.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
+            PathGui.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
@@ -102,7 +103,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
             obj.OffsetPattern = str(self.form.offsetPattern.currentText())
 
-        self.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
+        PathGui.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
         self.updateZigZagAngle(obj)
 

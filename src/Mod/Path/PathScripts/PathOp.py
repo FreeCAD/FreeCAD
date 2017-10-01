@@ -330,8 +330,8 @@ class ObjectOp(object):
                     if obj.StartDepth.Value < zmax:
                         safeDepths = False
 
-        clearance = obj.StartDepth.Value + 5.0
-        safe = obj.StartDepth.Value + 3
+        clearance = obj.StartDepth.Value + self.job.DefaultClearanceHeight.Value
+        safe = obj.StartDepth.Value + self.job.DefaultSafeHeight.Value
         if hasattr(obj, 'ClearanceHeight') and not PathGeom.isRoughly(clearance, obj.ClearanceHeight.Value):
             obj.ClearanceHeight = clearance
         if hasattr(obj, 'SafeHeight') and not PathGeom.isRoughly(safe, obj.SafeHeight.Value):

@@ -59,6 +59,10 @@ class JobTemplate:
     ToolController = 'ToolController'
     Stock = 'Stock'
     Version = 'Version'
+    DefaultVertRapid = 'DefaultVertRapid'
+    DefaultHorizRapid = 'DefaultHorizRapid'
+    DefaultSafeHeight = 'DefaultSafeHeight'
+    DefaultClearanceHeight = 'DefaultClearanceHeight'
 
 def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
@@ -132,6 +136,20 @@ class ObjectJob:
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
+        self.initDefaultValues(obj)
+
+    def initDefaultValues(self, obj):
+        if not hasattr(obj, 'DefaultHorizRapid'):
+            obj.addProperty('App::PropertySpeed', 'DefaultHorizRapid', 'Defaults', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Horizontal rapid feed rate for new tool controllers'))
+        if not hasattr(obj, 'DefaultVertRapid'):
+            obj.addProperty('App::PropertySpeed', 'DefaultVertRapid', 'Defaults', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Vertical rapid feed rate for new tool controllers'))
+        if not hasattr(obj, 'DefaultSafeHeight'):
+            obj.addProperty('App::PropertyLength', 'DefaultSafeHeight', 'Defaults', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Extra distance on top of StartDepth to set SafeHeight'))
+            obj.DefaultSafeHeight = 3.0
+        if not hasattr(obj, 'DefaultClearanceHeight'):
+            obj.addProperty('App::PropertyLength', 'DefaultClearanceHeight', 'Defaults', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Extra distance on top of StartDepth to set ClearanceHeight'))
+            obj.DefaultClearanceHeight = 5.0
+
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
         PathLog.track(obj.Label, arg2)
@@ -170,6 +188,7 @@ class ObjectJob:
 
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
+        self.initDefaultValues(obj)
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -211,6 +230,15 @@ class ObjectJob:
                         tcs.append(PathToolController.FromTemplate(tc))
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
+
+                if attrs.get(JobTemplate.DefaultVertRapid):
+                    obj.DefaultVertRapid = attrs[JobTemplate.DefaultVertRapid]
+                if attrs.get(JobTemplate.DefaultHorizRapid):
+                    obj.DefaultHorizRapid = attrs[JobTemplate.DefaultHorizRapid]
+                if attrs.get(JobTemplate.DefaultSafeHeight):
+                    obj.DefaultSafeHeight = attrs[JobTemplate.DefaultSafeHeight]
+                if attrs.get(JobTemplate.DefaultClearanceHeight):
+                    obj.DefaultClearanceHeight = attrs[JobTemplate.DefaultClearanceHeight]
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
                 tcs.append(PathToolController.Create())
@@ -231,6 +259,10 @@ class ObjectJob:
         attrs[JobTemplate.GeometryTolerance]           = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description]             = obj.Description
+        attrs[JobTemplate.DefaultVertRapid]            = obj.DefaultVertRapid.UserString
+        attrs[JobTemplate.DefaultHorizRapid]           = obj.DefaultHorizRapid.UserString
+        attrs[JobTemplate.DefaultSafeHeight]           = obj.DefaultSafeHeight.UserString
+        attrs[JobTemplate.DefaultClearanceHeight]      = obj.DefaultClearanceHeight.UserString
         return attrs
 
     def __getstate__(self):
@@ -256,6 +288,8 @@ class ObjectJob:
         group = self.obj.ToolController
         PathLog.info("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
+            tc.VertRapid = self.obj.DefaultVertRapid
+            tc.HorizRapid = self.obj.DefaultHorizRapid
             group.append(tc)
             self.obj.ToolController = group
 

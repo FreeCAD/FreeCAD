@@ -27,6 +27,7 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
+import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
@@ -476,6 +477,13 @@ class TaskPanel:
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
+        hicon = QtGui.QIcon.fromTheme('object-flip-horizontal')
+        vicon = QtGui.QIcon.fromTheme('object-flip-vertical')
+        iconSize = QtCore.QSize()
+
+        self.form.defaultRapidHorizontalIcon.setPixmap(hicon.pixmap(iconSize))
+        self.form.defaultRapidVerticalIcon.setPixmap(vicon.pixmap(iconSize))
+
         self.vproxy.setupEditVisibility(self.obj)
 
         self.stockFromBase = None
@@ -549,6 +557,12 @@ class TaskPanel:
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
+
+            PathGui.updateInputField(self.obj, 'DefaultSafeHeight', self.form.defaultHeightSafe)
+            PathGui.updateInputField(self.obj, 'DefaultClearanceHeight', self.form.defaultHeightClearance)
+            PathGui.updateInputField(self.obj, 'DefaultVertRapid', self.form.defaultRapidVertical)
+            PathGui.updateInputField(self.obj, 'DefaultHorizRapid', self.form.defaultRapidHorizontal)
+
             self.obj.Proxy.execute(self.obj)
 
     def selectComboBoxText(self, widget, text):
@@ -646,6 +660,11 @@ class TaskPanel:
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
+
+        self.form.defaultRapidVertical.setText(self.obj.DefaultVertRapid.UserString)
+        self.form.defaultRapidHorizontal.setText(self.obj.DefaultHorizRapid.UserString)
+        self.form.defaultHeightSafe.setText(self.obj.DefaultSafeHeight.UserString)
+        self.form.defaultHeightClearance.setText(self.obj.DefaultClearanceHeight.UserString)
 
 
     def setPostProcessorOutputFile(self):
@@ -986,6 +1005,12 @@ class TaskPanel:
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
         self.updateSelection()
+
+        # Defaults
+        self.form.defaultRapidVertical.editingFinished.connect(self.getFields)
+        self.form.defaultRapidHorizontal.editingFinished.connect(self.getFields)
+        self.form.defaultHeightSafe.editingFinished.connect(self.getFields)
+        self.form.defaultHeightClearance.editingFinished.connect(self.getFields)
 
         # set active page
         if activate in ['General', 'Base']:

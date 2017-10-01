@@ -26,6 +26,7 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
+import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
@@ -299,19 +300,6 @@ class TaskPanelPage(object):
         if obj.ToolController != tc:
             obj.ToolController = tc
 
-    def updateInputField(self, obj, prop, widget, onBeforeChange = None):
-        '''updateInputField(obj, prop, widget) ... helper function to update obj's property named prop with the value from widget, if it has changed.'''
-        value = FreeCAD.Units.Quantity(widget.text()).Value
-        attr = getattr(obj, prop)
-        attrValue = attr.Value if hasattr(attr, 'Value') else attr
-        if not PathGeom.isRoughly(attrValue, value):
-            PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
-            if onBeforeChange:
-                onBeforeChange(obj)
-            setattr(obj, prop, value)
-            return True
-        return False
-
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
     DataObject    = QtCore.Qt.ItemDataRole.UserRole
@@ -548,8 +536,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
     def getTitle(self, obj):
         return translate("Path", "Heights")
     def getFields(self, obj):
-        self.updateInputField(obj, 'SafeHeight',      self.form.safeHeight)
-        self.updateInputField(obj, 'ClearanceHeight', self.form.clearanceHeight)
+        PathGui.updateInputField(obj, 'SafeHeight',      self.form.safeHeight)
+        PathGui.updateInputField(obj, 'ClearanceHeight', self.form.clearanceHeight)
     def setFields(self,  obj):
         self.form.safeHeight.setText(FreeCAD.Units.Quantity(obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
         self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
@@ -600,13 +588,13 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if obj.FinalDepthLock != self.form.finalDepthLock.isChecked():
             obj.FinalDepthLock = self.form.finalDepthLock.isChecked()
 
-        self.updateInputField(obj, 'StartDepth', self.form.startDepth, self.lockStartDepth)
+        PathGui.updateInputField(obj, 'StartDepth', self.form.startDepth, self.lockStartDepth)
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth, self.lockFinalDepth)
+            PathGui.updateInputField(obj, 'FinalDepth', self.form.finalDepth, self.lockFinalDepth)
         if PathOp.FeatureStepDown & self.features:
-            self.updateInputField(obj, 'StepDown', self.form.stepDown)
+            PathGui.updateInputField(obj, 'StepDown', self.form.stepDown)
         if PathOp.FeatureFinishDepth & self.features:
-            self.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
+            PathGui.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
 
     def setFields(self, obj):
         self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)

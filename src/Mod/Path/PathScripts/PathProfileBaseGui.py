@@ -25,6 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfileFaces as PathProfileFaces
 import PathScripts.PathSelection as PathSelection
@@ -73,7 +74,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
-        self.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
+        PathGui.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
