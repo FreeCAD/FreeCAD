@@ -110,6 +110,38 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="defaultsGroup">
+     <property name="title">
+      <string>Defaults</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="defaultToolRapid">
+        <property name="text">
+         <string>Tool Rapid Speeds</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="defaultOperationHeights">
+        <property name="text">
+         <string>Operation Heights</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="toolsGroup">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -148,12 +180,12 @@
   <tabstop>stockGroup</tabstop>
   <tabstop>stockExtent</tabstop>
   <tabstop>stockPlacement</tabstop>
+  <tabstop>defaultsGroup</tabstop>
+  <tabstop>defaultToolRapid</tabstop>
+  <tabstop>defaultOperationHeights</tabstop>
   <tabstop>toolsGroup</tabstop>
   <tabstop>toolsList</tabstop>
   <tabstop>buttonBox</tabstop>
-  <tabstop>stockExtentHint</tabstop>
-  <tabstop>stockPlacementHint</tabstop>
-  <tabstop>postProcessingHint</tabstop>
  </tabstops>
  <resources/>
  <connections>

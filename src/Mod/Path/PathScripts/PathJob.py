@@ -123,6 +123,8 @@ class ObjectJob:
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
+        self.initDefaultValues(obj)
+
         obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
@@ -136,7 +138,6 @@ class ObjectJob:
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
-        self.initDefaultValues(obj)
 
     def initDefaultValues(self, obj):
         if not hasattr(obj, 'DefaultHorizRapid'):
