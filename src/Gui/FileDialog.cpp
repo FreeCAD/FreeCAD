@@ -48,6 +48,10 @@
 
 using namespace Gui;
 
+#if defined(FC_OS_LINUX)
+#define USE_QT_FILEDIALOG
+#endif
+
 
 /* TRANSLATOR Gui::FileDialog */
 
@@ -150,7 +154,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it 
     // before showing the file dialog.
-#if defined(FC_OS_LINUX)
+#if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
@@ -241,7 +245,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
-#if defined(FC_OS_LINUX)
+#if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
@@ -311,7 +315,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
-#if defined(FC_OS_LINUX)
+#if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
