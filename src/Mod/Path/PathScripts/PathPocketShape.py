@@ -67,7 +67,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if obj.Base:
             PathLog.debug("base items exist.  Processing...")
             self.removalshapes = []
-            horizontal = []
+            self.horiz = []
             vertical = []
             for o in obj.Base:
                 PathLog.debug("Base item: {}".format(o))
@@ -77,14 +77,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         face = base.Shape.getElement(sub)
                         if type(face.Surface) == Part.Plane and PathGeom.isVertical(face.Surface.Axis):
                             # it's a flat horizontal face
-                            horizontal.append(face)
+                            self.horiz.append(face)
                         elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
                             # vertical cylinder wall
                             if any(e.isClosed() for e in face.Edges):
                                 # complete cylinder
                                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                                 disk = Part.Face(Part.Wire(circle))
-                                horizontal.append(disk)
+                                self.horiz.append(disk)
                             else:
                                 # partial cylinder wall
                                 vertical.append(face)
@@ -94,21 +94,26 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             PathLog.error(translate('PathPocket', "Pocket does not support shape %s.%s") % (base.Label, sub))
 
             self.vertical = PathGeom.combineConnectedShapes(vertical)
-            vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
-            for wire in vWires:
-                face = Part.Face(wire)
+            self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
+            for wire in self.vWires:
+                w = PathGeom.removeDuplicateEdges(wire)
+                face = Part.Face(w)
+                face.tessellate(0.1)
                 if PathGeom.isRoughly(face.Area, 0):
                     PathLog.error(translate('PathPocket', 'Vertical faces do not form a loop - ignoring'))
                 else:
-                    horizontal.append(face)
+                    self.horiz.append(face)
 
 
             # move all horizontal faces to FinalDepth
-            for face in horizontal:
-                face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
+            for f in self.horiz:
+                f.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - f.BoundBox.ZMin))
 
             # check all faces and see if they are touching/overlapping and combine those into a compound
-            self.horizontal = PathGeom.combineConnectedShapes(horizontal)
+            self.horizontal = PathGeom.combineConnectedShapes(self.horiz)
+            for shape in self.horizontal:
+                shape.sewShape()
+                shape.tessellate(0.1)
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)

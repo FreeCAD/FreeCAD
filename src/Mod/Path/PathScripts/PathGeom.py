@@ -100,11 +100,7 @@ class PathGeom:
         Return true if the edges start and end at the same point and have the same type of curve.""" % PathGeomTolerance
         if type(e0.Curve) != type(e1.Curve):
             return False
-        if not cls.pointsCoincide(e0.valueAt(e0.FirstParameter), e1.valueAt(e1.FirstParameter)):
-            return False
-        if not cls.pointsCoincide(e0.valueAt(e0.LastParameter), e1.valueAt(e1.LastParameter)):
-            return False
-        return True
+        return all(cls.pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point) for i in range(len(e0.Vertexes)))
 
     @classmethod
     def edgeConnectsTo(cls, edge, vector, error=PathGeomTolerance):
@@ -463,4 +459,12 @@ class PathGeom:
                     combined.append(shape)
             shapes = combined
         return shapes
+
+    @classmethod
+    def removeDuplicateEdges(cls, wire):
+        unique = []
+        for e in wire.Edges:
+            if not any(cls.edgesMatch(e, u) for u in unique):
+                unique.append(e)
+        return Part.Wire(unique)
 
