@@ -42,7 +42,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroupExtension, Gui::ViewPr
 ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 {
     initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
-    
+
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();
 }
@@ -58,7 +58,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
     //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    if(ext) {        
+    if (ext) {
         auto objs = ext->Group.getValues();
         return objs;
     }
@@ -72,8 +72,8 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
     std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
 
     // search for objects handled (claimed) by the features
-    for( auto obj: model){
-        //stuff in annother geofeaturegroup is not in the model anyway
+    for (auto obj: model) {
+        //stuff in another geofeaturegroup is not in the model anyway
         if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
         
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
@@ -125,7 +125,8 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
     auto obj = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if (obj && prop == &obj->placement()) {
         getExtendedViewProvider()->setTransformation ( obj->placement().getValue().toMatrix() );
-    } else {
+    }
+    else {
         ViewProviderGroupExtension::extensionUpdateData ( prop );
     }
 }
