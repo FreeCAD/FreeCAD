@@ -48,7 +48,7 @@ __doc__ = "Base classes and framework for Path operation's UI"
 TaskPanelLayout = 0
 
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
