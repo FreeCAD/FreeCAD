@@ -197,7 +197,7 @@ std::string  DrawViewDimension::getFormatedValue()
 {
     std::string result;
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
-    double val = std::abs(getDimValue());
+    double val = std::abs(getDimValue());    //internal units!
 
     Base::Quantity qVal;
     qVal.setValue(val);
@@ -207,10 +207,14 @@ std::string  DrawViewDimension::getFormatedValue()
         qVal.setUnit(Base::Unit::Length);
     }
     QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
-    QRegExp rxUnits(QString::fromUtf8("\\D*$"));                          //any non digits at end of string
+                                                                      //but won't give more than Global_Decimals precision
+                                                                      //really should be able to ask units for value in appropriate UoM!!
+    QRegExp rxUnits(QString::fromUtf8("\\D*$"));                      //any non digits at end of string
 
     QString userVal = userStr;
-    userVal.remove(rxUnits);                                              //getUserString(defaultDecimals) without units
+    userVal.remove(rxUnits);                                           //getUserString(defaultDecimals) without units
+    double userValNum = userVal.toDouble();
+
 
     QString userUnits;
     int pos = 0;
@@ -218,9 +222,7 @@ std::string  DrawViewDimension::getFormatedValue()
         userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
     }
 
-    std::string prefixSym = getPrefix();                                      //get Radius/Diameter/... symbol
-
-    //have dimensionVal, whole userString, val(userString), units(userString), prefixSymbol
+    std::string prefixSym = getPrefix();                                  //get Radius/Diameter/... symbol
 
     //find the %x.y tag in FormatSpec
     QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.[0-9]*[aefgAEFG]"));     //printf double format spec 
@@ -230,10 +232,10 @@ std::string  DrawViewDimension::getFormatedValue()
     if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
         match = rxFormat.cap(0);                                          //entire capture of rx
 #if QT_VERSION >= 0x050000
-        specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),val);
+        specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),userValNum);
 #else
         QString qs2;
-        specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),val);
+        specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
 #endif
     }
 
@@ -251,13 +253,14 @@ std::string  DrawViewDimension::getFormatedValue()
             repl = specVal;
         }
     }
+
     repl = Base::Tools::fromStdString(getPrefix()) + repl;
     specStr.replace(match,repl);
 
     return specStr.toUtf8().constData();
 }
 
-
+//!NOTE: this returns the Dimension value in internal units (ie mm)!!!!
 double DrawViewDimension::getDimValue()
 {
     double result = 0.0;
