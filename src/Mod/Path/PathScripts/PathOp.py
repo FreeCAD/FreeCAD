@@ -216,7 +216,7 @@ class ObjectOp(object):
     def setDefaultValues(self, obj):
         '''setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead.'''
-        PathUtils.addToJob(obj)
+        job = PathUtils.addToJob(obj)
 
         obj.Active = True
 
@@ -235,8 +235,8 @@ class ObjectOp(object):
             obj.StepDown        =  1.0
 
         if FeatureHeights & features:
-            obj.ClearanceHeight = 10.0
-            obj.SafeHeight      =  8.0
+            obj.setExpression('SafeHeight', "%s.DefaultSafeHeight+StartDepth" % job.Settings.Name)
+            obj.setExpression('ClearanceHeight', "%s.DefaultClearanceHeight+StartDepth" % job.Settings.Name)
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
@@ -330,12 +330,12 @@ class ObjectOp(object):
                     if obj.StartDepth.Value < zmax:
                         safeDepths = False
 
-        clearance = obj.StartDepth.Value + self.job.DefaultClearanceHeight.Value
-        safe = obj.StartDepth.Value + self.job.DefaultSafeHeight.Value
-        if hasattr(obj, 'ClearanceHeight') and not PathGeom.isRoughly(clearance, obj.ClearanceHeight.Value):
-            obj.ClearanceHeight = clearance
-        if hasattr(obj, 'SafeHeight') and not PathGeom.isRoughly(safe, obj.SafeHeight.Value):
-            obj.SafeHeight = safe
+        #clearance = obj.StartDepth.Value + self.job.Settings.DefaultClearanceHeight.Value
+        #safe = obj.StartDepth.Value + self.job.Settings.DefaultSafeHeight.Value
+        #if hasattr(obj, 'ClearanceHeight') and not PathGeom.isRoughly(clearance, obj.ClearanceHeight.Value):
+        #    obj.ClearanceHeight = clearance
+        #if hasattr(obj, 'SafeHeight') and not PathGeom.isRoughly(safe, obj.SafeHeight.Value):
+        #    obj.SafeHeight = safe
 
         return safeDepths
 
