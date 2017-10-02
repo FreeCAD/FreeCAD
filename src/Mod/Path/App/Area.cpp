@@ -1931,7 +1931,11 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
             }
         }
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
-        out.Clip(toClipperOp(OperationIntersection),myArea.get(), SubjectFill,ClipFill);
+        PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
+        auto area = *myArea;
+        area.OffsetWithClipper(-tool_radius,JoinType,EndType,
+                myParams.MiterLimit,myParams.RoundPreceision);
+        out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;
         break;
     }default:
