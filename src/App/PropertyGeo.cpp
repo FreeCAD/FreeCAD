@@ -702,7 +702,11 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) c
 {
     std::string p = path.getSubPathStr();
 
-    if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
+    if (p == ".Rotation.Angle") {
+        // Convert angle to degrees
+	return Base::Quantity(Base::toDegrees(boost::any_cast<double>(Property::getPathValue(path))), Unit::Angle);
+    }
+    else if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
         // Convert double to quantity
         return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
     }
