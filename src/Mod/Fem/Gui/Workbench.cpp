@@ -108,7 +108,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "Separator"
            << "FEM_ConstraintFluidBoundary"
            << "FEM_ConstraintFlowVelocity";
-           
+
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
      *solve << "FEM_SolverCalculix"
