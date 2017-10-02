@@ -139,7 +139,7 @@ SET(FemElmer_SRCS
 
 SET(FemEquationsElmer_SRCS
     femsolver/elmer/equations/__init__.py
-    femsolver/elmer/equations/base.py
+    femsolver/elmer/equations/equation.py
     femsolver/elmer/equations/linear.py
     femsolver/elmer/equations/nonlinear.py
     femsolver/elmer/equations/elasticity.py

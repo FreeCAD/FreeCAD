@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "_Linear"
+__title__ = "Equation"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
