@@ -361,6 +361,13 @@ def makeSolverCalculix(doc, name="SolverCalculiX"):
     return obj
 
 
+def makeSolverElmer(doc, name="SolverElmer"):
+    '''makeSolverElmer(document, [name]): makes a Elmer solver object'''
+    import femsolver.elmer.solver
+    obj = femsolver.elmer.solver.create(doc, name)
+    return obj
+
+
 def makeSolverZ88(doc, name="SolverZ88"):
     '''makeSolverZ88(document, [name]): makes a Z88 solver object'''
     import femsolver.z88.solver

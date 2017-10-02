@@ -73,6 +73,7 @@ INSTALL(
     FILES
         femsolver/__init__.py
         femsolver/solverbase.py
+        femsolver/equationbase.py
         femsolver/report.py
         femsolver/reportdialog.py
         femsolver/settings.py
@@ -81,6 +82,30 @@ INSTALL(
         femsolver/signal.py
     DESTINATION
         Mod/Fem/femsolver
+)
+
+INSTALL(
+    FILES
+        femsolver/elmer/__init__.py
+        femsolver/elmer/sifio.py
+        femsolver/elmer/solver.py
+        femsolver/elmer/tasks.py
+        femsolver/elmer/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/elmer
+)
+
+INSTALL(
+    FILES
+        femsolver/elmer/equations/__init__.py
+        femsolver/elmer/equations/equation.py
+        femsolver/elmer/equations/linear.py
+        femsolver/elmer/equations/nonlinear.py
+        femsolver/elmer/equations/elasticity.py
+        femsolver/elmer/equations/heat.py
+        femsolver/elmer/equations/flow.py
+    DESTINATION
+        Mod/Fem/femsolver/elmer/equations
 )
 
 INSTALL(
@@ -109,6 +134,8 @@ INSTALL(
         PyGui/FemSelectionObserver.py
         PyGui/FemSelectionWidgets.py
         PyGui/__init__.py
+        PyGui/_CommandFemSolverElmer.py
+        PyGui/_CommandFemEquation.py
         PyGui/_CommandFemConstraintBodyHeatSource.py
         PyGui/_CommandFemConstraintFlowVelocity.py
         PyGui/_CommandFemConstraintInitialFlowVelocity.py
