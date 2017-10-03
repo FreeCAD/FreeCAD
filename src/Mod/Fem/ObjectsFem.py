@@ -47,6 +47,7 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
 
 
 def makeConstraintBodyHeatSource(doc, name="ConstraintBodyHeatSource"):
+    '''makeConstraintBodyHeatSource(document, [name]): makes a Fem ConstraintBodyHeatSource object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintBodyHeatSource
     PyObjects._FemConstraintBodyHeatSource.Proxy(obj)
@@ -75,6 +76,7 @@ def makeConstraintFixed(doc, name="ConstraintFixed"):
 
 
 def makeConstraintFlowVelocity(doc, name="ConstraintFlowVelocity"):
+    '''makeConstraintFlowVelocity(document, [name]): makes a Fem ConstraintFlowVelocity object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintFlowVelocity
     PyObjects._FemConstraintFlowVelocity.Proxy(obj)
@@ -109,6 +111,7 @@ def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
 
 
 def makeConstraintInitialFlowVelocity(doc, name="ConstraintInitialFlowVelocity"):
+    '''makeConstraintInitialFlowVelocity(document, [name]): makes a Fem ConstraintInitialFlowVelocity object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
     import PyObjects._FemConstraintInitialFlowVelocity
     PyObjects._FemConstraintInitialFlowVelocity.Proxy(obj)
@@ -343,7 +346,7 @@ def makeResultMechanical(doc, name="MechanicalResult"):
 
 ########## solver objects ##########
 def makeSolverCalculixOld(doc, name="CalculiXOld"):
-    '''makeSolverCalculixOld(document, name): makes a Calculix solver object'''
+    '''makeSolverCalculixOld(document, [name]): makes a depreciated Calculix solver object'''
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
     import PyObjects._FemSolverCalculix
     PyObjects._FemSolverCalculix._FemSolverCalculix(obj)
@@ -354,21 +357,21 @@ def makeSolverCalculixOld(doc, name="CalculiXOld"):
 
 
 def makeSolverCalculix(doc, name="SolverCalculiX"):
-    '''makeSolverCalculix(document, name): makes a Calculix solver object'''
+    '''makeSolverCalculix(document, [name]): makes a Calculix solver object'''
     import femsolver.calculix.solver
     obj = femsolver.calculix.solver.create(doc, name)
     return obj
 
 
 def makeSolverElmer(doc, name="SolverElmer"):
-    '''makeSolverElmer(document, name): makes a Elmer solver object'''
+    '''makeSolverElmer(document, [name]): makes a Elmer solver object'''
     import femsolver.elmer.solver
     obj = femsolver.elmer.solver.create(doc, name)
     return obj
 
 
 def makeSolverZ88(doc, name="SolverZ88"):
-    '''makeSolverZ88(document, name): makes a Z88 solver object'''
+    '''makeSolverZ88(document, [name]): makes a Z88 solver object'''
     import femsolver.z88.solver
     obj = femsolver.z88.solver.create(doc, name)
     return obj
