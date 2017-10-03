@@ -39,13 +39,8 @@ class MeshWorkbench (Workbench):
     def Initialize(self):
         import Mesh
         import MeshGui
-        # try:
         import MeshFlatteningCommand
-        toolbar = MeshFlatteningCommand.initialize()
-        self.appendToolbar(toolbar)
-        # except ImportError:
-        #     import FreeCAD as app
-        #     app.Message("MeshPart not found")
+
     def GetClassName(self):
         return "MeshGui::Workbench"
 
