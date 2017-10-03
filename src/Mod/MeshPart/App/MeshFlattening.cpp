@@ -174,7 +174,8 @@ void FaceUnwrapper::findFlatNodes()
     std::vector<long> fixed_pins;  //TODO: INPUT
     LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
     mesh_flattener.lscm();
-    mesh_flattener.relax(0.9);
+    for (int j=0; j<9; j++)
+        mesh_flattener.relax(0.9);
     this->ze_nodes = mesh_flattener.flat_vertices.transpose();
 }
 
