@@ -250,7 +250,7 @@
 		</Methode>
 		<Methode Name="insertUKnot">
 			<Documentation>
-				<UserDocu>insertUKnote(float U, int Index, float Tolerance) - Insert or overide a knot</UserDocu>
+				<UserDocu>insertUKnote(float U, int Index, float Tolerance) - Insert or override a knot</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="insertUKnots">
@@ -260,7 +260,7 @@
 		</Methode>
 		<Methode Name="insertVKnot">
 			<Documentation>
-				<UserDocu>insertUKnote(float V, int Index, float Tolerance) - Insert or overide a knot.</UserDocu>
+				<UserDocu>insertUKnote(float V, int Index, float Tolerance) - Insert or override a knot.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="insertVKnots">

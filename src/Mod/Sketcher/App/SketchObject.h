@@ -58,7 +58,7 @@ public:
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
     App::DocumentObjectExecReturn *execute(void);
@@ -220,7 +220,7 @@ public:
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
     
     /*!
-     \ brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
+     \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
      \param GeoId - the geometry of type bspline to increase the degree
      \param knotIndex - the index of the knot to modify (note that index is OCC consistent, so 1<=knotindex<=knots)
      \param multiplicityincr - the increment (positive value) or decrement (negative value) of multiplicity of the knot

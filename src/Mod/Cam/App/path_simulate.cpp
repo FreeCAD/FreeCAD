@@ -3161,7 +3161,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 	int pid2 = 3; // Slave
 	int pid3 = 4; // Platte
 
-    if (brob == false) // Simulations-Output (brob == true -> roboter-ouput)
+    if (brob == false) // Simulations-Output (brob == true -> roboter-output)
     {
 		TimeCorrection();
 

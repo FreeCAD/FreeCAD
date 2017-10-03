@@ -120,7 +120,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
 
 std::vector<std::string> DrawViewSpreadsheet::getAvailColumns(void)
 {
-    // build a list of available colums: A, B, C, ... AA, AB, ... ZY, ZZ.
+    // build a list of available columns: A, B, C, ... AA, AB, ... ZY, ZZ.
     std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     std::vector<std::string> availcolumns;
     for (int i=0; i<26; ++i) {

@@ -51,7 +51,7 @@ typedef struct
     std::vector<unsigned int> Constraining;
     std::vector<unsigned int> FacetRef;
 
-}VERTICES;   /*!< VERTICES struct. Contains coordinates, index, face reference, and constraining informations*/
+}VERTICES;   /*!< VERTICES struct. Contains coordinates, index, face reference, and constraining information*/
 
 typedef struct
 {

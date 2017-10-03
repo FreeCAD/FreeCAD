@@ -696,7 +696,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
 
     std::string::size_type pos = cName.find(':');
 
-    // is there a path seperator ?
+    // is there a path separator ?
     if (pos == std::string::npos) {
         throw Base::ValueError("Application::GetParameterGroupByPath() no parameter set name specified");
     }
@@ -1886,7 +1886,7 @@ void Application::ParseOptions(int ac, char ** av)
     ("write-log,l", descr.c_str())
     ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
-    ("system-cfg,s", value<string>(),"Systen config file to load/save system settings")
+    ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")

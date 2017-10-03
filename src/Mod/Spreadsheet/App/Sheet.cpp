@@ -603,7 +603,7 @@ void Sheet::updateAlias(CellAddress key)
 }
 
 /**
-  * Update the Propery given by \a key. This will also eventually trigger recomputations of cells depending on \a key.
+  * Update the Property given by \a key. This will also eventually trigger recomputations of cells depending on \a key.
   *
   * @param key The address of the cell we want to recompute.
   *
@@ -649,7 +649,7 @@ void Sheet::updateProperty(CellAddress key)
 }
 
 /**
-  * Retrieve a specifc Property given by \a name.
+  * Retrieve a specific Property given by \a name.
   * This function might throw an exception if something fails, but might also
   * return 0 in case the property is not found.
   *
