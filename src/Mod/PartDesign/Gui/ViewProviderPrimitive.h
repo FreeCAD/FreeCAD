@@ -45,6 +45,7 @@ public:
     
 protected:
     virtual QIcon getIcon(void) const;
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual bool  setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     

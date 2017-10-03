@@ -50,6 +50,7 @@ public:
     int getStyle() { return m_style; }
     void setStyle(int s) { m_style = s; }
     static int getPrefArrowStyle();
+    static double getPrefArrowSize();
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 

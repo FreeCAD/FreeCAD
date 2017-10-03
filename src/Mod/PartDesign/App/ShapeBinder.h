@@ -47,7 +47,7 @@ public:
     ShapeBinder();
     virtual ~ShapeBinder();
 
-    App::PropertyLinkSubList    Support;
+    App::PropertyLinkSubListGlobal    Support;
 
     static void getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
     static Part::TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
@@ -57,6 +57,7 @@ public:
     }
 
 protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
     virtual short int mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
 };

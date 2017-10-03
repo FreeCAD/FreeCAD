@@ -76,7 +76,7 @@ def insert(filename,docname):
 def decode(name):
     "decodes encoded strings"
     try:
-        decodedName = (utf8_decode(name))
+        decodedName = (name.decode("utf8"))
     except UnicodeDecodeError:
         try:
             decodedName = (name.decode("latin1"))

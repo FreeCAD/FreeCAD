@@ -38,6 +38,8 @@
 #include "DrawPage.h"
 #include "DrawViewSymbol.h"
 
+#include <Mod/TechDraw/App/DrawViewSymbolPy.h>  // generated from DrawViewSymbolPy.xml
+
 using namespace TechDraw;
 using namespace std;
 
@@ -81,6 +83,7 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
                     tbegin = twhat[0].second;
                 }
                 EditableTexts.setValues(eds);
+                requestPaint();
             }
         }
     }
@@ -89,6 +92,10 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     std::string svg = Symbol.getValue();
     const std::vector<std::string>& editText = EditableTexts.getValues();
 
@@ -113,6 +120,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 
     }
     Symbol.setValue(newsvg);
+    requestPaint();
     return DrawView::execute();
 }
 
@@ -140,7 +148,7 @@ QRectF DrawViewSymbol::getRect() const
 //            std::string hNum  = what[1].str();
 //            h = std::stod(hNum);
 //        }
-//        return (QRectF(0,0,Scale.getValue() * w,Scale.getValue() * h));
+//        return (QRectF(0,0,getScale() * w,getScale() * h));
 //we now have a w x h, but we don't really know what it means - px,mm,in,...
         
 }
@@ -154,7 +162,28 @@ bool DrawViewSymbol::checkFit(TechDraw::DrawPage* p) const
     return result;
 }
 
+short DrawViewSymbol::mustExecute() const
+{
+    short result = 0;
+    if (!isRestoring()) {
+        result  =  (Scale.isTouched()  ||
+                    EditableTexts.isTouched());
+    }
+    if ((bool) result) {
+        return result;
+    }
+    return DrawView::mustExecute();
+}
 
+
+PyObject *DrawViewSymbol::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawViewSymbolPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 // Python Drawing feature ---------------------------------------------------------
 

@@ -33,6 +33,7 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 class PathPreferences:
     DefaultFilePath           = "DefaultFilePath"
     DefaultJobTemplate        = "DefaultJobTemplate"
+    DefaultStockTemplate      = "DefaultStockTemplate"
 
     PostProcessorDefault      = "PostProcessorDefault"
     PostProcessorDefaultArgs  = "PostProcessorDefaultArgs"
@@ -118,7 +119,10 @@ class PathPreferences:
 
     @classmethod
     def defaultJobTemplate(cls):
-        return cls.preferences().GetString(cls.DefaultJobTemplate)
+        template = cls.preferences().GetString(cls.DefaultJobTemplate)
+        if 'xml' not in template:
+            return template
+        return ''
 
     @classmethod
     def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance):
@@ -159,4 +163,11 @@ class PathPreferences:
     def defaultOutputPolicy(cls):
         pref = cls.preferences()
         return pref.GetString(cls.PostProcessorOutputPolicy, "")
+
+    @classmethod
+    def defaultStockTemplate(cls):
+        return cls.preferences().GetString(cls.DefaultStockTemplate, "")
+    @classmethod
+    def setDefaultStockTemplate(cls, template):
+        cls.preferences().SetString(cls.DefaultStockTemplate, template)
 

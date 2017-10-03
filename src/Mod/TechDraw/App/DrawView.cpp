@@ -94,55 +94,61 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    return App::DocumentObject::StdReturn;                //DO::execute returns 0
+}
+
+void DrawView::checkScale(void)
+{
     TechDraw::DrawPage *page = findParentPage();
-    if(page) {
+    if(page &&
+       keepUpdated()) {
         if (ScaleType.isValue("Page")) {
-            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
             }
-        } else if (ScaleType.isValue("Automatic")) {
-            //check fit. if too big, rescale
-            //if (dpg) { leave alone } else {
-            if (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))  {
-                //do nothing
-            } else {
-                if (!checkFit(page)) {
-                    double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
-                    if(std::abs(newScale - Scale.getValue()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                        Scale.setValue(newScale);
-                    }
-                }
-            }
-        } else if (ScaleType.isValue("Custom")) {
-            //Base::Console().Message("TRACE - DV::execute - custom %s Scale: %.3f\n",getNameInDocument(),Scale.getValue());
         }
     }
-    return App::DocumentObject::StdReturn;                //DO::execute returns 0
 }
 
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //Base::Console().Message("TRACE - DV::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
-        if (prop == &ScaleType) {
+        if (this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId()))  {
+            //do nothing. DPGI/DPG handles itself
+        } else if (prop == &ScaleType) {
+            auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
+                if (page != nullptr) {
+                    if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+                       Scale.setValue(page->Scale.getValue());
+                    }
+                }
             } else if ( ScaleType.isValue("Custom") ) {
+                //don't change Scale
                 Scale.setStatus(App::Property::ReadOnly,false);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Automatic") ) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
-            }
-        } else if (prop == &X ||
-                   prop == &Y) {
-            if (isMouseMove()) {     //actually "has mouse moved this item?"
-                setAutoPos(false);
+                if (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))  {
+                    //do nothing. DPG handles itself
+                } else {
+                    if (!checkFit(page)) {
+                        double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                        if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                            Scale.setValue(newScale);
+                        }
+                    }
+                }
             }
         }
+        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
+            prop == &Y) {
+            requestPaint();
+        }
     }
-
     App::DocumentObject::onChanged(prop);
 }
 
@@ -150,9 +156,7 @@ short DrawView::mustExecute() const
 {
     short result = 0;
     if (!isRestoring()) {
-        result  =  (X.isTouched()  ||
-                    Y.isTouched()  ||
-                    Scale.isTouched()  ||
+        result  =  (Scale.isTouched()  ||
                     ScaleType.isTouched() );
     }
     if ((bool) result) {
@@ -212,8 +216,8 @@ double DrawView::autoScale(double w, double h) const
     double fudgeFactor = 0.90;
     QRectF viewBox = getRect();
     //have to unscale rect to determine new scale
-    double vbw = viewBox.width()/Scale.getValue();
-    double vbh = viewBox.height()/Scale.getValue();
+    double vbw = viewBox.width()/getScale();
+    double vbh = viewBox.height()/getScale();
     double xScale = w/vbw;
     double yScale = h/vbh;
     //TODO: find a standard scale that's close? 1:2, 1:10, 1:100...?  Logic in TaskProjGroup
@@ -236,10 +240,15 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
 void DrawView::setPosition(double x, double y)
 {
-    //recompute.lock()
     X.setValue(x);
     Y.setValue(y);
-    //recompute.unlock()
+}
+
+//TODO: getScale is no longer needed and could revert to Scale.getValue
+double DrawView::getScale(void) const
+{
+    auto result = Scale.getValue();
+    return result;
 }
 
 void DrawView::Restore(Base::XMLReader &reader)
@@ -306,6 +315,20 @@ void DrawView::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
+bool DrawView::keepUpdated(void)
+{
+    bool result = false;
+    TechDraw::DrawPage *page = findParentPage();
+    if(page) {
+        result = page->KeepUpdated.getValue();
+    }
+    return result;
+}
+
+void DrawView::requestPaint(void)
+{
+    signalGuiPaint(this);
+}
 
 PyObject *DrawView::getPyObject(void)
 {

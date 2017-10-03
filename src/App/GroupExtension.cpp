@@ -53,7 +53,7 @@ DocumentObject* GroupExtension::addObject(const char* sType, const char* pObject
 {
     DocumentObject* obj = getExtendedObject()->getDocument()->addObject(sType, pObjectName);
     if(!allowObject(obj)) {
-        getExtendedObject()->getDocument()->remObject(obj->getNameInDocument());
+        getExtendedObject()->getDocument()->removeObject(obj->getNameInDocument());
         return nullptr;
     }
     if (obj) addObject(obj);
@@ -102,6 +102,12 @@ std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentO
     Group.setValues(grp);
     
     return added;
+}
+
+std::vector< DocumentObject* > GroupExtension::setObjects(std::vector< DocumentObject* > obj) {
+
+    Group.setValues(std::vector< DocumentObject* > ());
+    return addObjects(obj);
 }
 
 std::vector<DocumentObject*> GroupExtension::removeObject(DocumentObject* obj)
@@ -154,7 +160,7 @@ void GroupExtension::removeObjectFromDocument(DocumentObject* obj)
         grp->removeObjectsFromDocument();
     }
 
-    getExtendedObject()->getDocument()->remObject(obj->getNameInDocument());
+    getExtendedObject()->getDocument()->removeObject(obj->getNameInDocument());
 }
 
 DocumentObject *GroupExtension::getObject(const char *Name) const
@@ -167,15 +173,28 @@ DocumentObject *GroupExtension::getObject(const char *Name) const
 
 bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
 {
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj) {
-            return true;
-        } else if ( recursive && (*it)->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
-            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
-                                    (*it)->getExtension(GroupExtension::getExtensionClassTypeId()));
 
-            if (subGroup->hasObject (obj, recursive)) {
+    if(obj == getExtendedObject())
+        return false;
+
+    const std::vector<DocumentObject*>& grp = Group.getValues();
+    for (auto child : grp) {
+
+        if(!child)
+            continue;
+
+        if (child == obj) {
+            return true;
+        } else if (child == getExtendedObject()) {
+            Base::Exception("Cyclic dependencies detected: Search cannot be performed");
+        } else if ( recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
+
+            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
+                                    child->getExtension(GroupExtension::getExtensionClassTypeId()));
+            std::vector<const GroupExtension*> history;
+            history.push_back(this);
+
+            if (subGroup->recursiveHasObject (obj, subGroup, history)) {
                 return true;
             }
         }
@@ -184,21 +203,47 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
     return false;
 }
 
-bool GroupExtension::isChildOf(const GroupExtension* group) const
-{
-    const std::vector<DocumentObject*>& grp = group->Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == getExtendedObject())
-            return true;
-        if ((*it)->hasExtension(GroupExtension::getExtensionClassTypeId())) {
-            if (this->isChildOf(static_cast<GroupExtension*>((*it)->getExtension(GroupExtension::getExtensionClassTypeId()))))
+bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, 
+                                        std::vector< const GroupExtension* > history) const {
 
+    //the purpose is to prevent infinite recursion when groups form a cyclic graph. To do this 
+    //we store every group we processed on the current leave of the tree, and if we reach an 
+    //already processed group we know that it not really is a tree but a cycle.
+    history.push_back(this);
+
+    //we use hasObject with out recursion to allow override in derived classes
+    if(group->hasObject(obj, false))
+        return true;
+
+    //we checked for the searched object already with hasObject and did not find it, now we need to
+    //do the same for all subgroups
+    for (auto child : group->Group.getValues()) {
+
+        if(!child)
+            continue;
+
+        if ( child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
+
+            auto ext = child->getExtensionByType<GroupExtension>();
+            
+            if(std::find(history.begin(), history.end(), ext) != history.end())
+                Base::Exception("Cyclic dependencies detected: Search cannot be performed");
+
+            if (recursiveHasObject(obj, ext, history)) {
                 return true;
+            }
         }
     }
-
     return false;
 }
+
+
+bool GroupExtension::isChildOf(const GroupExtension* group, bool recursive) const
+{
+    return group->hasObject(getExtendedObject(), recursive);
+}
+
+
 
 std::vector<DocumentObject*> GroupExtension::getObjects() const
 {
@@ -244,7 +289,7 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 }
 
 PyObject* GroupExtension::getExtensionPyObject(void) {
-    
+
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         auto grp = new GroupExtensionPy(this);
@@ -254,36 +299,38 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
 }
 
 void GroupExtension::extensionOnChanged(const Property* p) {
-    
+
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
     if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId()) &&
        (strcmp(p->getName(), "Group")==0)) {
-     
-        bool error = false;
-        auto corrected = Group.getValues();
-        for(auto obj : Group.getValues()) {
+
+        if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
             
-            //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
-            //would return anyone of it and hence it is possible that we miss an error. We need a custom check
-            auto list = obj->getInList();
-            for (auto in : list) {
-                if(in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false) &&
-                    in != getExtendedObject()) {
-                    error = true;
-                    corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
-                    break;
+            bool error = false;
+            auto corrected = Group.getValues();
+            for(auto obj : Group.getValues()) {
+
+                //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
+                //would return anyone of it and hence it is possible that we miss an error. We need a custom check
+                auto list = obj->getInList();
+                for (auto in : list) {
+                    if(in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false) &&
+                        in != getExtendedObject()) {
+                        error = true;
+                        corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                    }
                 }
             }
-        }
-        
-        //if an error was found we need to correct the values and inform the user
-        if(error) {
-            Group.setValues(corrected);
-            throw Base::Exception("Object can only be in a single Group");
+
+            //if an error was found we need to correct the values and inform the user
+            if(error) {
+                Group.setValues(corrected);
+                throw Base::Exception("Object can only be in a single Group");
+            }
         }
     }
-    
+
     App::Extension::extensionOnChanged(p);
 }
 

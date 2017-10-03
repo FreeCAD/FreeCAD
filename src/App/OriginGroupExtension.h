@@ -65,6 +65,7 @@ public:
     void relinkToOrigin(App::DocumentObject* obj);
     
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
+    virtual bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
 
 protected:
     /// Checks integrity of the Origin

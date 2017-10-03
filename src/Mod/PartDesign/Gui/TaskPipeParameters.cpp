@@ -323,7 +323,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
     //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxillery spine he already selected 
+    //spine/auxiliary spine he already selected
     if(pipe->AuxillerySpine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
         auxSpineShow = svp->isShow();

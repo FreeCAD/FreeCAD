@@ -385,6 +385,9 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
 
     // if dv doesn't have a graphic, make one
     for (auto& dv: pChildren) {
+        if (dv->isRemoving()) {
+            continue;
+        }
         QGIView* qv = m_view->findQViewForDocObj(dv);
         if (qv == nullptr) {
             attachView(dv);
@@ -411,6 +414,7 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
     }
 }
 
+//NOTE: this doesn't add missing views.  see updateDrawing()
 void MDIViewPage::redrawAllViews()
 {
     const std::vector<QGIView *> &upviews = m_view->getViews();
@@ -419,6 +423,7 @@ void MDIViewPage::redrawAllViews()
     }
 }
 
+//NOTE: this doesn't add missing views.   see updateDrawing()
 void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
 {
     std::string dvName = dv->getNameInDocument();
@@ -1057,19 +1062,17 @@ void MDIViewPage::selectionChanged()
                 static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
             }
         } else {
-
             TechDraw::DrawView *viewObj = itemView->getViewObject();
+            if (viewObj && !viewObj->isRemoving()) {
+                std::string doc_name = viewObj->getDocument()->getName();
+                std::string obj_name = viewObj->getNameInDocument();
 
-            std::string doc_name = viewObj->getDocument()->getName();
-            std::string obj_name = viewObj->getNameInDocument();
-
-            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str());
-            showStatusMsg(doc_name.c_str(),
-                          obj_name.c_str(),
-                          "");
-
+                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str());
+                showStatusMsg(doc_name.c_str(),
+                              obj_name.c_str(),
+                              "");
+            }
         }
-
     }
 
     blockConnection(saveBlock);

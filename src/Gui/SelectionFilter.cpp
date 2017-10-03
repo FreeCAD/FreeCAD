@@ -91,9 +91,9 @@ bool SelectionGatePython::allow(App::Document* doc, App::DocumentObject* obj, co
             Py::Callable method(this->gate.getAttr(std::string("allow")));
             Py::Object pyDoc = Py::asObject(doc->getPyObject());
             Py::Object pyObj = Py::asObject(obj->getPyObject());
-            Py::String pySub;
+            Py::Object pySub = Py::None();
             if (sub)
-                pySub = std::string(sub);
+                pySub = Py::String(sub);
             Py::Tuple args(3);
             args.setItem(0, pyDoc);
             args.setItem(1, pyObj);

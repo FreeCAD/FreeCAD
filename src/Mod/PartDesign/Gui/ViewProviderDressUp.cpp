@@ -46,8 +46,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    // TODO check if this gets a sane translation (2015-07-26, Fat-Zer)
-    act = menu->addAction(QObject::tr((std::string("Edit ") + featureName() + " feature").c_str()), receiver, member);
+    act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromStdString(featureName())), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
 

@@ -954,16 +954,11 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
 
-        Primitive::execute();
+        return Primitive::execute();
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
-
-
-
-    return Primitive::execute();
 }
 
 PROPERTY_SOURCE(Part::Wedge, Part::Primitive)
@@ -1044,7 +1039,6 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
         this->Shape.setValue(mkSolid.Solid());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 

@@ -68,7 +68,7 @@
      <widget class="QWidget" name="standard"/>
      <widget class="QWidget" name="fixed"/>
      <widget class="QWidget" name="frenet"/>
-     <widget class="QWidget" name="auxillery">
+     <widget class="QWidget" name="auxiliary">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QCheckBox" name="curvelinear">

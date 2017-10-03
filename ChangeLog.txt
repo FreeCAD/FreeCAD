@@ -49,7 +49,7 @@ Version: 0.14
   * Hide all objects in a group
   * Part::TopoShape::getMemSize fails for Bezier Curves
   * icons not showing in Part Loft and sweep dialogues
-  * Drawing SVG output makes ever knot symetrical.
+  * Drawing SVG output makes ever knot symmetrical.
   * Part Common fails with two surface objects
   * Teigha File Converter not found, DWG support will be disabled.
   * recognize remote branches for Version.h in detached head state
@@ -65,7 +65,7 @@ Version: 0.14
   * Crash propably in MeshPart
   * Part.BSplineCurve: allow to set degree and mutliplicites when calling constructor.
   * FeaturePython objects should be able to define how POVray output is generated
-  * Loosing Snap when Object is getting more complex.
+  * Losing Snap when Object is getting more complex.
   * PropertyLinkSubList causes crash
   * BRepPrimAPI_MakeRevolution vs BRepPrimAPI_MakeRevol
   * plane offset precision is limited to 0.1
@@ -311,7 +311,7 @@ Version: V0.5B8 Date: Tue Aug 01 2006 +++++++++++++++++++++++++++++++
   * Allow to open a project file even if not everything can be loaded e.g. if a module is missing
   * Select name if a file instead of directory was given in FileDialog's getOpenFileName() or getSaveFileName() methods
   * Bug fixed in harmonizing normals of a mesh
-  * speed up a lot several algorithms that searches for independant components of a mesh or searches for inhomogenous normals
+  * speed up a lot several algorithms that searches for independent components of a mesh or searches for inhomogenous normals
   * make MeshKernel::VisitNeighbourFacets() more robust against topologic errors in mesh
   * Option added to do one- or two-side rendering of meshes
   * Dialog to enter numbers higher than the maximum of int's, i.e numbers up to 4294967295
@@ -333,7 +333,7 @@ Version: V0.5B7 Date: Thu May 18 2006 +++++++++++++++++++++++++++++++
   * added new ViewProvider for meshes with more than 100.000 triangles using SoFCMeshNode for optimizations
   * save/restore of view providers into/from a separate XML file in a project file
   * check if project file exists when loading from command line
-  * using grid to speed up cutting algoritm for huge meshes
+  * using grid to speed up cutting algorithm for huge meshes
   * calculate inverse color of mesh color for open edges 
   * added project properties to App::Document
   * added material property class
@@ -557,7 +557,7 @@ Version: V0.1B117 Date: Sun Mar 20 14:06:55 2005 +++++++++++++++++++++++++++++++
   * Viewprovider for meshes added
   * Integration of latest Image module source
   * RFE 1159671 implemented (elements in alphabetic order)
-  * Finishing drag&drop multible files
+  * Finishing drag&drop multiple files
   * Finishing open from command line and droping on Programm icon
   * solving load dependand modules
   * more convenient Python console
@@ -660,7 +660,7 @@ Version: V0.1B101 Date: Thu Dec 02 22:32:22 2004 +++++++++++++++++++++++++++++++
 
 Version: V0.1B100 Date: Mon Nov 29 19:40:56 2004 +++++++++++++++++++++++++++++++
   * set up new exception handling for python call back
-  * implement std property acces in App::Feature
+  * implement std property access in App::Feature
 
 Version: V0.1B99 Date: Fri Nov 26 22:40:56 2004 +++++++++++++++++++++++++++++++
   * replace QextMDI by own impl. using QWorkspace and QDockWindow
@@ -701,7 +701,7 @@ Version: V0.1B91 Date: Tue Sep 21 15:34:55 2004 +++++++++++++++++++++++++++++++
 Version: V0.1B90 Date: Tue Sep 07 19:25:03 2004 +++++++++++++++++++++++++++++++
   * Clean up path finding
   * port to OCC 5.2
-  - switch to new iostream (finaly!!!)
+  - switch to new iostream (finally!!!)
 
 Version: V0.1B89 Date: Fri Aug 20 19:03:18 2004 +++++++++++++++++++++++++++++++
   * pimple App/Application and App/Document
@@ -754,7 +754,7 @@ Version: V0.1B77 Date: Fri Nov 14 14:56:14 2003 +++++++++++++++++++++++++++++++
   * Removed all relativ paths
   * config HomePath is now not in bin anymore
   * all config files one dir up
-  * FC runs now from every derectory
+  * FC runs now from every directory
   * remove Startup and Install script
 
 Version: V0.1B76 Date: Sat Nov 08 14:47:32 2003 +++++++++++++++++++++++++++++++
@@ -845,7 +845,7 @@ Version: V0.1B61 Date: Sat May 24 17:35:52 2003 +++++++++++++++++++++++++++++++
   * binding for scintilla
   * switching the observer to templates
   * adding SoQt to the source
-  * the template observer the M$ STL dont work any more
+  * the template observer the M$ STL don't work any more
 
 Version: V0.1B60 Date: Wed May 21 21:18:53 2003 +++++++++++++++++++++++++++++++
   * finishing close, save and update stuff
@@ -892,7 +892,7 @@ Version: V0.1B52 Date: Thu Apr 10 21:17:20 2003 +++++++++++++++++++++++++++++++
   * insert the TreeDockBar
 
 Version: V0.1B51 Date: Sun Apr 06 21:27:35 2003 +++++++++++++++++++++++++++++++
-  * Realy big patch from Werner
+  * Really big patch from Werner
     - Fix a problem with the paning in MouseModel
     - Fixing workbench binding for std. menus
     - switch to QT_VER for easier changing QT Version

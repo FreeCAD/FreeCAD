@@ -258,6 +258,7 @@ void Document::exportGraphviz(std::ostream& out) const
             buildAdjacencyList();
             addEdges();
             markCycles();
+            markOutOfScopeLinks();
         }
 
         /**
@@ -767,6 +768,23 @@ void Document::exportGraphviz(std::ostream& out) const
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
         }
+        
+        void markOutOfScopeLinks() {
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            for( auto obj : objects) {
+
+                std::vector<App::DocumentObject*> invalids;
+                GeoFeatureGroupExtension::getInvalidLinkObjects(obj, invalids);
+                //isLinkValid returns true for non-link properties
+                for(auto linkedObj : invalids) {
+    
+                    auto res = edge(GlobalVertexList[getId(obj)], GlobalVertexList[getId(linkedObj)], DepList);
+                    if(res.second)
+                        edgeAttrMap[res.first]["color"] = "red";
+                }
+            }
+        }
 
         const struct DocumentP* d;
         Graph DepList;
@@ -1224,6 +1242,7 @@ Document::~Document()
 
     d->objectArray.clear();
     for (it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+        it->second->setStatus(ObjectStatus::Destroy, true);
         delete(it->second);
     }
 
@@ -2025,7 +2044,7 @@ int Document::recompute()
 
     int objectCount = 0;
     
-    // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
     bool skip = testStatus(Document::SkipRecompute);
     if (skip)
@@ -2147,11 +2166,29 @@ int Document::recompute()
 
 int Document::recompute()
 {
+    if (testStatus(Document::Recomputing)) {
+        // this is clearly a bug in the calling instance
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
     int objectCount = 0;
+
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
+    // time expensive recomputes
+    bool skip = testStatus(Document::SkipRecompute);
+    if (skip)
+        return 0;
+
+    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+
     // delete recompute log
     for (auto LogEntry: _RecomputeLog)
         delete LogEntry;
     _RecomputeLog.clear();
+
+    //do we have anything to do?
+    if(d->objectMap.empty())
+        return 0;
 
     // get the sorted vector of all objects in the document and go though it from the end
     vector<DocumentObject*> topoSortedObjects = topologicalSort();
@@ -2162,8 +2199,8 @@ int Document::recompute()
     }
 
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
-        // ask the object if it should be recomputed
-        if ((*objIt)->mustExecute() == 1){
+        // ask the object if it should be recomputed  
+        if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
             objectCount++;
             if (_recomputeFeature(*objIt)) {
                 // if something happen break execution of recompute
@@ -2176,7 +2213,6 @@ int Document::recompute()
                     inObjIt->touch();
             }
         }
-
     }
 #ifdef FC_DEBUG
     // check if all objects are recalculated which were thouched 
@@ -2186,7 +2222,7 @@ int Document::recompute()
     }
 #endif
 
-        return objectCount;
+    return objectCount;
 }
 
 #endif // USE_OLD_DAG
@@ -2199,8 +2235,14 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     ret.reserve(d->objectArray.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto objectIt : d->objectArray)
-        countMap[objectIt] = objectIt->getInList().size();
+    for (auto objectIt : d->objectMap) {
+        //we need inlist with unique entries
+        auto in = objectIt.second->getInList();
+        std::sort(in.begin(), in.end());
+        in.erase(std::unique(in.begin(), in.end()), in.end());
+
+        countMap[objectIt.second] = in.size();
+    }
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
         return count.second == 0;
@@ -2213,7 +2255,13 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 
     while (rootObjeIt != countMap.end()){
         rootObjeIt->second = rootObjeIt->second - 1;
-        for (auto outListIt : rootObjeIt->first->getOutList()){
+
+        //we need outlist with unique entries
+        auto out = rootObjeIt->first->getOutList();
+        std::sort(out.begin(), out.end());
+        out.erase(std::unique(out.begin(), out.end()), out.end());
+        
+        for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
             outListMapIt->second = outListMapIt->second - 1;
         }
@@ -2541,7 +2589,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 }
 
 /// Remove an object out of the document
-void Document::remObject(const char* sName)
+void Document::removeObject(const char* sName)
 {
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
 
@@ -2555,13 +2603,12 @@ void Document::remObject(const char* sName)
         d->activeObject = 0;
 
     // Mark the object as about to be deleted
-    pos->second->setStatus(ObjectStatus::Delete, true);
+    pos->second->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pos->second->unsetupObject();
     }
 
     signalDeletedObject(*(pos->second));
-    pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
@@ -2595,6 +2642,7 @@ void Document::remObject(const char* sName)
     }
 
     // do no transactions if we do a rollback!
+    std::unique_ptr<DocumentObject> tobedestroyed;
     if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction) {
@@ -2602,8 +2650,10 @@ void Document::remObject(const char* sName)
             d->activeUndoTransaction->addObjectNew(pos->second);
         }
         else {
-            // if not saved in undo -> delete object
-            delete pos->second;
+            // if not saved in undo -> delete object later
+            std::unique_ptr<DocumentObject> delobj(pos->second);
+            tobedestroyed.swap(delobj);
+            tobedestroyed->setStatus(ObjectStatus::Destroy, true);
         }
     }
 
@@ -2613,16 +2663,15 @@ void Document::remObject(const char* sName)
             break;
         }
     }
-    // remove from adjancy list
-    //remove_vertex(_DepConMap[pos->second],_DepList);
-    //_DepConMap.erase(pos->second);
+
+    pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 }
 
 /// Remove an object out of the document (internal)
-void Document::_remObject(DocumentObject* pcObject)
+void Document::_removeObject(DocumentObject* pcObject)
 {
-    // TODO Refactoring: share code with Document::remObject() (2015-09-01, Fat-Zer)
+    // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
@@ -2631,14 +2680,13 @@ void Document::_remObject(DocumentObject* pcObject)
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
-    // Mark the object as about to be deleted
-    pcObject->setStatus(ObjectStatus::Delete, true);
+    // Mark the object as about to be removed
+    pcObject->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pcObject->unsetupObject();
     }
     signalDeletedObject(*pcObject);
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
-    pcObject->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     //remove the tip if needed
     if (Tip.getValue() == pcObject) {
@@ -2659,6 +2707,7 @@ void Document::_remObject(DocumentObject* pcObject)
     }
 
     // remove from map
+    pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
@@ -2670,6 +2719,7 @@ void Document::_remObject(DocumentObject* pcObject)
 
     // for a rollback delete the object
     if (d->rollback) {
+        pcObject->setStatus(ObjectStatus::Destroy, true);
         delete pcObject;
     }
 }
@@ -2783,14 +2833,14 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     // all object of the other document that refer to this object must be nullified
     that->breakDependency(obj, false);
     std::string objname = getUniqueObjectName(obj->getNameInDocument());
-    that->_remObject(obj);
+    that->_removeObject(obj);
     this->_addObject(obj, objname.c_str());
     obj->setDocument(this);
 
     std::map<std::string,App::Property*> props;
     obj->getPropertyMap(props);
     for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second->getTypeId() == PropertyLink::getClassTypeId()) {
+        if (it->second->getTypeId().isDerivedFrom(PropertyLink::getClassTypeId())) {
             DocumentObject* link = static_cast<PropertyLink*>(it->second)->getValue();
             if (recursive) {
                 moveObject(link, recursive);
@@ -2800,7 +2850,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
                 static_cast<PropertyLink*>(it->second)->setValue(0);
             }
         }
-        else if (it->second->getTypeId() == PropertyLinkList::getClassTypeId()) {
+        else if (it->second->getTypeId().isDerivedFrom(PropertyLinkList::getClassTypeId())) {
             std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(it->second)->getValues();
             if (recursive) {
                 for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt)

@@ -38,7 +38,7 @@ class AppExport DocumentObjectExtension : public App::Extension
 
     //The cass does not have properties itself, but it is important to provide the property access
     //functions. see cpp file for details
-    EXTENSION_PROPERTY_HEADER(App::DocumentObjectExtension );
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObjectExtension );
 
 public:
 
@@ -60,7 +60,7 @@ public:
     /// get called when object is going to be removed from the document
     virtual void onExtendedUnsetupObject();
   
-    virtual PyObject* getExtensionPyObject(void);
+    virtual PyObject* getExtensionPyObject(void) override;
     
     /// returns the type name of the ViewProviderExtension which is automatically attached 
     /// to the viewprovider object when it is initiated

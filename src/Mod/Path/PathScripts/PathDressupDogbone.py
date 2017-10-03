@@ -342,11 +342,6 @@ class Bone:
         PathLog.debug("adaptive corner=%.2f * %.2f˚ -> bone=%.2f * %.2f˚" % (distance, angle, length, boneAngle))
         return length
 
-    def edges(self):
-        if not hasattr(self, 'e'):
-            self.e = edgesForCommands(self.commands, self.inChord.Start)
-        return self.e
-
 class ObjectDressup:
 
     def __init__(self, obj, base):
@@ -405,8 +400,8 @@ class ObjectDressup:
                 PathLog.debug("Taking tangent as intersect %s" % tangent)
                 ppt = pivot + tangent
             else:
-                PathLog.debug("Taking chord start as intersect %s" % inChordStart)
-                ppt = inChord.Start
+                PathLog.debug("Taking chord start as intersect %s" % edge.Vertexes[0].Point)
+                ppt = edge.Vertexes[0].Point
             #debugMarker(ppt, "ptt.%d-%s.in" % (self.boneId, d), color, 0.2)
             PathLog.debug("        -->  (%.2f, %.2f)" % (ppt.x, ppt.y))
         return ppt
@@ -985,7 +980,7 @@ class ViewProviderDressup:
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(arg1.Object)
-        PathUtils.addObjectToJob(arg1.Object.Base, job)
+        job.Proxy.addOperation(arg1.Object.Base)
         arg1.Object.Base = None
         return True
 
@@ -996,7 +991,7 @@ def Create(base, name = 'DogboneDressup'):
     obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', 'DogboneDressup')
     dbo = ObjectDressup(obj, base)
     job = PathUtils.findParentJob(base)
-    PathUtils.addObjectToJob(obj, job)
+    job.Proxy.addOperation(obj)
 
     if FreeCAD.GuiUp:
         ViewProviderDressup(obj.ViewObject)
@@ -1004,7 +999,6 @@ def Create(base, name = 'DogboneDressup'):
 
     obj.ToolController = base.ToolController
     dbo.setup(obj, True)
-
     return obj
 
 class CommandDressupDogbone:

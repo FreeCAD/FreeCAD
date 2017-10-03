@@ -49,6 +49,7 @@ public:
 
     QByteArray loadResource(const QString& filename) const;
     QByteArray fileNotFound() const;
+    QByteArray loadFailed(const QString& error) const;
 };
 
 /** 

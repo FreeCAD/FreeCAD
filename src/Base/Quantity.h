@@ -223,6 +223,8 @@ public:
     static Quantity Watt;
     static Quantity VoltAmpere;
 
+    static Quantity Volt;
+
     static Quantity Joule;
     static Quantity NewtonMeter;
     static Quantity VoltAmpereSecond;

@@ -67,8 +67,10 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
         ShapeBinder::getFilteredReferences(&Support, obj, subs);
         //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
         if(obj) {
-            Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs).getShape());
-            Placement.setValue(obj->Placement.getValue());
+            Part::TopoShape shape = ShapeBinder::buildShapeFromReferences(obj, subs);
+            Base::Placement placement(shape.getTransform());
+            Shape.setValue(shape);
+            Placement.setValue(placement);
         }
     }
 
@@ -148,4 +150,12 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::
         return base;
     }
     return base;
+}
+
+void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    // The type of Support was App::PropertyLinkSubList in the past
+    if (prop == &Support && strcmp(TypeName, "App::PropertyLinkSubList") == 0) {
+        Support.Restore(reader);
+    }
 }

@@ -433,6 +433,36 @@ Base::Matrix4D TopoShape::getTransform(void) const
     return mtrx;
 }
 
+void TopoShape::setPlacement(const Base::Placement& rclTrf)
+{
+    const Base::Vector3d& pos = rclTrf.getPosition();
+    Base::Vector3d axis;
+    double angle;
+    rclTrf.getRotation().getValue(axis, angle);
+
+    gp_Trsf trsf;
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0.,0.,0.), gp_Dir(axis.x, axis.y, axis.z)), angle);
+    trsf.SetTranslationPart(gp_Vec(pos.x, pos.y, pos.z));
+    TopLoc_Location loc(trsf);
+    _Shape.Location(loc);
+}
+
+Base::Placement TopoShape::getPlacemet(void) const
+{
+    TopLoc_Location loc = _Shape.Location();
+    gp_Trsf trsf = loc.Transformation();
+    gp_XYZ pos = trsf.TranslationPart();
+
+    gp_XYZ axis;
+    Standard_Real angle;
+    trsf.GetRotation(axis, angle);
+
+    Base::Rotation rot(Base::Vector3d(axis.X(), axis.Y(), axis.Z()), angle);
+    Base::Placement placement(Base::Vector3d(pos.X(), pos.Y(), pos.Z()), rot);
+
+    return placement;
+}
+
 void TopoShape::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
@@ -2089,10 +2119,12 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 
                                  Standard_Boolean isSolid,
                                  Standard_Boolean isRuled,
-                                 Standard_Boolean isClosed) const
+                                 Standard_Boolean isClosed,
+                                 Standard_Integer maxDegree) const
 {
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator (isSolid,isRuled);
+    aGenerator.SetMaxDegree(maxDegree);
 
     TopTools_ListIteratorOfListOfShape it;
     int countShapes = 0;
@@ -2114,7 +2146,8 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     }
 
     if (countShapes < 2) {
-        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face"); }
+        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
+    }
     else {
         // close loft by duplicating initial profile as last profile.  not perfect. 
         if (isClosed) {
@@ -2123,8 +2156,9 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
             - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
-            if (profiles.Last().ShapeType() == TopAbs_VERTEX)  {
-                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n"); }
+            if (profiles.Last().ShapeType() == TopAbs_VERTEX) {
+                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
+            }
             else {
                 // repeat Add logic above for first profile
                 const TopoDS_Shape& firstProfile = profiles.First();
@@ -2133,12 +2167,12 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
                     countShapes++;
                 }
                 else if (firstProfile.ShapeType() == TopAbs_EDGE)  {
-                 aGenerator.AddWire(TopoDS::Wire (firstProfile));
-                 countShapes++;
+                    aGenerator.AddWire(TopoDS::Wire (firstProfile));
+                    countShapes++;
                 }
                 else if (firstProfile.ShapeType() == TopAbs_WIRE)  {
-                 aGenerator.AddWire(TopoDS::Wire (firstProfile));
-                 countShapes++;
+                    aGenerator.AddWire(TopoDS::Wire (firstProfile));
+                    countShapes++;
                 }
             }     
         }
@@ -2149,7 +2183,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     aGenerator.Build();
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
-    
+
     //Base::Console().Message("DEBUG: TopoShape::makeLoft returns.\n");
     return aGenerator.Shape();
 }
@@ -3090,8 +3124,6 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     aSewingTool.Load(aComp);
     aSewingTool.Perform();
     _Shape = aSewingTool.SewedShape();
-    // TopAbs_Orientation o = _Shape.Orientation();
-    _Shape.Reverse(); // seems that we have to reverse the orientation
     if (_Shape.IsNull())
         _Shape = aComp;
 }

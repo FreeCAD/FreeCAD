@@ -42,8 +42,11 @@ class QInputEvent;
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
+class QuarterWidget;
+
 class QUARTER_DLL_API InputDevice {
 public:
+  InputDevice(QuarterWidget * quarter);
   InputDevice(void);
   virtual ~InputDevice() {}
 
@@ -60,6 +63,7 @@ public:
 protected:
   SbVec2s mousepos;
   SbVec2s windowsize;
+  QuarterWidget* quarter;
 };
 
 }}} // namespace

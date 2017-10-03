@@ -154,10 +154,20 @@ QPainterPath QGIArrow::makeOpenDot(double length, double width, bool flipped)
 int QGIArrow::getPrefArrowStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     int style = hGrp->GetInt("ArrowStyle", 0);
     return style;
 }
+
+double QGIArrow::getPrefArrowSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double style = hGrp->GetFloat("ArrowSize", 5.0);
+    return style;
+}
+
+
 
 void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

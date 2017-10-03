@@ -39,7 +39,7 @@ public:
     virtual ~ViewProviderShapeBinder();
 
     void setupContextMenu(QMenu*, QObject*, const char*);
-    void highlightReferences(const bool on, bool auxillery);    
+    void highlightReferences(const bool on, bool auxiliary);
     
 protected:
     virtual bool setEdit(int ModNum);

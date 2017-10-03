@@ -39,6 +39,7 @@
 #include <App/Part.h>
 #include <Base/Tools.h>
 #include <Base/Reader.h>
+#include <Base/Console.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -280,6 +281,15 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
     catch (const Base::Exception& e) {
         e.ReportException();
     }
+    catch (Py::Exception& e) {
+        // reported by code analyzers
+        e.clear();
+        Base::Console().Warning("Unexpected PyCXX exception\n");
+    }
+    catch (const boost::exception&) {
+        // reported by code analyzers
+        Base::Console().Warning("Unexpected boost exception\n");
+    }
 
     return result;
 }
@@ -310,10 +320,10 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             //independent copies don't have links and are not attached
             if(independent && (
-                prop->getTypeId() == App::PropertyLink::getClassTypeId() ||
-                prop->getTypeId() == App::PropertyLinkList::getClassTypeId() ||
-                prop->getTypeId() == App::PropertyLinkSub::getClassTypeId() ||
-                prop->getTypeId() == App::PropertyLinkSubList::getClassTypeId()||
+                prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()) ||
+                prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()) ||
+                prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()) ||
+                prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())||
                 ( prop->getGroup() && strcmp(prop->getGroup(),"Attachment")==0) ))    {
 
                 ++it;

@@ -37,9 +37,14 @@ import PathScripts.PathLog as PathLog
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 NotValidBaseTypeIds = ['Sketcher::SketchObject']
-def isValidBaseObject(obj):
-    '''isSolid(obj) ... returns true if an object represents a solid.'''
 
+def isValidBaseObject(obj):
+    '''isValidBaseObject(obj) ... returns true if the object can be used as a base for a job.'''
+    if hasattr(obj, 'getParentGeoFeatureGroup') and obj.getParentGeoFeatureGroup():
+        # Can't link to anything inside a geo feature group anymore
+        return False
+    if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
+        return obj.Group and any(hasattr(o, 'Shape') for o in obj.Group)
     if not hasattr(obj, 'Shape'):
         return False
     if obj.TypeId in NotValidBaseTypeIds:
@@ -48,9 +53,37 @@ def isValidBaseObject(obj):
         return False
     return True
 
+def isSolid(obj):
+    '''isSolid(obj) ... return True if the object is a valid solid.'''
+    if hasattr(obj, 'Tip'):
+        return isSolid(obj.Tip)
+    if hasattr(obj, 'Shape'):
+        if obj.Shape.ShapeType == 'Solid' and obj.Shape.isClosed():
+            return True
+        if obj.Shape.ShapeType == 'Compound':
+            if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
+                return isSolid(obj.Base) and isSolid(obj.Tool)
+    if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
+        if not obj.Group or any(hasattr(o, 'Shape') and not isSolid(o) for o in obj.Group):
+            return False
+        return True
+    return False
+
 def toolControllerForOp(op):
+    '''toolControllerForOp(op) ... return the tool controller used by the op.
+    If the op doesn't have its own tool controller but has a Base object, return its tool controller.
+    Otherwise return None.'''
     if hasattr(op, 'ToolController'):
         return op.ToolController
     if hasattr(op, 'Base'):
         return toolControllerForOp(op.Base)
     return None
+
+def getPublicObject(obj):
+    '''getPublicObject(obj) ... returns the object which should be used to reference a feature of the given object.'''
+    if hasattr(obj, 'getParentGeoFeatureGroup'):
+        body = obj.getParentGeoFeatureGroup()
+        if body:
+            return getPublicObject(body)
+    return obj
+

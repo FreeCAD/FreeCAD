@@ -37,7 +37,10 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string DocumentObjectPy::representation(void) const
 {
-    return std::string("<Document object>");
+    DocumentObject* object = this->getDocumentObjectPtr();
+    std::stringstream str;
+    str << "<" << object->getTypeId().getName() << " object>";
+    return str.str();
 }
 
 Py::String DocumentObjectPy::getName(void) const
@@ -186,7 +189,12 @@ Py::Object DocumentObjectPy::getViewObject(void) const
         arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
         Py::Object doc = method.apply(arg);
         method = doc.getAttr("getObject");
-        arg.setItem(0, Py::String(getDocumentObjectPtr()->getNameInDocument()));
+        const char* internalName = getDocumentObjectPtr()->getNameInDocument();
+        if (!internalName) {
+            throw Py::RuntimeError("Object has been removed from document");
+        }
+
+        arg.setItem(0, Py::String(internalName));
         Py::Object obj = method.apply(arg);
         return obj;
     }

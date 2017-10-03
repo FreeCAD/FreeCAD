@@ -1290,10 +1290,10 @@ void View3DInventorViewer::clearGraphicsItems()
     this->graphicsItems.clear();
 }
 
-int View3DInventorViewer::getNumSamples() const
+int View3DInventorViewer::getNumSamples()
 {
     int samples = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing");
+        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing", 0);
 
     switch (samples) {
     case View3DInventorViewer::MSAA2x:

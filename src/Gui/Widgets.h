@@ -298,14 +298,15 @@ public Q_SLOTS:
     void setValue(const QVariant&);
 
 protected:
-    virtual void showValue(const QVariant&) = 0;
+    virtual void showValue(const QVariant& data);
     void resizeEvent(QResizeEvent*);
 
 protected Q_SLOTS:
-    virtual void browse() = 0;
+    virtual void browse();
 
 Q_SIGNALS:
     void valueChanged(const QVariant &);
+    void buttonClicked();
 
 private:
     QLabel *label;
@@ -435,6 +436,9 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void changeText();
+
+protected:
+    void resizeEvent(QResizeEvent*);
 
 private:
     InputType type;

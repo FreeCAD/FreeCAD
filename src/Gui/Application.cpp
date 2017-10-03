@@ -649,6 +649,7 @@ void Application::createStandardOperations()
     Gui::CreateMacroCommands();
     Gui::CreateViewStdCommands();
     Gui::CreateWindowStdCommands();
+    Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
 }
 
@@ -773,7 +774,11 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
+        catch (const Py::Exception&) {
+            Base::PyException e;
             e.ReportException();
         }
     }

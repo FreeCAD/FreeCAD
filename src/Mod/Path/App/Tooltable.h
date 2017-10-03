@@ -92,6 +92,8 @@ namespace Path
         double CuttingEdgeAngle;
         double CuttingEdgeHeight;
         
+        static const char* TypeName(ToolType typ);
+        static const char* MaterialName(ToolMaterial mat);
     };
     
     /** The representation of a table of tools */

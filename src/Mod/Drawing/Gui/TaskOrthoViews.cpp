@@ -184,7 +184,7 @@ void orthoview::set_data(int r_x, int r_y)
 
 void orthoview::deleteme()
 {
-    parent_doc->remObject(myname.c_str());
+    parent_doc->removeObject(myname.c_str());
 }
 
 void orthoview::setPos(float px, float py)

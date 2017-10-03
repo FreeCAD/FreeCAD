@@ -187,7 +187,8 @@ public:
     const char ** getEnums(void) const;
     //@}
 
-    virtual const char * getEditorName(void) const { return "Gui::PropertyEditor::PropertyEnumItem"; }
+    const char* getEditorName(void) const { return _editorTypeName.c_str(); }
+    void setEditorName(const char* name) { _editorTypeName = name; } 
     
     virtual PyObject * getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -203,6 +204,7 @@ public:
 
 private:
     Enumeration _enum;
+    std::string _editorTypeName;
 };
 
 /** Constraint integer properties

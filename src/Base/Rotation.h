@@ -82,8 +82,26 @@ public:
     bool isSame(const Rotation&) const;
     //@}
 
+    /** Specialty constructors */
     static Rotation slerp(const Rotation & rot0, const Rotation & rot1, double t);
     static Rotation identity(void);
+
+    /**
+     * @brief makeRotationByAxes(xdir, ydir, zdir, priorityOrder): creates a rotation
+     * that converts a vector in local cs with axes given as arguments, into a
+     * vector in global cs.
+     * @param xdir is wanted direction of local X axis
+     * @param ydir ...
+     * @param zdir
+     * @param priorityOrder sets which directions are followed. It is a string
+     * like "ZXY". This means, Z direction is followed precisely; X direction is
+     * corrected to be perpendicular to Z direction, and used; Y direction
+     * argument is ignored altogether (Y direction is generated from Z and X).
+     *
+     * If only one vector provided is nonzero, the other two directions are picked automatically.
+     */
+    static Rotation makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder = "ZXY");
+
 
 private:
     void normalize();

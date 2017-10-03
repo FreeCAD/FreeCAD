@@ -67,12 +67,30 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
     PyObject *cor = 0;
     PyObject *ang = 0;
     PyObject *hei = 0;
+    int version = 1;
 
-    static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" ,NULL};
+    static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" , "version", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|sssOOOOOO", kwlist,
-                                     &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei ))
+    PyObject *dict = 0;
+    if (!kwd && (PyObject_TypeCheck(args, &PyDict_Type) || PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict))) {
+        static PyObject *arg = PyTuple_New(0);
+        if (PyObject_TypeCheck(args, &PyDict_Type)) {
+          dict = args;
+        }
+        if (!PyArg_ParseTupleAndKeywords(arg, dict, "|sssOOOOOOi", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei, &version)) {
+            return -1;
+        }
+    } else {
+        PyErr_Clear();
+        if (!PyArg_ParseTupleAndKeywords(args, kwd, "|sssOOOOOO", kwlist, &name, &type, &mat, &dia, &len, &fla, &cor, &ang, &hei)) {
+            return -1;
+        }
+    }
+
+    if (1 != version) {
+        PyErr_SetString(PyExc_TypeError, "Unsupported Tool template version");
         return -1;
+    }
 
     getToolPtr()->Name = name;
     std::string typeStr(type);
@@ -146,32 +164,7 @@ void ToolPy::setName(Py::String arg)
 
 Py::String ToolPy::getToolType(void) const
 {
-    if(getToolPtr()->Type == Tool::DRILL)
-        return Py::String("Drill");
-    else if(getToolPtr()->Type == Tool::CENTERDRILL)
-        return Py::String("CenterDrill");
-    else if(getToolPtr()->Type == Tool::COUNTERSINK)
-        return Py::String("CounterSink");
-    else if(getToolPtr()->Type == Tool::COUNTERBORE)
-        return Py::String("CounterBore");
-    else if(getToolPtr()->Type == Tool::REAMER)
-        return Py::String("Reamer");
-    else if(getToolPtr()->Type == Tool::TAP)
-        return Py::String("Tap");
-    else if(getToolPtr()->Type == Tool::ENDMILL)
-        return Py::String("EndMill");
-    else if(getToolPtr()->Type == Tool::SLOTCUTTER)
-        return Py::String("SlotCutter");
-    else if(getToolPtr()->Type == Tool::BALLENDMILL)
-        return Py::String("BallEndMill");
-    else if(getToolPtr()->Type == Tool::CHAMFERMILL)
-        return Py::String("ChamferMill");
-    else if(getToolPtr()->Type == Tool::CORNERROUND)
-        return Py::String("CornerRound");
-    else if(getToolPtr()->Type == Tool::ENGRAVER)
-        return Py::String("Engraver");
-    else
-        return Py::String("Undefined");
+  return Py::String(Tool::TypeName(getToolPtr()->Type));
 }
 
 void ToolPy::setToolType(Py::String arg)
@@ -208,22 +201,7 @@ void ToolPy::setToolType(Py::String arg)
 
 Py::String ToolPy::getMaterial(void) const
 {
-    if(getToolPtr()->Material == Tool::HIGHSPEEDSTEEL)
-        return Py::String("HighSpeedSteel");
-    else if(getToolPtr()->Material == Tool::CARBIDE)
-        return Py::String("Carbide");
-    else if(getToolPtr()->Material == Tool::HIGHCARBONTOOLSTEEL)
-        return Py::String("HighCarbonToolSteel");
-    else if(getToolPtr()->Material == Tool::CASTALLOY)
-        return Py::String("CastAlloy");
-    else if(getToolPtr()->Material == Tool::CERAMICS)
-        return Py::String("Ceramics");
-    else if(getToolPtr()->Material == Tool::DIAMOND)
-        return Py::String("Diamond");
-    else if(getToolPtr()->Material == Tool::SIALON)
-        return Py::String("Sialon");
-    else
-        return Py::String("Undefined");
+  return Py::String(Tool::MaterialName(getToolPtr()->Material));
 }
 
 void ToolPy::setMaterial(Py::String arg)
@@ -328,7 +306,7 @@ PyObject* ToolPy::copy(PyObject * args)
 }
 
 
-PyObject* ToolPy::fromTemplate(PyObject * args)
+PyObject* ToolPy::setFromTemplate(PyObject * args)
 {
     char *pstr = 0;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
@@ -340,10 +318,46 @@ PyObject* ToolPy::fromTemplate(PyObject * args)
         getToolPtr()->Restore(reader);
         Py_Return ;
     }
-    PyErr_SetString(PyExc_TypeError, "argument must be a string");
+
+    PyErr_Clear();
+    if (!PyInit(args, 0)) {
+        Py_Return ;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "argument must be a string or dictionary");
     return 0;
 }
 
+#if PY_MAJOR_VERSION >= 3
+#  define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
+#  define PYINT_TYPE                PyLong_Type
+#  define PYINT_FROMLONG(l)         PyLong_FromLong(l)
+#  define PYINT_ASLONG(o)           PyLong_AsLong(o)
+#else
+#  define PYSTRING_FROMSTRING(str)  PyString_FromString(str)
+#  define PYINT_TYPE                PyInt_Type
+#  define PYINT_FROMLONG(l)         PyInt_FromLong(l)
+#  define PYINT_ASLONG(o)           PyInt_AsLong(o)
+#endif
+
+PyObject* ToolPy::templateAttrs(PyObject * args)
+{
+    if (!args || PyArg_ParseTuple(args, "")) {
+        PyObject *dict = PyDict_New();
+        PyDict_SetItemString(dict, "version", PYINT_FROMLONG(1));
+        PyDict_SetItemString(dict, "name", PYSTRING_FROMSTRING(getToolPtr()->Name.c_str()));
+        PyDict_SetItemString(dict, "tooltype",PYSTRING_FROMSTRING(Tool::TypeName(getToolPtr()->Type)));
+        PyDict_SetItemString(dict, "material", PYSTRING_FROMSTRING(Tool::MaterialName(getToolPtr()->Material)));
+        PyDict_SetItemString(dict, "diameter", PyFloat_FromDouble(getToolPtr()->Diameter));
+        PyDict_SetItemString(dict, "lengthOffset", PyFloat_FromDouble(getToolPtr()->LengthOffset));
+        PyDict_SetItemString(dict, "flatRadius",  PyFloat_FromDouble(getToolPtr()->FlatRadius));
+        PyDict_SetItemString(dict, "cornerRadius", PyFloat_FromDouble(getToolPtr()->CornerRadius));
+        PyDict_SetItemString(dict, "cuttingEdgeAngle", PyFloat_FromDouble(getToolPtr()->CuttingEdgeAngle));
+        PyDict_SetItemString(dict, "cuttingEdgeHeight", PyFloat_FromDouble(getToolPtr()->CuttingEdgeHeight));
+        return dict;
+    }
+    throw Py::Exception("This method accepts no argument");
+}
 
 // TooltablePy
 
@@ -375,24 +389,12 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyObject *pcObj;
     if (PyArg_ParseTuple(args, "O!", &(PyDict_Type), &pcObj)) {
-        PyObject *key, *value;
-        Py_ssize_t pos = 0;
-        while (PyDict_Next(pcObj, &pos, &key, &value)) {
-#if PY_MAJOR_VERSION >= 3
-            if ( !PyObject_TypeCheck(key,&(PyLong_Type)) || !PyObject_TypeCheck(value,&(Path::ToolPy::Type)) ) {
-#else
-            if ( !PyObject_TypeCheck(key,&(PyInt_Type)) || !PyObject_TypeCheck(value,&(Path::ToolPy::Type)) ) {
-#endif
-                PyErr_SetString(PyExc_TypeError, "The dictionary can only contain int:tool pairs");
-                return -1;
-            }
-#if PY_MAJOR_VERSION >= 3
-            int ckey = (int)PyLong_AsLong(key);
-#else
-            int ckey = (int)PyInt_AsLong(key);
-#endif
-            Path::Tool &tool = *static_cast<Path::ToolPy*>(value)->getToolPtr();
-            getTooltablePtr()->setTool(tool,ckey);
+        try {
+            Py::Dict dict(pcObj);
+            setTools(dict);
+        } catch(...) {
+            PyErr_SetString(PyExc_TypeError, "The dictionary can only contain int:tool pairs");
+            return -1;
         }
         return 0;
     }
@@ -420,11 +422,7 @@ Py::Dict TooltablePy::getTools(void) const
     PyObject *dict = PyDict_New();
     for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
         PyObject *tool = new Path::ToolPy(i->second);
-#if PY_MAJOR_VERSION >= 3
-        PyDict_SetItem(dict,PyLong_FromLong(i->first),tool);
-#else
-        PyDict_SetItem(dict,PyInt_FromLong(i->first),tool);
-#endif
+        PyDict_SetItem(dict,PYINT_FROMLONG(i->first),tool);
     }
     return Py::Dict(dict);
 }
@@ -436,15 +434,21 @@ void TooltablePy::setTools(Py::Dict arg)
     PyObject *key, *value;
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
-#if PY_MAJOR_VERSION >= 3
-        if ( PyObject_TypeCheck(key,&(PyLong_Type)) && (PyObject_TypeCheck(value,&(Path::ToolPy::Type))) ) {
-            int ckey = (int)PyLong_AsLong(key);
-#else
-        if ( PyObject_TypeCheck(key,&(PyInt_Type)) && (PyObject_TypeCheck(value,&(Path::ToolPy::Type))) ) {
-            int ckey = (int)PyInt_AsLong(key);
-#endif
-            Path::Tool &tool = *static_cast<Path::ToolPy*>(value)->getToolPtr();
-            getTooltablePtr()->setTool(tool,ckey);
+        if ( PyObject_TypeCheck(key,&(PYINT_TYPE)) && ((PyObject_TypeCheck(value, &(Path::ToolPy::Type))) || PyObject_TypeCheck(value, &PyDict_Type))) {
+            int ckey = (int)PYINT_ASLONG(key);
+            if (PyObject_TypeCheck(value, &(Path::ToolPy::Type))) {
+              Path::Tool &tool = *static_cast<Path::ToolPy*>(value)->getToolPtr();
+              getTooltablePtr()->setTool(tool, ckey);
+            } else {
+              PyErr_Clear();
+              Path::Tool *tool = new Path::Tool;
+              Path::ToolPy pyTool(tool);
+              if (!pyTool.setFromTemplate(value)) {
+                PyErr_Print();
+                throw Py::Exception("something went wrong");
+              }
+              getTooltablePtr()->setTool(*tool, ckey);
+            }
         } else {
             throw Py::Exception("The dictionary can only contain int:tool pairs");
         }
@@ -544,3 +548,27 @@ int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 }
 
 
+PyObject* TooltablePy::setFromTemplate(PyObject * args)
+{
+    PyObject *dict = 0;
+    if (PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
+      Py::Dict d(dict);
+      setTools(d);
+      Py_Return ;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "argument must be a dictionary returned from templateAttrs()");
+    return 0;
+}
+
+PyObject* TooltablePy::templateAttrs(PyObject * args)
+{
+    (void)args;
+    PyObject *dict = PyDict_New();
+    for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
+        Path::ToolPy tool(new Path::Tool(*i->second));
+        PyObject *attrs = tool.templateAttrs(0);
+        PyDict_SetItem(dict, PYINT_FROMLONG(i->first), attrs);
+    }
+    return dict;
+}

@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 import FreeCAD
-from FemCommands import FemCommands
+from .FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
 
@@ -50,7 +50,7 @@ class _CommandFemMeshBoundaryLayer(FemCommands):
         if (len(sel) == 1):
             sobj = sel[0]
             if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(App.ActiveDocument." + sobj.Name + ")")
+                FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + sobj.Name + ")")
 
         FreeCADGui.Selection.clearSelection()
 

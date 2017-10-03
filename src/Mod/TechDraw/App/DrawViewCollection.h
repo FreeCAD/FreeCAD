@@ -39,7 +39,6 @@ class TechDrawExport DrawViewCollection : public DrawView
     PROPERTY_HEADER(TechDraw::DrawViewCollection);
 
 public:
-    App::PropertyLink     Source;
     App::PropertyLinkList Views;
 public:
     /// Constructor
@@ -50,7 +49,7 @@ public:
     int addView(DrawView *view);
     int removeView(DrawView *view);
     void rebuildViewList(void);
-    bool isDeleting(void) { return nowDeleting; }
+    bool isUnsetting(void) { return nowUnsetting; }
 
     int countChildren();
 
@@ -66,7 +65,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-    bool nowDeleting;
+    bool nowUnsetting;
 };
 
 } //namespace TechDraw

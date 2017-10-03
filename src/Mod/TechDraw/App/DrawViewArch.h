@@ -42,7 +42,7 @@ public:
     DrawViewArch(void);
     virtual ~DrawViewArch();
 
-    App::PropertyLink         Source;
+    App::PropertyLinkGlobal   Source;
     App::PropertyBool         AllOn;
     App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
     App::PropertyBool         ShowHidden;

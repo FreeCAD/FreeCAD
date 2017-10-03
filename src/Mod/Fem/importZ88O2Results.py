@@ -86,7 +86,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
             mesh_file = filename.replace('o2', 'i1')
             mesh_data = importZ88Mesh.read_z88_mesh(mesh_file)
             femmesh = importToolsFem.make_femmesh(mesh_data)
-            result_mesh_object = ObjectsFem.makeMeshResult('Result_mesh')
+            result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
             result_mesh_object.FemMesh = femmesh
         else:
             FreeCAD.Console.PrintError('Z88 mesh file z88i1.txt not found!')
@@ -95,7 +95,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
         for result_set in disp_read['Results']:
             results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(results_name)
+            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
             results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
             if analysis:

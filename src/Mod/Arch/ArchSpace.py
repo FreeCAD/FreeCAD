@@ -258,8 +258,8 @@ class _Space(ArchComponent.Component):
         obj.addProperty("App::PropertyLink",       "Zone",          "Arch",QT_TRANSLATE_NOOP("App::Property","A zone this space is part of"))
         obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Arch",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"))
         obj.addProperty("App::PropertyFloat",      "LightingPower", "Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed to light this space in Watts"))
-        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipments of this space in Watts"))
-        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipments included in this space"))
+        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipment of this space in Watts"))
+        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipment included in this space"))
         obj.addProperty("App::PropertyEnumeration","Conditioning",  "Arch",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
         self.Type = "Space"
         obj.SpaceType = SpaceTypes
