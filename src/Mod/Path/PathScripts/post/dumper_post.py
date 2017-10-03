@@ -40,7 +40,7 @@ if open.__module__ == '__builtin__':
 
 
 def export(objectslist, filename,argstring):
-    output = '''(This ouput produced with the dump post processor)
+    output = '''(This output produced with the dump post processor)
 (Dump is useful for inspecting the raw commands in your paths)
 (but is not useful for driving machines.)
 (Consider setting a default postprocessor in your project or )

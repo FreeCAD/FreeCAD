@@ -1194,7 +1194,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
     }
 
 #   ifdef FC_DEBUG
-        // printing some informations
+        // printing some information
         Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   endif

@@ -49,7 +49,7 @@ public:
     App::PropertyFloatConstraint Scale;
     App::PropertyEnumeration ProjectionType; // First or Third Angle
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

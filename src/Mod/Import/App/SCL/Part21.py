@@ -37,7 +37,7 @@ import time
 INSTANCE_DEFINITION_RE = re.compile("#(\d+)[^\S\n]?=[^\S\n]?(.*?)\((.*)\)[^\S\n]?;[\\r]?$")
 
 def map_string_to_num(stri):
-    """ Take a string, check wether it is an integer, a float or not
+    """ Take a string, check whether it is an integer, a float or not
     """
     if ('.' in stri) or ('E' in stri): #it's definitely a float
         return REAL(stri)

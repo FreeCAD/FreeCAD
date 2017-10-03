@@ -369,7 +369,7 @@ public:
     /**
      * @brief getValue emulates the action of a single-object link.
      * @return reference to object, if the link is to only one object. NULL if
-     * the link is empty, or links to subelements of more than one documant
+     * the link is empty, or links to subelements of more than one document
      * object.
      */
     DocumentObject* getValue() const;

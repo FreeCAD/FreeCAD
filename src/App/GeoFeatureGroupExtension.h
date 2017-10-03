@@ -36,7 +36,7 @@ namespace App
 /**
  * @brief The base class for placeable group of DocumentObjects. It represents a local coordnate system
  * 
- * This class is the FreeCAD way of representing local coordinate systems. It groups its childs beneath 
+ * This class is the FreeCAD way of representing local coordinate systems. It groups its children beneath 
  * it and transforms them all with the GeoFeatureGroup placement. A few important properties:
  * - Every child that belongs to the CS must be in the Group property. Even if a sketch is part of a pad,
  *   it must be in the Group property of the same GeoFeatureGroup as pad. This also holds for normal 

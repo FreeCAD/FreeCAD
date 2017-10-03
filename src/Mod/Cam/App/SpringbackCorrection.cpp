@@ -1973,8 +1973,8 @@ bool SpringbackCorrection::GetCurvature(TopoDS_Face aFace)
 }
 
 
-// 1. Computes the curvature of the mesh at the verticies
-// 2. Stores the minimum curvatures along the neighbours for all verticies in a vector
+// 1. Computes the curvature of the mesh at the vertices
+// 2. Stores the minimum curvatures along the neighbours for all vertices in a vector
 std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace, const MeshCore::MeshKernel& mesh)
 {
 
