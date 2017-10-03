@@ -115,7 +115,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default values in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
-      <string>Defaults</string>
+      <string>Settings</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

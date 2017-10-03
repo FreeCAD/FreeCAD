@@ -47,17 +47,20 @@ def translate(context, text, disambig=None):
 
 class ToolControllerTemplate:
     '''Attribute and sub element strings for template export/import.'''
-    Name         = 'name'
-    Label        = 'label'
-    ToolNumber   = 'nr'
-    VertFeed     = 'vfeed'
+    Expressions  = 'xengine'
+    ExprExpr     = 'expr'
+    ExprProp     = 'prop'
     HorizFeed    = 'hfeed'
-    VertRapid    = 'vrapid'
     HorizRapid   = 'hrapid'
-    SpindleSpeed = 'speed'
+    Label        = 'label'
+    Name         = 'name'
     SpindleDir   = 'dir'
+    SpindleSpeed = 'speed'
+    ToolNumber   = 'nr'
     Tool         = 'tool'
     Version      = 'version'
+    VertFeed     = 'vfeed'
+    VertRapid    = 'vrapid'
 
 class ToolController:
     def __init__(self, obj, tool=1):
@@ -100,6 +103,9 @@ class ToolController:
                 obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
             if template.get(ToolControllerTemplate.Tool):
                 obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
+            if template.get(ToolControllerTemplate.Expressions):
+                for exprDef in template.get(ToolControllerTemplate.Expressions):
+                    obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
         else:
             PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
 
@@ -117,6 +123,13 @@ class ToolController:
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir]   = obj.SpindleDir
         attrs[ToolControllerTemplate.Tool]         = obj.Tool.templateAttrs()
+        expressions = []
+        for expr in obj.ExpressionEngine:
+            PathLog.info('%s: %s' % (expr[0], expr[1]))
+            expressions.append({ToolControllerTemplate.ExprProp: expr[0], ToolControllerTemplate.ExprExpr: expr[1]})
+        if expressions:
+            PathLog.info('add expressions')
+            attrs[ToolControllerTemplate.Expressions] = expressions
         return attrs
 
     def execute(self, obj):
