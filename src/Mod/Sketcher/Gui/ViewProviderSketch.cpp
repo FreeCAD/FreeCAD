@@ -1934,6 +1934,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     int VertexId = -1; // the loop below should be in sync with the main loop in ViewProviderSketch::draw
                        // so that the vertex indices are calculated correctly
     int GeoId = 0;
+
     bool touchMode = false;
     //check if selection goes from the right to the left side (for touch-selection where even partially boxed objects get selected)
     if(corners[0].getValue()[0] > corners[1].getValue()[0])
@@ -1982,6 +1983,12 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             //in touchMode it's enough if one of the points is inside, in normal mode both have to be inside
             if ( (pnt1Inside && pnt2Inside) || (touchMode && (pnt1Inside || pnt2Inside) )) {
+                std::stringstream ss;
+                ss << "Edge" << GeoId + 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            } else
+            //check if line intersects with (boundbox of) polygon
+            if(touchMode && polygon.CalcBoundBox().Intersect(Base::Line2d(Base::Vector2d(pnt1.x, pnt1.y), Base::Vector2d(pnt2.x, pnt2.y))) ){
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
