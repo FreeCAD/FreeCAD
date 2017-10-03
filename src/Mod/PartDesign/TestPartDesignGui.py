@@ -85,7 +85,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("SketchGuiTest")
 
     def testRefuseToMoveSingleFeature(self):
-        FreeCAD.Console.PrintMessage('Testing refuse to move the feature with dependecies from one body to another\n')
+        FreeCAD.Console.PrintMessage('Testing refuse to move the feature with dependencies from one body to another\n')
         self.BodySource = self.Doc.addObject('PartDesign::Body','Body')
         Gui.activeView().setActiveObject('pdbody', self.BodySource)
 

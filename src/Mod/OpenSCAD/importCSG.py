@@ -219,8 +219,8 @@ def p_anymodifier(p):
                    | MODIFIERDISABLE
     '''
     #just return the plain modifier for now
-    #has to be changed when the modifiers are inplemented
-    #please note that disabled objects usually are stript of the CSG ouput during compilation
+    #has to be changed when the modifiers are implemented
+    #please note that disabled objects usually are stripped of the CSG output during compilation
     p[0] = p[1]
 
 def p_statementwithmod(p):

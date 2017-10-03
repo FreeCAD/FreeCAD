@@ -450,7 +450,7 @@ QuarterWidget::clearWindow(void) const
 /*!
   Enable/disable interaction mode.
 
-  Specifies wether you may use the alt-key to enter interaction mode.
+  Specifies whether you may use the alt-key to enter interaction mode.
 */
 void
 QuarterWidget::setInteractionModeEnabled(bool onoff)

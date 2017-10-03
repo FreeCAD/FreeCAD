@@ -183,7 +183,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
   s1 = MeshAlgos::createGTSSurface(pMesh1);
   s2 = MeshAlgos::createGTSSurface(pMesh2);
 
-  // clear the mesh (mermory)
+  // clear the mesh (memory)
   //Mesh1.clear();
   //Mesh2.clear();
 

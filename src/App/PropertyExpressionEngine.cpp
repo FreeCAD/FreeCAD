@@ -731,7 +731,7 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
     // Get document object
     DocumentObject * pathDocObj = usePath.getDocumentObject();
 
-    // Check for document object dependecies
+    // Check for document object dependencies
     for (std::set<App::ObjectIdentifier>::const_iterator j = exprDeps.begin(); j != exprDeps.end(); ++j) {
         DocumentObject * docObj = (*j).getDocumentObject();
 

@@ -15,7 +15,7 @@ CONFIG += debug_and_release
 macx {
         # Using gcc
         QMAKESPEC=macx-g++
-        # uncoment this line if you want use xcode
+        # uncomment this line if you want use xcode
         # QMAKESPEC=macx-xcode
 }
 

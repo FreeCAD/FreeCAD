@@ -33,7 +33,7 @@ namespace Base
 
 
 /** A test class. A more elaborate class description.
- * Detaild description with some formating:
+ * Detailed description with some formatting:
  *  \par
  *  bla blablablablablablabl:
  *  \code

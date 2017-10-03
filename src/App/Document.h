@@ -163,7 +163,7 @@ public:
     std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);
     /// Opens the document from its file name
     //void open (void);
-    /// Is the document already saved to a file
+    /// Is the document already saved to a file?
     bool isSaved() const;
     /// Get the document name
     const char* getName() const;
@@ -172,20 +172,20 @@ public:
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
 
-    /// returns the complet document mermory consumption, including all managed DocObjects and Undo Redo.
+    /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
     unsigned int getMemSize (void) const;
 
     /** @name Object handling  */
     //@{
     /** Add a feature of sType with sName (ASCII) to this document and set it active.
-     * Unicode names are set through the Label propery.
+     * Unicode names are set through the Label property.
      * @param sType       the type of created object
-     * @param pObjectName if nonNULL use that name otherwise generate a new uniq name based on the \a sType
+     * @param pObjectName if nonNULL use that name otherwise generate a new unique name based on the \a sType
      * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
      */
     DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
     /** Add an array of features of the given types and names.
-     * Unicode names are set through the Label propery.
+     * Unicode names are set through the Label property.
      * @param sType       The type of created object
      * @param objectNames A list of object names
      * @param isNew       If false don't call the \c DocumentObject::setupObject() callback (default is true)
@@ -198,7 +198,7 @@ public:
      * This is an overloaded function of the function above and can be used to create
      * a feature outside and add it to the document afterwards.
      * \note The passed feature must not yet be added to a document, otherwise an exception
-     * is raisedd.
+     * is raised.
      */
     void addObject(DocumentObject*, const char* pObjectName=0);
     
@@ -244,7 +244,7 @@ public:
     /** @name methods for modification and state handling
      */
     //@{
-    /// Remove all modifications. After this call The document becomes again Valid.
+    /// Remove all modifications. After this call The document becomes Valid again.
     void purgeTouched();
     /// check if there is any touched object in this document
     bool isTouched(void) const;
@@ -260,7 +260,7 @@ public:
     void recomputeFeature(DocumentObject* Feat);
     /// get the error log from the recompute run
     const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
-    /// get the text of the error of a spezified object
+    /// get the text of the error of a specified object
     const char* getErrorDescription(const App::DocumentObject*) const;
     /// return the status bits
     bool testStatus(Status pos) const;
@@ -281,7 +281,7 @@ public:
     void openTransaction(const char* name=0);
     // Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
-    /// Abort the  actually running transaction.
+    /// Abort the actually running transaction.
     void abortTransaction();
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
@@ -295,17 +295,17 @@ public:
     unsigned int getMaxUndoStackSize(void)const;
     /// Remove all stored Undos and Redos
     void clearUndos();
-    /// Returns the  number  of stored Undos. If greater than 0 Undo will be effective.
+    /// Returns the number of stored Undos. If greater than 0 Undo will be effective.
     int getAvailableUndos() const;
     /// Returns a list of the Undo names
     std::vector<std::string> getAvailableUndoNames() const;
-    /// Will UNDO  one step, returns  False if no undo was done (Undos == 0).
+    /// Will UNDO one step, returns False if no undo was done (Undos == 0).
     bool undo();
     /// Returns the number of stored Redos. If greater than 0 Redo will be effective.
     int getAvailableRedos() const;
     /// Returns a list of the Redo names.
     std::vector<std::string> getAvailableRedoNames() const;
-    /// Will REDO  one step, returns  False if no redo was done (Redos == 0).
+    /// Will REDO one step, returns False if no redo was done (Redos == 0).
     bool redo() ;
     /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
     bool isPerformingTransaction() const;

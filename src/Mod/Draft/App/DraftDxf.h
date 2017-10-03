@@ -49,7 +49,7 @@ namespace DraftUtils
     
         // FreeCAD-specific functions
         void AddObject(Part::TopoShape *shape); //Called by OnRead functions to add Part objects
-        std::string Deformat(const char* text); // Removes DXF formating from texts
+        std::string Deformat(const char* text); // Removes DXF formatting from texts
         
     private:
         gp_Pnt makePoint(const double* p);
