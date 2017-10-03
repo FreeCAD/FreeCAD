@@ -1934,6 +1934,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     int VertexId = -1; // the loop below should be in sync with the main loop in ViewProviderSketch::draw
                        // so that the vertex indices are calculated correctly
     int GeoId = 0;
+    bool touchMode = false;
+    //check if selection goes from the right to the left side (for touch-selection where even partially boxed objects get selected)
+    if(corners[0].getValue()[0] > corners[1].getValue()[0])
+        touchMode = true;
+
     for (std::vector<Part::Geometry *>::const_iterator it = geomlist.begin(); it != geomlist.end()-2; ++it, ++GeoId) {
 
         if (GeoId >= intGeoCount)
@@ -1963,19 +1968,20 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             bool pnt2Inside = polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y));
-            if (pnt1Inside) {
+            if (pnt1Inside && !touchMode) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt2Inside) {
+            if (pnt2Inside && !touchMode) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt1Inside && pnt2Inside) {
+            //in touchMode it's enough if one of the points is inside, in normal mode both have to be inside
+            if ( (pnt1Inside && pnt2Inside) || (touchMode && (pnt1Inside || pnt2Inside) )) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2024,7 +2030,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 }
             }
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { 
-            // ----- Check if circle lies inside box selection -----/
+            // ----- Check if ellipse lies inside box selection -----/
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
             pnt0 = ellipse->getCenter();
             VertexId += 1;
