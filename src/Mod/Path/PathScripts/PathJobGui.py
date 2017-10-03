@@ -480,13 +480,6 @@ class TaskPanel:
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
-        hicon = QtGui.QIcon.fromTheme('object-flip-horizontal')
-        vicon = QtGui.QIcon.fromTheme('object-flip-vertical')
-        iconSize = QtCore.QSize()
-
-        self.form.defaultRapidHorizontalIcon.setPixmap(hicon.pixmap(iconSize))
-        self.form.defaultRapidVerticalIcon.setPixmap(vicon.pixmap(iconSize))
-
         self.vproxy.setupEditVisibility(self.obj)
 
         self.stockFromBase = None
@@ -560,11 +553,6 @@ class TaskPanel:
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
-
-            PathGui.updateInputField(self.obj, 'DefaultSafeHeight', self.form.defaultHeightSafe)
-            PathGui.updateInputField(self.obj, 'DefaultClearanceHeight', self.form.defaultHeightClearance)
-            PathGui.updateInputField(self.obj, 'DefaultVertRapid', self.form.defaultRapidVertical)
-            PathGui.updateInputField(self.obj, 'DefaultHorizRapid', self.form.defaultRapidHorizontal)
 
             self.obj.Proxy.execute(self.obj)
 
@@ -663,12 +651,6 @@ class TaskPanel:
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
-
-        self.form.defaultRapidVertical.setText(self.obj.DefaultVertRapid.UserString)
-        self.form.defaultRapidHorizontal.setText(self.obj.DefaultHorizRapid.UserString)
-        self.form.defaultHeightSafe.setText(self.obj.DefaultSafeHeight.UserString)
-        self.form.defaultHeightClearance.setText(self.obj.DefaultClearanceHeight.UserString)
-
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Job", "Select Output File"), None, translate("Path_Job", "All Files (*.*)"))
@@ -1009,12 +991,6 @@ class TaskPanel:
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
         self.updateSelection()
 
-        # Defaults
-        self.form.defaultRapidVertical.editingFinished.connect(self.getFields)
-        self.form.defaultRapidHorizontal.editingFinished.connect(self.getFields)
-        self.form.defaultHeightSafe.editingFinished.connect(self.getFields)
-        self.form.defaultHeightClearance.editingFinished.connect(self.getFields)
-
         # set active page
         if activate in ['General', 'Base']:
             self.form.setCurrentIndex(0)
@@ -1049,6 +1025,7 @@ def Create(base, template=None):
         obj = PathJob.Create('Job', base, template)
         ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.commitTransaction()
+        obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
     except:

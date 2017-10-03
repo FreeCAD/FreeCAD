@@ -64,6 +64,14 @@ class JobTemplate:
     DefaultSafeHeight = 'DefaultSafeHeight'
     DefaultClearanceHeight = 'DefaultClearanceHeight'
 
+class JobSetting:
+    '''Alias names for the official settings being used.'''
+    DefaultVertRapid = 'DefaultVertRapid'
+    DefaultHorizRapid = 'DefaultHorizRapid'
+    DefaultSafeHeight = 'DefaultSafeHeight'
+    DefaultClearanceHeight = 'DefaultClearanceHeight'
+
+
 def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
 
@@ -138,9 +146,10 @@ class ObjectJob:
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
-    def setSetting(self, obj, row, name, value, label):
+    def createSetting(self, obj, row, name, value, label):
         labelCell = "B%d" % row
         valueCell = "C%d" % row
+        PathLog.info("createSetting(%d, %s, %s): %s" % (row, name, value, valueCell))
         obj.Settings.set(labelCell, label)
         obj.Settings.set(valueCell, value)
         obj.Settings.setAlias(valueCell, name)
@@ -150,11 +159,11 @@ class ObjectJob:
             obj.addProperty('App::PropertyLink', 'Settings', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Spreadsheet holding the settings for this job'))
             obj.Settings = obj.Document.addObject('Spreadsheet::Sheet', 'Settings')
             obj.Settings.set('A2', translate('PathJob', 'Tool Rapid Speeds'))
-            self.setSetting(obj, 3, 'DefaultHorizRapid', '0 mm/s', translate('PathJob', 'Default Horizontal Rapid'))
-            self.setSetting(obj, 4, 'DefaultVertRapid',  '0 mm/s', translate('PathJob', 'Default Vertical Rapid'))
+            self.createSetting(obj, 3, JobSetting.DefaultHorizRapid, '0 mm/s', translate('PathJob', 'Default Horizontal Rapid'))
+            self.createSetting(obj, 4, JobSetting.DefaultVertRapid,  '0 mm/s', translate('PathJob', 'Default Vertical Rapid'))
             obj.Settings.set('A6', translate('PathJob', 'Operation Heights'))
-            self.setSetting(obj, 7, 'DefaultSafeHeight', '3 mm',  translate('PathJob', 'Default Safe Height'))
-            self.setSetting(obj, 8, 'DefaultClearanceHeight', '5 mm',  translate('PathJob', 'Default Clearance Height'))
+            self.createSetting(obj, 7, JobSetting.DefaultSafeHeight, '3 mm',  translate('PathJob', 'Default Safe Height'))
+            self.createSetting(obj, 8, JobSetting.DefaultClearanceHeight, '5 mm',  translate('PathJob', 'Default Clearance Height'))
 
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
@@ -211,6 +220,11 @@ class ObjectJob:
             return obj.Base.Objects[0]
         return obj.Base
 
+    def updateSetting(self, obj, name, value):
+        cell = obj.Settings.getCellFromAlias(name)
+        PathLog.info("updateSetting(%s, %s): %s" % (name, value, cell))
+        self.obj.Settings.set(cell, value)
+
     def setFromTemplateFile(self, obj, template):
         '''setFromTemplateFile(obj, template) ... extract the properties from the given template file and assign to receiver.
         This will also create any TCs stored in the template.'''
@@ -220,6 +234,15 @@ class ObjectJob:
                 attrs = json.load(fp)
 
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
+                if attrs.get(JobTemplate.DefaultVertRapid):
+                    self.updateSetting(obj, JobSetting.DefaultVertRapid, attrs[JobTemplate.DefaultVertRapid])
+                if attrs.get(JobTemplate.DefaultHorizRapid):
+                    self.updateSetting(obj, JobSetting.DefaultHorizRapid, attrs[JobTemplate.DefaultHorizRapid])
+                if attrs.get(JobTemplate.DefaultSafeHeight):
+                    self.updateSetting(obj, JobSetting.DefaultSafeHeight, attrs[JobTemplate.DefaultSafeHeight])
+                if attrs.get(JobTemplate.DefaultClearanceHeight):
+                    self.updateSetting(obj, JobSetting.DefaultClearanceHeight, attrs[JobTemplate.DefaultClearanceHeight])
+
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
                 if attrs.get(JobTemplate.PostProcessor):
@@ -233,21 +256,11 @@ class ObjectJob:
                 if attrs.get(JobTemplate.Description):
                     obj.Description = attrs.get(JobTemplate.Description)
 
-
                 if attrs.get(JobTemplate.ToolController):
                     for tc in attrs.get(JobTemplate.ToolController):
                         tcs.append(PathToolController.FromTemplate(tc))
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
-
-                if attrs.get(JobTemplate.DefaultVertRapid):
-                    obj.Settings.DefaultVertRapid = attrs[JobTemplate.DefaultVertRapid]
-                if attrs.get(JobTemplate.DefaultHorizRapid):
-                    obj.Settings.DefaultHorizRapid = attrs[JobTemplate.DefaultHorizRapid]
-                if attrs.get(JobTemplate.DefaultSafeHeight):
-                    obj.Settings.DefaultSafeHeight = attrs[JobTemplate.DefaultSafeHeight]
-                if attrs.get(JobTemplate.DefaultClearanceHeight):
-                    obj.Settings.DefaultClearanceHeight = attrs[JobTemplate.DefaultClearanceHeight]
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
                 tcs.append(PathToolController.Create())
@@ -297,8 +310,8 @@ class ObjectJob:
         group = self.obj.ToolController
         PathLog.info("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
-            tc.setExpression('VertRapid',  "%s.DefaultVertRapid" % self.obj.Settings.Name)
-            tc.setExpression('HorizRapid', "%s.DefaultHorizRapid" % self.obj.Settings.Name)
+            tc.setExpression('VertRapid',  "%s.%s" % (self.obj.Settings.Name, JobSetting.DefaultVertRapid))
+            tc.setExpression('HorizRapid', "%s.%s" % (self.obj.Settings.Name, JobSetting.DefaultHorizRapid))
             group.append(tc)
             self.obj.ToolController = group
 
