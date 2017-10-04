@@ -26,16 +26,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#   include <assert.h>
-#   include <fcntl.h>
-#   include <sys/types.h>
-#   include <sys/stat.h>
-#   ifdef FC_OS_WIN32
-#   include <io.h>
-#   include <xercesc/sax/SAXParseException.hpp>
-#   endif
-#   include <stdio.h>
-#   include <sstream>
+# include <assert.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# ifdef FC_OS_WIN32
+# include <io.h>
+# include <xercesc/sax/SAXParseException.hpp>
+# endif
+# include <stdio.h>
+# include <sstream>
+# include <list>
 #endif
 
 
