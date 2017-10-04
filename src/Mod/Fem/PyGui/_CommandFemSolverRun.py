@@ -85,4 +85,5 @@ class _CommandFemSolverRun(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
+
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())
