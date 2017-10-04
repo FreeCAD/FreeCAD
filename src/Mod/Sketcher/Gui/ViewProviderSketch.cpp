@@ -2463,7 +2463,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // for periodic curves, but it works reasonably well. Including all poles, which could be done, generally
             // forces the user to select much more than the curve (all the poles) and it would not select the curve in cases
             // where it is indeed comprised in the box.
-            // The implementation of the touch mode is also far from a desireable "touch"
+            // The implementation of the touch mode is also far from a desireable "touch" as it only recognizes touched points not the curve itself
             if (pnt1Inside && pnt2Inside || (touchMode && (pnt1Inside || pnt2Inside))) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
