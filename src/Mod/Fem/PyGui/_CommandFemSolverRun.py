@@ -31,7 +31,6 @@ from .FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore, QtGui
 import femsolver.run
-import FemUtils
 
 
 class _CommandFemSolverRun(FemCommands):
