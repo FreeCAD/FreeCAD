@@ -2447,13 +2447,13 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             bool pnt2Inside = polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y));
-            if (pnt1Inside) {
+            if (pnt1Inside || (touchMode && pnt2Inside)) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
             
-            if (pnt2Inside) {
+            if (pnt2Inside || (touchMode && pnt1Inside)) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2463,7 +2463,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // for periodic curves, but it works reasonably well. Including all poles, which could be done, generally
             // forces the user to select much more than the curve (all the poles) and it would not select the curve in cases
             // where it is indeed comprised in the box.
-            if (pnt1Inside && pnt2Inside) {
+            // The implementation of the touch mode is also far from a desireable "touch"
+            if (pnt1Inside && pnt2Inside || (touchMode && (pnt1Inside || pnt2Inside))) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
