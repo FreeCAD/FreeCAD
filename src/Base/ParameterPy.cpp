@@ -48,10 +48,51 @@
 #include "Exception.h"
 #include "Console.h"
 #include "PyObjectBase.h"
+#include "Interpreter.h"
 #include <CXX/Extensions.hxx>
 
 
-using namespace Base;
+namespace Base {
+
+class ParameterGrpObserver : public ParameterGrp::ObserverType
+{
+public:
+    ParameterGrpObserver(const Py::Object& obj)
+    {
+        inst = obj;
+    }
+    virtual ~ParameterGrpObserver()
+    {
+        Base::PyGILStateLocker lock;
+        inst = Py::None();
+    }
+    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
+    {
+        Base::PyGILStateLocker lock;
+        try {
+            ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+            ParameterGrp::handle hGrp(&rGrp);
+            Py::Callable method(this->inst.getAttr(std::string("onChange")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::asObject(GetPyObject(hGrp)));
+            args.setItem(1, Py::String(Reason));
+            method.apply(args);
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+        }
+    }
+    bool isEqual(const Py::Object& obj) const
+    {
+        return this->inst.is(obj);
+    }
+
+private:
+    Py::Object inst;
+};
+
+typedef std::list<ParameterGrpObserver*> ParameterGrpObserverList;
 
 class ParameterGrpPy : public Py::PythonExtension<ParameterGrpPy>
 {
@@ -70,6 +111,8 @@ public:
     Py::Object isEmpty(const Py::Tuple&);
     Py::Object clear(const Py::Tuple&);
 
+    Py::Object attach(const Py::Tuple&);
+    Py::Object detach(const Py::Tuple&);
     Py::Object notify(const Py::Tuple&);
     Py::Object notifyAll(const Py::Tuple&);
 
@@ -100,7 +143,8 @@ public:
     Py::Object getContents(const Py::Tuple&);
 
 private:
-    Base::Reference<ParameterGrp> _cParamGrp;
+    ParameterGrp::handle _cParamGrp;
+    ParameterGrpObserverList _observers;
 };
 
 // ---------------------------------------------------------
@@ -122,6 +166,8 @@ void ParameterGrpPy::init_type()
     add_varargs_method("IsEmpty",&ParameterGrpPy::isEmpty,"IsEmpty()");
     add_varargs_method("Clear",&ParameterGrpPy::clear,"Clear()");
 
+    add_varargs_method("Attach",&ParameterGrpPy::attach,"Attach()");
+    add_varargs_method("Detach",&ParameterGrpPy::detach,"Detach()");
     add_varargs_method("Notify",&ParameterGrpPy::notify,"Notify()");
     add_varargs_method("NotifyAll",&ParameterGrpPy::notifyAll,"NotifyAll()");
 
@@ -159,6 +205,11 @@ ParameterGrpPy::ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp)
 
 ParameterGrpPy::~ParameterGrpPy()
 {
+    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
+        ParameterGrpObserver* obs = *it;
+        _cParamGrp->Detach(obs);
+        delete obs;
+    }
 }
 
 Py::Object ParameterGrpPy::repr()
@@ -415,6 +466,52 @@ Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
     return Py::Boolean(_cParamGrp->HasGroup(pstr));
 }
 
+Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
+{
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
+        throw Py::Exception();
+
+    Py::Object o(obj);
+    if (!o.hasAttr(std::string("onChange")))
+        throw Py::TypeError("Object has no onChange attribute");
+
+    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
+        if ((*it)->isEqual(o)) {
+            throw Py::RuntimeError("Object is already attached.");
+        }
+    }
+
+    ParameterGrpObserver* obs = new ParameterGrpObserver(o);
+    _cParamGrp->Attach(obs);
+    _observers.push_back(obs);
+
+    return Py::None();
+}
+
+Py::Object ParameterGrpPy::detach(const Py::Tuple& args)
+{
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
+        throw Py::Exception();
+
+    Py::Object o(obj);
+    if (!o.hasAttr(std::string("onChange")))
+        throw Py::TypeError("Object has no onChange attribute");
+
+    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
+        if ((*it)->isEqual(o)) {
+            ParameterGrpObserver* obs = *it;
+            _observers.erase(it);
+            _cParamGrp->Detach(obs);
+            delete obs;
+            break;
+        }
+    }
+
+    return Py::None();
+}
+
 Py::Object ParameterGrpPy::notify(const Py::Tuple& args)
 {
     char *pstr;
@@ -504,6 +601,8 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
     return list;
 }
 
+} // namespace Base
+
 /** python wrapper function
 */
 PyObject* GetPyObject(const Base::Reference<ParameterGrp> &hcParamGrp)
@@ -511,8 +610,8 @@ PyObject* GetPyObject(const Base::Reference<ParameterGrp> &hcParamGrp)
     static bool init = false;
     if (!init) {
         init = true;
-        ParameterGrpPy::init_type();
+        Base::ParameterGrpPy::init_type();
     }
 
-    return new ParameterGrpPy(hcParamGrp); 
+    return new Base::ParameterGrpPy(hcParamGrp);
 }
