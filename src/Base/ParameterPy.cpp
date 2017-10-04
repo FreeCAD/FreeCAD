@@ -69,6 +69,8 @@ public:
     }
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
     {
+        if (!Reason || Reason[0] == '\0')
+            return;
         Base::PyGILStateLocker lock;
         try {
             ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
