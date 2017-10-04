@@ -2371,26 +2371,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt2 = proj(pnt2);
 
             bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
-            if (pnt0Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId - 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
-            if (pnt1Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
+            bool bpolyInside = true;
 
-            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
-            if (pnt0Inside && pnt1Inside) {
+            if ((pnt0Inside && pnt1Inside) || touchMode) {
                 double startangle, endangle;
 
                 aop->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -2400,6 +2384,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+                if(touchMode)countSegments=countSegments*2.5;
 
                 float segment = float(range) / countSegments;
                 //In local coordinate system, value() of parabola is:
@@ -2408,7 +2393,6 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 float focal = float(aop->getFocal()) / cos(segment/2);
                 float phi = float(aop->getAngleXU());
  
-                bool bpolyInside = true;
                 pnt0 = aop->getCenter();
                 float angle = float(startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
@@ -2420,6 +2404,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
+                        if(!touchMode)break;
+                    } else if(touchMode){
+                        bpolyInside = true;
                         break;
                     }
                 }
@@ -2427,6 +2414,23 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 if (bpolyInside) {
                     std::stringstream ss;
                     ss << "Edge" << GeoId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+                if (pnt0Inside || (bpolyInside && touchMode)) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId - 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
+                if (pnt1Inside || (bpolyInside && touchMode)) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
+                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y)) || (bpolyInside && touchMode)) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
             }
