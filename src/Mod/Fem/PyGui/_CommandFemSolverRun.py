@@ -84,5 +84,6 @@ class _CommandFemSolverRun(FemCommands):
                 machine.target = femsolver.run.RESULTS
                 machine.start()
 
+        FreeCADGui.Selection.clearSelection()
 
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())
