@@ -1981,21 +1981,35 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            //in touchMode it's enough if one of the points is inside, in normal mode both have to be inside
-            if ( (pnt1Inside && pnt2Inside) || (touchMode && (pnt1Inside || pnt2Inside) )) {
+            if ( (pnt1Inside && pnt2Inside)) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             } else
-            //check if line intersects with (boundbox of) polygon
-            if(touchMode && polygon.CalcBoundBox().Intersect(Base::Line2d(Base::Vector2d(pnt1.x, pnt1.y), Base::Vector2d(pnt2.x, pnt2.y))) ){
-                std::stringstream ss;
-                ss << "Edge" << GeoId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
+            //check if line intersects with polygon
+                if(touchMode){
+                    //add points
+                    std::stringstream ss, ss2;
+                    ss << "Vertex" << VertexId;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                    ss2 << "Vertex" << VertexId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss2.str().c_str());
+
+                    Base::Polygon2d lineAsPolygon;
+                    lineAsPolygon.Add(Base::Vector2d(pnt1.x, pnt1.y));
+                    lineAsPolygon.Add(Base::Vector2d(pnt2.x, pnt2.y));
+                    std::list<Base::Polygon2d> resultList;
+                    polygon.Intersect(lineAsPolygon, resultList);
+                    if(resultList.size() > 0){
+                        std::stringstream ss;
+                        ss << "Edge" << GeoId + 1;
+                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                    }
+                }
 
         } else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
             // ----- Check if circle lies inside box selection -----/
+            ///TODO: Make it impossible to miss the circle if it's big and the selection pretty thin.
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             pnt0 = circle->getCenter();
             VertexId += 1;
@@ -2003,12 +2017,16 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             Plm.multVec(pnt0, pnt0);
             pnt0 = proj(pnt0);
 
-            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-
+            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
+                if(!touchMode){
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
                 int countSegments = 12;
+                if(touchMode)
+                    countSegments = 24;
+
                 float segment = float(2 * M_PI) / countSegments;
 
                 // circumscribed polygon radius
@@ -2025,15 +2043,24 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        break;
-                    }
+                        if(!touchMode)break;
+                    }else
+                        if(touchMode){
+                            bpolyInside = true;
+                            break;
+                        }
                 }
 
                 if (bpolyInside) {
+                    std::stringstream ss,ss2;
                     ss.clear();
                     ss.str("");
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
+                    if(touchMode){
+                        ss2 << "Vertex" << VertexId + 1;
+                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss2.str().c_str());
+                    }
                 }
             }
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { 
