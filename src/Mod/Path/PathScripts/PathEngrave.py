@@ -30,6 +30,8 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+import TechDraw
+import traceback
 
 from PySide import QtCore
 
@@ -100,6 +102,13 @@ class ObjectEngrave(PathOp.ObjectOp):
                     output += self.buildpathocc(obj, tagWires, zValues)
                     wires.extend(tagWires)
                 self.wires = wires
+            elif obj.Base:
+                wires = []
+                for base, subs in obj.Base:
+                    edges = [base.Shape.getElement(sub) for sub in subs]
+                    wires.extend(TechDraw.edgeWalker(edges))
+                output += self.buildpathocc(obj, wires, zValues)
+                self.wires = wires
             else:
                 raise ValueError('Unknown baseobject type for engraving')
 
@@ -108,6 +117,7 @@ class ObjectEngrave(PathOp.ObjectOp):
 
         except Exception as e:
             #PathLog.error("Exception: %s" % e)
+            #traceback.print_exc()
             PathLog.error(translate("Path", "The Job Base Object has no engraveable element.  Engraving operation will produce no output."))
 
     def buildpathocc(self, obj, wires, zValues):
