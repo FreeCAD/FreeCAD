@@ -306,9 +306,19 @@ public:
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
-    bool allowOtherBody;
+    bool isAllowedOtherBody() const {
+        return allowOtherBody;
+    }
+    void setAllowOtherBody(bool on) {
+        allowOtherBody = on;
+    }
     /// Flag to allow carbon copy from misaligned geometry
-    bool allowUnaligned;
+    bool isAllowedUnaligned() const {
+        return allowUnaligned;
+    }
+    void setAllowUnaligned(bool on) {
+        allowUnaligned = on;
+    }
 
     enum eReasonList{
         rlAllowed,
@@ -346,6 +356,11 @@ protected:
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool allowOtherBody;
+    /// Flag to allow carbon copy from misaligned geometry
+    bool allowUnaligned;
+
     std::vector<Part::Geometry *> ExternalGeo;
 
     std::vector<int> VertexId2GeoId;
