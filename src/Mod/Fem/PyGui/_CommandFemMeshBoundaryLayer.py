@@ -46,11 +46,8 @@ class _CommandFemMeshBoundaryLayer(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshBoundaryLayer")
         FreeCADGui.addModule("ObjectsFem")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            sobj = sel[0]
-            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
-                FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + sobj.Name + ")")
+        self.mesh = FreeCADGui.Selection.getSelection()[0]  # see 'with_gmsh_femmesh' in FemCommands for selection check
+        FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.mesh.Name + ")")
 
         FreeCADGui.Selection.clearSelection()
 
