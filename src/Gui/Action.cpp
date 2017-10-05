@@ -773,7 +773,6 @@ void RecentFilesAction::save()
                                 ->GetGroup("Preferences")->GetGroup("RecentFiles");
     int count = hGrp->GetInt("RecentFiles", this->visibleItems); // save number of files
     hGrp->Clear();
-    hGrp->SetInt("RecentFiles", count); // restore
 
     // count all set items
     QList<QAction*> recentFiles = _group->actions();
@@ -785,6 +784,8 @@ void RecentFilesAction::save()
             break;
         hGrp->SetASCII(key.toLatin1(), value.toUtf8());
     }
+
+    hGrp->SetInt("RecentFiles", count); // restore
 }
 
 // --------------------------------------------------------------------
