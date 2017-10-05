@@ -43,6 +43,7 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
     Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
+    Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
 
 public:
@@ -53,6 +54,8 @@ public:
 
     /// Get the current quantity
     Base::Quantity value() const;
+    /// Get the current quantity without unit
+    double rawValue() const;
 
     /// Gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// or returns false if the input is a unparsable string or has a wrong unit.
@@ -123,11 +126,10 @@ protected:
     virtual void showEvent(QShowEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
     virtual void focusOutEvent(QFocusEvent * event);
-    virtual void  keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
 
 private:
-
     void updateText(const Base::Quantity&);
 
 Q_SIGNALS:
