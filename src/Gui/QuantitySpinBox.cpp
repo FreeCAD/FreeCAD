@@ -413,6 +413,12 @@ Base::Quantity QuantitySpinBox::value() const
     return d->quantity;
 }
 
+double QuantitySpinBox::rawValue() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->quantity.getValue();
+}
+
 void QuantitySpinBox::setValue(const Base::Quantity& value)
 {
     Q_D(QuantitySpinBox);
