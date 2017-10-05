@@ -39,7 +39,6 @@ INSTALL(
         FemMesh2Mesh.py
         FemMeshTools.py
         FemResultTools.py
-        FemSelectionObserver.py
         FemTools.py
         FemToolsCcx.py
         FemToolsZ88.py
@@ -73,6 +72,7 @@ INSTALL(
 INSTALL(
     FILES
         PyGui/FemCommands.py
+        PyGui/FemSelectionObserver.py
         PyGui/__init__.py
         PyGui/_CommandFemAnalysis.py
         PyGui/_CommandFemConstraintSelfWeight.py
