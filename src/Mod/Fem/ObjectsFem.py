@@ -182,19 +182,6 @@ def makeElementGeometry2D(doc, thickness=20.0, name="ElementGeometry2D"):
 
 
 ########## material objects ##########
-def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
-    '''makeMaterialSolid(name): makes an FEM Material for solid'''
-    obj = doc.addObject("App::MaterialObjectPython", name)
-    import PyObjects._FemMaterial
-    PyObjects._FemMaterial._FemMaterial(obj)
-    obj.Category = 'Solid'
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemMaterial
-        PyGui._ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
-    # doc.recompute()
-    return obj
-
-
 def makeMaterialFluid(doc, name="FluidMaterial"):
     '''makeMaterialFluid(name): makes an FEM Material for fluid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
@@ -220,7 +207,37 @@ def makeMaterialMechanicalNonlinear(doc, base_material, name="MechanicalMaterial
     return obj
 
 
+def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
+    '''makeMaterialSolid(name): makes an FEM Material for solid'''
+    obj = doc.addObject("App::MaterialObjectPython", name)
+    import PyObjects._FemMaterial
+    PyObjects._FemMaterial._FemMaterial(obj)
+    obj.Category = 'Solid'
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemMaterial
+        PyGui._ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+    # doc.recompute()
+    return obj
+
+
 ########## mesh objects ##########
+def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
+    '''makeMeshBoundaryLayer([length], [name]): creates a  FEM mesh BoundaryLayer object to define boundary layer properties'''
+    obj = doc.addObject("Fem::FeaturePython", name)
+    import PyObjects._FemMeshBoundaryLayer
+    PyObjects._FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
+
+    # obj.BaseMesh = base_mesh
+    # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh BoundaryLayer obj. to the list
+    tmplist = base_mesh.MeshBoundaryLayerList
+    tmplist.append(obj)
+    base_mesh.MeshBoundaryLayerList = tmplist
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemMeshBoundaryLayer
+        PyGui._ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer(obj.ViewObject)
+    return obj
+
+
 def makeMeshGmsh(doc, name="FEMMeshGMSH"):
     '''makeMeshGmsh(name): makes a GMSH FEM mesh object'''
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
@@ -246,23 +263,6 @@ def makeMeshGroup(doc, base_mesh, use_label=False, name="FEMMeshGroup"):
     if FreeCAD.GuiUp:
         import PyGui._ViewProviderFemMeshGroup
         PyGui._ViewProviderFemMeshGroup._ViewProviderFemMeshGroup(obj.ViewObject)
-    return obj
-
-
-def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
-    '''makeMeshBoundaryLayer([length], [name]): creates a  FEM mesh BoundaryLayer object to define boundary layer properties'''
-    obj = doc.addObject("Fem::FeaturePython", name)
-    import PyObjects._FemMeshBoundaryLayer
-    PyObjects._FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
-
-    # obj.BaseMesh = base_mesh
-    # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh BoundaryLayer obj. to the list
-    tmplist = base_mesh.MeshBoundaryLayerList
-    tmplist.append(obj)
-    base_mesh.MeshBoundaryLayerList = tmplist
-    if FreeCAD.GuiUp:
-        import PyGui._ViewProviderFemMeshBoundaryLayer
-        PyGui._ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer(obj.ViewObject)
     return obj
 
 
