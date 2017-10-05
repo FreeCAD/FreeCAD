@@ -63,7 +63,8 @@ Q_SIGNALS:
  * A special view class which sends the messages from the application to
  * the editor and embeds it in a window.
  */
-class WebGuiExport BrowserView : public Gui::MDIView, public Gui::WindowParameter
+class WebGuiExport BrowserView : public Gui::MDIView,
+                                 public Gui::WindowParameter
 {
     Q_OBJECT
 
@@ -73,33 +74,18 @@ public:
 
     void load(const char* URL);
     void load(const QUrl & url);
-    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromLatin1("Browser"));
+    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl);
     void stop(void);
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
     const char *getName(void) const {return "BrowserView";}
-    void onUpdate(void){};
+    virtual PyObject *getPyObject(void);
 
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
     bool canClose(void);
-
-    /** @name Standard actions of the editor */
-    //@{
-    //bool open   (const QString &f);
-    //bool saveAs ();
-    //void cut    ();
-    //void copy   ();
-    //void paste  ();
-    //void undo   ();
-    //void redo   ();
-    //void run    ();
-    //void print  ();
-    //void printPdf();
-    //@}
-
 
 protected Q_SLOTS:
     void onLoadStarted();

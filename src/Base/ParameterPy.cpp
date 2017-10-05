@@ -69,8 +69,6 @@ public:
     }
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
     {
-        if (!Reason || Reason[0] == '\0')
-            return;
         Base::PyGILStateLocker lock;
         try {
             ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
@@ -78,7 +76,9 @@ public:
             Py::Callable method(this->inst.getAttr(std::string("onChange")));
             Py::Tuple args(2);
             args.setItem(0, Py::asObject(GetPyObject(hGrp)));
-            args.setItem(1, Py::String(Reason));
+            // A Reason of null indicates to clear the parameter group
+            if (Reason && Reason[0] != '\0')
+                args.setItem(1, Py::String(Reason));
             method.apply(args);
         }
         catch (Py::Exception&) {
