@@ -335,7 +335,6 @@ void ExpressionLineEdit::disablePartialCompletion()
 
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
-    ///TODO: Refactor textChanged2 to a better name since it's function changed
     if (!block && !partialCompletion) {
         Q_EMIT textChanged2(text.left(cursorPosition()), -1);
     }else if (!block && partialCompletion){
