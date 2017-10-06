@@ -345,6 +345,30 @@ def makeResultMechanical(doc, name="MechanicalResult"):
 
 
 ########## solver objects ##########
+def makeEquationElasticity(doc, base_solver):
+    '''makeEquationElasticity(document, base_solver): creates a  FEM elasticity equation for a solver'''
+    obj = doc.SolverElmer.addObject(doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, 'Elasticity'))[0]
+    return obj
+
+
+def makeEquationElectrostatic(doc, base_solver):
+    '''makeEquationElectrostatic(document, base_solver): creates a  FEM electrostatic equation for a solver'''
+    obj = doc.SolverElmer.addObject(doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, 'Electrostatic'))[0]
+    return obj
+
+
+def makeEquationFlow(doc, base_solver):
+    '''makeEquationFlow(document, base_solver): creates a  FEM flow equation for a solver'''
+    obj = doc.SolverElmer.addObject(doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, 'Flow'))[0]
+    return obj
+
+
+def makeEquationHeat(doc, base_solver):
+    '''makeEquationHeat(document, base_solver): creates a  FEM heat equation for a solver'''
+    obj = doc.SolverElmer.addObject(doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, 'Heat'))[0]
+    return obj
+
+
 def makeSolverCalculixOld(doc, name="CalculiXOld"):
     '''makeSolverCalculixOld(document, [name]): makes a depreciated Calculix solver object'''
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
