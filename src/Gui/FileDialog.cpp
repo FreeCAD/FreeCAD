@@ -49,7 +49,7 @@
 using namespace Gui;
 
 #if defined(FC_OS_LINUX)
-#define USE_QT_FILEDIALOG
+#undef USE_QT_FILEDIALOG
 #endif
 
 
