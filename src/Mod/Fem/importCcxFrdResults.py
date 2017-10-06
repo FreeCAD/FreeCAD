@@ -113,7 +113,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
 
 
-# read a calculix result file and extract the nodes, displacement vectores and stress values.
+# read a calculix result file and extract the nodes, displacement vectors and stress values.
 def readResult(frd_input):
     print('Read results from: ' + frd_input)
     inout_nodes = []

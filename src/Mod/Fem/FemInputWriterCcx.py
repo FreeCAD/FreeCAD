@@ -345,7 +345,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.get_element_geometry2D_elements()
         elif len(self.beamsection_objects) > 1:
             self.get_element_geometry1D_elements()
-            # we will need to split the beams even for one beamobj because no beam in z-direction can be used in ccx without a special adjustment
+            # we will need to split the beams even for one beamobj 
+            # because no beam in z-direction can be used in ccx without a special adjustment
             # thus they need an own ccx_elset --> but this is ccx specific and thus should not be in input writer!
         elif len(self.fluidsection_objects) > 1:
             self.get_element_fluid1D_elements()
@@ -357,8 +358,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # create the ccx_elsets
         if len(self.material_objects) == 1:
             if self.femmesh.Volumes:
-                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
-                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+                # we only could do this for volumes, if a mesh contains volumes 
+                # we're going to use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces
+                # and the edges of the faces as edges, there we have to check for some geometric objects
                 self.get_ccx_elsets_single_mat_solid()
             elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_single_mat_single_shell()
@@ -374,8 +377,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.get_ccx_elsets_single_mat_multiple_fluid()
         elif len(self.material_objects) > 1:
             if self.femmesh.Volumes:
-                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
-                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+                # we only could do this for volumes, if a mseh contains volumes 
+                # we're going to use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces
+                # and the edges of the faces as edges, there we have to check for some geometric objects
                 self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retriving ids from group mesh data is implemented
             elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_shell()

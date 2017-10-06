@@ -182,7 +182,7 @@ def read_z88_mesh(z88_mesh_input):
                     FreeCAD.Console.PrintError("Not supported at the moment\n")
                     return {}
                 elif z88_element_type == 21:
-                    # schale16, mixture made from hexa8  und hexa20 (thickness is linear)
+                    # schale16, mixture made from hexa8 and hexa20 (thickness is linear)
                     FreeCAD.Console.PrintError("Z88 Element No. 21, schale16\n")
                     FreeCAD.Console.PrintError("Not supported at the moment\n")
                     return {}
