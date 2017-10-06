@@ -42,6 +42,7 @@
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderPy.h"
+#include "ViewProviderDocumentObjectPy.h"
 
 
 using namespace Gui;
@@ -305,6 +306,18 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
         }
     }
 
+    Py_Return;
+}
+
+PyObject* DocumentPy::scrollToTreeItem(PyObject *args)
+{
+    PyObject *view;
+    if (!PyArg_ParseTuple(args,"O!",&(Gui::ViewProviderDocumentObjectPy::Type), &view))
+        return 0;
+
+    Gui::ViewProviderDocumentObject* vp = static_cast<ViewProviderDocumentObjectPy*>
+            (view)->getViewProviderDocumentObjectPtr();
+    getDocumentPtr()->signalScrollToObject(*vp);
     Py_Return;
 }
 
