@@ -1716,17 +1716,28 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
         }
         str << "]";
 
+        std::string bodyName = PartDesignGui::getBody(false)->getNameInDocument();
+
         std::string msg("Make ");
         msg += which;
         Gui::Command::openCommand(msg.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::%s\",\"%s\")",
-                                PartDesignGui::getBody(false)->getNameInDocument(), which.c_str(), FeatName.c_str());
+                                bodyName.c_str(), which.c_str(), FeatName.c_str());
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
         // TODO Wjat that function supposed to do? (2015-08-05, Fat-Zer)
         func(FeatName, features);
+
+        // Set the tip of the body
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
+                                bodyName.c_str(), FeatName.c_str());
+
+        // Adjust visibility to show only the tip feature
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().show(\"%s\")",
+                                FeatName.c_str());
+        Gui::Command::updateActive();
     };
 
     // Get a valid original from the user
