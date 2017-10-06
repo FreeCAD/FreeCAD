@@ -60,7 +60,7 @@ FreeCAD_to_Fenics_XDMF_dict = {
 }
 
 # we need numpy functions to later access and process large data sets in a fast manner
-# also the hd5 support better works together with numpy
+# also the hd5 support works better together with numpy
 
 
 def numpy_array_to_str(npa):

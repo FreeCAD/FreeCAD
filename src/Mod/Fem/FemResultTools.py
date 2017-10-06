@@ -49,7 +49,7 @@ def reset_mesh_deformation(resultobj):
             resultobj.Mesh.ViewObject.applyDisplacement(0.0)
 
 
-## Resets reslut mesh color
+## Resets result mesh color
 #  @param result object
 def reset_mesh_color(resultobj):
     if FreeCAD.GuiUp:
@@ -75,7 +75,7 @@ def show_displacement(resultobj, displacement_factor=0.0):
 #  - U1, U2, U3 - deformation
 #  - Uabs - absolute deformation
 #  - Sabs - Von Mises stress
-#  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hot spots.
+#  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hotspots.
 def show_result(resultobj, result_type="Sabs", limit=None):
     if result_type == "None":
         reset_mesh_color(resultobj.Mesh)
@@ -85,7 +85,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
             values = resultobj.StressValues
         elif result_type == "Uabs":
             values = resultobj.DisplacementLengths
-        # TODO the result object does have more result types to show, implement them
+        # TODO: the result object does have more result types to show, implement them
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
             d = zip(*resultobj.DisplacementVectors)
@@ -98,7 +98,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
 ## Sets mesh color using list of values. Internally used by show_result function.
 #  @param self The python object self
 #  @param values list of values
-#  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
+#  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hotspots.
 def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
     if limit:
         filtered_values = []
