@@ -27,9 +27,12 @@
 #endif
 
 #include "App/Part.h"
+#include "App/Document.h"
 #include "Command.h"
 #include "Application.h"
+#include "Document.h"
 #include "MDIView.h"
+#include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;
@@ -97,13 +100,20 @@ void StdCmdGroup::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     openCommand("Add a group");
-    std::string FeatName = getUniqueObjectName("Group");
 
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
+    QString label = QApplication::translate("Std_Group", "Group");
     doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", GroupName.c_str(),
-            QObject::tr(GroupName.c_str()).toUtf8().data());
+              label.toUtf8().data());
+    commitCommand();
+
+    Gui::Document* gui = Application::Instance->activeDocument();
+    App::Document* app = gui->getDocument();
+    ViewProvider* vp = gui->getViewProvider(app->getActiveObject());
+    if (vp && vp->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        gui->signalScrollToObject(*static_cast<ViewProviderDocumentObject*>(vp));
 }
 
 bool StdCmdGroup::isActive(void)
