@@ -272,7 +272,7 @@ def makeMeshNetgen(doc, name="FEMMeshNetgen"):
 
 
 def makeMeshRegion(doc, base_mesh, element_length=0.0, name="FEMMeshRegion"):
-    '''makeMeshRegion(document, base_mesh, [element_length] [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
+    '''makeMeshRegion(document, base_mesh, [element_length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
     obj = doc.addObject("Fem::FeaturePython", name)
     import PyObjects._FemMeshRegion
     PyObjects._FemMeshRegion._FemMeshRegion(obj)
