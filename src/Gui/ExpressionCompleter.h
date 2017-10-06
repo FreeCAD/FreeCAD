@@ -30,7 +30,7 @@ public:
     int getPrefixStart() const { return prefixStart; }
 
 public Q_SLOTS:
-    void slotUpdate(const QString &prefix);
+    void slotUpdate(const QString &prefix, int jumpstart);
 
 private:
     void createModelForDocument(const App::Document * doc, QStandardItem * parent, const std::set<const App::DocumentObject *> &forbidden);
@@ -51,14 +51,20 @@ public:
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
+    void enablePartialCompletion();
+    void disablePartialCompletion();
+    void setPartFilterSettings(QRegExp regex, QString::SplitBehavior behavior);
 Q_SIGNALS:
-    void textChanged2(QString text);
+    void textChanged2(QString text, int jumpstart);
+    void partialCompletionChanged2(QString text);
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
     void slotCompleteText(const QString & completionPrefix);
 private:
     ExpressionCompleter * completer;
-    bool block;
+    bool block, partialCompletion;
+    QRegExp filterRegex;
+    QString::SplitBehavior filterSplitBehavior;
 };
 
 }
