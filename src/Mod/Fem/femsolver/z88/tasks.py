@@ -102,6 +102,7 @@ class Solve(run.Solve):
         self.signalAbort.remove(self._process.terminate)
         # if not self.aborted:
         #     self._updateOutput(output)
+        del output   # get flake8 quiet
 
     def _observeSolver(self, process):
         output = ""
