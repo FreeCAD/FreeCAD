@@ -939,6 +939,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
     connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
     connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
+    connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
@@ -954,6 +955,7 @@ DocumentItem::~DocumentItem()
     connectResObject.disconnect();
     connectHltObject.disconnect();
     connectExpObject.disconnect();
+    connectScrObject.disconnect();
 }
 
 #define FOREACH_ITEM(_item, _obj) \
@@ -1314,6 +1316,14 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
             assert(0);
         }
         populateItem(item);
+    END_FOREACH_ITEM
+}
+
+void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj)
+{
+    FOREACH_ITEM(item,obj)
+        QTreeWidget* tree = item->treeWidget();
+        tree->scrollToItem(item, QAbstractItemView::PositionAtTop);
     END_FOREACH_ITEM
 }
 
