@@ -342,7 +342,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
 
     def test_pyimport_all_FEM_modules(self):
-        # we gone try to import all python modules from FreeCAD Fem
+        # we're gonna try to import all python modules from FreeCAD Fem
         pymodules = []
 
         # collect all Python modules in Fem

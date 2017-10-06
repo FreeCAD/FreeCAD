@@ -384,7 +384,7 @@ def get_femelementface_sets_from_group_data(femmesh, fem_object):
                 if femmesh.getGroupElementType(g) == "Face":
                     print("Constraint: " + obj.Name + " --> " + "faces are in mesh group: " + grp_name)
                     group_faces = femmesh.getGroupElements(g)  # == ref_shape_femelements
-    return group_faces  # an empty tuple is returned if no femelements where found
+    return group_faces  # an empty tuple is returned if no femelements were found
 
 
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
@@ -495,7 +495,7 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
         print('  sum_node_load:          ', sum_node_load)
         print('  frc_obj.Force:          ', frc_obj.Force)
         print('  the reason could be simply a circle length --> see method get_ref_edge_node_lengths')
-        print('  the reason could also be an problem in retrieving the ref_edge_node_length')
+        print('  the reason could also be a problem in retrieving the ref_edge_node_length')
 
         # try debugging of the last bad refedge
         print('DEBUGGING')
@@ -623,13 +623,13 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
 
     ratio = sum_node_load / frc_obj.Force
     if ratio < 0.99 or ratio > 1.01:
-        print('Deviation  sum_node_load to frc_obj.Force is more than 1% :  ', ratio)
+        print('Deviation sum_node_load to frc_obj.Force is more than 1% :  ', ratio)
         print('  sum_ref_face_node_area: ', sum_ref_face_node_area)
         print('  sum_ref_face_area:      ', sum_ref_face_area)
         print('  sum_node_load:          ', sum_node_load)
         print('  frc_obj.Force:          ', frc_obj.Force)
         print('  the reason could be simply a circle area --> see method get_ref_face_node_areas')
-        print('  the reason could also be an problem in retrieving the ref_face_node_area')
+        print('  the reason could also be a problem in retrieving the ref_face_node_area')
 
     return force_obj_node_load_table
 
@@ -647,14 +647,14 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
                     nodecount += 1
             if nodecount > 1:
                 refedge_fem_volumeelements.append(elem)
-        # for every refedge_fem_volumeelement look which of his nodes is in refedge_nodes --> add all these nodes to edge_table
+        # for every refedge_fem_volumeelement look which of its nodes is in refedge_nodes --> add all these nodes to edge_table
         for elem in refedge_fem_volumeelements:
             fe_refedge_nodes = []
             for node in femelement_table[elem]:
                 if node in refedge_nodes:
                     fe_refedge_nodes.append(node)
                 edge_table[elem] = fe_refedge_nodes  # { volumeID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
-        #  FIXME duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
+        # FIXME: duplicate_mesh_elements: as soon as contact and springs are supported the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_face_femmesh(femmesh):
         refedge_fem_faceelements = []
@@ -673,7 +673,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
                 if node in refedge_nodes:
                     fe_refedge_nodes.append(node)
                 edge_table[elem] = fe_refedge_nodes  # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
-        #  FIXME duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
+        # FIXME: duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_edge_femmesh(femmesh):
         refedge_fem_edgeelements = get_femelements_by_femnodes_std(femelement_table, refedge_nodes)
@@ -734,8 +734,8 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         if has_no_face_data(femmesh):
             print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrive the volume elments of the ref_face!')
             # there is no face data
-            # the problem if we retrive the nodes ourself is they are not sorted we just have the nodes. We need to sourt them according
-            # the shell mesh notaion of tria3, tria6, quad4, quad8
+            # the problem if we retrieve the nodes ourself is they are not sorted we just have the nodes. 
+            # We need to sort them according the shell mesh notation of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
             # try to use getccxVolumesByFace() to get the volume ids of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
             ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
@@ -789,7 +789,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
         if vol_node_ct == 10:  # tetra10 --> tria6 face
-            if face_node_indexs == [1, 2, 3, 5, 6, 7]:  # node order of face  in tetra10 volume element
+            if face_node_indexs == [1, 2, 3, 5, 6, 7]:  # node order of face in tetra10 volume element
                 node_numbers = (1, 2, 3, 5, 6, 7)       # node order of a tria6 face of tetra10
             elif face_node_indexs == [1, 2, 4, 5, 8, 9]:
                 node_numbers = (1, 4, 2, 8, 9, 5)
@@ -800,7 +800,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             else:
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
         elif vol_node_ct == 4:  # tetra4 --> tria3 face
-            if face_node_indexs == [1, 2, 3]:  # node order of face  in tetra4 volume element
+            if face_node_indexs == [1, 2, 3]:  # node order of face in tetra4 volume element
                 node_numbers = (1, 2, 3)       # node order of a tria3 face of tetra4
             elif face_node_indexs == [1, 2, 4]:
                 node_numbers = (1, 4, 2, 8)
@@ -811,7 +811,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             else:
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
         elif vol_node_ct == 20:  # hexa20 --> quad8 face
-            if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:  # node order of face  in hexa20 volume element
+            if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:  # node order of face in hexa20 volume element
                 node_numbers = (1, 2, 3, 4, 9, 10, 11, 12)       # node order of a quad8 face of hexa20
             elif face_node_indexs == [5, 6, 7, 8, 13, 14, 15, 16]:
                 node_numbers = (5, 8, 7, 6, 16, 15, 14, 13)
@@ -827,7 +827,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
         elif vol_node_ct == 8:  # hexa8 --> quad4 face
             face_node_indexs = sorted(face_nodenumber_table[veID])
-            if face_node_indexs == [1, 2, 3, 4]:  # node order of face  in hexa8 volume element
+            if face_node_indexs == [1, 2, 3, 4]:  # node order of face in hexa8 volume element
                 node_numbers = (1, 2, 3, 4)       # node order of a quad8 face of hexa8
             elif face_node_indexs == [5, 6, 7, 8]:
                 node_numbers = (5, 8, 7, 6)
@@ -842,7 +842,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             else:
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
         elif vol_node_ct == 15:  # penta15 --> tria6 and quad8 faces
-            if face_node_indexs == [1, 2, 3, 7, 8, 9]:  # node order of face  in penta15 volume element
+            if face_node_indexs == [1, 2, 3, 7, 8, 9]:  # node order of face in penta15 volume element
                 node_numbers = (1, 2, 3, 7, 8, 9)       # node order of a tria6 face of penta15
             elif face_node_indexs == [4, 5, 6, 10, 11, 12]:
                 node_numbers = (4, 6, 5, 12, 11, 10)  # tria6
@@ -855,7 +855,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             else:
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): penta15: face not found!" + str(face_node_indexs) + "\n")
         elif vol_node_ct == 6:  # penta6 --> tria3 and quad4 faces
-            if face_node_indexs == [1, 2, 3]:  # node order of face  in penta6 volume element
+            if face_node_indexs == [1, 2, 3]:  # node order of face in penta6 volume element
                 node_numbers = (1, 2, 3)       # node order of a tria3 face of penta6
             elif face_node_indexs == [4, 5, 6]:
                 node_numbers = (4, 6, 5)  # tria3
@@ -881,7 +881,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
 def get_ref_facenodes_areas(femnodes_mesh, face_table):
     # calculate the appropriate node_areas for every node of every mesh face (mf)
     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
-    # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
+    # FIXME: only gives exact results in case of a real triangle. If for S6 or C3D10 elements
     # the midnodes are not on the line between the end nodes the area will not be a triangle
     # see http://forum.freecadweb.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
     # same applies for the quads, results are exact only if mid nodes are on the line between corner nodes
@@ -1017,7 +1017,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
 
 def get_ref_shape_node_sum_geom_table(node_geom_table):
     # shape could be Edge or Face, geom could be length or area
-    # summ of legth or area for each node of the ref_shape
+    # sum of legth or area for each node of the ref_shape
     node_sum_geom_table = {}
     for n, A in node_geom_table:
         # print(n, ' --> ', A)
@@ -1029,8 +1029,9 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
 
 
 def get_mesh_group_elements(mesh_group_obj, aPart):
-    '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart. If found in shape they are added to a dict
-    {MeshGroupIdentifier : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
+    '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart. 
+       If found in shape they are added to a dict
+       {MeshGroupIdentifier : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
     group_elements = {}  # { name : [element, element, ... , element]}
     if mesh_group_obj.References:
@@ -1042,8 +1043,9 @@ def get_mesh_group_elements(mesh_group_obj, aPart):
 
 
 def get_analysis_group_elements(aAnalysis, aPart):
-    ''' all Reference shapes of all Analysis member are searched in the Shape of aPart. If found in shape they are added to a dict
-    {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
+    ''' all Reference shapes of all Analysis member are searched in the Shape of aPart. 
+        If found in shape they are added to a dict
+        {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
     group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
@@ -1060,12 +1062,14 @@ def get_analysis_group_elements(aAnalysis, aPart):
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
         else:
             FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
-            print('We gone try to get the empty material references anyway.\n')
-            # FemElementGeometry2D, ElementGeometry1D and FemElementFluid1D could have empty references, but on solid meshes only materials should have empty references
+            print('We are going to try to get the empty material references anyway.\n')
+            # FemElementGeometry2D, ElementGeometry1D and FemElementFluid1D could have empty references, 
+            # but on solid meshes only materials should have empty references
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
-    # check if all groups have at least one element, it does not mean ALL reference shapes for a group have been found
+    # check if all groups have at least one element, 
+    # it doesn't mean ALL reference shapes for a group have been found
     for g in group_elements:
         # print(group_elements[g])
         if len(group_elements[g]) == 0:
@@ -1086,7 +1090,7 @@ def get_reference_group_elements(obj, aPart):
     '''
     aShape = aPart.Shape
     if hasattr(obj, "UseLabel") and obj.UseLabel:
-        key = obj.Label  # TODO check the character of the Label, only allow underline and standard english character
+        key = obj.Label  # TODO: check the character of the Label, only allow underline and standard english character
     else:
         key = obj.Name
     elements = []
@@ -1119,10 +1123,10 @@ def get_reference_group_elements(obj, aPart):
                     # Part.show(aShape)
                     # Part.show(ref_shape)
                 else:
-                    FreeCAD.Console.PrintError('This should not happen, please debugg!\n')
+                    FreeCAD.Console.PrintError('This should not happen, please debug!\n')
                     # in this case we would not have needed to use the is_same_geometry() inside find_element_in_shape()
                     # AFAIK we could have used the Part methods isPartner() or even isSame()
-                    # We gone find out when we need to debugg this :-)!
+                    # We're gonna find out when we need to debug this :-)!
     return (key, sorted(elements))
 
 
@@ -1230,7 +1234,7 @@ def find_element_in_shape(aShape, anElement):
 
 
 def get_vertexes_by_element(aShape, anElement):
-    # we gone extent the method find_element_in_shape and return the vertexes
+    # we're going to extend the method find_element_in_shape and return the vertexes
     # import Part
     ele_vertexes = []
     ele_st = anElement.ShapeType
