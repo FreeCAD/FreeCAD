@@ -31,6 +31,7 @@
 #endif
 
 #include "ViewProviderAnalysis.h"
+#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>
@@ -74,9 +75,32 @@ bool ViewProviderFemAnalysis::doubleClicked(void)
 
 std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)const
 {
-    std::vector<App::DocumentObject*> temp(static_cast<Fem::FemAnalysis*>(getObject())->Member.getValues());
+    return static_cast<Fem::FemAnalysis*>(getObject())->Member.getValues();
+}
 
-    return temp;
+std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
+{
+    return { "Analysis" };
+}
+
+void ViewProviderFemAnalysis::hide(void)
+{
+    Gui::ViewProviderDocumentObject::hide();
+    std::vector<App::DocumentObject*> temp(static_cast<Fem::FemAnalysis*>
+        (getObject())->Member.getValues());
+    for (auto it : temp) {
+        Gui::Application::Instance->hideViewProvider(it);
+    }
+}
+
+void ViewProviderFemAnalysis::show(void)
+{
+    Gui::ViewProviderDocumentObject::show();
+    std::vector<App::DocumentObject*> temp(static_cast<Fem::FemAnalysis*>
+        (getObject())->Member.getValues());
+    for (auto it : temp) {
+        Gui::Application::Instance->showViewProvider(it);
+    }
 }
 
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const char* )
