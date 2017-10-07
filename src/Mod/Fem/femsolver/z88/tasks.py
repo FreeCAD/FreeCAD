@@ -75,8 +75,9 @@ class Prepare(run.Prepare):
 class Solve(run.Solve):
 
     def run(self):
-        # AFAIK z88r needs to be run twice, once in test mode ond once in real solve mode
+        # AFAIK: z88r needs to be run twice, once in test mode ond once in real solve mode
         # the subprocess was just copied, it seams to work :-)
+        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compare with the used ones
         self.pushStatus("Executing test solver...\n")
         binary = settings.getBinary("Z88")
         self._process = subprocess.Popen(
