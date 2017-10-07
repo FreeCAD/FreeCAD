@@ -328,8 +328,18 @@ void QuantitySpinBox::setBoundToByName(const QString &qstr)
     }
 }
 
-void Gui::QuantitySpinBox::onChange() {
-    
+QString Gui::QuantitySpinBox::expressionText() const
+{
+    Q_D(const QuantitySpinBox);
+    if (isBound()) {
+        return QString::fromStdString(getExpressionString());
+    }
+    return QString();
+}
+
+
+void Gui::QuantitySpinBox::onChange()
+{
     Q_ASSERT(isBound());
     
     if (getExpression()) {
