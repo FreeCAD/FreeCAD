@@ -315,16 +315,16 @@ void QuantitySpinBox::setBoundToByName(const QString &qstr)
                     path.setDocumentObjectName(objName, true);
                     bind(path);
                 } else {
-                    printf("%s.%s('%s', '%s'): no prop\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+                    //printf("%s.%s('%s', '%s'): no prop\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
                 }
             } else {
-                printf("%s.%s('%s', '%s'): no obj\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+                //printf("%s.%s('%s', '%s'): no obj\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
             }
         } else {
-            printf("%s.%s('%s', '%s'): no doc\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+            //printf("%s.%s('%s', '%s'): no doc\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
         }
     } else {
-        printf("%s.%s(%s'): invalid name\n", __FILE__, __FUNCTION__, name.c_str());
+        //printf("%s.%s(%s'): invalid name\n", __FILE__, __FUNCTION__, name.c_str());
     }
 }
 
