@@ -492,8 +492,13 @@ void PropertyItem::bind(const App::Property& prop) {
 QString PropertyItem::expressionAsString() const
 {
     if (hasExpression()) {
-        std::unique_ptr<App::Expression> result(getExpression()->eval());
-        return QString::fromStdString(result->toString());
+        try {
+            std::unique_ptr<App::Expression> result(getExpression()->eval());
+            return QString::fromStdString(result->toString());
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     }
 
     return QString();
