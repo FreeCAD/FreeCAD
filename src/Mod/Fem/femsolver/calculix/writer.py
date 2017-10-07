@@ -381,7 +381,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 # we're going to use them in the analysis
                 # but a mesh could contain the element faces of the volumes as faces
                 # and the edges of the faces as edges, there we have to check for some geometric objects
-                self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retriving ids from group mesh data is implemented
+                self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retrieving ids from group mesh data is implemented
             elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_shell()
             elif len(self.shellthickness_objects) > 1:
