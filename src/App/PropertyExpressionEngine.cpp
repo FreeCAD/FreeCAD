@@ -407,12 +407,35 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
             throw Base::RuntimeError(error.c_str());
 
         AtomicPropertyChange signaller(*this);
+#ifndef USE_OLD_DAG
+        // When overriding an ObjectIdentifier key then first remove
+        // the dependency caused by the expression as otherwise it happens
+        // that the same object dependency is added twice for the same
+        // identifier. This makes it impossible to properly clear dependencies
+        // and thus leads to topological errors on recompute.
+        //
+        // Verify that this property is owned by a DocumentObject
+        App::DocumentObject* parent = dynamic_cast<App::DocumentObject*>(getContainer());
+        if (parent) {
+            if (it != expressions.end() && it->second.expression) {
+                std::set<ObjectIdentifier> deps;
+                it->second.expression->getDeps(deps);
+                std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                while (j != deps.end()) {
+                    const ObjectIdentifier & p = *j;
+                    DocumentObject* docObj = p.getDocumentObject();
+                    if (docObj && (docObj != parent))
+                        docObj->_removeBackLink(parent);
+                    ++j;
+                }
+            }
+        }
+#endif
+
         expressions[usePath] = ExpressionInfo(expr, comment);
-        
+
 #ifndef USE_OLD_DAG
         //maintain the backlinks in the documentobject graph datastructure
-        //verify that this property is owned by a DocumentObject
-        App::DocumentObject* parent = dynamic_cast<App::DocumentObject*>(getContainer());
         if (parent) {
             std::set<ObjectIdentifier> deps;
             expr->getDeps(deps);
