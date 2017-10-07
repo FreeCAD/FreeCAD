@@ -141,6 +141,8 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_OperationCopy', _CopyOperation())
 
 
+# \c findShape() is referenced from Gui/Command.cpp and used by Path.Area commands.
+# Do not remove!
 def findShape(shape, subname=None, subtype=None):
     '''To find a higher oder shape containing the subshape with subname.
         E.g. to find the wire containing 'Edge1' in shape,
