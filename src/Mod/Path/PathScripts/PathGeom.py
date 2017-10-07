@@ -152,7 +152,7 @@ class PathGeom:
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
                 return cls.isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse:
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse or type(obj.Curve) == Part.BSplineCurve:
                 return cls.isHorizontal(obj.Curve.Axis)
             if type(obj.Curve) == Part.BezierCurve:
                 # the current assumption is that a bezier curve is vertical if its end points are vertical
@@ -181,7 +181,7 @@ class PathGeom:
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
                 return cls.isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse:
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse or type(obj.Curve) == Part.BSplineCurve:
                 return cls.isVertical(obj.Curve.Axis)
             if type(obj.Curve) == Part.BezierCurve:
                 return cls.isRoughly(obj.BoundBox.ZLength, 0)
