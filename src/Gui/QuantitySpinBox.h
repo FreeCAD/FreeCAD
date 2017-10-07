@@ -45,7 +45,8 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
     Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(QString boundTo READ boundToName WRITE setBoundToByName)
+    Q_PROPERTY(QString binding READ boundToName WRITE setBoundToByName)
+    Q_PROPERTY(QString expression READ expressionText)
 
 public:
     using ExpressionBinding::apply;
@@ -94,6 +95,9 @@ public:
     QString boundToName() const;
     /// Sets the path of the bound property
     void setBoundToByName(const QString &path);
+
+    /// Gets the expression as a string
+    QString expressionText() const;
 
     /// Set the number portion selected
     void selectNumber();
