@@ -533,14 +533,23 @@ class TaskPanelHeightsPage(TaskPanelPage):
     '''Page controller for heights.'''
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
+
+    def initPage(self, obj):
+        self.form.safeHeight.setProperty('binding', "%s.SafeHeight" % obj.Name)
+        self.form.clearanceHeight.setProperty('binding', "%s.ClearanceHeight" % obj.Name)
+        self.form.safeHeight.setProperty('unit', obj.SafeHeight.getUserPreferred()[2])
+        self.form.clearanceHeight.setProperty('unit', obj.ClearanceHeight.getUserPreferred()[2])
+
     def getTitle(self, obj):
         return translate("Path", "Heights")
+
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'SafeHeight',      self.form.safeHeight)
         PathGui.updateInputField(obj, 'ClearanceHeight', self.form.clearanceHeight)
     def setFields(self,  obj):
-        self.form.safeHeight.setText(FreeCAD.Units.Quantity(obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
-        self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
+        self.form.safeHeight.setProperty('rawValue', obj.SafeHeight.Value)
+        self.form.safeHeight.setProperty('rawValue', obj.ClearanceHeight.Value)
+
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.safeHeight.editingFinished)
