@@ -297,34 +297,54 @@ QString QuantitySpinBox::boundToName() const
     return QString();
 }
 
-void QuantitySpinBox::setBoundToByName(const QString &qstr)
+/**
+ * @brief Create an object identifier by name.
+ *
+ * An identifier is written as document#documentobject.property.subproperty1...subpropertyN
+ * document# may be dropped, in this case the active document is used.
+ */
+void QuantitySpinBox::setBoundToByName(const QString &name)
 {
     Q_D(QuantitySpinBox);
-    std::string name = qstr.toStdString();
-    size_t pos = name.rfind('.');
-    if (std::string::npos != pos && 0 != pos) {
-        std::string objName = name.substr(0, pos);
-        std::string prpName = name.substr(pos+1);
+    try {
+        // get document
         App::Document *doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            App::DocumentObject *obj = doc->getObject(objName.c_str());
-            if (obj) {
-                App::Property *prop = obj->getPropertyByName(prpName.c_str());
-                if (prop) {
-                    App::ObjectIdentifier path(*prop);
-                    path.setDocumentObjectName(objName, true);
-                    bind(path);
-                } else {
-                    //printf("%s.%s('%s', '%s'): no prop\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
-                }
-            } else {
-                //printf("%s.%s('%s', '%s'): no obj\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
-            }
-        } else {
-            //printf("%s.%s('%s', '%s'): no doc\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+        QStringList list = name.split(QLatin1Char('#'));
+        if (list.size() > 1) {
+            doc = App::GetApplication().getDocument(list.front().toLatin1());
+            list.pop_front();
         }
-    } else {
-        //printf("%s.%s(%s'): invalid name\n", __FILE__, __FUNCTION__, name.c_str());
+
+        if (!doc) {
+            qDebug() << "No such document";
+            return;
+        }
+
+        // first element is assumed to be the document name
+        list = list.front().split(QLatin1Char('.'));
+
+        // get object
+        App::DocumentObject* obj = doc->getObject(list.front().toLatin1());
+        if (!obj) {
+            qDebug() << "No object " << list.front() << " in document";
+            return;
+        }
+        list.pop_front();
+
+        // the rest of the list defines the property and eventually subproperties
+        App::ObjectIdentifier path(obj);
+        path.setDocumentName(std::string(doc->getName()), true);
+        path.setDocumentObjectName(std::string(obj->getNameInDocument()), true);
+
+        for (QStringList::iterator it = list.begin(); it != list.end(); ++it) {
+            path << App::ObjectIdentifier::Component::SimpleComponent(it->toLatin1().constData());
+        }
+
+        if (path.getProperty())
+            bind(path);
+    }
+    catch (const Base::Exception& e) {
+        qDebug() << e.what();
     }
 }
 
