@@ -147,7 +147,7 @@ class PathGeom:
                 return True
             if type(obj.Surface) == Part.SurfaceOfExtrusion:
                 return cls.isVertical(obj.Surface.Direction)
-            PathLog.error(translate('PathGeom', "face isVertical(%s) not supported") % type(obj.Surface))
+            PathLog.warning(translate('PathGeom', "face %s not handled, assuming not vertical") % type(obj.Surface))
             return None
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
@@ -157,7 +157,7 @@ class PathGeom:
             if type(obj.Curve) == Part.BezierCurve:
                 # the current assumption is that a bezier curve is vertical if its end points are vertical
                 return cls.isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
-            PathLog.error(translate('PathGeom', "edge isVertical(%s) not supported") % type(obj.Curve))
+            PathLog.warning(translate('PathGeom', "edge %s not handled, assuming not vertical") % type(obj.Curve))
             return None
         PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
         return None
@@ -176,7 +176,7 @@ class PathGeom:
                 return True
             if type(obj.Surface) == Part.SurfaceOfExtrusion:
                 return cls.isHorizontal(obj.Surface.Direction)
-            PathLog.error(translate('PathGeom', "face isHorizontal(%s) not supported") % type(obj.Surface))
+            PathLog.warning(translate('PathGeom', "face %s not handled, assuming not horizontal") % type(obj.Surface))
             return None
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
@@ -185,7 +185,7 @@ class PathGeom:
                 return cls.isVertical(obj.Curve.Axis)
             if type(obj.Curve) == Part.BezierCurve:
                 return cls.isRoughly(obj.BoundBox.ZLength, 0)
-            PathLog.error(translate('PathGeom', "edge isHorizontal(%s) not supported") % type(obj.Curve))
+            PathLog.warning(translate('PathGeom', "edge %s not handled, assuming not horizontal") % type(obj.Curve))
             return None
         PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
         return None

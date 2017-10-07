@@ -24,6 +24,9 @@
 
 import FreeCAD
 import PathScripts
+import PathScripts.PathLog as PathLog
+import traceback
+
 from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import horizontalFaceLoop
@@ -45,6 +48,11 @@ __url__ = "http://www.freecadweb.org"
 
 class _CommandSelectLoop:
     "the Path command to complete loop selection definition"
+    def __init__(self):
+        self.obj = None
+        self.sub = []
+        self.active = False
+
     def GetResources(self):
         return {'Pixmap': 'Path-SelectLoop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
@@ -56,18 +64,15 @@ class _CommandSelectLoop:
             return False
         try:
             sel = FreeCADGui.Selection.getSelectionEx()[0]
-            sub1 = sel.SubElementNames[0]
-            if sub1[0:4] != 'Edge':
-                if sub1[0:4] == 'Face' and horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames):
-                    return True
-                return False
-            if len(sel.SubElementNames) == 1 and horizontalEdgeLoop(sel.Object, sel.SubObjects[0]):
-                return True
-            sub2 = sel.SubElementNames[1]
-            if sub2[0:4] != 'Edge':
-                return False
-            return True
-        except:
+            if sel.Object == self.obj and sel.SubElementNames == self.sub:
+                return self.active
+            self.obj = sel.Object
+            self.sub = sel.SubElementNames
+            self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            return self.active
+        except Exception as exc:
+            PathLog.error(exc)
+            traceback.print_exc(exc)
             return False
 
     def Activated(self):
@@ -93,6 +98,17 @@ class _CommandSelectLoop:
                 for i in loopwire.Edges:
                     if e.hashCode() == i.hashCode():
                         FreeCADGui.Selection.addSelection(obj, "Edge"+str(elist.index(e)+1))
+
+    def formsPartOfALoop(self, obj, sub, names):
+        if names[0][0:4] != 'Edge':
+            if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
+                return True
+            return False
+        if len(sel.SubElementNames) == 1 and horizontalEdgeLoop(obj, sub):
+            return True
+        if names[1][0:4] != 'Edge':
+            return False
+        return True
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
