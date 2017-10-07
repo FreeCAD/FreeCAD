@@ -43,6 +43,9 @@
 #include "Command.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Expression.h>
 #include <sstream>
 #include <boost/math/special_functions/round.hpp>
@@ -281,6 +284,47 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
         iconLabel->setToolTip(QString::fromLatin1(e.what()));
+    }
+}
+
+QString QuantitySpinBox::boundToName() const
+{
+    Q_D(const QuantitySpinBox);
+    if (isBound()) {
+        std::string path = getPath().toString();
+        return QString::fromStdString(path);
+    }
+    return QString();
+}
+
+void QuantitySpinBox::setBoundToByName(const QString &qstr)
+{
+    Q_D(QuantitySpinBox);
+    std::string name = qstr.toStdString();
+    size_t pos = name.rfind('.');
+    if (std::string::npos != pos && 0 != pos) {
+        std::string objName = name.substr(0, pos);
+        std::string prpName = name.substr(pos+1);
+        App::Document *doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            App::DocumentObject *obj = doc->getObject(objName.c_str());
+            if (obj) {
+                App::Property *prop = obj->getPropertyByName(prpName.c_str());
+                if (prop) {
+                    App::ObjectIdentifier path(*prop);
+                    path.setDocumentObjectName(objName, true);
+                    bind(path);
+                } else {
+                    printf("%s.%s('%s', '%s'): no prop\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+                }
+            } else {
+                printf("%s.%s('%s', '%s'): no obj\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+            }
+        } else {
+            printf("%s.%s('%s', '%s'): no doc\n", __FILE__, __FUNCTION__, objName.c_str(), prpName.c_str());
+        }
+    } else {
+        printf("%s.%s(%s'): invalid name\n", __FILE__, __FUNCTION__, name.c_str());
     }
 }
 

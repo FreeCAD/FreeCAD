@@ -45,6 +45,7 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
     Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
+    Q_PROPERTY(QString boundTo READ boundToName WRITE setBoundToByName)
 
 public:
     using ExpressionBinding::apply;
@@ -88,6 +89,11 @@ public:
     double maximum() const;
     /// Sets the value of the maximum property 
     void setMaximum(double max);
+
+    /// Gets the path of the bound property
+    QString boundToName() const;
+    /// Sets the path of the bound property
+    void setBoundToByName(const QString &path);
 
     /// Set the number portion selected
     void selectNumber();
