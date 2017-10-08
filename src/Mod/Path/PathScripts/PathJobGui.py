@@ -752,6 +752,18 @@ class TaskPanel:
             except:
                 pass
             item.setText("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
+        elif 'HorizFeed' == prop or 'VertFeed' == prop:
+            vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
+            try:
+                val = FreeCAD.Units.Quantity(item.text())
+                if FreeCAD.Units.Velocity == val.Unit:
+                    setattr(tc, prop, val)
+                elif FreeCAD.Units.Unit() == val.Unit:
+                    val = FreeCAD.Units.Quantity(item.text()+vUnit);
+                    setattr(tc, prop, val)
+            except:
+                pass
+            item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
