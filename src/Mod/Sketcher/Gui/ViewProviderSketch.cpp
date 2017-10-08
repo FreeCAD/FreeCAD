@@ -2017,7 +2017,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
 
             if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
-                if(!touchMode){
+                if(!touchMode || polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2071,7 +2071,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
 
             if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
-                if(!touchMode){
+                if(!touchMode || polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)){
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
