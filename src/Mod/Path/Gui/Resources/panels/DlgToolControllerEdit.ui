@@ -78,9 +78,12 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="Gui::InputField" name="horizFeed">
+           <widget class="Gui::QuantitySpinBox" name="horizFeed">
             <property name="minimum" stdset="0">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum" stdset="0">
+             <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm/s</string>
@@ -88,9 +91,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="Gui::InputField" name="vertFeed">
+           <widget class="Gui::QuantitySpinBox" name="vertFeed">
             <property name="minimum" stdset="0">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum" stdset="0">
+             <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm/s</string>
@@ -98,9 +104,12 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="Gui::InputField" name="horizRapid">
+           <widget class="Gui::QuantitySpinBox" name="horizRapid">
             <property name="minimum" stdset="0">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum" stdset="0">
+             <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm/s</string>
@@ -108,9 +117,12 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="Gui::InputField" name="vertRapid">
+           <widget class="Gui::QuantitySpinBox" name="vertRapid">
             <property name="minimum" stdset="0">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum" stdset="0">
+             <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm/s</string>
@@ -494,6 +506,11 @@
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
