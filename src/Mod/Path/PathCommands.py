@@ -107,9 +107,9 @@ class _CommandSelectLoop:
             if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
                 return True
             return False
-        if len(sel.SubElementNames) == 1 and horizontalEdgeLoop(obj, sub):
+        if len(names) == 1 and horizontalEdgeLoop(obj, sub):
             return True
-        if names[1][0:4] != 'Edge':
+        if len(names) == 1 or names[1][0:4] != 'Edge':
             return False
         return True
 
