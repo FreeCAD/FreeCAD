@@ -25,6 +25,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathSettings as PathSettings
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
@@ -235,8 +236,8 @@ class ObjectOp(object):
             obj.StepDown        =  1.0
 
         if FeatureHeights & features:
-            obj.setExpression('SafeHeight', "%s.DefaultSafeHeight+StartDepth" % job.Settings.Name)
-            obj.setExpression('ClearanceHeight', "%s.DefaultClearanceHeight+StartDepth" % job.Settings.Name)
+            obj.setExpression('SafeHeight',      "%s.%s+StartDepth" % (job.Settings.Name, PathSettings.Default.SafeHeight))
+            obj.setExpression('ClearanceHeight', "%s.%s+StartDepth" % (job.Settings.Name, PathSettings.Default.ClearanceHeight))
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
