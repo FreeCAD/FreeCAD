@@ -66,14 +66,15 @@ class StockType:
 def shapeBoundBox(obj):
     if hasattr(obj, 'Shape'):
         return obj.Shape.BoundBox
-    if 'App::Part' == obj.TypeId:
+    if obj and 'App::Part' == obj.TypeId:
         bounds = [shapeBoundBox(o) for o in obj.Group]
         if bounds:
             bb = bounds[0]
             for b in bounds[1:]:
                 bb = bb.united(b)
             return bb
-    PathLog.error(translate('PathStock', 'Invalid base object - no shape found'))
+    if obj:
+        PathLog.error(translate('PathStock', "Invalid base object %s - no shape found") % obj.Name)
     return None
 
 class StockFromBase:
@@ -96,7 +97,11 @@ class StockFromBase:
         obj.ExtZneg= 1.0
         obj.ExtZpos= 1.0
 
-        obj.Placement = placement
+        dPos = placement.Base - base.Placement.Base
+        dRot = placement.Rotation.multiply(base.Placement.Rotation.inverted())
+        dPlacement = FreeCAD.Placement(dPos, dRot)
+        PathLog.debug("%s - %s: %s" % (placement, base.Placement, dPlacement))
+        obj.Placement = dPlacement
         obj.Proxy = self
 
     def __getstate__(self):
@@ -107,16 +112,19 @@ class StockFromBase:
     def execute(self, obj):
         bb = shapeBoundBox(obj.Base)
 
-        origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
-        self.origin = origin - FreeCAD.Vector(obj.ExtXneg.Value, obj.ExtYneg.Value, obj.ExtZneg.Value)
+        # Sometimes, when the Base changes it's temporarily not assigned when
+        # Stock.execute is triggered - it'll be set correctly the next time around.
+        if bb:
+            origin = FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin)
+            self.origin = origin - FreeCAD.Vector(obj.ExtXneg.Value, obj.ExtYneg.Value, obj.ExtZneg.Value)
 
-        self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
-        self.width  = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
-        self.height = bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value
+            self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
+            self.width  = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
+            self.height = bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value
 
-        shape = Part.makeBox(self.length, self.width, self.height, self.origin)
-        shape.Placement = obj.Placement
-        obj.Shape = shape
+            shape = Part.makeBox(self.length, self.width, self.height, self.origin)
+            shape.Placement = obj.Placement
+            obj.Shape = shape
 
     def onChanged(self, obj, prop):
         if prop in ['ExtXneg', 'ExtXpos', 'ExtYneg', 'ExtYpos', 'ExtZneg', 'ExtZpos'] and not 'Restore' in obj.State:
