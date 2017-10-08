@@ -162,7 +162,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Extend Base Bound Box</string>
+           <string>Extend Model's Bound Box</string>
           </property>
          </item>
          <item>
