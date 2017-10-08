@@ -251,13 +251,14 @@ class CommandJobTemplateExport:
         if stockAttrs:
             attrs[PathJob.JobTemplate.Stock] = stockAttrs
 
-        # defaults settings
-        if dialog and not (dialog.includeDefaults() and dialog.includeDefaultToolRapid()):
-            attrs.pop(PathJob.JobTemplate.DefaultVertRapid, None)
-            attrs.pop(PathJob.JobTemplate.DefaultHorizRapid, None)
-        if dialog and not (dialog.includeDefaults() and dialog.includeDefaultOperationHeights()):
-            attrs.pop(PathJob.JobTemplate.DefaultSafeHeight, None)
-            attrs.pop(PathJob.JobTemplate.DefaultClearanceHeight, None)
+        # settings
+        settingsAttrs = None
+        if dialog:
+            settingsAttrs = job.Proxy.settings.templateAttributes(dialog.includeDefaultToolRapid(), dialog.includeDefaultOperationHeights())
+        else:
+            settingsAttrs = job.Proxy.settings.templateAttributes(True, True)
+        if settingsAttrs:
+            attrs[PathJob.JobTemplate.Settings] = settingsAttrs
 
         # write template
         with open(unicode(path), 'wb') as fp:

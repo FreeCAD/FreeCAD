@@ -51,19 +51,16 @@ def translate(context, text, disambig=None):
 
 class JobTemplate:
     '''Attribute and sub element strings for template export/import.'''
+    Description = 'Desc'
+    GeometryTolerance = 'Tolerance'
     Job = 'Job'
     PostProcessor = 'Post'
     PostProcessorArgs = 'PostArgs'
     PostProcessorOutputFile = 'Output'
-    GeometryTolerance = 'Tolerance'
-    Description = 'Desc'
-    ToolController = 'ToolController'
+    Settings = 'Settings'
     Stock = 'Stock'
+    ToolController = 'ToolController'
     Version = 'Version'
-    DefaultVertRapid = 'DefaultVertRapid'
-    DefaultHorizRapid = 'DefaultHorizRapid'
-    DefaultSafeHeight = 'DefaultSafeHeight'
-    DefaultClearanceHeight = 'DefaultClearanceHeight'
 
 def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
@@ -209,14 +206,8 @@ class ObjectJob:
                 attrs = json.load(fp)
 
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
-                if attrs.get(JobTemplate.DefaultVertRapid):
-                    self.settings.updateSetting(PathSettings.Default.VertRapid, attrs[JobTemplate.DefaultVertRapid])
-                if attrs.get(JobTemplate.DefaultHorizRapid):
-                    self.settings.updateSetting(PathSettings.Default.HorizRapid, attrs[JobTemplate.DefaultHorizRapid])
-                if attrs.get(JobTemplate.DefaultSafeHeight):
-                    self.settings.updateSetting(PathSettings.Default.SafeHeight, attrs[JobTemplate.DefaultSafeHeight])
-                if attrs.get(JobTemplate.DefaultClearanceHeight):
-                    self.settings.updateSetting(PathSettings.Default.ClearanceHeight, attrs[JobTemplate.DefaultClearanceHeight])
+                if attrs.get(JobTemplate.Settings):
+                    self.settings.setFromTemplate(attrs[JobTemplate.Settings])
 
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
@@ -236,13 +227,13 @@ class ObjectJob:
                         tcs.append(PathToolController.FromTemplate(tc))
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
+
+                PathLog.debug("setting tool controllers (%d)" % len(tcs))
+                obj.ToolController = tcs
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
-                tcs.append(PathToolController.Create())
         if not tcs:
-            tcs.append(PathToolController.Create())
-        PathLog.debug("setting tool controllers (%d)" % len(tcs))
-        obj.ToolController = tcs
+            self.addToolController(PathToolController.Create())
 
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file.'''
@@ -256,10 +247,6 @@ class ObjectJob:
         attrs[JobTemplate.GeometryTolerance]           = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description]             = obj.Description
-        attrs[JobTemplate.DefaultVertRapid]            = obj.Settings.DefaultVertRapid
-        attrs[JobTemplate.DefaultHorizRapid]           = obj.Settings.DefaultHorizRapid
-        attrs[JobTemplate.DefaultSafeHeight]           = obj.Settings.DefaultSafeHeight
-        attrs[JobTemplate.DefaultClearanceHeight]      = obj.Settings.DefaultClearanceHeight
         return attrs
 
     def __getstate__(self):
@@ -283,7 +270,7 @@ class ObjectJob:
 
     def addToolController(self, tc):
         group = self.obj.ToolController
-        PathLog.info("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
+        PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
             tc.setExpression('VertRapid',  "%s.%s" % (self.obj.Settings.Name, PathSettings.Default.VertRapid))
             tc.setExpression('HorizRapid', "%s.%s" % (self.obj.Settings.Name, PathSettings.Default.HorizRapid))

@@ -76,3 +76,23 @@ class Settings:
         self.obj.Settings.setAlias(valueCell, name)
         self.obj.Settings.set(descCell, desc)
 
+    def setFromTemplate(self, attrs):
+        if attrs.get(Default.VertRapid):
+            self.updateSetting(Default.VertRapid, attrs[Default.VertRapid])
+        if attrs.get(Default.HorizRapid):
+            self.updateSetting(Default.HorizRapid, attrs[Default.HorizRapid])
+        if attrs.get(Default.SafeHeight):
+            self.updateSetting(Default.SafeHeight, attrs[Default.SafeHeight])
+        if attrs.get(Default.ClearanceHeight):
+            self.updateSetting(Default.ClearanceHeight, attrs[Default.ClearanceHeight])
+
+    def templateAttributes(self, includeRapids, includeHeights):
+        attrs = {}
+        if includeRapids:
+            attrs[Default.VertRapid]            = self.obj.Settings.DefaultVertRapid.UserString
+            attrs[Default.HorizRapid]           = self.obj.Settings.DefaultHorizRapid.UserString
+        if includeHeights:
+            attrs[Default.SafeHeight]           = self.obj.Settings.DefaultSafeHeight.UserString
+            attrs[Default.ClearanceHeight]      = self.obj.Settings.DefaultClearanceHeight.UserString
+        return attrs
+
