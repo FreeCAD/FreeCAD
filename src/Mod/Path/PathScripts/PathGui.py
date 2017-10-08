@@ -40,6 +40,11 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "A collection of helper and utility functions for the Path GUI."
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 def updateInputField(obj, prop, widget, onBeforeChange = None):
     '''updateInputField(obj, prop, widget) ... helper function to update obj's property named prop with the value from widget, if it has changed.'''
@@ -55,17 +60,20 @@ def updateInputField(obj, prop, widget, onBeforeChange = None):
     return False
 
 class QuantitySpinBox:
-    def __init__(self, widget, obj, propName):
+    def __init__(self, widget, obj, propName, onBeforeChange=None):
         self.obj = obj
         self.widget = widget
         self.prop = propName
+        self.onBeforeChange = onBeforeChange
 
         widget.setProperty('unit', getattr(self.obj, self.prop).getUserPreferred()[2])
         widget.setProperty('binding', "%s.%s" % (obj.Name, propName))
 
-    def updateSpinBox(self):
-        self.widget.setProperty('rawValue', getattr(self.obj, self.prop).Value)
+    def updateSpinBox(self, quantity=None):
+        if quantity is None:
+            quantity = getattr(self.obj, self.prop)
+        self.widget.setProperty('rawValue', quantity.Value)
 
     def updateProperty(self):
-        return updateInputField(self.obj, self.prop, self.widget)
+        return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
 
