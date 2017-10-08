@@ -65,15 +65,21 @@ class QuantitySpinBox:
         self.widget = widget
         self.prop = propName
         self.onBeforeChange = onBeforeChange
-
-        widget.setProperty('unit', getattr(self.obj, self.prop).getUserPreferred()[2])
-        widget.setProperty('binding', "%s.%s" % (obj.Name, propName))
+        if hasattr(obj, propName):
+            widget.setProperty('unit', getattr(self.obj, self.prop).getUserPreferred()[2])
+            widget.setProperty('binding', "%s.%s" % (obj.Name, propName))
+            self.valid = True
+        else:
+            self.valid = False
 
     def updateSpinBox(self, quantity=None):
-        if quantity is None:
-            quantity = getattr(self.obj, self.prop)
-        self.widget.setProperty('rawValue', quantity.Value)
+        if self.valid:
+            if quantity is None:
+                quantity = getattr(self.obj, self.prop)
+            self.widget.setProperty('rawValue', quantity.Value)
 
     def updateProperty(self):
-        return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
+        if self.valid:
+            return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
+        return None
 
