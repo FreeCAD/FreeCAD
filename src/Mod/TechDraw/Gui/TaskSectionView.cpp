@@ -163,7 +163,6 @@ void TaskSectionView::updateValues()
     m_section->SectionOrigin.setValue(origin);
     m_section->SectionSymbol.setValue(ui->leSymbol->text().toUtf8().constData());
 
-    m_base->touch();
     m_base->getDocument()->recompute();
 }
 
@@ -302,8 +301,7 @@ bool TaskSectionView::reject()
                             PageName.c_str(),SectionName.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",SectionName.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-    m_base->touch();
-    m_base->getDocument()->recompute();
+    m_base->findParentPage()->requestPaint();
     return false;
 }
 

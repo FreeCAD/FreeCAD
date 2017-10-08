@@ -156,6 +156,7 @@ namespace KDL {
 
   Vector Joint::JointOrigin() const
   {
+    (void)inertia; (void)damping; (void)stiffness;
     return origin;
   }
 

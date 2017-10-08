@@ -44,7 +44,7 @@ PROPERTY_SOURCE(TechDraw::DrawViewCollection, TechDraw::DrawView)
 
 DrawViewCollection::DrawViewCollection()
 {
-    nowDeleting = false;
+    nowUnsetting = false;
     static const char *group = "Drawing view";
     ADD_PROPERTY_TYPE(Views     ,(0), group, App::Prop_None,"Attached Views");
 
@@ -145,7 +145,7 @@ void DrawViewCollection::onChanged(const App::Property* prop)
 
 void DrawViewCollection::unsetupObject()
 {
-    nowDeleting = true;
+    nowUnsetting = true;
 
     // Remove the collection's views from document
     App::Document* doc = getDocument();

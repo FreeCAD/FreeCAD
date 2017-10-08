@@ -31,21 +31,30 @@
 
 #include "ViewProviderBoolean.h"
 #include "TaskBooleanParameters.h"
+#include "ViewProviderBody.h"
 #include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean,PartDesignGui::ViewProvider)
 
+const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result","Tools",NULL};
+
+
 ViewProviderBoolean::ViewProviderBoolean()
 {
     sPixmap = "PartDesign_Boolean.svg";
     initExtension(this);
+    
+    ADD_PROPERTY(Display,((long)0));
+    Display.setEnums(DisplayEnum);
 }
 
 ViewProviderBoolean::~ViewProviderBoolean()
@@ -116,4 +125,27 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
+void ViewProviderBoolean::attach(App::DocumentObject* obj) {
+    PartGui::ViewProviderPartExt::attach(obj);
+    
+    //set default display mode to override the "Group" display mode
+    setDisplayMode("Flat Lines");
+}
 
+void ViewProviderBoolean::onChanged(const App::Property* prop) {
+    
+    PartDesignGui::ViewProvider::onChanged(prop);
+    
+    if(prop == &Display) {
+     
+        if(Display.getValue() == 0) {
+            auto vp = getBodyViewProvider();
+            if(vp)
+                setDisplayMode(vp->DisplayMode.getValueAsString());
+            else 
+                setDisplayMode("Flat Lines");
+        } else {
+            setDisplayMode("Group");
+        }
+    }
+}

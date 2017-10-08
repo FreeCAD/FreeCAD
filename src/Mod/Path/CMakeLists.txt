@@ -25,7 +25,6 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
-    PathScripts/PathDressup.py
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
@@ -58,6 +57,8 @@ SET(PathScripts_SRCS
     PathScripts/PathPocketBase.py
     PathScripts/PathPocketBaseGui.py
     PathScripts/PathPocketGui.py
+    PathScripts/PathPocketShape.py
+    PathScripts/PathPocketShapeGui.py
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
@@ -77,6 +78,7 @@ SET(PathScripts_SRCS
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
+    PathScripts/PathSurfaceGui.py
     PathScripts/PathToolController.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
@@ -119,6 +121,9 @@ SET(PathTests_SRCS
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
     PathTests/TestPathStock.py
+    PathTests/TestPathTool.py
+    PathTests/TestPathToolController.py
+    PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
 )
 

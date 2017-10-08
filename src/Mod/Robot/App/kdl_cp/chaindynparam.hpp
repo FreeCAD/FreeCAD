@@ -55,7 +55,7 @@ namespace KDL {
 
     private:
         const Chain chain;
-	int nr;
+	//int nr;
 	unsigned int nj;
         unsigned int ns;
 	Vector grav;

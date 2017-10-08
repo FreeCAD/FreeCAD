@@ -122,11 +122,11 @@ bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
 
 
 
-void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
+void ViewProviderPipe::highlightReferences(const bool on, bool auxiliary)
 {
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
     Part::Feature* base;
-    if(!auxillery)
+    if(!auxiliary)
         base = static_cast<Part::Feature*>(pcPipe->Spine.getValue());
     else 
         base = static_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue());
@@ -137,7 +137,7 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
     if (svp == NULL) return;
 
     std::vector<std::string> edges;
-    if(!auxillery)
+    if(!auxiliary)
         edges = pcPipe->Spine.getSubValuesStartsWith("Edge");
     else 
         edges = pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge");

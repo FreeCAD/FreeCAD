@@ -159,6 +159,7 @@ Area::Area(const AreaParams *params)
 ,myHaveSolid(false)
 ,myShapeDone(false)
 ,myProjecting(false)
+,mySkippedShapes(0)
 {
     if(params)
         setParams(*params);
@@ -174,6 +175,7 @@ Area::Area(const Area &other, bool deep_copy)
 ,myHaveSolid(other.myHaveSolid)
 ,myShapeDone(false)
 ,myProjecting(false)
+,mySkippedShapes(0)
 {
     if(!deep_copy || !other.isBuilt())
         return;
@@ -1929,7 +1931,11 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
             }
         }
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
-        out.Clip(toClipperOp(OperationIntersection),myArea.get(), SubjectFill,ClipFill);
+        PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
+        auto area = *myArea;
+        area.OffsetWithClipper(-tool_radius,JoinType,EndType,
+                myParams.MiterLimit,myParams.RoundPreceision);
+        out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;
         break;
     }default:
@@ -2226,12 +2232,26 @@ struct ShapeInfo{
     bool myStart;
 
     ShapeInfo(BRepLib_FindSurface &finder, const TopoDS_Shape &shape, ShapeParams &params)
-        :myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
-        ,myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(true)
+        : myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
+        , myShape(shape)
+        , myStartPt(1e20,1e20,1e20)
+        , myParams(params)
+        , myBestParameter(0)
+        , mySupportEdge(false)
+        , myPlanar(true)
+        , myRebase(false)
+        , myStart(false)
     {}
 
     ShapeInfo(const TopoDS_Shape &shape, ShapeParams &params)
-        :myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(false)
+        : myShape(shape)
+        , myStartPt(1e20,1e20,1e20)
+        , myParams(params)
+        , myBestParameter(0)
+        , mySupportEdge(false)
+        , myPlanar(false)
+        , myRebase(false)
+        , myStart(false)
     {}
     double nearest(const gp_Pnt &pt) {
         myStartPt = pt;

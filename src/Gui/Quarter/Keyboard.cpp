@@ -60,6 +60,12 @@ Keyboard::Keyboard(void)
   PRIVATE(this) = new KeyboardP(this);
 }
 
+Keyboard::Keyboard(QuarterWidget* quarter) :
+    InputDevice(quarter)
+{
+    PRIVATE(this) = new KeyboardP(this);
+}
+
 Keyboard::~Keyboard()
 {
   delete PRIVATE(this);

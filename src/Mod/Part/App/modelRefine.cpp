@@ -62,6 +62,9 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TColgp_SequenceOfPnt.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <Standard_Version.hxx>
 #include <Base/Console.h>
 #include "modelRefine.h"
 
@@ -1181,6 +1184,16 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             }
         }
         myShape = mkSolid.Solid();
+
+#if OCC_VERSION_HEX <= 0x060700
+        // With occ 6.7 and older it can happen that a solid is flipped.
+        // In this case it must be reversed
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(myShape, props);
+        if (props.Mass() < 0) {
+            myShape.Reverse();
+        }
+#endif
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);

@@ -44,7 +44,12 @@ class gp_Ax2;
 //class TopoDS_Edge;
 //class TopoDS_Vertex;
 //class TopoDS_Wire;
-//class TopoDS_Shape;
+class TopoDS_Shape;
+
+namespace App
+{
+class Part;
+}
 
 namespace TechDrawGeometry
 {
@@ -76,7 +81,7 @@ public:
     DrawViewPart(void);
     virtual ~DrawViewPart();
 
-    App::PropertyLink   Source;                                        //Part Feature
+    App::PropertyLinkGlobal   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;
@@ -127,7 +132,7 @@ public:
     const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
     const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
     const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
-    const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
+    virtual const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction,
@@ -138,7 +143,7 @@ public:
     bool handleFaces(void);
     bool showSectionEdges(void);
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -150,12 +155,13 @@ public:
     }
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
-    bool isDeleting(void) { return nowDeleting; }
+    bool isUnsetting(void) { return nowUnsetting; }
     
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
-
-
+    virtual TopoDS_Shape getSourceShape(void) const; 
+    virtual TopoDS_Shape getShapeFromPart(App::Part* ap) const;
+    
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
@@ -178,7 +184,7 @@ protected:
     bool m_handleFaces;
 
 private:
-    bool nowDeleting;
+    bool nowUnsetting;
 
 };
 

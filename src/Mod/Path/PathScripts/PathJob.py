@@ -30,7 +30,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
-import xml.etree.ElementTree as xml
+import json
 
 from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
@@ -41,7 +41,6 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
 
 """Path Job object and FreeCAD command"""
 
@@ -52,23 +51,31 @@ def translate(context, text, disambig=None):
 class JobTemplate:
     '''Attribute and sub element strings for template export/import.'''
     Job = 'Job'
-    PostProcessor = 'post'
-    PostProcessorArgs = 'post_args'
-    PostProcessorOutputFile = 'output'
-    GeometryTolerance = 'tol'
-    Description = 'desc'
+    PostProcessor = 'Post'
+    PostProcessorArgs = 'PostArgs'
+    PostProcessorOutputFile = 'Output'
+    GeometryTolerance = 'Tolerance'
+    Description = 'Desc'
     ToolController = 'ToolController'
     Stock = 'Stock'
+    Version = 'Version'
 
-def isResourceClone(obj, propName, resourceName):
+def isArchPanelSheet(obj):
+    return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
+
+def isResourceClone(obj, propName, resourceName=None):
     '''isResourceClone(obj, propName, resourceName) ... Return True if the given property of obj is a clone of type resourceName.'''
     if hasattr(obj, propName):
         propLink =  getattr(obj, propName)
-        if hasattr(propLink, 'PathResource') and resourceName == propLink.PathResource:
+        if hasattr(propLink, 'PathResource') and ((resourceName and resourceName == propLink.PathResource) or (resourceName is None and propName == propLink.PathResource)):
             return True
     return False
 
 def createResourceClone(obj, orig, name, icon):
+    if isArchPanelSheet(orig):
+        # can't clone panel sheets - they have to be panel sheets
+        return orig
+
     clone = Draft.clone(orig)
     clone.Label = "%s-%s" % (name, orig.Label)
     clone.addProperty('App::PropertyString', 'PathResource')
@@ -81,7 +88,7 @@ def createResourceClone(obj, orig, name, icon):
 
 class ObjectJob:
 
-    def __init__(self, obj, base, template = None):
+    def __init__(self, obj, base, templateFile = None):
         self.obj = obj
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
@@ -115,9 +122,13 @@ class ObjectJob:
         obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
-        self.assignTemplate(obj, template)
+        self.setFromTemplateFile(obj, templateFile)
         if not obj.Stock:
-            obj.Stock = PathStock.CreateFromBase(obj)
+            stockTemplate = PathPreferences.defaultStockTemplate()
+            if stockTemplate:
+                obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
+            if not obj.Stock:
+                obj.Stock = PathStock.CreateFromBase(obj)
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
@@ -142,7 +153,8 @@ class ObjectJob:
         # base doesn't depend on anything inside job
         if obj.Base:
             PathLog.debug('taking down base')
-            doc.removeObject(obj.Base.Name)
+            if isResourceClone(obj, 'Base'):
+                doc.removeObject(obj.Base.Name)
             obj.Base = None
         # Tool controllers don't depend on anything
         PathLog.debug('taking down tool controller')
@@ -151,7 +163,7 @@ class ObjectJob:
         obj.ToolController = []
 
     def fixupResourceClone(self, obj, name, icon):
-        if not isResourceClone(obj, name, name):
+        if not isResourceClone(obj, name, name) and not isArchPanelSheet(obj):
             orig = getattr(obj, name)
             if orig:
                 setattr(obj, name, createResourceClone(obj, orig, name, icon))
@@ -159,35 +171,49 @@ class ObjectJob:
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
 
+    def onChanged(self, obj, prop):
+        if prop == "PostProcessor" and obj.PostProcessor:
+            processor = PostProcessor.load(obj.PostProcessor)
+            self.tooltip = processor.tooltip
+            self.tooltipArgs = processor.tooltipArgs
+
     def baseObject(self, obj):
         '''Return the base object, not its clone.'''
         if isResourceClone(obj, 'Base', 'Base'):
             return obj.Base.Objects[0]
         return obj.Base
 
-    def assignTemplate(self, obj, template):
-        '''assignTemplate(obj, template) ... extract the properties from the given template file and assign to receiver.
+    def setFromTemplateFile(self, obj, template):
+        '''setFromTemplateFile(obj, template) ... extract the properties from the given template file and assign to receiver.
         This will also create any TCs stored in the template.'''
         tcs = []
         if template:
-            tree = xml.parse(template)
-            for job in tree.getroot().iter(JobTemplate.Job):
-                if job.get(JobTemplate.GeometryTolerance):
-                    obj.GeometryTolerance = float(job.get(JobTemplate.GeometryTolerance))
-                if job.get(JobTemplate.PostProcessor):
-                    obj.PostProcessor = job.get(JobTemplate.PostProcessor)
-                    if job.get(JobTemplate.PostProcessorArgs):
-                        obj.PostProcessorArgs = job.get(JobTemplate.PostProcessorArgs)
+            with open(unicode(template), 'rb') as fp:
+                attrs = json.load(fp)
+
+            if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
+                if attrs.get(JobTemplate.GeometryTolerance):
+                    obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
+                if attrs.get(JobTemplate.PostProcessor):
+                    obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
+                    if attrs.get(JobTemplate.PostProcessorArgs):
+                        obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
                     else:
                         obj.PostProcessorArgs = ''
-                if job.get(JobTemplate.PostProcessorOutputFile):
-                    obj.PostProcessorOutputFile = job.get(JobTemplate.PostProcessorOutputFile)
-                if job.get(JobTemplate.Description):
-                    obj.Description = job.get(JobTemplate.Description)
-            for tc in tree.getroot().iter(JobTemplate.ToolController):
-                tcs.append(PathToolController.FromTemplate(tc))
-            for stock in tree.getroot().iter(JobTemplate.Stock):
-                obj.Stock = PathStock.CreateFromTemplate(self, stock)
+                if attrs.get(JobTemplate.PostProcessorOutputFile):
+                    obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
+                if attrs.get(JobTemplate.Description):
+                    obj.Description = attrs.get(JobTemplate.Description)
+
+
+                if attrs.get(JobTemplate.ToolController):
+                    for tc in attrs.get(JobTemplate.ToolController):
+                        tcs.append(PathToolController.FromTemplate(tc))
+                if attrs.get(JobTemplate.Stock):
+                    obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
+            else:
+                PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
+                tcs.append(PathToolController.Create())
         else:
             tcs.append(PathToolController.Create())
         PathLog.debug("setting tool controllers (%d)" % len(tcs))
@@ -196,6 +222,7 @@ class ObjectJob:
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file.'''
         attrs = {}
+        attrs[JobTemplate.Version] = 1
         if obj.PostProcessor:
             attrs[JobTemplate.PostProcessor]           = obj.PostProcessor
             attrs[JobTemplate.PostProcessorArgs]       = obj.PostProcessorArgs
@@ -256,10 +283,12 @@ class ObjectJob:
     @classmethod
     def isBaseCandidate(cls, obj):
         '''Answer true if the given object can be used as a Base for a job.'''
-        return PathUtil.isValidBaseObject(obj) or (hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet))
+        return PathUtil.isValidBaseObject(obj) or isArchPanelSheet(obj)
 
-def Create(name, base, template = None):
+def Create(name, base, templateFile = None):
+    '''Create(name, base, templateFile=None) ... creates a new job and all it's resources.
+    If a template file is specified the new job is initialized with the values from the template.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectJob(obj, base, template)
+    proxy = ObjectJob(obj, base, templateFile)
     return obj
 

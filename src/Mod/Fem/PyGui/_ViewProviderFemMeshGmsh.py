@@ -102,7 +102,7 @@ class _ViewProviderFemMeshGmsh:
                     else:
                         FreeCAD.Console.PrintError('Active analysis is not in active document.')
                 else:
-                    print('No active analysis in active document, we gone have a look if the GMSH FEM mesh object belongs to a non active analysis.')
+                    print('No active analysis in active document, we are going to have a look if the GMSH FEM mesh object belongs to a non active analysis.')
                     found_mesh_analysis = False
                     for o in gui_doc.Document.Objects:
                         if o.isDerivedFrom('Fem::FemAnalysisPython'):
@@ -110,7 +110,7 @@ class _ViewProviderFemMeshGmsh:
                                 if m == self.Object:
                                     found_mesh_analysis = True
                                     FemGui.setActiveAnalysis(o)
-                                    print('The analysis the GMSH FEM mesh object belongs too was found and activated: ' + o.Name)
+                                    print('The analysis the GMSH FEM mesh object belongs to was found and activated: ' + o.Name)
                                     gui_doc.setEdit(vobj.Object.Name)
                                     break
                     if not found_mesh_analysis:

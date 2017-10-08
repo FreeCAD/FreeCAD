@@ -528,12 +528,19 @@ void DocumentObject::connectRelabelSignals()
     if (ExpressionEngine.numExpressions() > 0) {
 
         // Not already connected?
-        if (!onRelabledObjectConnection.connected())
-            onRelabledObjectConnection = getDocument()->signalRelabelObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
+        if (!onRelabledObjectConnection.connected()) {
+            onRelabledObjectConnection = getDocument()->signalRelabelObject
+                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed,
+                                         &ExpressionEngine, _1));
+        }
 
-        // Connect to signalDeletedObject, to properly track deletion of other objects that might be referenced in an expression
-        if (!onDeletedObjectConnection.connected())
-            onDeletedObjectConnection = getDocument()->signalDeletedObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted, &ExpressionEngine, _1));
+        // Connect to signalDeletedObject, to properly track deletion of other objects
+        // that might be referenced in an expression
+        if (!onDeletedObjectConnection.connected()) {
+            onDeletedObjectConnection = getDocument()->signalDeletedObject
+                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted,
+                                         &ExpressionEngine, _1));
+        }
 
         try {
             // Crude method to resolve all expression dependencies

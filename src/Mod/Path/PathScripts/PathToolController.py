@@ -56,7 +56,8 @@ class ToolControllerTemplate:
     HorizRapid   = 'hrapid'
     SpindleSpeed = 'speed'
     SpindleDir   = 'dir'
-    Tool         = 'Tool'
+    Tool         = 'tool'
+    Version      = 'version'
 
 class ToolController:
     def __init__(self, obj, tool=1):
@@ -77,43 +78,45 @@ class ToolController:
         mode = 2
         obj.setEditorMode('Placement', mode)
 
-    def assignTemplate(self, obj, template):
-        '''assignTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
+    def setFromTemplate(self, obj, template):
+        '''setFromTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
         PathLog.track(obj.Name, template)
-        if template.get(ToolControllerTemplate.Label):
-            obj.Label = template.get(ToolControllerTemplate.Label)
-        if template.get(ToolControllerTemplate.VertFeed):
-            obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
-        if template.get(ToolControllerTemplate.HorizFeed):
-            obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
-        if template.get(ToolControllerTemplate.VertRapid):
-            obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
-        if template.get(ToolControllerTemplate.HorizRapid):
-            obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
-        if template.get(ToolControllerTemplate.SpindleSpeed):
-            obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
-        if template.get(ToolControllerTemplate.SpindleDir):
-            obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
-        if template.get(ToolControllerTemplate.ToolNumber):
-            obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
-
-        for t in template.iter(ToolControllerTemplate.Tool):
-            tool = Path.Tool()
-            tool.fromTemplate(xml.tostring(t))
-            obj.Tool = tool
+        if template.get(ToolControllerTemplate.Version) and 1 == int(template.get(ToolControllerTemplate.Version)):
+            if template.get(ToolControllerTemplate.Label):
+                obj.Label = template.get(ToolControllerTemplate.Label)
+            if template.get(ToolControllerTemplate.VertFeed):
+                obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
+            if template.get(ToolControllerTemplate.HorizFeed):
+                obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
+            if template.get(ToolControllerTemplate.VertRapid):
+                obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
+            if template.get(ToolControllerTemplate.HorizRapid):
+                obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
+            if template.get(ToolControllerTemplate.SpindleSpeed):
+                obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
+            if template.get(ToolControllerTemplate.SpindleDir):
+                obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
+            if template.get(ToolControllerTemplate.ToolNumber):
+                obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
+            if template.get(ToolControllerTemplate.Tool):
+                obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
+        else:
+            PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
 
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template.'''
         attrs = {}
-        attrs[ToolControllerTemplate.Name]         = ("%s" % (obj.Name))
-        attrs[ToolControllerTemplate.Label]        = ("%s" % (obj.Label))
-        attrs[ToolControllerTemplate.ToolNumber]   = ("%d" % (obj.ToolNumber))
+        attrs[ToolControllerTemplate.Version]      = 1
+        attrs[ToolControllerTemplate.Name]         = obj.Name
+        attrs[ToolControllerTemplate.Label]        = obj.Label
+        attrs[ToolControllerTemplate.ToolNumber]   = obj.ToolNumber
         attrs[ToolControllerTemplate.VertFeed]     = ("%s" % (obj.VertFeed))
         attrs[ToolControllerTemplate.HorizFeed]    = ("%s" % (obj.HorizFeed))
         attrs[ToolControllerTemplate.VertRapid]    = ("%s" % (obj.VertRapid))
         attrs[ToolControllerTemplate.HorizRapid]   = ("%s" % (obj.HorizRapid))
-        attrs[ToolControllerTemplate.SpindleSpeed] = ("%f" % (obj.SpindleSpeed))
-        attrs[ToolControllerTemplate.SpindleDir]   = ("%s" % (obj.SpindleDir))
+        attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
+        attrs[ToolControllerTemplate.SpindleDir]   = obj.SpindleDir
+        attrs[ToolControllerTemplate.Tool]         = obj.Tool.templateAttrs()
         return attrs
 
     def execute(self, obj):
@@ -223,7 +226,7 @@ def FromTemplate(template, assignViewProvider=True):
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
-    tc.assignTemplate(obj, template)
+    tc.setFromTemplate(obj, template)
 
     return obj
 
@@ -410,14 +413,11 @@ class DlgToolControllerEdit:
 
     def exec_(self):
         restoreTC   = self.obj.Proxy.templateAttrs(self.obj)
-        restoreTool = self.obj.Tool.Content
 
         rc = False
         if not self.editor.form.exec_():
             PathLog.info("revert")
-            root = xml.Element('ToolController', restoreTC)
-            root.append(xml.fromstring(restoreTool))
-            self.obj.Proxy.assignTemplate(self.obj, root)
+            self.obj.Proxy.setFromTemplate(self.obj, restoreTC)
             rc = True
         return rc
 

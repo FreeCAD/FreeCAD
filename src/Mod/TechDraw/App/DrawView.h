@@ -41,7 +41,7 @@ class DrawPage;
  */
 class TechDrawExport DrawView : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawView);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawView);
 
 public:
     /// Constructor
@@ -57,19 +57,19 @@ public:
     App::PropertyBool  KeepLabel;
     App::PropertyString Caption;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onDocumentRestored();
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual void onDocumentRestored() override;
     virtual short mustExecute() const override;
     //@}
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
     bool isInClip();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDrawingView";
     }
     //return PyObject as DrawViewPy
@@ -88,13 +88,13 @@ public:
     boost::signal<void (const DrawView*)> signalGuiPaint;
     virtual double getScale(void) const;
     void checkScale(void);
+    void requestPaint(void);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;
-    void requestPaint(void);
 
 private:
     static const char* ScaleTypeEnums[];

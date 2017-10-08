@@ -51,6 +51,7 @@
 
 #include <App/Application.h>
 #include <App/Material.h>
+#include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -81,6 +82,7 @@ DrawViewMulti::DrawViewMulti()
 
     //Source is replaced by Sources in Multi
     Source.setStatus(App::Property::ReadOnly,true);
+    Source.setStatus(App::Property::Hidden,true);
 
     geometryObject = nullptr;
 }
@@ -116,6 +118,40 @@ void DrawViewMulti::onChanged(const App::Property* prop)
     DrawViewPart::onChanged(prop);
 }
 
+TopoDS_Shape DrawViewMulti::getSourceShape(void) const
+{
+    TopoDS_Shape result;
+    const std::vector<App::DocumentObject*>& links = Sources.getValues();
+    if (links.empty())  {
+        Base::Console().Log("DVM::execute - No Sources - creation? - %s\n",getNameInDocument());
+    } else {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        for (auto& l:links) {
+            if (l->isDerivedFrom(Part::Feature::getClassTypeId())){
+                const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
+                if (partTopo.isNull()) {
+                    continue;    //has no shape
+                }
+                BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
+                TopoDS_Shape shape = BuilderCopy.Shape();
+                builder.Add(comp, shape);
+            } else if (l->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+                TopoDS_Shape s = getShapeFromPart(static_cast<App::Part*>(l));
+                if (s.IsNull()) {
+                    continue;
+                }
+                BRepBuilderAPI_Copy BuilderCopy(s);
+                TopoDS_Shape shape = BuilderCopy.Shape();
+                builder.Add(comp, shape);
+            }
+        }        
+        result = comp;
+    }
+    return result;
+}
+
 App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 {
     if (!keepUpdated()) {
@@ -125,32 +161,20 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
     const std::vector<App::DocumentObject*>& links = Sources.getValues();
     if (links.empty())  {
         Base::Console().Log("INFO - DVM::execute - No Sources - creation?\n");
-        return DrawViewPart::execute();
+        return DrawView::execute();
     }
 
-    //Base::Console().Message("TRACE - DVM::execute() - %s/%s\n",getNameInDocument(),Label.getValue());
-
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    for (auto& l:links) {
-        if (!l->isDerivedFrom(Part::Feature::getClassTypeId())){
-            continue;     //not a part
-        } 
-        const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
-        if (partTopo.isNull()) {
-            continue;    //has no shape
-        }
-        BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
-        TopoDS_Shape shape = BuilderCopy.Shape();
-        builder.Add(comp, shape);
+    m_compound = TopoDS::Compound(getSourceShape());
+    if (m_compound.IsNull()) {
+        return new App::DocumentObjectExecReturn("DVP - Linked shape object(s) is invalid");
     }
-    m_compound = comp;
+    TopoDS_Compound comp = m_compound;
 
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(comp,
                                                      Direction.getValue());
+        shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(comp,
                                                     inputCenter,
                                                     getScale());

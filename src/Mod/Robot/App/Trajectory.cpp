@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <memory>
 #endif
 
 #include <Base/Writer.h>
@@ -153,11 +154,10 @@ void Trajectory::generateTrajectory(void)
     pcTrajectory = new KDL::Trajectory_Composite();
 
     // pointer to the pieces while iterating
-    KDL::Trajectory_Segment     *pcTrak=0;
-    KDL::Path                   *pcPath=0;
-    KDL::VelocityProfile        *pcVelPrf=0;
-    KDL::Path_RoundedComposite  *pcRoundComp=0;
-    KDL::Frame                  Last;
+    std::unique_ptr<KDL::Trajectory_Segment> pcTrak;
+    std::unique_ptr<KDL::VelocityProfile> pcVelPrf;
+    std::unique_ptr<KDL::Path_RoundedComposite> pcRoundComp;
+    KDL::Frame Last;
 
     try {
         // handle the first waypoint special
@@ -177,11 +177,11 @@ void Trajectory::generateTrajectory(void)
                     // continues the movement until no continus waypoint or the end
                     bool Cont = (*it)->Cont && !(it==--vpcWaypoints.end());
                     // start of a continue block
-                    if (Cont && pcRoundComp==0) {
-                        pcRoundComp = new KDL::Path_RoundedComposite(3, 3,
-                                          new KDL::RotationalInterpolation_SingleAxis());
+                    if (Cont && !pcRoundComp) {
+                        pcRoundComp.reset(new KDL::Path_RoundedComposite(3, 3,
+                                          new KDL::RotationalInterpolation_SingleAxis()));
                         // the velocity of the first waypoint is used
-                        pcVelPrf = new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration);
+                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration));
                         pcRoundComp->Add(Last);
                         pcRoundComp->Add(Next);
 
@@ -196,21 +196,22 @@ void Trajectory::generateTrajectory(void)
                         pcRoundComp->Add(Next);
                         pcRoundComp->Finish();
                         pcVelPrf->SetProfile(0,pcRoundComp->PathLength());
-                        pcTrak = new KDL::Trajectory_Segment(pcRoundComp,pcVelPrf);
-                        pcRoundComp = 0;
+                        pcTrak.reset(new KDL::Trajectory_Segment(pcRoundComp.release(),pcVelPrf.release()));
 
                         // normal block
                     }
-                    else if (Cont==false && pcRoundComp==0){
+                    else if (Cont==false && !pcRoundComp){
+                        KDL::Path* pcPath;
                         pcPath = new KDL::Path_Line(Last,
                                                     Next,
                                                     new KDL::RotationalInterpolation_SingleAxis(),
                                                     1.0,
                                                     true
                                                     );
-                        pcVelPrf = new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration);
+
+                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration));
                         pcVelPrf->SetProfile(0,pcPath->PathLength());
-                        pcTrak = new KDL::Trajectory_Segment(pcPath,pcVelPrf);
+                        pcTrak.reset(new KDL::Trajectory_Segment(pcPath,pcVelPrf.release()));
                     }
                     Last = Next;
                     break;}
@@ -221,8 +222,8 @@ void Trajectory::generateTrajectory(void)
                 }
 
                 // add the segment if no continuous block is running
-                if (!pcRoundComp)
-                    pcTrajectory->Add(pcTrak);
+                if (!pcRoundComp && pcTrak)
+                    pcTrajectory->Add(pcTrak.release());
             }
         }
     }

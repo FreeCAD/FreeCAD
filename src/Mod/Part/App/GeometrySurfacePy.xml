@@ -71,7 +71,15 @@ the second vector corresponds to the minimum curvature.
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Continuity" ReadOnly="true">
+        <Methode Name="isPlanar">
+            <Documentation>
+                <UserDocu>
+isPlanar([float]) -> Bool
+Checks if the surface is planar within a certain tolerance.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
 					Returns the global continuity of the surface.

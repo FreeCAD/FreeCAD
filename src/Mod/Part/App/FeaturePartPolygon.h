@@ -42,7 +42,7 @@ public:
     App::PropertyVectorList Nodes;
     App::PropertyBool       Close;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);

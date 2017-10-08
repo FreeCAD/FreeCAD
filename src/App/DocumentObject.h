@@ -155,9 +155,9 @@ public:
     bool isInOutListRecursive(DocumentObject* objToTest) const;
     /// test if this object is directly (non recursive) in the OutList
     bool isInOutList(DocumentObject* objToTest) const;
-    /// internal, used by ProperyLink to maintain DAG back links
+    /// internal, used by PropertyLink to maintain DAG back links
     void _removeBackLink(DocumentObject*);
-    /// internal, used by ProperyLink to maintain DAG back links
+    /// internal, used by PropertyLink to maintain DAG back links
     void _addBackLink(DocumentObject*);
     //@}
 
@@ -196,7 +196,7 @@ public:
     /** Called in case of losing a link
      * Get called by the document when a object got deleted a link property of this
      * object ist pointing to. The standard behaviour of the DocumentObject implementation
-     * is to reset the links to nothing. You may overide this method to implement
+     * is to reset the links to nothing. You may override this method to implement
      * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);

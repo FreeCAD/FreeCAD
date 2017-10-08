@@ -5,6 +5,8 @@
 from Robot import *
 from Part import *
 from FreeCAD import *
+import FreeCAD as App
+import tempfile
 
 # === Basic robot stuff ===
 # create the robot. If you not specify a other kinematic it becomes a Puma 560
@@ -66,10 +68,10 @@ App.activeDocument().Robot.Axis2 = -90
 App.activeDocument().Robot.Axis3 = 90
 
 # retrive the Tcp position 
-pos = FreeCAD.getDocument("Unnamed").getObject("Robot").Tcp
+pos = App.getDocument("Unnamed").getObject("Robot").Tcp
 # move the robot
 pos.move(App.Vector(-10,0,0))
-FreeCAD.getDocument("Unnamed").getObject("Robot").Tcp = pos
+App.getDocument("Unnamed").getObject("Robot").Tcp = pos
 
 # create an empty Trajectory object in the active document
 App.activeDocument().addObject("Robot::TrajectoryObject","Trajectory")
@@ -97,7 +99,7 @@ print(App.activeDocument().Trajectory.Trajectory)
 # python module. Here is in detail the Kuka Postprocessor descriped
 from KukaExporter import ExportCompactSub
 
-ExportCompactSub(App.activeDocument().Robot,App.activeDocument().Trajectory,'D:/Temp/TestOut.src')
+ExportCompactSub(App.activeDocument().Robot,App.activeDocument().Trajectory,tempfile.gettempdir()+'/TestOut.src')
 
 # and thats kind of how its done:
 for w in App.activeDocument().Trajectory.Trajectory.Waypoints:

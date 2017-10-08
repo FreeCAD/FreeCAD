@@ -46,7 +46,7 @@ public:
     App::PropertyInteger Width; /**< The width of the structured cloud. */
     App::PropertyInteger Height; /**< The height of the structured cloud. */
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

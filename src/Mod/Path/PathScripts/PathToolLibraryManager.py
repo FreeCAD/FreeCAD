@@ -23,16 +23,19 @@
 # ***************************************************************************
 
 from __future__ import print_function
+
 import FreeCAD
-import xml.sax
 import FreeCADGui
 import Path
-import os
-from PySide import QtCore, QtGui
 import PathScripts
-from PathScripts import PathUtils
-
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtils as PathUtils
+import json
+import os
+import xml.sax
+
+from PySide import QtCore, QtGui
+
 
 LOG_MODULE = 'PathToolLibraryManager'
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
@@ -140,14 +143,38 @@ class ToolLibraryManager():
     preferences and all or part of the library can be exported to other formats
     '''
 
+    TooltableTypeJSON     = translate("TooltableEditor", "Tooltable JSON (*.json)")
+    TooltableTypeXML      = translate("TooltableEditor", "Tooltable XML (*.xml)")
+    TooltableTypeHeekscad = translate("TooltableEditor", "HeeksCAD tooltable (*.tooltable)")
+    TooltableTypeLinuxCNC = translate("TooltableEditor", "LinuxCNC tooltable (*.tbl)")
+
+    PreferenceMainLibraryXML = "ToolLibrary"
+    PreferenceMainLibraryJSON = "ToolLibrary-Main"
+
     def __init__(self):
         self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
         return
 
+    def templateAttrs(self, tooltable):
+        attrs = {}
+        attrs['Version'] = 1
+        attrs['Tools'] = tooltable.templateAttrs()
+        return attrs
+
+    def tooltableFromAttrs(self, stringattrs):
+        if stringattrs.get('Version') and 1 == int(stringattrs['Version']):
+            attrs = {}
+            for key, val in stringattrs['Tools'].iteritems():
+                attrs[int(key)] = val
+            return Path.Tooltable(attrs)
+        else:
+            PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable template version %s") % stringattrs.get('Version'))
+        return None
+
     def saveMainLibrary(self, tooltable):
         '''Persists the permanent library to FreeCAD user preferences'''
-        tmpstring = tooltable.Content
-        self.prefs.SetString("ToolLibrary", tmpstring)
+        tmpstring = json.dumps(self.templateAttrs(tooltable))
+        self.prefs.SetString(self.PreferenceMainLibraryJSON, tmpstring)
         return True
 
     def getLists(self):
@@ -166,11 +193,19 @@ class ToolLibraryManager():
     def _findList(self, listname):
         tt = None
         if listname == "<Main>":
-            tmpstring = self.prefs.GetString("ToolLibrary", "")
-            if tmpstring != "":
-                Handler = FreeCADTooltableHandler()
-                xml.sax.parseString(tmpstring, Handler)
-                tt = Handler.tooltable
+            tmpstring = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
+            if not tmpstring:
+                tmpstring = self.prefs.GetString(self.PreferenceMainLibraryXML, "")
+            if tmpstring:
+                if tmpstring[0] == '{':
+                    tt = self.tooltableFromAttrs(json.loads(tmpstring))
+                elif tmpstring[0] == '<':
+                    # legacy XML table
+                    Handler = FreeCADTooltableHandler()
+                    xml.sax.parseString(tmpstring, Handler)
+                    tt = Handler.tooltable
+                    # store new format
+                    self.saveMainLibrary(tt)
             else:
                 tt = Path.Tooltable()
         else:
@@ -222,20 +257,28 @@ class ToolLibraryManager():
     # methods for importing and exporting
     def read(self, filename, listname):
         "imports a tooltable from a file"
-        parser = xml.sax.make_parser()
-        parser.setFeature(xml.sax.handler.feature_namespaces, 0)
-        if os.path.splitext(filename[0])[1].lower() == ".tooltable":
-            Handler = HeeksTooltableHandler()
-        else:
-            Handler = FreeCADTooltableHandler()
 
         try:
-            parser.setContentHandler(Handler)
-            parser.parse(unicode(filename[0]))
-            if not Handler.tooltable:
-                return None
+            fileExtension = os.path.splitext(filename[0])[1].lower()
+            xmlHandler = None
+            if fileExtension == '.tooltable':
+                xmlHandler = HeeksTooltableHandler()
+            if fileExtension == '.xml':
+                xmlHandler = FreeCADTooltableHandler()
 
-            ht = Handler.tooltable
+            if xmlHandler:
+                parser = xml.sax.make_parser()
+                parser.setFeature(xml.sax.handler.feature_namespaces, 0)
+                parser.setContentHandler(xmlHandler)
+                parser.parse(unicode(filename[0]))
+                if not xmlHandler.tooltable:
+                    return None
+
+                ht = xmlHandler.tooltable
+            else:
+                with open(unicode(filename[0]), "rb") as fp:
+                    ht = self.tooltableFromAttrs(json.load(fp))
+
             tt = self._findList(listname)
             for t in ht.Tools:
                 newt = ht.getTool(t).copy()
@@ -246,24 +289,33 @@ class ToolLibraryManager():
         except Exception as e:
             print("could not parse file", e)
 
+
     def write(self, filename, listname):
         "exports the tooltable to a file"
         tt = self._findList(listname)
         if tt:
             try:
-                file = open(unicode(filename[0]), "wb")
+                def openFileWithExtension(name, ext):
+                    fext = os.path.splitext(name)[1].lower()
+                    if fext != ext:
+                        name = "{}{}".format(name, ext)
+                    return (open(unicode(name), 'wb'), name)
 
-                if filename[1] == 'LinuxCNC tooltable (*.tbl)':
+                if filename[1] == self.TooltableTypeXML:
+                    fp,fname = openFileWithExtension(filename[0], '.xml')
+                    fp.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+                    fp.write(tt.Content)
+                elif filename[1] == self.TooltableTypeLinuxCNC:
+                    fp,fname = openFileWithExtension(filename[0], '.tbl')
                     for key in tt.Tools:
                         t = tt.Tools[key]
-                        file.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
-
+                        fp.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
                 else:
-                    file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-                    file.write(tt.Content)
+                    fp,fname = openFileWithExtension(filename[0], '.json')
+                    json.dump(self.templateAttrs(tt), fp, sort_keys=True, indent=2)
 
-                file.close()
-                print("Written ", unicode(filename[0]))
+                fp.close()
+                print("Written ", unicode(fname))
 
             except Exception as e:
                 print("Could not write file:", e)
@@ -272,6 +324,8 @@ class ToolLibraryManager():
         "adds a new tool at the end of the table"
         print(listname, tool, position)
         tt = self._findList(listname)
+        if not tt:
+            tt = Path.Tooltable()
         if position is None:
             tt.addTools(tool)
             newID = tt.Tools.keys()[-1]
@@ -486,7 +540,7 @@ class EditorPanel():
 
     def importFile(self):
         "imports a tooltable from a file"
-        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate( "TooltableEditor", "Open tooltable", None), None, translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
+        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate( "TooltableEditor", "Open tooltable", None), None, "{};;{};;{}".format(ToolLibraryManager.TooltableTypeJSON, ToolLibraryManager.TooltableTypeXML, ToolLibraryManager.TooltableTypeHeekscad))
         if filename[0]:
             listname = '<Main>'
             if self.TLM.read(filename, listname):
@@ -494,8 +548,8 @@ class EditorPanel():
 
 
     def exportFile(self):
-        "imports a tooltable from a file"
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("TooltableEditor", "Save tooltable", None), None, translate("TooltableEditor", "Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)", None))
+        "export a tooltable to a file"
+        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("TooltableEditor", "Save tooltable", None), None, "{};;{};;{}".format(ToolLibraryManager.TooltableTypeJSON, ToolLibraryManager.TooltableTypeXML, ToolLibraryManager.TooltableTypeLinuxCNC))
 
         if filename[0]:
             #listname = self.form.listView.selectedIndexes()[0].data()

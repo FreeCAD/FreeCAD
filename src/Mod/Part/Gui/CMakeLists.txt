@@ -53,6 +53,7 @@ set(PartGui_MOC_HDRS
     DlgSettings3DViewPartImp.h
     DlgSettingsGeneral.h
     DlgSettingsObjectColor.h
+    PropertyEnumAttacherItem.h
     TaskFaceColors.h
     TaskShapeBuilder.h
     TaskLoft.h
@@ -161,6 +162,8 @@ SET(PartGui_SRCS
     Resources/Part.qrc
     PreCompiled.cpp
     PreCompiled.h
+    PropertyEnumAttacherItem.cpp
+    PropertyEnumAttacherItem.h
     SoFCShapeObject.cpp
     SoFCShapeObject.h
     SoBrepEdgeSet.cpp

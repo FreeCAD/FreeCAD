@@ -36,7 +36,7 @@ namespace App
 /**
  * @brief The base class for placeable group of DocumentObjects. It represents a local coordnate system
  * 
- * This class is the FreeCAD way of representing local coordinate systems. It groups its childs beneath 
+ * This class is the FreeCAD way of representing local coordinate systems. It groups its children beneath 
  * it and transforms them all with the GeoFeatureGroup placement. A few important properties:
  * - Every child that belongs to the CS must be in the Group property. Even if a sketch is part of a pad,
  *   it must be in the Group property of the same GeoFeatureGroup as pad. This also holds for normal 
@@ -103,11 +103,11 @@ public:
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
     static std::vector<App::DocumentObject*> getCSRelevantLinks(const App::DocumentObject* obj);
-    /// Checks if the links of the given object comply with all GeoFeatureGroup requrirements, that means
-    /// if normal links are only withing the parent GeoFeatureGroup. 
+    /// Checks if the links of the given object comply with all GeoFeatureGroup requirements, that means
+    /// if normal links are only within the parent GeoFeatureGroup. 
     static bool areLinksValid(const App::DocumentObject* obj);
-    /// Checks if the given link complies with all GeoFeatureGroup requrirements, that means
-    /// if normal links are only withing the parent GeoFeatureGroup. 
+    /// Checks if the given link complies with all GeoFeatureGroup requirements, that means
+    /// if normal links are only within the parent GeoFeatureGroup. 
     static bool isLinkValid(App::Property* link);
     //Returns all objects that are wrongly linked from this object, meaning which are out of scope of the 
     //links of obj

@@ -77,7 +77,7 @@ using namespace PartGui;
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
 ViewProviderPath::ViewProviderPath()
-    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1)
+    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
     unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL); // dark green (0,170,0)

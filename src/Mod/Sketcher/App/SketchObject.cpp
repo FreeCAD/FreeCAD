@@ -99,6 +99,7 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 
+    ExternalGeometry.setScope(App::LinkScope::Global);
     allowOtherBody = true;
     allowUnaligned = true;
 
@@ -5802,7 +5803,8 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
 
 /*!
- * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs, and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
+ * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs,
+ *  and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
  * \param justAnalyze if true, nothing is actually done - only the number of constraints to be affected is returned.
  * \return the number of constraints changed/to be changed.
  */
@@ -5819,8 +5821,8 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         bool affected=false;
         Constraint *constNew = 0;
         for(int ig=1; ig<=3; ig++){//cycle through constraint.first, second, third
-            int geoId;
-            Sketcher::PointPos posId;
+            int geoId = 0;
+            Sketcher::PointPos posId = none;
             switch (ig){
                 case 1: geoId=newVals[ic]->First; posId = newVals[ic]->FirstPos; break;
                 case 2: geoId=newVals[ic]->Second; posId = newVals[ic]->SecondPos; break;

@@ -44,7 +44,7 @@ public:
     bool doubleClicked();
 
     virtual bool onDelete(const std::vector<std::string> &);
-    void highlightReferences(const bool on, bool auxillery);
+    void highlightReferences(const bool on, bool auxiliary);
     
 protected:
     virtual QIcon getIcon(void) const;

@@ -39,6 +39,7 @@
 #include <App/Part.h>
 #include <Base/Tools.h>
 #include <Base/Reader.h>
+#include <Base/Console.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -279,6 +280,15 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
     }
     catch (const Base::Exception& e) {
         e.ReportException();
+    }
+    catch (Py::Exception& e) {
+        // reported by code analyzers
+        e.clear();
+        Base::Console().Warning("Unexpected PyCXX exception\n");
+    }
+    catch (const boost::exception&) {
+        // reported by code analyzers
+        Base::Console().Warning("Unexpected boost exception\n");
     }
 
     return result;

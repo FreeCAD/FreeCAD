@@ -25,6 +25,7 @@
 #define GUI_DIALOG_DLGPROPERTYLINK_H
 
 #include <QDialog>
+#include <QAbstractItemView>
 
 namespace Gui { namespace Dialog {
 
@@ -37,15 +38,17 @@ public:
     DlgPropertyLink(const QStringList& list, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgPropertyLink();
 
+    void setSelectionMode(QAbstractItemView::SelectionMode mode);
     void accept();
     QStringList propertyLink() const;
+    QVariantList propertyLinkList() const;
 
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
     void on_searchBox_textChanged(const QString&);
 
 private:
-    void findObjects(bool on);
+    void findObjects(bool on, const QString& searchText);
 
 private:
     QStringList link;

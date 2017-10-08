@@ -26,7 +26,7 @@ This is besides the Application class the most important class in FreeCAD
 It contains all the data of the opened, saved or newly created FreeCAD Document.
 The Document manage the Undo and Redo mechanism and the linking of documents.
 
-Note: the documents are not free objects. They are completly handled by the
+Note: the documents are not free objects. They are completely handled by the
 App::Application. Only the Application can Open or destroy a document.
 
 \section Exception Exception handling

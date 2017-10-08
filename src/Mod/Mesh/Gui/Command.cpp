@@ -1651,6 +1651,53 @@ bool CmdMeshMerge::isActive(void)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) >= 2;
 }
 
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshScale)
+
+CmdMeshScale::CmdMeshScale()
+  : Command("Mesh_Scale")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Scale...");
+    sToolTipText  = QT_TR_NOOP("Scale selected meshes");
+    sWhatsThis    = "Mesh_Scale";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdMeshScale::activated(int)
+{
+    App::Document *pcDoc = App::GetApplication().getActiveDocument();
+    if (!pcDoc)
+        return;
+
+    bool ok;
+    double factor = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Scaling"),
+        QObject::tr("Enter scaling factor:"), 1, 0, DBL_MAX, 5, &ok);
+    if (!ok || factor == 0)
+        return;
+
+    openCommand("Mesh scale");
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    Base::Matrix4D mat;
+    mat.scale(factor,factor,factor);
+    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
+        MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
+        MeshCore::MeshKernel& kernel = mesh->getKernel();
+        kernel.Transform(mat);
+        static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+    }
+
+    updateActive();
+    commitCommand();
+}
+
+bool CmdMeshScale::isActive(void)
+{
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+}
+
 
 void CreateMeshCommands(void)
 {
@@ -1689,4 +1736,5 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFromPartShape());
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
     rcCmdMgr.addCommand(new CmdMeshMerge());
+    rcCmdMgr.addCommand(new CmdMeshScale());
 }

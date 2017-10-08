@@ -374,19 +374,22 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             highlighted = false;
             if (vpd && vpd->useNewSelectionModel() && vpd->isSelectable()) {
                 std::string documentName = vpd->getObject()->getDocument()->getName();
+                std::string objectLabel = vpd->getObject()->Label.getStrValue();
                 std::string objectName = vpd->getObject()->getNameInDocument();
                 std::string subElementName = vpd->getElement(pp ? pp->getDetail() : 0);
 
                 this->preSelection = 1;
                 static char buf[513];
-                snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
+                snprintf(buf,512,"Preselected: %s - %s.%s.%s (%g, %g, %g)"
+                                           ,objectLabel.c_str()
+                                           ,documentName.c_str()
                                            ,objectName.c_str()
                                            ,subElementName.c_str()
                                            ,pp->getPoint()[0]
                                            ,pp->getPoint()[1]
                                            ,pp->getPoint()[2]);
 
-                getMainWindow()->showMessage(QString::fromLatin1(buf));
+                getMainWindow()->showMessage(QString::fromUtf8(buf));
 
                 if (Gui::Selection().setPreselect(documentName.c_str()
                                        ,objectName.c_str()
@@ -481,7 +484,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         if (ok)
                             type = SoSelectionElementAction::Append;
                         if (mymode == OFF) {
-                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
+                            snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)"
+                                                       ,documentName.c_str()
                                                        ,objectName.c_str()
                                                        ,subElementName.c_str()
                                                        ,pp->getPoint()[0]
@@ -519,7 +523,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     }
 
                     if (mymode == OFF) {
-                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.c_str()
+                        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)"
+                                                   ,documentName.c_str()
                                                    ,objectName.c_str()
                                                    ,subElementName.c_str()
                                                    ,pp->getPoint()[0]

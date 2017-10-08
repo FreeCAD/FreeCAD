@@ -57,10 +57,6 @@ public:
 
     virtual bool doubleClicked(void);
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
-
-    // returns the root node where the children gets collected(3D)
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
     virtual std::vector< std::string > getDisplayModes(void) const;
     virtual void setDisplayMode(const char* ModeName);
@@ -81,6 +77,13 @@ public:
      * @note datums are counted as their base point only
      */
     SbBox3f getBoundBox ();
+
+    /** Check whether objects can be added to the view provider by drag and drop */
+    virtual bool canDropObjects() const;
+    /** Check whether the object can be dropped to the view provider by drag and drop */
+    virtual bool canDropObject(App::DocumentObject*) const;
+    /** Add an object to the view provider by drag and drop */
+    virtual void dropObject(App::DocumentObject*);
 
 protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );

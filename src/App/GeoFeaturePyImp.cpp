@@ -28,6 +28,7 @@
 // inclusion of the generated files (generated out of GeoFeaturePy.xml)
 #include "GeoFeaturePy.h"
 #include "GeoFeaturePy.cpp"
+#include <Base/PlacementPy.h>
 #include <CXX/Objects.hxx>
 
 using namespace App;
@@ -42,6 +43,20 @@ PyObject* GeoFeaturePy::getPaths(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
+}
+
+PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
+    
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    
+    try {
+        Base::Placement p = static_cast<GeoFeature*>(getDocumentObjectPtr())->globalPlacement();
+        return new Base::PlacementPy(new Base::Placement(p));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }
 
 PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)

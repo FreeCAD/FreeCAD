@@ -43,6 +43,9 @@
 #include "Command.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Expression.h>
 #include <sstream>
 #include <boost/math/special_functions/round.hpp>
@@ -284,8 +287,79 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
     }
 }
 
-void Gui::QuantitySpinBox::onChange() {
-    
+QString QuantitySpinBox::boundToName() const
+{
+    Q_D(const QuantitySpinBox);
+    if (isBound()) {
+        std::string path = getPath().toString();
+        return QString::fromStdString(path);
+    }
+    return QString();
+}
+
+/**
+ * @brief Create an object identifier by name.
+ *
+ * An identifier is written as document#documentobject.property.subproperty1...subpropertyN
+ * document# may be dropped, in this case the active document is used.
+ */
+void QuantitySpinBox::setBoundToByName(const QString &name)
+{
+    Q_D(QuantitySpinBox);
+    try {
+        // get document
+        App::Document *doc = App::GetApplication().getActiveDocument();
+        QStringList list = name.split(QLatin1Char('#'));
+        if (list.size() > 1) {
+            doc = App::GetApplication().getDocument(list.front().toLatin1());
+            list.pop_front();
+        }
+
+        if (!doc) {
+            qDebug() << "No such document";
+            return;
+        }
+
+        // first element is assumed to be the document name
+        list = list.front().split(QLatin1Char('.'));
+
+        // get object
+        App::DocumentObject* obj = doc->getObject(list.front().toLatin1());
+        if (!obj) {
+            qDebug() << "No object " << list.front() << " in document";
+            return;
+        }
+        list.pop_front();
+
+        // the rest of the list defines the property and eventually subproperties
+        App::ObjectIdentifier path(obj);
+        path.setDocumentName(std::string(doc->getName()), true);
+        path.setDocumentObjectName(std::string(obj->getNameInDocument()), true);
+
+        for (QStringList::iterator it = list.begin(); it != list.end(); ++it) {
+            path << App::ObjectIdentifier::Component::SimpleComponent(it->toLatin1().constData());
+        }
+
+        if (path.getProperty())
+            bind(path);
+    }
+    catch (const Base::Exception& e) {
+        qDebug() << e.what();
+    }
+}
+
+QString Gui::QuantitySpinBox::expressionText() const
+{
+    Q_D(const QuantitySpinBox);
+    if (isBound()) {
+        return QString::fromStdString(getExpressionString());
+    }
+    return QString();
+}
+
+
+void Gui::QuantitySpinBox::onChange()
+{
     Q_ASSERT(isBound());
     
     if (getExpression()) {
@@ -411,6 +485,12 @@ Base::Quantity QuantitySpinBox::value() const
 {
     Q_D(const QuantitySpinBox);
     return d->quantity;
+}
+
+double QuantitySpinBox::rawValue() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->quantity.getValue();
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)

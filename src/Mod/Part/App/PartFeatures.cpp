@@ -29,6 +29,7 @@
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepLib_MakeWire.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
@@ -256,6 +257,8 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
 // ----------------------------------------------------------------------------
 
+App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2,Geom_BSplineSurface::MaxDegree(),1};
+
 PROPERTY_SOURCE(Part::Loft, Part::Feature)
 
 Loft::Loft()
@@ -265,6 +268,8 @@ Loft::Loft()
     ADD_PROPERTY_TYPE(Solid,(false),"Loft",App::Prop_None,"Create solid");
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Ruled surface");
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
+    ADD_PROPERTY_TYPE(MaxDegree,(5),"Loft",App::Prop_None,"Maximum Degree");
+    MaxDegree.setConstraints(&Degrees);
 }
 
 short Loft::mustExecute() const
@@ -276,6 +281,8 @@ short Loft::mustExecute() const
     if (Ruled.isTouched())
         return 1;
     if (Closed.isTouched())
+        return 1;
+    if (MaxDegree.isTouched())
         return 1;
     return 0;
 }
@@ -334,9 +341,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
         Standard_Boolean isRuled = Ruled.getValue() ? Standard_True : Standard_False;
         Standard_Boolean isClosed = Closed.getValue() ? Standard_True : Standard_False;
+        int degMax = MaxDegree.getValue();
 
         TopoShape myShape;
-        this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled,isClosed));
+        this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled, isClosed, degMax));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

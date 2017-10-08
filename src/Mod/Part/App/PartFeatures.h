@@ -73,6 +73,7 @@ public:
     App::PropertyBool Solid;
     App::PropertyBool Ruled;
     App::PropertyBool Closed;
+    App::PropertyIntegerConstraint MaxDegree;
 
     /** @name methods override feature */
     //@{
@@ -86,6 +87,9 @@ public:
 
 protected:
     void onChanged (const App::Property* prop);
+
+private:
+    static App::PropertyIntegerConstraint::Constraints Degrees;
 };
 
 class Sweep : public Part::Feature
