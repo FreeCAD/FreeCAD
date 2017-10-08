@@ -535,21 +535,19 @@ class TaskPanelHeightsPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
 
     def initPage(self, obj):
-        self.form.safeHeight.setProperty('unit', obj.SafeHeight.getUserPreferred()[2])
-        self.form.safeHeight.setProperty('binding', "%s.SafeHeight" % obj.Name)
-        self.form.clearanceHeight.setProperty('unit', obj.ClearanceHeight.getUserPreferred()[2])
-        self.form.clearanceHeight.setProperty('binding', "%s.ClearanceHeight" % obj.Name)
+        self.safeHeight = PathGui.QuantitySpinBox(self.form.safeHeight, obj, 'SafeHeight')
+        self.clearanceHeight = PathGui.QuantitySpinBox(self.form.clearanceHeight, obj, 'ClearanceHeight')
 
     def getTitle(self, obj):
         return translate("Path", "Heights")
 
     def getFields(self, obj):
-        PathGui.updateInputField(obj, 'SafeHeight',      self.form.safeHeight)
-        PathGui.updateInputField(obj, 'ClearanceHeight', self.form.clearanceHeight)
+        self.safeHeight.updateProperty()
+        self.clearanceHeight.updateProperty()
 
     def setFields(self,  obj):
-        self.form.safeHeight.setProperty('rawValue', obj.SafeHeight.Value)
-        self.form.clearanceHeight.setProperty('rawValue', obj.ClearanceHeight.Value)
+        self.safeHeight.updateSpinBox()
+        self.clearanceHeight.updateSpinBox()
 
     def getSignalsForUpdate(self, obj):
         signals = []

@@ -54,3 +54,18 @@ def updateInputField(obj, prop, widget, onBeforeChange = None):
         return True
     return False
 
+class QuantitySpinBox:
+    def __init__(self, widget, obj, propName):
+        self.obj = obj
+        self.widget = widget
+        self.prop = propName
+
+        widget.setProperty('unit', getattr(self.obj, self.prop).getUserPreferred()[2])
+        widget.setProperty('binding', "%s.%s" % (obj.Name, propName))
+
+    def updateSpinBox(self):
+        self.widget.setProperty('rawValue', getattr(self.obj, self.prop).Value)
+
+    def updateProperty(self):
+        return updateInputField(self.obj, self.prop, self.widget)
+
