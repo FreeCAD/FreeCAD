@@ -68,7 +68,10 @@ class _CommandSelectLoop:
                 return self.active
             self.obj = sel.Object
             self.sub = sel.SubElementNames
-            self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            if sel.SubObjects:
+                self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            else:
+                self.active = False
             return self.active
         except Exception as exc:
             PathLog.error(exc)
