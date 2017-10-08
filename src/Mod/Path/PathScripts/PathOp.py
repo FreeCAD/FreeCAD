@@ -128,12 +128,9 @@ class ObjectOp(object):
         if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Final Depth of Tool- lowest value in Z"))
-            obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "If enabled Start Depth will not be automatically updated when geometry changes"))
-            obj.addProperty("App::PropertyBool", "FinalDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "If enabled Final Depth will not be automatically updated when geometry changes"))
             values = ['start']
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('FinalDepth', 2) # hide
-                obj.setEditorMode('FinalDepthLock', 2) # hide
             else:
                 values.append('final')
             self.addOpValues(obj, values)
@@ -168,24 +165,18 @@ class ObjectOp(object):
             obj.touch()
             obj.Document.recompute()
         if FeatureDepths & self.opFeatures(obj):
-            if not hasattr(obj, 'StartDepthLock'):
-                obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "If enabled Start Depth will not be automatically updated when geometry changes"))
-                obj.StartDepthLock = False
-            if not hasattr(obj, 'FinalDepthLock'):
-                obj.addProperty("App::PropertyBool", "FinalDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "If enabled Final Depth will not be automatically updated when geometry changes"))
-                obj.FinalDepthLock = False
             if not hasattr(obj, 'OpStartDepth'):
                 self.addOpValues(obj, ['start', 'final'])
-                if not obj.StartDepthLock:
+                if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
                     obj.setExpression('StartDepth', 'OpStartDepth')
-                if FeatureNoFinalDepth & features:
+                if FeatureNoFinalDepth & self.opFeatures(obj):
                     obj.setEditorMode('OpFinalDepth', 2)
-                elif not obj.FinalDepthLock:
+                elif not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
                     obj.setExpression('FinalDepth', 'OpFinalDepth')
-                if PatGeom.isRoughly(obj.StepDown.Value, 1):
+                if PathGeom.isRoughly(obj.StepDown.Value, 1):
                     obj.setExpression('StepDown', 'OpToolDiameter')
         if FeatureStepDown & self.opFeatures(obj) and not hasattr(obj, 'OpToolDiameter'):
-            self.addOpValues(['tooldia'])
+            self.addOpValues(obj, ['tooldia'])
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
@@ -237,7 +228,7 @@ class ObjectOp(object):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
 
-        if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'StartDepthLock', 'FinalDepth', 'FinalDepthLock']:
+        if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
@@ -258,9 +249,7 @@ class ObjectOp(object):
             obj.setExpression('StartDepth', 'OpStartDepth')
             obj.setExpression('FinalDepth', 'OpFinalDepth')
             obj.OpStartDepth    =  1.0
-            obj.StartDepthLock  =  False
             obj.OpFinalDepth    =  0.0
-            obj.FinalDepthLock  =  False
 
         if FeatureStepDown & features:
             obj.OpToolDiameter  =  1.0
@@ -331,15 +320,10 @@ class ObjectOp(object):
             # clearing with stock boundaries
             pass
 
-        safeDepths = True
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
             if not PathGeom.isRoughly(obj.OpFinalDepth.Value, zmin):
-                if not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
-                    obj.OpFinalDepth = zmin
-                else:
-                    if obj.OpFinalDepth.Value < zmin:
-                        safeDepths = False
+                obj.OpFinalDepth = zmin
             zmin = obj.OpFinalDepth.Value
 
             def minZmax(z):
@@ -354,15 +338,7 @@ class ObjectOp(object):
 
             # update start depth if requested and required
             if not PathGeom.isRoughly(obj.OpStartDepth.Value, zmax):
-                if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
-                    obj.OpStartDepth = zmax
-                elif (obj.OpStartDepth.Value - 0.0001) <= obj.OpFinalDepth.Value:
-                    obj.OpStartDepth = minZmax(obj.OpFinalDepth.Value)
-                else:
-                    if obj.OpStartDepth.Value < zmax:
-                        safeDepths = False
-
-        return safeDepths
+                obj.OpStartDepth = zmax
 
     @waiting_effects
     def execute(self, obj):

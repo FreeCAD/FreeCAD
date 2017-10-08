@@ -569,7 +569,6 @@ class TaskPanelDepthsPage(TaskPanelPage):
         if PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.hide()
             self.form.finalDepthLabel.hide()
-            self.form.finalDepthLock.hide()
             self.form.finalDepthSet.hide()
 
         if not PathOp.FeatureStepDown & self.features:
@@ -580,27 +579,15 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
 
-        self.startDepth = PathGui.QuantitySpinBox(self.form.startDepth, obj, 'StartDepth', self.lockStartDepth)
-        self.finalDepth = PathGui.QuantitySpinBox(self.form.finalDepth, obj, 'FinalDepth', self.lockFinalDepth)
+        self.startDepth = PathGui.QuantitySpinBox(self.form.startDepth, obj, 'StartDepth')
+        self.finalDepth = PathGui.QuantitySpinBox(self.form.finalDepth, obj, 'FinalDepth')
         self.finishDepth = PathGui.QuantitySpinBox(self.form.finishDepth, obj, 'FinishDepth')
         self.stepDown = PathGui.QuantitySpinBox(self.form.stepDown, obj, 'StepDown')
 
     def getTitle(self, obj):
         return translate("PathOp", "Depths")
 
-    def lockStartDepth(self, obj):
-        if not obj.StartDepthLock:
-            obj.StartDepthLock = True
-    def lockFinalDepth(self, obj):
-        if not obj.FinalDepthLock:
-            obj.FinalDepthLock = True
-
     def getFields(self, obj):
-        if obj.StartDepthLock != self.form.startDepthLock.isChecked():
-            obj.StartDepthLock = self.form.startDepthLock.isChecked()
-        if obj.FinalDepthLock != self.form.finalDepthLock.isChecked():
-            obj.FinalDepthLock = self.form.finalDepthLock.isChecked()
-
         self.startDepth.updateProperty()
         if not PathOp.FeatureNoFinalDepth & self.features:
             self.finalDepth.updateProperty()
@@ -611,10 +598,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
 
     def setFields(self, obj):
         self.startDepth.updateSpinBox()
-        self.form.startDepthLock.setChecked(obj.StartDepthLock)
         if not PathOp.FeatureNoFinalDepth & self.features:
             self.finalDepth.updateSpinBox()
-            self.form.finalDepthLock.setChecked(obj.FinalDepthLock)
         if PathOp.FeatureStepDown & self.features:
             self.stepDown.updateSpinBox()
         if PathOp.FeatureFinishDepth & self.features:
@@ -624,10 +609,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
-        signals.append(self.form.startDepthLock.clicked)
         if not PathOp.FeatureNoFinalDepth & self.features:
             signals.append(self.form.finalDepth.editingFinished)
-            signals.append(self.form.finalDepthLock.clicked)
         if PathOp.FeatureStepDown & self.features:
             signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
@@ -635,18 +618,20 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return signals
 
     def registerSignalHandlers(self, obj):
-        self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.startDepth))
+        self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.startDepth, 'StartDepth'))
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.finalDepth))
+            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.finalDepth, 'FinaleDepth'))
 
     def pageUpdateData(self, obj, prop):
-        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth', 'FinalDepthLock', 'StartDepthLock']:
+        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
             self.setFields(obj)
 
-    def depthSet(self, obj, spinbox):
+    def depthSet(self, obj, spinbox, prop):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
         if z is not None:
             PathLog.debug("depthSet(%.2f)" % z)
+            if spinbox.expression():
+                obj.setExpression(prop, None)
             spinbox.updateSpinBox(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length))
             spinbox.updateProperty()
         else:

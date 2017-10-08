@@ -72,6 +72,11 @@ class QuantitySpinBox:
         else:
             self.valid = False
 
+    def expression(self):
+        if self.valid:
+            return self.widget.property('expression')
+        return False
+
     def updateSpinBox(self, quantity=None):
         if self.valid:
             if quantity is None:
