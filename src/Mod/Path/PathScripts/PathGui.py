@@ -24,12 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSelection as PathSelection
-import PathScripts.PathOp as PathOp
-import PathScripts.PathUtils as PathUtils
 import importlib
 
 from PathScripts.PathGeom import PathGeom

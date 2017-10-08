@@ -24,16 +24,17 @@
 ''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
 
 import FreeCAD
-import FreeCADGui
 import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-#from . import PathUtils
-import xml.etree.ElementTree as xml
 
 from FreeCAD import Units
-from PySide import QtCore, QtGui
+from PySide import QtCore
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    import PathScripts.PathGui as PathGui
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -268,6 +269,10 @@ class ToolControllerEditor:
         if not asDialog:
             self.form.buttonBox.hide()
         self.obj = obj
+        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, 'VertFeed')
+        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, 'HorizFeed')
+        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, 'VertRapid')
+        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj, 'HorizRapid')
 
     def getType(self, tooltype):
         "gets a combobox index number for a given type or viceversa"
@@ -298,10 +303,10 @@ class ToolControllerEditor:
         tc = self.obj
         self.form.tcName.setText(tc.Label)
         self.form.tcNumber.setValue(tc.ToolNumber)
-        self.form.horizFeed.setText(tc.HorizFeed.UserString)
-        self.form.vertFeed.setText(tc.VertFeed.UserString)
-        self.form.horizRapid.setText(tc.HorizRapid.UserString)
-        self.form.vertRapid.setText(tc.VertRapid.UserString)
+        self.horizFeed.updateSpinBox()
+        self.horizRapid.updateSpinBox()
+        self.vertFeed.updateSpinBox()
+        self.vertRapid.updateSpinBox()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
         index = self.form.spindleDirection.findText(tc.SpindleDir, QtCore.Qt.MatchFixedString)
         if index >= 0:
@@ -322,10 +327,10 @@ class ToolControllerEditor:
         try:
             tc.Label = self.form.tcName.text()
             tc.ToolNumber = self.form.tcNumber.value()
-            tc.HorizFeed = self.form.horizFeed.text()
-            tc.VertFeed = self.form.vertFeed.text()
-            tc.HorizRapid = self.form.horizRapid.text()
-            tc.VertRapid = self.form.vertRapid.text()
+            self.horizFeed.updateProperty()
+            self.vertFeed.updateProperty()
+            self.horizRapid.updateProperty()
+            self.vertRapid.updateProperty()
             tc.SpindleSpeed = self.form.spindleSpeed.value()
             tc.SpindleDir = self.form.spindleDirection.currentText()
 
