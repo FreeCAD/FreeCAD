@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>270</width>
+    <width>296</width>
     <height>235</height>
    </rect>
   </property>
@@ -15,16 +15,34 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="2">
-    <widget class="Gui::InputField" name="startDepth">
+    <widget class="Gui::QuantitySpinBox" name="startDepth">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="minimum">
+      <double>-999999999.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>999999999.000000000000000</double>
      </property>
     </widget>
    </item>
    <item row="1" column="2">
-    <widget class="Gui::InputField" name="finalDepth">
+    <widget class="Gui::QuantitySpinBox" name="finalDepth">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="minimum">
+      <double>-999999999.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>999999999.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -36,9 +54,18 @@
     </widget>
    </item>
    <item row="2" column="2">
-    <widget class="Gui::InputField" name="finishDepth">
+    <widget class="Gui::QuantitySpinBox" name="finishDepth">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="minimum">
+      <double>-999999999.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>999999999.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -71,7 +98,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="4">
+   <item row="5" column="0" colspan="4">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -85,9 +112,18 @@
     </spacer>
    </item>
    <item row="3" column="2">
-    <widget class="Gui::InputField" name="stepDown">
+    <widget class="Gui::QuantitySpinBox" name="stepDown">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="minimum">
+      <double>-999999999.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>999999999.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -131,13 +167,26 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
