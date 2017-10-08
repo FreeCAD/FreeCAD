@@ -269,10 +269,18 @@ class ToolControllerEditor:
         if not asDialog:
             self.form.buttonBox.hide()
         self.obj = obj
+
         self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, 'VertFeed')
         self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, 'HorizFeed')
         self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, 'VertRapid')
         self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj, 'HorizRapid')
+
+        self.toolDiameter = PathGui.QuantitySpinBox(self.form.toolDiameter, obj, 'Tool.Diameter')
+        self.toolLengthOffset = PathGui.QuantitySpinBox(self.form.toolLengthOffset, obj, 'Tool.LengthOffset')
+        self.toolFlatRadius = PathGui.QuantitySpinBox(self.form.toolFlatRadius, obj, 'Tool.FlatRadius')
+        self.toolCornerRadius = PathGui.QuantitySpinBox(self.form.toolCornerRadius, obj, 'Tool.CornerRadius')
+        self.toolCuttingEdgeAngle = PathGui.QuantitySpinBox(self.form.toolCuttingEdgeAngle, obj, 'Tool.CuttingEdgeAngle')
+        self.toolCuttingEdgeHeight = PathGui.QuantitySpinBox(self.form.toolCuttingEdgeHeight, obj, 'Tool.CuttingEdgeHeight')
 
     def getType(self, tooltype):
         "gets a combobox index number for a given type or viceversa"
@@ -315,12 +323,12 @@ class ToolControllerEditor:
         self.form.toolName.setText(tc.Tool.Name)
         self.form.toolType.setCurrentIndex(self.getType(tc.Tool.ToolType))
         self.form.toolMaterial.setCurrentIndex(self.getMaterial(tc.Tool.Material))
-        self.form.toolDiameter.setText(FreeCAD.Units.Quantity(tc.Tool.Diameter, FreeCAD.Units.Length).UserString)
-        self.form.toolLengthOffset.setText(FreeCAD.Units.Quantity(tc.Tool.LengthOffset, FreeCAD.Units.Length).UserString)
-        self.form.toolFlatRadius.setText(FreeCAD.Units.Quantity(tc.Tool.FlatRadius, FreeCAD.Units.Length).UserString)
-        self.form.toolCornerRadius.setText(FreeCAD.Units.Quantity(tc.Tool.CornerRadius, FreeCAD.Units.Length).UserString)
-        self.form.toolCuttingEdgeAngle.setText(FreeCAD.Units.Quantity(tc.Tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
-        self.form.toolCuttingEdgeHeight.setText(FreeCAD.Units.Quantity(tc.Tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
+        self.toolDiameter.updateSpinBox()
+        self.toolLengthOffset.updateSpinBox()
+        self.toolFlatRadius.updateSpinBox()
+        self.toolCornerRadius.updateSpinBox()
+        self.toolCuttingEdgeAngle.updateSpinBox()
+        self.toolCuttingEdgeHeight.updateSpinBox()
 
     def updateToolController(self):
         tc = self.obj
@@ -337,12 +345,12 @@ class ToolControllerEditor:
             tc.Tool.Name = str(self.form.toolName.text())
             tc.Tool.ToolType = self.getType(self.form.toolType.currentIndex())
             tc.Tool.Material = self.getMaterial(self.form.toolMaterial.currentIndex())
-            tc.Tool.Diameter = FreeCAD.Units.parseQuantity(self.form.toolDiameter.text())
-            tc.Tool.LengthOffset = FreeCAD.Units.parseQuantity(self.form.toolLengthOffset.text())
-            tc.Tool.FlatRadius = FreeCAD.Units.parseQuantity(self.form.toolFlatRadius.text())
-            tc.Tool.CornerRadius = FreeCAD.Units.parseQuantity(self.form.toolCornerRadius.text())
-            tc.Tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(self.form.toolCuttingEdgeAngle.text())
-            tc.Tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(self.form.toolCuttingEdgeHeight.text())
+            self.toolDiameter.updateProperty()
+            self.toolLengthOffset.updateProperty()
+            self.toolFlatRadius.updateProperty()
+            self.toolCornerRadius.updateProperty()
+            self.toolCuttingEdgeAngle.updateProperty()
+            self.toolCuttingEdgeHeight.updateProperty()
         except Exception as e:
             PathLog.error(translate("PathToolController", "Error updating TC: %s") % e)
 

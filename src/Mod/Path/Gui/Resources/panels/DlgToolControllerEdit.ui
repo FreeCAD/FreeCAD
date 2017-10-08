@@ -16,7 +16,15 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QToolBox" name="toolBox">
-     <widget class="QWidget" name="toolBoxPage1" native="true">
+     <widget class="QWidget" name="toolBoxPage1">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>474</width>
+        <height>535</height>
+       </rect>
+      </property>
       <attribute name="label">
        <string>Controller</string>
       </attribute>
@@ -79,10 +87,13 @@
           </item>
           <item row="0" column="1">
            <widget class="Gui::QuantitySpinBox" name="horizFeed">
-            <property name="minimum" stdset="0">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="minimum">
              <double>0.000000000000000</double>
             </property>
-            <property name="maximum" stdset="0">
+            <property name="maximum">
              <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
@@ -92,10 +103,13 @@
           </item>
           <item row="1" column="1">
            <widget class="Gui::QuantitySpinBox" name="vertFeed">
-            <property name="minimum" stdset="0">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="minimum">
              <double>0.000000000000000</double>
             </property>
-            <property name="maximum" stdset="0">
+            <property name="maximum">
              <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
@@ -105,10 +119,13 @@
           </item>
           <item row="2" column="1">
            <widget class="Gui::QuantitySpinBox" name="horizRapid">
-            <property name="minimum" stdset="0">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="minimum">
              <double>0.000000000000000</double>
             </property>
-            <property name="maximum" stdset="0">
+            <property name="maximum">
              <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
@@ -118,10 +135,13 @@
           </item>
           <item row="3" column="1">
            <widget class="Gui::QuantitySpinBox" name="vertRapid">
-            <property name="minimum" stdset="0">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="minimum">
              <double>0.000000000000000</double>
             </property>
-            <property name="maximum" stdset="0">
+            <property name="maximum">
              <double>9999999.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
@@ -183,7 +203,15 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="toolBoxPage2" native="true">
+     <widget class="QWidget" name="toolBoxPage2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>474</width>
+        <height>535</height>
+       </rect>
+      </property>
       <attribute name="label">
        <string>Tool</string>
       </attribute>
@@ -377,18 +405,21 @@
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="Gui::InputField" name="toolDiameter">
-            <property name="text">
-             <string>0 mm</string>
+           <widget class="Gui::QuantitySpinBox" name="toolDiameter">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="singleStep" stdset="0">
-             <double>0.125000000000000</double>
+            <property name="text" stdset="0">
+             <string>0.00</string>
             </property>
-            <property name="maximum" stdset="0">
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
              <double>100.000000000000000</double>
             </property>
-            <property name="minimum" stdset="0">
-             <double>0.000000000000000</double>
+            <property name="singleStep">
+             <double>0.125000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
@@ -396,15 +427,18 @@
            </widget>
           </item>
           <item row="8" column="1">
-           <widget class="Gui::InputField" name="toolLengthOffset">
-            <property name="text">
-             <string>0 mm</string>
+           <widget class="Gui::QuantitySpinBox" name="toolLengthOffset">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="maximum" stdset="0">
-             <double>100.000000000000000</double>
+            <property name="text" stdset="0">
+             <string>0.00</string>
             </property>
-            <property name="minimum" stdset="0">
+            <property name="minimum">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
@@ -412,15 +446,18 @@
            </widget>
           </item>
           <item row="12" column="1">
-           <widget class="Gui::InputField" name="toolFlatRadius">
-            <property name="text">
-             <string>0 mm</string>
+           <widget class="Gui::QuantitySpinBox" name="toolFlatRadius">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="maximum" stdset="0">
-             <double>100.000000000000000</double>
+            <property name="text" stdset="0">
+             <string>0.00</string>
             </property>
-            <property name="minimum" stdset="0">
+            <property name="minimum">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
@@ -428,15 +465,18 @@
            </widget>
           </item>
           <item row="14" column="1">
-           <widget class="Gui::InputField" name="toolCornerRadius">
-            <property name="text">
-             <string>0 mm</string>
+           <widget class="Gui::QuantitySpinBox" name="toolCornerRadius">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="maximum" stdset="0">
-             <double>100.000000000000000</double>
+            <property name="text" stdset="0">
+             <string>0.00</string>
             </property>
-            <property name="minimum" stdset="0">
+            <property name="minimum">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
@@ -444,15 +484,18 @@
            </widget>
           </item>
           <item row="18" column="1">
-           <widget class="Gui::InputField" name="toolCuttingEdgeHeight">
-            <property name="text">
-             <string>0 mm</string>
+           <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeHeight">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
-            <property name="maximum" stdset="0">
-             <double>100.000000000000000</double>
+            <property name="text" stdset="0">
+             <string>0.00</string>
             </property>
-            <property name="minimum" stdset="0">
+            <property name="minimum">
              <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
@@ -460,7 +503,10 @@
            </widget>
           </item>
           <item row="16" column="1">
-           <widget class="Gui::InputField" name="toolCuttingEdgeAngle">
+           <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeAngle">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
             <property name="unit" stdset="0">
              <string notr="true">°</string>
             </property>
@@ -503,16 +549,31 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::QuantitySpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tcName</tabstop>
+  <tabstop>tcNumber</tabstop>
+  <tabstop>horizFeed</tabstop>
+  <tabstop>vertFeed</tabstop>
+  <tabstop>horizRapid</tabstop>
+  <tabstop>vertRapid</tabstop>
+  <tabstop>spindleSpeed</tabstop>
+  <tabstop>spindleDirection</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>toolName</tabstop>
+  <tabstop>toolType</tabstop>
+  <tabstop>toolMaterial</tabstop>
+  <tabstop>toolDiameter</tabstop>
+  <tabstop>toolLengthOffset</tabstop>
+  <tabstop>toolFlatRadius</tabstop>
+  <tabstop>toolCornerRadius</tabstop>
+  <tabstop>toolCuttingEdgeAngle</tabstop>
+  <tabstop>toolCuttingEdgeHeight</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
