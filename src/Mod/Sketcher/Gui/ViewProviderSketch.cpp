@@ -1969,19 +1969,19 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             bool pnt2Inside = polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y));
-            if (pnt1Inside && !touchMode) {
+            if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt2Inside && !touchMode) {
+            if (pnt2Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if ( (pnt1Inside && pnt2Inside)) {
+            if ((pnt1Inside && pnt2Inside) && !touchMode) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -1997,12 +1997,6 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                         std::stringstream ss;
                         ss << "Edge" << GeoId + 1;
                         Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-                        //add points
-                        std::stringstream ss2, ss3;
-                        ss2 << "Vertex" << VertexId + 1;
-                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss2.str().c_str());
-                        ss3 << "Vertex" << VertexId;
-                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss3.str().c_str());
                     }
                 }
 
@@ -2017,7 +2011,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
 
             if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
-                if(!touchMode || polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
+                if(polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2071,7 +2065,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
 
             if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
-                if(!touchMode || polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
+                if(polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2175,19 +2169,19 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 }
             }
 
-            if (pnt0Inside || (bpolyInside && touchMode)) {
+            if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt1Inside || (bpolyInside && touchMode)) {
+            if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y)) || (bpolyInside && touchMode)) {
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2253,19 +2247,19 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
             }
-            if (pnt0Inside || (bpolyInside && touchMode)) {
+            if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt1Inside || (bpolyInside && touchMode)) {
+            if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y)) || (bpolyInside && touchMode)) {
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2333,19 +2327,19 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
-                if (pnt0Inside || (bpolyInside && touchMode)) {
+                if (pnt0Inside) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId - 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
 
-                if (pnt1Inside || (bpolyInside && touchMode)) {
+                if (pnt1Inside) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
 
-                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y)) || (bpolyInside && touchMode)) {
+                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2416,19 +2410,19 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
-                if (pnt0Inside || (bpolyInside && touchMode)) {
+                if (pnt0Inside) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId - 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
 
-                if (pnt1Inside || (bpolyInside && touchMode)) {
+                if (pnt1Inside) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
 
-                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y)) || (bpolyInside && touchMode)) {
+                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
