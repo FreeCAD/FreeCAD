@@ -171,7 +171,7 @@ class TaskPanelPage(object):
         self.obj = obj
         self.form = self.getForm()
         self.signalDirtyChanged = None
-        self.setDirty()
+        self.setClean()
         self.setTitle('-')
         self.features = features
 
@@ -636,8 +636,10 @@ class TaskPanelDepthsPage(TaskPanelPage):
             PathLog.debug("depthSet(%s, %s, %.2f)" % (obj.Label, prop, z))
             if spinbox.expression():
                 obj.setExpression(prop, None)
+                self.setDirty()
             spinbox.updateSpinBox(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length))
-            spinbox.updateProperty()
+            if spinbox.updateProperty():
+                self.setDirty()
         else:
             PathLog.info("depthSet(-)")
 
@@ -736,7 +738,7 @@ class TaskPanel(object):
 
         self.selectionFactory = selectionFactory
         self.obj = obj
-        self.isdirty = True
+        self.isdirty = deleteOnReject
 
     def isDirty(self):
         '''isDirty() ... returns true if the model is not in sync with the UI anymore.'''
@@ -800,6 +802,7 @@ class TaskPanel(object):
         self.buttonBox = buttonBox
         for page in self.featurePages:
             page.modifyStandardButtons(buttonBox)
+        self.pageDirtyChanged(None)
 
     def panelGetFields(self):
         '''panelGetFields() ... invoked to trigger a complete transfer of UI data to the model.'''
