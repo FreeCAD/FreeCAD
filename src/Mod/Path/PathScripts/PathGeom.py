@@ -141,23 +141,25 @@ class PathGeom:
         if obj.ShapeType == 'Face':
             if type(obj.Surface) == Part.Plane:
                 return cls.isHorizontal(obj.Surface.Axis)
-            if type(obj.Surface) == Part.Cylinder:
+            if type(obj.Surface) == Part.Cylinder or type(obj.Surface) == Part.Cone:
                 return cls.isVertical(obj.Surface.Axis)
             if type(obj.Surface) == Part.Sphere:
                 return True
             if type(obj.Surface) == Part.SurfaceOfExtrusion:
                 return cls.isVertical(obj.Surface.Direction)
-            PathLog.warning(translate('PathGeom', "face %s not handled, assuming not vertical") % type(obj.Surface))
+            if type(obj.Surface) != Part.BSplineSurface:
+                PathLog.info(translate('PathGeom', "face %s not handled, assuming not vertical") % type(obj.Surface))
             return None
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
                 return cls.isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse or type(obj.Curve) == Part.BSplineCurve:
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse: # or type(obj.Curve) == Part.BSplineCurve:
                 return cls.isHorizontal(obj.Curve.Axis)
             if type(obj.Curve) == Part.BezierCurve:
                 # the current assumption is that a bezier curve is vertical if its end points are vertical
                 return cls.isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
-            PathLog.warning(translate('PathGeom', "edge %s not handled, assuming not vertical") % type(obj.Curve))
+            if type(obj.Curve) != Part.BSplineCurve:
+                PathLog.info(translate('PathGeom', "edge %s not handled, assuming not vertical") % type(obj.Curve))
             return None
         PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
         return None
@@ -170,23 +172,19 @@ class PathGeom:
         if obj.ShapeType == 'Face':
             if type(obj.Surface) == Part.Plane:
                 return cls.isVertical(obj.Surface.Axis)
-            if type(obj.Surface) == Part.Cylinder:
+            if type(obj.Surface) == Part.Cylinder or type(obj.Surface) == Part.Cone:
                 return cls.isHorizontal(obj.Surface.Axis)
             if type(obj.Surface) == Part.Sphere:
                 return True
             if type(obj.Surface) == Part.SurfaceOfExtrusion:
                 return cls.isHorizontal(obj.Surface.Direction)
-            PathLog.warning(translate('PathGeom', "face %s not handled, assuming not horizontal") % type(obj.Surface))
-            return None
+            return cls.isRoughly(obj.BoundBox.ZLength, 0.0)
         if obj.ShapeType == 'Edge':
             if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
                 return cls.isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse or type(obj.Curve) == Part.BSplineCurve:
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse: # or type(obj.Curve) == Part.BSplineCurve:
                 return cls.isVertical(obj.Curve.Axis)
-            if type(obj.Curve) == Part.BezierCurve:
-                return cls.isRoughly(obj.BoundBox.ZLength, 0)
-            PathLog.warning(translate('PathGeom', "edge %s not handled, assuming not horizontal") % type(obj.Curve))
-            return None
+            return cls.isRoughly(obj.BoundBox.ZLength, 0.0)
         PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
         return None
 
