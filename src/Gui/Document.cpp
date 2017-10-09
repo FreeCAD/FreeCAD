@@ -67,6 +67,8 @@
 #include "WaitCursor.h"
 #include "Thumbnail.h"
 
+FC_LOG_LEVEL_INIT("Gui::Document",true,true)
+
 using namespace Gui;
 
 namespace Gui {
@@ -105,6 +107,7 @@ struct DocumentP
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
     Connection connectShowHidden;
+    Connection connectFinishRestoreObject;
     Connection connectExportObjects;
     Connection connectImportObjects;
     Connection connectFinishImportObjects;
@@ -156,6 +159,8 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectShowHidden = App::GetApplication().signalShowHidden.connect
         (boost::bind(&Gui::Document::slotShowHidden, this, _1));
 
+    d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
+        (boost::bind(&Gui::Document::slotFinishRestoreObject, this, _1));
     d->connectExportObjects = pcDocument->signalExportViewObjects.connect
         (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
     d->connectImportObjects = pcDocument->signalImportViewObjects.connect
@@ -199,6 +204,7 @@ Document::~Document()
     d->connectStartLoadDocument.disconnect();
     d->connectFinishLoadDocument.disconnect();
     d->connectShowHidden.disconnect();
+    d->connectFinishRestoreObject.disconnect();
     d->connectExportObjects.disconnect();
     d->connectImportObjects.disconnect();
     d->connectFinishImportObjects.disconnect();
@@ -927,6 +933,14 @@ void Document::slotStartRestoreDocument(const App::Document& doc)
     d->connectActObject.block();
 }
 
+void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
+    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(getViewProvider(&obj));
+    if(vpd) {
+        vpd->setStatus(Gui::isRestoring,false);
+        vpd->finishRestoring();
+    }
+}
+
 void Document::slotFinishRestoreDocument(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
@@ -945,9 +959,10 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     // some post-processing of view providers
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        it->second->setStatus(Gui::isRestoring,false);
-        it->second->finishRestoring();
-        isModified = isModified || it->first->isTouched();
+        if(it->first->isTouched()) {
+            isModified = true;
+            FC_WARN("'" << it->first->getNameInDocument() << "' is touched after restore");
+        }
     }
 
     // reset modified flag
@@ -1116,13 +1131,16 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {
-    for(auto obj : objs) {
-        auto vp = getViewProvider(obj);
-        if(!vp) continue;
-        vp->setStatus(Gui::isRestoring,false);
-        auto vpd = dynamic_cast<ViewProviderDocumentObject*>(vp);
-        if(vpd) vpd->finishRestoring();
-    }
+    (void)objs;
+    // finishRestoring() is now trigged by signalFinishRestoreObject
+    //
+    // for(auto obj : objs) {
+    //     auto vp = getViewProvider(obj);
+    //     if(!vp) continue;
+    //     vp->setStatus(Gui::isRestoring,false);
+    //     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(vp);
+    //     if(vpd) vpd->finishRestoring();
+    // }
 }
 
 

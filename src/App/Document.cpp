@@ -1818,14 +1818,19 @@ void Document::afterRestore(bool checkXLink) {
 }
 
 void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkXLink) {
-    for (auto obj : objArray) {
+    std::set<DocumentObject*> objSet;
+    for(auto obj : objArray)
+        objSet.insert(obj);
+    for (auto obj : getDependencyList(objArray,true,true)) {
+        if(objSet.find(obj)==objSet.end())
+            continue;
         obj->connectRelabelSignals();
         try {
             obj->onDocumentRestored();
             obj->ExpressionEngine.onDocumentRestored();
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Error in %s: %s\n", obj->Label.getValue(), e.what());
+            FC_ERR(getName() << ": Error in " << obj->Label.getValue() << ": " << e.what());
         }
 
         bool purge = true;
@@ -1834,15 +1839,21 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             obj->getPropertyList(props);
             for(auto prop : props) {
                 if(prop->isDerivedFrom(PropertyXLink::getClassTypeId()) &&
-                !static_cast<PropertyXLink*>(prop)->isRestored())
+                   !static_cast<PropertyXLink*>(prop)->isRestored())
                 {
                     purge = false;
                     break;
                 }
             }
         }
-        if(purge)
+        if(purge) {
+            FC_TRACE(getName() << ": purge touched " << obj->getNameInDocument());
             obj->purgeTouched();
+        }else
+            FC_WARN(getName() << ": xlink not restured, not purge touched " << 
+                    obj->getNameInDocument());
+
+        signalFinishRestoreObject(*obj);
     }
 }
 
