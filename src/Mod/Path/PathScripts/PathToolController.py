@@ -126,10 +126,9 @@ class ToolController:
         attrs[ToolControllerTemplate.Tool]         = obj.Tool.templateAttrs()
         expressions = []
         for expr in obj.ExpressionEngine:
-            PathLog.info('%s: %s' % (expr[0], expr[1]))
+            PathLog.debug('%s: %s' % (expr[0], expr[1]))
             expressions.append({ToolControllerTemplate.ExprProp: expr[0], ToolControllerTemplate.ExprExpr: expr[1]})
         if expressions:
-            PathLog.info('add expressions')
             attrs[ToolControllerTemplate.Expressions] = expressions
         return attrs
 
