@@ -1011,6 +1011,12 @@ void MainWindow::processMessages(const QList<QByteArray> & msg)
 
 void MainWindow::delayedStartup()
 {
+    // automatically run unit tests in Gui
+    if (App::Application::Config()["RunMode"] == "Internal") {
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        return;
+    }
+
     // processing all command line files
     try {
         std::list<std::string> files = App::Application::getCmdLineFiles();
