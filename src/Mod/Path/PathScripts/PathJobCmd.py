@@ -143,12 +143,13 @@ class DlgJobTemplateExport:
             self.dialog.postProcessingGroup.setChecked(False)
 
         if job.Stock and not PathJob.isResourceClone(job, 'Stock', 'Stock'):
-            if hasattr(job.Stock, 'ExtXNeg'):
+            stockType = PathStock.StockType.FromStock(job.Stock)
+            if stockType == PathStock.StockType.FromBase:
                 seHint = translate('PathJob', "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f") % (job.Stock.ExtXneg, job.Stock.ExtXpos, job.Stock.ExtYneg, job.Stock.ExtYpos, job.Stock.ExtZneg, job.Stock.ExtZpos)
                 self.dialog.stockPlacement.setChecked(False)
-            elif hasattr(job.Stock, 'Length') and hasattr(job.Stock, 'Width'):
+            elif stockType == PathStock.StockType.CreateBox:
                 seHint = translate('PathJob', "Box: %.2f x %.2f x %.2f") % (job.Stock.Length, job.Stock.Width, job.Stock.Height)
-            elif hasattr(job.Stock, 'Radius'):
+            elif stockType == PathStock.StockType.CreateCylinder:
                 seHint = translate('PathJob', "Cylinder: %.2f x %.2f") % (job.Stock.Radius, job.Stock.Height)
             else:
                 seHint = '-'
