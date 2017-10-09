@@ -627,7 +627,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
         }
     }
 
-    // count = index + seperators
+    // count = index + separators
     edgeStart = -1;
     int i;
     for(i=StartIndex.getValue();i<(int)command2Edge.size();++i)
