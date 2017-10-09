@@ -69,7 +69,7 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     getShapeRoot ()->addChild(lineSet);
 
     PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet();
-    // SoBrepFaceSet supports only triangles (otherwice we recive incorrect highlighting
+    // SoBrepFaceSet supports only triangles (otherwise we receive incorrect highlighting)
     faceSet->partIndex.set1Value(0, 2); // One face, two triangles
     faceSet->coordIndex.setNum(8);
     // first triangle

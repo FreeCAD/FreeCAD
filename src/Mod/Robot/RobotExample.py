@@ -67,7 +67,7 @@ App.activeDocument().Robot.RobotKinematicFile = App.getResourceDir()+"Mod/Robot/
 App.activeDocument().Robot.Axis2 = -90
 App.activeDocument().Robot.Axis3 = 90
 
-# retrive the Tcp position 
+# retrieve the Tcp position 
 pos = App.getDocument("Unnamed").getObject("Robot").Tcp
 # move the robot
 pos.move(App.Vector(-10,0,0))

@@ -70,7 +70,7 @@ public:
     /**
      * Verifies the linked Profile and returns it if it is a valid 2D object
      * @param silent if profile property is malformed and the parameter is true
-     *               silently returns nullptr, otherwice throw a Base::Exception.
+     *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
     Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
@@ -78,7 +78,7 @@ public:
     /**
      * Verifies the linked Profile and returns it if it is a valid object
      * @param silent if profile property is malformed and the parameter is true
-     *               silently returns nullptr, otherwice throw a Base::Exception.
+     *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
     Part::Feature* getVerifiedObject(bool silent=false) const;
@@ -86,7 +86,7 @@ public:
     /**
      * Verifies the linked Object and returns the shape used as profile
      * @param silent if profirle property is malformed and the parameter is true
-     *               silently returns nullptr, otherwice throw a Base::Exception.
+     *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
     TopoDS_Shape getVerifiedFace(bool silent = false) const;

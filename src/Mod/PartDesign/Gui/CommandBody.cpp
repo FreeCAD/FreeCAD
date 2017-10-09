@@ -348,7 +348,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     std::set<PartDesign::Feature*> migrateFeatures;
 
 
-    // Retrive all PartDesign Features objects and filter out features already belongs to some body
+    // Retrieve all PartDesign Features objects and filter out features already belonging to some body
     for ( const auto & feat: doc->getObjects(  ) ) {
          if( feat->isDerivedFrom( PartDesign::Feature::getClassTypeId() ) &&
                  !PartDesign::Body::findBodyOf( feat ) && PartDesign::Body::isSolidFeature ( feat ) ) {
@@ -414,8 +414,8 @@ void CmdPartDesignMigrate::activated(int iMsg)
                     if ( std::next ( baseFeatIt ) == chainIt->end() ) {
                         // just append our chain to already found
                         chainIt->splice ( chainIt->end(), chain );
-                        // TODO If we will hit a third part everything will be messed up again.
-                        //      Probably it will require a yet another smart-ass find_if. (2015-08-10, Fat-Zer)
+                        // TODO: If we will hit a third part everything will be messed up again.
+                        //       Probably it will require a yet another smart-ass find_if. (2015-08-10, Fat-Zer)
                     } else {
                         // We have a fork of a partDesign feature here
                         // add a chain for current body
@@ -430,7 +430,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                     // The feature is not present in list pending for migration,
                     // This generally shouldn't happen but may be if we run into some broken file
                     // Try to find out the body we should insert into
-                    // TODO Some error/warning is needed here (2015-08-10, Fat-Zer)
+                    // TODO: Some error/warning is needed here (2015-08-10, Fat-Zer)
                     auto newChainIt = featureChains.emplace (featureChains.end());
                     newChainIt->splice (newChainIt->end(), chain);
                 }
@@ -438,10 +438,10 @@ void CmdPartDesignMigrate::activated(int iMsg)
         }
         migrateFeatures.erase ( featIt );
         featIt = migrateFeatures.begin ();
-        // TODO Align visibility (2015-08-17, Fat-Zer)
+        // TODO: Align visibility (2015-08-17, Fat-Zer)
     } /* for */
 
-    // TODO make it work without parts (2015-09-04, Fat-Zer)
+    // TODO: make it work without parts (2015-09-04, Fat-Zer)
     // add a part if there is no active yet
     App::Part *actPart = PartDesignGui::assertActivePart ();
 
@@ -518,7 +518,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                                     arg(QString::fromUtf8(sketch->Label.getValue()) ) );
                         }
                     } else {
-                        // TODO Message that sketchbased is based not on a sketch (2015-08-11, Fat-Zer)
+                        // TODO: Message that sketchbased is based not on a sketch (2015-08-11, Fat-Zer)
                     }
                 }
             }
@@ -922,8 +922,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         }
 
         // Remove and re-insert the feature to/from the Body
-        // TODO if tip was moved the new position of tip is quite undetermined (2015-08-07, Fat-Zer)
-        // TODO warn the user if we are moving an object to some place before the object's link (2015-08-07, Fat-Zer)
+        // TODO: if tip was moved the new position of tip is quite undetermined (2015-08-07, Fat-Zer)
+        // TODO: warn the user if we are moving an object to some place before the object's link (2015-08-07, Fat-Zer)
         doCommand ( Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                 body->getNameInDocument(), feat->getNameInDocument() );
         doCommand ( Doc, "App.activeDocument().%s.insertObject(App.activeDocument().%s, %s, True)",

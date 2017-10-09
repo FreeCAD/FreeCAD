@@ -241,7 +241,7 @@ class GitControl(VersionControl):
         # date/time
         import time
         info=os.popen("git log -1 --date=raw --pretty=format:%cd").read()
-        # commit time is more meaningfull than author time
+        # commit time is more meaningful than author time
         # use UTC
         self.date = time.strftime("%Y/%m/%d %H:%M:%S",time.gmtime(\
                 float(info.strip().split(' ',1)[0])))

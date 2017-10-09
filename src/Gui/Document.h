@@ -167,8 +167,8 @@ public:
     /// Create a clone of the given view
     Gui::MDIView* cloneView(Gui::MDIView*);
     /** send messages to the active view
-     * Send a specific massage to the active view and is able to recive a
-     * return massage
+     * Send a specific massage to the active view and is able to receive a
+     * return message
      */
     /// send Messages to all views
     bool sendMsgToViews(const char* pMsg);

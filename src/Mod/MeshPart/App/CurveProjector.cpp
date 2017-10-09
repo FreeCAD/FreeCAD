@@ -77,7 +77,7 @@ void CurveProjector::writeIntersectionPointsToFile(const char *name)
 
 //**************************************************************************
 //**************************************************************************
-// Seperator for additional classes
+// Separator for additional classes
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 CurveProjectorShape::CurveProjectorShape(const TopoDS_Shape &aShape, const MeshKernel &pMesh)
@@ -243,7 +243,7 @@ bool CurveProjectorShape::findStartPoint(const MeshKernel &MeshK,const Base::Vec
 
 //**************************************************************************
 //**************************************************************************
-// Seperator for CurveProjectorSimple classe
+// Separator for CurveProjectorSimple classes
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -557,7 +557,7 @@ bool CurveProjectorSimple::findStartPoint(const MeshKernel &MeshK,const Base::Ve
 
 //**************************************************************************
 //**************************************************************************
-// Seperator for CurveProjectorSimple classe
+// Separator for CurveProjectorSimple classes
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
