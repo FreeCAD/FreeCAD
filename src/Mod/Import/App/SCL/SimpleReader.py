@@ -31,8 +31,8 @@
 
 """Simple Part21 STEP reader
 
-Reads a given STEP file. Maps the enteties and instaciate the
-corosbonding classes.
+Reads a given STEP file. Maps the entities and instantiate the
+corresponding classes.
 In addition it writes out a graphwiz file with the entity graph.
 """
 
@@ -92,7 +92,7 @@ class SimpleParser:
         gvFile.write('}\n')
 
     def instaciate(self):
-        """Instaciate the python classe from the enteties"""
+        """Instantiate the python class from the entities"""
         import inspect
         # load the needed schema module
         if self._p21loader.get_schema_name() == 'config_control_design':
@@ -149,7 +149,7 @@ class SimpleParser:
                     else:
                         self._create_entity_instance(key)
                         if key not in self.instanceMape:
-                            raise NameError("Needed instance not instanciated: ",key)
+                            raise NameError("Needed instance not instantiated: ",key)
                         else:
                             attrList[n] =  self.instanceMape[key]
                 elif i[0] == '$':

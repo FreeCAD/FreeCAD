@@ -53,7 +53,7 @@ void MeshAlgos::offset(MeshCore::MeshKernel* Mesh, float fSize)
   std::vector<Base::Vector3f> normals = Mesh->CalcVertexNormals();
 
   unsigned int i = 0;
-  // go throug all the Vertex normales
+  // go through all the Vertex normals
   for(std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();++It,i++)
     // and move each mesh point in the normal direction
     Mesh->MovePoint(i,It->Normalize() * fSize);
@@ -75,7 +75,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
 
     unsigned int i = 0;
 
-    // go throug all the Vertex normales
+    // go through all the Vertex normals
     for(std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++){
         builder.addSingleLine(Mesh->GetPoint(i),Mesh->GetPoint(i)+It->Normalize() * fSize);
         // and move each mesh point in the normal direction
@@ -125,7 +125,7 @@ void MeshAlgos::offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zma
   std::vector<Base::Vector3f> normals = Mesh->CalcVertexNormals();
 
   unsigned int i = 0;
-  // go throug all the Vertex normales
+  // go through all the Vertex normals
   for(std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();++It,i++)
   {
     Base::Vector3f Pnt = Mesh->GetPoint(i);

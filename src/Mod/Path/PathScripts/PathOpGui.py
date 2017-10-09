@@ -144,7 +144,7 @@ class ViewProvider(object):
         return self.OpIcon
 
     def getTaskPanelOpPage(self, obj):
-        '''getTaskPanelOpPage(obj) ... use the stored information to instanciate the receiver op's page controller.'''
+        '''getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller.'''
         mod = importlib.import_module(self.OpPageModule)
         cls = getattr(mod, self.OpPageClass)
         return cls(obj, 0)
