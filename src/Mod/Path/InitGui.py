@@ -152,12 +152,13 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             obj = FreeCADGui.Selection.getSelection()[0]
             if obj.isDerivedFrom("Path::Feature"):
+                self.appendContextMenu("", "Separator")
                 self.appendContextMenu("", ["Path_Inspect"])
                 selectedName = obj.Name
-                if "Job" in selectedName:
-                    self.appendContextMenu("", ["Path_ExportTemplate"])
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
+                if "Job" in selectedName:
+                    self.appendContextMenu("", ["Path_ExportTemplate"])
             if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy"])
             if obj.isDerivedFrom("Path::Feature"):
