@@ -242,7 +242,8 @@ int main( int argc, char ** argv )
     std::streambuf* oldcerr = std::cerr.rdbuf(&stdcerr);
 
     try {
-        if (App::Application::Config()["RunMode"] == "Gui")
+        if (App::Application::Config()["RunMode"] == "Gui" ||
+            App::Application::Config()["RunMode"] == "Internal")
             Gui::Application::runApplication();
         else
             App::Application::runApplication();
