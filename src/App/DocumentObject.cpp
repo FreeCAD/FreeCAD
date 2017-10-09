@@ -241,7 +241,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     return result;
 }
 
-void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
+void _getOutListRecursive(std::set<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
 {
     for (const auto objIt : obj->getOutList()){
         // if the check object is in the recursive inList we have a cycle!
@@ -249,8 +249,11 @@ void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentOb
             std::cerr << "DocumentObject::getOutListRecursive(): cyclic dependency detected!" << std::endl;
             throw Base::RuntimeError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
         }
-        objSet.push_back(objIt);
-        _getOutListRecursive(objSet, objIt, checkObj,depth-1);
+
+        // if the element was already in the set then there is no need to process it again
+        auto pair = objSet.insert(objIt);
+        if (pair.second)
+            _getOutListRecursive(objSet, objIt, checkObj, depth-1);
     }
 }
 
@@ -258,18 +261,14 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) cons
 {
     // number of objects in document is a good estimate in result size
     int maxDepth = getDocument()->countObjects() + 2;
-    std::vector<App::DocumentObject*> result;
-    result.reserve(maxDepth);
+    std::set<App::DocumentObject*> result;
 
     // using a recursive helper to collect all OutLists
     _getOutListRecursive(result, this, this, maxDepth);
 
-    // remove duplicate entries and resize the vector
-    std::sort(result.begin(), result.end());
-    auto newEnd = std::unique(result.begin(), result.end());
-    result.resize(std::distance(result.begin(), newEnd));
-
-    return result;
+    std::vector<App::DocumentObject*> array;
+    array.insert(array.begin(), result.begin(), result.end());
+    return array;
 }
 
 DocumentObjectGroup* DocumentObject::getGroup() const
