@@ -566,23 +566,27 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
 
     def initPage(self, obj):
+        self.startDepth = PathGui.QuantitySpinBox(self.form.startDepth, obj, 'StartDepth')
+
         if PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.hide()
             self.form.finalDepthLabel.hide()
             self.form.finalDepthSet.hide()
+        else:
+            self.finalDepth = PathGui.QuantitySpinBox(self.form.finalDepth, obj, 'FinalDepth')
 
-        if not PathOp.FeatureStepDown & self.features:
+        if PathOp.FeatureStepDown & self.features:
+            self.stepDown = PathGui.QuantitySpinBox(self.form.stepDown, obj, 'StepDown')
+        else:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
 
-        if not PathOp.FeatureFinishDepth & self.features:
+        if PathOp.FeatureFinishDepth & self.features:
+            self.finishDepth = PathGui.QuantitySpinBox(self.form.finishDepth, obj, 'FinishDepth')
+        else:
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
 
-        self.startDepth = PathGui.QuantitySpinBox(self.form.startDepth, obj, 'StartDepth')
-        self.finalDepth = PathGui.QuantitySpinBox(self.form.finalDepth, obj, 'FinalDepth')
-        self.finishDepth = PathGui.QuantitySpinBox(self.form.finishDepth, obj, 'FinishDepth')
-        self.stepDown = PathGui.QuantitySpinBox(self.form.stepDown, obj, 'StepDown')
 
     def getTitle(self, obj):
         return translate("PathOp", "Depths")
@@ -620,7 +624,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def registerSignalHandlers(self, obj):
         self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.startDepth, 'StartDepth'))
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.finalDepth, 'FinaleDepth'))
+            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.finalDepth, 'FinalDepth'))
 
     def pageUpdateData(self, obj, prop):
         if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
@@ -629,7 +633,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def depthSet(self, obj, spinbox, prop):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
         if z is not None:
-            PathLog.debug("depthSet(%.2f)" % z)
+            PathLog.debug("depthSet(%s, %s, %.2f)" % (obj.Label, prop, z))
             if spinbox.expression():
                 obj.setExpression(prop, None)
             spinbox.updateSpinBox(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length))

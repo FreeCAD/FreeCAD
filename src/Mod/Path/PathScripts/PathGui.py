@@ -53,7 +53,7 @@ def _getProperty(obj, prop):
         attr = getattr(o, name)
 
     if o == attr:
-        PathLog.warning(translate('PathGui', "%s has no property %s (%s))") % (obj.Label, prop))
+        PathLog.warning(translate('PathGui', "%s has no property %s (%s))") % (obj.Label, prop, name))
         return (None, None, None)
 
     #PathLog.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))

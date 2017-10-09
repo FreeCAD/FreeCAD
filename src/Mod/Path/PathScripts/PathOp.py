@@ -124,20 +124,17 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "The tool controller that will be used to calculate the path"))
+            self.addOpValues(obj, ['tooldia'])
 
         if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Final Depth of Tool- lowest value in Z"))
-            values = ['start']
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('FinalDepth', 2) # hide
-            else:
-                values.append('final')
-            self.addOpValues(obj, values)
+            self.addOpValues(obj, ['start', 'final'])
 
         if FeatureStepDown & features:
             obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Incremental Step Down of Tool"))
-            self.addOpValues(obj, ['tooldia'])
 
         if FeatureFinishDepth & features:
             obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Maximum material removed on final pass."))
@@ -164,6 +161,10 @@ class ObjectOp(object):
             obj.Base = base
             obj.touch()
             obj.Document.recompute()
+
+        if FeatureTool & self.opFeatures(obj) and not hasattr(obj, 'OpToolDiameter'):
+            self.addOpValues(obj, ['tooldia'])
+
         if FeatureDepths & self.opFeatures(obj):
             if not hasattr(obj, 'OpStartDepth'):
                 self.addOpValues(obj, ['start', 'final'])
@@ -175,8 +176,6 @@ class ObjectOp(object):
                     obj.setExpression('FinalDepth', 'OpFinalDepth')
                 if PathGeom.isRoughly(obj.StepDown.Value, 1):
                     obj.setExpression('StepDown', 'OpToolDiameter')
-        if FeatureStepDown & self.opFeatures(obj) and not hasattr(obj, 'OpToolDiameter'):
-            self.addOpValues(obj, ['tooldia'])
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
@@ -244,6 +243,7 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             obj.ToolController = PathUtils.findToolController(obj)
+            obj.OpToolDiameter  =  1.0
 
         if FeatureDepths & features:
             obj.setExpression('StartDepth', 'OpStartDepth')
@@ -252,7 +252,6 @@ class ObjectOp(object):
             obj.OpFinalDepth    =  0.0
 
         if FeatureStepDown & features:
-            obj.OpToolDiameter  =  1.0
             obj.setExpression('StepDown', 'OpToolDiameter')
 
         if FeatureHeights & features:
