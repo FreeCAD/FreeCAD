@@ -261,9 +261,10 @@ class CommandJobTemplateExport:
         if setupSheetAttrs:
             attrs[PathJob.JobTemplate.SetupSheet] = setupSheetAttrs
 
+        encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
         with open(unicode(path), 'wb') as fp:
-            json.dump(attrs, fp, sort_keys=True, indent=2)
+            json.dump(encoded, fp, sort_keys=True, indent=2)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command

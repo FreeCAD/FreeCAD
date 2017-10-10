@@ -208,6 +208,7 @@ class ObjectJob:
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
                 if attrs.get(JobTemplate.SetupSheet):
                     self.setupSheet.setFromTemplate(attrs[JobTemplate.SetupSheet])
+                attrs = self.setupSheet.decodeTemplateAttributes(attrs)
 
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
