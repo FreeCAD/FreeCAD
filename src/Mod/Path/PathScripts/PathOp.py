@@ -255,8 +255,8 @@ class ObjectOp(object):
             obj.setExpression('StepDown', 'OpToolDiameter')
 
         if FeatureHeights & features:
-            obj.setExpression('SafeHeight',      "%s.%s+StartDepth" % (job.SetupSheet.Name, PathSetupSheet.Default.SafeHeight))
-            obj.setExpression('ClearanceHeight', "%s.%s+StartDepth" % (job.SetupSheet.Name, PathSetupSheet.Default.ClearanceHeight))
+            obj.setExpression('SafeHeight',      "%s.%s+StartDepth" % (job.Proxy.setupSheet.expressionReference(), PathSetupSheet.Default.SafeHeight))
+            obj.setExpression('ClearanceHeight', "%s.%s+StartDepth" % (job.Proxy.setupSheet.expressionReference(), PathSetupSheet.Default.ClearanceHeight))
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
