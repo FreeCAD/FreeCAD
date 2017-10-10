@@ -47,17 +47,38 @@ class Default:
     SafeHeight = 'DefaultSafeHeight'
     ClearanceHeight = 'DefaultClearanceHeight'
 
+def _traverseTemplateAttributes(attrs, codec):
+    coded = {}
+    for key,value in attrs.iteritems():
+        if type(value) == dict:
+            PathLog.debug("%s is a dict" % key)
+            coded[key] = _traverseTemplateAttributes(value, codec)
+        elif type(value) == list:
+            PathLog.debug("%s is a list" % key)
+            coded[key] = [_traverseTemplateAttributes(attr, codec) for attr in value]
+        elif type(value) == str or type(value) == unicode:
+            PathLog.debug("%s is a string" % key)
+            coded[key] = codec(value)
+        else:
+            PathLog.debug("%s is %s" % (key, type(value)))
+            coded[key] = value
+    return coded
+
 class SetupSheet:
     '''Spreadsheet used by a Job to hold global reference values.
 It's mostly a convencience wrapper around Spreadsheet.
     '''
 
+    TemplateReference = '${SetupSheet}'
+
     def __init__(self, obj):
         self.obj = obj
 
-    def setup(self):
-        '''setup() ... initializes receiver with default values.'''
+    def setup(self, label=None):
+        '''setup(label=None) ... initializes receiver with default values.'''
         self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'SetupSheet')
+        if label:
+            self.obj.SetupSheet.Label = label
         self.obj.SetupSheet.set('A2', translate('PathSetupSheet', 'Tool Rapid Speeds'))
         self.createSetting(3, Default.HorizRapid, '0 mm/s', translate('PathSetupSheet', 'Horizontal'), translate('PathSetupSheet', 'Default speed for horizzontal rapid moves.'))
         self.createSetting(4, Default.VertRapid,  '0 mm/s', translate('PathSetupSheet', 'Vertical'),   translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
@@ -93,7 +114,7 @@ It's mostly a convencience wrapper around Spreadsheet.
         if attrs.get(Default.ClearanceHeight):
             self.updateSetting(Default.ClearanceHeight, attrs[Default.ClearanceHeight])
 
-    def templateAttributes(self, includeRapids, includeHeights):
+    def templateAttributes(self, includeRapids=True, includeHeights=True):
         '''templateAttributes(includeRapids, includeHeights) ... answers a dictionary with the default values.'''
         attrs = {}
         if includeRapids:
@@ -107,3 +128,11 @@ It's mostly a convencience wrapper around Spreadsheet.
     def expressionReference(self):
         '''expressionReference() ... returns the string to be used in expressions'''
         return self.obj.SetupSheet.Label
+
+    def encodeTemplateAttributes(self, attrs):
+        '''encodeTemplateAttributes(attrs) ... return a dictionary with all values encoded.'''
+        return _traverseTemplateAttributes(attrs, lambda value: value.replace(self.expressionReference(), self.TemplateReference))
+
+    def decodeTemplateAttributes(self, attrs):
+        '''decodeTemplateAttributes(attrs) ... expand template attributes to reference the receiver where applicable.'''
+        return _traverseTemplateAttributes(attrs, lambda value: value.replace(self.TemplateReference, self.expressionReference()))
