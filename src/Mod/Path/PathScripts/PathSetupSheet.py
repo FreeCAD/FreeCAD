@@ -27,7 +27,7 @@ import Path
 import PathScripts.PathLog as PathLog
 import PySide
 
-__title__ = "Settings for a Job."
+__title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "A container for all default values and job specific configuration values."
@@ -47,34 +47,35 @@ class Default:
     SafeHeight = 'DefaultSafeHeight'
     ClearanceHeight = 'DefaultClearanceHeight'
 
-class Settings:
+class SetupSheet:
 
     def __init__(self, obj):
         self.obj = obj
 
     def setup(self):
-        self.obj.Settings = self.obj.Document.addObject('Spreadsheet::Sheet', 'Settings')
-        self.obj.Settings.set('A2', translate('PathSettings', 'Tool Rapid Speeds'))
-        self.createSetting(3, Default.HorizRapid, '0 mm/s', translate('PathSettings', 'Horizontal'), translate('PathSettings', 'Default speed for horizzontal rapid moves.'))
-        self.createSetting(4, Default.VertRapid,  '0 mm/s', translate('PathSettings', 'Vertical'),   translate('PathSettings', 'Default speed for vertical rapid moves.'))
-        self.obj.Settings.set('A6', translate('PathSettings', 'Operation Heights'))
-        self.createSetting(7, Default.SafeHeight,      '3 mm',  translate('PathSettings', 'Safe Height'),      translate('PathSettings', 'Default value added to StartDepth used for the safe height.'))
-        self.createSetting(8, Default.ClearanceHeight, '5 mm',  translate('PathSettings', 'Clearance Height'), translate('PathSettings', 'Default value added to StartDepth used for the clearance height.'))
+        self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'Setup_Sheet')
+        self.obj.SetupSheet.Label = translate('PathSetupSheet', 'Setup Sheet')
+        self.obj.SetupSheet.set('A2', translate('PathSetupSheet', 'Tool Rapid Speeds'))
+        self.createSetting(3, Default.HorizRapid, '0 mm/s', translate('PathSetupSheet', 'Horizontal'), translate('PathSetupSheet', 'Default speed for horizzontal rapid moves.'))
+        self.createSetting(4, Default.VertRapid,  '0 mm/s', translate('PathSetupSheet', 'Vertical'),   translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
+        self.obj.SetupSheet.set('A6', translate('PathSetupSheet', 'Operation Heights'))
+        self.createSetting(7, Default.SafeHeight,      '3 mm',  translate('PathSetupSheet', 'Safe Height'),      translate('PathSetupSheet', 'Default value added to StartDepth used for the safe height.'))
+        self.createSetting(8, Default.ClearanceHeight, '5 mm',  translate('PathSetupSheet', 'Clearance Height'), translate('PathSetupSheet', 'Default value added to StartDepth used for the clearance height.'))
 
     def updateSetting(self, name, value):
-        cell = self.obj.Settings.getCellFromAlias(name)
+        cell = self.obj.SetupSheet.getCellFromAlias(name)
         PathLog.debug("updateSetting(%s, %s): %s" % (name, value, cell))
-        self.obj.Settings.set(cell, value)
+        self.obj.SetupSheet.set(cell, value)
 
     def createSetting(self, row, name, value, label, desc):
         labelCell = "B%d" % row
         valueCell = "C%d" % row
         descCell  = "D%d" % row
         PathLog.debug("createSetting(%d, %s, %s): %s" % (row, name, value, valueCell))
-        self.obj.Settings.set(labelCell, label)
-        self.obj.Settings.set(valueCell, value)
-        self.obj.Settings.setAlias(valueCell, name)
-        self.obj.Settings.set(descCell, desc)
+        self.obj.SetupSheet.set(labelCell, label)
+        self.obj.SetupSheet.set(valueCell, value)
+        self.obj.SetupSheet.setAlias(valueCell, name)
+        self.obj.SetupSheet.set(descCell, desc)
 
     def setFromTemplate(self, attrs):
         if attrs.get(Default.VertRapid):
@@ -89,10 +90,10 @@ class Settings:
     def templateAttributes(self, includeRapids, includeHeights):
         attrs = {}
         if includeRapids:
-            attrs[Default.VertRapid]            = self.obj.Settings.DefaultVertRapid.UserString
-            attrs[Default.HorizRapid]           = self.obj.Settings.DefaultHorizRapid.UserString
+            attrs[Default.VertRapid]            = self.obj.SetupSheet.DefaultVertRapid.UserString
+            attrs[Default.HorizRapid]           = self.obj.SetupSheet.DefaultHorizRapid.UserString
         if includeHeights:
-            attrs[Default.SafeHeight]           = self.obj.Settings.DefaultSafeHeight.UserString
-            attrs[Default.ClearanceHeight]      = self.obj.Settings.DefaultClearanceHeight.UserString
+            attrs[Default.SafeHeight]           = self.obj.SetupSheet.DefaultSafeHeight.UserString
+            attrs[Default.ClearanceHeight]      = self.obj.SetupSheet.DefaultClearanceHeight.UserString
         return attrs
 
