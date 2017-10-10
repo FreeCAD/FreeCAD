@@ -351,8 +351,13 @@ void QuantitySpinBox::setBoundToByName(const QString &name)
 QString Gui::QuantitySpinBox::expressionText() const
 {
     Q_D(const QuantitySpinBox);
-    if (isBound()) {
-        return QString::fromStdString(getExpressionString());
+    try {
+        if (hasExpression()) {
+            return QString::fromStdString(getExpressionString());
+        }
+    }
+    catch (const Base::Exception& e) {
+        qDebug() << e.what();
     }
     return QString();
 }
