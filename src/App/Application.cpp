@@ -2034,6 +2034,7 @@ void Application::ParseOptions(int ac, char ** av)
     }
 
     if (vm.count("console")) {
+        mConfig["Console"] = "1";
         mConfig["RunMode"] = "Cmd";
     }
 
