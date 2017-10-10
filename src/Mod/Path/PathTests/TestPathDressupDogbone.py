@@ -118,9 +118,9 @@ class TestDressupDogbone(PathTestBase):
         profile.Base = (cut, face)
         profile.StepDown = 5
         # set start and final depth in order to eliminate effects of stock (and its default values)
-        profile.StartDepthLock = True
+        profile.setExpression('StartDepth', None)
         profile.StartDepth = 10
-        profile.FinalDepthLock = True
+        profile.setExpression('FinalDepth', None)
         profile.FinalDepth = 0
 
         profile.processHoles = True
