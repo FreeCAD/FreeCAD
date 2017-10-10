@@ -238,7 +238,7 @@ script:
   - sudo make -j2 install
   - ${INSTALLED_APP_PATH} --run-test 0
   - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-  - sleep 10 && pkill FreeCADCmd
+  - sleep 10 && pkill FreeCADCmd && fg 1
   - cat /tmp/FreeCAD_installed.log
   - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
