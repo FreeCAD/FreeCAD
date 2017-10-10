@@ -272,8 +272,8 @@ class ObjectJob:
         group = self.obj.ToolController
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
-            tc.setExpression('VertRapid',  "%s.%s" % (self.obj.SetupSheet.Name, PathSetupSheet.Default.VertRapid))
-            tc.setExpression('HorizRapid', "%s.%s" % (self.obj.SetupSheet.Name, PathSetupSheet.Default.HorizRapid))
+            tc.setExpression('VertRapid',  "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Default.VertRapid))
+            tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Default.HorizRapid))
             group.append(tc)
             self.obj.ToolController = group
 

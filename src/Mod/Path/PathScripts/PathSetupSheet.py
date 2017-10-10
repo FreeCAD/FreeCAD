@@ -48,13 +48,16 @@ class Default:
     ClearanceHeight = 'DefaultClearanceHeight'
 
 class SetupSheet:
+    '''Spreadsheet used by a Job to hold global reference values.
+It's mostly a convencience wrapper around Spreadsheet.
+    '''
 
     def __init__(self, obj):
         self.obj = obj
 
     def setup(self):
-        self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'Setup_Sheet')
-        self.obj.SetupSheet.Label = translate('PathSetupSheet', 'Setup Sheet')
+        '''setup() ... initializes receiver with default values.'''
+        self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'SetupSheet')
         self.obj.SetupSheet.set('A2', translate('PathSetupSheet', 'Tool Rapid Speeds'))
         self.createSetting(3, Default.HorizRapid, '0 mm/s', translate('PathSetupSheet', 'Horizontal'), translate('PathSetupSheet', 'Default speed for horizzontal rapid moves.'))
         self.createSetting(4, Default.VertRapid,  '0 mm/s', translate('PathSetupSheet', 'Vertical'),   translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
@@ -62,22 +65,25 @@ class SetupSheet:
         self.createSetting(7, Default.SafeHeight,      '3 mm',  translate('PathSetupSheet', 'Safe Height'),      translate('PathSetupSheet', 'Default value added to StartDepth used for the safe height.'))
         self.createSetting(8, Default.ClearanceHeight, '5 mm',  translate('PathSetupSheet', 'Clearance Height'), translate('PathSetupSheet', 'Default value added to StartDepth used for the clearance height.'))
 
-    def updateSetting(self, name, value):
-        cell = self.obj.SetupSheet.getCellFromAlias(name)
-        PathLog.debug("updateSetting(%s, %s): %s" % (name, value, cell))
+    def updateSetting(self, alias, value):
+        '''updateSetting(alias, value) ... stores a new value for the given value.'''
+        cell = self.obj.SetupSheet.getCellFromAlias(alias)
+        PathLog.debug("updateSetting(%s, %s): %s" % (alias, value, cell))
         self.obj.SetupSheet.set(cell, value)
 
-    def createSetting(self, row, name, value, label, desc):
+    def createSetting(self, row, alias, value, label, desc):
+        '''createSetting(row, alias, value, label, desc) ... sets the values of the new setting in the given row.'''
         labelCell = "B%d" % row
         valueCell = "C%d" % row
         descCell  = "D%d" % row
-        PathLog.debug("createSetting(%d, %s, %s): %s" % (row, name, value, valueCell))
+        PathLog.debug("createSetting(%d, %s, %s): %s" % (row, alias, value, valueCell))
         self.obj.SetupSheet.set(labelCell, label)
         self.obj.SetupSheet.set(valueCell, value)
-        self.obj.SetupSheet.setAlias(valueCell, name)
+        self.obj.SetupSheet.setAlias(valueCell, alias)
         self.obj.SetupSheet.set(descCell, desc)
 
     def setFromTemplate(self, attrs):
+        '''setFromTemplate(attrs) ... sets the default values from the given dictionary.'''
         if attrs.get(Default.VertRapid):
             self.updateSetting(Default.VertRapid, attrs[Default.VertRapid])
         if attrs.get(Default.HorizRapid):
@@ -88,6 +94,7 @@ class SetupSheet:
             self.updateSetting(Default.ClearanceHeight, attrs[Default.ClearanceHeight])
 
     def templateAttributes(self, includeRapids, includeHeights):
+        '''templateAttributes(includeRapids, includeHeights) ... answers a dictionary with the default values.'''
         attrs = {}
         if includeRapids:
             attrs[Default.VertRapid]            = self.obj.SetupSheet.DefaultVertRapid.UserString
@@ -97,3 +104,6 @@ class SetupSheet:
             attrs[Default.ClearanceHeight]      = self.obj.SetupSheet.DefaultClearanceHeight.UserString
         return attrs
 
+    def expressionReference(self):
+        '''expressionReference() ... returns the string to be used in expressions'''
+        return self.obj.SetupSheet.Label
