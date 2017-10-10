@@ -156,9 +156,9 @@ class ViewProvider:
             children.append(self.obj.Base)
         if self.obj.Stock:
             children.append(self.obj.Stock)
-        if hasattr(self.obj, 'Settings'):
-            # when loading a job that didn't have settings they might not've been created yet
-            children.append(self.obj.Settings)
+        if hasattr(self.obj, 'SetupSheet'):
+            # when loading a job that didn't have a setup sheet they might not've been created yet
+            children.append(self.obj.SetupSheet)
         return children
 
     def onDelete(self, vobj, arg2=None):
