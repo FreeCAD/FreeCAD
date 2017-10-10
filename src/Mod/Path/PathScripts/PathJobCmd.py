@@ -252,14 +252,14 @@ class CommandJobTemplateExport:
         if stockAttrs:
             attrs[PathJob.JobTemplate.Stock] = stockAttrs
 
-        # settings
-        settingsAttrs = None
+        # setup sheet
+        setupSheetAttrs = None
         if dialog:
-            settingsAttrs = job.Proxy.settings.templateAttributes(dialog.includeDefaultToolRapid(), dialog.includeDefaultOperationHeights())
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeDefaultToolRapid(), dialog.includeDefaultOperationHeights())
         else:
-            settingsAttrs = job.Proxy.settings.templateAttributes(True, True)
-        if settingsAttrs:
-            attrs[PathJob.JobTemplate.Settings] = settingsAttrs
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True)
+        if setupSheetAttrs:
+            attrs[PathJob.JobTemplate.SetupSheet] = setupSheetAttrs
 
         # write template
         with open(unicode(path), 'wb') as fp:

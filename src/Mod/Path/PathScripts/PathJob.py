@@ -27,7 +27,7 @@ import Draft
 import FreeCAD
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSettings as PathSettings
+import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
@@ -57,7 +57,7 @@ class JobTemplate:
     PostProcessor = 'Post'
     PostProcessorArgs = 'PostArgs'
     PostProcessorOutputFile = 'Output'
-    Settings = 'Settings'
+    SetupSheet = 'SetupSheet'
     Stock = 'Stock'
     ToolController = 'ToolController'
     Version = 'Version'
@@ -121,7 +121,7 @@ class ObjectJob:
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
-        self.setupSettings(obj)
+        self.setupSetupSheet(obj)
 
         obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
@@ -136,11 +136,11 @@ class ObjectJob:
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
-    def setupSettings(self, obj):
-        self.settings = PathSettings.Settings(obj)
-        if not hasattr(obj, 'Settings'):
-            obj.addProperty('App::PropertyLink', 'Settings', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Spreadsheet holding the settings for this job'))
-            self.settings.setup()
+    def setupSetupSheet(self, obj):
+        self.setupSheet = PathSetupSheet.SetupSheet(obj)
+        if not hasattr(obj, 'SetupSheet'):
+            obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Spreadsheet holding the settings for this job'))
+            self.setupSheet.setup()
 
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
@@ -171,9 +171,9 @@ class ObjectJob:
         for tc in obj.ToolController:
             doc.removeObject(tc.Name)
         obj.ToolController = []
-        # Settings
-        doc.removeObject(obj.Settings.Name)
-        obj.Settings = None
+        # SetupSheet
+        doc.removeObject(obj.SetupSheet.Name)
+        obj.SetupSheet = None
 
     def fixupResourceClone(self, obj, name, icon):
         if not isResourceClone(obj, name, name) and not isArchPanelSheet(obj):
@@ -183,7 +183,7 @@ class ObjectJob:
 
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
-        self.setupSettings(obj)
+        self.setupSetupSheet(obj)
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -206,8 +206,8 @@ class ObjectJob:
                 attrs = json.load(fp)
 
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
-                if attrs.get(JobTemplate.Settings):
-                    self.settings.setFromTemplate(attrs[JobTemplate.Settings])
+                if attrs.get(JobTemplate.SetupSheet):
+                    self.setupSheet.setFromTemplate(attrs[JobTemplate.SetupSheet])
 
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
@@ -272,8 +272,8 @@ class ObjectJob:
         group = self.obj.ToolController
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
-            tc.setExpression('VertRapid',  "%s.%s" % (self.obj.Settings.Name, PathSettings.Default.VertRapid))
-            tc.setExpression('HorizRapid', "%s.%s" % (self.obj.Settings.Name, PathSettings.Default.HorizRapid))
+            tc.setExpression('VertRapid',  "%s.%s" % (self.obj.SetupSheet.Name, PathSetupSheet.Default.VertRapid))
+            tc.setExpression('HorizRapid', "%s.%s" % (self.obj.SetupSheet.Name, PathSetupSheet.Default.HorizRapid))
             group.append(tc)
             self.obj.ToolController = group
 
