@@ -62,7 +62,7 @@ class FaceUnwrapper{
 public:
 	FaceUnwrapper(const TopoDS_Face & face);
         FaceUnwrapper(ColMat<double, 3> xyz_nodes, ColMat<long, 3> tris);
-	void findFlatNodes();
+	void findFlatNodes(int steps, double val);
 	ColMat<double, 3> interpolateFlatFace(const TopoDS_Face& face);
         std::vector<ColMat<double, 3>> getFlatBoundaryNodes();
 

@@ -23,6 +23,7 @@
 
 #include "MeshFlatteningLscmRelax.h"
 #include <Eigen/IterativeLinearSolvers>
+#include<Eigen/SparseCholesky>
 #include <Eigen/SVD>
 #include <iostream>
 #include <algorithm>
@@ -278,10 +279,9 @@ void LscmRelax::relax(double weight)
     // rhs +=  K_g * Eigen::VectorXd::Ones(K_g.rows());
     
     // solve linear system (privately store the value for guess in next step)
-    Eigen::ConjugateGradient<spMat, Eigen::Lower> solver;
-    solver.setTolerance(0.0000001);
+    Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
     solver.compute(K_g);
-    this->sol = solver.solveWithGuess(-rhs, this->sol);
+    this->sol = solver.solve(-rhs);
     this->set_shift(this->sol.head(this->vertices.cols() * 2) * weight);
     this->set_q_l_m();
 }

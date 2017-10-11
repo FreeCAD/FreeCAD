@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -44,38 +45,61 @@
 #include "MeshFlatteningNurbs.h"
 
 #include <TopoDS_Face.hxx>
+#include <TopoDS_Edge.hxx>
 #include <TopoDS.hxx>
+#include <ShapeFix_Edge.hxx>
 
 
 
 namespace py = pybind11;
 
-// void FaceUnwrapper_constructor(FaceUnwrapper& instance, Part::TopoShapeFacePy Face)
-FaceUnwrapper* FaceUnwrapper_constructor(py::object face)
+const TopoDS_Face& getTopoDSFace(py::object* face)
 {
-    if (PyObject_TypeCheck(face.ptr(), &(Part::TopoShapeFacePy::Type)))
+    if (PyObject_TypeCheck(face->ptr(), &(Part::TopoShapeFacePy::Type)))
     {
-        const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face.ptr());
+        const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face->ptr());
         const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
-        return new FaceUnwrapper(myFace);
+        return myFace;
     }
     else
-        throw std::invalid_argument("FaceUnwrapper should be initialized with Part.Face");
+        throw std::invalid_argument("must be a face");
 }
 
-ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object face)
+const TopoDS_Edge& getTopoDSEdge(py::object* edge)
 {
-    std::cout << face.ptr()->ob_type->tp_name << std::endl;
-    std::cout << Part::TopoShapeFacePy::Type.tp_name << std::endl;
-    if (PyObject_TypeCheck(face.ptr(), &(Part::TopoShapeFacePy::Type)))
+    if (PyObject_TypeCheck(edge->ptr(), &(Part::TopoShapeEdgePy::Type)))
     {
-        const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face.ptr());
-        const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
-        return instance.interpolateFlatFace(myFace);
+        const Part::TopoShapeEdgePy* e = static_cast<Part::TopoShapeEdgePy*>(edge->ptr());
+        const TopoDS_Edge& myEdge = TopoDS::Edge(e->getTopoShapePtr()->getShape());
+        return myEdge;
     }
     else
-        throw std::invalid_argument("FaceUnwrapper.interpolateNurbs should be initialized with Part.Face");
+        throw std::invalid_argument("must be an edge");
 }
+
+Py::Object makeEdge(const TopoDS_Edge& edge)
+{
+    return Py::asObject(new Part::TopoShapeEdgePy(new Part::TopoShape(edge)));
+}
+
+py::object makeFace(const TopoDS_Face& face)
+{
+    return py::cast(new Part::TopoShapeFacePy(new Part::TopoShape(face)));
+}
+
+
+FaceUnwrapper* FaceUnwrapper_constructor(py::object* face)
+{
+    const TopoDS_Face& myFace = getTopoDSFace(face);
+    return new FaceUnwrapper(myFace);
+}
+
+ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object* face)
+{
+    const TopoDS_Face& myFace = getTopoDSFace(face);
+    return instance.interpolateFlatFace(myFace);
+}
+
 
 PYBIND11_MODULE(flatmesh, m)
 {
@@ -96,21 +120,34 @@ PYBIND11_MODULE(flatmesh, m)
 
     py::class_<nurbs::NurbsBase2D>(m, "NurbsBase2D")
         .def(py::init<Eigen::VectorXd, Eigen::VectorXd, Eigen::VectorXd, int, int>())
+        .def_readonly("u_knots", &nurbs::NurbsBase2D::u_knots)
+        .def_readonly("weights", &nurbs::NurbsBase2D::weights)
+        .def_readonly("degree_u", &nurbs::NurbsBase2D::degree_u)
+        .def_readonly("v_knots", &nurbs::NurbsBase2D::u_knots)
+        .def_readonly("degree_v", &nurbs::NurbsBase2D::degree_u)
+        .def("getUVMesh", &nurbs::NurbsBase2D::getUVMesh)
         .def("computeFirstDerivatives", &nurbs::NurbsBase2D::computeFirstDerivatives)
         .def("getInfluenceVector", &nurbs::NurbsBase2D::getInfluenceVector)
         .def("getInfluenceMatrix", &nurbs::NurbsBase2D::getInfluenceMatrix)
         .def("getDuVector", &nurbs::NurbsBase2D::getDuVector)
         .def("getDuMatrix", &nurbs::NurbsBase2D::getDuMatrix)
         .def("getDvVector", &nurbs::NurbsBase2D::getDvVector)
-        .def("getDvMatrix", &nurbs::NurbsBase2D::getDvMatrix);
+        .def("getDvMatrix", &nurbs::NurbsBase2D::getDvMatrix)
+        .def("interpolateUBS", &nurbs::NurbsBase2D::interpolateUBS);
 
     py::class_<nurbs::NurbsBase1D>(m, "NurbsBase1D")
         .def(py::init<Eigen::VectorXd, Eigen::VectorXd, int>())
+        .def_readonly("u_knots", &nurbs::NurbsBase1D::u_knots)
+        .def_readonly("weights", &nurbs::NurbsBase1D::weights)
+        .def_readonly("degree_u", &nurbs::NurbsBase1D::degree_u)
+        .def("getUMesh", &nurbs::NurbsBase1D::getUMesh)
         .def("computeFirstDerivatives", &nurbs::NurbsBase1D::computeFirstDerivatives)
         .def("getInfluenceVector", &nurbs::NurbsBase1D::getInfluenceVector)
         .def("getInfluenceMatrix", &nurbs::NurbsBase1D::getInfluenceMatrix)
         .def("getDuVector", &nurbs::NurbsBase1D::getDuVector)
-        .def("getDuMatrix", &nurbs::NurbsBase1D::getDuMatrix);
+        .def("getDuMatrix", &nurbs::NurbsBase1D::getDuMatrix)
+        .def_static("getKnotSequence", &nurbs::NurbsBase1D::getKnotSequence)
+        .def_static("getWeightList", &nurbs::NurbsBase1D::getWeightList);
 
     py::class_<FaceUnwrapper>(m, "FaceUnwrapper")
         .def(py::init(&FaceUnwrapper_constructor))
@@ -124,4 +161,5 @@ PYBIND11_MODULE(flatmesh, m)
         .def_readonly("ze_nodes", &FaceUnwrapper::ze_nodes)
         .def_readonly("ze_poles", &FaceUnwrapper::ze_poles)
         .def_readonly("A", &FaceUnwrapper::A);
+        
 };

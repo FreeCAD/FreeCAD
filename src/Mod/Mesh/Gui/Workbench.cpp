@@ -193,7 +193,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_Merge" << "Mesh_PolySelect" << "Mesh_PolyCut"
           << "Mesh_PolySplit" << "Mesh_PolySegm" << "Mesh_PolyTrim" << "Separator"
           << "Mesh_TrimByPlane" << "Mesh_SectionByPlane" << "Mesh_Segmentation"
-          << "Mesh_VertexCurvature" << "CreateFlatMesh";
+          << "Mesh_VertexCurvature" << "CreateFlatMesh" << "CreateFlatFace";
     return root;
 }
 
