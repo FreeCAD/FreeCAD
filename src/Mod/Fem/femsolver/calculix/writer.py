@@ -377,7 +377,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.get_ccx_elsets_single_mat_multiple_fluid()
         elif len(self.material_objects) > 1:
             if self.femmesh.Volumes:
-                # we only could do this for volumes, if a mseh contains volumes 
+                # we only could do this for volumes, if a mseh contains volumes
                 # we're going to use them in the analysis
                 # but a mesh could contain the element faces of the volumes as faces
                 # and the edges of the faces as edges, there we have to check for some geometric objects
