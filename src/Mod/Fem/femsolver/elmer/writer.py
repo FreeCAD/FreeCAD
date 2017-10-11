@@ -434,6 +434,7 @@ class Writer(object):
                 densityQuantity = Units.Quantity(m["Density"])
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
+                    density = None  # not tested, but it seams needed because denisty does not exist (IMHO, bernd)
                     density.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
                 density = convert(densityQuantity, dimension)
