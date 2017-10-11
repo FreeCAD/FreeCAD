@@ -88,7 +88,7 @@ public:
     ColMat<double, 1> rhs;
     Eigen::MatrixXd MATRIX;
 
-    double nue=0.0;
+    double nue=0.9;
     double elasticity=1.;
 
     void lscm();
