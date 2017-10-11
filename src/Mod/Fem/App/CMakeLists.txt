@@ -269,6 +269,13 @@ SET(FemTests_SRCS
     test_files/ccx/Flow1D_thermomech.fcstd
 )
 
+SET(FemTestsElmer_SRCS
+    test_files/elmer/__init__.py
+    test_files/elmer/case.sif
+    test_files/elmer/group_mesh.geo
+    test_files/elmer/ELMERSOLVER_STARTINFO
+)
+
 SET(FemBase_SRCS
     FemMeshObject.cpp
     FemMeshObject.h
@@ -379,6 +386,7 @@ fc_target_copy_resource(Fem
     ${FemObjectsScripts_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
+    ${FemTestsElmer_SRCS}
     ${FemSolver_SRCS}
     ${FemElmer_SRCS}
     ${FemCalculix_SRCS}
