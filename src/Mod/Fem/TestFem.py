@@ -42,6 +42,7 @@ temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
 test_file_dir = home_path + 'Mod/Fem/test_files/ccx/'
+test_file_dir_elmer = home_path + 'Mod/Fem/test_files/elmer/'
 
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
@@ -613,7 +614,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
 
-        # use new solver frame work solver
+        # use new solver frame work ccx solver
         fcc_print('Checking FEM new solver for new solver frame work...')
         solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
         solver_ccx2_object.GeometricalNonlinearity = 'linear'
@@ -623,12 +624,14 @@ class FemCcxAnalysisTest(unittest.TestCase):
         solver_ccx2_object.EigenmodesCount = 10
         solver_ccx2_object.EigenmodeHighLimit = 1000000.0
         solver_ccx2_object.EigenmodeLowLimit = 0.0
-        self.assertTrue(solver_ccx2_object, "FemTest of new solver failed")
+        self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
         analysis.Member = analysis.Member + [solver_ccx2_object]
 
         fcc_print('Checking inpfile writing for new solver frame work...')
-        if not os.path.exists(static2_analysis_dir):
+        if not os.path.exists(static2_analysis_dir):  # new solver frameworkd does explicit not create a non existing directory
             os.makedirs(static2_analysis_dir)
+
+        fcc_print('machine_ccx')
         machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
         machine.target = femsolver.run.PREPARE
         machine.start()
@@ -636,6 +639,46 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))
         ret = compare_inp_files(static_analysis_inp_file, static2_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+
+        # use new solver frame work elmer solver
+        solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
+        self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
+        analysis.Member = analysis.Member + [solver_elmer_object]
+        solver_elmer_eqobj = ObjectsFem.makeEquationElasticity(self.active_doc, solver_elmer_object)
+        self.assertTrue(solver_elmer_eqobj, "FemTest of elmer elasticity equation failed")
+
+        # set ThermalExpansionCoefficient, current elmer seams to need it even on simple elasticity analysis
+        mat = material_object.Material
+        mat['ThermalExpansionCoefficient'] = "0 um/m/K"  # FIXME elmer elasticity needs the dictionary key, otherwise it fails
+        material_object.Material = mat
+
+        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.active_doc)
+        mesh_gmsh.CharacteristicLengthMin = "9 mm"
+        mesh_gmsh.FemMesh = mesh_object.FemMesh  # elmer needs a GMHS mesh object, FIXME error message on Python solver run
+        mesh_gmsh.Part = box
+        analysis.Member = analysis.Member + [mesh_gmsh]
+        self.active_doc.removeObject(mesh_object.Name)
+
+        fcc_print('machine_elmer')
+        machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, static2_analysis_dir)
+        machine_elmer.target = femsolver.run.PREPARE
+        machine_elmer.start()
+        machine_elmer.join()  # wait for the machine to finish.
+
+        fcc_print('Test writing STARTINFO file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', static2_analysis_dir + 'ELMERSOLVER_STARTINFO'))
+        ret = compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', static2_analysis_dir + 'ELMERSOLVER_STARTINFO')
+        self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
+
+        fcc_print('Test writing case file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'case.sif', static2_analysis_dir + 'case.sif'))
+        ret = compare_files(test_file_dir_elmer + 'case.sif', static2_analysis_dir + 'case.sif')
+        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
+
+        fcc_print('Test writing GMSH geo file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'group_mesh.geo', static2_analysis_dir + 'group_mesh.geo'))
+        ret = compare_files(test_file_dir_elmer + 'group_mesh.geo', static2_analysis_dir + 'group_mesh.geo')
+        self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
         fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(static2_save_fc_file))
         self.active_doc.saveAs(static2_save_fc_file)
@@ -1054,6 +1097,28 @@ def compare_inp_files(file_name1, file_name2):
     file2.close()
     # TODO see comment on file1
     lf2 = [l for l in f2 if not (l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1'))]
+    lf2 = force_unix_line_ends(lf2)
+    import difflib
+    diff = difflib.unified_diff(lf1, lf2, n=0)
+    result = ''
+    for l in diff:
+        result += l
+    if result:
+        result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
+    return result
+
+
+def compare_files(file_name1, file_name2):
+    file1 = open(file_name1, 'r')
+    f1 = file1.readlines()
+    file1.close()
+    # workaraound for compare geos of elmer test and temporary file path (not only names change, path changes with operating system)
+    lf1 = [l for l in f1 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
+    lf1 = force_unix_line_ends(lf1)
+    file2 = open(file_name2, 'r')
+    f2 = file2.readlines()
+    file2.close()
+    lf2 = [l for l in f2 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)

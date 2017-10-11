@@ -249,3 +249,14 @@ INSTALL(
     DESTINATION
         Mod/Fem/test_files/ccx
 )
+
+INSTALL(
+    FILES
+        # changes on the file list here needs to be made in App/CMakeLists.txt as well
+        test_files/elmer/__init__.py
+        test_files/elmer/case.sif
+        test_files/elmer/group_mesh.geo
+        test_files/elmer/ELMERSOLVER_STARTINFO
+    DESTINATION
+        Mod/Fem/test_files/elmer
+)
