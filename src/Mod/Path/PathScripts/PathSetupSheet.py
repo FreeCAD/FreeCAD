@@ -74,9 +74,9 @@ It's mostly a convencience wrapper around Spreadsheet.
     def __init__(self, obj):
         self.obj = obj
 
-    def setup(self, label=None):
+    def setup(self, label='SetupSheet'):
         '''setup(label=None) ... initializes receiver with default values.'''
-        self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'SetupSheet')
+        self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'Spreadsheet')
         if label:
             self.obj.SetupSheet.Label = label
         self.obj.SetupSheet.set('A2', translate('PathSetupSheet', 'Tool Rapid Speeds'))
@@ -127,12 +127,30 @@ It's mostly a convencience wrapper around Spreadsheet.
 
     def expressionReference(self):
         '''expressionReference() ... returns the string to be used in expressions'''
-        return self.obj.SetupSheet.Label
+        # Using the Name here and not the Label (both would be valid) because the Name 'fails early'.
+        #
+        # If there is a Name/Label conflict and an expression is bound to the Name we'll get an error
+        # on creation (Property not found). Not good, but at least there's some indication that
+        # something's afoul.
+        #
+        # If the expression is based on the Label everything works out nicely - until the document is
+        # saved and loaded from disk. The Labels change in order to avoid the Name/Label conflict
+        # but the expression stays the same. If the user's lucky the expression is broken because the
+        # conflicting object doesn't have the properties reference by the expressions. If the user is
+        # not so lucky those properties also exist in the other object, there is no indication that
+        # anything is wrong but the expressions will substitute the values from the wrong object.
+        #
+        # I prefer the question: "why do I get this error when I create ..." over "my cnc machine just
+        # rammed it's tool head into the table ..." or even "I saved my file and now it's corrupt..."
+        #
+        # https://forum.freecadweb.org/viewtopic.php?f=10&t=24839
+        # https://forum.freecadweb.org/viewtopic.php?f=10&t=24845
+        return self.obj.SetupSheet.Name
 
     def encodeTemplateAttributes(self, attrs):
         '''encodeTemplateAttributes(attrs) ... return a dictionary with all values encoded.'''
-        return _traverseTemplateAttributes(attrs, lambda value: value.replace(self.expressionReference(), self.TemplateReference))
+        return _traverseTemplateAttributes(attrs, lambda value: unicode(value.replace(self.expressionReference(), self.TemplateReference)))
 
     def decodeTemplateAttributes(self, attrs):
         '''decodeTemplateAttributes(attrs) ... expand template attributes to reference the receiver where applicable.'''
-        return _traverseTemplateAttributes(attrs, lambda value: value.replace(self.TemplateReference, self.expressionReference()))
+        return _traverseTemplateAttributes(attrs, lambda value: unicode(value.replace(self.TemplateReference, self.expressionReference())))
