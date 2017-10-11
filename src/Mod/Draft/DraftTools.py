@@ -3094,7 +3094,7 @@ class Upgrade(Modifier):
         return {'Pixmap'  : 'Draft_Upgrade',
                 'Accel' : "U, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Upgrade"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Joins the selected objects into one, or converts closed wires to filled faces, or unite faces")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Joins the selected objects into one, or converts closed wires to filled faces, or unites faces")}
 
     def Activated(self):
         Modifier.Activated(self,"Upgrade")
