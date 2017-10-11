@@ -99,7 +99,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
             results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
             if analysis:
-                analysis_object.Member = analysis_object.Member + [results]
+                analysis_object.addObject(results)
 
         if FreeCAD.GuiUp:
             if analysis:

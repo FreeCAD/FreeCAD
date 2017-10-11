@@ -55,7 +55,7 @@ class _CommandFemMeshNetgenFromShape(FemCommands):
                 FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
                 if FemGui.getActiveAnalysis():
                     FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
+                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(App.ActiveDocument.ActiveObject)")
                 FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)")
 
         FreeCADGui.Selection.clearSelection()

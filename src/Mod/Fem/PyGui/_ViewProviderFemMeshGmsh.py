@@ -79,7 +79,7 @@ class _ViewProviderFemMeshGmsh:
             if found_an_analysis:
                 if FemGui.getActiveAnalysis() is not None:
                     if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
-                        if self.Object in FemGui.getActiveAnalysis().Member:
+                        if self.Object in FemGui.getActiveAnalysis().Group:
                             if not gui_doc.getInEdit():
                                 gui_doc.setEdit(vobj.Object.Name)
                             else:
@@ -89,7 +89,7 @@ class _ViewProviderFemMeshGmsh:
                             found_mesh_analysis = False
                             for o in gui_doc.Document.Objects:
                                 if o.isDerivedFrom('Fem::FemAnalysisPython'):
-                                    for m in o.Member:
+                                    for m in o.Group:
                                         if m == self.Object:
                                             found_mesh_analysis = True
                                             FemGui.setActiveAnalysis(o)
@@ -106,7 +106,7 @@ class _ViewProviderFemMeshGmsh:
                     found_mesh_analysis = False
                     for o in gui_doc.Document.Objects:
                         if o.isDerivedFrom('Fem::FemAnalysisPython'):
-                            for m in o.Member:
+                            for m in o.Group:
                                 if m == self.Object:
                                     found_mesh_analysis = True
                                     FemGui.setActiveAnalysis(o)

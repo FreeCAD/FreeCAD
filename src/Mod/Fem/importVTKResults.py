@@ -91,7 +91,7 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
         result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
 
     if analysis:
-        analysis_object.Member = analysis_object.Member + [result_obj]
+        analysis_object.addObject(result_obj)
 
     ''' seams not used at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk

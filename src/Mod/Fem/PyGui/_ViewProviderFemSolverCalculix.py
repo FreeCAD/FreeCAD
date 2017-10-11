@@ -66,7 +66,7 @@ class _ViewProviderFemSolverCalculix:
             # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
             if FemGui.getActiveAnalysis() is not None:
                 if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
-                    if self.Object in FemGui.getActiveAnalysis().Member:
+                    if self.Object in FemGui.getActiveAnalysis().Group:
                         doc.setEdit(vobj.Object.Name)
                     else:
                         FreeCAD.Console.PrintError('Activate the analysis this solver belongs to!\n')

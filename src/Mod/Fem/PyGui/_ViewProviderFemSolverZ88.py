@@ -56,7 +56,7 @@ class _ViewProviderFemSolverZ88:
             # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
             if FemGui.getActiveAnalysis() is not None:
                 if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
-                    if self.Object in FemGui.getActiveAnalysis().Member:
+                    if self.Object in FemGui.getActiveAnalysis().Group:
                         FreeCAD.Console.PrintError('Not yet supported, use property editor and "run analysis" button!\n')
                         # doc.setEdit(vobj.Object.Name)
                     else:

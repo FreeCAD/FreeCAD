@@ -188,7 +188,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     Fem::FemMeshObject* pcMesh = NULL;
     if (pcAnalysis) {
-        std::vector<App::DocumentObject*> fem = pcAnalysis->Member.getValues();
+        std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
             if ((*it)->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
                 pcMesh = static_cast<Fem::FemMeshObject*>(*it);
@@ -221,7 +221,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject* 
     if (pcAnalysis) {
-        std::vector<App::DocumentObject*> fem = pcAnalysis->Member.getValues();
+        std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
             if ((*it)->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
                 pcSolver = static_cast<Fem::FemSolverObject*>(*it);

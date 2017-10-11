@@ -25,7 +25,7 @@
 #define Fem_FemAnalysis_H
 
 
-#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/PropertyLinks.h>
 #include <App/FeaturePython.h>
 
@@ -34,7 +34,7 @@
 namespace Fem
 {
 
-class AppFemExport FemAnalysis : public App::DocumentObject
+class AppFemExport FemAnalysis : public App::DocumentObjectGroup
 {
     PROPERTY_HEADER(Fem::FemAnalysis);
 
@@ -53,8 +53,6 @@ public:
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
 
-    /// Member objects of the Analysis
-    App::PropertyLinkList Member;
     /// unique identifier of the Analysis
     App::PropertyUUID    Uid;
 
