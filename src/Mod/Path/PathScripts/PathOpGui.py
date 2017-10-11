@@ -30,6 +30,7 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
+import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
 
@@ -160,6 +161,10 @@ class ViewProvider(object):
         # PathLog.track(obj.Label, prop) # Creates a lot of noise
         if self.panel:
             self.panel.updateData(obj, prop)
+
+    def onDelete(self, vobj, arg2=None):
+        PathUtil.clearExpressionEngine(vobj.Object)
+        return True
 
 class TaskPanelPage(object):
     '''Base class for all task panel pages.'''
@@ -767,6 +772,7 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path", "Uncreate AreaOp Operation"))
+            PathUtil.clearExpressionEngine(self.obj)
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
