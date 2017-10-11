@@ -29,7 +29,6 @@
 #*   Werner Mayer 2004                                                     *
 #***************************************************************************/
 
-
 class MeshWorkbench (Workbench):
     "Mesh workbench object"
     def __init__(self):
@@ -40,6 +39,8 @@ class MeshWorkbench (Workbench):
     def Initialize(self):
         import Mesh
         import MeshGui
+        import MeshFlatteningCommand
+
     def GetClassName(self):
         return "MeshGui::Workbench"
 
