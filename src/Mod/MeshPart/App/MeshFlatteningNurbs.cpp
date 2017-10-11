@@ -25,6 +25,7 @@
 #include <iostream>
 #include "math.h"
 
+
 namespace nurbs{
 
 double divide(double a, double b)
@@ -34,6 +35,28 @@ double divide(double a, double b)
     else
         return a / b;
 }
+
+Eigen::VectorXd NurbsBase1D::getKnotSequence(double u_min, double u_max, int u_deg, int num_u_poles)
+{
+    // boarder poles are on the surface
+    std::vector<double> u_knots;
+    for (int i=0; i < u_deg; i++)
+        u_knots.push_back(u_min);
+    for (int i=0; i < num_u_poles; i++)
+        u_knots.push_back(u_min + (u_max - u_min) * i / (num_u_poles - 1));
+    for (int i=0; i < u_deg; i++)
+        u_knots.push_back(u_max);
+    return Eigen::Map<Eigen::VectorXd>(u_knots.data(), u_knots.size());
+}
+
+Eigen::VectorXd NurbsBase1D::getWeightList(Eigen::VectorXd knots, int u_deg)
+{
+    Eigen::VectorXd weights;
+    weights.resize(knots.rows() - u_deg - 1);
+    weights.setOnes();
+    return weights;
+}
+
 
 // DE BOOR ALGORITHM FROM OPENGLIDER
 std::function<double(double)> get_basis(int degree, int i, Eigen::VectorXd knots)
@@ -180,7 +203,7 @@ void add_triplets(Eigen::VectorXd values, double row, std::vector<trip> &triplet
 spMat NurbsBase2D::getInfluenceMatrix(Eigen::Matrix<double, Eigen::Dynamic, 2> U)
 {
     std::vector<trip> triplets;
-    for (int row_index; row_index < U.rows(); row_index++)
+    for (unsigned int row_index = 0; row_index < U.rows(); row_index++)
         add_triplets(this->getInfluenceVector(U.row(row_index)), row_index, triplets);
     spMat mat(U.rows(), this->u_functions.size() * this->v_functions.size());
     mat.setFromTriplets(triplets.begin(), triplets.end());
@@ -288,7 +311,7 @@ Eigen::VectorXd NurbsBase2D::getDvVector(Eigen::Vector2d u)
 spMat NurbsBase2D::getDuMatrix(Eigen::Matrix<double, Eigen::Dynamic, 2> U)
 {
     std::vector<trip> triplets;
-    for (int row_index; row_index < U.rows(); row_index++)
+    for (unsigned int row_index = 0; row_index < U.rows(); row_index++)
         add_triplets(this->getDuVector(U.row(row_index)), row_index, triplets);
     spMat mat(U.rows(), this->u_functions.size() * this->v_functions.size());
     mat.setFromTriplets(triplets.begin(), triplets.end());
@@ -298,12 +321,65 @@ spMat NurbsBase2D::getDuMatrix(Eigen::Matrix<double, Eigen::Dynamic, 2> U)
 spMat NurbsBase2D::getDvMatrix(Eigen::Matrix<double, Eigen::Dynamic, 2> U)
 {
     std::vector<trip> triplets;
-    for (int row_index; row_index < U.rows(); row_index++)
+    for (unsigned int row_index = 0; row_index < U.rows(); row_index++)
         add_triplets(this->getDvVector(U.row(row_index)), row_index, triplets);
     spMat mat(U.rows(), this->u_functions.size() * this->v_functions.size());
     mat.setFromTriplets(triplets.begin(), triplets.end());
     return mat;
 }
+
+
+std::tuple<NurbsBase2D, Eigen::MatrixXd> NurbsBase2D::interpolateUBS(
+    Eigen::Matrix<double, Eigen::Dynamic, 3> poles,
+    int degree_u,
+    int degree_v,
+    int num_u_poles,
+    int num_v_poles,
+    int num_u_points,
+    int num_v_points)
+{
+    double u_min = this->u_knots(0);
+    double u_max = this->u_knots(this->u_knots.size() - 1);
+    double v_min = this->v_knots(0);
+    double v_max = this->v_knots(this->v_knots.size() - 1);
+    Eigen::VectorXd weights, u_knots, v_knots;
+    u_knots = NurbsBase1D::getKnotSequence(u_min, u_max, degree_u, num_u_poles);
+    v_knots = NurbsBase1D::getKnotSequence(v_min, v_max, degree_v, num_v_poles);
+    
+    weights.resize((u_knots.rows() - degree_u - 1) * (v_knots.rows() - degree_v - 1));
+    weights.setOnes();
+    NurbsBase2D new_base(u_knots, v_knots, weights, degree_u, degree_v);
+    Eigen::Matrix<double, Eigen::Dynamic, 2> uv_points = this->getUVMesh(num_u_points, num_v_points);
+    Eigen::Matrix<double, Eigen::Dynamic, 3> xyz_points = this->getInfluenceMatrix(uv_points) * poles;
+    spMat A = new_base.getInfluenceMatrix(uv_points);
+    Eigen::LeastSquaresConjugateGradient<spMat > solver;
+    solver.compute(A);
+    Eigen::Matrix<double, Eigen::Dynamic, 3> new_poles = solver.solve(xyz_points);
+    return std::tuple<NurbsBase2D, Eigen::MatrixXd >(new_base, new_poles);
+}
+
+Eigen::Matrix<double, Eigen::Dynamic, 2> NurbsBase2D::getUVMesh(int num_u_points, int num_v_points)
+{
+    double u_min = this->u_knots(0);
+    double u_max = this->u_knots(this->u_knots.size() - 1);
+    double v_min = this->v_knots(0);
+    double v_max = this->v_knots(this->v_knots.size() - 1);
+    Eigen::Matrix<double, Eigen::Dynamic, 2> uv_points;
+    uv_points.resize(num_u_points * num_v_points, 2);
+    int i = 0;
+    for (int u = 0; u < num_u_points; u++)
+    {
+        for (int v = 0; v < num_v_points; v++)
+        {
+            uv_points(i, 0) = u_min + (u_max - u_min) * u / (num_u_points - 1);
+            uv_points(i, 1) = v_min + (v_max - v_min) * v / (num_v_points - 1);
+            i++;
+        }
+        
+    }
+    return uv_points;
+}
+
 
 NurbsBase1D::NurbsBase1D(Eigen::VectorXd u_knots, Eigen::VectorXd weights, int degree_u)
 {
@@ -336,7 +412,7 @@ Eigen::VectorXd NurbsBase1D::getInfluenceVector(double u)
 spMat NurbsBase1D::getInfluenceMatrix(Eigen::VectorXd u)
 {
     std::vector<trip> triplets;
-    for (int row_index; row_index < u.size(); row_index++)
+    for (unsigned int row_index = 0; row_index < u.size(); row_index++)
         add_triplets(this->getInfluenceVector(u[row_index]), row_index, triplets);
     spMat mat(u.size(), this->u_functions.size());
     mat.setFromTriplets(triplets.begin(), triplets.end());
@@ -393,11 +469,44 @@ Eigen::VectorXd NurbsBase1D::getDuVector(double u)
 spMat NurbsBase1D::getDuMatrix(Eigen::VectorXd U)
 {
     std::vector<trip> triplets;
-    for (int row_index; row_index < U.size(); row_index++)
+    for (unsigned int row_index = 0; row_index < U.size(); row_index++)
         add_triplets(this->getDuVector(U[row_index]), row_index, triplets);
     spMat mat(U.size(), this->u_functions.size());
     mat.setFromTriplets(triplets.begin(), triplets.end());
     return mat;
 }
+
+std::tuple<NurbsBase1D, Eigen::Matrix<double, Eigen::Dynamic, 3>> NurbsBase1D::interpolateUBS(
+    Eigen::Matrix<double,
+    Eigen::Dynamic, 3> poles,
+    int degree,
+    int num_poles,
+    int num_points)
+{
+    double u_min = this->u_knots(0);
+    double u_max = this->u_knots(this->u_knots.size() - 1);
+    Eigen::VectorXd u_knots, weights;
+    u_knots = NurbsBase1D::getKnotSequence(u_min, u_max, degree, num_poles);
+    weights = NurbsBase1D::getWeightList(u_knots, degree);
+    NurbsBase1D new_base(u_knots, weights, degree);
+    Eigen::Matrix<double, Eigen::Dynamic, 1> u_points = this->getUMesh(num_points);
+    Eigen::Matrix<double, Eigen::Dynamic, 3> xyz_points;
+    xyz_points = this->getInfluenceMatrix(u_points) * poles;
+    spMat A = new_base.getInfluenceMatrix(u_points);
+    Eigen::LeastSquaresConjugateGradient<spMat > solver;
+    solver.compute(A);
+    Eigen::Matrix<double, Eigen::Dynamic, 3> new_poles = solver.solve(xyz_points);
+    return std::tuple<NurbsBase1D, Eigen::Matrix<double, Eigen::Dynamic, 3> >(new_base, new_poles);
+}
+
+Eigen::VectorXd NurbsBase1D::getUMesh(int num_u_points)
+{
+    double u_min = this->u_knots(0);
+    double u_max = this->u_knots(this->u_knots.size() - 1);
+    Eigen::Matrix<double, Eigen::Dynamic, 1> u_points;
+    u_points.setLinSpaced(num_u_points, u_min, u_max);
+    return u_points;    
+}
+
 
 }

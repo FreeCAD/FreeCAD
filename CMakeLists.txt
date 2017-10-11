@@ -587,6 +587,20 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
+    
+# -------------------------------- PyBind11 -----------------------------
+EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
+  "import pybind11; print(bool(pybind11))"
+  OUTPUT_VARIABLE PYBIND11_FOUND OUTPUT_STRIP_TRAILING_WHITESPACE )
+  
+EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
+  "import pybind11; print(pybind11.get_include())"
+  OUTPUT_VARIABLE PYBIND11_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE )
+
+if (PYBIND11_FOUND)
+    message(STATUS "successfully found pybind11")
+    message(STATUS "pybind11 include dir is: " ${PYBIND11_INCLUDE_DIR})
+endif()
 
 # -------------------------------- Boost --------------------------------
 
