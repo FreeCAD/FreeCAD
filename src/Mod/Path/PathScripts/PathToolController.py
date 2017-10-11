@@ -28,6 +28,7 @@ import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
 
 from FreeCAD import Units
 from PySide import QtCore
@@ -190,6 +191,10 @@ class ViewProvider:
         vobj.setEditorMode('DisplayMode', mode)
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('Selectable', mode)
+
+    def onDelete(self, vobj, args=None):
+        PathUtil.clearExpressionEngine(vobj.Object)
+        return True
 
     def updateData(self, vobj, prop):
         # this is executed when a property of the APP OBJECT changes

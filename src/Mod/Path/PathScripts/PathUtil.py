@@ -87,3 +87,12 @@ def getPublicObject(obj):
             return getPublicObject(body)
     return obj
 
+def clearExpressionEngine(obj):
+    '''clearExpressionEngine(obj) ... removes all expressions from obj.
+
+There is currently a bug that invalidates the DAG if an object
+is deleted that still has one or more expressions attached to it.
+Use this function to remove all expressions before deletion.'''
+    if hasattr(obj, 'ExpressionEngine'):
+        for attr,expr in obj.ExpressionEngine:
+            obj.setExpression(attr, None)
