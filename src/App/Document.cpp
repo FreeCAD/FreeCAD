@@ -337,17 +337,20 @@ void Document::exportGraphviz(std::ostream& out) const
             boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();             
 
             if (expressions.size() > 0) {
-                
-                Graph* graph;
-                if(CSsubgraphs) {
+
+                Graph* graph = nullptr;
+                graph = &DepList;
+                if (CSsubgraphs) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(obj);
-                    graph = group ? GraphList[group] : &DepList;
+                    if (group) {
+                        auto it = GraphList.find(group);
+                        if (it != GraphList.end())
+                            graph = it->second;
+                    }
                 }
-                else 
-                    graph = &DepList;                                   
 
                 // If documentObject has an expression, create a subgraph for it
-                if (!GraphList[obj]) {
+                if (!GraphList[obj] && graph) {
                     GraphList[obj] = &graph->create_subgraph();
                     setGraphAttributes(obj);
                 }
@@ -366,12 +369,13 @@ void Document::exportGraphviz(std::ostream& out) const
                         // Doesn't exist already?
                         if (!GraphList[o]) {
                             
-                            if(CSsubgraphs) {
+                            if (CSsubgraphs) {
                                 auto group = GeoFeatureGroupExtension::getGroupOfObject(o);
                                 auto graph2 = group ? GraphList[group] : &DepList;
-                                GraphList[o] = &graph2->create_subgraph();
+                                if (graph2)
+                                    GraphList[o] = &graph2->create_subgraph();
                             }
-                            else {
+                            else if (graph) {
                                 GraphList[o] = &graph->create_subgraph();
                             }
 
@@ -488,10 +492,13 @@ void Document::exportGraphviz(std::ostream& out) const
         void recursiveCSSubgraphs(DocumentObject* cs, DocumentObject* parent) {
             
             auto graph = parent ? GraphList[parent] : &DepList;
+            // check if the value for the key 'parent' is null
+            if (!graph)
+                return;
             auto& sub = graph->create_subgraph();
             GraphList[cs] = &sub;
             get_property(sub, graph_name) = getClusterName(cs);
-            
+
             //build random color string
             std::stringstream stream;
             stream << "#" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
@@ -507,7 +514,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                     recursiveCSSubgraphs(obj, cs);
             }
-            
+
             //setup the origin if available 
             if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
                 auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
@@ -518,12 +525,12 @@ void Document::exportGraphviz(std::ostream& out) const
                 setGraphLabel(osub, origin);
             }
         }
-        
+
         void addSubgraphs() {
-            
+
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
-            
+
             if(CSSubgraphs) {
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
@@ -531,7 +538,7 @@ void Document::exportGraphviz(std::ostream& out) const
                         recursiveCSSubgraphs(objectIt, nullptr);
                 }
             }
-                        
+
             // Internal document objects
             for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 addExpressionSubgraphIfNeeded(It->second, CSSubgraphs);
@@ -768,7 +775,7 @@ void Document::exportGraphviz(std::ostream& out) const
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
         }
-        
+
         void markOutOfScopeLinks() {
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
 
