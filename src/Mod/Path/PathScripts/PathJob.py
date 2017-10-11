@@ -151,6 +151,7 @@ class ObjectJob:
         while obj.Operations.Group:
             op = obj.Operations.Group[0]
             if not op.ViewObject or not hasattr(op.ViewObject.Proxy, 'onDelete') or op.ViewObject.Proxy.onDelete(op.ViewObject, ()):
+                PathUtil.clearExpressionEngine(op)
                 doc.removeObject(op.Name)
         obj.Operations.Group = []
         doc.removeObject(obj.Operations.Name)
@@ -158,22 +159,27 @@ class ObjectJob:
         # stock could depend on Base
         if obj.Stock:
             PathLog.debug('taking down stock')
+            PathUtil.clearExpressionEngine(obj.Stock)
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
         # base doesn't depend on anything inside job
         if obj.Base:
             PathLog.debug('taking down base')
             if isResourceClone(obj, 'Base'):
+                PathUtil.clearExpressionEngine(obj.Base)
                 doc.removeObject(obj.Base.Name)
             obj.Base = None
         # Tool controllers don't depend on anything
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
+            PathUtil.clearExpressionEngine(tc)
             doc.removeObject(tc.Name)
         obj.ToolController = []
         # SetupSheet
+        PathUtil.clearExpressionEngine(obj.SetupSheet)
         doc.removeObject(obj.SetupSheet.Name)
         obj.SetupSheet = None
+        return True
 
     def fixupResourceClone(self, obj, name, icon):
         if not isResourceClone(obj, name, name) and not isArchPanelSheet(obj):
