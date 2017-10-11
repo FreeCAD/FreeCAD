@@ -46,7 +46,7 @@ class _CommandFemSolverCalculix(FemCommands):
 
     def Activated(self):
         has_nonlinear_material_obj = False
-        for m in FemGui.getActiveAnalysis().Member:
+        for m in FemGui.getActiveAnalysis().Group:
             if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
                 has_nonlinear_material_obj = True
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
@@ -55,9 +55,9 @@ class _CommandFemSolverCalculix(FemCommands):
             FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)")
             FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(solver)")
         else:
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)]")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument))")
 
 
 FreeCADGui.addCommand('FEM_SolverCalculix', _CommandFemSolverCalculix())

@@ -35,13 +35,12 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObject)
+PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObjectGroup)
 
 
 FemAnalysis::FemAnalysis()
 {
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Member,(0), "Analysis member",Prop_None,"All objects belonging to the Analysis");
     ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Analysis");
 }
 
@@ -56,16 +55,12 @@ short FemAnalysis::mustExecute(void) const
 
 PyObject *FemAnalysis::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
+    return App::DocumentObjectGroup::getPyObject();
 }
 
 void FemAnalysis::onChanged(const Property* prop)
 {
-    App::DocumentObject::onChanged(prop);
+    App::DocumentObjectGroup::onChanged(prop);
 }
 
 

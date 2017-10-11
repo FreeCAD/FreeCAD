@@ -51,7 +51,7 @@ class _CommandFemMaterialFluid(FemCommands):
         FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMaterialFluid(FreeCAD.ActiveDocument, 'FluidMaterial')")
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".Member = FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".addObject(App.ActiveDocument.ActiveObject)")
         FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
 
 

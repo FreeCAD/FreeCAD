@@ -290,7 +290,7 @@ class FemToolsCcx(FemTools.FemTools):
         if os.path.isfile(frd_result_file):
             result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
             importCcxFrdResults.importFrd(frd_result_file, self.analysis, result_name_prefix)
-            for m in self.analysis.Member:
+            for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
                     break
@@ -311,7 +311,7 @@ class FemToolsCcx(FemTools.FemTools):
             raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
             # print(mode_frequencies)
-            for m in self.analysis.Member:
+            for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:

@@ -196,7 +196,7 @@ class FemToolsZ88(FemTools.FemTools):
         if os.path.isfile(disp_result_file):
             result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
             importZ88O2Results.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
-            for m in self.analysis.Member:
+            for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
         else:

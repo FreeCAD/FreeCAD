@@ -415,7 +415,7 @@ def hide_parts_constraints():
     if hide_constraints:
         for o in FreeCAD.ActiveDocument.Objects:
             if o.isDerivedFrom('Fem::FemAnalysis'):
-                for acnstrmesh in FemGui.getActiveAnalysis().Member:
+                for acnstrmesh in FemGui.getActiveAnalysis().Group:
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = False
                 break

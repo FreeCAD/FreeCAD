@@ -33,7 +33,7 @@ import FreeCAD
 ## Removes all result objects from an analysis group
 #  @param analysis
 def purge_results(analysis):
-    for m in analysis.Member:
+    for m in analysis.Group:
         if (m.isDerivedFrom('Fem::FemResultObject')):
             if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
                 analysis.Document.removeObject(m.Mesh.Name)

@@ -1049,7 +1049,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
     '''
     group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
-    for m in aAnalysis.Member:
+    for m in aAnalysis.Group:
         if hasattr(m, "References"):
             if m.References:
                 grp_ele = get_reference_group_elements(m, aPart)
@@ -1141,7 +1141,7 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
     material_shape_type = ''
     missed_material_refshapes = []
     empty_reference_material = None
-    for m in aAnalysis.Member:
+    for m in aAnalysis.Group:
         if m.isDerivedFrom("App::MaterialObjectPython"):
             if hasattr(m, "References") and not m.References:
                 if not empty_reference_material:
