@@ -510,7 +510,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>if this is checked, the &quot;open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+           <string>If this is checked, the &quot;open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
           </property>
           <property name="text">
            <string>Open in external browser</string>

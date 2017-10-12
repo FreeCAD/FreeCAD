@@ -160,7 +160,7 @@
       <item row="2" column="1">
        <widget class="QCheckBox" name="processPerimeter">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside primeter of the base geomtry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geomtry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Process Perimeter</string>
