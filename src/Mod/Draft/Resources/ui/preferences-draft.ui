@@ -300,7 +300,7 @@ Values with differences below this value will be treated as same.</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
           <property name="toolTip">
-           <string>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</string>
+           <string>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</string>
           </property>
           <property name="text">
            <string>Fill objects with faces whenever possible</string>
