@@ -1455,7 +1455,7 @@ std::vector<std::string> Document::getRedoVector(void) const
     return getDocument()->getAvailableRedoNames();
 }
 
-/// Will UNDO  one or more steps
+/// Will UNDO one or more steps
 void Document::undo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1463,7 +1463,7 @@ void Document::undo(int iSteps)
     }
 }
 
-/// Will REDO  one or more steps
+/// Will REDO one or more steps
 void Document::redo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1517,7 +1517,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
     } 
     
     //find all unclaimed viewproviders and add them back to the document (this happens if a 
-    //viewprovider has been claimed before, but the object droped it. 
+    //viewprovider has been claimed before, but the object dropped it. 
     if(rebuild) {
         auto vpmap = d->_ViewProviderMap;
         for( auto& pair  : d->_ViewProviderMap ) {

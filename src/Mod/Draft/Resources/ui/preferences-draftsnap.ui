@@ -444,7 +444,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="spinBox">
           <property name="toolTip">
-           <string>the number of horizontal or vertical lines of the grid</string>
+           <string>The number of horizontal or vertical lines of the grid</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

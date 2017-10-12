@@ -63,7 +63,7 @@ namespace Base {
 
     /**
      * The _instances member just stores the pointer of the
-     * all instanciated SequencerBase objects.
+     * all instantiated SequencerBase objects.
      */
     std::vector<SequencerBase*> SequencerP::_instances;
     SequencerLauncher* SequencerP::_topLauncher = 0;

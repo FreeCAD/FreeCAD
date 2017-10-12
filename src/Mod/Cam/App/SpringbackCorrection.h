@@ -82,9 +82,9 @@ struct MeshPnt
 /** @brief a struct for computing the maximum and minimum curvature-radius
            of a single mesh-point
     @param pnt        mesh-point
-    @param distances  distance-vector to all sourrounding edges
-    @param MinEdgeOff minimum curvature-radii of sourrounding edges
-    @param MaxEdgeOff maximum curvature-radii of sourrounding edges
+    @param distances  distance-vector to all surrounding edges
+    @param MinEdgeOff minimum curvature-radii of surrounding edges
+    @param MaxEdgeOff maximum curvature-radii of surrounding edges
 */
 struct FacePnt
 {
