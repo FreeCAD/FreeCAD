@@ -60,23 +60,25 @@ class _CommandSelectLoop:
                 'CmdType': "ForEdit"}
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
-            return False
-        try:
-            sel = FreeCADGui.Selection.getSelectionEx()[0]
-            if sel.Object == self.obj and sel.SubElementNames == self.sub:
+        if 'PathWorkbench' == FreeCADGui.activeWorkbench().name():
+            if bool(FreeCADGui.Selection.getSelection()) is False:
+                return False
+            try:
+                sel = FreeCADGui.Selection.getSelectionEx()[0]
+                if sel.Object == self.obj and sel.SubElementNames == self.sub:
+                    return self.active
+                self.obj = sel.Object
+                self.sub = sel.SubElementNames
+                if sel.SubObjects:
+                    self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+                else:
+                    self.active = False
                 return self.active
-            self.obj = sel.Object
-            self.sub = sel.SubElementNames
-            if sel.SubObjects:
-                self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
-            else:
-                self.active = False
-            return self.active
-        except Exception as exc:
-            PathLog.error(exc)
-            traceback.print_exc(exc)
-            return False
+            except Exception as exc:
+                PathLog.error(exc)
+                traceback.print_exc(exc)
+                return False
+        return False
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelectionEx()[0]
