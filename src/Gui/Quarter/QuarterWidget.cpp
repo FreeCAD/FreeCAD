@@ -297,7 +297,7 @@ QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewi
 
   this->installEventFilter(PRIVATE(this)->eventfilter);
   this->installEventFilter(PRIVATE(this)->interactionmode);
-  
+
   initialized = false;
 }
 
@@ -844,8 +844,6 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
         PRIVATE(this)->soeventmanager->setViewportRegion(vp);
     }
 
-    std::clock_t begin = std::clock();
-
     if(!initialized) {
 #if !defined(HAVE_QT5_OPENGL)
         glEnable(GL_DEPTH_TEST);
@@ -917,9 +915,6 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     // process the delay queue the next time we enter this function,
     // unless we get here after a call to redraw().
     PRIVATE(this)->processdelayqueue = true;
-
-    std::clock_t end = std::clock();
-    renderTime = double(double(end-begin)/CLOCKS_PER_SEC)*1000.0;
 }
 
 bool QuarterWidget::viewportEvent(QEvent* event)
