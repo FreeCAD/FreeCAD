@@ -310,7 +310,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
           <property name="toolTip">
-           <string>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</string>
+           <string>If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</string>
           </property>
           <property name="text">
            <string>Join geometry</string>
