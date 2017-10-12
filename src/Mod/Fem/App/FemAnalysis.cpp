@@ -63,6 +63,19 @@ void FemAnalysis::onChanged(const Property* prop)
     App::DocumentObjectGroup::onChanged(prop);
 }
 
+void FemAnalysis::handleChangedPropertyName(Base::XMLReader &reader,
+                                            const char * TypeName,
+                                            const char *PropName)
+{
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Group.getClassTypeId() == type && strcmp(PropName, "Member") == 0) {
+        Group.Restore(reader);
+    }
+    else {
+        App::DocumentObjectGroup::handleChangedPropertyName(reader, TypeName, PropName);
+    }
+}
+
 
 // Dummy class 'DocumentObject' in Fem namespace
 PROPERTY_SOURCE_ABSTRACT(Fem::DocumentObject, App::DocumentObject)
@@ -74,6 +87,10 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Fem::FemAnalysisPython, Fem::FemAnalysis)
 template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
     return "FemGui::ViewProviderFemAnalysisPython";
+}
+
+template<> void Fem::FemAnalysisPython::Restore(Base::XMLReader& reader) {
+    FemAnalysis::Restore(reader);
 }
 //template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
 //    if (PythonObject.is(Py::_None())) {

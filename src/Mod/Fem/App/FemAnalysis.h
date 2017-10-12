@@ -60,6 +60,10 @@ public:
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged (const App::Property* prop);
+    /// Support of backward compatibility
+    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+                                           const char * TypeName,
+                                           const char *PropName);
 };
 
 class AppFemExport DocumentObject : public App::DocumentObject

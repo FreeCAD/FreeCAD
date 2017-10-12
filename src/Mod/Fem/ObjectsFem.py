@@ -33,9 +33,7 @@ import FreeCAD
 ########## analysis objects ##########
 def makeAnalysis(doc, name="Analysis"):
     '''makeAnalysis(document, [name]): makes a Fem Analysis object'''
-    obj = doc.addObject("Fem::FemAnalysisPython", name)
-    if FreeCAD.GuiUp:
-        obj.ViewObject.Proxy = 0
+    obj = doc.addObject("Fem::FemAnalysis", name)
     return obj
 
 
