@@ -2044,15 +2044,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 }
 
                 if (bpolyInside) {
-                    std::stringstream ss,ss2;
+                    std::stringstream ss;
                     ss.clear();
                     ss.str("");
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
-                    if(touchMode){
-                        ss2 << "Vertex" << VertexId + 1;
-                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss2.str().c_str());
-                    }
                 }
             }
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { 
@@ -2103,10 +2099,6 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     ss.str("");
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
-                    if(touchMode){
-                        ss2 << "Vertex" << VertexId + 1;
-                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss2.str().c_str());
-                    }
                 }
             }
 
