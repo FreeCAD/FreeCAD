@@ -170,6 +170,11 @@ OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bun
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+if (WIN32 OR APPLE)
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
+else()
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
+endif()
 
 # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
 set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
