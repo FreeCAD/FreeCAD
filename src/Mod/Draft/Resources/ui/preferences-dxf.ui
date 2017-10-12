@@ -112,7 +112,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
           <property name="toolTip">
-           <string>if this is unchecked, texts/mtexts won't be imported</string>
+           <string>If this is unchecked, texts/mtexts won't be imported</string>
           </property>
           <property name="text">
            <string>texts and dimensions</string>
@@ -141,7 +141,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
           <property name="toolTip">
-           <string>if this is checked, paper space objects will be imported too</string>
+           <string>If this is checked, paper space objects will be imported too</string>
           </property>
           <property name="text">
            <string>layouts</string>
@@ -330,7 +330,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
           <property name="toolTip">
-           <string>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</string>
+           <string>If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</string>
           </property>
           <property name="text">
            <string>Group layers into blocks</string>

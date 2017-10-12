@@ -278,7 +278,7 @@ bool SpringbackCorrection::CalcCurv()
 
 
 
-        FacePntVector.resize(innerpoints);  // stores inner-points and sourrounding edges-distances
+        FacePntVector.resize(innerpoints);  // stores inner-points and surrounding edges-distances
 
         // explores the edges of the face ----------------------
         for (aExpEdge.Init(aFace,TopAbs_EDGE);aExpEdge.More();aExpEdge.Next())

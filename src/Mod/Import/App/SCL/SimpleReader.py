@@ -33,7 +33,7 @@
 
 Reads a given STEP file. Maps the entities and instantiate the
 corresponding classes.
-In addition it writes out a graphwiz file with the entity graph.
+In addition it writes out a graphviz file with the entity graph.
 """
 
 import Part21,sys
@@ -91,7 +91,7 @@ class SimpleParser:
             self._writeGraphVizEdge( i,self._p21loader._instances_definition[i][1],gvFile)
         gvFile.write('}\n')
 
-    def instaciate(self):
+    def instantiate(self):
         """Instantiate the python class from the entities"""
         import inspect
         # load the needed schema module
@@ -166,6 +166,6 @@ class SimpleParser:
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
     parser = SimpleReader("Aufspannung.stp") # simple test file
-    #parser.instaciate()
+    #parser.instantiate()
     parser.writeGraphViz('TestGrap.gv')
     #dot.exe -Tsvg -o Test.svg e:\fem-dev\src\Mod\Import\App\SCL\TestGrap-geo.gv
