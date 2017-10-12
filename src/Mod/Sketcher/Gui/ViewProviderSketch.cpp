@@ -1985,15 +1985,15 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            } else
+            }
             //check if line intersects with polygon
-                if(touchMode){
+            else if (touchMode) {
                     Base::Polygon2d lineAsPolygon;
                     lineAsPolygon.Add(Base::Vector2d(pnt1.x, pnt1.y));
                     lineAsPolygon.Add(Base::Vector2d(pnt2.x, pnt2.y));
                     std::list<Base::Polygon2d> resultList;
                     polygon.Intersect(lineAsPolygon, resultList);
-                    if(resultList.size() > 0){
+                    if (!resultList.empty()) {
                         std::stringstream ss;
                         ss << "Edge" << GeoId + 1;
                         Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2011,13 +2011,13 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
 
             if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
-                if(polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
+                if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
                 int countSegments = 12;
-                if(touchMode)
+                if (touchMode)
                     countSegments = 36;
 
                 float segment = float(2 * M_PI) / countSegments;
@@ -2036,8 +2036,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        if(!touchMode)break;
-                    }else if(touchMode){
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
                         bpolyInside = true;
                         break;
                     }
@@ -2045,8 +2047,6 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 if (bpolyInside) {
                     std::stringstream ss;
-                    ss.clear();
-                    ss.str("");
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
                 }
@@ -2061,13 +2061,14 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
 
             if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
-                if(polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))){
+                if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
                     std::stringstream ss;
                     ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
+
                 int countSegments = 12;
-                if(touchMode)
+                if (touchMode)
                     countSegments = 24;
                 double segment = (2 * M_PI) / countSegments;
 
@@ -2086,17 +2087,17 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        if(!touchMode)break;
-                    }else if (touchMode){
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
                         bpolyInside = true;
                         break;
                     }
                 }
 
                 if (bpolyInside) {
-                    std::stringstream ss, ss2;
-                    ss.clear();
-                    ss.str("");
+                    std::stringstream ss;
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
                 }
@@ -2131,7 +2132,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
-                if(touchMode)countSegments=countSegments*2.5;
+                if (touchMode)
+                    countSegments=countSegments*2.5;
                 float segment = float(range) / countSegments;
 
                 // circumscribed polygon radius
@@ -2147,8 +2149,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        if(!touchMode)break;
-                    } else if(touchMode){
+                        if (!touchMode)
+                            break;
+                    }
+                    else if(touchMode) {
                         bpolyInside = true;
                         break;
                     }
@@ -2208,7 +2212,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
-                if(touchMode)countSegments=countSegments*2.5;
+                if (touchMode)
+                    countSegments=countSegments*2.5;
                 double segment = (range) / countSegments;
 
                 // circumscribed polygon radius
@@ -2226,8 +2231,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        if(!touchMode)break;
-                    } else if(touchMode){
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
                         bpolyInside = true;
                         break;
                     }
@@ -2287,7 +2294,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
-                if(touchMode)countSegments=countSegments*2.5;
+                if (touchMode)
+                    countSegments=countSegments*2.5;
 
                 float segment = float(range) / countSegments;
 
@@ -2307,8 +2315,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        if(!touchMode)break;
-                    } else if(touchMode){
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
                         bpolyInside = true;
                         break;
                     }
@@ -2370,7 +2380,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
-                if(touchMode)countSegments=countSegments*2.5;
+                if (touchMode)
+                    countSegments=countSegments*2.5;
 
                 float segment = float(range) / countSegments;
                 //In local coordinate system, value() of parabola is:
@@ -2390,8 +2401,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
-                        if(!touchMode)break;
-                    } else if(touchMode){
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
                         bpolyInside = true;
                         break;
                     }
