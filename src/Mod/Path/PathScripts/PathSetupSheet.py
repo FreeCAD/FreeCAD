@@ -41,11 +41,13 @@ else:
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
-class Default:
-    HorizRapid = 'DefaultHorizRapid'
-    VertRapid = 'DefaultVertRapid'
-    SafeHeight = 'DefaultSafeHeight'
-    ClearanceHeight = 'DefaultClearanceHeight'
+class Template:
+    HorizRapid = 'HorizRapid'
+    VertRapid = 'VertRapid'
+    SafeHeightOffset = 'SafeHeight'
+    SafeHeightExpression = 'SafeHeightExpression'
+    ClearanceHeightOffset = 'ClearanceHeight'
+    ClearanceHeightExpression = 'ClearanceHeightExpression'
 
 def _traverseTemplateAttributes(attrs, codec):
     coded = {}
@@ -73,56 +75,57 @@ It's mostly a convencience wrapper around Spreadsheet.
 
     def __init__(self, obj):
         self.obj = obj
+        obj.addProperty('App::PropertySpeed', 'VertRapid',  'ToolController', translate('PathSetupSheet', 'Default speed for horizontal rapid moves.'))
+        obj.addProperty('App::PropertySpeed', 'HorizRapid', 'ToolController', translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
 
-    def setup(self, label='SetupSheet'):
-        '''setup(label=None) ... initializes receiver with default values.'''
-        self.obj.SetupSheet = self.obj.Document.addObject('Spreadsheet::Sheet', 'Spreadsheet')
-        if label:
-            self.obj.SetupSheet.Label = label
-        self.obj.SetupSheet.set('A2', translate('PathSetupSheet', 'Tool Rapid Speeds'))
-        self.createSetting(3, Default.HorizRapid, '0 mm/s', translate('PathSetupSheet', 'Horizontal'), translate('PathSetupSheet', 'Default speed for horizzontal rapid moves.'))
-        self.createSetting(4, Default.VertRapid,  '0 mm/s', translate('PathSetupSheet', 'Vertical'),   translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
-        self.obj.SetupSheet.set('A6', translate('PathSetupSheet', 'Operation Heights'))
-        self.createSetting(7, Default.SafeHeight,      '3 mm',  translate('PathSetupSheet', 'Safe Height'),      translate('PathSetupSheet', 'Default value added to StartDepth used for the safe height.'))
-        self.createSetting(8, Default.ClearanceHeight, '5 mm',  translate('PathSetupSheet', 'Clearance Height'), translate('PathSetupSheet', 'Default value added to StartDepth used for the clearance height.'))
+        obj.addProperty('App::PropertyLength', 'SafeHeightOffset',          'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.'))
+        obj.addProperty('App::PropertyString', 'SafeHeightExpression',      'OperationHeights', translate('PathSetupSheet', 'Expression set for the SafeHeight of new operations.'))
+        obj.addProperty('App::PropertyLength', 'ClearanceHeightOffset',     'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.'))
+        obj.addProperty('App::PropertyString', 'ClearanceHeightExpression', 'OperationHeights', translate('PathSetupSheet', 'Expression set for the ClearanceHeight of new operations.'))
 
-    def updateSetting(self, alias, value):
-        '''updateSetting(alias, value) ... stores a new value for the given value.'''
-        cell = self.obj.SetupSheet.getCellFromAlias(alias)
-        PathLog.debug("updateSetting(%s, %s): %s" % (alias, value, cell))
-        self.obj.SetupSheet.set(cell, value)
+        obj.SafeHeightOffset      = '3 mm'
+        obj.ClearanceHeightOffset = '5 mm'
+        obj.SafeHeightExpression      = "StartDepth+%s.SafeHeightOffset" % self.expressionReference()
+        obj.ClearanceHeightExpression = "StartDepth+%s.ClearanceHeightOffset" % self.expressionReference()
 
-    def createSetting(self, row, alias, value, label, desc):
-        '''createSetting(row, alias, value, label, desc) ... sets the values of the new setting in the given row.'''
-        labelCell = "B%d" % row
-        valueCell = "C%d" % row
-        descCell  = "D%d" % row
-        PathLog.debug("createSetting(%d, %s, %s): %s" % (row, alias, value, valueCell))
-        self.obj.SetupSheet.set(labelCell, label)
-        self.obj.SetupSheet.set(valueCell, value)
-        self.obj.SetupSheet.setAlias(valueCell, alias)
-        self.obj.SetupSheet.set(descCell, desc)
+        obj.Proxy = self
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        for obj in FreeCAD.ActiveDocument.Objects:
+            if hasattr(obj, 'Proxy') and obj.Proxy == self:
+                self.obj = obj
+                break
+        return None
 
     def setFromTemplate(self, attrs):
         '''setFromTemplate(attrs) ... sets the default values from the given dictionary.'''
-        if attrs.get(Default.VertRapid):
-            self.updateSetting(Default.VertRapid, attrs[Default.VertRapid])
-        if attrs.get(Default.HorizRapid):
-            self.updateSetting(Default.HorizRapid, attrs[Default.HorizRapid])
-        if attrs.get(Default.SafeHeight):
-            self.updateSetting(Default.SafeHeight, attrs[Default.SafeHeight])
-        if attrs.get(Default.ClearanceHeight):
-            self.updateSetting(Default.ClearanceHeight, attrs[Default.ClearanceHeight])
+        if attrs.get(Template.VertRapid):
+            self.obj.VertRapid = attrs[Template.VertRapid]
+        if attrs.get(Template.HorizRapid):
+            self.obj.HorizRapid = attrs[Template.HorizRapid]
+        if attrs.get(Template.SafeHeightOffset):
+            self.obj.SafeHeightOffset = attrs[Template.SafeHeightOffset]
+        if attrs.get(Template.SafeHeightExpression):
+            self.obj.SafeHeightExpression = attrs[Template.SafeHeightExpression]
+        if attrs.get(Template.ClearanceHeightOffset):
+            self.obj.ClearanceHeightOffset = attrs[Template.ClearanceHeightOffset]
+        if attrs.get(Template.ClearanceHeightExpression):
+            self.obj.ClearanceHeightExpression = attrs[Template.ClearanceHeightExpression]
 
     def templateAttributes(self, includeRapids=True, includeHeights=True):
         '''templateAttributes(includeRapids, includeHeights) ... answers a dictionary with the default values.'''
         attrs = {}
         if includeRapids:
-            attrs[Default.VertRapid]            = self.obj.SetupSheet.DefaultVertRapid.UserString
-            attrs[Default.HorizRapid]           = self.obj.SetupSheet.DefaultHorizRapid.UserString
+            attrs[Template.VertRapid]  = self.obj.VertRapid.UserString
+            attrs[Template.HorizRapid] = self.obj.HorizRapid.UserString
         if includeHeights:
-            attrs[Default.SafeHeight]           = self.obj.SetupSheet.DefaultSafeHeight.UserString
-            attrs[Default.ClearanceHeight]      = self.obj.SetupSheet.DefaultClearanceHeight.UserString
+            attrs[Template.SafeHeightOffset]          = self.obj.SafeHeightOffset.UserString
+            attrs[Template.SafeHeightExpression]      = self.obj.SafeHeightExpression
+            attrs[Template.ClearanceHeightOffset]     = self.obj.ClearanceHeightOffset.UserString
+            attrs[Template.ClearanceHeightExpression] = self.obj.ClearanceHeightExpression
         return attrs
 
     def expressionReference(self):
@@ -145,7 +148,7 @@ It's mostly a convencience wrapper around Spreadsheet.
         #
         # https://forum.freecadweb.org/viewtopic.php?f=10&t=24839
         # https://forum.freecadweb.org/viewtopic.php?f=10&t=24845
-        return self.obj.SetupSheet.Name
+        return self.obj.Name
 
     def encodeTemplateAttributes(self, attrs):
         '''encodeTemplateAttributes(attrs) ... return a dictionary with all values encoded.'''
@@ -154,3 +157,9 @@ It's mostly a convencience wrapper around Spreadsheet.
     def decodeTemplateAttributes(self, attrs):
         '''decodeTemplateAttributes(attrs) ... expand template attributes to reference the receiver where applicable.'''
         return _traverseTemplateAttributes(attrs, lambda value: unicode(value.replace(self.TemplateReference, self.expressionReference())))
+
+
+def Create(name='SetupSheet'):
+    obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
+    proxy = SetupSheet(obj)
+    return obj

@@ -137,10 +137,12 @@ class ObjectJob:
             obj.Stock.ViewObject.Visibility = False
 
     def setupSetupSheet(self, obj):
-        self.setupSheet = PathSetupSheet.SetupSheet(obj)
         if not hasattr(obj, 'SetupSheet'):
             obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Spreadsheet holding the settings for this job'))
-            self.setupSheet.setup()
+            obj.SetupSheet = PathSetupSheet.Create()
+            if obj.SetupSheet.ViewObject:
+                PathIconViewProvider.ViewProvider(obj.SetupSheet.ViewObject, 'SetupSheet')
+        self.setupSheet = obj.SetupSheet.Proxy
 
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
@@ -212,9 +214,9 @@ class ObjectJob:
                 attrs = json.load(fp)
 
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
+                attrs = self.setupSheet.decodeTemplateAttributes(attrs)
                 if attrs.get(JobTemplate.SetupSheet):
                     self.setupSheet.setFromTemplate(attrs[JobTemplate.SetupSheet])
-                attrs = self.setupSheet.decodeTemplateAttributes(attrs)
 
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
@@ -279,8 +281,8 @@ class ObjectJob:
         group = self.obj.ToolController
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
-            tc.setExpression('VertRapid',  "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Default.VertRapid))
-            tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Default.HorizRapid))
+            tc.setExpression('VertRapid',  "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.VertRapid))
+            tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.HorizRapid))
             group.append(tc)
             self.obj.ToolController = group
 
