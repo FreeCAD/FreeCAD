@@ -226,12 +226,19 @@ before_install:
   esac
 
 install:
+# Download codespell to test PR for spelling mistakes
+  - pip3 install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
+
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
   - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
+# Run codepsell to test PR for spelling mistakes. 
+# Spelling mistakes _will not_ fail the build but instead return results via PR comment thread 
+  - ./spellcheck_code.sh 
+
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
