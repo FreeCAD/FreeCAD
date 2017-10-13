@@ -1878,13 +1878,17 @@ void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
 
 void PropertyPlacementItem::assignProperty(const App::Property* prop)
 {
+    // Choose an adaptive epsilon to avoid chaning the axis when they are considered to
+    // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
+    double eps = std::pow(10.0, -2*(decimals()+1));
     if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         double angle;
         Base::Vector3d dir;
         value.getRotation().getValue(dir, angle);
         Base::Vector3d cross = this->rot_axis.Cross(dir);
-        if (cross.Sqr() > Base::Vector3d::epsilon()) {
+        double len2 = cross.Sqr();
+        if (angle != 0 && len2 > eps) {
             this->rot_axis = dir;
         }
         this->rot_angle = Base::toDegrees(angle);
