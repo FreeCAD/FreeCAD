@@ -29,98 +29,94 @@ import PathScripts.PathSetupSheet as PathSetupSheet
 from PathTests.PathTestUtils import PathTestBase
 
 class TestPathSetupSheet(PathTestBase):
-    class TestObject:
-        def __init__(self, doc):
-            self.Document = doc
-            self.SetupSheet = None
 
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathSetupSheet")
-        self.obj = self.TestObject(self.doc)
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
 
     def test00(self):
         '''Verify SetupSheet templateAttributes'''
-        ss = PathSetupSheet.SetupSheet(self.obj)
-        ss.setup()
+        ss = PathSetupSheet.Create().Proxy
         self.doc.recompute()
 
         attrs = ss.templateAttributes(True, True)
 
-        self.assertEqual(attrs[PathSetupSheet.Default.HorizRapid], '0.00 mm/s')
-        self.assertEqual(attrs[PathSetupSheet.Default.VertRapid], '0.00 mm/s')
-        self.assertEqual(attrs[PathSetupSheet.Default.SafeHeight], '3.00 mm')
-        self.assertEqual(attrs[PathSetupSheet.Default.ClearanceHeight], '5.00 mm')
+        self.assertEqual(attrs[PathSetupSheet.Template.HorizRapid], '0.00 mm/s')
+        self.assertEqual(attrs[PathSetupSheet.Template.VertRapid], '0.00 mm/s')
+        self.assertEqual(attrs[PathSetupSheet.Template.SafeHeightOffset], '3.00 mm')
+        self.assertEqual(attrs[PathSetupSheet.Template.SafeHeightExpression], 'StartDepth+SetupSheet.SafeHeightOffset')
+        self.assertEqual(attrs[PathSetupSheet.Template.ClearanceHeightOffset], '5.00 mm')
+        self.assertEqual(attrs[PathSetupSheet.Template.ClearanceHeightExpression], 'StartDepth+SetupSheet.ClearanceHeightOffset')
 
     def test01(self):
         '''Verify SetupSheet template attributes roundtrip.'''
-        ss = PathSetupSheet.SetupSheet(self.obj)
-        ss.setup()
+        ss = PathSetupSheet.Create().Proxy
         self.doc.recompute()
         ss.DefaultVertRapid = '10 mm/s'
         ss.DefaultHorizRapid = '22 mm/s'
-        ss.DefaultSafeHeight = '18 mm'
-        ss.DefaultClearanceHeight = '23 mm'
+        ss.DefaultSafeHeightOffset = '18 mm'
+        ss.DefaultSafeHeightExpression = 'Hugo+Olga'
+        ss.DefaultClearanceHeightOffset = '23 mm'
+        ss.DefaultClearanceHeightExpression = 'Peter+Paul'
 
-        o2 = self.TestObject(self.doc)
-        s2 = PathSetupSheet.SetupSheet(o2)
-        s2.setup()
+        s2 = PathSetupSheet.Create().Proxy
         self.doc.recompute()
         s2.setFromTemplate(ss.templateAttributes())
         self.doc.recompute()
 
-        self.assertRoughly(self.obj.SetupSheet.DefaultVertRapid, o2.SetupSheet.DefaultVertRapid)
-        self.assertRoughly(self.obj.SetupSheet.DefaultHorizRapid, o2.SetupSheet.DefaultHorizRapid)
-        self.assertRoughly(self.obj.SetupSheet.DefaultSafeHeight, o2.SetupSheet.DefaultSafeHeight)
-        self.assertRoughly(self.obj.SetupSheet.DefaultClearanceHeight, o2.SetupSheet.DefaultClearanceHeight)
+        o1 = ss.obj
+        o2 = s2.obj
+
+        self.assertRoughly(o1.VertRapid, o2.VertRapid)
+        self.assertRoughly(o1.HorizRapid, o2.HorizRapid)
+        self.assertRoughly(o1.SafeHeightOffset, o2.SafeHeightOffset)
+        self.assertEqual(o1.SafeHeightExpression, o2.SafeHeightExpression)
+        self.assertRoughly(o1.ClearanceHeightOffset, o2.ClearanceHeightOffset)
+        self.assertEqual(o1.ClearanceHeightExpression, o2.ClearanceHeightExpression)
 
     def test10(self):
         '''Verify template attributes encoding/decoding of floats.'''
-        ss = PathSetupSheet.SetupSheet(self.obj)
-        ss.setup('x')
+        ss = PathSetupSheet.Create().Proxy
 
-        self.assertEqual(ss.expressionReference(), 'Spreadsheet')
+        self.assertEqual(ss.expressionReference(), 'SetupSheet')
 
         self.assertEqual(str(ss.encodeTemplateAttributes({'00': 13.00})), "{'00': 13.0}")
         self.assertEqual(str(ss.decodeTemplateAttributes({'00': 13.00})), "{'00': 13.0}")
 
     def test11(self):
         '''Verify template attributes encoding/decoding of strings.'''
-        ss = PathSetupSheet.SetupSheet(self.obj)
-        ss.setup('x')
+        ss = PathSetupSheet.Create().Proxy
 
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet'})), "{'00': u'SetupSheet'}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'Spreadsheet'})), "{'00': u'${SetupSheet}'}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'Spreadsheet.y'})), "{'00': u'${SetupSheet}.y'}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': '${SetupSheet}'})), "{'00': u'${SetupSheet}'}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'hugo'})), "{'00': u'hugo'}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet'})), "{'00': u'${SetupSheet}'}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet.y'})), "{'00': u'${SetupSheet}.y'}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': '${hugo}'})), "{'00': u'${hugo}'}")
 
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': 'SetupSheet'})), "{'00': u'SetupSheet'}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}'})), "{'00': u'Spreadsheet'}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y'})), "{'00': u'Spreadsheet.y'}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y - ${SetupSheet}.z'})), "{'00': u'Spreadsheet.y - Spreadsheet.z'}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': 'hugo'})), "{'00': u'hugo'}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}'})), "{'00': u'SetupSheet'}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y'})), "{'00': u'SetupSheet.y'}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y - ${SetupSheet}.z'})), "{'00': u'SetupSheet.y - SetupSheet.z'}")
 
     def test12(self):
         '''Verify template attributes encoding/decoding of dictionaries.'''
-        ss = PathSetupSheet.SetupSheet(self.obj)
-        ss.setup('rrr')
+        ss = PathSetupSheet.Create().Proxy
 
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'SetupSheet'}})), "{'00': {'01': u'SetupSheet'}}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'Spreadsheet.y - Spreadsheet.z'}})), "{'00': {'01': u'${SetupSheet}.y - ${SetupSheet}.z'}}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'hugo'}})), "{'00': {'01': u'hugo'}}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'SetupSheet.y - SetupSheet.z'}})), "{'00': {'01': u'${SetupSheet}.y - ${SetupSheet}.z'}}")
 
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': 'SetupSheet'}})), "{'00': {'01': u'SetupSheet'}}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': '${SetupSheet}.y - ${SetupSheet}.z'}})), "{'00': {'01': u'Spreadsheet.y - Spreadsheet.z'}}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': 'hugo'}})), "{'00': {'01': u'hugo'}}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': '${SetupSheet}.y - ${SetupSheet}.z'}})), "{'00': {'01': u'SetupSheet.y - SetupSheet.z'}}")
 
     def test13(self):
         '''Verify template attributes encoding/decoding of lists.'''
-        ss = PathSetupSheet.SetupSheet(self.obj)
-        ss.setup('hugo')
+        ss = PathSetupSheet.Create().Proxy
 
         attrs = {}
-        attrs['00'] = 'x.Spreadsheet'
-        attrs['01'] = [{'10': 'Spreadsheet', '11': 'Spreadsheet.y'}, {'20': 'Spreadsheet'}]
-        attrs['02'] = [{'a': [{'b': 'Spreadsheet'}, {'c': 'Spreadsheet'}], 'b': [{'b': 'Spreadsheet'}]}]
+        attrs['00'] = 'x.SetupSheet'
+        attrs['01'] = [{'10': 'SetupSheet', '11': 'SetupSheet.y'}, {'20': 'SetupSheet'}]
+        attrs['02'] = [{'a': [{'b': 'SetupSheet'}, {'c': 'SetupSheet'}], 'b': [{'b': 'SetupSheet'}]}]
 
         encoded = ss.encodeTemplateAttributes(attrs)
         self.assertEqual(encoded['00'], 'x.${SetupSheet}')
@@ -150,14 +146,11 @@ class TestPathSetupSheet(PathTestBase):
         self.assertEqual(decoded['02'][0]['b'][0]['b'], attrs['02'][0]['b'][0]['b'])
 
         # just to be safe ...
-        o2 = self.TestObject(self.doc)
-        s2 = PathSetupSheet.SetupSheet(o2)
-        s2.setup()
+        s2 = PathSetupSheet.Create().Proxy
         self.doc.recompute()
         s2.setFromTemplate(ss.templateAttributes())
-        o2.SetupSheet.Label = 'xxx'
-        self.assertEqual(s2.expressionReference(), 'Spreadsheet001')
+        self.assertEqual(s2.expressionReference(), 'SetupSheet001')
         dec = s2.decodeTemplateAttributes(encoded)
         # pick one
-        self.assertEqual(dec['01'][0]['11'], 'Spreadsheet001.y')
+        self.assertEqual(dec['01'][0]['11'], 'SetupSheet001.y')
 
