@@ -99,8 +99,6 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 
-    ExternalGeometry.setScope(App::LinkScope::Global);
-    allowOtherBody = true;
     allowUnaligned = true;
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
@@ -2037,13 +2035,9 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
         } else if (body_this == body_obj) {
             return true;
         } else {
-            if ( this->allowOtherBody ) { // Selection outside of body not allowed if flag is not set
-                return true;
-            } else {
-                if (rsn)
-                    *rsn = rlOtherBody;
-                return false;
-            }
+            if (rsn)
+                *rsn = rlOtherBody;
+            return false;
         }
     } else {
         // cross-part link. Disallow, should be done via shapebinders only
@@ -2096,7 +2090,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this != NULL) {
-            if ((body_this != body_obj) && !this->allowOtherBody) {
+            if (body_this != body_obj) {
                 if (rsn)
                     *rsn = rlOtherBody;
                 return false;
