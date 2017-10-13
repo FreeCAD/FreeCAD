@@ -25,6 +25,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
@@ -93,15 +94,25 @@ class ObjectOp(object):
     '''
 
     def addBaseProperty(self, obj):
-        obj.addProperty("App::PropertyLinkSubListGlobal", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"))
+        obj.addProperty("App::PropertyLinkSubListGlobal", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "The base geometry for this operation"))
 
+    def addOpValues(self, obj, values):
+        if 'start' in values:
+            obj.addProperty("App::PropertyDistance", "OpStartDepth", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the calculated value for the StartDepth"))
+            obj.setEditorMode('OpStartDepth', 1) # read-only
+        if 'final' in values:
+            obj.addProperty("App::PropertyDistance", "OpFinalDepth", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the calculated value for the FinalDepth"))
+            obj.setEditorMode('OpFinalDepth', 1) # read-only
+        if 'tooldia' in values:
+            obj.addProperty("App::PropertyDistance", "OpToolDiameter", "Op Values", QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the diameter of the tool"))
+            obj.setEditorMode('OpToolDiameter', 1) # read-only
 
     def __init__(self, obj):
         PathLog.track()
 
-        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"))
+        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "An optional comment for this Operation"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "User Assigned Label"))
 
         features = self.opFeatures(obj)
 
@@ -109,32 +120,32 @@ class ObjectOp(object):
             self.addBaseProperty(obj)
 
         if FeatureLocations & features:
-            obj.addProperty("App::PropertyVectorList", "Locations", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Base locations for this operation"))
+            obj.addProperty("App::PropertyVectorList", "Locations", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Base locations for this operation"))
 
         if FeatureTool & features:
-            obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
+            obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "The tool controller that will be used to calculate the path"))
+            self.addOpValues(obj, ['tooldia'])
 
         if FeatureDepths & features:
-            obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"))
-            obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"))
-            obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Start Depth will not be automatically updated when geometry changes"))
-            obj.addProperty("App::PropertyBool", "FinalDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Final Depth will not be automatically updated when geometry changes"))
+            obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth of Tool- first cut depth in Z"))
+            obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Final Depth of Tool- lowest value in Z"))
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('FinalDepth', 2) # hide
+            self.addOpValues(obj, ['start', 'final'])
 
         if FeatureStepDown & features:
-            obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"))
+            obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Incremental Step Down of Tool"))
 
         if FeatureFinishDepth & features:
-            obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."))
+            obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Maximum material removed on final pass."))
 
         if FeatureHeights & features:
-            obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height needed to clear clamps and obstructions"))
-            obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."))
+            obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "The height needed to clear clamps and obstructions"))
+            obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Rapid Safety Height between locations."))
 
         if FeatureStartPoint & features:
-            obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path"))
-            obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if specifying a Start Point"))
+            obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
+            obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "make True, if specifying a Start Point"))
 
         self.initOperation(obj)
 
@@ -150,13 +161,21 @@ class ObjectOp(object):
             obj.Base = base
             obj.touch()
             obj.Document.recompute()
+
+        if FeatureTool & self.opFeatures(obj) and not hasattr(obj, 'OpToolDiameter'):
+            self.addOpValues(obj, ['tooldia'])
+
         if FeatureDepths & self.opFeatures(obj):
-            if not hasattr(obj, 'StartDepthLock'):
-                obj.addProperty("App::PropertyBool", "StartDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Start Depth will not be automatically updated when geometry changes"))
-                obj.StartDepthLock = False
-            if not hasattr(obj, 'FinalDepthLock'):
-                obj.addProperty("App::PropertyBool", "FinalDepthLock", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property", "If enabled Final Depth will not be automatically updated when geometry changes"))
-                obj.FinalDepthLock = False
+            if not hasattr(obj, 'OpStartDepth'):
+                self.addOpValues(obj, ['start', 'final'])
+                if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
+                    obj.setExpression('StartDepth', 'OpStartDepth')
+                if FeatureNoFinalDepth & self.opFeatures(obj):
+                    obj.setEditorMode('OpFinalDepth', 2)
+                elif not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
+                    obj.setExpression('FinalDepth', 'OpFinalDepth')
+                if PathGeom.isRoughly(obj.StepDown.Value, 1):
+                    obj.setExpression('StepDown', 'OpToolDiameter')
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
@@ -208,7 +227,7 @@ class ObjectOp(object):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
 
-        if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'StartDepthLock', 'FinalDepth', 'FinalDepthLock']:
+        if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
@@ -216,7 +235,7 @@ class ObjectOp(object):
     def setDefaultValues(self, obj):
         '''setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead.'''
-        PathUtils.addToJob(obj)
+        job = PathUtils.addToJob(obj)
 
         obj.Active = True
 
@@ -224,19 +243,20 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             obj.ToolController = PathUtils.findToolController(obj)
+            obj.OpToolDiameter  =  1.0
 
         if FeatureDepths & features:
-            obj.StartDepth      =  1.0
-            obj.StartDepthLock  =  False
-            obj.FinalDepth      =  0.0
-            obj.FinalDepthLock  =  False
+            obj.setExpression('StartDepth', 'OpStartDepth')
+            obj.setExpression('FinalDepth', 'OpFinalDepth')
+            obj.OpStartDepth    =  1.0
+            obj.OpFinalDepth    =  0.0
 
         if FeatureStepDown & features:
-            obj.StepDown        =  1.0
+            obj.setExpression('StepDown', 'OpToolDiameter')
 
         if FeatureHeights & features:
-            obj.ClearanceHeight = 10.0
-            obj.SafeHeight      =  8.0
+            obj.setExpression('SafeHeight',      "%s.%s+StartDepth" % (job.Proxy.setupSheet.expressionReference(), PathSetupSheet.Default.SafeHeight))
+            obj.setExpression('ClearanceHeight', "%s.%s+StartDepth" % (job.Proxy.setupSheet.expressionReference(), PathSetupSheet.Default.ClearanceHeight))
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
@@ -267,7 +287,7 @@ class ObjectOp(object):
 
     def updateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... base implementation calculating depths depending on base geometry.
-        Can safely be overwritten.'''
+        Should not be overwritten.'''
 
         def faceZmin(bb, fbb):
             if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
@@ -299,16 +319,11 @@ class ObjectOp(object):
             # clearing with stock boundaries
             pass
 
-        safeDepths = True
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
-            if not PathGeom.isRoughly(obj.FinalDepth.Value, zmin):
-                if not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
-                    obj.FinalDepth = zmin
-                else:
-                    if obj.FinalDepth.Value < zmin:
-                        safeDepths = False
-            zmin = obj.FinalDepth.Value
+            if not PathGeom.isRoughly(obj.OpFinalDepth.Value, zmin):
+                obj.OpFinalDepth = zmin
+            zmin = obj.OpFinalDepth.Value
 
             def minZmax(z):
                 if hasattr(obj, 'StepDown') and not PathGeom.isRoughly(obj.StepDown.Value, 0):
@@ -321,23 +336,8 @@ class ObjectOp(object):
                 zmax = minZmax(zmin)
 
             # update start depth if requested and required
-            if not PathGeom.isRoughly(obj.StartDepth.Value, zmax):
-                if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
-                    obj.StartDepth = zmax
-                elif (obj.StartDepth.Value - 0.0001) <= obj.FinalDepth.Value:
-                    obj.StartDepth = minZmax(obj.FinalDepth.Value)
-                else:
-                    if obj.StartDepth.Value < zmax:
-                        safeDepths = False
-
-        clearance = obj.StartDepth.Value + 5.0
-        safe = obj.StartDepth.Value + 3
-        if hasattr(obj, 'ClearanceHeight') and not PathGeom.isRoughly(clearance, obj.ClearanceHeight.Value):
-            obj.ClearanceHeight = clearance
-        if hasattr(obj, 'SafeHeight') and not PathGeom.isRoughly(safe, obj.SafeHeight.Value):
-            obj.SafeHeight = safe
-
-        return safeDepths
+            if not PathGeom.isRoughly(obj.OpStartDepth.Value, zmax):
+                obj.OpStartDepth = zmax
 
     @waiting_effects
     def execute(self, obj):
@@ -386,11 +386,14 @@ class ObjectOp(object):
                 if not tool or tool.Diameter == 0:
                     FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
                     return
-                else:
-                    self.radius = tool.Diameter/2
-                    self.tool = tool
+                self.radius = tool.Diameter/2
+                self.tool = tool
+                obj.OpToolDiameter = tool.Diameter
 
         self.updateDepths(obj)
+        # now that all op values are set make sure the user properties get updated accordingly,
+        # in case they still have an expression referencing any op values
+        obj.recompute()
 
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))

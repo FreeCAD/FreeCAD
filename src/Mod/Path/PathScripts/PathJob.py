@@ -27,6 +27,7 @@ import Draft
 import FreeCAD
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
+import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
@@ -50,14 +51,15 @@ def translate(context, text, disambig=None):
 
 class JobTemplate:
     '''Attribute and sub element strings for template export/import.'''
+    Description = 'Desc'
+    GeometryTolerance = 'Tolerance'
     Job = 'Job'
     PostProcessor = 'Post'
     PostProcessorArgs = 'PostArgs'
     PostProcessorOutputFile = 'Output'
-    GeometryTolerance = 'Tolerance'
-    Description = 'Desc'
-    ToolController = 'ToolController'
+    SetupSheet = 'SetupSheet'
     Stock = 'Stock'
+    ToolController = 'ToolController'
     Version = 'Version'
 
 def isArchPanelSheet(obj):
@@ -119,6 +121,8 @@ class ObjectJob:
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
+        self.setupSetupSheet(obj)
+
         obj.Base = createResourceClone(obj, base, 'Base', 'BaseGeometry')
         obj.Proxy = self
 
@@ -132,6 +136,12 @@ class ObjectJob:
         if obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = False
 
+    def setupSetupSheet(self, obj):
+        self.setupSheet = PathSetupSheet.SetupSheet(obj)
+        if not hasattr(obj, 'SetupSheet'):
+            obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Spreadsheet holding the settings for this job'))
+            self.setupSheet.setup()
+
     def onDelete(self, obj, arg2=None):
         '''Called by the view provider, there doesn't seem to be a callback on the obj itself.'''
         PathLog.track(obj.Label, arg2)
@@ -141,6 +151,7 @@ class ObjectJob:
         while obj.Operations.Group:
             op = obj.Operations.Group[0]
             if not op.ViewObject or not hasattr(op.ViewObject.Proxy, 'onDelete') or op.ViewObject.Proxy.onDelete(op.ViewObject, ()):
+                PathUtil.clearExpressionEngine(op)
                 doc.removeObject(op.Name)
         obj.Operations.Group = []
         doc.removeObject(obj.Operations.Name)
@@ -148,19 +159,27 @@ class ObjectJob:
         # stock could depend on Base
         if obj.Stock:
             PathLog.debug('taking down stock')
+            PathUtil.clearExpressionEngine(obj.Stock)
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
         # base doesn't depend on anything inside job
         if obj.Base:
             PathLog.debug('taking down base')
             if isResourceClone(obj, 'Base'):
+                PathUtil.clearExpressionEngine(obj.Base)
                 doc.removeObject(obj.Base.Name)
             obj.Base = None
         # Tool controllers don't depend on anything
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
+            PathUtil.clearExpressionEngine(tc)
             doc.removeObject(tc.Name)
         obj.ToolController = []
+        # SetupSheet
+        PathUtil.clearExpressionEngine(obj.SetupSheet)
+        doc.removeObject(obj.SetupSheet.Name)
+        obj.SetupSheet = None
+        return True
 
     def fixupResourceClone(self, obj, name, icon):
         if not isResourceClone(obj, name, name) and not isArchPanelSheet(obj):
@@ -170,6 +189,7 @@ class ObjectJob:
 
     def onDocumentRestored(self, obj):
         self.fixupResourceClone(obj, 'Base', 'BaseGeometry')
+        self.setupSetupSheet(obj)
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -192,6 +212,10 @@ class ObjectJob:
                 attrs = json.load(fp)
 
             if attrs.get(JobTemplate.Version) and 1 == int(attrs[JobTemplate.Version]):
+                if attrs.get(JobTemplate.SetupSheet):
+                    self.setupSheet.setFromTemplate(attrs[JobTemplate.SetupSheet])
+                attrs = self.setupSheet.decodeTemplateAttributes(attrs)
+
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
                 if attrs.get(JobTemplate.PostProcessor):
@@ -205,19 +229,18 @@ class ObjectJob:
                 if attrs.get(JobTemplate.Description):
                     obj.Description = attrs.get(JobTemplate.Description)
 
-
                 if attrs.get(JobTemplate.ToolController):
                     for tc in attrs.get(JobTemplate.ToolController):
                         tcs.append(PathToolController.FromTemplate(tc))
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
+
+                PathLog.debug("setting tool controllers (%d)" % len(tcs))
+                obj.ToolController = tcs
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
-                tcs.append(PathToolController.Create())
-        else:
-            tcs.append(PathToolController.Create())
-        PathLog.debug("setting tool controllers (%d)" % len(tcs))
-        obj.ToolController = tcs
+        if not tcs:
+            self.addToolController(PathToolController.Create())
 
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file.'''
@@ -254,8 +277,10 @@ class ObjectJob:
 
     def addToolController(self, tc):
         group = self.obj.ToolController
-        PathLog.info("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
+        PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
+            tc.setExpression('VertRapid',  "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Default.VertRapid))
+            tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Default.HorizRapid))
             group.append(tc)
             self.obj.ToolController = group
 

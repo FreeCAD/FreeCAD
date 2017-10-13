@@ -57,7 +57,7 @@ deletes the tool found at the given position</UserDocu>
                 <UserDocu>setFromTemplate(dict) ... restores receiver from given template attribute dictionary</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="templateAttrs">
+        <Methode Name="templateAttrs" Const="true">
             <Documentation>
                 <UserDocu>templateAttrs() ... returns a dictionary representing the receivers attributes for a template</UserDocu>
             </Documentation>

@@ -26,6 +26,7 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathDrilling as PathDrilling
+import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 
@@ -53,9 +54,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def getFields(self, obj):
         '''setFields(obj) ... update obj's properties with values from the UI'''
         PathLog.track()
-        self.updateInputField(obj, 'PeckDepth', self.form.peckDepth)
-        self.updateInputField(obj, 'RetractHeight', self.form.retractHeight)
-        self.updateInputField(obj, 'DwellTime', self.form.dwellTime)
+        PathGui.updateInputField(obj, 'PeckDepth', self.form.peckDepth)
+        PathGui.updateInputField(obj, 'RetractHeight', self.form.retractHeight)
+        PathGui.updateInputField(obj, 'DwellTime', self.form.dwellTime)
 
         if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()

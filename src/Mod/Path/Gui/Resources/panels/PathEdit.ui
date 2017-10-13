@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>924</height>
+    <height>673</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>4</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -399,75 +399,87 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QTableWidget" name="toolControllerList">
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>Name</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nr.</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Feed</string>
-       </property>
-       <property name="icon">
-        <iconset theme="object-flip-horizontal">
-         <normaloff/>
-        </iconset>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Feed</string>
-       </property>
-       <property name="icon">
-        <iconset theme="object-flip-vertical">
-         <normaloff/>
-        </iconset>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Spindle</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_4" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <widget class="QFrame" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QPushButton" name="toolControllerEdit">
-         <property name="enabled">
+        <widget class="QTableWidget" name="toolControllerList">
+         <attribute name="verticalHeaderVisible">
           <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Edit</string>
-         </property>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Nr.</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Feed</string>
+          </property>
+          <property name="icon">
+           <iconset theme="object-flip-horizontal">
+            <normaloff/>
+           </iconset>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Feed</string>
+          </property>
+          <property name="icon">
+           <iconset theme="object-flip-vertical">
+            <normaloff/>
+           </iconset>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Spindle</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="toolControllerAdd">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="toolControllerDelete">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Remove</string>
-         </property>
+        <widget class="QWidget" name="widget_4" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="toolControllerEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="toolControllerAdd">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="toolControllerDelete">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -640,7 +652,6 @@
   <tabstop>moveToOrigin</tabstop>
   <tabstop>centerInStock</tabstop>
   <tabstop>centerInStockXY</tabstop>
-  <tabstop>toolControllerList</tabstop>
   <tabstop>toolControllerEdit</tabstop>
   <tabstop>toolControllerAdd</tabstop>
   <tabstop>toolControllerDelete</tabstop>

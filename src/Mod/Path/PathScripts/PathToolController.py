@@ -24,16 +24,18 @@
 ''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
 
 import FreeCAD
-import FreeCADGui
 import Part
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-#from . import PathUtils
-import xml.etree.ElementTree as xml
+import PathScripts.PathUtil as PathUtil
 
 from FreeCAD import Units
-from PySide import QtCore, QtGui
+from PySide import QtCore
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    import PathScripts.PathGui as PathGui
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -47,17 +49,20 @@ def translate(context, text, disambig=None):
 
 class ToolControllerTemplate:
     '''Attribute and sub element strings for template export/import.'''
-    Name         = 'name'
-    Label        = 'label'
-    ToolNumber   = 'nr'
-    VertFeed     = 'vfeed'
+    Expressions  = 'xengine'
+    ExprExpr     = 'expr'
+    ExprProp     = 'prop'
     HorizFeed    = 'hfeed'
-    VertRapid    = 'vrapid'
     HorizRapid   = 'hrapid'
-    SpindleSpeed = 'speed'
+    Label        = 'label'
+    Name         = 'name'
     SpindleDir   = 'dir'
+    SpindleSpeed = 'speed'
+    ToolNumber   = 'nr'
     Tool         = 'tool'
     Version      = 'version'
+    VertFeed     = 'vfeed'
+    VertRapid    = 'vrapid'
 
 class ToolController:
     def __init__(self, obj, tool=1):
@@ -100,6 +105,9 @@ class ToolController:
                 obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
             if template.get(ToolControllerTemplate.Tool):
                 obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
+            if template.get(ToolControllerTemplate.Expressions):
+                for exprDef in template.get(ToolControllerTemplate.Expressions):
+                    obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
         else:
             PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
 
@@ -117,6 +125,12 @@ class ToolController:
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir]   = obj.SpindleDir
         attrs[ToolControllerTemplate.Tool]         = obj.Tool.templateAttrs()
+        expressions = []
+        for expr in obj.ExpressionEngine:
+            PathLog.debug('%s: %s' % (expr[0], expr[1]))
+            expressions.append({ToolControllerTemplate.ExprProp: expr[0], ToolControllerTemplate.ExprExpr: expr[1]})
+        if expressions:
+            attrs[ToolControllerTemplate.Expressions] = expressions
         return attrs
 
     def execute(self, obj):
@@ -177,6 +191,10 @@ class ViewProvider:
         vobj.setEditorMode('DisplayMode', mode)
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('Selectable', mode)
+
+    def onDelete(self, vobj, args=None):
+        PathUtil.clearExpressionEngine(vobj.Object)
+        return True
 
     def updateData(self, vobj, prop):
         # this is executed when a property of the APP OBJECT changes
@@ -256,6 +274,18 @@ class ToolControllerEditor:
             self.form.buttonBox.hide()
         self.obj = obj
 
+        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, 'VertFeed')
+        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, 'HorizFeed')
+        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, 'VertRapid')
+        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj, 'HorizRapid')
+
+        self.toolDiameter = PathGui.QuantitySpinBox(self.form.toolDiameter, obj, 'Tool.Diameter')
+        self.toolLengthOffset = PathGui.QuantitySpinBox(self.form.toolLengthOffset, obj, 'Tool.LengthOffset')
+        self.toolFlatRadius = PathGui.QuantitySpinBox(self.form.toolFlatRadius, obj, 'Tool.FlatRadius')
+        self.toolCornerRadius = PathGui.QuantitySpinBox(self.form.toolCornerRadius, obj, 'Tool.CornerRadius')
+        self.toolCuttingEdgeAngle = PathGui.QuantitySpinBox(self.form.toolCuttingEdgeAngle, obj, 'Tool.CuttingEdgeAngle')
+        self.toolCuttingEdgeHeight = PathGui.QuantitySpinBox(self.form.toolCuttingEdgeHeight, obj, 'Tool.CuttingEdgeHeight')
+
     def getType(self, tooltype):
         "gets a combobox index number for a given type or viceversa"
         toolslist = ["Drill", "CenterDrill", "CounterSink", "CounterBore",
@@ -285,10 +315,10 @@ class ToolControllerEditor:
         tc = self.obj
         self.form.tcName.setText(tc.Label)
         self.form.tcNumber.setValue(tc.ToolNumber)
-        self.form.horizFeed.setText(tc.HorizFeed.UserString)
-        self.form.vertFeed.setText(tc.VertFeed.UserString)
-        self.form.horizRapid.setText(tc.HorizRapid.UserString)
-        self.form.vertRapid.setText(tc.VertRapid.UserString)
+        self.horizFeed.updateSpinBox()
+        self.horizRapid.updateSpinBox()
+        self.vertFeed.updateSpinBox()
+        self.vertRapid.updateSpinBox()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
         index = self.form.spindleDirection.findText(tc.SpindleDir, QtCore.Qt.MatchFixedString)
         if index >= 0:
@@ -297,34 +327,34 @@ class ToolControllerEditor:
         self.form.toolName.setText(tc.Tool.Name)
         self.form.toolType.setCurrentIndex(self.getType(tc.Tool.ToolType))
         self.form.toolMaterial.setCurrentIndex(self.getMaterial(tc.Tool.Material))
-        self.form.toolDiameter.setText(FreeCAD.Units.Quantity(tc.Tool.Diameter, FreeCAD.Units.Length).UserString)
-        self.form.toolLengthOffset.setText(FreeCAD.Units.Quantity(tc.Tool.LengthOffset, FreeCAD.Units.Length).UserString)
-        self.form.toolFlatRadius.setText(FreeCAD.Units.Quantity(tc.Tool.FlatRadius, FreeCAD.Units.Length).UserString)
-        self.form.toolCornerRadius.setText(FreeCAD.Units.Quantity(tc.Tool.CornerRadius, FreeCAD.Units.Length).UserString)
-        self.form.toolCuttingEdgeAngle.setText(FreeCAD.Units.Quantity(tc.Tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
-        self.form.toolCuttingEdgeHeight.setText(FreeCAD.Units.Quantity(tc.Tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
+        self.toolDiameter.updateSpinBox()
+        self.toolLengthOffset.updateSpinBox()
+        self.toolFlatRadius.updateSpinBox()
+        self.toolCornerRadius.updateSpinBox()
+        self.toolCuttingEdgeAngle.updateSpinBox()
+        self.toolCuttingEdgeHeight.updateSpinBox()
 
     def updateToolController(self):
         tc = self.obj
         try:
             tc.Label = self.form.tcName.text()
             tc.ToolNumber = self.form.tcNumber.value()
-            tc.HorizFeed = self.form.horizFeed.text()
-            tc.VertFeed = self.form.vertFeed.text()
-            tc.HorizRapid = self.form.horizRapid.text()
-            tc.VertRapid = self.form.vertRapid.text()
+            self.horizFeed.updateProperty()
+            self.vertFeed.updateProperty()
+            self.horizRapid.updateProperty()
+            self.vertRapid.updateProperty()
             tc.SpindleSpeed = self.form.spindleSpeed.value()
             tc.SpindleDir = self.form.spindleDirection.currentText()
 
             tc.Tool.Name = str(self.form.toolName.text())
             tc.Tool.ToolType = self.getType(self.form.toolType.currentIndex())
             tc.Tool.Material = self.getMaterial(self.form.toolMaterial.currentIndex())
-            tc.Tool.Diameter = FreeCAD.Units.parseQuantity(self.form.toolDiameter.text())
-            tc.Tool.LengthOffset = FreeCAD.Units.parseQuantity(self.form.toolLengthOffset.text())
-            tc.Tool.FlatRadius = FreeCAD.Units.parseQuantity(self.form.toolFlatRadius.text())
-            tc.Tool.CornerRadius = FreeCAD.Units.parseQuantity(self.form.toolCornerRadius.text())
-            tc.Tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(self.form.toolCuttingEdgeAngle.text())
-            tc.Tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(self.form.toolCuttingEdgeHeight.text())
+            self.toolDiameter.updateProperty()
+            self.toolLengthOffset.updateProperty()
+            self.toolFlatRadius.updateProperty()
+            self.toolCornerRadius.updateProperty()
+            self.toolCuttingEdgeAngle.updateProperty()
+            self.toolCuttingEdgeHeight.updateProperty()
         except Exception as e:
             PathLog.error(translate("PathToolController", "Error updating TC: %s") % e)
 

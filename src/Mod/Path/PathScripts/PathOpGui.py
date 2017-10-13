@@ -26,9 +26,11 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
+import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathOp as PathOp
+import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
 
@@ -160,6 +162,10 @@ class ViewProvider(object):
         if self.panel:
             self.panel.updateData(obj, prop)
 
+    def onDelete(self, vobj, arg2=None):
+        PathUtil.clearExpressionEngine(vobj.Object)
+        return True
+
 class TaskPanelPage(object):
     '''Base class for all task panel pages.'''
 
@@ -170,7 +176,7 @@ class TaskPanelPage(object):
         self.obj = obj
         self.form = self.getForm()
         self.signalDirtyChanged = None
-        self.setDirty()
+        self.setClean()
         self.setTitle('-')
         self.features = features
 
@@ -298,19 +304,6 @@ class TaskPanelPage(object):
         tc = PathUtils.findToolController(obj, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
-
-    def updateInputField(self, obj, prop, widget, onBeforeChange = None):
-        '''updateInputField(obj, prop, widget) ... helper function to update obj's property named prop with the value from widget, if it has changed.'''
-        value = FreeCAD.Units.Quantity(widget.text()).Value
-        attr = getattr(obj, prop)
-        attrValue = attr.Value if hasattr(attr, 'Value') else attr
-        if not PathGeom.isRoughly(attrValue, value):
-            PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, getattr(obj, prop), value))
-            if onBeforeChange:
-                onBeforeChange(obj)
-            setattr(obj, prop, value)
-            return True
-        return False
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
@@ -545,14 +538,22 @@ class TaskPanelHeightsPage(TaskPanelPage):
     '''Page controller for heights.'''
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
+
+    def initPage(self, obj):
+        self.safeHeight = PathGui.QuantitySpinBox(self.form.safeHeight, obj, 'SafeHeight')
+        self.clearanceHeight = PathGui.QuantitySpinBox(self.form.clearanceHeight, obj, 'ClearanceHeight')
+
     def getTitle(self, obj):
         return translate("Path", "Heights")
+
     def getFields(self, obj):
-        self.updateInputField(obj, 'SafeHeight',      self.form.safeHeight)
-        self.updateInputField(obj, 'ClearanceHeight', self.form.clearanceHeight)
+        self.safeHeight.updateProperty()
+        self.clearanceHeight.updateProperty()
+
     def setFields(self,  obj):
-        self.form.safeHeight.setText(FreeCAD.Units.Quantity(obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
-        self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
+        self.safeHeight.updateSpinBox()
+        self.clearanceHeight.updateSpinBox()
+
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.safeHeight.editingFinished)
@@ -570,63 +571,55 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
 
     def initPage(self, obj):
+        self.startDepth = PathGui.QuantitySpinBox(self.form.startDepth, obj, 'StartDepth')
+
         if PathOp.FeatureNoFinalDepth & self.features:
             self.form.finalDepth.hide()
             self.form.finalDepthLabel.hide()
-            self.form.finalDepthLock.hide()
             self.form.finalDepthSet.hide()
+        else:
+            self.finalDepth = PathGui.QuantitySpinBox(self.form.finalDepth, obj, 'FinalDepth')
 
-        if not PathOp.FeatureStepDown & self.features:
+        if PathOp.FeatureStepDown & self.features:
+            self.stepDown = PathGui.QuantitySpinBox(self.form.stepDown, obj, 'StepDown')
+        else:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
 
-        if not PathOp.FeatureFinishDepth & self.features:
+        if PathOp.FeatureFinishDepth & self.features:
+            self.finishDepth = PathGui.QuantitySpinBox(self.form.finishDepth, obj, 'FinishDepth')
+        else:
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
+
 
     def getTitle(self, obj):
         return translate("PathOp", "Depths")
 
-    def lockStartDepth(self, obj):
-        if not obj.StartDepthLock:
-            obj.StartDepthLock = True
-    def lockFinalDepth(self, obj):
-        if not obj.FinalDepthLock:
-            obj.FinalDepthLock = True
-
     def getFields(self, obj):
-        if obj.StartDepthLock != self.form.startDepthLock.isChecked():
-            obj.StartDepthLock = self.form.startDepthLock.isChecked()
-        if obj.FinalDepthLock != self.form.finalDepthLock.isChecked():
-            obj.FinalDepthLock = self.form.finalDepthLock.isChecked()
-
-        self.updateInputField(obj, 'StartDepth', self.form.startDepth, self.lockStartDepth)
+        self.startDepth.updateProperty()
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.updateInputField(obj, 'FinalDepth', self.form.finalDepth, self.lockFinalDepth)
+            self.finalDepth.updateProperty()
         if PathOp.FeatureStepDown & self.features:
-            self.updateInputField(obj, 'StepDown', self.form.stepDown)
+            self.stepDown.updateProperty()
         if PathOp.FeatureFinishDepth & self.features:
-            self.updateInputField(obj, 'FinishDepth', self.form.finishDepth)
+            self.finishDepth.updateProperty()
 
     def setFields(self, obj):
-        self.form.startDepth.setText(FreeCAD.Units.Quantity(obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
-        self.form.startDepthLock.setChecked(obj.StartDepthLock)
+        self.startDepth.updateSpinBox()
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.form.finalDepth.setText(FreeCAD.Units.Quantity(obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
-            self.form.finalDepthLock.setChecked(obj.FinalDepthLock)
+            self.finalDepth.updateSpinBox()
         if PathOp.FeatureStepDown & self.features:
-            self.form.stepDown.setText(FreeCAD.Units.Quantity(obj.StepDown.Value, FreeCAD.Units.Length).UserString)
+            self.stepDown.updateSpinBox()
         if PathOp.FeatureFinishDepth & self.features:
-            self.form.finishDepth.setText(FreeCAD.Units.Quantity(obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
+            self.finishDepth.updateSpinBox()
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
 
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.startDepth.editingFinished)
-        signals.append(self.form.startDepthLock.clicked)
         if not PathOp.FeatureNoFinalDepth & self.features:
             signals.append(self.form.finalDepth.editingFinished)
-            signals.append(self.form.finalDepthLock.clicked)
         if PathOp.FeatureStepDown & self.features:
             signals.append(self.form.stepDown.editingFinished)
         if PathOp.FeatureFinishDepth & self.features:
@@ -634,20 +627,24 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return signals
 
     def registerSignalHandlers(self, obj):
-        self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.startDepth))
+        self.form.startDepthSet.clicked.connect(lambda: self.depthSet(obj, self.startDepth, 'StartDepth'))
         if not PathOp.FeatureNoFinalDepth & self.features:
-            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.form.finalDepth))
+            self.form.finalDepthSet.clicked.connect(lambda: self.depthSet(obj, self.finalDepth, 'FinalDepth'))
 
     def pageUpdateData(self, obj, prop):
-        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth', 'FinalDepthLock', 'StartDepthLock']:
+        if prop in ['StartDepth', 'FinalDepth', 'StepDown', 'FinishDepth']:
             self.setFields(obj)
 
-    def depthSet(self, obj, widget):
+    def depthSet(self, obj, spinbox, prop):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
         if z is not None:
-            PathLog.debug("depthSet(%.2f)" % z)
-            widget.setText(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString)
-            self.getFields(obj)
+            PathLog.debug("depthSet(%s, %s, %.2f)" % (obj.Label, prop, z))
+            if spinbox.expression():
+                obj.setExpression(prop, None)
+                self.setDirty()
+            spinbox.updateSpinBox(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length))
+            if spinbox.updateProperty():
+                self.setDirty()
         else:
             PathLog.info("depthSet(-)")
 
@@ -746,7 +743,7 @@ class TaskPanel(object):
 
         self.selectionFactory = selectionFactory
         self.obj = obj
-        self.isdirty = True
+        self.isdirty = deleteOnReject
 
     def isDirty(self):
         '''isDirty() ... returns true if the model is not in sync with the UI anymore.'''
@@ -775,6 +772,7 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path", "Uncreate AreaOp Operation"))
+            PathUtil.clearExpressionEngine(self.obj)
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
@@ -810,6 +808,7 @@ class TaskPanel(object):
         self.buttonBox = buttonBox
         for page in self.featurePages:
             page.modifyStandardButtons(buttonBox)
+        self.pageDirtyChanged(None)
 
     def panelGetFields(self):
         '''panelGetFields() ... invoked to trigger a complete transfer of UI data to the model.'''

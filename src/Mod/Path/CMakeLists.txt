@@ -74,6 +74,7 @@ SET(PathScripts_SRCS
     PathScripts/PathProfileFacesGui.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
+    PathScripts/PathSetupSheet.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
@@ -120,6 +121,7 @@ SET(PathTests_SRCS
     PathTests/TestPathGeom.py
     PathTests/TestPathLog.py
     PathTests/TestPathPost.py
+    PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
     PathTests/TestPathTool.py
     PathTests/TestPathToolController.py

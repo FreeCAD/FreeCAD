@@ -75,7 +75,6 @@
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
-        <file>panels/ToolControl.ui</file>
         <file>panels/ToolEdit.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
