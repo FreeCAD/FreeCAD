@@ -1832,10 +1832,10 @@ void CmdPartDesignMirrored::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
-	if (!pcActiveBody)
-		return;
+    if (!pcActiveBody)
+        return;
 
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
