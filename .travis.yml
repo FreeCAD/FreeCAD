@@ -84,6 +84,8 @@ notifications:
     on_start:   change
 
 before_install:
+# Download codespell to test PR for spelling mistakes
+  - pip install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
 - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
 - |
   case "${TRAVIS_OS_NAME}" in
@@ -226,9 +228,6 @@ before_install:
   esac
 
 install:
-# Download codespell to test PR for spelling mistakes
-  - pip3 install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
-
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
