@@ -27,7 +27,7 @@ echo "$TEXT_CONTENT"
 
 # Download FreeCAD's codespell whitelist in to ./fc-word-whitelist.txt
 echo -e "$BLUE>> Downloading whitelist files:$NC"
-curl -Os https://gist.githubusercontent.com/luzpaz/7ac1bf4412b9c1e5acde715ef9cb612c/raw/fc-word-whitelist.txt`
+curl -Os https://gist.githubusercontent.com/luzpaz/7ac1bf4412b9c1e5acde715ef9cb612c/raw/fc-word-whitelist.txt
 
 # Run codespell 
 echo -e "$BLUE>> Run codespell:$NC"
@@ -43,4 +43,6 @@ curl -i -H "Authorization: token $GH_TOKEN" \
     https://api.github.com/repos/FreeCAD/FreeCAD/issues/$TRAVIS_PULL_REQUEST/comments
 
 # Clean up
-rm ./fc-word-whitelist.txt codespell_results.txt
+# rm ./fc-word-whitelist.txt codespell_results.txt
+
+exit 0;
