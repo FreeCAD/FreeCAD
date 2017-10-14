@@ -3,21 +3,26 @@
 # Tips:
 # 1. use "exit 0;" to not interrupt build process
 # 2. Needs a token as an ENV variable that is hidden (DONE: $GH_TOKEN)
-# 3. requires apt package: codespell (we want to install the most up to date codespell) 
-#    pip install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
+# 3. requires most up to date codespell: pip install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;36m'
 NC='\033[0m' # No Color
 
-CODESPELL_SKIPS="*.po,*.ts,./.git,./src/3rdParty,./src/zipios++,./src/CXX"
+TRANSLATION_FILES="*.po,*.ts"
+3RDPARTY_FILES="./src/3rdParty,./src/zipios++,./src/CXX"
+MISC_FILES="./git,./src/Mod/Assembly/App/opendcm,./src/Mod/Cam/App"
+
+# CODESPELL_SKIPS="*.po,*.ts,./.git,./src/3rdParty,./src/zipios++,./src/CXX,./src/Mod/Assembly/App/opendcm,./src/Mod/Cam/App"
+CODESPELL_SKIPS="$TRANSLATION_FILES,$3RDPARTY_FILES,$MISC_FILES"
 
 # Round up all changed content
 CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
 
+# Show File names that changed
 echo -e "$BLUE>> Following files were changed in this pull request (commit range: $TRAVIS_COMMIT_RANGE):$NC"
-echo "$CHANGED_FILES"
+echo -e "$GREEN\n$CHANGED_FILES\n$NC"
 
 # cat all files that changed
 TEXT_CONTENT=`cat $(echo "$CHANGED_FILES")`
