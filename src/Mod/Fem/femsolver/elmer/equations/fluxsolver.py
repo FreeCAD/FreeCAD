@@ -21,96 +21,54 @@
 # ***************************************************************************
 
 
-__title__ = "_Base"
+__title__ = "Fluxsolver"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD
-if FreeCAD.GuiUp:
-    from pivy import coin
+import FemUtils
+from ... import equationbase
+from . import linear
 
 
-class BaseProxy(object):
+def create(doc, name="Fluxsolver"):
+    return FemUtils.createObject(
+        doc, name, Proxy, ViewProxy)
 
-    BaseType = "App::FeaturePython"
+
+class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
+
+    Type = "Fem::FemEquationElmerFluxsolver"
 
     def __init__(self, obj):
-        obj.Proxy = self
+        super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyLinkSubList", "References",
-            "Base", "")
+            "App::PropertyBool", "CalculateFlux",
+            "Fluxsolver", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyString", "FluxVariable",
+            "Fluxsolver", "Insert variable name for flux calculation")
+        #obj.addProperty(
+            #"App::PropertyBool", "CalculateFluxAbs",
+            #"Fluxsolver", "Select calculation of abs of flux")
+        #obj.addProperty(
+            #"App::PropertyBool", "CalculateFluxMagnitude",
+            #"Fluxsolver", "Select calculation of magnitude of flux")
+        obj.addProperty(
+            "App::PropertyBool", "CalculateGrad",
+            "Fluxsolver", "Select  calculation of gradient")
+        #obj.addProperty(
+            #"App::PropertyBool", "CalculateGradAbs",
+            #"Fluxsolver", "Select calculation of abs of gradient")
+        #obj.addProperty(
+            #"App::PropertyBool", "CalculateGradMagnitude",
+            #"Fluxsolver", "Select calculation of magnitude of gradient")
+        #obj.addProperty(
+            #"App::PropertyBool", "EnforcePositiveMagnitude",
+            #"Fluxsolver", "Select calculation of positive magnitude")
 
-    def execute(self, obj):
-        return True
+        obj.Priority = 5
 
 
-class BaseViewProxy(object):
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode
-
-
-class HeatProxy(BaseProxy):
+class ViewProxy(linear.ViewProxy, equationbase.FluxsolverViewProxy):
     pass
-
-
-class HeatViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-heat.svg"
-
-
-class ElasticityProxy(BaseProxy):
-    pass
-
-
-class ElasticityViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-elasticity.svg"
-
-
-class ElectrostaticViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-electrostatic.svg"
-
-
-class ElectrostaticProxy(BaseProxy):
-    pass
-
-
-class FluxsolverViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-fluxsolver.svg"
-
-
-class FluxsolverProxy(BaseProxy):
-    pass
-
-
-class FlowProxy(BaseProxy):
-    pass
-
-
-class FlowViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/fem-equation-flow.svg"
