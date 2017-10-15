@@ -22,6 +22,7 @@
         <file>icons/fem-constraint-gear.svg</file>
         <file>icons/fem-constraint-heatflux.svg</file>
         <file>icons/fem-constraint-initial-flow-velocity.svg</file>
+        <file>icons/fem-constraint-electrostatic-potential.svg</file>
         <file>icons/fem-constraint-InitialTemperature.svg</file>
         <file>icons/fem-constraint-planerotation.svg</file>
         <file>icons/fem-constraint-pressure.svg</file>
@@ -36,6 +37,7 @@
         <file>icons/fem-data.svg</file>
         <file>icons/fem-elmer.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
+        <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
         <file>icons/fem-equation-flow.svg</file>
         <file>icons/fem-equation-heat.svg</file>
