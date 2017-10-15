@@ -168,6 +168,17 @@ def makeConstraintTransform(doc, name="ConstraintTransform"):
     return obj
 
 
+def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
+    '''makeConstraintTransform(document, [name]): makes a Fem ConstraintTransform object'''
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintElectrostaticPotential
+    PyObjects._FemConstraintElectrostaticPotential.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintElectrostaticPotential
+        PyGui._ViewProviderFemConstraintElectrostaticPotential.ViewProxy(obj.ViewObject)
+    return obj
+
+
 ########## element definition objects ##########
 def makeElementFluid1D(doc, name="ElementFluid1D"):
     '''makeElementFluid1D(document, [name]): creates an 1D fluid element object to define 1D flow'''
