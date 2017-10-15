@@ -2458,11 +2458,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
             
-            // This is a rather approximated approach. No it does not guarantie that the whole curve is boxed, specially
+            // This is a rather approximated approach. No it does not guarantee that the whole curve is boxed, specially
             // for periodic curves, but it works reasonably well. Including all poles, which could be done, generally
             // forces the user to select much more than the curve (all the poles) and it would not select the curve in cases
             // where it is indeed comprised in the box.
-            // The implementation of the touch mode is also far from a desireable "touch" as it only recognizes touched points not the curve itself
+            // The implementation of the touch mode is also far from a desirable "touch" as it only recognizes touched points not the curve itself
             if (pnt1Inside && pnt2Inside || (touchMode && (pnt1Inside || pnt2Inside))) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
@@ -2536,7 +2536,7 @@ void ViewProviderSketch::updateColor(void)
     
     for (int  i=0; i < CurvNum; i++) {
         int GeoId = edit->CurvIdToGeoId[i];
-        // CurvId has several vertex a ssociated to 1 material
+        // CurvId has several vertices associated to 1 material
         //edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
         int indexes = (edit->CurveSet->numVertices[i]);
 
