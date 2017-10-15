@@ -289,7 +289,6 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
 QString QuantitySpinBox::boundToName() const
 {
-    Q_D(const QuantitySpinBox);
     if (isBound()) {
         std::string path = getPath().toString();
         return QString::fromStdString(path);
@@ -305,7 +304,6 @@ QString QuantitySpinBox::boundToName() const
  */
 void QuantitySpinBox::setBoundToByName(const QString &name)
 {
-    Q_D(QuantitySpinBox);
     try {
         // get document
         App::Document *doc = App::GetApplication().getActiveDocument();
@@ -350,7 +348,6 @@ void QuantitySpinBox::setBoundToByName(const QString &name)
 
 QString Gui::QuantitySpinBox::expressionText() const
 {
-    Q_D(const QuantitySpinBox);
     try {
         if (hasExpression()) {
             return QString::fromStdString(getExpressionString());
