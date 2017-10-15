@@ -1145,7 +1145,7 @@ PAPER_TYPE             = a4wide
 # The EXTRA_PACKAGES tag can be to specify one or more names of LaTeX
 # packages that should be included in the LaTeX output.
 
-EXTRA_PACKAGES         =
+EXTRA_PACKAGES         = amsmath
 
 # The LATEX_HEADER tag can be used to specify a personal LaTeX header for
 # the generated latex document. The header should contain everything until
