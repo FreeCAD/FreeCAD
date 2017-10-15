@@ -96,7 +96,8 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
-    DrawViewPart::execute();
+    App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
+    delete ret;
 
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
