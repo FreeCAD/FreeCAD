@@ -1315,6 +1315,8 @@ void Document::Save (Base::Writer &writer) const
 void Document::Restore(Base::XMLReader &reader)
 {
     int i,Cnt;
+    Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
+
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -2417,7 +2419,10 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     // insert in the adjacence list and referenc through the ConectionMap
     //_DepConMap[pcObject] = add_vertex(_DepList);
 
-    pcObject->Label.setValue( ObjectName );
+    // If we are restoring, don't set the Label object now; it will be restored later. This is to avoid potential duplicate
+    // label conflicts later.
+    if (!d->StatusBits.test(Restoring))
+        pcObject->Label.setValue( ObjectName );
 
     // Call the object-specific initialization
     if (!d->undoing && !d->rollback && isNew) {
