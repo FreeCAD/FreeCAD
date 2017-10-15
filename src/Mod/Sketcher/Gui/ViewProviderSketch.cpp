@@ -2463,7 +2463,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // forces the user to select much more than the curve (all the poles) and it would not select the curve in cases
             // where it is indeed comprised in the box.
             // The implementation of the touch mode is also far from a desirable "touch" as it only recognizes touched points not the curve itself
-            if (pnt1Inside && pnt2Inside || (touchMode && (pnt1Inside || pnt2Inside))) {
+            if ((pnt1Inside && pnt2Inside) || (touchMode && (pnt1Inside || pnt2Inside))) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());

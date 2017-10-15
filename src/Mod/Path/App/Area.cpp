@@ -22,6 +22,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cfloat>
 #endif
 
 #include <boost/version.hpp>
@@ -2804,9 +2805,8 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     double max_dist = sort_mode==SortModeGreedy?threshold*threshold:0;
     while(shape_list.size()) {
         AREA_TRACE("sorting " << shape_list.size() << ' ' << AREA_XYZ(pstart));
-        double best_d;
+        double best_d = DBL_MAX;
         auto best_it = shape_list.begin();
-        bool first = true;
         for(auto it=best_it;it!=shape_list.end();++it) {
             double d;
             gp_Pnt pt;
@@ -2814,8 +2814,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                 d = it->myPln.SquareDistance(pstart);
             else
                 d = it->nearest(pstart);
-            if(first || d<best_d) {
-                first = false;
+            if(d < best_d) {
                 best_it = it;
                 best_d = d;
             }

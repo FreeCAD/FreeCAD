@@ -50,7 +50,7 @@ namespace TechDraw
  */
 class TechDrawExport DrawViewMulti : public DrawViewPart
 {
-    PROPERTY_HEADER(Part::DrawViewMulti);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewMulti);
 
 public:
     /// Constructor
