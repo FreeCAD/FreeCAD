@@ -467,6 +467,12 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
         else {
             Base::Console().Warning("Gui::Document::slotNewObject() no view provider for the object %s found\n",cName.c_str());
         }
+    }else{
+        try {
+            pcProvider->reattach(const_cast<App::DocumentObject*>(&Obj));
+        } catch(Base::Exception &e){
+            e.ReportException();
+        }
     }
 
     if (pcProvider) {

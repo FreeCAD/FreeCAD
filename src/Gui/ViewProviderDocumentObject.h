@@ -63,6 +63,7 @@ public:
     App::PropertyBool ShowInTree;
 
     virtual void attach(App::DocumentObject *pcObject);
+    virtual void reattach(App::DocumentObject *) {}
     virtual void update(const App::Property*) override;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
