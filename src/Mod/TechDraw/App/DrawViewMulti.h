@@ -59,18 +59,18 @@ public:
 
     App::PropertyLinkListGlobal Sources;
 
-    virtual short mustExecute() const;
+    virtual short mustExecute() const override;
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     //@}
 
     virtual TopoDS_Shape getSourceShape(void) const override; 
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
 
