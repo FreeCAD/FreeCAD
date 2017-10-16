@@ -915,15 +915,19 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     // set camera settings
     QString viewPos;
-    if (d->_pcAppWnd->sendHasMsgToActiveView("GetCamera")) {
-        const char* ppReturn=0;
-        d->_pcAppWnd->sendMsgToActiveView("GetCamera",&ppReturn);
-  
-        // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-        QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
-        if (lines.size() > 1) {
-            lines.pop_front();
-            viewPos = lines.join(QLatin1String(" "));
+    std::list<MDIView*> mdi = getMDIViews();
+    for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+        if ((*it)->onHasMsg("GetCamera")) {
+            const char* ppReturn=0;
+            (*it)->onMsg("GetCamera",&ppReturn);
+
+            // remove the first line because it's a comment like '#Inventor V2.1 ascii'
+            QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
+            if (lines.size() > 1) {
+                lines.pop_front();
+                viewPos = lines.join(QLatin1String(" "));
+                break;
+            }
         }
     }
 
