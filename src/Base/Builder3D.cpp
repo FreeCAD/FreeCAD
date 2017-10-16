@@ -385,11 +385,13 @@ void InventorBuilder::addBaseColor(float color_r,float color_g,float color_b)
     result << Base::blanks(indent) << "} " << std::endl;
 }
 
-void InventorBuilder::addMaterial(float color_r,float color_g,float color_b)
+void InventorBuilder::addMaterial(float color_r,float color_g,float color_b,float color_a)
 {
     result << Base::blanks(indent) << "Material { " << std::endl;
     result << Base::blanks(indent) << "  diffuseColor "
            << color_r << " "<< color_g << " "<< color_b << std::endl;
+    if (color_a > 0)
+        result << Base::blanks(indent) << "  transparency " << color_a << std::endl;
     result << Base::blanks(indent) << "} " << std::endl;
 }
 
@@ -674,6 +676,29 @@ void InventorBuilder::addIndexedFaceSet(const std::vector<int>& indices)
     std::vector<int>::const_iterator it_last_f = indices.end()-1;
     int index=0;
     for (std::vector<int>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+        if (index % 8 == 0)
+            result << Base::blanks(indent);
+        if (it != it_last_f)
+            result << *it << ", ";
+        else
+            result << *it << " ] " << std::endl;
+        if (++index % 8 == 0)
+            result << std::endl;
+    }
+    indent -= 4;
+
+    result << Base::blanks(indent) << "} " << std::endl;
+}
+
+void InventorBuilder::addFaceSet(const std::vector<int>& vertices)
+{
+    result << Base::blanks(indent) << "FaceSet { " << std::endl
+           << Base::blanks(indent) << "  numVertices [ " << std::endl;
+
+    indent += 4;
+    std::vector<int>::const_iterator it_last_f = vertices.end()-1;
+    int index=0;
+    for (std::vector<int>::const_iterator it = vertices.begin(); it != vertices.end(); ++it) {
         if (index % 8 == 0)
             result << Base::blanks(indent);
         if (it != it_last_f)
