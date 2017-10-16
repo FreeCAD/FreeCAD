@@ -306,7 +306,8 @@ App.Units.Acceleration  = App.Units.Unit(1,0,-2)
 App.Units.Temperature   = App.Units.Unit(0,0,0,0,1) 
 
 App.Units.ElectricCurrent   = App.Units.Unit(0,0,0,1) 
-App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1) 
+App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
+App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminoseIntensity = App.Units.Unit(0,0,0,0,0,0,1) 
 
 App.Units.Stress        = App.Units.Unit(-1,1,-2) 
