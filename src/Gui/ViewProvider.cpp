@@ -107,11 +107,13 @@ ViewProvider::~ViewProvider()
         pcAnnotation->unref();
 }
 
-bool ViewProvider::startEditing(int ModNum)
+ViewProvider *ViewProvider::startEditing(int ModNum)
 {
-    bool ok = setEdit(ModNum);
-    if (ok) _iEditMode = ModNum;
-    return ok;
+    if(setEdit(ModNum)) {
+        _iEditMode = ModNum;
+        return this;
+    }
+    return 0;
 }
 
 int ViewProvider::getEditingMode() const
@@ -267,7 +269,7 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
     pcTransform->setMatrix(rcMatrix);
 }
 
-SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix) const
+SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
     double dMtrx[16];
     rcMatrix.getGLMatrix(dMtrx);
@@ -275,6 +277,15 @@ SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix) const
                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+}
+
+Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
+{
+    Base::Matrix4D mat;
+    for(int i=0;i<4;++i)
+        for(int j=0;j<4;++j)
+            mat[i][j] = smat[j][i];
+    return mat;
 }
 
 void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
@@ -503,78 +514,14 @@ bool ViewProvider::checkRecursion(SoNode* node)
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const
 {
-    //first get the path to this node and calculate the current transformation
-    SoSearchAction sa;
-    sa.setNode(pcRoot);
-    sa.setSearchingAll(true);
-    sa.apply(viewer->getSoRenderManager()->getSceneGraph());
-    if (!sa.getPath())
-        return nullptr;
-    SoGetMatrixAction gm(viewer->getSoRenderManager()->getViewportRegion());
-    gm.apply(sa.getPath());
-
-    SoTransform* trans = new SoTransform;
-    trans->setMatrix(gm.getMatrix());
-    trans->ref();
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
-    // transformation
-    SoSeparator* root = new SoSeparator;
-    root->ref();
-    root->addChild(viewer->getSoRenderManager()->getCamera());
-    root->addChild(trans);
-    root->addChild(pcRoot);
-
-    //get the picked point
-    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
-    rp.setPoint(pos);
-    rp.setRadius(viewer->getPickRadius());
-    rp.apply(root);
-    root->unref();
-    trans->unref();
-
-    SoPickedPoint* pick = rp.getPickedPoint();
-    return (pick ? new SoPickedPoint(*pick) : 0);
+    return viewer->getPointOnRay(pos,const_cast<ViewProvider*>(this));
 }
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer* viewer) const
 {
-    // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
-    // to fail to get intersections between the ray and a line
-    
-    //first get the path to this node and calculate the current setTransformation
-    SoSearchAction sa;
-    sa.setNode(pcRoot);
-    sa.setSearchingAll(true);
-    sa.apply(viewer->getSoRenderManager()->getSceneGraph());
-    SoGetMatrixAction gm(viewer->getSoRenderManager()->getViewportRegion());
-    gm.apply(sa.getPath());
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
-    // transformation
-    SoTransform* trans = new SoTransform;
-    trans->ref();
-    trans->setMatrix(gm.getMatrix());
-    
-    SoSeparator* root = new SoSeparator;
-    root->ref();
-    root->addChild(viewer->getSoRenderManager()->getCamera());
-    root->addChild(trans);
-    root->addChild(pcRoot);
-    
-    //get the picked point
-    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
-    rp.setRay(pos,dir);
-    rp.setRadius(viewer->getPickRadius());
-    rp.apply(root);
-    root->unref();
-    trans->unref();
-
-    // returns a copy of the point
-    SoPickedPoint* pick = rp.getPickedPoint();
-    //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
-    return (pick ? new SoPickedPoint(*pick) : 0);
+    return viewer->getPointOnRay(pos,dir,const_cast<ViewProvider*>(this));
 }
+
 
 std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp) const
 {

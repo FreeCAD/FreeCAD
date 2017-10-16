@@ -49,6 +49,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "Application.h"
 #include "MainWindow.h"
@@ -81,7 +82,11 @@ struct DocumentP
     int        _iDocId;
     bool       _isClosing;
     bool       _isModified;
-    ViewProvider*   _editViewProvider;
+    int                         _editMode;
+    ViewProvider*               _editViewProvider;
+    ViewProviderDocumentObject* _editViewProviderParent;
+    std::string                 _editSubname;
+    Base::Matrix4D              _editingTransform;
     Application*    _pcAppWnd;
     // the doc/Document
     App::Document*  _pcDocument;
@@ -136,6 +141,8 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = 0;
+    d->_editViewProviderParent = 0;
+    d->_editMode = 0;
 
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
@@ -237,40 +244,144 @@ Document::~Document()
 // 3D viewer handling
 //*****************************************************************************************************
 
-bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
+bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
 {
-    if (d->_editViewProvider)
-        resetEdit();
-
-    // is it really a ViewProvider of this document?
     ViewProviderDocumentObject* vp = dynamic_cast<ViewProviderDocumentObject*>(p);
-    if (!vp)
+    if (!vp) {
+        FC_ERR("cannot edit non ViewProviderDocumentObject");
         return false;
+    }
+    auto obj = vp->getObject();
+    if(!obj->getNameInDocument()) {
+        FC_ERR("cannot edit detached object");
+        return false;
+    }
 
-    if (d->_ViewProviderMap.find(vp->getObject()) == d->_ViewProviderMap.end())
+    std::string _subname;
+    if(!subname) {
+        // No subname reference is given, we try to extract one from the current
+        // selection in order to obtain the correct transformation matrix below
+        auto sels = Gui::Selection().getCompleteSelection(false);
+        App::DocumentObject *parentObj = 0;
+        for(auto &sel : sels) {
+            if(!sel.pObject || !sel.pObject->getNameInDocument())
+                continue;
+            if(!parentObj)
+                parentObj = sel.pObject;
+            else if(parentObj!=sel.pObject) {
+                FC_LOG("Cannot deduce subname for editing, more than one parent?");
+                parentObj = 0;
+                break;
+            }
+            auto sobj = parentObj->getSubObject(sel.SubName);
+            if(!sobj || (sobj!=obj && sobj->getLinkedObject(true)!= obj)) {
+                FC_LOG("Cannot deduce subname for editing, subname mismatch");
+                parentObj = 0;
+                break;
+            }
+            _subname = sel.SubName;
+        }
+        if(parentObj) {
+            FC_LOG("deduced editing reference " << parentObj->getNameInDocument() << '.' << _subname);
+            subname = _subname.c_str();
+            obj = parentObj;
+            vp = dynamic_cast<ViewProviderDocumentObject*>(
+                    Application::Instance->getViewProvider(obj));
+            if(!vp || !vp->getDocument()) {
+                FC_ERR("invliad view provider for parent object");
+                return false;
+            }
+            if(vp->getDocument()!=this)
+                return vp->getDocument()->setEdit(vp,ModNum,subname);
+        }
+    }
+
+    if (d->_ViewProviderMap.find(obj) == d->_ViewProviderMap.end()) {
+        // We can actuall support editing external object, by calling
+        // View3DInventViewer::setupEditingRoot() before exiting from
+        // ViewProvider::setEditViewer(), which transfer all child node of the view
+        // provider into an editing node inside the viewer of this document. And
+        // that's may actually be the case, as the subname referenced sub object
+        // is allowed to be in other documents. 
+        //
+        // We just disabling editing external parent object here, for bug
+        // tracking purpose. Because, bringing an unrelated external object to
+        // the current view for editing will confuse user, and is certainly a
+        // bug. By right, the top parent object should always belong to the
+        // editing document, and the acutally editing sub object can be
+        // external.
+        //
+        // So, you can either call setEdit() with subname set to 0, which cause
+        // the code above to auto detect selection context, and dispatch the
+        // editing call to the correct document. Or, supply subname yourself,
+        // and make sure you get the document right.
+        //
+        FC_ERR("cannot edit object '" << obj->getNameInDocument() << "': not found in document "
+                << "'" << getDocument()->getName() << "'");
         return false;
+    }
+
+    auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+    if(group) {
+        auto ext = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+        d->_editingTransform = ext->globalGroupPlacement().toMatrix();
+    }else
+        d->_editingTransform = Base::Matrix4D();
+    auto sobj = obj->getSubObject(subname,0,&d->_editingTransform);
+    if(!sobj || !sobj->getNameInDocument()) {
+        FC_ERR("Invalid sub object '" << obj->getNameInDocument() 
+                << '.' << (subname?subname:"") << "'");
+        return false;
+    }
+    auto svp = vp;
+    if(sobj!=obj) {
+        svp = dynamic_cast<ViewProviderDocumentObject*>(
+                Application::Instance->getViewProvider(sobj));
+        if(!svp) {
+            FC_ERR("Cannot edit '" << sobj->getNameInDocument() << "' without view provider");
+            return false;
+        }
+    }
 
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     // if the currently active view is not the 3d view search for it and activate it
     if (!activeView) {
         activeView = dynamic_cast<View3DInventor *>(getViewOfViewProvider(p));
-        if (activeView)
-            getMainWindow()->setActiveWindow(activeView);
+        if(!activeView){
+            FC_ERR("cannot edit without active view");
+            return false;
+        }
     }
+    getMainWindow()->setActiveWindow(activeView);
+    Application::Instance->setEditDocument(this);
 
-    if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
-        d->_editViewProvider = p;
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        if (dlg)
-            dlg->setDocumentName(this->getDocument()->getName());
-        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
-    }
-    else {
+    d->_editViewProviderParent = vp;
+    if(subname)
+        d->_editSubname = subname;
+    else
+        d->_editSubname.clear();
+
+    d->_editMode = ModNum;
+    d->_editViewProvider = svp->startEditing(ModNum);
+    if(!d->_editViewProvider) {
+        FC_LOG("object '" << sobj->getNameInDocument() << "' refuse to edit");
         return false;
     }
-
+    activeView->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (dlg)
+        dlg->setDocumentName(this->getDocument()->getName());
+    if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+        signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
     return true;
+}
+
+Base::Matrix4D Document::getEditingTransform() const {
+    return d->_editingTransform;
+}
+
+void Document::setEditingTransform(const Base::Matrix4D &mat) {
+    d->_editingTransform = mat;
 }
 
 void Document::resetEdit(void)
@@ -288,18 +399,32 @@ void Document::resetEdit(void)
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
         d->_editViewProvider = 0;
     }
+    if(Application::Instance->editDocument() == this)
+        Application::Instance->setEditDocument(0);
 }
 
-ViewProvider *Document::getInEdit(void) const
+ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp, 
+        std::string *subname, int *mode) const
 {
     if (d->_editViewProvider) {
         // there is only one 3d view which is in edit mode
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
-        if (activeView && activeView->getViewer()->isEditingViewProvider())
+        if (activeView && activeView->getViewer()->isEditingViewProvider()) {
+            if(parentVp) *parentVp = d->_editViewProviderParent;
+            if(subname) *subname = d->_editSubname;
+            if(mode) *mode = d->_editMode;
             return d->_editViewProvider;
+        }
     }
 
     return 0;
+}
+
+void Document::setInEdit(ViewProviderDocumentObject *parentVp, const char *subname) {
+    if (d->_editViewProvider) {
+        d->_editViewProviderParent = parentVp;
+        d->_editSubname = subname?subname:"";
+    }
 }
 
 void Document::setAnnotationViewProvider(const char* name, ViewProvider *pcProvider)

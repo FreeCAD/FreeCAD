@@ -141,6 +141,7 @@ struct ApplicationP
 {
     ApplicationP() : 
     activeDocument(0L), 
+    editDocument(0L),
     isClosing(false), 
     startingUp(true)
     {
@@ -157,6 +158,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document*   activeDocument;
+    Gui::Document*  editDocument;
     MacroManager*  macroMngr;
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
@@ -703,6 +705,9 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
 
+    if (d->editDocument == doc->second)
+        setEditDocument(0);
+
     doc->second->beforeDelete();
 
     // For exception-safety use a smart pointer
@@ -819,6 +824,26 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 Gui::Document* Application::activeDocument(void) const
 {
     return d->activeDocument;
+}
+
+Gui::Document* Application::editDocument(void) const
+{
+    return d->editDocument;
+}
+
+Gui::MDIView* Application::editViewOfNode(SoNode *node) const
+{
+    return d->editDocument?d->editDocument->getViewOfNode(node):0;
+}
+
+void Application::setEditDocument(Gui::Document *doc) {
+    if(!doc) {
+        d->editDocument = 0;
+        return;
+    }
+    for(auto &v : d->documents)
+        v.second->resetEdit();
+    d->editDocument = doc;
 }
 
 void Application::setActiveDocument(Gui::Document* pcDocument)

@@ -31,7 +31,7 @@
     <Methode Name="setEdit">
       <Documentation>
         <UserDocu>
-          setEdit([String:Name|ViewProvider|DocumentObject]|,mod)
+          setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None)
           Set the given object in edit mode.
         </UserDocu>
       </Documentation>
@@ -113,6 +113,24 @@
 	  </Documentation>
 	  <Parameter Name="ActiveView" Type="Object" />
 	</Attribute>
+	<Attribute Name="EditingTransform">
+	  <Documentation>
+		  <UserDocu>The editing transformation matrix</UserDocu>
+	  </Documentation>
+	  <Parameter Name="EditingTransform" Type="Object" />
+	</Attribute>
+    <Attribute Name="InEdit">
+      <Documentation>
+        <UserDocu>A tuple(obj,subname) of editing object reference, or None if no object is in edit</UserDocu>
+      </Documentation>
+	  <Parameter Name="InEdit" Type="Object" />
+    </Attribute>
+    <Attribute Name="EditMode" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Current edit mode. Only meaningful when there is a current object in edit</UserDocu>
+      </Documentation>
+	  <Parameter Name="EditMode" Type="Int" />
+    </Attribute>
 	<Attribute Name="Document" ReadOnly="true">
 	  <Documentation>
 		  <UserDocu>The related App document to this Gui document</UserDocu>

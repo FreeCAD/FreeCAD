@@ -100,6 +100,7 @@ public:
     virtual SoSeparator* getRoot(void){return pcRoot;}
     // return the mode switch node of the Provider (3D)
     SoSwitch *getModeSwitch(void){return pcModeSwitch;}
+    SoTransform *getTransformNode(){return pcTransform;}
     // returns the root for the Annotations. 
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
@@ -317,7 +318,7 @@ protected:
     int getEditingMode() const;
 
 public:
-    bool startEditing(int ModNum = 0);
+    virtual ViewProvider *startEditing(int ModNum=0);
     bool isEditing() const;
     void finishEditing();
     /// adjust viewer settings when editing a view provider
@@ -357,7 +358,8 @@ public:
     /// set the viewing transformation of the provider
     virtual void setTransformation(const Base::Matrix4D &rcMatrix);
     virtual void setTransformation(const SbMatrix &rcMatrix);
-    SbMatrix convert(const Base::Matrix4D &rcMatrix) const;
+    static SbMatrix convert(const Base::Matrix4D &rcMatrix);
+    static Base::Matrix4D convert(const SbMatrix &sbMat);
     //@}
 
 public:

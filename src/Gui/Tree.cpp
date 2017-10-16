@@ -70,7 +70,8 @@ const int TreeWidget::ObjectType = 1001;
 
 /* TRANSLATOR Gui::TreeWidget */
 TreeWidget::TreeWidget(QWidget* parent)
-    : QTreeWidget(parent), SelectionObserver(false), contextItem(0), currentDocItem(0),fromOutside(false)
+    : QTreeWidget(parent), SelectionObserver(false), contextItem(0)
+    , editingItem(0), currentDocItem(0),fromOutside(false)
 {
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
@@ -239,8 +240,10 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
     QAction* topact = 0;
     auto actions = contextMenu.actions();
-    if(actions.size())
+    if(actions.size()) {
+        contextMenu.addSeparator();
         topact = actions.front();
+    }
     contextMenu.insertAction(topact,this->syncSelectionAction);
     contextMenu.insertAction(topact,this->syncViewAction);
     contextMenu.insertSeparator(topact);
@@ -493,9 +496,11 @@ void TreeWidget::onStartEditing()
             DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
                 (this->contextItem);
             int edit = action->data().toInt();
+
             App::DocumentObject* obj = objitem->object()->getObject();
-            if (!obj) return;
-            Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
+            if (!obj || !obj->getNameInDocument()) 
+                return;
+            auto doc = const_cast<Document*>(objitem->getParentDocument()->document());
             MDIView *view = doc->getActiveView();
             if (view) getMainWindow()->setActiveWindow(view);
 
@@ -511,7 +516,9 @@ void TreeWidget::onStartEditing()
             bool ok = doc->setEdit(objitem->object(), edit);
             if (!ok) doc->abortCommand();
 #else
-            doc->setEdit(objitem->object(), edit);
+            editingItem = objitem;
+            if(!doc->setEdit(objitem->object(), edit))
+                editingItem = 0;
 #endif
         }
     }
@@ -1782,16 +1789,28 @@ TreeWidget *DocumentItem::getTree() {
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
-    FOREACH_ITEM(item,v)
-        item->setBackgroundColor(0,Qt::yellow);
-    END_FOREACH_ITEM
+    if(getTree()->editingItem)
+        getTree()->editingItem->setBackgroundColor(0,Qt::yellow);
+    else{
+        FOREACH_ITEM(item,v)
+            item->setBackgroundColor(0,Qt::yellow);
+        END_FOREACH_ITEM
+    }
 }
 
 void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 {
-    FOREACH_ITEM(item,v)
-        item->setData(0, Qt::BackgroundColorRole,QVariant());
+    auto tree = getTree();
+    FOREACH_ITEM_ALL(item)
+        if(tree->editingItem) {
+            if(item == tree->editingItem) {
+                item->setData(0, Qt::BackgroundColorRole,QVariant());
+                break;
+            }
+        }else if(item->object() == &v)
+            item->setData(0, Qt::BackgroundColorRole,QVariant());
     END_FOREACH_ITEM
+    tree->editingItem = 0;
 }
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
@@ -2247,8 +2266,9 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     item->selected = selected;
 
     std::ostringstream str;
-    auto obj = item->getSubName(str);
-    if(!obj) return;
+    auto vobj = item->getSubName(str);
+    if(!vobj) return;
+    auto obj = vobj->getObject();
     const char *objname = obj->getNameInDocument();
     if(!objname) return;
     const char *docname = obj->getDocument()->getName();
@@ -2826,7 +2846,7 @@ const char *DocumentObjectItem::getName() const {
     return name?name:"";
 }
 
-App::DocumentObject *DocumentObjectItem::getSubName(std::ostringstream &str) const 
+ViewProviderDocumentObject *DocumentObjectItem::getSubName(std::ostringstream &str) const 
 {
     const char *name = object()->getObject()->getNameInDocument();
     if(!name) return 0;
@@ -2834,16 +2854,16 @@ App::DocumentObject *DocumentObjectItem::getSubName(std::ostringstream &str) con
 
     int group;
     if(!parent || !(group=parent->isGroup())) 
-        return object()->getObject();
+        return object();
 
-    auto obj = parent->getSubName(str);
-    if(!obj) return 0;
+    auto vobj = parent->getSubName(str);
+    if(!vobj) return 0;
 
     if(str.tellp()>0 || group==1)
         str << name << '.';
     else 
-        obj = object()->getObject();
-    return obj;
+        vobj = object();
+    return vobj;
 }
 
 App::DocumentObject *DocumentObjectItem::getFullSubName(

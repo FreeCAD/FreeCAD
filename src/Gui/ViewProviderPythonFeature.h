@@ -59,6 +59,8 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     ValueT setEdit(int ModNum);
     ValueT unsetEdit(int ModNum);
+    bool setEditViewer(View3DInventorViewer*, int ModNum);
+    bool unsetEditViewer(View3DInventorViewer*);
     ValueT doubleClicked(void);
     void setupContextMenu(QMenu* menu);
 
@@ -485,6 +487,14 @@ protected:
         default:
             return ViewProviderT::unsetEdit(ModNum);
         }
+    }
+    virtual void setEditViewer(View3DInventorViewer *viewer, int ModNum) {
+        if(!imp->setEditViewer(viewer,ModNum))
+            ViewProviderT::setEditViewer(viewer,ModNum);
+    }
+    virtual void unsetEditViewer(View3DInventorViewer *viewer) {
+        if(!imp->unsetEditViewer(viewer))
+            ViewProviderT::unsetEditViewer(viewer);
     }
 
 public:

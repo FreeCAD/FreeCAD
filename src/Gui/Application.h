@@ -33,6 +33,7 @@
 #include <App/Application.h>
 
 class QCloseEvent;
+class SoNode;
 
 namespace Gui{
 class BaseView;
@@ -142,6 +143,11 @@ public:
     Gui::Document* activeDocument(void) const;
     /// Set the active document
     void setActiveDocument(Gui::Document* pcDocument);
+    /// Getter for the editing document
+    Gui::Document* editDocument(void) const;
+    Gui::MDIView* editViewOfNode(SoNode *node) const;
+    /// Set editing document, which will reset editing of all other document
+    void setEditDocument(Gui::Document* pcDocument);
     /** Retrieves a pointer to the Gui::Document whose App::Document has the name \a name.
     * If no such document exists 0 is returned.
     */
@@ -237,6 +243,7 @@ public:
     PYFUNCDEF_S(sSetActiveDocument);
     PYFUNCDEF_S(sActiveView);
     PYFUNCDEF_S(sGetDocument);
+    PYFUNCDEF_S(sEditDocument);
 
     PYFUNCDEF_S(sDoCommand);
     PYFUNCDEF_S(sDoCommandGui);

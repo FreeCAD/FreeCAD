@@ -169,6 +169,7 @@ private:
     QAction* showHiddenAction;
     QAction* hideInTreeAction;
     QTreeWidgetItem* contextItem;
+    DocumentObjectItem *editingItem;
     DocumentItem *currentDocItem;
     QTreeWidgetItem* rootItem;
     QTimer* statusTimer;
@@ -300,7 +301,7 @@ public:
     // is necssary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
-    App::DocumentObject *getSubName(std::ostringstream &str) const;
+    ViewProviderDocumentObject *getSubName(std::ostringstream &str) const;
 
     const char *getName() const;
 

@@ -41,6 +41,7 @@
 #include <App/DocumentObjectPy.h>
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderPy.h"
 
 
@@ -102,16 +103,17 @@ PyObject* DocumentPy::setEdit(PyObject *args)
 {
     char *psFeatStr;
     int mod = 0;
+    char *subname = 0;
 
     // by name
-    if (PyArg_ParseTuple(args, "s|i;Name of the object to edit has to be given!", &psFeatStr,&mod)) {
+    if (PyArg_ParseTuple(args, "s|is;Name of the object to edit has to be given!", &psFeatStr,&mod,&subname)) {
         App::DocumentObject * obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
         if (!obj) {
             PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
             return 0;
         }
 
-        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
+        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod,subname);
         return PyBool_FromLong(ok ? 1 : 0);
     }
 
@@ -120,7 +122,7 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     PyObject *docObj;
     if (PyArg_ParseTuple(args, "O!|i", &(App::DocumentObjectPy::Type), &docObj,&mod)) {
         App::DocumentObject * obj = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
+        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod,subname);
         return PyBool_FromLong(ok ? 1 : 0);
     }
 
@@ -128,7 +130,7 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!|i", &(Gui::ViewProviderPy::Type), &docObj,&mod)) {
         Gui::ViewProvider * view = static_cast<Gui::ViewProviderPy*>(docObj)->getViewProviderPtr();
-        bool ok = getDocumentPtr()->setEdit(view,mod);
+        bool ok = getDocumentPtr()->setEdit(view,mod,subname);
         return PyBool_FromLong(ok ? 1 : 0);
     }
 
@@ -362,6 +364,43 @@ Py::Object DocumentPy::getDocument(void) const
     } else {
         return Py::None();
     }
+}
+
+Py::Object DocumentPy::getEditingTransform(void) const {
+    return Py::Object(new Base::MatrixPy(new Base::Matrix4D(
+                    getDocumentPtr()->getEditingTransform())));
+}
+
+void DocumentPy::setEditingTransform(Py::Object arg) {
+    if(!PyObject_TypeCheck(arg.ptr(),&Base::MatrixPy::Type))
+        throw Py::TypeError("Expecting type of matrix");
+    getDocumentPtr()->setEditingTransform(
+            *static_cast<Base::MatrixPy*>(arg.ptr())->getMatrixPtr());
+}
+
+Py::Object DocumentPy::getInEdit(void) const {
+    ViewProviderDocumentObject *vp = 0;
+    std::string subname;
+    getDocumentPtr()->getInEdit(&vp,&subname); 
+    if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) 
+        return Py::None();
+    return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),Py::String(subname));
+}
+
+void DocumentPy::setInEdit(Py::Object arg) {
+    PyObject *pyobj = 0;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(arg.ptr(), "O!s", 
+                &Gui::ViewProviderDocumentObjectPy::Type, &pyobj,&subname))
+        throw Py::Exception();
+    getDocumentPtr()->setInEdit(static_cast<ViewProviderDocumentObjectPy*>(
+                pyobj)->getViewProviderDocumentObjectPtr(),subname);
+}
+
+Py::Int DocumentPy::getEditMode(void) const {
+    int mode = -1;
+    getDocumentPtr()->getInEdit(0,0,&mode);
+    return Py::Int(mode);
 }
 
 Py::Boolean DocumentPy::getModified(void) const

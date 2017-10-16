@@ -65,7 +65,8 @@ public:
     Py::Object getPickRadius(const Py::Tuple& args);
     Py::Object setPickRadius(const Py::Tuple& args);
 
-
+    Py::Object setupEditingRoot(const Py::Tuple &args);
+    Py::Object resetEditingRoot(const Py::Tuple &args);
 
 private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);

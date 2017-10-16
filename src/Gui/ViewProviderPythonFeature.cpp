@@ -58,6 +58,7 @@
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "WidgetFactory.h"
+#include "View3DInventorViewer.h"
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
@@ -566,6 +567,78 @@ ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
     }
 
     return NotImplemented;
+}
+
+bool ViewProviderPythonFeatureImp::setEditViewer(View3DInventorViewer *viewer, int ModNum)
+{
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *fname = "setEditViewer";
+            if (vp.hasAttr(fname)) {
+                if (vp.hasAttr("__object__")) {
+                    Py::Callable method(vp.getAttr(fname));
+                    Py::Tuple args(2);
+                    args.setItem(0, Py::Object(viewer->getPyObject(),true));
+                    args.setItem(1, Py::Int(ModNum));
+                    Py::Object ret(method.apply(args));
+                    return ret.isTrue();
+                }
+                else {
+                    Py::Callable method(vp.getAttr(fname));
+                    Py::Tuple args(3);
+                    args.setItem(0, Py::Object(object->getPyObject(),true));
+                    args.setItem(1, Py::Object(viewer->getPyObject(),true));
+                    args.setItem(2, Py::Int(ModNum));
+                    Py::Object ret(method.apply(args));
+                    return ret.isTrue();
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
+}
+
+bool ViewProviderPythonFeatureImp::unsetEditViewer(View3DInventorViewer *viewer)
+{
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *fname = "unsetEditViewer";
+            if (vp.hasAttr(fname)) {
+                if (vp.hasAttr("__object__")) {
+                    Py::Callable method(vp.getAttr(fname));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(viewer->getPyObject(),true));
+                    Py::Object ret(method.apply(args));
+                    return ret.isTrue();
+                }
+                else {
+                    Py::Callable method(vp.getAttr(fname));
+                    Py::Tuple args(2);
+                    args.setItem(0, Py::Object(object->getPyObject(),true));
+                    args.setItem(1, Py::Object(viewer->getPyObject(),true));
+                    Py::Object ret(method.apply(args));
+                    return ret.isTrue();
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
 }
 
 ViewProviderPythonFeatureImp::ValueT

@@ -220,11 +220,16 @@ public:
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     ViewProvider *getViewProviderByName(const char* name) const;
     /// set the ViewProvider in special edit mode
-    bool setEdit(Gui::ViewProvider* p, int ModNum=0);
+    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=0);
+    Base::Matrix4D getEditingTransform() const;
+    void setEditingTransform(const Base::Matrix4D &mat);
     /// reset from edit mode
     void resetEdit(void);
     /// get the in edit ViewProvider or NULL
-    ViewProvider *getInEdit(void) const;
+    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0, 
+            std::string *subname=0, int *mode=0) const;
+    /// set the in edit ViewProvider subname reference
+    void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
     /// make sure vp1 is root node is before vp2's in all 3D views
     //
     /// In case either view provider belongs to a geo group, then reorder using
