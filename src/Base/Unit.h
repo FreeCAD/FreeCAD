@@ -107,6 +107,7 @@ public:
     static Unit Temperature;
 
     static Unit ElectricCurrent;
+    static Unit ElectricPotential;
     static Unit AmountOfSubstance;
     static Unit LuminoseIntensity;
 
