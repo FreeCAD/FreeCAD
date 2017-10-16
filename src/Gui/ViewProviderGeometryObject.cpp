@@ -218,6 +218,7 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
     
     assert(!csysDragger);
     csysDragger = new SoFCCSysDragger();
+    csysDragger->ref();
     csysDragger->draggerSize.setValue(0.05f);
     csysDragger->translation.setValue(tempTransform->translation.getValue());
     csysDragger->rotation.setValue(tempTransform->rotation.getValue());
@@ -230,7 +231,8 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
     csysDragger->addStartCallback(dragStartCallback, this);
     csysDragger->addFinishCallback(dragFinishCallback, this);
     
-    pcRoot->insertChild(csysDragger, 0);
+    // dragger is now added to viewer editing root node
+    // pcRoot->insertChild(csysDragger, 0);
     
     TaskCSysDragger *task = new TaskCSysDragger(this, csysDragger);
     Gui::Control().showDialog(task);
@@ -248,7 +250,8 @@ void ViewProviderGeometryObject::unsetEdit(int ModNum)
     pcTransform->translation.disconnect(&csysDragger->translation);
     pcTransform->rotation.disconnect(&csysDragger->rotation);
     
-    pcRoot->removeChild(csysDragger); //should delete csysDragger
+    // pcRoot->removeChild(csysDragger); //should delete csysDragger
+    csysDragger->unref();
     csysDragger = nullptr;
   }
   Gui::Control().closeDialog();
@@ -264,6 +267,15 @@ void ViewProviderGeometryObject::setEditViewer(Gui::View3DInventorViewer* viewer
       rootPickStyle->style = SoPickStyle::UNPICKABLE;
       static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
       csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+      auto mat = viewer->getDocument()->getEditingTransform();
+      auto feat = dynamic_cast<App::GeoFeature *>(getObject());
+      if(feat) {
+          auto matInverse = feat->Placement.getValue().toMatrix();
+          matInverse.inverse();
+          mat *= matInverse;
+      }
+      viewer->setupEditingRoot(csysDragger,&mat);
     }
 }
 
