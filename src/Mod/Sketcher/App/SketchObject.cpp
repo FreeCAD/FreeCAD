@@ -2243,8 +2243,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                 Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2254,16 +2252,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = 2.0*M_PI - theta1;
+                theta2 = 2.0*M_PI - theta2;
+                std::swap(theta1, theta2);
+                if (theta1 < 0) {
+                    theta1 += 2.0*M_PI;
+                    theta2 += 2.0*M_PI;
+                }
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2506,8 +2508,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                 Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
                 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2517,18 +2517,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
                 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
-
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
