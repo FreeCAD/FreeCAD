@@ -32,22 +32,34 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/draggers/SoCenterballDragger.h>
+# include <Inventor/nodes/SoSurroundScale.h>
+# include <Inventor/nodes/SoCube.h>
 #endif
 #include <atomic>
 #include <QApplication>
 #include <QFileInfo>
+#include <QMenu>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind.hpp>
 #include <Base/Console.h>
+#include <Base/PlacementPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/BoundBoxPy.h>
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "Selection.h"
 #include "MainWindow.h"
 #include "ViewProviderLink.h"
+#include "ViewProviderLinkPy.h"
 #include "ViewProviderGeometryObject.h"
-#include <App/GroupExtension.h>
-#include <SoFCUnifiedSelection.h>
+#include "View3DInventor.h"
+#include "SoFCUnifiedSelection.h"
+#include "SoFCCSysDragger.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -276,20 +288,18 @@ public:
 
         auto childRoot = pcLinked->getChildRoot();
 
+        if(type!=LinkView::SnapshotTransform)
+            pcSnapshot->addChild(pcLinked->getTransformNode());
+
         for(int i=0,count=root->getNumChildren();i<count;++i) {
             SoNode *node = root->getChild(i);
-            if(type==LinkView::SnapshotTransform && 
-               node->isOfType(SoTransform::getClassTypeId()))
+            if(node==pcLinked->getTransformNode())
                 continue;
-            if(!node->isOfType(SoSwitch::getClassTypeId())) {
+            else if(node!=pcLinked->getModeSwitch()) {
                 pcSnapshot->addChild(node);
                 continue;
             }
-            if(pcLinkedSwitch) {
-                FC_WARN(getLinkedName() << " more than one switch node");
-                pcSnapshot->addChild(node);
-                continue;
-            }
+
             pcLinkedSwitch = static_cast<SoSwitch*>(node);
 
             pcSnapshot->addChild(pcModeSwitch);
@@ -636,6 +646,33 @@ LinkView::LinkView()
 LinkView::~LinkView() {
     unlink(linkInfo);
     unlink(linkOwner);
+}
+
+Base::BoundBox3d _getBoundBox(ViewProviderDocumentObject *vpd, SoNode *rootNode) {
+    auto doc = vpd->getDocument();
+    if(!doc) 
+        LINK_THROW(Base::RuntimeError,"no document");
+    Gui::MDIView* view = doc->getViewOfViewProvider(vpd);
+    if(!view)
+        LINK_THROW(Base::RuntimeError,"no view");
+    
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+    bboxAction.apply(rootNode);
+    auto bbox = bboxAction.getBoundingBox();
+    float minX,minY,minZ,maxX,maxY,maxZ;
+    bbox.getMax().getValue(maxX,maxY,maxZ);
+    bbox.getMin().getValue(minX,minY,minZ);
+    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
+}
+
+Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject *vpd) const {
+    if(!vpd) {
+        if(!linkOwner || !linkOwner->isLinked())
+            LINK_THROW(Base::ValueError,"no ViewProvider");
+        vpd = linkOwner->pcLinked;
+    }
+    return _getBoundBox(vpd,pcLinkRoot);
 }
 
 ViewProviderDocumentObject *LinkView::getOwner() const {
@@ -1273,7 +1310,7 @@ static const char *_LinkGroupIcon = "LinkGroup";
 static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
-    :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
+    :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false),useCenterballDragger(true)
 {
     sPixmap = _LinkIcon;
 
@@ -1316,6 +1353,10 @@ ViewProviderLink::~ViewProviderLink()
 {
 }
 
+bool ViewProviderLink::isSelectable() const {
+    return !pcDragger && Selectable.getValue();
+}
+
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     addDisplayMaskMode(handle.getLinkRoot(),"Link");
     setDisplayMaskMode("Link");
@@ -1323,6 +1364,10 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     checkIcon();
     if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
         hide();
+    handle.setOwner(this);
+}
+
+void ViewProviderLink::reattach(App::DocumentObject *) {
     handle.setOwner(this);
 }
 
@@ -1767,7 +1812,7 @@ void ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
     auto ext = getLinkExtension();
     if(isGroup(ext)) {
         ext->setLink(ext->getElementListValue().size(),obj);
-        if(obj->Visibility.getValue())
+        if(obj->getDocument()==getObject()->getDocument() && obj->Visibility.getValue())
             obj->Visibility.setValue(false);
         return;
     }
@@ -1853,6 +1898,330 @@ bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = dynamic_cast<App::LinkElement*>(getObject());
     return !element || element->canDelete();
 }
+
+bool ViewProviderLink::linkEdit(const App::LinkBaseExtension *ext) const {
+    if(!ext)
+        ext = getLinkExtension();
+    if(!ext ||
+       (!ext->getShowElementValue() && ext->getElementCountValue()) ||
+       hasElements(ext) || 
+       isGroup(ext) ||
+       hasSubName)
+    {
+        return false;
+    }
+    return handle.isLinked();
+}
+
+bool ViewProviderLink::doubleClicked() {
+    if(linkEdit())
+        return handle.getLinkedView()->doubleClicked();
+    return getDocument()->setEdit(this,ViewProvider::Transform);
+}
+
+void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    if(linkEdit()) 
+        handle.getLinkedView()->setupContextMenu(menu,receiver,member);
+}
+
+bool ViewProviderLink::initDraggingPlacement() {
+    Base::PyGILStateLocker lock;
+    try {
+        auto* proxy = getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *fname = "initDraggingPlacement";
+            if (feature.hasAttr(fname)) {
+                Py::Callable method(feature.getAttr(fname));
+                Py::Tuple arg;
+                Py::Object ret(method.apply(arg));
+                if(!ret.isTrue())
+                    return false;
+                PyObject *pymat,*pypla,*pybbox;
+                if(!PyArg_ParseTuple(ret.ptr(),"O!O!O!",&Base::MatrixPy::Type, &pymat,
+                            &Base::PlacementPy::Type, &pypla,
+                            &Base::BoundBoxPy::Type, &pybbox)) {
+                    FC_ERR("initDraggingPlacement() expects return of type tuple(matrix,placement,boundbox)");
+                    return false;
+                }
+                dragCtx.reset(new DraggerContext);
+                dragCtx->initialPlacement = *static_cast<Base::PlacementPy*>(pypla)->getPlacementPtr();
+                dragCtx->preTransform = *static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
+                dragCtx->bbox = *static_cast<Base::BoundBoxPy*>(pybbox)->getBoundBoxPtr();
+                return true;
+            }
+        }
+    } catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+        return false;
+    }
+
+    auto ext = getLinkExtension();
+    if(!ext) {
+        FC_ERR("no link extension");
+        return false;
+    }
+    if(!ext->hasPlacement()) {
+        FC_ERR("no placement");
+        return false;
+    }
+    auto doc = Application::Instance->editDocument();
+    if(!doc) {
+        FC_ERR("no editing document");
+        return false;
+    }
+
+    dragCtx.reset(new DraggerContext);
+
+    const auto &pla = ext->getPlacementProperty()?
+        ext->getPlacementValue():ext->getLinkPlacementValue();
+
+    dragCtx->preTransform = doc->getEditingTransform();
+    auto plaMat = pla.toMatrix();
+    plaMat.inverse();
+    dragCtx->preTransform *= plaMat;
+
+    dragCtx->bbox = handle.getBoundBox();
+    const auto &offset = Base::Placement(
+            dragCtx->bbox.GetCenter(),Base::Rotation());
+    dragCtx->initialPlacement = pla * offset;
+    dragCtx->mat = offset.toMatrix();
+    dragCtx->mat.inverse();
+    return true;
+}
+
+ViewProvider *ViewProviderLink::startEditing(int mode) {
+    if(mode==ViewProvider::Transform) {
+        if(!initDraggingPlacement())
+            return 0;
+        if(useCenterballDragger)
+            pcDragger = CoinPtr<SoCenterballDragger>(new SoCenterballDragger);
+        else
+            pcDragger = CoinPtr<SoFCCSysDragger>(new SoFCCSysDragger);
+        updateDraggingPlacement(dragCtx->initialPlacement,true);
+        pcDragger->addStartCallback(dragStartCallback, this);
+        pcDragger->addFinishCallback(dragFinishCallback, this);
+        pcDragger->addMotionCallback(dragMotionCallback, this);
+        return inherited::startEditing(mode);
+    }
+
+    if(!linkEdit()) {
+        FC_ERR("unsupported edit mode " << mode);
+        return 0;
+    }
+
+    auto doc = Application::Instance->editDocument();
+    if(!doc) {
+        FC_ERR("no editing document");
+        return 0;
+    }
+
+    // We are forwarding the editing request to linked object. We need to
+    // adjust the editing transformation.
+    Base::Matrix4D mat;
+    auto linked = getObject()->getLinkedObject(true,&mat,false);
+    if(!linked || linked==getObject()) {
+        FC_ERR("no linked object");
+        return 0;
+    }
+    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
+                Application::Instance->getViewProvider(linked));
+    if(!vpd) {
+        FC_ERR("no linked viewprovider");
+        return 0;
+    }
+    // amend the editing transformation with the link transformation
+    doc->setEditingTransform(doc->getEditingTransform()*mat);
+    return vpd->startEditing(mode);
+}
+
+void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    Q_UNUSED(ModNum);
+
+    if (pcDragger && viewer)
+    {
+        SoPickStyle *rootPickStyle = new SoPickStyle();
+        rootPickStyle->style = SoPickStyle::UNPICKABLE;
+        static_cast<SoFCUnifiedSelection*>(
+                viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
+
+        if(useCenterballDragger) {
+            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+            SoSeparator *group = new SoAnnotation;
+            SoPickStyle *pickStyle = new SoPickStyle;
+            pickStyle->setOverride(true);
+            group->addChild(pickStyle);
+            group->addChild(pcDragger);
+
+            // Because the dragger is not grouped with the actually geometry,
+            // we use an invisible cube sized by the bound box obtained from
+            // initDraggingPlacement() to scale the centerball dragger properly
+
+            auto * ss = (SoSurroundScale*)dragger->getPart("surroundScale", TRUE);
+            ss->numNodesUpToContainer = 3;
+            ss->numNodesUpToReset = 2;
+
+            auto *geoGroup = new SoGroup;
+            group->addChild(geoGroup);
+            auto *style = new SoDrawStyle;
+            style->style.setValue(SoDrawStyle::INVISIBLE);
+            style->setOverride(TRUE);
+            geoGroup->addChild(style);
+            auto *cube = new SoCube;
+            geoGroup->addChild(cube);
+            auto length = std::max(std::max(dragCtx->bbox.LengthX(),
+                        dragCtx->bbox.LengthY()), dragCtx->bbox.LengthZ());
+            cube->width = length;
+            cube->height = length;
+            cube->depth = length;
+
+            viewer->setupEditingRoot(group,&dragCtx->preTransform);
+        }else{
+            SoFCCSysDragger* dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+            dragger->draggerSize.setValue(0.05f);
+            dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+            viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
+        }
+    }
+}
+
+void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
+{
+    SoNode *child = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->getChild(0);
+    if (child && child->isOfType(SoPickStyle::getClassTypeId()))
+        static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
+    pcDragger.reset();
+    dragCtx.reset();
+}
+
+Base::Placement ViewProviderLink::currentDraggingPlacement() const{
+    assert(pcDragger);
+    SbVec3f v;
+    SbRotation r;
+    if(useCenterballDragger) {
+        SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+        v = dragger->center.getValue();
+        r = dragger->rotation.getValue();
+    }else{
+        SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+        v = dragger->translation.getValue();
+        r = dragger->rotation.getValue();
+    }
+    return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(r[0],r[1],r[2],r[3]));
+}
+
+void ViewProviderLink::enableCenterballDragger(bool enable) {
+    if(enable == useCenterballDragger)
+        return;
+    if(pcDragger)
+        LINK_THROW(Base::RuntimeError,"Cannot change dragger during dragging");
+    useCenterballDragger = enable;
+}
+
+void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool force) {
+    if(pcDragger && (force || currentDraggingPlacement()!=pla)) {
+        const auto &pos = pla.getPosition();
+        const auto &rot = pla.getRotation();
+        FC_LOG("updating dragger placement (" << pos.x << ", " << pos.y << ", " << pos.z << ')');
+        if(useCenterballDragger) {
+            SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+            SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
+            SbMatrix matrix;
+            matrix = convert(pla.toMatrix());
+            dragger->center.setValue(SbVec3f(0,0,0));
+            dragger->setMotionMatrix(matrix);
+            if (wasenabled) {
+                dragger->enableValueChangedCallbacks(TRUE);
+                dragger->valueChanged();
+            }
+        }else{
+            SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+            dragger->translation.setValue(SbVec3f(pos.x,pos.y,pos.z));
+            dragger->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
+        }
+    }
+}
+
+bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
+    if(!pcDragger) return false;
+    Base::PyGILStateLocker lock;
+    try {
+        auto* proxy = getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(fname)) {
+                Py::Callable method(feature.getAttr(fname));
+                Py::Tuple args;
+                method.apply(args);
+                return true;
+            }
+        }
+    } catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+        return true;
+    }
+
+    if(update) {
+        auto ext = getLinkExtension();
+        if(ext) {
+            const auto &pla = currentDraggingPlacement();
+            auto prop = ext->getLinkPlacementProperty();
+            if(!prop)
+                prop = ext->getPlacementProperty();
+            if(prop) {
+                auto plaNew = pla * Base::Placement(dragCtx->mat);
+                if(prop->getValue()!=plaNew)
+                    prop->setValue(plaNew);
+            }
+            updateDraggingPlacement(pla);
+        }
+    }
+    return false;
+}
+
+void ViewProviderLink::dragStartCallback(void *data, SoDragger *) {
+    auto me = static_cast<ViewProviderLink*>(data);
+    me->dragCtx->initialPlacement = me->currentDraggingPlacement();
+    if(!me->callDraggerProxy("onDragStart",false)) {
+        me->dragCtx->cmdPending = true;
+        me->getDocument()->openCommand("Link Transform");
+    }else
+        me->dragCtx->cmdPending = false;
+}
+
+void ViewProviderLink::dragFinishCallback(void *data, SoDragger *) {
+    auto me = static_cast<ViewProviderLink*>(data);
+    me->callDraggerProxy("onDragEnd",true);
+    if(me->dragCtx->cmdPending) {
+        if(me->currentDraggingPlacement() == me->dragCtx->initialPlacement)
+            me->getDocument()->abortCommand();
+        else
+            me->getDocument()->commitCommand();
+    }
+}
+
+void ViewProviderLink::dragMotionCallback(void *data, SoDragger *) {
+    auto me = static_cast<ViewProviderLink*>(data);
+    me->callDraggerProxy("onDragMotion",true);
+}
+
+void ViewProviderLink::updateLinks(ViewProvider *vp) {
+    auto ext = vp->getExtensionByType<ViewProviderLinkObserver>(true);
+    if(ext)
+        ext->linkInfo->update();
+}
+
+PyObject *ViewProviderLink::getPyObject() {
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderLinkPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 

@@ -834,6 +834,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
                     link->Label.setValue(linked->Label.getValue());
                 if(getLinkModeValue()<LinkModeAutoLink)
                     link->LinkTransform.setValue(true);
+                link->Visibility.setValue(false);
                 obj = link;
             }
 

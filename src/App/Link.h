@@ -244,6 +244,10 @@ public:
 
     typedef std::map<const Property*,std::pair<LinkBaseExtension*,int> > LinkPropMap;
 
+    bool hasPlacement() const {
+        return getLinkPlacementProperty() || getPlacementProperty();
+    }
+
 protected:
     void update(App::DocumentObject *parent, const Property *prop);
     bool hasElements() const;

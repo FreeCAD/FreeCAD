@@ -100,7 +100,7 @@ subname: a string or tuple/list of strings sub-name references to sub object
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getDetailPath" Const="true">
+        <Methode Name="getDetailPath">
             <Documentation>
                 <UserDocu>
 getDetailPath(element): get the 3d path an detail of an element.
@@ -109,9 +109,14 @@ Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getElementPicked" Const="true">
+        <Methode Name="getElementPicked">
             <Documentation>
                 <UserDocu>getElementPicked(pickPoint): get the element under a 3d pick point. </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getBoundBox">
+            <Documentation>
+                <UserDocu>getBoundBox(vobj=None): get the bounding box. </UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="LinkedView" ReadOnly="true">

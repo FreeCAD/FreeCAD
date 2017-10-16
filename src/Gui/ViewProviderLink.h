@@ -34,6 +34,7 @@
 #include "ViewProviderExtension.h"
 
 class SoBase;
+class SoDragger;
 
 namespace Gui {
 
@@ -151,6 +152,8 @@ public:
     std::vector<std::string> getSubNames() const;
     ViewProviderDocumentObject *getLinkedView() const;
 
+    Base::BoundBox3d getBoundBox(ViewProviderDocumentObject *vpd=0) const;
+
 protected:
     void replaceLinkedRoot(SoSeparator *);
     void resetRoot();
@@ -196,8 +199,9 @@ public:
     virtual ~ViewProviderLink();
 
     void attach(App::DocumentObject *pcObj) override;
+    void reattach(App::DocumentObject *pcObj) override;
 
-    bool isSelectable(void) const override {return Selectable.getValue();}
+    bool isSelectable(void) const override;
 
     bool useNewSelectionModel(void) const override {return true;}
 
@@ -223,9 +227,27 @@ public:
 
     std::vector<std::string> getDisplayModes(void) const override;
 
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+
     virtual QPixmap getOverlayPixmap() const;
 
+    ViewProvider *startEditing(int ModNum) override;
+    bool doubleClicked() override;
+
+    PyObject *getPyObject() override;
+
+    static void updateLinks(ViewProvider *vp);
+
+    void updateDraggingPlacement(const Base::Placement &pla, bool force=false);
+    Base::Placement currentDraggingPlacement() const;
+    void enableCenterballDragger(bool enable);
+    bool isUsingCenterballDragger() const { return useCenterballDragger; }
+
 protected:
+    void setEditViewer(View3DInventorViewer*, int ModNum);
+    void unsetEditViewer(View3DInventorViewer*);
+    bool linkEdit(const App::LinkBaseExtension *ext=0) const;
+
     enum LinkType {
         LinkTypeNone,
         LinkTypeNormal,
@@ -251,11 +273,30 @@ protected:
 
     ViewProvider *getLinkedView(bool real,const App::LinkBaseExtension *ext=0) const;
 
+    bool initDraggingPlacement();
+    bool callDraggerProxy(const char *fname, bool update);
+
+private:
+    static void dragStartCallback(void * data, SoDragger * d);
+    static void dragFinishCallback(void * data, SoDragger * d);
+    static void dragMotionCallback(void * data, SoDragger * d);
+
 protected:
     LinkView handle;
     LinkType linkType;
     bool hasSubName;
     bool hasSubElement;
+    bool useCenterballDragger;
+
+    struct DraggerContext{
+        Base::Matrix4D preTransform;
+        Base::Placement initialPlacement;
+        Base::Matrix4D mat;
+        Base::BoundBox3d bbox;
+        bool cmdPending;
+    };
+    std::unique_ptr<DraggerContext> dragCtx;
+    CoinPtr<SoDragger> pcDragger;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;
