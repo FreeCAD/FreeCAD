@@ -301,6 +301,9 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
             ViewProviderMesh* view = static_cast<ViewProviderMesh*>(pDoc->getViewProvider(object));
             this->pcLinkRoot->addChild(view->getHighlightNode());
+
+            Base::Placement p = static_cast<Mesh::Feature*>(view->getObject())->Placement.getValue();
+            ViewProviderMesh::updateTransform(p, pcTransform);
         }
     }
     else if (prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {
