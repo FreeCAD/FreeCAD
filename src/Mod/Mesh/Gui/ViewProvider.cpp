@@ -840,6 +840,8 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                 SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
+                proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())->
+                                  Placement.getValue().toMatrix());
                 self->cutMesh(clPoly, proj, clip_inner);
             }
         }
@@ -878,6 +880,8 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                 SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
+                proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())->
+                                  Placement.getValue().toMatrix());
                 self->trimMesh(clPoly, proj, clip_inner);
             }
         }
@@ -909,7 +913,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     // get the normal of the front clipping plane
     SbVec3f b,n;
     view->getNearPlane(b, n);
-    Base::Vector3f cPoint(b[0],b[1],b[2]), cNormal(n[0],n[1],n[2]);
+    Base::Vector3f cNormal(n[0],n[1],n[2]);
     SoCamera* pCam = view->getSoRenderManager()->getCamera();  
     SbViewVolume  vol = pCam->getViewVolume(); 
 
@@ -932,7 +936,11 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
             if (that->getEditingMode() > -1) {
                 that->finishEditing();
-                that->splitMesh(toolMesh, cNormal, clip_inner);
+                Base::Placement plm = static_cast<Mesh::Feature*>(that->getObject())->Placement.getValue();
+                plm.invert();
+                MeshCore::MeshKernel copyToolMesh(toolMesh);
+                copyToolMesh.Transform(plm.toMatrix());
+                that->splitMesh(copyToolMesh, cNormal, clip_inner);
             }
         }
     }
@@ -966,7 +974,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     // get the normal of the front clipping plane
     SbVec3f b,n;
     view->getNearPlane(b, n);
-    Base::Vector3f cPoint(b[0],b[1],b[2]), cNormal(n[0],n[1],n[2]);
+    Base::Vector3f cNormal(n[0],n[1],n[2]);
     SoCamera* pCam = view->getSoRenderManager()->getCamera();  
     SbViewVolume  vol = pCam->getViewVolume(); 
 
@@ -989,7 +997,11 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
             if (that->getEditingMode() > -1) {
                 that->finishEditing();
-                that->segmentMesh(toolMesh, cNormal, clip_inner);
+                Base::Placement plm = static_cast<Mesh::Feature*>(that->getObject())->Placement.getValue();
+                plm.invert();
+                MeshCore::MeshKernel copyToolMesh(toolMesh);
+                copyToolMesh.Transform(plm.toMatrix());
+                that->segmentMesh(copyToolMesh, cNormal, clip_inner);
             }
         }
     }
@@ -1059,7 +1071,6 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
                                             SbBool inner,
                                             std::vector<unsigned long>& indices) const
 {
-#if 1
     const bool ok = true;
     Base::Polygon2d polygon;
     for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
@@ -1069,30 +1080,7 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
     Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
     MeshCore::MeshAlgorithm cAlg(meshProp.getValue().getKernel());
     cAlg.CheckFacets(&proj, polygon, true, indices);
-#else
-    // get the normal of the front clipping plane
-    SbVec3f b,n;
-    Viewer.getNearPlane(b, n);
-    Base::Vector3f cPoint(b[0],b[1],b[2]), cNormal(n[0],n[1],n[2]);
-    SoCamera* pCam = Viewer.getCamera();  
-    SbViewVolume  vol = pCam->getViewVolume(); 
 
-    // create a tool shape from these points
-    std::vector<MeshCore::MeshGeomFacet> aFaces;
-    bool ok = ViewProviderMesh::createToolMesh(picked, vol, cNormal, aFaces);
-
-    // Get the attached mesh property
-    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
-
-    // Get the facet indices inside the tool mesh
-    MeshCore::MeshKernel cToolMesh;
-    bool locked = Base::Sequencer().setLocked(true);
-    cToolMesh = aFaces;
-    Base::Sequencer().setLocked(locked);
-    MeshCore::MeshFacetGrid cGrid(meshProp.getValue().getKernel());
-    MeshCore::MeshAlgorithm cAlg(meshProp.getValue().getKernel());
-    cAlg.GetFacetsFromToolMesh(cToolMesh, cNormal, cGrid, indices);
-#endif
     if (!inner) {
         // get the indices that are completely outside
         std::vector<unsigned long> complete(meshProp.getValue().countFacets());
