@@ -239,6 +239,8 @@ public:
     boost::signal<void ()> signalElementsChanged;
         
 protected:
+    Base::Placement getEditingPlacement() const;
+
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);

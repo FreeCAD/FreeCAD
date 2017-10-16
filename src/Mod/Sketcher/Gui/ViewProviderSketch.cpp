@@ -113,6 +113,8 @@
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
 
+FC_LOG_LEVEL_INIT("Sketch",true,true);
+
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...
 #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
@@ -389,7 +391,7 @@ void ViewProviderSketch::purgeHandler(void)
     deactivateHandler();
 
     // ensure that we are in sketch only selection mode
-    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
     Gui::View3DInventorViewer *viewer;
     viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
@@ -526,13 +528,22 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     vol.projectPointToLine(SbVec2f(pX,pY), line);
 }
 
+Base::Placement ViewProviderSketch::getEditingPlacement() const {
+    auto doc = Gui::Application::Instance->editDocument();
+    if(!doc || doc->getInEdit()!=this)
+        return getSketchObject()->globalPlacement();
+
+    // TODO: won't work if there is scale. Hmm... what to do...
+    return Base::Placement(doc->getEditingTransform());
+}
+
 void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec3f &point, const SbVec3f &normal)
 {
     // Plane form
     Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
 
     // move to position of Sketch
-    Base::Placement Plz = getSketchObject()->globalPlacement();
+    Base::Placement Plz = getEditingPlacement();
     R0 = Plz.getPosition() ;
     Base::Rotation tmp(Plz.getRotation());
     tmp.multVec(RN,RN);
@@ -762,18 +773,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         Sketcher::PointPos PosId;
                         getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                         if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                            Gui::Command::openCommand("Drag Point");
+                            getDocument()->openCommand("Drag Point");
                             try {
-                                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                                       ,getObject()->getNameInDocument()
-                                                       ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
-                                                       );
-                                Gui::Command::commitCommand();
+                                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.getDocument('%s').%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                        ,getDocument()->getDocument()->getName() 
+                                        ,getObject()->getNameInDocument()
+                                        ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0);
+                                getDocument()->commitCommand();
 
                                 tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
-                                Gui::Command::abortCommand();
+                                getDocument()->abortCommand();
                                 Base::Console().Error("Drag point: %s\n", e.what());
                             }
                         }
@@ -795,18 +807,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-                            Gui::Command::openCommand("Drag Curve");
+                            getDocument()->openCommand("Drag Curve");
                             try {
-                                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                                       ,getObject()->getNameInDocument()
-                                                       ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
-                                                       );
-                                Gui::Command::commitCommand();
+                                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.getDocument('%s').%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                        ,getDocument()->getDocument()->getName() 
+                                        ,getObject()->getNameInDocument()
+                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0);
+                                getDocument()->commitCommand();
 
                                 tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
-                                Gui::Command::abortCommand();
+                                getDocument()->abortCommand();
                                 Base::Console().Error("Drag curve: %s\n", e.what());
                             }
                         }
@@ -819,7 +832,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_DragConstraint:
                     if (edit->DragConstraintSet.empty() == false) {
-                        Gui::Command::openCommand("Drag Constraint");
+                        getDocument()->openCommand("Drag Constraint");
                         for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
                             it != edit->DragConstraintSet.end(); ++it) {
                             moveConstraint(*it, Base::Vector2d(x, y));
@@ -999,7 +1012,8 @@ void ViewProviderSketch::editDoubleClicked(void)
                 Constr->Type == Sketcher::SnellsLaw)) {
 
                 if(!Constr->isDriving) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setDriving(%i,%s)",
+                                            getDocument()->getDocument()->getName(),
                                             getObject()->getNameInDocument(),*it,"True");
                 }
 
@@ -1380,7 +1394,7 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
                                                           const SoNode *constraint)
 {
     assert(edit);
-    Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
+    Gui::MDIView *mdi = Gui::Application::Instance->editViewOfNode(edit->EditRoot);
     if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
         return Base::Vector3d(0, 0, 0);
     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -1921,7 +1935,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     Sketcher::SketchObject *sketchObject = getSketchObject();
     App::Document *doc = sketchObject->getDocument();
 
-    Base::Placement Plm = getSketchObject()->globalPlacement();
+    Base::Placement Plm = getEditingPlacement();
 
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -2822,7 +2836,7 @@ void ViewProviderSketch::drawConstraintIcons()
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
 
-            Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
+            Gui::MDIView *mdi = Gui::Application::Instance->editViewOfNode(edit->EditRoot);
             if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
                 return;
             Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -3194,7 +3208,7 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
 float ViewProviderSketch::getScaleFactor()
 {
     assert(edit);
-    Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
+    Gui::MDIView *mdi = Gui::Application::Instance->editViewOfNode(edit->EditRoot);
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
@@ -4800,7 +4814,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         Base::Vector3d RN(0,0,1);
 
         // move to position of Sketch
-        Base::Placement Plz = getSketchObject()->globalPlacement();
+        Base::Placement Plz = getEditingPlacement();
         Base::Rotation tmp(Plz.getRotation());
         tmp.multVec(RN,RN);
         Plz.setRotation(tmp);
@@ -4984,7 +4998,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
         if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 == 
             getSketchObject()->getSolvedSketch().getGeometrySize()) {
-            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
             if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
                 draw(false,true);
             
@@ -5074,8 +5088,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Gui::Command::addModule(Gui::Command::Gui,"Show.TempoVis");
         try{
             QString cmdstr = QString::fromLatin1(
-                        "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+                        "tv = Show.TempoVis(App.getDocument('%1'))\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
                         "  objs = tv.get_all_dependent(ActiveSketch)\n"
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"TechDraw::\"), objs)\n"
@@ -5088,8 +5102,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "tv.hide(ActiveSketch)\n"
                         "ActiveSketch.ViewObject.TempoVis = tv\n"
                         "del(tv)\n"
-                        );
-            cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
+                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
+                              QString::fromLatin1(getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
@@ -5170,9 +5184,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     UpdateSolverInformation();
     draw(false,true);
 
-    connectUndoDocument = Gui::Application::Instance->activeDocument()
+    connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
-    connectRedoDocument = Gui::Application::Instance->activeDocument()
+    connectRedoDocument = getDocument()
         ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, _1));
 
     return true;
@@ -5468,14 +5482,14 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         //visibility autoation
         try{
             QString cmdstr = QString::fromLatin1(
-                        "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
+                        "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                         "tv = ActiveSketch.ViewObject.TempoVis\n"
                         "if tv:\n"
                         "  tv.restore()\n"
                         "ActiveSketch.ViewObject.TempoVis = None\n"
                         "del(tv)\n"
-                        );
-            cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
+                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
+                              QString::fromLatin1(getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
@@ -5519,11 +5533,11 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     if (! this->TempoVis.getValue().isNone()){
         try{
             QString cmdstr = QString::fromLatin1(
-                        "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
+                        "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                         "if ActiveSketch.ViewObject.RestoreCamera:\n"
                         "  ActiveSketch.ViewObject.TempoVis.saveCamera()\n"
-                        );
-            cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
+                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
+                              QString::fromLatin1(getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
@@ -5532,7 +5546,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    Base::Placement plm = getSketchObject()->globalPlacement();
+    Base::Placement plm = getEditingPlacement();
     Base::Rotation tmp(plm.getRotation());
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
@@ -5565,6 +5579,8 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     
     viewer->addGraphicsItem(rubberband);
     rubberband->setViewer(viewer);
+
+    viewer->setupEditingRoot();
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -5758,7 +5774,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         std::set<int>::const_reverse_iterator rit;
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
+                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delConstraint(%i)"
+                                       ,getDocument()->getDocument()->getName()
                                        ,getObject()->getNameInDocument(), *rit);
             }
             catch (const Base::Exception& e) {
@@ -5768,7 +5785,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i)"
+                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delConstraintOnPoint(%i)"
+                                       ,getDocument()->getDocument()->getName()
                                        ,getObject()->getNameInDocument(), *rit);
             }
             catch (const Base::Exception& e) {
@@ -5778,7 +5796,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
+                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delGeometry(%i)"
+                                           ,getDocument()->getDocument()->getName()
                                            ,getObject()->getNameInDocument(), *rit);
             }
             catch (const Base::Exception& e) {
@@ -5788,8 +5807,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delExternal(%i)"
-                    ,getObject()->getNameInDocument(), *rit);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delExternal(%i)"
+                    ,getDocument()->getDocument()->getName(),getObject()->getNameInDocument(), *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
