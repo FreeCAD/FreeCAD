@@ -352,7 +352,7 @@ class Writer(object):
     def _handleFluxsolver(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemMisc.isOfType(equation, "Fem::FemEquationElmerFluxsolver"):
+            if FemUtils.isOfType(equation, "Fem::FemEquationElmerFluxsolver"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
