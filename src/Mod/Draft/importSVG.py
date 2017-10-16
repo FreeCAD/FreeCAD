@@ -52,6 +52,7 @@ from FreeCAD import Vector
 try: import FreeCADGui
 except ImportError: gui = False
 else: gui = True
+
 try: draftui = FreeCADGui.draftToolBar
 except AttributeError: draftui = None
 
@@ -421,7 +422,7 @@ class svgHandler(xml.sax.ContentHandler):
 
         def format(self,obj):
                 "applies styles to passed object"
-                if self.style and gui:
+                if gui:
                         v = obj.ViewObject
                         if self.color: v.LineColor = self.color
                         if self.width: v.LineWidth = self.width
@@ -449,7 +450,7 @@ class svgHandler(xml.sax.ContentHandler):
                         if not data['style']:
                                 pass#empty style attribute stops inhertig from parent
                         else:
-                                content = data['style'][0].replace(' ','')
+                                content = data['style'].replace(' ','')
                                 content = content.split(';')
                                 for i in content:
                                         pair = i.split(':')
@@ -468,12 +469,12 @@ class svgHandler(xml.sax.ContentHandler):
                                         data[k]=data[k][0]
 
                 # extracting style info
-                        
+
                 self.fill = None
                 self.color = None
                 self.width = None
                 self.text = None
-                
+
                 if name == 'svg':
                         m=FreeCAD.Matrix()
                         if not self.disableUnitScaling:
@@ -1277,3 +1278,6 @@ def export(exportList,filename):
         # closing
         svg.write('</svg>')
         svg.close()
+
+
+
