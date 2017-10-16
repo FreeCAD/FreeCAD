@@ -19,7 +19,7 @@ NC='\033[0m' # No Color
 
 # Categorized FreeCAD files/dirs that we want codespell to skip 
 TRANSLATION_FILES="*.po,*.ts"
-THIRDRDPARTY_FILES="./src/3rdParty,./src/zipios++,./src/CXX"
+THIRDPARTY_FILES="./src/3rdParty,./src/zipios++,./src/CXX"
 MISC_FILES="./git,./src/Mod/Assembly/App/opendcm,./src/Mod/Cam/App"
 
 # Output what FreeCAD files/dirs we will be skipping
@@ -28,7 +28,7 @@ echo -e "$BLUE>> Skipping all 3 party directories: $THIRDPARTY_FILES $NC\n"
 echo -e "$BLUE>> Skipping all misc. directories: $MISC_FILES $NC\n"
 
 # consolidate skipped file/dirs all in to 1 variable
-CODESPELL_SKIPS="$TRANSLATION_FILES,$THIRDPARTY_FILES,$MISC_FILES"
+CODESPELL_SKIPS="\"${TRANSLATION_FILES},${THIRDPARTY_FILES},${MISC_FILES}\""
 
 # Round up all changed content
 CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
@@ -45,11 +45,11 @@ echo -e "$BLUE>> Text content that will be checked:$NC"
 echo -e "$GREEN\n$TEXT_CONTENT\n$NC"
 
 # Download FreeCAD's codespell whitelist in to ./fc-word-whitelist.txt
-echo -e "$BLUE>> Downloading whitelist files:$NC"
+echo -e "$BLUE>> Downloading FreeCAD whitelist $NC"
 curl -Os https://gist.githubusercontent.com/luzpaz/7ac1bf4412b9c1e5acde715ef9cb612c/raw/fc-word-whitelist.txt
 
 # Run codespell and output results to stdout as well as in to a file
-echo -e "$BLUE>> Run codespell:$NC"
+echo -e "$BLUE>> Run codespell -d -q 3 -S "$CODESPELL_SKIPS" -I ./fc-word-whitelist.txt:$NC"
 codespell -d -q 3 -S "$CODESPELL_SKIPS" -I ./fc-word-whitelist.txt | tee codespell_results.txt
 
 CODESPELL_RESULTS=`cat codespell_results.txt`
