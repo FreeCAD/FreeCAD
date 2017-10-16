@@ -341,7 +341,8 @@ class _TaskPanelFemMaterial:
             ym_new_unit = "MPa"
             ym = FreeCAD.Units.Quantity(matmap['YoungsModulus'])
             ym_with_new_unit = ym.getValueAs(ym_new_unit)
-            self.form.input_fd_young_modulus.setText("{} {}".format(ym_with_new_unit, ym_new_unit))
+            q = FreeCAD.Units.Quantity("{} {}".format(ym_with_new_unit, ym_new_unit))
+            self.form.input_fd_young_modulus.setText(q.UserString)
         if 'PoissonRatio' in matmap:
             self.form.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
         # Fluidic properties
@@ -349,35 +350,41 @@ class _TaskPanelFemMaterial:
             nu_new_unit = "m^2/s"
             nu = FreeCAD.Units.Quantity(matmap['KinematicViscosity'])
             nu_with_new_unit = nu.getValueAs(nu_new_unit)
-            self.form.input_fd_kinematic_viscosity.setText("{} {}".format(nu_with_new_unit, nu_new_unit))
+            q = FreeCAD.Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
+            self.form.input_fd_kinematic_viscosity.setText(q.UserString)
         # For isotropic materials the volumetric thermal expansion coefficient is three times the linear coefficient:
         if 'VolumetricThermalExpansionCoefficient' in matmap:  # linear, only for solid
             vtec_new_unit = "m/m/K"
             vtec = FreeCAD.Units.Quantity(matmap['VolumetricThermalExpansionCoefficient'])
             vtec_with_new_unit = vtec.getValueAs(vtec_new_unit)
-            self.form.input_fd_vol_expansion_coefficient.setText("{} {}".format(vtec_with_new_unit, vtec_new_unit))
-
+            q = FreeCAD.Units.Quantity("{} {}".format(vtec_with_new_unit, vtec_new_unit))
+            self.form.input_fd_vol_expansion_coefficient.setText(q.UserString)
         if 'Density' in matmap:
             density_new_unit = "kg/m^3"
             density = FreeCAD.Units.Quantity(matmap['Density'])
             density_with_new_unit = density.getValueAs(density_new_unit)
-            self.form.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
+            #self.form.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
+            q = FreeCAD.Units.Quantity("{} {}".format(density_with_new_unit, density_new_unit))
+            self.form.input_fd_density.setText(q.UserString)
         # thermal properties
         if 'ThermalConductivity' in matmap:
             tc_new_unit = "W/m/K"
             tc = FreeCAD.Units.Quantity(matmap['ThermalConductivity'])
             tc_with_new_unit = tc.getValueAs(tc_new_unit)
-            self.form.input_fd_thermal_conductivity.setText("{} {}".format(tc_with_new_unit, tc_new_unit))
+            q = FreeCAD.Units.Quantity("{} {}".format(tc_with_new_unit, tc_new_unit))
+            self.form.input_fd_thermal_conductivity.setText(q.UserString)
         if 'ThermalExpansionCoefficient' in matmap:  # linear, only for solid
             tec_new_unit = "um/m/K"
             tec = FreeCAD.Units.Quantity(matmap['ThermalExpansionCoefficient'])
             tec_with_new_unit = tec.getValueAs(tec_new_unit)
-            self.form.input_fd_expansion_coefficient.setText("{} {}".format(tec_with_new_unit, tec_new_unit))
+            q = FreeCAD.Units.Quantity("{} {}".format(tec_with_new_unit, tec_new_unit))
+            self.form.input_fd_expansion_coefficient.setText(q.UserString)
         if 'SpecificHeat' in matmap:
             sh_new_unit = "J/kg/K"
             sh = FreeCAD.Units.Quantity(matmap['SpecificHeat'])
             sh_with_new_unit = sh.getValueAs(sh_new_unit)
-            self.form.input_fd_specific_heat.setText("{} {}".format(sh_with_new_unit, sh_new_unit))
+            q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
+            self.form.input_fd_specific_heat.setText(q.UserString)
 
     def add_transient_material(self, material):
         material_name = self.get_material_name(material)
