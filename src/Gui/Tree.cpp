@@ -1119,6 +1119,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
         if (!vp->canDropObjects()) {
             event->ignore();
+            return;
         }
 
         QList<QModelIndex> idxs = selectedIndexes();
@@ -1229,35 +1230,42 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // Open command
         Gui::Document* gui = vp->getDocument();
         gui->openCommand("Drag object");
-        for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
-            auto item = static_cast<DocumentObjectItem*>(*it);
-            Gui::ViewProviderDocumentObject* vpc = item->object();
-            App::DocumentObject* obj = vpc->getObject();
-            if(item->mySub.size()) {
-                auto subObj = obj->getSubObject(item->mySub.c_str());
-                if(subObj) 
-                    obj = subObj;
-                else
-                    FC_WARN("invalid trailing subname " << item->mySub);
-            }
-            std::ostringstream str;
-            auto owner = item->getRelativeParent(str,targetItemObj);
-            str << item->mySub;
-            std::string subname = str.str();
-
-            if(!dropOnly && vp->canDragAndDropObject(obj)) {
-                // does this have a parent object
-                QTreeWidgetItem* parent = (*it)->parent();
-                if (parent && parent->type() == TreeWidget::ObjectType) {
-                    Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
-                    vpp->dragObject(obj);
-                    owner = 0;
-                    subname.clear();
+        try {
+            for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
+                auto item = static_cast<DocumentObjectItem*>(*it);
+                Gui::ViewProviderDocumentObject* vpc = item->object();
+                App::DocumentObject* obj = vpc->getObject();
+                if(item->mySub.size()) {
+                    auto subObj = obj->getSubObject(item->mySub.c_str());
+                    if(subObj) 
+                        obj = subObj;
+                    else
+                        FC_WARN("invalid trailing subname " << item->mySub);
                 }
-            }
+                std::ostringstream str;
+                auto owner = item->getRelativeParent(str,targetItemObj);
+                str << item->mySub;
+                std::string subname = str.str();
 
-            // now add the object to the target object
-            vp->dropObjectEx(obj,owner,subname.c_str());
+                if(!dropOnly && vp->canDragAndDropObject(obj)) {
+                    // does this have a parent object
+                    QTreeWidgetItem* parent = (*it)->parent();
+                    if (parent && parent->type() == TreeWidget::ObjectType) {
+                        Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
+                        vpp->dragObject(obj);
+                        owner = 0;
+                        subname.clear();
+                    }
+                }
+
+                // now add the object to the target object
+                vp->dropObjectEx(obj,owner,subname.c_str());
+            }
+        } catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
+                    QString::fromLatin1(e.what()));
+            gui->abortCommand();
+            return;
         }
         gui->commitCommand();
     }
@@ -1281,25 +1289,32 @@ void TreeWidget::dropEvent(QDropEvent *event)
         App::Document* doc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Move object");
-        for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
-            Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(*it)->object();
-            App::DocumentObject* obj = vpc->getObject();
+        try {
+            for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
+                Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(*it)->object();
+                App::DocumentObject* obj = vpc->getObject();
 
-            // does this have a parent object
-            QTreeWidgetItem* parent = (*it)->parent();
-            if (parent && parent->type() == TreeWidget::ObjectType) {
-                Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
-                vpp->dragObject(obj);
-            }
+                // does this have a parent object
+                QTreeWidgetItem* parent = (*it)->parent();
+                if (parent && parent->type() == TreeWidget::ObjectType) {
+                    Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
+                    vpp->dragObject(obj);
+                }
 
-            //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
-            //all removed objects
-            auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-            if(grp) {
-                grp->getExtensionByType<App::GeoFeatureGroupExtension>()->removeObject(obj);
-                // children view provider maintainace is now handled by
-                // Gui::Document::handleChildren3D()
+                //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
+                //all removed objects
+                auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+                if(grp) {
+                    grp->getExtensionByType<App::GeoFeatureGroupExtension>()->removeObject(obj);
+                    // children view provider maintainace is now handled by
+                    // Gui::Document::handleChildren3D()
+                }
             }
+        } catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
+                    QString::fromLatin1(e.what()));
+            gui->abortCommand();
+            return;
         }
         gui->commitCommand();
     }

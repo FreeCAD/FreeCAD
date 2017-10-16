@@ -1086,6 +1086,7 @@ ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        throw e;
     }
 
     return Rejected;
@@ -1183,8 +1184,8 @@ ViewProviderPythonFeatureImp::dropObjectEx(
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        throw e;
     }
-    return Rejected;
 }
 
 bool ViewProviderPythonFeatureImp::isShow() const
