@@ -246,13 +246,13 @@ class ObjectOp(object):
             obj.OpToolDiameter  =  1.0
 
         if FeatureDepths & features:
-            obj.setExpression('StartDepth', 'OpStartDepth')
-            obj.setExpression('FinalDepth', 'OpFinalDepth')
+            obj.setExpression('StartDepth', job.SetupSheet.StartDepthExpression)
+            obj.setExpression('FinalDepth', job.SetupSheet.FinalDepthExpression)
             obj.OpStartDepth    =  1.0
             obj.OpFinalDepth    =  0.0
 
         if FeatureStepDown & features:
-            obj.setExpression('StepDown', 'OpToolDiameter')
+            obj.setExpression('StepDown', job.SetupSheet.StepDownExpression)
 
         if FeatureHeights & features:
             if job.SetupSheet.SafeHeightExpression:
@@ -264,6 +264,7 @@ class ObjectOp(object):
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj)
+        obj.recompute()
 
     def _setBaseAndStock(self, obj, ignoreErrors=False):
         job = PathUtils.findParentJob(obj)

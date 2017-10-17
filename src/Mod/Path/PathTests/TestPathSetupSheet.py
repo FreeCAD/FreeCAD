@@ -25,6 +25,9 @@
 import FreeCAD
 import Path
 import PathScripts.PathSetupSheet as PathSetupSheet
+import PathScripts.PathLog as PathLog
+
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -52,22 +55,23 @@ class TestPathSetupSheet(PathTestBase):
 
     def test01(self):
         '''Verify SetupSheet template attributes roundtrip.'''
-        ss = PathSetupSheet.Create().Proxy
+        o1 = PathSetupSheet.Create()
         self.doc.recompute()
-        ss.DefaultVertRapid = '10 mm/s'
-        ss.DefaultHorizRapid = '22 mm/s'
-        ss.DefaultSafeHeightOffset = '18 mm'
-        ss.DefaultSafeHeightExpression = 'Hugo+Olga'
-        ss.DefaultClearanceHeightOffset = '23 mm'
-        ss.DefaultClearanceHeightExpression = 'Peter+Paul'
+        o1.VertRapid = '10 mm/s'
+        o1.HorizRapid = '22 mm/s'
+        o1.SafeHeightOffset = '18 mm'
+        o1.SafeHeightExpression = 'Hugo+Olga'
+        o1.ClearanceHeightOffset = '23 mm'
+        o1.ClearanceHeightExpression = 'Peter+Paul'
+        o1.StartDepthExpression = 'Alpha'
+        o1.FinalDepthExpression = 'Omega'
+        o1.StepDownExpression = '1'
 
-        s2 = PathSetupSheet.Create().Proxy
+        o2 = PathSetupSheet.Create()
         self.doc.recompute()
-        s2.setFromTemplate(ss.templateAttributes())
+        o2.Proxy.setFromTemplate(o1.Proxy.templateAttributes())
         self.doc.recompute()
 
-        o1 = ss.obj
-        o2 = s2.obj
 
         self.assertRoughly(o1.VertRapid, o2.VertRapid)
         self.assertRoughly(o1.HorizRapid, o2.HorizRapid)
@@ -75,6 +79,58 @@ class TestPathSetupSheet(PathTestBase):
         self.assertEqual(o1.SafeHeightExpression, o2.SafeHeightExpression)
         self.assertRoughly(o1.ClearanceHeightOffset, o2.ClearanceHeightOffset)
         self.assertEqual(o1.ClearanceHeightExpression, o2.ClearanceHeightExpression)
+        self.assertEqual(o1.StartDepthExpression, o2.StartDepthExpression)
+        self.assertEqual(o1.FinalDepthExpression, o2.FinalDepthExpression)
+        self.assertEqual(o1.StepDownExpression, o2.StepDownExpression)
+
+    def test02(self):
+        '''Verify default value detection logic.'''
+        obj = PathSetupSheet.Create()
+        ss = obj.Proxy
+
+        self.assertTrue(ss.hasDefaultToolRapids())
+        self.assertTrue(ss.hasDefaultOperationHeights())
+        self.assertTrue(ss.hasDefaultOperationDepths())
+
+        obj.VertRapid = '1 mm/s'
+        self.assertFalse(ss.hasDefaultToolRapids())
+        obj.VertRapid = '0 mm/s'
+        self.assertTrue(ss.hasDefaultToolRapids())
+        obj.HorizRapid = '1 mm/s'
+        self.assertFalse(ss.hasDefaultToolRapids())
+        obj.HorizRapid = '0 mm/s'
+        self.assertTrue(ss.hasDefaultToolRapids())
+
+        obj.SafeHeightOffset = '0 mm'
+        self.assertFalse(ss.hasDefaultOperationHeights())
+        obj.SafeHeightOffset = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultSafeHeightOffset)
+        self.assertTrue(ss.hasDefaultOperationHeights())
+        obj.ClearanceHeightOffset = '0 mm'
+        self.assertFalse(ss.hasDefaultOperationHeights())
+        obj.ClearanceHeightOffset = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultClearanceHeightOffset)
+        self.assertTrue(ss.hasDefaultOperationHeights())
+
+        obj.SafeHeightExpression = '0 mm'
+        self.assertFalse(ss.hasDefaultOperationHeights())
+        obj.SafeHeightExpression = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultSafeHeightExpression)
+        self.assertTrue(ss.hasDefaultOperationHeights())
+        obj.ClearanceHeightExpression = '0 mm'
+        self.assertFalse(ss.hasDefaultOperationHeights())
+        obj.ClearanceHeightExpression = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultClearanceHeightExpression)
+        self.assertTrue(ss.hasDefaultOperationHeights())
+
+        obj.StartDepthExpression = ''
+        self.assertFalse(ss.hasDefaultOperationDepths())
+        obj.StartDepthExpression = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultStartDepthExpression)
+        self.assertTrue(ss.hasDefaultOperationDepths())
+        obj.FinalDepthExpression = ''
+        self.assertFalse(ss.hasDefaultOperationDepths())
+        obj.FinalDepthExpression = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultFinalDepthExpression)
+        self.assertTrue(ss.hasDefaultOperationDepths())
+        obj.StepDownExpression = ''
+        self.assertFalse(ss.hasDefaultOperationDepths())
+        obj.StepDownExpression = ss.decodeAttributeString(PathSetupSheet.SetupSheet.DefaultStepDownExpression)
+        self.assertTrue(ss.hasDefaultOperationDepths())
 
     def test10(self):
         '''Verify template attributes encoding/decoding of floats.'''

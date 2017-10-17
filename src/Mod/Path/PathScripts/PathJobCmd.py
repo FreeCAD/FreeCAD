@@ -158,6 +158,15 @@ class DlgJobTemplateExport:
             spHint = "%s" % job.Stock.Placement
             self.dialog.stockPlacementHint.setText(spHint)
 
+        rapidChanged = not job.SetupSheet.Proxy.hasDefaultToolRapids()
+        depthsChanged = not job.SetupSheet.Proxy.hasDefaultOperationDepths()
+        heightsChanged = not job.SetupSheet.Proxy.hasDefaultOperationHeights()
+        settingsChanged = rapidChanged or depthsChanged or heightsChanged
+        self.dialog.settingsGroup.setChecked(settingsChanged)
+        self.dialog.settingToolRapid.setChecked(rapidChanged)
+        self.dialog.settingOperationDepths.setChecked(depthsChanged)
+        self.dialog.settingOperationHeights.setChecked(heightsChanged)
+
         for tc in sorted(job.ToolController, key=lambda o: o.Label):
             item = QtGui.QListWidgetItem(tc.Label)
             item.setData(self.DataObject, tc)
@@ -189,12 +198,14 @@ class DlgJobTemplateExport:
     def includeStockPlacement(self):
         return self.dialog.stockPlacement.isChecked()
 
-    def includeDefaults(self):
-        return self.dialog.defaultsGroup.isChecked()
-    def includeDefaultToolRapid(self):
-        return self.dialog.defaultToolRapid.isChecked()
-    def includeDefaultOperationHeights(self):
-        return self.dialog.defaultOperationHeights.isChecked()
+    def includeSettings(self):
+        return self.dialog.settingsGroup.isChecked()
+    def includeSettingToolRapid(self):
+        return self.dialog.settingToolRapid.isChecked()
+    def includeSettingOperationHeights(self):
+        return self.dialog.settingOperationHeights.isChecked()
+    def includeSettingOperationDepths(self):
+        return self.dialog.settingOperationDepths.isChecked()
 
     def exec_(self):
         return self.dialog.exec_()
@@ -255,9 +266,9 @@ class CommandJobTemplateExport:
         # setup sheet
         setupSheetAttrs = None
         if dialog:
-            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeDefaultToolRapid(), dialog.includeDefaultOperationHeights())
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeSettingToolRapid(), dialog.includeSettingOperationHeights(), dialog.includeSettingOperationDepths())
         else:
-            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True)
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True, True)
         if setupSheetAttrs:
             attrs[PathJob.JobTemplate.SetupSheet] = setupSheetAttrs
 

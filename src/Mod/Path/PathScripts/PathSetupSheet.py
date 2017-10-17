@@ -27,6 +27,9 @@ import Path
 import PathScripts.PathLog as PathLog
 import PySide
 
+from PathScripts.PathGeom import PathGeom
+
+
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
@@ -44,10 +47,16 @@ def translate(context, text, disambig=None):
 class Template:
     HorizRapid = 'HorizRapid'
     VertRapid = 'VertRapid'
-    SafeHeightOffset = 'SafeHeight'
+    SafeHeightOffset = 'SafeHeightOffset'
     SafeHeightExpression = 'SafeHeightExpression'
-    ClearanceHeightOffset = 'ClearanceHeight'
+    ClearanceHeightOffset = 'ClearanceHeightOffset'
     ClearanceHeightExpression = 'ClearanceHeightExpression'
+    StartDepthExpression = 'StartDepthExpression'
+    FinalDepthExpression = 'FinalDepthExpression'
+    StepDownExpression = 'StepDownExpression'
+
+    All = [HorizRapid, VertRapid, SafeHeightOffset, SafeHeightExpression, ClearanceHeightOffset, ClearanceHeightExpression, StartDepthExpression, FinalDepthExpression, StepDownExpression]
+
 
 def _traverseTemplateAttributes(attrs, codec):
     coded = {}
@@ -73,6 +82,15 @@ It's mostly a convencience wrapper around Spreadsheet.
 
     TemplateReference = '${SetupSheet}'
 
+    DefaultSafeHeightOffset      = '3 mm'
+    DefaultClearanceHeightOffset = '5 mm'
+    DefaultSafeHeightExpression      = "StartDepth+${SetupSheet}.SafeHeightOffset"
+    DefaultClearanceHeightExpression = "StartDepth+${SetupSheet}.ClearanceHeightOffset"
+
+    DefaultStartDepthExpression = 'OpStartDepth'
+    DefaultFinalDepthExpression = 'OpFinalDepth'
+    DefaultStepDownExpression   = 'OpToolDiameter'
+
     def __init__(self, obj):
         self.obj = obj
         obj.addProperty('App::PropertySpeed', 'VertRapid',  'ToolController', translate('PathSetupSheet', 'Default speed for horizontal rapid moves.'))
@@ -83,10 +101,18 @@ It's mostly a convencience wrapper around Spreadsheet.
         obj.addProperty('App::PropertyLength', 'ClearanceHeightOffset',     'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.'))
         obj.addProperty('App::PropertyString', 'ClearanceHeightExpression', 'OperationHeights', translate('PathSetupSheet', 'Expression set for the ClearanceHeight of new operations.'))
 
-        obj.SafeHeightOffset      = '3 mm'
-        obj.ClearanceHeightOffset = '5 mm'
-        obj.SafeHeightExpression      = "StartDepth+%s.SafeHeightOffset" % self.expressionReference()
-        obj.ClearanceHeightExpression = "StartDepth+%s.ClearanceHeightOffset" % self.expressionReference()
+        obj.addProperty('App::PropertyString', 'StartDepthExpression', 'OperationDepths', translate('PathSetupSheet', 'Expression used for StartDepth of new operations.'))
+        obj.addProperty('App::PropertyString', 'FinalDepthExpression', 'OperationDepths', translate('PathSetupSheet', 'Expression used for FinalDepth of new operations.'))
+        obj.addProperty('App::PropertyString', 'StepDownExpression',   'OperationDepths', translate('PathSetupSheet', 'Expression used for StepDown of new operations.'))
+
+        obj.SafeHeightOffset          = self.decodeAttributeString(self.DefaultSafeHeightOffset)
+        obj.ClearanceHeightOffset     = self.decodeAttributeString(self.DefaultClearanceHeightOffset)
+        obj.SafeHeightExpression      = self.decodeAttributeString(self.DefaultSafeHeightExpression)
+        obj.ClearanceHeightExpression = self.decodeAttributeString(self.DefaultClearanceHeightExpression)
+
+        obj.StartDepthExpression = self.decodeAttributeString(self.DefaultStartDepthExpression)
+        obj.FinalDepthExpression = self.decodeAttributeString(self.DefaultFinalDepthExpression)
+        obj.StepDownExpression   = self.decodeAttributeString(self.DefaultStepDownExpression)
 
         obj.Proxy = self
 
@@ -100,23 +126,37 @@ It's mostly a convencience wrapper around Spreadsheet.
                 break
         return None
 
+    def hasDefaultToolRapids(self):
+        return PathGeom.isRoughly(self.obj.VertRapid.Value, 0) and PathGeom.isRoughly(self.obj.HorizRapid.Value, 0)
+
+    def hasDefaultOperationHeights(self):
+        if self.obj.SafeHeightOffset.UserString != FreeCAD.Units.Quantity(self.DefaultSafeHeightOffset).UserString:
+            return False
+        if self.obj.ClearanceHeightOffset.UserString != FreeCAD.Units.Quantity(self.DefaultClearanceHeightOffset).UserString:
+            return False
+        if self.obj.SafeHeightExpression != self.decodeAttributeString(self.DefaultSafeHeightExpression):
+            return False
+        if self.obj.ClearanceHeightExpression != self.decodeAttributeString(self.DefaultClearanceHeightExpression):
+            return False
+        return True
+
+    def hasDefaultOperationDepths(self):
+        if self.obj.StartDepthExpression != self.DefaultStartDepthExpression:
+            return False
+        if self.obj.FinalDepthExpression != self.DefaultFinalDepthExpression:
+            return False
+        if self.obj.StepDownExpression != self.DefaultStepDownExpression:
+            return False
+        return True
+
     def setFromTemplate(self, attrs):
         '''setFromTemplate(attrs) ... sets the default values from the given dictionary.'''
-        if attrs.get(Template.VertRapid):
-            self.obj.VertRapid = attrs[Template.VertRapid]
-        if attrs.get(Template.HorizRapid):
-            self.obj.HorizRapid = attrs[Template.HorizRapid]
-        if attrs.get(Template.SafeHeightOffset):
-            self.obj.SafeHeightOffset = attrs[Template.SafeHeightOffset]
-        if attrs.get(Template.SafeHeightExpression):
-            self.obj.SafeHeightExpression = attrs[Template.SafeHeightExpression]
-        if attrs.get(Template.ClearanceHeightOffset):
-            self.obj.ClearanceHeightOffset = attrs[Template.ClearanceHeightOffset]
-        if attrs.get(Template.ClearanceHeightExpression):
-            self.obj.ClearanceHeightExpression = attrs[Template.ClearanceHeightExpression]
+        for name in Template.All:
+            if attrs.get(name) is not None:
+                setattr(self.obj, name, attrs[name])
 
-    def templateAttributes(self, includeRapids=True, includeHeights=True):
-        '''templateAttributes(includeRapids, includeHeights) ... answers a dictionary with the default values.'''
+    def templateAttributes(self, includeRapids=True, includeHeights=True, includeDepths=True):
+        '''templateAttributes(includeRapids, includeHeights, includeDepths) ... answers a dictionary with the default values.'''
         attrs = {}
         if includeRapids:
             attrs[Template.VertRapid]  = self.obj.VertRapid.UserString
@@ -126,6 +166,10 @@ It's mostly a convencience wrapper around Spreadsheet.
             attrs[Template.SafeHeightExpression]      = self.obj.SafeHeightExpression
             attrs[Template.ClearanceHeightOffset]     = self.obj.ClearanceHeightOffset.UserString
             attrs[Template.ClearanceHeightExpression] = self.obj.ClearanceHeightExpression
+        if includeDepths:
+            attrs[Template.StartDepthExpression] = self.obj.StartDepthExpression
+            attrs[Template.FinalDepthExpression] = self.obj.FinalDepthExpression
+            attrs[Template.StepDownExpression]   = self.obj.StepDownExpression
         return attrs
 
     def expressionReference(self):
@@ -150,13 +194,20 @@ It's mostly a convencience wrapper around Spreadsheet.
         # https://forum.freecadweb.org/viewtopic.php?f=10&t=24845
         return self.obj.Name
 
+    def encodeAttributeString(self, attr):
+        '''encodeAttributeString(attr) ... return the encoded string of a template attribute.'''
+        return unicode(attr.replace(self.expressionReference(), self.TemplateReference))
+    def decodeAttributeString(self, attr):
+        '''decodeAttributeString(attr) ... return the decoded string of a template attribute.'''
+        return unicode(attr.replace(self.TemplateReference, self.expressionReference()))
+
     def encodeTemplateAttributes(self, attrs):
         '''encodeTemplateAttributes(attrs) ... return a dictionary with all values encoded.'''
-        return _traverseTemplateAttributes(attrs, lambda value: unicode(value.replace(self.expressionReference(), self.TemplateReference)))
+        return _traverseTemplateAttributes(attrs, self.encodeAttributeString)
 
     def decodeTemplateAttributes(self, attrs):
         '''decodeTemplateAttributes(attrs) ... expand template attributes to reference the receiver where applicable.'''
-        return _traverseTemplateAttributes(attrs, lambda value: unicode(value.replace(self.TemplateReference, self.expressionReference())))
+        return _traverseTemplateAttributes(attrs, self.decodeAttributeString)
 
 
 def Create(name='SetupSheet'):
