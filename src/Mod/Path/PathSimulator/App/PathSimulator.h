@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger         <shaise at gmail>               *
+ *   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,4 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h" 
+#ifndef PATH_PathSimulator_H
+#define PATH_PathSimulator_H
+
+#include <Base/Persistence.h>
+#include <Base/Vector3D.h>
+
+namespace Path
+{
+
+    /** The representation of a CNC Toolpath Simulator */
+    
+	class PathSimulatorAppExport PathSimulator : public Base::Persistence
+    {
+        TYPESYSTEM_HEADER();
+    
+        public:
+			PathSimulator() {};
+			~PathSimulator() {};
+            
+			virtual unsigned int getMemSize(void) const {
+				return 0;
+			};
+			virtual void Save(Base::Writer &/*writer*/) const {};
+			virtual void Restore(Base::XMLReader &/*reader*/) {};
+	};
+
+} //namespace Path
+
+
+#endif // PATH_PathSimulator_H
