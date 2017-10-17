@@ -27,6 +27,7 @@
 # include <sstream>
 #endif
 
+#include "Document.h"
 #include "Gui/ViewProviderDocumentObject.h"
 #include <App/DocumentObject.h>
 
@@ -69,6 +70,13 @@ Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const
 void ViewProviderDocumentObjectPy::setForceUpdate(Py::Boolean arg)
 {
     getViewProviderDocumentObjectPtr()->forceUpdate(arg);
+}
+
+Py::Object ViewProviderDocumentObjectPy::getDocument() const {
+    auto doc = getViewProviderDocumentObjectPtr()->getDocument();
+    if(!doc)
+        return Py::None();
+    return Py::Object(doc->getPyObject(),true);
 }
 
 PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const

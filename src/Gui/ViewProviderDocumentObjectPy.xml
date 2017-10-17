@@ -30,5 +30,11 @@
             </Documentation>
             <Parameter Name="ForceUpdate" Type="Boolean" />
         </Attribute>
+        <Attribute Name="Document" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The Gui owner document of this view object</UserDocu>
+            </Documentation>
+            <Parameter Name="Document" Type="Object" />
+        </Attribute>
 	</PythonExport>
 </GenerateModel>
