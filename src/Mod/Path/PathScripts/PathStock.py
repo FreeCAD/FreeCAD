@@ -31,7 +31,7 @@ import math
 from PySide import QtCore
 
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 

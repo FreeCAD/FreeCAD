@@ -140,29 +140,11 @@ class ObjectOp(PathOp.ObjectOp):
 
             if shape:
                 bb = shape.BoundBox
-                obj.StartDepth      = bb.ZMax
-                obj.FinalDepth      = bb.ZMin
-                if PathOp.FeatureStepDown & self.opFeatures(obj):
-                    obj.StepDown        = 1.0
+                obj.OpStartDepth      = bb.ZMax
+                obj.OpFinalDepth      = bb.ZMin
             else:
-                obj.StartDepth      =  1.0
-                obj.FinalDepth      =  0.0
-                if PathOp.FeatureStepDown & self.opFeatures(obj):
-                    obj.StepDown        =  1.0
-
-        if PathOp.FeatureHeights & self.opFeatures(obj):
-            try:
-                shape = self.areaOpShapeForDepths(obj)
-            except:
-                shape = None
-
-            if shape:
-                bb = shape.BoundBox
-                obj.ClearanceHeight = bb.ZMax + 5.0
-                obj.SafeHeight      = bb.ZMax + 3.0
-            else:
-                obj.ClearanceHeight = 10.0
-                obj.SafeHeight      =  8.0
+                obj.OpStartDepth      =  1.0
+                obj.OpFinalDepth      =  0.0
 
         self.areaOpSetDefaultValues(obj)
 

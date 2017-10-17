@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>422</width>
-    <height>432</height>
+    <height>434</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -110,7 +110,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="defaultsGroup">
+    <widget class="QGroupBox" name="settingsGroup">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default values in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -121,26 +121,36 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="defaultToolRapid">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="settingOperationHeights">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Tool Rapid Speeds</string>
+         <string>Operation Heights</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="defaultOperationHeights">
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="settingOperationDepths">
+        <property name="text">
+         <string>Operation Depths</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="settingToolRapid">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Operation Heights</string>
+         <string>Tool Rapid Speeds</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -189,9 +199,10 @@
   <tabstop>stockGroup</tabstop>
   <tabstop>stockExtent</tabstop>
   <tabstop>stockPlacement</tabstop>
-  <tabstop>defaultsGroup</tabstop>
-  <tabstop>defaultToolRapid</tabstop>
-  <tabstop>defaultOperationHeights</tabstop>
+  <tabstop>settingsGroup</tabstop>
+  <tabstop>settingOperationHeights</tabstop>
+  <tabstop>settingOperationDepths</tabstop>
+  <tabstop>settingToolRapid</tabstop>
   <tabstop>toolsGroup</tabstop>
   <tabstop>toolsList</tabstop>
   <tabstop>buttonBox</tabstop>

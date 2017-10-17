@@ -142,8 +142,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         job = PathUtils.findParentJob(obj)
         if job and job.Stock:
             bb = job.Stock.Shape.BoundBox
-            obj.FinalDepth = bb.ZMin
-            obj.StartDepth = bb.ZMax
+            obj.OpFinalDepth = bb.ZMin
+            obj.OpStartDepth = bb.ZMax
 
 def Create(name):
     '''Create(name) ... Creates and returns a Pocket operation.'''

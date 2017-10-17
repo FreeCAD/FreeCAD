@@ -262,10 +262,8 @@ class ObjectSurface(PathOp.ObjectOp):
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             d = PathUtils.guessDepths(job.Base.Shape, None)
-            obj.ClearanceHeight = d.clearance_height
-            obj.SafeHeight = d.safe_height + 1
-            obj.StartDepth = d.safe_height
-            obj.FinalDepth = d.start_depth
+            obj.OpStartDepth = d.safe_height
+            obj.OpFinalDepth = d.start_depth
 
 def Create(name):
     '''Create(name) ... Creates and returns a Surface operation.'''
