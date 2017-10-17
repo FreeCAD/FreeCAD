@@ -1,5 +1,6 @@
 add_subdirectory(App)
 add_subdirectory(libarea)
+add_subdirectory(PathSimulator)
 
 if(BUILD_GUI)
     add_subdirectory(Gui)
