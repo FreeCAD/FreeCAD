@@ -709,8 +709,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
         highlight->setReference(const_cast<char*>(viewDetail->Reference.getValue()));
-        Base::Vector3d center = viewDetail->AnchorPoint.getValue();
-        double radius = viewDetail->Radius.getValue();
+        Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
+        double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
         highlight->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));
         highlight->setFont(m_font,Rez::guiX(6.0));
