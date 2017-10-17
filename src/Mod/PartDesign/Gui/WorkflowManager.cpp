@@ -167,7 +167,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
             msgBox.addButton ( QMessageBox::No  );
         }
         msgBox.setDefaultButton ( yesBtn );
-        // TODO Add some description of manual migration mode (2015-08-09, Fat-Zer)
+        // TODO: Add some description of manual migration mode (2015-08-09, Fat-Zer)
 
         msgBox.exec();
 
@@ -192,7 +192,7 @@ void WorkflowManager::forceWorkflow( const App::Document *doc, Workflow wf) {
 }
 
 Workflow WorkflowManager::guessWorkflow(const App::Document *doc) {
-    // Retrive bodies of the document
+    // Retrieve bodies of the document
     auto features = doc->getObjectsOfType( PartDesign::Feature::getClassTypeId() );
 
     if( features.empty() ) {
@@ -212,7 +212,7 @@ Workflow WorkflowManager::guessWorkflow(const App::Document *doc) {
                     break;
                 }
             }
-            // if there are features not belonging to any body itmeans that migration was incomplete, otherwice it's Modern
+            // if there are features not belonging to any body it means that migration was incomplete, otherwise it's Modern
             return features_without_bodies ? Workflow::Undetermined : Workflow::Modern;
         }
     }

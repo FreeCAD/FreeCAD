@@ -84,17 +84,17 @@
           </property>
           <item>
            <property name="text">
-            <string>shift</string>
+            <string>Shift</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ctrl</string>
+            <string>Ctrl</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>alt</string>
+            <string>Alt</string>
            </property>
           </item>
          </widget>
@@ -139,17 +139,17 @@
           </property>
           <item>
            <property name="text">
-            <string>shift</string>
+            <string>Shift</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ctrl</string>
+            <string>Ctrl</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>alt</string>
+            <string>Alt</string>
            </property>
           </item>
          </widget>
@@ -181,7 +181,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_7">
           <property name="toolTip">
-           <string>The alt modifier key</string>
+           <string>The Alt modifier key</string>
           </property>
           <property name="currentIndex">
            <number>2</number>
@@ -194,17 +194,17 @@
           </property>
           <item>
            <property name="text">
-            <string>shift</string>
+            <string>Shift</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ctrl</string>
+            <string>Ctrl</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>alt</string>
+            <string>Alt</string>
            </property>
           </item>
          </widget>
@@ -444,7 +444,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="spinBox">
           <property name="toolTip">
-           <string>the number of horizontal or vertical lines of the grid</string>
+           <string>The number of horizontal or vertical lines of the grid</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

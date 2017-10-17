@@ -116,7 +116,7 @@ void QGIViewAnnotation::draw()
     }
 }
 
-//TODO: text is position slightly high (and left??) on page save to SVG file
+//TODO: text is positioned slightly high (and left??) on page save to SVG file
 
 void QGIViewAnnotation::drawAnnotation()
 {
@@ -127,7 +127,7 @@ void QGIViewAnnotation::drawAnnotation()
 
     const std::vector<std::string>& annoText = viewAnno->Text.getValues();
 
-    //build HTML/CSS formating around Text lines
+    //build HTML/CSS formatting around Text lines
     std::stringstream ss;
     ss << "<html>\n<head>\n<style>\n";
     ss << "p {";

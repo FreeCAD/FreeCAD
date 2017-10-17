@@ -58,7 +58,7 @@ public:
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
     App::DocumentObjectExecReturn *execute(void);
@@ -220,7 +220,7 @@ public:
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
     
     /*!
-     \ brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
+     \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
      \param GeoId - the geometry of type bspline to increase the degree
      \param knotIndex - the index of the knot to modify (note that index is OCC consistent, so 1<=knotindex<=knots)
      \param multiplicityincr - the increment (positive value) or decrement (negative value) of multiplicity of the knot
@@ -305,10 +305,13 @@ public:
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
-    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
-    bool allowOtherBody;
     /// Flag to allow carbon copy from misaligned geometry
-    bool allowUnaligned;
+    bool isAllowedUnaligned() const {
+        return allowUnaligned;
+    }
+    void setAllowUnaligned(bool on) {
+        allowUnaligned = on;
+    }
 
     enum eReasonList{
         rlAllowed,
@@ -346,6 +349,9 @@ protected:
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
+    /// Flag to allow carbon copy from misaligned geometry
+    bool allowUnaligned;
+
     std::vector<Part::Geometry *> ExternalGeo;
 
     std::vector<int> VertexId2GeoId;

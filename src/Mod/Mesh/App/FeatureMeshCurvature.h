@@ -48,7 +48,7 @@ public:
     App::PropertyLink Source;
     PropertyCurvatureList CurvInfo;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);

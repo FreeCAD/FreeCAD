@@ -15,13 +15,13 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
 		<DeveloperDocu>StepShape in a Import</DeveloperDocu>
 		<UserDocu>StepShape in Import
-This class gives a interface to retrive TopoShapes out of an loaded STEP file of any kind. 
+This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind. 
 		</UserDocu>
 	</Documentation>
 	  <Methode Name="read">
 		  <Documentation>
 			  <UserDocu>method read()
-Read a STEP file into memory and makeit accessably
+Read a STEP file into memory and make it accessible
 			  </UserDocu>
 		  </Documentation>
 	  </Methode>

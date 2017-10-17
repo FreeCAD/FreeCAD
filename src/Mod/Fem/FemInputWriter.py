@@ -65,7 +65,7 @@ class FemInputWriter():
         self.analysis_type = analysis_type
         self.dir_name = dir_name
         if not dir_name:
-            print('Error: FemInputWriter has no working_dir --> we gone make a temporary one!')
+            print('Error: FemInputWriter has no working_dir --> we are going to make a temporary one!')
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         self.dir_name = os.path.join(self.dir_name, '')  # check dir_name has a slash at the end, if not add one
         if not os.path.isdir(self.dir_name):
@@ -194,8 +194,9 @@ class FemInputWriter():
         # it only works if either Volumes or Shellthicknesses or Beamsections are in the material objects
         # it means it does not work for mixed meshes and multiple materials, this is checked in check_prerequisites
         if self.femmesh.Volumes:
-            # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
-            # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+            # we only could do this for volumes, if a mesh contains volumes we're going to use them in the analysis
+            # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, 
+            # there we have to check of some geometric objects
             all_found = False
             if self.femmesh.GroupCount:
                 all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
@@ -203,7 +204,8 @@ class FemInputWriter():
             if all_found is False:
                 if not self.femelement_table:
                     self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-                # we gone use the binary search for get_femelements_by_femnodes(), thus we need the parameter values self.femnodes_ele_table
+                # we're going to use the binary search for get_femelements_by_femnodes()
+                # thus we need the parameter values self.femnodes_ele_table
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femnodes_ele_table:

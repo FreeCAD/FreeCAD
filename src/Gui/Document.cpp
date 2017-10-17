@@ -915,15 +915,19 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     // set camera settings
     QString viewPos;
-    if (d->_pcAppWnd->sendHasMsgToActiveView("GetCamera")) {
-        const char* ppReturn=0;
-        d->_pcAppWnd->sendMsgToActiveView("GetCamera",&ppReturn);
-  
-        // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-        QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
-        if (lines.size() > 1) {
-            lines.pop_front();
-            viewPos = lines.join(QLatin1String(" "));
+    std::list<MDIView*> mdi = getMDIViews();
+    for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+        if ((*it)->onHasMsg("GetCamera")) {
+            const char* ppReturn=0;
+            (*it)->onMsg("GetCamera",&ppReturn);
+
+            // remove the first line because it's a comment like '#Inventor V2.1 ascii'
+            QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
+            if (lines.size() > 1) {
+                lines.pop_front();
+                viewPos = lines.join(QLatin1String(" "));
+                break;
+            }
         }
     }
 
@@ -1455,7 +1459,7 @@ std::vector<std::string> Document::getRedoVector(void) const
     return getDocument()->getAvailableRedoNames();
 }
 
-/// Will UNDO  one or more steps
+/// Will UNDO one or more steps
 void Document::undo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1463,7 +1467,7 @@ void Document::undo(int iSteps)
     }
 }
 
-/// Will REDO  one or more steps
+/// Will REDO one or more steps
 void Document::redo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1517,7 +1521,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
     } 
     
     //find all unclaimed viewproviders and add them back to the document (this happens if a 
-    //viewprovider has been claimed before, but the object droped it. 
+    //viewprovider has been claimed before, but the object dropped it. 
     if(rebuild) {
         auto vpmap = d->_ViewProviderMap;
         for( auto& pair  : d->_ViewProviderMap ) {

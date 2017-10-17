@@ -199,13 +199,11 @@ protected:
   virtual void actualRedraw(void);
   virtual bool updateDevicePixelRatio(void);
 
-  double renderTime;
-
 private:
   void constructor(const QtGLFormat& format, const QtGLWidget* sharewidget);
   friend class QuarterWidgetP;
   class QuarterWidgetP * pimpl;
-  bool initialized;  
+  bool initialized;
 };
 
 }}} // namespace

@@ -6,11 +6,11 @@ import os,sys,FileTools
 
 #import FileTools
 
-# line seperator
+# line separator
 ls = os.linesep
-# path seperator
+# path separator
 ps = os.pathsep
-# dir seperator
+# dir separator
 ds = os.sep
 
 #====================================================================

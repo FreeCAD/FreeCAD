@@ -299,7 +299,7 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
 
     std::string::size_type pos = cName.find('/');
 
-    // is there a path seperator ?
+    // is there a path separator ?
     if (pos == std::string::npos) {
         return _GetGroup(Name);
     }
@@ -710,7 +710,7 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
         Name = StrXUTF8( ((DOMElement*)pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            // retrive the text element
+            // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
                 vrValues.push_back( std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()) );
@@ -732,7 +732,7 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
         Name = StrXUTF8( ((DOMElement*)pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            // retrive the text element
+            // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
                 vrValues.push_back(std::make_pair(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str())));

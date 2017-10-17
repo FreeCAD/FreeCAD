@@ -102,7 +102,7 @@ struct SignalOwner {
     * disconnect the slot by the same boost:function it was connected with.
     *
     * @tparam S the signal type of interest
-    * @param c connection with which the slot was initialy connected
+    * @param c connection with which the slot was initially connected
     * @return void
     **/
     template<typename S>

@@ -141,7 +141,7 @@ bool TaskDlgDatumParameters::accept() {
             ext = true;
     }
     if(ext) {
-        // TODO rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
+        // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
         QDialog* dia = new QDialog;
         Ui_Dialog dlg;
         dlg.setupUi(dia);
@@ -174,7 +174,7 @@ bool TaskDlgDatumParameters::accept() {
     if(!PartGui::TaskDlgAttacher::accept())
         return false;
     
-    //we need to add the copied features to the body after the command action, as otherwise freecad crashs unexplainable
+    //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably
     for(auto obj : copies) {
         if(pcActiveBody)
             pcActiveBody->addObject(obj);

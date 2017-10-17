@@ -42,7 +42,7 @@ class _CommandFemMaterialMechanicalNonlinear(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
-        self.is_active = 'with_material'
+        self.is_active = 'with_material_solid'
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()

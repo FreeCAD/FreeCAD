@@ -306,7 +306,7 @@ TopoDS_Shape TopoShape::getSubShape(const char* Type) const
         return anIndices.FindKey(index);
     }
 
-    Standard_Failure::Raise("Not supported sub-shape type");
+    Standard_Failure::Raise("Unsupported sub-shape type");
     return TopoDS_Shape(); // avoid compiler warning
 }
 

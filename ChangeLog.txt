@@ -4,7 +4,7 @@ http://www.freecadweb.org/tracker/changelog_page.php
 Version: 0.14
   * Python path messed up after installation
   * Installing 0.14 breaks previous python installation
-  * Python function to retrive direct children of a shape using TopoDS_Iterator
+  * Python function to retrieve direct children of a shape using TopoDS_Iterator
   * Update translations for 0.14
   * FreeCAD crashes when changing placement of sketch.
   * Sketcher 180-deg-constraints should not be allowed for lines without intersection point.

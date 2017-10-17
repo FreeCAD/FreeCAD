@@ -723,7 +723,7 @@ private:
     ULONGLONG fileVersion = 0;
     if ( (m_parent != NULL) && (szImg != NULL) )
     {
-      // try to retrive the file-version:
+      // try to retrieve the file-version:
       if ( (this->m_parent->m_options & StackWalker::RetrieveFileVersion) != 0)
       {
         VS_FIXEDFILEINFO *fInfo = NULL;
@@ -750,7 +750,7 @@ private:
         }
       }
 
-      // Retrive some additional-infos about the module
+      // retrieve some additional-infos about the module
       IMAGEHLP_MODULE64_V3 Module;
       const char *szSymType = "-unknown-";
       if (this->GetModuleInfo(hProcess, baseAddr, &Module) != FALSE)
@@ -837,7 +837,7 @@ public:
       s_useV3Version = false;  // to prevent unneccessarry calls with the larger struct...
     }
 
-    // could not retrive the bigger structure, try with the smaller one (as defined in VC7.1)...
+    // could not retrieve the bigger structure, try with the smaller one (as defined in VC7.1)...
     pModuleInfo->SizeOfStruct = sizeof(IMAGEHLP_MODULE64_V2);
     memcpy(pData, pModuleInfo, sizeof(IMAGEHLP_MODULE64_V2));
     if (this->pSGMI(hProcess, baseAddr, (IMAGEHLP_MODULE64_V3*) pData) != FALSE)

@@ -432,7 +432,7 @@ Application::Application(bool GUIenabled)
     // global access 
     Instance = this;
 
-    // instanciate the workbench dictionary
+    // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
     if (GUIenabled) {

@@ -549,7 +549,7 @@ class _TaskPanelFemMaterial:
         if not self.sel_server:
             # if we do not check, we would start a new SelectionObserver on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
-            import FemSelectionObserver
+            from . import FemSelectionObserver
             self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):

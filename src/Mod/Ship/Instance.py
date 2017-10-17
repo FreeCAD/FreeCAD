@@ -122,7 +122,7 @@ class Ship:
             pass
 
     def cleanWeights(self, fp):
-        """Reanalyse the weights list looking for duplicated opbjects, or
+        """Reanalyse the weights list looking for duplicated objects, or
         removed ones.
         """
         if not len(fp.Weights):
@@ -150,7 +150,7 @@ class Ship:
             fp.Weights = filtered_list
 
     def cleanTanks(self, fp):
-        """Reanalyse the weights list looking for duplicated opbjects, or
+        """Reanalyse the weights list looking for duplicated objects, or
         removed ones.
         """
         if not len(fp.Tanks):
@@ -178,7 +178,7 @@ class Ship:
             fp.Tanks = filtered_list
 
     def cleanLoadConditions(self, fp):
-        """Reanalyse the weights list looking for duplicated opbjects, or
+        """Reanalyse the weights list looking for duplicated objects, or
         removed ones.
         """
         if not len(fp.LoadConditions):

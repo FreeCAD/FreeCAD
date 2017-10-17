@@ -109,16 +109,16 @@ std::vector<PyObject *> Feature::getPySubObjects(const std::vector<std::string>&
 {
     try {
         std::vector<PyObject *> temp;
-        for(std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it){
+        for (std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it) {
             PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
-            if(obj)
+            if (obj)
                 temp.push_back(obj);
         }
         return temp;
     }
-    catch (Standard_Failure& e) {
-
-        throw Py::ValueError(e.GetMessageString());
+    catch (Standard_Failure&) {
+        //throw Py::ValueError(e.GetMessageString());
+        return std::vector<PyObject *>();
     }
 }
 

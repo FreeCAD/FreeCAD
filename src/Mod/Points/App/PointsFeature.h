@@ -58,7 +58,7 @@ public:
     Feature(void);
     virtual ~Feature(void);
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     void Restore(Base::XMLReader &reader);
     void RestoreDocFile(Base::Reader &reader);

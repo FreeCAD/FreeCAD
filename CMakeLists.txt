@@ -101,6 +101,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 if(CMAKE_COMPILER_IS_CLANGXX)
+    # Disable warning about potentially uninstantiated static members
+    # because it leads to a lot of false-positives.
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
     # older boost.preprocessor turn off variadics for clang
     add_definitions(-DBOOST_PP_VARIADICS=1)
     message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
@@ -170,6 +173,11 @@ OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bun
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+if (WIN32 OR APPLE)
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
+else()
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
+endif()
 
 # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
 set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")

@@ -187,7 +187,7 @@ private:
             &Arg[0],&PyTuple_Type, &Arg[1],&PyTuple_Type, &Arg[2],&PyTuple_Type, &Arg[3])) 
             throw Py::Exception();
 
-        // go throug the Tuple of Tuples
+        // go through the Tuple of Tuples
         for (int i=0;i<4;i++) {
             // check the right size of the Tuple of floats
             if (PyTuple_GET_SIZE(Arg[i]) != 3)

@@ -51,9 +51,16 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);
-
+    /// A list of all possible display modes
+    virtual std::vector<std::string> getDisplayModes(void) const;
     // shows solid in the tree
-    virtual bool isShow(void) const{return true;}
+    virtual bool isShow(void) const {
+        return Visibility.getValue();
+    }
+    /// Hide the object in the view
+    virtual void hide(void);
+    /// Show the object in the view
+    virtual void show(void);
 
     /** @name Drag and drop */
     //@{
