@@ -71,7 +71,7 @@ KNOWN BUGS and TO DO
 /*==================================================================================================
 Reset elements
 ==================================================================================================*/
-/* Reseting everything helps to unify styles across different operating systems */
+/* Resetting everything helps to unify styles across different operating systems */
 * {
     padding: 0px;
     margin: 0px;
