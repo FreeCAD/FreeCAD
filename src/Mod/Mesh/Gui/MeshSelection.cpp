@@ -475,7 +475,11 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
         SoCamera* cam = view->getSoRenderManager()->getCamera();
         SbViewVolume vv = cam->getViewVolume();
         Gui::ViewVolumeProjection proj(vv);
+
+        Base::Placement plm = static_cast<Mesh::Feature*>(vp->getObject())->Placement.getValue();
+        proj.setTransform(plm.toMatrix());
         vp->getFacetsFromPolygon(polygon, proj, true, faces);
+
         if (self->onlyVisibleTriangles) {
             const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getWindowSize();
             short width,height; sz.getValue(width,height);
