@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger         <shaise at gmail>               *
+ *   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,4 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h" 
+#include "PreCompiled.h"
+
+#ifndef _PreComp_
+#endif
+
+#include <boost/regex.hpp>
+
+#include <Base/Writer.h>
+#include <Base/Reader.h>
+#include <Base/Stream.h>
+#include <Base/Exception.h>
+
+// KDL stuff - at the moment, not used
+//#include "Mod/Robot/App/kdl_cp/path_line.hpp"
+//#include "Mod/Robot/App/kdl_cp/path_circle.hpp"
+//#include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
+//#include "Mod/Robot/App/kdl_cp/utilities/error.h"
+
+#include "PathSimulator.h"
+
+using namespace Path;
+using namespace Base;
+
+TYPESYSTEM_SOURCE(Path::PathSimulator , Base::Persistence);
+
+
+
+
+
+ 
