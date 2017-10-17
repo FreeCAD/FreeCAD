@@ -252,6 +252,12 @@ Both parameters are optional.</UserDocu>
       </Documentation>
       <Parameter Name="RecomputesFrozen" Type="Boolean"/>
     </Attribute>
+    <Attribute Name="HasPendingTransaction" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if there is a pending transaction</UserDocu>
+      </Documentation>
+      <Parameter Name="HasPendingTransaction" Type="Boolean"/>
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

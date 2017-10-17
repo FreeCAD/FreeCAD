@@ -452,6 +452,10 @@ PyObject*  DocumentPy::commitTransaction(PyObject * args)
     Py_Return;
 }
 
+Py::Boolean DocumentPy::getHasPendingTransaction() const {
+    return Py::Boolean(getDocumentPtr()->hasPendingTransaction());
+}
+
 PyObject*  DocumentPy::undo(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
