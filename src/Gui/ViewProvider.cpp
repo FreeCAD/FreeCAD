@@ -614,6 +614,11 @@ bool ViewProvider::onDelete(const vector< string >& subNames) {
     return del;
 }
 
+bool ViewProvider::canDelete(App::DocumentObject*) const
+{
+    return false;
+}
+
 bool ViewProvider::canDragObject(App::DocumentObject* obj) const {
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
