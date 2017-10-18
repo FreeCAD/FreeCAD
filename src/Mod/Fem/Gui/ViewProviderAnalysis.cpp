@@ -78,6 +78,12 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
     return static_cast<Fem::FemAnalysis*>(getObject())->Member.getValues();
 }
 
+bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
+{
+    Q_UNUSED(obj)
+    return true;
+}
+
 std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
 {
     return { "Analysis" };

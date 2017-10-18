@@ -46,6 +46,8 @@ public:
     virtual bool doubleClicked(void);
 
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+    /// Asks the view provider if the given object can be deleted.
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     //virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
