@@ -220,7 +220,7 @@ void ViewProviderPartExt::GetNormals(const TopoDS_Face&  theFace,
 // Construction/Destruction
 
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0,64.0,1.0};
-App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001,100.0,0.01};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.01,100.0,0.01};
 App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange = {1.0,180.0,0.05};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
 const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
@@ -330,7 +330,9 @@ ViewProviderPartExt::~ViewProviderPartExt()
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
-    
+    // The lower limit of the deviation has been increased to avoid
+    // to freeze the GUI
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     if (prop == &Deviation) {
         if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
