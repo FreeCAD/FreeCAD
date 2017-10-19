@@ -734,7 +734,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         if has_no_face_data(femmesh):
             print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrieve the volume elements of the ref_face!')
             # there is no face data
-            # the problem if we retrieve the nodes ourself is they are not sorted we just have the nodes. 
+            # the problem if we retrieve the nodes ourself is they are not sorted we just have the nodes.
             # We need to sort them according the shell mesh notation of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
             # try to use getccxVolumesByFace() to get the volume ids of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
@@ -1029,7 +1029,7 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
 
 
 def get_mesh_group_elements(mesh_group_obj, aPart):
-    '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart. 
+    '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart.
        If found in shape they are added to a dict
        {MeshGroupIdentifier : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
@@ -1043,7 +1043,7 @@ def get_mesh_group_elements(mesh_group_obj, aPart):
 
 
 def get_analysis_group_elements(aAnalysis, aPart):
-    ''' all Reference shapes of all Analysis member are searched in the Shape of aPart. 
+    ''' all Reference shapes of all Analysis member are searched in the Shape of aPart.
         If found in shape they are added to a dict
         {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
@@ -1063,12 +1063,12 @@ def get_analysis_group_elements(aAnalysis, aPart):
         else:
             FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
             print('We are going to try to get the empty material references anyway.\n')
-            # FemElementGeometry2D, ElementGeometry1D and FemElementFluid1D could have empty references, 
+            # FemElementGeometry2D, ElementGeometry1D and FemElementFluid1D could have empty references,
             # but on solid meshes only materials should have empty references
             for er in empty_references:
                 print(er.Name)
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
-    # check if all groups have at least one element, 
+    # check if all groups have at least one element,
     # it doesn't mean ALL reference shapes for a group have been found
     for g in group_elements:
         # print(group_elements[g])
