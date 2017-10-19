@@ -100,7 +100,6 @@ class ArchTest(unittest.TestCase):
         sk.addConstraint(Sketcher.Constraint('Coincident',3,2,0,1)) 
         win = Arch.makeWindow(sk)
         Arch.removeComponents(win,host=w)
-        Arch.fixDAG(win,force=True)
         self.failUnless(win,"Arch Window failed")
 
     def testRoof(self):
