@@ -346,9 +346,6 @@ class Writer(object):
                         self._boundary(name, "Potential Constant", True)
                 self._handled(obj)
 
-
-
-
     def _handleFluxsolver(self):
         activeIn = []
         for equation in self.solver.Group:
@@ -363,13 +360,12 @@ class Writer(object):
 
     def _getFluxsolverSolver(self, equation):
         s = self._createLinearSolver(equation)
-        s["Equation"] = "Flux Solver" # equation.Name
+        s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
         s["Flux Variable"] = equation.FluxVariable
         s["Calculate Flux"] = equation.CalculateFlux
         s["Calculate Grad"] = equation.CalculateGrad
         return s
-
 
     def _handleElasticity(self):
         activeIn = []
