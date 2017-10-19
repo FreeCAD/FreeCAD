@@ -224,7 +224,7 @@ class FemGmshTools():
 
     def get_group_data(self):
         self.group_elements = {}
-        # TODO: solids, faces, edges and vertexes don't seem to work together in one group, 
+        # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
         #       some print or make them work together
 
         # mesh groups and groups of analysis member
@@ -271,8 +271,8 @@ class FemGmshTools():
                     if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
                         error_message = "  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. GMSH could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
                         FreeCAD.Console.PrintError(error_message + "\n")
-                        # TODO: no gui popup because FreeCAD will be in a endless print loop 
-                        #       as long as the pop up is on --> maybe find a better solution for 
+                        # TODO: no gui popup because FreeCAD will be in a endless print loop
+                        #       as long as the pop up is on --> maybe find a better solution for
                         #       either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)

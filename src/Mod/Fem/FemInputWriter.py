@@ -195,7 +195,7 @@ class FemInputWriter():
         # it means it does not work for mixed meshes and multiple materials, this is checked in check_prerequisites
         if self.femmesh.Volumes:
             # we only could do this for volumes, if a mesh contains volumes we're going to use them in the analysis
-            # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, 
+            # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges,
             # there we have to check of some geometric objects
             all_found = False
             if self.femmesh.GroupCount:
