@@ -27,7 +27,6 @@ echo -e "$BLUE>> Skipping all misc. directories: $MISC_FILES $NC\n"
 CODESPELL_SKIPS="\"${TRANSLATION_FILES},${THIRDPARTY_FILES},${MISC_FILES}\""
 
 # Round up all changed content
-# TODO: Figure out how to make $CHANGED_FILES output a list of files separated by a space
 CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
 
 
@@ -35,8 +34,9 @@ CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
 echo -e "$BLUE>> Following files were changed in this pull request (commit range: $TRAVIS_COMMIT_RANGE):$NC"
 echo -e "$GREEN\n$CHANGED_FILES\n$NC"
 
+
 # cat all files that changed
-TEXT_CONTENT=`cat $(echo "$CHANGED_FILES")`
+# TEXT_CONTENT=`cat $(echo "$CHANGED_FILES")`
 
 # Optionally output all the text in the PRs that is subject to be checked. 
 # echo -e "$BLUE>> Text content that will be checked:$NC"
@@ -48,6 +48,8 @@ curl -Os https://gist.githubusercontent.com/luzpaz/7ac1bf4412b9c1e5acde715ef9cb6
 
 # Run codespell and output results to stdout as well as in to a file
 echo -e "$BLUE>> Run codespell -d -q 3 -S "$CODESPELL_SKIPS" -I ./fc-word-whitelist.txt:$NC"
-codespell -d -q 3 -S "$CODESPELL_SKIPS" -I ./fc-word-whitelist.txt 
+# we need to sort the diffed file names in to a space delimited list so that we can pass it as parameters to codespell
+# hence the bash sorcery below 
+mapfile -t files < <(git diff --name-only $TRAVIS_COMMIT_RANGE); codespell -d -q 3 -S "$CODESPELL_SKIPS" -I ./fc-word-whitelist.txt  "${files[@]}"
 
-exit 0;
+# exit 0;
