@@ -183,7 +183,7 @@ def makeElementGeometry2D(doc, thickness=20.0, name="ElementGeometry2D"):
 
 ########## material objects ##########
 def makeMaterialFluid(doc, name="FluidMaterial"):
-    '''makeMaterialFluid(document, [name]): makes an FEM Material for fluid'''
+    '''makeMaterialFluid(document, [name]): makes a FEM Material for fluid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
     import PyObjects._FemMaterial
     PyObjects._FemMaterial._FemMaterial(obj)
@@ -196,7 +196,7 @@ def makeMaterialFluid(doc, name="FluidMaterial"):
 
 
 def makeMaterialMechanicalNonlinear(doc, base_material, name="MechanicalMaterialNonlinear"):
-    '''makeMaterialMechanicalNonlinear(document, base_material, [name]): creates an nonlinear material object'''
+    '''makeMaterialMechanicalNonlinear(document, base_material, [name]): creates a nonlinear material object'''
     obj = doc.addObject("Fem::FeaturePython", name)
     import PyObjects._FemMaterialMechanicalNonlinear
     PyObjects._FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
@@ -208,7 +208,7 @@ def makeMaterialMechanicalNonlinear(doc, base_material, name="MechanicalMaterial
 
 
 def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
-    '''makeMaterialSolid(document, [name]): makes an FEM Material for solid'''
+    '''makeMaterialSolid(document, [name]): makes a FEM Material for solid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
     import PyObjects._FemMaterial
     PyObjects._FemMaterial._FemMaterial(obj)
@@ -222,7 +222,7 @@ def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
 
 ########## mesh objects ##########
 def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
-    '''makeMeshBoundaryLayer(document, base_mesh, [name]): creates a  FEM mesh BoundaryLayer object to define boundary layer properties'''
+    '''makeMeshBoundaryLayer(document, base_mesh, [name]): creates a FEM mesh BoundaryLayer object to define boundary layer properties'''
     obj = doc.addObject("Fem::FeaturePython", name)
     import PyObjects._FemMeshBoundaryLayer
     PyObjects._FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
@@ -249,7 +249,7 @@ def makeMeshGmsh(doc, name="FEMMeshGMSH"):
 
 
 def makeMeshGroup(doc, base_mesh, use_label=False, name="FEMMeshGroup"):
-    '''makeMeshGroup(document, base_mesh, [use_label], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
+    '''makeMeshGroup(document, base_mesh, [use_label], [name]): creates a FEM mesh region object to define properties for a region of a FEM mesh'''
     obj = doc.addObject("Fem::FeaturePython", name)
     import PyObjects._FemMeshGroup
     PyObjects._FemMeshGroup._FemMeshGroup(obj)
@@ -272,7 +272,7 @@ def makeMeshNetgen(doc, name="FEMMeshNetgen"):
 
 
 def makeMeshRegion(doc, base_mesh, element_length=0.0, name="FEMMeshRegion"):
-    '''makeMeshRegion(document, base_mesh, [element_length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
+    '''makeMeshRegion(document, base_mesh, [element_length], [name]): creates a FEM mesh region object to define properties for a region of a FEM mesh'''
     obj = doc.addObject("Fem::FeaturePython", name)
     import PyObjects._FemMeshRegion
     PyObjects._FemMeshRegion._FemMeshRegion(obj)
