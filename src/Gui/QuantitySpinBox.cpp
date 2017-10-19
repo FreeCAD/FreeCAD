@@ -47,6 +47,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
+#include <App/PropertyGeo.h>
 #include <sstream>
 #include <boost/math/special_functions/round.hpp>
 
@@ -400,6 +401,7 @@ void Gui::QuantitySpinBox::onChange()
 bool QuantitySpinBox::apply(const std::string & propName)
 {
     if (!ExpressionBinding::apply(propName)) {
+        double dValue = value().getValue();
         if (isBound()) {
             const App::ObjectIdentifier & path = getPath();
             const Property * prop = path.getProperty();
@@ -407,8 +409,16 @@ bool QuantitySpinBox::apply(const std::string & propName)
             /* Skip update if property is bound and we know it is read-only */
             if (prop && prop->isReadOnly())
                 return true;
+
+            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+                std::string p = path.getSubPathStr();
+                if (p == ".Rotation.Angle") {
+                    dValue = Base::toRadians(dValue);
+                }
+            }
         }
-        Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value().getValue());
+
+        Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), dValue);
         return true;
     }
     else
