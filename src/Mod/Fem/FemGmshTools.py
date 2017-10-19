@@ -229,7 +229,8 @@ class FemGmshTools():
 
         # mesh groups and groups of analysis member
         if not self.mesh_obj.MeshGroupList:
-            print ('  No mesh group objects.')
+            # print ('  No mesh group objects.')
+            pass
         else:
             print ('  Mesh group objects, we need to get the elements.')
             for mg in self.mesh_obj.MeshGroupList:
@@ -249,14 +250,16 @@ class FemGmshTools():
                     FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         else:
             print('  No anlysis members for group meshing.')
-        print('  {}'.format(self.group_elements))
+        if self.group_elements:
+            print('  {}'.format(self.group_elements))
 
     def get_region_data(self):
         # mesh regions
         self.ele_length_map = {}  # { 'ElementString' : element length }
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
         if not self.mesh_obj.MeshRegionList:
-            print ('  No mesh regions.')
+            # print ('  No mesh regions.')
+            pass
         else:
             print ('  Mesh regions, we need to get the elements.')
             # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
@@ -308,8 +311,8 @@ class FemGmshTools():
                 ele_shape = FemMeshTools.get_element(self.part_obj, eleml)  # the method getElement(element) does not return Solid elements
                 ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-        print('  {}'.format(self.ele_length_map))
-        print('  {}'.format(self.ele_node_map))
+            print('  {}'.format(self.ele_length_map))
+            print('  {}'.format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer,
@@ -319,7 +322,8 @@ class FemGmshTools():
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
         if not self.mesh_obj.MeshBoundaryLayerList:
-            print ('  No mesh boundary layer setting document object.')
+            # print ('  No mesh boundary layer setting document object.')
+            pass
         else:
             print ('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
@@ -379,13 +383,13 @@ class FemGmshTools():
                         FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n")
                 else:
                     FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the min thickness is 0.0 mm.\n")
-        print('  {}'.format(self.bl_setting_list))
+            print('  {}'.format(self.bl_setting_list))
 
     def write_boundary_layer(self, geo):
         # currently single body is supported
         if len(self.bl_setting_list):
             geo.write("// boundary layer setting\n")
-            print('Start to write boundary layer setup')
+            print('  Start to write boundary layer setup')
             field_number = 1
             for item in self.bl_setting_list:
                 prefix = "Field[" + str(field_number) + "]"
@@ -407,9 +411,9 @@ class FemGmshTools():
                 field_number += 1
             geo.write("\n")
             geo.flush()
-            print('finished in boundary layer setup')
+            print('  finished in boundary layer setup')
         else:
-            print('no boundary layer setup is found for this mesh')
+            # print('  no boundary layer setup is found for this mesh')
             geo.write("// no boundary layer settings for this mesh\n")
 
     def write_part_file(self):
