@@ -84,6 +84,9 @@ notifications:
     on_start:   change
 
 before_install:
+# Download codespell to test PR for spelling mistakes
+- pip install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
+- source ${TRAVIS_BUILD_DIR}/spellcheck_code.sh
 - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
 - |
   case "${TRAVIS_OS_NAME}" in
@@ -232,6 +235,10 @@ install:
   - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
+# Run codepsell to test PR for spelling mistakes. 
+# Spelling mistakes _will not_ fail the build but instead return results via PR comment thread 
+  - source ${TRAVIS_BUILD_DIR}/spellcheck_code.sh
+
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
