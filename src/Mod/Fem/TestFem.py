@@ -400,15 +400,15 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new material...')
-        new_material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
-        mat = new_material_object.Material
+        material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
+        mat = material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
         mat['Density'] = "7900 kg/m^3"
-        new_material_object.Material = mat
-        self.assertTrue(new_material_object, "FemTest of new material failed")
-        analysis.Member = analysis.Member + [new_material_object]
+        material_object.Material = mat
+        self.assertTrue(material_object, "FemTest of new material failed")
+        analysis.Member = analysis.Member + [material_object]
 
         fcc_print('Checking FEM new fixed constraint...')
         fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
@@ -573,8 +573,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new material...')
-        new_material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
-        mat = new_material_object.Material
+        material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
+        mat = material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
@@ -582,9 +582,9 @@ class FemCcxAnalysisTest(unittest.TestCase):
         mat['ThermalConductivity'] = "43.27 W/m/K"  # SvdW: Change to Ansys model values
         mat['ThermalExpansionCoefficient'] = "12 um/m/K"
         mat['SpecificHeat'] = "500 J/kg/K"  # SvdW: Change to Ansys model values
-        new_material_object.Material = mat
-        self.assertTrue(new_material_object, "FemTest of new material failed")
-        analysis.Member = analysis.Member + [new_material_object]
+        material_object.Material = mat
+        self.assertTrue(material_object, "FemTest of new material failed")
+        analysis.Member = analysis.Member + [material_object]
 
         fcc_print('Checking FEM new fixed constraint...')
         fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
@@ -727,17 +727,17 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.Member = analysis.Member + [solver_object]
 
         fcc_print('Checking FEM new material...')
-        new_material_object = ObjectsFem.makeMaterialFluid(self.active_doc, 'FluidMaterial')
-        mat = new_material_object.Material
+        material_object = ObjectsFem.makeMaterialFluid(self.active_doc, 'FluidMaterial')
+        mat = material_object.Material
         mat['Name'] = "Water"
         mat['Density'] = "998 kg/m^3"
         mat['SpecificHeat'] = "4.182 J/kg/K"
         mat['DynamicViscosity'] = "1.003e-3 kg/m/s"
         mat['VolumetricThermalExpansionCoefficient'] = "2.07e-4 m/m/K"
         mat['ThermalConductivity'] = "0.591 W/m/K"
-        new_material_object.Material = mat
-        self.assertTrue(new_material_object, "FemTest of new material failed")
-        analysis.Member = analysis.Member + [new_material_object]
+        material_object.Material = mat
+        self.assertTrue(material_object, "FemTest of new material failed")
+        analysis.Member = analysis.Member + [material_object]
 
         fcc_print('Checking FEM Flow1D inlet constraint...')
         Flow1d_inlet = ObjectsFem.makeElementFluid1D(self.active_doc, "ElementFluid1D")
