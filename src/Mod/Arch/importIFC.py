@@ -586,7 +586,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if not shape.isNull():
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
-                        if DEBUG: print("skipping space ",pid)
+                        if DEBUG: print("skipping space ",pid,end="")
                     elif structobj:
                         structshapes[pid] = shape
                         if DEBUG: print(shape.Solids," ",end="")
@@ -631,7 +631,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 #continue
 
         else:
-            if DEBUG: print(" no brep ")
+            if DEBUG: print(" no brep ",end="")
 
         if MERGE_MODE_ARCH == 0 and archobj:
 
@@ -694,7 +694,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = Arch.makeComponent(baseobj,name=name)
             if obj:
                 sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else ""
-                if DEBUG: print(sols)
+                if DEBUG: print(sols,end="")
                 objects[pid] = obj
 
         elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
@@ -717,6 +717,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
+
+        if DEBUG: print("")  # newline for debug prints, print for a new object should be on a new line
 
         if obj:
 
