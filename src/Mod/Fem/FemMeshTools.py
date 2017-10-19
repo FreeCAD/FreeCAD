@@ -673,7 +673,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
                 if node in refedge_nodes:
                     fe_refedge_nodes.append(node)
                 edge_table[elem] = fe_refedge_nodes  # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
-        # FIXME: duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
+        # FIXME: duplicate_mesh_elements: as soon as contact and springs are supported the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_edge_femmesh(femmesh):
         refedge_fem_edgeelements = get_femelements_by_femnodes_std(femelement_table, refedge_nodes)
@@ -732,7 +732,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
     face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
     if is_solid_femmesh(femmesh):
         if has_no_face_data(femmesh):
-            print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrive the volume elments of the ref_face!')
+            print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrieve the volume elements of the ref_face!')
             # there is no face data
             # the problem if we retrieve the nodes ourself is they are not sorted we just have the nodes. 
             # We need to sort them according the shell mesh notation of tria3, tria6, quad4, quad8
@@ -757,7 +757,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                         if nodeID in ref_face_nodes:
                             ve_ref_face_nodes.append(nodeID)
                     face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
-                face_table = build_mesh_faces_of_volume_elements(face_table, femelement_table)  # we need to resort the nodes to make them build a element face
+                face_table = build_mesh_faces_of_volume_elements(face_table, femelement_table)  # we need to resort the nodes to make them build an element face
         else:  # the femmesh has face_data
             faces = femmesh.getFacesByFace(ref_face)   # (mv, mf)
             for mf in faces:
