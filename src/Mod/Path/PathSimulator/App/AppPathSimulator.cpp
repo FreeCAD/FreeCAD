@@ -28,9 +28,13 @@
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
+#include <Base/Interpreter.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
+
+#include "PathSim.h"
+#include "PathSimPy.h"
 
 
 namespace PathSimulator {
@@ -59,10 +63,27 @@ PyObject* initModule()
 /* Python entry */
 PyMOD_INIT_FUNC(PathSimulator)
 {
-    // ADD YOUR CODE HERE
-    //
-    //
+	// load dependent module
+	try {
+		Base::Interpreter().runString("import Part");
+		Base::Interpreter().runString("import Path");
+	}
+	catch (const Base::Exception& e) {
+		PyErr_SetString(PyExc_ImportError, e.what());
+		PyMOD_Return(NULL);
+	}
+
+	//
     PyObject* mod = PathSimulator::initModule();
-    Base::Console().Log("Loading PathSimulator module... done\n");
+    Base::Console().Log("Loading PathSimulator module.... done\n");
     PyMOD_Return(mod);
+
+	// Add Types to module
+	Base::Interpreter().addType(&PathSimulator::PathSimPy::Type, mod, "PathSim");
+
+	// NOTE: To finish the initialization of our own type objects we must
+	// call PyType_Ready, otherwise we run into a segmentation fault, later on.
+	// This function is responsible for adding inherited slots from a type's base class.
+	PathSimulator::PathSim::init();
+
 }
