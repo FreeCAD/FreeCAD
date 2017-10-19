@@ -82,6 +82,9 @@ IF(FREECAD_VERSION VERSION_GREATER 0.16)
     ENDIF()
 ENDIF(FREECAD_VERSION VERSION_GREATER 0.16)
 
+# Log the compiler and version
+MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}, version: ${CMAKE_CXX_COMPILER_VERSION}")
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
