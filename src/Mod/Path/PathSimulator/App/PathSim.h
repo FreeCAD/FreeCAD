@@ -21,33 +21,46 @@
  ***************************************************************************/
 
 
-#ifndef PATH_PathSimulator_H
-#define PATH_PathSimulator_H
+#ifndef PATHSIMULATOR_PathSim_H
+#define PATHSIMULATOR_PathSim_H
+
+// Exporting of App classes
 
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <Mod/Path/App/PreCompiled.h> 
+#include <Mod/Path/App/Command.h>
+#include <Mod/Path/App/Tooltable.h>
+#include <Mod/Part/App/TopoShape.h>
+#include "VolSim.h"
 
-namespace Path
+using namespace Path;
+
+namespace PathSimulator
 {
 
     /** The representation of a CNC Toolpath Simulator */
     
-	class PathSimulatorAppExport PathSimulator : public Base::Persistence
+	class PathSimulatorExport PathSim : public Base::BaseClass
     {
         TYPESYSTEM_HEADER();
     
         public:
-			PathSimulator() {};
-			~PathSimulator() {};
+			PathSim();
+			~PathSim();
             
-			virtual unsigned int getMemSize(void) const {
-				return 0;
-			};
-			virtual void Save(Base::Writer &/*writer*/) const {};
-			virtual void Restore(Base::XMLReader &/*reader*/) {};
+			void BeginSimulation(Part::TopoShape * stock, float resolution);
+			void SetCurrentTool(Tool * tool);
+			void ApplyCommand(Command * cmd);
+
+		public:
+			cStock * m_stock;
+			cSimTool *m_tool;
 	};
 
 } //namespace Path
 
 
-#endif // PATH_PathSimulator_H
+#endif // PATHSIMULATOR_PathSim_H

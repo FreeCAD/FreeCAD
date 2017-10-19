@@ -1,5 +1,9 @@
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
@@ -8,27 +12,40 @@ include_directories(
 )
 
 set(PathSimulator_LIBS
+	Path
+    Part
     FreeCADApp
 )
 
+SET(Python_SRCS
+    PathSimPy.xml
+    PathSimPyImp.cpp
+)
+
+
 SET(PathSimulator_SRCS
     AppPathSimulator.cpp
-    PathSimulator.cpp
-    PathSimulator.h
+    PathSim.cpp
+    PathSim.h
+    VolSim.cpp
+    VolSim.h
     PreCompiled.cpp
     PreCompiled.h
+    ${Python_SRCS}
 )
+
+generate_from_xml(PathSimPy)
 
 add_library(PathSimulator SHARED ${PathSimulator_SRCS})
 target_link_libraries(PathSimulator ${PathSimulator_LIBS})
 
 
 fc_target_copy_resource(PathSimulator 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path/PathSimulator
-    ${CMAKE_BINARY_DIR}/Mod/Path/PathSimulator
+    ${CMAKE_SOURCE_DIR}/src/Mod/Path
+    ${CMAKE_BINARY_DIR}/Mod/Path
     Init.py)
 
-SET_BIN_DIR(PathSimulator PathSimulator /Mod/Path/PathSimulator)
+SET_BIN_DIR(PathSimulator PathSimulator /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(PathSimulator)
 
 install(TARGETS PathSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})

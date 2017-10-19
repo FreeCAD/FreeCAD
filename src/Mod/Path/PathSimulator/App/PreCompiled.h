@@ -28,7 +28,9 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-# define PathSimulatorAppExport __declspec(dllexport)
+# define PathSimulatorExport __declspec(dllexport)
+# define PathExport  __declspec(dllexport)
+# define PartExport __declspec(dllimport)
 #else // for Linux
 # define PathSimulatorAppExport
 #endif
