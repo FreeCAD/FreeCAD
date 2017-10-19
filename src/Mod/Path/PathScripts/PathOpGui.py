@@ -585,8 +585,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.startDepth = PathGui.QuantitySpinBox(self.form.startDepth, obj, 'StartDepth')
 
         if PathOp.FeatureNoFinalDepth & self.features:
-            self.form.finalDepth.hide()
-            self.form.finalDepthLabel.hide()
+            self.form.finalDepth.setEnabled(False)
+            self.form.finalDepth.setToolTip(translate('PathOp', 'FinalDepth cannot be modified for this operation.\nIf it is necessary to set the FinalDepth manually please select a different operation.'))
             self.form.finalDepthSet.hide()
         else:
             self.finalDepth = PathGui.QuantitySpinBox(self.form.finalDepth, obj, 'FinalDepth')
