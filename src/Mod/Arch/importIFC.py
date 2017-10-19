@@ -382,7 +382,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
     materials = ifcfile.by_type("IfcMaterial")
-    overallboundbox = FreeCAD.BoundBox()
 
     if DEBUG: print("Building relationships table...",end="")
 
@@ -476,6 +475,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("Processing objects...")
 
     if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+        overallboundbox = None
         import FreeCADGui
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
 
@@ -571,11 +571,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
                 try:
-                    if not overallboundbox.isInside(shape.BoundBox):
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
-                    overallboundbox.add(shape.BoundBox)
+                    bb = shape.BoundBox
+                    # if DEBUG: print(' ' + str(bb),end="")
                 except:
-                    pass
+                    bb = None
+                    if DEBUG: print(' BB could not be computed',end="")
+                if bb:
+                    if not overallboundbox:
+                        overallboundbox = bb
+                    if not overallboundbox.isInside(bb):
+                        FreeCADGui.SendMsgToActiveView("ViewFit")
+                        overallboundbox.add(bb)
 
             if not shape.isNull():
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
