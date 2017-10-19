@@ -28,23 +28,62 @@
 
 #include <boost/regex.hpp>
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Exception.h>
 
-// KDL stuff - at the moment, not used
-//#include "Mod/Robot/App/kdl_cp/path_line.hpp"
-//#include "Mod/Robot/App/kdl_cp/path_circle.hpp"
-//#include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
-//#include "Mod/Robot/App/kdl_cp/utilities/error.h"
+#include "PathSim.h"
+//#include "VolSim.h"
 
-#include "PathSimulator.h"
-
-using namespace Path;
 using namespace Base;
+using namespace PathSimulator;
 
-TYPESYSTEM_SOURCE(Path::PathSimulator , Base::Persistence);
+TYPESYSTEM_SOURCE(PathSimulator::PathSim , Base::BaseClass);
+
+PathSim::PathSim()
+{
+	m_stock = nullptr;
+	m_tool = nullptr;
+}
+
+PathSim::~PathSim()
+{
+	if (m_stock != nullptr)
+		delete m_stock;
+	if (m_tool != nullptr)
+		delete m_tool;
+}
+
+
+void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
+{
+	Base::BoundBox3d & bbox = stock->getBoundBox();
+	m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
+}
+
+void PathSim::SetCurrentTool(Tool * tool)
+{
+	cSimTool::Type tp = cSimTool::FLAT;
+	float angle = 180;
+	switch (tool->Type)
+	{
+	case Tool::BALLENDMILL:
+		tp = cSimTool::ROUND;
+		break;
+
+	case Tool::CHAMFERMILL:
+		tp = cSimTool::CHAMFER;
+		angle = tool->CuttingEdgeAngle;
+		break;
+	}
+	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
+}
+
+
+void PathSim::ApplyCommand(Command * cmd)
+{
+
+}
 
 
 
