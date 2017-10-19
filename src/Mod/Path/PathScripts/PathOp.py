@@ -153,7 +153,8 @@ class ObjectOp(object):
         self.setDefaultValues(obj)
 
     def onDocumentRestored(self, obj):
-        if FeatureBaseGeometry & self.opFeatures(obj) and 'App::PropertyLinkSubList' == obj.getTypeIdOfProperty('Base'):
+        features = self.opFeatures(obj)
+        if FeatureBaseGeometry & features and 'App::PropertyLinkSubList' == obj.getTypeIdOfProperty('Base'):
             PathLog.info("Replacing link property with global link (%s)." % obj.State)
             base = obj.Base
             obj.removeProperty('Base')
@@ -162,20 +163,21 @@ class ObjectOp(object):
             obj.touch()
             obj.Document.recompute()
 
-        if FeatureTool & self.opFeatures(obj) and not hasattr(obj, 'OpToolDiameter'):
+        if FeatureTool & features and not hasattr(obj, 'OpToolDiameter'):
             self.addOpValues(obj, ['tooldia'])
 
-        if FeatureDepths & self.opFeatures(obj):
-            if not hasattr(obj, 'OpStartDepth'):
-                self.addOpValues(obj, ['start', 'final'])
-                if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
-                    obj.setExpression('StartDepth', 'OpStartDepth')
-                if FeatureNoFinalDepth & self.opFeatures(obj):
-                    obj.setEditorMode('OpFinalDepth', 2)
-                elif not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
-                    obj.setExpression('FinalDepth', 'OpFinalDepth')
-                if PathGeom.isRoughly(obj.StepDown.Value, 1):
-                    obj.setExpression('StepDown', 'OpToolDiameter')
+        if FeatureStepDown & features and not hasattr(obj, 'OpStartDepth'):
+            if PathGeom.isRoughly(obj.StepDown.Value, 1):
+                obj.setExpression('StepDown', 'OpToolDiameter')
+
+        if FeatureDepths & features and not hasattr(obj, 'OpStartDepth'):
+            self.addOpValues(obj, ['start', 'final'])
+            if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
+                obj.setExpression('StartDepth', 'OpStartDepth')
+            if FeatureNoFinalDepth & features:
+                obj.setEditorMode('OpFinalDepth', 2)
+            elif not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
+                obj.setExpression('FinalDepth', 'OpFinalDepth')
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
