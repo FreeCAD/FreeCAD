@@ -76,7 +76,6 @@ PyMOD_INIT_FUNC(PathSimulator)
 	//
     PyObject* mod = PathSimulator::initModule();
     Base::Console().Log("Loading PathSimulator module.... done\n");
-    PyMOD_Return(mod);
 
 	// Add Types to module
 	Base::Interpreter().addType(&PathSimulator::PathSimPy::Type, mod, "PathSim");
@@ -86,4 +85,5 @@ PyMOD_INIT_FUNC(PathSimulator)
 	// This function is responsible for adding inherited slots from a type's base class.
 	PathSimulator::PathSim::init();
 
+	PyMOD_Return(mod);
 }
