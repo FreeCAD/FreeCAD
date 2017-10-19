@@ -94,6 +94,8 @@ class ViewProvider(object):
         '''setEdit(vobj, mode=0) ... initiate editing of receivers model.'''
         PathLog.track()
         page = self.getTaskPanelOpPage(vobj.Object)
+        page.setTitle(self.OpName)
+        page.setIcon(self.OpIcon)
         selection = self.getSelectionFactory()
         self.setupTaskPanel(TaskPanel(vobj.Object, self.deleteObjectsOnReject(), page, selection))
         self.deleteOnReject = False
@@ -178,6 +180,7 @@ class TaskPanelPage(object):
         self.signalDirtyChanged = None
         self.setClean()
         self.setTitle('-')
+        self.setIcon(None)
         self.features = features
 
     def onDirtyChanged(self, callback):
@@ -226,6 +229,14 @@ class TaskPanelPage(object):
         The default implementation returns what was previously set with setTitle(title).
         Can safely be overwritten by subclasses.'''
         return self.title
+
+    def setIcon(self, icon):
+        '''setIcon(icon) ... sets the icon for the page.'''
+        self.icon = icon
+    def getIcon(self, icon):
+        '''getIcon(icon) ... return icon for page or None.
+        Can safely be overwritten by subclasses.'''
+        return self.icon
 
     # subclass interface
     def initPage(self, obj):
@@ -711,7 +722,6 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelHeightsPage(obj, features))
 
-        opPage.setTitle(translate('PathOp', 'Operation'))
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
@@ -719,6 +729,8 @@ class TaskPanel(object):
             page.onDirtyChanged(self.pageDirtyChanged)
 
         if TaskPanelLayout < 2:
+            opTitle = opPage.getTitle(obj)
+            opPage.setTitle(translate('PathOp', 'Operation'))
             toolbox = QtGui.QToolBox()
             if TaskPanelLayout == 0:
                 for page in self.featurePages:
@@ -727,6 +739,11 @@ class TaskPanel(object):
             else:
                 for page in reversed(self.featurePages):
                     toolbox.addItem(page.form, page.getTitle(obj))
+            PathLog.info("Title: '%s'" % opTitle)
+            toolbox.setWindowTitle(opTitle)
+            if opPage.getIcon(obj):
+                toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
+
             self.form = toolbox
         elif TaskPanelLayout == 2:
             forms = []
