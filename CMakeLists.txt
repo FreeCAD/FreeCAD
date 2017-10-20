@@ -106,7 +106,18 @@ endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 if(CMAKE_COMPILER_IS_CLANGXX)
     # Disable warning about potentially uninstantiated static members
     # because it leads to a lot of false-positives.
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    #
+    # https://en.wikipedia.org/wiki/Xcode#Latest_versions
+    if (APPLE)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    elseif (UNIX)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    endif()
+
     # older boost.preprocessor turn off variadics for clang
     add_definitions(-DBOOST_PP_VARIADICS=1)
     message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
