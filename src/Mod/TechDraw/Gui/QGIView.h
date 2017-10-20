@@ -73,6 +73,7 @@ public:
     virtual bool isVisible(void) {return m_visibility;};
     virtual void draw(void);
     virtual void drawCaption(void);
+    virtual void rotateView(void);
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */

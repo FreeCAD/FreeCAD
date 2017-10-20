@@ -561,6 +561,32 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
     return transShape;
 }
 
+//!rotates a shape about a viewAxis
+TopoDS_Shape TechDrawGeometry::rotateShape(const TopoDS_Shape &input,
+                             gp_Ax2& viewAxis,
+                             double rotAngle)
+{
+    TopoDS_Shape transShape;
+    if (input.IsNull()) {
+        return transShape;
+    }
+
+    gp_Ax1 rotAxis = viewAxis.Axis();
+    double rotation = rotAngle * M_PI/180.0;
+
+    try {
+        gp_Trsf tempTransform;
+        tempTransform.SetRotation(rotAxis,rotation);
+        BRepBuilderAPI_Transform mkTrf(input, tempTransform);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::rotateShape - rotate failed.\n");
+        return transShape;
+    }
+    return transShape;
+}
+
 //!scales a shape about a origin
 TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
                                           double scale)
