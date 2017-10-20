@@ -61,6 +61,7 @@
 
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "DrawUtil.h"
 #include "DrawViewMulti.h"
 
 using namespace TechDraw;
@@ -179,6 +180,11 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
                                                     inputCenter,
                                                     getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+                                                          viewAxis,
+                                                          Rotation.getValue());
+        }
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES

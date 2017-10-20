@@ -249,6 +249,11 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
                                                     inputCenter,
                                                     scale);
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+                                                          viewAxis,
+                                                          Rotation.getValue());
+        }
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
         geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),Radius.getValue() * scale);      //remove vertices beyond clipradius
 

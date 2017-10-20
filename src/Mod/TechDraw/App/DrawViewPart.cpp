@@ -218,6 +218,11 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                                                   getScale());
 
      gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
+     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+        mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+                                                      viewAxis,
+                                                      Rotation.getValue());
+     }
      geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES

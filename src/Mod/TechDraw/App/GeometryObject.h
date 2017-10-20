@@ -26,6 +26,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Ax2.hxx>
 
 #include <Base/Vector3D.h>
 #include <Base/BoundBox.h>
@@ -55,6 +56,10 @@ TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
                         double scale = 1.0);
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
                                        double scale);
+TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape &input,
+                             gp_Ax2& viewAxis,
+                             double rotAngle);
+
 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
