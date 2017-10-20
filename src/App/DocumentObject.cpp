@@ -488,8 +488,10 @@ void DocumentObject::onBeforeChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
-    if (_pDoc)
-        _pDoc->onChangedProperty(this,prop);
+    // Delay signaling view provider until the document object has handled the
+    // change
+    // if (_pDoc)
+    //     _pDoc->onChangedProperty(this,prop);
 
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
@@ -500,6 +502,10 @@ void DocumentObject::onChanged(const Property* prop)
     
     //call the parent for appropriate handling
     TransactionalObject::onChanged(prop);
+
+    // Now signal the view provider
+    if (_pDoc)
+        _pDoc->onChangedProperty(this,prop);
 }
 
 PyObject *DocumentObject::getPyObject(void)
