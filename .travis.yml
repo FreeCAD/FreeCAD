@@ -84,6 +84,12 @@ notifications:
     on_start:   change
 
 before_install:
+# Download codespell to test PR for spelling mistakes (linux only)
+- |
+  if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
+     pip install --user --upgrade git+https://github.com/lucasdemarchi/codespell.git
+     source ${TRAVIS_BUILD_DIR}/spellcheck_code.sh
+  fi
 - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
 - |
   case "${TRAVIS_OS_NAME}" in
