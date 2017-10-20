@@ -271,6 +271,12 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) cons
     return array;
 }
 
+std::vector<std::list<App::DocumentObject*> >
+DocumentObject::getPathsByOutList(App::DocumentObject* to) const
+{
+    return _pDoc->getPathsByOutList(this, to);
+}
+
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
     return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));

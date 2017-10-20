@@ -361,6 +361,31 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
     }
 }
 
+PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O!", &DocumentObjectPy::Type, &o))
+        return NULL;
+
+    try {
+        DocumentObject* target = static_cast<DocumentObjectPy*>
+                (o)->getDocumentObjectPtr();
+        auto array = getDocumentObjectPtr()->getPathsByOutList(target);
+        Py::List list;
+        for (auto it : array) {
+            Py::List path;
+            for (auto jt : it) {
+                path.append(Py::asObject(jt->getPyObject()));
+            }
+            list.append(path);
+        }
+        return Py::new_reference_to(list);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property
