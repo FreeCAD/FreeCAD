@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,51 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+#ifndef DRAWINGGUI_QGDISPLAYAREA_H
+#define DRAWINGGUI_QGDISPLAYAREA_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
-#include <QByteArray>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
+#include <QGraphicsItem>
+#include <QPointF>
+#include <QRectF>
 
-#include "QGIView.h"
-
-namespace TechDraw {
-class DrawViewSymbol;
-}
+QT_BEGIN_NAMESPACE
+class QPainter;
+class QStyleOptionGraphicsItem;
+QT_END_NAMESPACE
 
 namespace TechDrawGui
 {
-class QGCustomSvg;
-class QGDisplayArea;
 
-class TechDrawGuiExport QGIViewSymbol : public QGIView
+class TechDrawGuiExport QGDisplayArea : public QGraphicsItemGroup
 {
 public:
-    QGIViewSymbol();
-    ~QGIViewSymbol();
+    explicit QGDisplayArea(void);
+    ~QGDisplayArea() {}
 
-    enum {Type = QGraphicsItem::UserType + 121};
-    int type() const override { return Type;}
+    enum {Type = QGraphicsItem::UserType + 137};
+    int type() const { return Type;}
+    virtual QRectF boundingRect() const;
 
-    virtual void updateView(bool update = false) override;
-    void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
-
-    virtual void draw() override;
-    virtual void rotateView(void) override;
-
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void centerAt(QPointF centerPos);
+    virtual void centerAt(double cX, double cY);
 
 protected:
-    virtual void drawSvg();
-    void symbolToSvg(QByteArray qba);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-    QGDisplayArea* m_displayArea;
-    QGCustomSvg *m_svgItem;
+private:
+
 };
 
-} // namespace
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+}
+
+#endif // DRAWINGGUI_QGDISPLAYAREA_H
+

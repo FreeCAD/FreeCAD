@@ -123,6 +123,8 @@ SET(TechDrawGuiView_SRCS
     QGCustomBorder.h
     QGCustomImage.cpp
     QGCustomImage.h
+    QGDisplayArea.cpp
+    QGDisplayArea.h
     QGIView.cpp
     QGIView.h
     QGIArrow.cpp

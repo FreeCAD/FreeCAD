@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,51 +20,62 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-
-#include <QObject>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <assert.h>
+#include <QGraphicsScene>
+#include <QGraphicsSceneHoverEvent>
+#include <QMouseEvent>
 #include <QPainter>
-#include <QString>
-#include <QByteArray>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
+#include <QStyleOptionGraphicsItem>
+#endif
 
-#include "QGIView.h"
+#include <App/Application.h>
+#include <App/Material.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
 
-namespace TechDraw {
-class DrawViewSymbol;
+#include "QGDisplayArea.h"
+
+using namespace TechDrawGui;
+
+QGDisplayArea::QGDisplayArea(void)
+{
+    setHandlesChildEvents(false);
+    setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-namespace TechDrawGui
+void QGDisplayArea::centerAt(QPointF centerPos)
 {
-class QGCustomSvg;
-class QGDisplayArea;
+    centerAt(centerPos.x(),centerPos.y());
+}
 
-class TechDrawGuiExport QGIViewSymbol : public QGIView
+void QGDisplayArea::centerAt(double cX, double cY)
 {
-public:
-    QGIViewSymbol();
-    ~QGIViewSymbol();
+    QRectF box = boundingRect();
+    double width = box.width();
+    double height = box.height();
+    double newX = cX - width/2.;
+    double newY = cY - height/2.;
+    setPos(newX,newY);
+}
 
-    enum {Type = QGraphicsItem::UserType + 121};
-    int type() const override { return Type;}
+void QGDisplayArea::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
 
-    virtual void updateView(bool update = false) override;
-    void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
+    //painter->drawRect(boundingRect());          //good for debugging
 
-    virtual void draw() override;
-    virtual void rotateView(void) override;
+    QGraphicsItemGroup::paint (painter, &myOption, widget);
+}
 
+QRectF QGDisplayArea::boundingRect() const
+{
+    return childrenBoundingRect();
+}
 
-protected:
-    virtual void drawSvg();
-    void symbolToSvg(QByteArray qba);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-
-    QGDisplayArea* m_displayArea;
-    QGCustomSvg *m_svgItem;
-};
-
-} // namespace
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
