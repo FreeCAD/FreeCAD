@@ -69,6 +69,11 @@
                           in a single group, hence only a single return value.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getPathsByOutList">
+            <Documentation>
+                <UserDocu>Get all paths from this object to another object following the OutList.</UserDocu>
+            </Documentation>
+        </Methode>
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>

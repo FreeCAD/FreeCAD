@@ -3026,3 +3026,76 @@ std::vector<App::DocumentObject*> Document::getRootObjects() const
 
     return ret;
 }
+
+namespace App {
+typedef vector <size_t> Node;
+typedef vector <size_t> Path;
+void _findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
+                     std::vector <Path> &all_paths, Path tmp)
+{
+    if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
+        Path tmp2(tmp);
+        tmp2.push_back(id);
+        all_paths.push_back(tmp2);
+        return; // a cycle
+    }
+
+    tmp.push_back(id);
+    if (all_nodes[id].empty()) {
+        all_paths.push_back(tmp);
+        return;
+    }
+
+    for (size_t i=0; i < all_nodes[id].size(); i++) {
+        Path tmp2(tmp);
+        _findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+    }
+}
+}
+
+std::vector<std::list<App::DocumentObject*> >
+Document::getPathsByOutList(const App::DocumentObject* from, const App::DocumentObject* to) const
+{
+    std::map<const DocumentObject*, size_t> indexMap;
+    for (size_t i=0; i<d->objectArray.size(); ++i) {
+        indexMap[d->objectArray[i]] = i;
+    }
+
+    std::vector <Node> all_nodes(d->objectArray.size());
+    for (size_t i=0; i<d->objectArray.size(); ++i) {
+        DocumentObject* obj = d->objectArray[i];
+        std::vector<DocumentObject*> outList = obj->getOutList();
+        for (auto it : outList) {
+            all_nodes[i].push_back(indexMap[it]);
+        }
+    }
+
+    std::vector<std::list<App::DocumentObject*> > array;
+    if (from == to)
+        return array;
+
+    size_t index_from = indexMap[from];
+    size_t index_to = indexMap[to];
+    Path tmp;
+    std::vector<Path> all_paths;
+    _findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+
+    for (std::vector<Path>::iterator it = all_paths.begin(); it != all_paths.end(); ++it) {
+        Path::iterator jt = std::find(it->begin(), it->end(), index_to);
+        if (jt != it->end()) {
+            std::list<App::DocumentObject*> path;
+            for (Path::iterator kt = it->begin(); kt != jt; ++kt) {
+                path.push_back(d->objectArray[*kt]);
+            }
+
+            path.push_back(d->objectArray[*jt]);
+            array.push_back(path);
+        }
+    }
+
+    // remove duplicates
+    std::sort(array.begin(), array.end());
+    array.erase(std::unique(array.begin(), array.end()), array.end());
+
+    return array;
+}

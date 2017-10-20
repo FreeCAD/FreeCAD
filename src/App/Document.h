@@ -332,6 +332,9 @@ public:
     std::vector<App::DocumentObject*> topologicalSort() const;
     /// get all root objects (objects no other one reference too)
     std::vector<App::DocumentObject*> getRootObjects() const;
+    /// get all possible paths from one object to another following the OutList
+    std::vector<std::list<App::DocumentObject*> > getPathsByOutList
+    (const App::DocumentObject* from, const App::DocumentObject* to) const;
     //@}
 
     /// Function called to signal that an object identifier has been renamed
