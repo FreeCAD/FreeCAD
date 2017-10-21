@@ -3881,7 +3881,13 @@ class _Dimension(_DraftObject):
                         elif DraftGeomUtils.geomType(edge) == "Circle":
                             c = edge.Curve.Center
                             r = edge.Curve.Radius
-                            ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
+                            a = edge.Curve.Axis
+                            ray = obj.Dimline.sub(c).projectToPlane(Vector(0,0,0),a)
+                            if (ray.Length == 0):
+                                ray = a.cross(Vector(1,0,0))
+                                if (ray.Length == 0):
+                                    ray = a.cross(Vector(0,1,0))
+                            ray = DraftVecUtils.scaleTo(ray,r)
                             if hasattr(obj,"Diameter"):
                                 if obj.Diameter:
                                     obj.Start = c.add(ray.negative())
