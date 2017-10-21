@@ -138,7 +138,7 @@ class ObjectJob:
 
     def setupSetupSheet(self, obj):
         if not hasattr(obj, 'SetupSheet'):
-            obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'Spreadsheet holding the settings for this job'))
+            obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'SetupSheet holding the settings for this job'))
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
                 PathIconViewProvider.ViewProvider(obj.SetupSheet.ViewObject, 'SetupSheet')
