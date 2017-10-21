@@ -76,9 +76,7 @@ def _traverseTemplateAttributes(attrs, codec):
     return coded
 
 class SetupSheet:
-    '''Spreadsheet used by a Job to hold global reference values.
-It's mostly a convencience wrapper around Spreadsheet.
-    '''
+    '''Property container object used by a Job to hold global reference values. '''
 
     TemplateReference = '${SetupSheet}'
 
