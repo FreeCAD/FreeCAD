@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #include "Mod/Path/PathSimulator/App/PathSim.h"
+#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Mesh/App/MeshPy.h>
 
 // inclusion of the generated files (generated out of PathSimPy.xml)
 #include "PathSimPy.h"
@@ -49,19 +51,47 @@ int PathSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 
-PyObject* PathSimPy::BeginSimulation(PyObject * /*args*/, PyObject * /*kwds*/)
+PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+	static char *kwlist[] = { "stock", "resolution", NULL };
+	PyObject *pObjStock;
+	float resolution;
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!f", kwlist, &(Part::TopoShapePy::Type), &pObjStock, &resolution))
+		return 0;
+	PathSim *sim = getPathSimPtr();
+	Part::TopoShape *stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
+	sim->BeginSimulation(stock, resolution);
+	Py_IncRef(Py_None);
+	return Py_None;
 }
 
 PyObject* PathSimPy::SetCurrentTool(PyObject * /*args*/)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+	PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+	return 0;
 }
 
+PyObject* PathSimPy::GetResultMesh(PyObject * args)
+{
+	if (!PyArg_ParseTuple(args, ""))
+		return 0;
+	cStock *stock = getPathSimPtr()->m_stock;
 
+	Mesh::MeshObject *mesh = new Mesh::MeshObject();
+	Mesh::MeshPy *meshpy = new Mesh::MeshPy(mesh);
+	stock->Tesselate(*mesh);
+	return meshpy;
+}
+
+/* test script 
+import PathSimulator
+sim = PathSimulator.PathSim()
+stock = Part.makeBox(20,20,5)
+sim.BeginSimulation(stock,0.1)
+msh = sim.GetResultMesh()
+Mesh.show(msh)
+
+*/
 
 
 
