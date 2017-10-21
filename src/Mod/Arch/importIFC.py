@@ -569,21 +569,21 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
 
-            if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
-                try:
-                    bb = shape.BoundBox
-                    # if DEBUG: print(' ' + str(bb),end="")
-                except:
-                    bb = None
-                    if DEBUG: print(' BB could not be computed',end="")
-                if bb:
-                    if not overallboundbox:
-                        overallboundbox = bb
-                    if not overallboundbox.isInside(bb):
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
+            if not shape.isNull():
+                if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                    try:
+                        bb = shape.BoundBox
+                        # if DEBUG: print(' ' + str(bb),end="")
+                    except:
+                        bb = None
+                        if DEBUG: print(' BB could not be computed',end="")
+                    if bb.isValid():
+                        if not overallboundbox:
+                            overallboundbox = bb
+                        if not overallboundbox.isInside(bb):
+                            FreeCADGui.SendMsgToActiveView("ViewFit")
                         overallboundbox.add(bb)
 
-            if not shape.isNull():
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
                         if DEBUG: print("skipping space ",pid,end="")
