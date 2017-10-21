@@ -25,8 +25,18 @@ Start a simulation process on a box shape stock with given resolution\n</UserDoc
     </Methode>
     <Methode Name="SetCurrentTool">
       <Documentation>
-          <UserDocu>SetCurrentTool(tool):\n
-Set the current Path Tool for the subsequent simulator operations.\n</UserDocu>
+        <UserDocu>
+          SetCurrentTool(tool):\n
+          Set the current Path Tool for the subsequent simulator operations.\n
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="GetResultMesh">
+      <Documentation>
+        <UserDocu>
+          GetResultMesh():\n
+          Return the current mesh result of the simulation.\n
+        </UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Tool" ReadOnly="true">

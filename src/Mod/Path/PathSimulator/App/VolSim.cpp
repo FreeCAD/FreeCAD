@@ -20,6 +20,7 @@
 *                                                                         *
 ***************************************************************************/
 
+#include "PreCompiled.h"
 #include <algorithm>
 #include "VolSim.h"
 
@@ -151,7 +152,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 	return z;
 }
 
-int cStock::TesselTop(Model3D *model, int xp, int yp)
+int cStock::TesselTop(Mesh::MeshObject & mesh, int xp, int yp)
 {
 	int x_size, y_size;
 	float z = FindRectTop(xp, yp, x_size, y_size, true);
@@ -182,7 +183,7 @@ int cStock::TesselTop(Model3D *model, int xp, int yp)
 		Point3D pbr(xp + x_size, yp, z);
 		Point3D ptl(xp, yp + y_size, z);
 		Point3D ptr(xp + x_size, yp + y_size, z);
-		model->AddQuad(pbl, pbr, ptr, ptl);
+		AddQuad(mesh, pbl, pbr, ptr, ptl);
 	}
 
 	if (farRect)
@@ -294,7 +295,7 @@ void cStock::FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool sc
 }
 
 
-int cStock::TesselBot(Model3D *model, int xp, int yp)
+int cStock::TesselBot(Mesh::MeshObject & mesh, int xp, int yp)
 {
 	int x_size, y_size;
 	FindRectBot(xp, yp, x_size, y_size, true);
@@ -323,7 +324,7 @@ int cStock::TesselBot(Model3D *model, int xp, int yp)
 	Point3D pbr(xp + x_size, yp, m_pz);
 	Point3D ptl(xp, yp + y_size, m_pz);
 	Point3D ptr(xp + x_size, yp + y_size, m_pz);
-	model->AddQuad(pbl, ptl, ptr, pbr);
+	AddQuad(mesh, pbl, ptl, ptr, pbr);
 
 	if (farRect)
 		return -1;
@@ -332,7 +333,7 @@ int cStock::TesselBot(Model3D *model, int xp, int yp)
 }
 
 
-int cStock::TesselSidesX(Model3D *model, int yp)
+int cStock::TesselSidesX(Mesh::MeshObject & mesh, int yp)
 {
 	float lastz1 = m_pz;
 	if (yp < m_y)
@@ -356,14 +357,11 @@ int cStock::TesselSidesX(Model3D *model, int yp)
 		{
 			if (abs(newz1 - lastz1) < m_res && abs(newz2 - lastz2) < m_res)
 				continue;
-				Point3D pbl(lastpoint, yp, lastz1);
-				Point3D pbr(x, yp, lastz1);
-				Point3D ptl(lastpoint, yp, lastz2);
-				Point3D ptr(x, yp, lastz2);
-				if (lastz2 > lastz1)
-					model->AddQuad(pbl, pbr, ptr, ptl);
-				else
-					model->AddQuad(pbl, ptl, ptr, pbr);
+			Point3D pbl(lastpoint, yp, lastz1);
+			Point3D pbr(x, yp, lastz1);
+			Point3D ptl(lastpoint, yp, lastz2);
+			Point3D ptr(x, yp, lastz2);
+			AddQuad(mesh, pbl, ptl, ptr, pbr);
 		}
 		lastz1 = newz1;
 		lastz2 = newz2;
@@ -372,7 +370,7 @@ int cStock::TesselSidesX(Model3D *model, int yp)
 	return 0;
 }
 
-int cStock::TesselSidesY(Model3D *model, int xp)
+int cStock::TesselSidesY(Mesh::MeshObject & mesh, int xp)
 {
 	float lastz1 = m_pz;
 	if (xp < m_x)
@@ -400,10 +398,7 @@ int cStock::TesselSidesY(Model3D *model, int xp)
 			Point3D pbl(xp, y, lastz1);
 			Point3D ptr(xp, lastpoint, lastz2);
 			Point3D ptl(xp, y, lastz2);
-			if (lastz2 > lastz1)
-				model->AddQuad(pbl, pbr, ptr, ptl);
-			else
-				model->AddQuad(pbl, ptl, ptr, pbr);
+			AddQuad(mesh, pbl, ptl, ptr, pbr);
 		}
 		lastz1 = newz1;
 		lastz2 = newz2;
@@ -412,30 +407,38 @@ int cStock::TesselSidesY(Model3D *model, int xp)
 	return 0;
 }
 
-void cStock::AdjustCoordinates(Model3D *model)
+void cStock::SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point3D & p2, Point3D & p3)
 {
-	for (int i = 0; i < model->triangles.size(); i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			Point3D & t = model->triangles[i].points[j];
-			t.x = (float)t.x * m_res + m_px;
-			t.y = (float)t.y * m_res + m_py;
-		}
-	}
+	facet._aclPoints[0][0] = p1.x * m_res + m_px;
+	facet._aclPoints[0][1] = p1.y * m_res + m_py;
+	facet._aclPoints[0][2] = p1.z;
+	facet._aclPoints[1][0] = p2.x * m_res + m_px;
+	facet._aclPoints[1][1] = p2.y * m_res + m_py;
+	facet._aclPoints[1][2] = p2.z;
+	facet._aclPoints[2][0] = p3.x * m_res + m_px;
+	facet._aclPoints[2][1] = p3.y * m_res + m_py;
+	facet._aclPoints[2][2] = p3.z;
+	facet.CalcNormal();
 }
 
-
-Model3D *cStock::Tesselate()
+void cStock::AddQuad(Mesh::MeshObject & mesh, Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
 {
-	Model3D *model = new Model3D();
+	MeshCore::MeshGeomFacet facet;
+	SetFacetPoints(facet, p1, p2, p3);
+	mesh.addFacet(facet);
+	SetFacetPoints(facet, p1, p3, p4);
+	mesh.addFacet(facet);
+}
+
+void cStock::Tesselate(Mesh::MeshObject & mesh)
+{
 	for (int y = 0; y < m_y; y++)
 	{
 		for (int x = 0; x < m_x; x++)
 		{
 			int attr = m_attr[x][y];
 			if ((attr & SIM_TESSEL_TOP) == 0)
-				x += TesselTop(model, x, y);
+				x += TesselTop(mesh, x, y);
 		}
 	}
 	for (int y = 0; y < m_y; y++)
@@ -445,15 +448,13 @@ Model3D *cStock::Tesselate()
 			if ((m_stock[x][y] - m_pz) < m_res)
 				m_attr[x][y] |= SIM_TESSEL_BOT;
 			if ((m_attr[x][y] & SIM_TESSEL_BOT) == 0)
-				x += TesselBot(model, x, y);
+				x += TesselBot(mesh, x, y);
 		}
 	}
 	for (int y = 0; y <= m_y; y++)
-		TesselSidesX(model, y);
+		TesselSidesX(mesh, y);
 	for (int x = 0; x <= m_x; x++)
-		TesselSidesY(model, x);
-	AdjustCoordinates(model);
-	return model;
+		TesselSidesY(mesh, x);
 }
 
 

@@ -67,6 +67,7 @@ PyMOD_INIT_FUNC(PathSimulator)
 	try {
 		Base::Interpreter().runString("import Part");
 		Base::Interpreter().runString("import Path");
+		Base::Interpreter().runString("import Mesh");
 	}
 	catch (const Base::Exception& e) {
 		PyErr_SetString(PyExc_ImportError, e.what());
