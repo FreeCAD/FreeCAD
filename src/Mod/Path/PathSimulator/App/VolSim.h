@@ -27,6 +27,7 @@
 #define PATHSIMULATOR_VolSim_H
 
 #include <vector>
+#include <Mod/Mesh/App/Mesh.h>
 
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP		1
@@ -82,15 +83,32 @@ struct cLineSegment
 
 struct Model3D
 {
-	Model3D() {}
-	std::vector<Triangle3D> triangles;
+	Model3D(float px, float py, float res) : pos_x(px), pos_y(py), resolution(res) {}
+	void SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point3D & p2, Point3D & p3)
+	{
+		facet._aclPoints[0][0] = p1.x * resolution + pos_x;
+		facet._aclPoints[0][1] = p1.y * resolution + pos_y;
+		facet._aclPoints[0][2] = p1.z;
+		facet._aclPoints[1][0] = p2.x * resolution + pos_x;
+		facet._aclPoints[1][1] = p2.y * resolution + pos_y;
+		facet._aclPoints[1][2] = p2.z;
+		facet._aclPoints[2][0] = p3.x * resolution + pos_x;
+		facet._aclPoints[2][1] = p3.y * resolution + pos_y;
+		facet._aclPoints[2][2] = p3.z;
+		facet.CalcNormal();
+	}
+
 	inline void AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
 	{
-		Triangle3D t1(p1, p2, p3);
-		Triangle3D t2(p1, p3, p4);
-		triangles.push_back(t1);
-		triangles.push_back(t2);
+		MeshCore::MeshGeomFacet facet;
+		SetFacetPoints(facet, p1, p2, p3);
+		mesh.addFacet(facet);
+		SetFacetPoints(facet, p1, p3, p4);
+		mesh.addFacet(facet);
 	}
+
+	float pos_x, pos_y, resolution;
+	Mesh::MeshObject mesh;
 };
 
 class cSimTool
@@ -145,22 +163,23 @@ class cStock
 public:
 	cStock(float px, float py, float pz, float lx, float ly, float lz, float res);
 	~cStock();
-	Model3D *Tesselate();
-	void CreatePocket(float x, float y, float rad, float height);
-	void ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool &tool);
-	void ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool &tool, bool isCCW);
-	inline Point3D & ToInner(Point3D & p) {
+	void Tesselate(Mesh::MeshObject & mesh);
+    void CreatePocket(float x, float y, float rad, float height);
+    void ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool &tool);
+    void ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool &tool, bool isCCW);
+    inline Point3D & ToInner(Point3D & p) {
 		return Point3D((p.x - m_px) / m_res, (p.y - m_py) / m_res, p.z);
 	}
 
 private:
 	float FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool scanHoriz);
 	void FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool scanHoriz);
-	int TesselTop(Model3D *model, int x, int y);
-	int TesselBot(Model3D *model, int x, int y);
-	int TesselSidesX(Model3D *model, int yp);
-	int TesselSidesY(Model3D *model, int xp);
-	void AdjustCoordinates(Model3D *model);
+	void SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point3D & p2, Point3D & p3);
+	void AddQuad(Mesh::MeshObject & mesh, Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4);
+	int TesselTop(Mesh::MeshObject & mesh, int x, int y);
+	int TesselBot(Mesh::MeshObject & mesh, int x, int y);
+	int TesselSidesX(Mesh::MeshObject & mesh, int yp);
+	int TesselSidesY(Mesh::MeshObject & mesh, int xp);
 	Array2D<float>  m_stock;
 	Array2D<char> m_attr;
 	float m_px, m_py, m_pz;  // stock zero position

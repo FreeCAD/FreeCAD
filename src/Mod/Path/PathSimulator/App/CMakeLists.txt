@@ -14,6 +14,7 @@ include_directories(
 set(PathSimulator_LIBS
 	Path
     Part
+    Mesh
     FreeCADApp
 )
 
