@@ -37,6 +37,8 @@ SET(PathSimulator_SRCS
 
 generate_from_xml(PathSimPy)
 
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 add_library(PathSimulator SHARED ${PathSimulator_SRCS})
 target_link_libraries(PathSimulator ${PathSimulator_LIBS})
 
