@@ -527,7 +527,7 @@ void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 		cupAngle = 360;
 
 	// end cup
-	for (float r = 0.5; r <= rad; r += SIM_WALK_RES)
+	for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES)
 	{
 		Point3D cupCirc(perpDirX * r, perpDirY * r, pi2.z);
 		float rotang = 180 * SIM_WALK_RES / (3.1415926535 * r); 
@@ -583,7 +583,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 	Point3D cupCirc;
 	float tstep = (float)SIM_WALK_RES / rad;
 	float t = -1;
-	for (float r = crad1; r <= crad2; r += SIM_WALK_RES)
+	for (float r = crad1; r <= crad2; r += (float)SIM_WALK_RES)
 	{
 		cupCirc.x = xynorm.x * r;
 		cupCirc.y = xynorm.y * r;
@@ -612,7 +612,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 	// apply end cup
 	xynorm.SetRotationAngleRad(ang);
 	xynorm.Rotate();
-	for (float r = 0.5; r <= rad; r += SIM_WALK_RES)
+	for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES)
 	{
 		Point3D cupCirc(xynorm.x * r, xynorm.y * r, 0);
 		float rotang = (float)SIM_WALK_RES / r;

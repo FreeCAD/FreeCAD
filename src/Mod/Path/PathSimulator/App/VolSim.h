@@ -37,6 +37,8 @@ struct Point3D
 {
 	Point3D() {}
 	Point3D(float x, float y, float z) : x(x), y(y), z(z) {}
+	Point3D(Base::Vector3d & vec) : x(vec[0]), y(vec[1]), z(vec[2]) {}
+	Point3D(Base::Placement & pl) : x(pl.getPosition()[0]), y(pl.getPosition()[1]), z(pl.getPosition()[2]) {}
 	inline void set(float px, float py, float pz) { x = px; y = py; z = pz; }
 	inline void Add(Point3D & p) { x += p.x; y += p.y; z += p.z; }
 	inline void Rotate() { float tx = x;  x = x * cosa - y * sina; y = tx * sina + y * cosa; }
@@ -167,7 +169,7 @@ public:
     void CreatePocket(float x, float y, float rad, float height);
     void ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool &tool);
     void ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool &tool, bool isCCW);
-    inline Point3D & ToInner(Point3D & p) {
+    inline Point3D ToInner(Point3D & p) {
 		return Point3D((p.x - m_px) / m_res, (p.y - m_py) / m_res, p.z);
 	}
 

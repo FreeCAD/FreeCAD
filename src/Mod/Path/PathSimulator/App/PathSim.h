@@ -30,7 +30,6 @@
 #include <Base/Vector3D.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
-#include <Mod/Path/App/PreCompiled.h> 
 #include <Mod/Path/App/Command.h>
 #include <Mod/Path/App/Tooltable.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -53,7 +52,7 @@ namespace PathSimulator
             
 			void BeginSimulation(Part::TopoShape * stock, float resolution);
 			void SetCurrentTool(Tool * tool);
-			void ApplyCommand(Command * cmd);
+			void ApplyCommand(Base::Placement * pos, Command * cmd);
 
 		public:
 			cStock * m_stock;

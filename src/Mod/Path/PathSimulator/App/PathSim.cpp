@@ -80,9 +80,24 @@ void PathSim::SetCurrentTool(Tool * tool)
 }
 
 
-void PathSim::ApplyCommand(Command * cmd)
+void PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 {
-
+	Point3D fromPos(*pos);
+	Point3D toPos(cmd->getPlacement());
+	if (cmd->Name == "G0" || cmd->Name == "G1")
+	{
+		m_stock->ApplyLinearTool(fromPos, toPos, *m_tool);
+	}
+	else if (cmd->Name == "G2")
+	{
+		Point3D cent(cmd->getCenter());
+		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
+	}
+	else if (cmd->Name == "G3")
+	{
+		Point3D cent(cmd->getCenter());
+		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
+	}
 }
 
 
