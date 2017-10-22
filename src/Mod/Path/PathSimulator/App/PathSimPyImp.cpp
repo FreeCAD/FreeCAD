@@ -23,7 +23,11 @@
 #include "PreCompiled.h"
 
 #include "Mod/Path/PathSimulator/App/PathSim.h"
+#include <Base/PlacementPy.h>
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Path/App/ToolPy.h>
+#include <Mod/Path/App/CommandPy.h>
 #include <Mod/Mesh/App/MeshPy.h>
 
 // inclusion of the generated files (generated out of PathSimPy.xml)
@@ -65,10 +69,15 @@ PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 	return Py_None;
 }
 
-PyObject* PathSimPy::SetCurrentTool(PyObject * /*args*/)
+PyObject* PathSimPy::SetCurrentTool(PyObject * args)
 {
-	PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-	return 0;
+	PyObject *pObjTool;
+	if (!PyArg_ParseTuple(args, "O!", &(Path::ToolPy::Type), &pObjTool))
+		return 0;
+	PathSim *sim = getPathSimPtr();
+	sim->SetCurrentTool(static_cast<Path::ToolPy*>(pObjTool)->getToolPtr());
+	Py_IncRef(Py_None);
+	return Py_None;
 }
 
 PyObject* PathSimPy::GetResultMesh(PyObject * args)
@@ -81,6 +90,22 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 	Mesh::MeshPy *meshpy = new Mesh::MeshPy(mesh);
 	stock->Tesselate(*mesh);
 	return meshpy;
+}
+
+
+PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
+{
+	static char *kwlist[] = { "position", "command", NULL };
+	PyObject *pObjPlace;
+	PyObject *pObjCmd;
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!", kwlist, &(Base::PlacementPy::Type), &pObjPlace, &(Path::CommandPy::Type), &pObjCmd))
+		return 0;
+	PathSim *sim = getPathSimPtr();
+	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
+	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
+	sim->ApplyCommand(pos, cmd);
+	Py_IncRef(Py_None);
+	return Py_None;
 }
 
 /* test script 
