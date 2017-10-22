@@ -230,7 +230,7 @@ class PathGeom:
                 else:
                     cmd = 'G3' if not flip else 'G2'
                 pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
-                PathLog.info("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
+                PathLog.debug("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
 
                 # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
                 pa = PathGeom.xy(p1)
@@ -287,7 +287,7 @@ class PathGeom:
             d = -B.x * A.y + B.y * A.x
 
             if cls.isRoughly(d, 0, 0.005):
-                PathLog.info("Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z))
+                PathLog.debug("Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z))
                 # we're dealing with half a circle here
                 angle = cls.getAngle(A) + math.pi/2
                 if cmd.Name in cls.CmdMoveCW:
@@ -295,7 +295,7 @@ class PathGeom:
             else:
                 C = A + B
                 angle = cls.getAngle(C)
-                PathLog.info("Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f" % (d, center.x, center.y, center.z, angle / math.pi))
+                PathLog.debug("Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f" % (d, center.x, center.y, center.z, angle / math.pi))
 
             R = A.Length
             PathLog.debug("arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)" % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y))
