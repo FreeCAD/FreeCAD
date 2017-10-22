@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>
+#include <Base/Console.h>
 
 #include "PathSim.h"
 //#include "VolSim.h"
@@ -58,7 +59,8 @@ PathSim::~PathSim()
 void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
 	Base::BoundBox3d & bbox = stock->getBoundBox();
-	m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
+	//m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
+	m_stock = new cStock(0,0,0, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
 }
 
 void PathSim::SetCurrentTool(Tool * tool)
@@ -77,6 +79,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 		break;
 	}
 	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
+	Base::Console().Log("Diam %f\n", tool->Diameter);
 }
 
 
