@@ -27,6 +27,7 @@ import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
+import PathScripts.PathUtil as PathUtil
 import glob
 import json
 import os
@@ -274,7 +275,7 @@ class CommandJobTemplateExport:
 
         encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
-        with open(unicode(path), 'wb') as fp:
+        with open(PathUtil.toUnicode(path), 'wb') as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
 if FreeCAD.GuiUp:

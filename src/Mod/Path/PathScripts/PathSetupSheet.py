@@ -25,6 +25,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
 import PySide
 
 from PathScripts.PathGeom import PathGeom
@@ -67,7 +68,7 @@ def _traverseTemplateAttributes(attrs, codec):
         elif type(value) == list:
             PathLog.debug("%s is a list" % key)
             coded[key] = [_traverseTemplateAttributes(attr, codec) for attr in value]
-        elif type(value) == str or type(value) == unicode:
+        elif PathUtil.isString(value):
             PathLog.debug("%s is a string" % key)
             coded[key] = codec(value)
         else:
@@ -194,10 +195,10 @@ class SetupSheet:
 
     def encodeAttributeString(self, attr):
         '''encodeAttributeString(attr) ... return the encoded string of a template attribute.'''
-        return unicode(attr.replace(self.expressionReference(), self.TemplateReference))
+        return PathUtil.toUnicode(attr.replace(self.expressionReference(), self.TemplateReference))
     def decodeAttributeString(self, attr):
         '''decodeAttributeString(attr) ... return the decoded string of a template attribute.'''
-        return unicode(attr.replace(self.TemplateReference, self.expressionReference()))
+        return PathUtil.toUnicode(attr.replace(self.TemplateReference, self.expressionReference()))
 
     def encodeTemplateAttributes(self, attrs):
         '''encodeTemplateAttributes(attrs) ... return a dictionary with all values encoded.'''
