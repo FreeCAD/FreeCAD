@@ -32,6 +32,10 @@
 # endif
 #endif
 
+#if QT_VERSION >= 0x050000
+# include <QWindow>
+#endif
+
 #include "WaitCursor.h"
 
 using namespace Gui;
@@ -100,6 +104,13 @@ void WaitCursorP::setIgnoreEvents(WaitCursor::FilterEventsFlags flags)
 bool WaitCursorP::isModalDialog(QObject* o) const
 {
     QWidget* parent = qobject_cast<QWidget*>(o);
+#if QT_VERSION >= 0x050000
+    if (!parent) {
+        QWindow* window = qobject_cast<QWindow*>(o);
+        if (window)
+            parent = QWidget::find(window->winId());
+    }
+#endif
     while (parent) {
         QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
         if (dlg && dlg->isModal())
@@ -144,6 +155,7 @@ WaitCursor::WaitCursor()
 {
     if (instances++ == 0)
         setWaitCursor();
+    filter = WaitCursorP::getInstance()->ignoreEvents();
 }
 
 /** Restores the last cursor again. */
@@ -151,6 +163,7 @@ WaitCursor::~WaitCursor()
 {
     if (--instances == 0)
         restoreCursor();
+    WaitCursorP::getInstance()->setIgnoreEvents(filter);
 }
 
 /**

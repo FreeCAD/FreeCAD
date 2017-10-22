@@ -588,6 +588,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
 void Application::exportTo(const char* FileName, const char* DocName, const char* Module)
 {
     WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());

@@ -78,6 +78,7 @@ public:
     void setIgnoreEvents(FilterEventsFlags flags = AllEvents);
 
 private:
+    FilterEventsFlags filter;
     static int instances;
 };
 
