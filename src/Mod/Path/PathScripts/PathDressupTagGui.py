@@ -255,7 +255,7 @@ class PathDressupTagTaskPanel:
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            print("ignore new tag at %s" % (point))
+            print("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -310,6 +310,8 @@ class PathDressupTagTaskPanel:
             self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
             plane = FreeCAD.DraftWorkingPlane
             p = plane.getLocalCoords(self.pt)
+            v = pos.getValue()
+            PathLog.info("mouseMove(%s, %s, %s)" % (self.view.getPoint(v[0], v[1]), self.pt, p))
             displayPoint(p)
 
         def click(cb):
