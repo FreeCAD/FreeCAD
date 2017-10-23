@@ -52,7 +52,7 @@ namespace PathSimulator
             
 			void BeginSimulation(Part::TopoShape * stock, float resolution);
 			void SetCurrentTool(Tool * tool);
-			void ApplyCommand(Base::Placement * pos, Command * cmd);
+			Base::Placement * ApplyCommand(Base::Placement * pos, Command * cmd);
 
 		public:
 			cStock * m_stock;

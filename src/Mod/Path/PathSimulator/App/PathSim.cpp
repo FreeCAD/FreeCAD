@@ -59,8 +59,7 @@ PathSim::~PathSim()
 void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
 	Base::BoundBox3d & bbox = stock->getBoundBox();
-	//m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
-	m_stock = new cStock(0,0,0, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
+	m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
 }
 
 void PathSim::SetCurrentTool(Tool * tool)
@@ -79,14 +78,14 @@ void PathSim::SetCurrentTool(Tool * tool)
 		break;
 	}
 	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
-	Base::Console().Log("Diam %f\n", tool->Diameter);
 }
 
 
-void PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
+Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 {
 	Point3D fromPos(*pos);
-	Point3D toPos(cmd->getPlacement());
+	Point3D toPos(*pos);
+	toPos.UpdateCmd(*cmd);
 	if (cmd->Name == "G0" || cmd->Name == "G1")
 	{
 		m_stock->ApplyLinearTool(fromPos, toPos, *m_tool);
@@ -94,13 +93,17 @@ void PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	else if (cmd->Name == "G2")
 	{
 		Point3D cent(cmd->getCenter());
-		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
+		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
 	}
 	else if (cmd->Name == "G3")
 	{
 		Point3D cent(cmd->getCenter());
-		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
+		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
 	}
+	Base::Placement *plc = new Base::Placement();
+	Vector3d vec(toPos.x, toPos.y, toPos.z);
+	plc->setPosition(vec);
+	return plc;
 }
 
 

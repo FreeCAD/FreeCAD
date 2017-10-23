@@ -152,7 +152,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 	return z;
 }
 
-int cStock::TesselTop(Mesh::MeshObject & mesh, int xp, int yp)
+int cStock::TesselTop(int xp, int yp)
 {
 	int x_size, y_size;
 	float z = FindRectTop(xp, yp, x_size, y_size, true);
@@ -183,7 +183,7 @@ int cStock::TesselTop(Mesh::MeshObject & mesh, int xp, int yp)
 		Point3D pbr(xp + x_size, yp, z);
 		Point3D ptl(xp, yp + y_size, z);
 		Point3D ptr(xp + x_size, yp + y_size, z);
-		AddQuad(mesh, pbl, pbr, ptr, ptl);
+		AddQuad(pbl, pbr, ptr, ptl);
 	}
 
 	if (farRect)
@@ -295,7 +295,7 @@ void cStock::FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool sc
 }
 
 
-int cStock::TesselBot(Mesh::MeshObject & mesh, int xp, int yp)
+int cStock::TesselBot(int xp, int yp)
 {
 	int x_size, y_size;
 	FindRectBot(xp, yp, x_size, y_size, true);
@@ -324,7 +324,7 @@ int cStock::TesselBot(Mesh::MeshObject & mesh, int xp, int yp)
 	Point3D pbr(xp + x_size, yp, m_pz);
 	Point3D ptl(xp, yp + y_size, m_pz);
 	Point3D ptr(xp + x_size, yp + y_size, m_pz);
-	AddQuad(mesh, pbl, ptl, ptr, pbr);
+	AddQuad(pbl, ptl, ptr, pbr);
 
 	if (farRect)
 		return -1;
@@ -333,7 +333,7 @@ int cStock::TesselBot(Mesh::MeshObject & mesh, int xp, int yp)
 }
 
 
-int cStock::TesselSidesX(Mesh::MeshObject & mesh, int yp)
+int cStock::TesselSidesX(int yp)
 {
 	float lastz1 = m_pz;
 	if (yp < m_y)
@@ -361,7 +361,7 @@ int cStock::TesselSidesX(Mesh::MeshObject & mesh, int yp)
 			Point3D pbr(x, yp, lastz1);
 			Point3D ptl(lastpoint, yp, lastz2);
 			Point3D ptr(x, yp, lastz2);
-			AddQuad(mesh, pbl, ptl, ptr, pbr);
+			AddQuad(pbl, ptl, ptr, pbr);
 		}
 		lastz1 = newz1;
 		lastz2 = newz2;
@@ -370,7 +370,7 @@ int cStock::TesselSidesX(Mesh::MeshObject & mesh, int yp)
 	return 0;
 }
 
-int cStock::TesselSidesY(Mesh::MeshObject & mesh, int xp)
+int cStock::TesselSidesY(int xp)
 {
 	float lastz1 = m_pz;
 	if (xp < m_x)
@@ -398,7 +398,7 @@ int cStock::TesselSidesY(Mesh::MeshObject & mesh, int xp)
 			Point3D pbl(xp, y, lastz1);
 			Point3D ptr(xp, lastpoint, lastz2);
 			Point3D ptl(xp, y, lastz2);
-			AddQuad(mesh, pbl, ptl, ptr, pbr);
+			AddQuad(pbl, ptl, ptr, pbr);
 		}
 		lastz1 = newz1;
 		lastz2 = newz2;
@@ -421,24 +421,31 @@ void cStock::SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point
 	facet.CalcNormal();
 }
 
-void cStock::AddQuad(Mesh::MeshObject & mesh, Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
+void cStock::AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
 {
 	MeshCore::MeshGeomFacet facet;
 	SetFacetPoints(facet, p1, p2, p3);
-	mesh.addFacet(facet);
+	facets.push_back(facet);
 	SetFacetPoints(facet, p1, p3, p4);
-	mesh.addFacet(facet);
+	facets.push_back(facet);
 }
 
 void cStock::Tesselate(Mesh::MeshObject & mesh)
 {
+	// reset attribs
+	for (int y = 0; y < m_y; y++)
+	for (int x = 0; x < m_x; x++)
+		m_attr[x][y] = 0;
+
+	facets.clear();
+
 	for (int y = 0; y < m_y; y++)
 	{
 		for (int x = 0; x < m_x; x++)
 		{
 			int attr = m_attr[x][y];
 			if ((attr & SIM_TESSEL_TOP) == 0)
-				x += TesselTop(mesh, x, y);
+				x += TesselTop(x, y);
 		}
 	}
 	for (int y = 0; y < m_y; y++)
@@ -448,13 +455,15 @@ void cStock::Tesselate(Mesh::MeshObject & mesh)
 			if ((m_stock[x][y] - m_pz) < m_res)
 				m_attr[x][y] |= SIM_TESSEL_BOT;
 			if ((m_attr[x][y] & SIM_TESSEL_BOT) == 0)
-				x += TesselBot(mesh, x, y);
+				x += TesselBot(x, y);
 		}
 	}
 	for (int y = 0; y <= m_y; y++)
-		TesselSidesX(mesh, y);
+		TesselSidesX(y);
 	for (int x = 0; x <= m_x; x++)
-		TesselSidesY(mesh, x);
+		TesselSidesY(x);
+	mesh.addFacets(facets);
+	facets.clear();
 }
 
 
@@ -671,6 +680,16 @@ void Point3D::SetRotationAngleRad(float angle)
 void Point3D::SetRotationAngle(float angle)
 {
 	SetRotationAngleRad(angle * 2 * 3.1415926535 / 360);
+}
+
+void Point3D::UpdateCmd(Path::Command & cmd)
+{
+	if (cmd.has("X"))
+		x = cmd.getPlacement().getPosition()[0];
+	if (cmd.has("Y"))
+		y = cmd.getPlacement().getPosition()[1];
+	if (cmd.has("Z"))
+		z = cmd.getPlacement().getPosition()[2];
 }
 
 //************************************************************************************************************
