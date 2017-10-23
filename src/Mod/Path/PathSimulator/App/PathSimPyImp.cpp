@@ -106,9 +106,11 @@ PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 	PathSim *sim = getPathSimPtr();
 	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
 	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
-	sim->ApplyCommand(pos, cmd);
-	Py_IncRef(Py_None);
-	return Py_None;
+	Base::Placement *newpos = sim->ApplyCommand(pos, cmd);
+	//Base::Console().Log("Done...\n");
+	//Base::Console().Refresh();
+	Base::PlacementPy *newposPy = new Base::PlacementPy(newpos);
+	return newposPy;
 }
 
 /* test script 
