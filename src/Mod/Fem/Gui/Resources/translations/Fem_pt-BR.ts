@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt-BR" sourcelanguage="en">
+<TS version="2.0" language="pt-BR" sourcelanguage="en">
   <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Recipiente de análise</translation>
     </message>
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
@@ -15,29 +15,55 @@
     </message>
   </context>
   <context>
-    <name>FEM_BeamSection</name>
+    <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
+      <source>Constraint self weight</source>
+      <translation type="unfinished">Constraint self weight</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
+      <source>Creates a FEM constraint self weight</source>
+      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementFluid1D</name>
+    <message>
+      <location filename="_CommandFemElementFluid1D.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation type="unfinished">Fluid section for 1D flow</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemElementFluid1D.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry1D</name>
+    <message>
+      <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
       <translation type="unfinished">Beam cross section</translation>
     </message>
     <message>
-      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
       <translation type="unfinished">Creates a FEM beam cross section</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintSelfWeight</name>
+    <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
-      <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <location filename="_CommandFemElementGeometry2D.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation type="unfinished">Shell plate thickness</translation>
     </message>
     <message>
-      <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
-      <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <location filename="_CommandFemElementGeometry2D.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
     </message>
   </context>
   <context>
@@ -54,24 +80,11 @@
     </message>
   </context>
   <context>
-    <name>FEM_FluidSection</name>
-    <message>
-      <location filename="_CommandFemFluidSection.py" line="42"/>
-      <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemFluidSection.py" line="44"/>
-      <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
       <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
+      <translation>FEM / MEF material para Fluido</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="44"/>
@@ -84,12 +97,12 @@
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Material mecânico não linear</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Cria um material mecânico não-linear</translation>
     </message>
   </context>
   <context>
@@ -103,6 +116,19 @@
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
       <translation type="unfinished">Creates a FEM material for solid</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
+      <source>FEM mesh boundary layer</source>
+      <translation type="unfinished">FEM mesh boundary layer</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
+      <source>Creates a FEM mesh boundary layer</source>
+      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
     </message>
   </context>
   <context>
@@ -205,19 +231,6 @@
     </message>
   </context>
   <context>
-    <name>FEM_ShellThickness</name>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="41"/>
-      <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
@@ -281,13 +294,62 @@
       <source>Default Fem Command ToolTip</source>
       <translation>Comando Pré-definido MEF ToolTip</translation>
     </message>
+    <message>
+      <location filename="../../../PyGui/FemCommands.py" line="41"/>
+      <source>Default Fem Command MenuText</source>
+      <translation>Comando Pré-definido Mef TextoMenu</translation>
+    </message>
+    <message>
+      <location filename="../../../PyGui/FemCommands.py" line="43"/>
+      <source>Default Fem Command ToolTip</source>
+      <translation>Comando Pré-definido MEF ToolTip</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_BeamSection</name>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation type="unfinished">Beam cross section</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation type="unfinished">Creates a FEM beam cross section</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FluidSection</name>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation type="unfinished">Fluid section for 1D flow</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation type="unfinished">Shell plate thickness</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+    </message>
   </context>
   <context>
     <name>Fem_Analysis</name>
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Recipiente de análise</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
@@ -385,12 +447,12 @@
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Material mecânico não linear</translation>
     </message>
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Cria um material mecânico não-linear</translation>
     </message>
   </context>
   <context>

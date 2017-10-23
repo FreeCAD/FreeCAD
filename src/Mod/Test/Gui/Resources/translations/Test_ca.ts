@@ -1,114 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="ca" sourcelanguage="en">
-<context>
+  <context>
     <name>TestGui::UnitTest</name>
     <message>
-        <source>FreeCAD UnitTest</source>
-        <translation>FreeCAD UniTest</translation>
+      <source>FreeCAD UnitTest</source>
+      <translation>FreeCAD UniTest</translation>
     </message>
     <message>
-        <source>Failures and errors</source>
-        <translation>Fallades i errors</translation>
+      <source>Failures and errors</source>
+      <translation>Fallades i errors</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Descripció</translation>
+      <source>Description</source>
+      <translation>Descripció</translation>
     </message>
     <message>
-        <source>&amp;Start</source>
-        <translation>&amp;Inici</translation>
+      <source>&amp;Start</source>
+      <translation>&amp;Inici</translation>
     </message>
     <message>
-        <source>Alt+S</source>
-        <translation>Alt + S</translation>
+      <source>Alt+S</source>
+      <translation>Alt + S</translation>
     </message>
     <message>
-        <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Help</translation>
+      <source>&amp;Help</source>
+      <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
+      <source>F1</source>
+      <translation>F1</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;Sobre</translation>
+      <source>&amp;About</source>
+      <translation>&amp;Sobre</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation>Alt + A</translation>
+      <source>Alt+A</source>
+      <translation>Alt + A</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Close</translation>
+      <source>&amp;Close</source>
+      <translation>Tan&amp;ca</translation>
     </message>
     <message>
-        <source>Alt+C</source>
-        <translation type="unfinished">Alt+C</translation>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
     </message>
     <message>
-        <source>Idle</source>
-        <translation>Inactiu</translation>
+      <source>Idle</source>
+      <translation>Inactiu</translation>
     </message>
     <message>
-        <source>Progress</source>
-        <translation>Progrés</translation>
+      <source>Progress</source>
+      <translation>Progrés</translation>
     </message>
     <message>
-        <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+      <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
+      <translation type="unfinished">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Remaining:</source>
-        <translation>Restant:</translation>
+      <source>Remaining:</source>
+      <translation>Restant:</translation>
     </message>
     <message>
-        <source>Errors:</source>
-        <translation type="unfinished">Errors:</translation>
+      <source>Errors:</source>
+      <translation>Errors:</translation>
     </message>
     <message>
-        <source>Failures:</source>
-        <translation>Fallades:</translation>
+      <source>Failures:</source>
+      <translation>Fallades:</translation>
     </message>
     <message>
-        <source>Run:</source>
-        <translation>Executa:</translation>
+      <source>Run:</source>
+      <translation>Executa:</translation>
     </message>
     <message>
-        <source>Test</source>
-        <translation>Test</translation>
+      <source>Test</source>
+      <translation>Test</translation>
     </message>
     <message>
-        <source>Select test name:</source>
-        <translation>Seleccioni el nom del test:</translation>
+      <source>Select test name:</source>
+      <translation>Seleccioni el nom del test:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished">Help</translation>
+      <source>Help</source>
+      <translation>Ajuda</translation>
     </message>
     <message>
-        <source>About FreeCAD UnitTest</source>
-        <translation>Sobre FreeCAD UnitTest</translation>
+      <source>About FreeCAD UnitTest</source>
+      <translation>Sobre FreeCAD UnitTest</translation>
     </message>
     <message>
-        <source>Copyright (c) Werner Mayer
+      <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-        <translation>Copyright (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer
 
  FreeCAD UnitTest és part de FreeCAD i permet escriure tests unitaris per els moduls propis.</translation>
     </message>
     <message>
-        <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
+      <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Introduïu el nom d&apos;un objecte cridable, quan es cridi retornarà un TestCase. Clicar &apos;Començar&apos; i s&apos;executarà el test d&apos;aquest procediment. 
+      <translation>Introduïu el nom d'un objecte cridable, quan es cridi retornarà un TestCase. Clicar 'Començar' i s'executarà el test d'aquest procediment. 
 
 Fer doble clic a un error a la vista en arbre per veure més informació sobre ell, incloent-hi el rastreig de pila.</translation>
     </message>
-</context>
+  </context>
 </TS>

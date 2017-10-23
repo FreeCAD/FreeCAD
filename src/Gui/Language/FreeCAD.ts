@@ -1331,6 +1331,10 @@ Please define another shortcut.</source>
         <source>User macros location:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1373,6 +1377,28 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Renaming Macro File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter new name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos;
+ already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to rename to &apos;%1&apos;.
+Perhaps a file permission error?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2200,10 +2226,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The default company to use for new files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2217,6 +2239,10 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Add the program logo to the generated thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A URL where the user can find more details about the license</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3985,6 +4011,13 @@ How do you want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>Gui::PropertyEditor::LinkListLabel</name>
+    <message>
+        <source>Change the linked objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
         <source>Property</source>
@@ -4113,6 +4146,25 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>The file &apos;%1&apos; cannot be opened.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::RevitNavigationStyle</name>
+    <message>
+        <source>Press left mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press middle mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press SHIFT and middle mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll middle mouse button</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5524,6 +5576,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdGroup</name>
+    <message>
+        <source>Structure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new group for ordering objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdHideObjects</name>
     <message>
         <source>Standard-View</source>
@@ -5765,6 +5832,21 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdPart</name>
+    <message>
+        <source>Structure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new part and make it active</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6736,6 +6818,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdMainFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display the main window in fullscreen mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdOrthographicCamera</name>
     <message>
         <source>Standard-View</source>
@@ -6963,6 +7060,13 @@ Do you want to duplicate them, too?</source>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Dependency graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Std_Group</name>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
