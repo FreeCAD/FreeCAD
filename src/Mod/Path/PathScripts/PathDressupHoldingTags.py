@@ -795,7 +795,7 @@ class ObjectTagDressup:
             zVal2 = zVal2 and round(zVal2, 8)
 
             if cmd.Name in ['G1', 'G2', 'G3', 'G01', 'G02', 'G03']:
-                if zVal is not None and zVal2 != zVal:
+                if False and zVal is not None and zVal2 != zVal:
                     params['F'] = vertFeed
                 else:
                     params['F'] = horizFeed
