@@ -28,6 +28,7 @@ import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
+import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
@@ -585,7 +586,7 @@ class PathData:
 
         tags = []
 
-        for (i, count) in edgeDict.iteritems():
+        for (i, count) in PathUtil.keyValueIter(edgeDict):
             edge = self.baseWire.Edges[i]
             PathLog.debug(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)

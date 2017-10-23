@@ -29,8 +29,9 @@ import math
 import Part
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
+import PathScripts.PathUtils as PathUtils
 
-from PathScripts import PathUtils
 from PathScripts.PathGeom import PathGeom
 from PySide import QtCore, QtGui
 
@@ -852,7 +853,7 @@ class TaskPanel:
 
     def updateBoneList(self):
         itemList = []
-        for loc, (enabled, inaccessible, ids) in self.obj.Proxy.boneStateList(self.obj).iteritems():
+        for loc, (enabled, inaccessible, ids) in PathUtil.keyValueIter(self.obj.Proxy.boneStateList(self.obj)):
             lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in ids))
             item = QtGui.QListWidgetItem(lbl)
             if enabled:

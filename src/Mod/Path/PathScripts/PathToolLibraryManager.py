@@ -165,7 +165,7 @@ class ToolLibraryManager():
     def tooltableFromAttrs(self, stringattrs):
         if stringattrs.get('Version') and 1 == int(stringattrs['Version']):
             attrs = {}
-            for key, val in stringattrs['Tools'].iteritems():
+            for key, val in PathUtil.keyValueIter(stringattrs['Tools']):
                 attrs[int(key)] = val
             return Path.Tooltable(attrs)
         else:
@@ -235,7 +235,7 @@ class ToolLibraryManager():
         if tt:
             if len(tt.Tools) == 0:
                 tooldata.append([])
-            for number, t in tt.Tools.iteritems():
+            for number, t in PathUtil.keyValueIter(tt.Tools):
 
                 itemcheck = QtGui.QStandardItem()
                 itemcheck.setCheckable(True)
