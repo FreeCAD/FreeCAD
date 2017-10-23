@@ -26,10 +26,17 @@ import FreeCAD
 import Path
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathLog as PathLog
+import sys
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 
 from PathTests.PathTestUtils import PathTestBase
+
+def refstring(string):
+    if sys.version_info.major < 3:
+        return string
+    return string.replace(" u'", " '")
+    
 
 class TestPathSetupSheet(PathTestBase):
 
@@ -145,25 +152,25 @@ class TestPathSetupSheet(PathTestBase):
         '''Verify template attributes encoding/decoding of strings.'''
         ss = PathSetupSheet.Create().Proxy
 
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'hugo'})), "{'00': u'hugo'}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet'})), "{'00': u'${SetupSheet}'}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet.y'})), "{'00': u'${SetupSheet}.y'}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': '${hugo}'})), "{'00': u'${hugo}'}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'hugo'})), refstring("{'00': u'hugo'}"))
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet'})), refstring("{'00': u'${SetupSheet}'}"))
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': 'SetupSheet.y'})), refstring("{'00': u'${SetupSheet}.y'}"))
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': '${hugo}'})), refstring("{'00': u'${hugo}'}"))
 
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': 'hugo'})), "{'00': u'hugo'}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}'})), "{'00': u'SetupSheet'}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y'})), "{'00': u'SetupSheet.y'}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y - ${SetupSheet}.z'})), "{'00': u'SetupSheet.y - SetupSheet.z'}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': 'hugo'})), refstring("{'00': u'hugo'}"))
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}'})), refstring("{'00': u'SetupSheet'}"))
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y'})), refstring("{'00': u'SetupSheet.y'}"))
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': '${SetupSheet}.y - ${SetupSheet}.z'})), refstring("{'00': u'SetupSheet.y - SetupSheet.z'}"))
 
     def test12(self):
         '''Verify template attributes encoding/decoding of dictionaries.'''
         ss = PathSetupSheet.Create().Proxy
 
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'hugo'}})), "{'00': {'01': u'hugo'}}")
-        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'SetupSheet.y - SetupSheet.z'}})), "{'00': {'01': u'${SetupSheet}.y - ${SetupSheet}.z'}}")
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'hugo'}})), refstring("{'00': {'01': u'hugo'}}"))
+        self.assertEqual(str(ss.encodeTemplateAttributes({'00': {'01': 'SetupSheet.y - SetupSheet.z'}})), refstring("{'00': {'01': u'${SetupSheet}.y - ${SetupSheet}.z'}}"))
 
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': 'hugo'}})), "{'00': {'01': u'hugo'}}")
-        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': '${SetupSheet}.y - ${SetupSheet}.z'}})), "{'00': {'01': u'SetupSheet.y - SetupSheet.z'}}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': 'hugo'}})), refstring("{'00': {'01': u'hugo'}}"))
+        self.assertEqual(str(ss.decodeTemplateAttributes({'00': {'01': '${SetupSheet}.y - ${SetupSheet}.z'}})), refstring("{'00': {'01': u'SetupSheet.y - SetupSheet.z'}}"))
 
     def test13(self):
         '''Verify template attributes encoding/decoding of lists.'''
@@ -179,13 +186,13 @@ class TestPathSetupSheet(PathTestBase):
         self.assertEqual(len(encoded['01']), 2)
         self.assertEqual(encoded['01'][0]['10'], '${SetupSheet}')
         self.assertEqual(encoded['01'][0]['11'], '${SetupSheet}.y')
-        self.assertEqual(str(encoded['01'][1]), "{'20': u'${SetupSheet}'}")
+        self.assertEqual(str(encoded['01'][1]), refstring("{'20': u'${SetupSheet}'}"))
         self.assertEqual(len(encoded['02']), 1)
         self.assertEqual(len(encoded['02'][0]['a']), 2)
-        self.assertEqual(str(encoded['02'][0]['a'][0]), "{'b': u'${SetupSheet}'}")
-        self.assertEqual(str(encoded['02'][0]['a'][1]), "{'c': u'${SetupSheet}'}")
+        self.assertEqual(str(encoded['02'][0]['a'][0]), refstring("{'b': u'${SetupSheet}'}"))
+        self.assertEqual(str(encoded['02'][0]['a'][1]), refstring("{'c': u'${SetupSheet}'}"))
         self.assertEqual(len(encoded['02'][0]['b']), 1)
-        self.assertEqual(str(encoded['02'][0]['b'][0]), "{'b': u'${SetupSheet}'}")
+        self.assertEqual(str(encoded['02'][0]['b'][0]), refstring("{'b': u'${SetupSheet}'}"))
 
         decoded = ss.decodeTemplateAttributes(encoded)
         self.assertEqual(len(decoded), len(attrs))

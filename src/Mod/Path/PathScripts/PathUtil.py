@@ -100,7 +100,7 @@ Use this function to remove all expressions before deletion.'''
 
 def toUnicode(string):
     '''toUnicode(string) ... returns a unicode version of string regardless of the python version.'''
-    if sys.version_info[0] < 3:
+    if sys.version_info.major < 3:
         return unicode(string)
     return string
 
@@ -108,7 +108,7 @@ def isString(string):
     '''isString(string) ... return True if string is a string, regardless of string type and python version.'''
     if type(string) == str:
         return True
-    if sys.version_info[0] < 3 and type(string) == unicode:
+    if sys.version_info.major < 3 and type(string) == unicode:
         return True
     return False
 
