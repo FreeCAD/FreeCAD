@@ -28,6 +28,7 @@
 
 #include <vector>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Path/App/Command.h>
 
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP		1
@@ -42,6 +43,7 @@ struct Point3D
 	inline void set(float px, float py, float pz) { x = px; y = py; z = pz; }
 	inline void Add(Point3D & p) { x += p.x; y += p.y; z += p.z; }
 	inline void Rotate() { float tx = x;  x = x * cosa - y * sina; y = tx * sina + y * cosa; }
+	void UpdateCmd(Path::Command & cmd);
 	void SetRotationAngle(float angle);
 	void SetRotationAngleRad(float angle);
 	float x, y, z;
@@ -177,11 +179,11 @@ private:
 	float FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool scanHoriz);
 	void FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool scanHoriz);
 	void SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point3D & p2, Point3D & p3);
-	void AddQuad(Mesh::MeshObject & mesh, Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4);
-	int TesselTop(Mesh::MeshObject & mesh, int x, int y);
-	int TesselBot(Mesh::MeshObject & mesh, int x, int y);
-	int TesselSidesX(Mesh::MeshObject & mesh, int yp);
-	int TesselSidesY(Mesh::MeshObject & mesh, int xp);
+	void AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4);
+	int TesselTop(int x, int y);
+	int TesselBot(int x, int y);
+	int TesselSidesX(int yp);
+	int TesselSidesY(int xp);
 	Array2D<float>  m_stock;
 	Array2D<char> m_attr;
 	float m_px, m_py, m_pz;  // stock zero position
@@ -189,6 +191,7 @@ private:
 	float m_res;        // resoulution
 	float m_plane;		// stock plane height
 	int m_x, m_y;            // stock array size
+	std::vector<MeshCore::MeshGeomFacet> facets;
 };
 
 class cVolSim
