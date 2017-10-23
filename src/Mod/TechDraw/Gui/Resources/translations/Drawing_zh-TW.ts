@@ -176,7 +176,7 @@
 <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+579"/>
+        <location filename="../../Command.cpp" line="+600"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -195,7 +195,7 @@
 <context>
     <name>CmdTechDrawArchView</name>
     <message>
-        <location line="+340"/>
+        <location line="+342"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -214,7 +214,7 @@
 <context>
     <name>CmdTechDrawClip</name>
     <message>
-        <location line="-307"/>
+        <location line="-309"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -294,7 +294,7 @@
 <context>
     <name>CmdTechDrawExportPage</name>
     <message>
-        <location line="+163"/>
+        <location line="+165"/>
         <source>File</source>
         <translation type="unfinished">檔案</translation>
     </message>
@@ -342,7 +342,7 @@
 <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-        <location filename="../../CommandCreateDims.cpp" line="+853"/>
+        <location filename="../../CommandCreateDims.cpp" line="+822"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -356,7 +356,7 @@
 <context>
     <name>CmdTechDrawNewAngleDimension</name>
     <message>
-        <location line="-92"/>
+        <location line="-91"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -374,7 +374,7 @@
 <context>
     <name>CmdTechDrawNewDiameterDimension</name>
     <message>
-        <location line="-432"/>
+        <location line="-412"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -392,7 +392,7 @@
 <context>
     <name>CmdTechDrawNewDimension</name>
     <message>
-        <location line="-225"/>
+        <location line="-215"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -410,7 +410,7 @@
 <context>
     <name>CmdTechDrawNewDistanceXDimension</name>
     <message>
-        <location line="+430"/>
+        <location line="+406"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -428,7 +428,7 @@
 <context>
     <name>CmdTechDrawNewDistanceYDimension</name>
     <message>
-        <location line="+109"/>
+        <location line="+106"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -474,7 +474,7 @@
 <context>
     <name>CmdTechDrawNewLengthDimension</name>
     <message>
-        <location filename="../../CommandCreateDims.cpp" line="-224"/>
+        <location filename="../../CommandCreateDims.cpp" line="-218"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -492,7 +492,7 @@
 <context>
     <name>CmdTechDrawNewMulti</name>
     <message>
-        <location filename="../../Command.cpp" line="-517"/>
+        <location filename="../../Command.cpp" line="-530"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -510,7 +510,7 @@
 <context>
     <name>CmdTechDrawNewPage</name>
     <message>
-        <location line="-368"/>
+        <location line="-377"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -548,7 +548,7 @@
 <context>
     <name>CmdTechDrawNewRadiusDimension</name>
     <message>
-        <location filename="../../CommandCreateDims.cpp" line="-189"/>
+        <location filename="../../CommandCreateDims.cpp" line="-176"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -584,7 +584,7 @@
 <context>
     <name>CmdTechDrawNewViewDetail</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -602,7 +602,7 @@
 <context>
     <name>CmdTechDrawNewViewSection</name>
     <message>
-        <location line="-79"/>
+        <location line="-74"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -620,7 +620,7 @@
 <context>
     <name>CmdTechDrawProjGroup</name>
     <message>
-        <location line="+140"/>
+        <location line="+135"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -636,9 +636,23 @@
     </message>
 </context>
 <context>
+    <name>CmdTechDrawRedrawPage</name>
+    <message>
+        <location filename="../../CommandDecorate.cpp" line="+229"/>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Redraw a page</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTechDrawSpreadsheet</name>
     <message>
-        <location line="+521"/>
+        <location filename="../../Command.cpp" line="+542"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -657,7 +671,7 @@
 <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-        <location line="-162"/>
+        <location line="-164"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -676,7 +690,7 @@
 <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-        <location filename="../../CommandDecorate.cpp" line="+182"/>
+        <location filename="../../CommandDecorate.cpp" line="-49"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
@@ -765,24 +779,20 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-567"/>
-        <location line="+286"/>
-        <source>Select at least 1 Part object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-210"/>
-        <location line="+76"/>
+        <location filename="../../Command.cpp" line="-505"/>
+        <location line="+71"/>
         <source>Select at least 1 DrawingView object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
-        <source>Select exactly 1 Part object.</source>
+        <location line="-151"/>
+        <location line="+224"/>
+        <location line="+76"/>
+        <source>Select at least 1 object with a Shape.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+197"/>
+        <location line="+132"/>
         <source>Select 1 DrawViewClip and 1 DrawView.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -818,12 +828,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+51"/>
         <source>Select at least one object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+52"/>
         <source>Select exactly one Arch Section Plane object.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -848,7 +858,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+195"/>
+        <location filename="../../ViewProviderPage.cpp" line="+214"/>
         <source>Drawing viewer</source>
         <translation type="unfinished">工程圖檢視器</translation>
     </message>
@@ -857,19 +867,19 @@
         <translation type="obsolete">可縮放向量圖形(*.svg *.svgz)</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-806"/>
+        <location filename="../../Command.cpp" line="-826"/>
+        <location line="+80"/>
+        <location line="+71"/>
+        <location line="+73"/>
         <location line="+76"/>
-        <location line="+76"/>
-        <location line="+65"/>
-        <location line="+69"/>
-        <location line="+128"/>
+        <location line="+132"/>
         <location line="+16"/>
         <location line="+5"/>
         <location line="+9"/>
         <location line="+59"/>
         <location line="+20"/>
-        <location line="+109"/>
-        <location line="+51"/>
+        <location line="+110"/>
+        <location line="+52"/>
         <location line="+7"/>
         <location line="+45"/>
         <source>Wrong selection</source>
@@ -894,7 +904,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+72"/>
         <source>Select a Face first</source>
         <translation type="unfinished"></translation>
     </message>
@@ -923,7 +933,7 @@
         <translation type="obsolete">建立頁面供插入視圖資訊</translation>
     </message>
     <message>
-        <location filename="../../DrawGuiUtil.cpp" line="+89"/>
+        <location filename="../../DrawGuiUtil.cpp" line="+90"/>
         <source>No page found</source>
         <translation type="unfinished">No page found</translation>
     </message>
@@ -944,14 +954,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandCreateDims.cpp" line="-51"/>
-        <location line="+94"/>
-        <location line="+89"/>
-        <location line="+120"/>
-        <location line="+110"/>
-        <location line="+111"/>
-        <location line="+89"/>
-        <location line="+85"/>
+        <location filename="../../CommandCreateDims.cpp" line="-43"/>
+        <location line="+86"/>
+        <location line="+87"/>
+        <location line="+109"/>
+        <location line="+107"/>
+        <location line="+108"/>
+        <location line="+86"/>
+        <location line="+84"/>
         <location line="+6"/>
         <location filename="../../CommandDecorate.cpp" line="-7"/>
         <location line="+6"/>
@@ -959,17 +969,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-703"/>
+        <location line="-672"/>
         <source>Can&apos;t make a Dimension from this selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+613"/>
+        <location line="+583"/>
         <source>Can&apos;t make an angle Dimension from this selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+84"/>
         <source>There is no 3D object in your selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1021,7 +1031,7 @@
         <translation type="obsolete">選取一個頁面物件。</translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="+559"/>
+        <location filename="../../MDIViewPage.cpp" line="+564"/>
         <source>PDF (*.pdf)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1041,7 +1051,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+279"/>
+        <location line="+277"/>
         <source> %1.%2.%3 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1050,7 +1060,7 @@
         <translation type="obsolete">SVG(*.svg)</translation>
     </message>
     <message>
-        <location line="-524"/>
+        <location line="-522"/>
         <location line="+244"/>
         <source>All Files (*.*)</source>
         <translation>所有檔案(*.*)</translation>
@@ -1089,19 +1099,16 @@
         <translation type="obsolete">底部</translation>
     </message>
     <message>
-        <location filename="../../TaskProjGroup.cpp" line="+64"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Make axonometric...</translation>
+        <translation type="obsolete">Make axonometric...</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">編輯軸測設定</translation>
+        <translation type="obsolete">編輯軸測設定</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">建立正投影視角</translation>
+        <translation type="obsolete">建立正投影視角</translation>
     </message>
     <message>
         <location filename="../../QGVPage.cpp" line="+579"/>
@@ -1122,7 +1129,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>Show Units</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1147,7 +1154,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+16"/>
+        <source>Alternate Decimals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Use Global Decimals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+85"/>
+        <source>Arrow Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
         <source>Decorations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1227,12 +1249,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="-419"/>
         <source>Arrow Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+150"/>
         <source>Preferred arrowhead style</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1262,7 +1284,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+250"/>
         <source>Default weight for GeomHatch lines</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1280,7 +1302,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+349"/>
+        <location line="+385"/>
         <source>Geom Hatch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1320,7 +1342,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-588"/>
+        <location line="-624"/>
         <source>General</source>
         <translation type="unfinished">一般</translation>
     </message>
@@ -1341,12 +1363,12 @@
     </message>
     <message>
         <location line="+8"/>
-        <location line="+250"/>
+        <location line="+286"/>
         <source>Hidden Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-233"/>
+        <location line="-269"/>
         <source>NeverShow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1386,7 +1408,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+13"/>
+        <source>Keep Pages Up to Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Template Dot Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1462,7 +1494,7 @@
         <translation type="obsolete">&amp;大綱</translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="-690"/>
+        <location filename="../../MDIViewPage.cpp" line="-695"/>
         <source>&amp;Native</source>
         <translation>&amp;原始的</translation>
     </message>
@@ -1541,7 +1573,7 @@
         <translation type="obsolete">A5</translation>
     </message>
     <message>
-        <location line="+495"/>
+        <location line="+500"/>
         <source>Different orientation</source>
         <translation type="unfinished">Different orientation</translation>
     </message>
@@ -2242,21 +2274,6 @@ Do you want to continue?</translation>
     <message>
         <source>Drawing</source>
         <translation type="obsolete">工程圖</translation>
-    </message>
-    <message>
-        <location filename="../../Workbench.cpp" line="+39"/>
-        <source>TechDraw Pages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>TechDraw Views</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>TechDraw Dimensions</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
