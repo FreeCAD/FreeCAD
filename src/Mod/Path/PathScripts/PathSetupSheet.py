@@ -61,7 +61,7 @@ class Template:
 
 def _traverseTemplateAttributes(attrs, codec):
     coded = {}
-    for key,value in attrs.iteritems():
+    for key,value in PathUtil.keyValueIter(attrs):
         if type(value) == dict:
             PathLog.debug("%s is a dict" % key)
             coded[key] = _traverseTemplateAttributes(value, codec)
