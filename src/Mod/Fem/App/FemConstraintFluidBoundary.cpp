@@ -103,7 +103,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     Points.setValues(std::vector<Base::Vector3d>());
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
-    naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indication an invalid value
+    naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indicate an invalid value
     // property from: FemConstraintFixed object
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Normals where symbols are drawn");
