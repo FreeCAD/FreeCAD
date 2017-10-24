@@ -294,7 +294,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="prefSaveBackupFiles">
           <property name="text">
-           <string>Create up to backup files when resaving document</string>
+           <string>Maximum number of backup files to keep when resaving document</string>
           </property>
           <property name="checked">
            <bool>true</bool>
