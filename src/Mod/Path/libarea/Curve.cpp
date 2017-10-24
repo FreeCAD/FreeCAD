@@ -185,7 +185,7 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 	}
 }
 
-void CCurve::FitArcs()
+void CCurve::FitArcs(bool retry)
 {
 	std::list<CVertex> new_vertices;
 
@@ -193,7 +193,6 @@ void CCurve::FitArcs()
 	CArc arc;
 	bool arc_found = false;
 	bool arc_added = false;
-
 	int i = 0;
 	for(std::list<CVertex>::iterator It = m_vertices.begin(); It != m_vertices.end(); It++, i++)
 	{
@@ -220,7 +219,28 @@ void CCurve::FitArcs()
 		}
 	}
 
-	if(might_be_an_arc.size() > 0)AddArcOrLines(false, new_vertices, might_be_an_arc, arc, arc_found, arc_added);
+	if(might_be_an_arc.size() > 0) {
+        // check if the last edge can form an arc with the starting edge
+        if(!retry && 
+           !arc_found &&
+           m_vertices.size()>2 && 
+           m_vertices.begin()->m_type==0 && 
+           IsClosed()) 
+        {
+	        std::list<const CVertex*> tmp;
+            auto it = m_vertices.begin();
+            tmp.push_back(&(*it++));
+            tmp.push_back(&(*it));
+            CArc tmpArc;
+            if(CheckForArc(new_vertices.back(),tmp,tmpArc)) {
+                m_vertices.push_front(CVertex(new_vertices.back().m_p));
+                m_vertices.pop_back();
+                FitArcs(true);
+                return;
+            }
+        }
+        AddArcOrLines(false, new_vertices, might_be_an_arc, arc, arc_found, arc_added);
+    }
 
 	if(arc_added)
 	{
