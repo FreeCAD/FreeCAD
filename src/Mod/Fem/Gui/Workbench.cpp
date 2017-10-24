@@ -104,11 +104,25 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
     fluid->setCommand("Fluid Constraints");
-    *fluid << "FEM_ConstraintFluidBoundary";
+    *fluid << "FEM_ConstraintInitialFlowVelocity"
+           << "Separator"
+           << "FEM_ConstraintFluidBoundary"
+           << "FEM_ConstraintFlowVelocity";
+
+    Gui::ToolBarItem* electrostat = new Gui::ToolBarItem(root);
+    electrostat->setCommand("Electrostatic Constraints");
+    *electrostat << "FEM_ConstraintElectrostaticPotential";
 
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
      *solve << "FEM_SolverCalculix"
+           << "FEM_SolverElmer"
+           << "Separator"
+           << "FEM_EquationHeat"
+           << "FEM_EquationElasticity"
+           << "FEM_EquationFluxsolver"
+           << "FEM_EquationElectrostatic"
+           << "FEM_EquationFlow"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";
@@ -162,11 +176,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *thermal << "FEM_ConstraintInitialTemperature"
              << "Separator"
              << "FEM_ConstraintHeatflux"
-             << "FEM_ConstraintTemperature";
+             << "FEM_ConstraintTemperature"
+             << "FEM_ConstraintBodyHeatSource";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");
-    *fluid << "FEM_ConstraintFluidBoundary";
+    *fluid << "FEM_ConstraintInitialFlowVelocity"
+           << "Separator"
+           << "FEM_ConstraintFluidBoundary"
+           << "FEM_ConstraintFlowVelocity";
 
     Gui::MenuItem* model = new Gui::MenuItem;
     root->insertItem(item, model);
@@ -202,6 +220,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     solve->setCommand("&Solve");
     *solve << "FEM_SolverCalculix"
            << "FEM_SolverZ88"
+           << "FEM_SolverElmer"
+           << "Separator"
+           << "FEM_EquationHeat"
+           << "FEM_EquationElasticity"
+           << "FEM_EquationElectrostatic"
+           << "FEM_EquationFluxsolver"
+           << "FEM_EquationFlow"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";

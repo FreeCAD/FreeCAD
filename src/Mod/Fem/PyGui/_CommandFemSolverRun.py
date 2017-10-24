@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 from .FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore, QtGui
+import femsolver.run
 
 
 class _CommandFemSolverRun(FemCommands):
@@ -50,7 +51,7 @@ class _CommandFemSolverRun(FemCommands):
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
-        if self.solver.SolverType == "FemSolverCalculix":
+        if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
@@ -60,19 +61,30 @@ class _CommandFemSolverRun(FemCommands):
                 return
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
-        elif self.solver.SolverType == "FemSolverZ88":
-            import FemToolsZ88
-            self.fea = FemToolsZ88.FemToolsZ88(None, self.solver)
-            self.fea.reset_mesh_purge_results_checked()
-            message = self.fea.check_prerequisites()
-            if message:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-                return
-            self.fea.run()  # test z88
-            # self.fea.finished.connect(load_results)
-            # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
-            QtGui.QMessageBox.critical(None, "Not known solver type", message)
+            try:
+                machine = femsolver.run.getMachine(self.solver)
+            except femsolver.run.MustSaveError:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    "Please save the file before executing the solver. "
+                    "This must be done because the location of the working "
+                    "directory is set to \"Beside .fcstd File\".")
+                return
+            except femsolver.run.DirectoryDoesNotExist:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    "Selected working directory doesn't exist.")
+                return
+            if not machine.running:
+                machine.reset()
+                machine.target = femsolver.run.RESULTS
+                machine.start()
+                machine.join()  # wait for the machine to finish.
+
+        FreeCADGui.Selection.clearSelection()
 
 
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())

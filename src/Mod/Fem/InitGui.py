@@ -47,6 +47,10 @@ class FemWorkbench (Workbench):
 
         import PyGui._CommandFemAnalysis
         import PyGui._CommandFemConstraintSelfWeight
+        import PyGui._CommandFemConstraintBodyHeatSource
+        import PyGui._CommandFemConstraintFlowVelocity
+        import PyGui._CommandFemConstraintInitialFlowVelocity
+        import PyGui._CommandFemConstraintElectrostaticPotential
         import PyGui._CommandFemElementFluid1D
         import PyGui._CommandFemElementGeometry1D
         import PyGui._CommandFemElementGeometry2D
@@ -64,6 +68,8 @@ class FemWorkbench (Workbench):
         import PyGui._CommandFemResultShow
         import PyGui._CommandFemResultsPurge
         import PyGui._CommandFemSolverCalculix
+        import PyGui._CommandFemSolverElmer
+        import PyGui._CommandFemEquation
         import PyGui._CommandFemSolverControl
         import PyGui._CommandFemSolverRun
         import PyGui._CommandFemSolverZ88

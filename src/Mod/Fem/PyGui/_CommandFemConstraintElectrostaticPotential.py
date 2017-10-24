@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,44 +20,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemSolverZ88"
-__author__ = "Bernd Hahnebach"
+
+__title__ = "AddConstraintElectrostaticPotential"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemSolverZ88
+## @package CommandFemConstraintElectrostaticPotential
 #  \ingroup FEM
 
-# import FreeCAD
-import FemToolsZ88
+import FreeCAD
+from .FemCommands import FemCommands
+import FreeCADGui
+from PySide import QtCore
 
 
-class _FemSolverZ88():
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
-    def __init__(self, obj):
-        self.Type = "FemSolverZ88"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to  this object
+class _CommandFemConstraintElectrostaticPotential(FemCommands):
+    "The FEM_ConstraintElectrostaticPotential command definition"
+    def __init__(self):
+        super(_CommandFemConstraintElectrostaticPotential, self).__init__()
+        self.resources = {
+            'Pixmap': 'fem-constraint-electrostatic-potential',
+            'MenuText': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintElectrostaticPotential",
+                "Constraint Potenial"),
+            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintElectrostaticPotential",
+                "Creates a FEM constraint electrostatic potential")}
+        self.is_active = 'with_analysis'
 
-        obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver", 1)  # the 1 set the property to ReadOnly
-        obj.SolverType = str(self.Type)
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction(
+            "Create FemConstraintElectrostaticPotential")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
+            "FemGui.getActiveAnalysis().Member += "
+            "[ObjectsFem.makeConstraintElectrostaticPotential(FreeCAD.ActiveDocument)]")
 
-        # fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")  # not needed ATM
 
-        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations, will only be used it is left blank in preferences")
-        # the working directory is not set, the solver working directory is only used if the preferences working directory is left blank
-
-        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        known_analysis_types = FemToolsZ88.FemToolsZ88.known_analysis_types
-        obj.AnalysisType = known_analysis_types
-        obj.AnalysisType = known_analysis_types[0]
-
-    def execute(self, obj):
-        return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+FreeCADGui.addCommand('FEM_ConstraintElectrostaticPotential', _CommandFemConstraintElectrostaticPotential())

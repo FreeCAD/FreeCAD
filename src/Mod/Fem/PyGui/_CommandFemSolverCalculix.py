@@ -45,19 +45,34 @@ class _CommandFemSolverCalculix(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        has_nonlinear_material_obj = False
-        for m in FemGui.getActiveAnalysis().Member:
-            if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
-                has_nonlinear_material_obj = True
-        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
-        FreeCADGui.addModule("ObjectsFem")
-        if has_nonlinear_material_obj:
-            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)")
-            FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
+        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
+        if use_old_solver_frame_work and not use_new_solver_frame_work:
+            has_nonlinear_material_obj = False
+            for m in FemGui.getActiveAnalysis().Member:
+                if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                    has_nonlinear_material_obj = True
+            FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
+            FreeCADGui.addModule("ObjectsFem")
+            FreeCADGui.addModule("FemGui")
+            if has_nonlinear_material_obj:
+                FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculixOld(FreeCAD.ActiveDocument)")
+                FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
+                FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
+            else:
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculixOld(FreeCAD.ActiveDocument)]")
         else:
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)]")
+            analysis = FemGui.getActiveAnalysis()
+            FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
+            FreeCADGui.addModule("ObjectsFem")
+            FreeCADGui.doCommand(
+                "FreeCAD.ActiveDocument.%s.Member += "
+                "[ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)]"
+                % analysis.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
 
 
 FreeCADGui.addCommand('FEM_SolverCalculix', _CommandFemSolverCalculix())

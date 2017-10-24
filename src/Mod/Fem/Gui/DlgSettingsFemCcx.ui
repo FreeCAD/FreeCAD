@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>672</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,46 +36,7 @@
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_ccx_binary_std">
-            <property name="text">
-             <string>CalculiX binary</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
-            <property name="text">
-             <string>Use standard ccx binary path</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>UseStandardCcxLocation</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="l_ccx_binary_path">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>ccx binary path:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+          <item row="2" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path" native="true">
             <property name="enabled">
              <bool>false</bool>
@@ -115,14 +76,14 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="l_editor">
             <property name="text">
              <string>Editor</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="3" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_int_editor">
             <property name="text">
              <string>Use internal editor for .inp files</string>
@@ -138,7 +99,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="l_ext_editor">
             <property name="enabled">
              <bool>false</bool>
@@ -154,7 +115,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_ext_editor" native="true">
             <property name="enabled">
              <bool>false</bool>
@@ -167,14 +128,14 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="l_editor_2">
             <property name="text">
              <string>Split .inp</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_split_inp_writer">
             <property name="enabled">
              <bool>true</bool>
@@ -192,6 +153,100 @@
              <cstring>Mod/Fem/Ccx</cstring>
             </property>
            </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="l_ccx_binary_std">
+            <property name="text">
+             <string>CalculiX binary</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
+            <property name="text">
+             <string>Use standard ccx binary path</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>UseStandardCcxLocation</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="l_ccx_binary_path">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>ccx binary path:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="l_editor_3">
+            <property name="text">
+             <string>Solver frame work to run CalculiX</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_old">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="accessibleDescription">
+               <string>sdfsdfsdfds</string>
+              </property>
+              <property name="text">
+               <string>Deprecated</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem/Ccx</cstring>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>useOldSolverFrameWork</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_new">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>New</string>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem/Ccx</cstring>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>useNewSolverFrameWork</cstring>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -457,7 +512,7 @@
             </property>
            </widget>
           </item>
-           <item row="5" column="1">
+          <item row="5" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
             <property name="text">
              <string>3D Output, unchecked for 2D</string>
@@ -695,6 +750,11 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

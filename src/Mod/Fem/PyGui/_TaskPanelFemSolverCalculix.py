@@ -274,7 +274,7 @@ class _TaskPanelFemSolverCalculix:
     def select_thermomech_analysis(self):
         self.select_analysis_type('thermomech')
 
-    # That function overlaps with FemTools setup_working_dir and needs to be removed when we migrate fully to FemTools
+    # That function overlaps with FemToolsCcx setup_working_dir and could be removed when the one from FemToolsCcx would be used
     def setup_working_dir(self):
         wd = self.solver_object.WorkingDir
         if not (os.path.isdir(wd)):

@@ -54,6 +54,11 @@ void DlgSettingsFemGeneralImp::saveSettings()
     cb_restore_result_dialog->onSave();
     cb_keep_results_on_rerun->onSave();
     cb_hide_constraint->onSave();
+
+    cb_wd_temp->onSave();
+    cb_wd_beside->onSave();
+    cb_wd_custom->onSave();
+    le_wd_custom->onSave();
 }
 
 void DlgSettingsFemGeneralImp::loadSettings()
@@ -68,6 +73,11 @@ void DlgSettingsFemGeneralImp::loadSettings()
     cb_restore_result_dialog->onRestore();
     cb_keep_results_on_rerun->onRestore();
     cb_hide_constraint->onRestore();
+
+    cb_wd_temp->onRestore();
+    cb_wd_beside->onRestore();
+    cb_wd_custom->onRestore();
+    le_wd_custom->onRestore();
 }
 
 /**

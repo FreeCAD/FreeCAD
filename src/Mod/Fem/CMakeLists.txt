@@ -34,15 +34,13 @@ INSTALL(
         InitGui.py
         FemGmshTools.py
         FemInputWriter.py
-        FemInputWriterCcx.py
-        FemInputWriterZ88.py
         FemMesh2Mesh.py
         FemMeshTools.py
         FemResultTools.py
-        FemTools.py
         FemToolsCcx.py
-        FemToolsZ88.py
         ObjectsFem.py
+        FemUtils.py
+        FemConstraint.py
         TestFem.py
     DESTINATION
         Mod/Fem
@@ -52,6 +50,10 @@ INSTALL(
     FILES
         PyObjects/__init__.py
         PyObjects/_FemConstraintSelfWeight.py
+        PyObjects/_FemConstraintBodyHeatSource.py
+        PyObjects/_FemConstraintFlowVelocity.py
+        PyObjects/_FemConstraintInitialFlowVelocity.py
+        PyObjects/_FemConstraintElectrostaticPotential.py
         PyObjects/_FemElementFluid1D.py
         PyObjects/_FemElementGeometry1D.py
         PyObjects/_FemElementGeometry2D.py
@@ -63,7 +65,6 @@ INSTALL(
         PyObjects/_FemMeshResult.py
         PyObjects/_FemResultMechanical.py
         PyObjects/_FemSolverCalculix.py
-        PyObjects/_FemSolverZ88.py
         PyObjects/_FemMaterial.py
     DESTINATION
         Mod/Fem/PyObjects
@@ -71,9 +72,77 @@ INSTALL(
 
 INSTALL(
     FILES
+        femsolver/__init__.py
+        femsolver/solverbase.py
+        femsolver/equationbase.py
+        femsolver/report.py
+        femsolver/reportdialog.py
+        femsolver/settings.py
+        femsolver/task.py
+        femsolver/run.py
+        femsolver/signal.py
+    DESTINATION
+        Mod/Fem/femsolver
+)
+
+INSTALL(
+    FILES
+        femsolver/elmer/__init__.py
+        femsolver/elmer/sifio.py
+        femsolver/elmer/solver.py
+        femsolver/elmer/tasks.py
+        femsolver/elmer/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/elmer
+)
+
+INSTALL(
+    FILES
+        femsolver/elmer/equations/__init__.py
+        femsolver/elmer/equations/equation.py
+        femsolver/elmer/equations/linear.py
+        femsolver/elmer/equations/nonlinear.py
+        femsolver/elmer/equations/elasticity.py
+        femsolver/elmer/equations/electrostatic.py
+        femsolver/elmer/equations/fluxsolver.py
+        femsolver/elmer/equations/heat.py
+        femsolver/elmer/equations/flow.py
+    DESTINATION
+        Mod/Fem/femsolver/elmer/equations
+)
+
+INSTALL(
+    FILES
+        femsolver/calculix/__init__.py
+        femsolver/calculix/solver.py
+        femsolver/calculix/tasks.py
+        femsolver/calculix/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/calculix
+)
+
+INSTALL(
+    FILES
+        femsolver/z88/__init__.py
+        femsolver/z88/solver.py
+        femsolver/z88/tasks.py
+        femsolver/z88/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/z88
+)
+
+INSTALL(
+    FILES
         PyGui/FemCommands.py
         PyGui/FemSelectionObserver.py
+        PyGui/FemSelectionWidgets.py
         PyGui/__init__.py
+        PyGui/_CommandFemSolverElmer.py
+        PyGui/_CommandFemEquation.py
+        PyGui/_CommandFemConstraintBodyHeatSource.py
+        PyGui/_CommandFemConstraintFlowVelocity.py
+        PyGui/_CommandFemConstraintInitialFlowVelocity.py
+        PyGui/_CommandFemConstraintElectrostaticPotential.py
         PyGui/_CommandFemAnalysis.py
         PyGui/_CommandFemConstraintSelfWeight.py
         PyGui/_CommandFemElementFluid1D.py
@@ -106,7 +175,12 @@ INSTALL(
         PyGui/_TaskPanelFemMeshRegion.py
         PyGui/_TaskPanelFemResultShow.py
         PyGui/_TaskPanelFemSolverCalculix.py
+        PyGui/_TaskPanelFemSolverControl.py
         PyGui/_ViewProviderFemConstraintSelfWeight.py
+        PyGui/_ViewProviderFemConstraintBodyHeatSource.py
+        PyGui/_ViewProviderFemConstraintFlowVelocity.py
+        PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
+        PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
         PyGui/_ViewProviderFemElementFluid1D.py
         PyGui/_ViewProviderFemElementGeometry1D.py
         PyGui/_ViewProviderFemElementGeometry2D.py
@@ -119,7 +193,6 @@ INSTALL(
         PyGui/_ViewProviderFemMeshResult.py
         PyGui/_ViewProviderFemResultMechanical.py
         PyGui/_ViewProviderFemSolverCalculix.py
-        PyGui/_ViewProviderFemSolverZ88.py
         PyGui/TaskPanelFemElementFluid1D.ui
         PyGui/TaskPanelFemElementGeometry1D.ui
         PyGui/TaskPanelFemElementGeometry2D.ui
@@ -131,6 +204,9 @@ INSTALL(
         PyGui/TaskPanelFemMeshRegion.ui
         PyGui/TaskPanelFemResultShow.ui
         PyGui/TaskPanelFemSolverCalculix.ui
+        PyGui/TaskPanelFemFlowVelocity.ui
+        PyGui/TaskPanelFemInitialFlowVelocity.ui
+        PyGui/TaskPanelFemElectrostaticPotential.ui
     DESTINATION
         Mod/Fem/PyGui
 )

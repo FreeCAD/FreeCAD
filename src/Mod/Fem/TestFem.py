@@ -29,6 +29,7 @@ import FemToolsCcx
 import FemResultTools
 import FreeCAD
 import ObjectsFem
+import femsolver.run
 import tempfile
 import unittest
 import os
@@ -49,6 +50,8 @@ static_analysis_dir = temp_dir + 'FEM_static/'
 static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
 static_expected_values = test_file_dir + "cube_static_expected_values"
+static2_analysis_dir = temp_dir + 'FEM_static2/'
+static2_save_fc_file = static2_analysis_dir + static_base_name + '2.fcstd'
 
 frequency_base_name = 'cube_frequency'
 frequency_analysis_dir = temp_dir + 'FEM_frequency/'
@@ -342,7 +345,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
 
     def test_pyimport_all_FEM_modules(self):
-        # we're gonna try to import all python modules from FreeCAD Fem
+        # we're going to try to import all python modules from FreeCAD Fem
         pymodules = []
 
         # collect all Python modules in Fem
@@ -350,6 +353,11 @@ class FemTest(unittest.TestCase):
         pymodules += collect_python_modules('PyObjects')
         if FreeCAD.GuiUp:
             pymodules += collect_python_modules('PyGui')
+        pymodules += collect_python_modules('femsolver')
+        pymodules += collect_python_modules('femsolver/elmer')
+        pymodules += collect_python_modules('femsolver/elmer/equations')
+        pymodules += collect_python_modules('femsolver/z88')
+        pymodules += collect_python_modules('femsolver/calculix')
 
         # import all collected modules
         # fcc_print(pymodules)
@@ -388,7 +396,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
@@ -549,6 +557,33 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
 
+        # use new solver frame work solver
+        fcc_print('Checking FEM new solver for new solver frame work...')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
+        solver_ccx2_object.GeometricalNonlinearity = 'linear'
+        solver_ccx2_object.ThermoMechSteadyState = False
+        solver_ccx2_object.MatrixSolverType = 'default'
+        solver_ccx2_object.IterationsControlParameterTimeUse = False
+        solver_ccx2_object.EigenmodesCount = 10
+        solver_ccx2_object.EigenmodeHighLimit = 1000000.0
+        solver_ccx2_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_ccx2_object, "FemTest of new solver failed")
+        analysis.Member = analysis.Member + [solver_ccx2_object]
+
+        fcc_print('Checking inpfile writing for new solver frame work...')
+        if not os.path.exists(static2_analysis_dir):
+            os.makedirs(static2_analysis_dir)
+        machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
+        machine.target = femsolver.run.PREPARE
+        machine.start()
+        machine.join()  # wait for the machine to finish.
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))
+        ret = compare_inp_files(static_analysis_inp_file, static2_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+
+        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(static2_save_fc_file))
+        self.active_doc.saveAs(static2_save_fc_file)
+
         fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
 
     def test_thermomech_analysis(self):
@@ -562,7 +597,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -716,7 +751,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -1010,7 +1045,7 @@ def collect_python_modules(femsubdir=None):
             if not femsubdir:
                 collected_modules.append(os.path.splitext(os.path.basename(pyfile))[0])
             else:
-                collected_modules.append(femsubdir.replace('/','.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
+                collected_modules.append(femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
     return collected_modules
 
 
