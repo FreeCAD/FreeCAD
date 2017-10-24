@@ -35,7 +35,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
 #include "QGCustomClip.h"
 
 using namespace TechDrawGui;
@@ -53,12 +52,7 @@ QGCustomClip::QGCustomClip()
 
 void QGCustomClip::centerAt(QPointF centerPos)
 {
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = centerPos.x() - width/2.;
-    double newY = centerPos.y() - height/2.;
-    setPos(newX,newY);
+    centerAt(centerPos.x(),centerPos.y());
 }
 
 void QGCustomClip::centerAt(double cX, double cY)
@@ -83,7 +77,6 @@ void QGCustomClip::setRect(double x, double y, double w, double h)
     setRect(r);
 }
 
-
 QRectF QGCustomClip::rect()
 {
     return m_rect;
@@ -92,6 +85,8 @@ QRectF QGCustomClip::rect()
 void QGCustomClip::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+
+//    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint (painter, &myOption, widget);
 }
