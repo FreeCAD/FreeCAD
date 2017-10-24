@@ -1,12 +1,16 @@
 import os
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
+import FreeCAD
 import Path
+import Part
 import PathSimulator
 import math
 from FreeCAD import Vector, Base
 from PathScripts.PathGeom import PathGeom
-from PySide import QtGui, QtCore
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui, QtCore
 
 #compiled with pyrcc4 -py3 Resources\CAM_Sim.qrc -o CAM_Sim_rc.py
 import CAM_Sim_rc
@@ -39,7 +43,17 @@ class PathSimulation:
         self.timer = QtCore.QTimer()
         QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.PerformCut)
         self.stdrot = FreeCAD.Rotation(Vector(0,0,1),0)
+        self.iprogress = 0
+        self.numCommands = 0;
 
+    def Connect(self, but, sig):
+        QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
+
+    def UpdateProgress(self):
+        if self.numCommands > 0:
+            self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
+
+    def Activate(self):
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
         self.Connect(form.toolButtonStop, self.SimStop)
@@ -48,15 +62,6 @@ class PathSimulation:
         self.Connect(form.toolButtonStep, self.SimStep)
         self.Connect(form.toolButtonFF, self.SimFF)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
-
-    def Connect(self, but, sig):
-        QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
-
-    def UpdateProgress(self):
-        self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
-
-    def Activate(self):
-        form = self.taskForm.form
         jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
         form.comboJobs.clear()
         self.jobs = []            
@@ -131,8 +136,10 @@ class PathSimulation:
             self.cutSolid.ViewObject.Proxy = 0
             self.cutSolid.ViewObject.hide()
         
+        self.SetupSimulation()
+        self.resetSimulation = False
         FreeCAD.ActiveDocument.recompute()
-        self.resetSimulation = True
+        
         #self.dialog.show()
 
     def SkipStep(self):
@@ -459,7 +466,7 @@ class CommandPathSimulate:
     def GetResources(self):
         return {'Pixmap': 'Path-Simulator',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
-                'Accel': "P, I",
+                'Accel': "P, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "Simulate Path G-Code on stock")}
 
     def IsActive(self):
@@ -472,8 +479,10 @@ class CommandPathSimulate:
     def Activated(self):
         pathSimulation.Activate()
 
-
 pathSimulation = PathSimulation()
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Sanity',CommandPathSanity())
+    FreeCADGui.addCommand('Path_Simulator',CommandPathSimulate())
+    FreeCAD.Console.PrintLog("Loading PathSimulator Gui... done\n")
+
+
