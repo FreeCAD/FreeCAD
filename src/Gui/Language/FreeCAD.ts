@@ -2130,7 +2130,7 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Create up to backup files when resaving document</source>
+        <source>Maximum number of backup files to keep when resaving document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
