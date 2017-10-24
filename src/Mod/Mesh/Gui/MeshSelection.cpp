@@ -465,7 +465,7 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
 
     std::list<ViewProviderMesh*> views = self->getViewProviders();
     for (std::list<ViewProviderMesh*>::iterator it = views.begin(); it != views.end(); ++it) {
-        ViewProviderMesh* vp = static_cast<ViewProviderMesh*>(*it);
+        ViewProviderMesh* vp = *it;
 
         std::vector<unsigned long> faces;
         const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>((*it)->getObject())->Mesh.getValue();

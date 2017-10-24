@@ -55,7 +55,7 @@ public:
 
 protected:
     // Force using the reference count mechanism.
-    virtual ~SoFCIndexedFaceSet() {};
+    virtual ~SoFCIndexedFaceSet() {}
     virtual void GLRender(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *vertexindices,
