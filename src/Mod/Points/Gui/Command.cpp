@@ -211,15 +211,7 @@ void CmdPointsConvert::activated(int iMsg)
 
     bool addedPoints = false;
     for (std::vector<App::DocumentObject*>::iterator it = geoObject.begin(); it != geoObject.end(); ++it) {
-        App::PropertyComplexGeoData* prop = 0;
-
-        // a cad shape?
-        if ((*it)->isDerivedFrom(Base::Type::fromName("Part::Feature")))
-            prop = dynamic_cast<App::PropertyComplexGeoData*>((*it)->getPropertyByName("Shape"));
-        // a mesh?
-        else if ((*it)->isDerivedFrom(Base::Type::fromName("Mesh::Feature")))
-            prop = dynamic_cast<App::PropertyComplexGeoData*>((*it)->getPropertyByName("Mesh"));
-
+        const App::PropertyComplexGeoData* prop = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
         if (prop) {
             const Data::ComplexGeoData* data = prop->getComplexData();
             std::vector<Base::Vector3d> vertexes;
@@ -254,6 +246,7 @@ void CmdPointsConvert::activated(int iMsg)
 
                 App::Document* doc = (*it)->getDocument();
                 doc->addObject(fea, "Points");
+                fea->purgeTouched();
                 addedPoints = true;
             }
         }
