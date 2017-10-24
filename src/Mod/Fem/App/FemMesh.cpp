@@ -1347,7 +1347,6 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                 for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
                     apair.second.push_back(aFace->GetNode(*jt)->GetID());
                 elementsMapFac[it->second].insert(apair);
-
             }
         }
     }
@@ -1446,7 +1445,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
             anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Evolumes" << std::endl;
             for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
                 anABAQUS_Output << jt->first;
-                // Calculix allows max 16 enntries in one line, an hexa20 has more !
+                // Calculix allows max 16 entries in one line, a hexa20 has more !
                 int ct = 0;  // counter
                 bool first_line = true;
                 for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt, ++ct) {
