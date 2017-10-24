@@ -95,13 +95,13 @@ class CCurve
 
 protected:
 	void AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices, std::list<const CVertex*>& might_be_an_arc, CArc &arc, bool &arc_found, bool &arc_added);
-	bool CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& might_be_an_arc, CArc &arc);
+	static bool CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& might_be_an_arc, CArc &arc);
 
 public:
 	std::list<CVertex> m_vertices;
 	void append(const CVertex& vertex);
 
-	void FitArcs();
+	void FitArcs(bool retry=false);
 	void UnFitArcs();
 	Point NearestPoint(const Point& p)const;
 	Point NearestPoint(const CCurve& p, double *d = NULL)const;
