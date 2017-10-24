@@ -1,13 +1,12 @@
 
 add_subdirectory(App)
 # if(BUILD_GUI)
-    # add_subdirectory(Gui)
+     # add_subdirectory(Gui)
 # endif(BUILD_GUI)
 
 # install(
     # FILES
-        # Init.py
-        # InitGui.py
+        # Gui/PathSimulator.py
     # DESTINATION
-        # Mod/PathSimulator
+        # Mod/Path
 # )
