@@ -13,12 +13,11 @@ if FreeCAD.GuiUp:
     from PySide import QtGui, QtCore
 
 #compiled with pyrcc4 -py3 Resources\CAM_Sim.qrc -o CAM_Sim_rc.py
-import CAM_Sim_rc
        
 class CAMSimTaskUi:
     def __init__(self, parent):
         # this will create a Qt widget from our ui file
-        self.form = FreeCADGui.PySideUic.loadUi(_filePath + "/TaskPathSimulator.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/TaskPathSimulator.ui")
         self.parent = parent
 
     def accept(self):

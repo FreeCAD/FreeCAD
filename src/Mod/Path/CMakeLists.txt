@@ -89,7 +89,6 @@ SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PathSimulatorGui.py
     PathScripts/PostUtils.py
-    PathScripts/TaskPathSimulator.ui
     PathScripts/__init__.py
 )
 
