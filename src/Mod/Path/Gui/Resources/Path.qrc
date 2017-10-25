@@ -53,6 +53,11 @@
         <file>icons/Path-Area-View.svg</file>
         <file>icons/Path-Area-Workplane.svg</file>
         <file>icons/Path-Simulator.svg</file>
+        <file>icons/Path-BFastForward.svg</file>
+        <file>icons/Path-BPause.svg</file>
+        <file>icons/Path-BPlay.svg</file>
+        <file>icons/Path-BStep.svg</file>
+        <file>icons/Path-BStop.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
@@ -79,6 +84,7 @@
         <file>panels/PointEdit.ui</file>
         <file>panels/ToolEdit.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
+        <file>panels/TaskPathSimulator.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>
