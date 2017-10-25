@@ -60,6 +60,10 @@ class PathSimulation:
         self.Connect(form.toolButtonPause, self.SimPause)
         self.Connect(form.toolButtonStep, self.SimStep)
         self.Connect(form.toolButtonFF, self.SimFF)
+        form.sliderSpeed.valueChanged.connect(self.onSpeedBarChange)
+        self.onSpeedBarChange()
+        form.sliderAccuracy.valueChanged.connect(self.onAccuracyBarChange)
+        self.onAccuracyBarChange()
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
         jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
         form.comboJobs.clear()
@@ -390,6 +394,14 @@ class PathSimulation:
             listItem.setCheckState(QtCore.Qt.CheckState.Checked)
             self.operations.append(op)
             form.listOperations.addItem(listItem)
+            
+    def onSpeedBarChange(self):
+        form = self.taskForm.form
+        form.labelGPerSec.setText(str(form.sliderSpeed.value()) + " G/s")
+
+    def onAccuracyBarChange(self):
+        form = self.taskForm.form
+        form.labelAccuracy.setText(str(1.1 - 0.1 * form.sliderAccuracy.value()) + "%")
 
     def GuiBusy(self, isBusy):
         form = self.taskForm.form
