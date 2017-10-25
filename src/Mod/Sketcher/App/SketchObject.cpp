@@ -5691,6 +5691,8 @@ void SketchObject::onDocumentRestored()
             if (this->solve(true) == 0)
                 Shape.setValue(solvedSketch.toShape());
         }
+
+        Part::Part2DObject::onDocumentRestored();
     }
     catch (...) {
     }

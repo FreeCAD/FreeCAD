@@ -207,6 +207,38 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     App::DocumentObjectExtension::extensionOnChanged(prop);
 }
 
+void AttachExtension::onExtendedDocumentRestored()
+{
+    try {
+        bool bAttached = positionBySupport();
+
+        // Hide properties when not applicable to reduce user confusion
+        eMapMode mmode = eMapMode(this->MapMode.getValue());
+        bool modeIsPointOnCurve =
+                (mmode == mmNormalToPath ||
+                 mmode == mmFrenetNB ||
+                 mmode == mmFrenetTN ||
+                 mmode == mmFrenetTB ||
+                 mmode == mmRevolutionSection ||
+                 mmode == mmConcentric);
+
+        // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
+        bool hasOneRef = false;
+        if (_attacher && _attacher->references.getSubValues().size() == 1) {
+            hasOneRef = true;
+        }
+
+        this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+        this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
+        this->superPlacement.setStatus(App::Property::Status::Hidden, !bAttached);
+        getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+    }
+    catch (Base::Exception&) {
+    }
+    catch (Standard_Failure &) {
+    }
+}
+
 void AttachExtension::updateAttacherVals()
 {
     if (!_attacher)
