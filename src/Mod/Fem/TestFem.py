@@ -379,6 +379,49 @@ class FemCcxAnalysisTest(unittest.TestCase):
             FreeCAD.setActiveDocument("FemTest")
         self.active_doc = FreeCAD.ActiveDocument
 
+    def test_analysis(self):
+        doc = self.active_doc
+        analysis = ObjectsFem.makeAnalysis(doc)
+
+        con01 = analysis.addObject(ObjectsFem.makeConstraintBearing(doc))[0]
+        con02 = analysis.addObject(ObjectsFem.makeConstraintContact(doc))[0]
+        con03 = analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))[0]
+        con04 = analysis.addObject(ObjectsFem.makeConstraintFixed(doc))[0]
+        con05 = analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))[0]
+        con06 = analysis.addObject(ObjectsFem.makeConstraintForce(doc))[0]
+        con07 = analysis.addObject(ObjectsFem.makeConstraintGear(doc))[0]
+        con08 = analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))[0]
+        con09 = analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))[0]
+        con10 = analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))[0]
+        con11 = analysis.addObject(ObjectsFem.makeConstraintPressure(doc))[0]
+        con12 = analysis.addObject(ObjectsFem.makeConstraintPulley(doc))[0]
+        con13 = analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))[0]
+        con14 = analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))[0]
+        con15 = analysis.addObject(ObjectsFem.makeConstraintTransform(doc))[0]
+
+        ele01 = analysis.addObject(ObjectsFem.makeElementFluid1D(doc))[0]
+        ele02 = analysis.addObject(ObjectsFem.makeElementGeometry1D(doc))[0]
+        ele03 = analysis.addObject(ObjectsFem.makeElementGeometry2D(doc))[0]
+
+        mat01 = analysis.addObject(ObjectsFem.makeMaterialFluid(doc))[0]
+        mat02 = analysis.addObject(ObjectsFem.makeMaterialSolid(doc))[0]
+        mat03 = analysis.addObject(ObjectsFem.makeMaterialMechanicalNonlinear(doc, mat02))[0]
+
+        msh01 = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
+        msh02 = analysis.addObject(ObjectsFem.makeMeshBoundaryLayer(doc, msh01))[0]
+        msh03 = analysis.addObject(ObjectsFem.makeMeshGroup(doc, msh01))[0]
+        msh04 = analysis.addObject(ObjectsFem.makeMeshRegion(doc, msh01))[0]
+        msh05 = analysis.addObject(ObjectsFem.makeMeshNetgen(doc))[0]
+
+        res01 = analysis.addObject(ObjectsFem.makeMeshResult(doc))[0]
+        res02 = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
+
+        sol01 = analysis.addObject(ObjectsFem.makeSolverCalculix(doc))[0]
+        sol02 = analysis.addObject(ObjectsFem.makeSolverZ88(doc))[0]
+
+        doc.recompute()
+        self.assertEqual(len(analysis.Group), 30)
+
     def test_static_freq_analysis(self):
         # static
         fcc_print('--------------- Start of FEM tests ---------------')
