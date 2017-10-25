@@ -27,11 +27,15 @@ __url__ = "http://www.freecadweb.org"
 ## @package TaskPanelFemMaterial
 #  \ingroup FEM
 
+import sys
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 from PySide import QtCore, QtGui
 from PySide.QtGui import QFileDialog, QMessageBox
+
+if sys.version_info.major >= 3:
+    unicode = str
 
 
 class _TaskPanelFemMaterial:

@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 import FemToolsCcx
 import FreeCAD
 import os
+import sys
 import time
 import FreeCADGui
 import FemGui
@@ -37,6 +38,9 @@ from PySide import QtCore, QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
 
+
+if sys.version_info.major >= 3:
+    unicode = str
 
 class _TaskPanelFemSolverCalculix:
     def __init__(self, solver_object):
