@@ -73,10 +73,11 @@ class PathWorkbench (Workbench):
         from PathScripts import PathToolController
         from PathScripts import PathToolLenOffset
         from PathScripts import PathToolLibraryManager
+        from PathScripts import PathSimulatorGui
         import PathCommands
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity", "Path_Simulator"]
         toolcmdlist = ["Path_ToolLibraryEdit"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_Custom", "Path_Shape"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
