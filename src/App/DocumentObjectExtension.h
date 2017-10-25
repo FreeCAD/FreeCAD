@@ -55,6 +55,8 @@ public:
     
     /// get called after setting the document
     virtual void onExtendedSettingDocument();
+    /// get called after a document has been fully restored
+    virtual void onExtendedDocumentRestored();
     /// get called after a brand new object was created
     virtual void onExtendedSetupObject();
     /// get called when object is going to be removed from the document

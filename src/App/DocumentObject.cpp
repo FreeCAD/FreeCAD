@@ -563,6 +563,14 @@ void DocumentObject::connectRelabelSignals()
     }
 }
 
+void DocumentObject::onDocumentRestored()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedDocumentRestored();
+}
+
 void DocumentObject::onSettingDocument()
 {
     //call all extensions
