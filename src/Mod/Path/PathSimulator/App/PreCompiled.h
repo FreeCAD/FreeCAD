@@ -33,7 +33,7 @@
 # define PartExport __declspec(dllimport)
 # define MeshExport __declspec(dllimport)
 #else // for Linux
-# define PathSimulatorAppExport
+# define PathSimulatorExport
 # define PathExport
 # define PartExport
 # define MeshExport
