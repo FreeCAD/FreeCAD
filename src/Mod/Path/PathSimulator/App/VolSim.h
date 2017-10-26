@@ -85,36 +85,6 @@ struct cLineSegment
 	float lenXY;
 };
 
-struct Model3D
-{
-	Model3D(float px, float py, float res) : pos_x(px), pos_y(py), resolution(res) {}
-	void SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point3D & p2, Point3D & p3)
-	{
-		facet._aclPoints[0][0] = p1.x * resolution + pos_x;
-		facet._aclPoints[0][1] = p1.y * resolution + pos_y;
-		facet._aclPoints[0][2] = p1.z;
-		facet._aclPoints[1][0] = p2.x * resolution + pos_x;
-		facet._aclPoints[1][1] = p2.y * resolution + pos_y;
-		facet._aclPoints[1][2] = p2.z;
-		facet._aclPoints[2][0] = p3.x * resolution + pos_x;
-		facet._aclPoints[2][1] = p3.y * resolution + pos_y;
-		facet._aclPoints[2][2] = p3.z;
-		facet.CalcNormal();
-	}
-
-	inline void AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
-	{
-		MeshCore::MeshGeomFacet facet;
-		SetFacetPoints(facet, p1, p2, p3);
-		mesh.addFacet(facet);
-		SetFacetPoints(facet, p1, p3, p4);
-		mesh.addFacet(facet);
-	}
-
-	float pos_x, pos_y, resolution;
-	Mesh::MeshObject mesh;
-};
-
 class cSimTool
 {
 public:
@@ -167,7 +137,7 @@ class cStock
 public:
 	cStock(float px, float py, float pz, float lx, float ly, float lz, float res);
 	~cStock();
-	void Tesselate(Mesh::MeshObject & mesh);
+	void Tesselate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner);
     void CreatePocket(float x, float y, float rad, float height);
     void ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool &tool);
     void ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool &tool, bool isCCW);
@@ -179,7 +149,7 @@ private:
 	float FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool scanHoriz);
 	void FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool scanHoriz);
 	void SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point3D & p2, Point3D & p3);
-	void AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4);
+	void AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4, std::vector<MeshCore::MeshGeomFacet> & facets);
 	int TesselTop(int x, int y);
 	int TesselBot(int x, int y);
 	int TesselSidesX(int yp);
@@ -191,7 +161,8 @@ private:
 	float m_res;        // resoulution
 	float m_plane;		// stock plane height
 	int m_x, m_y;            // stock array size
-	std::vector<MeshCore::MeshGeomFacet> facets;
+	std::vector<MeshCore::MeshGeomFacet> facetsOuter;
+	std::vector<MeshCore::MeshGeomFacet> facetsInner;
 };
 
 class cVolSim

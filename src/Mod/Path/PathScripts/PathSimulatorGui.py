@@ -4,10 +4,12 @@ _filePath = os.path.dirname(os.path.abspath(__file__))
 import FreeCAD
 import Path
 import Part
+import Mesh
 import PathSimulator
 import math
 from FreeCAD import Vector, Base
 from PathScripts.PathGeom import PathGeom
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui, QtCore
@@ -43,7 +45,9 @@ class PathSimulation:
         QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.PerformCut)
         self.stdrot = FreeCAD.Rotation(Vector(0,0,1),0)
         self.iprogress = 0
-        self.numCommands = 0;
+        self.numCommands = 0
+        self.simperiod = 20
+        self.accuracy = 0.1
 
     def Connect(self, but, sig):
         QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
@@ -89,8 +93,11 @@ class PathSimulation:
             return 0
         self.stock = self.job.Stock.Shape
         if (self.isVoxel):
-            self.voxSim.BeginSimulation(self.stock,0.5)
-            self.cutMaterial.Mesh = self.voxSim.GetResultMesh()
+            maxlen = self.stock.BoundBox.XLength
+            if (maxlen < self.stock.BoundBox.YLength):
+                maxlen = self.stock.BoundBox.YLength
+            self.voxSim.BeginSimulation(self.stock, 0.01 * self.accuracy * maxlen)
+            (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
         self.busy = False
@@ -127,11 +134,16 @@ class PathSimulation:
         # Add cut material
         if self.isVoxel:
             self.cutMaterial = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython","CutMaterial")
+            self.cutMaterialIn = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython","CutMaterialIn")
+            self.cutMaterialIn.ViewObject.Proxy = 0
+            self.cutMaterialIn.ViewObject.show()
+            self.cutMaterialIn.ViewObject.ShapeColor = (1.0, 0.85, 0.45, 0.0)
         else:
             self.cutMaterial = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CutMaterial")
             self.cutMaterial.Shape = self.job.Stock.Shape
         self.cutMaterial.ViewObject.Proxy = 0
         self.cutMaterial.ViewObject.show()
+        self.cutMaterial.ViewObject.ShapeColor = (0.5, 0.25, 0.25, 0.0)
 
         # Add cut path solid for debug
         if self.debug:
@@ -140,7 +152,7 @@ class PathSimulation:
             self.cutSolid.ViewObject.hide()
         
         self.SetupSimulation()
-        self.resetSimulation = False
+        self.resetSimulation = True
         FreeCAD.ActiveDocument.recompute()
         
         #self.dialog.show()
@@ -212,7 +224,7 @@ class PathSimulation:
             self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
             if not self.disableAnim:
                 self.cutTool.Placement = self.curpos #FreeCAD.Placement(self.curpos, self.stdrot)
-                self.cutMaterial.Mesh = self.voxSim.GetResultMesh()
+                (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
@@ -397,11 +409,16 @@ class PathSimulation:
             
     def onSpeedBarChange(self):
         form = self.taskForm.form
+        self.simperiod = 1000 / form.sliderSpeed.value()
         form.labelGPerSec.setText(str(form.sliderSpeed.value()) + " G/s")
+        #if (self.timer.isActive()):
+        self.timer.setInterval(self.simperiod)
+        
 
     def onAccuracyBarChange(self):
         form = self.taskForm.form
-        form.labelAccuracy.setText(str(1.1 - 0.1 * form.sliderAccuracy.value()) + "%")
+        self.accuracy = 1.1 - 0.1 * form.sliderAccuracy.value()
+        form.labelAccuracy.setText(str(self.accuracy) + "%")
 
     def GuiBusy(self, isBusy):
         form = self.taskForm.form
@@ -435,11 +452,11 @@ class PathSimulation:
     def SimPlay(self):
         self.disableAnim = False
         self.GuiBusy(True)
-        self.timer.start(20)
+        self.timer.start(self.simperiod)
 
     def ViewShape(self):
         if self.isVoxel:
-            self.cutMaterial.Mesh = self.voxSim.GetResultMesh()
+            (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
 
@@ -455,15 +472,26 @@ class PathSimulation:
         FreeCAD.ActiveDocument.removeObject(self.cutTool.Name)
         self.cutTool = None
 
+    def RemoveInnerMaterial(self):
+        if self.cutMaterialIn is not None:
+            if self.isVoxel and self.cutMaterial is not None:
+                mesh = Mesh.Mesh()
+                mesh.addMesh(self.cutMaterial.Mesh)
+                mesh.addMesh(self.cutMaterialIn.Mesh)
+                self.cutMaterial.Mesh = mesh
+            FreeCAD.ActiveDocument.removeObject(self.cutMaterialIn.Name)
+            self.cutMaterialIn = None
+
     def RemoveMaterial(self):
-        if self.cutMaterial is None:
-            return
-        FreeCAD.ActiveDocument.removeObject(self.cutMaterial.Name)
-        self.cutMaterial = None
+        if self.cutMaterial is not None:
+            FreeCAD.ActiveDocument.removeObject(self.cutMaterial.Name)
+            self.cutMaterial = None
+        self.RemoveInnerMaterial()
         
 
     def accept(self):
         self.EndSimulation()
+        self.RemoveInnerMaterial()
         self.RemoveTool()
         
     def cancel(self):
