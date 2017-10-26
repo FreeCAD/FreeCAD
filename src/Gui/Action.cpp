@@ -643,7 +643,6 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 
 RecentFilesAction::~RecentFilesAction()
 {
-    try { save(); } catch (...) {}
 }
 
 /** Adds the new item to the recent files. */
@@ -656,12 +655,12 @@ void RecentFilesAction::appendFile(const QString& filename)
     files.removeAll(filename);
     files.prepend(filename);
     setFiles(files);
+    save();
 
     // update the XML structure and save the user parameter to disk (#0001989)
     bool saveParameter = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
     if (saveParameter) {
-        save();
         ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
         parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
     }
