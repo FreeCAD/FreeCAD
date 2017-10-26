@@ -85,6 +85,7 @@ class PathSimulation:
         form = self.taskForm.form       
         self.activeOps = []
         self.numCommands = 0
+        self.ioperation = 0
         for i in range(form.listOperations.count()):
             if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
                 self.activeOps.append(self.operations[i])
@@ -122,7 +123,6 @@ class PathSimulation:
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
         self.busy = False
         #self.timer.start(100)
-        self.ioperation = 0
         self.height = 10
         self.skipStep = False
         self.initialPos = Vector(0, 0, self.job.Stock.Shape.BoundBox.ZMax)
