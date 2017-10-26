@@ -34,6 +34,9 @@
 # define MeshExport __declspec(dllimport)
 #else // for Linux
 # define PathSimulatorAppExport
+# define PathExport
+# define PartExport
+# define MeshExport
 #endif
 
 #ifdef _PreComp_

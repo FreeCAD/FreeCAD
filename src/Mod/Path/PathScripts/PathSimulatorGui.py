@@ -442,7 +442,7 @@ class PathSimulation:
 
     def SimFF(self):
         self.GuiBusy(True)
-        self.timer.start(10)
+        self.timer.start(1)
         self.disableAnim = True
 
     def SimStep(self):
