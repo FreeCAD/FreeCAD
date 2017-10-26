@@ -89,10 +89,15 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 		return 0;
 	cStock *stock = getPathSimPtr()->m_stock;
 
-	Mesh::MeshObject *mesh = new Mesh::MeshObject();
-	Mesh::MeshPy *meshpy = new Mesh::MeshPy(mesh);
-	stock->Tesselate(*mesh);
-	return meshpy;
+	Mesh::MeshObject *meshOuter = new Mesh::MeshObject();
+	Mesh::MeshPy *meshOuterpy = new Mesh::MeshPy(meshOuter);
+	Mesh::MeshObject *meshInner = new Mesh::MeshObject();
+	Mesh::MeshPy *meshInnerpy = new Mesh::MeshPy(meshInner);
+	stock->Tesselate(*meshOuter, *meshInner);
+	PyObject *tuple = PyTuple_New(2);
+	PyTuple_SetItem(tuple, 0, meshOuterpy);
+	PyTuple_SetItem(tuple, 1, meshInnerpy);
+	return tuple;
 }
 
 

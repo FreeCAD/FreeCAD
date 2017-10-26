@@ -183,7 +183,10 @@ int cStock::TesselTop(int xp, int yp)
 		Point3D pbr(xp + x_size, yp, z);
 		Point3D ptl(xp, yp + y_size, z);
 		Point3D ptr(xp + x_size, yp + y_size, z);
-		AddQuad(pbl, pbr, ptr, ptl);
+		if (abs(m_pz + m_lz - z) < SIM_EPSILON)
+			AddQuad(pbl, pbr, ptr, ptl, facetsOuter);
+		else
+			AddQuad(pbl, pbr, ptr, ptl, facetsInner);
 	}
 
 	if (farRect)
@@ -324,7 +327,7 @@ int cStock::TesselBot(int xp, int yp)
 	Point3D pbr(xp + x_size, yp, m_pz);
 	Point3D ptl(xp, yp + y_size, m_pz);
 	Point3D ptr(xp + x_size, yp + y_size, m_pz);
-	AddQuad(pbl, ptl, ptr, pbr);
+	AddQuad(pbl, ptl, ptr, pbr, facetsOuter);
 
 	if (farRect)
 		return -1;
@@ -341,6 +344,10 @@ int cStock::TesselSidesX(int yp)
 	float lastz2 = m_pz;
 	if (yp > 0)
 		lastz2 = std::max(m_stock[0][yp - 1], m_pz);
+
+	std::vector<MeshCore::MeshGeomFacet> *facets = &facetsInner;
+	if (yp == 0 || yp == m_y)
+		facets = &facetsOuter;
 
 	//bool lastzclip = (lastz - m_pz) < m_res;
 	int lastpoint = 0;
@@ -361,7 +368,7 @@ int cStock::TesselSidesX(int yp)
 			Point3D pbr(x, yp, lastz1);
 			Point3D ptl(lastpoint, yp, lastz2);
 			Point3D ptr(x, yp, lastz2);
-			AddQuad(pbl, ptl, ptr, pbr);
+			AddQuad(pbl, ptl, ptr, pbr, *facets);
 		}
 		lastz1 = newz1;
 		lastz2 = newz2;
@@ -378,6 +385,10 @@ int cStock::TesselSidesY(int xp)
 	float lastz2 = m_pz;
 	if (xp > 0)
 		lastz2 = std::max(m_stock[xp - 1][0], m_pz);
+
+	std::vector<MeshCore::MeshGeomFacet> *facets = &facetsInner;
+	if (xp == 0 || xp == m_x)
+		facets = &facetsOuter;
 
 	//bool lastzclip = (lastz - m_pz) < m_res;
 	int lastpoint = 0;
@@ -398,7 +409,7 @@ int cStock::TesselSidesY(int xp)
 			Point3D pbl(xp, y, lastz1);
 			Point3D ptr(xp, lastpoint, lastz2);
 			Point3D ptl(xp, y, lastz2);
-			AddQuad(pbl, ptl, ptr, pbr);
+			AddQuad(pbl, ptl, ptr, pbr, *facets);
 		}
 		lastz1 = newz1;
 		lastz2 = newz2;
@@ -421,7 +432,7 @@ void cStock::SetFacetPoints(MeshCore::MeshGeomFacet & facet, Point3D & p1, Point
 	facet.CalcNormal();
 }
 
-void cStock::AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
+void cStock::AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4, std::vector<MeshCore::MeshGeomFacet> & facets)
 {
 	MeshCore::MeshGeomFacet facet;
 	SetFacetPoints(facet, p1, p2, p3);
@@ -430,14 +441,15 @@ void cStock::AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4)
 	facets.push_back(facet);
 }
 
-void cStock::Tesselate(Mesh::MeshObject & mesh)
+void cStock::Tesselate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner)
 {
 	// reset attribs
 	for (int y = 0; y < m_y; y++)
 	for (int x = 0; x < m_x; x++)
 		m_attr[x][y] = 0;
 
-	facets.clear();
+	facetsOuter.clear();
+	facetsInner.clear();
 
 	for (int y = 0; y < m_y; y++)
 	{
@@ -462,8 +474,10 @@ void cStock::Tesselate(Mesh::MeshObject & mesh)
 		TesselSidesX(y);
 	for (int x = 0; x <= m_x; x++)
 		TesselSidesY(x);
-	mesh.addFacets(facets);
-	facets.clear();
+	meshOuter.addFacets(facetsOuter);
+	meshInner.addFacets(facetsInner);
+	facetsOuter.clear();
+	facetsInner.clear();
 }
 
 
