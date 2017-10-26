@@ -32,7 +32,6 @@ cStock::cStock(float px, float py, float pz, float lx, float ly, float lz, float
 {
 	m_x = (int)(lx / res) + 1;
 	m_y = (int)(ly / res) + 1;
-	int memsize = m_x * m_y;
 	m_stock.Init(m_x, m_y);
 	m_attr.Init(m_x, m_y);
 	m_plane = pz + lz;
