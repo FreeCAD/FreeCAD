@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QGLWidget>
 # include <QGridLayout>
+# include <QPainter>
 # include <Inventor/actions/SoAction.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
@@ -33,6 +33,8 @@
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/SbLinear.h>
 #endif
+
+#include <QtOpenGL.h>
 
 #include "Workbench.h"
 #include <Gui/MenuManager.h>
@@ -109,6 +111,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sandbox_RedirectPaint"
           << "Std_TestGraphicsView"
           << "Std_TestTaskBox";
+
     return root;
 }
 
@@ -153,9 +156,11 @@ SoWidgetShape::SoWidgetShape()
 
 void SoWidgetShape::GLRender(SoGLRenderAction * /*action*/)
 {
-#if 1
+#if defined(HAVE_QT5_OPENGL)
     this->image = QPixmap::grabWidget(w, w->rect()).toImage();
-    this->image = QGLWidget::convertToGLFormat(this->image);
+#else
+    this->image = QPixmap::grabWidget(w, w->rect()).toImage();
+    this->image = QtGLWidget::convertToGLFormat(this->image);
 #endif
     glRasterPos2d(10,10);
     glDrawPixels(this->image.width(),this->image.height(),GL_RGBA,GL_UNSIGNED_BYTE,this->image.bits());
@@ -273,7 +278,12 @@ void SoWidgetShape::setWidget(QWidget* w)
 {
     this->w = w;
     this->w->show();
-    QPainter::setRedirected(this->w, &this->image);
+    QPixmap img(this->w->size());
+    this->w->render(&img);
+    this->image = img.toImage();
+
+#if !defined(HAVE_QT5_OPENGL)
     this->image = QPixmap::grabWidget(w, w->rect()).toImage();
-    this->image = QGLWidget::convertToGLFormat(this->image);
+    this->image = QtGLWidget::convertToGLFormat(this->image);
+#endif
 }

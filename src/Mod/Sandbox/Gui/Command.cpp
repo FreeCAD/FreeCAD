@@ -1027,8 +1027,15 @@ class GDIWidget : public QWidget
 {
 public:
     GDIWidget(QWidget* parent) : QWidget(parent)
-    {setAttribute(Qt::WA_PaintOnScreen); }
-    QPaintEngine *paintEngine() const { return 0; }
+    {
+        setAttribute(Qt::WA_PaintOnScreen);
+#if QT_VERSION >= 0x050000
+        setAttribute(Qt::WA_NativeWindow);
+#endif
+    }
+    QPaintEngine *paintEngine() const { 
+        return 0;
+    }
 protected:
     void paintEvent(QPaintEvent *event) {
 #if QT_VERSION < 0x050000
@@ -1174,6 +1181,18 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
 
 void CmdTestRedirectPaint::activated(int)
 {
+#if 1 //QT_VERSION >= 0x050000
+    QCalendarWidget* cal = new QCalendarWidget();
+    cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
+    cal->show();
+    QPixmap img(cal->size());
+    cal->render(&img);
+
+    QLabel* label = new QLabel();
+    label->setPixmap(img);
+    label->show();
+    label->setWindowTitle(QString::fromLatin1("QLabel"));
+#else
     QCalendarWidget* cal = new QCalendarWidget();
     QLabel* label = new QLabel();
     QPainter::setRedirected(cal,label);
@@ -1181,6 +1200,7 @@ void CmdTestRedirectPaint::activated(int)
     cal->show();
     label->show();
     label->setWindowTitle(QString::fromLatin1("QLabel"));
+#endif
 }
 
 //===========================================================================
