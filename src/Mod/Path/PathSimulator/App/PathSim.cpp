@@ -58,7 +58,7 @@ PathSim::~PathSim()
 
 void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
-	Base::BoundBox3d & bbox = stock->getBoundBox();
+	Base::BoundBox3d bbox = stock->getBoundBox();
 	m_stock = new cStock(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
 }
 
@@ -76,6 +76,20 @@ void PathSim::SetCurrentTool(Tool * tool)
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
 		break;
+
+	case Tool::UNDEFINED:
+	case Tool::DRILL:
+	case Tool::CENTERDRILL:
+	case Tool::COUNTERSINK:
+	case Tool::COUNTERBORE:
+	case Tool::REAMER:
+	case Tool::TAP:
+	case Tool::ENDMILL:
+	case Tool::SLOTCUTTER:
+	case Tool::CORNERROUND:
+	case Tool::ENGRAVER:
+		break; // quiet warnings
+
 	}
 	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
 }
@@ -92,12 +106,14 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	}
 	else if (cmd->Name == "G2")
 	{
-		Point3D cent(cmd->getCenter());
+		Vector3d vcent = cmd->getCenter();
+		Point3D cent(vcent);
 		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
 	}
 	else if (cmd->Name == "G3")
 	{
-		Point3D cent(cmd->getCenter());
+		Vector3d vcent = cmd->getCenter();
+		Point3D cent(vcent);
 		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
 	}
 	Base::Placement *plc = new Base::Placement();
