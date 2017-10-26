@@ -475,6 +475,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Acceleration                )       return QString::fromLatin1("Acceleration"); else
     if(*this == Unit::Temperature                 )       return QString::fromLatin1("Temperature"); else
     if(*this == Unit::ElectricCurrent             )       return QString::fromLatin1("ElectricCurrent"); else
+    if(*this == Unit::ElectricPotential           )       return QString::fromLatin1("ElectricPotential"); else
     if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance"); else
     if(*this == Unit::LuminoseIntensity           )       return QString::fromLatin1("LuminoseIntensity"); else
     if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure"); else
@@ -507,6 +508,7 @@ Unit Unit::Acceleration(1,0,-2);
 Unit Unit::Temperature(0,0,0,0,1);
 
 Unit Unit::ElectricCurrent(0,0,0,1);
+Unit Unit::ElectricPotential(2,1,-3,-1);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminoseIntensity(0,0,0,0,0,0,1);
 

@@ -225,7 +225,7 @@ class CommandPathPost:
             targetlist = []
             for o in FreeCAD.ActiveDocument.Objects:
                 if hasattr(o, "Proxy"):
-                    if isinstance(o.Proxy, PathJob.ObjectPathJob):
+                    if isinstance(o.Proxy, PathJob.ObjectJob):
                         targetlist.append(o.Label)
             PathLog.debug("Possible post objects: {}".format(targetlist))
             if len(targetlist) > 1:
@@ -246,14 +246,13 @@ class CommandPathPost:
         # Then post-the ordered list
         postlist = []
         currTool = None
-        for obj in job.Group:
+        for obj in job.Operations.Group:
             PathLog.debug("obj: {}".format(obj.Name))
-            if not isinstance(obj.Proxy, PathToolController.ToolController):
-                tc = PathUtil.toolControllerForOp(obj)
-                if tc is not None:
-                    if tc.ToolNumber != currTool:
-                        postlist.append(tc)
-                postlist.append(obj)
+            tc = PathUtil.toolControllerForOp(obj)
+            if tc is not None:
+                if tc.ToolNumber != currTool:
+                    postlist.append(tc)
+            postlist.append(obj)
 
         fail = True
         rc = ''

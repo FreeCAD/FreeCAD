@@ -112,9 +112,9 @@ PyObject* BezierCurve2dPy::insertPoleAfter(PyObject * args)
         curve->InsertPoleAfter(index,pnt,weight);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -134,9 +134,9 @@ PyObject* BezierCurve2dPy::insertPoleBefore(PyObject * args)
         curve->InsertPoleBefore(index,pnt,weight);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -152,9 +152,9 @@ PyObject* BezierCurve2dPy::removePole(PyObject * args)
         curve->RemovePole(index);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -170,9 +170,9 @@ PyObject* BezierCurve2dPy::segment(PyObject * args)
         curve->Segment(u1,u2);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -195,9 +195,9 @@ PyObject* BezierCurve2dPy::setPole(PyObject * args)
             curve->SetPole(index,pnt,weight);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -221,9 +221,9 @@ PyObject* BezierCurve2dPy::getPole(PyObject * args)
         arg.setItem(1, Py::Float(pnt.Y()));
         return Py::new_reference_to(method.apply(arg));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -251,9 +251,9 @@ PyObject* BezierCurve2dPy::getPoles(PyObject * args)
         }
         return Py::new_reference_to(poles);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -276,9 +276,9 @@ PyObject* BezierCurve2dPy::setPoles(PyObject * args)
         this->getGeom2dBezierCurvePtr()->setHandle(bezier);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -295,9 +295,9 @@ PyObject* BezierCurve2dPy::setWeight(PyObject * args)
         curve->SetWeight(index,weight);
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -315,9 +315,9 @@ PyObject* BezierCurve2dPy::getWeight(PyObject * args)
         double weight = curve->Weight(index);
         return Py_BuildValue("d", weight);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -337,9 +337,9 @@ PyObject* BezierCurve2dPy::getWeights(PyObject * args)
         }
         return Py::new_reference_to(weights);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -356,9 +356,9 @@ PyObject* BezierCurve2dPy::getResolution(PyObject* args)
         curve->Resolution(tol,utol);
         return Py_BuildValue("d",utol);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

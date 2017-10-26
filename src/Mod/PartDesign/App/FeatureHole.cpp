@@ -493,6 +493,10 @@ void Hole::updateHoleCutParams()
 
     if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
         std::string holeCutType = HoleCutType.getValueAsString();
+        if (ThreadType.getValue() < 0)
+            throw Base::IndexError("Thread type out of range");
+        if (ThreadSize.getValue() < 0)
+            throw Base::IndexError("Thread size out of range");
         double diameter = PartDesign::Hole::threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
         double f = 1.0;
         double depth = 0;
@@ -528,6 +532,10 @@ void Hole::updateDiameterParam()
 
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
+    if (threadType < 0)
+        throw Base::IndexError("Thread type out of range");
+    if (threadSize < 0)
+        throw Base::IndexError("Thread size out of range");
     double diameter = threadDescription[threadType][threadSize].diameter;
     double pitch = threadDescription[threadType][threadSize].pitch;
 
@@ -1252,15 +1260,14 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        if (std::string(e->GetMessageString()) == "TopoDS::Face" &&
+    catch (Standard_Failure& e) {
+        if (std::string(e.GetMessageString()) == "TopoDS::Face" &&
             (std::string(DepthType.getValueAsString()) == "UpToFirst" || std::string(DepthType.getValueAsString()) == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed "
                 "for making a pocket up to a face.");
         else
-            return new App::DocumentObjectExecReturn(e->GetMessageString());
+            return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());

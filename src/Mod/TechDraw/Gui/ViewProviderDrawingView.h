@@ -31,6 +31,10 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include "QGIView.h"
 
+namespace TechDraw {
+class DrawView;
+}
+
 namespace TechDrawGui {
 class QGIView;
 class MDIViewPage;
@@ -71,6 +75,11 @@ public:
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;
+    
+    void onGuiRepaint(const TechDraw::DrawView* dv); 
+    typedef boost::signals::connection Connection;
+    Connection connectGuiRepaint;
+    
 
 private:
     bool m_docReady;                                                   //sb MDI + QGraphicsScene ready

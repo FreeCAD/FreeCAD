@@ -64,7 +64,8 @@ public:
         );
         add_varargs_method("export",&Module::exporter
         );
-        add_varargs_method("show",&Module::show
+        add_varargs_method("show",&Module::show,
+            "show(points,[string]) -- Add the points to the active document or create one if no document exists."
         );
         initialize("This module is the Points module."); // register with Python
     }
@@ -381,7 +382,8 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(PointsPy::Type), &pcObj))
+        char *name = "Points";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PointsPy::Type), &pcObj, &name))
             throw Py::Exception();
 
         try {
@@ -389,11 +391,9 @@ private:
             if (!pcDoc)
                 pcDoc = App::GetApplication().newDocument();
             PointsPy* pPoints = static_cast<PointsPy*>(pcObj);
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", "Points");
+            Points::Feature *pcFeature = static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
             // copy the data
-            //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
             pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
-            //pcDoc->recompute();
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());

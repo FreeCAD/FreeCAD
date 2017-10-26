@@ -429,8 +429,16 @@ class ViewProviderDressup:
 
     def attach(self, vobj):
         self.Object = vobj.Object
-        return
-
+        if self.Object and self.Object.Base:
+            for i in self.Object.Base.InList:
+                if hasattr(i, "Group"):
+                    group = i.Group
+                    for g in group:
+                        if g.Name == self.Object.Base.Name:
+                            group.remove(g)
+                    i.Group = group
+                    print(i.Group)
+            #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
 
     def unsetEdit(self, vobj, mode=0):
         return False
@@ -439,15 +447,6 @@ class ViewProviderDressup:
         return True
 
     def claimChildren(self):
-        for i in self.Object.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.Object.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                print(i.Group)
-        #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.Object.Base]
 
     def __getstate__(self):
@@ -458,7 +457,7 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        PathUtils.addToProject(arg1.Object.Base)
+        PathUtils.addToJob(arg1.Object.Base)
         arg1.Object.Base = None
         return True
 

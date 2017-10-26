@@ -106,9 +106,9 @@ PyObject* Curve2dPy::reverse(PyObject * args)
             curve->Reverse();
             Py_Return;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -193,9 +193,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             TopoDS_Shape edge =  mkBuilder.Shape();
             return Py::new_reference_to(shape2pyshape(edge));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -210,9 +210,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             TopoDS_Shape edge =  mkBuilder.Shape();
             return Py::new_reference_to(shape2pyshape(edge));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -231,9 +231,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -251,9 +251,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -271,9 +271,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -291,9 +291,9 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
     }
@@ -515,9 +515,9 @@ PyObject* Curve2dPy::length(PyObject *args)
             return PyFloat_FromDouble(len);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -541,9 +541,9 @@ PyObject* Curve2dPy::parameterAtDistance(PyObject *args)
             return PyFloat_FromDouble(parm);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -570,9 +570,9 @@ PyObject* Curve2dPy::value(PyObject *args)
             return Py::new_reference_to(method.apply(arg));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -603,9 +603,9 @@ PyObject* Curve2dPy::tangent(PyObject *args)
             return Py::new_reference_to(method.apply(arg));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -634,9 +634,9 @@ PyObject* Curve2dPy::normal(PyObject *args)
             return Py::new_reference_to(method.apply(arg));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -658,9 +658,9 @@ PyObject* Curve2dPy::curvature(PyObject *args)
             return Py::new_reference_to(Py::Float(C));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -689,9 +689,9 @@ PyObject* Curve2dPy::centerOfCurvature(PyObject *args)
             return Py::new_reference_to(method.apply(arg));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -715,9 +715,9 @@ PyObject* Curve2dPy::parameter(PyObject *args)
             return Py::new_reference_to(Py::Float(val));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -743,9 +743,9 @@ PyObject* Curve2dPy::toBSpline(PyObject * args)
             return new BSplineCurve2dPy(new Geom2dBSplineCurve(spline));
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
@@ -797,9 +797,9 @@ PyObject* Curve2dPy::approximateBSpline(PyObject *args)
             return 0;
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -910,9 +910,9 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
             return Py::new_reference_to(points);
         }
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
 

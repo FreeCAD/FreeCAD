@@ -299,6 +299,24 @@ private:
     SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
+class GuiExport RevitNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    RevitNavigationStyle();
+    ~RevitNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SbBool lockButton1;
+    SoMouseButtonEvent mouseDownConsumedEvent;
+};
+
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 

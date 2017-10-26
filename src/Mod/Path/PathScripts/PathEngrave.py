@@ -184,15 +184,13 @@ class ObjectEngrave(PathOp.ObjectOp):
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             bb = job.Base.Shape.BoundBox
-            obj.StartDepth = bb.ZMax
-            obj.FinalDepth = bb.ZMin
-            obj.ClearanceHeight = bb.ZMax + 5.0
-            obj.SafeHeight = bb.ZMax + 3.0
+            obj.OpStartDepth = bb.ZMax
+            obj.OpFinalDepth = bb.ZMin
         else:
-            obj.FinalDepth = -0.1
-        if obj.StartDepth.Value != obj.FinalDepth.Value:
+            obj.OpFinalDepth = -0.1
+        if obj.OpStartDepth.Value != obj.OpFinalDepth.Value:
             # maintain behaviour of a single run
-            obj.StepDown = obj.StartDepth.Value - obj.FinalDepth.Value
+            obj.OpStepDown = obj.OpStartDepth.Value - obj.OpFinalDepth.Value
 
 def Create(name):
     '''Create(name) ... Creates and returns a Engrave operation.'''

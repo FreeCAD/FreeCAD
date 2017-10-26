@@ -174,6 +174,7 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
+    void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
 
     bool createNewItem(const Gui::ViewProviderDocumentObject&, 
                     QTreeWidgetItem *parent=0, int index=-1, 
@@ -193,6 +194,7 @@ private:
     Connection connectResObject;
     Connection connectHltObject;
     Connection connectExpObject;
+    Connection connectScrObject;
 };
 
 /** The link between the tree and a document object.

@@ -167,7 +167,7 @@
     </message>
     <message>
         <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
-        <source>freecad,</source>
+        <source>FreeCAD,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -234,13 +234,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGui.cpp" line="78"/>
-        <location filename="../../BrowserView.cpp" line="354"/>
+        <location filename="../../AppWebGui.cpp" line="80"/>
+        <location filename="../../BrowserView.cpp" line="412"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="250"/>
+        <location filename="../../BrowserView.cpp" line="309"/>
         <source>File does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -248,12 +248,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="245"/>
+        <location filename="../../BrowserView.cpp" line="304"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="325"/>
+        <location filename="../../BrowserView.cpp" line="383"/>
         <source>Loading %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -261,12 +261,12 @@
 <context>
     <name>WebGui::WebView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="122"/>
+        <location filename="../../BrowserView.cpp" line="181"/>
         <source>Open in External Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="126"/>
+        <location filename="../../BrowserView.cpp" line="185"/>
         <source>Open in new window</source>
         <translation type="unfinished"></translation>
     </message>

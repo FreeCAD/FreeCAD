@@ -207,7 +207,7 @@ bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
     case MeshIO::NAS:
         return LoadNastran(str);
     default:
-        throw Base::FileException("Not supported file format");
+        throw Base::FileException("Unsupported file format");
     }
 }
 
@@ -1774,7 +1774,7 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
     case MeshIO::PY:
         return SavePython(str);
     default:
-        throw Base::FileException("Not supported file format");
+        throw Base::FileException("Unsupported file format");
     }
 }
 

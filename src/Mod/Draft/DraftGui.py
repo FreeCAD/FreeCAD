@@ -75,7 +75,7 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version >= 3 or utf8_decode:
+        if sys.version_info.major >= 3 or utf8_decode:
             return QtGui.QApplication.translate(context, text, None)
         else:
             return QtGui.QApplication.translate(context, text, None).encode("utf8")
@@ -672,7 +672,7 @@ class DraftToolBar:
         
         self.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.wplabel.text())
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
-        self.colorButton.setToolTip(translate("draft", "Curreont line color"))
+        self.colorButton.setToolTip(translate("draft", "Current line color"))
         self.facecolorButton.setToolTip(translate("draft", "Current face color"))
         self.widthButton.setToolTip(translate("draft", "Current line width"))
         self.fontsizeButton.setToolTip(translate("draft", "Current font size"))

@@ -116,7 +116,7 @@ class FemGmshTools():
             self.algorithm3D = '1'
 
     def create_mesh(self):
-        print("\nWe gone start GMSH FEM mesh run!")
+        print("\nWe are going to start GMSH FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
         print('  CharacteristicLengthMax: ' + str(self.clmax))
         print('  CharacteristicLengthMin: ' + str(self.clmin))
@@ -136,7 +136,7 @@ class FemGmshTools():
     def get_dimension(self):
         # Dimension
         # known_element_dimensions = ['From Shape', '1D', '2D', '3D']
-        # if not given, GMSH uses the hightest available.
+        # if not given, GMSH uses the highest available.
         # A use case for not "From Shape" would be a surface (2D) mesh of a solid
         if self.dimension == 'From Shape':
             shty = self.part_obj.Shape.ShapeType
@@ -159,7 +159,7 @@ class FemGmshTools():
                 self.dimension = '3'  # dimension 3 works for 2D and 1d shapes as well
             else:
                 self.dimension = '0'
-                FreeCAD.Console.PrintError('Could not retrive Dimension from shape type. Please choose dimension.')
+                FreeCAD.Console.PrintError('Could not retrieve Dimension from shape type. Please choose dimension.')
         elif self.dimension == '3D':
             self.dimension = '3'
         elif self.dimension == '2D':
@@ -224,11 +224,13 @@ class FemGmshTools():
 
     def get_group_data(self):
         self.group_elements = {}
-        # TODO solids, faces, edges and vertexes seam not work together in one group, some print or make them work together
+        # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
+        #       some print or make them work together
 
         # mesh groups and groups of analysis member
         if not self.mesh_obj.MeshGroupList:
-            print ('  No mesh group objects.')
+            # print ('  No mesh group objects.')
+            pass
         else:
             print ('  Mesh group objects, we need to get the elements.')
             for mg in self.mesh_obj.MeshGroupList:
@@ -248,14 +250,16 @@ class FemGmshTools():
                     FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         else:
             print('  No anlysis members for group meshing.')
-        print('  {}'.format(self.group_elements))
+        if self.group_elements:
+            print('  {}'.format(self.group_elements))
 
     def get_region_data(self):
         # mesh regions
         self.ele_length_map = {}  # { 'ElementString' : element length }
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
         if not self.mesh_obj.MeshRegionList:
-            print ('  No mesh regions.')
+            # print ('  No mesh regions.')
+            pass
         else:
             print ('  Mesh regions, we need to get the elements.')
             # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
@@ -267,7 +271,9 @@ class FemGmshTools():
                     if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
                         error_message = "  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. GMSH could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
                         FreeCAD.Console.PrintError(error_message + "\n")
-                        # TODO no gui popup because FreeCAD will be in a endless prind loop as long as the pop up is on --> my be find a better solution for either of both --> thus the pop up is in task panel
+                        # TODO: no gui popup because FreeCAD will be in a endless print loop
+                        #       as long as the pop up is on --> maybe find a better solution for
+                        #       either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
@@ -280,12 +286,12 @@ class FemGmshTools():
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
                                 # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
-                                # print("  But we gone try to find it in the Shape to mesh :-)")
+                                # print("  But we are going to try to find it in the Shape to mesh :-)")
                                 search_ele_in_shape_to_mesh = True
                             for elems in sub[1]:
                                 # print(elems)  # elems --> element
                                 if search_ele_in_shape_to_mesh:
-                                    # we gone try to find the element it in the Shape to mesh and use the found element as elems
+                                    # we're going to try to find the element in the Shape to mesh and use the found element as elems
                                     ele_shape = FemMeshTools.get_element(sub[0], elems)  # the method getElement(element) does not return Solid elements
                                     found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
                                     if found_element:
@@ -305,8 +311,8 @@ class FemGmshTools():
                 ele_shape = FemMeshTools.get_element(self.part_obj, eleml)  # the method getElement(element) does not return Solid elements
                 ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-        print('  {}'.format(self.ele_length_map))
-        print('  {}'.format(self.ele_node_map))
+            print('  {}'.format(self.ele_length_map))
+            print('  {}'.format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer,
@@ -316,7 +322,8 @@ class FemGmshTools():
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
         if not self.mesh_obj.MeshBoundaryLayerList:
-            print ('  No mesh boundary layer setting document object.')
+            # print ('  No mesh boundary layer setting document object.')
+            pass
         else:
             print ('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
@@ -333,7 +340,7 @@ class FemGmshTools():
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
                                 # print("  One element of the mesh boundary layer " + mr_obj.Name + " is not an element of the Part to mesh.")
-                                # print("  But we going to find it in the Shape to mesh :-)")
+                                # print("  But we're going to find it in the Shape to mesh :-)")
                                 search_ele_in_shape_to_mesh = True
                             for elems in sub[1]:
                                 # print(elems)  # elems --> element
@@ -356,7 +363,7 @@ class FemGmshTools():
                         setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
                         setting['ratio'] = mr_obj.GrowthRate
                         setting['thickness'] = sum([setting['hwall_n'] * setting['ratio'] ** i for i in range(mr_obj.NumberOfLayers)])
-                        setting['hwall_t'] = setting['thickness']  # setting['hwall_n'] * 5 # tangetial cell dimension
+                        setting['hwall_t'] = setting['thickness']  # setting['hwall_n'] * 5 # tangential cell dimension
 
                         # hfar: cell dimension outside boundary should be set later if some character length is set
                         if self.clmax > setting['thickness'] * 0.8 and self.clmax < setting['thickness'] * 1.6:
@@ -364,25 +371,25 @@ class FemGmshTools():
                         else:
                             setting['hfar'] = setting['thickness']  # set a value for safety, it may works as background mesh cell size
                         # from face name -> face id is done in geo file write up
-                        #fan angle setup is not implemented yet
+                        #TODO: fan angle setup is not implemented yet
                         if self.dimension == '2':
                             setting['EdgesList'] = belem_list
                         elif self.dimension == '3':
                             setting['FacesList'] = belem_list
                         else:
-                            FreeCAD.Console.PrintError("boundary layer is only  supported for 2D and 3D mesh")
+                            FreeCAD.Console.PrintError("boundary layer is only supported for 2D and 3D mesh")
                         self.bl_setting_list.append(setting)
                     else:
                         FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n")
                 else:
                     FreeCAD.Console.PrintError("The mesh boundary layer: " + mr_obj.Name + " is not used to create the mesh because the min thickness is 0.0 mm.\n")
-        print('  {}'.format(self.bl_setting_list))
+            print('  {}'.format(self.bl_setting_list))
 
     def write_boundary_layer(self, geo):
         # currently single body is supported
         if len(self.bl_setting_list):
             geo.write("// boundary layer setting\n")
-            print('Start to write boundary layer setup')
+            print('  Start to write boundary layer setup')
             field_number = 1
             for item in self.bl_setting_list:
                 prefix = "Field[" + str(field_number) + "]"
@@ -404,9 +411,9 @@ class FemGmshTools():
                 field_number += 1
             geo.write("\n")
             geo.flush()
-            print('finished in boundary layer setup')
+            print('  finished in boundary layer setup')
         else:
-            print('no boundary layer setup is found for this mesh')
+            # print('  no boundary layer setup is found for this mesh')
             geo.write("// no boundary layer settings for this mesh\n")
 
     def write_part_file(self):
@@ -420,7 +427,7 @@ class FemGmshTools():
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
         if self.group_elements:
-            # print('  We gone have found elements to make mesh groups for.')
+            # print('  We are going to have to find elements to make mesh groups for.')
             geo.write("// group data\n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
             for group in self.group_elements:
@@ -465,7 +472,7 @@ class FemGmshTools():
         geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         if len(self.bl_setting_list):
-            # if minLength must smaller than first layer of boundary_layer, it is safer to set it as zero (defualt value) to avoid error
+            # if minLength must smaller than first layer of boundary_layer, it is safer to set it as zero (default value) to avoid error
             geo.write("Mesh.CharacteristicLengthMin = " + str(0) + ";\n")
         else:
             geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
@@ -508,7 +515,7 @@ class FemGmshTools():
         geo.write("// meshing\n")
         # remove duplicate vertices, see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
         if hasattr(self.mesh_obj, 'CoherenceMesh') and self.mesh_obj.CoherenceMesh is True:
-            geo.write("Geometry.Tolerance = " + str(self.geotol) + "; // set gemetrical tolerance (also used for merging nodes)\n")
+            geo.write("Geometry.Tolerance = " + str(self.geotol) + "; // set geometrical tolerance (also used for merging nodes)\n")
             geo.write("Mesh  " + self.dimension + ";\n")
             geo.write("Coherence Mesh; // Remove duplicate vertices\n")
         else:
@@ -519,7 +526,7 @@ class FemGmshTools():
         if self.analysis and self.group_elements:
             geo.write("// For each group save not only the elements but the nodes too.;\n")
             geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
-            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")  # belongs to Mesh.SaveAll but anly needed if there are groups
+            geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")  # belongs to Mesh.SaveAll but only needed if there are groups
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
         geo.write('Save "' + self.temp_file_mesh + '";\n')

@@ -20,22 +20,27 @@
     </Methode>
     <Methode Name="addObject">
         <Documentation>
-            <UserDocu>Add an object to the group</UserDocu>
+            <UserDocu>Add an object to the group. Returns all objects that have been added.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="addObjects">
         <Documentation>
-            <UserDocu>Adds multiple objects to the group. Expects a list.</UserDocu>
+            <UserDocu>Adds multiple objects to the group. Expects a list and returns all objects that have been added.</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setObjects">
+        <Documentation>
+            <UserDocu>Sets the objects of the group. Expects a list and returns all objects that are now in the group.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="removeObject">
         <Documentation>
-            <UserDocu>Remove an object from the group</UserDocu>
+            <UserDocu>Remove an object from the group and returns all objects that have been removed.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="removeObjects">
         <Documentation>
-            <UserDocu>Remove multiple objects from the group. Expects a list.</UserDocu>
+            <UserDocu>Remove multiple objects from the group. Expects a list and returns all objects that have been removed.</UserDocu>
         </Documentation>
     </Methode>
 	  <Methode Name="removeObjectsFromDocument">

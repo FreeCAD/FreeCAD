@@ -85,7 +85,7 @@ public:
             "compressed.\n"
         );
         add_varargs_method("show",&Module::show,
-            "Put a mesh object in the active document or creates one if needed"
+            "show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."
         );
         add_varargs_method("createBox",&Module::createBox,
             "Create a solid mesh box"
@@ -359,14 +359,15 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(MeshPy::Type), &pcObj))
+        char *name = "Mesh";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(MeshPy::Type), &pcObj, &name))
             throw Py::Exception();
 
         App::Document *pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
         MeshPy* pMesh = static_cast<MeshPy*>(pcObj);
-        Mesh::Feature *pcFeature = (Mesh::Feature *)pcDoc->addObject("Mesh::Feature", "Mesh");
+        Mesh::Feature *pcFeature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", name));
         Mesh::MeshObject* mo = pMesh->getMeshObjectPtr();
         if (!mo) {
             throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid mesh");

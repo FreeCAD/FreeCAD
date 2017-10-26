@@ -168,6 +168,8 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
 
     m_seeksensor = new SoTimerSensor(SoQTQuarterAdaptor::seeksensorCB, (void*)this);
     getSoEventManager()->setNavigationState(SoEventManager::NO_NAVIGATION);
+
+    resetFrameCounter();
 }
 
 
@@ -700,4 +702,39 @@ bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* eve
     }
 
     return SIM::Coin3D::Quarter::QuarterWidget::processSoEvent(event);
+}
+
+/*!
+  Overridden from QuarterWidget to render the scenegraph
+*/
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::paintEvent(QPaintEvent* event)
+{
+    QuarterWidget::paintEvent(event);
+
+    this->framesPerSecond = addFrametime(SbTime::getTimeOfDay().getValue());
+}
+
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter(void)
+{
+    this->framecount = 0;
+    this->frames.assign(100, 0.0f);
+    this->totaldraw = 0.0f;
+    this->starttime = SbTime::getTimeOfDay().getValue();
+    this->framesPerSecond = SbVec2f(0, 0);
+}
+
+SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double timeofday)
+{
+    int framearray_size = 100;
+    this->framecount++;
+
+    int arrayptr = (this->framecount - 1) % framearray_size;
+
+    double renderTime = timeofday - this->starttime;
+    this->totaldraw += (float(renderTime) - this->frames[arrayptr]);
+    float drawfps = this->totaldraw / std::min<int>(this->framecount, framearray_size);
+
+    this->frames[arrayptr] = static_cast<float>(renderTime);
+    this->starttime = timeofday;
+    return SbVec2f(1000 * drawfps, 1.0f / drawfps);
 }

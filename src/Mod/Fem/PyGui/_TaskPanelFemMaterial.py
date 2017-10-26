@@ -27,11 +27,15 @@ __url__ = "http://www.freecadweb.org"
 ## @package TaskPanelFemMaterial
 #  \ingroup FEM
 
+import sys
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 from PySide import QtCore, QtGui
 from PySide.QtGui import QFileDialog, QMessageBox
+
+if sys.version_info.major >= 3:
+    unicode = str
 
 
 class _TaskPanelFemMaterial:
@@ -549,7 +553,7 @@ class _TaskPanelFemMaterial:
         if not self.sel_server:
             # if we do not check, we would start a new SelectionObserver on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
-            import FemSelectionObserver
+            from . import FemSelectionObserver
             self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):

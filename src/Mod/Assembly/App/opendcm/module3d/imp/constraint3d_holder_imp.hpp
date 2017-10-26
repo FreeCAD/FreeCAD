@@ -24,7 +24,7 @@
 #include "opendcm/core/imp/constraint_holder_imp.hpp"
 
 #ifdef DCM_EXTERNAL_CORE
-//following macros are used for externalization. As the holder type can hould a very big set of combinations,
+//following macros are used for externalization. As the holder type can hold a very big set of combinations,
 //especially with module states recursive incarnation, we explicitly initiate all possible versions of this
 //struct so that it must only be compiled once. To get all possible equation
 //combinations boost pp is needed.

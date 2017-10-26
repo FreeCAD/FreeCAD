@@ -85,6 +85,9 @@ protected:
     virtual void onBeforeChange (const App::Property* prop);
     /// If BaseFeature is set and Tip is null set the Tip to it
     virtual void onChanged (const App::Property* prop);
+    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+                                           const char * TypeName,
+                                           const char *PropName);
 
 };
 

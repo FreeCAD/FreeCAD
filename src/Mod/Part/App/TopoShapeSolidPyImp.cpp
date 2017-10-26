@@ -234,9 +234,9 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -257,9 +257,9 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -317,9 +317,9 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
         const TopoDS_Shape& offsetshape = builder.Shape();
         return new TopoShapeSolidPy(new TopoShape(offsetshape));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

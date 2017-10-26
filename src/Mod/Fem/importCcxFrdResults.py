@@ -72,7 +72,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             analysis_object = analysis
 
         mesh = importToolsFem.make_femmesh(m)
-        result_mesh_object = ObjectsFem.makeMeshResult('Result_mesh')
+        result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
         result_mesh_object.FemMesh = mesh
 
         positions = []
@@ -97,11 +97,11 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             else:
                 results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(results_name)
+            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
             results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
             if analysis:
-                analysis_object.Member = analysis_object.Member + [results]
+                analysis_object.addObject(results)
 
         if FreeCAD.GuiUp:
             if analysis:
@@ -113,7 +113,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
 
 
-# read a calculix result file and extract the nodes, displacement vectores and stress values.
+# read a calculix result file and extract the nodes, displacement vectors and stress values.
 def readResult(frd_input):
     print('Read results from: ' + frd_input)
     inout_nodes = []
@@ -260,7 +260,7 @@ def readResult(frd_input):
                 # hexa20 import works with the following frd file node assignment
                 elements_hexa20[elem] = (nd8, nd5, nd6, nd7, nd4, nd1, nd2, nd3, nd20, nd17,
                                          nd18, nd19, nd12, nd9, nd10, nd11, nd16, nd13, nd14, nd15)
-                # print elements_hexa20[elem]
+                # print(elements_hexa20[elem])
             elif elemType == 5 and input_continues is False:
                 # first line
                 # C3D15 Calculix --> penta15 FreeCAD

@@ -49,7 +49,7 @@ public:
     App::PropertyLink         Source;
     App::PropertyString       CellStart;
     App::PropertyString       CellEnd;
-    App::PropertyString       Font;
+    App::PropertyFont         Font;
     App::PropertyColor        TextColor;
     App::PropertyFloat        LineWidth;
     App::PropertyFloat        TextSize;

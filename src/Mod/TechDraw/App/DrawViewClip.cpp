@@ -103,7 +103,9 @@ void DrawViewClip::removeView(DrawView *view)
 
 App::DocumentObjectExecReturn *DrawViewClip::execute(void)
 {
-    touch();
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
@@ -113,6 +115,7 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
         }
     }
 
+    requestPaint();
     return DrawView::execute();
 }
 

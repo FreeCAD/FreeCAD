@@ -840,7 +840,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 SbBool 
 SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 {
-    // Note: The read in document name can be false, so the caller must ensure pointing to the correct documemt
+    // Note: The read in document name can be false, so the caller must ensure pointing to the correct document
     SbBool ret = inherited::readInstance(in, flags);
     return ret;
 }

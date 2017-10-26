@@ -181,7 +181,7 @@ void CmdPrimtiveCompAdditive::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Box"));
-    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its with, height and length"));
+    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its width, height and length"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cylinder"));
@@ -189,7 +189,7 @@ void CmdPrimtiveCompAdditive::languageChange()
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Sphere"));
-    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive sphere by its radius and varius angles"));
+    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive sphere by its radius and various angles"));
     arc3->setStatusTip(arc3->toolTip());
     QAction* arc4 = a[3];
     arc4->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cone"));
@@ -338,7 +338,7 @@ void CmdPrimtiveCompSubtractive::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Box"));
-    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive box by its with, height and length"));
+    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive box by its width, height and length"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Cylinder"));
@@ -346,7 +346,7 @@ void CmdPrimtiveCompSubtractive::languageChange()
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Sphere"));
-    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive sphere by its radius and varius angles"));
+    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive sphere by its radius and various angles"));
     arc3->setStatusTip(arc3->toolTip());
     QAction* arc4 = a[3];
     arc4->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Cone"));

@@ -579,7 +579,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
         PyErr_SetString(Base::BaseExceptionFreeCADError,e);
         return NULL;
     }
-    // in debug not all exceptions will be catched to get the attention of the developer!
+    // in debug not all exceptions will be caught to get the attention of the developer!
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(const std::exception& e) // catch other c++ exceptions
     {

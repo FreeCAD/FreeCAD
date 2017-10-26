@@ -59,6 +59,8 @@ ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
     setDefaultMode(SO_SWITCH_ALL);
 #endif
     ViewProviderGroupExtension::initExtension(this);
+
+    sPixmap = "Group.svg";
 }
 
 ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
@@ -92,19 +94,6 @@ void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderD
                 vp.push_back((ViewProviderDocumentObject*)v);
         }
     }
-}
-
-/**
- * Returns the pixmap for the list item.
- */
-QIcon ViewProviderDocumentObjectGroup::getIcon() const
-{
-    QIcon groupIcon;
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon),
-                        QIcon::Normal, QIcon::Off);
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon),
-                        QIcon::Normal, QIcon::On);
-    return groupIcon;
 }
 
 

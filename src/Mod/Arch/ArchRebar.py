@@ -83,7 +83,6 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-    ArchCommands.fixDAG(obj)
     return obj
 
 
@@ -154,7 +153,7 @@ class _Rebar(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Diameter","Arch",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
-        obj.addProperty("App::PropertyLength","OffsetStart","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the fist bar (concrete cover)."))
+        obj.addProperty("App::PropertyLength","OffsetStart","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."))
         obj.addProperty("App::PropertyLength","OffsetEnd","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
         obj.addProperty("App::PropertyInteger","Amount","Arch",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
         obj.addProperty("App::PropertyLength","Spacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))

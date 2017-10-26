@@ -58,6 +58,9 @@ using namespace App;
 PyMethodDef Application::Methods[] = {
     {"ParamGet",       (PyCFunction) Application::sGetParam,       1,
      "Get parameters by path"},
+    {"saveParameter",  (PyCFunction) Application::sSaveParameter,  1,
+     "saveParameter(config='User parameter') -> None\n"
+     "Save parameter set to file. The default set is 'User parameter'"},
     {"Version",        (PyCFunction) Application::sGetVersion,     1,
      "Print the version to the output."},
     {"ConfigGet",      (PyCFunction) Application::sGetConfig,      1,
@@ -339,6 +342,33 @@ PyObject* Application::sGetParam(PyObject * /*self*/, PyObject *args,PyObject * 
 
     PY_TRY {
         return GetPyObject(GetApplication().GetParameterGroupByPath(pstr));
+    }PY_CATCH;
+}
+
+PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr = "User parameter";
+    if (!PyArg_ParseTuple(args, "|s", &pstr))
+        return NULL;
+
+    PY_TRY {
+        ParameterManager* param = App::GetApplication().GetParameterSet(pstr);
+        if (!param) {
+            std::stringstream str;
+            str << "No parameter set found with name: " << pstr;
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return NULL;
+        }
+        else if (!param->HasSerializer()) {
+            std::stringstream str;
+            str << "Parameter set cannot be serialized: " << pstr;
+            PyErr_SetString(PyExc_RuntimeError, str.str().c_str());
+            return NULL;
+        }
+
+        param->SaveDocument();
+        Py_INCREF(Py_None);
+        return Py_None;
     }PY_CATCH;
 }
 

@@ -1,4 +1,4 @@
-#! python
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 # (c) 2010 Werner Mayer LGPL
 
@@ -78,7 +78,7 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/Fem",
                'rm Gui/Resources/translations/Fempy.ts'],
               ["src/Mod/Tux",
-               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Tux.ts'],
+               'pylupdate `find ./ -name "*.py"` -ts Resources/translations/Tux.ts'],
                ]
 
 # add python folders to exclude list

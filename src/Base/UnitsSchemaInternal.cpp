@@ -114,7 +114,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
     }
     else if (unit == Unit::ThermalConductivity) {
-        if (UnitValue < 1000) {
+        if (UnitValue > 1000000) {
             unitString = QString::fromLatin1("W/mm/K");
             factor = 1000000.0;
         }
@@ -165,6 +165,10 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     }
     else if (unit == Unit::Power) {
         unitString = QString::fromLatin1("W");
+        factor = 1000000;
+    }
+    else if (unit == Unit::ElectricPotential) {
+        unitString = QString::fromLatin1("V");
         factor = 1000000;
     }
     else if (unit == Unit::SpecificEnergy) {

@@ -2,6 +2,7 @@
 from Sketcher import *
 from Part import *
 from FreeCAD import *
+import FreeCAD as App
 
 # set some constances for the constraints
 StartPoint = 1

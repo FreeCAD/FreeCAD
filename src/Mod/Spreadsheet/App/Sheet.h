@@ -187,6 +187,7 @@ public:
         return props.addDynamicProperty(type, name, group, doc, attr, ro, hidden);
     }
     virtual bool removeDynamicProperty(const char* name) {
+        App::DocumentObject::onAboutToRemoveProperty(name);
         return props.removeDynamicProperty(name);
     }
     std::vector<std::string> getDynamicPropertyNames() const {

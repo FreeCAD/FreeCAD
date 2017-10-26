@@ -55,11 +55,15 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
+    #from DraftGui import translate
 else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
+
+def translate(ctx,txt):
+    return txt
 
 arrowtypes = ["Dot","Circle","Arrow","Tick"]
 
@@ -881,7 +885,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
-    from DraftTools import msg,translate
+    from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
@@ -2623,7 +2627,6 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     import Part, DraftGeomUtils
     from Sketcher import Constraint
     import Sketcher
-    from DraftTools import translate
     import math
 
     StartPoint = 1
@@ -3102,7 +3105,7 @@ def upgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg,translate
+    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3463,7 +3466,7 @@ def downgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg,translate
+    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3694,7 +3697,6 @@ class _ViewProviderDraft:
     "The base class for Draft Viewproviders"
 
     def __init__(self, vobj):
-        from DraftTools import translate
         vobj.Proxy = self
         self.Object = vobj.Object
         vobj.addProperty("App::PropertyEnumeration","Pattern","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a hatch pattern"))
@@ -3879,7 +3881,13 @@ class _Dimension(_DraftObject):
                         elif DraftGeomUtils.geomType(edge) == "Circle":
                             c = edge.Curve.Center
                             r = edge.Curve.Radius
-                            ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
+                            a = edge.Curve.Axis
+                            ray = obj.Dimline.sub(c).projectToPlane(Vector(0,0,0),a)
+                            if (ray.Length == 0):
+                                ray = a.cross(Vector(1,0,0))
+                                if (ray.Length == 0):
+                                    ray = a.cross(Vector(0,1,0))
+                            ray = DraftVecUtils.scaleTo(ray,r)
                             if hasattr(obj,"Diameter"):
                                 if obj.Diameter:
                                     obj.Start = c.add(ray.negative())
@@ -5147,7 +5155,7 @@ class _BSpline(_DraftObject):
 
     def execute(self, obj):
         import Part
-        from DraftTools import msg,translate
+        from DraftTools import msg
         self.assureProperties(obj)
         if obj.Points:
             self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
@@ -5791,10 +5799,19 @@ class _Clone(_DraftObject):
                     return
         objs = getGroupContents(obj.Objects)
         for o in objs:
+            sh = None
             if o.isDerivedFrom("Part::Feature"):
-                if o.Shape.isNull():
-                    return
-                sh = o.Shape.copy()
+                if not o.Shape.isNull():
+                    sh = o.Shape.copy()
+            elif o.hasExtension("App::GeoFeatureGroupExtension"):
+                shps = []
+                for so in o.Group:
+                    if so.isDerivedFrom("Part::Feature"):
+                        if not so.Shape.isNull():
+                            shps.append(so.Shape)
+                if shps:
+                    sh = Part.makeCompound(shps)
+            if sh:
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
                     sx,sy,sz = obj.Scale
@@ -5863,6 +5880,16 @@ class _ViewProviderClone:
                     c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
                     for f in o.Shape.Faces:
                         colors.append(c)
+            elif o.hasExtension("App::GeoFeatureGroupExtension"):
+                for so in vobj.Object.Group:
+                    if so.isDerivedFrom("Part::Feature"):
+                        if len(so.ViewObject.DiffuseColor) > 1:
+                            colors.extend(so.ViewObject.DiffuseColor)
+                        else:
+                            c = so.ViewObject.ShapeColor
+                            c = (c[0],c[1],c[2],so.ViewObject.Transparency/100.0)
+                            for f in so.Shape.Faces:
+                                colors.append(c)
         if colors:
             vobj.DiffuseColor = colors
 
@@ -6238,6 +6265,8 @@ class ViewProviderWorkingPlaneProxy:
     "A View Provider for working plane proxies"
 
     def __init__(self,vobj):
+        # ViewData: 0,1,2: position; 3,4,5,6: rotation; 7: near dist; 8: far dist, 9:aspect ratio;
+        # 10: focal dist; 11: height (ortho) or height angle (persp); 12: ortho (0) or persp (1)
         vobj.addProperty("App::PropertyLength","DisplaySize","Arch",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
         vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
@@ -6278,19 +6307,20 @@ class ViewProviderWorkingPlaneProxy:
         if hasattr(self,"Object"):
             from pivy import coin
             n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+            cdata = list(n.position.getValue().getValue())
+            cdata.extend(list(n.orientation.getValue().getValue()))
+            cdata.append(n.nearDistance.getValue())
+            cdata.append(n.farDistance.getValue())
+            cdata.append(n.aspectRatio.getValue())
+            cdata.append(n.focalDistance.getValue())
             if isinstance(n,coin.SoOrthographicCamera):
-                FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
-                #print FreeCADGui.ActiveDocument.ActiveView.getCamera()
-                cdata = list(n.position.getValue().getValue())
-                cdata.extend(list(n.orientation.getValue().getValue()))
-                cdata.append(n.nearDistance.getValue())
-                cdata.append(n.farDistance.getValue())
-                cdata.append(n.aspectRatio.getValue())
-                cdata.append(n.focalDistance.getValue())
                 cdata.append(n.height.getValue())
-                self.Object.ViewObject.ViewData = cdata
-            else:
-                FreeCAD.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft","Only orthographic views are supported")+"\n")
+                cdata.append(0.0) # orthograhic camera
+            elif isinstance(n,coin.SoPerspectiveCamera):
+                cdata.append(n.heightAngle.getValue())
+                cdata.append(1.0) # perspective camera
+            self.Object.ViewObject.ViewData = cdata
             
     def writeState(self):
         if hasattr(self,"Object"):

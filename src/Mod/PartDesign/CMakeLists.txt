@@ -38,6 +38,7 @@ INSTALL(
         PartDesignTests/TestShapeBinder.py
         PartDesignTests/TestPad.py
         PartDesignTests/TestPocket.py
+        PartDesignTests/TestHole.py
         PartDesignTests/TestRevolve.py
         PartDesignTests/TestLoft.py
         PartDesignTests/TestPipe.py

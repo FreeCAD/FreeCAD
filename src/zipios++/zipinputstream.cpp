@@ -5,6 +5,7 @@
 
 #include "zipinputstreambuf.h"
 #include "zipinputstream.h"
+#include <Base/FileInfo.h>
 
 using std::istream;
 
@@ -24,7 +25,12 @@ ZipInputStream::ZipInputStream( const std::string &filename, std::streampos pos 
   : std::istream( 0 ),
     ifs( 0 )
 {
+#if _WIN32
+  std::wstring wsname = Base::FileInfo(filename).toStdWString();
+  ifs = new std::ifstream( wsname.c_str(), std::ios::in |std:: ios::binary ) ;
+#else
   ifs = new std::ifstream( filename.c_str(), std::ios::in |std:: ios::binary ) ;
+#endif
   izf = new ZipInputStreambuf( ifs->rdbuf(), pos ) ;
 //  this->rdbuf( izf ) ; is replaced by:
   this->init( izf ) ;

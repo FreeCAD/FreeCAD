@@ -50,6 +50,7 @@
 #include "View3DInventor.h"
 #include "SplitView3DInventor.h"
 #include "ViewProvider.h"
+#include "WaitCursor.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -1143,7 +1144,10 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args,PyOb
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     if (pstr) 
         cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
+    WaitCursor wc;
+    wc.restoreCursor();
     cDlg.exec();
+    wc.setWaitCursor();
 
     Py_INCREF(Py_None);
     return Py_None;

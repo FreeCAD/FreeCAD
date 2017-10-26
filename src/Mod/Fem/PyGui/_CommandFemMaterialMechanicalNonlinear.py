@@ -42,7 +42,7 @@ class _CommandFemMaterialMechanicalNonlinear(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
-        self.is_active = 'with_material'
+        self.is_active = 'with_material_solid'
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -56,8 +56,8 @@ class _CommandFemMaterialMechanicalNonlinear(FemCommands):
                     allow_nonlinear_material = False
                     break
             if allow_nonlinear_material:
-                string_lin_mat_obj = "App.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
-                command_to_run = "FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [ObjectsFem.makeMaterialMechanicalNonlinear(" + string_lin_mat_obj + ")]"
+                string_lin_mat_obj = "FreeCAD.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
+                command_to_run = "FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, " + string_lin_mat_obj + "))"
                 FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
                 FreeCADGui.addModule("ObjectsFem")
                 FreeCADGui.doCommand(command_to_run)
@@ -65,7 +65,7 @@ class _CommandFemMaterialMechanicalNonlinear(FemCommands):
             # nonlinear material
             # nonlinear geometry --> its is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
             solver_object = None
-            for m in FemGui.getActiveAnalysis().Member:
+            for m in FemGui.getActiveAnalysis().Group:
                 if m.isDerivedFrom('Fem::FemSolverObjectPython'):
                     if not solver_object:
                         solver_object = m

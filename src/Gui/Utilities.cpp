@@ -39,12 +39,18 @@ using namespace Gui;
 
 ViewVolumeProjection::ViewVolumeProjection (const SbViewVolume &vv)
   : viewVolume(vv)
+  , hasTransform(false)
 {
 }
 
 Base::Vector3f ViewVolumeProjection::operator()(const Base::Vector3f &pt) const
 {
     SbVec3f pt3d(pt.x,pt.y,pt.z);
+    if (hasTransform) {
+        Base::Vector3f ptt = transform * pt;
+        pt3d.setValue(ptt.x, ptt.y, ptt.z);
+    }
+
     viewVolume.projectToScreen(pt3d,pt3d);
     return Base::Vector3f(pt3d[0],pt3d[1],pt3d[2]);
 }
@@ -77,6 +83,17 @@ Base::Vector3d ViewVolumeProjection::inverse (const Base::Vector3d &pt) const
     Base::Vector3f ptf = Base::convertTo<Base::Vector3f>(pt);
     ptf = inverse(ptf);
     return Base::convertTo<Base::Vector3d>(ptf);
+}
+
+/*!
+ * \brief This method applies an additional transformation to the input points
+ * passed with the () operator.
+ * \param mat
+ */
+void ViewVolumeProjection::setTransform(const Base::Matrix4D& mat)
+{
+    transform = mat;
+    hasTransform = (mat != Base::Matrix4D());
 }
 
 Base::Matrix4D ViewVolumeProjection::getProjectionMatrix () const

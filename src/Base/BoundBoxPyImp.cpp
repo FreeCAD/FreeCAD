@@ -59,10 +59,15 @@ PyObject *BoundBoxPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 // constructor method
 int BoundBoxPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        return 0;
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+
     double xMin=0.0,yMin=0.0,zMin=0.0,xMax=0.0,yMax=0.0,zMax=0.0;
     PyObject *object1, *object2;
     BoundBoxPy::PointerType ptr = getBoundBoxPtr();
-    if (PyArg_ParseTuple(args, "|dddddd", &xMin, &yMin, &zMin, &xMax, &yMax, &zMax)) {
+    if (PyArg_ParseTuple(args, "d|ddddd", &xMin, &yMin, &zMin, &xMax, &yMax, &zMax)) {
         ptr->MaxX = xMax;
         ptr->MaxY = yMax;
         ptr->MaxZ = zMax;

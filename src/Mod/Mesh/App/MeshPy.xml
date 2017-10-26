@@ -27,14 +27,18 @@ Example:
   f.Mesh = m # Assign the mesh object to the internal property
   d.recompute()</UserDocu>
 		</Documentation>
-		<Methode Name="read">
+        <Methode Name="read" Keyword="true">
 			<Documentation>
-				<UserDocu>Read in a mesh object from file.</UserDocu>
+                <UserDocu>Read in a mesh object from file.
+mesh.read(Filename='mymesh.stl')
+mesh.read(Stream=file,Format='STL')</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="write" Const="true">
+        <Methode Name="write" Const="true" Keyword="true">
 			<Documentation>
-				<UserDocu>Write the mesh object into file.</UserDocu>
+				<UserDocu>Write the mesh object into file.
+mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
+mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="writeInventor" Const="true">

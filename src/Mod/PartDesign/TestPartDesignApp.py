@@ -30,6 +30,7 @@ from PartDesignTests.TestShapeBinder import TestShapeBinder
 # additive/subtractive features & primitives
 from PartDesignTests.TestPad import TestPad
 from PartDesignTests.TestPocket import TestPocket
+from PartDesignTests.TestHole import TestHole
 from PartDesignTests.TestRevolve import TestRevolve
 from PartDesignTests.TestPipe import TestPipe
 from PartDesignTests.TestLoft import TestLoft

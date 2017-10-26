@@ -174,8 +174,8 @@ void Origin::unsetupObject () {
         // Check that previous deletes wasn't inderectly removed one of our objects
         const auto &objsLnk = OriginFeatures.getValues ();
         if ( std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
-            if ( ! obj->isDeleting () ) {
-                obj->getDocument ()->remObject (obj->getNameInDocument());
+            if ( ! obj->isRemoving() ) {
+                obj->getDocument()->removeObject (obj->getNameInDocument());
             }
         }
     }

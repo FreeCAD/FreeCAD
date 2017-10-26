@@ -58,14 +58,14 @@ matrix:
           - PYTHON_MAJOR_VERSION=3
 
       - os: osx
-        osx_image: xcode6.4
+        osx_image: xcode7.3
         compiler: clang
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
           - PYTHON_MAJOR_VERSION=2
 
       - os: osx
-        osx_image: xcode6.4
+        osx_image: xcode7.3
         compiler: clang
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
@@ -186,7 +186,9 @@ before_install:
 
           brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
           brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
-
+          # qt4 bottle contains postgresql plugin even when --with-postgresql option is not specified
+          # and so postgresql dep is not installed. Delete it because the plugin is not included with qt5 bottle.
+          sudo rm -f /usr/local/lib/qt4/plugins/sqldrivers/libqsqlpsql.dylib
        elif [ "${QT}" == "Qt5" ]; then
           # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
           brew ls --versions cartr/qt4/qt > /dev/null && \
@@ -234,7 +236,7 @@ script:
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
   - sudo make -j2 install
-  - ${INSTALLED_APP_PATH} --run-test 0
+  - ${INSTALLED_APP_PATH} --console --run-test 0
   - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
   - sleep 10 && pkill FreeCAD
   - cat /tmp/FreeCAD_installed.log

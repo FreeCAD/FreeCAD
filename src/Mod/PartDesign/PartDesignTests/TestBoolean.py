@@ -47,7 +47,7 @@ class TestBoolean(unittest.TestCase):
         self.BooleanFuse = self.Doc.addObject('PartDesign::Boolean','BooleanFuse')
         self.Body001.addObject(self.BooleanFuse)
         self.Doc.recompute()
-        self.BooleanFuse.Bodies = [self.Body,]
+        self.BooleanFuse.setObjects([self.Body,])
         self.BooleanFuse.Type = 0
         self.Doc.recompute()
         self.assertAlmostEqual(self.BooleanFuse.Shape.Volume, 1500)
@@ -71,7 +71,7 @@ class TestBoolean(unittest.TestCase):
         self.BooleanCut = self.Doc.addObject('PartDesign::Boolean','BooleanCut')
         self.Body001.addObject(self.BooleanCut)
         self.Doc.recompute()
-        self.BooleanCut.Bodies = [self.Body,]
+        self.BooleanCut.setObjects([self.Body,])
         self.BooleanCut.Type = 1
         self.Doc.recompute()
         self.assertAlmostEqual(self.BooleanCut.Shape.Volume, 500)
@@ -95,7 +95,7 @@ class TestBoolean(unittest.TestCase):
         self.BooleanCommon = self.Doc.addObject('PartDesign::Boolean','BooleanCommon')
         self.Body001.addObject(self.BooleanCommon)
         self.Doc.recompute()
-        self.BooleanCommon.Bodies = [self.Body,]
+        self.BooleanCommon.setObjects([self.Body,])
         self.BooleanCommon.Type = 2
         self.Doc.recompute()
         self.assertAlmostEqual(self.BooleanCommon.Shape.Volume, 500)

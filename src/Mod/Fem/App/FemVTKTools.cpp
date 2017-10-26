@@ -451,7 +451,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
     }
     if(obj->getTypeId() ==  FemAnalysis::getClassTypeId())
     {
-        std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Member.getValues();
+        std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
             if ((*it)->getTypeId().isDerivedFrom(type))
                 return static_cast<App::DocumentObject*>(*it); // return the first of that type
@@ -472,10 +472,8 @@ App::DocumentObject* createObjectByType(const Base::Type type)
 
     if(obj->getTypeId() ==  FemAnalysis::getClassTypeId())
     {
-        std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Member.getValues();
         App::DocumentObject* newobj = pcDoc->addObject(type.getName());
-        fem.push_back(newobj); // FemAnalysis is not a DocumentGroup derived class but DocumentObject
-        (static_cast<FemAnalysis*>(obj))->Member.setValues(fem);
+        static_cast<FemAnalysis*>(obj)->addObject(newobj);
         return newobj;
     }
     else

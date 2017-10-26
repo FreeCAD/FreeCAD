@@ -94,6 +94,7 @@ PyObject* MeasurementPy::has3DReferences(PyObject *args)
         result = Py_True;
     }
 
+    Py_IncRef(result);
     return result;
 }
 

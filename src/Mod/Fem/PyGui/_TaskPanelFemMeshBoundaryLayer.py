@@ -151,7 +151,7 @@ class _TaskPanelFemMeshBoundaryLayer:
             print_message = self.selection_mode_solid_print_message
         else:
             print_message = self.selection_mode_std_print_message
-        import FemSelectionObserver
+        from . import FemSelectionObserver
         self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):

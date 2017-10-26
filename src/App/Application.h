@@ -292,6 +292,7 @@ private:
 
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sSaveParameter     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetVersion        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetConfig         (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sSetConfig         (PyObject *self,PyObject *args,PyObject *kwd);

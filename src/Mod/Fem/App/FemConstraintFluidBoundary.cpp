@@ -42,31 +42,25 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint);
 
-// also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py,
-// update simultaneously
+// also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
 static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", NULL};
-static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "moving", NULL};
+static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "partialSlip", "moving", NULL};
 static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate", NULL};
 static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", NULL};
 static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", NULL};
 static const char* FreestreamSubtypes[] = {"unspecific", "freestream",NULL};
 
-// see Ansys fluet manual: Turbulence Specification method
+// see Ansys fluet manual: Turbulence Specification method, if not specified, solver will guess a value based e.g. 0.05 for inlet length geometry",
 static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",NULL};
-/* only used in TaskPanel
-static const char* TurbulenceSpecificationHelpTexts[] = {
- * "see Ansys fluet manual: Turbulence Specification method",
- * "not specified, solver will guess a value based e.g. 0.05 for inlet",
- * "or fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
-*/
+/* only used in TaskFemConstraintFluidBoundary.cpp */
 
 // activate the heat transfer and radiation model in Solver object explorer
-// also defined in FoamCaseBuilder/HeatTransferBuilder.py, update simultaneously
-static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed",  "HTC","coupled", NULL};
-/* only used in TaskPanel
-static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [W/m2]",
-            "mixed fixedGradient and fixedValue", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
+// also defined in FoamCaseBuilder/HeatTransferBuilder.py, update simultaneously, heatFlux is not a standard OpenFOAM patch type
+static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", NULL};
+/* only used in TaskFemConstraintFluidBoundary.cpp
+static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [K/m]",
+            "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
 */
 
 ConstraintFluidBoundary::ConstraintFluidBoundary()

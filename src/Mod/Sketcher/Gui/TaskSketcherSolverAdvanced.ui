@@ -554,7 +554,7 @@
         <string>Degree of verbosity of the debug output to the console</string>
        </property>
        <property name="text">
-        <string>Console  Debug mode:</string>
+        <string>Console Debug mode:</string>
        </property>
       </widget>
      </item>

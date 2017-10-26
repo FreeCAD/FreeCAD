@@ -63,7 +63,7 @@ def addToComponent(compobject,addobject,mod=None):
     if compobject == addobject: return
     # first check zis already there
     found = False
-    attribs = ["Additions","Objects","Components","Subtractions","Base","Group"]
+    attribs = ["Additions","Objects","Components","Subtractions","Base","Group","Hosts"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":
@@ -108,7 +108,7 @@ def removeFromComponent(compobject,subobject):
     it is added as a subtraction.'''
     if compobject == subobject: return
     found = False
-    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes","Fixtures","Group"]
+    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes","Fixtures","Group","Hosts"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":
@@ -158,7 +158,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
 
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Group"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Group","Hosts"]
         self.baseform = QtGui.QWidget()
         self.baseform.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.baseform)
@@ -304,6 +304,7 @@ class ComponentTaskPanel:
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None))
         self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None))
         self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None))
+        self.treeHosts.setText(0,QtGui.QApplication.translate("Arch", "Hosts", None))
 
 class Component:
     "The default Arch Component object"
@@ -516,18 +517,6 @@ class Component:
                             add.Placement = add.Placement.multiply(placement)
                         base = base.fuse(add)
 
-                    elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
-                        if hasattr(o.Proxy,"getSubVolume"):
-                            f = o.Proxy.getSubVolume(o)
-                            if f:
-                                if base.Solids and f.Solids:
-                                    if placement:
-                                        f.Placement = f.Placement.multiply(placement)
-                                    if len(base.Solids) > 1:
-                                        base = Part.makeCompound([sol.cut(f) for sol in base.Solids])
-                                    else:
-                                        base = base.cut(f)
-
                     elif o.isDerivedFrom("Part::Feature"):
                         if o.Shape:
                             if not o.Shape.isNull():
@@ -545,7 +534,13 @@ class Component:
                                         base = s
 
         # treat subtractions
-        for o in obj.Subtractions:
+        subs = obj.Subtractions
+        for link in obj.InList:
+            if hasattr(link,"Hosts"):
+                for host in link.Hosts:
+                    if host == obj:
+                        subs.append(link)
+        for o in subs:
 
             if base:
                 if base.isNull():
@@ -841,10 +836,6 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
-            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-            swalA = prefs.GetBool("swallowAdditions",True)
-            swalS = prefs.GetBool("swallowSubtractions",True)
-            swalW = prefs.GetBool("swallowWindows",True)
             c = []
             if hasattr(self.Object,"Base"):
                 if Draft.getType(self.Object) != "Wall":
@@ -853,15 +844,12 @@ class ViewProviderComponent:
                     c = []
                 else:
                     c = [self.Object.Base]
-            if hasattr(self.Object,"Additions") and swalA:
+            if hasattr(self.Object,"Additions"):
                 c.extend(self.Object.Additions)
-            if hasattr(self.Object,"Subtractions") and swalS:
+            if hasattr(self.Object,"Subtractions"):
                 for s in self.Object.Subtractions:
                     if Draft.getType(self.Object) == "Wall":
                         if Draft.getType(s) == "Roof":
-                            continue
-                    if (Draft.getType(s) == "Window") or Draft.isClone(s,"Window"):
-                        if not swalW:
                             continue
                     c.append(s)
             for link in ["Armatures","Group"]:
@@ -877,6 +865,10 @@ class ViewProviderComponent:
                 if hasattr(link,"Host"):
                     if link.Host:
                         if link.Host == self.Object:
+                            c.append(link)
+                elif hasattr(link,"Hosts"):
+                    for host in link.Hosts:
+                        if host == self.Object:
                             c.append(link)
             return c
         return []

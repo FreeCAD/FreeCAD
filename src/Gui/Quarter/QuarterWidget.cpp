@@ -297,7 +297,7 @@ QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewi
 
   this->installEventFilter(PRIVATE(this)->eventfilter);
   this->installEventFilter(PRIVATE(this)->interactionmode);
-  
+
   initialized = false;
 }
 
@@ -450,7 +450,7 @@ QuarterWidget::clearWindow(void) const
 /*!
   Enable/disable interaction mode.
 
-  Specifies wether you may use the alt-key to enter interaction mode.
+  Specifies whether you may use the alt-key to enter interaction mode.
 */
 void
 QuarterWidget::setInteractionModeEnabled(bool onoff)
@@ -835,7 +835,14 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
 {
-    std::clock_t begin = std::clock();
+    if (updateDevicePixelRatio()) {
+        qreal dev_pix_ratio = devicePixelRatio();
+        int width = static_cast<int>(dev_pix_ratio * this->width());
+        int height = static_cast<int>(dev_pix_ratio * this->height());
+        SbViewportRegion vp(width, height);
+        PRIVATE(this)->sorendermanager->setViewportRegion(vp);
+        PRIVATE(this)->soeventmanager->setViewportRegion(vp);
+    }
 
     if(!initialized) {
 #if !defined(HAVE_QT5_OPENGL)
@@ -908,9 +915,6 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     // process the delay queue the next time we enter this function,
     // unless we get here after a call to redraw().
     PRIVATE(this)->processdelayqueue = true;
-
-    std::clock_t end = std::clock();
-    renderTime = double(double(end-begin)/CLOCKS_PER_SEC)*1000.0;
 }
 
 bool QuarterWidget::viewportEvent(QEvent* event)

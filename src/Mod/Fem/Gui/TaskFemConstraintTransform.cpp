@@ -440,8 +440,8 @@ std::string TaskFemConstraintTransform::getSurfaceReferences(std::string showCon
 {
     return "for obj in FreeCAD.ActiveDocument.Objects:\n\
         if obj.isDerivedFrom(\"Fem::FemAnalysisPython\"):\n\
-                if FreeCAD.ActiveDocument."+showConstr+" in obj.Member:\n\
-                        members = obj.Member\n\
+                if FreeCAD.ActiveDocument."+showConstr+" in obj.Group:\n\
+                        members = obj.Group\n\
 A = []\n\
 i = 0\n\
 ss = []\n\

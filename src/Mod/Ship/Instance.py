@@ -122,7 +122,7 @@ class Ship:
             pass
 
     def cleanWeights(self, fp):
-        """Reanalyse the weights list looking for duplicated opbjects, or
+        """Reanalyse the weights list looking for duplicated objects, or
         removed ones.
         """
         if not len(fp.Weights):
@@ -150,7 +150,7 @@ class Ship:
             fp.Weights = filtered_list
 
     def cleanTanks(self, fp):
-        """Reanalyse the weights list looking for duplicated opbjects, or
+        """Reanalyse the weights list looking for duplicated objects, or
         removed ones.
         """
         if not len(fp.Tanks):
@@ -178,7 +178,7 @@ class Ship:
             fp.Tanks = filtered_list
 
     def cleanLoadConditions(self, fp):
-        """Reanalyse the weights list looking for duplicated opbjects, or
+        """Reanalyse the weights list looking for duplicated objects, or
         removed ones.
         """
         if not len(fp.LoadConditions):
@@ -257,7 +257,7 @@ class ViewProviderShip:
     def setDisplayMode(self, mode):
         """Map the display mode defined in attach with those defined in
         getDisplayModes. Since they have the same names nothing needs to be
-        done. This method is optinal.
+        done. This method is optional.
 
         Keyword arguments:
         mode -- Mode to be activated.

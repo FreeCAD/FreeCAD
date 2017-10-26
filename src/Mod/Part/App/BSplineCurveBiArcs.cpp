@@ -219,9 +219,25 @@ std::list<Geometry*> GeomBSplineCurve::toBiArcs(double tolerance) const
     gp_Vec v_start;
     gp_Pnt p_end;
     gp_Vec v_end;
-    this->myCurve->D1(this->myCurve->FirstParameter(), p_start, v_start);
+    this->myCurve->D0(this->myCurve->FirstParameter(), p_start);
+    this->myCurve->D0(this->myCurve->LastParameter(), p_end);
 
     std::list<Geometry*> list;
-    createArcs(tolerance, list, p_start, v_start, this->myCurve->FirstParameter(), this->myCurve->LastParameter(), p_end, v_end);
+
+    // the spline is closed
+    if (p_start.Distance(p_end) < Precision::Intersection()) {
+        this->myCurve->D1(this->myCurve->FirstParameter(), p_start, v_start);
+        createArcs(tolerance, list, p_start, v_start, this->myCurve->FirstParameter(),
+                   this->myCurve->LastParameter()/2, p_end, v_end);
+        this->myCurve->D1(this->myCurve->LastParameter()/2, p_start, v_start);
+        createArcs(tolerance, list, p_start, v_start, this->myCurve->LastParameter()/2,
+                   this->myCurve->LastParameter(), p_end, v_end);
+    }
+    else {
+        this->myCurve->D1(this->myCurve->FirstParameter(), p_start, v_start);
+        createArcs(tolerance, list, p_start, v_start, this->myCurve->FirstParameter(),
+                   this->myCurve->LastParameter(), p_end, v_end);
+    }
+
     return list;
 }

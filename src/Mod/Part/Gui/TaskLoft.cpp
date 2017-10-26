@@ -72,8 +72,8 @@ LoftWidget::LoftWidget(QWidget* parent)
     Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->ui.setupUi(this);
-    d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
-    d->ui.selector->setSelectedLabel(tr("Loft"));
+    d->ui.selector->setAvailableLabel(tr("Available profiles"));
+    d->ui.selector->setSelectedLabel(tr("Selected profiles"));
 
     connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));

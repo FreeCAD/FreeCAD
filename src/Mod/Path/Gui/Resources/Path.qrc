@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/Path-3DPocket.svg</file>
         <file>icons/Path-3DSurface.svg</file>
         <file>icons/Path-Array.svg</file>
         <file>icons/Path-Axis.svg</file>
@@ -29,6 +30,7 @@
         <file>icons/Path-Machine.svg</file>
         <file>icons/Path-OperationA.svg</file>
         <file>icons/Path-OperationB.svg</file>
+        <file>icons/Path-OpCopy.svg</file>
         <file>icons/Path-Plane.svg</file>
         <file>icons/Path-Pocket.svg</file>
         <file>icons/Path-Post.svg</file>
@@ -37,6 +39,7 @@
         <file>icons/Path-Profile.svg</file>
         <file>icons/Path-Sanity.svg</file>
         <file>icons/Path-SelectLoop.svg</file>
+        <file>icons/Path-SetupSheet.svg</file>
         <file>icons/Path-Shape.svg</file>
         <file>icons/Path-SimpleCopy.svg</file>
         <file>icons/Path-Speed.svg</file>
@@ -52,7 +55,9 @@
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
+        <file>panels/DlgJobTemplateExport.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
+        <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
@@ -68,9 +73,9 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
+        <file>panels/PageOpSurfaceEdit.ui</file>
+        <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
-        <file>panels/SurfaceEdit.ui</file>
-        <file>panels/ToolControl.ui</file>
         <file>panels/ToolEdit.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>

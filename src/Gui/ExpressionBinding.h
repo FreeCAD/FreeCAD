@@ -50,7 +50,7 @@ public:
 
     QPixmap getIcon(const char *name, const QSize &size) const;
    
-    //auto apply means that the python code is issues not only on aplly() but 
+    //auto apply means that the python code is issued not only on apply() but 
     //also on setExpression
     bool autoApply() const {return m_autoApply;};
     void setAutoApply(bool value) {m_autoApply = value;};

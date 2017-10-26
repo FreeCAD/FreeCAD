@@ -92,6 +92,10 @@ void DrawViewArch::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
         std::string svgFrag;
@@ -106,7 +110,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",renderMode=" << RenderMode.getValue()
                  << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
                  << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
-                 << ",scale=" << Scale.getValue()
+                 << ",scale=" << getScale()
                  << ",linewidth=" << LineWidth.getValue()
                  << ",fontsize=" << FontSize.getValue()
                  << ",techdraw=True"
@@ -117,7 +121,8 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                                          SourceName.c_str(),paramStr.str().c_str());
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
-        }
+    }
+    requestPaint();
     return DrawView::execute();
 }
 

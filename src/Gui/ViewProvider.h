@@ -137,9 +137,16 @@ public:
      * Get called if the object is about to get deleted.
      * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
      * @param subNames  list of selected subelements
-     * @return          true if the deletion is approoved by the view provider.
+     * @return          true if the deletion is approved by the view provider.
      */
     virtual bool onDelete(const std::vector<std::string> &subNames);
+    /**
+     * @brief Asks the view provider if the given object that is part of its
+     * outlist can be removed from there without breaking it.
+     * @param obj is part of the outlist of the object associated to the view provider
+     * @return true if the removal is approved by the view provider.
+     */
+    virtual bool canDelete(App::DocumentObject* obj) const;
     //@}
 
 

@@ -69,20 +69,24 @@ public:
     std::string fileNamePure () const;
     /// Convert the path name into a UCS-2 encoded wide string format.
     std::wstring toStdWString() const;
-    /** Returns the file's extension name.
-     * If complete is true (the default), extension() returns the string of all
-     * characters in the file name after (but not including) the first '.' character.
-     * If complete is false, extension() returns the string of all characters in
-     * the file name after (but not including) the last '.' character.
-     * Example:
+    /** Returns the extension of the file.
+     * The extension consists of all characters in the file after (but not including)
+     * the last '.' character.
      *@code
      *  FileInfo fi( "/tmp/archive.tar.gz" );
-     *  std::string ext = fi.extension(true);  // ext = "tar.gz"
-     *  ext = fi.extension(false);   // ext = "gz"
      *  ext = fi.extension();   // ext = "gz"
      *@endcode
      */
     std::string extension () const;
+    /** Returns the complete extension of the file.
+     * The complete extension consists of all characters in the file after (but not including)
+     * the first '.' character.
+     *@code
+     *  FileInfo fi( "/tmp/archive.tar.gz" );
+     *  ext = fi.completeExtension();   // ext = "tar.gz"
+     *@endcode
+     */
+    std::string completeExtension () const;
     /// Checks for a special extension, NOT case sensetive
     bool hasExtension (const char* Ext) const;
     //@}

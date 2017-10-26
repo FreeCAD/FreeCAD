@@ -103,6 +103,8 @@ public:
     virtual short int extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
     virtual PyObject* getExtensionPyObject(void);
+    virtual void onExtendedDocumentRestored();
+
 protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);
     

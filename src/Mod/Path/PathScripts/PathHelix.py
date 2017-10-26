@@ -80,7 +80,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         from numpy import ceil, linspace
 
         if (obj.StartDepth.Value <= obj.FinalDepth.Value):
-            return
+            return ""
 
         out = "(helix_cut <{0}, {1}>, {2})".format(x0, y0,
                     ", ".join(map(str, (r_out, r_in, dr, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value, obj.SafeHeight.Value,

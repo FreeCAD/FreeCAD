@@ -75,7 +75,7 @@ public:
     unsigned int pixValToMapIndex(double PixVal);
 
 Q_SIGNALS:
-  void drawGraphics();
+    void drawGraphics();
 
 private:
 

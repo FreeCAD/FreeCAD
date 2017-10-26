@@ -71,10 +71,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             base, sub = obj.Base[0]
             shape = base.Shape.getElement(sub[0])
             d = PathUtils.guessDepths(shape, None)
-            obj.ClearanceHeight = d.clearance_height
-            obj.SafeHeight = d.safe_height + 1
-            obj.StartDepth = d.safe_height
-            obj.FinalDepth = d.start_depth
+            obj.OpStartDepth = d.safe_height
+            obj.OpFinalDepth = d.start_depth
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return top face'''
@@ -118,10 +116,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             d = PathUtils.guessDepths(job.Base.Shape, None)
-            obj.ClearanceHeight = d.clearance_height
-            obj.SafeHeight = d.safe_height + 1
-            obj.StartDepth = d.safe_height
-            obj.FinalDepth = d.start_depth
+            obj.OpStartDepth = d.safe_height
+            obj.OpFinalDepth = d.start_depth
 
 def Create(name):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''

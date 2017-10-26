@@ -109,7 +109,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabBasicBoundary">
       <property name="enabled">
@@ -382,7 +382,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="labelTemperature">
            <property name="text">
-            <string>Temp[K]</string>
+            <string>Temperature[K]</string>
            </property>
           </widget>
          </item>
@@ -405,7 +405,7 @@
          <item row="2" column="0">
           <widget class="QLabel" name="labelHeatFlux">
            <property name="text">
-            <string>Heat flux</string>
+            <string>Heat flux [W/m2]</string>
            </property>
           </widget>
          </item>

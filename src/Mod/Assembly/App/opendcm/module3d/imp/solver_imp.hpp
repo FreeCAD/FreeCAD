@@ -193,7 +193,7 @@ void SystemSolver<Sys>::Rescaler::collectPseudoPoints(
             std::pair<LocalVertex,bool> res = parent->getLocalVertex(v);
 
             if(!res.second)
-                return; //means the geometry is in non of the clusters which is not allowed
+                return; //means the geometry is in none of the clusters which is not allowed
 
             if(res.first == cluster)
                 c->collectPseudoPoints(vec, vec2);
@@ -302,7 +302,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             else
                 cm.initFixMaps();
 
-            //map all geometrie within that cluster to it's rotation matrix
+            //map all geometries within that cluster to it's rotation matrix
             //for collecting all geometries which need updates
             cm.clearGeometry();
             cm.mapClusterDownstreamGeometry(c);
@@ -353,7 +353,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             // always need the full solver power
             bool has_cycle;
             cycle_dedector cd(has_cycle);
-            //create te needed property maps and fill it
+            //create the needed property maps and fill it
             property_map<vertex_index_prop, Cluster> vi_map(cluster);
             cluster->initIndexMaps();
             typedef std::map< LocalVertex, boost::default_color_type> vcmap;
@@ -374,7 +374,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 		//cool, lets do uncylic. first all rotational constraints with rotational parameters
 		mes.setAccess(rotation);
 
-		//rotations need to be calculated in a scaled manner. thats because the normales used for
+		//rotations need to be calculated in a scaled manner. thats because the normals used for
 		//rotation calculation are always 1, no matter how big the part is. This can lead to problems
 		//when for example two rotated faces have a precision error on the parallel normals but a distance
 		//at the outer edges is far bigger than the precision as the distance from normal origin to outer edge

@@ -34,6 +34,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Window.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
@@ -114,6 +115,11 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
         (boost::bind(&Placement::slotActiveDocument, this, _1));
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc) documents.insert(activeDoc->getName());
+
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Placement");
+    long index = hGrp->GetInt("RotationMethod");
+    ui->rotationInput->setCurrentIndex(index);
+    ui->stackedWidget->setCurrentIndex(index);
 }
 
 Placement::~Placement()
@@ -362,6 +368,9 @@ bool Placement::onApply()
             (*it)->blockSignals(false);
         }
     }
+
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Placement");
+    hGrp->SetInt("RotationMethod", ui->rotationInput->currentIndex());
 
     return true;
 }

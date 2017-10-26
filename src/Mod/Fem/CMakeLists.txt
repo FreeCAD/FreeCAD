@@ -38,7 +38,7 @@ INSTALL(
         FemInputWriterZ88.py
         FemMesh2Mesh.py
         FemMeshTools.py
-        FemSelectionObserver.py
+        FemResultTools.py
         FemTools.py
         FemToolsCcx.py
         FemToolsZ88.py
@@ -72,6 +72,7 @@ INSTALL(
 INSTALL(
     FILES
         PyGui/FemCommands.py
+        PyGui/FemSelectionObserver.py
         PyGui/__init__.py
         PyGui/_CommandFemAnalysis.py
         PyGui/_CommandFemConstraintSelfWeight.py
@@ -126,7 +127,7 @@ INSTALL(
         PyGui/TaskPanelFemMeshBoundaryLayer.ui
         PyGui/TaskPanelFemMeshGmsh.ui
         PyGui/TaskPanelFemMeshGroup.ui
-	PyGui/TaskPanelFemMeshGroupXDMFExport.ui
+        PyGui/TaskPanelFemMeshGroupXDMFExport.ui
         PyGui/TaskPanelFemMeshRegion.ui
         PyGui/TaskPanelFemResultShow.ui
         PyGui/TaskPanelFemSolverCalculix.ui

@@ -35,12 +35,12 @@ if False:
 
 class EGate:
     def allow(self, doc, obj, sub):
-        return (sub[0:4] == 'Edge')
+        return sub and sub[0:4] == 'Edge'
 
 
 class MESHGate:
     def allow(self, doc, obj, sub):
-        return (obj.TypeId[0:4] == 'Mesh')
+        return obj.TypeId[0:4] == 'Mesh'
 
 
 class ENGRAVEGate:
@@ -81,20 +81,20 @@ class PROFILEGate:
             profileable = False
 
         elif obj.ShapeType == 'Compound':
-            if sub[0:4] == 'Face':
+            if sub and sub[0:4] == 'Face':
                 profileable = True
 
-            if sub[0:4] == 'Edge':
+            if sub and sub[0:4] == 'Edge':
                 profileable = False
 
         elif obj.ShapeType == 'Face':
             profileable = False
 
         elif obj.ShapeType == 'Solid':
-            if sub[0:4] == 'Face':
+            if sub and sub[0:4] == 'Face':
                 profileable = True
 
-            if sub[0:4] == 'Edge':
+            if sub and sub[0:4] == 'Edge':
                 profileable = False
 
         elif obj.ShapeType == 'Wire':
@@ -119,11 +119,11 @@ class POCKETGate:
             pocketable = True
 
         elif obj.ShapeType == 'Solid':
-            if sub[0:4] == 'Face':
+            if sub and sub[0:4] == 'Face':
                 pocketable = True
 
         elif obj.ShapeType == 'Compound':
-            if sub[0:4] == 'Face':
+            if sub and sub[0:4] == 'Face':
                 pocketable = True
 
         return pocketable
@@ -168,6 +168,8 @@ def select(op):
     opsel['Helix'] = drillselect
     opsel['MillFace'] = pocketselect
     opsel['Pocket'] = pocketselect
+    opsel['Pocket 3D'] = pocketselect
+    opsel['Pocket Shape'] = pocketselect
     opsel['Profile Edges'] = eselect
     opsel['Profile Faces'] = profileselect
     opsel['Surface'] = surfaceselect

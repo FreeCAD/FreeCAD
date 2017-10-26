@@ -146,6 +146,10 @@ void DrawViewDetail::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     App::DocumentObject* link = Source.getValue();
     App::DocumentObject* base = BaseView.getValue();
     if (!link || !base)  {
@@ -168,13 +172,11 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
-    (void) DrawView::execute();          //make sure Scale is up to date
-
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
     double radius = getFudgeRadius();
     Base::Vector3d dirDetail = dvp->Direction.getValue();
-    double scale = Scale.getValue();
+    double scale = getScale();
     gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(0.0,0.0,0.0), dirDetail, false);
 
     Base::BoundBox3d bbxSource = partTopo.getBoundBox();
@@ -255,21 +257,20 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         try {
             extractFaces();
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e4 = Standard_Failure::Caught();
-            Base::Console().Log("LOG - DVD::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4->GetMessageString());
-            return new App::DocumentObjectExecReturn(e4->GetMessageString());
+        catch (Standard_Failure& e4) {
+            Base::Console().Log("LOG - DVD::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+            return new App::DocumentObjectExecReturn(e4.GetMessageString());
         }
     }
 
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e1 = Standard_Failure::Caught();
-        Base::Console().Log("LOG - DVD::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1->GetMessageString());
-        return new App::DocumentObjectExecReturn(e1->GetMessageString());
+    catch (Standard_Failure& e1) {
+        Base::Console().Log("LOG - DVD::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1.GetMessageString());
+        return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
+    requestPaint();
 
     return App::DocumentObject::StdReturn;
 }

@@ -454,7 +454,7 @@ class CheckWBWorker(QtCore.QThread):
         basedir = FreeCAD.ConfigGet("UserAppData")
         moddir = basedir + os.sep + "Mod"
         self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
-        upds = 0
+        upds = []
         gitpython_warning = False
         for repo in self.repos:
             if repo[2] == 1: #installed
@@ -480,10 +480,10 @@ class CheckWBWorker(QtCore.QThread):
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
                         self.mark.emit(repo[0])
-                        upds += 1
+                        upds.append(repo[0])
         self.progressbar_show.emit(False)
         if upds:
-            self.info_label.emit(str(upds)+" "+translate("AddonsInstaller", "update(s) available"))
+            self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds))
         else:
             self.info_label.emit(translate("AddonsInstaller","Everything is up to date"))
         self.stop = True
@@ -743,7 +743,9 @@ class InstallWorker(QtCore.QThread):
                     self.download(self.repos[self.idx][1],clonedir)
                 answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
                 # symlink any macro contained in the module to the macros folder
-                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
+                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
+                if not os.path.exists(macrodir):
+                    os.makedirs(macrodir)
                 for f in os.listdir(clonedir):
                     if f.lower().endswith(".fcmacro"):
                         symlink(clonedir+os.sep+f,macrodir+os.sep+f)

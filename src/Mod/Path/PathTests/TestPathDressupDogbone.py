@@ -112,12 +112,17 @@ class TestDressupDogbone(PathTestBase):
             if f.Surface.Axis == FreeCAD.Vector(0,0,1) and f.Orientation == 'Forward':
                 break
 
-        job = doc.addObject("Path::FeatureCompoundPython", "Job")
-        PathJob.ObjectPathJob(job, cut, None)
+        job = PathJob.Create('Job', cut, None)
 
         profile = PathProfileFaces.Create('Profile Faces')
         profile.Base = (cut, face)
         profile.StepDown = 5
+        # set start and final depth in order to eliminate effects of stock (and its default values)
+        profile.setExpression('StartDepth', None)
+        profile.StartDepth = 10
+        profile.setExpression('FinalDepth', None)
+        profile.FinalDepth = 0
+
         profile.processHoles = True
         profile.processPerimeter = True
         doc.recompute()

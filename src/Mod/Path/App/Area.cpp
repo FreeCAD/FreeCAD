@@ -22,6 +22,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cfloat>
 #endif
 
 #include <boost/version.hpp>
@@ -159,6 +160,7 @@ Area::Area(const AreaParams *params)
 ,myHaveSolid(false)
 ,myShapeDone(false)
 ,myProjecting(false)
+,mySkippedShapes(0)
 {
     if(params)
         setParams(*params);
@@ -174,6 +176,7 @@ Area::Area(const Area &other, bool deep_copy)
 ,myHaveSolid(other.myHaveSolid)
 ,myShapeDone(false)
 ,myProjecting(false)
+,mySkippedShapes(0)
 {
     if(!deep_copy || !other.isBuilt())
         return;
@@ -1929,7 +1932,11 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
             }
         }
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
-        out.Clip(toClipperOp(OperationIntersection),myArea.get(), SubjectFill,ClipFill);
+        PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
+        auto area = *myArea;
+        area.OffsetWithClipper(-tool_radius,JoinType,EndType,
+                myParams.MiterLimit,myParams.RoundPreceision);
+        out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;
         break;
     }default:
@@ -2226,12 +2233,26 @@ struct ShapeInfo{
     bool myStart;
 
     ShapeInfo(BRepLib_FindSurface &finder, const TopoDS_Shape &shape, ShapeParams &params)
-        :myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
-        ,myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(true)
+        : myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
+        , myShape(shape)
+        , myStartPt(1e20,1e20,1e20)
+        , myParams(params)
+        , myBestParameter(0)
+        , mySupportEdge(false)
+        , myPlanar(true)
+        , myRebase(false)
+        , myStart(false)
     {}
 
     ShapeInfo(const TopoDS_Shape &shape, ShapeParams &params)
-        :myShape(shape),myStartPt(1e20,1e20,1e20),myParams(params),myPlanar(false)
+        : myShape(shape)
+        , myStartPt(1e20,1e20,1e20)
+        , myParams(params)
+        , myBestParameter(0)
+        , mySupportEdge(false)
+        , myPlanar(false)
+        , myRebase(false)
+        , myStart(false)
     {}
     double nearest(const gp_Pnt &pt) {
         myStartPt = pt;
@@ -2270,6 +2291,7 @@ struct ShapeInfo{
                 BRepExtrema_DistShapeShape extss(v,wire);
                 if(extss.IsDone() && extss.NbSolution()) {
                     d = extss.Value();
+                    d *= d;
                     p = extss.PointOnShape2(1);
                     support = extss.SupportOnShape2(1);
                     support_edge = extss.SupportTypeShape2(1)==BRepExtrema_IsOnEdge;
@@ -2445,7 +2467,8 @@ struct ShapeInfo{
         return myBestWire->wire;
     }
 
-    std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,double min_dist, gp_Pnt *pentry) {
+    std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,
+            double min_dist, double max_dist, gp_Pnt *pentry) {
 
         if(myWires.empty() ||
            pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
@@ -2473,7 +2496,9 @@ struct ShapeInfo{
             FC_DURATION_PLUS(myParams.rd,t);
             myWires.erase(myBestWire);
             if(myWires.empty()) break;
-            nearest(pend);
+            double d = nearest(pend);
+            if(max_dist>0 && d>max_dist)
+                break;
         }
         return std::move(wires);
     }
@@ -2619,6 +2644,9 @@ struct WireOrienter {
     }
 };
 
+typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
+typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
+
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pnt *_pstart, gp_Pnt *_pend, double *stepdown_hint, short *_parc_plane,
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
@@ -2626,6 +2654,27 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     std::list<TopoDS_Shape> wires;
 
     if(shapes.empty()) return wires;
+
+    AxisGetter getter;
+    AxisSetter setter;
+    switch(retract_axis) {
+    case RetractAxisX:
+        getter = &gp_Pnt::X;
+        setter = &gp_Pnt::SetX;
+        break;
+    case RetractAxisY:
+        getter = &gp_Pnt::Y;
+        setter = &gp_Pnt::SetY;
+        break;
+    default:
+        getter = &gp_Pnt::Z;
+        setter = &gp_Pnt::SetZ;
+    }
+
+    if(sort_mode==SortModeGreedy && threshold<Precision::Confusion()){
+        AREA_WARN("Sort mode 'Greedy' requires a threshold value (suggestion: use the tool diameter)");
+        sort_mode = SortMode2D5;
+    }
 
     short _arc_plane = ArcPlaneNone;
     short &arc_plane = _parc_plane?*_parc_plane:_arc_plane;
@@ -2696,7 +2745,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                      fabs(pstart.Y())<Precision::Confusion() &&
                      fabs(pstart.Z())<Precision::Confusion();
 
-    if(use_bound || sort_mode == SortMode2D5) {
+    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
         //Second stage, group shape by its plane, and find overall boundary
 
         if(arcPlaneFound || use_bound) {
@@ -2751,31 +2800,50 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pln pln;
     double hint = 0.0;
     bool hint_first = true;
+    auto current_it = shape_list.end();
+    double current_height = (pstart.*getter)();
+    double max_dist = sort_mode==SortModeGreedy?threshold*threshold:0;
     while(shape_list.size()) {
         AREA_TRACE("sorting " << shape_list.size() << ' ' << AREA_XYZ(pstart));
-        double best_d;
+        double best_d = DBL_MAX;
         auto best_it = shape_list.begin();
-        bool first = true;
         for(auto it=best_it;it!=shape_list.end();++it) {
             double d;
             gp_Pnt pt;
-            if(it->myPlanar)
+            if(it->myPlanar && current_it==shape_list.end())
                 d = it->myPln.SquareDistance(pstart);
             else
                 d = it->nearest(pstart);
-            if(first || d<best_d) {
-                first = false;
+            if(d < best_d) {
                 best_it = it;
                 best_d = d;
             }
         }
         gp_Pnt pentry;
-        wires.splice(wires.end(),best_it->sortWires(pstart,pend,min_dist,&pentry));
+        if(sort_mode==SortModeGreedy) {
+            // greedy sort will go down to the next layer even if the current
+            // layer is not finished, as long as the path jump distance is
+            // within the threshold.
+            if(current_it==shape_list.end()) {
+                current_it = best_it;
+                current_height = (pstart.*getter)();
+            } else if(best_d>max_dist) {
+                // If the path jumps beyond the threshold, bail out and go back
+                // to the first unfinished layer.
+                (pstart.*setter)(current_height);
+                current_it->nearest(pstart);
+                best_it = current_it;
+            }
+        }
+
+        wires.splice(wires.end(),
+            best_it->sortWires(pstart,pend,min_dist,max_dist,&pentry));
+
         if(use_bound && _pstart) {
             use_bound = false;
             *_pstart = pentry;
         }
-        if(sort_mode==SortMode2D5 && stepdown_hint) {
+        if((sort_mode==SortMode2D5||sort_mode==SortMode3D) && stepdown_hint) {
             if(!best_it->myPlanar)
                 hint_first = true;
             else if(hint_first)
@@ -2801,7 +2869,12 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
             pln = best_it->myPln;
         }
         pstart = pend;
-        shape_list.erase(best_it);
+
+        if(best_it->myWires.empty()) {
+            if(current_it == best_it)
+                current_it = shape_list.end();
+            shape_list.erase(best_it);
+        }
     }
     if(stepdown_hint && hint!=0.0)
         *stepdown_hint = hint;
@@ -2845,9 +2918,6 @@ static inline void addG1(bool verbose,Toolpath &path, const gp_Pnt &last,
     }
     return;
 }
-
-typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
-typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 
 static void addG0(bool verbose, Toolpath &path,
         gp_Pnt last, const gp_Pnt &next,
@@ -2978,18 +3048,10 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         threshold = Precision::Confusion();
     threshold *= threshold;
 
-    resume_height = fabs(resume_height);
-    if(resume_height < Precision::Confusion())
-        resume_height = stepdown_hint;
-
-    retraction = fabs(retraction);
-    if(retraction < Precision::Confusion())
-        retraction = (pstart.*getter)()+resume_height;
-
     // in case the user didn't specify feed start, sortWire() will choose one
     // based on the bound. We'll further adjust that according to resume height
     if(!_pstart || pstart.SquareDistance(*_pstart)>Precision::SquareConfusion())
-        (pstart.*setter)((pstart.*getter)()+resume_height);
+        (pstart.*setter)(resume_height);
 
     gp_Pnt plast,p;
     // initial vertial rapid pull up to retraction (or start Z height if higher)

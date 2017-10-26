@@ -133,8 +133,8 @@ SweepWidget::SweepWidget(QWidget* parent)
     Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->ui.setupUi(this);
-    d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
-    d->ui.selector->setSelectedLabel(tr("Sweep"));
+    d->ui.selector->setAvailableLabel(tr("Available profiles"));
+    d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
     connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),

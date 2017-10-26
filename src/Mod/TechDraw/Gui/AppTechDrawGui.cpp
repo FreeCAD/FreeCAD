@@ -30,6 +30,7 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
@@ -66,6 +67,15 @@ void loadTechDrawResource()
     // add resources and reloads the translators
     Q_INIT_RESOURCE(TechDraw);
     Gui::Translator::instance()->refresh();
+
+    // add osifont
+    std::string fontDir = App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/";
+    QString fontFile = Base::Tools::fromStdString(fontDir + "osifont-lgpl3fe.ttf");
+    QFontDatabase fontDB;
+    int rc = fontDB.addApplicationFont(fontFile);
+    if (rc) {
+        Base::Console().Log("TechDraw failed to load osifont file: %d from: %s\n",rc,qPrintable(fontFile));
+    }
 }
 
 namespace TechDrawGui {

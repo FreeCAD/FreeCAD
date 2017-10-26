@@ -130,7 +130,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
             }
         }
     }
-    else if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
+    else if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         App::DocumentObject *pBase = static_cast<const App::PropertyLink*>(prop)->getValue();
         if (pBase)
             Gui::Application::Instance->hideViewProvider(pBase);
@@ -216,7 +216,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 
         this->DiffuseColor.setValues(colBool);
     }
-    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
             if (*it)
@@ -344,7 +344,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 
         this->DiffuseColor.setValues(colBool);
     }
-    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
             if (*it)

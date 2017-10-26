@@ -315,7 +315,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoGroup* pcFlatWireRoot = new SoSeparator();
     // add the complete flat group (contains the coordinates)
     pcFlatWireRoot->addChild(pcFlatRoot);
-    //pcFlatWireRoot->addChild(offset); // makes no differents.....
+    //pcFlatWireRoot->addChild(offset); // makes no difference.....
     // add the line nodes
     SoMaterialBinding *pcMatBind = new SoMaterialBinding;
     pcMatBind->value = SoMaterialBinding::OVERALL;
@@ -1298,7 +1298,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 6 nodes
                 case 6:
                     // tria6 face
-                    // penta6 volume, two 3-node triangle and three 4-node qudrangles
+                    // penta6 volume, two 3-node triangle and three 4-node quadrangles
                     switch (facesHelper[l].FaceNo){
                         case 0: { // tria6 face, 6-node triangle
                             // prefeche all node indexes of this face
@@ -1758,9 +1758,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     break;
                 // 13 nodes
                 case 13:
-                    // pyra13 volume, four 6-node triangle and one 8-node qudrangles
+                    // pyra13 volume, four 6-node triangle and one 8-node quadrangles
                     switch(facesHelper[l].FaceNo){
-                        case 1: { // pyra13 volume: face 1, 8-node qudrangles
+                        case 1: { // pyra13 volume: face 1, 8-node quadrangles
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1943,7 +1943,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     break;
                 // 15 nodes
                 case 15:
-                    // penta15 volume, two 6-node triangles and three 8-node qudrangles
+                    // penta15 volume, two 6-node triangles and three 8-node quadrangles
                     switch(facesHelper[l].FaceNo){
                         case 1: { // penta15 volume: face 1, 6-node triangle
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
@@ -2154,7 +2154,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     break;
                 // 20 nodes
                 case 20:
-                    // hexa20 volume, six 8-node qudrangles
+                    // hexa20 volume, six 8-node quadrangles
                     switch(facesHelper[l].FaceNo){
                         case 1: { // hexa20 volume: face 1
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];

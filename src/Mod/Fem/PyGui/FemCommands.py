@@ -68,6 +68,8 @@ class FemCommands(object):
                 active = FreeCADGui.ActiveDocument is not None and self.with_femmesh_andor_res_selected()
             elif self.is_active == 'with_material':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_selected()
+            elif self.is_active == 'with_material_solid':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_solid_selected()
             elif self.is_active == 'with_solver':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
             elif self.is_active == 'with_analysis_without_solver':
@@ -76,7 +78,7 @@ class FemCommands(object):
 
         def results_present(self):
             results = False
-            analysis_members = FemGui.getActiveAnalysis().Member
+            analysis_members = FemGui.getActiveAnalysis().Group
             for o in analysis_members:
                 if o.isDerivedFrom('Fem::FemResultObject'):
                     results = True
@@ -86,7 +88,7 @@ class FemCommands(object):
             result_is_in_active_analysis = False
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemResultObject"):
-                for o in FemGui.getActiveAnalysis().Member:
+                for o in FemGui.getActiveAnalysis().Group:
                     if o == sel[0]:
                         result_is_in_active_analysis = True
                         break
@@ -123,6 +125,13 @@ class FemCommands(object):
             else:
                 return False
 
+        def material_solid_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython") and hasattr(sel[0], "Category") and sel[0].Category == "Solid":
+                return True
+            else:
+                return False
+
         def with_femmesh_andor_res_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
@@ -155,7 +164,7 @@ class FemCommands(object):
 
         def analysis_has_solver(self):
             solver = False
-            analysis_members = FemGui.getActiveAnalysis().Member
+            analysis_members = FemGui.getActiveAnalysis().Group
             for o in analysis_members:
                 if o.isDerivedFrom("Fem::FemSolverObjectPython"):
                     solver = True
@@ -166,7 +175,7 @@ class FemCommands(object):
 
         def hide_meshes_show_parts_constraints(self):
             if FreeCAD.GuiUp:
-                for acnstrmesh in FemGui.getActiveAnalysis().Member:
+                for acnstrmesh in FemGui.getActiveAnalysis().Group:
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = True
                     if "Mesh" in acnstrmesh.TypeId:

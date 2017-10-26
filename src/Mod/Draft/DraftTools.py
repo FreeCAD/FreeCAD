@@ -337,20 +337,31 @@ class SelectPlane(DraftTool):
                     if hasattr(sel.Object.ViewObject,"RestoreView"):
                         if sel.Object.ViewObject.RestoreView:
                             if hasattr(sel.Object.ViewObject,"ViewData"):
-                                if len(sel.Object.ViewObject.ViewData) == 12:
+                                if len(sel.Object.ViewObject.ViewData) >= 12:
                                     d = sel.Object.ViewObject.ViewData
+                                    camtype = "orthographic"
+                                    if len(sel.Object.ViewObject.ViewData) == 13:
+                                        if d[12] == 1:
+                                            camtype = "perspective"
                                     c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
                                     from pivy import coin
                                     if isinstance(c,coin.SoOrthographicCamera):
-                                        c.position.setValue([d[0],d[1],d[2]])
-                                        c.orientation.setValue([d[3],d[4],d[5],d[6]])
-                                        c.nearDistance.setValue(d[7])
-                                        c.farDistance.setValue(d[8])
-                                        c.aspectRatio.setValue(d[9])
-                                        c.focalDistance.setValue(d[10])
+                                        if camtype == "perspective":
+                                            FreeCADGui.ActiveDocument.ActiveView.setCameraType("Perspective")
+                                    elif isinstance(c,coin.SoPerspectiveCamera):
+                                        if camtype == "orthographic":
+                                            FreeCADGui.ActiveDocument.ActiveView.setCameraType("Orthographic")
+                                    c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                                    c.position.setValue([d[0],d[1],d[2]])
+                                    c.orientation.setValue([d[3],d[4],d[5],d[6]])
+                                    c.nearDistance.setValue(d[7])
+                                    c.farDistance.setValue(d[8])
+                                    c.aspectRatio.setValue(d[9])
+                                    c.focalDistance.setValue(d[10])
+                                    if camtype == "orthographic":
                                         c.height.setValue(d[11])
                                     else:
-                                        FreeCAD.Console.PrintWarning(translate("Draft","Only orthographic views are supported")+"\n")
+                                        c.heightAngle.setValue(d[11])
                     if hasattr(sel.Object.ViewObject,"RestoreState"):
                         if sel.Object.ViewObject.RestoreState:
                             if hasattr(sel.Object.ViewObject,"VisibilityMap"):
@@ -3083,7 +3094,7 @@ class Upgrade(Modifier):
         return {'Pixmap'  : 'Draft_Upgrade',
                 'Accel' : "U, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Upgrade"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Joins the selected objects into one, or converts closed wires to filled faces, or unite faces")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Joins the selected objects into one, or converts closed wires to filled faces, or unites faces")}
 
     def Activated(self):
         Modifier.Activated(self,"Upgrade")
