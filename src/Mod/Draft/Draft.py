@@ -1727,7 +1727,8 @@ def draftify(objectslist,makeblock=False,delete=True):
     newobjlist = []
     for obj in objectslist:
         if obj.isDerivedFrom('Part::Feature'):
-            for w in obj.Shape.Wires:
+            for cluster in Part.getSortedClusters(obj.Shape.Edges):
+                w = Part.Wire(cluster)
                 if DraftGeomUtils.hasCurves(w):
                     if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
                         nobj = makeCircle(w.Edges[0])
