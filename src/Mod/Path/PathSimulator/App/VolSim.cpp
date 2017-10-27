@@ -740,6 +740,9 @@ void cSimTool::InitTool()  // pos is 0..1 location along the radius of the tool
 	case ROUND:
 		dradius = radius * radius;
 		break;
+
+	case FLAT:
+		break;
 	}
 }
 
