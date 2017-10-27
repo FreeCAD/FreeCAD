@@ -99,8 +99,8 @@ public:
 	void InitTool();
 
 	Type type;
-	float tipAngle;
 	float radius;
+	float tipAngle;
 	float dradius;
 	float chamRatio;
 	float GetToolProfileAt(float pos);
