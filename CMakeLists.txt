@@ -932,29 +932,29 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
         find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
 
-        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/PySide)
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/__init__.py "# PySide wrapper\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
+        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py  "from PySide2.QtGui import *\n"
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtGui.py  "from PySide2.QtGui import *\n"
                                                             "from PySide2.QtWidgets import *\n"
                                                             "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
 	if(APPLE)
 	    INSTALL(
 	        DIRECTORY	
-                    ${CMAKE_BINARY_DIR}/bin/PySide
+                    ${CMAKE_BINARY_DIR}/Ext/PySide
 		DESTINATION
                     MacOS
             )
 	else()
             INSTALL(
 	        DIRECTORY	
-                    ${CMAKE_BINARY_DIR}/bin/PySide
+                    ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
-                    bin
+                    Ext
             )
 	endif()
     else()
