@@ -64,13 +64,6 @@ matrix:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
           - PYTHON_MAJOR_VERSION=2
 
-      - os: osx
-        osx_image: xcode7.3
-        compiler: clang
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
-          - PYTHON_MAJOR_VERSION=2
-
 git:
   depth: 5000
 
@@ -177,30 +170,12 @@ before_install:
 
        brew tap FreeCAD/freecad
 
-       if [ "${QT}" == "Qt4" ]; then
-          # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
-          brew ls --versions qt@5.6 > /dev/null && \
-             brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
+       brew install --verbose --only-dependencies freecad --with-packaging-utils
+       brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
 
-          brew tap cartr/qt4
-
-          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
-          # qt4 bottle contains postgresql plugin even when --with-postgresql option is not specified
-          # and so postgresql dep is not installed. Delete it because the plugin is not included with qt5 bottle.
-          sudo rm -f /usr/local/lib/qt4/plugins/sqldrivers/libqsqlpsql.dylib
-       elif [ "${QT}" == "Qt5" ]; then
-          # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
-          brew ls --versions cartr/qt4/qt > /dev/null && \
-             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken@1.2 cartr/qt4/pyside@1.2 cartr/qt4/pyside-tools@1.2 cartr/qt4/qt
-
-          brew install --verbose --only-dependencies freecad --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
-
-          # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-          QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
-          CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
-       fi
+       # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
+       QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
+       CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
 
        #Install the 3DConnexion frameworks
        if [ "${DEPLOY}" == "1" ]; then
