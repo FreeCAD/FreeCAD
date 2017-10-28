@@ -22,13 +22,11 @@
 
 #include "PreCompiled.h"
 
+#include <Mod/Path/App/ToolPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Path/App/ToolPy.h>
-#include <Mod/Path/App/ToolPy.cpp>
 #include <Mod/Path/App/CommandPy.h>
-#include <Mod/Path/App/CommandPy.cpp>
 #include <Mod/Mesh/App/MeshPy.h>
 #include "Mod/Path/PathSimulator/App/PathSim.h"
 
@@ -74,8 +72,7 @@ PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 PyObject* PathSimPy::SetCurrentTool(PyObject * args)
 {
 	PyObject *pObjTool;
-	//Path::ToolPy tptmp(new Path::Tool);
-	if (!PyArg_ParseTuple(args, "O", /*tptmp.GetType(),*/ &pObjTool))
+	if (!PyArg_ParseTuple(args, "O!", &(Path::ToolPy::Type), &pObjTool))
 		return 0;
 	PathSim *sim = getPathSimPtr();
 	sim->SetCurrentTool(static_cast<Path::ToolPy*>(pObjTool)->getToolPtr());
@@ -106,7 +103,7 @@ PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 	static char *kwlist[] = { "position", "command", NULL };
 	PyObject *pObjPlace;
 	PyObject *pObjCmd;
-	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O", kwlist, &(Base::PlacementPy::Type), &pObjPlace, /*&(Path::CommandPy::Type),*/ &pObjCmd))
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!", kwlist, &(Base::PlacementPy::Type), &pObjPlace, &(Path::CommandPy::Type), &pObjCmd))
 		return 0;
 	PathSim *sim = getPathSimPtr();
 	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
@@ -117,18 +114,6 @@ PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 	Base::PlacementPy *newposPy = new Base::PlacementPy(newpos);
 	return newposPy;
 }
-
-/* test script 
-import PathSimulator
-sim = PathSimulator.PathSim()
-stock = Part.makeBox(20,20,5)
-sim.BeginSimulation(stock,0.1)
-msh = sim.GetResultMesh()
-Mesh.show(msh)
-
-*/
-
-
 
 Py::Object PathSimPy::getTool(void) const
 {

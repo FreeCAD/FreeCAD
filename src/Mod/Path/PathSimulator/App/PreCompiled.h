@@ -29,7 +29,7 @@
 // Exporting of App classes
 #ifdef FC_OS_WIN32
 # define PathSimulatorExport __declspec(dllexport)
-# define PathExport  __declspec(dllexport)
+# define PathExport  __declspec(dllimport)
 # define PartExport __declspec(dllimport)
 # define MeshExport __declspec(dllimport)
 #else // for Linux
