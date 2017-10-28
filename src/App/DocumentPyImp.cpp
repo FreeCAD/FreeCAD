@@ -484,10 +484,26 @@ PyObject*  DocumentPy::clearUndos(PyObject * args)
 
 PyObject*  DocumentPy::recompute(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+    PyObject *pyobjs = Py_None;
+    if (!PyArg_ParseTuple(args, "|O",&pyobjs))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception
     try {
-        int objectCount = getDocumentPtr()->recompute();
+        std::vector<App::DocumentObject *> objs;
+        if(pyobjs!=Py_None) {
+            if(!PySequence_Check(pyobjs)) {
+                PyErr_SetString(PyExc_TypeError, "expect input of sequence of document objects");
+                return 0;
+            }
+            Py::Sequence seq(pyobjs);
+            for(size_t i=0;i<seq.size();++i) {
+                if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+                    PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
+                    return 0;
+                }
+                objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+            }
+        }
+        int objectCount = getDocumentPtr()->recompute(objs);
         return Py::new_reference_to(Py::Int(objectCount));
     }
     catch (const Base::RuntimeError& e) {

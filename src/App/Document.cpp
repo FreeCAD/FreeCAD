@@ -2073,9 +2073,9 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     return ret;
 }
 
-void Document::_rebuildDependencyList(void)
+void Document::_rebuildDependencyList(const std::vector<App::DocumentObject*> &objs)
 {
-    _buildDependencyList(d->objectArray,false,0,&d->DepList,&d->VertexObjectList);
+    _buildDependencyList(objs.empty()?d->objectArray:objs,false,0,&d->DepList,&d->VertexObjectList);
 }
 
 /**
@@ -2102,7 +2102,7 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
 }
 
 #ifdef USE_OLD_DAG
-int Document::recompute()
+int Document::recompute(const std::vector<App::DocumentObject*> &objs)
 {
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
@@ -2125,7 +2125,7 @@ int Document::recompute()
     _RecomputeLog.clear();
 
     // updates the dependency graph
-    _rebuildDependencyList();
+    _rebuildDependencyList(objs);
 
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
@@ -2239,7 +2239,7 @@ int Document::recompute()
 
 #else //ifdef USE_OLD_DAG
 
-int Document::recompute()
+int Document::recompute(const std::vector<App::DocumentObject*> &objs)
 {
     int objectCount = 0;
     // delete recompute log
@@ -2248,7 +2248,7 @@ int Document::recompute()
     _RecomputeLog.clear();
 
     // get the sorted vector of all objects in the document and go though it from the end
-    vector<DocumentObject*> topoSortedObjects = topologicalSort();
+    vector<DocumentObject*> topoSortedObjects = topologicalSort(objs);
 
     if (topoSortedObjects.size() != d->objectArray.size()){
         cerr << "App::Document::recompute(): topological sort fails, invalid DAG!" << endl;
@@ -2285,7 +2285,7 @@ int Document::recompute()
 
 #endif // USE_OLD_DAG
 
-std::vector<App::DocumentObject*> Document::topologicalSort() const
+std::vector<App::DocumentObject*> Document::topologicalSort(const std::vector<App::DocumentObject*> &objs) const
 {
     // topological sort algorithm described here:
     // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
@@ -2293,8 +2293,11 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     ret.reserve(d->objectArray.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto objectIt : d->objectArray)
-        countMap[objectIt] = objectIt->getInList().size();
+    const auto &objectArray = objs.empty()?d->objectArray:objs;
+    for (auto objectIt : objectArray) {
+        if(objectIt->getNameInDocument() && objectIt->getDocument()==this)
+            countMap[objectIt] = objectIt->getInList().size();
+    }
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
         return count.second == 0;
@@ -2399,7 +2402,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
     return false;
 }
 
-void Document::recomputeFeature(DocumentObject* Feat)
+void Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 {
      // delete recompute log
     for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
@@ -2407,8 +2410,14 @@ void Document::recomputeFeature(DocumentObject* Feat)
     _RecomputeLog.clear();
 
     // verify that the feature is (active) part of the document
-    if (Feat->getNameInDocument())
-        _recomputeFeature(Feat);
+    if (Feat->getNameInDocument()) {
+        if(recursive) {
+            std::vector<App::DocumentObject*> objs;
+            objs.push_back(Feat);
+            recompute(objs);
+        }else
+            _recomputeFeature(Feat);
+    }
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew, const char *viewType)

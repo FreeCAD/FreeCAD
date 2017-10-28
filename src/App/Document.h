@@ -287,10 +287,14 @@ public:
     void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
-    /// Recompute all touched features and return the amount of recalculated features
-    int recompute();
+    /** Recompute touched features and return the amount of recalculated features
+     *
+     * @param objs: specify a sub set of objects to recompute. If empty, then
+     * all object in this document is checked for recompute
+     */
+    int recompute(const std::vector<App::DocumentObject*> &objs=std::vector<App::DocumentObject*>());
     /// Recompute only one feature
-    void recomputeFeature(DocumentObject* Feat);
+    void recomputeFeature(DocumentObject* Feat,bool recursive=false);
     /// get the error log from the recompute run
     const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
     /// get the text of the error of a spezified object
@@ -372,7 +376,8 @@ public:
     // set Changed
     //void setChanged(DocumentObject* change);
     /// get a list of topological sorted objects (https://en.wikipedia.org/wiki/Topological_sorting)
-    std::vector<App::DocumentObject*> topologicalSort() const;
+    std::vector<App::DocumentObject*> topologicalSort(
+            const std::vector<App::DocumentObject*> &objs = std::vector<App::DocumentObject*>()) const;
     /// get all root objects (objects no other one reference too)
     std::vector<App::DocumentObject*> getRootObjects() const;
     //@}
@@ -430,7 +435,9 @@ protected:
     void _clearRedos();
 
     /// refresh the internal dependency graph
-    void _rebuildDependencyList(void);
+    void _rebuildDependencyList(
+        const std::vector<App::DocumentObject*> &objs = std::vector<App::DocumentObject*>());
+
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;
 
 

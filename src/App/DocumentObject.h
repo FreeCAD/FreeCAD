@@ -223,8 +223,11 @@ public:
      */
     virtual short mustExecute(void) const;
 
-    /// Recompute only this feature
-    bool recomputeFeature();
+    /** Recompute only this feature
+     *
+     * @param recursive: set to true to recompute any dependent objects as well
+     */
+    bool recomputeFeature(bool recursive=false);
 
     /// get the status Message
     const char *getStatusString(void) const;

@@ -52,7 +52,7 @@
         </Methode>
         <Methode Name="recompute">
             <Documentation>
-                <UserDocu>Recomputes this object</UserDocu>
+                <UserDocu>recompute(recursive=False): Recomputes this object</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getSubObject" Keyword="true">

@@ -322,11 +322,12 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject *recursive=Py_False;
+    if (!PyArg_ParseTuple(args, "|O",&recursive))
         return NULL;
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature();
+        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive));
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {

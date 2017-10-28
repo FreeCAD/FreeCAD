@@ -100,11 +100,11 @@ DocumentObjectExecReturn *DocumentObject::execute(void)
     return StdReturn;
 }
 
-bool DocumentObject::recomputeFeature()
+bool DocumentObject::recomputeFeature(bool recursive)
 {
     Document* doc = this->getDocument();
     if (doc)
-        doc->recomputeFeature(this);
+        doc->recomputeFeature(this,recursive);
     return isValid();
 }
 
