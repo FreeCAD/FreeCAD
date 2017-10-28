@@ -177,7 +177,7 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
                          eMapMode mapMode, bool mapReverse,
                          double attachParameter,
                          double surfU, double surfV,
-                         const Base::Placement &superPlacement)
+                         const Base::Placement &attachmentOffset)
 {
     this->references.Paste(references);
     this->mapMode = mapMode;
@@ -185,7 +185,7 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
     this->attachParameter = attachParameter;
     this->surfU = surfU;
     this->surfV = surfV;
-    this->superPlacement = superPlacement;
+    this->attachmentOffset = attachmentOffset;
 }
 
 void AttachEngine::setUp(const AttachEngine &another)
@@ -196,7 +196,7 @@ void AttachEngine::setUp(const AttachEngine &another)
           another.attachParameter,
           another.surfU,
           another.surfV,
-          another.superPlacement);
+          another.attachmentOffset);
 }
 
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
@@ -1017,7 +1017,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sh));
         Base::Placement plm = Base::Placement();
         plm.setPosition(Base::Vector3d(p.X(), p.Y(), p.Z()));
-        plm.setPosition(plm.getPosition() + this->superPlacement.getPosition());
+        plm.setPosition(plm.getPosition() + this->attachmentOffset.getPosition());
         plm.setRotation(origPlacement.getRotation());
         return plm;
     } break;
@@ -1552,7 +1552,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
 
         Base::Placement plm =
                 Base::Placement(Base::Vector3d(SketchBasePoint.X(), SketchBasePoint.Y(), SketchBasePoint.Z()), rot);
-        plm *= this->superPlacement;
+        plm *= this->attachmentOffset;
         return plm;
     } break;
     default:
@@ -1568,7 +1568,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
                                    /*makeYVertical = */ false,
                                    /*makeLegacyFlatFaceOrientation = */ mmode == mmFlatFace,
                                    &Place);
-    plm *= this->superPlacement;
+    plm *= this->attachmentOffset;
     return plm;
 }
 
@@ -1905,11 +1905,11 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
-        attacher3D.superPlacement = Base::Placement(); //superplacement is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
         plm *= presuperPlacement;
     }
-    plm *= this->superPlacement;
+    plm *= this->attachmentOffset;
     return plm;
 }
 
@@ -2080,10 +2080,10 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
-        attacher3D.superPlacement = Base::Placement(); //superplacement is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
     }
-    plm *= this->superPlacement;
+    plm *= this->attachmentOffset;
     return plm;
 }
 
