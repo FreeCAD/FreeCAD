@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Path Simulator</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -292,12 +292,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="labelNote">
      <property name="styleSheet">
       <string notr="true">QLabel { color: rgb(250, 100, 0) }</string>
      </property>
      <property name="text">
-      <string>* Note: Due to inherent CAD engine limitations, inaccuracies may occur</string>
+      <string>* Note: Volumetric simulation, inaccuracies are inherent.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
