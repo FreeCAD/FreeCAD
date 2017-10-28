@@ -151,6 +151,9 @@ void Primitive::Restore(Base::XMLReader &reader)
                     static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
                 }
             }
+            else {
+                extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
+            }
         }
         catch (const Base::XMLParseException&) {
             throw; // re-throw

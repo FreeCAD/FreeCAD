@@ -123,21 +123,21 @@ void AttachEnginePy::setReferences(Py::Object arg)
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
-Py::Object AttachEnginePy::getSuperPlacement(void) const
+Py::Object AttachEnginePy::getAttachmentOffset(void) const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        return Py::Object(new Base::PlacementPy(new Base::Placement(attacher.superPlacement)),true);
+        return Py::Object(new Base::PlacementPy(new Base::Placement(attacher.attachmentOffset)),true);
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
-void AttachEnginePy::setSuperPlacement(Py::Object arg)
+void AttachEnginePy::setAttachmentOffset(Py::Object arg)
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
         if (PyObject_TypeCheck(arg.ptr(), &(Base::PlacementPy::Type))) {
             const Base::PlacementPy* plmPy = static_cast<const Base::PlacementPy*>(arg.ptr());
-            attacher.superPlacement = *(plmPy->getPlacementPtr());
+            attacher.attachmentOffset = *(plmPy->getPlacementPtr());
         } else {
             std::string error = std::string("type must be 'Placement', not ");
             error += arg.type().as_string();
@@ -519,7 +519,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
                        feat->MapReversed.getValue(),
                        feat->MapPathParameter.getValue(),
                        0.0,0.0,
-                       feat->superPlacement.getValue());
+                       feat->AttachmentOffset.getValue());
         return Py::new_reference_to(Py::None());
     } ATTACHERPY_STDCATCH_METH;
 }
@@ -543,7 +543,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
         feat->MapMode.setValue(attacher.mapMode);
         feat->MapReversed.setValue(attacher.mapReverse);
         feat->MapPathParameter.setValue(attacher.attachParameter);
-        feat->superPlacement.setValue(attacher.superPlacement);
+        feat->AttachmentOffset.setValue(attacher.attachmentOffset);
         return Py::new_reference_to(Py::None());
     } ATTACHERPY_STDCATCH_METH;
 }

@@ -34,11 +34,11 @@
       </Documentation>
       <Parameter Name="References" Type="Object" />
     </Attribute>
-    <Attribute Name="SuperPlacement" ReadOnly="false">
+    <Attribute Name="AttachmentOffset" ReadOnly="false">
       <Documentation>
         <UserDocu>Current attachment mode.</UserDocu>
       </Documentation>
-      <Parameter Name="SuperPlacement" Type="Object" />
+      <Parameter Name="AttachmentOffset" Type="Object" />
     </Attribute>
     <Attribute Name="Reverse" ReadOnly="false">
       <Documentation>
@@ -105,7 +105,7 @@
     <Methode Name="calculateAttachedPlacement" Const="true">
       <Documentation>
         <UserDocu>calculateAttachedPlacement(orig_placement): returns result of attachment, based
-on current Mode, References, etc. SuperPlacment is included.
+on current Mode, References, etc. AttachmentOffset is included.
 
 original_placement is the previous placement of the object being attached. It
 is used to preserve orientation for Translate attachment mode. For other modes,

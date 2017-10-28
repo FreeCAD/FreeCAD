@@ -258,7 +258,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
                 Datum.c_str(), refStr.toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
                 Datum.c_str(), AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.AttachmentOffset.Base.z = %f",
                 Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s)",

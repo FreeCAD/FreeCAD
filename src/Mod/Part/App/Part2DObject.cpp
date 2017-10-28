@@ -243,6 +243,8 @@ void Part2DObject::Restore(Base::XMLReader &reader)
                     }
                     this->MapMode.setValue(Attacher::mmFlatFace);
                 }
+            } else {
+                extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
             }
         }
         catch (const Base::XMLParseException&) {
