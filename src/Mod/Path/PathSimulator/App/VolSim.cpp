@@ -68,7 +68,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			{
 				for (int y = yp; y < yp + y_size; y++)
 				{
-					if ((m_attr[tx][y] & SIM_TESSEL_TOP) != 0 || abs(z - m_stock[tx][y]) > m_res)
+					if ((m_attr[tx][y] & SIM_TESSEL_TOP) != 0 || fabs(z - m_stock[tx][y]) > m_res)
 					{
 						xr_ok = false;
 						break;
@@ -89,7 +89,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			{
 				for (int y = yp; y < yp + y_size; y++)
 				{
-					if ((m_attr[tx][y] & SIM_TESSEL_TOP) != 0 || abs(z - m_stock[tx][y]) > m_res)
+					if ((m_attr[tx][y] & SIM_TESSEL_TOP) != 0 || fabs(z - m_stock[tx][y]) > m_res)
 					{
 						xl_ok = false;
 						break;
@@ -113,7 +113,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			{
 				for (int x = xp; x < xp + x_size; x++)
 				{
-					if ((m_attr[x][ty] & SIM_TESSEL_TOP) != 0 || abs(z - m_stock[x][ty]) > m_res)
+					if ((m_attr[x][ty] & SIM_TESSEL_TOP) != 0 || fabs(z - m_stock[x][ty]) > m_res)
 					{
 						yu_ok = false;
 						break;
@@ -134,7 +134,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			{
 				for (int x = xp; x < xp + x_size; x++)
 				{
-					if ((m_attr[x][ty] & SIM_TESSEL_TOP) != 0 || abs(z - m_stock[x][ty]) > m_res)
+					if ((m_attr[x][ty] & SIM_TESSEL_TOP) != 0 || fabs(z - m_stock[x][ty]) > m_res)
 					{
 						yd_ok = false;
 						break;
@@ -182,7 +182,7 @@ int cStock::TesselTop(int xp, int yp)
 		Point3D pbr(xp + x_size, yp, z);
 		Point3D ptl(xp, yp + y_size, z);
 		Point3D ptr(xp + x_size, yp + y_size, z);
-		if (abs(m_pz + m_lz - z) < SIM_EPSILON)
+		if (fabs(m_pz + m_lz - z) < SIM_EPSILON)
 			AddQuad(pbl, pbr, ptr, ptl, facetsOuter);
 		else
 			AddQuad(pbl, pbr, ptr, ptl, facetsInner);
@@ -359,9 +359,9 @@ int cStock::TesselSidesX(int yp)
 		if (yp > 0 && x < m_x)
 			newz2 = std::max(m_stock[x][yp - 1], m_pz);
 
-		if (abs(lastz1 - lastz2) > m_res)
+		if (fabs(lastz1 - lastz2) > m_res)
 		{
-			if (abs(newz1 - lastz1) < m_res && abs(newz2 - lastz2) < m_res)
+			if (fabs(newz1 - lastz1) < m_res && fabs(newz2 - lastz2) < m_res)
 				continue;
 			Point3D pbl(lastpoint, yp, lastz1);
 			Point3D pbr(x, yp, lastz1);
@@ -400,9 +400,9 @@ int cStock::TesselSidesY(int xp)
 		if (xp > 0 && y < m_y)
 			newz2 = std::max(m_stock[xp - 1][y], m_pz);
 
-		if (abs(lastz1 - lastz2) > m_res)
+		if (fabs(lastz1 - lastz2) > m_res)
 		{
-			if (abs(newz1 - lastz1) < m_res && abs(newz2 - lastz2) < m_res)
+			if (fabs(newz1 - lastz1) < m_res && fabs(newz2 - lastz2) < m_res)
 				continue;
 			Point3D pbr(xp, lastpoint, lastz1);
 			Point3D pbl(xp, y, lastz1);
@@ -599,7 +599,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 		ang -= 2 * 3.1415926;
 	if (isCCW && ang < 0)
 		ang += 2 * 3.1415926;
-	ang = abs(ang);
+	ang = fabs(ang);
 
 	// apply path
 	Point3D cupCirc;
