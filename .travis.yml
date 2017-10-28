@@ -14,8 +14,7 @@
 #           repo.  The Travis job will deploy the OS X build to this
 #           GitHub release name as a release asset.
 #
-#  DEPLOY: Repo setting to deploy (defaults to no deploy to reduce
-#          Travis build times. Set DEPLOY=1 to enable in repo settings.
+#  Git commit is tagged.
 ##
 env:
   global:
@@ -23,53 +22,167 @@ env:
     - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
-    - DEPLOY=${DEPLOY:-0}
+
+_helpers:
+- &install_helpers eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
+- &linux_base
+  os: linux
+  dist: trusty
+  sudo: required
+  before_install:
+  - *install_helpers
+  - |
+    #Install Eigen 3.3.3 to reduce compiler warnings
+    curl -L "http://bitbucket.org/eigen/eigen/get/3.3.3.tar.gz" | tar xvz && cd eigen-*
+    mkdir build && cd build
+    cmake -DCMAKE_C_FLAGS_RELEASE=-DNDEBUG -DCMAKE_CXX_FLAGS_RELEASE=-DNDEBUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON ..
+    sudo make -j2 install
+    cd ${TRAVIS_BUILD_DIR}
+
+    #Install ccache to reduce successive build times (use 3.2.5+ to avoid spurious warnings)
+    curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.2.5" | tar xvz && cd ccache-*
+    ./autogen.sh && ./configure CC=gcc && sudo make install
+    cd ${TRAVIS_BUILD_DIR}
+
+    #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
+    sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
+    sudo find /usr/lib -name libpq.so -exec ln -s {} /usr/lib/libpq.so ';'
+    export DISPLAY=:99.0
+    sh -e /etc/init.d/xvfb start
+
+    export CCACHE_CPP2=YES
+    if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
+    then
+       export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
+    else
+       export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python3.4 -DPYTHON_BASENAME=.cpython-34m -DPYTHON_SUFFIX=.cpython-34m"
+    fi
+    export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
+- &osx_base
+  os: osx
+  osx_image: xcode7.3
+  before_install:
+  - *install_helpers
+  - |
+    xcodebuild -version -sdk
+    brew --config
+    if [ "${OSX_PORTS_CACHE}X" != "X" ]
+    then
+         brew install jq
+         cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
+         travis_wait prime_local_ports_cache $cacheContext
+    fi
+    brew update >/dev/null
+    brew --config
+
+    brew tap FreeCAD/freecad
+
+    if [ "${QT}" == "Qt4" ]
+    then
+       # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
+       brew ls --versions qt@5.6 > /dev/null && \
+          brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
+
+       brew tap cartr/qt4
+
+       brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
+       brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
+
+       # qt4 bottle contains postgresql plugin even when --with-postgresql option is not specified
+       # and so postgresql dep is not installed. Delete it because the plugin is not included with qt5 bottle.
+       sudo rm -f /usr/local/lib/qt4/plugins/sqldrivers/libqsqlpsql.dylib
+    elif [ "${QT}" == "Qt5" ]
+    then
+       # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
+       brew ls --versions cartr/qt4/qt > /dev/null && \
+          brew uninstall --ignore-dependencies --force cartr/qt4/shiboken@1.2 cartr/qt4/pyside@1.2 cartr/qt4/pyside-tools@1.2 cartr/qt4/qt
+
+       brew install --verbose --only-dependencies freecad --with-packaging-utils
+       brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
+
+       # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
+       QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
+       CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
+    fi
+
+    #Install the 3DConnexion frameworks
+    if [ -n "$TRAVIS_TAG" ]
+    then
+       if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
+          curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
+          hdiutil attach -readonly /tmp/3dFW.dmg
+          sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+          diskutil eject /Volumes/3Dconnexion\ Software
+       fi
+       export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
+       export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
+    else
+       export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
+    fi
+
+    export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DEIGEN3_INCLUDE_DIR=$(brew --prefix eigen@3.2)/include/eigen3"
+- &gcc_compiler
+  compiler: gcc
+- &clang_compiler
+  compiler: clang
+
+addons:
+  apt:
+    packages:
+    - doxygen  # docs generator
+    - libboost1.55-dev
+    - libboost-filesystem1.55-dev
+    - libboost-program-options1.55-dev
+    - libboost-python1.55-dev
+    - libboost-regex1.55-dev
+    - libboost-signals1.55-dev
+    - libboost-system1.55-dev
+    - libboost-thread1.55-dev
+    - libcoin80
+    - libcoin80-dev
+    - liboce-foundation-dev
+    - liboce-modeling-dev
+    - liboce-ocaf-dev
+    - liboce-ocaf-lite-dev
+    - liboce-visualization-dev
+    - libpyside-dev
+    - libqtcore4
+    - libshiboken-dev
+    - libxerces-c-dev
+    - libxmu-dev
+    - libxmu-headers
+    - libxmu6
+    - libxmuu-dev
+    - libxmuu1
+    - netgen
+    - netgen-headers
+    - oce-draw
+    - pyside-tools
+    - python-dev
+    - python-pyside
+    - python-matplotlib
+    - python3-dev
+    - python3-pyside
+    - python3-matplotlib
+    - qt4-dev-tools
+    - qt4-qmake
+    - libqt4-opengl-dev
+    - shiboken
+    - swig
+    - libvtk6-dev
+    - libmed-dev
+    - libmedc-dev
+    - asciidoc
 
 cache:
-    ccache: true
+  ccache: true
+  directories:
+  - $HOME/Library/Caches/Homebrew
 
 language: cpp
 python:
-    - 2.7
-    - 3.4
-
-# Inject osx build into matrix - needed to specify image/dist
-matrix:
-    include:
-      - os: linux
-        dist: trusty
-        compiler: clang
-        env: 
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
-          - PYTHON_MAJOR_VERSION=2
-
-      - os: linux
-        dist: trusty
-        compiler: gcc
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
-          - PYTHON_MAJOR_VERSION=2
-
-      - os: linux
-        dist: trusty
-        compiler: gcc
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
-          - PYTHON_MAJOR_VERSION=3
-
-      - os: osx
-        osx_image: xcode7.3
-        compiler: clang
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
-          - PYTHON_MAJOR_VERSION=2
-
-      - os: osx
-        osx_image: xcode7.3
-        compiler: clang
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
-          - PYTHON_MAJOR_VERSION=2
+- 2.7
+- 3.4
 
 git:
   depth: 5000
@@ -83,180 +196,80 @@ notifications:
     on_failure: always
     on_start:   change
 
-before_install:
-- eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
-- |
-  case "${TRAVIS_OS_NAME}" in
-
-   "linux")
-       sudo apt-get update -qq
-       sudo apt-get install -y doxygen                          \
-                               libboost1.55-dev                 \
-                               libboost-filesystem1.55-dev      \
-                               libboost-program-options1.55-dev \
-                               libboost-python1.55-dev          \
-                               libboost-regex1.55-dev           \
-                               libboost-signals1.55-dev         \
-                               libboost-system1.55-dev          \
-                               libboost-thread1.55-dev          \
-                               libcoin80                        \
-                               libcoin80-dev                    \
-                               liboce-foundation-dev            \
-                               liboce-modeling-dev              \
-                               liboce-ocaf-dev                  \
-                               liboce-ocaf-lite-dev             \
-                               liboce-visualization-dev         \
-                               libpyside-dev                    \
-                               libqtcore4                       \
-                               libshiboken-dev                  \
-                               libxerces-c-dev                  \
-                               libxmu-dev                       \
-                               libxmu-headers                   \
-                               libxmu6                          \
-                               libxmuu-dev                      \
-                               libxmuu1                         \
-                               netgen                           \
-                               netgen-headers                   \
-                               oce-draw                         \
-                               pyside-tools                     \
-                               python-dev                       \
-                               python-pyside                    \
-                               python-matplotlib                \
-                               python3-dev                      \
-                               python3-pyside                   \
-                               python3-matplotlib               \
-                               qt4-dev-tools                    \
-                               qt4-qmake                        \
-                               libqt4-opengl-dev                \
-                               shiboken                         \
-                               swig                             \
-                               libvtk6-dev                      \
-                               libmed-dev                       \
-                               libmedc-dev			\
-                               asciidoc
-
-       #Install Eigen 3.3.3 to reduce compiler warnings
-       curl -L "http://bitbucket.org/eigen/eigen/get/3.3.3.tar.gz" | tar xvz && cd eigen-*
-       mkdir build && cd build
-       cmake -DCMAKE_C_FLAGS_RELEASE=-DNDEBUG -DCMAKE_CXX_FLAGS_RELEASE=-DNDEBUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON ..
-       sudo make -j2 install
-       cd ${TRAVIS_BUILD_DIR}
-
-       #Install ccache to reduce successive build times (use 3.2.5+ to avoid spurious warnings)
-       curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.2.5" | tar xvz && cd ccache-*
-       ./autogen.sh && ./configure CC=gcc && sudo make install
-       cd ${TRAVIS_BUILD_DIR}
-
-       #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
-       sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
-       sudo find /usr/lib -name libpq.so -exec ln -s {} /usr/lib/libpq.so ';'
-       export DISPLAY=:99.0
-       sh -e /etc/init.d/xvfb start
-
-       export CCACHE_CPP2=YES
-       if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
-       then
-        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
-       else
-        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python3.4 -DPYTHON_BASENAME=.cpython-34m \
-        -DPYTHON_SUFFIX=.cpython-34m"
-       fi
-       export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
-       ;;
-
-   "osx")
-       xcodebuild -version -sdk
-       brew --config
-       if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
-            brew install jq
-            cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
-            travis_wait prime_local_ports_cache $cacheContext
-       fi
-       brew update >/dev/null
-       brew --config
-
-       brew tap FreeCAD/freecad
-
-       if [ "${QT}" == "Qt4" ]; then
-          # Qt4: Replace Qt5 from ports-cache with Qt4, if necessary
-          brew ls --versions qt@5.6 > /dev/null && \
-             brew uninstall --ignore-dependencies --force shiboken pyside pyside-tools qt@5.6
-
-          brew tap cartr/qt4
-
-          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-qt4 --with-packaging-utils #Ensure all dependencies are satisfied
-          # qt4 bottle contains postgresql plugin even when --with-postgresql option is not specified
-          # and so postgresql dep is not installed. Delete it because the plugin is not included with qt5 bottle.
-          sudo rm -f /usr/local/lib/qt4/plugins/sqldrivers/libqsqlpsql.dylib
-       elif [ "${QT}" == "Qt5" ]; then
-          # Qt5: Replace Qt4 in ports-cache with Qt5, if necessary
-          brew ls --versions cartr/qt4/qt > /dev/null && \
-             brew uninstall --ignore-dependencies --force cartr/qt4/shiboken@1.2 cartr/qt4/pyside@1.2 cartr/qt4/pyside-tools@1.2 cartr/qt4/qt
-
-          brew install --verbose --only-dependencies freecad --with-packaging-utils
-          brew install --verbose --only-dependencies freecad --with-packaging-utils #Ensure all dependencies are satisfied
-
-          # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-          QT5_CMAKE_PREFIX=$(ls -d $(brew list -1 | grep qt | tail -1 | xargs brew --cellar)/*/lib/cmake)
-          CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX}"
-       fi
-
-       #Install the 3DConnexion frameworks
-       if [ "${DEPLOY}" == "1" ]; then
-          if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
-             curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
-             hdiutil attach -readonly /tmp/3dFW.dmg
-             sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
-             diskutil eject /Volumes/3Dconnexion\ Software
-          fi
-          export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
-          export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
-       else
-          export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
-       fi
-
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DEIGEN3_INCLUDE_DIR=$(brew --prefix eigen@3.2)/include/eigen3"
-       ;;
-
-   *)
-       echo "Invalid or unsupported operating system ${TRAVIS_OS_NAME}"
-       exit 1
-       ;;
-  esac
-
 install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+- mkdir build
+- cd build
+- cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ##
-  - sudo make -j2 install
-  - ${INSTALLED_APP_PATH} --console --run-test 0
-  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-  - sleep 10 && pkill FreeCAD
-  - cat /tmp/FreeCAD_installed.log
-  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
+- sudo make -j2 install
+- ${INSTALLED_APP_PATH} --console --run-test 0
+- ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+- sleep 10 && pkill FreeCAD
+- cat /tmp/FreeCAD_installed.log
+- grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
-after_success:
-####
-#  Package and deploy the build to GitHub.  This will only run for builds on
-#  master (i.e. pull requests are only built and tested but not deployed).
-#
-#  GH_TOKEN must be set in order to deploy releases to GitHub
-##
-- |
-  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" -a "${DEPLOY}" == "1" ]; then
-     brew ls --versions jq || brew install jq
-     npm install -g appdmg
-     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
-     export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
-     appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
-     deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
-     gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
-     gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
-  fi
+# Inject osx build into matrix - needed to specify image/dist
+jobs:
+    fast_finish: true
+    include:
+      - <<: *linux_base
+        <<: *clang_compiler
+        env: 
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - PYTHON_MAJOR_VERSION=2
+
+      - <<: *linux_base
+        <<: *gcc_compiler
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - PYTHON_MAJOR_VERSION=2
+
+      - <<: *linux_base
+        <<: *gcc_compiler
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
+          - PYTHON_MAJOR_VERSION=3
+
+      - <<: *osx_base
+        <<: *clang_compiler
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
+          - PYTHON_MAJOR_VERSION=2
+
+      - <<: *osx_base
+        <<: *clang_compiler
+        env:
+          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt4
+          - PYTHON_MAJOR_VERSION=2
+
+      - stage: Deploy dmg to GitHub Releases
+        # Prevent deploy job from appearing in tests unless commit is tagged
+        if: tag IS present
+        <<: *osx_base
+        deploy:
+          provider: script
+          on:
+            tags: true
+            all_branches: true
+          ####
+          #  Package and deploy the build to GitHub.  This will only run for builds on
+          #  master (i.e. pull requests are only built and tested but not deployed).
+          #
+          #  GH_TOKEN must be set in order to deploy releases to GitHub
+          ##
+          script: |
+            brew ls --versions jq || brew install jq
+            npm install -g appdmg
+            export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
+            export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
+            appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
+            deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
+            gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
+            gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
