@@ -57,12 +57,12 @@ AttachExtension::AttachExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter, (0.0), "Attachment", App::Prop_None, "Sets point of curve to map the sketch to. 0..1 = start..end");
 
-    EXTENSION_ADD_PROPERTY_TYPE(superPlacement, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
+    EXTENSION_ADD_PROPERTY_TYPE(AttachmentOffset, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
 
     // Only show these properties when applicable. Controlled by extensionOnChanged
     this->MapPathParameter.setStatus(App::Property::Status::Hidden, true);
     this->MapReversed.setStatus(App::Property::Status::Hidden, true);
-    this->superPlacement.setStatus(App::Property::Status::Hidden, true);
+    this->AttachmentOffset.setStatus(App::Property::Status::Hidden, true);
 
     setAttacher(new AttachEngine3D);//default attacher
     initExtensionType(AttachExtension::getExtensionClassTypeId());
@@ -164,7 +164,7 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
              || prop == &MapMode
              || prop == &MapPathParameter
              || prop == &MapReversed
-             || prop == &superPlacement)){
+             || prop == &AttachmentOffset)){
 
             bool bAttached = false;
             try{
@@ -194,7 +194,7 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
 
             this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
             this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
-            this->superPlacement.setStatus(App::Property::Status::Hidden, !bAttached);
+            this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
             getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
 
@@ -205,6 +205,15 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     }
 
     App::DocumentObjectExtension::extensionOnChanged(prop);
+}
+
+void AttachExtension::extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
+{
+    // Was superPlacement
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (AttachmentOffset.getClassTypeId() == type && strcmp(PropName, "superPlacement") == 0) {
+        AttachmentOffset.Restore(reader);
+    }
 }
 
 void AttachExtension::onExtendedDocumentRestored()
@@ -230,7 +239,7 @@ void AttachExtension::onExtendedDocumentRestored()
 
         this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
         this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
-        this->superPlacement.setStatus(App::Property::Status::Hidden, !bAttached);
+        this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
         getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
     }
     catch (Base::Exception&) {
@@ -248,7 +257,7 @@ void AttachExtension::updateAttacherVals()
                      this->MapReversed.getValue(),
                      this->MapPathParameter.getValue(),
                      0.0,0.0,
-                     this->superPlacement.getValue());
+                     this->AttachmentOffset.getValue());
 }
 
 App::PropertyPlacement& AttachExtension::getPlacement() {

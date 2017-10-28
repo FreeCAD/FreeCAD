@@ -222,7 +222,7 @@ public: //methods
                       bool mapReverse = false,
                       double attachParameter = 0.0,
                       double surfU = 0.0, double surfV = 0.0,
-                      const Base::Placement &superPlacement = Base::Placement());
+                      const Base::Placement &attachmentOffset = Base::Placement());
     virtual void setUp(const AttachEngine &another);
     virtual AttachEngine* copy() const = 0;
     virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const = 0;
@@ -370,7 +370,7 @@ public: //members
     bool mapReverse;
     double attachParameter;
     double surfU, surfV;
-    Base::Placement superPlacement;
+    Base::Placement attachmentOffset;
 
     /**
      * @brief modeEnabled is an indicator, whether some mode is ever suggested
