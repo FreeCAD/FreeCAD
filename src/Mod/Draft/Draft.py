@@ -2756,11 +2756,13 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                 ok = True
         elif tp == "BSpline":
             nobj.addGeometry(obj.Shape.Edges[0].Curve)
+            nobj.exposeInternalGeometry(nobj.GeometryCount-1)
             ok = True
         elif tp == "BezCurve":
             bez = obj.Shape.Edges[0].Curve
             bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter)
             nobj.addGeometry(bsp)
+            nobj.exposeInternalGeometry(nobj.GeometryCount-1)
             ok = True
         elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
             shape = obj if tp == 'Shape' else obj.Shape
@@ -2779,8 +2781,15 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                     norm = obj.Placement.Rotation.Axis
             for e in shape.Edges:
                 if DraftGeomUtils.geomType(e) in ["BSplineCurve","BezierCurve"]:
-                    FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
-                    return None
+                    if DraftGeomUtils.geomType(e) == "BezierCurve":
+                        bsp = e.Curve.toBSpline(e.Curve.FirstParameter,e.Curve.LastParameter)
+                    else:
+                        bsp = e.Curve
+                    nobj.addGeometry(bsp)
+                    nobj.exposeInternalGeometry(nobj.GeometryCount-1)
+                    ok = True
+                    #FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
+                    #return None
             # if not addTo:
                 # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(shape).Rotation
 
