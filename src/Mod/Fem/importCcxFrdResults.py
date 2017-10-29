@@ -66,34 +66,24 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     if result_name_prefix is None:
         result_name_prefix = ''
     m = readResult(filename)
-    mesh_object = None
-    if(len(m['Nodes']) > 0):
-        if analysis is None:
-            analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            analysis_object = ObjectsFem.makeAnalysis('Analysis')
-            analysis_object.Label = analysis_name
-        else:
-            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
+    result_mesh_object = None
+    if len(m['Nodes']) > 0:
+        if analysis:
+            analysis_object = analysis
 
-        if 'Nodes' in m:
-            positions = []
-            for k, v in m['Nodes'].items():
-                positions.append(v)
-            p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-            p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+        mesh = importToolsFem.make_femmesh(m)
+        result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
+        result_mesh_object.FemMesh = mesh
 
-            x_span = abs(p_x_max - p_x_min)
-            y_span = abs(p_y_max - p_y_min)
-            z_span = abs(p_z_max - p_z_min)
-            span = max(x_span, y_span, z_span)
-
-        if (not analysis):
-            mesh = importToolsFem.make_femmesh(m)
-
-            if len(m['Nodes']) > 0:
-                mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
-                mesh_object.FemMesh = mesh
-                analysis_object.Member = analysis_object.Member + [mesh_object]
+        positions = []
+        for k, v in m['Nodes'].items():
+            positions.append(v)
+        p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+        p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+        x_span = abs(p_x_max - p_x_min)
+        y_span = abs(p_y_max - p_y_min)
+        z_span = abs(p_z_max - p_z_min)
+        span = max(x_span, y_span, z_span)
 
         number_of_increments = len(m['Results'])
         for result_set in m['Results']:
@@ -107,33 +97,36 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             else:
                 results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(results_name)
-            for m in analysis_object.Member:  # TODO analysis could have multiple mesh objects in the future
-                if m.isDerivedFrom("Fem::FemMeshObject"):
-                    results.Mesh = m
-                    break
+            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+            results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-            analysis_object.Member = analysis_object.Member + [results]
+            if analysis:
+                analysis_object.addObject(results)
 
-        if(FreeCAD.GuiUp):
-            import FemGui
-            FemGui.setActiveAnalysis(analysis_object)
+        if FreeCAD.GuiUp:
+            if analysis:
+                import FemGui
+                FemGui.setActiveAnalysis(analysis_object)
+            FreeCAD.ActiveDocument.recompute()
+
+    else:
+        FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
 
 
-# read a calculix result file and extract the nodes, displacement vectores and stress values.
+# read a calculix result file and extract the nodes, displacement vectors and stress values.
 def readResult(frd_input):
-    inout_nodes_exist = False
-    if os.path.exists("inout_nodes.txt"):
-        inout_nodes = []
-        f = pyopen("inout_nodes.txt", "r")
+    print('Read results from: ' + frd_input)
+    inout_nodes = []
+    inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
+    if os.path.exists(inout_nodes_file):
+        print('Read special 1DFlow nodes data form: ' + inout_nodes_file)
+        f = pyopen(inout_nodes_file, "r")
         lines = f.readlines()
         for line in lines:
             a = line.split(',')
             inout_nodes.append(a)
-        if len(inout_nodes) > 0:
-            inout_nodes_exist = True
         f.close()
-        os.remove("inout_nodes.txt")
+        print(inout_nodes)
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}
@@ -267,7 +260,7 @@ def readResult(frd_input):
                 # hexa20 import works with the following frd file node assignment
                 elements_hexa20[elem] = (nd8, nd5, nd6, nd7, nd4, nd1, nd2, nd3, nd20, nd17,
                                          nd18, nd19, nd12, nd9, nd10, nd11, nd16, nd13, nd14, nd15)
-                # print elements_hexa20[elem]
+                # print(elements_hexa20[elem])
             elif elemType == 5 and input_continues is False:
                 # first line
                 # C3D15 Calculix --> penta15 FreeCAD
@@ -360,7 +353,7 @@ def readResult(frd_input):
                 nd1 = int(line[3:13])
                 nd3 = int(line[13:23])
                 nd2 = int(line[23:33])
-                if inout_nodes_exist:
+                if inout_nodes:
                     for i in range(len(inout_nodes)):
                         if nd1 == int(inout_nodes[i][1]):
                             elements_seg3[elem] = (int(inout_nodes[i][2]), nd3, nd1)  # fluid inlet node numbering
@@ -436,7 +429,7 @@ def readResult(frd_input):
             elem = int(line[4:13])
             massflow = float(line[13:25])
             mode_massflow[elem] = (massflow * 1000)  # convert units to kg/s from t/s
-            if inout_nodes_exist:
+            if inout_nodes:
                 for i in range(len(inout_nodes)):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
@@ -448,7 +441,7 @@ def readResult(frd_input):
             elem = int(line[4:13])
             networkpressure = float(line[13:25])
             mode_networkpressure[elem] = (networkpressure)
-            if inout_nodes_exist:
+            if inout_nodes:
                 for i in range(len(inout_nodes)):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
@@ -479,7 +472,7 @@ def readResult(frd_input):
             if mode_networkpressure_found:
                 mode_networkpressure_found = False
 
-            if mode_disp and mode_stress and mode_temp:
+            if mode_disp and mode_stress and mode_strain and mode_temp:
                 mode_results = {}
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
@@ -498,7 +491,7 @@ def readResult(frd_input):
                 mode_temp = {}
                 eigenmode = 0
 
-            if mode_disp and mode_stress:
+            if mode_disp and mode_stress and mode_strain:
                 mode_results = {}
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
@@ -529,10 +522,25 @@ def readResult(frd_input):
             elements_found = False
 
     frd_file.close()
+    if not inout_nodes:
+        if results:
+            if 'mflow' in results[0] or 'npressure' in results[0]:
+                FreeCAD.Console.PrintError('We have mflow or npressure, but no inout_nodes file.\n')
     if not nodes:
         FreeCAD.Console.PrintError('FEM: No nodes found in Frd file.\n')
-    return {'Nodes': nodes,
-            'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
-            'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
-            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2, 'Seg3Elem': elements_seg3,
-            'Results': results}
+    return {
+        'Nodes': nodes,
+        'Seg2Elem': elements_seg2,
+        'Seg3Elem': elements_seg3,
+        'Tria3Elem': elements_tria3,
+        'Tria6Elem': elements_tria6,
+        'Quad4Elem': elements_quad4,
+        'Quad8Elem': elements_quad8,
+        'Tetra4Elem': elements_tetra4,
+        'Tetra10Elem': elements_tetra10,
+        'Hexa8Elem': elements_hexa8,
+        'Hexa20Elem': elements_hexa20,
+        'Penta6Elem': elements_penta6,
+        'Penta15Elem': elements_penta15,
+        'Results': results
+    }

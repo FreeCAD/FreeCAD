@@ -24,23 +24,31 @@
 '''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
 import FreeCAD
 import FreeCADGui
-import Part
 import math
-from DraftGeomUtils import geomType
-import PathScripts
-from PathScripts import PathJob
 import numpy
-from PathScripts import PathLog
-from FreeCAD import Vector
+import Part
 import Path
+import PathScripts
+import TechDraw
+
+from DraftGeomUtils import geomType
+from FreeCAD import Vector
+from PathScripts import PathJob
+from PathScripts import PathJobCmd
+from PathScripts import PathLog
+from PathScripts.PathGeom import PathGeom
 from PySide import QtCore
 from PySide import QtGui
 
-LOG_MODULE = 'PathUtils'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathUtils')
-FreeCAD.setLogLevel('Path.Area', 0)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#FreeCAD.setLogLevel('Path.Area', 0)
 
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -111,52 +119,72 @@ def curvetowire(obj, steps):
     return edgelist
 
 
-def isDrillable(obj, candidate, tooldiameter=None):
+def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
+    """
+    Checks candidates to see if they can be drilled.
+    Candidates can be either faces - circular or cylindrical or circular edges.
+    The tooldiameter can be optionally passed.  if passed, the check will return
+    False for any holes smaller than the tooldiameter.
+    obj=Shape
+    candidate = Face or Edge
+    tooldiameter=float
+    """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
     drillable = False
-    if candidate.ShapeType == 'Face':
-        face = candidate
-        # eliminate flat faces
-        if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
-            for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
-                if (isinstance(edge.Curve, Part.Line)):
-                    PathLog.debug("candidate is a circle")
-                    v0 = edge.Vertexes[0].Point
-                    v1 = edge.Vertexes[1].Point
-                    if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
-                        # vector of top center
-                        lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
-                        # vector of bottom center
-                        lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
-                        if obj.isInside(lsp, 0, False) or obj.isInside(lep, 0, False):
-                            drillable = False
-                        # eliminate elliptical holes
-                        elif not hasattr(face.Surface, "Radius"):
-                            drillable = False
-                        else:
-                            if tooldiameter is not None:
-                                drillable = face.Surface.Radius >= tooldiameter/2
+    try:
+        if candidate.ShapeType == 'Face':
+            face = candidate
+            # eliminate flat faces
+            if (round(face.ParameterRange[0], 8) == 0.0) and (round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)):
+                for edge in face.Edges:  # Find seam edge and check if aligned to Z axis.
+                    if (isinstance(edge.Curve, Part.Line)):
+                        PathLog.debug("candidate is a circle")
+                        v0 = edge.Vertexes[0].Point
+                        v1 = edge.Vertexes[1].Point
+                        #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
+                        if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
+                                (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
+                            drillable = True
+                            # vector of top center
+                            lsp = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMax)
+                            # vector of bottom center
+                            lep = Vector(face.BoundBox.Center.x, face.BoundBox.Center.y, face.BoundBox.ZMin)
+                            # check if the cylindrical 'lids' are inside the base
+                            # object.  This eliminates extruded circles but allows
+                            # actual holes.
+                            if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
+                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
+                                drillable = False
+                            # eliminate elliptical holes
+                            elif not hasattr(face.Surface, "Radius"):
+                                PathLog.debug("candidate face has no radius attribute")
+                                drillable = False
                             else:
-                                drillable = True
-    else:
-        for edge in candidate.Edges:
-            if isinstance(edge.Curve, Part.Circle) and edge.isClosed():
-                PathLog.debug("candidate is a circle or ellipse")
-                if not hasattr(edge.Curve, "Radius"):
-                    PathLog.debug("No radius.  Ellipse.")
-                    drillable = False
-                else:
-                    PathLog.debug("Has Radius, Circle")
-                    if tooldiameter is not None:
-                        drillable = edge.Curve.Radius >= tooldiameter/2
-                        if not drillable:
-                            FreeCAD.Console.PrintMessage(
-                                    "Found a drillable hole with diameter: {}: "
-                                    "too small for the current tool with "
-                                    "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                                if tooldiameter is not None:
+                                    drillable = face.Surface.Radius >= tooldiameter/2
+                                else:
+                                    drillable = True
+        else:
+            for edge in candidate.Edges:
+                if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
+                    PathLog.debug("candidate is a circle or ellipse")
+                    if not hasattr(edge.Curve, "Radius"):
+                        PathLog.debug("No radius.  Ellipse.")
+                        drillable = False
                     else:
-                        drillable = True
-    PathLog.debug("candidate is drillable: {}".format(drillable))
+                        PathLog.debug("Has Radius, Circle")
+                        if tooldiameter is not None:
+                            drillable = edge.Curve.Radius >= tooldiameter/2
+                            if not drillable:
+                                FreeCAD.Console.PrintMessage(
+                                        "Found a drillable hole with diameter: {}: "
+                                        "too small for the current tool with "
+                                        "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                        else:
+                            drillable = True
+        PathLog.debug("candidate is drillable: {}".format(drillable))
+    except Exception as ex:
+        PathLog.warning(translate("PathUtils", "Issue determine drillability: {}").format(ex))
     return drillable
 
 
@@ -192,6 +220,54 @@ def loopdetect(obj, edge1, edge2):
     loopwire = next(x for x in loop)[1]
     return loopwire
 
+def horizontalEdgeLoop(obj, edge):
+    '''horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
+    h = edge.hashCode()
+    wires = [w for w in obj.Shape.Wires if any(e.hashCode() == h for e in w.Edges)]
+    loops = [w for w in wires if all(PathGeom.isHorizontal(e) for e in w.Edges) and PathGeom.isHorizontal(Part.Face(w))]
+    if len(loops) == 1:
+        return loops[0]
+    return None
+
+def horizontalFaceLoop(obj, face, faceList=None):
+    '''horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
+    All face names listed in faceList must be part of the hole for the solution to be returned.'''
+
+    wires = [horizontalEdgeLoop(obj, e) for e in face.Edges]
+    # Not sure if sorting by Area is a premature optimization - but it seems
+    # the loop we're looking for is typically the biggest of the them all.
+    wires = sorted([w for w in wires if w], key=lambda w: Part.Face(w).Area)
+
+    for wire in wires:
+        hashes = [e.hashCode() for e in wire.Edges]
+
+        #find all faces that share a an edge with the wire and are vertical
+        faces = ["Face%d"%(i+1) for i,f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
+
+        if faceList and not all(f in faces for f in faceList):
+            continue
+
+        # verify they form a valid hole by getting the outline and comparing
+        # the resulting XY footprint with that of the faces
+        comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
+        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0,0,1))
+
+        # findShapeOutline always returns closed wires, by removing the
+        # trace-backs single edge spikes don't contriubte to the bound box
+        uniqueEdges = []
+        for edge in outline.Edges:
+            if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
+                continue
+            uniqueEdges.append(edge)
+        w = Part.Wire(uniqueEdges)
+
+        # if the faces really form the walls of a hole then the resulting
+        # wire is still closed and it still has the same footprint
+        bb1 = comp.BoundBox
+        bb2 = w.BoundBox
+        if w.isClosed() and PathGeom.isRoughly(bb1.XMin, bb2.XMin) and PathGeom.isRoughly(bb1.XMax, bb2.XMax) and PathGeom.isRoughly(bb1.YMin, bb2.YMin) and PathGeom.isRoughly(bb1.YMax, bb2.YMax):
+            return faces
+    return None
 
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''
@@ -243,7 +319,7 @@ def makeWorkplane(shape):
     return c
 
 
-def getEnvelope(partshape, subshape=None, stockheight=None):
+def getEnvelope(partshape, subshape=None, depthparams=None):
     '''
     getEnvelope(partshape, stockheight=None)
     returns a shape corresponding to the partshape silhouette extruded to height.
@@ -252,11 +328,13 @@ def getEnvelope(partshape, subshape=None, stockheight=None):
     partshape = solid object
     stockheight = float - Absolute Z height of the top of material before cutting.
     '''
-    PathLog.track(partshape, subshape, stockheight)
+    PathLog.track(partshape, subshape, depthparams)
 
     # if partshape.Volume == 0.0:  #Not a 3D object
     #     return None
 
+
+    zShift = 0
     if subshape is not None:
         if isinstance(subshape, Part.Face):
             PathLog.debug('processing a face')
@@ -267,22 +345,31 @@ def getEnvelope(partshape, subshape=None, stockheight=None):
             PathLog.debug("About to section with params: {}".format(area.getParams()))
             sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-        zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
+       # zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
         PathLog.debug('partshapeZmin: {}, subshapeZMin: {}, zShift: {}'.format(partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift))
-        newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
-        sec.Placement = newPlace
 
     else:
         area = Path.Area(Fill=2, Coplanar=0).add(partshape)
         area.setPlane(makeWorkplane(partshape))
         sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-    if stockheight is not None:
-        eLength = float(stockheight)-partshape.BoundBox.ZMin
-        PathLog.debug('boundbox zMIN: {} elength: {}'.format(partshape.BoundBox.ZMin, eLength))
-        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+    # If depthparams are passed, use it to calculate bottom and height of
+    # envelope
+    if depthparams is not None:
+#        eLength = float(stockheight)-partshape.BoundBox.ZMin
+        eLength = depthparams.safe_height - depthparams.final_depth
+        #envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+        zShift = depthparams.final_depth - sec.BoundBox.ZMin
+        PathLog.debug('boundbox zMIN: {} elength: {} zShift {}'.format(partshape.BoundBox.ZMin, eLength, zShift))
     else:
-        envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, partshape.BoundBox.ZLength))
+        eLength = partshape.BoundBox.ZLength - sec.BoundBox.ZMin
+
+    # Shift the section based on selection and depthparams.
+    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
+    sec.Placement = newPlace
+
+    # Extrude the section to top of Boundbox or desired height
+    envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
@@ -322,18 +409,14 @@ def changeTool(obj, job):
 
 def getToolControllers(obj):
     '''returns all the tool controllers'''
-    controllers = []
     try:
-        parent = findParentJob(obj)
+        job = findParentJob(obj)
     except:
-        parent = None
+        job = None
 
-    if parent is not None and hasattr(parent, 'Group'):
-        sibs = parent.Group
-        for g in sibs:
-            if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
-                controllers.append(g)
-    return controllers
+    if job:
+        return job.ToolController
+    return []
 
 
 def findToolController(obj, name=None):
@@ -343,13 +426,14 @@ def findToolController(obj, name=None):
 
     PathLog.track('name: {}'.format(name))
     c = None
-    # First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
-    for sel in FreeCADGui.Selection.getSelectionEx():
-        if hasattr(sel.Object, 'Proxy'):
-            if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
-                if c is None:
-                    c = sel.Object
-                FreeCADGui.Selection.removeSelection(sel.Object)
+    if FreeCAD.GuiUp:
+        # First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            if hasattr(sel.Object, 'Proxy'):
+                if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
+                    if c is None:
+                        c = sel.Object
+                    FreeCADGui.Selection.removeSelection(sel.Object)
     if c is not None:
         return c
 
@@ -383,7 +467,7 @@ def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     PathLog.track()
     for i in obj.InList:
-        if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
+        if isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
             return i
         if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
             grandParent = findParentJob(i)
@@ -397,15 +481,13 @@ def GetJobs(jobname=None):
     PathLog.track()
     jobs = []
     for o in FreeCAD.ActiveDocument.Objects:
-        if "Proxy" in o.PropertiesList:
-            if isinstance(o.Proxy, PathJob.ObjectPathJob):
-                if jobname is not None:
-                    if o.Name == jobname:
-                        jobs.append(o)
-                else:
+        if hasattr(o, 'Proxy') and isinstance(o.Proxy, PathJob.ObjectJob):
+            if jobname is not None:
+                if o.Name == jobname:
                     jobs.append(o)
+            else:
+                jobs.append(o)
     return jobs
-
 
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
@@ -417,33 +499,30 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            FreeCAD.Console.PrintError("Didn't find the job")
+            PathLog.error(translate("Path", "Didn't find job %s") % jobname)
             return None
     else:
         jobs = GetJobs()
         if len(jobs) == 0:
-            job = PathJob.CommandJob.Create()
+            job = PathJobCmd.CommandJobCreate().Activated()
 
         elif len(jobs) == 1:
             job = jobs[0]
         else:
             # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
             form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-            mylist = [i.Name for i in jobs]
+            mylist = [i.Label for i in jobs]
             form.cboProject.addItems(mylist)
             r = form.exec_()
             if r is False:
                 return None
             else:
                 print(form.cboProject.currentText())
-                job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
+                job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
 
     if obj:
-        g = job.Group
-        g.append(obj)
-        job.Group = g
+        job.Proxy.addOperation(obj)
     return job
-
 
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""
@@ -669,60 +748,179 @@ def sort_jobs(locations, keys, attractors=[]):
 
     return out
 
+def guessDepths(objshape, subs=None):
+    """
+    takes an object shape and optional list of subobjects and returns a depth_params
+    object with suggested height/depth values.
+
+    objshape = Part::Shape.
+    subs = list of subobjects from objshape
+    """
+
+    bb = objshape.BoundBox  # parent boundbox
+    clearance = bb.ZMax + 5.0
+    safe = bb.ZMax
+    start = bb.ZMax
+    final = bb.ZMin
+
+    if subs is not None:
+        subobj = Part.makeCompound(subs)
+        fbb = subobj.BoundBox  # feature boundbox
+        start = fbb.ZMax
+
+        if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+            final = fbb.ZMin
+        elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
+            final = fbb.ZMin
+        elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+            final = fbb.ZMin
+        elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+            final = fbb.ZMin
+
+    return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
+
+def drillTipLength(tool):
+    """returns the length of the drillbit tip."""
+    if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+        return 0.0
+    else:
+        if tool.CuttingEdgeAngle < 0 or tool.CuttingEdgeAngle >= 90:
+            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be <90° and >=0°") % tool.CuttingEdgeAngle)
+            return 0.0
+        theta = math.radians(tool.CuttingEdgeAngle)
+        length = (tool.Diameter/2) / math.tan(theta) 
+        if length < 0:
+            PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
+            return 0.0
+        return length
 
 class depth_params:
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
-    (self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None])
+    (self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False)
 
         Note: if user_depths are supplied, only user_depths will be used.
 
         clearance_height:   Height to clear all obstacles
-        rapid_safety_space: Height to rapid between locations
-        start_depth:        Top of Stock
+        safe_height:        Height to clear raw stock material
+        start_depth:        Top of Model
         step_down:          Distance to step down between passes (always positive)
         z_finish_step:      Maximum amount of material to remove on the final pass
         final_depth:        Lowest point of the cutting operation
         user_depths:        List of specified depths
+        equalstep:          Boolean.  If True, steps down except Z_finish_depth will be balanced.
     '''
 
-    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths=None):
-        '''self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None]'''
+    def __init__(self, clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths=None, equalstep=False):
+        '''self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False'''
         if z_finish_step > step_down:
             raise ValueError('z_finish_step must be less than step_down')
 
-        self.clearance_height = clearance_height
-        self.rapid_safety_space = math.fabs(rapid_safety_space)
-        self.start_depth = start_depth
-        self.step_down = math.fabs(step_down)
-        self.z_finish_step = math.fabs(z_finish_step)
-        self.final_depth = final_depth
-        self.user_depths = user_depths
+        self.__clearance_height = clearance_height
+        self.__safe_height = safe_height
+        self.__start_depth = start_depth
+        self.__step_down = math.fabs(step_down)
+        self.__z_finish_step = math.fabs(z_finish_step)
+        self.__final_depth = final_depth
+        self.__user_depths = user_depths
+        self.data = self.__get_depths(equalstep=equalstep)
+        self.index = 0
 
-    def get_depths(self, equalstep=False):
+    def __iter__(self):
+        self.index = 0
+        return self
+
+    def __next__(self):
+        if self.index == len(self.data):
+            raise StopIteration
+        self.index = self.index + 1
+        return self.data[self.index - 1]
+
+    def next(self):
+        return self.__next__()
+
+    @property
+    def clearance_height(self):
+        """
+        Height of all vises, clamps, and other obstructions.  Rapid moves at clearance height
+        are always assumed to be safe from collision.
+        """
+        return self.__clearance_height
+
+    @property
+    def safe_height(self):
+        """
+        Height of top of raw stock material.  Rapid moves above safe height are 
+        assumed to be safe within an operation.  May not be safe between
+        operations or tool changes.
+        All moves below safe height except retraction should be at feed rate.
+        """
+        return self.__safe_height
+
+    @property
+    def start_depth(self):
+        """
+        Start Depth is the top of the model.
+        """
+        return self.__start_depth
+
+    @property
+    def step_down(self):
+        """
+        Maximum step down value between passes.  Step-Down may be less than
+        this value, especially if equalstep is True.
+        """
+        return self.__step_down
+
+    @property
+    def z_finish_depth(self):
+        """
+        The amount of material to remove on the finish pass.  If given, the
+        final pass will remove exactly this amount.
+        """
+        return self.__z_finish_step
+
+    @property
+    def final_depth(self):
+        """
+        The height of the cutter during the last pass or finish pass if
+        z_finish_pass is given.
+        """
+        return self.__final_depth
+
+    @property
+    def user_depths(self):
+        """
+        Returns a list of the user_specified depths.  If user_depths were given
+        in __init__, these depths override all calculation and only these are
+        used.
+        """
+        return self.__user_depths
+
+    def __get_depths(self, equalstep=False):
         '''returns a list of depths to be used in order from first to last.
         equalstep=True: all steps down before the finish pass will be equalized.'''
 
         if self.user_depths is not None:
-            return self.user_depths
+            return self.__user_depths
 
-        total_depth = self.start_depth - self.final_depth
+        total_depth = self.__start_depth - self.__final_depth
 
         if total_depth < 0:
             return []
 
-        depths = [self.final_depth]
+        depths = [self.__final_depth]
 
         # apply finish step if necessary
-        if self.z_finish_step > 0:
-            if self.z_finish_step < total_depth:
-                depths.append(self.z_finish_step + self.final_depth)
+        if self.__z_finish_step > 0:
+            if self.__z_finish_step < total_depth:
+                depths.append(self.__z_finish_step + self.__final_depth)
             else:
                 return depths
 
         if equalstep:
-            depths += self.__equal_steps(self.start_depth, depths[-1], self.step_down)[1:]
+            depths += self.__equal_steps(self.__start_depth, depths[-1], self.__step_down)[1:]
         else:
-            depths += self.__fixed_steps(self.start_depth, depths[-1], self.step_down)[1:]
+            depths += self.__fixed_steps(self.__start_depth, depths[-1], self.__step_down)[1:]
 
         depths.reverse()
         return depths
@@ -734,9 +932,9 @@ class depth_params:
         than max_size.'''
 
         steps_needed = math.ceil((start - stop) / max_size)
-        depths = numpy.linspace(stop, start, steps_needed, endpoint=False)
+        depths = list(numpy.linspace(stop, start, steps_needed, endpoint=False))
 
-        return depths.tolist()
+        return depths
 
     def __fixed_steps(self, start, stop, size):
         '''returns a list of depths beginning with the bottom (included), ending
@@ -746,51 +944,11 @@ class depth_params:
 
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)
-        depths = numpy.linspace(last_step, start, fullsteps, endpoint=False)
+        depths = list(numpy.linspace(last_step, start, fullsteps, endpoint=False))
 
         if last_step == stop:
-            return depths.tolist()
+            return depths
         else:
-            return [stop] + depths.tolist()
+            return [stop] + depths
 
 
-class CollisionTester:
-
-    def compareBBSpace(self, bb1, bb2):
-        if (bb1.XMin == bb2.XMin and
-                bb1.XMax == bb2.XMax and
-                bb1.YMin == bb2.YMin and
-                bb1.YMax == bb2.YMax and
-                bb1.ZMin == bb2.ZMin and
-                bb1.ZMax == bb2.ZMax):
-            return True
-        return False
-
-    def getCollisionSim(self, baseobject, cutterPath):
-
-        baseColor = (0.800000011920929, 0.800000011920929, 0.800000011920929, 00.0)
-        intersecColor = (1.0, 0.0, 0.0, 0.0)
-        cVol = baseobject.common(cutterPath)
-
-        if cVol.Volume > 1e-12:
-            colorassignment = []
-            gougedShape = baseobject.cut(cutterPath)
-            # gougeSim = FreeCAD.ActiveDocument.addObject("Part::Feature","Gouge")
-            # gougeSim.Shape = gougedShape
-
-            for idx, i in enumerate(gougedShape.Faces):
-                match = False
-                for jdx, j in enumerate(cVol.Faces):
-                    if self.compareBBSpace(i.BoundBox, j.BoundBox):
-                        match = True
-                if match is True:
-                    # print ("Need to highlight Face{}".format(idx+1))
-                    colorassignment.append(intersecColor)
-                else:
-                    colorassignment.append(baseColor)
-            collisionSim = FreeCAD.ActiveDocument.addObject("Part::Feature", "Collision")
-            collisionSim.Shape = gougedShape
-            collisionSim.ViewObject.DiffuseColor = colorassignment
-            return collisionSim
-        else:
-            return None

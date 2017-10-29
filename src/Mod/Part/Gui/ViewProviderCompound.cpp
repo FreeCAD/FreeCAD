@@ -81,7 +81,6 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         std::vector<App::Color> compCol;
         compCol.resize(compMap.Extent(), this->ShapeColor.getValue());
 
-        bool setColor=false;
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
             Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
@@ -98,22 +97,60 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),baseCol);
             if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
                 applyColor(hist[index], baseCol, compCol);
-                setColor = true;
             }
             else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
                 baseCol.resize(baseMap.Extent(), baseCol[0]);
                 applyColor(hist[index], baseCol, compCol);
-                setColor = true;
             }
         }
 
-        if (setColor)
-            this->DiffuseColor.setValues(compCol);
+        this->DiffuseColor.setValues(compCol);
     }
-    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject *>::const_iterator it = pBases.begin(); it != pBases.end(); ++it) {
             if (*it) Gui::Application::Instance->hideViewProvider(*it);
         }
     }
+}
+
+bool ViewProviderCompound::canDragObjects() const
+{
+    return true;
+}
+
+bool ViewProviderCompound::canDragObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+}
+
+void ViewProviderCompound::dragObject(App::DocumentObject* obj)
+{
+    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it == obj) {
+            pShapes.erase(it);
+            pComp->Links.setValues(pShapes);
+            break;
+        }
+    }
+}
+
+bool ViewProviderCompound::canDropObjects() const
+{
+    return true;
+}
+
+bool ViewProviderCompound::canDropObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+}
+
+void ViewProviderCompound::dropObject(App::DocumentObject* obj)
+{
+    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
+    pShapes.push_back(obj);
+    pComp->Links.setValues(pShapes);
 }

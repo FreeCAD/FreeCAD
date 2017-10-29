@@ -25,13 +25,15 @@
 #define PARTGUI_ViewProviderBoolean_H
 
 #include "ViewProvider.h"
+#include <Gui/ViewProviderGeoFeatureGroupExtension.h>
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderBoolean : public ViewProvider
+class PartDesignGuiExport ViewProviderBoolean : public ViewProvider,
+                                                public Gui::ViewProviderGeoFeatureGroupExtension
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderBoolean);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean);
 
 public:
     /// constructor
@@ -39,14 +41,19 @@ public:
     /// destructor
     virtual ~ViewProviderBoolean();
 
+    App::PropertyEnumeration Display;
+    
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*);
-    std::vector<App::DocumentObject*> claimChildren(void)const;
 
     virtual bool onDelete(const std::vector<std::string> &);
+    virtual void attach(App::DocumentObject*);
+    virtual void onChanged(const App::Property* prop);
 
 protected:
     virtual bool setEdit(int ModNum);
+    
+    static const char* DisplayEnum[];
 
 };
 

@@ -113,7 +113,7 @@ public:
             "read(filename,[document]): Imports a GCode file into the given document"
         );
         add_varargs_method("show",&Module::show,
-            "show(path): Add the path to the active document or create one if no document exists"
+            "show(path,[string]): Add the path to the active document or create one if no document exists"
         );
         add_varargs_method("fromShape",&Module::fromShape,
             "fromShape(Shape): Returns a Path object from a Part Shape"
@@ -122,7 +122,7 @@ public:
             "fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")\n"
             "\nReturns a Path object from a list of shapes\n"
             "\n* shapes: input list of shapes.\n"
-            "\n* start (Vector()): optional start position.\n"
+            "\n* start (Vector()): feed start position, and also serves as a hint of path entry.\n"
             "\n* return_end (False): if True, returns tuple (path, endPosition).\n"
             PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
         );
@@ -217,15 +217,16 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(PathPy::Type), &pcObj))
+        char *name = "Path";
+        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PathPy::Type), &pcObj, &name))
             throw Py::Exception();
 
         try {
-            App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+            App::Document *pcDoc = App::GetApplication().getActiveDocument();
             if (!pcDoc)
                 pcDoc = App::GetApplication().newDocument();
             PathPy* pPath = static_cast<PathPy*>(pcObj);
-            Path::Feature *pcFeature = (Path::Feature *)pcDoc->addObject("Path::Feature", "Path");
+            Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("Path::Feature", name));
             Path::Toolpath* pa = pPath->getToolpathPtr();
             if (!pa) {
                 throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid path");
@@ -415,7 +416,7 @@ private:
         try {
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
             std::list<TopoDS_Shape> wires = Area::sortWires(shapes,&pstart,
-                    &pend, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
+                    &pend, 0, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             PyObject *list = PyList_New(0);
             for(auto &wire : wires)
                 PyList_Append(list,Py::new_reference_to(

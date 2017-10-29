@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PathEdit</class>
+ <widget class="QTabWidget" name="PathEdit">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>673</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Job Edit</string>
+  </property>
+  <property name="currentIndex">
+   <number>0</number>
+  </property>
+  <widget class="QWidget" name="tabGeneral">
+   <attribute name="title">
+    <string>General</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="2" column="1">
+     <widget class="QComboBox" name="jobModel"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Label</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Model</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="jobLabel"/>
+    </item>
+    <item row="4" column="0">
+     <spacer name="verticalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Description</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPlainTextEdit" name="jobDescription"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tabOutput">
+   <attribute name="title">
+    <string>Output</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>Output File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="postProcessorOutputFile">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QToolButton" name="postProcessorSetOutputFile">
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>Processor</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QComboBox" name="postProcessor"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>Arguments</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QLineEdit" name="postProcessorArguments">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>747</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tabSetup">
+   <attribute name="title">
+    <string>Setup</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="stockGroup">
+      <property name="title">
+       <string>Stock</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QComboBox" name="stock">
+         <property name="currentIndex">
+          <number>2</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>Create Box</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Create Cylinder</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Extend Model's Bound Box</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Use Existing Solid</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>6</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="stockFromExisting">
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="1">
+           <widget class="QComboBox" name="stockExisting"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="stockFromBase">
+         <layout class="QGridLayout" name="gridLayout_9">
+          <item row="1" column="3">
+           <widget class="Gui::InputField" name="stockExtYpos"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="stockExtXLabel">
+            <property name="text">
+             <string>Ext. X</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="Gui::InputField" name="stockExtXpos">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="stockExtYLabel">
+            <property name="text">
+             <string>Ext. Y</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="Gui::InputField" name="stockExtXneg"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="stockExtZLabel">
+            <property name="text">
+             <string>Ext. Z</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="Gui::InputField" name="stockExtZneg"/>
+          </item>
+          <item row="2" column="3">
+           <widget class="Gui::InputField" name="stockExtZpos"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="Gui::InputField" name="stockExtYneg"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="stockCreateCylinder">
+         <layout class="QGridLayout" name="gridLayout_10">
+          <item row="0" column="2">
+           <widget class="Gui::InputField" name="stockCylinderRadius"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="Gui::InputField" name="stockCylinderHeight"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="stockCylinderRadiusLabel">
+            <property name="text">
+             <string>Radius</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="stockCylinderHeightLabel">
+            <property name="text">
+             <string>Height</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="stockCreateBox">
+         <layout class="QGridLayout" name="gridLayout_11">
+          <item row="0" column="1">
+           <widget class="QLabel" name="stockBoxLengthLabel">
+            <property name="text">
+             <string>Length</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="stockBoxWidthLabel">
+            <property name="text">
+             <string>Width</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="Gui::InputField" name="stockBoxLength"/>
+          </item>
+          <item row="2" column="2">
+           <widget class="Gui::InputField" name="stockBoxHeight"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="Gui::InputField" name="stockBoxWidth"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="stockBoxHeightLabel">
+            <property name="text">
+             <string>Height</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="orientGroup">
+      <property name="title">
+       <string>Orientation</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="orientXAxis">
+         <property name="text">
+          <string>X-Axis</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="orientYAxis">
+         <property name="text">
+          <string>Y-Axis</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="orientZAxis">
+         <property name="text">
+          <string>Z-Axis</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="alignGroup">
+      <property name="title">
+       <string>Alignment</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="setOrigin">
+         <property name="text">
+          <string>Set Origin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="moveToOrigin">
+         <property name="text">
+          <string>Move to Origin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="centerInStock">
+         <property name="text">
+          <string>Center in Stock</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QPushButton" name="centerInStockXY">
+         <property name="text">
+          <string>XY in Stock</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>195</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tabTools">
+   <attribute name="title">
+    <string>Tools</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QFrame" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QTableWidget" name="toolControllerList">
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Nr.</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Feed</string>
+          </property>
+          <property name="icon">
+           <iconset theme="object-flip-horizontal">
+            <normaloff/>
+           </iconset>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Feed</string>
+          </property>
+          <property name="icon">
+           <iconset theme="object-flip-vertical">
+            <normaloff/>
+           </iconset>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Spindle</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_4" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="toolControllerEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="toolControllerAdd">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="toolControllerDelete">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tabWorkplan">
+   <attribute name="title">
+    <string>Workplan</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <widget class="QWidget" name="activeToolGroup" native="true">
+      <layout class="QFormLayout" name="formLayout_3">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Active Tool </string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="activeToolController"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QListWidget" name="operationsList">
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::InternalMove</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="operationMove" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="operationUp">
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../Gui/Icons/resource.qrc">
+              <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="operationDown">
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../Gui/Icons/resource.qrc">
+              <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="operationModify" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="operationEdit">
+         <property name="text">
+          <string>Edit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="operationDelete">
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>jobLabel</tabstop>
+  <tabstop>jobModel</tabstop>
+  <tabstop>jobDescription</tabstop>
+  <tabstop>postProcessorOutputFile</tabstop>
+  <tabstop>postProcessorSetOutputFile</tabstop>
+  <tabstop>postProcessor</tabstop>
+  <tabstop>postProcessorArguments</tabstop>
+  <tabstop>stock</tabstop>
+  <tabstop>stockExisting</tabstop>
+  <tabstop>stockExtXneg</tabstop>
+  <tabstop>stockExtXpos</tabstop>
+  <tabstop>stockExtYneg</tabstop>
+  <tabstop>stockExtYpos</tabstop>
+  <tabstop>stockExtZneg</tabstop>
+  <tabstop>stockExtZpos</tabstop>
+  <tabstop>stockCylinderRadius</tabstop>
+  <tabstop>stockCylinderHeight</tabstop>
+  <tabstop>stockBoxLength</tabstop>
+  <tabstop>stockBoxWidth</tabstop>
+  <tabstop>stockBoxHeight</tabstop>
+  <tabstop>orientXAxis</tabstop>
+  <tabstop>orientYAxis</tabstop>
+  <tabstop>orientZAxis</tabstop>
+  <tabstop>setOrigin</tabstop>
+  <tabstop>moveToOrigin</tabstop>
+  <tabstop>centerInStock</tabstop>
+  <tabstop>centerInStockXY</tabstop>
+  <tabstop>toolControllerEdit</tabstop>
+  <tabstop>toolControllerAdd</tabstop>
+  <tabstop>toolControllerDelete</tabstop>
+  <tabstop>activeToolController</tabstop>
+  <tabstop>operationsList</tabstop>
+  <tabstop>operationDelete</tabstop>
+  <tabstop>operationEdit</tabstop>
+  <tabstop>operationUp</tabstop>
+  <tabstop>operationDown</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../../../../Gui/Icons/resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>

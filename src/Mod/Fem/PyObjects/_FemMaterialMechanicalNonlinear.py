@@ -44,8 +44,11 @@ class _FemMaterialMechanicalNonlinear:
         obj.addProperty("App::PropertyString", "YieldPoint1", "Fem", "Set stress and strain for yield point one, separated by a comma.")
         obj.YieldPoint1 = "235.0, 0.0"
 
-        obj.addProperty("App::PropertyString", "YieldPoint2", "Fem", "Set stress and strain for yield point one, separated by a comma.")
+        obj.addProperty("App::PropertyString", "YieldPoint2", "Fem", "Set stress and strain for yield point two, separated by a comma.")
         obj.YieldPoint2 = "241.0, 0.025"
+
+        obj.addProperty("App::PropertyString", "YieldPoint3", "Fem", "Set stress and strain for yield point three, separated by a comma.")
+        obj.YieldPoint3 = ""
 
     def execute(self, obj):
         return

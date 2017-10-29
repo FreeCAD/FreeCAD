@@ -59,19 +59,35 @@ using namespace Attacher;
 
 namespace PartDesignGui {
 
-PartDesign::Body *getBody(bool messageIfNot)
+/*!
+ * \brief Return active body or show a warning message.
+ * If \a autoActivate is true (the default) then if there is
+ * only single body in the document it will be activated.
+ * \param messageIfNot
+ * \param autoActivate
+ * \return Body
+ */
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
     if (activeView) {
+        bool singleBodyDocument = activeView->getAppDocument()->
+            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
         if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
+            if (!activeBody && singleBodyDocument && autoActivate) {
+                Gui::Command::doCommand( Gui::Command::Gui,
+                    "Gui.activeView().setActiveObject('pdbody',App.ActiveDocument.findObjects('PartDesign::Body')[0])");
+                activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+                return activeBody;
+            }
             if (!activeBody && messageIfNot) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one. If you have a legacy document "
+                                "Please make one active (double click) or create one.\n\nIf you have a legacy document "
                                 "with PartDesign objects without Body, use the transfer function in "
                                 "PartDesign to put them into a Body."
                                 ));
@@ -106,13 +122,13 @@ PartDesign::Body * makeBody(App::Document *doc)
     return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 }
 
-PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot, bool autoActivate)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody( /*messageIfNot =*/ false);
-    if(rv && rv->hasObject(obj))
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate);
+    if (rv && rv->hasObject(obj))
         return rv;
 
     rv = PartDesign::Body::findBodyOf(obj);

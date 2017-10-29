@@ -120,12 +120,12 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
         ProjectionAlgos::ExtractionType type = ProjectionAlgos::Plain;
         if (hidden) type = (ProjectionAlgos::ExtractionType)(type|ProjectionAlgos::WithHidden);
         if (smooth) type = (ProjectionAlgos::ExtractionType)(type|ProjectionAlgos::WithSmooth);
-	ProjectionAlgos::XmlAttributes visible_style = { 
-	  {"stroke_width", to_string(this->LineWidth.getValue() / this->Scale.getValue())}
-	};
-	ProjectionAlgos::XmlAttributes hidden_style = {
-	  {"stroke_width", to_string(this->HiddenWidth.getValue() / this->Scale.getValue()) }
-	};
+        ProjectionAlgos::XmlAttributes visible_style = {
+          {"stroke-width", to_string(this->LineWidth.getValue() / this->Scale.getValue())}
+        };
+        ProjectionAlgos::XmlAttributes hidden_style = {
+          {"stroke-width", to_string(this->HiddenWidth.getValue() / this->Scale.getValue()) }
+        };
         result << Alg.getSVG(type, this->Tolerance.getValue(), visible_style, visible_style, visible_style, hidden_style, hidden_style, hidden_style);
 
         result << "</g>" << endl;
@@ -135,9 +135,8 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
 

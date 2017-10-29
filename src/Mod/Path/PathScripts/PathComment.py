@@ -99,7 +99,6 @@ class CommandPathComment:
     def GetResources(self):
         return {'Pixmap': 'Path-Comment',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
-                'Accel': "P, C",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Add a Comment to your CNC program")}
 
     def IsActive(self):

@@ -59,7 +59,6 @@ class _Precast(ArchComponent.Component):
         obj.addProperty("App::PropertyDistance","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of this element"))
         obj.addProperty("App::PropertyDistance","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this element"))
         obj.addProperty("App::PropertyDistance","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this element"))
-        obj.addProperty("App::PropertyLinkList","Armatures","Arch",QT_TRANSLATE_NOOP("App::Property","Armatures contained in this element"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         self.Type = "Precast"
         obj.Role = ["Beam","Column","Panel","Slab","Stairs"]

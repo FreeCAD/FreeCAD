@@ -229,6 +229,25 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('B21', '=pow(-7; 4)')
         sheet.set('C21', '=pow(7mm; 4)')
         sheet.set('D21', '=pow(7mm; 4mm)')
+        sheet.set('A23', '=hypot(3; 4)') # Hypot
+        sheet.set('B23', '=hypot(-3; 4)')
+        sheet.set('C23', '=hypot(3mm; 4)')
+        sheet.set('D23', '=hypot(3mm; 4mm)')
+        sheet.set('A24', '=hypot(3; 4; 5)') # Hypot
+        sheet.set('B24', '=hypot(-3; 4; 5)')
+        sheet.set('C24', '=hypot(3mm; 4; 5)')
+        sheet.set('D24', '=hypot(3mm; 4mm; 5mm)')
+        sheet.set('A26', '=cath(5; 3)') # Cath
+        sheet.set('B26', '=cath(-5; 3)')
+        sheet.set('C26', '=cath(5mm; 3)')
+        sheet.set('D26', '=cath(5mm; 3mm)')
+
+        l = math.sqrt(5 * 5 + 4*4 + 3*3)
+        sheet.set('A27', '=cath(%0.15f; 5; 4)' % l) # Cath
+        sheet.set('B27', '=cath(%0.15f; -5; 4)' % l)
+        sheet.set('C27', '=cath(%0.15f mm; 5mm; 4)' % l)
+        sheet.set('D27', '=cath(%0.15f mm; 5mm; 4mm)' % l)
+
         self.doc.recompute()
         self.assertMostlyEqual(sheet.A1,  0.5)   # Cos
         self.assertMostlyEqual(sheet.B1,  0.5)
@@ -300,7 +319,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.A19, 3) # Mod
         self.assertMostlyEqual(sheet.B19, -3)
         self.assertMostlyEqual(sheet.C19, Units.Quantity('3 mm'))
-        self.assertEqual(sheet.D19, u'ERR: Second argument must have empty unit.')
+        self.assertEqual(sheet.D19, 3)
         self.assertMostlyEqual(sheet.A20, Units.Quantity('45 deg'))       # Atan2
         self.assertMostlyEqual(sheet.B20, Units.Quantity('-45 deg'))
         self.assertEqual(sheet.C20, u'ERR: Units must be equal')
@@ -309,6 +328,28 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.B21, 2401)
         self.assertMostlyEqual(sheet.C21, Units.Quantity('2401mm^4'))
         self.assertEqual(sheet.D21, u'ERR: Exponent is not allowed to have a unit.')
+        self.assertMostlyEqual(sheet.A23, 5) # Hypot
+        self.assertMostlyEqual(sheet.B23, 5)
+        self.assertEqual(sheet.C23, u'ERR: Units must be equal')
+        self.assertMostlyEqual(sheet.D23, Units.Quantity('5mm'))
+
+        l = math.sqrt(3*3 + 4*4 + 5*5)
+        self.assertMostlyEqual(sheet.A24, l) # Hypot
+        self.assertMostlyEqual(sheet.B24, l)
+        self.assertEqual(sheet.C24, u'ERR: Units must be equal')
+        self.assertMostlyEqual(sheet.D24, Units.Quantity("7.07106781186548 mm"))
+        self.assertMostlyEqual(sheet.A26, 4) # Cath
+        self.assertMostlyEqual(sheet.B26, 4)
+        self.assertEqual(sheet.C26, u'ERR: Units must be equal')
+        self.assertMostlyEqual(sheet.D26, Units.Quantity('4mm'))
+
+        l = math.sqrt(5 * 5 + 4*4 + 3*3)
+        l = math.sqrt(l * l - 5*5 - 4*4)
+        self.assertMostlyEqual(sheet.A27, l) # Cath
+        self.assertMostlyEqual(sheet.B27, l)
+        self.assertEqual(sheet.C27, u'ERR: Units must be equal')
+        self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
+        FreeCAD.closeDocument(doc.Name)
         
     def testRelationalOperators(self):
         """ Test relational operators """
@@ -454,7 +495,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.addObject("Part::Thickness", "Pipe")
         sheet.set('B1', '101')
         sheet.set('A53', '=-(-(B1-1)/2)')
-        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value*1mm - 1"/2)')
+        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value - 1"/2)')
 
         self.doc.recompute()
         self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")
@@ -773,6 +814,15 @@ class SpreadsheetCases(unittest.TestCase):
 
         # Close second document
         FreeCAD.closeDocument(doc2.Name)
+
+    def testIssue3128(self):
+        """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '=mod(7mm;3mm)')
+        sheet.set('A2', '=mod(7kg;3mm)')
+        self.doc.recompute()
+        self.assertEqual(sheet.A1, Units.Quantity('1'))
+        self.assertEqual(sheet.A2, Units.Quantity('1 kg/mm'))
 
     def tearDown(self):
         #closing doc

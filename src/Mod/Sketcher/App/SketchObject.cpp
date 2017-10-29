@@ -57,6 +57,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
+//# include <QtGlobal>
 #endif
 
 #include <boost/bind.hpp>
@@ -98,7 +99,6 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 
-    allowOtherBody = true;
     allowUnaligned = true;
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
@@ -159,48 +159,28 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
         delConstraintsToExternal();
     }
 
-    // We should have an updated Sketcher geometry or this execute should not have happened
-    // therefore we update our sketch object geometry with the SketchObject one.
-    //
-    // set up a sketch (including dofs counting and diagnosing of conflicts)    
-    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  getExternalGeometryCount());
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
+    // This includes a regular solve including full geometry update, except when an error
+    // ensues
+    int err = this->solve(true);
     
-    lastSolveTime=0.0;
-    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
-    
-    solverNeedsUpdate=false;
-    
-    if (lastDoF < 0) { // over-constrained sketch
+    if (err == -4) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
         appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    if (lastHasConflict) { // conflicting constraints
+    else if (err == -3) { // conflicting constraints
         std::string msg="Sketch with conflicting constraints\n";
         appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    if (lastHasRedundancies) { // redundant constraints
+    else if (err == -2) { // redundant constraints
         std::string msg="Sketch with redundant constraints\n";
         appendRedundantMsg(lastRedundant, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    // solve the sketch
-    lastSolverStatus=solvedSketch.solve();
-    lastSolveTime=solvedSketch.SolveTime;
-    
-    if (lastSolverStatus != 0)
+    else if (err == -1) { // Solver failed
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
-
-    std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
-    Geometry.setValues(geomlist);
-    for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it)
-        if (*it) delete *it;
+    }
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of 
     // the objects that depend on this sketch (like pads)
@@ -225,44 +205,52 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
     // the solver needs to be updated.
     
-    // We should have an updated Sketcher geometry or this solver should not have happened
-    // therefore we update our sketch object geometry with the SketchObject one.
+    // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have happened
+    // therefore we update our sketch solver geometry with the SketchObject one.
     //
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
-    
+
+    // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
+    // Some examples:
+    // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines
+    // Conflicting: a 80 degrees angle between a vertical line and another line, then adding a horizontal constraint to that other line
+    // OverConstrained: a conflicting constraint when all other DoF are already constraint (it has more constrains than parameters and the extra constraints are not redundant)
+
     solverNeedsUpdate=false;
-    
+
     lastHasConflict = solvedSketch.hasConflicts();
-    
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();
+    lastSolveTime=0.0;
+
+    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+
     int err=0;
+
+    // redundancy is a lower priority problem than conflict/over-constraint/solver error
+    // we set it here because we are indeed going to solve, as we can. However, we still want to
+    // provide the right error code.
+    if (lastHasRedundancies) { // redundant constraints
+        err = -2;
+    }
+    
     if (lastDoF < 0) { // over-constrained sketch
-        err = -3;
-        // if lastDoF<0, then an over-constrained situation has ensued.
-        // Geometry is not to be updated, as geometry can not follow the constraints.
-        // However, solver information must be updated.
-        this->Constraints.touch();
+        err = -4;
     }
     else if (lastHasConflict) { // conflicting constraints
+        // The situation is exactly the same as in the over-constrained situation.
         err = -3;
     }
     else {
         lastSolverStatus=solvedSketch.solve();
         if (lastSolverStatus != 0){ // solving
-            err = -2;
-            // if solver failed, geometry was never updated, but invalid constraints were likely added before
-            // solving (see solve in addConstraint), so solver information is definitely invalid.
-            this->Constraints.touch();
-            
+            err = -1;
         }
-            
     }
     
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
     lastSolveTime=solvedSketch.SolveTime;
 
     if (err == 0 && updateGeoAfterSolving) {
@@ -271,6 +259,11 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         Geometry.setValues(geomlist);
         for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
             if (*it) delete *it;
+    }
+    else if(err <0) {
+        // if solver failed, invalid constraints were likely added before solving
+        // (see solve in addConstraint), so solver information is definitely invalid.
+        this->Constraints.touch();
     }
 
     return err;
@@ -2042,13 +2035,9 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
         } else if (body_this == body_obj) {
             return true;
         } else {
-            if ( this->allowOtherBody ) { // Selection outside of body not allowed if flag is not set
-                return true;
-            } else {
-                if (rsn)
-                    *rsn = rlOtherBody;
-                return false;
-            }
+            if (rsn)
+                *rsn = rlOtherBody;
+            return false;
         }
     } else {
         // cross-part link. Disallow, should be done via shapebinders only
@@ -2101,7 +2090,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this != NULL) {
-            if ((body_this != body_obj) && !this->allowOtherBody) {
+            if (body_this != body_obj) {
                 if (rsn)
                     *rsn = rlOtherBody;
                 return false;
@@ -2254,8 +2243,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                 Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2265,16 +2252,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = 2.0*M_PI - theta1;
+                theta2 = 2.0*M_PI - theta2;
+                std::swap(theta1, theta2);
+                if (theta1 < 0) {
+                    theta1 += 2.0*M_PI;
+                    theta2 += 2.0*M_PI;
+                }
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2282,8 +2273,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
                 Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2293,16 +2282,16 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = -theta1;
+                theta2 = -theta2;
+                std::swap(theta1, theta2);
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2310,23 +2299,21 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                 Part::GeomArcOfParabola *geosymaoe = static_cast<Part::GeomArcOfParabola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 //double df= geosymaoe->getFocal();
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setXAxisDir(sf1-scp);
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = -theta1;
+                theta2 = -theta2;
+                std::swap(theta1, theta2);
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2517,8 +2504,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                 Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
                 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2528,25 +2513,15 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
                 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
-
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
                 Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
                 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2556,54 +2531,36 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
                 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
-
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                 Part::GeomArcOfParabola *geosymaoe = static_cast<Part::GeomArcOfParabola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 /*double df= geosymaoe->getFocal();*/
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
 
                 geosymaoe->setXAxisDir(sf1-scp);
                 geosymaoe->setCenter(scp);
 
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
                 Part::GeomBSplineCurve *geosymbsp = static_cast<Part::GeomBSplineCurve *>(geosym);
-                
+
                 std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
                 
                 for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
-                    
                     (*it) = (*it) + 2.0*(refpoint-(*it));
                 }
-                
+
                 geosymbsp->setPoles(poles);
 
                 //isStartEndInverted.insert(std::make_pair(*it, false));
@@ -4140,37 +4097,36 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
     #if OCC_VERSION_HEX < 0x060900
-    Base::Console().Error("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher\n");
-    return false;
+        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher\n"))
     #endif
     
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        THROWM(Base::ValueError,"BSpline GeoId is out of bounds.")
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline GeoId is out of bounds."))
     
     if (multiplicityincr == 0) // no change in multiplicity
-        THROWM(Base::ValueError,"You are requesting no change in knot multiplicity.")
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "You are requesting no change in knot multiplicity."))
     
     const Part::Geometry *geo = getGeometry(GeoId);
     
     if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        THROWM(Base::TypeError,"The GeoId provided is not a B-spline curve.");
+        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The GeoId provided is not a B-spline curve."))
     
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
     
     int degree = bsp->getDegree();
     
     if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
-        THROWM(Base::ValueError,"The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.");
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero."))
 
     Part::GeomBSplineCurve *bspline;
 
     int curmult = bsp->getMultiplicity(knotIndex);
     
     if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
-        THROWM(Base::ValueError,"The multiplicity cannot be increased beyond the degree of the b-spline.");
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."))
     
     if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
-        THROWM(Base::ValueError,"The multiplicity cannot be decreased beyond zero.");
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."))
     
     try {
 
@@ -4183,7 +4139,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
             bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr,1E6);
 
             if(!result)
-                THROWM(Base::CADKernelError, "OCC is unable to decrease the multiplicity within the maximum tolerance.");
+                THROWMT(Base::CADKernelError, QT_TRANSLATE_NOOP("Exceptions", "OCC is unable to decrease the multiplicity within the maximum tolerance."))
         }
     }
     catch (const Base::Exception& e) {
@@ -4803,9 +4759,9 @@ void SketchObject::rebuildExternalGeometry(void)
                 const Part::TopoShape& refShape=refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
-            catch (Standard_Failure) {
-                Handle(Standard_Failure) e = Standard_Failure::Caught();
-                throw Base::Exception(e->GetMessageString());
+            catch (Standard_Failure& e) {
+        
+                throw Base::Exception(e.GetMessageString());
             }
         } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
             const App::Plane* pl = static_cast<const App::Plane*>(Obj);
@@ -5072,9 +5028,9 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
                     }
-                    catch (Standard_Failure) {
-                        Handle(Standard_Failure) e = Standard_Failure::Caught();
-                        throw Base::Exception(e->GetMessageString());
+                    catch (Standard_Failure& e) {
+                
+                        throw Base::Exception(e.GetMessageString());
                     }
                 }
             }
@@ -5729,6 +5685,14 @@ void SketchObject::onDocumentRestored()
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
+        // this may happen when saving a sketch directly in edit mode
+        // but never performed a recompute before
+        if (Shape.getValue().IsNull() && hasConflicts() == 0) {
+            if (this->solve(true) == 0)
+                Shape.setValue(solvedSketch.toShape());
+        }
+
+        Part::Part2DObject::onDocumentRestored();
     }
     catch (...) {
     }
@@ -5803,7 +5767,8 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
 
 /*!
- * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs, and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
+ * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs,
+ *  and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
  * \param justAnalyze if true, nothing is actually done - only the number of constraints to be affected is returned.
  * \return the number of constraints changed/to be changed.
  */
@@ -5820,8 +5785,8 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         bool affected=false;
         Constraint *constNew = 0;
         for(int ig=1; ig<=3; ig++){//cycle through constraint.first, second, third
-            int geoId;
-            Sketcher::PointPos posId;
+            int geoId = 0;
+            Sketcher::PointPos posId = none;
             switch (ig){
                 case 1: geoId=newVals[ic]->First; posId = newVals[ic]->FirstPos; break;
                 case 2: geoId=newVals[ic]->Second; posId = newVals[ic]->SecondPos; break;

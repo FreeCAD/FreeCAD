@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import sys
 import FreeCAD
 import FemTools
 from PySide import QtCore
@@ -103,7 +104,7 @@ class FemToolsCcx(FemTools.FemTools):
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
 
-    ## Sets CalculiX ccx binary path and velidates if the binary can be executed
+    ## Sets CalculiX ccx binary path and validates if the binary can be executed
     #  @param self The python object self
     #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
     #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
@@ -121,7 +122,10 @@ class FemToolsCcx(FemTools.FemTools):
                 import subprocess
                 p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
-                    ccx_path = p1.stdout.read().split('\n')[0]
+                    if sys.version_info.major >= 3:
+                        ccx_path = str(p1.stdout.read()).split('\n')[0]
+                    else:
+                        ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
                     error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
                     if FreeCAD.GuiUp:
@@ -153,20 +157,20 @@ class FemToolsCcx(FemTools.FemTools):
                                  stderr=subprocess.PIPE, shell=False,
                                  startupinfo=startup_info)
             ccx_stdout, ccx_stderr = p.communicate()
-            if ccx_binary_sig in ccx_stdout:
+            if ccx_binary_sig in str(ccx_stdout):
                 self.ccx_binary_present = True
             else:
                 raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
                 # TODO: I'm still able to break it. If user gives not a file but a path without a file or a file which is not a binary no excetion at all is raised.
         except OSError as e:
-            FreeCAD.Console.PrintError(e.message)
+            FreeCAD.Console.PrintError(str(e))
             if e.errno == 2:
                 error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 raise Exception(error_message)
         except Exception as e:
-            FreeCAD.Console.PrintError(e.message)
+            FreeCAD.Console.PrintError(str(e))
             error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(None, error_title, error_message)
@@ -202,6 +206,25 @@ class FemToolsCcx(FemTools.FemTools):
             return p.returncode
         return -1
 
+    def get_ccx_version(self):
+        import re
+        import subprocess
+        from platform import system
+        startup_info = None
+        if system() == "Windows":
+            # Windows workaround to avoid blinking terminal window
+            startup_info = subprocess.STARTUPINFO()
+            startup_info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+        ccx_stdout = None
+        ccx_stderr = None
+        # Now extract the version number
+        p = subprocess.Popen([self.ccx_binary, '-v'], stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE, shell=False,
+                             startupinfo=startup_info)
+        ccx_stdout, ccx_stderr = p.communicate()
+        m = re.search(r"(\d+).(\d+)", ccx_stdout)
+        return (int(m.group(1)), int(m.group(2)))
+
     def run(self):
         ret_code = 0
         message = self.check_prerequisites()
@@ -232,8 +255,8 @@ class FemToolsCcx(FemTools.FemTools):
             nonpositive_jacobian_elenodes = []
             for line in self.ccx_stdout.splitlines():
                 if 'determinant in element' in line:
-                    # print line
-                    # print line.split()
+                    # print(line)
+                    # print(line.split())
                     non_posjac_ele = int(line.split()[3])
                     # print(non_posjac_ele)
                     if non_posjac_ele not in nonpositive_jacobian_elements:
@@ -271,7 +294,7 @@ class FemToolsCcx(FemTools.FemTools):
         if os.path.isfile(frd_result_file):
             result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
             importCcxFrdResults.importFrd(frd_result_file, self.analysis, result_name_prefix)
-            for m in self.analysis.Member:
+            for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
                     break
@@ -292,7 +315,7 @@ class FemToolsCcx(FemTools.FemTools):
             raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
             # print(mode_frequencies)
-            for m in self.analysis.Member:
+            for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:

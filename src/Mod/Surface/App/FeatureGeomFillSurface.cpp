@@ -166,9 +166,9 @@ App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
     catch (StdFail_NotDone) {
         return new App::DocumentObjectExecReturn("A curve was not a b-spline and could not be converted into one.");
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
 

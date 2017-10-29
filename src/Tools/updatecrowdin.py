@@ -54,7 +54,6 @@ import sys,os,xml.sax,pycurl,StringIO
 
 files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
           ["Assembly.ts",          "/Mod/Assembly/Gui/Resources/translations/Assembly_de.ts"],
-          ["Complete.ts",          "/Mod/Complete/Gui/Resources/translations/Complete_de.ts"],
           ["draft.ts",             "/Mod/Draft/Resources/translations/Draft.ts"],
           ["Drawing.ts",           "/Mod/Drawing/Gui/Resources/translations/Drawing_de.ts"],
           ["Fem.ts",               "/Mod/Fem/Gui/Resources/translations/Fem.ts"],
@@ -162,7 +161,7 @@ if __name__ == "__main__":
         
     elif arg == "download":
         print "Downloading all.zip in current directory..."
-        cmd = "wget "+url+"download/all.zip"+key
+        cmd = "wget -O freecad.zip "+url+"download/all.zip"+key
         os.system(cmd)
         
     elif arg == "update":

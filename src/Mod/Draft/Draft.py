@@ -55,11 +55,15 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
+    #from DraftGui import translate
 else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
+
+def translate(ctx,txt):
+    return txt
 
 arrowtypes = ["Dot","Circle","Arrow","Tick"]
 
@@ -432,7 +436,11 @@ def formatObject(target,origin=None):
     or copies the properties of another object if given as origin.
     It also places the object in construction group if needed.
     '''
+    if not target:
+        return
     obrep = target.ViewObject
+    if not obrep:
+        return
     ui = None
     if gui:
         if hasattr(FreeCADGui,"draftToolBar"):
@@ -500,7 +508,8 @@ def select(objs=None):
             if not isinstance(objs,list):
                 objs = [objs]
             for obj in objs:
-                FreeCADGui.Selection.addSelection(obj)
+                if obj:
+                    FreeCADGui.Selection.addSelection(obj)
 
 def loadSvgPatterns():
     "loads the default Draft SVG patterns and custom patters if available"
@@ -876,7 +885,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
-    from DraftTools import msg,translate
+    from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
@@ -1260,6 +1269,7 @@ def move(objectslist,vector,copy=False):
     if not isinstance(objectslist,list): objectslist = [objectslist]
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
+    newgroups = {}
     for obj in objectslist:
         if hasattr(obj,"Placement"):
            if obj.getEditorMode("Placement") == ["ReadOnly"]:
@@ -1305,12 +1315,19 @@ def move(objectslist,vector,copy=False):
             newobj.End = obj.End.add(vector)
             newobj.Dimline = obj.Dimline.add(vector)
         else:
-            if copy: print("Mesh copy not supported at the moment") # TODO
+            if copy and obj.isDerivedFrom("Mesh::Feature"): 
+                print("Mesh copy not supported at the moment") # TODO
             newobj = obj
             if "Placement" in obj.PropertiesList:
                 pla = obj.Placement
                 pla.move(vector)
         newobjlist.append(newobj)
+        if copy:
+            for p in obj.InList:
+                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
+                    g = newgroups.setdefault(p.Name,FreeCAD.ActiveDocument.addObject(p.TypeId,p.Name))
+                    g.addObject(newobj)
+                    break
     if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
@@ -1367,6 +1384,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     if not isinstance(objectslist,list): objectslist = [objectslist]
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
+    newgroups = {}
     for obj in objectslist:
         if hasattr(obj,"Placement"):
            if obj.getEditorMode("Placement") == ["ReadOnly"]:
@@ -1397,6 +1415,14 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             elif axis.normalize() == Vector(0,0,-1):
                 newobj.ViewObject.RotationAxis = "Z"
                 newobj.ViewObject.Rotation = -angle
+        elif getType(obj) == "Point":
+            v = Vector(obj.X,obj.Y,obj.Z)
+            rv = v.sub(center)
+            rv = DraftVecUtils.rotate(rv,math.radians(angle),axis)
+            v = center.add(rv)
+            newobj.X = v.x
+            newobj.Y = v.y
+            newobj.Z = v.z
         elif hasattr(obj,"Placement"):
             shape = Part.Shape()
             shape.Placement = obj.Placement
@@ -1405,6 +1431,12 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
         if copy:
             formatObject(newobj,obj)
         newobjlist.append(newobj)
+        if copy:
+            for p in obj.InList:
+                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
+                    g = newgroups.setdefault(p.Name,FreeCAD.ActiveDocument.addObject(p.TypeId,p.Name))
+                    g.addObject(newobj)
+                    break
     if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
@@ -1427,14 +1459,15 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj = makeCopy(obj)
             else:
                 newobj = obj
-            sh = obj.Shape.copy()
-            m = FreeCAD.Matrix()
-            m.scale(delta)
-            sh = sh.transformGeometry(m)
-            corr = Vector(center.x,center.y,center.z)
-            corr.scale(delta.x,delta.y,delta.z)
-            corr = (corr.sub(center)).negative()
-            sh.translate(corr)
+            if obj.isDerivedFrom("Part::Feature"):
+                sh = obj.Shape.copy()
+                m = FreeCAD.Matrix()
+                m.scale(delta)
+                sh = sh.transformGeometry(m)
+                corr = Vector(center.x,center.y,center.z)
+                corr.scale(delta.x,delta.y,delta.z)
+                corr = (corr.sub(center)).negative()
+                sh.translate(corr)
             if getType(obj) == "Rectangle":
                 p = []
                 for v in sh.Vertexes: p.append(v.Point)
@@ -1468,8 +1501,10 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             elif (obj.isDerivedFrom("Part::Feature")):
                 newobj.Shape = sh
             elif (obj.TypeId == "App::Annotation"):
-                factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize.Value
-                obj.ViewObject.Fontsize = factor
+                factor = delta.y * obj.ViewObject.FontSize
+                newobj.ViewObject.FontSize = factor
+                d = obj.Position.sub(center)
+                newobj.Position = center.add(Vector(d.x*delta.x,d.y*delta.y,d.z*delta.z))
             if copy: 
                 formatObject(newobj,obj)
             newobjlist.append(newobj)
@@ -1692,7 +1727,8 @@ def draftify(objectslist,makeblock=False,delete=True):
     newobjlist = []
     for obj in objectslist:
         if obj.isDerivedFrom('Part::Feature'):
-            for w in obj.Shape.Wires:
+            for cluster in Part.getSortedClusters(obj.Shape.Edges):
+                w = Part.Wire(cluster)
                 if DraftGeomUtils.hasCurves(w):
                     if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
                         nobj = makeCircle(w.Edges[0])
@@ -1857,8 +1893,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         ny = DraftVecUtils.project(vec,plane.v)
         ly = ny.Length
         if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-        if techdraw:
-            ly = -ly
+        #if techdraw: buggy - we now simply do it at the end
+        #    ly = -ly
         return Vector(lx,ly,0)
 
     def getDiscretized(edge):
@@ -2133,8 +2169,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(base.x) + ',' + str(base.y+linespacing*i) + ') '
-                svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ')" '
+                svg += ','+ str(base.x) + ',' + str(base.y-linespacing*i) + ') '
+                svg += 'translate(' + str(base.x) + ',' + str(base.y-linespacing*i) + ') '
+                svg += 'scale(1,-1)" '
                 #svg += '" freecad:skip="1"'
                 svg += '>\n' + t + '</text>\n'
         else:
@@ -2150,7 +2187,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             else:
                 svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ')'
             #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-            if flip and (not techdraw):
+            if flip:
                 svg += ' scale(1,-1) '
             else:
                 svg += ' scale(1,1) '
@@ -2377,6 +2414,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if len(f.Edges) == 1:
                 if isinstance(f.Edges[0].Curve,Part.Circle):
                     svg += getCircle(f.Edges[0])
+                    
+    elif getType(obj) == "Rebar":
+        fill = "none"
+        lstyle = getLineStyle()
+        if obj.Proxy:
+            if not hasattr(obj.Proxy,"wires"):
+                obj.Proxy.execute(obj)
+            if hasattr(obj.Proxy,"wires"):
+                svg += getPath(wires=obj.Proxy.wires)
 
     elif getType(obj) == "PipeConnector":
         pass
@@ -2462,6 +2508,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
                     svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                    
+    # techdraw expects bottom-to-top coordinates
+    if techdraw:
+        svg = '<g transform ="scale(1,-1)">'+svg+'</g>'
     return svg
 
 def getrgb(color,testbw=True):
@@ -2578,7 +2628,6 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     import Part, DraftGeomUtils
     from Sketcher import Constraint
     import Sketcher
-    from DraftTools import translate
     import math
 
     StartPoint = 1
@@ -2631,11 +2680,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     for obj in objectslist:
         ok = False
         tp = getType(obj)
-        if tp in ["BSpline","BezCurve"]:
-            FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
-            if deletable: FreeCAD.ActiveDocument.removeObject(deletable.Name)
-            return None
-        elif tp in ["Circle","Ellipse"]:
+        if tp in ["Circle","Ellipse"]:
             if rotation is None:
                 rotation = obj.Placement.Rotation
             edge = obj.Shape.Edges[0]
@@ -2682,34 +2727,41 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                     closed = obj.Closed
 
                 if len(obj.Shape.Vertexes) < 3:
-                    FreeCAD.Console.PrintError(translate("draft","Need at least 3 points in order to convert to Sketch"))
-                    return None
-
-                # Use the first three points to make a working plane. We've already
-                # checked to make sure everything is coplanar
-                plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
-                normal = plane.Axis
-
-                if rotation is None:
-                    axis = FreeCAD.Vector(0,0,1).cross(normal)
-                    angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
-                    rotation = FreeCAD.Rotation(axis, angle)
-                for edge in obj.Shape.Edges:
-                    # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
-                    edge = DraftGeomUtils.orientEdge(edge, normal)
-                    nobj.addGeometry(edge)
-                if autoconstraints:
-                    last = nobj.GeometryCount
-                    segs = list(range(last-len(obj.Shape.Edges),last-1))
-                    for seg in segs:
-                        constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                        if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                            constraints.append(Constraint("Vertical",seg))
-                        elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                            constraints.append(Constraint("Horizontal",seg))
-                    if closed:
-                        constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+                    e = obj.Shape.Edges[0]
+                    nobj.addGeometry(Part.LineSegment(e.Curve,e.FirstParameter,e.LastParameter))
+                else:
+                    # Use the first three points to make a working plane. We've already
+                    # checked to make sure everything is coplanar
+                    plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
+                    normal = plane.Axis
+                    if rotation is None:
+                        axis = FreeCAD.Vector(0,0,1).cross(normal)
+                        angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
+                        rotation = FreeCAD.Rotation(axis, angle)
+                    for edge in obj.Shape.Edges:
+                        # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
+                        edge = DraftGeomUtils.orientEdge(edge, normal)
+                        nobj.addGeometry(edge)
+                    if autoconstraints:
+                        last = nobj.GeometryCount
+                        segs = list(range(last-len(obj.Shape.Edges),last-1))
+                        for seg in segs:
+                            constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                                constraints.append(Constraint("Vertical",seg))
+                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                                constraints.append(Constraint("Horizontal",seg))
+                        if closed:
+                            constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
                 ok = True
+        elif tp == "BSpline":
+            nobj.addGeometry(obj.Shape.Edges[0].Curve)
+            ok = True
+        elif tp == "BezCurve":
+            bez = obj.Shape.Edges[0].Curve
+            bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter)
+            nobj.addGeometry(bsp)
+            ok = True
         elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
             shape = obj if tp == 'Shape' else obj.Shape
 
@@ -3054,7 +3106,7 @@ def upgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg,translate
+    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3415,7 +3467,7 @@ def downgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg,translate
+    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3614,6 +3666,8 @@ def makeWorkingPlaneProxy(placement):
         WorkingPlaneProxy(obj)
         if FreeCAD.GuiUp:
             ViewProviderWorkingPlaneProxy(obj.ViewObject)
+            obj.ViewObject.Proxy.writeCamera()
+            obj.ViewObject.Proxy.writeState()
         obj.Placement = placement
 
 
@@ -3644,7 +3698,6 @@ class _ViewProviderDraft:
     "The base class for Draft Viewproviders"
 
     def __init__(self, vobj):
-        from DraftTools import translate
         vobj.Proxy = self
         self.Object = vobj.Object
         vobj.addProperty("App::PropertyEnumeration","Pattern","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a hatch pattern"))
@@ -3730,8 +3783,12 @@ class _ViewProviderDraft:
                     s = 1
                     if vobj.PatternSize:
                         s = vobj.PatternSize
-                    self.texcoords.directionS.setValue(s,0,0)
-                    self.texcoords.directionT.setValue(0,s,0)
+                    vS = FreeCAD.Vector(self.texcoords.directionS.getValue().getValue())
+                    vT = FreeCAD.Vector(self.texcoords.directionT.getValue().getValue())
+                    vS.Length = s
+                    vT.Length = s
+                    self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
+                    self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
         return
 
     def execute(self,vobj):
@@ -3825,7 +3882,13 @@ class _Dimension(_DraftObject):
                         elif DraftGeomUtils.geomType(edge) == "Circle":
                             c = edge.Curve.Center
                             r = edge.Curve.Radius
-                            ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
+                            a = edge.Curve.Axis
+                            ray = obj.Dimline.sub(c).projectToPlane(Vector(0,0,0),a)
+                            if (ray.Length == 0):
+                                ray = a.cross(Vector(1,0,0))
+                                if (ray.Length == 0):
+                                    ray = a.cross(Vector(0,1,0))
+                            ray = DraftVecUtils.scaleTo(ray,r)
                             if hasattr(obj,"Diameter"):
                                 if obj.Diameter:
                                     obj.Start = c.add(ray.negative())
@@ -4713,8 +4776,8 @@ class _Wire(_DraftObject):
         _DraftObject.__init__(self,obj,"Wire")
         obj.addProperty("App::PropertyVectorList","Points","Draft",QT_TRANSLATE_NOOP("App::Property","The vertices of the wire"))
         obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the wire is closed or not"))
-        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object is the wire is formed from 2 objects"))
-        obj.addProperty("App::PropertyLink","Tool","Draft",QT_TRANSLATE_NOOP("App::Property","The tool object is the wire is formed from 2 objects"))
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object is the wire, it's formed from 2 objects"))
+        obj.addProperty("App::PropertyLink","Tool","Draft",QT_TRANSLATE_NOOP("App::Property","The tool object is the wire, it's formed from 2 objects"))
         obj.addProperty("App::PropertyVectorDistance","Start","Draft",QT_TRANSLATE_NOOP("App::Property","The start point of this line"))
         obj.addProperty("App::PropertyVectorDistance","End","Draft",QT_TRANSLATE_NOOP("App::Property","The end point of this line"))
         obj.addProperty("App::PropertyLength","Length","Draft",QT_TRANSLATE_NOOP("App::Property","The length of this line"))
@@ -4863,11 +4926,6 @@ class _Wire(_DraftObject):
                     obj.Start = displayfpstart
                 if obj.End != displayfpend:
                     obj.End = displayfpend
-            if len(obj.Points) > 2:
-                obj.setEditorMode('Start',2)
-                obj.setEditorMode('End',2)
-                if hasattr(obj,"Length"):
-                    obj.setEditorMode('Length',2)
 
 
 class _ViewProviderWire(_ViewProviderDraft):
@@ -5098,7 +5156,7 @@ class _BSpline(_DraftObject):
 
     def execute(self, obj):
         import Part
-        from DraftTools import msg,translate
+        from DraftTools import msg
         self.assureProperties(obj)
         if obj.Points:
             self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
@@ -5742,10 +5800,19 @@ class _Clone(_DraftObject):
                     return
         objs = getGroupContents(obj.Objects)
         for o in objs:
+            sh = None
             if o.isDerivedFrom("Part::Feature"):
-                if o.Shape.isNull():
-                    return
-                sh = o.Shape.copy()
+                if not o.Shape.isNull():
+                    sh = o.Shape.copy()
+            elif o.hasExtension("App::GeoFeatureGroupExtension"):
+                shps = []
+                for so in o.Group:
+                    if so.isDerivedFrom("Part::Feature"):
+                        if not so.Shape.isNull():
+                            shps.append(so.Shape)
+                if shps:
+                    sh = Part.makeCompound(shps)
+            if sh:
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
                     sx,sy,sz = obj.Scale
@@ -5814,6 +5881,16 @@ class _ViewProviderClone:
                     c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
                     for f in o.Shape.Faces:
                         colors.append(c)
+            elif o.hasExtension("App::GeoFeatureGroupExtension"):
+                for so in vobj.Object.Group:
+                    if so.isDerivedFrom("Part::Feature"):
+                        if len(so.ViewObject.DiffuseColor) > 1:
+                            colors.extend(so.ViewObject.DiffuseColor)
+                        else:
+                            c = so.ViewObject.ShapeColor
+                            c = (c[0],c[1],c[2],so.ViewObject.Transparency/100.0)
+                            for f in so.Shape.Faces:
+                                colors.append(c)
         if colors:
             vobj.DiffuseColor = colors
 
@@ -6189,18 +6266,23 @@ class ViewProviderWorkingPlaneProxy:
     "A View Provider for working plane proxies"
 
     def __init__(self,vobj):
+        # ViewData: 0,1,2: position; 3,4,5,6: rotation; 7: near dist; 8: far dist, 9:aspect ratio;
+        # 10: focal dist; 11: height (ortho) or height angle (persp); 12: ortho (0) or persp (1)
         vobj.addProperty("App::PropertyLength","DisplaySize","Arch",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
         vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyFloatList","ViewData","Base","")
+        vobj.addProperty("App::PropertyBool","RestoreView","Base","")
+        vobj.addProperty("App::PropertyMap","VisibilityMap","Base","")
+        vobj.addProperty("App::PropertyBool","RestoreState","Base","")
         vobj.DisplaySize = 100
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
         vobj.LineColor = (0.0,0.25,0.25,1.0)
         vobj.Proxy = self
-        self.Object = vobj.Object
 
     def getIcon(self):
         import Draft_rc
@@ -6208,6 +6290,49 @@ class ViewProviderWorkingPlaneProxy:
 
     def claimChildren(self):
         return []
+        
+    def doubleClicked(self,vobj):
+        FreeCADGui.runCommand("Draft_SelectPlane")
+        return True
+        
+    def setupContextMenu(self,vobj,menu):
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
+        menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write objects state",menu)
+        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeState)
+        menu.addAction(action2)
+        
+    def writeCamera(self):
+        if hasattr(self,"Object"):
+            from pivy import coin
+            n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+            cdata = list(n.position.getValue().getValue())
+            cdata.extend(list(n.orientation.getValue().getValue()))
+            cdata.append(n.nearDistance.getValue())
+            cdata.append(n.farDistance.getValue())
+            cdata.append(n.aspectRatio.getValue())
+            cdata.append(n.focalDistance.getValue())
+            if isinstance(n,coin.SoOrthographicCamera):
+                cdata.append(n.height.getValue())
+                cdata.append(0.0) # orthograhic camera
+            elif isinstance(n,coin.SoPerspectiveCamera):
+                cdata.append(n.heightAngle.getValue())
+                cdata.append(1.0) # perspective camera
+            self.Object.ViewObject.ViewData = cdata
+            
+    def writeState(self):
+        if hasattr(self,"Object"):
+            FreeCAD.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing objects shown/hidden state")+"\n")
+            vis = {}
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.ViewObject:
+                    vis[o.Name] = str(o.ViewObject.Visibility)
+            self.Object.ViewObject.VisibilityMap = vis
+
+
 
     def attach(self,vobj):
         from pivy import coin
@@ -6238,6 +6363,7 @@ class ViewProviderWorkingPlaneProxy:
         self.onChanged(vobj,"DisplaySize")
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"Transparency")
+        self.Object = vobj.Object
 
     def getDisplayModes(self,vobj):
         return ["Default"]

@@ -21,6 +21,7 @@
 
 import FreeCAD, os, sys, unittest, Part
 import copy 
+from FreeCAD import Units
 App = FreeCAD
 
 #---------------------------------------------------------------------------
@@ -33,10 +34,24 @@ class PartTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("PartTest")
 
     def testBoxCase(self):
-        self.Box = App.ActiveDocument.addObject("Part::Box","Box")
+        self.Box = self.Doc.addObject("Part::Box","Box")
         self.Doc.recompute()
         self.failUnless(len(self.Box.Shape.Faces)==6)
-        
+
+    def testIssue2985(self):
+        v1 = App.Vector(0.0,0.0,0.0)
+        v2 = App.Vector(10.0,0.0,0.0)
+        v3 = App.Vector(10.0,0.0,10.0)
+        v4 = App.Vector(0.0,0.0,10.0)
+        edge1 = Part.makeLine(v1, v2)
+        edge2 = Part.makeLine(v2, v3)
+        edge3 = Part.makeLine(v3, v4)
+        edge4 = Part.makeLine(v4, v1)
+        # Travis build confirms the crash under macOS
+        #result = Part.makeFilledFace([edge1,edge2,edge3,edge4])
+        #self.Doc.addObject("Part::Feature","Face").Shape = result
+        #self.assertTrue(isinstance(result.Surface, Part.BSplineSurface))
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartTest")
@@ -89,6 +104,48 @@ class PartTestBSplineCurve(unittest.TestCase):
         # spline.setKnots()
         # spline.setOrigin(2)   # not working?
         self.spline.setPole(1, App.Vector([1, 0, 0])) # first parameter 0 gives occ error
+
+    def testIssue2671(self):
+        self.Doc = App.newDocument("Issue2671")
+        Box = self.Doc.addObject("Part::Box","Box")
+        Mirroring = self.Doc.addObject("Part::Mirroring", 'Mirroring')
+        Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
+        Mirroring.Base = (8, 5, 25)
+        Mirroring.Normal = (0.5, 0.2, 0.9)
+        Spreadsheet.set('A1', '=Mirroring.Base.x')
+        Spreadsheet.set('B1', '=Mirroring.Base.y')
+        Spreadsheet.set('C1', '=Mirroring.Base.z')
+        Spreadsheet.set('A2', '=Mirroring.Normal.x')
+        Spreadsheet.set('B2', '=Mirroring.Normal.y')
+        Spreadsheet.set('C2', '=Mirroring.Normal.z')
+        self.Doc.recompute()
+        self.assertEqual(Spreadsheet.A1, Units.Quantity('8 mm'))
+        self.assertEqual(Spreadsheet.B1, Units.Quantity('5 mm'))
+        self.assertEqual(Spreadsheet.C1, Units.Quantity('25 mm'))
+        self.assertEqual(Spreadsheet.A2, Units.Quantity('0.5 mm'))
+        self.assertEqual(Spreadsheet.B2, Units.Quantity('0.2 mm'))
+        self.assertEqual(Spreadsheet.C2, Units.Quantity('0.9 mm'))
+        App.closeDocument("Issue2671")
+
+    def testIssue2876(self):
+        self.Doc = App.newDocument("Issue2876")
+        Cylinder = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        Cylinder.Radius = 5
+        Pipe = self.Doc.addObject("Part::Thickness", "Pipe")
+        Pipe.Faces = (Cylinder, ["Face2", "Face3"])
+        Pipe.Mode = 1
+        Pipe.Value = -1 # negative wall thickness
+        Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
+        Spreadsheet.set('A1', 'Pipe OD')
+        Spreadsheet.set('B1', 'Pipe WT')
+        Spreadsheet.set('C1', 'Pipe ID')
+        Spreadsheet.set('A2', '=2*Cylinder.Radius')
+        Spreadsheet.set('B2', '=-Pipe.Value')
+        Spreadsheet.set('C2', '=2*(Cylinder.Radius + Pipe.Value)')
+        self.Doc.recompute()
+        self.assertEqual(Spreadsheet.B2, Units.Quantity('1 mm'))
+        self.assertEqual(Spreadsheet.C2, Units.Quantity('8 mm'))
+        App.closeDocument("Issue2876")
 
     def tearDown(self):
         #closing doc

@@ -359,17 +359,18 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 {
     try {
         std::stringstream str;
-        Handle(Geom_BSplineCurve) spline = c.BSpline();
-        if (spline->Degree() > 3 || spline->IsRational()) {
-            Standard_Real tol3D = 0.001;
-            Standard_Integer maxDegree = 3, maxSegment = 100;
-            Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
-            // approximate the curve using a tolerance
-            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
-            if (approx.IsDone() && approx.HasResult()) {
-                // have the result
-                spline = approx.Curve();
-            }
+        Handle(Geom_BSplineCurve) spline;
+        Standard_Real tol3D = 0.001;
+        Standard_Integer maxDegree = 3, maxSegment = 100;
+        Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+        // approximate the curve using a tolerance
+        Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            // have the result
+            spline = approx.Curve();
+        } else {
+            printGeneric(c, id, out);
+            return;
         }
 
         GeomConvert_BSplineCurveToBezierCurve crt(spline);
@@ -433,6 +434,19 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& o
             out << c << " " << nodes(i).X() << " " << nodes(i).Y()<< " " ; 
             c = 'L';
         }
+        out << "\" />" << endl;
+    } else if (c.GetType() == GeomAbs_Line) {
+        //BRep_Tool::Polygon3D assumes the edge has polygon representation - ie already been "tesselated"
+        //this is not true for all edges, especially "floating edges"
+        double f = c.FirstParameter();
+        double l = c.LastParameter();
+        gp_Pnt s = c.Value(f);
+        gp_Pnt e = c.Value(l);
+        char c = 'M';
+        out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" "; 
+        out << c << " " << s.X() << " " << s.Y()<< " " ; 
+        c = 'L';
+        out << c << " " << e.X() << " " << e.Y()<< " " ; 
         out << "\" />" << endl;
     }
 }
@@ -646,17 +660,18 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 {
     try {
         std::stringstream str;
-        Handle(Geom_BSplineCurve) spline = c.BSpline();
-        if (spline->Degree() > 3 || spline->IsRational()) {
-            Standard_Real tol3D = 0.001;
-            Standard_Integer maxDegree = 3, maxSegment = 50;
-            Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
-            // approximate the curve using a tolerance
-            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
-            if (approx.IsDone() && approx.HasResult()) {
-                // have the result
-                spline = approx.Curve();
-            }
+        Handle(Geom_BSplineCurve) spline;
+        Standard_Real tol3D = 0.001;
+        Standard_Integer maxDegree = 3, maxSegment = 50;
+        Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+        // approximate the curve using a tolerance
+        Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            // have the result
+            spline = approx.Curve();
+        } else {
+            printGeneric(c, id, out);
+            return;
         }
 		
         //GeomConvert_BSplineCurveToBezierCurve crt(spline);

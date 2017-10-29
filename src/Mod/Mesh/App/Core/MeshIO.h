@@ -129,7 +129,7 @@ protected:
 };
 
 /**
- * The MeshOutput class is able to write a mesh object to an ouput stream
+ * The MeshOutput class is able to write a mesh object to an output stream
  * on various formats.
  */
 class MeshExport MeshOutput

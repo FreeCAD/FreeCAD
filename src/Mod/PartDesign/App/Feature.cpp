@@ -55,6 +55,7 @@ Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
     Placement.setStatus(App::Property::Hidden, true);
+    BaseFeature.setStatus(App::Property::Hidden, true);
 }
 
 short Feature::mustExecute() const
@@ -175,6 +176,20 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 
     return builder.Shape();
 }
+
+Body* Feature::getFeatureBody() {
+
+    auto list = getInList();
+    for (auto in : list) {
+        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
+           static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
+               
+               return static_cast<Body*>(in);
+        }
+    }
+    
+    return nullptr;
+};
 
 }//namespace PartDesign
 

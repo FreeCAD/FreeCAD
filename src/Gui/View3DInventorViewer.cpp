@@ -1290,10 +1290,10 @@ void View3DInventorViewer::clearGraphicsItems()
     this->graphicsItems.clear();
 }
 
-int View3DInventorViewer::getNumSamples() const
+int View3DInventorViewer::getNumSamples()
 {
     int samples = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing");
+        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing", 0);
 
     switch (samples) {
     case View3DInventorViewer::MSAA2x:
@@ -1642,7 +1642,7 @@ void View3DInventorViewer::renderScene(void)
         std::stringstream stream;
         stream.precision(1);
         stream.setf(std::ios::fixed | std::ios::showpoint);
-        stream << renderTime << " ms / " << 1000./renderTime << " fps";
+        stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
         draw2DString(stream.str().c_str(), SbVec2s(10,10), SbVec2f(0.1f,0.1f));
     }
 

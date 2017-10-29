@@ -96,7 +96,12 @@
 			  <UserDocu>toggleTreeItem(DocObject,int=0) - change TreeItem of a document object 0:Toggle,1:Collaps,2:Expand</UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Attribute Name="ActiveObject" ReadOnly="false">
+      <Methode Name="scrollToTreeItem">
+          <Documentation>
+              <UserDocu>scrollToTreeItem(ViewObject) - scroll the tree view to the item of a view object</UserDocu>
+          </Documentation>
+      </Methode>
+      <Attribute Name="ActiveObject" ReadOnly="false">
 	  <Documentation>
 		<UserDocu>The active object of the document</UserDocu>
 	  </Documentation>

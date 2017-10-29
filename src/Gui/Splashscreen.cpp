@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QDialogButtonBox>
+# include <QLocale>
 # include <QMutex>
 # include <QProcess> 
 # include <QSysInfo>
@@ -553,6 +554,10 @@ void AboutDialog::on_copyButton_clicked()
 #endif
         << endl;
 #endif
+    QLocale loc;
+    str << "Locale: " << loc.languageToString(loc.language()) << "/"
+        << loc.countryToString(loc.country())
+        << " (" << loc.name() << ")" << endl;
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

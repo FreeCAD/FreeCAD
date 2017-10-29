@@ -17,12 +17,13 @@
 %}
 
      /* Bison declarations.  */
-     %token UNIT NUM MINUSSIGN
+     %token UNIT ONE NUM MINUSSIGN
      %token ACOS ASIN ATAN ATAN2 COS EXP ABS MOD LOG LOG10 POW SIN SINH TAN TANH SQRT;
      %left MINUSSIGN '+'
      %left '*' '/'
      %left NEG     /* negation--unary minus */
      %right '^'    /* exponentiation */
+     %left ONE NUM
 
 
 
@@ -37,6 +38,7 @@
             |  quantity quantity            { QuantResult = $1 + $2;            }
  ;   
      num:      NUM                			{ $$ = $1;         	}
+             | ONE                			{ $$ = $1;         	}
              | num '+' num        			{ $$ = Quantity($1.getValue() + $3.getValue());    	}
              | num MINUSSIGN num      		{ $$ = Quantity($1.getValue() - $3.getValue());    	}
              | num '*' num        			{ $$ = Quantity($1.getValue() * $3.getValue());    	}
@@ -60,6 +62,7 @@
 ;            
 
     unit:       UNIT                        { $$ = $1;         	                }
+            |   ONE '/' unit                { $$ = Quantity(1.0)/$3;  	        }
             |   unit '*' unit        	    { $$ = $1 * $3;    	                }
             |   unit '/' unit        		{ $$ = $1 / $3;    	                }
             |   unit '^' num        	    { $$ = $1.pow ($3);                 }

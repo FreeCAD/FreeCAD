@@ -31,9 +31,9 @@
 
 """Simple Part21 STEP reader
 
-Reads a given STEP file. Maps the enteties and instaciate the
-corosbonding classes.
-In addition it writes out a graphwiz file with the entity graph.
+Reads a given STEP file. Maps the entities and instantiate the
+corresponding classes.
+In addition it writes out a graphviz file with the entity graph.
 """
 
 import Part21,sys
@@ -91,8 +91,8 @@ class SimpleParser:
             self._writeGraphVizEdge( i,self._p21loader._instances_definition[i][1],gvFile)
         gvFile.write('}\n')
 
-    def instaciate(self):
-        """Instaciate the python classe from the enteties"""
+    def instantiate(self):
+        """Instantiate the python class from the entities"""
         import inspect
         # load the needed schema module
         if self._p21loader.get_schema_name() == 'config_control_design':
@@ -149,7 +149,7 @@ class SimpleParser:
                     else:
                         self._create_entity_instance(key)
                         if key not in self.instanceMape:
-                            raise NameError("Needed instance not instanciated: ",key)
+                            raise NameError("Needed instance not instantiated: ",key)
                         else:
                             attrList[n] =  self.instanceMape[key]
                 elif i[0] == '$':
@@ -166,6 +166,6 @@ class SimpleParser:
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
     parser = SimpleReader("Aufspannung.stp") # simple test file
-    #parser.instaciate()
+    #parser.instantiate()
     parser.writeGraphViz('TestGrap.gv')
     #dot.exe -Tsvg -o Test.svg e:\fem-dev\src\Mod\Import\App\SCL\TestGrap-geo.gv

@@ -75,7 +75,7 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version >= 3 or utf8_decode:
+        if sys.version_info.major >= 3 or utf8_decode:
             return QtGui.QApplication.translate(context, text, None)
         else:
             return QtGui.QApplication.translate(context, text, None).encode("utf8")
@@ -100,6 +100,7 @@ class todo:
     QtCore.QTimer.singleShot(0,doTodo).'''
     itinerary = []
     commitlist = []
+    afteritinerary = []
     
     @staticmethod
     def doTasks():
@@ -134,6 +135,17 @@ class todo:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.restack()
         todo.commitlist = []
+        for f, arg in todo.afteritinerary:
+            try:
+                # print("debug: executing",f)
+                if arg:
+                    f(arg)
+                else:
+                    f()
+            except:
+                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
+                FreeCAD.Console.PrintWarning (wrn)
+        todo.afteritinerary = []
 
     @staticmethod
     def delay (f, arg):
@@ -147,6 +159,13 @@ class todo:
         # print("debug: delaying commit",cl)
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
+
+    @staticmethod
+    def delayAfter (f, arg):
+        # print("debug: delaying",f)
+        if todo.afteritinerary == []:
+            QtCore.QTimer.singleShot(0, todo.doTasks)
+        todo.afteritinerary.append((f,arg))
 
 #---------------------------------------------------------------------------
 # UNITS handling
@@ -251,13 +270,17 @@ class DraftTaskPanel:
         if hasattr(FreeCADGui,"draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
         else:
-            FreeCADGui.ActiveDocument.resetEdit()
+            if FreeCADGui.ActiveDocument:
+                FreeCADGui.ActiveDocument.resetEdit()
             return True
     def reject(self):
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
-        FreeCADGui.ActiveDocument.resetEdit()
+        if FreeCADGui.ActiveDocument:
+            FreeCADGui.ActiveDocument.resetEdit()
         return True
+    def isAllowedAlterDocument(self):
+        return False
 
 class DraftToolBar:
     "main draft Toolbar"
@@ -647,9 +670,9 @@ class DraftToolBar:
         self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
         self.autoGroupButton.setText("None")
         
-        self.wplabel.setToolTip(translate("draft", "Current working plane:")+self.wplabel.text())
+        self.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.wplabel.text())
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
-        self.colorButton.setToolTip(translate("draft", "Curreont line color"))
+        self.colorButton.setToolTip(translate("draft", "Current line color"))
         self.facecolorButton.setToolTip(translate("draft", "Current face color"))
         self.widthButton.setToolTip(translate("draft", "Current line width"))
         self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
@@ -806,6 +829,8 @@ class DraftToolBar:
                     FreeCADGui.draftToolBar.escape()
                     FreeCADGui.ActiveDocument.resetEdit()
                     return True
+                def isAllowedAlterDocument(self):
+                    return False
             if FreeCADGui.Control.activeDialog():
                 FreeCADGui.Control.closeDialog()
             todo.delay(FreeCADGui.Control.showDialog,dummy(extra))
@@ -1438,7 +1463,8 @@ class DraftToolBar:
         if self.cancel:
             self.cancel()
             self.cancel = None
-        FreeCADGui.ActiveDocument.resetEdit()
+        if FreeCADGui.ActiveDocument:
+            FreeCADGui.ActiveDocument.resetEdit()
 
     def escape(self):
         "escapes the current command"
@@ -2136,6 +2162,95 @@ class FacebinderTaskPanel:
         self.addButton.setText(QtGui.QApplication.translate("draft", "Add", None))
         self.title.setText(QtGui.QApplication.translate("draft", "Facebinder elements", None))
 
+
+class ScaleTaskPanel:
+
+    '''A Task Panel for the Scale tool'''
+
+    def __init__(self):
+        self.sourceCmd = None
+        self.form = QtGui.QWidget()
+        layout = QtGui.QGridLayout(self.form)
+        self.xLabel = QtGui.QLabel()
+        layout.addWidget(self.xLabel,0,0,1,1)
+        self.xValue = QtGui.QDoubleSpinBox()
+        self.xValue.setDecimals(Draft.getParam("precision"))
+        self.xValue.setRange(.0000001,1000000.0)
+        self.xValue.setValue(1)
+        layout.addWidget(self.xValue,0,1,1,1)
+        self.yLabel = QtGui.QLabel()
+        layout.addWidget(self.yLabel,1,0,1,1)
+        self.yValue = QtGui.QDoubleSpinBox()
+        self.yValue.setDecimals(Draft.getParam("precision"))
+        self.yValue.setRange(.0000001,1000000.0)
+        self.yValue.setValue(1)
+        layout.addWidget(self.yValue,1,1,1,1)
+        self.zLabel = QtGui.QLabel()
+        layout.addWidget(self.zLabel,2,0,1,1)
+        self.zValue = QtGui.QDoubleSpinBox()
+        self.zValue.setDecimals(Draft.getParam("precision"))
+        self.zValue.setRange(.0000001,1000000.0)
+        self.zValue.setValue(1)
+        layout.addWidget(self.zValue,2,1,1,1)
+        self.lock = QtGui.QCheckBox()
+        layout.addWidget(self.lock,3,0,1,2)
+        self.relative = QtGui.QCheckBox()
+        layout.addWidget(self.relative,4,0,1,2)
+        self.rLabel = QtGui.QLabel()
+        layout.addWidget(self.rLabel,5,0,1,2)
+        self.isClone = QtGui.QRadioButton()
+        layout.addWidget(self.isClone,6,0,1,2)
+        self.isClone.setChecked(True)
+        self.isOriginal = QtGui.QRadioButton()
+        layout.addWidget(self.isOriginal,7,0,1,2)
+        self.isCopy = QtGui.QRadioButton()
+        layout.addWidget(self.isCopy,8,0,1,2)
+        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
+        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
+        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
+        self.retranslateUi()
+        
+    def setValue(self,val=None):
+        if self.lock.isChecked():
+            self.xValue.setValue(val)
+            self.yValue.setValue(val)
+            self.zValue.setValue(val)
+        if self.sourceCmd:
+            self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+        
+    def retranslateUi(self,widget=None):
+        self.form.setWindowTitle(QtGui.QApplication.translate("Draft", "Scale", None))
+        self.xLabel.setText(QtGui.QApplication.translate("Draft", "X factor", None))
+        self.yLabel.setText(QtGui.QApplication.translate("Draft", "Y factor", None))
+        self.zLabel.setText(QtGui.QApplication.translate("Draft", "Z factor", None))
+        self.lock.setText(QtGui.QApplication.translate("Draft", "Uniform scaling", None))
+        self.relative.setText(QtGui.QApplication.translate("Draft", "Working plane orientation", None))
+        self.rLabel.setText(QtGui.QApplication.translate("Draft", "Result", None))
+        self.isClone.setText(QtGui.QApplication.translate("Draft", "Create a clone", None))
+        self.isOriginal.setText(QtGui.QApplication.translate("Draft", "Modify original", None))
+        self.isCopy.setText(QtGui.QApplication.translate("Draft", "Create a copy", None))
+
+    def accept(self):
+        if self.sourceCmd:
+            x = self.xValue.value()
+            y = self.yValue.value()
+            z = self.zValue.value()
+            rel = self.relative.isChecked()
+            if self.isClone.isChecked():
+                mod = 0
+            elif self.isOriginal.isChecked():
+                mod = 1
+            else:
+                mod = 2
+            self.sourceCmd.scale(x,y,z,rel,mod)
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        if self.sourceCmd:
+            self.sourceCmd.finish()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
 
 if not hasattr(FreeCADGui,"draftToolBar"):
     FreeCADGui.draftToolBar = DraftToolBar()

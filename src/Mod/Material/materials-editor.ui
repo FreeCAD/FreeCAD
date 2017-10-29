@@ -227,7 +227,7 @@
             <string>Source</string>
            </property>
            <property name="toolTip">
-            <string>An optional description of where the informations included in this card come from</string>
+            <string>An optional description of where the information included in this card comes from</string>
            </property>
            <property name="flags">
             <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>

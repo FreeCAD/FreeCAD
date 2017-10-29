@@ -29,6 +29,7 @@
 # include <Python.h>
 # include <climits>
 # include <Standard_Version.hxx>
+# include <NCollection_Vector.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
 # include <TDocStd_Document.hxx>
@@ -134,9 +135,8 @@ private:
                     aReader.Transfer(hDoc);
                     pi->EndScope();
                 }
-                catch (OSD_Exception) {
-                    Handle(Standard_Failure) e = Standard_Failure::Caught();
-                    Base::Console().Error("%s\n", e->GetMessageString());
+                catch (OSD_Exception& e) {
+                    Base::Console().Error("%s\n", e.GetMessageString());
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc,Utf8Name.c_str());
@@ -170,9 +170,8 @@ private:
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
                 }
-                catch (OSD_Exception) {
-                    Handle(Standard_Failure) e = Standard_Failure::Caught();
-                    Base::Console().Error("%s\n", e->GetMessageString());
+                catch (OSD_Exception& e) {
+                    Base::Console().Error("%s\n", e.GetMessageString());
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc,Utf8Name.c_str());
@@ -193,9 +192,8 @@ private:
             pcDoc->recompute();
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -221,6 +219,7 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             bool keepExplicitPlacement = list.size() > 1;
+            keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -230,7 +229,10 @@ private:
                     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                         Part::Feature* part = static_cast<Part::Feature*>(obj);
                         std::vector<App::Color> colors;
-                        ocaf.saveShape(part, colors);
+                        std::vector <TDF_Label> hierarchical_label;
+                        std::vector <TopLoc_Location> hierarchical_loc;
+                        std::vector <App::DocumentObject*> hierarchical_part;
+                        ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
                     }
                     else {
                         Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
@@ -246,7 +248,10 @@ private:
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             App::PropertyColorList colors;
                             colors.setPyObject(item1.ptr());
-                            ocaf.saveShape(part, colors.getValues());
+                            std::vector <TDF_Label> hierarchical_label;
+                            std::vector <TopLoc_Location> hierarchical_loc;
+                            std::vector <App::DocumentObject*> hierarchical_part;
+                            ocaf.saveShape(part, colors.getValues(), hierarchical_label, hierarchical_loc, hierarchical_part);
                         }
                         else {
                             Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
@@ -299,9 +304,8 @@ private:
 
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -361,9 +365,8 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 aReader.Transfer(hDoc);
                 pi->EndScope();
             }
-            catch (OSD_Exception) {
-                Handle(Standard_Failure) e = Standard_Failure::Caught();
-                Base::Console().Error("%s\n", e->GetMessageString());
+            catch (OSD_Exception& e) {
+                Base::Console().Error("%s\n", e.GetMessageString());
                 Base::Console().Message("Try to load STEP file without colors...\n");
 
                 Part::ImportStepParts(pcDoc,Name);
@@ -390,9 +393,8 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
                 aReader.Transfer(hDoc);
                 pi->EndScope();
             }
-            catch (OSD_Exception) {
-                Handle(Standard_Failure) e = Standard_Failure::Caught();
-                Base::Console().Error("%s\n", e->GetMessageString());
+            catch (OSD_Exception& e) {
+                Base::Console().Error("%s\n", e.GetMessageString());
                 Base::Console().Message("Try to load IGES file without colors...\n");
 
                 Part::ImportIgesParts(pcDoc,Name);
@@ -409,9 +411,8 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
         pcDoc->recompute();
 
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_RuntimeError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
     PY_CATCH

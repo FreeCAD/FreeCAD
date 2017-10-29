@@ -31,7 +31,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from lxml import etree  # parsing xml files and exporting
+from xml.etree import ElementTree as ET
 import itertools
 
 
@@ -208,7 +208,7 @@ def read_fenics_mesh_xml(xmlfilename):
     for val in Fenics_to_FreeCAD_dict.itervalues():
         element_dict[val] = {}
 
-    tree = etree.parse(xmlfilename)
+    tree = ET.parse(xmlfilename)
     root = tree.getroot()
 
     if root.tag.lower() != "dolfin":
@@ -225,8 +225,18 @@ def read_fenics_mesh_xml(xmlfilename):
     if root.find("data") is not None:
         print("Internal mesh data found")
 
-    return {'Nodes': nodes,
-            'Hexa8Elem': {}, 'Penta6Elem': {}, 'Tetra4Elem': element_dict['tetra4'], 'Tetra10Elem': {},
-            'Penta15Elem': {}, 'Hexa20Elem': {}, 'Tria3Elem': element_dict['tria3'], 'Tria6Elem': {},
-            'Quad4Elem': element_dict['quad4'], 'Quad8Elem': {}, 'Seg2Elem': element_dict['seg2']
-            }
+    return {
+        'Nodes': nodes,
+        'Seg2Elem': element_dict['seg2'],
+        'Seg3Elem': {},
+        'Tria3Elem': element_dict['tria3'],
+        'Tria6Elem': {},
+        'Quad4Elem': element_dict['quad4'],
+        'Quad8Elem': {},
+        'Tetra4Elem': element_dict['tetra4'],
+        'Tetra10Elem': {},
+        'Hexa8Elem': {},
+        'Hexa20Elem': {},
+        'Penta6Elem': {},
+        'Penta15Elem': {}
+    }

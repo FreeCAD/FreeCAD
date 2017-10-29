@@ -172,7 +172,7 @@ class FemToolsZ88(FemTools.FemTools):
         # print(self.z88_testrun.state())
         # out = self.z88_testrun.readAllStandardOutput()
         # print(out + '\n')  # in some cases output will be cutted, see gmsh macro --> same problem
-        # TODO search out for "Vektor GS" and "Vektor KOI" and print values, may be compare with z88_params value
+        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compare with z88_params value
         self.z88_solve_run()
 
     def z88_solverun_started(self):
@@ -196,7 +196,7 @@ class FemToolsZ88(FemTools.FemTools):
         if os.path.isfile(disp_result_file):
             result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
             importZ88O2Results.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
-            for m in self.analysis.Member:
+            for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
         else:

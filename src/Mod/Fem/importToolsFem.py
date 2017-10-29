@@ -33,6 +33,20 @@ from math import pow, sqrt
 import numpy as np
 
 
+def get_FemMeshObjectMeshGroups(fem_mesh_obj):
+    """
+        Get mesh groups from mesh. This also throws no exception if there
+        is no Groups property at all (e.g. Netgen meshes).
+    """
+    fem_mesh = fem_mesh_obj.FemMesh
+    try:
+        gmshgroups = fem_mesh.Groups
+    except:
+        gmshgroups = ()
+
+    return gmshgroups
+
+
 def get_FemMeshObjectOrder(fem_mesh_obj):
     """
         Gets element order. Element order counting based on number of nodes on
@@ -56,7 +70,6 @@ def get_FemMeshObjectOrder(fem_mesh_obj):
             presumable_order = [el - 1 for el in edges_length_set]
     else:
         print("Found no edges in mesh: Element order determination does not work without them.")
-    print(presumable_order)
 
     return presumable_order
 
@@ -113,17 +126,20 @@ def make_femmesh(mesh_data):
     m = mesh_data
     if ('Nodes' in m) and (len(m['Nodes']) > 0):
         print("Found: nodes")
-        if (('Seg2Elem' in m) or
-           ('Tria3Elem' in m) or
-           ('Tria6Elem' in m) or
-           ('Quad4Elem' in m) or
-           ('Quad8Elem' in m) or
-           ('Tetra4Elem' in m) or
-           ('Tetra10Elem' in m) or
-           ('Penta6Elem' in m) or
-           ('Penta15Elem' in m) or
-           ('Hexa8Elem' in m) or
-           ('Hexa20Elem' in m)):
+        if (
+                ('Seg2Elem' in m) or
+                ('Seg3Elem' in m) or
+                ('Tria3Elem' in m) or
+                ('Tria6Elem' in m) or
+                ('Quad4Elem' in m) or
+                ('Quad8Elem' in m) or
+                ('Tetra4Elem' in m) or
+                ('Tetra10Elem' in m) or
+                ('Penta6Elem' in m) or
+                ('Penta15Elem' in m) or
+                ('Hexa8Elem' in m) or
+                ('Hexa20Elem' in m)
+        ):
 
             nds = m['Nodes']
             print("Found: elements")
@@ -175,11 +191,15 @@ def make_femmesh(mesh_data):
             elms_seg2 = m['Seg2Elem']
             for i in elms_seg2:
                 e = elms_seg2[i]
-                mesh.addEdge(e[0], e[1])
+                mesh.addEdge([e[0], e[1]], i)
+            elms_seg3 = m['Seg3Elem']
+            for i in elms_seg3:
+                e = elms_seg3[i]
+                mesh.addEdge([e[0], e[1], e[2]], i)
             print("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
                   len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)))
-            print("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2".format(
-                  len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
+            print("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3".format(
+                  len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2), len(elms_seg3)))
         else:
             FreeCAD.Console.PrintError("No Elements found!\n")
     else:
@@ -190,6 +210,7 @@ def make_femmesh(mesh_data):
 def fill_femresult_mechanical(results, result_set, span):
     ''' fills  an FreeCAD FEM mechanical result object with result data
     '''
+    no_of_values = None
 
     if 'number' in result_set:
         eigenmode_number = result_set['number']
@@ -293,12 +314,16 @@ def fill_femresult_mechanical(results, result_set, span):
                 results.Temperature = list(map((lambda x: x), Temperature.values()))
             results.Time = step_time
 
+    # read MassFlow, disp does not exist, no_of_values and results.NodeNumbers needs to be set
     if 'mflow' in result_set:
         MassFlow = result_set['mflow']
         if len(MassFlow) > 0:
             results.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             results.Time = step_time
+            no_of_values = len(MassFlow)
+            results.NodeNumbers = list(MassFlow.keys())
 
+    # read NetworkPressure, disp does not exist, see MassFlow
     if 'npressure' in result_set:
         NetworkPressure = result_set['npressure']
         if len(NetworkPressure) > 0:
@@ -310,19 +335,20 @@ def fill_femresult_mechanical(results, result_set, span):
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
     ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
+    temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
 
     if results.DisplacementVectors:
         x_max, y_max, z_max = map(max, zip(*displacement))
         x_min, y_min, z_min = map(min, zip(*displacement))
         sum_list = map(sum, zip(*displacement))
         x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-        a_max = max(results.DisplacementLengths)
         a_min = min(results.DisplacementLengths)
         a_avg = sum(results.DisplacementLengths) / no_of_values
+        a_max = max(results.DisplacementLengths)
     if results.StressValues:
-        s_max = max(results.StressValues)
         s_min = min(results.StressValues)
         s_avg = sum(results.StressValues) / no_of_values
+        s_max = max(results.StressValues)
     if results.PrincipalMax:
         p1_min = min(results.PrincipalMax)
         p1_avg = sum(results.PrincipalMax) / no_of_values
@@ -340,9 +366,21 @@ def fill_femresult_mechanical(results, result_set, span):
         ms_avg = sum(results.MaxShear) / no_of_values
         ms_max = max(results.MaxShear)
     if results.Peeq:
-        peeq_max = max(results.Peeq)
         peeq_min = min(results.Peeq)
         peeq_avg = sum(results.Peeq) / no_of_values
+        peeq_max = max(results.Peeq)
+    if results.Temperature:
+        temp_min = min(results.Temperature)
+        temp_avg = sum(results.Temperature) / no_of_values
+        temp_max = max(results.Temperature)
+    if results.MassFlowRate:
+        mflow_min = min(results.MassFlowRate)
+        mflow_avg = sum(results.MassFlowRate) / no_of_values
+        mflow_max = max(results.MassFlowRate)
+    if results.NetworkPressure:
+        npress_min = min(results.NetworkPressure)
+        npress_avg = sum(results.NetworkPressure) / no_of_values
+        npress_max = max(results.NetworkPressure)
 
     results.Stats = [x_min, x_avg, x_max,
                      y_min, y_avg, y_max,
@@ -353,7 +391,13 @@ def fill_femresult_mechanical(results, result_set, span):
                      p2_min, p2_avg, p2_max,
                      p3_min, p3_avg, p3_max,
                      ms_min, ms_avg, ms_max,
-                     peeq_min, peeq_avg, peeq_max]
+                     peeq_min, peeq_avg, peeq_max,
+                     temp_min, temp_avg, temp_max,
+                     mflow_min, mflow_avg, mflow_max,
+                     npress_min, npress_avg, npress_max]
+    # do not forget to adapt the def get_stats in FemResultTools module as well as the TestFem module
+    # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+    # TODO: a dictionary would be far robust than a list, but needs adapten in VTK too because of VTK result import
 
     return results
 

@@ -120,7 +120,7 @@ class Preview(object):
         self.apLineLabel = DrawText('APText',
                                     text,
                                     Base.Vector(-0.5 * L, 0, zEnd))
-        # Draw the amin frame
+        # Draw the main frame
         amLine = Part.makeLine((0, -0.5 * B, zStart), (0, -0.5 * B, zEnd))
         Part.show(amLine)
         objs = FreeCAD.ActiveDocument.Objects

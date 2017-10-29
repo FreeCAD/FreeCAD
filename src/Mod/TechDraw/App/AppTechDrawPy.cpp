@@ -41,14 +41,21 @@
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
+
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-
 #include <Mod/Part/App/OCCError.h>
 
+#include <Mod/Drawing/App/DrawingExport.h>
+
 #include "DrawProjectSplit.h"
+#include "DrawViewPart.h"
+#include "DrawViewPartPy.h"
+#include "GeometryObject.h"
 #include "EdgeWalker.h"
 
 
@@ -76,6 +83,12 @@ public:
         );
         add_varargs_method("findShapeOutline",&Module::findShapeOutline,
             "wire = findShapeOutline(shape,scale,direction) -- Project shape in direction and find outer wire of result."
+        );
+        add_varargs_method("viewPartAsDxf",&Module::viewPartAsDxf,
+            "string = viewPartAsDxf(DrawViewPart) -- Return the edges of a DrawViewPart in Dxf format."
+        );
+        add_varargs_method("viewPartAsSvg",&Module::viewPartAsSvg,
+            "string = viewPartAsSvg(DrawViewPart) -- Return the edges of a DrawViewPart in Svg format."
         );
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -135,9 +148,9 @@ private:
                 }
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
         if (edgeList.empty()) {
@@ -193,9 +206,9 @@ private:
                 }
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
         if (edgeList.empty()) {
@@ -257,9 +270,9 @@ private:
         try {
             edgeList = DrawProjectSplit::getEdgesForWalker(shape,scale,dir);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
         if (edgeList.empty()) {
@@ -289,6 +302,138 @@ private:
         }
         return Py::asObject(outerWire);
     }
+
+    Py::Object viewPartAsDxf(const Py::Tuple& args)
+    {
+        PyObject *viewObj;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
+            throw Py::Exception("expected (DrawViewPart)");
+        } 
+        Py::String dxfReturn;
+
+        try {
+            App::DocumentObject* obj = 0;
+            TechDraw::DrawViewPart* dvp = 0;
+            Drawing::DXFOutput dxfOut;
+            std::string dxfText; 
+            std::stringstream ss;
+            if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
+                obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+                TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
+                TopoDS_Shape s = TechDrawGeometry::mirrorShape(go->getVisHard());
+                ss << dxfOut.exportEdges(s);
+                s = TechDrawGeometry::mirrorShape(go->getVisOutline());
+                ss << dxfOut.exportEdges(s);
+                if (dvp->SmoothVisible.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getVisSmooth());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->SeamVisible.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getVisSeam());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->HardHidden.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getHidHard());
+                    ss << dxfOut.exportEdges(s);
+                    s = TechDrawGeometry::mirrorShape(go->getHidOutline());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->SmoothHidden.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getHidSmooth());
+                    ss << dxfOut.exportEdges(s);
+                }
+                if (dvp->SeamHidden.getValue()) {
+                    s = TechDrawGeometry::mirrorShape(go->getHidSeam());
+                    ss << dxfOut.exportEdges(s);
+                }
+                // ss now contains all edges as Dxf
+                dxfReturn = Py::String(ss.str());
+           }
+        }
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+
+        return dxfReturn;
+    }
+
+    Py::Object viewPartAsSvg(const Py::Tuple& args)
+    {
+        PyObject *viewObj;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
+            throw Py::Exception("expected (DrawViewPart)");
+        } 
+        Py::String svgReturn;
+        std::string grpHead1 = "<g fill=\"none\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-width=\"";
+        std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
+        std::string grpTail  = "</g>\n";
+        try {
+            App::DocumentObject* obj = 0;
+            TechDraw::DrawViewPart* dvp = 0;
+            Drawing::SVGOutput svgOut;
+            std::string svgText; 
+            std::stringstream ss;
+            if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
+                obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+                TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
+                //visible group begin "<g ... >"
+                ss << grpHead1;
+                double thick = dvp->LineWidth.getValue();
+                ss << thick;
+                ss << grpHead2;
+                TopoDS_Shape s = go->getVisHard();
+                ss << svgOut.exportEdges(s);
+                s = (go->getVisOutline());
+                ss << svgOut.exportEdges(s);
+                if (dvp->SmoothVisible.getValue()) {
+                    s = go->getVisSmooth();
+                    ss << svgOut.exportEdges(s);
+                }
+                if (dvp->SeamVisible.getValue()) {
+                    s = go->getVisSeam();
+                    ss << svgOut.exportEdges(s);
+                }
+                //visible group end "</g>"
+                ss << grpTail;
+
+                if ( dvp->HardHidden.getValue()  ||
+                     dvp->SmoothHidden.getValue() ||
+                     dvp->SeamHidden.getValue() ) {
+                    //hidden group begin
+                    ss << grpHead1;
+                    thick = dvp->HiddenWidth.getValue();
+                    ss << thick;
+                    ss << grpHead2;
+                    if (dvp->HardHidden.getValue()) {
+                        s = go->getHidHard();
+                        ss << svgOut.exportEdges(s);
+                        s = go->getHidOutline();
+                        ss << svgOut.exportEdges(s);
+                    }
+                    if (dvp->SmoothHidden.getValue()) {
+                        s = go->getHidSmooth();
+                        ss << svgOut.exportEdges(s);
+                    }
+                    if (dvp->SeamHidden.getValue()) {
+                        s = go->getHidSeam();
+                        ss << svgOut.exportEdges(s);
+                    }
+                    ss << grpTail;
+                    //hidden group end
+                }
+                // ss now contains all edges as Svg
+                svgReturn = Py::String(ss.str());
+           }
+        }
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+
+        return svgReturn;
+    }
+
  };
 
 PyObject* initModule()

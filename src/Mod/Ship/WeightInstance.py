@@ -43,7 +43,7 @@ class Weight:
         ship -- Ship where the weight is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_weight",
             "True if it is a valid weight instance, False otherwise",
             None))
@@ -52,7 +52,7 @@ class Weight:
                         "Weight",
                         tooltip).IsWeight = True
         # Add the mass property for puntual weights
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_weight",
             "Mass [kg]",
             None))
@@ -61,7 +61,7 @@ class Weight:
                         "Weight",
                         tooltip).Mass = 0.0
         # Add the density property for linear elements
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_weight",
             "Linear density [kg / m]",
             None))
@@ -70,7 +70,7 @@ class Weight:
                         "Weight",
                         tooltip).LineDens = 0.0
         # Add the area density property for surface elements
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_weight",
             "Area density [kg / m^2]",
             None))
@@ -79,7 +79,7 @@ class Weight:
                         "Weight",
                         tooltip).AreaDens = 0.0
         # Add the density property for volumetric elements
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_weight",
             "Density [kg / m^3]",
             None))
@@ -319,7 +319,7 @@ class ViewProviderWeight:
     def setDisplayMode(self, mode):
         """Map the display mode defined in attach with those defined in
         getDisplayModes. Since they have the same names nothing needs to be
-        done. This method is optinal.
+        done. This method is optional.
 
         Keyword arguments:
         mode -- Mode to be activated.

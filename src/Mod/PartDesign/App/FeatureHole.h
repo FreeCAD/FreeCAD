@@ -27,6 +27,12 @@
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 
+class Property;
+
+namespace Base {
+class XMLReader;
+}
+
 namespace PartDesign
 {
 
@@ -37,27 +43,94 @@ class PartDesignExport Hole : public ProfileBased
 public:
     Hole();
 
-    App::PropertyEnumeration    Type;
-    App::PropertyEnumeration    HoleType;
+    App::PropertyBool           Threaded;
+    App::PropertyBool           ModelActualThread;
+    App::PropertyLength         ThreadPitch;
+    App::PropertyAngle          ThreadAngle;
+    App::PropertyLength         ThreadCutOffInner;
+    App::PropertyLength         ThreadCutOffOuter;
     App::PropertyEnumeration    ThreadType;
-    App::PropertyLength         Length;
-    App::PropertyFloat          ThreadSize;
+    App::PropertyEnumeration    ThreadSize;
+    App::PropertyEnumeration    ThreadClass;
+    App::PropertyEnumeration    ThreadFit;
+    App::PropertyLength         Diameter;
+    App::PropertyEnumeration    ThreadDirection;
+    App::PropertyEnumeration    HoleCutType;
+    App::PropertyLength         HoleCutDiameter;
+    App::PropertyLength         HoleCutDepth;
+    App::PropertyAngle          HoleCutCountersinkAngle;
+    App::PropertyEnumeration    DepthType;
+    App::PropertyLength         Depth;
+    App::PropertyEnumeration    DrillPoint;
+    App::PropertyAngle          DrillPointAngle;
+    App::PropertyBool           Tapered;
+    App::PropertyAngle          TaperedAngle;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
-    //short mustExecute() const;
+
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderHole";
     }
     //@}
-private:
-    static const char* TypeEnums[];
-    static const char* HoleTypeEnums[];
-    static const char* ThreadEnums[];
+    short mustExecute() const;
 
+    typedef struct {
+        const char * designation;
+        double diameter;
+        double pitch;
+    } ThreadDescription;
+
+    static const ThreadDescription threadDescription[][171];
+
+    virtual void Restore(Base::XMLReader & reader);
+
+    virtual void updateProps();
+
+protected:
+    void onChanged(const App::Property* prop);
+private:
+    static const char* DepthTypeEnums[];
+    static const char* ThreadTypeEnums[];
+    static const char* ThreadFitEnums[];
+    static const char* DrillPointEnums[];
+    static const char* ThreadDirectionEnums[];
+
+    /* "None" thread profile */
+    static const char* HoleCutType_None_Enums[];
+    static const char* ThreadSize_None_Enums[];
+    static const char* ThreadClass_None_Enums[];
+
+    /* ISO metric coarse profile */
+    static const char* HoleCutType_ISOmetric_Enums[];
+    static const char* ThreadSize_ISOmetric_Enums[];
+    static const char* ThreadClass_ISOmetric_Enums[];
+
+    /* ISO metric fine profile */
+    static const char* HoleCutType_ISOmetricfine_Enums[];
+    static const char* ThreadSize_ISOmetricfine_Enums[];
+    static const char* ThreadClass_ISOmetricfine_Enums[];
+
+    /* UNC profile */
+    static const char* HoleCutType_UNC_Enums[];
+    static const char* ThreadSize_UNC_Enums[];
+    static const char* ThreadClass_UNC_Enums[];
+
+    /* UNF profile */
+    static const char* HoleCutType_UNF_Enums[];
+    static const char* ThreadSize_UNF_Enums[];
+    static const char* ThreadClass_UNF_Enums[];
+
+    /* UNEF profile */
+    static const char* HoleCutType_UNEF_Enums[];
+    static const char* ThreadSize_UNEF_Enums[];
+    static const char* ThreadClass_UNEF_Enums[];
+
+    void updateHoleCutParams();
+    void updateDiameterParam();
 };
 
 } //namespace PartDesign

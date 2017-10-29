@@ -472,8 +472,11 @@ class AttachmentEditorTaskPanel(FrozenClass):
             list_widget = self.form.listOfModes
             list_widget.clear()
             sugr = self.last_sugr
+            # always have the option to choose Deactivated mode
+            valid_modes = ['Deactivated'] + sugr['allApplicableModes']
+            
             # add valid modes
-            for m in sugr['allApplicableModes']:
+            for m in valid_modes:
                 item = QtGui.QListWidgetItem()
                 txt = self.attacher.getModeInfo(m)['UserFriendlyName']
                 item.setText(txt)
@@ -521,8 +524,11 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 for refstr in mi['ReferenceCombinations']:
                     refstr_userfriendly = [self.attacher.getRefTypeInfo(t)['UserFriendlyName'] for t in refstr]
                     cmb.append(u", ".join(refstr_userfriendly))
-                tip = _translate('AttachmentEditor',"{docu}\n\nReference combinations:\n{combinations}",None).format(docu=mi['BriefDocu'], combinations= u"\n".join(cmb) )
-
+                
+                tip = mi['BriefDocu']
+                if (m != 'Deactivated'):
+                    tip += _translate('AttachmentEditor', "\n\nReference combinations:\n", None) + u"\n".join(cmb)
+                
                 item.setToolTip(tip)
 
         finally:
@@ -587,8 +593,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
         
         if new_plm is not None:
             self.form.groupBox_superplacement.setTitle(_translate('AttachmentEditor',"Extra placement:",None))
+            self.form.groupBox_superplacement.setEnabled(True)
         else:
             self.form.groupBox_superplacement.setTitle(_translate('AttachmentEditor',"Extra placement (inactive - not attached):",None))
+            self.form.groupBox_superplacement.setEnabled(False)
 
     def cleanUp(self):
         '''stuff that needs to be done when dialog is closed.'''

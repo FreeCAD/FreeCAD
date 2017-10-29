@@ -498,46 +498,46 @@ class _ViewProviderArchMultiMaterial:
     def isShow(self):
         return True
 
-
-class MultiMaterialDelegate(QtGui.QStyledItemDelegate):
-    def __init__(self, parent=None, *args):
-        self.mats = []
-        for obj in FreeCAD.ActiveDocument.Objects:
-            if obj.isDerivedFrom("App::MaterialObject"):
-                self.mats.append(obj)
-        QtGui.QStyledItemDelegate.__init__(self, parent, *args)
-
-    def createEditor(self,parent,option,index):
-        if index.column() == 1:
-            editor = QtGui.QComboBox(parent)
-        elif index.column() == 2:
-            ui = FreeCADGui.UiLoader()
-            editor = ui.createWidget("Gui::InputField")
-            editor.setSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Minimum)
-            editor.setParent(parent)
-        else:
-            editor = QtGui.QLineEdit(parent)
-        return editor
-
-    def setEditorData(self, editor, index):
-        if index.column() == 1:
-            idx = -1
-            for i,m in enumerate(self.mats):
-                editor.addItem(m.Label)
-                if m.Label == index.data():
-                    idx = i
-            editor.setCurrentIndex(idx)
-        else:
-            QtGui.QStyledItemDelegate.setEditorData(self, editor, index)
-
-    def setModelData(self, editor, model, index):
-        if index.column() == 1:
-            if editor.currentIndex() == -1:
-                model.setData(index, "")
+if FreeCAD.GuiUp:
+    class MultiMaterialDelegate(QtGui.QStyledItemDelegate):
+        def __init__(self, parent=None, *args):
+            self.mats = []
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if obj.isDerivedFrom("App::MaterialObject"):
+                    self.mats.append(obj)
+            QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+    
+        def createEditor(self,parent,option,index):
+            if index.column() == 1:
+                editor = QtGui.QComboBox(parent)
+            elif index.column() == 2:
+                ui = FreeCADGui.UiLoader()
+                editor = ui.createWidget("Gui::InputField")
+                editor.setSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Minimum)
+                editor.setParent(parent)
             else:
-                model.setData(index, self.mats[editor.currentIndex()].Label)
-        else:
-            QtGui.QStyledItemDelegate.setModelData(self, editor, model, index)
+                editor = QtGui.QLineEdit(parent)
+            return editor
+    
+        def setEditorData(self, editor, index):
+            if index.column() == 1:
+                idx = -1
+                for i,m in enumerate(self.mats):
+                    editor.addItem(m.Label)
+                    if m.Label == index.data():
+                        idx = i
+                editor.setCurrentIndex(idx)
+            else:
+                QtGui.QStyledItemDelegate.setEditorData(self, editor, index)
+    
+        def setModelData(self, editor, model, index):
+            if index.column() == 1:
+                if editor.currentIndex() == -1:
+                    model.setData(index, "")
+                else:
+                    model.setData(index, self.mats[editor.currentIndex()].Label)
+            else:
+                QtGui.QStyledItemDelegate.setModelData(self, editor, model, index)
 
 
 class _ArchMultiMaterialTaskPanel:

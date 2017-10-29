@@ -59,8 +59,6 @@ CmdPathArea::CmdPathArea()
     sWhatsThis      = "Path_Area";
     sStatusTip      = sToolTipText;
     sPixmap         = "Path-Area";
-    sAccel          = "P,A";
-
 }
 
 void CmdPathArea::activated(int iMsg)
@@ -143,8 +141,6 @@ CmdPathAreaWorkplane::CmdPathAreaWorkplane()
     sWhatsThis      = "Path_Area_Workplane";
     sStatusTip      = sToolTipText;
     sPixmap         = "Path-Area-Workplane";
-    sAccel          = "P,W";
-
 }
 
 void CmdPathAreaWorkplane::activated(int iMsg)
@@ -235,8 +231,6 @@ CmdPathCompound::CmdPathCompound()
     sWhatsThis      = "Path_Compound";
     sStatusTip      = sToolTipText;
     sPixmap         = "Path-Compound";
-    sAccel          = "P,C";
-
 }
 
 void CmdPathCompound::activated(int iMsg)
@@ -289,7 +283,6 @@ CmdPathShape::CmdPathShape()
     sWhatsThis      = "Path_Shape";
     sStatusTip      = sToolTipText;
     sPixmap         = "Path-Shape";
-    sAccel          = "P,S";
 }
 
 void CmdPathShape::activated(int iMsg)

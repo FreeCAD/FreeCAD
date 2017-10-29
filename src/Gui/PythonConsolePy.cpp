@@ -46,6 +46,7 @@ void PythonStdout::init_type()
     behaviors().supportRepr();
     add_varargs_method("write",&PythonStdout::write,"write()");
     add_varargs_method("flush",&PythonStdout::flush,"flush()");
+    add_noargs_method("isatty",&PythonStdout::isatty,"isatty()");
 }
 
 PythonStdout::PythonStdout(PythonConsole *pc)
@@ -113,6 +114,11 @@ Py::Object PythonStdout::flush(const Py::Tuple&)
     return Py::None();
 }
 
+Py::Object PythonStdout::isatty()
+{
+    return Py::False();
+}
+
 // -------------------------------------------------------------------------
 
 void PythonStderr::init_type()
@@ -123,6 +129,7 @@ void PythonStderr::init_type()
     behaviors().supportRepr();
     add_varargs_method("write",&PythonStderr::write,"write()");
     add_varargs_method("flush",&PythonStderr::flush,"flush()");
+    add_noargs_method("isatty",&PythonStderr::isatty,"isatty()");
 }
 
 PythonStderr::PythonStderr(PythonConsole *pc)
@@ -190,6 +197,11 @@ Py::Object PythonStderr::flush(const Py::Tuple&)
     return Py::None();
 }
 
+Py::Object PythonStderr::isatty()
+{
+    return Py::False();
+}
+
 // -------------------------------------------------------------------------
 
 void OutputStdout::init_type()
@@ -200,6 +212,7 @@ void OutputStdout::init_type()
     behaviors().supportRepr();
     add_varargs_method("write",&OutputStdout::write,"write()");
     add_varargs_method("flush",&OutputStdout::flush,"flush()");
+    add_noargs_method("isatty",&OutputStdout::isatty,"isatty()");
 }
 
 OutputStdout::OutputStdout()
@@ -264,6 +277,12 @@ Py::Object OutputStdout::flush(const Py::Tuple&)
     return Py::None();
 }
 
+Py::Object OutputStdout::isatty()
+{
+    return Py::False();
+}
+
+
 // -------------------------------------------------------------------------
 
 void OutputStderr::init_type()
@@ -274,6 +293,7 @@ void OutputStderr::init_type()
     behaviors().supportRepr();
     add_varargs_method("write",&OutputStderr::write,"write()");
     add_varargs_method("flush",&OutputStderr::flush,"flush()");
+    add_noargs_method("isatty",&OutputStderr::isatty,"isatty()");
 }
 
 OutputStderr::OutputStderr()
@@ -337,6 +357,12 @@ Py::Object OutputStderr::flush(const Py::Tuple&)
 {
     return Py::None();
 }
+
+Py::Object OutputStderr::isatty()
+{
+    return Py::False();
+}
+
 
 // -------------------------------------------------------------------------
 

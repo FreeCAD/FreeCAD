@@ -32,6 +32,7 @@
 
 #include "GeometryObject.h"
 #include "DrawUtil.h"
+#include "DrawPage.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
 
@@ -64,8 +65,8 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     //projection group controls these
     Direction.setStatus(App::Property::ReadOnly,true);
     RotationVector.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
 }
 
 short DrawProjGroupItem::mustExecute() const
@@ -74,9 +75,7 @@ short DrawProjGroupItem::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     RotationVector.isTouched() ||
-                    Source.isTouched()  ||
-                    Scale.isTouched() ||
-                    ScaleType.isTouched());
+                    Source.isTouched()  );
     }
 
     if (result) {
@@ -95,16 +94,33 @@ DrawProjGroupItem::~DrawProjGroupItem()
 {
 }
 
+App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
+{
+    App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
+    delete ret;
+
+    auto pgroup = getPGroup();
+    Base::Vector3d newPos;
+    if ((pgroup != nullptr) && 
+        (pgroup->AutoDistribute.getValue())) {
+         newPos = pgroup->getXYPosition(Type.getValueAsString());
+         X.setValue(newPos.x);
+         Y.setValue(newPos.y);
+         requestPaint();
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
 void DrawProjGroupItem::onDocumentRestored()
 {
-//    setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
     App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
     if (rc) {
         delete rc;
     }
 }
 
-DrawProjGroup* DrawProjGroupItem::getGroup() const
+DrawProjGroup* DrawProjGroupItem::getPGroup() const
 {
     DrawProjGroup* result = nullptr;
     std::vector<App::DocumentObject*> parent = getInList();
@@ -134,6 +150,7 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
      return viewAxis;
 }
 
+//obs??
 //get the angle between the current RotationVector vector and the original X dir angle
 double DrawProjGroupItem::getRotateAngle()
 {
@@ -160,15 +177,26 @@ double DrawProjGroupItem::getRotateAngle()
     return angle;
 }
 
+double DrawProjGroupItem::getScale(void) const
+{
+    double result = 1.0;
+    auto pgroup = getPGroup();
+    if (pgroup != nullptr) {
+        result = pgroup->Scale.getValue();
+    }
+    return result;
+}
+
+
 void DrawProjGroupItem::unsetupObject()
 {
-    if (getGroup() != nullptr) {
-        if (getGroup()->hasProjection(Type.getValueAsString()) ) {
-            if ((getGroup()->getAnchor() == this) &&
-                 !getGroup()->isDeleting() )         {
+    if (getPGroup() != nullptr) {
+        if (getPGroup()->hasProjection(Type.getValueAsString()) ) {
+            if ((getPGroup()->getAnchor() == this) &&
+                 !getPGroup()->isUnsetting() )         {
                    Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
-                                           getGroup()->getNameInDocument(),getGroup()->Label.getValue());
-                   getGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+                                           getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
+                   getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
              }
         }
     }

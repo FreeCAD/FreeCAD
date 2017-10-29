@@ -216,6 +216,7 @@ class CommandPathInspect:
     def GetResources(self):
         return {'Pixmap': 'Path-Inspect',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspect G-code"),
+                'Accel': "P, I",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspects the G-code contents of a path")}
 
     def IsActive(self):

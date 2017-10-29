@@ -51,6 +51,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <cstdio>
+#include <cerrno>
+#include <cstring>
 
 using namespace Base;
 
@@ -280,6 +282,14 @@ std::string FileInfo::extension () const
     return FileName.substr(pos+1);
 }
 
+std::string FileInfo::completeExtension () const
+{
+    std::string::size_type pos = FileName.find_first_of('.');
+    if (pos == std::string::npos)
+        return std::string();
+    return FileName.substr(pos+1);
+}
+
 bool FileInfo::hasExtension (const char* Ext) const
 {
 #if defined (FC_OS_WIN32)
@@ -469,6 +479,10 @@ bool FileInfo::renameFile(const char* NewName)
 #else
 #   error "FileInfo::renameFile() not implemented for this platform!"
 #endif
+    if (!res) {
+        int code = errno;
+        std::clog << "Error in renameFile: " << strerror(code) << " (" << code << ")" << std::endl;
+    }
 
     return res;
 }

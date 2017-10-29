@@ -116,7 +116,7 @@
      <item>
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>freecad,</string>
+        <string>FreeCAD,</string>
        </property>
       </widget>
      </item>

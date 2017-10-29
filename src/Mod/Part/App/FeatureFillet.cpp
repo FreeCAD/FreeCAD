@@ -85,9 +85,8 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making fillets");

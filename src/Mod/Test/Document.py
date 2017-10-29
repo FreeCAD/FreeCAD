@@ -156,6 +156,13 @@ class DocumentBasicCases(unittest.TestCase):
   def testMem(self):
     self.Doc.MemSize
 
+  def testDuplicateLinks(self):
+    obj = self.Doc.addObject("App::FeatureTest","obj")
+    grp = self.Doc.addObject("App::DocumentObjectGroup","group")
+    grp.Group = [obj,obj]
+    self.Doc.removeObject(obj.Name)
+    self.assertListEqual(grp.Group, [])
+
   def testAddRemove(self):
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
     # must delete object
@@ -263,80 +270,6 @@ class DocumentBasicCases(unittest.TestCase):
     
     self.Doc.removeObject(obj.Name)
     del obj
-    
-  def testRecompute(self):
-      
-    # sequence to test recompute behaviour
-    #       L1---\    L7
-    #      /  \   \    |
-    #    L2   L3   \  L8
-    #   /  \ /  \  /
-    #  L4   L5   L6
-
-    L1 = self.Doc.addObject("App::FeatureTest","Label_1")
-    L2 = self.Doc.addObject("App::FeatureTest","Label_2")
-    L3 = self.Doc.addObject("App::FeatureTest","Label_3")
-    L4 = self.Doc.addObject("App::FeatureTest","Label_4")
-    L5 = self.Doc.addObject("App::FeatureTest","Label_5")
-    L6 = self.Doc.addObject("App::FeatureTest","Label_6")
-    L7 = self.Doc.addObject("App::FeatureTest","Label_7")
-    L8 = self.Doc.addObject("App::FeatureTest","Label_8")
-    L1.LinkList = [L2,L3,L6]
-    L2.Link = L4
-    L2.LinkList = [L5]
-    L3.LinkList = [L5,L6]
-    L7.Link = L8 #make second root
-
-    self.failUnless(L7 in self.Doc.RootObjects)
-    self.failUnless(L1 in self.Doc.RootObjects)
-
-    self.failUnless(len(self.Doc.Objects) == len(self.Doc.ToplogicalSortedObjects))
-
-    seqDic = {}
-    i = 0
-    for obj in self.Doc.ToplogicalSortedObjects:
-        seqDic[obj] = i
-        print(obj)
-        i += 1
-        
-    self.failUnless(seqDic[L2] > seqDic[L1])
-    self.failUnless(seqDic[L3] > seqDic[L1])
-    self.failUnless(seqDic[L5] > seqDic[L2])
-    self.failUnless(seqDic[L5] > seqDic[L3])
-    self.failUnless(seqDic[L5] > seqDic[L1])
-
-
-    self.failUnless((0, 0, 0, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    self.failUnless(self.Doc.recompute()==4)
-    self.failUnless((1, 1, 1, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L5.touch()
-    self.failUnless((1, 1, 1, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    self.failUnless(self.Doc.recompute()==4)
-    self.failUnless((2, 2, 2, 0, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L4.touch()
-    self.failUnless(self.Doc.recompute()==3)
-    self.failUnless((3, 3, 2, 1, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L5.touch()
-    self.failUnless(self.Doc.recompute()==4)
-    self.failUnless((4, 4, 3, 1, 2, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L6.touch()
-    self.failUnless(self.Doc.recompute()==3)
-    self.failUnless((5, 4, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L2.touch()
-    self.failUnless(self.Doc.recompute()==2)
-    self.failUnless((6, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L1.touch()
-    self.failUnless(self.Doc.recompute()==1)
-    self.failUnless((7, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-     
-    self.Doc.removeObject(L1.Name)
-    self.Doc.removeObject(L2.Name)
-    self.Doc.removeObject(L3.Name)
-    self.Doc.removeObject(L4.Name)
-    self.Doc.removeObject(L5.Name)
-    self.Doc.removeObject(L6.Name)
-    self.Doc.removeObject(L7.Name)
-    self.Doc.removeObject(L8.Name)
     
   def testPropertyLink_Issue2902Part1(self):
     o1 = self.Doc.addObject("App::FeatureTest","test1")
@@ -528,6 +461,79 @@ class DocumentRecomputeCases(unittest.TestCase):
     self.L1.Link = self.L2
     self.L2.Link = self.L3
 
+  def testRecompute(self):
+      
+    # sequence to test recompute behaviour
+    #       L1---\    L7
+    #      /  \   \    |
+    #    L2   L3   \  L8
+    #   /  \ /  \  /
+    #  L4   L5   L6
+
+    L1 = self.Doc.addObject("App::FeatureTest","Label_1")
+    L2 = self.Doc.addObject("App::FeatureTest","Label_2")
+    L3 = self.Doc.addObject("App::FeatureTest","Label_3")
+    L4 = self.Doc.addObject("App::FeatureTest","Label_4")
+    L5 = self.Doc.addObject("App::FeatureTest","Label_5")
+    L6 = self.Doc.addObject("App::FeatureTest","Label_6")
+    L7 = self.Doc.addObject("App::FeatureTest","Label_7")
+    L8 = self.Doc.addObject("App::FeatureTest","Label_8")
+    L1.LinkList = [L2,L3,L6]
+    L2.Link = L4
+    L2.LinkList = [L5]
+    L3.LinkList = [L5,L6]
+    L7.Link = L8 #make second root
+
+    self.failUnless(L7 in self.Doc.RootObjects)
+    self.failUnless(L1 in self.Doc.RootObjects)
+
+    self.failUnless(len(self.Doc.Objects) == len(self.Doc.TopologicalSortedObjects))
+
+    seqDic = {}
+    i = 0
+    for obj in self.Doc.TopologicalSortedObjects:
+        seqDic[obj] = i
+        print(obj)
+        i += 1
+        
+    self.failUnless(seqDic[L2] > seqDic[L1])
+    self.failUnless(seqDic[L3] > seqDic[L1])
+    self.failUnless(seqDic[L5] > seqDic[L2])
+    self.failUnless(seqDic[L5] > seqDic[L3])
+    self.failUnless(seqDic[L5] > seqDic[L1])
+
+
+    self.failUnless((0, 0, 0, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    self.failUnless(self.Doc.recompute()==4)
+    self.failUnless((1, 1, 1, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    L5.touch()
+    self.failUnless((1, 1, 1, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    self.failUnless(self.Doc.recompute()==4)
+    self.failUnless((2, 2, 2, 0, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    L4.touch()
+    self.failUnless(self.Doc.recompute()==3)
+    self.failUnless((3, 3, 2, 1, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    L5.touch()
+    self.failUnless(self.Doc.recompute()==4)
+    self.failUnless((4, 4, 3, 1, 2, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    L6.touch()
+    self.failUnless(self.Doc.recompute()==3)
+    self.failUnless((5, 4, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    L2.touch()
+    self.failUnless(self.Doc.recompute()==2)
+    self.failUnless((6, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+    L1.touch()
+    self.failUnless(self.Doc.recompute()==1)
+    self.failUnless((7, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
+     
+    self.Doc.removeObject(L1.Name)
+    self.Doc.removeObject(L2.Name)
+    self.Doc.removeObject(L3.Name)
+    self.Doc.removeObject(L4.Name)
+    self.Doc.removeObject(L5.Name)
+    self.Doc.removeObject(L6.Name)
+    self.Doc.removeObject(L7.Name)
+    self.Doc.removeObject(L8.Name)
 
   def tearDown(self):
     #closing doc
@@ -758,6 +764,84 @@ class UndoRedoCases(unittest.TestCase):
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
 
+  def testUndoInList(self):
+    
+    self.Doc.UndoMode = 1
+      
+    self.Doc.openTransaction("Box")
+    self.Box = self.Doc.addObject('Part::Box')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Cylinder")
+    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Doc.commitTransaction()
+    
+    self.Doc.openTransaction("Fuse")
+    self.Fuse1 = self.Doc.addObject('Part::MultiFuse', 'Fuse')
+    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Doc.commitTransaction()
+    
+    self.Doc.undo()
+    self.failUnless(len(self.Box.InList) == 0)
+    self.failUnless(len(self.Cylinder.InList) == 0)      
+    
+    self.Doc.redo()
+    self.failUnless(len(self.Box.InList) == 1)
+    self.failUnless(self.Box.InList[0] == self.Doc.Fuse)
+    self.failUnless(len(self.Cylinder.InList) == 1)  
+    self.failUnless(self.Cylinder.InList[0] == self.Doc.Fuse)
+      
+  def testUndoIssue0003150Part1(self):
+  
+    self.Doc.UndoMode = 1
+  
+    self.Doc.openTransaction("Box")
+    self.Box = self.Doc.addObject('Part::Box')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Cylinder")
+    self.Cylinder = self.Doc.addObject('Part::Cylinder')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Fuse")
+    self.Fuse1 = self.Doc.addObject('Part::MultiFuse')
+    self.Fuse1.Shapes = [self.Box, self.Cylinder]
+    self.Doc.commitTransaction()
+    self.Doc.recompute()
+
+    self.Doc.openTransaction("Sphere")
+    self.Sphere = self.Doc.addObject('Part::Sphere')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Fuse")
+    self.Fuse2 = self.Doc.addObject('Part::MultiFuse')
+    self.Fuse2.Shapes = [self.Fuse1, self.Sphere]
+    self.Doc.commitTransaction()
+    self.Doc.recompute()
+
+    self.Doc.openTransaction("Part")
+    self.Part = self.Doc.addObject('App::Part')
+    self.Doc.commitTransaction()
+
+    self.Doc.openTransaction("Drag")
+    self.Part.addObject(self.Fuse2)
+    self.Doc.commitTransaction()
+
+    #3 undos show the problem of failing recompute
+    self.Doc.undo()
+    self.Doc.undo()
+    self.Doc.undo()
+    self.failUnless(self.Doc.recompute() >= 0)
+
+  def tearDown(self):
+    # closing doc
+    FreeCAD.closeDocument("UndoTest")
+
+class DocumentGroupCases(unittest.TestCase):
+    
+  def setUp(self):
+    self.Doc = FreeCAD.newDocument("GroupTests")
+
   def testGroup(self):
     # Add an object to the group
     L2 = self.Doc.addObject("App::FeatureTest","Label_2")
@@ -866,19 +950,17 @@ class UndoRedoCases(unittest.TestCase):
     self.failUnless(prt1.hasObject(obj1)==False)
     self.failUnless(prt2.hasObject(grp2))
     self.failUnless(prt2.hasObject(obj1))
-       
-    #to test: try add obj to second group by .Group = []
-    grp = prt1.Group
-    grp.append(grp2)
-    
-    #to test: check if cross CS link works
-    #try:
-    #    prt1.Group=grp
-    #except:
-    #    pass
-    #else:
-    #    self.fail("No exception at cross geofeaturegroup links")
-    
+    try:
+        grp = prt1.Group
+        grp.append(obj1)
+        prt1.Group = grp
+    except:
+        grp.remove(obj1)
+        self.failUnless(prt1.Group == grp)
+    else:
+        self.fail("No exception thrown when object is in multiple Groups")
+          
+    #it is not allowed to be in 2 Groups
     prt2.addObject(grp1)
     grp = grp1.Group
     grp.append(obj1)
@@ -888,13 +970,73 @@ class UndoRedoCases(unittest.TestCase):
         pass
     else:
         self.fail("No exception thrown when object is in multiple Groups")
-   
+          
+    #cross linking between GeoFeatureGroups is not allowed
+    self.Doc.recompute()
+    box = self.Doc.addObject("Part::Box","Box")
+    cyl = self.Doc.addObject("Part::Cylinder","Cylinder")
+    fus = self.Doc.addObject("Part::MultiFuse","Fusion")
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Up-to-date')
+    fus.Shapes = [] #remove all links as addObject would otherwise transfer all linked objects
+    prt1.addObject(cyl)
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Invalid')
+    fus.Shapes = []
+    prt1.addObject(box)
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Invalid')
+    fus.Shapes = []
+    prt1.addObject(fus)
+    fus.Shapes = [cyl, box]
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Up-to-date')
+    prt2.addObject(box) #this time addObject should move all dependencies to the new part
+    self.Doc.recompute()
+    self.failUnless(fus.State[0] == 'Up-to-date')
+    
+    #grouping must be resilient against cyclic links and not crash: #issue 0002567
+    prt1.addObject(prt2)
+    grp = prt2.Group
+    grp.append(prt1)
+    prt2.Group = grp
+    self.Doc.recompute()
+    prt2.Group = []
+    try:
+        prt2.Group = [prt2]
+    except:
+        pass
+    else:
+        self.fail("Exception is expected")
         
+    self.Doc.recompute()
+    
+  def testIssue0003150Part2(self):
+    self.box = self.Doc.addObject("Part::Box")
+    self.cyl = self.Doc.addObject("Part::Cylinder")
+    self.sph = self.Doc.addObject("Part::Sphere")
+
+    self.fus1 = self.Doc.addObject("Part::MultiFuse")
+    self.fus2 = self.Doc.addObject("Part::MultiFuse")
+
+    self.fus1.Shapes = [self.box, self.cyl];
+    self.fus2.Shapes = [self.sph, self.cyl];
+
+    self.prt = self.Doc.addObject("App::Part")
+    self.prt.addObject(self.fus1)
+    self.failUnless(len(self.prt.Group)==5)
+    self.failUnless(self.fus2.getParentGeoFeatureGroup() == self.prt)
+    self.failUnless(self.prt.hasObject(self.sph))
+    
+    self.prt.removeObject(self.fus1)
+    self.failUnless(len(self.prt.Group)==0)
 
   def tearDown(self):
     # closing doc
-    FreeCAD.closeDocument("UndoTest")
-
+    FreeCAD.closeDocument("GroupTests")
 
 class DocumentPlatformCases(unittest.TestCase):
   def setUp(self):
@@ -958,6 +1100,8 @@ class DocumentPlatformCases(unittest.TestCase):
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PlatformTests")
+
+
 class DocumentFileIncludeCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("FileIncludeTests")
@@ -1096,6 +1240,46 @@ class DocumentPropertyCases(unittest.TestCase):
     FreeCAD.closeDocument("PropertyTests")
     self.Doc = FreeCAD.open(tempFile)
 
+  def testRemoveProperty(self):
+    prop = 'Something'
+    self.Obj.addProperty('App::PropertyFloat', prop)
+    self.Obj.Something = 0.01
+    self.Doc.recompute()
+    self.Doc.openTransaction('modify and remove property')
+    self.Obj.Something = 0.00
+    self.Obj.removeProperty(prop)
+    self.Obj.recompute()
+    self.Doc.abortTransaction()
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PropertyTests")
+
+
+class DocumentExpressionCases(unittest.TestCase):
+  def setUp(self):
+    self.Doc = FreeCAD.newDocument()
+    self.Obj1 = self.Doc.addObject("App::FeatureTest","Test")
+    self.Obj2 = self.Doc.addObject("App::FeatureTest","Test")
+
+  def testExpression(self):
+    # set the object twice to test that the backlinks are removed when overwriting the expression
+    self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
+    self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
+    self.Obj1.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(0,0,1),10))
+    self.Doc.recompute()
+    self.assertEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+    # clear the expression
+    self.Obj2.setExpression('Placement.Rotation.Angle', None)
+    self.assertEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+    self.Doc.recompute()
+    self.assertEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+    # touch the objects to perform a recompute
+    self.Obj1.Placement = self.Obj1.Placement
+    self.Obj2.Placement = self.Obj2.Placement
+    # must not raise a topological error
+    self.assertEqual(self.Doc.recompute(), 2)
+
+  def tearDown(self):
+    #closing doc
+    FreeCAD.closeDocument(self.Doc.Name)

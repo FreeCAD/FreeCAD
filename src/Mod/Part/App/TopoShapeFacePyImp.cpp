@@ -139,9 +139,9 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return 0;
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -172,9 +172,9 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkFace.Face());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -205,9 +205,9 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkFace.Face());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -251,9 +251,9 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             getTopoShapePtr()->setShape(mkFace.Face());
             return 0;
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -311,9 +311,9 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 Standard_Failure::Raise("no wires in list");
             }
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+    
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -358,9 +358,8 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         } catch (Base::Exception &e){
             PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
             return -1;
-        } catch (Standard_Failure){
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        } catch (Standard_Failure& e){
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
     }
@@ -506,9 +505,9 @@ PyObject* TopoShapeFacePy::derivative1At(PyObject *args)
         tuple.setItem(1, Py::Vector(Base::Vector3d(vecV.X(),vecV.Y(),vecV.Z())));
         return Py::new_reference_to(tuple);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -531,9 +530,9 @@ PyObject* TopoShapeFacePy::derivative2At(PyObject *args)
         tuple.setItem(1, Py::Vector(Base::Vector3d(vecV.X(),vecV.Y(),vecV.Z())));
         return Py::new_reference_to(tuple);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -558,9 +557,9 @@ PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args)
         TopAbs_State state = CL.Perform(gp_Pnt2d(u,v));
         return PyBool_FromLong((state == TopAbs_ON || state == TopAbs_IN) ? 1 : 0);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -576,9 +575,9 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
         BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Face(this->getTopoShapePtr()->getShape()), gp_Pnt(pt.x,pt.y,pt.z));
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -629,9 +628,9 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
 
         Py_Return;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -664,9 +663,9 @@ PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
         tuple.setItem(2, Py::Float(last));
         return Py::new_reference_to(tuple);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

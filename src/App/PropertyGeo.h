@@ -75,6 +75,9 @@ public:
     void setValue(const Base::Vector3d &vec);
     void setValue(double x, double y, double z);
 
+    /// Get valid paths for this property; used by auto completer
+    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+
     /** This method returns a string representation of the property
      */
     const Base::Vector3d &getValue(void) const;
@@ -117,11 +120,60 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
     }
 };
 
+class AppExport PropertyPosition: public PropertyVector
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyPosition();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyPosition();
+
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
+    const char* getEditorName(void) const {
+        return "Gui::PropertyEditor::PropertyPositionItem";
+    }
+};
+
+class AppExport PropertyDirection: public PropertyVector
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyDirection();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyDirection();
+
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
+    const char* getEditorName(void) const {
+        return "Gui::PropertyEditor::PropertyDirectionItem";
+    }
+};
 
 class AppExport PropertyVectorList: public PropertyLists
 {

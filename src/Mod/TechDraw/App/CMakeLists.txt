@@ -24,6 +24,7 @@ set(TechDrawLIBS
     Measure
     Part
     Spreadsheet
+    Drawing
 )
 
 generate_from_xml(DrawPagePy)

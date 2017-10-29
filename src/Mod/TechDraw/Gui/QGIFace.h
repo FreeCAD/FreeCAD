@@ -106,13 +106,13 @@ public:
     void setLineWeight(double w);
 
     void clearLineSets(void);
-    void addLineSet(LineSet ls);
+    void addLineSet(LineSet& ls);
     void clearFillItems(void);
 
-    void lineSetToFillItems(LineSet ls);
-    QGraphicsPathItem* geomToLine(TechDrawGeometry::BaseGeom* base, LineSet ls);
-    QGraphicsPathItem* geomToOffsetLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet ls);
-    QGraphicsPathItem* geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet ls);
+    void lineSetToFillItems(LineSet& ls);
+    QGraphicsPathItem* geomToLine(TechDrawGeometry::BaseGeom* base,LineSet& ls);
+//    QGraphicsPathItem* geomToOffsetLine(TechDrawGeometry::BaseGeom* base, double offset, const LineSet& ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds);
 
     //bitmap texture fill parms method

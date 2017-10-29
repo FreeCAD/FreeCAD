@@ -114,7 +114,7 @@ public:
     void paintGL();
 };
 
-class Polyline : public Gui::GLGraphicsItem
+class GuiExport Polyline : public Gui::GLGraphicsItem
 {
     View3DInventorViewer* viewer;
     std::vector<QPoint> _cNodeVector;

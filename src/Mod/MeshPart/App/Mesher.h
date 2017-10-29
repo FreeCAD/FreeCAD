@@ -81,6 +81,10 @@ public:
     { regular = s; }
     bool isRegular() const
     { return regular; }
+    void setRelative(bool s)
+    { relative = s; }
+    bool isRelative() const
+    { return relative; }
     void setSegments(bool s)
     { segments = s; }
     bool isSegments() const
@@ -134,6 +138,7 @@ private:
     double deflection;
     double angularDeflection;
     double minLen, maxLen;
+    bool relative;
     bool regular;
     bool segments;
 #if defined (HAVE_NETGEN)

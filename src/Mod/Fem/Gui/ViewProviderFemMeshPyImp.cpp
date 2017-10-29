@@ -96,6 +96,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject *args)
         this->getViewProviderFemMeshPtr()->setColorByNodeId(ids, node_colors);
     } else {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeByScalars");
+        return 0;
     }
     Py_Return;
 }
@@ -124,6 +125,7 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject *args)
         this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(ids, vectors);
     } else {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeDisplacementByVectors");
+        return 0;
     }
     Py_Return;
 }

@@ -3096,7 +3096,7 @@ gp_XYZ _ViscousBuilder::getFaceNormal(const SMDS_MeshNode* node,
       isOK = false;
       return p.XYZ();
     }
-    Quantity_Parameter U,V;
+    Standard_Real U,V;
     projector.LowerDistanceParameters(U,V);
     uv.SetCoord( U,V );
   }

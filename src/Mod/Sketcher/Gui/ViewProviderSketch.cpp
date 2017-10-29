@@ -111,6 +111,7 @@
 #include "DrawSketchHandler.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
+#include "CommandConstraints.h"
 
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...
@@ -768,14 +769,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                
-                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                            
-                                if(autoRecompute)
-                                    Gui::Command::updateActive();
-                                else
-                                    getSketchObject()->solve();
+
+                                tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -807,13 +802,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                            
-                                if(autoRecompute)
-                                    Gui::Command::updateActive();
-                                else
-                                    getSketchObject()->solve();
+
+                                tryAutoRecomputeIfNotSolve(getSketchObject());
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -1944,6 +1934,12 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     int VertexId = -1; // the loop below should be in sync with the main loop in ViewProviderSketch::draw
                        // so that the vertex indices are calculated correctly
     int GeoId = 0;
+
+    bool touchMode = false;
+    //check if selection goes from the right to the left side (for touch-selection where even partially boxed objects get selected)
+    if(corners[0].getValue()[0] > corners[1].getValue()[0])
+        touchMode = true;
+
     for (std::vector<Part::Geometry *>::const_iterator it = geomlist.begin(); it != geomlist.end()-2; ++it, ++GeoId) {
 
         if (GeoId >= intGeoCount)
@@ -1985,14 +1981,28 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt1Inside && pnt2Inside) {
+            if ((pnt1Inside && pnt2Inside) && !touchMode) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
+            //check if line intersects with polygon
+            else if (touchMode) {
+                    Base::Polygon2d lineAsPolygon;
+                    lineAsPolygon.Add(Base::Vector2d(pnt1.x, pnt1.y));
+                    lineAsPolygon.Add(Base::Vector2d(pnt2.x, pnt2.y));
+                    std::list<Base::Polygon2d> resultList;
+                    polygon.Intersect(lineAsPolygon, resultList);
+                    if (!resultList.empty()) {
+                        std::stringstream ss;
+                        ss << "Edge" << GeoId + 1;
+                        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                    }
+                }
 
         } else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
             // ----- Check if circle lies inside box selection -----/
+            ///TODO: Make it impossible to miss the circle if it's big and the selection pretty thin.
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             pnt0 = circle->getCenter();
             VertexId += 1;
@@ -2000,12 +2010,16 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             Plm.multVec(pnt0, pnt0);
             pnt0 = proj(pnt0);
 
-            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-
+            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
+                if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
                 int countSegments = 12;
+                if (touchMode)
+                    countSegments = 36;
+
                 float segment = float(2 * M_PI) / countSegments;
 
                 // circumscribed polygon radius
@@ -2022,19 +2036,23 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
+                        bpolyInside = true;
                         break;
                     }
                 }
 
                 if (bpolyInside) {
-                    ss.clear();
-                    ss.str("");
+                    std::stringstream ss;
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
                 }
             }
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { 
-            // ----- Check if circle lies inside box selection -----/
+            // ----- Check if ellipse lies inside box selection -----/
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
             pnt0 = ellipse->getCenter();
             VertexId += 1;
@@ -2042,12 +2060,16 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             Plm.multVec(pnt0, pnt0);
             pnt0 = proj(pnt0);
 
-            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)) || touchMode) {
+                if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
 
                 int countSegments = 12;
+                if (touchMode)
+                    countSegments = 24;
                 double segment = (2 * M_PI) / countSegments;
 
                 // circumscribed polygon radius
@@ -2065,13 +2087,17 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
+                        bpolyInside = true;
                         break;
                     }
                 }
 
                 if (bpolyInside) {
-                    ss.clear();
-                    ss.str("");
+                    std::stringstream ss;
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
                 }
@@ -2094,39 +2120,25 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt2 = proj(pnt2);
 
             bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
-            if (pnt0Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId - 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
-            if (pnt1Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
+            bool bpolyInside = true;
 
-            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
-            if (pnt0Inside && pnt1Inside) {
+            if ((pnt0Inside && pnt1Inside) || touchMode) {
                 double startangle, endangle;
                 aoc->getRange(startangle, endangle, /*emulateCCW=*/true);
+
                 if (startangle > endangle) // if arc is reversed
                     std::swap(startangle, endangle);
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+                if (touchMode)
+                    countSegments=countSegments*2.5;
                 float segment = float(range) / countSegments;
 
                 // circumscribed polygon radius
                 float radius = float(aoc->getRadius()) / cos(segment/2);
 
-                bool bpolyInside = true;
                 pnt0 = aoc->getCenter();
                 float angle = float(startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
@@ -2137,6 +2149,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
+                        if (!touchMode)
+                            break;
+                    }
+                    else if(touchMode) {
+                        bpolyInside = true;
                         break;
                     }
                 }
@@ -2146,6 +2163,24 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
+            }
+
+            if (pnt0Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
         } else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
             // Check if arc lies inside box selection
@@ -2165,13 +2200,58 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt2 = proj(pnt2);
 
             bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
+            bool bpolyInside = true;
+
+            if ((pnt0Inside && pnt1Inside) || touchMode) {
+                double startangle, endangle;
+                aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
+
+                if (startangle > endangle) // if arc is reversed
+                    std::swap(startangle, endangle);
+
+                double range = endangle-startangle;
+                int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+                if (touchMode)
+                    countSegments=countSegments*2.5;
+                double segment = (range) / countSegments;
+
+                // circumscribed polygon radius
+                double a = (aoe->getMajorRadius()) / cos(segment/2);
+                double b = (aoe->getMinorRadius()) / cos(segment/2);
+                Base::Vector3d majdir = aoe->getMajorAxisDir();
+                Base::Vector3d mindir = Base::Vector3d(-majdir.y, majdir.x, 0.0);
+
+                pnt0 = aoe->getCenter();
+                double angle = (startangle) + segment/2;
+                for (int i = 0; i < countSegments; ++i, angle += segment) {
+                    pnt = pnt0 + cos(angle)*a*majdir + sin(angle)*b*mindir;
+
+                    Plm.multVec(pnt, pnt);
+                    pnt = proj(pnt);
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
+                        bpolyInside = false;
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
+                        bpolyInside = true;
+                        break;
+                    }
+                }
+
+                if (bpolyInside) {
+                    std::stringstream ss;
+                    ss << "Edge" << GeoId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+            }
             if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
@@ -2184,49 +2264,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt0Inside && pnt1Inside) {
-                double startangle, endangle;
-                aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
-
-                if (startangle > endangle) // if arc is reversed
-                    std::swap(startangle, endangle);
-
-                double range = endangle-startangle;
-                int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
-
-                double segment = (range) / countSegments;
-
-                                                // circumscribed polygon radius
-                double a = (aoe->getMajorRadius()) / cos(segment/2);
-                double b = (aoe->getMinorRadius()) / cos(segment/2);
-                Base::Vector3d majdir = aoe->getMajorAxisDir();
-                Base::Vector3d mindir = Base::Vector3d(-majdir.y, majdir.x, 0.0);
-
-                bool bpolyInside = true;
-                pnt0 = aoe->getCenter();
-                double angle = (startangle) + segment/2;
-                for (int i = 0; i < countSegments; ++i, angle += segment) {
-                    pnt = pnt0 + cos(angle)*a*majdir + sin(angle)*b*mindir;
-
-                    Plm.multVec(pnt, pnt);
-                    pnt = proj(pnt);
-                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
-                        bpolyInside = false;
-                        break;
-                    }
-                }
-
-                if (bpolyInside) {
-                    std::stringstream ss;
-                    ss << "Edge" << GeoId + 1;
-                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-                }
-            }
-
         } else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
             // Check if arc lies inside box selection
             const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(*it);
-
             pnt0 = aoh->getStartPoint();
             pnt1 = aoh->getEndPoint();
             pnt2 = aoh->getCenter();
@@ -2241,26 +2281,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt2 = proj(pnt2);
 
             bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
-            if (pnt0Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId - 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
-            if (pnt1Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
+            bool bpolyInside = true;
 
-            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
-            if (pnt0Inside && pnt1Inside) {
+            if ((pnt0Inside && pnt1Inside) || touchMode) {
                 double startangle, endangle;
 
                 aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -2270,15 +2294,16 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+                if (touchMode)
+                    countSegments=countSegments*2.5;
 
                 float segment = float(range) / countSegments;
 
-                                                // circumscribed polygon radius
+                // circumscribed polygon radius
                 float a = float(aoh->getMajorRadius()) / cos(segment/2);
                 float b = float(aoh->getMinorRadius()) / cos(segment/2);
                 float phi = float(aoh->getAngleXU());
  
-                bool bpolyInside = true;
                 pnt0 = aoh->getCenter();
                 float angle = float(startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
@@ -2290,6 +2315,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
+                        bpolyInside = true;
                         break;
                     }
                 }
@@ -2299,6 +2329,24 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     ss << "Edge" << GeoId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
+                if (pnt0Inside) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId - 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
+                if (pnt1Inside) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
+                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
             }
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
@@ -2319,26 +2367,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt2 = proj(pnt2);
 
             bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
-            if (pnt0Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId - 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
-            if (pnt1Inside) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
+            bool bpolyInside = true;
 
-            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
-            }
-
-            if (pnt0Inside && pnt1Inside) {
+            if ((pnt0Inside && pnt1Inside) || touchMode) {
                 double startangle, endangle;
 
                 aop->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -2348,6 +2380,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+                if (touchMode)
+                    countSegments=countSegments*2.5;
 
                 float segment = float(range) / countSegments;
                 //In local coordinate system, value() of parabola is:
@@ -2356,7 +2390,6 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 float focal = float(aop->getFocal()) / cos(segment/2);
                 float phi = float(aop->getAngleXU());
  
-                bool bpolyInside = true;
                 pnt0 = aop->getCenter();
                 float angle = float(startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
@@ -2368,6 +2401,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
+                        if (!touchMode)
+                            break;
+                    }
+                    else if (touchMode) {
+                        bpolyInside = true;
                         break;
                     }
                 }
@@ -2375,6 +2413,23 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 if (bpolyInside) {
                     std::stringstream ss;
                     ss << "Edge" << GeoId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+                if (pnt0Inside) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId - 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
+                if (pnt1Inside) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+
+                if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
+                    std::stringstream ss;
+                    ss << "Vertex" << VertexId + 1;
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
             }
@@ -2391,23 +2446,24 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             bool pnt2Inside = polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y));
-            if (pnt1Inside) {
+            if (pnt1Inside || (touchMode && pnt2Inside)) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
             
-            if (pnt2Inside) {
+            if (pnt2Inside || (touchMode && pnt1Inside)) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
             
-            // This is a rather approximated approach. No it does not guarantie that the whole curve is boxed, specially
+            // This is a rather approximated approach. No it does not guarantee that the whole curve is boxed, specially
             // for periodic curves, but it works reasonably well. Including all poles, which could be done, generally
             // forces the user to select much more than the curve (all the poles) and it would not select the curve in cases
             // where it is indeed comprised in the box.
-            if (pnt1Inside && pnt2Inside) {
+            // The implementation of the touch mode is also far from a desirable "touch" as it only recognizes touched points not the curve itself
+            if ((pnt1Inside && pnt2Inside) || (touchMode && (pnt1Inside || pnt2Inside))) {
                 std::stringstream ss;
                 ss << "Edge" << GeoId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2480,7 +2536,7 @@ void ViewProviderSketch::updateColor(void)
     
     for (int  i=0; i < CurvNum; i++) {
         int GeoId = edit->CurvIdToGeoId[i];
-        // CurvId has several vertex a ssociated to 1 material
+        // CurvId has several vertices associated to 1 material
         //edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
         int indexes = (edit->CurveSet->numVertices[i]);
 
@@ -2793,6 +2849,12 @@ void ViewProviderSketch::drawConstraintIcons()
             multipleIcons = true;
             break;
         default:
+            break;
+        }
+
+        // Double-check that we can safely access the Inventor nodes
+        if (constrId >= edit->constrGroup->getNumChildren()) {
+            Base::Console().Warning("Can't update constraint icons because view is not in sync with sketch\n");
             break;
         }
 
@@ -3384,7 +3446,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) { 
-            const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(*it);
+            const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(*it);
             Handle(Geom_TrimmedCurve) curve = Handle(Geom_TrimmedCurve)::DownCast(aoh->handle());
 
             double startangle, endangle;
@@ -3417,7 +3479,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(center);
         } 
         else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) { 
-            const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(*it);
+            const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(*it);
             Handle(Geom_TrimmedCurve) curve = Handle(Geom_TrimmedCurve)::DownCast(aop->handle());
 
             double startangle, endangle;
@@ -5081,7 +5143,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
                         "tv = Show.TempoVis(App.ActiveDocument)\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
-                        "  tv.hide_all_dependent(ActiveSketch)\n"
+                        "  objs = tv.get_all_dependent(ActiveSketch)\n"
+                        "  objs = filter(lambda x: not x.TypeId.startswith(\"TechDraw::\"), objs)\n"
+                        "  objs = filter(lambda x: not x.TypeId.startswith(\"Drawing::\"), objs)\n"
+                        "  tv.hide(objs)\n"
                         "if ActiveSketch.ViewObject.ShowSupport:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.Support])\n"
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
@@ -5808,6 +5873,11 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             signalConstraintsChanged();
             signalElementsChanged();
         }
+        
+        // Notes on solving and recomputing:
+        //
+        // This function is generally called from StdCmdDelete::activated
+        // Since 2015-05-03 that function includes a recompute at the end.
         
         /*this->drawConstraintIcons();
         this->updateColor();*/

@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -103,7 +104,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
 
     // update Axis from ReferenceAxis
-    updateAxis();
+    try {
+        updateAxis();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
     // get revolve axis
     Base::Vector3d b = Base.getValue();
@@ -164,13 +169,13 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        if (std::string(e->GetMessageString()) == "TopoDS::Face")
+    catch (Standard_Failure& e) {
+
+        if (std::string(e.GetMessageString()) == "TopoDS::Face")
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
                 "Intersecting sketch entities in a sketch are not allowed.");
         else
-            return new App::DocumentObjectExecReturn(e->GetMessageString());
+            return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -179,7 +184,12 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
 bool Revolution::suggestReversed(void)
 {
-    updateAxis();
+    try {
+        updateAxis();
+    } catch (const Base::Exception&) {
+        return false;
+    }
+
     return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
 }
 

@@ -11,27 +11,33 @@ endif(MSVC)
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
-    if(NOT PYTHON_VERSION_MAJOR LESS 3)
-        find_package( Boost COMPONENTS python3)
-        if (NOT Boost_PYTHON3_FOUND)
-            find_package( Boost COMPONENTS python REQUIRED)
+
+OPTION(USE_BOOST_PYTHON "use BOOST_PYTHON, otherwise use PYBIND11" ON)
+
+if(USE_BOOST_PYTHON)
+    if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+        if(NOT PYTHON_VERSION_MAJOR LESS 3)
+            find_package( Boost COMPONENTS python3)
+            if (NOT Boost_PYTHON3_FOUND)
+                find_package( Boost COMPONENTS python REQUIRED)
+            endif()
+        else()
+            find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
+        endif()
+
+        if(Boost_FOUND)
+            include_directories(${Boost_INCLUDE_DIRS})
+            MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
+            MESSAGE(STATUS "boost-incude dirs are: " ${Boost_INCLUDE_DIRS})
+            MESSAGE(STATUS "boost-python lib is: " ${Boost_PYTHON_LIBRARY})
+            MESSAGE(STATUS "boost_LIBRARY_DIRS is: " ${Boost_LIBRARY_DIRS})
+            MESSAGE(STATUS "Boost_LIBRARIES is: " ${Boost_LIBRARIES})
         endif()
     else()
-        find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
-    endif()
-
-    if(Boost_FOUND)
         include_directories(${Boost_INCLUDE_DIRS})
-        MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
-        MESSAGE(STATUS "boost-incude dirs are: " ${Boost_INCLUDE_DIRS})
-        MESSAGE(STATUS "boost-python lib is: " ${Boost_PYTHON_LIBRARY})
-        MESSAGE(STATUS "boost_LIBRARY_DIRS is: " ${Boost_LIBRARY_DIRS})
-        MESSAGE(STATUS "Boost_LIBRARIES is: " ${Boost_LIBRARIES})
     endif()
-else()
-    include_directories(${Boost_INCLUDE_DIRS})
-endif()
+endif(USE_BOOST_PYTHON)
+
 
 # this defines the source-files for library
 set(AREA_SRC_COMMON
@@ -56,9 +62,15 @@ set(AREA_SRC_CLIPPER
 )
 
 # this defines the additional source-files for python module (wrapper to libarea)
-set(PYAREA_SRC
-    PythonStuff.cpp
-)
+if (USE_BOOST_PYTHON)
+    set(PYAREA_SRC
+        PythonStuff.cpp
+    )
+else(USE_BOOST_PYTHON)
+    set(PYAREA_SRC
+        pyarea.cpp
+    )
+endif(USE_BOOST_PYTHON)
 
 # this defines the headers
 if(DEFINED INCLUDE_INSTALL_DIR)

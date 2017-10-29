@@ -45,6 +45,8 @@
 #include "Core/Segmentation.h"
 #include "Core/Curvature.h"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace Mesh;
 
 
@@ -143,10 +145,11 @@ PyObject* MeshPy::copy(PyObject *args)
     return new MeshPy(new MeshObject(kernel));
 }
 
-PyObject*  MeshPy::read(PyObject *args)
+PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
 {
     char* Name;
-    if (PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
+    static char* keywords_path[] = {"Filename",NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "et", keywords_path, "utf-8", &Name)) {
         getMeshObjectPtr()->load(Name);
         PyMem_Free(Name);
         Py_Return;
@@ -174,9 +177,12 @@ PyObject*  MeshPy::read(PyObject *args)
 
     PyObject* input;
     char* Ext;
-    if (PyArg_ParseTuple(args, "Os",&input,&Ext)) {
-        if (ext.find(Ext) != ext.end()) {
-            format = ext[Ext];
+    static char* keywords_stream[] = {"Stream","Format",NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "Os",keywords_stream, &input, &Ext)) {
+        std::string fmt(Ext);
+        boost::to_upper(fmt);
+        if (ext.find(fmt) != ext.end()) {
+            format = ext[fmt];
         }
 
         // read mesh
@@ -192,7 +198,7 @@ PyObject*  MeshPy::read(PyObject *args)
     return NULL;
 }
 
-PyObject*  MeshPy::write(PyObject *args)
+PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 {
     char* Name;
     char* Ext=0;
@@ -217,15 +223,21 @@ PyObject*  MeshPy::write(PyObject *args)
     ext["APLY"] = MeshCore::MeshIO::APLY;
     ext["PY"  ] = MeshCore::MeshIO::PY;
 
-    if (PyArg_ParseTuple(args, "et|ssO!","utf-8",&Name,&Ext,&ObjName,&PyList_Type,&List)) {
-        if (Ext && ext.find(Ext) != ext.end()) {
-            format = ext[Ext];
+    static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
+                                    &Name, &Ext, &ObjName, &List)) {
+        if (Ext) {
+            std::string fmt(Ext);
+            boost::to_upper(fmt);
+            if (ext.find(fmt) != ext.end()) {
+                format = ext[fmt];
+            }
         }
 
         if (List) {
             MeshCore::Material mat;
-            Py::List list(List);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(List);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::Tuple t(*it);
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
@@ -251,17 +263,21 @@ PyObject*  MeshPy::write(PyObject *args)
 
     PyErr_Clear();
 
+    static char* keywords_stream[] = {"Stream","Format","Name","Material",NULL};
     PyObject* input;
-    if (PyArg_ParseTuple(args, "Os|sO!", &input,&Ext,&ObjName,&PyList_Type,&List)) {
-        if (ext.find(Ext) != ext.end()) {
-            format = ext[Ext];
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "Os|sO", keywords_stream,
+                                    &input, &Ext, &ObjName, &List)) {
+        std::string fmt(Ext);
+        boost::to_upper(fmt);
+        if (ext.find(fmt) != ext.end()) {
+            format = ext[fmt];
         }
 
         std::unique_ptr<MeshCore::Material> mat;
         if (List) {
             mat.reset(new MeshCore::Material);
-            Py::List list(List);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(List);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::Tuple t(*it);
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));

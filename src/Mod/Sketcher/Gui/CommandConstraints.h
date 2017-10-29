@@ -101,6 +101,14 @@ void makeTangentToArcOfParabolaviaNewPoint(const Sketcher::SketchObject* Obj,
 
 std::string getStrippedPythonExceptionString(const Base::Exception);
 
+/// This function tries to auto-recompute the active document if the option
+/// is set in the user parameter. If the option is not set nothing will be done
+/// @return true if a recompute was undertaken, false if not.
+bool tryAutoRecompute();
+
+/// This function tries to auto-recompute as tryAutoRecompute. If tryAutoRecompute
+/// is not enabled, then it solves the SketchObject.
+void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 

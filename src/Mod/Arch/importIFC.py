@@ -139,7 +139,7 @@ def getPreferences():
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
-    global SPLIT_LAYERS, EXPORT_2D
+    global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -165,6 +165,8 @@ def getPreferences():
     SERIALIZE = p.GetBool("ifcSerialize",False)
     SPLIT_LAYERS = p.GetBool("ifcSplitLayers",False)
     EXPORT_2D = p.GetBool("ifcExport2D",True)
+    FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
+    FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
 
 
 def explore(filename=None):
@@ -271,7 +273,7 @@ def explore(filename=None):
                         print("Error in entity ", entity)
                         break
                     else:
-                        if not argname in ["Id", "GlobalId"]:
+                        if argname not in ["Id", "GlobalId"]:
                             colored = False
                             if isinstance(argvalue,ifcopenshell.entity_instance):
                                 if argvalue.id() == 0:
@@ -355,8 +357,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     FreeCAD.ActiveDocument = doc
 
     if DEBUG: print("done.")
-    
-    global ROOT_ELEMENT
+
+    global ROOT_ELEMENT, parametrics
 
     if root:
         ROOT_ELEMENT = root
@@ -395,6 +397,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     structshapes = {} # { id:shaoe } only used for merge mode
     mattable = {} # { objid:matid }
     sharedobjects = {} # { representationmapid:object }
+    parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
@@ -405,7 +408,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
         for obj in r.RelatedObjects:
-            if not obj.id() in properties :
+            if not obj.id() in properties:
                 properties[obj.id()] = {}
             prop_by_category = {}
             prop = []
@@ -471,13 +474,33 @@ def insert(filename,docname,skip=[],only=[],root=None):
     progressbar.start("Importing IFC objects...",len(products))
     if DEBUG: print("Processing objects...")
 
+    if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+        overallboundbox = None
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+
     # products
     for product in products:
+
+        count += 1
 
         pid = product.id()
         guid = product.GlobalId
         ptype = product.is_a()
-        if DEBUG: print(count+1,"/",len(products)," creating object #",pid," : ",ptype,end="")
+        if DEBUG: print(count,"/",len(products)," creating object #",pid," : ",ptype,end="")
+
+        # checking for full FreeCAD parametric definition, overriding everything else
+        if pid in properties.keys():
+            if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in properties[pid].keys()]:
+                if DEBUG: print(" restoring from parametric definition...",end="")
+                obj = createFromProperties(properties[pid],ifcfile)
+                if obj:
+                    objects[pid] = obj
+                    if DEBUG: print("done")
+                    continue
+                else:
+                    print("failed.",end="")
+
         name = str(ptype[3:])
         if product.Name:
             name = product.Name.encode("utf8")
@@ -547,9 +570,23 @@ def insert(filename,docname,skip=[],only=[],root=None):
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
 
             if not shape.isNull():
+                if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                    try:
+                        bb = shape.BoundBox
+                        # if DEBUG: print(' ' + str(bb),end="")
+                    except:
+                        bb = None
+                        if DEBUG: print(' BB could not be computed',end="")
+                    if bb.isValid():
+                        if not overallboundbox:
+                            overallboundbox = bb
+                        if not overallboundbox.isInside(bb):
+                            FreeCADGui.SendMsgToActiveView("ViewFit")
+                        overallboundbox.add(bb)
+
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
-                        if DEBUG: print("skipping space ",pid)
+                        if DEBUG: print("skipping space ",pid,end="")
                     elif structobj:
                         structshapes[pid] = shape
                         if DEBUG: print(shape.Solids," ",end="")
@@ -657,7 +694,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = Arch.makeComponent(baseobj,name=name)
             if obj:
                 sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else ""
-                if DEBUG: print(sols)
+                if DEBUG: print(sols,end="")
                 objects[pid] = obj
 
         elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
@@ -681,6 +718,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
 
+        if DEBUG: print("")  # newline for debug prints, print for a new object should be on a new line
+
         if obj:
 
             obj.Label = name
@@ -688,31 +727,31 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # properties
             if pid in properties:
-                if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties") :
+                if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties"):
                     ifc_spreadsheet = Arch.makeIfcSpreadsheet()
                     n=2
                     for c in properties[pid].keys():
                         o = ifcfile[c]
-                        if DEBUG : print("propertyset Name",o.Name,type(o.Name))
+                        if DEBUG: print("propertyset Name",o.Name,type(o.Name))
                         catname = o.Name
                         for p in properties[pid][c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
-                                if DEBUG :
+                                if DEBUG:
                                     print("property name",l.Name,type(l.Name))
                                 ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
                                 ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
-                                if l.NominalValue :
-                                    if DEBUG :
+                                if l.NominalValue:
+                                    if DEBUG:
                                         print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
                                         print("property NominalValue.wrappedValue",l.NominalValue.wrappedValue,type(l.NominalValue.wrappedValue))
                                         #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                                         ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
-                                    else :
+                                    else:
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
-                                    if hasattr(l.NominalValue,'Unit') :
+                                    if hasattr(l.NominalValue,'Unit'):
                                         ifc_spreadsheet.set(str('E'+str(n)), str(l.NominalValue.Unit))
                                 n += 1
                         obj.IfcProperties = ifc_spreadsheet
@@ -740,7 +779,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         annotations.append(product)
                         break
 
-        count += 1
         progressbar.next()
 
     progressbar.stop()
@@ -865,14 +903,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if host in objects.keys():
                 cobs = [objects[child] for child in children if child in objects.keys()]
                 if cobs:
-                    if DEBUG and (len(cobs) > 10) and ( not(Draft.getType(objects[host]) in ["Site","Building","Floor"])):
+                    if DEBUG and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor"])):
                         # avoid huge fusions
                         print("more than 10 shapes to add: skipping.")
                     else:
                         if DEBUG: print("adding ",len(cobs), " object(s) to ", objects[host].Label)
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
-                        
+
         if DEBUG: print("done.")
 
         FreeCAD.ActiveDocument.recompute()
@@ -898,7 +936,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         name = "Annotation"
         if annotation.Name:
             name = annotation.Name.encode("utf8")
-        if not "annotation" in name.lower():
+        if "annotation" not in name.lower():
             name = "Annotation " + name
         if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
         shapes2d = []
@@ -918,7 +956,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         count += 1
 
     FreeCAD.ActiveDocument.recompute()
-    
+
     if DEBUG and annotations: print("done.")
 
     # Materials
@@ -953,6 +991,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         objects[o].Material = mat
 
     if DEBUG and materials: print("done")
+
+    # restore links from full parametric definitions
+    for p in parametrics:
+        l = FreeCAD.ActiveDocument.getObject(p[2])
+        if l:
+            setattr(p[0],p[1],l)
 
     FreeCAD.ActiveDocument.recompute()
 
@@ -995,8 +1039,10 @@ def export(exportList,filename):
     template = template.replace("$now",str(int(time.time())))
     template = template.replace("$projectid",FreeCAD.ActiveDocument.Uid[:22].replace("-","_"))
     template = template.replace("$project",FreeCAD.ActiveDocument.Name)
-    template = template.replace("$filename",filename)
+    template = template.replace("$filename",os.path.basename(filename))
     template = template.replace("$timestamp",str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
+    if hasattr(ifcopenshell,"version"):
+        template = template.replace("IfcOpenShell","IfcOpenShell "+ifcopenshell.version)
     templatefilehandle,templatefile = tempfile.mkstemp(suffix=".ifc")
     of = pyopen(templatefile,"wb")
     of.write(template.encode("utf8"))
@@ -1018,8 +1064,10 @@ def export(exportList,filename):
             if obj.Shape:
                 if obj.Shape.Edges and (not obj.Shape.Faces):
                     annotations.append(obj)
-    objectslist = [obj for obj in objectslist if not obj in annotations]
+    objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist)
+    if FULL_PARAMETRIC:
+        objectslist = Arch.getAllChildren(objectslist)
     products = {} # { Name: IfcEntity, ... }
     surfstyles = {} # { (r,g,b): IfcEntity, ... }
     clones = {} # { Basename:[Clonename1,Clonename2,...] }
@@ -1035,7 +1083,7 @@ def export(exportList,filename):
             b = Draft.getCloneBase(o,strict=True)
             if b:
                 clones.setdefault(b.Name,[]).append(o.Name)
-            
+
     #print("clones table: ",clones)
     #print(objectslist)
 
@@ -1078,7 +1126,7 @@ def export(exportList,filename):
         ifctypes = []
         for v in typesmap.values():
             ifctypes.extend(v)
-        if not ifctype in ifctypes:
+        if ifctype not in ifctypes:
             ifctype = "IfcBuildingElementProxy"
 
         # getting the "Force BREP" flag
@@ -1147,14 +1195,14 @@ def export(exportList,filename):
         if hasattr(obj,"IfcProperties"):
             if obj.IfcProperties:
                 ifcprop = True
-                if DEBUG : print("      adding ifc properties")
+                if DEBUG: print("      adding ifc properties")
                 if obj.IfcProperties.TypeId == 'Spreadsheet::Sheet':
                     sheet = obj.IfcProperties
                     propertiesDic = {}
                     categories = []
                     n=2
                     cell = True
-                    while cell == True :
+                    while cell is True:
                         if hasattr(sheet,'A'+str(n)):
                             cat = sheet.get('A'+str(n))
                             key = sheet.get('B'+str(n))
@@ -1165,7 +1213,7 @@ def export(exportList,filename):
                                 val = ''
                             if isinstance(key, unicode):
                                 key = key.encode("utf8")
-                            else :
+                            else:
                                 key = str(key)
                             tp = tp.encode("utf8")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
@@ -1181,7 +1229,7 @@ def export(exportList,filename):
                                 val = float(val)
                             unit = None
                             #unit = sheet.get('E'+str(n))
-                            if cat in categories :
+                            if cat in categories:
                                 propertiesDic[cat].append({"key":key,"tp":tp,"val":val,"unit":unit})
                             else:
                                 propertiesDic[cat] = [{"key":key,"tp":tp,"val":val,"unit":unit}]
@@ -1191,8 +1239,8 @@ def export(exportList,filename):
                             cell = False
                     for cat in propertiesDic:
                         props = []
-                        for prop in propertiesDic[cat] :
-                            if DEBUG :
+                        for prop in propertiesDic[cat]:
+                            if DEBUG:
                                 print("key",prop["key"],type(prop["key"]))
                                 print("tp",prop["tp"],type(prop["tp"]))
                                 print("val",prop["val"],type(prop["val"]))
@@ -1234,6 +1282,72 @@ def export(exportList,filename):
         if not ifcprop:
             #if DEBUG : print("no ifc properties to export")
             pass
+        if FULL_PARAMETRIC:
+            # exporting all the object properties
+            FreeCADProps = []
+            FreeCADGuiProps = []
+            FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCADType",None,ifcfile.create_entity("IfcText",obj.TypeId),None))
+            FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCADName",None,ifcfile.create_entity("IfcText",obj.Name),None))
+            sets = [("App",obj)]
+            if hasattr(obj,"Proxy"):
+                if obj.Proxy:
+                    FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCADAppObject",None,ifcfile.create_entity("IfcText",str(obj.Proxy.__class__)),None))
+            if FreeCAD.GuiUp:
+                if obj.ViewObject:
+                    sets.append(("Gui",obj.ViewObject))
+                    if hasattr(obj.ViewObject,"Proxy"):
+                        if obj.ViewObject.Proxy:
+                            FreeCADGuiProps.append(ifcfile.createIfcPropertySingleValue("FreeCADGuiObject",None,ifcfile.create_entity("IfcText",str(obj.ViewObject.Proxy.__class__)),None))
+            for realm,ctx in sets:
+                if ctx:
+                    for prop in ctx.PropertiesList:
+                        if not(prop in ["IfcProperties","IfcAttributes","Shape","Proxy","ExpressionEngine","AngularDeflection","BoundingBox"]):
+                            try:
+                                ptype = ctx.getTypeIdOfProperty(prop)
+                            except AttributeError:
+                                ptype = "Unknown"
+                            itype = None
+                            ivalue = None
+                            if ptype in ["App::PropertyString","App::PropertyEnumeration"]:
+                                itype = "IfcText"
+                                ivalue = getattr(ctx,prop)
+                            elif ptype == "App::PropertyInteger":
+                                itype = "IfcInteger"
+                                ivalue = getattr(ctx,prop)
+                            elif ptype == "App::PropertyFloat":
+                                itype = "IfcReal"
+                                ivalue = float(getattr(ctx,prop))
+                            elif ptype == "App::PropertyBool":
+                                itype = "IfcBoolean"
+                                ivalue = getattr(ctx,prop)
+                            elif ptype in ["App::PropertyVector","App::PropertyPlacement"]:
+                                itype = "IfcText"
+                                ivalue = str(getattr(ctx,prop))
+                            elif ptype in ["App::PropertyLength","App::PropertyDistance"]:
+                                itype = "IfcReal"
+                                ivalue = float(getattr(ctx,prop).getValueAs("m"))
+                            elif ptype == "App::PropertyArea":
+                                itype = "IfcReal"
+                                ivalue = float(getattr(ctx,prop).getValueAs("m^2"))
+                            elif ptype == "App::PropertyLink":
+                                t = getattr(ctx,prop)
+                                if t:
+                                    itype = "IfcText"
+                                    ivalue = "FreeCADLink_" + t.Name
+                            else:
+                                if DEBUG: print("Unable to encode property ",prop," of type ",ptype)
+                            if itype:
+                                # TODO add description
+                                if realm == "Gui":
+                                    FreeCADGuiProps.append(ifcfile.createIfcPropertySingleValue("FreeCADGui_"+prop,None,ifcfile.create_entity(itype,ivalue),None))
+                                else:
+                                    FreeCADProps.append(ifcfile.createIfcPropertySingleValue("FreeCAD_"+prop,None,ifcfile.create_entity(itype,ivalue),None))
+            if FreeCADProps:
+                pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'FreeCADPropertySet',None,FreeCADProps)
+                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+            if FreeCADGuiProps:
+                pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'FreeCADGuiPropertySet',None,FreeCADGuiProps)
+                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
 
         count += 1
 
@@ -1396,7 +1510,7 @@ def export(exportList,filename):
                     for e in w.Edges:
                         ehc.append(e.hashCode())
                 for e in sh.Edges:
-                    if not e.hashCode in ehc:
+                    if e.hashCode not in ehc:
                         reps.append(createCurve(ifcfile,e))
             elif anno.isDerivedFrom("App::Annotation"):
                 l = anno.Position
@@ -1429,7 +1543,7 @@ def export(exportList,filename):
                 defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'AnnotationsLink','',annos,defaulthost)
- 
+
 
     if DEBUG: print("writing ",filename,"...")
 
@@ -1442,6 +1556,83 @@ def export(exportList,filename):
         FreeCAD.ActiveDocument.recompute()
 
     os.remove(templatefile)
+
+
+def createFromProperties(propsets,ifcfile):
+    "creates a FreeCAD parametric object from a set of properties"
+    obj = None
+    sets = []
+    global parametrics
+    appset = None
+    guiset = None
+    for pset in propsets.keys():
+        if ifcfile[pset].Name == "FreeCADPropertySet":
+            appset = {}
+            for pid in propsets[pset]:
+                p = ifcfile[pid]
+                appset[p.Name] = p.NominalValue.wrappedValue
+        elif ifcfile[pset].Name == "FreeCADGuiPropertySet":
+            guiset = {}
+            for pid in propsets[pset]:
+                p = ifcfile[pid]
+                guiset[p.Name] = p.NominalValue.wrappedValue
+    if appset:
+        oname = None
+        otype = None
+        if "FreeCADType" in appset.keys():
+            if "FreeCADName" in appset.keys():
+                obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
+                if "FreeCADAppObject" in appset:
+                    mod,cla = appset["FreeCADAppObject"].split(".")
+                    import importlib
+                    mod = importlib.import_module(mod)
+                    getattr(mod,cla)(obj)
+                sets.append(("App",appset))
+                if FreeCAD.GuiUp:
+                    if guiset:
+                        if "FreeCADGuiObject" in guiset:
+                            mod,cla = guiset["FreeCADGuiObject"].split(".")
+                            import importlib
+                            mod = importlib.import_module(mod)
+                            getattr(mod,cla)(obj.ViewObject)
+                        sets.append(("Gui",guiset))
+    if obj and sets:
+        for realm,pset in sets:
+            if realm == "App":
+                target = obj
+            else:
+                target = obj.ViewObject
+            for key,val in pset.items():
+                if key.startswith("FreeCAD_") or key.startswith("FreeCADGui_"):
+                    name = key.split("_")[1]
+                    if name in target.PropertiesList:
+                        if not target.getEditorMode(name):
+                            ptype = target.getTypeIdOfProperty(name)
+                            if ptype in ["App::PropertyString","App::PropertyEnumeration","App::PropertyInteger","App::PropertyFloat"]:
+                                setattr(target,name,val)
+                            elif ptype in ["App::PropertyLength","App::PropertyDistance"]:
+                                setattr(target,name,val*1000)
+                            elif ptype == "App::PropertyBool":
+                                if val in [".T.",True]:
+                                    setattr(target,name,True)
+                                else:
+                                    setattr(target,name,False)
+                            elif ptype == "App::PropertyVector":
+                                setattr(target,name,FreeCAD.Vector([float(s) for s in val.split("(")[1].strip(")").split(",")]))
+                            elif ptype == "App::PropertyArea":
+                                setattr(target,name,val*1000000)
+                            elif ptype == "App::PropertyPlacement":
+                                data = val.split("[")[1].strip("]").split("(")
+                                data = [data[1].split(")")[0],data[2].strip(")")]
+                                v = FreeCAD.Vector([float(s) for s in data[0].split(",")])
+                                r = FreeCAD.Rotation(*[float(s) for s in data[1].split(",")])
+                                setattr(target,name,FreeCAD.Placement(v,r))
+                            elif ptype == "App::PropertyLink":
+                                link = val.split("_")[1]
+                                parametrics.append([target,name,link])
+                            else:
+                                print("Unhandled FreeCAD property:",name," of type:",ptype)
+    return obj
 
 
 def createCurve(ifcfile,wire):
@@ -1559,7 +1750,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     # check for clones
     if (not subtraction) and (not forcebrep):
         for k,v in clones.items():
-            if (obj.Name == k ) or (obj.Name in v):
+            if (obj.Name == k) or (obj.Name in v):
                 if k in sharedobjects:
                     # base shape already exists
                     repmap = sharedobjects[k]

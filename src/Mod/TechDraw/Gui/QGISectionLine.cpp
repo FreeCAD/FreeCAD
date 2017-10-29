@@ -41,6 +41,9 @@ using namespace TechDrawGui;
 
 QGISectionLine::QGISectionLine()
 {
+    m_symbol = "";
+    m_symSize = 0.0;
+    
     m_extLen = Rez::guiX(8.0);
     m_arrowSize = 0.0;
 

@@ -72,6 +72,24 @@ void Mirroring::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
+void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if (prop == &Base && strcmp(TypeName, "App::PropertyVector") == 0) {
+        App::PropertyVector v;
+
+        v.Restore(reader);
+
+        Base.setValue(v.getValue());
+    }
+    else if (prop == &Normal && strcmp(TypeName, "App::PropertyVector") == 0) {
+        App::PropertyVector v;
+
+        v.Restore(reader);
+
+        Normal.setValue(v.getValue());
+    }
+}
+
 App::DocumentObjectExecReturn *Mirroring::execute(void)
 {
     App::DocumentObject* link = Source.getValue();
@@ -97,8 +115,7 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
         this->Shape.setValue(mkTrf.Shape());
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }

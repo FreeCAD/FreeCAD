@@ -62,6 +62,9 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TColgp_SequenceOfPnt.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <Standard_Version.hxx>
 #include <Base/Console.h>
 #include "modelRefine.h"
 
@@ -892,11 +895,13 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
             return false;
     return true;
   }
-  catch (Standard_Failure)
+  catch (Standard_Failure& e)
   {
-    Handle(Standard_Failure) e = Standard_Failure::Caught();
     std::ostringstream stream;
-    stream << "FaceTypedBSpline::isEqual: OCC Error: " << e->GetMessageString() << std::endl;
+    if (e.GetMessageString())
+      stream << "FaceTypedBSpline::isEqual: OCC Error: " << e.GetMessageString() << std::endl;
+    else
+      stream << "FaceTypedBSpline::isEqual: Unknown OCC Error" << std::endl;
     Base::Console().Message(stream.str().c_str());
   }
   catch (...)
@@ -1179,6 +1184,16 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             }
         }
         myShape = mkSolid.Solid();
+
+#if OCC_VERSION_HEX <= 0x060700
+        // With occ 6.7 and older it can happen that a solid is flipped.
+        // In this case it must be reversed
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(myShape, props);
+        if (props.Mass() < 0) {
+            myShape.Reverse();
+        }
+#endif
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);

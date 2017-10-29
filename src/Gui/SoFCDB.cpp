@@ -136,6 +136,8 @@ void Gui::SoFCDB::init()
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
     PropertyVectorDistanceItem      ::init();
+    PropertyPositionItem            ::init();
+    PropertyDirectionItem           ::init();
     PropertyMatrixItem              ::init();
     PropertyPlacementItem           ::init();
     PropertyEnumItem                ::init();
@@ -149,11 +151,13 @@ void Gui::SoFCDB::init()
     PropertyPathItem                ::init();
     PropertyTransientFileItem       ::init();
     PropertyLinkItem                ::init();
+    PropertyLinkListItem            ::init();
 
     NavigationStyle                 ::init();
     UserNavigationStyle             ::init();
     InventorNavigationStyle         ::init();
     CADNavigationStyle              ::init();
+    RevitNavigationStyle            ::init();
     BlenderNavigationStyle          ::init();
     MayaGestureNavigationStyle      ::init();
     TouchpadNavigationStyle         ::init();

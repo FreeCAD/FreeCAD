@@ -189,8 +189,9 @@ public:
      * \param color_r - red color
      * \param color_g - green color
      * \param color_b - blue color
+     * \param color_a - transparency
      */
-    void addMaterial(float color_r,float color_g,float color_b);
+    void addMaterial(float color_r,float color_g,float color_b,float color_a=0);
     /*!
      * \brief Starts a material node. The node must be closed with \ref endMaterial
      * and the colors must be added with \ref addColor().
@@ -291,6 +292,7 @@ public:
     void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, bool filled = true,
                         short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
     void addIndexedFaceSet(const std::vector<int>& indices);
+    void addFaceSet(const std::vector<int>& vertices);
     //@}
 
     /** @name Surface handling */

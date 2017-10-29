@@ -262,7 +262,11 @@ class DraftTool:
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.off()
         if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
+            try:
+                self.view.removeEventCallback("SoEvent",self.call)
+            except RuntimeError:
+                # the view has been deleted already
+                pass
             self.call = None
         if self.commitList:
             todo.delayCommit(self.commitList)
@@ -330,6 +334,43 @@ class SelectPlane(DraftTool):
                     return
                 elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    if hasattr(sel.Object.ViewObject,"RestoreView"):
+                        if sel.Object.ViewObject.RestoreView:
+                            if hasattr(sel.Object.ViewObject,"ViewData"):
+                                if len(sel.Object.ViewObject.ViewData) >= 12:
+                                    d = sel.Object.ViewObject.ViewData
+                                    camtype = "orthographic"
+                                    if len(sel.Object.ViewObject.ViewData) == 13:
+                                        if d[12] == 1:
+                                            camtype = "perspective"
+                                    c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                                    from pivy import coin
+                                    if isinstance(c,coin.SoOrthographicCamera):
+                                        if camtype == "perspective":
+                                            FreeCADGui.ActiveDocument.ActiveView.setCameraType("Perspective")
+                                    elif isinstance(c,coin.SoPerspectiveCamera):
+                                        if camtype == "orthographic":
+                                            FreeCADGui.ActiveDocument.ActiveView.setCameraType("Orthographic")
+                                    c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                                    c.position.setValue([d[0],d[1],d[2]])
+                                    c.orientation.setValue([d[3],d[4],d[5],d[6]])
+                                    c.nearDistance.setValue(d[7])
+                                    c.farDistance.setValue(d[8])
+                                    c.aspectRatio.setValue(d[9])
+                                    c.focalDistance.setValue(d[10])
+                                    if camtype == "orthographic":
+                                        c.height.setValue(d[11])
+                                    else:
+                                        c.heightAngle.setValue(d[11])
+                    if hasattr(sel.Object.ViewObject,"RestoreState"):
+                        if sel.Object.ViewObject.RestoreState:
+                            if hasattr(sel.Object.ViewObject,"VisibilityMap"):
+                                if sel.Object.ViewObject.VisibilityMap:
+                                    for k,v in sel.Object.ViewObject.VisibilityMap.items():
+                                        o = FreeCADGui.ActiveDocument.getObject(k)
+                                        if o:
+                                            if o.Visibility != (v == "True"):
+                                                FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
                     self.display(plane.axis)
                     self.finish()
                     return
@@ -351,6 +392,21 @@ class SelectPlane(DraftTool):
                             self.display(plane.axis)
                             self.finish()
                             return
+            elif sel:
+                subs = []
+                import Part
+                for s in sel:
+                    for so in s.SubObjects:
+                        if isinstance(so,Part.Vertex):
+                            subs.append(so)
+                if len(subs) == 3:
+                    plane.alignTo3Points(subs[0].Point,
+                                         subs[1].Point,
+                                         subs[2].Point,
+                                         self.offset)
+                    self.display(plane.axis)
+                    self.finish()
+                    return
             self.ui.selectPlaneUi()
             msg(translate("draft", "Pick a face to define the drawing plane\n"))
             if plane.alignToSelection(self.offset):
@@ -435,7 +491,7 @@ class SelectPlane(DraftTool):
         elif type(arg).__name__ == 'Vector':
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
-        self.ui.wplabel.setToolTip(translate("draft", "Current working plane:")+self.ui.wplabel.text())
+        self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 #---------------------------------------------------------------------------
@@ -492,8 +548,13 @@ class Line(Creator):
         "terminates the operation and closes the poly if asked"
         if self.obj:
             # remove temporary object, if any
-            old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            try:
+                old = self.obj.Name
+            except ReferenceError:
+                # object already deleted, for some reason
+                pass
+            else:
+                todo.delay(self.doc.removeObject,old)
         self.obj = None
         if self.oldWP:
             FreeCAD.DraftWorkingPlane = self.oldWP
@@ -2257,7 +2318,7 @@ class Move(Modifier):
                 onlyarchgroups = False
         if not onlyarchgroups:
             # arch groups can be moved, no need to add their children
-            self.sel = Draft.getGroupContents(self.sel,spaces=True)
+            self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
@@ -2269,11 +2330,10 @@ class Move(Modifier):
     def finish(self,closed=False,cont=False):
         if self.ghost:
             self.ghost.finalize()
-        Modifier.finish(self)
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
 
     def move(self,delta,copy=False):
         "moving the real shapes"
@@ -2413,11 +2473,11 @@ class Rotate(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
         self.step = 0
         self.center = None
         self.ui.arcUi()
-        self.ui.isCopy.show()
+        self.ui.modUi()
         self.ui.setTitle("Rotate")
         self.arctrack = arcTracker()
         self.ghost = ghostTracker(self.sel)
@@ -2426,17 +2486,16 @@ class Rotate(Modifier):
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
-        Modifier.finish(self)
         if self.arctrack:
             self.arctrack.finalize()
         if self.ghost:
             self.ghost.finalize()
-        if self.doc:
-            self.doc.recompute()
         if cont and self.ui:
             if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
+                todo.delayAfter(self.Activated,[])
+        Modifier.finish(self)
+        if self.doc:
+            self.doc.recompute()
 
     def rot (self,angle,copy=False):
         "rotating the real shapes"
@@ -3035,7 +3094,7 @@ class Upgrade(Modifier):
         return {'Pixmap'  : 'Draft_Upgrade',
                 'Accel' : "U, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Upgrade"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Joins the selected objects into one, or converts closed wires to filled faces, or unite faces")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Upgrade", "Joins the selected objects into one, or converts closed wires to filled faces, or unites faces")}
 
     def Activated(self):
         Modifier.Activated(self,"Upgrade")
@@ -3546,12 +3605,20 @@ class Scale(Modifier):
         Modifier.finish(self)
         if self.ghost:
             self.ghost.finalize()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                FreeCADGui.Selection.clearSelection()
-                self.Activated()
 
-    def scale(self,delta,copy=False):
+    def scale(self,x,y,z,rel,mode):
+        delta = Vector(x,y,z)
+        if rel:
+            delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(delta)
+        if mode == 0:
+            copy = False
+            legacy = False
+        elif mode == 1:
+            copy = False
+            legacy = True
+        elif mode == 2:
+            copy = True
+            legacy = True
         "moving the real shapes"
         sel = '['
         for o in self.sel:
@@ -3560,14 +3627,22 @@ class Scale(Modifier):
             sel += 'FreeCAD.ActiveDocument.'+o.Name
         sel += ']'
         FreeCADGui.addModule("Draft")
-        if copy:
-            self.commit(translate("draft","Copy"),
-                        ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        else:
-            self.commit(translate("draft","Scale"),
-                        ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')',
-                         'FreeCAD.ActiveDocument.recompute()'])
+        self.commit(translate("draft","Copy"),
+                    ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+',legacy='+str(legacy)+')',
+                     'FreeCAD.ActiveDocument.recompute()'])
+        self.finish()
+
+    def scaleGhost(self,x,y,z,rel):
+        delta = Vector(x,y,z)
+        if rel:
+            delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(delta)
+        self.ghost.scale(delta)
+        # calculate a correction factor depending on the scaling center
+        corr = Vector(self.node[0].x,self.node[0].y,self.node[0].z)
+        corr.scale(delta.x,delta.y,delta.z)
+        corr = (corr.sub(self.node[0])).negative()
+        self.ghost.move(corr)
+        self.ghost.on()
 
     def action(self,arg):
         "scene event handler"
@@ -3578,63 +3653,24 @@ class Scale(Modifier):
             if self.ghost:
                 self.ghost.off()
             self.point,ctrlPoint,info = getPoint(self,arg,sym=True)
-            if (len(self.node) > 0):
-                last = self.node[len(self.node)-1]
-                delta = self.point.sub(last)
-                delta = FreeCAD.Vector(delta.x,delta.y,1)
-                if self.ghost:
-                    self.ghost.scale(delta)
-                    # calculate a correction factor depending on the scaling center
-                    corr = Vector(self.node[0].x,self.node[0].y,self.node[0].z)
-                    corr.scale(delta.x,delta.y,delta.z)
-                    corr = (corr.sub(self.node[0])).negative()
-                    self.ghost.move(corr)
-                    self.ghost.on()
-                    self.ui.zValue.setText("1")
-            if self.extendedCopy:
-                if not hasMod(arg,MODALT): self.finish()
-            redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
                     self.ui.redraw()
-                    if (self.node == []):
-                        self.node.append(self.point)
-                        self.ui.isRelative.setChecked(True)
-                        self.ui.isCopy.show()
-                        if self.ghost:
-                            self.ghost.on()
-                        msg(translate("draft", "Pick scale factor:\n"))
-                    else:
-                        last = self.node[0]
-                        delta = self.point.sub(last)
-                        delta = FreeCAD.Vector(delta.x,delta.y,1)
-                        if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
-                            self.scale(delta,True)
-                        else:
-                            self.scale(delta)
-                        if hasMod(arg,MODALT):
-                            self.extendedCopy = True
-                        else:
-                            self.finish(cont=True)
+                    self.numericInput(self.point.x,self.point.y,self.point.z)
 
     def numericInput(self,numx,numy,numz):
-        "this function gets called by the toolbar when valid x, y, and z have been entered there"
+        "this function gets called by the toolbar when a valid base point has been entered"
         self.point = Vector(numx,numy,numz)
-        if not self.node:
-            self.node.append(self.point)
-            self.ui.isRelative.show()
-            self.ui.isCopy.show()
-            if self.ghost:
-                self.ghost.on()
-            msg(translate("draft", "Pick scale factor:\n"))
-        else:
-            last = self.node[-1]
-            if self.ui.isCopy.isChecked():
-                self.scale(self.point.sub(last),True)
-            else:
-                self.scale(self.point.sub(last))
-            self.finish(cont=True)
+        self.node.append(self.point)
+        self.ui.offUi()
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+        task = DraftGui.ScaleTaskPanel()
+        task.sourceCmd = self
+        DraftGui.todo.delay(FreeCADGui.Control.showDialog,task)
+        if self.ghost:
+            self.ghost.on()
 
 
 class ToggleConstructionMode():

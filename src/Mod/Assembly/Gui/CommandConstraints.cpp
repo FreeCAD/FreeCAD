@@ -129,7 +129,7 @@ void CmdAssemblyConstraint::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 
@@ -213,7 +213,7 @@ void CmdAssemblyConstraintDistance::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 
@@ -280,7 +280,7 @@ void CmdAssemblyConstraintFix::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 
@@ -345,7 +345,7 @@ void CmdAssemblyConstraintAngle::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 
@@ -414,7 +414,7 @@ void CmdAssemblyConstraintOrientation::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 
@@ -482,7 +482,7 @@ void CmdAssemblyConstraintCoincidence::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 
@@ -550,7 +550,7 @@ void CmdAssemblyConstraintAlignment::activated(int iMsg)
     //Assembly::ProductRef* Asm = 0;
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    //// retrive the standard objects needed
+    //// retrieve the standard objects needed
     //if(getConstraintPrerequisits(&Asm, &ConstGrp))
     //    return;
 

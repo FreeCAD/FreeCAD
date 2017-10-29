@@ -2,6 +2,7 @@
 /* Lexer for the FreeCAD  Units language   */
 /* (c) 2013 Juergen Riegel  LGPL           */
 
+/* flex --outfile=QuantityLexer.c QuantityParser.l */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -66,18 +67,18 @@ CGRP     '\,'[0-9][0-9][0-9]
 "h"        yylval = Quantity::Hour;                return UNIT; // hour  
 
 "A"        yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal standard electric current)
-"mA"       yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere         
-"kA"       yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere         
-"MA"       yylval = Quantity::MegaAmpere;          return UNIT; // Mega Ampere         
+"mA"       yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere
+"kA"       yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere
+"MA"       yylval = Quantity::MegaAmpere;          return UNIT; // Mega Ampere
 
 "K"        yylval = Quantity::Kelvin;              return UNIT; // Kelvin         (internal standard thermodynamic temperature)
-"mK"       yylval = Quantity::MilliKelvin;         return UNIT; // Kelvin         
-"\xC2\xB5K"    yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
-"uK"       yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
+"mK"       yylval = Quantity::MilliKelvin;         return UNIT; // Kelvin
+"\xC2\xB5K"    yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin
+"uK"       yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin
 
-"mol"      yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)        
+"mol"      yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)
 
-"cd"       yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)        
+"cd"       yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)
 
 "in"       yylval = Quantity::Inch;                return UNIT; // inch
 "\""       yylval = Quantity::Inch;                return UNIT; // inch
@@ -99,37 +100,40 @@ CGRP     '\,'[0-9][0-9][0-9]
 "lbf"      yylval = Quantity::PoundForce;          return UNIT; // pound
 
 "N"        yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
-"kN"       yylval = Quantity::KiloNewton;          return UNIT; // Newton 
-"MN"       yylval = Quantity::MegaNewton;          return UNIT; // Newton 
-"mN"       yylval = Quantity::MilliNewton;         return UNIT; // Newton 
+"kN"       yylval = Quantity::KiloNewton;          return UNIT; // Newton
+"MN"       yylval = Quantity::MegaNewton;          return UNIT; // Newton
+"mN"       yylval = Quantity::MilliNewton;         return UNIT; // Newton
 
-"Pa"       yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m*s^2 or N/m^2) 
-"kPa"      yylval = Quantity::KiloPascal;          return UNIT; // Pascal 
-"MPa"      yylval = Quantity::MegaPascal;          return UNIT; // Pascal  
-"GPa"      yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
+"Pa"       yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
+"kPa"      yylval = Quantity::KiloPascal;          return UNIT; // Pascal
+"MPa"      yylval = Quantity::MegaPascal;          return UNIT; // Pascal
+"GPa"      yylval = Quantity::GigaPascal;          return UNIT; // Pascal
 
-"Torr"     yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 ) 
-"mTorr"    yylval = Quantity::mTorr;               return UNIT; //  
-"uTorr"    yylval = Quantity::yTorr;               return UNIT; //  
-"\xC2\xB5Torr"    yylval = Quantity::yTorr;               return UNIT; //  
+"Torr"     yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 )
+"mTorr"    yylval = Quantity::mTorr;               return UNIT; //
+"uTorr"    yylval = Quantity::yTorr;               return UNIT; //
+"\xC2\xB5Torr"    yylval = Quantity::yTorr;               return UNIT; //
 
-"psi"      yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
-"ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2 
+"psi"      yylval = Quantity::PSI;                 return UNIT; // pounds/in^2
+"ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
 
-"W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
-"VA"       yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 
+"W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
+"VA"       yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
 
-"J"        yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2) 
-"Nm"       yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule 
-"VAs"      yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule 
-"CV"       yylval = Quantity::WattSecond;          return UNIT; //  
-"Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule 
+"V"        yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
+
+"J"        yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
+"Nm"       yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
+"VAs"      yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
+"CV"       yylval = Quantity::WattSecond;          return UNIT; //
+"Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
 
 "\xC2\xB0" yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
-"rad"      yylval = Quantity::Radian;              return UNIT; // radian         
-"gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
+"rad"      yylval = Quantity::Radian;              return UNIT; // radian
+"gon"      yylval = Quantity::Gon;                 return UNIT; // gon
 
+"1"        yylval = Quantity(1.0);                 return ONE;
 {DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 "."?{DIGIT}+{EXPO}?                                 {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 {DIGIT}+","?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }

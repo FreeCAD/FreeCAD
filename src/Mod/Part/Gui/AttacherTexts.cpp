@@ -48,7 +48,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         switch (mmode){
         case mmDeactivated:
             return TwoStrings(qApp->translate("Attacher3D", "Deactivated","Attachment3D mode caption"),
-                              qApp->translate("Attacher3D", "Attachment is disabled. CS can be moved by editing Placement property.","Attachment3D mode tooltip"));
+                              qApp->translate("Attacher3D", "Attachment is disabled. Object can be moved by editing Placement property.","Attachment3D mode tooltip"));
         case mmTranslate:
             return TwoStrings(qApp->translate("Attacher3D", "Translate origin","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Origin is aligned to match Vertex. Orientation is controlled by Placement property.","Attachment3D mode tooltip"));
@@ -97,6 +97,24 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmInertialCS:
             return TwoStrings(qApp->translate("Attacher3D", "Inertial CS","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Inertial coordinate system, constructed on principal axes of inertia and center of mass.","Attachment3D mode tooltip"));
+        case mmOZX:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-Z-X","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOZY:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-Z-Y","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOXY:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-X-Y","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOXZ:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-X-Z","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOYZ:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-Y-Z","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOYX:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-Y-X","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.","Attachment3D mode tooltip"));
         default:
             break;
         }
@@ -105,7 +123,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         switch (mmode){
         case mmDeactivated:
             return TwoStrings(qApp->translate("Attacher2D", "Deactivated","AttachmentPlane mode caption"),
-                              qApp->translate("Attacher2D", "Attachment is disabled. Plane can be moved by editing Placement property.","AttachmentPlane mode tooltip"));
+                              qApp->translate("Attacher2D", "Attachment is disabled. Object can be moved by editing Placement property.","AttachmentPlane mode tooltip"));
         case mmTranslate:
             return TwoStrings(qApp->translate("Attacher2D", "Translate origin","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Origin is aligned to match Vertex. Orientation is controlled by Placement property.","AttachmentPlane mode tooltip"));
@@ -154,6 +172,24 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmInertialCS:
             return TwoStrings(qApp->translate("Attacher2D", "Inertia 2-3","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane constructed on second and third principal axes of inertia (passes through center of mass).","AttachmentPlane mode tooltip"));
+        case mmOZX:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-N-X","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOZY:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-N-Y","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOXY:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-X-Y","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOXZ:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-X-N","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOYZ:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-Y-N","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.","Attachment3D mode tooltip"));
+        case mmOYX:
+            return TwoStrings(qApp->translate("Attacher3D", "Align O-Y-X","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.","Attachment3D mode tooltip"));
         default:
             break;
         }
@@ -191,7 +227,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             return TwoStrings(qApp->translate("Attacher1D", "Tangent","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line tangent to an edge. Optional vertex link defines where.","AttachmentLine mode tooltip"));
         case mm1Normal:
-            return TwoStrings(qApp->translate("Attacher1D", "Normal","AttachmentLine mode caption"),
+            return TwoStrings(qApp->translate("Attacher1D", "Normal to edge","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.","AttachmentLine mode tooltip"));
         case mm1Binormal:
             return TwoStrings(qApp->translate("Attacher1D", "Binormal","AttachmentLine mode caption"),
@@ -220,6 +256,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mm1AxisInertia3:
             return TwoStrings(qApp->translate("Attacher1D", "3rd principal axis","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line follows third principal axis of inertia.","AttachmentLine mode tooltip"));
+        case mm1FaceNormal:
+            return TwoStrings(qApp->translate("Attacher1D", "Normal to surface","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line perpendicular to surface at point set by vertex.","AttachmentLine mode tooltip"));
         default:
             break;
         }

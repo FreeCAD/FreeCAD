@@ -29,7 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh reader and writer for FEM workbench
 
+from PySide import QtGui, QtCore
+
 import FreeCAD
+import FreeCADGui
 import importToolsFem
 import os
 
@@ -46,6 +49,64 @@ if open.__module__ == '__builtin__':
 elif open.__module__ == 'io':
     # because we'll redefine open below (Python3)
     pyopen = open
+
+
+class WriteXDMFTaskPanel:
+    """
+    This task panel is used to write mesh groups with user defined values.
+    It will called if there are mesh groups detected. Else it will be bypassed.
+    """
+    def __init__(self, fem_mesh_obj, fileString):
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGroupXDMFExport.ui")
+        self.result_dict = {}
+        self.fem_mesh_obj = fem_mesh_obj
+        self.fileString = fileString
+
+        self.convert_fem_mesh_obj_to_table()
+
+    def convert_fem_mesh_obj_to_table(self):
+
+        def ro(item):
+            item.setFlags(~QtCore.Qt.ItemIsEditable & ~QtCore.Qt.ItemIsEnabled)
+            return item
+
+        gmshgroups = importToolsFem.get_FemMeshObjectMeshGroups(self.fem_mesh_obj)
+        fem_mesh = self.fem_mesh_obj.FemMesh
+
+        self.form.tableGroups.setRowCount(0)
+        self.form.tableGroups.setRowCount(len(gmshgroups))
+
+        for (ind, gind) in enumerate(gmshgroups):
+            # group number
+            self.form.tableGroups.setItem(ind, 0, ro(QtGui.QTableWidgetItem(str(gind))))
+            # group name
+            self.form.tableGroups.setItem(ind, 1, ro(QtGui.QTableWidgetItem(fem_mesh.getGroupName(gind))))
+            # group elements
+            self.form.tableGroups.setItem(ind, 2, ro(QtGui.QTableWidgetItem(fem_mesh.getGroupElementType(gind))))
+            # default value for not marked elements
+            self.form.tableGroups.setItem(ind, 3, QtGui.QTableWidgetItem(str(-1)))
+            # default value for marked elements
+            self.form.tableGroups.setItem(ind, 4, QtGui.QTableWidgetItem(str(gind)))
+
+    def convert_table_to_group_dict(self):
+        group_values_dict = {}
+        num_rows = self.form.tableGroups.rowCount()
+
+        for r in range(num_rows):
+            g = int(self.form.tableGroups.item(r, 0).text())
+            default_value = int(self.form.tableGroups.item(r, 3).text())
+            marked_value = int(self.form.tableGroups.item(r, 4).text())
+
+            group_values_dict[g] = (marked_value, default_value)
+
+        return group_values_dict
+
+    def accept(self):
+        group_values_dict = self.convert_table_to_group_dict()
+
+        writeFenicsXDMF.write_fenics_mesh_xdmf(self.fem_mesh_obj, self.fileString, group_values_dict=group_values_dict)
+
+        FreeCADGui.Control.closeDialog()
 
 
 def open(filename):
@@ -79,9 +140,12 @@ def export(objectslist, fileString):
         if fileExtension.lower() == '.xml':
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == '.xdmf':
-            writeFenicsXDMF.write_fenics_mesh_xdmf(obj, fileString)
-
-    # write_fenics_mesh(obj, filename)
+            if importToolsFem.get_FemMeshObjectMeshGroups(obj) is not ():
+                # if there are groups found, make task panel available
+                panel = WriteXDMFTaskPanel(obj, fileString)
+                FreeCADGui.Control.showDialog(panel)
+            else:
+                writeFenicsXDMF.write_fenics_mesh_xdmf(obj, fileString)
 
 
 def import_fenics_mesh(filename, analysis=None):

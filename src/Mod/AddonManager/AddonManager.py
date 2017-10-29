@@ -33,7 +33,7 @@ __url__ = "http://www.freecadweb.org"
 FreeCAD Addon Manager Module
 
 It will fetch its contents from https://github.com/FreeCAD/FreeCAD-addons
-You need a working internet connection, and the python-git package
+You need a working internet connection, and the GitPython package
 installed.
 '''
 
@@ -150,9 +150,9 @@ class AddonsInstaller(QtGui.QDialog):
         QtCore.QObject.connect(self.listMacros, QtCore.SIGNAL("currentRowChanged(int)"), self.show_macro)
         QtCore.QObject.connect(self.buttonCheck, QtCore.SIGNAL("clicked()"), self.check_updates)
         QtCore.QMetaObject.connectSlotsByName(self)
-        
+
         self.update()
-        
+
         if not NOGIT:
             try:
                 import git
@@ -160,6 +160,19 @@ class AddonsInstaller(QtGui.QDialog):
                 self.buttonCheck.hide()
             else:
                 self.buttonCheck.show()
+
+    def reject(self):
+        # ensure all threads are finished before closing
+        oktoclose = True
+        for worker in ["update_worker","check_worker","show_worker","showmacro_worker",
+                       "macro_worker","install_worker"]:
+            if hasattr(self,worker):
+                thread = getattr(self,worker)
+                if thread:
+                    if not thread.isFinished():
+                        oktoclose = False
+        if oktoclose:
+            QtGui.QDialog.reject(self)
 
     def retranslateUi(self):
         self.setWindowTitle(translate("AddonsInstaller","Addon manager"))
@@ -439,22 +452,38 @@ class CheckWBWorker(QtCore.QThread):
             return
         self.progressbar_show.emit(True)
         basedir = FreeCAD.ConfigGet("UserAppData")
-        moddir = basedir + os.sep + "Mod" 
+        moddir = basedir + os.sep + "Mod"
         self.info_label.emit(translate("AddonsInstaller", "Checking for new versions..."))
-        upds = 0
+        upds = []
+        gitpython_warning = False
         for repo in self.repos:
             if repo[2] == 1: #installed
                 self.info_label.emit(translate("AddonsInstaller","Checking repo")+" "+repo[0]+"...")
                 clonedir = moddir + os.sep + repo[0]
                 if os.path.exists(clonedir):
+                    if not os.path.exists(clonedir + os.sep + '.git'):
+                        # Repair addon installed with raw download
+                        bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
+                        try:
+                            with bare_repo.config_writer() as cw:
+                                cw.set('core', 'bare', False)
+                        except AttributeError:
+                            if not gitpython_warning:
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                gitpython_warning = True
+                            cw = bare_repo.config_writer()
+                            cw.set('core', 'bare', False)
+                            del cw
+                        repo = git.Repo(clonedir)
+                        repo.head.reset('--hard')
                     gitrepo = git.Git(clonedir)
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
                         self.mark.emit(repo[0])
-                        upds += 1
+                        upds.append(repo[0])
         self.progressbar_show.emit(False)
         if upds:
-            self.info_label.emit(str(upds)+" "+translate("AddonsInstaller", "update(s) available"))
+            self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds))
         else:
             self.info_label.emit(translate("AddonsInstaller","Everything is up to date"))
         self.stop = True
@@ -534,8 +563,39 @@ class ShowWorker(QtCore.QThread):
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
             self.addon_repos.emit(self.repos)
-        if self.repos[self.idx][2] == 1 :
-            message = "<strong>" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
+        if self.repos[self.idx][2] == 1:
+            upd = False
+            # checking for updates
+            if not NOGIT:
+                try:
+                    import git
+                except:
+                    pass
+                else:
+                    repo = self.repos[self.idx]
+                    clonedir = FreeCAD.ConfigGet("UserAppData") + os.sep + "Mod" + os.sep + repo[0]
+                    if os.path.exists(clonedir):
+                        if not os.path.exists(clonedir + os.sep + '.git'):
+                            # Repair addon installed with raw download
+                            bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
+                            try:
+                                with bare_repo.config_writer() as cw:
+                                    cw.set('core', 'bare', False)
+                            except AttributeError:
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                cw = bare_repo.config_writer()
+                                cw.set('core', 'bare', False)
+                                del cw
+                            repo = git.Repo(clonedir)
+                            repo.head.reset('--hard')
+                        gitrepo = git.Git(clonedir)
+                        gitrepo.fetch()
+                        if "git pull" in gitrepo.status():
+                            upd = True
+            if upd:
+                message = "<strong>" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
+            else:
+                message = "<strong>" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
         else:
             message = desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
         self.info_label.emit( message )
@@ -627,8 +687,8 @@ class InstallWorker(QtCore.QThread):
         try:
             import git
         except:
-            self.info_label.emit("python-git not found.")
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","python-git not found. Using standard download instead.\n"))
+            self.info_label.emit("GitPython not found.")
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.\n"))
             try:
                 import zipfile
             except:
@@ -654,6 +714,19 @@ class InstallWorker(QtCore.QThread):
         if os.path.exists(clonedir):
             self.info_label.emit("Updating module...")
             if git:
+                if not os.path.exists(clonedir + os.sep + '.git'):
+                    # Repair addon installed with raw download
+                    bare_repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir + os.sep + '.git', bare=True)
+                    try:
+                        with bare_repo.config_writer() as cw:
+                            cw.set('core', 'bare', False)
+                    except AttributeError:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                        cw = bare_repo.config_writer()
+                        cw.set('core', 'bare', False)
+                        del cw
+                    repo = git.Repo(clonedir)
+                    repo.head.reset('--hard')
                 repo = git.Git(clonedir)
                 answer = repo.pull()
             else:
@@ -670,7 +743,9 @@ class InstallWorker(QtCore.QThread):
                     self.download(self.repos[self.idx][1],clonedir)
                 answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
                 # symlink any macro contained in the module to the macros folder
-                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
+                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
+                if not os.path.exists(macrodir):
+                    os.makedirs(macrodir)
                 for f in os.listdir(clonedir):
                     if f.lower().endswith(".fcmacro"):
                         symlink(clonedir+os.sep+f,macrodir+os.sep+f)
@@ -706,8 +781,9 @@ class InstallWorker(QtCore.QThread):
                     for wb in depswb:
                         if wb.strip():
                             if not wb.strip() in FreeCADGui.listWorkbenches().keys():
-                                ok = False
-                                message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
+                                if not wb.strip()+"Workbench" in FreeCADGui.listWorkbenches().keys():
+                                    ok = False
+                                    message += translate("AddonsInstaller","Missing workbench") + ": " + wb + ", "
                 elif l.startswith("pylibs="):
                     depspy = l.split("=")[1].split(",")
                     for pl in depspy:

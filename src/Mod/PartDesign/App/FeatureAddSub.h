@@ -53,6 +53,26 @@ protected:
     Type addSubType;
 };
 
+typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;
+
+class FeatureAdditivePython : public FeatureAddSubPython
+{
+    PROPERTY_HEADER(PartDesign::FeatureAdditivePython);
+
+public:
+    FeatureAdditivePython();
+    ~FeatureAdditivePython();
+};
+
+class FeatureSubtractivePython : public FeatureAddSubPython
+{
+    PROPERTY_HEADER(PartDesign::FeatureSubtractivePython);
+
+public:
+    FeatureSubtractivePython();
+    ~FeatureSubtractivePython();
+};
+
 } //namespace PartDesign
 
 

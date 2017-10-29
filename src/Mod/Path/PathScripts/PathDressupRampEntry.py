@@ -38,8 +38,7 @@ def translate(text, context="PathDressup_RampEntry", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ObjectDressup:
@@ -343,7 +342,7 @@ class ObjectDressup:
         # now we need to return to original position.
         if goingForward:
             # if the ramp was going forward, the return edges are the edges we already covered in ramping,
-            # exept the last one, which was already covered inside for loop. Direction needs to be reversed also
+            # except the last one, which was already covered inside for loop. Direction needs to be reversed also
             returnedges = self.getreversed(rampedges[:i])
         else:
             # if the ramp was already reversing, the edges needed for return are the ones
@@ -563,7 +562,9 @@ class ViewProviderDressup:
         PathLog.debug("Deleting Dressup")
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        PathUtils.addToJob(arg1.Object.Base)
+        job = PathUtils.findParentJob(self.obj)
+        job.Proxy.addOperation(arg1.Object.Base)
+        arg1.Object.Base = None
         return True
 
     def __getstate__(self):

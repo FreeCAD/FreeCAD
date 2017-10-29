@@ -59,14 +59,6 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-//TODO: Look into this, seems we might be able to delete it now?  IR
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("QObject", "Make axonometric...");
-    qApp->translate("QObject", "Edit axonometric settings...");
-    qApp->translate("QObject", "Make orthographic");
-#endif
-
-
 TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     ui(new Ui_TaskProjGroup),
     multiView(featView),
@@ -78,7 +70,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     ui->projection->setCurrentIndex(multiView->ProjectionType.getValue());
 
-    setFractionalScale(multiView->Scale.getValue());
+    setFractionalScale(multiView->getScale());
     ui->cmbScaleType->setCurrentIndex(multiView->ScaleType.getValue());
 
     // Initially toggle view checkboxes if needed
@@ -129,21 +121,16 @@ void TaskProjGroup::viewToggled(bool toggle)
     QString viewName = sender()->objectName();
     int index = viewName.mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
-    App::DocumentObject* newObj;
-    TechDraw::DrawView* newView;
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
-        newObj = multiView->addProjection( viewNameCStr );
-        newView = static_cast<TechDraw::DrawView*>(newObj);
-        m_mdi->redraw1View(newView);
+        (void) multiView->addProjection( viewNameCStr );
         changed = true;
     } else if ( !toggle && multiView->hasProjection( viewNameCStr ) ) {
         multiView->removeProjection( viewNameCStr );
         changed = true;
     }
     if (changed) {
-        multiView->recomputeFeature();
         if (multiView->ScaleType.isValue("Automatic")) {
-            double scale = multiView->Scale.getValue();
+            double scale = multiView->getScale();
             setFractionalScale(scale);
         }
     }
@@ -176,24 +163,31 @@ void TaskProjGroup::rotateButtonClicked(void)
 
 void TaskProjGroup::on3DClicked(void)
 {
-    std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
-    Base::Vector3d dir = dir3D.first;
-    dir = DrawUtil::closestBasis(dir);
-    Base::Vector3d up = dir3D.second;
-    up = DrawUtil::closestBasis(up);
-    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
-    if (front) {                              //why "if front"???
-        multiView->setTable(dir,up);
-        setUiPrimary();
-        Gui::Command::updateActive();
-    }
+    Base::Console().Warning("TaskProjGroup - this function is temporarily unavailable\n");
+//TODO: how to set the DPG.Cube (or a brand new replacement Cube) to a specific orientation 
+//      {10x(viewDirection + RotationVector)}  given only the 
+//      viewDirection + upDirection(!= RotationVector) of the front view?
+//      need to find the sequence of rotations Left/Right, Up/Down, CW/CCW
+//      from current orientation to desired orientation. 
+    
+//    std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
+//    Base::Vector3d dir = dir3D.first;
+//    dir = DrawUtil::closestBasis(dir);
+//    Base::Vector3d up = dir3D.second;
+//    up = DrawUtil::closestBasis(up);
+//    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
+//    if (front) {                              //why "if front"???
+//        multiView->setTable(dir,up);
+//        setUiPrimary();
+//        Gui::Command::updateActive();
+//    }
 }
 
 void TaskProjGroup::onResetClicked(void)
 {
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {
-        multiView->resetTable();
+        multiView->resetCube();
         setUiPrimary();
         Gui::Command::updateActive();
     }
@@ -272,7 +266,7 @@ void TaskProjGroup::nearestFraction(double val, int &n, int &d) const
 
     n = 1;  // numerator
     d = 1;  // denominator
-    double fraction = n / d;
+    double fraction = 1.0;                                                      //coverity 152005
     //double m = fabs(fraction - val);
 
     while (fabs(fraction - val) > 0.001) {
@@ -299,7 +293,7 @@ void TaskProjGroup::updateTask()
     ui->cmbScaleType->setCurrentIndex(multiView->ScaleType.getValue());
 
     // Update the scale value
-    setFractionalScale(multiView->Scale.getValue());
+    setFractionalScale(multiView->getScale());
 
     blockUpdate = false;
 }
@@ -332,7 +326,7 @@ void TaskProjGroup::scaleManuallyChanged(int i)
     double scale = (double) a / (double) b;
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
                                                                                      , scale);
-    multiView->recomputeFeature();
+    multiView->recomputeFeature();  //just a repaint.  multiView is already marked for recompute by changed to Scale
     Gui::Command::updateActive();
 }
 
@@ -458,8 +452,10 @@ bool TaskProjGroup::accept()
     Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
     if (!doc) return false;
 
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
+    if (!getCreateMode())  {    //this is an edit session, end the transaction
+        Gui::Command::commitCommand();
+    }
+    //Gui::Command::updateActive();     //no chain of updates here
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
     return true;

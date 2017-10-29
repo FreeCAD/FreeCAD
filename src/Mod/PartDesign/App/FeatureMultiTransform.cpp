@@ -59,6 +59,12 @@ void MultiTransform::positionBySupport(void)
             throw Base::Exception("Transformation features must be subclasses of Transformed");
         PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
         transFeature->Placement.setValue(this->Placement.getValue());
+
+        // To avoid that a linked transform feature stays touched after a recompute
+        // we have to purge the touched state
+        if (this->isRecomputing()) {
+            transFeature->purgeTouched();
+        }
     }
 }
 

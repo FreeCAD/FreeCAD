@@ -537,6 +537,10 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
                              double scale)
 {
     TopoDS_Shape transShape;
+    if (input.IsNull()) {
+        return transShape;
+    }
+    
     try {
         // Make tempTransform scale the object around it's centre point and
         // mirror about the Y axis

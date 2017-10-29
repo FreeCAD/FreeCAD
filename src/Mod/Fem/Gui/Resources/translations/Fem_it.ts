@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="it" sourcelanguage="en">
+<TS version="2.0" language="it" sourcelanguage="en">
   <context>
     <name>FEM_Analysis</name>
     <message>
@@ -15,29 +15,55 @@
     </message>
   </context>
   <context>
-    <name>FEM_BeamSection</name>
+    <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
+      <source>Constraint self weight</source>
+      <translation>Vincolo peso proprio</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
+      <source>Creates a FEM constraint self weight</source>
+      <translation>Crea un vincolo peso proprio FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementFluid1D</name>
+    <message>
+      <location filename="_CommandFemElementFluid1D.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation>Sezione del fluido per il flusso 1D</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemElementFluid1D.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation>Crea una sezione di fluido FEM per il flusso 1D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry1D</name>
+    <message>
+      <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
       <translation>Sezione trasversale di trave</translation>
     </message>
     <message>
-      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
       <translation>Crea una sezione trasversale di una trave FEM</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintSelfWeight</name>
+    <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
-      <source>Constraint self weigt</source>
-      <translation>Vincolo peso proprio</translation>
+      <location filename="_CommandFemElementGeometry2D.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation>Spessore della membrana</translation>
     </message>
     <message>
-      <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
-      <source>Creates a FEM constraint self weigt</source>
-      <translation>Crea un vincolo peso proprio FEM</translation>
+      <location filename="_CommandFemElementGeometry2D.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
     </message>
   </context>
   <context>
@@ -45,25 +71,12 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>Converti mesh FEM mesh in mesh</translation>
+      <translation>Converti mesh FEM in mesh</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Converte la superficie di una mesh FEM in una mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_FluidSection</name>
-    <message>
-      <location filename="_CommandFemFluidSection.py" line="42"/>
-      <source>Fluid section for 1D flow</source>
-      <translation>Sezione del fluido per il flusso 1D</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemFluidSection.py" line="44"/>
-      <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>Crea una sezione di fluido FEM per il flusso 1D</translation>
     </message>
   </context>
   <context>
@@ -103,6 +116,19 @@
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
       <translation>Crea un materiale FEM per il solido</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
+      <source>FEM mesh boundary layer</source>
+      <translation>Griglia FEM di contorno</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
+      <source>Creates a FEM mesh boundary layer</source>
+      <translation>Crea una griglia FEM di contorno</translation>
     </message>
   </context>
   <context>
@@ -205,19 +231,6 @@
     </message>
   </context>
   <context>
-    <name>FEM_ShellThickness</name>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="41"/>
-      <source>Shell plate thickness</source>
-      <translation>Spessore di Shell</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
@@ -274,12 +287,61 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation>Default Fem Command MenuText</translation>
+      <translation>Menù di comando Fem iniziale</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation>Default Fem Command ToolTip</translation>
+      <translation>Suggerimento di commando Fem iniziale</translation>
+    </message>
+    <message>
+      <location filename="../../../PyGui/FemCommands.py" line="41"/>
+      <source>Default Fem Command MenuText</source>
+      <translation>Menù di comando Fem iniziale</translation>
+    </message>
+    <message>
+      <location filename="../../../PyGui/FemCommands.py" line="43"/>
+      <source>Default Fem Command ToolTip</source>
+      <translation>Suggerimento di commando Fem iniziale</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_BeamSection</name>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation>Sezione trasversale di trave</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation>Crea una sezione trasversale di una trave FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FluidSection</name>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation>Sezione del fluido per il flusso 1D</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation>Crea una sezione di fluido FEM per il flusso 1D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation>Spessore della membrana</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
     </message>
   </context>
   <context>
@@ -372,7 +434,7 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>Converti mesh FEM mesh in mesh</translation>
+      <translation>Converti mesh FEM in mesh</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
@@ -499,7 +561,7 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore di Shell</translation>
+      <translation>Spessore della membrana</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>

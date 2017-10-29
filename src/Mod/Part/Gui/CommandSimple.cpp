@@ -180,20 +180,20 @@ void CmdPartSimpleCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
     openCommand("Create Copy");
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
+    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
                       "App.ActiveDocument.%s.Shape\n"
                       "App.ActiveDocument.ActiveObject.Label="
                       "App.ActiveDocument.%s.Label\n",
-                      (*it)->getNameInDocument(),
-                      (*it)->getNameInDocument(),
-                      (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "DiffuseColor", (*it)->getNameInDocument());
+                      it->getFeatName(),
+                      it->getFeatName(),
+                      it->getFeatName());
+        copyVisual("ActiveObject", "ShapeColor", it->getFeatName());
+        copyVisual("ActiveObject", "LineColor", it->getFeatName());
+        copyVisual("ActiveObject", "PointColor", it->getFeatName());
+        copyVisual("ActiveObject", "DiffuseColor", it->getFeatName());
     }
     commitCommand();
     updateActive();

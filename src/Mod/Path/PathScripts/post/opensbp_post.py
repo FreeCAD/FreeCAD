@@ -34,17 +34,28 @@ inside FreeCAD, via the GUI importer or via python scripts with:
 
 import Path
 Path.write(object,"/path/to/file.ncc","post_opensbp")
+'''
 
+'''
 DONE:
     uses native commands
     handles feed and jog moves
     handles XY, Z, and XYZ feed speeds
     handles arcs
+    support for inch output
 ToDo
     comments may not format correctly
     drilling.  Haven't looked at it.
     many other things
 
+'''
+
+TOOLTIP_ARGS='''
+Arguments for opensbp:
+    --comments          ... insert comments - mostly for debugging
+    --inches            ... convert output to inches
+    --no-header         ... suppress header output
+    --no-show-editor    ... don't show editor, just save result
 '''
 
 now = datetime.datetime.now()
@@ -74,9 +85,31 @@ if open.__module__ == '__builtin__':
 
 CurrentState = {}
 
+def getMetricValue(val):
+    return val
+def getImperialValue(val):
+    return val / 25.4
+
+GetValue = getMetricValue
+
 
 def export(objectslist, filename, argstring):
+    global OUTPUT_COMMENTS
+    global OUTPUT_HEADER
+    global SHOW_EDITOR
     global CurrentState
+    global GetValue
+
+    for arg in argstring.split():
+        if arg == '--comments':
+            OUTPUT_COMMENTS = True
+        if arg == '--inches':
+            GetValue = getImperialValue
+        if arg == '--no-header':
+            OUTPUT_HEADER = False
+        if arg == '--no-show-editor':
+            SHOW_EDITOR = False
+
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -100,7 +133,7 @@ def export(objectslist, filename, argstring):
 
     # Write the preamble
     if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(begin preamble)\n"
+        gcode += linenumber() + "'(begin preamble)\n"
     for line in PREAMBLE.splitlines(True):
         gcode += linenumber() + line
 
@@ -108,7 +141,7 @@ def export(objectslist, filename, argstring):
 
         # do the pre_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(begin operation: " + obj.Label + ")\n"
+            gcode += linenumber() + "'(begin operation: " + obj.Label + ")\n"
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -116,13 +149,13 @@ def export(objectslist, filename, argstring):
 
         # do the post_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(finish operation: " + obj.Label + ")\n"
+            gcode += linenumber() + "'(finish operation: " + obj.Label + ")\n"
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
     # do the post_amble
     if OUTPUT_COMMENTS:
-        gcode += "(begin postamble)\n"
+        gcode += "'(begin postamble)\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
@@ -161,18 +194,26 @@ def move(command):
 
     if 'F' in command.Parameters:
         speed = command.Parameters['F']
-        if speed != CurrentState['F']:
-            if command.Name in ['G1', 'G01']:  # move
-                movetype = "MS"
-            else:  # jog
-                movetype = "JS"
-            zspeed = ""
-            xyspeed = ""
-            if 'Z' in axis:
-                zspeed = "{:f}".format(speed)
-            if ('X' in axis) or ('Y' in axis):
-                xyspeed = "{:f}".format(speed)
-            txt += "{},{},{}\n".format(movetype, zspeed, xyspeed)
+        if command.Name in ['G1', 'G01']:  # move
+            movetype = "MS"
+        else:  # jog
+            movetype = "JS"
+        zspeed = ""
+        xyspeed = ""
+        if 'Z' in axis:
+            speedKey = "{}Z".format(movetype)
+            speedVal = GetValue(speed)
+            if CurrentState[speedKey] != speedVal:
+                CurrentState[speedKey] = speedVal
+                zspeed = "{:f}".format(speedVal)
+        if ('X' in axis) or ('Y' in axis):
+            speedKey = "{}XY".format(movetype)
+            speedVal = GetValue(speed)
+            if CurrentState[speedKey] != speedVal:
+                CurrentState[speedKey] = speedVal
+                xyspeed = "{:f}".format(speedVal)
+        if zspeed or xyspeed:
+            txt += "{},{},{}\n".format(movetype, xyspeed, zspeed)
 
     if command.Name in ['G0', 'G00']:
         pref = "J"
@@ -181,40 +222,38 @@ def move(command):
 
     if axis == "X":
         txt += pref + "X"
-        txt += "," + format(command.Parameters["X"], '.4f')
+        txt += "," + format(GetValue(command.Parameters["X"]), '.4f')
         txt += "\n"
     elif axis == "Y":
         txt += pref + "Y"
-        txt += "," + format(command.Parameters["Y"], '.4f')
+        txt += "," + format(GetValue(command.Parameters["Y"]), '.4f')
         txt += "\n"
     elif axis == "Z":
         txt += pref + "Z"
-        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "XY":
         txt += pref + "2"
-        txt += "," + format(command.Parameters["X"], '.4f')
-        txt += "," + format(command.Parameters["Y"], '.4f')
+        txt += "," + format(GetValue(command.Parameters["X"]), '.4f')
+        txt += "," + format(GetValue(command.Parameters["Y"]), '.4f')
         txt += "\n"
     elif axis == "XZ":
-        txt += pref + "X"
-        txt += "," + format(command.Parameters["X"], '.4f')
-        txt += "\n"
-        txt += pref + "Z"
-        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += pref + "3"
+        txt += "," + format(GetValue(command.Parameters["X"]), '.4f')
+        txt += ","
+        txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "XYZ":
         txt += pref + "3"
-        txt += "," + format(command.Parameters["X"], '.4f')
-        txt += "," + format(command.Parameters["Y"], '.4f')
-        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += "," + format(GetValue(command.Parameters["X"]), '.4f')
+        txt += "," + format(GetValue(command.Parameters["Y"]), '.4f')
+        txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "YZ":
-        txt += pref + "Y"
-        txt += "," + format(command.Parameters["Y"], '.4f')
-        txt += "\n"
-        txt += pref + "Z"
-        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += pref + "3"
+        txt += ","
+        txt += "," + format(GetValue(command.Parameters["Y"]), '.4f')
+        txt += "," + format(GetValue(command.Parameters["Z"]), '.4f')
         txt += "\n"
     elif axis == "":
         print("warning: skipping duplicate move.")
@@ -232,10 +271,10 @@ def arc(command):
     else:  # G3 means CCW
         dirstring = "-1"
     txt = "CG,,"
-    txt += format(command.Parameters['X'], '.4f') + ","
-    txt += format(command.Parameters['Y'], '.4f') + ","
-    txt += format(command.Parameters['I'], '.4f') + ","
-    txt += format(command.Parameters['J'], '.4f') + ","
+    txt += format(GetValue(command.Parameters['X']), '.4f') + ","
+    txt += format(GetValue(command.Parameters['Y']), '.4f') + ","
+    txt += format(GetValue(command.Parameters['I']), '.4f') + ","
+    txt += format(GetValue(command.Parameters['J']), '.4f') + ","
     txt += "T" + ","
     txt += dirstring
     txt += "\n"
@@ -299,7 +338,7 @@ def parse(pathobj):
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if OUTPUT_COMMENTS:
-            output += linenumber() + "(compound: " + pathobj.Label + ")\n"
+            output += linenumber() + "'(compound: " + pathobj.Label + ")\n"
         for p in pathobj.Group:
             output += parse(p)
     else:  # parsing simple path
@@ -307,13 +346,15 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return output
         if OUTPUT_COMMENTS:
-            output += linenumber() + "(Path: " + pathobj.Label + ")\n"
+            output += linenumber() + "'(Path: " + pathobj.Label + ")\n"
         for c in pathobj.Path.Commands:
             command = c.Name
             if command in scommands:
                 output += scommands[command](c)
                 if c.Parameters:
                     CurrentState.update(c.Parameters)
+            elif command[0] == '(':
+                output += "' " + command + "\n"
             else:
                 print("I don't know what the hell the command: ",end='')
                 print(command + " means.  Maybe I should support it.")

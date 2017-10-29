@@ -31,6 +31,7 @@
 #include "ui_Tessellation.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -248,9 +249,17 @@ bool Tessellation::accept()
             QString cmd;
             if (method == 0) { // Standard
                 double devFace = ui->spinSurfaceDeviation->value().getValue();
-                QString param = QString::fromLatin1("Shape=__doc__.getObject(\"%1\").Shape,LinearDeflection=%2")
+                double devAngle = ui->spinAngularDeviation->value().getValue();
+                devAngle = Base::toRadians<double>(devAngle);
+                bool relative = ui->relativeDeviation->isChecked();
+                QString param = QString::fromLatin1("Shape=__doc__.getObject(\"%1\").Shape, "
+                                                    "LinearDeflection=%2, "
+                                                    "AngularDeflection=%3, "
+                                                    "Relative=%4")
                     .arg(shape)
-                    .arg(devFace);
+                    .arg(devFace)
+                    .arg(devAngle)
+                    .arg(relative ? QString::fromLatin1("True") : QString::fromLatin1("False"));
                 if (ui->meshShapeColors->isChecked())
                     param += QString::fromLatin1(",Segments=True");
                 if (ui->groupsFaceColors->isChecked())

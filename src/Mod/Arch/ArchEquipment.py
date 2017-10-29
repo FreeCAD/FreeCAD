@@ -48,7 +48,7 @@ else:
 #  \brief The Equipment object and tools
 #
 #  This module provides tools to build equipment objects.
-#  Equipments are used to represent furniture and all kinds of electrical
+#  Equipment is used to represent furniture and all kinds of electrical
 #  or hydraulic appliances in a building
 
 # presets

@@ -279,7 +279,7 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
     DocumentObject *pcFtr = getDocumentPtr()->getObject(sName);
     if(pcFtr) {
-        getDocumentPtr()->remObject( sName );
+        getDocumentPtr()->removeObject( sName );
         Py_Return;
     } else {
         std::stringstream str;
@@ -403,9 +403,15 @@ PyObject*  DocumentPy::clearUndos(PyObject * args)
 PyObject*  DocumentPy::recompute(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
-    int objectCount = getDocumentPtr()->recompute();
-    return Py::new_reference_to(Py::Int(objectCount));
+        return NULL;                    // NULL triggers exception
+    try {
+        int objectCount = getDocumentPtr()->recompute();
+        return Py::new_reference_to(Py::Int(objectCount));
+    }
+    catch (const Base::RuntimeError& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
+    }
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)
@@ -510,7 +516,7 @@ Py::List DocumentPy::getObjects(void) const
     return res;
 }
 
-Py::List DocumentPy::getToplogicalSortedObjects(void) const
+Py::List DocumentPy::getTopologicalSortedObjects(void) const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;

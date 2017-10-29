@@ -26,10 +26,12 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/Selection.h>
 
 namespace PartGui { 
 
-class ShapeBuilderWidget : public QWidget
+class ShapeBuilderWidget : public QWidget,
+                           public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -43,6 +45,9 @@ public:
 private Q_SLOTS:
     void on_createButton_clicked();
     void switchMode(int);
+
+private:
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
     void createEdgeFromVertex();

@@ -66,6 +66,7 @@ public:
 -
 + if (self.export.Sequence):
     static PySequenceMethods Sequence[];
+    static PyMappingMethods Mapping[];
 -
 + if (self.export.RichCompare):
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
@@ -180,14 +181,14 @@ public:
 + if (self.export.Sequence.sq_item):
     static PyObject * sequence_item(PyObject *, Py_ssize_t);
 -
-+ if (self.export.Sequence.sq_slice):
-    static PyObject * sequence_slice(PyObject *, Py_ssize_t, Py_ssize_t);
++ if (self.export.Sequence.mp_subscript):
+    static PyObject * mapping_subscript(PyObject *, PyObject *);
 -
 + if (self.export.Sequence.sq_ass_item):
     static int sequence_ass_item(PyObject *, Py_ssize_t, PyObject *);
 -
-+ if (self.export.Sequence.sq_ass_slice):
-    static int sequence_ass_slice(PyObject *, Py_ssize_t, Py_ssize_t, PyObject *);
++ if (self.export.Sequence.mp_ass_subscript):
+    static int mapping_ass_subscript(PyObject *, PyObject *, PyObject *);
 -
 + if (self.export.Sequence.sq_contains):
     static int sequence_contains(PyObject *, PyObject *);
@@ -286,10 +287,11 @@ PyTypeObject @self.export.Name@::Type = {
 -
 + if (self.export.Sequence):
     @self.export.Namespace@::@self.export.Name@::Sequence,      /*tp_as_sequence*/
+    @self.export.Namespace@::@self.export.Name@::Mapping,       /*tp_as_mapping*/
 = else:
     0,                                                /*tp_as_sequence*/
--
     0,                                                /*tp_as_mapping*/
+-
     0,                                                /*tp_hash*/
     0,                                                /*tp_call */
     0,                                                /*tp_str  */
@@ -445,21 +447,13 @@ PySequenceMethods VectorPy::Sequence[] = { {
 = else:
     0,
 -
-+ if (self.export.Sequence.sq_slice):
-    sequence_slice,
-= else:
     0,
--
 + if (self.export.Sequence.sq_ass_item):
     sequence_ass_item,
 = else:
     0,
 -
-+ if (self.export.Sequence.sq_ass_slice):
-    sequence_ass_slice,
-= else:
     0,
--
 + if (self.export.Sequence.sq_contains):
     sequence_contains,
 = else:
@@ -474,6 +468,24 @@ PySequenceMethods VectorPy::Sequence[] = { {
     sequence_inplace_repeat,
 = else:
     0
+-
+} };
+
+PyMappingMethods VectorPy::Mapping[] = { {
++ if (self.export.Sequence.sq_length):
+    sequence_length,
+= else:
+    0,
+-
++ if (self.export.Sequence.mp_subscript):
+    mapping_subscript,
+= else:
+    0,
+-
++ if (self.export.Sequence.mp_ass_subscript):
+    mapping_ass_subscript,
+= else:
+    0,
 -
 } };
 -
@@ -535,12 +547,13 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     }
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = e.getPyObject();
-        
         e.ReportException();
+
+        PyObject *edict = e.getPyObject();
+
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
-        
+
         return NULL;
     }
     catch(const boost::filesystem::filesystem_error& e) // catch boost filesystem exception
@@ -566,7 +579,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
         PyErr_SetString(Base::BaseExceptionFreeCADError,e);
         return NULL;
     }
-    // in debug not all exceptions will be catched to get the attention of the developer!
+    // in debug not all exceptions will be caught to get the attention of the developer!
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(const std::exception& e) // catch other c++ exceptions
     {
@@ -725,9 +738,10 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
+        e.ReportException();
+        
         PyObject *edict = e.getPyObject();
         
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         return NULL;
@@ -755,9 +769,10 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
+        e.ReportException();
+        
         PyObject *edict = e.getPyObject();
         
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         
@@ -797,9 +812,9 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
+        e.ReportException();
         PyObject *edict = e.getPyObject();
         
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         
@@ -828,9 +843,10 @@ int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ fun
 #else  // DONT_CATCH_CXX_EXCEPTIONS  
     catch(Base::Exception& e) // catch the FreeCAD exceptions
     {
-        PyObject *edict = e.getPyObject();
-        
         e.ReportException();
+        
+        PyObject *edict = e.getPyObject();
+
         PyErr_SetObject(Base::BaseExceptionFreeCADError, edict);
         Py_DECREF(edict);
         return -1;
@@ -1069,9 +1085,9 @@ PyObject * @self.export.Name@::sequence_item(PyObject *, Py_ssize_t)
     return 0;
 }
 -
-+ if (self.export.Sequence.sq_slice):
++ if (self.export.Sequence.mp_subscript):
 
-PyObject * @self.export.Name@::sequence_slice(PyObject *, Py_ssize_t, Py_ssize_t)
+PyObject * @self.export.Name@::mapping_subscript(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
@@ -1085,9 +1101,9 @@ int @self.export.Name@::sequence_ass_item(PyObject *, Py_ssize_t, PyObject *)
     return -1;
 }
 -
-+ if (self.export.Sequence.sq_ass_slice):
++ if (self.export.Sequence.mp_ass_subscript):
 
-int @self.export.Name@::sequence_ass_slice(PyObject *, Py_ssize_t, Py_ssize_t, PyObject *)
+int @self.export.Name@::mapping_ass_subscript(PyObject *, PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return -1;
@@ -1387,9 +1403,9 @@ PyObject * @self.export.Name@::sequence_item(PyObject *, Py_ssize_t)
     return 0;
 }
 -
-+ if (self.export.Sequence.sq_slice):
++ if (self.export.Sequence.mp_subscript):
 
-PyObject * @self.export.Name@::sequence_slice(PyObject *, Py_ssize_t, Py_ssize_t)
+PyObject * @self.export.Name@::mapping_subscript(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
@@ -1403,9 +1419,9 @@ int @self.export.Name@::sequence_ass_item(PyObject *, Py_ssize_t, PyObject *)
     return -1;
 }
 -
-+ if (self.export.Sequence.sq_ass_slice):
++ if (self.export.Sequence.mp_ass_subscript):
 
-int @self.export.Name@::sequence_ass_slice(PyObject *, Py_ssize_t, Py_ssize_t, PyObject *)
+int @self.export.Name@::mapping_ass_subscript(PyObject *, PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return -1;

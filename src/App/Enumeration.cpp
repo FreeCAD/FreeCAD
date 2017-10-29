@@ -100,7 +100,9 @@ void Enumeration::setEnums(const char **plEnums)
     std::string oldValue;
     bool preserve = (isValid() && plEnums != NULL);
     if (preserve) {
-        oldValue = getCStr();
+        const char* str = getCStr();
+        if (str)
+            oldValue = str;
     }
 
     // set _ownEnumArray
@@ -126,7 +128,9 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     std::string oldValue;
     bool preserve = isValid();
     if (preserve) {
-        oldValue = getCStr();
+        const char* str = getCStr();
+        if (str)
+            oldValue = str;
     }
 
     if (isValid() && _ownEnumArray) {
@@ -165,7 +169,7 @@ void Enumeration::setValue(const char *value)
         return;
     }
 
-    unsigned int i = 0;
+    int i = 0;
     const char **plEnums = _EnumArray;
 
     // search for the right entry
@@ -322,7 +326,10 @@ void Enumeration::findMaxVal(void)
     }
 
     const char **plEnums = _EnumArray;
-    long i = 0;
+
+    // the NULL terminator doesn't belong to the range of
+    // valid values
+    int i = -1;
     while (*(plEnums++) != NULL) {
         ++i;
         // very unlikely to have enums with more then 5000 entries!

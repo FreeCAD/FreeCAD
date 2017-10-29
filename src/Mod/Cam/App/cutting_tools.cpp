@@ -492,7 +492,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 //        gp_Vec first_u,first_v,second_u,second_v,third_u,third_v, Norm_first,Norm_second,Norm_third,Norm_average;
 //        double u_middle,v_middle;
 //        /*
-//        Generate three random point on the surface to get the surface normal and decide wether its a
+//        Generate three random point on the surface to get the surface normal and decide whether it's a
 //        planar face or not
 //        */
 //        FirstUParameter = aAdaptor_Surface.FirstUParameter();

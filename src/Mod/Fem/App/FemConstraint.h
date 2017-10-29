@@ -25,6 +25,7 @@
 #define FEM_CONSTRAINT_H
 
 #include <Base/Vector3D.h>
+#include <App/FeaturePython.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
@@ -74,6 +75,9 @@ protected:
     const Base::Vector3d getDirection(const App::PropertyLinkSub &direction);
 
 };
+
+typedef App::FeaturePythonT<Constraint> ConstraintPython;
+
 
 } //namespace Fem
 

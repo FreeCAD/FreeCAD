@@ -102,14 +102,22 @@ class _CutPlaneTaskPanel:
         self.retranslateUi(self.form)
         self.previewCutVolume(self.combobox.currentIndex())
 
+    def isAllowedAlterSelection(self):
+        return False
+
     def accept(self):
         FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
         val = self.combobox.currentIndex()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
-        FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("Arch.cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0],"+ str(val) +")")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        s = FreeCADGui.Selection.getSelectionEx()
+        if len(s) > 1:
+            if s[1].SubObjects:
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
+                FreeCADGui.addModule("Arch")
+                FreeCADGui.doCommand("Arch.cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0],"+ str(val) +")")
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
+                return True
+        FreeCAD.Console.PrintError("Wrong selection\n")
         return True
 
     def reject(self):

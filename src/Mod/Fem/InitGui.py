@@ -54,6 +54,7 @@ class FemWorkbench (Workbench):
         import PyGui._CommandFemMaterialFluid
         import PyGui._CommandFemMaterialMechanicalNonlinear
         import PyGui._CommandFemMesh2Mesh
+        import PyGui._CommandFemMeshBoundaryLayer
         import PyGui._CommandFemMeshClear
         import PyGui._CommandFemMeshGmshFromShape
         import PyGui._CommandFemMeshGroup

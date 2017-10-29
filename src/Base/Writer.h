@@ -103,7 +103,7 @@ public:
     std::vector<std::string> getErrors() const;
     //@}
 
-    /** @name pretty formating for XML */
+    /** @name pretty formatting for XML */
     //@{
     /// get the current indentation
     const char* ind(void) const {return indBuf;}

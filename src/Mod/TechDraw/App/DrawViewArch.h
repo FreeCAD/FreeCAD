@@ -42,7 +42,7 @@ public:
     DrawViewArch(void);
     virtual ~DrawViewArch();
 
-    App::PropertyLink         Source;
+    App::PropertyLinkGlobal   Source;
     App::PropertyBool         AllOn;
     App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
     App::PropertyBool         ShowHidden;
@@ -50,7 +50,7 @@ public:
     App::PropertyFloat        LineWidth;
     App::PropertyFloat        FontSize;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

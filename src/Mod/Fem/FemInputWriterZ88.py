@@ -55,7 +55,8 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, shellthickness_obj, fluidsection_obj,
             analysis_type, dir_name)
-        self.file_name = self.dir_name + '/z88'
+        # self.dir_name does have a slash at the end
+        self.file_name = self.dir_name + 'z88'
         print('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name)
 

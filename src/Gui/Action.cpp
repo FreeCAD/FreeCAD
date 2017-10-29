@@ -45,6 +45,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "WhatsThis.h"
+#include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 
@@ -209,6 +210,7 @@ ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
 {
     _group = new QActionGroup(this);
     connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
+    connect(_group, SIGNAL(hovered(QAction*)), this, SLOT(onHovered(QAction*)));
 }
 
 ActionGroup::~ActionGroup()
@@ -349,6 +351,12 @@ void ActionGroup::onActivated (QAction* a)
 
     _pcCmd->invoke(index);
 }
+
+void ActionGroup::onHovered (QAction *a) 
+{
+    Gui::ToolTip::showText(QCursor::pos(), a->toolTip());
+}
+
 
 // --------------------------------------------------------------------
 
@@ -635,7 +643,6 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 
 RecentFilesAction::~RecentFilesAction()
 {
-    try { save(); } catch (...) {}
 }
 
 /** Adds the new item to the recent files. */
@@ -648,12 +655,12 @@ void RecentFilesAction::appendFile(const QString& filename)
     files.removeAll(filename);
     files.prepend(filename);
     setFiles(files);
+    save();
 
     // update the XML structure and save the user parameter to disk (#0001989)
     bool saveParameter = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
     if (saveParameter) {
-        save();
         ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
         parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
     }
@@ -765,7 +772,6 @@ void RecentFilesAction::save()
                                 ->GetGroup("Preferences")->GetGroup("RecentFiles");
     int count = hGrp->GetInt("RecentFiles", this->visibleItems); // save number of files
     hGrp->Clear();
-    hGrp->SetInt("RecentFiles", count); // restore
 
     // count all set items
     QList<QAction*> recentFiles = _group->actions();
@@ -777,6 +783,8 @@ void RecentFilesAction::save()
             break;
         hGrp->SetASCII(key.toLatin1(), value.toUtf8());
     }
+
+    hGrp->SetInt("RecentFiles", count); // restore
 }
 
 // --------------------------------------------------------------------

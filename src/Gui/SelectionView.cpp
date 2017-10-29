@@ -108,6 +108,11 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
+        // save as user data
+        QStringList list;
+        list << QString::fromLatin1(Reason.pDocName);
+        list << QString::fromLatin1(Reason.pObjectName);
+
         // insert the selection as item
         str << Reason.pDocName;
         str << ".";
@@ -115,14 +120,17 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         if (Reason.pSubName[0] != 0 ) {
             str << ".";
             str << Reason.pSubName;
+            list << QString::fromLatin1(Reason.pSubName);
         }
+
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         str << " (";
         str << QString::fromUtf8(obj->Label.getValue());
         str << ")";
         
-        new QListWidgetItem(selObject, selectionView);
+        QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
+        item->setData(Qt::UserRole, list);
     }
     else if (Reason.Type == SelectionChanges::ClrSelection) {
         // remove all items
@@ -154,6 +162,11 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         selectionView->clear();
         std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName);
         for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
+            // save as user data
+            QStringList list;
+            list << QString::fromLatin1(it->DocName);
+            list << QString::fromLatin1(it->FeatName);
+
             // build name
             str << it->DocName;
             str << ".";
@@ -161,17 +174,21 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             if (it->SubName && it->SubName[0] != '\0') {
                 str << ".";
                 str << it->SubName;
+                list << QString::fromLatin1(it->SubName);
             }
+
             App::Document* doc = App::GetApplication().getDocument(it->DocName);
             App::DocumentObject* obj = doc->getObject(it->FeatName);
             str << " (";
             str << QString::fromUtf8(obj->Label.getValue());
             str << ")";
             
-            new QListWidgetItem(selObject, selectionView);
+            QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
+            item->setData(Qt::UserRole, list);
             selObject.clear();
         }
     }
+
     countLabel->setText(QString::number(selectionView->count()));
 }
 
@@ -201,9 +218,10 @@ void SelectionView::select(QListWidgetItem* item)
         item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromLatin1("."));
-    // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    QStringList elements = item->data(Qt::UserRole).toStringList();
+    if (elements.size() < 2)
+        return;
+
     //Gui::Selection().clearSelection();
     Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
     //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
@@ -216,9 +234,10 @@ void SelectionView::deselect(void)
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromLatin1("."));
-    // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    QStringList elements = item->data(Qt::UserRole).toStringList();
+    if (elements.size() < 2)
+        return;
+
     //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
     QString cmd = QString::fromLatin1("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
     Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
@@ -241,9 +260,9 @@ void SelectionView::touch(void)
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromLatin1("."));
-    // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    QStringList elements = item->data(Qt::UserRole).toStringList();
+    if (elements.size() < 2)
+        return;
     QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").touch()").arg(elements[0]).arg(elements[1]);
     Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
 }
@@ -253,15 +272,14 @@ void SelectionView::toPython(void)
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromLatin1("."));
-    // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    QStringList elements = item->data(Qt::UserRole).toStringList();
+    if (elements.size() < 2)
+        return;
 
     try {
         QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         if (elements.length() > 2) {
-            elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
             App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
             App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
             QString property = getProperty(obj);
@@ -292,9 +310,8 @@ void SelectionView::showPart(void)
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromLatin1("."));
+    QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {
-        elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
         App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
         App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
         QString module = getModule(obj->getTypeId().getName());
@@ -388,7 +405,8 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
     toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
-    QStringList elements = item->text().split(QString::fromLatin1("."));
+
+    QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {
         // subshape-specific entries
         QAction *showPart = menu.addAction(tr("Duplicate subshape"),this,SLOT(showPart()));

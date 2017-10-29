@@ -180,6 +180,10 @@ void QGISVGTemplate::createClickHandles(void)
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double dotSize = hGrp->GetFloat("TemplateDotSize", 3.0);
+
     while (boost::regex_search(begin, end, tagMatch, tagRegex)) {
         if ( boost::regex_search(tagMatch[1].first, tagMatch[1].second, nameMatch, editableNameRegex) &&
              boost::regex_search(tagMatch[1].first, tagMatch[1].second, xMatch, xRegex) &&
@@ -191,8 +195,7 @@ void QGISVGTemplate::createClickHandles(void)
             double x = Rez::guiX(xStr.toDouble());
             double y = Rez::guiX(yStr.toDouble());
 
-            //TODO: this should probably be configurable without a code change
-            double editClickBoxSize = Rez::guiX(1.5);
+            double editClickBoxSize = Rez::guiX(dotSize);
             QColor editClickBoxColor = Qt::green;
 
             double width = editClickBoxSize;

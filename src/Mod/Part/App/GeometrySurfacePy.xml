@@ -24,22 +24,62 @@
 		</Methode>
 		<Methode Name="value">
 			<Documentation>
-				<UserDocu>Computes the point of parameter (u,v) on this surface</UserDocu>
+                <UserDocu>value(u,v) -> Point
+Computes the point of parameter (u,v) on this surface</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="tangent">
 			<Documentation>
-				<UserDocu>Computes the tangent of parameter (u,v) on this geometry</UserDocu>
+                <UserDocu>tangent(u,v) -> (Vector,Vector)
+Computes the tangent of parameter (u,v) on this geometry</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="bounds">
+        <Methode Name="normal">
+            <Documentation>
+                <UserDocu>normal(u,v) -> Vector
+Computes the normal of parameter (u,v) on this geometry</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isUmbillic">
+            <Documentation>
+                <UserDocu>isUmbillic(u,v) -> bool
+Check if the geometry on parameter is an umbillic point,
+i.e. maximum and minimum curvature are equal.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="curvature">
+            <Documentation>
+                <UserDocu>curvature(u,v,type) -> float
+The value of type must be one of this: Max, Min, Mean or Gauss
+Computes the curvature of parameter (u,v) on this geometry</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="curvatureDirections">
+            <Documentation>
+                <UserDocu>curvatureDirections(u,v) -> (Vector,Vector)
+Computes the directions of maximum and minimum curvature
+of parameter (u,v) on this geometry.
+The first vector corresponds to the maximum curvature,
+the second vector corresponds to the minimum curvature.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="bounds">
 			<Documentation>
 				<UserDocu>
 					Returns the parametric bounds (U1, U2, V1, V2) of this trimmed surface.
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Continuity" ReadOnly="true">
+        <Methode Name="isPlanar">
+            <Documentation>
+                <UserDocu>
+isPlanar([float]) -> Bool
+Checks if the surface is planar within a certain tolerance.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
 					Returns the global continuity of the surface.

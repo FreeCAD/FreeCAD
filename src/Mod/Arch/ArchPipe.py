@@ -303,6 +303,7 @@ class _ArchPipeConnector(ArchComponent.Component):
     def execute(self,obj):
         
         tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
+        ptol = 0.001 # tolerance for coincident points
 
         import math,Part,DraftGeomUtils,ArchCommands
         if len(obj.Pipes) < 2:
@@ -315,16 +316,16 @@ class _ArchPipeConnector(ArchComponent.Component):
         order = []
         for o in obj.Pipes:
             wires.append(o.Proxy.getWire(o))
-        if wires[0].Vertexes[0].Point == wires[1].Vertexes[0].Point:
+        if wires[0].Vertexes[0].Point.sub(wires[1].Vertexes[0].Point).Length <= ptol:
             order = ["start","start"]
             point = wires[0].Vertexes[0].Point
-        elif wires[0].Vertexes[0].Point == wires[1].Vertexes[-1].Point:
+        elif wires[0].Vertexes[0].Point.sub(wires[1].Vertexes[-1].Point).Length <= ptol:
             order = ["start","end"]
             point = wires[0].Vertexes[0].Point
-        elif wires[0].Vertexes[-1].Point == wires[1].Vertexes[-1].Point:
+        elif wires[0].Vertexes[-1].Point.sub(wires[1].Vertexes[-1].Point).Length <= ptol:
             order = ["end","end"]
             point = wires[0].Vertexes[-1].Point
-        elif wires[0].Vertexes[-1].Point == wires[1].Vertexes[0].Point:
+        elif wires[0].Vertexes[-1].Point.sub(wires[1].Vertexes[0].Point).Length <= ptol:
             order = ["end","start"]
             point = wires[0].Vertexes[-1].Point
         else:

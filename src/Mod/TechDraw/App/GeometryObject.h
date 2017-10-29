@@ -51,8 +51,8 @@ class Vertex;
 
 //! scales & mirrors a shape about a center
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
-                        const gp_Pnt& inputCenter,
-                        double scale);
+                        const gp_Pnt& inputCenter = gp_Pnt(0.0,0.0,0.0),
+                        double scale = 1.0);
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
                                        double scale);
 
@@ -94,6 +94,17 @@ public:
     void setIsoCount(int i) { m_isoCount = i; }
     void setParentName(std::string n);                          //for debug messages
     void pruneVertexGeom(Base::Vector3d center, double radius);
+
+    TopoDS_Shape getVisHard(void)    { return visHard; }
+    TopoDS_Shape getVisOutline(void) { return visOutline; }
+    TopoDS_Shape getVisSmooth(void)  { return visSmooth; }
+    TopoDS_Shape getVisSeam(void)    { return visSeam; }
+    TopoDS_Shape getVisIso(void)     { return visIso; }
+    TopoDS_Shape getHidHard(void)    { return hidHard; }
+    TopoDS_Shape getHidOutline(void) { return hidOutline; }
+    TopoDS_Shape getHidSmooth(void)  { return hidSmooth; }
+    TopoDS_Shape getHidSeam(void)    { return hidSeam; }
+    TopoDS_Shape getHidIso(void)     { return hidIso; }
 
 protected:
     //HLR output

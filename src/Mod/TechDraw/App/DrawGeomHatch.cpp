@@ -42,6 +42,7 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <Standard_PrimitiveTypes.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
@@ -198,7 +199,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed 
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
-        Base::Console().Message("TRACE - DGH::getTrimmedLines - no source geometry\n");
+        Base::Console().Log("DGH::getTrimmedLines - no source geometry\n");
         return result;
     }
     return getTrimmedLines(source, m_lineSets,i, ScalePattern.getValue());
@@ -216,7 +217,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
     }
 
     TopoDS_Face face = extractFace(source,iface);
-    
 
     Bnd_Box bBox;
     BRepBndLib::Add(face, bBox);
@@ -242,11 +242,12 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
             return result;
         }
         TopoDS_Shape common = mkCommon.Shape();
+
+        //save the boundingBox of hatch pattern
         Bnd_Box overlayBox;
         overlayBox.SetGap(0.0);
         BRepBndLib::Add(common, overlayBox);
         ls.setBBox(overlayBox);
-
 
         //get resulting edges
         std::vector<TopoDS_Edge> resultEdges;
@@ -396,7 +397,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
-        Base::Console().Message("TRACE - DGH::getFaceOverlay - no source geometry\n");
+        Base::Console().Log("DGH::getFaceOverlay - no source geometry\n");
         return result;
     }
 
@@ -462,9 +463,24 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
          Base::Console().Log("INFO - DGH::extractFace - face creation failed\n");
          return result;
     }
-    result = mkFace.Face();
+    TopoDS_Face face = mkFace.Face();
+
+    TopoDS_Shape temp;
+    try {
+        // mirror about the Y axis
+        gp_Trsf mirrorTransform;
+        mirrorTransform.SetMirror( gp_Ax2(gp_Pnt(0.0,0.0,0.0), gp_Dir(0, 1, 0)) );
+        BRepBuilderAPI_Transform mkTrf(face, mirrorTransform);
+        temp = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("DGH::extractFace - mirror failed.\n");
+        return result;
+    }
+    result = TopoDS::Face(temp);
     return result;
 }
+
 void DrawGeomHatch::getParameters(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()

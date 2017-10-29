@@ -108,7 +108,13 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
         try {
             std::vector<ShapeHistory> history;
             TopoDS_Shape resShape = s.front();
+            if (resShape.IsNull())
+                throw Base::RuntimeError("Input shape is null");
+
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                if (it->IsNull())
+                    throw Base::RuntimeError("Input shape is null");
+
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
                 // Let's check if the fusion has been successful
@@ -140,12 +146,17 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                  }
             }
             if (hGrp->GetBool("RefineModel", false)) {
-                TopoDS_Shape oldShape = resShape;
-                BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                resShape = mkRefine.Shape();
-                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                    *jt = joinHistory(*jt, hist);
+                try {
+                    TopoDS_Shape oldShape = resShape;
+                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                    resShape = mkRefine.Shape();
+                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                        *jt = joinHistory(*jt, hist);
+                }
+                catch (Standard_Failure) {
+                    // do nothing
+                }
             }
 
             this->Shape.setValue(resShape);
@@ -173,9 +184,8 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
             }
             this->History.setValues(history);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            return new App::DocumentObjectExecReturn(e->GetMessageString());
+        catch (Standard_Failure& e) {
+            return new App::DocumentObjectExecReturn(e.GetMessageString());
         }
     }
     else {

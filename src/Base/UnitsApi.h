@@ -55,6 +55,8 @@ public:
     static void setSchema(UnitSystem s);
     /// return the active schema
     static UnitSystem getSchema(void){return actSystem;}
+    /// Returns a brief description of a schema
+    static const char* getDescription(UnitSystem);
 
     static QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
     static QString schemaTranslate(const Base::Quantity& quant) { // to satisfy GCC
@@ -62,6 +64,7 @@ public:
         QString dummy2;
         return UnitsApi::schemaTranslate(quant, dummy1, dummy2);
     }
+
     /// generate a value for a quantity with default user preferred system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
     /// generate a value for a quantity with default user preferred system
@@ -82,6 +85,9 @@ public:
 
     static double defaultFactor;
 
+protected:
+    /// return an instance of the given enum value
+    static UnitsSchema* createSchema(UnitSystem s);
 
 protected:
     // not used at the moment
@@ -97,6 +103,9 @@ protected: // the python API wrapper methodes
     //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
     //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sListSchemas     (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetSchema       (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sSchemaTranslate (PyObject *self,PyObject *args,PyObject *kwd);
 };
 
 } // namespace Base

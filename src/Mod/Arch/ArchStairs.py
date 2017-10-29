@@ -487,7 +487,7 @@ class _Stairs(ArchComponent.Component):
         else:
             h = obj.Height.Value
         hstep = h/obj.NumberOfSteps
-        landing = obj.NumberOfSteps/2
+        landing = int(obj.NumberOfSteps/2)
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
         p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
         p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))

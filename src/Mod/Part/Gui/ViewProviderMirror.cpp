@@ -254,19 +254,17 @@ void ViewProviderFillet::updateData(const App::Property* prop)
             std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
             std::vector<App::Color> colFill;
             colFill.resize(fillMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
+            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
 
-            bool setColor=false;
             if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colFill);
-                setColor = true;
             }
             else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
                 colBase.resize(baseMap.Extent(), colBase[0]);
                 applyColor(hist[0], colBase, colFill);
-                setColor = true;
             }
-            if (setColor)
-                this->DiffuseColor.setValues(colFill);
+
+            this->DiffuseColor.setValues(colFill);
         }
     }
 }
@@ -359,19 +357,17 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
             std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
             std::vector<App::Color> colCham;
             colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
+            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
 
-            bool setColor=false;
             if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colCham);
-                setColor = true;
             }
             else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
                 colBase.resize(baseMap.Extent(), colBase[0]);
                 applyColor(hist[0], colBase, colCham);
-                setColor = true;
             }
-            if (setColor)
-                this->DiffuseColor.setValues(colCham);
+
+            this->DiffuseColor.setValues(colCham);
         }
     }
 }

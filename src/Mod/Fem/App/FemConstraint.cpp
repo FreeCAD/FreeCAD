@@ -54,6 +54,9 @@
 #include "FemConstraint.h"
 #include "FemTools.h"
 
+#include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
+
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -75,6 +78,8 @@ Constraint::Constraint()
     ADD_PROPERTY_TYPE(References,(0,0),"Constraint",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
     ADD_PROPERTY_TYPE(NormalDirection,(Base::Vector3d(0,0,1)),"Constraint",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),"Normal direction pointing outside of solid");
     ADD_PROPERTY_TYPE(Scale,(1),"Base",App::PropertyType(App::Prop_Output),"Scale used for drawing constraints"); //OvG: Add scale parameter inherited by all derived constraints
+
+    References.setScope(App::LinkScope::Global);
 }
 
 Constraint::~Constraint()
@@ -390,4 +395,28 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     }
 
     return Fem::Tools::getDirectionFromShape(sh);
+}
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::ConstraintPython, Fem::Constraint)
+template<> const char* Fem::ConstraintPython::getViewProviderName(void) const {
+    return "FemGui::ViewProviderFemConstraintPython";
+}
+
+template<> PyObject* Fem::ConstraintPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
+// explicit template instantiation
+template class AppFemExport FeaturePythonT<Fem::Constraint>;
+
+/// @endcond
+
 }

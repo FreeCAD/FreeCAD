@@ -27,8 +27,6 @@ __url__ = "http://www.freecadweb.org"
 ## @package ViewProviderFemConstraintSelfWeight
 #  \ingroup FEM
 
-from pivy import coin
-
 
 class _ViewProviderFemConstraintSelfWeight:
     "A View Provider for the FemConstraintSelfWeight object"
@@ -41,14 +39,6 @@ class _ViewProviderFemConstraintSelfWeight:
     def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
-        self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Standard")
-
-    def getDisplayModes(self, obj):
-        return ["Standard"]
-
-    def getDefaultDisplayMode(self):
-        return "Standard"
 
     def updateData(self, obj, prop):
         return

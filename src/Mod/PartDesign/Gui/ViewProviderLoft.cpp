@@ -56,9 +56,17 @@ ViewProviderLoft::~ViewProviderLoft()
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::Loft*>(getObject())->getVerifiedSketch(true);
+
+    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+
+    App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
     if (sketch != NULL)
         temp.push_back(sketch);
+
+    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+            temp.push_back(obj);
+    }
 
     return temp;
 }
@@ -113,11 +121,11 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
     return true;
 }
 
-void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxillery*/)
+void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/)
 {/*
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
     Part::Feature* base;
-    if(!auxillery)
+    if(!auxiliary)
         base = static_cast<Part::Feature*>(pcLoft->Spine.getValue());
     else 
         base = static_cast<Part::Feature*>(pcLoft->AuxillerySpine.getValue());
@@ -128,7 +136,7 @@ void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxillery*/
     if (svp == NULL) return;
 
     std::vector<std::string> edges;
-    if(!auxillery)
+    if(!auxiliary)
         edges = pcLoft->Spine.getSubValuesStartsWith("Edge");
     else 
         edges = pcLoft->AuxillerySpine.getSubValuesStartsWith("Edge");

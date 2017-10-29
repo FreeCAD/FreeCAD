@@ -974,7 +974,7 @@ void PropertySheet::addDependencies(CellAddress key)
 }
 
 /**
-  * Remove dependecies given by \a expression for cell at \a key.
+  * Remove dependencies given by \a expression for cell at \a key.
   *
   * @param expression Expression to extract dependencies from
   * @param key        Address of cell containing the expression

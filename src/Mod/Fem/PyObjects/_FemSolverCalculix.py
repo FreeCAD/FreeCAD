@@ -132,17 +132,21 @@ class _FemSolverCalculix():
         obj.addProperty("App::PropertyString", "IterationsControlParameterCutb", "Fem", "User defined time incrementation cutbacks control parameter")
         obj.IterationsControlParameterCutb = p_cutb
 
-        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", "Set to True to switch of the ccx automatic incrementation (ccx parameter DIRECT)")
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", "Set to True to switch off the ccx automatic incrementation completely (ccx parameter DIRECT). Use with care. Analysis may not converge!")
         obj.IterationsUserDefinedIncrementations = False
 
-        obj.addProperty("App::PropertyString", "IterationsUserDefinedTimeStepLength", "Fem", "Set the time step length for the current step, only used if IterationsUserDefinedIncrementations is set to True")
-        obj.IterationsUserDefinedTimeStepLength = "0.1, 1.0"
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedTimeStepLength", "Fem", "Set to True to use the user defined time steps. The time steps are set with TimeInitialStep and TimeEnd")
+        obj.IterationsUserDefinedTimeStepLength = False
 
         known_ccx_solver_types = ["default", "spooles", "iterativescaling", "iterativecholesky"]
         obj.addProperty("App::PropertyEnumeration", "MatrixSolverType", "Fem", "Type of solver to use")
         obj.MatrixSolverType = known_ccx_solver_types
         solver_type = ccx_prefs.GetInt("Solver", 0)
         obj.MatrixSolverType = known_ccx_solver_types[solver_type]
+
+        obj.addProperty("App::PropertyBool", "BeamShellResultOutput3D", "Fem", "Output 3D results for 1D and 2D anlysis ")
+        dimout = ccx_prefs.GetBool("BeamShellOutput", False)
+        obj.BeamShellResultOutput3D = dimout
 
     def execute(self, obj):
         return

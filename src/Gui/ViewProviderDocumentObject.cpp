@@ -35,7 +35,8 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <App/Material.h>
-#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/Origin.h>
 #include "Application.h"
 #include "Document.h"
 #include "Selection.h"
@@ -92,6 +93,15 @@ const char* ViewProviderDocumentObject::detachFromDocument()
     // name comes from the document object
     setStatus(Detach, true);
     return "";
+}
+
+void ViewProviderDocumentObject::onAboutToRemoveProperty(const char* prop)
+{
+    // transactions of view providers are also managed in App::Document.
+    App::DocumentObject* docobject = getObject();
+    App::Document* document = docobject ? docobject->getDocument() : nullptr;
+    if (document)
+        document->removePropertyOfObject(this, prop);
 }
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
@@ -275,6 +285,16 @@ void ViewProviderDocumentObject::setActiveMode()
     }
     if (!Visibility.getValue())
         ViewProvider::hide();
+}
+
+bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
+{
+    Q_UNUSED(obj)
+    if (getObject()->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
+        return true;
+    if (getObject()->isDerivedFrom(App::Origin::getClassTypeId()))
+        return true;
+    return false;
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()

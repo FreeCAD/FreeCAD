@@ -24,11 +24,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <QButtonGroup>
 # include <QMessageBox>
 # include <QTextStream>
+# include <sstream>
 #endif
 
 #include "ViewProviderExt.h"
@@ -132,6 +134,36 @@ ShapeBuilderWidget::~ShapeBuilderWidget()
 {
     Gui::Selection().rmvSelectionGate();
     delete d;
+}
+
+void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (d->ui.checkFaces->isChecked()) {
+        if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            std::string subName(msg.pSubName);
+            if (!subName.empty()) {
+                // From the shape get all faces and add them to the selection
+                bool blocked = blockConnection(true);
+                App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
+                App::DocumentObject* obj = doc->getObject(msg.pObjectName);
+                if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                    TopoDS_Shape myShape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+                    TopTools_IndexedMapOfShape all_faces;
+                    TopExp::MapShapes(myShape, TopAbs_FACE, all_faces);
+                    for (int i=1; i<= all_faces.Extent(); i++) {
+                        TopoDS_Shape face = all_faces(i);
+                        if (!face.IsNull()) {
+                            std::stringstream str;
+                            str << "Face" << i;
+                            Gui::Selection().addSelection(msg.pDocName, msg.pObjectName, str.str().c_str());
+                        }
+                    }
+                }
+
+                blockConnection(blocked);
+            }
+        }
+    }
 }
 
 void ShapeBuilderWidget::on_createButton_clicked()

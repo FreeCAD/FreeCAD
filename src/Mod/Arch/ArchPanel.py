@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part, ArchNesting
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -35,7 +35,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-    
+
 ## @package ArchPanel
 #  \ingroup ARCH
 #  \brief The Panel object and tools
@@ -52,13 +52,14 @@ __url__ = "http://www.freecadweb.org"
 #           Description                 l    w    t
 
 Presets = [None,
-           ["Plywood 12mm, 1220 x 2440",1200,2400,12],
-           ["Plywood 15mm, 1220 x 2440",1200,2400,15],
-           ["Plywood 18mm, 1220 x 2440",1200,2400,18],
-           ["Plywood 25mm, 1220 x 2440",1200,2400,25],
+           ["Plywood 12mm, 1220 x 2440",1220,2440,12],
+           ["Plywood 15mm, 1220 x 2440",1220,2440,15],
+           ["Plywood 18mm, 1220 x 2440",1220,2440,18],
+           ["Plywood 25mm, 1220 x 2440",1220,2440,25],
            ["MDF 3mm, 900 x 600",       900, 600, 3],
            ["MDF 6mm, 900 x 600",       900, 600, 6],
-           ["OSB 18mm, 1200 x 2400",    1200,2400,18]]
+           ["OSB 18mm, 1220 x 2440",    1220,2440,18],
+           ]
 
 def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
     '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
@@ -344,7 +345,6 @@ class CommandPanelSheet:
         FreeCAD.ActiveDocument.recompute()
 
 
-
 class _Panel(ArchComponent.Component):
     "The Panel object"
     def __init__(self,obj):
@@ -370,7 +370,7 @@ class _Panel(ArchComponent.Component):
 
     def execute(self,obj):
         "creates the panel shape"
-        
+
         if self.clone(obj):
             return
 
@@ -503,7 +503,7 @@ class _Panel(ArchComponent.Component):
                     v3 = Vector(l2,w2,layeroffset)
                     v4 = Vector(-l2,w2,layeroffset)
                     base = Part.makePolygon([v1,v2,v3,v4,v1])
-                    basepofile = Part.Face(base)
+                    baseprofile = Part.Face(base)
                     base = baseprofile.extrude(n)
                     shps.append(base)
                     layeroffset += l
@@ -520,11 +520,11 @@ class _Panel(ArchComponent.Component):
                 base = Part.makePolygon([v1,v2,v3,v4,v1])
                 baseprofile = Part.Face(base)
                 base = baseprofile.extrude(normal)
-            
+
         if hasattr(obj,"Area"):
             if baseprofile:
                 obj.Area = baseprofile.Area
-            
+
         if hasattr(obj,"WaveLength"):
             if baseprofile and obj.WaveLength.Value and obj.WaveHeight.Value:
                 # corrugated element
@@ -734,9 +734,12 @@ class PanelCut(Draft._DraftObject):
         obj.addProperty("App::PropertyVector","TagPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
         obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
         obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+        obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+        obj.addProperty("App::PropertyFloatList","AllowedAngles","Arch",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
         obj.Proxy = self
         self.Type = "PanelCut"
         obj.TagText = "%tag%"
+        obj.MakeFace = False
         obj.TagSize = 10
         obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
 
@@ -770,9 +773,9 @@ class PanelCut(Draft._DraftObject):
                                 s = sol.section(plane)
                                 wires.extend(DraftGeomUtils.findWires(s.Edges))
                             if wires:
-                                base = Part.makeCompound(wires)
+                                base = self.buildCut(obj,wires)
                         else:
-                            base = Part.makeCompound(baseobj.Shape.Wires)
+                            base = self.buildCut(obj,baseobj.Shape.Wires)
                             for w in base.Wires:
                                 n = DraftGeomUtils.getNormal(w)
                                 if n:
@@ -820,6 +823,32 @@ class PanelCut(Draft._DraftObject):
                         base = Part.Compound([base])
                     obj.Shape = base
                     obj.Placement = pl
+
+    def buildCut(self,obj,wires):
+
+        """buildCut(obj,wires): builds the object shape"""
+        import Part
+        if hasattr(obj,"MakeFace"):
+            if obj.MakeFace:
+                face = None
+                if len(wires) > 1:
+                    d = 0
+                    ow = None
+                    for w in wires:
+                        if w.BoundBox.DiagonalLength > d:
+                            d = w.BoundBox.DiagonalLength
+                            ow = w
+                    if ow:
+                        face = Part.Face(ow)
+                        for w in wires:
+                            if w.hashCode() != ow.hashCode():
+                                wface = Part.Face(w)
+                                face = face.cut(wface)
+                else:
+                    face = Part.Face(wires[0])
+                if face:
+                    return face
+        return Part.makeCompound(wires)
 
     def getWires(self, obj):
 
@@ -938,13 +967,25 @@ class PanelSheet(Draft._DraftObject):
         obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
         obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
         obj.addProperty("App::PropertyPercent","FillRatio","Arch",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
+        obj.addProperty("App::PropertyBool","MakeFace","Arch",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+        obj.addProperty("App::PropertyAngle","GrainDirection","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
+        obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+        obj.addProperty("App::PropertyFloatList","Rotations","Arch", QT_TRANSLATE_NOOP("App::Property","A list of possible rotations for the nester"))
         obj.Proxy = self
         self.Type = "PanelSheet"
         obj.TagSize = 10
-        obj.Width = 1000
-        obj.Height = 1000
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        obj.Width = p.GetFloat("PanelLength",1000)
+        obj.Height = p.GetFloat("PanelWidth",1000)
+        obj.MakeFace = False
         obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
         obj.setEditorMode("FillRatio",2)
+        obj.Scale = 1.0
+
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, 'Scale'):
+            obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+            obj.Scale = 1.0
 
     def execute(self, obj):
         import Part
@@ -959,6 +1000,9 @@ class PanelSheet(Draft._DraftObject):
             v3 = Vector(l2,w2,0)
             v4 = Vector(-l2,w2,0)
             base = Part.makePolygon([v1,v2,v3,v4,v1])
+            if hasattr(obj,"MakeFace"):
+                if obj.MakeFace:
+                    base = Part.Face(base)
             self.sheetborder = base
             wires = []
             area = obj.Width.Value * obj.Height.Value
@@ -985,6 +1029,7 @@ class PanelSheet(Draft._DraftObject):
                 textshape.rotate(textshape.BoundBox.Center,Vector(0,0,1),obj.TagRotation.Value)
                 self.sheettag = textshape
                 base = Part.Compound([base,textshape])
+            base.scale(obj.Scale, FreeCAD.Vector())
             obj.Shape = base
             obj.Placement = pl
             obj.FillRatio = int((subarea/area)*100)
@@ -1003,12 +1048,14 @@ class PanelSheet(Draft._DraftObject):
                     w = p.Proxy.getWires(p)
                     if w[0]:
                         w = w[0]
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
             if not ispanel:
                 if p.isDerivedFrom("Part::Feature"):
                     for w in p.Shape.Wires:
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
@@ -1026,6 +1073,7 @@ class PanelSheet(Draft._DraftObject):
                     w = p.Proxy.getWires(p)
                     if w[1]:
                         w = w[1]
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
@@ -1045,11 +1093,13 @@ class PanelSheet(Draft._DraftObject):
                     w = p.Proxy.getWires(p)
                     if w[2]:
                         w = w[2]
+                        w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
         if self.sheettag is not None:
             w = self.sheettag.copy()
+            w.scale(obj.Scale, FreeCAD.Vector())
             if transform:
                 w.Placement = obj.Placement.multiply(w.Placement)
             outp.append(w)
@@ -1064,7 +1114,8 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
         Draft._ViewProviderDraft.__init__(self,vobj)
         vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
         vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
-
+        vobj.addProperty("App::PropertyBool","ShowGrain","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the wood grain texture on/off"))
+        vobj.PatternSize = 0.0035
 
     def getIcon(self):
         return ":/icons/Draft_Drawing.svg"
@@ -1123,11 +1174,26 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
             if hasattr(vobj,"LineColor"):
                 c = vobj.LineColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
+        elif prop == "ShowGrain":
+            if hasattr(vobj,"ShowGrain"):
+                if vobj.ShowGrain:
+                    vobj.Pattern = "woodgrain"
+                else:
+                    vobj.Pattern = "None"
         Draft._ViewProviderDraft.onChanged(self,vobj,prop)
+
 
     def updateData(self,obj,prop):
         if prop in ["Width","Height"]:
             self.onChanged(obj.ViewObject,"Margin")
+        elif prop == "GrainDirection":
+            if hasattr(self,"texcoords"):
+                if self.texcoords:
+                    s = FreeCAD.Vector(self.texcoords.directionS.getValue().getValue()).Length
+                    vS  = DraftVecUtils.rotate(FreeCAD.Vector(s,0,0),-math.radians(obj.GrainDirection.Value))
+                    vT  = DraftVecUtils.rotate(FreeCAD.Vector(0,s,0),-math.radians(obj.GrainDirection.Value))
+                    self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
+                    self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
         Draft._ViewProviderDraft.updateData(self,obj,prop)
 
 
@@ -1151,12 +1217,161 @@ class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
         FreeCADGui.runCommand("Draft_Edit")
 
 
+class CommandNest:
+
+
+    "the Arch Panel command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Nest',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Nest","Nest"),
+                'Accel': "N, E",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Nest","Nests a series of selected shapes in a container")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.Control.showDialog(NestTaskPanel())
+
+
+class NestTaskPanel:
+
+
+    '''The TaskPanel for Arch Nest command'''
+
+    def __init__(self,obj=None):
+        import ArchNesting
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchNest.ui")
+        self.form.progressBar.hide()
+        self.form.ButtonPreview.setEnabled(False)
+        self.form.ButtonStop.setEnabled(False)
+        QtCore.QObject.connect(self.form.ButtonContainer,QtCore.SIGNAL("pressed()"),self.getContainer)
+        QtCore.QObject.connect(self.form.ButtonShapes,QtCore.SIGNAL("pressed()"),self.getShapes)
+        QtCore.QObject.connect(self.form.ButtonRemove,QtCore.SIGNAL("pressed()"),self.removeShapes)
+        QtCore.QObject.connect(self.form.ButtonStart,QtCore.SIGNAL("pressed()"),self.start)
+        QtCore.QObject.connect(self.form.ButtonStop,QtCore.SIGNAL("pressed()"),self.stop)
+        QtCore.QObject.connect(self.form.ButtonPreview,QtCore.SIGNAL("pressed()"),self.preview)
+        self.shapes = []
+        self.container = None
+        self.nester = None
+        self.temps = []
+
+    def reject(self):
+        self.stop()
+        self.clearTemps()
+        return True
+
+    def accept(self):
+        self.stop()
+        self.clearTemps()
+        if self.nester:
+            FreeCAD.ActiveDocument.openTransaction("Nesting")
+            self.nester.apply()
+            FreeCAD.ActiveDocument.commitTransaction()
+        return True
+
+    def clearTemps(self):
+        for t in self.temps:
+            if FreeCAD.ActiveDocument.getObject(t.Name):
+                FreeCAD.ActiveDocument.removeObject(t.Name)
+        self.temps = []
+
+    def getContainer(self):
+        s = FreeCADGui.Selection.getSelection()
+        if len(s) == 1:
+            if s[0].isDerivedFrom("Part::Feature"):
+                if len(s[0].Shape.Faces) == 1:
+                    if not (s[0] in self.shapes):
+                        self.form.Container.clear()
+                        self.addObject(s[0],self.form.Container)
+                        self.container = s[0]
+                else:
+                    FreeCAD.Console.PrintError(translate("Arch","This object has no face"))
+                if Draft.getType(s[0]) == "PanelSheet":
+                    if hasattr(s[0],"Rotations"):
+                        if s[0].Rotations:
+                            self.form.Rotations.setText(str(s[0].Rotations))
+
+    def getShapes(self):
+        s = FreeCADGui.Selection.getSelection()
+        for o in s:
+            if o.isDerivedFrom("Part::Feature"):
+                if not o in self.shapes:
+                    if o != self.container:
+                        self.addObject(o,self.form.Shapes)
+                        self.shapes.append(o)
+
+    def addObject(self,obj,form):
+        i = QtGui.QListWidgetItem()
+        i.setText(obj.Label)
+        i.setToolTip(obj.Name)
+        if hasattr(obj.ViewObject,"Proxy"):
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+        else:
+            i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
+        form.addItem(i)
+
+    def removeShapes(self):
+        for i in self.form.Shapes.selectedItems():
+            o = FreeCAD.ActiveDocument.getObject(i.toolTip())
+            if o:
+                if o in self.shapes:
+                    self.shapes.remove(o)
+                    self.form.Shapes.takeItem(self.form.Shapes.row(i))
+
+    def setCounter(self,value):
+        self.form.progressBar.setValue(value)
+
+    def start(self):
+        self.clearTemps()
+        self.form.progressBar.setFormat("pass 1: %p%")
+        self.form.progressBar.setValue(0)
+        self.form.progressBar.show()
+        tolerance = self.form.Tolerance.value()
+        discretize = self.form.Subdivisions.value()
+        rotations = [float(x) for x in self.form.Rotations.text().split(",")]
+        import ArchNesting
+        ArchNesting.TOLERANCE = tolerance
+        ArchNesting.DISCRETIZE = discretize
+        ArchNesting.ROTATIONS = rotations
+        self.nester = ArchNesting.Nester()
+        self.nester.addContainer(self.container)
+        self.nester.addObjects(self.shapes)
+        self.nester.setCounter = self.setCounter
+        self.form.ButtonStop.setEnabled(True)
+        self.form.ButtonStart.setEnabled(False)
+        self.form.ButtonPreview.setEnabled(False)
+        QtGui.qApp.processEvents()
+        result = self.nester.run()
+        self.form.progressBar.hide()
+        self.form.ButtonStart.setEnabled(True)
+        self.form.ButtonStop.setEnabled(False)
+        if result:
+            self.form.ButtonPreview.setEnabled(True)
+
+    def stop(self):
+        if self.nester:
+            self.nester.stop()
+        self.form.ButtonStart.setEnabled(True)
+        self.form.ButtonStop.setEnabled(False)
+        self.form.ButtonPreview.setEnabled(False)
+        self.form.progressBar.hide()
+
+    def preview(self):
+        self.clearTemps()
+        if self.nester:
+            t = self.nester.show()
+            if t:
+                self.temps.extend(t)
+
 if FreeCAD.GuiUp:
 
     class CommandPanelGroup:
 
         def GetCommands(self):
-            return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet'])
+            return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet','Arch_Nest'])
         def GetResources(self):
             return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
                      'ToolTip': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
@@ -1167,4 +1382,5 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Panel',CommandPanel())
     FreeCADGui.addCommand('Arch_Panel_Cut',CommandPanelCut())
     FreeCADGui.addCommand('Arch_Panel_Sheet',CommandPanelSheet())
+    FreeCADGui.addCommand('Arch_Nest',CommandNest())
     FreeCADGui.addCommand('Arch_PanelTools', CommandPanelGroup())

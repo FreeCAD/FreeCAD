@@ -35,6 +35,7 @@
 #include <map>
 #include <vector>
 #include <App/Material.h>
+#include <App/Part.h>
 #include <Mod/Part/App/FeatureCompound.h>
 
 
@@ -57,6 +58,7 @@ public:
     ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
     virtual ~ImportOCAF();
     void loadShapes();
+    void setMerge(bool);
 
 private:
     void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, std::vector<App::DocumentObject*> &);
@@ -69,6 +71,7 @@ private:
     App::Document* doc;
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
+    bool merge;
     std::string default_name;
     std::set<int> myRefShapes;
     static const int HashUpper = INT_MAX;
@@ -77,8 +80,24 @@ private:
 class ImportExport ExportOCAF
 {
 public:
+    void createNode(App::Part* part, int& root_it,
+                    std::vector <TDF_Label>& hierarchical_label,
+                    std::vector <TopLoc_Location>& hierarchical_loc,
+                    std::vector <App::DocumentObject*>& hierarchical_part);
     ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement);
-    void saveShape(Part::Feature* part, const std::vector<App::Color>&);
+    int saveShape(Part::Feature* part, const std::vector<App::Color>&,
+                  std::vector <TDF_Label>& hierarchical_label,
+                  std::vector <TopLoc_Location>& hierarchical_loc,
+                  std::vector <App::DocumentObject*>& hierarchical_part);
+    void reallocateFreeShape(std::vector <App::DocumentObject*> hierarchical_part,
+                             std::vector <TDF_Label> FreeLabels,
+                             std::vector <int> part_id,
+                             std::vector< std::vector<App::Color> >& Colors);
+    void getFreeLabels(std::vector <TDF_Label>& hierarchical_label,
+                       std::vector <TDF_Label>& labels,
+                       std::vector <int>& label_part_id);
+    void pushNode(int root, int node, std::vector <TDF_Label>& hierarchical_label,
+                  std::vector <TopLoc_Location>& hierarchical_loc);
 
 private:
     Handle(TDocStd_Document) pDoc;

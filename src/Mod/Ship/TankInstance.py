@@ -47,7 +47,7 @@ class Tank:
         ship -- Ship where the tank is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = str(QtGui.QApplication.translate(
+        tooltip = unicode(QtGui.QApplication.translate(
             "ship_tank",
             "True if it is a valid tank instance, False otherwise",
             None))
@@ -269,7 +269,7 @@ class ViewProviderTank:
     def setDisplayMode(self, mode):
         """Map the display mode defined in attach with those defined in
         getDisplayModes. Since they have the same names nothing needs to be
-        done. This method is optinal.
+        done. This method is optional.
 
         Keyword arguments:
         mode -- Mode to be activated.

@@ -26,7 +26,7 @@ This is besides the Application class the most important class in FreeCAD
 It contains all the data of the opened, saved or newly created FreeCAD Document.
 The Document manage the Undo and Redo mechanism and the linking of documents.
 
-Note: the documents are not free objects. They are completly handled by the
+Note: the documents are not free objects. They are completely handled by the
 App::Application. Only the Application can Open or destroy a document.
 
 \section Exception Exception handling
@@ -258,6 +258,7 @@ void Document::exportGraphviz(std::ostream& out) const
             buildAdjacencyList();
             addEdges();
             markCycles();
+            markOutOfScopeLinks();
         }
 
         /**
@@ -336,17 +337,20 @@ void Document::exportGraphviz(std::ostream& out) const
             boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();             
 
             if (expressions.size() > 0) {
-                
-                Graph* graph;
-                if(CSsubgraphs) {
+
+                Graph* graph = nullptr;
+                graph = &DepList;
+                if (CSsubgraphs) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(obj);
-                    graph = group ? GraphList[group] : &DepList;
+                    if (group) {
+                        auto it = GraphList.find(group);
+                        if (it != GraphList.end())
+                            graph = it->second;
+                    }
                 }
-                else 
-                    graph = &DepList;                                   
 
                 // If documentObject has an expression, create a subgraph for it
-                if (!GraphList[obj]) {
+                if (!GraphList[obj] && graph) {
                     GraphList[obj] = &graph->create_subgraph();
                     setGraphAttributes(obj);
                 }
@@ -365,12 +369,13 @@ void Document::exportGraphviz(std::ostream& out) const
                         // Doesn't exist already?
                         if (!GraphList[o]) {
                             
-                            if(CSsubgraphs) {
+                            if (CSsubgraphs) {
                                 auto group = GeoFeatureGroupExtension::getGroupOfObject(o);
                                 auto graph2 = group ? GraphList[group] : &DepList;
-                                GraphList[o] = &graph2->create_subgraph();
+                                if (graph2)
+                                    GraphList[o] = &graph2->create_subgraph();
                             }
-                            else {
+                            else if (graph) {
                                 GraphList[o] = &graph->create_subgraph();
                             }
 
@@ -487,10 +492,13 @@ void Document::exportGraphviz(std::ostream& out) const
         void recursiveCSSubgraphs(DocumentObject* cs, DocumentObject* parent) {
             
             auto graph = parent ? GraphList[parent] : &DepList;
+            // check if the value for the key 'parent' is null
+            if (!graph)
+                return;
             auto& sub = graph->create_subgraph();
             GraphList[cs] = &sub;
             get_property(sub, graph_name) = getClusterName(cs);
-            
+
             //build random color string
             std::stringstream stream;
             stream << "#" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
@@ -506,7 +514,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                     recursiveCSSubgraphs(obj, cs);
             }
-            
+
             //setup the origin if available 
             if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
                 auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
@@ -517,12 +525,12 @@ void Document::exportGraphviz(std::ostream& out) const
                 setGraphLabel(osub, origin);
             }
         }
-        
+
         void addSubgraphs() {
-            
+
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
-            
+
             if(CSSubgraphs) {
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
@@ -530,7 +538,7 @@ void Document::exportGraphviz(std::ostream& out) const
                         recursiveCSSubgraphs(objectIt, nullptr);
                 }
             }
-                        
+
             // Internal document objects
             for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 addExpressionSubgraphIfNeeded(It->second, CSSubgraphs);
@@ -768,6 +776,23 @@ void Document::exportGraphviz(std::ostream& out) const
                 edgeAttrMap[ei->second]["color"] = "red";
         }
 
+        void markOutOfScopeLinks() {
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            for( auto obj : objects) {
+
+                std::vector<App::DocumentObject*> invalids;
+                GeoFeatureGroupExtension::getInvalidLinkObjects(obj, invalids);
+                //isLinkValid returns true for non-link properties
+                for(auto linkedObj : invalids) {
+    
+                    auto res = edge(GlobalVertexList[getId(obj)], GlobalVertexList[getId(linkedObj)], DepList);
+                    if(res.second)
+                        edgeAttrMap[res.first]["color"] = "red";
+                }
+            }
+        }
+
         const struct DocumentP* d;
         Graph DepList;
         int vertex_no;
@@ -867,6 +892,17 @@ bool Document::redo(void)
     }
 
     return false;
+}
+
+void Document::removePropertyOfObject(TransactionalObject* obj, const char* name)
+{
+    Property* prop = obj->getDynamicPropertyByName(name);
+    if (prop) {
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->removeProperty(obj, prop);
+        for (auto it : mUndoTransactions)
+            it->removeProperty(obj, prop);
+    }
 }
 
 bool Document::isPerformingTransaction() const
@@ -1213,6 +1249,7 @@ Document::~Document()
 
     d->objectArray.clear();
     for (it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+        it->second->setStatus(ObjectStatus::Destroy, true);
         delete(it->second);
     }
 
@@ -2007,13 +2044,20 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
 #ifdef USE_OLD_DAG
 int Document::recompute()
 {
+    if (testStatus(Document::Recomputing)) {
+        // this is clearly a bug in the calling instance
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
     int objectCount = 0;
     
-    // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
     bool skip = testStatus(Document::SkipRecompute);
     if (skip)
         return 0;
+
+    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
     for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
@@ -2100,6 +2144,7 @@ int Document::recompute()
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
+        if (!Cur || !isIn(Cur)) continue;
 
         if (recomputeList.find(Cur) != recomputeList.end() ||
                 Cur->ExpressionEngine.depsAreTouched()) {
@@ -2128,11 +2173,29 @@ int Document::recompute()
 
 int Document::recompute()
 {
+    if (testStatus(Document::Recomputing)) {
+        // this is clearly a bug in the calling instance
+        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+    }
+
     int objectCount = 0;
+
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
+    // time expensive recomputes
+    bool skip = testStatus(Document::SkipRecompute);
+    if (skip)
+        return 0;
+
+    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+
     // delete recompute log
     for (auto LogEntry: _RecomputeLog)
         delete LogEntry;
     _RecomputeLog.clear();
+
+    //do we have anything to do?
+    if(d->objectMap.empty())
+        return 0;
 
     // get the sorted vector of all objects in the document and go though it from the end
     vector<DocumentObject*> topoSortedObjects = topologicalSort();
@@ -2143,8 +2206,8 @@ int Document::recompute()
     }
 
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
-        // ask the object if it should be recomputed
-        if ((*objIt)->mustExecute() == 1){
+        // ask the object if it should be recomputed  
+        if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
             objectCount++;
             if (_recomputeFeature(*objIt)) {
                 // if something happen break execution of recompute
@@ -2157,7 +2220,6 @@ int Document::recompute()
                     inObjIt->touch();
             }
         }
-
     }
 #ifdef FC_DEBUG
     // check if all objects are recalculated which were thouched 
@@ -2167,7 +2229,7 @@ int Document::recompute()
     }
 #endif
 
-        return objectCount;
+    return objectCount;
 }
 
 #endif // USE_OLD_DAG
@@ -2180,8 +2242,14 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     ret.reserve(d->objectArray.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto objectIt : d->objectArray)
-        countMap[objectIt] = objectIt->getInList().size();
+    for (auto objectIt : d->objectMap) {
+        //we need inlist with unique entries
+        auto in = objectIt.second->getInList();
+        std::sort(in.begin(), in.end());
+        in.erase(std::unique(in.begin(), in.end()), in.end());
+
+        countMap[objectIt.second] = in.size();
+    }
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
         return count.second == 0;
@@ -2194,7 +2262,13 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 
     while (rootObjeIt != countMap.end()){
         rootObjeIt->second = rootObjeIt->second - 1;
-        for (auto outListIt : rootObjeIt->first->getOutList()){
+
+        //we need outlist with unique entries
+        auto out = rootObjeIt->first->getOutList();
+        std::sort(out.begin(), out.end());
+        out.erase(std::unique(out.begin(), out.end()), out.end());
+        
+        for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
             outListMapIt->second = outListMapIt->second - 1;
         }
@@ -2522,7 +2596,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 }
 
 /// Remove an object out of the document
-void Document::remObject(const char* sName)
+void Document::removeObject(const char* sName)
 {
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
 
@@ -2536,13 +2610,12 @@ void Document::remObject(const char* sName)
         d->activeObject = 0;
 
     // Mark the object as about to be deleted
-    pos->second->setStatus(ObjectStatus::Delete, true);
+    pos->second->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pos->second->unsetupObject();
     }
 
     signalDeletedObject(*(pos->second));
-    pos->second->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
@@ -2576,6 +2649,7 @@ void Document::remObject(const char* sName)
     }
 
     // do no transactions if we do a rollback!
+    std::unique_ptr<DocumentObject> tobedestroyed;
     if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction) {
@@ -2583,8 +2657,10 @@ void Document::remObject(const char* sName)
             d->activeUndoTransaction->addObjectNew(pos->second);
         }
         else {
-            // if not saved in undo -> delete object
-            delete pos->second;
+            // if not saved in undo -> delete object later
+            std::unique_ptr<DocumentObject> delobj(pos->second);
+            tobedestroyed.swap(delobj);
+            tobedestroyed->setStatus(ObjectStatus::Destroy, true);
         }
     }
 
@@ -2594,16 +2670,15 @@ void Document::remObject(const char* sName)
             break;
         }
     }
-    // remove from adjancy list
-    //remove_vertex(_DepConMap[pos->second],_DepList);
-    //_DepConMap.erase(pos->second);
+
+    pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 }
 
 /// Remove an object out of the document (internal)
-void Document::_remObject(DocumentObject* pcObject)
+void Document::_removeObject(DocumentObject* pcObject)
 {
-    // TODO Refactoring: share code with Document::remObject() (2015-09-01, Fat-Zer)
+    // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
@@ -2612,14 +2687,13 @@ void Document::_remObject(DocumentObject* pcObject)
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
-    // Mark the object as about to be deleted
-    pcObject->setStatus(ObjectStatus::Delete, true);
+    // Mark the object as about to be removed
+    pcObject->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pcObject->unsetupObject();
     }
     signalDeletedObject(*pcObject);
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
-    pcObject->setStatus(ObjectStatus::Delete, false); // Unset the bit to be on the safe side
 
     //remove the tip if needed
     if (Tip.getValue() == pcObject) {
@@ -2640,6 +2714,7 @@ void Document::_remObject(DocumentObject* pcObject)
     }
 
     // remove from map
+    pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
@@ -2651,6 +2726,7 @@ void Document::_remObject(DocumentObject* pcObject)
 
     // for a rollback delete the object
     if (d->rollback) {
+        pcObject->setStatus(ObjectStatus::Destroy, true);
         delete pcObject;
     }
 }
@@ -2683,15 +2759,14 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                     link->setValues(std::vector<DocumentObject*>());
                 }
                 else {
-                    // copy the list (not the objects)
-                    std::vector<DocumentObject*> linked = link->getValues();
-                    for (std::vector<DocumentObject*>::iterator fIt = linked.begin(); fIt != linked.end(); ++fIt) {
-                        if ((*fIt) == pcObject) {
-                            // reassign the the list without the object to be deleted
-                            linked.erase(fIt);
-                            link->setValues(linked);
-                            break;
+                    const auto &links = link->getValues();
+                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
+                        std::vector<DocumentObject*> newLinks;
+                        for(auto obj : links) {
+                            if (obj != pcObject) 
+                                newLinks.push_back(obj);
                         }
+                        link->setValues(newLinks);
                     }
                 }
             }
@@ -2765,14 +2840,14 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     // all object of the other document that refer to this object must be nullified
     that->breakDependency(obj, false);
     std::string objname = getUniqueObjectName(obj->getNameInDocument());
-    that->_remObject(obj);
+    that->_removeObject(obj);
     this->_addObject(obj, objname.c_str());
     obj->setDocument(this);
 
     std::map<std::string,App::Property*> props;
     obj->getPropertyMap(props);
     for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second->getTypeId() == PropertyLink::getClassTypeId()) {
+        if (it->second->getTypeId().isDerivedFrom(PropertyLink::getClassTypeId())) {
             DocumentObject* link = static_cast<PropertyLink*>(it->second)->getValue();
             if (recursive) {
                 moveObject(link, recursive);
@@ -2782,7 +2857,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
                 static_cast<PropertyLink*>(it->second)->setValue(0);
             }
         }
-        else if (it->second->getTypeId() == PropertyLinkList::getClassTypeId()) {
+        else if (it->second->getTypeId().isDerivedFrom(PropertyLinkList::getClassTypeId())) {
             std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(it->second)->getValues();
             if (recursive) {
                 for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt)
@@ -2950,4 +3025,77 @@ std::vector<App::DocumentObject*> Document::getRootObjects() const
     }
 
     return ret;
+}
+
+namespace App {
+typedef vector <size_t> Node;
+typedef vector <size_t> Path;
+void _findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
+                     std::vector <Path> &all_paths, Path tmp)
+{
+    if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
+        Path tmp2(tmp);
+        tmp2.push_back(id);
+        all_paths.push_back(tmp2);
+        return; // a cycle
+    }
+
+    tmp.push_back(id);
+    if (all_nodes[id].empty()) {
+        all_paths.push_back(tmp);
+        return;
+    }
+
+    for (size_t i=0; i < all_nodes[id].size(); i++) {
+        Path tmp2(tmp);
+        _findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+    }
+}
+}
+
+std::vector<std::list<App::DocumentObject*> >
+Document::getPathsByOutList(const App::DocumentObject* from, const App::DocumentObject* to) const
+{
+    std::map<const DocumentObject*, size_t> indexMap;
+    for (size_t i=0; i<d->objectArray.size(); ++i) {
+        indexMap[d->objectArray[i]] = i;
+    }
+
+    std::vector <Node> all_nodes(d->objectArray.size());
+    for (size_t i=0; i<d->objectArray.size(); ++i) {
+        DocumentObject* obj = d->objectArray[i];
+        std::vector<DocumentObject*> outList = obj->getOutList();
+        for (auto it : outList) {
+            all_nodes[i].push_back(indexMap[it]);
+        }
+    }
+
+    std::vector<std::list<App::DocumentObject*> > array;
+    if (from == to)
+        return array;
+
+    size_t index_from = indexMap[from];
+    size_t index_to = indexMap[to];
+    Path tmp;
+    std::vector<Path> all_paths;
+    _findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+
+    for (std::vector<Path>::iterator it = all_paths.begin(); it != all_paths.end(); ++it) {
+        Path::iterator jt = std::find(it->begin(), it->end(), index_to);
+        if (jt != it->end()) {
+            std::list<App::DocumentObject*> path;
+            for (Path::iterator kt = it->begin(); kt != jt; ++kt) {
+                path.push_back(d->objectArray[*kt]);
+            }
+
+            path.push_back(d->objectArray[*jt]);
+            array.push_back(path);
+        }
+    }
+
+    // remove duplicates
+    std::sort(array.begin(), array.end());
+    array.erase(std::unique(array.begin(), array.end()), array.end());
+
+    return array;
 }

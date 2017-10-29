@@ -55,7 +55,7 @@ class View3DInventorViewer;
 class GuiExport AbstractMouseSelection
 {
 public:
-    enum { Continue=0, Restart=1, Finish=2, Cancel=3 };
+    enum { Continue=0, Restart=1, Finish=2, Cancel=3, Ignore=4 };
 
     AbstractMouseSelection();
     virtual ~AbstractMouseSelection(void) {}

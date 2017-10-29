@@ -75,7 +75,7 @@ using namespace Part;
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
 
 // Private function prototypes
-PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale);
+PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale,int charNum, double tracking);
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 
@@ -162,12 +162,12 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
        cadv = FTFont->glyph->advance.x;
        kern = getKerning(FTFont,prevchar,currchar);
        PenPos += kern.x;
-       WireList = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
+       WireList = getGlyphContours(FTFont,currchar,PenPos, scalefactor,i,tracking);
        if (!PyList_Size(WireList))                                  // empty ==> whitespace
            Base::Console().Log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
        else
            PyList_Append(CharList, WireList);
-       PenPos += (cadv + tracking);
+       PenPos += cadv;
        prevchar = currchar;
    }
 
@@ -266,7 +266,7 @@ static FT_Outline_Funcs FTcbFuncs = {
 
 //********** FT2FC Helpers
 // get glyph outline in wires
-PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale) {
+PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale, int charNum, double tracking) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
    gp_Pnt origin = gp_Pnt(0.0,0.0,0.0);
@@ -290,7 +290,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    /*FT_Orientation fontClass =*/ FT_Outline_Get_Orientation(&FTFont->glyph->outline);
    PyObject* ret = PyList_New(0);
 
-   gp_Vec pointer = gp_Vec(PenPos * Scale,0.0,0.0);
+   gp_Vec pointer = gp_Vec(PenPos * Scale + charNum*tracking,0.0,0.0);
    gp_Trsf xForm;
    xForm.SetScale(origin,Scale);
    xForm.SetTranslationPart(pointer);

@@ -34,6 +34,14 @@ from GCode.
 import os
 import Path
 import FreeCAD
+import PathScripts.PathLog as PathLog
+
+if True:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ == '__builtin__':
@@ -41,6 +49,7 @@ if open.__module__ == '__builtin__':
 
 
 def open(filename):
+    PathLog.track(filename)
     "called when freecad opens a file."
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
@@ -49,6 +58,7 @@ def open(filename):
 
 def insert(filename, docname):
     "called when freecad imports a file"
+    PathLog.track(filename)
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
@@ -61,12 +71,14 @@ def insert(filename, docname):
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
     print("preprocessing...")
-    
+    print(inputstring)
+    PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.split("\n")
     output = ""
     lastcommand = None
-    
+    print (lines)
+
     for l in lines:
         # remove any leftover trailing and preceding spaces
         l = l.strip()
@@ -75,8 +87,14 @@ def parse(inputstring):
             continue
         if l[0].upper() in ["N"]:
             # remove line numbers
-            l = l.split(" ",1)[1]
-        if l[0] in ["(","%","#"]:
+            l = l.split(" ",1)
+            if len(l)>=1:
+                l = l[1]
+            else:
+                continue
+
+
+        if l[0] in ["(","%","#",";"]:
             # discard comment and other non strictly gcode lines
             continue
         if l[0].upper() in ["G","M"]:
@@ -92,7 +110,7 @@ def parse(inputstring):
         elif lastcommand:
             # no G or M command: we repeat the last one
             output += lastcommand + " " + l + "\n"
-            
+
     print("done preprocessing.")
     return output
 

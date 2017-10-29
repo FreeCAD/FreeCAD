@@ -108,7 +108,6 @@ class CommandPathPlane:
     def GetResources(self):
         return {'Pixmap': 'Path-Plane',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Selection Plane"),
-                'Accel': "P, P",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Create a Selection Plane object")}
 
     def IsActive(self):

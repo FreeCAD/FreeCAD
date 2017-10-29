@@ -175,10 +175,6 @@ std::string ViewProviderFemConstraint::gethideMeshShowPartStr(const std::string 
     if \""+showConstr+"\" == amesh.Name:\n\
         amesh.ViewObject.Visibility = True\n\
     elif \"Mesh\" in amesh.TypeId:\n\
-        aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
-        for apart in App.activeDocument().Objects:\n\
-            if aparttoshow == apart.Name:\n\
-                apart.ViewObject.Visibility = True\n\
         amesh.ViewObject.Visibility = False\n";
 }
 
@@ -493,4 +489,16 @@ void ViewProviderFemConstraint::checkForWizard()
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
         wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }
+}
+
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemConstraintPython, FemGui::ViewProviderFemConstraint)
+/// @endcond
+
+// explicit template instantiation
+template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
 }

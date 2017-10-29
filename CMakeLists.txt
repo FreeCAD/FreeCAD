@@ -82,6 +82,9 @@ IF(FREECAD_VERSION VERSION_GREATER 0.16)
     ENDIF()
 ENDIF(FREECAD_VERSION VERSION_GREATER 0.16)
 
+# Log the compiler and version
+MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}, version: ${CMAKE_CXX_COMPILER_VERSION}")
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
@@ -101,6 +104,20 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 if(CMAKE_COMPILER_IS_CLANGXX)
+    # Disable warning about potentially uninstantiated static members
+    # because it leads to a lot of false-positives.
+    #
+    # https://en.wikipedia.org/wiki/Xcode#Latest_versions
+    if (APPLE)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    elseif (UNIX)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    endif()
+
     # older boost.preprocessor turn off variadics for clang
     add_definitions(-DBOOST_PP_VARIADICS=1)
     message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
@@ -162,6 +179,7 @@ endif(MSVC)
 
 # Switch to build FreeCAD with Qt5
 OPTION(BUILD_QT5 "Build with Qt5." OFF)
+OPTION(BUILD_QT5_WEBKIT "Build with Qt5." ON)
 OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
@@ -169,6 +187,11 @@ OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bun
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+if (WIN32 OR APPLE)
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
+else()
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
+endif()
 
 # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
 set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
@@ -298,9 +321,6 @@ function(REQUIRES_MODS dependent)
     endif(${dependent})
 endfunction(REQUIRES_MODS)
 
-REQUIRES_MODS(BUILD_COMPLETE           BUILD_MESH BUILD_POINTS BUILD_DRAWING
-                                       BUILD_RAYTRACING BUILD_PART_DESIGN
-                                       BUILD_IMAGE BUILD_DRAFT)
 REQUIRES_MODS(BUILD_ARCH               BUILD_PART BUILD_MESH BUILD_DRAFT)
 REQUIRES_MODS(BUILD_DRAFT              BUILD_SKETCHER)
 REQUIRES_MODS(BUILD_DRAWING            BUILD_PART BUILD_SPREADSHEET)
@@ -321,7 +341,7 @@ REQUIRES_MODS(BUILD_SHIP               BUILD_PART BUILD_PLOT BUILD_IMAGE)
 REQUIRES_MODS(BUILD_SKETCHER           BUILD_PART)
 REQUIRES_MODS(BUILD_SPREADSHEET        BUILD_DRAFT)
 REQUIRES_MODS(BUILD_START              BUILD_WEB)
-REQUIRES_MODS(BUILD_TECHDRAW           BUILD_PART BUILD_SPREADSHEET)
+REQUIRES_MODS(BUILD_TECHDRAW           BUILD_PART BUILD_SPREADSHEET BUILD_DRAWING)
 
 # ==============================================================================
 
@@ -661,7 +681,33 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             if (WIN32)
                 find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
             else()
-                find_package(HDF5 REQUIRED)
+                find_package(PkgConfig)
+                pkg_search_module(HDF5 hdf5-serial)
+                if(NOT HDF5_FOUND)
+                    find_package(HDF5 REQUIRED)
+                else()
+                    add_compile_options(${HDF5_CFLAGS})
+                    link_directories(${HDF5_LIBRARY_DIRS})
+                    link_libraries(${HDF5_LIBRARIES})
+                    find_file(Hdf5dotH hdf5.h PATHS ${HDF5_INCLUDE_DIRS} NO_DEFAULT_PATH)
+                    if(NOT Hdf5dotH)
+                        message( FATAL_ERROR "hdf5-serial not found in an error message above.")
+                    endif()
+                endif()
+                check_include_file_cxx(hdf5.h HDF5_FOUND)
+                if(NOT HDF5_FOUND)
+                    message( FATAL_ERROR "hdf5.h was not found.")
+                endif()
+
+                # Med Fichier can require MPI
+                pkg_search_module(OPENMPI ompi-cxx)
+                add_compile_options(${OPENMPI_CFLAGS})
+                link_directories(${OPENMPI_LIBRARY_DIRS})
+                link_libraries(${OPENMPI_LIBRARIES})
+                find_file(MpidotH mpi.h PATHS ${OPENMPI_INCLUDE_DIRS} NO_DEFAULT_PATH)
+                if(NOT MpidotH)
+                    message( WARNING "mpi.h was not found. Check for error above.")
+                endif()
             endif()
             find_package(MEDFile REQUIRED)
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
@@ -779,9 +825,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(Qt5UiTools)
             find_package(Qt5Network)
             find_package(Qt5Concurrent)
-            if (NOT WIN32)
-            # Disable for Windows for now since building the Qt sources always fails
-            find_package(Qt5WebKitWidgets)
+            if (BUILD_QT5_WEBKIT)
+                find_package(Qt5WebKitWidgets)
             endif()
         endif(BUILD_GUI)
 
@@ -893,7 +938,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
         file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py  "from PySide2.QtGui import *\n"
-                                                            "from PySide2.QtWidgets import *\n")
+                                                            "from PySide2.QtWidgets import *\n"
+                                                            "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
         file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
 	if(APPLE)

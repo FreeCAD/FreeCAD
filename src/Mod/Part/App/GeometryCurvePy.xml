@@ -148,6 +148,14 @@ of the nearest orthogonal projection of the point.</UserDocu>
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="trim">
+            <Documentation>
+                <UserDocu>
+                    Returns a trimmed curve defined in the given parameter range
+                    trim([Float=First, Float=Last]) -> trimmed curve
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="approximateBSpline">
 			<Documentation>
 				<UserDocu>

@@ -82,9 +82,9 @@ App::DocumentObjectExecReturn *Feature::recompute(void)
     try {
         return App::GeoFeature::recompute();
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e->GetMessageString());
+    catch (Standard_Failure& e) {
+
+        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e.GetMessageString());
         if (ret->Why.empty()) ret->Why = "Unknown OCC exception";
         return ret;
     }
@@ -107,13 +107,19 @@ PyObject *Feature::getPyObject(void)
 
 std::vector<PyObject *> Feature::getPySubObjects(const std::vector<std::string>& NameVec) const
 {
-    std::vector<PyObject *> temp;
-    for(std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it){
-        PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
-        if(obj)
-            temp.push_back(obj);
+    try {
+        std::vector<PyObject *> temp;
+        for (std::vector<std::string>::const_iterator it=NameVec.begin();it!=NameVec.end();++it) {
+            PyObject *obj = Shape.getShape().getPySubShape((*it).c_str());
+            if (obj)
+                temp.push_back(obj);
+        }
+        return temp;
     }
-    return temp;
+    catch (Standard_Failure&) {
+        //throw Py::ValueError(e.GetMessageString());
+        return std::vector<PyObject *>();
+    }
 }
 
 void Feature::onChanged(const App::Property* prop)

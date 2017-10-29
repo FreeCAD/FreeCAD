@@ -135,7 +135,7 @@ class _TaskPanelFemMeshGmsh:
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         self.console_message_gmsh = ''
         self.gmsh_runs = True
-        self.console_log("We gone start ...")
+        self.console_log("We are going to start ...")
         self.get_active_analysis()
         import FemGmshTools
         gmsh_mesh = FemGmshTools.FemGmshTools(self.obj, self.analysis)
@@ -162,7 +162,7 @@ class _TaskPanelFemMeshGmsh:
         import FemGui
         self.analysis = FemGui.getActiveAnalysis()
         if self.analysis:
-            for m in FemGui.getActiveAnalysis().Member:
+            for m in FemGui.getActiveAnalysis().Group:
                 if m.Name == self.mesh_obj.Name:
                     print('Active analysis found: ' + self.analysis.Name)
                     return

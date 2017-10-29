@@ -971,19 +971,19 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         dir = line->getDirection();
 
         // Check that axis is perpendicular with sketch plane!
-        if (sketchplane.Axis().Direction().Angle(gp_Dir(dir.x, dir.y, dir.z))< Precision::Angular())
-             throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
+        if (sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+            throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
         return;
     }
 
     if (pcReferenceAxis->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
         const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
         base = Base::Vector3d(0,0,0);
-        line->Placement.getValue().multVec (Base::Vector3d (1,0,0), dir);
+        line->Placement.getValue().multVec(Base::Vector3d (1,0,0), dir);
 
         // Check that axis is perpendicular with sketch plane!
-        if (sketchplane.Axis().Direction().Angle(gp_Dir(dir.x, dir.y, dir.z)) < Precision::Angular())
-             throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
+        if (sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+            throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
         return;
     }
 
@@ -1008,7 +1008,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
             dir = Base::Vector3d(d.X(), d.Y(), d.Z());
             // Check that axis is co-planar with sketch plane!
             // Check that axis is perpendicular with sketch plane!
-            if (sketchplane.Axis().Direction().Angle(d) < Precision::Angular())
+            if (sketchplane.Axis().Direction().IsParallel(d, Precision::Angular()))
                 throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
             return;
         } else {
@@ -1024,9 +1024,14 @@ TopoDS_Shape ProfileBased::refineShapeIfActive(const TopoDS_Shape& oldShape) con
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     if (hGrp->GetBool("RefineModel", false)) {
-        Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-        TopoDS_Shape resShape = mkRefine.Shape();
-        return resShape;
+        try {
+            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+            TopoDS_Shape resShape = mkRefine.Shape();
+            return resShape;
+        }
+        catch (Standard_Failure) {
+            return oldShape;
+        }
     }
 
     return oldShape;

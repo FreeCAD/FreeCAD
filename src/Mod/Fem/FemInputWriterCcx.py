@@ -59,9 +59,11 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, shellthickness_obj, fluidsection_obj,
             analysis_type, dir_name)
+        # self.dir_name does have a slash at the end
         self.main_file_name = self.mesh_object.Name + '.inp'
-        self.file_name = self.dir_name + '/' + self.main_file_name
+        self.file_name = self.dir_name + self.main_file_name
         self.FluidInletoutlet_ele = []
+        self.fluid_inout_nodes_file = self.dir_name + self.mesh_object.Name + '_inout_nodes.txt'
         print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
@@ -110,7 +112,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
                 inpfile.close()
-                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name)
+                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, self.file_name, self.fluid_inout_nodes_file)
                 inpfile = open(self.file_name, 'a')
 
         # constraints independent from steps
@@ -261,7 +263,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
-                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp")
+                FemMeshTools.use_correct_fluidinout_ele_def(self.FluidInletoutlet_ele, name + "_Node_Elem_sets.inp", self.fluid_inout_nodes_file)
 
         # constraints independent from steps
         if self.planerotation_objects:
@@ -343,7 +345,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.get_element_geometry2D_elements()
         elif len(self.beamsection_objects) > 1:
             self.get_element_geometry1D_elements()
-            # we will need to split the beams even for one beamobj because no beam in z-direction can be used in ccx without a special adjustment
+            # we will need to split the beams even for one beamobj 
+            # because no beam in z-direction can be used in ccx without a special adjustment
             # thus they need an own ccx_elset --> but this is ccx specific and thus should not be in input writer!
         elif len(self.fluidsection_objects) > 1:
             self.get_element_fluid1D_elements()
@@ -355,8 +358,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # create the ccx_elsets
         if len(self.material_objects) == 1:
             if self.femmesh.Volumes:
-                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
-                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+                # we only could do this for volumes, if a mesh contains volumes 
+                # we're going to use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces
+                # and the edges of the faces as edges, there we have to check for some geometric objects
                 self.get_ccx_elsets_single_mat_solid()
             elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_single_mat_single_shell()
@@ -372,8 +377,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 self.get_ccx_elsets_single_mat_multiple_fluid()
         elif len(self.material_objects) > 1:
             if self.femmesh.Volumes:
-                # we only could do this for volumes, if a mseh contains volumes we gone use them in the analysis
-                # but a mesh could contain the element faces of the volumes as faces and the edges of the faces as edges, there we have to check of some gemetric objects
+                # we only could do this for volumes, if a mseh contains volumes 
+                # we're going to use them in the analysis
+                # but a mesh could contain the element faces of the volumes as faces
+                # and the edges of the faces as edges, there we have to check for some geometric objects
                 self.get_ccx_elsets_multiple_mat_solid()  # volume is a bit special, because retriving ids from group mesh data is implemented
             elif len(self.shellthickness_objects) == 1:
                 self.get_ccx_elsets_multiple_mat_single_shell()
@@ -603,8 +610,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     if nl_mat_obj.LinearBaseMaterial == mat_obj:
                         if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
                             f.write('*PLASTIC\n')
-                            f.write(nl_mat_obj.YieldPoint1 + '\n')
-                            f.write(nl_mat_obj.YieldPoint2 + '\n')
+                            if nl_mat_obj.YieldPoint1:
+                                f.write(nl_mat_obj.YieldPoint1 + '\n')
+                            if nl_mat_obj.YieldPoint2:
+                                f.write(nl_mat_obj.YieldPoint2 + '\n')
+                            if nl_mat_obj.YieldPoint3:
+                                f.write(nl_mat_obj.YieldPoint3 + '\n')
                     f.write('\n')
 
     def write_constraints_initialtemperature(self, f):
@@ -690,7 +701,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.analysis_type == 'thermomech':
                 step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
             elif self.analysis_type == 'static' or self.analysis_type == 'frequency':
-                pass  # not supported for stati and frequency,  ... really ?
+                pass  # parameter is for thermomechanical analysis only, see ccx manual *STEP
         # write step line
         f.write(step + '\n')
         # CONTROLS line
@@ -716,17 +727,17 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             analysis_type += ', SOLVER=ITERATIVE SCALING'
         elif self.solver_obj.MatrixSolverType == "iterativecholesky":
             analysis_type += ', SOLVER=ITERATIVE CHOLESKY'
-        # analysis line --> user defined incrementations --> parameter DIRECT
+        # analysis line --> user defined incrementations --> parameter DIRECT --> completely switch off ccx automatic incrementation
         if self.solver_obj.IterationsUserDefinedIncrementations:
-            if self.analysis_type == 'static':  # it would be possible in thermomech too IMHO (bernd)
+            if self.analysis_type == 'static':
                 analysis_type += ', DIRECT'
             elif self.analysis_type == 'thermomech':
-                print('IterationsUserDefinedIncrementations not implemented for thermomech at the moment')
+                analysis_type += ', DIRECT'
             elif self.analysis_type == 'frequency':
                 print('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored')
         # analysis line --> steadystate --> thermomech only
         if self.solver_obj.ThermoMechSteadyState:
-            if self.analysis_type == 'thermomech':
+            if self.analysis_type == 'thermomech':  # bernd: I do not know if STEADY STATE is allowed with DIRECT but since time steps are 1.0 it makes no sense IMHO
                 analysis_type += ', STEADY STATE'
                 self.solver_obj.TimeInitialStep = 1.0  # Set time to 1 and ignore user inputs for steady state
                 self.solver_obj.TimeEnd = 1.0
@@ -735,10 +746,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # ANALYSIS parameter line
         analysis_parameter = ''
         if self.analysis_type == 'static':
-            if self.solver_obj.IterationsUserDefinedIncrementations:
-                analysis_parameter = self.solver_obj.IterationsUserDefinedTimeStepLength
+            if self.solver_obj.IterationsUserDefinedIncrementations is True or self.solver_obj.IterationsUserDefinedTimeStepLength is True:
+                analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)
         elif self.analysis_type == 'frequency':
-            if self.solver_obj.EigenmodeLowLimit == -1.0 and self.solver_obj.EigenmodeHighLimit == -1.0:
+            if self.solver_obj.EigenmodeLowLimit == 0.0 and self.solver_obj.EigenmodeHighLimit == 0.0:
                 analysis_parameter = '{}\n'.format(self.solver_obj.EigenmodesCount)
             else:
                 analysis_parameter = '{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit)
@@ -911,7 +922,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                         f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
                     elif fno == 0:  # on shell mesh face: fno == 0 --> normal of element face == face normal
                         f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
-                    elif fno == -1:  # on shell mesh face: fno == -1 --> normal of element face oposite direction face normal
+                    elif fno == -1:  # on shell mesh face: fno == -1 --> normal of element face opposite direction face normal
                         f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
 
     def write_constraints_temperature(self, f):
@@ -963,10 +974,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** FluidSection constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        if os.path.exists("inout_nodes.txt"):
-            inout_nodes_file = open("inout_nodes.txt", "r")
+        if os.path.exists(self.fluid_inout_nodes_file):
+            inout_nodes_file = open(self.fluid_inout_nodes_file, "r")
             lines = inout_nodes_file.readlines()
             inout_nodes_file.close()
+        else:
+            print("1DFlow inout nodes file not found: " + self.fluid_inout_nodes_file)
         # get nodes
         self.get_constraints_fluidsection_nodes()
         for femobj in self.fluidsection_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
@@ -1011,7 +1024,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Outputs --> frd file\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         if self.beamsection_objects or self.shellthickness_objects or self.fluidsection_objects:
-            f.write('*NODE FILE, OUTPUT=2d\n')
+            if self.solver_obj.BeamShellResultOutput3D is False:
+                f.write('*NODE FILE, OUTPUT=2d\n')
+            else:
+                f.write('*NODE FILE, OUTPUT=3d\n')
         else:
             f.write('*NODE FILE\n')
         if self.analysis_type == "thermomech":  # MPH write out nodal temperatures if thermomechanical

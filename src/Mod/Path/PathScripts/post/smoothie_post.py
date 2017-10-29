@@ -30,24 +30,35 @@ in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
 import smoothie_post
-linuxcnc_post.export(object,"/path/to/file.ncc","")
+smoothie_post.export(object,"/path/to/file.ncc","")
 '''
 
-TOOLTIP_ARGS='''
-Arguments for smoothieboard:
-    --header,--no-header             ... output headers (--header)
-    --comments,--no-comments         ... output comments (--comments)
-    --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
-    --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
-    --IP_ADDR                        ... IP Address for remote sending of gcode
-
-'''
-import FreeCAD
-from FreeCAD import Units
+import argparse
 import datetime
 from PathScripts import PostUtils
+import FreeCAD
+from FreeCAD import Units
+import shlex
 
 now = datetime.datetime.now()
+
+parser = argparse.ArgumentParser(prog='linuxcnc', add_help=False)
+parser.add_argument('--header', action='store_true', help='output headers (default)')
+parser.add_argument('--no-header', action='store_true', help='suppress header output')
+parser.add_argument('--comments', action='store_true', help='output comment (default)')
+parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
+parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
+parser.add_argument('--no-line-numbers', action='store_true', help='don\'t prefix with line numbers (default)')
+parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output (default)')
+parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
+parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
+parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
+parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
+parser.add_argument('--IP_ADDR', help='IP Address for machine target machine')
+parser.add_argument('--verbose', action='store_true', help='verbose output for debugging, default="False"')
+parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
+
+TOOLTIP_ARGS=parser.format_help()
 
 # These globals set common customization preferences
 OUTPUT_COMMENTS = True
@@ -68,7 +79,9 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = 'mm/min'
+UNIT_SPEED_FORMAT = 'mm/min'
+UNIT_FORMAT = 'mm'
+
 MACHINE_NAME = "SmoothieBoard"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
@@ -79,7 +92,6 @@ PREAMBLE = '''G17 G90
 
 # Postamble text will appear following the last operation.
 POSTAMBLE = '''M05
-G00 X-1.0 Y1.0
 G17 G90
 M2
 '''
@@ -106,28 +118,51 @@ def processArguments(argstring):
     global SHOW_EDITOR
     global IP_ADDR
     global VERBOSE
+    global PRECISION
+    global PREAMBLE
+    global POSTAMBLE
+    global UNITS
+    global UNIT_SPEED_FORMAT
+    global UNIT_FORMAT
 
-    for arg in argstring.split():
-        if arg == '--header':
-            OUTPUT_HEADER = True
-        elif arg == '--no-header':
+
+    try:
+        args = parser.parse_args(shlex.split(argstring))
+
+        if args.no_header:
             OUTPUT_HEADER = False
-        elif arg == '--comments':
-            OUTPUT_COMMENTS = True
-        elif arg == '--no-comments':
+        if args.header:
+            OUTPUT_HEADER = True
+        if args.no_comments:
             OUTPUT_COMMENTS = False
-        elif arg == '--line-numbers':
-            OUTPUT_LINE_NUMBERS = True
-        elif arg == '--no-line-numbers':
+        if args.comments:
+            OUTPUT_COMMENTS = True
+        if args.no_line_numbers:
             OUTPUT_LINE_NUMBERS = False
-        elif arg == '--show-editor':
-            SHOW_EDITOR = True
-        elif arg == '--no-show-editor':
+        if args.line_numbers:
+            OUTPUT_LINE_NUMBERS = True
+        if args.no_show_editor:
             SHOW_EDITOR = False
-        elif arg.split('=')[0] == '--IP_ADDR':
-            IP_ADDR = arg.split('=')[1]
-        elif arg == '--verbose':
-            VERBOSE = True
+        if args.show_editor:
+            SHOW_EDITOR = True
+        print("Show editor = %d" % SHOW_EDITOR)
+        PRECISION = args.precision
+        if args.preamble is not None:
+            PREAMBLE = args.preamble
+        if args.postamble is not None:
+            POSTAMBLE = args.postamble
+        if args.inches:
+            UNITS = 'G20'
+            UNIT_SPEED_FORMAT = 'in/min'
+            UNIT_FORMAT = 'in'
+
+        IP_ADDR = args.IP_ADDR
+        VERBOSE = args.verbose
+
+    except:
+        return False
+
+    return True
 
 def export(objectslist, filename, argstring):
     processArguments(argstring)
@@ -298,9 +333,11 @@ def linenumber():
     return ""
 
 def parse(pathobj):
+    global PRECISION
     out = ""
     lastcommand = None
     global SPINDLE_SPEED
+    precision_string = '.' + str(PRECISION) +'f'
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
@@ -339,15 +376,17 @@ def parse(pathobj):
                         if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             outstring.append(
-                                param + format(float(speed.getValueAs(UNIT_FORMAT)), '.2f') )
+                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string ) )
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     elif param == 'S':
                         outstring.append(param + str(c.Parameters['S']))
                         SPINDLE_SPEED = c.Parameters['S']
                     else:
+                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param + format(c.Parameters[param], '.4f'))
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string) )
+                            #param + format(c.Parameters[param], precision_string))
             if command in ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']:
                 outstring.append('S' + str(SPINDLE_SPEED))
 

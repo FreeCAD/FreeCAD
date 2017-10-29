@@ -65,7 +65,6 @@ bool Function::value( const double, double& f ) const
 #endif
       f = pow( 10., f );
     } catch(Standard_Failure) {
-      Handle(Standard_Failure) aFail = Standard_Failure::Caught();
       f = 0.0;
       ok = false;
     }
@@ -198,7 +197,6 @@ FunctionExpr::FunctionExpr( const char* str, const int conv )
     myExpr = ExprIntrp_GenExp::Create();
     myExpr->Process( ( Standard_CString )str );
   } catch(Standard_Failure) {
-    Handle(Standard_Failure) aFail = Standard_Failure::Caught();
     ok = false;
   }
 
@@ -233,7 +231,6 @@ bool FunctionExpr::value( const double t, double& f ) const
 #endif
     f = myExpr->Expression()->Evaluate( myVars, myValues );
   } catch(Standard_Failure) {
-    Handle(Standard_Failure) aFail = Standard_Failure::Caught();
     f = 0.0;
     ok = false;
   }

@@ -30,6 +30,7 @@
 # include <climits>
 # include <QString>
 # include <Standard_Version.hxx>
+# include <NCollection_Vector.hxx>
 # include <BRep_Builder.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
@@ -342,7 +343,10 @@ private:
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
+            bool optionReadShapeCompoundMode_status;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+            optionReadShapeCompoundMode_status = hGrp->GetBool("ReadShapeCompoundMode",false);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -361,9 +365,8 @@ private:
                     aReader.Transfer(hDoc);
                     pi->EndScope();
                 }
-                catch (OSD_Exception) {
-                    Handle(Standard_Failure) e = Standard_Failure::Caught();
-                    Base::Console().Error("%s\n", e->GetMessageString());
+                catch (OSD_Exception& e) {
+                    Base::Console().Error("%s\n", e.GetMessageString());
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc,Utf8Name.c_str());
@@ -397,9 +400,8 @@ private:
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
                 }
-                catch (OSD_Exception) {
-                    Handle(Standard_Failure) e = Standard_Failure::Caught();
-                    Base::Console().Error("%s\n", e->GetMessageString());
+                catch (OSD_Exception& e) {
+                    Base::Console().Error("%s\n", e.GetMessageString());
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc,Utf8Name.c_str());
@@ -416,14 +418,15 @@ private:
             // purge the document before recomputing it to clear it and settle it in the proper
             // way. This is drastically improving STEP rendering time on complex STEP files.
             pcDoc->recompute();
+            if (file.hasExtension("stp") || file.hasExtension("step"))
+                ocaf.setMerge(optionReadShapeCompoundMode_status);
             ocaf.loadShapes();
             pcDoc->purgeTouched();
             pcDoc->recompute();
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -431,6 +434,71 @@ private:
 
         return Py::None();
     }
+    int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, 
+                          std::vector <TDF_Label>& hierarchical_label,
+                          std::vector <TopLoc_Location>& hierarchical_loc,
+                          std::vector <App::DocumentObject*>& hierarchical_part)
+    {
+        std::vector <int> local_label;
+        int root_id;
+        int return_label = -1;
+
+
+        if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+            App::Part* part = static_cast<App::Part*>(obj);
+            // I shall recusrively select the elements and call back
+            std::vector<App::DocumentObject*> entries = part->Group.getValues();
+            std::vector<App::DocumentObject*>::iterator it;
+
+            for ( it = entries.begin(); it != entries.end(); it++ ) {
+                int new_label=0;
+                new_label=export_app_object((*it),ocaf,hierarchical_label,hierarchical_loc, hierarchical_part);
+                local_label.push_back(new_label);
+            }
+
+            ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc, hierarchical_part);
+            std::vector<int>::iterator label_it;
+            for (label_it = local_label.begin(); label_it != local_label.end(); ++label_it) {
+                ocaf.pushNode(root_id,(*label_it), hierarchical_label,hierarchical_loc);
+            }
+
+            return_label=root_id;
+        }
+
+        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            Part::Feature* part = static_cast<Part::Feature*>(obj);
+            std::vector<App::Color> colors;
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                if (colors.empty())
+                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+            }
+
+            return_label=ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
+        }
+
+        return(return_label);
+    }
+
+    void get_parts_colors(std::vector <App::DocumentObject*> hierarchical_part, std::vector <TDF_Label> FreeLabels,
+                          std::vector <int> part_id, std::vector< std::vector<App::Color> >& Colors)
+    {
+        // I am seeking for the colors of each parts
+        int n = FreeLabels.size();
+        for (int i = 0; i < n; i++) {
+            std::vector<App::Color> colors;
+            Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+                if (colors.empty())
+                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+                Colors.push_back(colors);
+            }
+        }
+    }
+
     Py::Object exporter(const Py::Tuple& args)
     {
         PyObject* object;
@@ -449,33 +517,49 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             bool keepExplicitPlacement = list.size() > 1;
+            keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+
+            // That stuff is exporting a list of selected oject into FreeCAD Tree
+            std::vector <TDF_Label> hierarchical_label;
+            std::vector <TopLoc_Location> hierarchical_loc;
+            std::vector <App::DocumentObject*> hierarchical_part;
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                        Part::Feature* part = static_cast<Part::Feature*>(obj);
-                        std::vector<App::Color> colors;
-                        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-                        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                            colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-                            if (colors.empty())
-                                colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
-                        }
-                        ocaf.saveShape(part, colors);
-                    }
-                    else {
-                        Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
-                    }
+                    export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc,hierarchical_part);
                 }
             }
+
+            // Free Shapes must have absolute placement and not explicit
+            // Free Shapes must have absolute placement and not explicit
+            std::vector <TDF_Label> FreeLabels;
+            std::vector <int> part_id;
+            ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
+            // Got issue with the colors as they are coming from the View Provider they can't be determined into
+            // the App Code.
+            std::vector< std::vector<App::Color> > Colors;
+            get_parts_colors(hierarchical_part,FreeLabels,part_id,Colors);
+            ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 //Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                bool optionScheme_214;
+                bool optionScheme_203;
+                ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+                optionScheme_214 = hGrp_stp->GetBool("Scheme_214",true);
+                optionScheme_203 = hGrp_stp->GetBool("Scheme_203",false);
+                if (optionScheme_214)
+                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                if (optionScheme_203)
+                    Interface_Static::SetCVal("write.step.schema", "AP203");
+
                 STEPCAFControl_Writer writer;
+                Interface_Static::SetIVal("write.step.assembly",1);
+                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
@@ -516,9 +600,8 @@ private:
 
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -610,9 +693,8 @@ private:
             browse.load(dlg->findChild<QTreeWidget*>());
             hApp->Close(hDoc);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());

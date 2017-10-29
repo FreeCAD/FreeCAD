@@ -134,7 +134,7 @@ inline StrXUTF8::StrXUTF8(const XMLCh* const toTranscode)
         XMLTransService::Codes  res;
         transcoder.reset(XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XERCES_CPP_NAMESPACE_QUALIFIER XMLRecognizer::UTF_8, res, 4096, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager));
         if (res != XMLTransService::Ok)
-            throw Base::UnicodeError("Cant create UTF-8 encoder in StrXUTF8::StrXUTF8()");
+            throw Base::UnicodeError("Can\'t create UTF-8 encoder in StrXUTF8::StrXUTF8()");
     }
 
     //char outBuff[128];
@@ -250,7 +250,7 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
         XMLTransService::Codes  res;
         transcoder.reset(XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XERCES_CPP_NAMESPACE_QUALIFIER XMLRecognizer::UTF_8, res, 4096, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager));
         if (res != XMLTransService::Ok)
-            throw Base::UnicodeError("Cant create UTF-8 decoder in XUTF8Str::XUTF8Str()");
+            throw Base::UnicodeError("Can\'t create UTF-8 decoder in XUTF8Str::XUTF8Str()");
     }
 
     static XMLCh outBuff[128];

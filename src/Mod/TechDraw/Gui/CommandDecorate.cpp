@@ -298,6 +298,47 @@ bool CmdTechDrawToggleFrame::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_RedrawPage
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawRedrawPage);
+
+CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
+  : Command("TechDraw_RedrawPage")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Redraw a page");
+    sToolTipText    = QT_TR_NOOP("Redraw a page");
+    sWhatsThis      = "TechDraw_RedrawPage";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_Tree_Page_Sync";
+}
+
+void CmdTechDrawRedrawPage::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+    bool keepUpdated = page->KeepUpdated.getValue();
+    if (!keepUpdated) {
+        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = True",PageName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = False",PageName.c_str());
+    } else {
+        page->requestPaint();
+    }
+}
+
+bool CmdTechDrawRedrawPage::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    return (havePage);
+}
+
 void CreateTechDrawCommandsDecorate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -306,6 +347,7 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
+    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
 }
 
 //===========================================================================

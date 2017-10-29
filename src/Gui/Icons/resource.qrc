@@ -11,6 +11,7 @@
         <file>freecad.svg</file>
         <file>freecad-doc.png</file>
         <file>bulb.svg</file>
+        <file>TextDocument.svg</file>
         <file>button_down.svg</file>
         <file>button_left.svg</file>
         <file>button_right.svg</file>
@@ -152,6 +153,10 @@
         <file>colors.svg</file>
         <file>px.svg</file>
         <file>AddonManager.svg</file>
+        <file>Group.svg</file>
+        <file>Geofeaturegroup.svg</file>
+        <file>Std_Axis.svg</file>
+        <file>Std_Plane.svg</file>
     </qresource>
     <!-- Alternative directory names for icons that should be loaded from a theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

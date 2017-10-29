@@ -112,7 +112,6 @@ class CommandPathFixture:
     def GetResources(self):
         return {'Pixmap': 'Path-Datums',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
-                'Accel': "P, F",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Creates a Fixture Offset object")}
 
     def IsActive(self):

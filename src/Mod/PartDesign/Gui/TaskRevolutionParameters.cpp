@@ -114,12 +114,10 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
 
-    PartDesign::ProfileBased* sketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-    // TODO This is quite ugly better redo it (2015-11-02, Fat-Zer)
-    if ( sketchBased->isDerivedFrom(PartDesign::Revolution::getClassTypeId() ) ) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *> ( sketchBased )->Angle);
-    } else if ( sketchBased->isDerivedFrom(PartDesign::Groove::getClassTypeId() ) ) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> ( sketchBased )->Angle);
+    if (pcFeat->isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
+        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *>(pcFeat)->Angle);
+    } else if (pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId())) {
+        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> (pcFeat)->Angle);
     }
 
     ui->revolveAngle->blockSignals(false);
@@ -138,31 +136,30 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
         } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
+            ex.ReportException();
         }
      }
 }
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 {
-    // TODO share the code with TaskTransformedParameters (2015-08-31, Fat-Zer)
     bool oldVal_blockUpdate = blockUpdate;
     blockUpdate = true;
 
-    if(axesInList.size() == 0)
+    if (axesInList.empty())
         forceRefill = true;//not filled yet, full refill
 
     if (forceRefill){
         ui->axis->clear();
 
-        for(size_t i = 0  ;  i < axesInList.size()  ;  i++ ){
+        for(size_t i = 0; i < axesInList.size(); i++){
             delete axesInList[i];
         }
         this->axesInList.clear();
 
         //add sketch axes
-        PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::Revolution*>(vp->getObject());
-        Part::Part2DObject* pcSketch = static_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
+        PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+        Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch){
             addAxisToCombo(pcSketch,"V_Axis",QObject::tr("Vertical sketch axis"));
             addAxisToCombo(pcSketch,"H_Axis",QObject::tr("Horizontal sketch axis"));
@@ -185,7 +182,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
                 addAxisToCombo(orig->getY(),"",tr("Base Y axis"));
                 addAxisToCombo(orig->getZ(),"",tr("Base Z axis"));
             } catch (const Base::Exception &ex) {
-                Base::Console().Error ("%s\n", ex.what() );
+                ex.ReportException();
             }
         }
 
@@ -198,14 +195,14 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
     int indexOfCurrent = -1;
     App::DocumentObject* ax = propReferenceAxis->getValue();
     const std::vector<std::string> &subList = propReferenceAxis->getSubValues();
-    for(size_t i = 0  ;  i < axesInList.size()  ;  i++) {
-        if(ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues())
+    for (size_t i = 0; i < axesInList.size(); i++) {
+        if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues())
             indexOfCurrent = i;
     }
-    if ( indexOfCurrent == -1  &&  ax ){
+    if (indexOfCurrent == -1  &&  ax) {
         assert(subList.size() <= 1);
         std::string sub;
-        if (subList.size()>0)
+        if (!subList.empty())
             sub = subList[0];
         addAxisToCombo(ax, sub, getRefStr(ax, subList));
         indexOfCurrent = axesInList.size()-1;
@@ -270,18 +267,18 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         return;
     PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());
 
-    if(axesInList.size() == 0)
+    if (axesInList.empty())
         return;
 
     App::DocumentObject *oldRefAxis = propReferenceAxis->getValue();
     std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
 
     App::PropertyLinkSub &lnk = *(axesInList[num]);
-    if(lnk.getValue() == 0){
+    if (lnk.getValue() == 0) {
         // enter reference selection mode
         TaskSketchBasedParameters::onSelectReference(true, true, false, true);
     } else {
-        if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
+        if (!pcRevolution->getDocument()->isIn(lnk.getValue())){
             Base::Console().Error("Object was deleted\n");
             return;
         }
@@ -289,26 +286,31 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         exitSelectionMode();
     }
 
-    App::DocumentObject *newRefAxis = propReferenceAxis->getValue();
-    const std::vector<std::string> &newSubRefAxis = propReferenceAxis->getSubValues();
-    if (oldRefAxis != newRefAxis ||
-        oldSubRefAxis.size() != newSubRefAxis.size() ||
-        oldSubRefAxis[0] != newSubRefAxis[0]) {
-        bool reversed = propReversed->getValue();
-        if(pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
-            reversed = static_cast<PartDesign::Revolution*>(pcRevolution)->suggestReversed();
-        if(pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
-            reversed = static_cast<PartDesign::Groove*>(pcRevolution)->suggestReversed();
+    try {
+        App::DocumentObject *newRefAxis = propReferenceAxis->getValue();
+        const std::vector<std::string> &newSubRefAxis = propReferenceAxis->getSubValues();
+        if (oldRefAxis != newRefAxis ||
+            oldSubRefAxis.size() != newSubRefAxis.size() ||
+            oldSubRefAxis[0] != newSubRefAxis[0]) {
+            bool reversed = propReversed->getValue();
+            if(pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
+                reversed = static_cast<PartDesign::Revolution*>(pcRevolution)->suggestReversed();
+            if(pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
+                reversed = static_cast<PartDesign::Groove*>(pcRevolution)->suggestReversed();
 
-        if (reversed != propReversed->getValue()) {
-            propReversed->setValue(reversed);
-            ui->checkBoxReversed->blockSignals(true);
-            ui->checkBoxReversed->setChecked(reversed);
-            ui->checkBoxReversed->blockSignals(false);
+            if (reversed != propReversed->getValue()) {
+                propReversed->setValue(reversed);
+                ui->checkBoxReversed->blockSignals(true);
+                ui->checkBoxReversed->setChecked(reversed);
+                ui->checkBoxReversed->blockSignals(false);
+            }
         }
-    }
 
-    recomputeFeature();
+        recomputeFeature();
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskRevolutionParameters::onMidplane(bool on)
@@ -330,30 +332,30 @@ double TaskRevolutionParameters::getAngle(void) const
 
 void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    if (axesInList.size() == 0)
-        throw Base::Exception("Not initialized!");
+    if (axesInList.empty())
+        throw Base::RuntimeError("Not initialized!");
 
     int num = ui->axis->currentIndex();
     const App::PropertyLinkSub &lnk = *(axesInList[num]);
-    if(lnk.getValue() == 0){
-        throw Base::Exception("Still in reference selection mode; reference wasn't selected yet");
+    if (lnk.getValue() == 0) {
+        throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
     } else {
         PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-        if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
-            throw Base::Exception("Object was deleted");
-            return;
+        if (!pcRevolution->getDocument()->isIn(lnk.getValue())){
+            throw Base::RuntimeError("Object was deleted");
         }
+
         obj = lnk.getValue();
         sub = lnk.getSubValues();
     }
 }
 
-bool   TaskRevolutionParameters::getMidplane(void) const
+bool TaskRevolutionParameters::getMidplane(void) const
 {
     return ui->checkBoxMidplane->isChecked();
 }
 
-bool   TaskRevolutionParameters::getReversed(void) const
+bool TaskRevolutionParameters::getReversed(void) const
 {
     return ui->checkBoxReversed->isChecked();
 }
@@ -370,7 +372,7 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
             vpOrigin->resetTemporaryVisibility();
         }
     } catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what () );
+        ex.ReportException();
     }
 
     delete ui;

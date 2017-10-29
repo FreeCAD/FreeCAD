@@ -27,7 +27,10 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRep_Tool.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopLoc_Location.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <QMessageBox>
 # include <Inventor/nodes/SoCamera.h>
 #endif
@@ -111,7 +114,12 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             std::string tmp = std::string("Create ")+name;
 
             cmd.openCommand(tmp.c_str());
-            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",fullTypeName.c_str(),FeatName.c_str());
+            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject('%s','%s')", pcActiveBody->getNameInDocument(), 
+                          fullTypeName.c_str(),FeatName.c_str());
+
+            // remove the body from links in case it's selected as
+            // otherwise a cyclic dependency will be created
+            support.removeValue(pcActiveBody);
 
             //test if current selection fits a mode.
             if (support.getSize() > 0) {
@@ -126,10 +134,6 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                 } else {
                     QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
                 }
-            }
-            if (pcActiveBody) {
-                cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                               pcActiveBody->getNameInDocument(), FeatName.c_str());
             }
             cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
             cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -154,7 +158,7 @@ CmdPartDesignPlane::CmdPartDesignPlane()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a datum plane");
     sToolTipText    = QT_TR_NOOP("Create a new datum plane");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Plane";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Plane";
 }
@@ -182,7 +186,7 @@ CmdPartDesignLine::CmdPartDesignLine()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a datum line");
     sToolTipText    = QT_TR_NOOP("Create a new datum line");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Line";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Line";
 }
@@ -210,7 +214,7 @@ CmdPartDesignPoint::CmdPartDesignPoint()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a datum point");
     sToolTipText    = QT_TR_NOOP("Create a new datum point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Point";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Point";
 }
@@ -242,7 +246,7 @@ CmdPartDesignShapeBinder::CmdPartDesignShapeBinder()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a shape binder");
     sToolTipText    = QT_TR_NOOP("Create a new shape binder");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_ShapeBinder";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_ShapeBinder";
 }
@@ -260,9 +264,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
-        // TODO probably we not should handle edit here (2015-10-26, Fat-Zer)
-        std::string tmp = std::string("Edit ShapeBinder");
-        openCommand(tmp.c_str());
+        openCommand("Edit ShapeBinder");
         doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",
                 support.getValue()->getNameInDocument());
     } else {
@@ -271,21 +273,21 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
             return;
 
         std::string FeatName = getUniqueObjectName("ShapeBinder");
-        std::string tmp = std::string("Create ShapeBinder");
 
-        openCommand(tmp.c_str());
+        openCommand("Create ShapeBinder");
+        doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject('%s','%s')",
+                    pcActiveBody->getNameInDocument(), "PartDesign::ShapeBinder",FeatName.c_str());
 
-        doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                    "PartDesign::ShapeBinder",FeatName.c_str());
-        
+        // remove the body from links in case it's selected as
+        // otherwise a cyclic dependency will be created
+        support.removeValue(pcActiveBody);
+
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
             doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
                     FeatName.c_str(), support.getPyReprString().c_str());
         }
-        doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                pcActiveBody->getNameInDocument(), FeatName.c_str());
-        doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
+        updateActive();
         doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
     // TODO do a proper error processing (2015-09-11, Fat-Zer)
@@ -294,6 +296,49 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 bool CmdPartDesignShapeBinder::isActive(void)
 {
     return hasActiveDocument ();
+}
+
+//===========================================================================
+// PartDesign_Clone
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignClone)
+
+CmdPartDesignClone::CmdPartDesignClone()
+  :Command("PartDesign_Clone")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a clone");
+    sToolTipText    = QT_TR_NOOP("Create a new clone");
+    sWhatsThis      = "PartDesign_Clone";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Clone";
+}
+
+void CmdPartDesignClone::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::string FeatName = getUniqueObjectName("Clone");
+    std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
+            (Part::Feature::getClassTypeId());
+    if (objs.size() == 1) {
+        openCommand("Create Clone");
+        doCommand(Command::Doc,"App.ActiveDocument.addObject('PartDesign::FeatureBase','%s')",
+                  FeatName.c_str());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.BaseFeature = App.ActiveDocument.%s",
+                  objs.front()->getNameInDocument());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.Placement = App.ActiveDocument.%s.Placement",
+                  objs.front()->getNameInDocument());
+        doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.setEditorMode('Placement',0)");
+        commitCommand();
+        updateActive();
+    }
+}
+
+bool CmdPartDesignClone::isActive(void)
+{
+    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
 }
 
 //===========================================================================
@@ -310,7 +355,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create sketch");
     sToolTipText    = QT_TR_NOOP("Create a new sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_NewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_NewSketch";
 }
@@ -399,10 +444,14 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             }
 
             BRepAdaptor_Surface adapt(face);
-            if (adapt.GetType() != GeomAbs_Plane){
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-                    QObject::tr("You need a planar face as support for a sketch!"));
-                return;
+            if (adapt.GetType() != GeomAbs_Plane) {
+                TopLoc_Location loc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                if (surf.IsNull() || !GeomLib_IsPlanarSurface(surf).IsPlanar()) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
+                        QObject::tr("You need a planar face as support for a sketch!"));
+                    return;
+                }
             }
 
             supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
@@ -453,13 +502,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand("Create a Sketch on Face");
-        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.newObject('Sketcher::SketchObject','%s')",pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                       pcActiveBody->getNameInDocument(), FeatName.c_str());
-        doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
-        //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
+        updateActive();
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
     else {
@@ -567,13 +613,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
                                         ", [''])";
 
-            Gui::Command::doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.newObject('Sketcher::SketchObject','%s')", pcActiveBody->getNameInDocument(), FeatName.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
             Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                        pcActiveBody->getNameInDocument(), FeatName.c_str());
-            //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
             Gui::Command::doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
         };
 
@@ -645,21 +688,6 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
-    if (pcActiveBody) {
-        App::DocumentObject* lastSolidFeature = pcActiveBody->Tip.getValue();
-        if (!prevSolidFeature || prevSolidFeature == lastSolidFeature) {
-            // If the previous feature not given or is the Tip add Feature after it.
-            cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                    pcActiveBody->getNameInDocument(), FeatName.c_str());
-            prevSolidFeature = lastSolidFeature;
-        } else {
-            // Insert the feature into the body after the given one.
-            cmd->doCommand(cmd->Doc,
-                    "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s, True)",
-                    pcActiveBody->getNameInDocument(), FeatName.c_str(), prevSolidFeature->getNameInDocument());
-        }
-    }
-
     if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
 
@@ -675,6 +703,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         cmd->copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
+        cmd->copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
     }
 }
 
@@ -789,8 +818,8 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         std::string FeatName = cmd->getUniqueObjectName(which.c_str());
 
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
-            which.c_str(), FeatName.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::%s\",\"%s\")",
+            PartDesignGui::getBody(false)->getNameInDocument(), which.c_str(), FeatName.c_str());
         
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
@@ -859,7 +888,10 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     auto* pcActiveBody = PartDesignGui::getBody(false);
     if (pcActiveBody && !bNoSketchWasSelected && ext) {
 
-        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, true);
+        // getPartFor() already has reported an error
+        if (!pcActivePart)
+            return;
 
         QDialog* dia = new QDialog;
         Ui_Dialog dlg;
@@ -965,14 +997,6 @@ void CmdPartDesignPad::activated(int iMsg)
 
         // specific parameters for Pad
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
-        App::DocumentObjectGroup* grp = profile->getGroup();
-        if (grp) {
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
-                        ,grp->getNameInDocument(),FeatName.c_str());
-            if(profile->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-                Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
-                            ,grp->getNameInDocument(), profile->getNameInDocument());
-        }
         Gui::Command::updateActive();
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
@@ -1000,7 +1024,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
     sToolTipText  = QT_TR_NOOP("Create a pocket with the selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Pocket";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
 }
@@ -1031,6 +1055,52 @@ void CmdPartDesignPocket::activated(int iMsg)
 }
 
 bool CmdPartDesignPocket::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_Hole
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignHole);
+
+CmdPartDesignHole::CmdPartDesignHole()
+  : Command("PartDesign_Hole")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Hole");
+    sToolTipText  = QT_TR_NOOP("Create a hole with the selected sketch");
+    sWhatsThis    = "PartDesign_Hole";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Hole";
+}
+
+void CmdPartDesignHole::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+                return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
+
+        if (FeatName.empty()) return;
+
+        finishProfileBased(cmd, sketch, FeatName);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(this, "Hole", worker);
+}
+
+bool CmdPartDesignHole::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1139,9 +1209,17 @@ void CmdPartDesignGroove::activated(int iMsg)
         }
 
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
-        PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(cmd->getDocument()->getObject(FeatName.c_str()));
-        if (pcGroove && pcGroove->suggestReversed())
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
+
+        try {
+            // This raises as exception if line is perpendicular to sketch/support face.
+            // Here we should continue to give the user a chance to change the default values.
+            PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(cmd->getDocument()->getObject(FeatName.c_str()));
+            if (pcGroove && pcGroove->suggestReversed())
+                Gui::Command::doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
 
         finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
@@ -1167,7 +1245,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive pipe");
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
-    sWhatsThis    = "PartDesign_Additive_Pipe";
+    sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Pipe";
 }
@@ -1217,7 +1295,7 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive pipe");
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
-    sWhatsThis    = "PartDesign_Subtractive_Pipe";
+    sWhatsThis    = "PartDesign_SubtractivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Subtractive_Pipe";
 }
@@ -1266,8 +1344,8 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive loft");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
-    sWhatsThis    = "PartDesign_Additive_Loft";
+    sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections");
+    sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Loft";
 }
@@ -1316,8 +1394,8 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive loft");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
-    sWhatsThis    = "PartDesign_Subtractive_Loft";
+    sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections and remove it from the body");
+    sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Subtractive_Loft";
 }
@@ -1439,7 +1517,8 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     std::string FeatName = cmd->getUniqueObjectName(which.c_str());
 
     cmd->openCommand((std::string("Make ") + which).c_str());
-    cmd->doCommand(cmd->Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
+    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.newObject(\"PartDesign::%s\",\"%s\")",
+                   PartDesignGui::getBodyFor(base,false)->getNameInDocument(), which.c_str(), FeatName.c_str());
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, FeatName, base);
@@ -1470,7 +1549,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Fillet");
     sToolTipText  = QT_TR_NOOP("Make a fillet on an edge, face or body");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Fillet";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Fillet";
 }
@@ -1498,7 +1577,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Chamfer");
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Chamfer";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Chamfer";
 }
@@ -1645,14 +1724,28 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
         }
         str << "]";
 
-        Gui::Command::openCommand((std::string("Make ") + which + " feature").c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
+        std::string bodyName = PartDesignGui::getBody(false)->getNameInDocument();
+
+        std::string msg("Make ");
+        msg += which;
+        Gui::Command::openCommand(msg.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::%s\",\"%s\")",
+                                bodyName.c_str(), which.c_str(), FeatName.c_str());
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
         // TODO Wjat that function supposed to do? (2015-08-05, Fat-Zer)
         func(FeatName, features);
+
+        // Set the tip of the body
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
+                                bodyName.c_str(), FeatName.c_str());
+
+        // Adjust visibility to show only the tip feature
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().show(\"%s\")",
+                                FeatName.c_str());
+        Gui::Command::updateActive();
     };
 
     // Get a valid original from the user
@@ -1725,8 +1818,8 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
-    sToolTipText  = QT_TR_NOOP("create a mirrored feature");
-    sWhatsThis    = sToolTipText;
+    sToolTipText  = QT_TR_NOOP("Create a mirrored feature");
+    sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
 }
@@ -1739,10 +1832,10 @@ void CmdPartDesignMirrored::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
-	if (!pcActiveBody)
-		return;
+    if (!pcActiveBody)
+        return;
 
     Gui::Command* cmd = this;
     auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
@@ -2019,7 +2112,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform");
-        doCommand(Doc, "App.activeDocument().addObject(\"PartDesign::MultiTransform\",\"%s\")", FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.newObject(\"PartDesign::MultiTransform\",\"%s\")", pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Originals = App.activeDocument().%s.Originals", FeatName.c_str(), trFeat->getNameInDocument());
         doCommand(Doc, "App.activeDocument().%s.Originals = []", trFeat->getNameInDocument());
         doCommand(Doc, "App.activeDocument().%s.Transformations = [App.activeDocument().%s]", FeatName.c_str(), trFeat->getNameInDocument());
@@ -2075,7 +2168,7 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Boolean operation");
     sToolTipText    = QT_TR_NOOP("Boolean operation with two or more bodies");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "PartDesign_Boolean";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Boolean";
 }
@@ -2087,13 +2180,13 @@ void CmdPartDesignBoolean::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
-    Gui::SelectionFilter BodyFilter("SELECT PartDesign::Body COUNT 1..");
+    Gui::SelectionFilter BodyFilter("SELECT Part::Feature COUNT 1..");
 
     openCommand("Create Boolean");
     std::string FeatName = getUniqueObjectName("Boolean");
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Boolean','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.newObject('PartDesign::Boolean','%s')", pcActiveBody->getNameInDocument(), FeatName.c_str());
     
-    if (BodyFilter.match()) {
+    if (BodyFilter.match() && !BodyFilter.Result.empty()) {
         std::vector<App::DocumentObject*> bodies;
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
         for (; i != BodyFilter.Result.end(); i++) {
@@ -2103,7 +2196,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
             }
         }
         std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
-        doCommand(Doc,"App.activeDocument().%s.Bodies = %s",FeatName.c_str(),bodyString.c_str());
+        doCommand(Doc,"App.activeDocument().%s.addObjects(%s)",FeatName.c_str(),bodyString.c_str());
     }
 
     finishFeature(this, FeatName, nullptr, false);
@@ -2127,6 +2220,7 @@ void CreatePartDesignCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdPartDesignShapeBinder());
+    rcCmdMgr.addCommand(new CmdPartDesignClone());
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());
     rcCmdMgr.addCommand(new CmdPartDesignPoint());
@@ -2135,6 +2229,7 @@ void CreatePartDesignCommands(void)
 
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
+    rcCmdMgr.addCommand(new CmdPartDesignHole());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
     rcCmdMgr.addCommand(new CmdPartDesignGroove());
     rcCmdMgr.addCommand(new CmdPartDesignAdditivePipe);

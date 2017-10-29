@@ -42,6 +42,14 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
 
+    // In order to get the right factor always express the target
+    // units as internal units where length is in mm and mass in kg
+    // Example:
+    // For W/mm/K we get the factor of 1000000.0 because
+    // W/mm/K = kg*m^2/s^3/mm/K
+    // = 10e6 * kg*mm^2/s^3/mm/K
+    // = 10e6 * kg*mm/s^3/K
+
     // now do special treatment on all cases seems necessary:
     if (unit == Unit::Length) {  // Length handling ============================
         if (UnitValue < 0.000000001) {// smaller then 0.001 nm -> scientific notation
@@ -106,9 +114,9 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
     }
     else if (unit == Unit::ThermalConductivity) {
-        if (UnitValue < 1000) {
+        if (UnitValue > 1000000) {
             unitString = QString::fromLatin1("W/mm/K");
-            factor = 1.0;
+            factor = 1000000.0;
         }
         else {
             unitString = QString::fromLatin1("W/m/K");
@@ -159,6 +167,14 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         unitString = QString::fromLatin1("W");
         factor = 1000000;
     }
+    else if (unit == Unit::ElectricPotential) {
+        unitString = QString::fromLatin1("V");
+        factor = 1000000;
+    }
+    else if (unit == Unit::SpecificEnergy) {
+        unitString = QString::fromLatin1("m^2/s^2");
+        factor = 1000000;
+    }
     else if (unit == Unit::HeatFlux) {
         unitString = QString::fromLatin1("W/m^2");
         factor = 1.0;
@@ -166,6 +182,10 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mm/s");
         factor = 1.0;
+    }
+    else if (unit == Unit::DynamicViscosity) {
+        unitString = QString::fromLatin1("kg/(m*s)");
+        factor = 0.001;
     }
     else {
         // default action for all cases without special treatment:

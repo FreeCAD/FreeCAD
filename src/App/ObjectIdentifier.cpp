@@ -362,6 +362,24 @@ bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
             return true;
         }
     }
+
+    // If object identifier uses the label then resolving the document object will fail.
+    // So, it must be checked if using the new label will succeed
+    if (!components.empty() && components[0].getName() == oldName) {
+        ObjectIdentifier id(*this);
+        id.components[0].name = newName;
+
+        ResolveResults result(id);
+
+        if (result.propertyIndex == 1 && result.resolvedDocumentObjectName == newName) {
+            if (ExpressionParser::isTokenAnIndentifier(newName))
+                components[0].name = newName;
+            else
+                components[0].name = ObjectIdentifier::String(newName, true);
+
+            return true;
+        }
+    }
     return false;
 }
 
@@ -383,6 +401,18 @@ bool ObjectIdentifier::validDocumentObjectRename(const std::string &oldName, con
         ResolveResults result(*this);
 
         if (result.propertyIndex == 1 && result.resolvedDocumentObjectName == oldName)
+            return true;
+    }
+
+    // If object identifier uses the label then resolving the document object will fail.
+    // So, it must be checked if using the new label will succeed
+    if (!components.empty() && components[0].getName() == oldName) {
+        ObjectIdentifier id(*this);
+        id.components[0].name = newName;
+
+        ResolveResults result(id);
+
+        if (result.propertyIndex == 1 && result.resolvedDocumentObjectName == newName)
             return true;
     }
     return false;
@@ -411,7 +441,6 @@ bool ObjectIdentifier::renameDocument(const std::string &oldName, const std::str
             return true;
         }
     }
-
     return false;
 }
 

@@ -42,7 +42,6 @@ public:
     /// destructor.
     virtual ~ViewProviderDocumentObjectGroup();
 
-    QIcon getIcon(void) const;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes(void) const;
     bool isShow(void) const;
