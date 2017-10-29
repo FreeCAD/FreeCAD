@@ -52,98 +52,11 @@ class CommandPathSanity:
 
     def IsActive(self):
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        if (obj.TypeId == "Path::FeatureCompoundPython"):
+        if hasattr(obj, 'Operations') and hasattr(obj, 'ToolController'):
             return True
         return False
 
-    def __review(self, obj):
-        "checks the selected job for common errors"
-        toolcontrolcount = 0
-        operationcount = 0
-        #global baseobj
-
-        # if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
-        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
-
-        if obj.PostProcessor == '':
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Postprocessor has not been selected.\n"))
-
-        if obj.PostProcessorOutputFile == '':
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "No output file is named. You'll be prompted during postprocessing.\n"))
-
-        for item in obj.Group:
-            print("Checking: " + item.Label)
-            if isinstance(item.Proxy, PathScripts.PathToolController.ToolController):
-                toolcontrolcount += 1
-                self.__checkTC(item)
-
-            if isinstance(item.Proxy, PathScripts.PathProfileContour.ObjectContour):
-                if item.Active:
-                    operationcount +=1
-                    # simobj = item.Proxy.execute(item, getsim=True)
-                    # if simobj is not None:
-                    #     print ('collision detected')
-                    #     PC.getCollisionObject(self.baseobj, simobj)
-
-            if isinstance(item.Proxy, PathScripts.PathProfileFaces.ObjectProfile):
-                if item.Active:
-                    operationcount +=1
-                    # simobj = item.Proxy.execute(item, getsim=True)
-                    # if simobj is not None:
-                    #     print ('collision detected')
-                    #     PC.getCollisionObject(self.baseobj, simobj)
-
-            if isinstance(item.Proxy, PathScripts.PathProfileEdges.ObjectProfile):
-                if item.Active:
-                    operationcount +=1
-                    # simobj = item.Proxy.execute(item, getsim=True)
-                    # if simobj is not None:
-                    #     print ('collision detected')
-                    #     PC.getCollisionObject(self.baseobj, simobj)
-
-            if isinstance(item.Proxy, PathScripts.PathPocket.ObjectPocket):
-                if item.Active:
-                    operationcount +=1
-                    # simobj = item.Proxy.execute(item, getsim=True)
-                    # if simobj is not None:
-                    #     print ('collision detected')
-                    #     PC.getCollisionObject(self.baseobj, simobj)
-
-            if isinstance(item.Proxy, PathScripts.PathDrilling.ObjectDrilling):
-                if item.Active:
-                    operationcount +=1
-
-            if isinstance(item.Proxy, PathScripts.PathMillFace.ObjectFace):
-                if item.Active:
-                    operationcount +=1
-
-            if isinstance(item.Proxy, PathScripts.PathHelix.ObjectHelix):
-                if item.Active:
-                    operationcount +=1
-
-            if isinstance(item.Proxy, PathScripts.PathSurface.ObjectSurface):
-                if item.Active:
-                    operationcount +=1
-
-        if operationcount == 0: #no active operations
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
-
-        if toolcontrolcount == 0: #need at least one active TC
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
-
-    def __checkTC(self, item):
-        if item.ToolNumber == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
-        if item.HorizFeed == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the Horizontal feed rate\n"))
-        if item.VertFeed == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the Vertical feed rate\n"))
-        if item.SpindleSpeed == 0:
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
-
-
     def Activated(self):
-        #global baseobj 
         # if everything is ok, execute
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
         self.baseobj = obj.Base
@@ -151,6 +64,100 @@ class CommandPathSanity:
             FreeCAD.Console.PrintWarning(translate("Path_Sanity", "The Job has no selected Base object.\n"))
             return
         self.__review(obj)
+
+    def __review(self, obj):
+        "checks the selected job for common errors"
+        clean = True
+
+        # if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
+        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+
+        if obj.PostProcessor == '':
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Postprocessor has not been selected.\n"))
+            clean = False
+
+        if obj.PostProcessorOutputFile == '':
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "No output file is named. You'll be prompted during postprocessing.\n"))
+            clean = False
+
+        for tc in obj.ToolController:
+            PathLog.info("Checking: {}.{}".format(obj.Label, tc.Label))
+            clean &= self.__checkTC(tc)
+
+        for op in obj.Operations.Group:
+            PathLog.info("Checking: {}.{}".format(obj.Label, op.Label))
+
+            if isinstance(op.Proxy, PathScripts.PathProfileContour.ObjectContour):
+                if op.Active:
+                    # simobj = op.Proxy.execute(op, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
+                    #     clean = False
+                    pass
+
+            if isinstance(op.Proxy, PathScripts.PathProfileFaces.ObjectProfile):
+                if op.Active:
+                    # simobj = op.Proxy.execute(op, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
+                    #     clean = False
+                    pass
+
+            if isinstance(op.Proxy, PathScripts.PathProfileEdges.ObjectProfile):
+                if op.Active:
+                    # simobj = op.Proxy.execute(op, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
+                    #     clean = False
+                    pass
+
+            if isinstance(op.Proxy, PathScripts.PathPocket.ObjectPocket):
+                if op.Active:
+                    # simobj = op.Proxy.execute(op, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
+                    #     clean = False
+                    pass
+
+            if isinstance(op.Proxy, PathScripts.PathPocketShape.ObjectPocket):
+                if op.Active:
+                    # simobj = op.Proxy.execute(op, getsim=True)
+                    # if simobj is not None:
+                    #     print ('collision detected')
+                    #     PC.getCollisionObject(self.baseobj, simobj)
+                    #     clean = False
+                    pass
+
+        if not any(op.Active for op in obj.Operations.Group): #no active operations
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "No active operations was found. Post processing will not result in any tooling."))
+            clean = False
+
+        if len(obj.ToolController) == 0: #need at least one active TC
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
+            clean = False
+
+        if clean:
+            FreeCAD.Console.PrintMessage(translate("Path_Sanity", "No issues detected, {} has passed basic sanity check.").format(obj.Label))
+
+    def __checkTC(self, tc):
+        clean = True
+        if tc.ToolNumber == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
+            clean = False
+        if tc.HorizFeed == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the Horizontal feed rate\n"))
+            clean = False
+        if tc.VertFeed == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the Vertical feed rate\n"))
+            clean = False
+        if tc.SpindleSpeed == 0:
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(tc.Label) + " has a 0 value for the spindle speed\n"))
+            clean = False
+        return clean
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
