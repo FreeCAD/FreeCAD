@@ -457,7 +457,7 @@
             </property>
            </widget>
           </item>
-           <item row="5" column="1">
+           <item row="7" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
             <property name="text">
              <string>3D Output, unchecked for 2D</string>
@@ -473,7 +473,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="7" column="0">
            <widget class="QLabel" name="l_BeamShellOutput">
             <property name="text">
              <string>Beam, shell element 3D output format </string>
