@@ -766,7 +766,10 @@ class InstallWorker(QtCore.QThread):
             depsurl += "/"
         depsurl += "master/metadata.txt"
         try:
-            mu = urllib2.urlopen(depsurl)
+            if ctx:
+                mu = urllib2.urlopen(depsurl,context=ctx)
+            else:
+                mu = urllib2.urlopen(depsurl)
         except urllib2.HTTPError:
             # no metadata.txt, we just continue without deps checking
             pass
@@ -823,7 +826,10 @@ class InstallWorker(QtCore.QThread):
         zipurl = giturl+"/archive/master.zip"
         try:
             print("Downloading "+zipurl)
-            u = urllib2.urlopen(zipurl)
+            if ctx:
+                u = urllib2.urlopen(zipurl,context=ctx)
+            else:
+                u = urllib2.urlopen(zipurl)
         except:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
         zfile = io.StringIO()
