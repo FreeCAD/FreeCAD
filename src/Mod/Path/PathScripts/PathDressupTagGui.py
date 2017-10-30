@@ -27,6 +27,7 @@ import FreeCADGui
 import Path
 import PathScripts
 #import PathScripts.PathDressupTag as PathDressupTag
+import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
@@ -56,18 +57,8 @@ class PathDressupTagTaskPanel:
         self.obj = obj
         self.obj.Proxy.obj = obj
         self.viewProvider = viewProvider
-        self.form = QtGui.QWidget()
-        self.formTags  = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
-        self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
-        self.layout = QtGui.QVBoxLayout(self.form)
-        #self.form.setGeometry(self.formTags.geometry())
-        self.form.setWindowTitle(self.formTags.windowTitle())
-        self.form.setSizePolicy(self.formTags.sizePolicy())
-        self.formTags.setParent(self.form)
-        self.formPoint.setParent(self.form)
-        self.layout.addWidget(self.formTags)
-        self.layout.addWidget(self.formPoint)
-        self.formPoint.hide()
+        self.form  = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
+        self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
             FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
@@ -77,9 +68,6 @@ class PathDressupTagTaskPanel:
         else:
             self.jvoVisible = jvoVisibility
         self.pt = FreeCAD.Vector(0, 0, 0)
-
-        closeButton = self.formPoint.buttonBox.button(QtGui.QDialogButtonBox.StandardButton.Close)
-        closeButton.setText(translate("PathDressup_HoldingTags", "Done"))
 
         self.isDirty = True
 
@@ -92,22 +80,9 @@ class PathDressupTagTaskPanel:
             self.obj.Proxy.execute(self.obj)
             self.isDirty = False
 
-    def addEscapeShortcut(self):
-        # The only way I could get to intercept the escape key, or really any key was
-        # by creating an action with a shortcut .....
-        self.escape = QtGui.QAction(self.formPoint)
-        self.escape.setText('Done')
-        self.escape.setShortcut(QtGui.QKeySequence.fromString('Esc'))
-        QtCore.QObject.connect(self.escape, QtCore.SIGNAL('triggered()'), self.pointDone)
-        self.formPoint.addAction(self.escape)
-
-    def removeEscapeShortcut(self):
-        if self.escape:
-            self.formPoint.removeAction(self.escape)
-            self.escape = None
-
     def modifyStandardButtons(self, buttonBox):
         self.buttonBox = buttonBox
+        self.getPoint.buttonBox = buttonBox
 
     def abort(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -136,9 +111,9 @@ class PathDressupTagTaskPanel:
 
     def getTags(self, includeCurrent):
         tags = []
-        index = self.formTags.lwTags.currentRow()
-        for i in range(0, self.formTags.lwTags.count()):
-            item = self.formTags.lwTags.item(i)
+        index = self.form.lwTags.currentRow()
+        for i in range(0, self.form.lwTags.count()):
+            item = self.form.lwTags.item(i)
             enabled = item.checkState() == QtCore.Qt.CheckState.Checked
             x = item.data(self.DataX)
             y = item.data(self.DataY)
@@ -148,10 +123,10 @@ class PathDressupTagTaskPanel:
         return tags
 
     def getFields(self):
-        width  = FreeCAD.Units.Quantity(self.formTags.ifWidth.text()).Value
-        height = FreeCAD.Units.Quantity(self.formTags.ifHeight.text()).Value
-        angle  = self.formTags.dsbAngle.value()
-        radius = FreeCAD.Units.Quantity(self.formTags.ifRadius.text()).Value
+        width  = FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value
+        height = FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value
+        angle  = self.form.dsbAngle.value()
+        radius = FreeCAD.Units.Quantity(self.form.ifRadius.text()).Value
 
         tags = self.getTags(True)
         positions = []
@@ -183,8 +158,8 @@ class PathDressupTagTaskPanel:
 
     def updateTagsView(self):
         PathLog.track()
-        self.formTags.lwTags.blockSignals(True)
-        self.formTags.lwTags.clear()
+        self.form.lwTags.blockSignals(True)
+        self.form.lwTags.clear()
         for i, pos in enumerate(self.Positions):
             lbl = "%d: (%.2f, %.2f)" % (i, pos.x, pos.y)
             item = QtGui.QListWidgetItem(lbl)
@@ -200,41 +175,36 @@ class PathDressupTagTaskPanel:
             flags |= QtCore.Qt.ItemFlag.ItemIsEnabled
             flags |= QtCore.Qt.ItemFlag.ItemIsUserCheckable
             item.setFlags(flags)
-            self.formTags.lwTags.addItem(item)
-        self.formTags.lwTags.blockSignals(False)
+            self.form.lwTags.addItem(item)
+        self.form.lwTags.blockSignals(False)
         self.whenTagSelectionChanged()
         self.viewProvider.updatePositions(self.Positions, self.Disabled)
 
     def generateNewTags(self):
-        count = self.formTags.sbCount.value()
+        count = self.form.sbCount.value()
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
 
         self.updateTagsView()
-        #if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
-        #    # this causes a big of an echo and a double click on the spin buttons, don't know why though
-        #    FreeCAD.ActiveDocument.recompute()
-
 
     def updateModel(self):
         self.getFields()
         self.updateTagsView()
         self.isDirty = True
-        #FreeCAD.ActiveDocument.recompute()
 
     def whenCountChanged(self):
-        count = self.formTags.sbCount.value()
-        self.formTags.pbGenerate.setEnabled(count)
+        count = self.form.sbCount.value()
+        self.form.pbGenerate.setEnabled(count)
 
     def selectTagWithId(self, index):
         PathLog.track(index)
-        self.formTags.lwTags.setCurrentRow(index)
+        self.form.lwTags.setCurrentRow(index)
 
     def whenTagSelectionChanged(self):
-        index = self.formTags.lwTags.currentRow()
-        count = self.formTags.lwTags.count()
-        self.formTags.pbDelete.setEnabled(index != -1 and count > 2)
-        self.formTags.pbEdit.setEnabled(index != -1)
+        index = self.form.lwTags.currentRow()
+        count = self.form.lwTags.count()
+        self.form.pbDelete.setEnabled(index != -1 and count > 2)
+        self.form.pbEdit.setEnabled(index != -1)
         self.viewProvider.selectTag(index)
 
     def whenTagsViewChanged(self):
@@ -259,7 +229,7 @@ class PathDressupTagTaskPanel:
 
     def addNewTag(self):
         self.tags = self.getTags(True)
-        self.getPoint(self.addNewTagAt)
+        self.getPoint.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
         if point and obj and (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
@@ -278,10 +248,10 @@ class PathDressupTagTaskPanel:
             x = item.data(self.DataX)
             y = item.data(self.DataY)
             z = item.data(self.DataZ)
-            self.getPoint(self.editTagAt, FreeCAD.Vector(x, y, z))
+            self.getPoint.getPoint(self.editTagAt, FreeCAD.Vector(x, y, z))
 
     def editSelectedTag(self):
-        self.editTag(self.formTags.lwTags.currentItem())
+        self.editTag(self.form.lwTags.currentItem())
 
     def removeGlobalCallbacks(self):
         if hasattr(self, 'view') and self.view:
@@ -293,56 +263,6 @@ class PathDressupTagTaskPanel:
                 self.pointCbMove = None
             self.view = None
 
-    def getPoint(self, whenDone, start=None):
-
-        def displayPoint(p):
-            self.formPoint.ifValueX.setText(FreeCAD.Units.Quantity(p.x, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueY.setText(FreeCAD.Units.Quantity(p.y, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueZ.setText(FreeCAD.Units.Quantity(p.z, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueX.setFocus()
-            self.formPoint.ifValueX.selectAll()
-
-        def mouseMove(cb):
-            event = cb.getEvent()
-            pos = event.getPosition()
-            cntrl = event.wasCtrlDown()
-            shift = event.wasShiftDown()
-            self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
-            plane = FreeCAD.DraftWorkingPlane
-            p = plane.getLocalCoords(self.pt)
-            v = pos.getValue()
-            PathLog.info("mouseMove(%s, %s, %s)" % (self.view.getPoint(v[0], v[1]), self.pt, p))
-            displayPoint(p)
-
-        def click(cb):
-            event = cb.getEvent()
-            if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
-                accept()
-
-        def accept():
-            if start:
-                self.pointAccept()
-            else:
-                self.pointAcceptAndContinue()
-
-        def cancel():
-            self.pointReject()
-
-        self.pointWhenDone = whenDone
-        self.formTags.hide()
-        self.formPoint.show()
-        self.addEscapeShortcut()
-        if start:
-            displayPoint(start)
-        else:
-            displayPoint(FreeCAD.Vector(0,0,0))
-
-        self.view = Draft.get3DView()
-        self.pointCbClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
-        self.pointCbMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
-
-        self.buttonBox.setEnabled(False)
-
     def setupSpinBox(self, widget, val, decimals = 2):
         if decimals:
             widget.setDecimals(decimals)
@@ -350,11 +270,11 @@ class PathDressupTagTaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.formTags.sbCount.setValue(len(self.Positions))
-        self.formTags.ifHeight.setText(FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString)
-        self.formTags.ifWidth.setText(FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString)
-        self.formTags.dsbAngle.setValue(self.obj.Angle)
-        self.formTags.ifRadius.setText(FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString)
+        self.form.sbCount.setValue(len(self.Positions))
+        self.form.ifHeight.setText(FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString)
+        self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString)
+        self.form.dsbAngle.setValue(self.obj.Angle)
+        self.form.ifRadius.setText(FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString)
 
     def setupUi(self):
         self.Positions = self.obj.Positions
@@ -364,62 +284,22 @@ class PathDressupTagTaskPanel:
         self.whenCountChanged()
 
         if self.obj.Proxy.supportsTagGeneration(self.obj):
-            self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
-            self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
+            self.form.sbCount.valueChanged.connect(self.whenCountChanged)
+            self.form.pbGenerate.clicked.connect(self.generateNewTags)
         else:
-            self.formTags.cbTagGeneration.setEnabled(False)
+            self.form.cbTagGeneration.setEnabled(False)
 
-        self.formTags.lwTags.itemChanged.connect(self.whenTagsViewChanged)
-        self.formTags.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
-        self.formTags.lwTags.itemActivated.connect(self.editTag)
+        self.form.lwTags.itemChanged.connect(self.whenTagsViewChanged)
+        self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
+        self.form.lwTags.itemActivated.connect(self.editTag)
 
-        self.formTags.pbDelete.clicked.connect(self.deleteSelectedTag)
-        self.formTags.pbEdit.clicked.connect(self.editSelectedTag)
-        self.formTags.pbAdd.clicked.connect(self.addNewTag)
-
-        self.formPoint.buttonBox.accepted.connect(self.pointAccept)
-        self.formPoint.buttonBox.rejected.connect(self.pointReject)
-
-        self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
+        self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
+        self.form.pbEdit.clicked.connect(self.editSelectedTag)
+        self.form.pbAdd.clicked.connect(self.addNewTag)
 
         self.viewProvider.turnMarkerDisplayOn(True)
 
-    def pointFinish(self, ok, cleanup = True):
-        obj = FreeCADGui.Snapper.lastSnappedObject
 
-        if cleanup:
-            self.removeGlobalCallbacks();
-            FreeCADGui.Snapper.off()
-            self.buttonBox.setEnabled(True)
-            self.removeEscapeShortcut()
-            self.formPoint.hide()
-            self.formTags.show()
-            self.formTags.setFocus()
-
-        if ok:
-            self.pointWhenDone(self.pt, obj)
-        else:
-            self.pointWhenDone(None, None)
-
-    def pointDone(self):
-        self.pointFinish(False)
-
-    def pointReject(self):
-        self.pointFinish(False)
-
-    def pointAccept(self):
-        self.pointFinish(True)
-
-    def pointAcceptAndContinue(self):
-        self.pointFinish(True, False)
-
-    def updatePoint(self):
-        x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
-        y = FreeCAD.Units.Quantity(self.formPoint.ifValueY.text()).Value
-        z = FreeCAD.Units.Quantity(self.formPoint.ifValueZ.text()).Value
-        self.pt = FreeCAD.Vector(x, y, z)
 
 class HoldingTagMarker:
     def __init__(self, point, colors):
