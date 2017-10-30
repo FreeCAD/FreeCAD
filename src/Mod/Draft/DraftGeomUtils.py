@@ -570,6 +570,9 @@ def orientEdge(edge, normal=None, make_arc=False):
     elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
         return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
                                     edge.LastParameter,edge.Curve.Axis.z>0)
+    elif make_arc and isinstance(edge.Curve,Part.Ellipse) and not edge.Closed:
+        return Part.ArcOfEllipse(edge.Curve, edge.FirstParameter,
+                                    edge.LastParameter,edge.Curve.Axis.z>0)
     return edge.Curve
 
 def mirror (point, edge):
