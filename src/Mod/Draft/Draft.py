@@ -2676,6 +2676,12 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
         except AttributeError:
             pass
 
+    def convertBezier(edge):
+        if DraftGeomUtils.geomType(edge) == "BezierCurve":
+            return(edge.Curve.toBSpline(edge.FirstParameter,edge.LastParameter).toShape())
+        else:
+            return(edge)
+
     rotation = None
     for obj in objectslist:
         ok = False
@@ -2779,17 +2785,13 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                     FreeCAD.Console.PrintWarning(translate("draft","Unable to guess the normal direction of this object"))
                     rotation = FreeCAD.Rotation()
                     norm = obj.Placement.Rotation.Axis
-            for e in shape.Edges:
-                if DraftGeomUtils.geomType(e) in ["BSplineCurve","BezierCurve"]:
-                    if DraftGeomUtils.geomType(e) == "BezierCurve":
-                        bsp = e.Curve.toBSpline(e.Curve.FirstParameter,e.Curve.LastParameter)
-                    else:
-                        bsp = e.Curve
-                    nobj.addGeometry(bsp)
-                    nobj.exposeInternalGeometry(nobj.GeometryCount-1)
-                    ok = True
-                    #FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
-                    #return None
+            if not shape.Wires:
+                for e in shape.Edges:
+                    # unconnected edges
+                    newedge = convertBezier(e)
+                    nobj.addGeometry(DraftGeomUtils.orientEdge(newedge,norm,make_arc=True))
+                    addRadiusConstraint(newedge)
+
             # if not addTo:
                 # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(shape).Rotation
 
@@ -2798,9 +2800,10 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                     last_count = nobj.GeometryCount
                     edges = wire.OrderedEdges
                     for edge in edges:
+                        newedge = convertBezier(edge)
                         nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                            edge,norm,make_arc=True))
-                        addRadiusConstraint(edge)
+                                            newedge,norm,make_arc=True))
+                        addRadiusConstraint(newedge)
                     for i,g in enumerate(nobj.Geometry[last_count:]):
                         if edges[i].Closed:
                             continue
@@ -2840,8 +2843,9 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
             else:
                 for wire in shape.Wires:
                     for edge in wire.OrderedEdges:
+                        newedge = convertBezier(edge)
                         nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                                edge,norm,make_arc=True))
+                                                newedge,norm,make_arc=True))
             ok = True
         formatObject(nobj,obj)
         if ok and delete and obj.isDerivedFrom("Part::Feature"):
