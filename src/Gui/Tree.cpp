@@ -2751,7 +2751,7 @@ void DocumentObjectItem::displayStatusInfo()
     App::DocumentObject* Obj = object()->getObject();
 
     QString info = QString::fromLatin1(Obj->getStatusString());
-    if ( Obj->mustExecute() == 1 )
+    if ( Obj->mustExecute() == 1 && !Obj->isError())
         info += QString::fromLatin1(" (but must be executed)");
     QString status = TreeWidget::tr("%1, Internal name: %2")
             .arg(info)
