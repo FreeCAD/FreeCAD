@@ -30,10 +30,14 @@
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
+#include <Base/BoundBox.h>
 #include <App/Material.h>
 #include <App/DocumentObject.h>
 #include "Application.h"
@@ -41,6 +45,8 @@
 #include "Selection.h"
 #include "MainWindow.h"
 #include "MDIView.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
@@ -330,3 +336,26 @@ bool ViewProviderDocumentObject::showInTree() const {
     return ShowInTree.getValue();
 }
 
+Base::BoundBox3d ViewProviderDocumentObject::getBoundingBox() const {
+    auto doc = getDocument();
+    if(!doc) 
+        throw Base::RuntimeError("no document");
+    Gui::MDIView* view = doc->getViewOfViewProvider(
+            const_cast<ViewProviderDocumentObject*>(this));
+    if(!view)
+        throw Base::RuntimeError("no view");
+    
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+
+    auto mode = pcModeSwitch->whichChild.getValue();
+    pcModeSwitch->whichChild = getDefaultMode();
+    bboxAction.apply(pcRoot);
+    pcModeSwitch->whichChild = mode;
+
+    auto bbox = bboxAction.getBoundingBox();
+    float minX,minY,minZ,maxX,maxY,maxZ;
+    bbox.getMax().getValue(maxX,maxY,maxZ);
+    bbox.getMin().getValue(minX,minY,minZ);
+    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
+}

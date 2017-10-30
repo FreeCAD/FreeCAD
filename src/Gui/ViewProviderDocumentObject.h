@@ -26,6 +26,7 @@
 
 #include <Inventor/SoType.h>
 
+#include <Base/BoundBox.h>
 #include "ViewProvider.h"
 #include <App/DocumentObject.h>
 
@@ -104,6 +105,13 @@ public:
     virtual void startRestoring();
     virtual void finishRestoring();
     //@}
+
+    /** Return the bound box of this view object
+     *
+     * This method shall work regardless whether the current view object is
+     * visible or not.
+     */
+    Base::BoundBox3d getBoundingBox() const;
 
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
