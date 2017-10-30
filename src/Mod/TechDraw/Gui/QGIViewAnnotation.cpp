@@ -162,6 +162,15 @@ void QGIViewAnnotation::drawAnnotation()
     m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));
     QString qs = QString::fromUtf8(ss.str().c_str());
     m_textItem->setHtml(qs);
-    m_textItem->setPos(0.,0.);
+    m_textItem->centerAt(0.,0.);
 }
+
+void QGIViewAnnotation::rotateView(void)
+{
+    QRectF r = m_textItem->boundingRect();
+    m_textItem->setTransformOriginPoint(r.center());
+    double rot = getViewObject()->Rotation.getValue();
+    m_textItem->setRotation(-rot);
+}
+
 

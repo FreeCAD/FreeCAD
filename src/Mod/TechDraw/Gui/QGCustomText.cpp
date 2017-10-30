@@ -59,12 +59,13 @@ QGCustomText::QGCustomText()
 
 void QGCustomText::centerAt(QPointF centerPos)
 {
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = centerPos.x() - width/2.;
-    double newY = centerPos.y() - height/2.;
-    setPos(newX,newY);
+      centerAt(centerPos.x(),centerPos.y());
+//    QRectF box = boundingRect();
+//    double width = box.width();
+//    double height = box.height();
+//    double newX = centerPos.x() - width/2.;
+//    double newY = centerPos.y() - height/2.;
+//    setPos(newX,newY);
 }
 
 void QGCustomText::centerAt(double cX, double cY)
