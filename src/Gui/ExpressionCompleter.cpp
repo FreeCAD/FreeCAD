@@ -337,7 +337,7 @@ void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
     if (!block && !partialCompletion) {
         Q_EMIT textChanged2(text.left(cursorPosition()), -1);
-    }else if (!block && partialCompletion){
+    }else if (!block && partialCompletion && cursorPosition() != 0){
         int lastChar = text.left(cursorPosition()).lastIndexOf(QRegExp(QString::fromLatin1("[a-zA-Z.]")));
         if(text.length() > 0 && lastChar == cursorPosition()-1)
         {
