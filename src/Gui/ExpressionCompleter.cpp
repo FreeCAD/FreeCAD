@@ -342,7 +342,9 @@ void ExpressionLineEdit::slotTextChanged(const QString & text)
         if(text.length() > 0 && lastChar == cursorPosition()-1)
         {
             QString toComplete = text.left(cursorPosition()).split(filterRegex, filterSplitBehavior).last();
-            int beginOfVar = text.length()-toComplete.length();
+            int beginOfVar = text.left(cursorPosition()).lastIndexOf(QRegExp(QString::fromLatin1("[+-*=!<>^?: ()/.]")));//text.length()-toComplete.length();
+            if(beginOfVar < 0)
+                beginOfVar = 0;
             Q_EMIT textChanged2(toComplete,beginOfVar);
         } else {
 
@@ -355,6 +357,9 @@ void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix)
     int start = completer->getPrefixStart();
     QString before(text().left(start));
     QString after(text().mid(cursorPosition()));
+
+    if(after.startsWith(QString::fromLatin1(".")))
+        after = after.right(1);
 
     block = true;
     setText(before + completionPrefix + after);
