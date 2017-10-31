@@ -286,7 +286,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent)
 
     //enable partial completion and set the required regex by default
     enablePartialCompletion();
-    setPartFilterSettings(QRegExp(tr("[+-*=!<>^?: ()/]")), QString::SkipEmptyParts);
+    setPartFilterSettings(QRegExp(QString::fromLatin1("[+-*=!<>^?: ()/]")), QString::SkipEmptyParts);
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -338,7 +338,7 @@ void ExpressionLineEdit::slotTextChanged(const QString & text)
     if (!block && !partialCompletion) {
         Q_EMIT textChanged2(text.left(cursorPosition()), -1);
     }else if (!block && partialCompletion){
-        int lastChar = text.left(cursorPosition()).lastIndexOf(QRegExp(tr("[a-zA-Z.]")));
+        int lastChar = text.left(cursorPosition()).lastIndexOf(QRegExp(QString::fromLatin1("[a-zA-Z.]")));
         if(text.length() > 0 && lastChar == cursorPosition()-1)
         {
             QString toComplete = text.left(cursorPosition()).split(filterRegex, filterSplitBehavior).last();
