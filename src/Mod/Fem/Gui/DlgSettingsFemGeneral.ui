@@ -67,6 +67,9 @@
               <property name="prefEntry" stdset="0">
                <cstring>WorkingDir</cstring>
               </property>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
+              </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
               </property>
