@@ -11,8 +11,10 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
+link_directories(${OCC_LIBRARY_DIR})
+
 set(PathSimulator_LIBS
-	Path
+    Path
     Part
     Mesh
     FreeCADApp
