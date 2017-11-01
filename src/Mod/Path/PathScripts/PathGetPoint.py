@@ -104,8 +104,11 @@ class TaskPanel:
             event = cb.getEvent()
             pos = event.getPosition()
             if self.onPath:
+                # There should not be a dependency from Draft->Path, so handle Path "snapping"
+                # directly, at least for now. Simple enough because there isn't really any
+                # "snapping" going on other than what getObjectInfo() provides.
                 screenpos = tuple(pos.getValue())
-                snapInfo = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
+                snapInfo = Draft.get3DView().getObjectInfo(screenpos)
                 if snapInfo:
                     obj = FreeCAD.ActiveDocument.getObject(snapInfo['Object'])
                     if hasattr(obj, 'Path'):
@@ -114,6 +117,7 @@ class TaskPanel:
                     else:
                         self.obj = None
             else:
+                # Snapper handles regular objects just fine
                 cntrl = event.wasCtrlDown()
                 shift = event.wasShiftDown()
                 self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
