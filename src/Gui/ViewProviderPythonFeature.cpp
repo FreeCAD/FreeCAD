@@ -66,21 +66,28 @@
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
 
+FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true);
+
 
 using namespace Gui;
 
 namespace Gui {
 
+struct ProxyInfo {
+    Py::Object viewObject;
+    Py::Object proxy;
+};
+
 class PropertyEvent : public QEvent
 {
 public:
-    PropertyEvent(const Gui::ViewProvider* vp, App::Property* p)
-        : QEvent(QEvent::Type(QEvent::User)), view(vp), prop(p)
+    PropertyEvent(const Gui::ViewProviderDocumentObject* vp, const ProxyInfo &info)
+        : QEvent(QEvent::Type(QEvent::User)), view(vp), info(info)
     {
     }
 
-    const Gui::ViewProvider* view;
-    App::Property* prop;
+    const Gui::ViewProviderDocumentObject* view;
+    ProxyInfo info;
 };
 
 class ViewProviderPythonFeatureObserver : public QObject
@@ -102,12 +109,56 @@ private:
         // Make sure that the object hasn't been deleted in the meantime (#0001522)
         if (it != viewMap.end()) {
             viewMap.erase(it);
-            App::Property* prop = pe->view->getPropertyByName("Proxy");
-            if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
-                prop->Paste(*pe->prop);
+
+            // We check below the python object of the view provider to make
+            // sure that the view provider is actually the owner of the proxy
+            // object we cached before. This step is necessary to prevent a
+            // very obscure bug described here.
+            //
+            // The proxy caching is only effective when an object is deleted in
+            // an event of undo, and we restore the proxy in the event of redo.
+            // The object is not really freed while inside undo/redo stack. It
+            // gets really deleted from memory when either the user clears the
+            // undo/redo stack manually, or the redo stack gets automatically
+            // cleared when new transaction is created. FC has no explicit
+            // signaling of when the object is really deleted from the memory.
+            // This ViewProviderPythonFeatureObserver uses a heuristic to
+            // decide when to flush the cache in slotAppendObject(), that is,
+            // it sees any cache miss event as the signaling of an redo clear.
+            // The bug happens in the very rare event, when the redo stack is
+            // cleared when new transaction is added, and the freed object's
+            // memory gets immediately reused by c++ allocator for the new
+            // object created in the new transaction.  This creates a cache
+            // false hit event, where the old deleted view provider's proxy
+            // gets mistakenly assigned to the newly created object, which
+            // happens to have the exact same memory location. This situation
+            // is very rare and really depends on the system's allocator
+            // implementation.  However, tests show that it happens regularly
+            // in Linux debug build. To prevent this, we use the trick of
+            // checking the python object pointer of the view provider to make
+            // sure the view provider are in fact the same. We hold the python
+            // object reference count, so it never gets freed and reused like
+            // its owner view provider.
+            //
+            // Side note: the original implementation uses property copy and
+            // paste to store the proxy object, which is fine, but has the
+            // trouble of having to manually freed the copied property. And the
+            // original implementation didn't do that in every case, causing
+            // memory leak. We now simply stores the python object with
+            // reference counting, so no need to worry about deleting
+            
+            Py::Object viewObject(const_cast<ViewProviderDocumentObject*>(pe->view)->getPyObject(),true);
+            if(viewObject.ptr() != pe->info.viewObject.ptr()) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    FC_WARN("invalid proxy cache " << viewObject.ptr() << ", " <<
+                            pe->info.viewObject.ptr() << ", " << pe->info.proxy.ptr());
+            }else{
+                App::Property* prop = pe->view->getPropertyByName("Proxy");
+                if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+                    prop->setPyObject(pe->info.proxy.ptr());
+                }
             }
         }
-        delete pe->prop;
     }
     static ViewProviderPythonFeatureObserver* _singleton;
 
@@ -115,7 +166,7 @@ private:
     ~ViewProviderPythonFeatureObserver();
     typedef std::map<
                 const App::DocumentObject*,
-                App::Property*
+                ProxyInfo
             > ObjectProxy;
 
     std::map<const App::Document*, ObjectProxy> proxyMap;
@@ -144,6 +195,7 @@ void ViewProviderPythonFeatureObserver::slotDeleteDocument(const Gui::Document& 
     App::Document* doc = d.getDocument();
     std::map<const App::Document*, ObjectProxy>::iterator it = proxyMap.find(doc);
     if (it != proxyMap.end()) {
+        Base::PyGILStateLocker lock;
         proxyMap.erase(it);
     }
 }
@@ -198,7 +250,10 @@ void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider
     try {
         App::Property* prop = vp.getPropertyByName("Proxy");
         if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
-            proxyMap[doc][docobj] = prop->Copy();
+            auto &info = proxyMap[doc][docobj];
+            info.viewObject = Py::asObject(const_cast<ViewProviderDocumentObject&>(vp).getPyObject());
+            info.proxy = Py::asObject(prop->getPyObject());
+            FC_LOG("proxy cache " << info.viewObject.ptr() << ", " << info.proxy.ptr());
         }
     }
     catch (Py::Exception& e) {
