@@ -1473,20 +1473,9 @@ void TreeWidget::scrollItemToTop(Gui::Document* doc)
     std::map<const Gui::Document*,DocumentItem*>::iterator it;
     it = DocumentMap.find(doc);
     if (it != DocumentMap.end()) {
-        if(!syncSelectionAction->isChecked()) {
-            bool lock = this->blockConnection(true);
-            it->second->selectItems(true);
-            this->blockConnection(lock);
-            return;
-        }
-        DocumentItem* root = it->second;
-        QTreeWidgetItemIterator it(root, QTreeWidgetItemIterator::Selected);
-        for (; *it; ++it) {
-            if ((*it)->type() == TreeWidget::ObjectType) {
-                this->scrollToItem(*it, QAbstractItemView::PositionAtTop);
-                break;
-            }
-        }
+        bool lock = this->blockConnection(true);
+        it->second->selectItems(true);
+        this->blockConnection(lock);
     }
 }
 
@@ -2383,6 +2372,7 @@ void DocumentItem::selectItems(bool sync) {
     }
 
     DocumentObjectItem *first = 0;
+    DocumentObjectItem *last = 0;
 
     FOREACH_ITEM_ALL(item)
         if(item->selected == 1) {
@@ -2395,11 +2385,16 @@ void DocumentItem::selectItems(bool sync) {
                 first = item;
             item->selected = 1;
             item->setSelected(true);
+            last = item;
         }
     END_FOREACH_ITEM;
 
-    if(sync && first) 
-        treeWidget()->scrollToItem(first);
+    if(sync) {
+        if(!first)
+            first = last;
+        if(first)
+            treeWidget()->scrollToItem(first);
+    }
 }
 
 void DocumentItem::selectLinkedItem(DocumentObjectItem *item, bool recurse) { 
