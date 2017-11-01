@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <QApplication>
+# include <QThread>
 # include <QBuffer>
 # include <QByteArray>
 # include <QClipboard>
@@ -137,6 +138,7 @@ struct MainWindowP
     QLabel* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
+    QTimer* statusTimer;
     QTimer* activityTimer;
     QTimer* visibleTimer;
     QMdiArea* mdiArea;
@@ -147,6 +149,7 @@ struct MainWindowP
     bool whatsthis;
     QString whatstext;
     Assistant* assistant;
+    int currentStatusType = 100;
 };
 
 class MDITabbar : public QTabBar
@@ -274,6 +277,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->mdiArea->setBackground(QBrush(QColor(160,160,160)));
     setCentralWidget(d->mdiArea);
 
+    statusBar()->setObjectName(QString::fromLatin1("statusBar"));
+    connect(statusBar(), SIGNAL(messageChanged(const QString &)), this, SLOT(statusMessageChanged()));
+
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
@@ -289,6 +295,11 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->actionTimer = new QTimer( this );
     d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
     connect(d->actionTimer, SIGNAL(timeout()), d->actionLabel, SLOT(clear()));
+
+    // clear status type
+    d->statusTimer = new QTimer( this );
+    d->statusTimer->setObjectName(QString::fromLatin1("statusTimer"));
+    connect(d->statusTimer, SIGNAL(timeout()), this, SLOT(clearStatus()));
 
     // update gui timer
     d->activityTimer = new QTimer(this);
@@ -901,19 +912,6 @@ QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
         mdis << (*it)->widget();
     }
     return mdis;
-}
-
-// set text to the pane
-void MainWindow::setPaneText(int i, QString text)
-{
-    if (i==1) {
-        d->actionLabel->setText(text);
-        d->actionTimer->setSingleShot(true);
-        d->actionTimer->start(5000);
-    }
-    else if (i==2) {
-        d->sizeLabel->setText(text);
-    }
 }
 
 MDIView* MainWindow::activeWindow(void) const
@@ -1534,20 +1532,21 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::showMessage (const QString& message, int timeout)
-{
-    QFontMetrics fm(statusBar()->font());
-    QString msg = fm.elidedText(message, Qt::ElideMiddle, this->d->actionLabel->width());
-#if QT_VERSION <= 0x040600
-    this->statusBar()->showMessage(msg, timeout);
-#else
-    //#0000665: There is a crash under Ubuntu 12.04 (Qt 4.8.1)
-    QMetaObject::invokeMethod(statusBar(), "showMessage",
-        Qt::QueuedConnection,
-        QGenericReturnArgument(),
-        Q_ARG(QString,msg),
-        Q_ARG(int, timeout));
-#endif
+void MainWindow::clearStatus() {
+    d->currentStatusType = 100;
+    statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+}
+
+void MainWindow::statusMessageChanged() {
+    if(d->currentStatusType<0)
+        d->currentStatusType = -d->currentStatusType;
+    else {
+        // here probably means the status bar message is changed by QMainWindow
+        // internals, e.g. for displaying tooltip and stuff. Set reset what
+        // we've changed.
+        d->statusTimer->stop();
+        clearStatus();
+    }
 }
 
 // -------------------------------------------------------------
@@ -1565,9 +1564,9 @@ namespace Gui {
 class CustomMessageEvent : public QEvent
 {
 public:
-    enum Type {Msg, Wrn, Err, Log};
-    CustomMessageEvent(Type t, const QString& s)
-      : QEvent(QEvent::User), _type(t), msg(s)
+    enum Type {None, Err, Wrn, Pane, Msg, Log, Tmp};
+    CustomMessageEvent(Type t, const QString& s, int timeout=0)
+      : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
     ~CustomMessageEvent()
     { }
@@ -1575,10 +1574,74 @@ public:
     { return _type; }
     const QString& message() const
     { return msg; }
+    int timeout() const
+    { return _timeout; }
 private:
     Type _type;
     QString msg;
+    int _timeout;
 };
+}
+
+void MainWindow::showMessage(const QString& message, int timeout) {
+    if(QApplication::instance()->thread() != QThread::currentThread()) {
+        QApplication::postEvent(this, new CustomMessageEvent(CustomMessageEvent::Tmp,message,timeout));
+        return;
+    }
+    d->actionLabel->setText(message);
+    if(timeout) {
+        d->actionTimer->setSingleShot(true);
+        d->actionTimer->start(timeout);
+    }else
+        d->actionTimer->stop();
+}
+
+void MainWindow::showStatus(int type, const QString& message)
+{
+    if(QApplication::instance()->thread() != QThread::currentThread()) {
+        QApplication::postEvent(this, 
+                new CustomMessageEvent((CustomMessageEvent::Type)type,message));
+        return;
+    }
+
+    if(d->currentStatusType < type)
+        return;
+
+    d->statusTimer->setSingleShot(true);
+    // TODO: hardcode?
+    int timeout = 5000;
+    d->statusTimer->start(timeout);
+
+    QFontMetrics fm(statusBar()->font());
+    QString msg = fm.elidedText(message, Qt::ElideMiddle, this->d->actionLabel->width());
+    switch(type) {
+    case CustomMessageEvent::Err:
+        statusBar()->setStyleSheet(d->status->err);
+        break;
+    case CustomMessageEvent::Wrn:
+        statusBar()->setStyleSheet(d->status->wrn);
+        break;
+    case CustomMessageEvent::Pane:
+        statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+        break;
+    default:
+        statusBar()->setStyleSheet(d->status->msg);
+        break;
+    }
+    d->currentStatusType = -type;
+    statusBar()->showMessage(msg, timeout);
+}
+
+
+// set text to the pane
+void MainWindow::setPaneText(int i, QString text)
+{
+    if (i==1) {
+        showStatus(CustomMessageEvent::Pane, text);
+    }
+    else if (i==2) {
+        d->sizeLabel->setText(text);
+    }
 }
 
 void MainWindow::customEvent(QEvent* e)
@@ -1586,7 +1649,8 @@ void MainWindow::customEvent(QEvent* e)
     if (e->type() == QEvent::User) {
         Gui::CustomMessageEvent* ce = static_cast<Gui::CustomMessageEvent*>(e);
         QString msg = ce->message();
-        if (ce->type() == CustomMessageEvent::Log) {
+        switch(ce->type()) {
+        case CustomMessageEvent::Log: {
             if (msg.startsWith(QLatin1String("#Inventor V2.1 ascii "))) {
                 Gui::Document *d = Application::Instance->activeDocument();
                 if (d) {
@@ -1600,11 +1664,12 @@ void MainWindow::customEvent(QEvent* e)
                     }
                 }
             }
-        }
-        else {
-            d->actionLabel->setText(msg);
-            d->actionTimer->setSingleShot(true);
-            d->actionTimer->start(5000);
+            break;
+        } case CustomMessageEvent::Tmp: {
+            showMessage(msg, ce->timeout());
+            break;
+        } default:
+            showStatus(ce->type(),msg);
         }
     }
     else if (e->type() == ActionStyleEvent::EventType) {
@@ -1627,9 +1692,9 @@ void MainWindow::customEvent(QEvent* e)
 StatusBarObserver::StatusBarObserver()
   : WindowParameter("OutputWindow")
 {
-    msg = QString::fromLatin1("#000000"); // black
-    wrn = QString::fromLatin1("#ffaa00"); // orange
-    err = QString::fromLatin1("#ff0000"); // red
+    msg = QString::fromLatin1("#statusBar{color: #000000}"); // black
+    wrn = QString::fromLatin1("#statusBar{color: #ffaa00}"); // orange
+    err = QString::fromLatin1("#statusBar{color: #ff0000}"); // red
     Base::Console().AttachObserver(this);
     getWindowParameter()->Attach(this);
     getWindowParameter()->NotifyAll();
@@ -1644,17 +1709,18 @@ StatusBarObserver::~StatusBarObserver()
 void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
     ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+    auto format = QString::fromLatin1("#statusBar{color: %1}");
     if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->msg = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name();
+        this->msg = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->wrn = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name();
+        this->wrn = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->err = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name();
+        this->err = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
     }
 }
 
@@ -1664,8 +1730,7 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
 void StatusBarObserver::Message(const char * m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->msg).arg(QString::fromUtf8(m));
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Msg, txt);
+    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Msg, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 
@@ -1675,8 +1740,7 @@ void StatusBarObserver::Message(const char * m)
 void StatusBarObserver::Warning(const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->wrn).arg(QString::fromUtf8(m));
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Wrn, txt);
+    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Wrn, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 
@@ -1686,8 +1750,7 @@ void StatusBarObserver::Warning(const char *m)
 void StatusBarObserver::Error  (const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->err).arg(QString::fromUtf8(m));
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Err, txt);
+    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Err, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 

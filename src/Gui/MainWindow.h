@@ -196,6 +196,9 @@ public Q_SLOTS:
     void whatsThis();
     void switchToTopLevelMode();
     void switchToDockedMode();
+
+    void statusMessageChanged();
+
     void showMessage (const QString & message, int timeout = 0);
 
 protected:
@@ -222,6 +225,8 @@ protected:
      * relevant user visible text.
      */
     void changeEvent(QEvent *e);
+
+    void showStatus(int type, const QString & message);
 
 private Q_SLOTS:
     /**
@@ -264,6 +269,10 @@ private Q_SLOTS:
      * \internal
      */
     void processMessages(const QList<QByteArray> &);
+    /**
+     * \internal
+     */
+    void clearStatus();
 
 Q_SIGNALS:
     void timeEvent();
@@ -312,6 +321,7 @@ public:
     /// name of the observer
     const char *Name(void){return "StatusBar";}
 
+    friend class MainWindow;
 private:
     QString msg, wrn, err;
 };

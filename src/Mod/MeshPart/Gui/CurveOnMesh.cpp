@@ -562,7 +562,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
                                 self->d_ptr->createGrid();
                             }
                             else if (self->d_ptr->mesh != mesh) {
-                                Gui::getMainWindow()->statusBar()->showMessage(
+                                Gui::getMainWindow()->showMessage(
                                     tr("Wrong mesh picked"));
                                 return;
                             }
@@ -602,7 +602,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
                 }
             }
             else {
-                Gui::getMainWindow()->statusBar()->showMessage(
+                Gui::getMainWindow()->showMessage(
                     tr("No point was picked"));
             }
         }

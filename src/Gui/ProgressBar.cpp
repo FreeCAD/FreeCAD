@@ -250,7 +250,7 @@ void Sequencer::showRemainingTime()
             QString status = QString::fromLatin1("%1\t[%2]").arg(txt).arg(remain);
 
             if (thr != currentThread) {
-                QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+                QMetaObject::invokeMethod(getMainWindow(), "showMessage",
                     Qt::/*Blocking*/QueuedConnection,
                     QGenericReturnArgument(),
                     Q_ARG(QString,status));
@@ -269,7 +269,7 @@ void Sequencer::resetData()
     if (thr != currentThread) {
         QMetaObject::invokeMethod(d->bar, "reset", Qt::QueuedConnection);
         QMetaObject::invokeMethod(d->bar, "hide", Qt::QueuedConnection);
-        QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+        QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
             Q_ARG(QString,QString()));
@@ -311,7 +311,7 @@ void Sequencer::setText (const char* pszTxt)
     // print message to the statusbar
     d->text = pszTxt ? QString::fromUtf8(pszTxt) : QLatin1String("");
     if (thr != currentThread) {
-        QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+        QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
             Q_ARG(QString,d->text));
