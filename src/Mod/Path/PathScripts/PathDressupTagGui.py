@@ -58,7 +58,7 @@ class PathDressupTagTaskPanel:
         self.obj.Proxy.obj = obj
         self.viewProvider = viewProvider
         self.form  = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
-        self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup)
+        self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup, True)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
             FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
