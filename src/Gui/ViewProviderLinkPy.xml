@@ -25,5 +25,11 @@
             </Documentation>
             <Parameter Name="UseCenterballDragger" Type="Boolean" />
         </Attribute>
+        <Attribute Name="LinkView" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Get the associated LinkView object</UserDocu>
+            </Documentation>
+            <Parameter Name="LinkView" Type="Object" />
+        </Attribute>
 	</PythonExport>
 </GenerateModel>

@@ -89,6 +89,8 @@ public:
     LinkView();
     ~LinkView();
 
+    virtual PyObject *getPyObject(void);
+
     virtual void unlink(LinkInfoPtr) override;
     virtual void onLinkedIconChange(LinkInfoPtr) override;
     virtual void onLinkedUpdateData(LinkInfoPtr, const App::Property *) override;
@@ -154,6 +156,8 @@ public:
 
     Base::BoundBox3d getBoundBox(ViewProviderDocumentObject *vpd=0) const;
 
+    void setInvalid();
+
 protected:
     void replaceLinkedRoot(SoSeparator *);
     void resetRoot();
@@ -178,6 +182,8 @@ protected:
     class Element;
     std::vector<std::unique_ptr<Element> > nodeArray;
     std::map<SoNode*,int> nodeMap;
+
+    Py::Object PythonObject;
 };
 
 class GuiExport ViewProviderLink : public ViewProviderDocumentObject
@@ -235,6 +241,7 @@ public:
     bool doubleClicked() override;
 
     PyObject *getPyObject() override;
+    PyObject *getPyLinkView();
 
     static void updateLinks(ViewProvider *vp);
 
@@ -282,7 +289,7 @@ private:
     static void dragMotionCallback(void * data, SoDragger * d);
 
 protected:
-    LinkView handle;
+    LinkView *linkView;
     LinkType linkType;
     bool hasSubName;
     bool hasSubElement;

@@ -68,6 +68,10 @@ void ViewProviderLinkPy::setUseCenterballDragger(Py::Boolean arg) {
     }
 }
 
+Py::Object ViewProviderLinkPy::getLinkView() const {
+    return Py::Object(getViewProviderLinkPtr()->getPyLinkView(),true);
+}
+
 PyObject *ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

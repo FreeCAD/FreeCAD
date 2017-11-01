@@ -9,6 +9,7 @@
         Namespace="Gui" 
         FatherInclude="Base/BaseClass.h"
         FatherNamespace="Base"
+        Constructor="true"
         Delete="true">
         <Documentation>
             <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />

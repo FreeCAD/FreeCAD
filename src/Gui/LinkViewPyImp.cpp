@@ -40,6 +40,17 @@
 
 using namespace Gui;
 
+PyObject *LinkViewPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+{
+    return new LinkViewPy(new LinkView);
+}
+
+int LinkViewPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+{
+    return 0;
+}
+
+
 // returns a string which represent the object e.g. when printed in python
 std::string LinkViewPy::representation(void) const
 {

@@ -56,6 +56,7 @@
 #include "MainWindow.h"
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
+#include "LinkViewPy.h"
 #include "ViewProviderGeometryObject.h"
 #include "View3DInventor.h"
 #include "SoFCUnifiedSelection.h"
@@ -646,6 +647,22 @@ LinkView::LinkView()
 LinkView::~LinkView() {
     unlink(linkInfo);
     unlink(linkOwner);
+}
+
+PyObject *LinkView::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None()))
+        PythonObject = Py::Object(new LinkViewPy(this),true);
+    return Py::new_reference_to(PythonObject);
+}
+
+void LinkView::setInvalid(void) {
+    if (!PythonObject.is(Py::_None())){
+        Base::PyObjectBase* obj = (Base::PyObjectBase*)PythonObject.ptr();
+        obj->setInvalid();
+        obj->DecRef();
+    }else
+        delete this;
 }
 
 Base::BoundBox3d _getBoundBox(ViewProviderDocumentObject *vpd, SoNode *rootNode) {
@@ -1347,10 +1364,13 @@ ViewProviderLink::ViewProviderLink()
     ADD_PROPERTY(OverrideMaterialList,());
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
+
+    linkView = new LinkView;
 }
 
 ViewProviderLink::~ViewProviderLink()
 {
+    linkView->setInvalid();
 }
 
 bool ViewProviderLink::isSelectable() const {
@@ -1358,17 +1378,17 @@ bool ViewProviderLink::isSelectable() const {
 }
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
-    addDisplayMaskMode(handle.getLinkRoot(),"Link");
+    addDisplayMaskMode(linkView->getLinkRoot(),"Link");
     setDisplayMaskMode("Link");
     inherited::attach(pcObj);
     checkIcon();
     if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
         hide();
-    handle.setOwner(this);
+    linkView->setOwner(this);
 }
 
 void ViewProviderLink::reattach(App::DocumentObject *) {
-    handle.setOwner(this);
+    linkView->setOwner(this);
 }
 
 std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
@@ -1380,7 +1400,7 @@ std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
 
 QIcon ViewProviderLink::getIcon() const {
     if(getObject()->getLinkedObject(false)!=getObject()) {
-        QIcon icon = handle.getLinkedIcon(getOverlayPixmap());
+        QIcon icon = linkView->getLinkedIcon(getOverlayPixmap());
         if(!icon.isNull())
             return icon;
     }
@@ -1403,21 +1423,21 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
     }
     if (prop == &OverrideMaterial) {
         if(!OverrideMaterial.getValue()) {
-            handle.setMaterial(-1,0);
-            for(int i=0;i<handle.getSize();++i)
-                handle.setMaterial(i,0);
+            linkView->setMaterial(-1,0);
+            for(int i=0;i<linkView->getSize();++i)
+                linkView->setMaterial(i,0);
         }else
             applyMaterial();
     }else if (prop == &ShapeMaterial) {
         if(OverrideMaterial.getValue())
-            handle.setMaterial(-1,&ShapeMaterial.getValue());
+            linkView->setMaterial(-1,&ShapeMaterial.getValue());
     }else if(prop == &MaterialList || prop == &OverrideMaterialList) {
         applyMaterial();
     }else if(prop==&DrawStyle || prop==&PointSize || prop==&LineWidth) {
         if(!DrawStyle.getValue())
-            handle.setDrawStyle(0);
+            linkView->setDrawStyle(0);
         else
-            handle.setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
+            linkView->setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
     }
 
     inherited::onChanged(prop);
@@ -1435,11 +1455,11 @@ bool ViewProviderLink::setLinkType(App::LinkBaseExtension *ext) {
         linkType = type;
     switch(type) {
     case LinkTypeSubs:
-        handle.setNodeType(ext->linkTransform()?LinkView::SnapshotContainer:
+        linkView->setNodeType(ext->linkTransform()?LinkView::SnapshotContainer:
                 LinkView::SnapshotContainerTransform);
         break;
     case LinkTypeNormal:
-        handle.setNodeType(ext->linkTransform()?LinkView::SnapshotVisible:
+        linkView->setNodeType(ext->linkTransform()?LinkView::SnapshotVisible:
                 LinkView::SnapshotTransform);
         break;
     default:
@@ -1471,12 +1491,12 @@ void ViewProviderLink::updateData(const App::Property *prop) {
 void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App::Property *prop) {
     if(!prop) return;
     if(prop == &ext->_LinkRecomputed) {
-        if(handle.hasSubs())
-            handle.updateLink();
+        if(linkView->hasSubs())
+            linkView->updateLink();
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
         const auto &v = ext->getScaleVector();
         pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-        handle.renderDoubleSide(v.x*v.y*v.z < 0);
+        linkView->renderDoubleSide(v.x*v.y*v.z < 0);
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
         if(!propLinkPlacement || propLinkPlacement == prop) {
@@ -1517,14 +1537,14 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             setLinkType(ext);
 
             auto obj = ext->getLinkedObjectValue();
-            handle.setLink(obj,subs);
+            linkView->setLink(obj,subs);
             signalChangeIcon();
         }
     }else if(prop == ext->getLinkTransformProperty()) {
         setLinkType(ext);
     }else if(prop==ext->getElementCountProperty()) {
         if(!ext->getShowElementValue()) 
-            handle.setSize(ext->getElementCountValue());
+            linkView->setSize(ext->getElementCountValue());
         checkIcon(ext);
     }else if(prop == ext->getShowElementProperty()) {
         const auto &elements = ext->getElementListValue();
@@ -1566,21 +1586,21 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 MaterialList.setValue(materials);
                 MaterialList.setStatus(App::Property::User3,false);
                 
-                handle.setSize(ext->getElementCountValue());
+                linkView->setSize(ext->getElementCountValue());
             }
         }
     }else if(prop==ext->getScaleListProperty() || prop==ext->getPlacementListProperty()) {
         if(!prop->testStatus(App::Property::User3) && 
-            handle.getSize() && 
+            linkView->getSize() && 
             !ext->getShowElementValue()) 
         {
             auto propPlacements = ext->getPlacementListProperty();
             auto propScales = ext->getScaleListProperty();
-            if(propPlacements && handle.getSize()) {
+            if(propPlacements && linkView->getSize()) {
                 const auto &touched = 
                     prop==propScales?propScales->getTouchList():propPlacements->getTouchList();
                 if(touched.empty()) {
-                    for(int i=0;i<handle.getSize();++i) {
+                    for(int i=0;i<linkView->getSize();++i) {
                         Base::Matrix4D mat;
                         if(propPlacements->getSize()>i) 
                             mat = (*propPlacements)[i].toMatrix();
@@ -1589,11 +1609,11 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                             s.scale((*propScales)[i]);
                             mat *= s;
                         }
-                        handle.setTransform(i,mat);
+                        linkView->setTransform(i,mat);
                     }
                 }else{
                     for(int i : touched) {
-                        if(i<0 || i>=handle.getSize())
+                        if(i<0 || i>=linkView->getSize())
                             continue;
                         Base::Matrix4D mat;
                         if(propPlacements->getSize()>i) 
@@ -1603,22 +1623,22 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                             s.scale((*propScales)[i]);
                             mat *= s;
                         }
-                        handle.setTransform(i,mat);
+                        linkView->setTransform(i,mat);
                     }
                 }
             }
         }
     }else if(prop == ext->getVisibilityListProperty()) {
         const auto &vis = ext->getVisibilityListValue();
-        for(size_t i=0;i<(size_t)handle.getSize();++i) {
+        for(size_t i=0;i<(size_t)linkView->getSize();++i) {
             if(vis.size()>i)
-                handle.setElementVisible(i,vis[i]);
+                linkView->setElementVisible(i,vis[i]);
             else
-                handle.setElementVisible(i,true);
+                linkView->setElementVisible(i,true);
         }
     }else if(prop == ext->getElementListProperty()) {
         if(ext->getShowElementValue())
-            handle.setChildren(ext->getElementListValue(), ext->getVisibilityListValue());
+            linkView->setChildren(ext->getElementListValue(), ext->getVisibilityListValue());
         checkIcon(ext);
     }
 }
@@ -1646,11 +1666,11 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
 
 void ViewProviderLink::applyMaterial() {
     if(!OverrideMaterial.getValue()) return;
-    handle.setMaterial(-1,&ShapeMaterial.getValue());
-    for(int i=0;i<handle.getSize();++i) {
+    linkView->setMaterial(-1,&ShapeMaterial.getValue());
+    for(int i=0;i<linkView->getSize();++i) {
         if(MaterialList.getSize()>i && 
            OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
-            handle.setMaterial(i,&MaterialList[i]);
+            linkView->setMaterial(i,&MaterialList[i]);
     }
 }
 
@@ -1658,7 +1678,7 @@ void ViewProviderLink::finishRestoring() {
     FC_TRACE("finish restoring");
     auto ext = getLinkExtension();
     if(!ext) return;
-    handle.setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
+    linkView->setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
     updateDataPrivate(ext,ext->getLinkedObjectProperty());
     if(ext->getLinkPlacementProperty())
         updateDataPrivate(ext,ext->getLinkPlacementProperty());
@@ -1794,7 +1814,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
         return true;
     if(!ext || !ext->getLinkedObjectProperty() || hasElements(ext))
         return false;
-    if(!hasSubName && handle.isLinked()) {
+    if(!hasSubName && linkView->isLinked()) {
         auto linked = getLinkedView(false,ext);
         if(linked)
             return linked->canDropObjectEx(obj,owner,subname);
@@ -1850,7 +1870,7 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
 bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
     auto ext = getLinkExtension();
     if(!ext) return false;
-    bool ret = handle.linkGetElementPicked(pp,subname);
+    bool ret = linkView->linkGetElementPicked(pp,subname);
     if(ret && (isGroup(ext) || hasElements(ext))) {
         const auto &elements = ext->getElementListValue();
         const char *sub = 0;
@@ -1888,7 +1908,7 @@ SoDetail* ViewProviderLink::getDetailPath(
             subname = _subname.c_str();
         }
     }
-    if(handle.linkGetDetailPath(subname,pPath,det))
+    if(linkView->linkGetDetailPath(subname,pPath,det))
         return det;
     pPath->truncate(len);
     return 0;
@@ -1910,19 +1930,19 @@ bool ViewProviderLink::linkEdit(const App::LinkBaseExtension *ext) const {
     {
         return false;
     }
-    return handle.isLinked();
+    return linkView->isLinked();
 }
 
 bool ViewProviderLink::doubleClicked() {
     if(linkEdit())
-        return handle.getLinkedView()->doubleClicked();
+        return linkView->getLinkedView()->doubleClicked();
     return getDocument()->setEdit(this,ViewProvider::Transform);
 }
 
 void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     if(linkEdit()) 
-        handle.getLinkedView()->setupContextMenu(menu,receiver,member);
+        linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
 }
 
 bool ViewProviderLink::initDraggingPlacement() {
@@ -1983,7 +2003,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     plaMat.inverse();
     dragCtx->preTransform *= plaMat;
 
-    dragCtx->bbox = handle.getBoundBox();
+    dragCtx->bbox = linkView->getBoundBox();
     const auto &offset = Base::Placement(
             dragCtx->bbox.GetCenter(),Base::Rotation());
     dragCtx->initialPlacement = pla * offset;
@@ -2220,6 +2240,10 @@ PyObject *ViewProviderLink::getPyObject() {
         pyViewObject = new ViewProviderLinkPy(this);
     pyViewObject->IncRef();
     return pyViewObject;
+}
+
+PyObject *ViewProviderLink::getPyLinkView() {
+    return linkView->getPyObject();
 }
 
 
