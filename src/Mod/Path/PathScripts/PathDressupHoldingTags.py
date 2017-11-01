@@ -42,8 +42,11 @@ from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule()
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt tanslation handling
 def translate(context, text, disambig=None):
@@ -643,14 +646,18 @@ class PathData:
                 ordered.append(t)
         # disable all tags that are not on the base wire.
         for tag in tags:
-            PathLog.notice("Tag #%d not on base wire - disabling\n" % len(ordered))
+            PathLog.info("Tag #%d (%.2f, %.2f) not on base wire - disabling\n" % (len(ordered), tag.x, tag.y))
             tag.enabled = False
             ordered.append(tag)
         return ordered
 
     def pointIsOnPath(self, p):
-        for e in self.edges:
-            if DraftGeomUtils.isPtOnEdge(p, e):
+        v = Part.Vertex(FreeCAD.Vector(p.x, p.y, self.minZ))
+        PathLog.debug("pt = (%f, %f, %f)" % (v.X, v.Y, v.Z))
+        for e in self.bottomEdges:
+            indent = "{} ".format(e.distToShape(v)[0])
+            debugEdge(e, indent, True)
+            if PathGeom.isRoughly(v.distToShape(e)[0], 0.0, 1.0):
                 return True
         return False
 
@@ -788,7 +795,7 @@ class ObjectTagDressup:
             zVal2 = zVal2 and round(zVal2, 8)
 
             if cmd.Name in ['G1', 'G2', 'G3', 'G01', 'G02', 'G03']:
-                if zVal is not None and zVal2 != zVal:
+                if False and zVal is not None and zVal2 != zVal:
                     params['F'] = vertFeed
                 else:
                     params['F'] = horizFeed
@@ -823,7 +830,7 @@ class ObjectTagDressup:
             if tag.enabled:
                 if prev:
                     if prev.solid.common(tag.solid).Faces:
-                        PathLog.notice("Tag #%d intersects with previous tag - disabling\n" % i)
+                        PathLog.info("Tag #%d intersects with previous tag - disabling\n" % i)
                         PathLog.debug("this tag = %d [%s]" % (i, tag.solid.BoundBox))
                         tag.enabled = False
                 elif self.pathData.edges:
@@ -831,7 +838,7 @@ class ObjectTagDressup:
                     p0 = e.valueAt(e.FirstParameter)
                     p1 = e.valueAt(e.LastParameter)
                     if tag.solid.isInside(p0, PathGeom.Tolerance, True) or tag.solid.isInside(p1, PathGeom.Tolerance, True):
-                        PathLog.notice("Tag #%d intersects with starting point - disabling\n" % i)
+                        PathLog.info("Tag #%d intersects with starting point - disabling\n" % i)
                         tag.enabled = False
 
             if tag.enabled:

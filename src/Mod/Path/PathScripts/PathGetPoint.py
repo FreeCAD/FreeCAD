@@ -25,6 +25,7 @@
 import Draft
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathLog as PathLog
 
 from PySide import QtCore, QtGui
 from pivy import coin
@@ -34,6 +35,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitray points while the task panel is active."
 
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 class TaskPanel:
     '''Use an instance of this class in another TaskPanel to invoke the snapper.
     Create the instance in the TaskPanel's constructors and invoke getPoint(whenDone, start) whenever a new point is
@@ -41,7 +44,7 @@ class TaskPanel:
     provided in the constructor.
     The (only) public API function other than the constructor is getPoint(whenDone, start).
     '''
-    def __init__(self, form):
+    def __init__(self, form, onPath=False):
         '''__init___(form) ... form will be replaced by PointEdit.ui while the Snapper is active.'''
         self.formOrig = form
         self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
@@ -52,6 +55,8 @@ class TaskPanel:
 
         self.setupUi()
         self.buttonBox = None
+        self.onPath = onPath
+        self.obj = None
 
     def setupUi(self):
         '''setupUi() ... internal function - do not call.'''
@@ -95,19 +100,38 @@ class TaskPanel:
             self.formPoint.ifValueX.selectAll()
 
         def mouseMove(cb):
+            p = None
             event = cb.getEvent()
             pos = event.getPosition()
-            cntrl = event.wasCtrlDown()
-            shift = event.wasShiftDown()
-            self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
-            plane = FreeCAD.DraftWorkingPlane
-            p = plane.getLocalCoords(self.pt)
-            displayPoint(p)
+            if self.onPath:
+                # There should not be a dependency from Draft->Path, so handle Path "snapping"
+                # directly, at least for now. Simple enough because there isn't really any
+                # "snapping" going on other than what getObjectInfo() provides.
+                screenpos = tuple(pos.getValue())
+                snapInfo = Draft.get3DView().getObjectInfo(screenpos)
+                if snapInfo:
+                    obj = FreeCAD.ActiveDocument.getObject(snapInfo['Object'])
+                    if hasattr(obj, 'Path'):
+                        self.obj = obj
+                        p = FreeCAD.Vector(snapInfo['x'], snapInfo['y'], snapInfo['z'])
+                    else:
+                        self.obj = None
+            else:
+                # Snapper handles regular objects just fine
+                cntrl = event.wasCtrlDown()
+                shift = event.wasShiftDown()
+                self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
+                plane = FreeCAD.DraftWorkingPlane
+                p = plane.getLocalCoords(self.pt)
+                self.obj = FreeCADGui.Snapper.lastSnappedObject
+            if p:
+                displayPoint(p)
 
         def click(cb):
             event = cb.getEvent()
             if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
-                accept()
+                if self.obj:
+                    accept()
 
         def accept():
             if start:
@@ -137,7 +161,6 @@ class TaskPanel:
 
     def pointFinish(self, ok, cleanup = True):
         '''pointFinish(ok, cleanup=True) ... internal function - do not call.'''
-        obj = FreeCADGui.Snapper.lastSnappedObject
 
         if cleanup:
             self.removeGlobalCallbacks()
@@ -150,7 +173,7 @@ class TaskPanel:
             self.formOrig.setFocus()
 
         if ok:
-            self.pointWhenDone(self.pt, obj)
+            self.pointWhenDone(self.pt, self.obj)
         else:
             self.pointWhenDone(None, None)
 
