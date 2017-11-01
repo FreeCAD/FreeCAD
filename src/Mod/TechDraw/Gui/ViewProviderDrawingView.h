@@ -77,7 +77,7 @@ public:
     virtual TechDraw::DrawView* getViewObject() const;
     
     void onGuiRepaint(const TechDraw::DrawView* dv); 
-    typedef boost::signals::connection Connection;
+    typedef boost::signals::scoped_connection Connection;
     Connection connectGuiRepaint;
     
 

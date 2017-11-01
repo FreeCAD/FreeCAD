@@ -81,7 +81,7 @@ public:
 
     TechDraw::DrawPage* getDrawPage() const;
     void onGuiRepaint(const TechDraw::DrawPage* dp); 
-    typedef boost::signals::connection Connection;
+    typedef boost::signals::scoped_connection Connection;
     Connection connectGuiRepaint;
 
     void unsetEdit(int ModNum);
