@@ -653,7 +653,7 @@ class PathData:
 
     def pointIsOnPath(self, p):
         v = Part.Vertex(FreeCAD.Vector(p.x, p.y, self.minZ))
-        PathLog.info("pt = (%f, %f, %f)" % (v.X, v.Y, v.Z))
+        PathLog.debug("pt = (%f, %f, %f)" % (v.X, v.Y, v.Z))
         for e in self.bottomEdges:
             indent = "{} ".format(e.distToShape(v)[0])
             debugEdge(e, indent, True)
