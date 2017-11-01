@@ -987,7 +987,8 @@ class Snapper:
         self.radius = 0
         self.setCursor()
         if hideSnapBar or Draft.getParam("hideSnapBar",False):
-            self.toolbar.hide()
+            if hasattr(self,"toolbar") and self.toolbar:
+                self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
         self.selectMode = False
