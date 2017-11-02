@@ -305,6 +305,14 @@ public:
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool isAllowedOtherBody() const {
+        return allowOtherBody;
+    }
+    void setAllowOtherBody(bool on) {
+        allowOtherBody = on;
+    }
+
     /// Flag to allow carbon copy from misaligned geometry
     bool isAllowedUnaligned() const {
         return allowUnaligned;
@@ -349,6 +357,9 @@ protected:
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool allowOtherBody;
+
     /// Flag to allow carbon copy from misaligned geometry
     bool allowUnaligned;
 
