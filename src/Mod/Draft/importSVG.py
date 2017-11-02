@@ -625,10 +625,11 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(0,-y,0))
                                                 else:
                                                         currentvec = Vector(lastvec.x,-y,0)
-                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
-                                                lastvec = currentvec
-                                                lastpole = None
-                                                path.append(seg)
+                                                if lastvec!=currentvec:
+                                                    seg = Part.LineSegment(lastvec,currentvec).toShape()
+                                                    lastvec = currentvec
+                                                    lastpole = None
+                                                    path.append(seg)
                                 elif (d == "A" or d == "a"):
                                         for rx,ry,xrotation, largeflag, sweepflag,x,y in \
                                                 zip(pointlist[0::7],pointlist[1::7],pointlist[2::7],pointlist[3::7],pointlist[4::7],pointlist[5::7],pointlist[6::7]):
