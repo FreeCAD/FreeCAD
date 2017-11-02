@@ -33,6 +33,10 @@ limited memory it seems sensible to reduce the number of commands and
 parameters, like e.g. suppress the units in the header and at every hop.
 '''
 
+TOOLTIP_ARGS = '''
+--units_included, --no_units_included   ... output G21 command
+'''
+
 # reload in python console:
 #   import generic_post
 #   reload(generic_post)
@@ -47,9 +51,8 @@ import math
 # user editable stuff here
 
 MACHINE_NAME = 'Maho 600E'
-CORNER_MIN = {'x': -51.877, 'y': 0, 'z': 0}  # use metric for internal units
-# use metric for internal units
-CORNER_MAX = {'x': 591.5,  'y': 391.498,  'z': 391.5}
+CORNER_MIN = {'x': -51.877, 'y': 0, 'z': 0}           # use metric for internal units
+CORNER_MAX = {'x': 591.5,  'y': 391.498,  'z': 391.5} # use metric for internal units
 
 UNITS = 'G21'  # use metric units
 # possible values:
@@ -103,10 +106,10 @@ MODAL = True
 # possible values:
 #                  True      repeated GCodes in subsequent lines are suppressed, like in the following snippet
 #                            G1 X10 Y20
-#                               X10 Y30
+#                               X15 Y30
 #                  False     repeated GCodes in subsequent lines are repeated in the GCode file
 #                            G1 X10 Y20
-#                            G1 X10 Y30
+#                            G1 X15 Y30
 
 # suppress these parameters if they haven't changed
 MODALPARAMS = ['X', 'Y', 'Z', 'S', 'F']
@@ -139,7 +142,7 @@ SWAP_Y_Z = True   # machines with an angle milling head do not switch axes, so w
 ABSOLUTE_CIRCLE_CENTER = True
 # possible values:
 #                  True      use absolute values for the circle center in commands G2, G3
-# False     values for I, J, K are given relative to the last point
+#                  False     values for I, J, K are given relative to the last point
 
 USE_RADIUS_IF_POSSIBLE = True
 # possible values:
@@ -186,6 +189,12 @@ SPINDLE_DECIMALS = 0
 # possible values:
 # integer >= 0
 
+SUPPRESS_ZERO_FEED = True
+# possible values: True    if feed is zero the F command is suppressed
+#                  False   F commands are written even if they are zero
+# This is useful for machines without special speeds for the G0 command. They could be 
+# left zero and are suppressed in the output
+
 # The header is divided into two parts, one is dynamic, the other is a static GCode header.
 # If the current selection and the current time should be included in the header,
 # it has to be generated at execution time, and thus it cannot be held in constant values.
@@ -197,13 +206,14 @@ SPINDLE_DECIMALS = 0
 
 
 def mkHeader(selection):
+    job = PathUtils.findParentJob(selection[0])
   # this is within a function, because otherwise filename and time don't change when changing the FreeCAD project
     #  now = datetime.datetime.now()
     now = time.strftime("%Y-%m-%d %H:%M")
     originfile = FreeCAD.ActiveDocument.FileName
     headerNoNumber = "%PM\n"     # this line gets no linenumber
-    if hasattr(selection[0], "Description"):
-        description = selection[0].Description
+    if hasattr(job, "Description"):
+        description = job.Description
     else:
         description = ""
     # this line gets no linenumber, it is already a specially numbered
@@ -211,9 +221,13 @@ def mkHeader(selection):
     header = ""
 #  header += "(Output Time:" + str(now) + ")\n"
     header += "(" + originfile + ")\n"
-    header += "(Exported by FreeCAD)\n"
+#    header += "(Exported by FreeCAD)\n"
     header += "(Post Processor: " + __name__ + ")\n"
-    header += "(Target machine: " + MACHINE_NAME + ")"
+#    header += "(Target machine: " + MACHINE_NAME + ")\n"
+    header += "G18\n" # Auswahl XZ-Ebene
+    header += "G90\n" # Bezugsmaß
+    header += "G51\n" # Reset Voreinstelldaten -> ggf. unnötig
+    header += "G52 (ersetze G55-G59)" # Nullpunktverschiebung
     return headerNoNumber + linenumberify(header)
 
 GCODE_HEADER = ""   # do not terminate with a newline, it is inserted by linenumberify
@@ -286,9 +300,40 @@ def linenumberify(GCodeString):
                 result += s + "\n"
     return result
 
+def processArguments(argstring):
+    global OUTPUT_HEADER
+    global OUTPUT_COMMENTS
+    global OUTPUT_LINE_NUMBERS
+    global SHOW_EDITOR
+    global PRECISION
 
-def export(selection, filename, argstring):
+    for arg in argstring.split():
+        if arg == '--header':
+            OUTPUT_HEADER = True
+        elif arg == '--no-header':
+            OUTPUT_HEADER = False
+        elif arg == '--comments':
+            OUTPUT_COMMENTS = True
+        elif arg == '--no-comments':
+            OUTPUT_COMMENTS = False
+        elif arg == '--line-numbers':
+            OUTPUT_LINE_NUMBERS = True
+        elif arg == '--no-line-numbers':
+            OUTPUT_LINE_NUMBERS = False
+        elif arg == '--show-editor':
+            SHOW_EDITOR = True
+        elif arg == '--no-show-editor':
+            SHOW_EDITOR = False
+        elif arg.split('=')[0] == '--output-precision':
+            PRECISION = arg.split('=')[1]
+
+def export(objectslist, filename, argstring):
+    global UNITS
     global linenr
+    global ABSOLUTE_CIRCLE_CENTER
+    global USE_RADIUS_IF_POSSIBLE
+    global RADIUS_COMMENT
+
     linenr = STARTLINENR
     lastX = 0
     lastY = 0
@@ -298,12 +343,12 @@ def export(selection, filename, argstring):
     modalParamsDict = dict()
     for mp in MODALPARAMS:
         modalParamsDict[mp] = None
-    for obj in selection:
+    for obj in objectslist:
         if not hasattr(obj, "Path"):
             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
     myMachine = None
-    for pathobj in selection:
+    for pathobj in objectslist:
         if hasattr(pathobj, "MachineName"):
             myMachine = pathobj.MachineName
         if hasattr(pathobj, "MachineUnits"):
@@ -315,24 +360,21 @@ def export(selection, filename, argstring):
         print("No machine found in this selection")
 
     gcode = ''
-    gcode += mkHeader(selection)
+    gcode += mkHeader(objectslist)
     gcode += linenumberify(GCODE_HEADER)
     if UNITS_INCLUDED:
         gcode += linenumberify(mapGCode(UNITS))
 
     lastcommand = None
 
-    gobjects = []
-    for g in selection[0].Group:
-        if g.Name != 'Machine':  # filtering out gcode home position from Machine object
-            gobjects.append(g)
-
-    for obj in gobjects:
+    for obj in objectslist:
         if hasattr(obj, 'Comment'):
             gcode += linenumberify('(' + obj.Comment + ')')
         for c in obj.Path.Commands:
             outstring = []
             command = c.Name
+            if command != 'G0':
+                command = command.replace('G0','G') # normalize: G01 -> G1
 
             if (command != UNITS or UNITS_INCLUDED):
                 if command[0] == '(':
@@ -343,19 +385,24 @@ def export(selection, filename, argstring):
 
                 if not MODAL or command != lastcommand:
                     outstring.append(mappedCommand)
-#               if MODAL == True: )
-# #\better:   append iff MODAL == False )
-#                   if command == lastcommand: )
-#                       outstring.pop(0!#\ )
+#               if MODAL == True:
+# #\better:   append iff MODAL == False
+#                   if command == lastcommand:
+#                       outstring.pop(0)
                 if c.Parameters >= 1:
                     for param in params:
+                        # test   print("param: " + param + ",  command: " + command)
                         if param in c.Parameters:
                             if (param in MODALPARAMS) and (modalParamsDict[str(param)] == c.Parameters[str(param)]):
                                 # do nothing or append white space
                                 outstring.append('  ')
                             elif param == 'F':
-                                outstring.append(
-                                    param + PostUtils.fmt(c.Parameters['F'], FEED_DECIMALS, UNITS))
+                                feed = c.Parameters['F']
+                                if SUPPRESS_ZERO_FEED and feed == 0:
+                                    pass
+                                else:
+                                    outstring.append(
+                                        param + PostUtils.fmt(feed, FEED_DECIMALS, UNITS))
                             elif param == 'H':
                                 outstring.append(
                                     param + str(int(c.Parameters['H'])))
@@ -369,6 +416,7 @@ def export(selection, filename, argstring):
                                 outstring.append(
                                     param + str(int(c.Parameters['T'])))
                             elif param == 'I' and (command == 'G2' or command == 'G3'):
+                                #test print("param = 'I'")
                                 # this is the special case for circular paths,
                                 # where relative coordinates have to be changed
                                 # to absolute
@@ -425,7 +473,7 @@ def export(selection, filename, argstring):
                                     if ABSOLUTE_CIRCLE_CENTER:
                                         k += lastZ
                                 if SWAP_Y_Z:
-                                        # we have to swap j and k as well
+                                    # we have to swap j and k as well
                                     outstring.append(
                                         'J' + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
                                 else:
@@ -438,7 +486,10 @@ def export(selection, filename, argstring):
                                 outstring.append(
                                     'Y' + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
                             else:
+                                # this is an unknown command, don't create GCode for it
                                 print("parameter " + param + " for command " + command + " ignored")
+#                                outstring.append(
+#                                    param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
 
                             if param in MODALPARAMS:
                                 modalParamsDict[str(param)] = c.Parameters[
@@ -454,12 +505,13 @@ def export(selection, filename, argstring):
                 outstr = outstr.replace(']', '')
                 outstr = outstr.replace('[', '')
                 outstr = outstr.replace("'", '')
-                outstr = outstr.replace(",", '')
+                outstr = outstr.replace(",", '.')
                 if LINENUMBERS:
                     gcode += "N" + str(linenr) + " "
                     linenr += LINENUMBER_INCREMENT
                 gcode += outstr + '\n'
                 lastcommand = c.Name
+    gcode = gcode.replace("_","-")
     gcode += linenumberify(GCODE_FOOTER)
     if SHOW_EDITOR:
         PostUtils.editor(gcode)
