@@ -47,11 +47,11 @@ __url__ = "http://www.freecadweb.org"
 
 '''The Draft module offers a range of tools to create and manipulate basic 2D objects'''
 
-import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc
+import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc, WorkingPlane
 from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
-    import FreeCADGui, WorkingPlane
+    import FreeCADGui
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
