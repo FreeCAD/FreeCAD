@@ -373,7 +373,7 @@ class _CommandStructure:
                 else:
                     self.dents.form.hide()
             else:
-                p=elt[0]
+                p=elt[0]-1 # Presets indexes are 1-based
                 self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
                 self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
                 self.Profile = Presets[p]
