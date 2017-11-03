@@ -220,7 +220,7 @@ template <typename T>
 class ConverterT : public Converter {
 public:
     virtual std::string toString(float f) const {
-        typename T c = static_cast<T>(f);
+        T c = static_cast<T>(f);
         std::ostringstream oss;
         oss.precision(6);
         oss.setf(std::ostringstream::showpoint);
@@ -228,12 +228,12 @@ public:
         return oss.str();
     }
     virtual double toDouble(Base::InputStream& str) const {
-        typename T c;
+        T c;
         str >> c;
         return static_cast<double>(c);
     }
     virtual int getSizeOf() const {
-        return sizeof(typename T);
+        return sizeof(T);
     }
 };
 
@@ -274,7 +274,7 @@ protected:
     }
     virtual pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
-        std::ios_base::openmode which = 
+        std::ios_base::openmode = 
             std::ios::in | std::ios::out) {
         int p_pos=-1;
         if (way == std::ios_base::beg)
@@ -453,7 +453,6 @@ void PlyReader::read(const std::string& filename)
     std::size_t numPoints = readHeader(inp, format, offset, fields, types, sizes);
 
     Eigen::MatrixXd data(numPoints, fields.size());
-    std::size_t numFields = fields.size();
     if (format == "ascii") {
         readAscii(inp, offset, data);
     }
@@ -465,27 +464,28 @@ void PlyReader::read(const std::string& filename)
     }
 
     std::vector<std::string>::iterator it;
+    std::size_t max_size = std::numeric_limits<std::size_t>::max();
 
     // x field
-    std::size_t x = -1;
+    std::size_t x = max_size;
     it = std::find(fields.begin(), fields.end(), "x");
     if (it != fields.end())
         x = std::distance(fields.begin(), it);
 
     // y field
-    std::size_t y = -1;
+    std::size_t y = max_size;
     it = std::find(fields.begin(), fields.end(), "y");
     if (it != fields.end())
         y = std::distance(fields.begin(), it);
 
     // z field
-    std::size_t z = -1;
+    std::size_t z = max_size;
     it = std::find(fields.begin(), fields.end(), "z");
     if (it != fields.end())
         z = std::distance(fields.begin(), it);
 
     // normal x field
-    std::size_t normal_x = -1;
+    std::size_t normal_x = max_size;
     it = std::find(fields.begin(), fields.end(), "normal_x");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "nx");
@@ -493,7 +493,7 @@ void PlyReader::read(const std::string& filename)
         normal_x = std::distance(fields.begin(), it);
 
     // normal y field
-    std::size_t normal_y = -1;
+    std::size_t normal_y = max_size;
     it = std::find(fields.begin(), fields.end(), "normal_y");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "ny");
@@ -501,7 +501,7 @@ void PlyReader::read(const std::string& filename)
         normal_y = std::distance(fields.begin(), it);
 
     // normal z field
-    std::size_t normal_z = -1;
+    std::size_t normal_z = max_size;
     it = std::find(fields.begin(), fields.end(), "normal_z");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "nz");
@@ -509,13 +509,13 @@ void PlyReader::read(const std::string& filename)
         normal_z = std::distance(fields.begin(), it);
 
     // intensity field
-    std::size_t greyvalue = -1;
+    std::size_t greyvalue = max_size;
     it = std::find(fields.begin(), fields.end(), "intensity");
     if (it != fields.end())
         greyvalue = std::distance(fields.begin(), it);
 
     // rgb(a) field
-    std::size_t red = -1, green = -1, blue = -1, alpha = -1;
+    std::size_t red = max_size, green = max_size, blue = max_size, alpha = max_size;
     it = std::find(fields.begin(), fields.end(), "red");
     if (it != fields.end())
         red = std::distance(fields.begin(), it);
@@ -533,10 +533,10 @@ void PlyReader::read(const std::string& filename)
         alpha = std::distance(fields.begin(), it);
 
     // transfer the data
-    bool hasData = (x != -1 && y != -1 && z != -1);
-    bool hasNormal = (normal_x != -1 && normal_y != -1 && normal_z != -1);
-    bool hasIntensity = (greyvalue != -1);
-    bool hasColor = (red != -1 && green != -1 && blue != -1);
+    bool hasData = (x != max_size && y != max_size && z != max_size);
+    bool hasNormal = (normal_x != max_size && normal_y != max_size && normal_z != max_size);
+    bool hasIntensity = (greyvalue != max_size);
+    bool hasColor = (red != max_size && green != max_size && blue != max_size);
 
     if (hasData) {
         points.reserve(numPoints);
@@ -567,7 +567,7 @@ void PlyReader::read(const std::string& filename)
                 float r = data(i, red);
                 float g = data(i, green);
                 float b = data(i, blue);
-                if (alpha != -1)
+                if (alpha != max_size)
                     a = data(i, alpha);
                 colors.push_back(App::Color(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
@@ -580,7 +580,7 @@ void PlyReader::read(const std::string& filename)
                 float r = data(i, red);
                 float g = data(i, green);
                 float b = data(i, blue);
-                if (alpha != -1)
+                if (alpha != max_size)
                     a = data(i, alpha);
                 colors.push_back(App::Color(r, g, b, a));
             }
@@ -897,7 +897,6 @@ void PcdReader::read(const std::string& filename)
     std::size_t numPoints = readHeader(inp, format, fields, types, sizes);
 
     Eigen::MatrixXd data(numPoints, fields.size());
-    std::size_t numFields = fields.size();
     if (format == "ascii") {
         readAscii(inp, data);
     }
@@ -924,27 +923,28 @@ void PcdReader::read(const std::string& filename)
     }
 
     std::vector<std::string>::iterator it;
+    std::size_t max_size = std::numeric_limits<std::size_t>::max();
 
     // x field
-    std::size_t x = -1;
+    std::size_t x = max_size;
     it = std::find(fields.begin(), fields.end(), "x");
     if (it != fields.end())
         x = std::distance(fields.begin(), it);
 
     // y field
-    std::size_t y = -1;
+    std::size_t y = max_size;
     it = std::find(fields.begin(), fields.end(), "y");
     if (it != fields.end())
         y = std::distance(fields.begin(), it);
 
     // z field
-    std::size_t z = -1;
+    std::size_t z = max_size;
     it = std::find(fields.begin(), fields.end(), "z");
     if (it != fields.end())
         z = std::distance(fields.begin(), it);
 
     // normal x field
-    std::size_t normal_x = -1;
+    std::size_t normal_x = max_size;
     it = std::find(fields.begin(), fields.end(), "normal_x");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "nx");
@@ -952,7 +952,7 @@ void PcdReader::read(const std::string& filename)
         normal_x = std::distance(fields.begin(), it);
 
     // normal y field
-    std::size_t normal_y = -1;
+    std::size_t normal_y = max_size;
     it = std::find(fields.begin(), fields.end(), "normal_y");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "ny");
@@ -960,7 +960,7 @@ void PcdReader::read(const std::string& filename)
         normal_y = std::distance(fields.begin(), it);
 
     // normal z field
-    std::size_t normal_z = -1;
+    std::size_t normal_z = max_size;
     it = std::find(fields.begin(), fields.end(), "normal_z");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "nz");
@@ -968,13 +968,13 @@ void PcdReader::read(const std::string& filename)
         normal_z = std::distance(fields.begin(), it);
 
     // intensity field
-    std::size_t greyvalue = -1;
+    std::size_t greyvalue = max_size;
     it = std::find(fields.begin(), fields.end(), "intensity");
     if (it != fields.end())
         greyvalue = std::distance(fields.begin(), it);
 
     // rgb(a) field
-    std::size_t rgba = -1;
+    std::size_t rgba = max_size;
     it = std::find(fields.begin(), fields.end(), "rgb");
     if (it == fields.end())
         it = std::find(fields.begin(), fields.end(), "rgba");
@@ -982,10 +982,10 @@ void PcdReader::read(const std::string& filename)
         rgba = std::distance(fields.begin(), it);
 
     // transfer the data
-    bool hasData = (x != -1 && y != -1 && z != -1);
-    bool hasNormal = (normal_x != -1 && normal_y != -1 && normal_z != -1);
-    bool hasIntensity = (greyvalue != -1);
-    bool hasColor = (rgba != -1);
+    bool hasData = (x != max_size && y != max_size && z != max_size);
+    bool hasNormal = (normal_x != max_size && normal_y != max_size && normal_z != max_size);
+    bool hasIntensity = (greyvalue != max_size);
+    bool hasColor = (rgba != max_size);
 
     if (hasData) {
         points.reserve(numPoints);
@@ -1108,7 +1108,7 @@ std::size_t PcdReader::readHeader(std::istream& in,
     if (fields.size() != sizes.size() ||
         fields.size() != types.size() ||
         fields.size() != counts.size() ||
-        points != this->width * this->height) {
+        points != static_cast<std::size_t>(this->width * this->height)) {
         throw Base::BadFormatError("");
     }
 
@@ -1393,7 +1393,6 @@ void PlyWriter::write(const std::string& filename)
         col += 1;
     }
 
-    std::size_t numProps = properties.size();
     Base::ofstream out(filename, std::ios::out);
     out << "ply" << std::endl
         << "format ascii 1.0" << std::endl
