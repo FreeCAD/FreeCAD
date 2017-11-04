@@ -523,7 +523,7 @@ void LscmRelax::rotate_by_min_bound_area()
         double x_distance = x_proj.maxCoeff() - x_proj.minCoeff();
         double y_distance = y_proj.maxCoeff() - y_proj.minCoeff();
         double area = x_distance * y_distance;
-        if (min_area == 0 or area < min_area)
+        if (min_area == 0 || area < min_area)
         {
             min_area = area;
             min_phi = phi;
