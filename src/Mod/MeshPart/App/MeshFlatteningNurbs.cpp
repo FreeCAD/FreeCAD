@@ -70,8 +70,8 @@ std::function<double(double)> get_basis(int degree, int i, Eigen::VectorXd knots
             double t_this = knots[i];
             double t_next = knots[i+1];
             if (t == knots[0])
-                return (double)(t_next >= t and t >= t_this);
-            return (double)(t_next >= t and t > t_this);
+                return (double)(t_next >= t && t >= t_this);
+            return (double)(t_next >= t && t > t_this);
         };
     }
     else
@@ -114,12 +114,12 @@ std::function<double(double)> get_basis_derivative(int order, int degree, int i,
         return [degree, i, knots, order](double t)
         {
             double out = 0;
-            if (not (knots[i + degree] - knots[i] == 0))
+            if (!(knots[i + degree] - knots[i] == 0))
             {
                 out +=  get_basis(degree - 1, i, knots)(t) *
                         degree / (knots[i + degree] - knots[i]);
             }
-            if (not (knots[i + degree + 1] - knots[i + 1] == 0))
+            if (!(knots[i + degree + 1] - knots[i + 1] == 0))
             {
                 out -=  get_basis(degree - 1, i + 1, knots)(t) *
                         degree / (knots[i + degree + 1] - knots[i + 1]);
@@ -132,12 +132,12 @@ std::function<double(double)> get_basis_derivative(int order, int degree, int i,
         return [degree, i, knots, order](double t)
         {
             double out = 0;
-            if (not (knots[i + degree] - knots[i] == 0))
+            if (!(knots[i + degree] - knots[i] == 0))
             {
                 out +=  get_basis_derivative(order - 1, degree - 1, i, knots)(t) *
                         degree / (knots[i + degree] - knots[i]);
             }
-            if (not (knots[i + degree + 1] - knots[i + 1] == 0))
+            if (!(knots[i + degree + 1] - knots[i + 1] == 0))
             {
                 out -=  get_basis_derivative(order - 1, degree - 1, i + 1, knots)(t) *
                         degree / (knots[i + degree + 1] - knots[i + 1]);
