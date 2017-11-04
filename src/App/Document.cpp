@@ -2029,7 +2029,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(const std::vector<
  * @param paths Map with current and new names
  */
 
-void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths, const std::function<bool(const App::DocumentObject*)> & selector)
 {
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
 
@@ -2040,7 +2040,8 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
     }
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
-        (*it)->renameObjectIdentifiers(extendedPaths);
+        if (selector(*it))
+            (*it)->renameObjectIdentifiers(extendedPaths);
 }
 
 #ifdef USE_OLD_DAG

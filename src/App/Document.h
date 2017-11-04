@@ -35,6 +35,7 @@
 #include <map>
 #include <vector>
 #include <stack>
+#include <functional>
 
 #include <boost/signals.hpp>
 
@@ -338,7 +339,7 @@ public:
     //@}
 
     /// Function called to signal that an object identifier has been renamed
-    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
     virtual PyObject *getPyObject(void);
 
