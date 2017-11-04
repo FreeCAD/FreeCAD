@@ -26,13 +26,11 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Section.hxx>
 # include <gp_Trsf.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Ax1.hxx>
-#include <BRepBuilderAPI_GTransform.hxx>
 #endif
 
 #include "Body.h"
@@ -48,7 +46,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common","Section",NULL};
+const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",NULL};
 
 Boolean::Boolean()
 {
@@ -139,15 +137,6 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             if (!mkCommon.IsDone())
                 return new App::DocumentObjectExecReturn("Common operation failed");
             boolOp = mkCommon.Shape();
-        } else if (type == "Section") {
-            BRepAlgoAPI_Section mkSection(result, shape);
-            if (!mkSection.IsDone())
-                return new App::DocumentObjectExecReturn("Section failed");
-            // we have to get the solids
-            boolOp = this->getSolid(mkSection.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
         }
 
         result = boolOp; // Use result of this operation for fuse/cut of next body
