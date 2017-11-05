@@ -454,7 +454,13 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 void ViewProviderBody::dropObject(App::DocumentObject* obj)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    body->BaseFeature.setValue(obj);
+    if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        body->addObject(obj);
+    }
+    else {
+        body->BaseFeature.setValue(obj);
+    }
+
     App::Document* doc  = body->getDocument();
     doc->recompute();
 
