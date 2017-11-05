@@ -242,7 +242,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 }
             }
 
-            // for sketches open the feature dialog to rebase it to a new pane
+            // for sketches open the feature dialog to rebase it to a new plane
             // as requested in issue #0002862
             if (addtogroup) {
                 std::vector<App::DocumentObject*> planes;
