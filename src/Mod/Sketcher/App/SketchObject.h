@@ -97,6 +97,8 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// deletes all the elements/constraints of the sketch except for external geometry
+    int deleteAllGeometry();
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
     /// add constraint
