@@ -722,6 +722,23 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     return 0;
 }
 
+int SketchObject::deleteAllGeometry()
+{
+    std::vector< Part::Geometry * > newVals(0);
+    std::vector< Constraint * > newConstraints(0);
+
+    this->Geometry.setValues(newVals);
+    this->Constraints.setValues(newConstraints);
+
+    this->Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
