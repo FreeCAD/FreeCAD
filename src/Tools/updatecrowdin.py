@@ -77,6 +77,7 @@ files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
           ["Spreadsheet.ts",       "/Mod/Spreadsheet/Gui/Resources/translations/Spreadsheet.ts"],
           ["Path.ts",              "/Mod/Path/Gui/Resources/translations/Path.ts"],
           ["Tux.ts",               "/Mod/Tux/Resources/translations/Tux.ts"],
+          ["TechDraw.ts",          "/Mod/TechDraw/Resources/translations/TechDraw.ts"],
           ]
 
 
