@@ -213,6 +213,23 @@ PyObject* SketchObjectPy::delGeometry(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::deleteAllGeometry(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    
+    if (this->getSketchObjectPtr()->deleteAllGeometry()) {
+        std::stringstream str;
+        str << "Unable to delete Geometry";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+
+
 PyObject* SketchObjectPy::toggleConstruction(PyObject *args)
 {
     int Index;
