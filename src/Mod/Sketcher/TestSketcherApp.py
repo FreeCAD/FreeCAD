@@ -153,7 +153,33 @@ class SketcherSolverTestCases(unittest.TestCase):
 		CreateSlotPlateInnerSet(self.Slot)
 		self.Doc.recompute()
 		self.failUnless(len(self.Slot.Shape.Edges) == 9)
-	
+
+	def testIssue3245(self):
+		self.Doc2 = FreeCAD.newDocument("Issue3245")
+		self.Doc2.addObject('Sketcher::SketchObject','Sketch')
+		self.Doc2.Sketch.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(0.000000,0.000000,0.000000,1.000000))
+		self.Doc2.Sketch.MapMode = "Deactivated"
+		self.Doc2.Sketch.addGeometry(Part.LineSegment(App.Vector(-1.195999,56.041161,0),App.Vector(60.654316,56.382877,0)),False)
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',0,1,-2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('Horizontal',0))
+		self.Doc2.Sketch.addGeometry(Part.LineSegment(App.Vector(0.512583,32.121155,0),App.Vector(60.654316,31.779440,0)),False)
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('Horizontal',1))
+		self.Doc2.Sketch.addGeometry(Part.LineSegment(App.Vector(0.170867,13.326859,0),App.Vector(61.679455,13.326859,0)),False)
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',2,1,-2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('Horizontal',2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,-2))
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,60.654316))
+		self.Doc2.Sketch.setExpression('Constraints[6]', u'60')
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('DistanceX',1,1,1,2,60.654316))
+		self.Doc2.Sketch.setExpression('Constraints[7]', u'65')
+		self.Doc2.Sketch.addConstraint(Sketcher.Constraint('DistanceX',2,1,2,2,61.679455))
+		self.Doc2.Sketch.setExpression('Constraints[8]', u'70')
+		self.Doc2.recompute()
+		self.Doc2.Sketch.delGeometry(2)
+		values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
+		self.failUnless(values['Constraints[4]'] == u'60')
+		self.failUnless(values['Constraints[5]'] == u'65')
+		FreeCAD.closeDocument("Issue3245")
 	
 	def tearDown(self):
 		#closing doc
