@@ -67,8 +67,11 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        # w = writer.Writer(self.solver, self.directory, True)  # test mode
-        w = writer.Writer(self.solver, self.directory)
+        print("Prepare testmode: " + str(self.testmode))
+        if self.testmode:
+            w = writer.Writer(self.solver, self.directory, True)  # test mode
+        else:
+            w = writer.Writer(self.solver, self.directory)
         try:
             w.write()
             self.checkHandled(w)

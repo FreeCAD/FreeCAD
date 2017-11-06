@@ -75,13 +75,14 @@ class Proxy(solverbase.Proxy):
         obj.SteadyStateMaxIterations = 1
         obj.SteadyStateMinIterations = 0
 
-    def createMachine(self, obj, directory):
+    def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
             solver=obj, directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),
             solve=tasks.Solve(),
-            results=tasks.Results())
+            results=tasks.Results(),
+            testmode=testmode)
 
     def createEquation(self, doc, eqId):
         return self._EQUATIONS[eqId].create(doc)
