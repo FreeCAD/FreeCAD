@@ -575,7 +575,9 @@ class FemCcxAnalysisTest(unittest.TestCase):
         if not os.path.exists(static2_analysis_dir):  # new solver frameworkd does explicit not create a non existing directory
             os.makedirs(static2_analysis_dir)
 
+        fcc_print('machine_ccx')
         machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
+        fcc_print(machine.testmode)
         machine.target = femsolver.run.PREPARE
         machine.start()
         machine.join()  # wait for the machine to finish.
@@ -603,7 +605,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.removeObject(mesh_object.Name)
 
         fcc_print('machine_elmer')
-        machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, static2_analysis_dir)
+        machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, static2_analysis_dir, True)
+        fcc_print(machine_elmer.testmode)
         machine_elmer.target = femsolver.run.PREPARE
         machine_elmer.start()
         machine_elmer.join()  # wait for the machine to finish.
