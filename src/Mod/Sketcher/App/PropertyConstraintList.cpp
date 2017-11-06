@@ -185,13 +185,19 @@ void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
     std::vector<Constraint*> oldVals(_lValueList);
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
     std::set<App::ObjectIdentifier> removed;
+    std::set<App::ObjectIdentifier> newRenamedPaths;
 
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(lValue[i]->tag);
 
-        if (j != valueMap.end() && (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) )
-            renamed[makePath(j->second, _lValueList[j->second] )] = makePath(i, lValue[i]);
+        if (j != valueMap.end() && (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) ) {
+            App::ObjectIdentifier oid(makePath(i, lValue[i]));
+            renamed[makePath(j->second, _lValueList[j->second] )] = oid;
+
+            /* Keep track of new paths */
+            newRenamedPaths.insert(oid);
+        }
     }
 
     /* Update value map with new tags from new array */
@@ -206,9 +212,11 @@ void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
     /* Collect info about removed elements */
     for (std::size_t i = 0; i < oldVals.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(oldVals[i]->tag);
+        App::ObjectIdentifier oid(makePath(i, oldVals[i]));
 
-        if (j == valueMap.end())
-            removed.insert(makePath(i, oldVals[i]));
+        /* If not found in new values or a renamed expression takes its place, place it in the set to be removed */
+        if (j == valueMap.end() && newRenamedPaths.find(oid) == newRenamedPaths.end())
+            removed.insert(oid);
     }
 
     /* Signal removes */
