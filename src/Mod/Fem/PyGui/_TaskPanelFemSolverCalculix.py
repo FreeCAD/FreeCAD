@@ -42,6 +42,7 @@ from PySide.QtGui import QApplication
 if sys.version_info.major >= 3:
     unicode = str
 
+
 class _TaskPanelFemSolverCalculix:
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemSolverCalculix.ui")
