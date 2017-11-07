@@ -625,7 +625,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         solver_ccx2_object.EigenmodeHighLimit = 1000000.0
         solver_ccx2_object.EigenmodeLowLimit = 0.0
         self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
-        analysis.Member = analysis.Member + [solver_ccx2_object]
+        analysis.addObject(solver_ccx2_object)
 
         fcc_print('Checking inpfile writing for new solver frame work...')
         if not os.path.exists(static2_analysis_dir):  # new solver frameworkd does explicit not create a non existing directory
@@ -644,7 +644,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         # use new solver frame work elmer solver
         solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
         self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
-        analysis.Member = analysis.Member + [solver_elmer_object]
+        analysis.addObject(solver_elmer_object)
         solver_elmer_eqobj = ObjectsFem.makeEquationElasticity(self.active_doc, solver_elmer_object)
         self.assertTrue(solver_elmer_eqobj, "FemTest of elmer elasticity equation failed")
 
@@ -657,7 +657,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         mesh_gmsh.CharacteristicLengthMin = "9 mm"
         mesh_gmsh.FemMesh = mesh_object.FemMesh  # elmer needs a GMHS mesh object, FIXME error message on Python solver run
         mesh_gmsh.Part = box
-        analysis.Member = analysis.Member + [mesh_gmsh]
+        analysis.addObject(mesh_gmsh)
         self.active_doc.removeObject(mesh_object.Name)
 
         fcc_print('machine_elmer')

@@ -49,12 +49,9 @@ class _CommandFemConstraintFlowVelocity(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create FemConstraintFlowVelocity")
+        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintFlowVelocity")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintFlowVelocity(FreeCAD.ActiveDocument)]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintFlowVelocity(FreeCAD.ActiveDocument))")
 
 
 FreeCADGui.addCommand('FEM_ConstraintFlowVelocity', _CommandFemConstraintFlowVelocity())
