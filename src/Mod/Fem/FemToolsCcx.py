@@ -87,7 +87,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     ## Removes all result objects
     #  @param self The python object self
     def purge_results(self):
-        for m in self.analysis.Member:
+        for m in self.analysis.Group:
             if (m.isDerivedFrom('Fem::FemResultObject')):
                 if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
                     self.analysis.Document.removeObject(m.Mesh.Name)
@@ -193,7 +193,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.transform_constraints = []
 
         found_solver_for_use = False
-        for m in self.analysis.Member:
+        for m in self.analysis.Group:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
                 # for some methods no solver is needed (purge_results) --> solver could be none
                 # analysis has one solver and no solver was set --> use the one solver
