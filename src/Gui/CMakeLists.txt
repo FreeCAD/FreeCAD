@@ -401,6 +401,7 @@ SET(Command_CPP_SRCS
     CommandWindow.cpp
     CommandTest.cpp
     CommandView.cpp
+    CommandLink.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}

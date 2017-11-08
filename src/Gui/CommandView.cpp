@@ -2482,6 +2482,52 @@ void StdCmdTreeSelection::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_TreeSelectAllInstance
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdTreeSelectAllInstances)
+
+StdCmdTreeSelectAllInstances::StdCmdTreeSelectAllInstances()
+  : Command("Std_TreeSelectAllInstances")
+{
+    sGroup        = QT_TR_NOOP("View");
+    sMenuText     = QT_TR_NOOP("Select all instances");
+    sToolTipText  = QT_TR_NOOP("Select all instances of the current selected object");
+    sWhatsThis    = "Std_TreeSelectAllInstances";
+    sStatusTip    = QT_TR_NOOP("Select all instances of the current selected object");
+    eType         = Alter3DView|AlterSelection;
+}
+
+bool StdCmdTreeSelectAllInstances::isActive(void)
+{
+    const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,true);
+    if(sels.empty())
+        return false;
+    auto obj = sels[0].getObject();
+    if(!obj || !obj->getNameInDocument())
+        return false;
+    return dynamic_cast<ViewProviderDocumentObject*>(
+            Application::Instance->getViewProvider(obj))!=0;
+}
+
+void StdCmdTreeSelectAllInstances::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,true);
+    if(sels.empty())
+        return;
+    auto obj = sels[0].getObject();
+    if(!obj || !obj->getNameInDocument())
+        return;
+    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
+            Application::Instance->getViewProvider(obj));
+    if(!vpd) 
+        return;
+    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+        tree->selectAllInstances(*vpd);
+}
+
+//===========================================================================
 // Std_MeasureDistance
 //===========================================================================
 
@@ -2776,6 +2822,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdViewBoxZoom());
     rcCmdMgr.addCommand(new StdBoxSelection());
     rcCmdMgr.addCommand(new StdCmdTreeSelection());
+    rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());
     rcCmdMgr.addCommand(new StdCmdMeasureDistance());
     rcCmdMgr.addCommand(new StdCmdSceneInspector());
     rcCmdMgr.addCommand(new StdCmdTextureMapping());

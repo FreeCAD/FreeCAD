@@ -470,9 +470,36 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     {
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
-                  << "Std_ToggleSelectability" << "Separator" << "Std_SetAppearance"
-                  << "Std_RandomColor" << "Std_Cut" << "Std_Copy" << "Std_Paste"
-                  << "Separator" << "Std_Delete";
+                  << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
+                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
+                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Separator";
+        }
+
+        if(App::GetApplication().getActiveDocument()) {
+            MenuItem* linkMenu = new MenuItem;
+            linkMenu->setCommand("Link actions");
+            *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
+            
+            auto &rMgr = Application::Instance->commandManager();
+            const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
+                "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkSelectLinked",
+                "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
+            bool separator = true;
+            for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {
+                if(!cmds[i]) {
+                    if(separator) {
+                        separator = false;
+                        *linkMenu << "Separator";
+                    }
+                    continue;
+                }
+                auto cmd = rMgr.getCommandByName(cmds[i]);
+                if(cmd->isActive()) {
+                    separator = true;
+                    *linkMenu << cmds[i];
+                }
+            }
+            *item << linkMenu;
         }
     }
 }

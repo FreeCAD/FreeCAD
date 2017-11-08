@@ -661,6 +661,7 @@ void Application::createStandardOperations()
     Gui::CreateViewStdCommands();
     Gui::CreateWindowStdCommands();
     Gui::CreateTestCommands();
+    Gui::CreateLinkCommands();
 }
 
 void Application::slotNewDocument(const App::Document& Doc)

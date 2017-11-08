@@ -70,6 +70,17 @@ public:
     ~TreeWidget();
 
     void scrollItemToTop(Gui::Document*);
+    void selectAllInstances(const ViewProviderDocumentObject &vpd);
+    void selectLinkedObject(App::DocumentObject *obj, bool recurse); 
+    void selectAllLinks(App::DocumentObject *obj); 
+
+    /* Return a list of selected object of a give document and their parent
+     *
+     * This function can return the non-group parent of the selected object,
+     * which Gui::Selection() cannot provide.
+     */
+    static std::vector<std::pair<ViewProviderDocumentObject*,ViewProviderDocumentObject*> > 
+        getSelection(App::Document *doc);
 
     static const int DocumentType;
     static const int ObjectType;
@@ -113,17 +124,6 @@ protected Q_SLOTS:
     void onFinishEditing();
     void onSkipRecompute(bool on);
     void onMarkRecompute();
-    void onSelectAllInstances();
-    void onMakeLinkGroup();
-    void onMakeLink();
-    void onMakeLinkSub();
-    void onReplaceWithLink();
-    void onImportLink();
-    void onImportAllLink();
-    void onUnlink();
-    void onSelectLinked();
-    void onSelectLinkedFinal();
-    void onSelectAllLinks();
     void onSyncSelection();
     void onSyncView();
     void onShowHidden();
@@ -154,16 +154,6 @@ private:
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;
     QAction* markRecomputeAction;
-    QAction* selectAllInstancesAction;
-    QAction* selectLinkedAction;
-    QAction* selectLinkedFinalAction;
-    QAction* selectAllLinksAction;
-    QAction* makeLinkGroupAction;
-    QAction* makeLinkAction;
-    QAction* replaceWithLinkAction;
-    QAction* unlinkAction;
-    QAction* importLinkAction;
-    QAction* importAllLinkAction;
     QAction* syncSelectionAction;
     QAction* syncViewAction;
     QAction* showHiddenAction;
@@ -176,8 +166,6 @@ private:
     static QPixmap* documentPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;
-
-    std::map<QAction*,DocumentObjectItem*> linkSubActions;
 
     friend class DocumentItem;
 };
@@ -202,7 +190,6 @@ public:
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
     void populateItem(DocumentObjectItem *item, bool refresh = false);
-    void selectLinkedItem(DocumentObjectItem *item, bool recurse);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
