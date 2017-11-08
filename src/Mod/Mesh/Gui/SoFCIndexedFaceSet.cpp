@@ -28,9 +28,11 @@
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
+# include <OpenGL/glext.h>
 # else
 # include <GL/gl.h>
 # include <GL/glu.h>
+# include <GL/glext.h>
 # endif
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
@@ -42,7 +44,6 @@
 # include <Inventor/elements/SoViewingMatrixElement.h>
 #endif
 
-#include <GL/glext.h>
 #include <Inventor/C/glue/gl.h>
 
 #include <Gui/SoFCInteractiveElement.h>
