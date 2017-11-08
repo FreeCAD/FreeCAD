@@ -84,7 +84,9 @@ GLImageBox::~GLImageBox()
 // Set up the OpenGL rendering state
 void GLImageBox::initializeGL()
 {
-    qglClearColor( Qt::black );		// Let OpenGL clear to black
+    QPalette p = this->palette();
+    qglClearColor(p.color(this->backgroundRole()));		// Let OpenGL clear to background color
+    //qglClearColor(Qt::black);		// Let OpenGL clear to black
     static bool init = false;
     if (!init) {
         init = true;
