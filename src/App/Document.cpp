@@ -279,6 +279,8 @@ void Document::exportGraphviz(std::ostream& out) const
 
         std::string getId(const ObjectIdentifier & path) {
             DocumentObject * docObj = path.getDocumentObject();
+            if (!docObj)
+                return std::string();
 
             return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
         }
@@ -336,7 +338,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
             boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();             
 
-            if (expressions.size() > 0) {
+            if (!expressions.empty()) {
 
                 Graph* graph = nullptr;
                 graph = &DepList;
@@ -350,7 +352,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
 
                 // If documentObject has an expression, create a subgraph for it
-                if (!GraphList[obj] && graph) {
+                if (graph && !GraphList[obj]) {
                     GraphList[obj] = &graph->create_subgraph();
                     setGraphAttributes(obj);
                 }
@@ -367,8 +369,8 @@ void Document::exportGraphviz(std::ostream& out) const
                         DocumentObject * o = j->getDocumentObject();
 
                         // Doesn't exist already?
-                        if (!GraphList[o]) {
-                            
+                        if (o && !GraphList[o]) {
+
                             if (CSsubgraphs) {
                                 auto group = GeoFeatureGroupExtension::getGroupOfObject(o);
                                 auto graph2 = group ? GraphList[group] : &DepList;
