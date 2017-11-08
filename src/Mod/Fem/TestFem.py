@@ -382,11 +382,7 @@ class FemTest(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
         doc.recompute()
-        self.assertEqual(len(analysis.Group), 30)
-        '''
-        grep -c  "def make" src/Mod/Fem/ObjectsFem.py
-        because of the analysis itself count -1
-        '''
+        self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
 
     def test_pyimport_all_FEM_modules(self):
         # we're gonna try to import all python modules from FreeCAD Fem
@@ -981,6 +977,20 @@ class FemCcxAnalysisTest(unittest.TestCase):
 # helpers
 def fcc_print(message):
     FreeCAD.Console.PrintMessage('{} \n'.format(message))
+
+
+def get_defmake_count():
+    '''
+    count the def make in module ObjectsFem
+    could also be donn in bash with
+    grep -c  "def make" src/Mod/Fem/ObjectsFem.py
+    '''
+    name_modfile = home_path + 'Mod/Fem/ObjectsFem.py'
+    modfile = open(name_modfile, 'r')
+    lines_modefile = modfile.readlines()
+    modfile.close()
+    lines_defmake = [l for l in lines_modefile if l.startswith('def make')]
+    return len(lines_defmake)
 
 
 def compare_inp_files(file_name1, file_name2):
