@@ -122,6 +122,8 @@ private:
       {
         fcounter[0] = 0;
         fcounter[1] = 0;
+        facet[0] = 0;
+        facet[1] = 0;
       }
   };
 

@@ -91,20 +91,20 @@ App::DocumentObjectExecReturn *SetOperations::execute(void)
         else if (ot == "outer")
             type = MeshCore::SetOperations::Outer;
         else
-            throw new Base::ValueError("Operation type must either be 'union' or 'intersection'"
-                                      " or 'difference' or 'inner' or 'outer'");
+            throw Base::ValueError("Operation type must either be 'union' or 'intersection'"
+                                   " or 'difference' or 'inner' or 'outer'");
 
         MeshCore::SetOperations setOp(meshKernel1.getKernel(), meshKernel2.getKernel(), 
             pcKernel->getKernel(), type, 1.0e-5f);
         setOp.Do();
         Mesh.setValuePtr(pcKernel.release());
     }
-    else { 
+    else {
         // Error mesh property
         if (!mesh1)
-            throw new Base::ValueError("First input mesh not set");
+            throw Base::ValueError("First input mesh not set");
         if (!mesh2)
-            throw new Base::ValueError("Second input mesh not set");
+            throw Base::ValueError("Second input mesh not set");
     }
 
     return App::DocumentObject::StdReturn;

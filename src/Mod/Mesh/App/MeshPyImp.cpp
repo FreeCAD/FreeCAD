@@ -212,6 +212,8 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["AST" ] = MeshCore::MeshIO::ASTL;
     ext["OBJ" ] = MeshCore::MeshIO::OBJ;
     ext["OFF" ] = MeshCore::MeshIO::OFF;
+    ext["IDTF"] = MeshCore::MeshIO::IDTF;
+    ext["MGL" ] = MeshCore::MeshIO::MGL;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
     ext["VRML"] = MeshCore::MeshIO::VRML;
