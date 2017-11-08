@@ -37,9 +37,13 @@
 # include <Inventor/elements/SoCoordinateElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoMaterialBindingElement.h>
+# include <Inventor/elements/SoNormalBindingElement.h>
 # include <Inventor/elements/SoProjectionMatrixElement.h>
 # include <Inventor/elements/SoViewingMatrixElement.h>
 #endif
+
+#include <GL/glext.h>
+#include <Inventor/C/glue/gl.h>
 
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
@@ -48,6 +52,8 @@
 using namespace MeshGui;
 
 
+//#define RENDER_GLARRAYS
+
 SO_NODE_SOURCE(SoFCIndexedFaceSet);
 
 void SoFCIndexedFaceSet::initClass()
@@ -55,7 +61,7 @@ void SoFCIndexedFaceSet::initClass()
     SO_NODE_INIT_CLASS(SoFCIndexedFaceSet, SoIndexedFaceSet, "IndexedFaceSet");
 }
 
-SoFCIndexedFaceSet::SoFCIndexedFaceSet() : renderTriangleLimit(100000), selectBuf(0)
+SoFCIndexedFaceSet::SoFCIndexedFaceSet() : renderTriangleLimit(100000), updateGLArray(false), selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
     setName(SoFCIndexedFaceSet::getClassTypeId().getName());
@@ -77,9 +83,32 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
 
     unsigned int num = this->coordIndex.getNum()/4;
     if (mode == false || num <= this->renderTriangleLimit) {
+#ifdef RENDER_GLARRAYS
+        SoMaterialBindingElement::Binding matbind =
+            SoMaterialBindingElement::get(state);
+
+        if (matbind == SoMaterialBindingElement::OVERALL) {
+            SoMaterialBundle mb(action);
+            mb.sendFirst();
+            if (updateGLArray) {
+                updateGLArray = false;
+                generateGLArrays(state);
+            }
+            renderFacesGLArray(action);
+        }
+        else {
+            inherited::GLRender(action);
+        }
+#else
         inherited::GLRender(action);
+#endif
     }
     else {
+#if 0 && defined (RENDER_GLARRAYS)
+        SoMaterialBundle mb(action);
+        mb.sendFirst();
+        renderCoordsGLArray(action);
+#else
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
         int32_t binding = (int32_t)(matbind);
@@ -108,6 +137,7 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+#endif
     }
 }
 
@@ -187,6 +217,144 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
         viptr++; index++; normalindices++;
     }
     glEnd();
+}
+
+void SoFCIndexedFaceSet::invalidate()
+{
+    updateGLArray = true;
+}
+
+void SoFCIndexedFaceSet::generateGLArrays(SoState * state)
+{
+    this->index_array.resize(0);
+    this->vertex_array.resize(0);
+
+    const SoCoordinateElement * coords;
+    const SbVec3f * normals;
+    const int32_t * cindices;
+    int numindices;
+    const int32_t * nindices;
+    const int32_t * tindices;
+    const int32_t * mindices;
+    SbBool normalCacheUsed;
+
+    SbBool sendNormals = true;
+
+    this->getVertexData(state, coords, normals, cindices,
+                        nindices, tindices, mindices, numindices,
+                        sendNormals, normalCacheUsed);
+
+    const SbVec3f * points = coords->getArrayPtr3();
+
+    std::vector<float> face_vertices;
+    std::vector<int32_t> face_indices;
+
+    std::size_t numTria = numindices / 4;
+
+    SoNormalBindingElement::Binding normbind = SoNormalBindingElement::get(state);
+    if (normbind == SoNormalBindingElement::PER_VERTEX_INDEXED) {
+        face_vertices.reserve(3 * numTria * 6); // duplicate each vertex
+        face_indices.resize(3 * numTria);
+
+        // the nindices must have the length of numindices
+        int32_t vertex = 0;
+        int index = 0;
+        for (std::size_t i=0; i<numTria; i++) {
+            for (int j=0; j<3; j++) {
+                const SbVec3f& n = normals[nindices[index]];
+                face_vertices.push_back(n[0]);
+                face_vertices.push_back(n[1]);
+                face_vertices.push_back(n[2]);
+
+                const SbVec3f& p = points[cindices[index]];
+                face_vertices.push_back(p[0]);
+                face_vertices.push_back(p[1]);
+                face_vertices.push_back(p[2]);
+
+                face_indices[vertex] = vertex;
+                vertex++;
+                index++;
+            }
+            index++;
+        }
+    }
+
+    this->index_array.swap(face_indices);
+    this->vertex_array.swap(face_vertices);
+}
+
+//****************************************************************************
+// renderFacesGLArray: normal and coord from vertex_array;
+// no texture, color, highlight or selection but highest possible speed;
+// all vertices written in one go!
+//
+// Benchmark tests with an 256 MB STL file:
+//
+// Implementation                            | FPS
+// ================================================
+// OpenInventor                              |  3.5
+// With GL_PRIMITIVE_RESTART                 |  0.9
+// With GL_PRIMITIVE_RESTART_FIXED_INDEX     |  0.9
+// Without GL_PRIMITIVE_RESTART              | 12.5
+// 
+void SoFCIndexedFaceSet::renderFacesGLArray(SoGLRenderAction *action)
+{
+#if 0 // use Inventor's coordIndex saves memory but the rendering is very slow then
+    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+    PFNGLPRIMITIVERESTARTINDEXPROC glPrimitiveRestartIndex = (PFNGLPRIMITIVERESTARTINDEXPROC)
+        cc_glglue_getprocaddress(glue, "glPrimitiveRestartIndex");
+
+    int cnt = coordIndex.getNum();
+
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    // https://www.opengl.org/discussion_boards/archive/index.php/t-180767.html
+    // https://www.khronos.org/opengl/wiki/Vertex_Rendering#Primitive_Restart
+    glPrimitiveRestartIndex(0xffffffff);
+    glEnable(GL_PRIMITIVE_RESTART);
+    //glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
+
+    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
+    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, coordIndex.getValues(0));
+
+    glDisable(GL_PRIMITIVE_RESTART);
+    //glDisable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+#else // Needs more memory but makes it very fast
+    (void)action;
+    int cnt = index_array.size();
+
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
+    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+#endif
+}
+
+// Implementation                            | FPS
+// ================================================
+// drawCoords (every 4th vertex)             | 20.0
+// renderCoordsGLArray (all vertexes)        | 20.0
+// 
+void SoFCIndexedFaceSet::renderCoordsGLArray(SoGLRenderAction *action)
+{
+    (void)action;
+    int cnt = index_array.size();
+
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
+    glDrawElements(GL_POINTS, cnt, GL_UNSIGNED_INT, &(index_array[0]));
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
 }
 
 void SoFCIndexedFaceSet::doAction(SoAction * action)

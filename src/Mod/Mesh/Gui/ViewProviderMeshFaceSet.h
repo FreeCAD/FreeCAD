@@ -26,6 +26,7 @@
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
 namespace MeshGui {
+class SoFCIndexedFaceSet;
 
 /**
  * The ViewProviderMeshFaceSet class creates nodes for representing the mesh
@@ -65,7 +66,7 @@ private:
     bool directRendering;
     unsigned long triangleCount;
     SoCoordinate3       * pcMeshCoord;
-    SoIndexedFaceSet    * pcMeshFaces;
+    SoFCIndexedFaceSet  * pcMeshFaces;
     SoFCMeshObjectNode  * pcMeshNode;
     SoFCMeshObjectShape * pcMeshShape;
 };

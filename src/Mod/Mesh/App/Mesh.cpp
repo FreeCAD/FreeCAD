@@ -596,12 +596,16 @@ void MeshObject::addMesh(const MeshCore::MeshKernel& kernel)
 
 void MeshObject::deleteFacets(const std::vector<unsigned long>& removeIndices)
 {
+    if (removeIndices.empty())
+        return;
     _kernel.DeleteFacets(removeIndices);
     deletedFacets(removeIndices);
 }
 
 void MeshObject::deletePoints(const std::vector<unsigned long>& removeIndices)
 {
+    if (removeIndices.empty())
+        return;
     _kernel.DeletePoints(removeIndices);
     this->_segments.clear();
 }

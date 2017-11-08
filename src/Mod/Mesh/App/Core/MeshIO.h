@@ -46,6 +46,8 @@ namespace MeshIO {
         BSTL,
         OBJ,
         OFF,
+        IDTF,
+        MGL,
         IV,
         X3D,
         VRML,
@@ -178,6 +180,10 @@ public:
     void SaveXML (Base::Writer &writer) const;
     /** Saves a node to an OpenInventor file. */
     bool SaveMeshNode (std::ostream &rstrIn);
+    /** Writes an IDTF file. */
+    bool SaveIDTF (std::ostream &rstrOut) const;
+    /** Writes an MGL file. */
+    bool SaveMGL (std::ostream &rstrOut) const;
     /** Writes an OpenInventor file. */
     bool SaveInventor (std::ostream &rstrOut) const;
     /** Writes an X3D file. */
