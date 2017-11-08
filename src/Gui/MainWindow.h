@@ -151,6 +151,8 @@ public:
     void loadUrls(App::Document*, const QList<QUrl>&);
     //@}
 
+    void updateActions();
+
 public Q_SLOTS:
     /**
      * Sets text to the pane in the status bar.
@@ -256,7 +258,7 @@ private Q_SLOTS:
     /** 
      * This method gets frequently activated and test the commands if they are still active.
      */
-    void updateActions();
+    void _updateActions();
     /**
      * \internal
      */

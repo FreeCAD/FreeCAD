@@ -766,6 +766,8 @@ void Application::slotActiveDocument(const App::Document& Doc)
             }
         }
         signalActiveDocument(*doc->second);
+
+        getMainWindow()->updateActions();
     }
 }
 
@@ -792,6 +794,7 @@ void Application::slotRelabelObject(const ViewProvider& vp)
 void Application::slotActivatedObject(const ViewProvider& vp)
 {
     this->signalActivatedObject(vp);
+    getMainWindow()->updateActions();
 }
 
 void Application::onLastWindowClosed(Gui::Document* pcDoc)

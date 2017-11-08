@@ -62,6 +62,7 @@ void CreateMacroCommands(void);
 void CreateViewStdCommands(void);
 void CreateWindowStdCommands(void);
 void CreateTestCommands(void);
+void CreateLinkCommands(void);
 
 
 /** The CommandBase class
@@ -161,8 +162,6 @@ protected:
     //@{
     /// Methods which gets called when activated, needs to be reimplemented!
     virtual void activated(int iMsg)=0;
-    /// Override this method if your Cmd is not always active
-    virtual bool isActive(void){return true;} 
     /// Creates the used Action
     virtual Action * createAction(void);
     /// Applies the menu text, tool and status tip to the passed action object
@@ -175,6 +174,8 @@ public:
     //@{
     /// CommandManager is a friend
     friend class CommandManager;
+    /// Override this method if your Cmd is not always active
+    virtual bool isActive(void){return true;} 
     /// Get somtile called to check the state of the command
     void testActive(void);
     /// Enables or disables the command

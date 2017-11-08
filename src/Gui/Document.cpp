@@ -118,6 +118,7 @@ struct DocumentP
     Connection connectFinishImportObjects;
     Connection connectUndoDocument;
     Connection connectRedoDocument;
+    Connection connectRecomputed;;
     Connection connectTransactionAppend;
     Connection connectTransactionRemove;
 };
@@ -179,6 +180,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotUndoDocument, this, _1));
     d->connectRedoDocument = pcDocument->signalRedo.connect
         (boost::bind(&Gui::Document::slotRedoDocument, this, _1));
+    d->connectRecomputed = pcDocument->signalRecomputed.connect
+        (boost::bind(&Gui::Document::slotRecomputed, this, _1));
 
     d->connectTransactionAppend = pcDocument->signalTransactionAppend.connect
         (boost::bind(&Gui::Document::slotTransactionAppend, this, _1, _2));
@@ -217,6 +220,7 @@ Document::~Document()
     d->connectFinishImportObjects.disconnect();
     d->connectUndoDocument.disconnect();
     d->connectRedoDocument.disconnect();
+    d->connectRecomputed.disconnect();
     d->connectTransactionAppend.disconnect();
     d->connectTransactionRemove.disconnect();
 
@@ -741,6 +745,7 @@ void Document::slotUndoDocument(const App::Document& doc)
         return;
     
     signalUndoDocument(*this);  
+    getMainWindow()->updateActions();
 }
 
 void Document::slotRedoDocument(const App::Document& doc)
@@ -749,6 +754,14 @@ void Document::slotRedoDocument(const App::Document& doc)
         return;
     
     signalRedoDocument(*this);   
+    getMainWindow()->updateActions();
+}
+
+void Document::slotRecomputed(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    getMainWindow()->updateActions();
 }
 
 void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)

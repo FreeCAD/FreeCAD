@@ -117,6 +117,8 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 
+FC_LOG_LEVEL_INIT("MainWindow",true,true);
+
 #if defined(Q_OS_WIN32)
 #define slots
 //#include <private/qmainwindowlayout_p.h>
@@ -304,7 +306,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // update gui timer
     d->activityTimer = new QTimer(this);
     d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
-    connect(d->activityTimer, SIGNAL(timeout()),this, SLOT(updateActions()));
+    connect(d->activityTimer, SIGNAL(timeout()),this, SLOT(_updateActions()));
     d->activityTimer->setSingleShot(false);
     d->activityTimer->start(300);
 
@@ -1051,10 +1053,17 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
-void MainWindow::updateActions()
+void MainWindow::updateActions() {
+    if(this && !d->activityTimer->isActive())
+        d->activityTimer->start(300);
+}
+
+void MainWindow::_updateActions()
 {
     if (isVisible()) {
+        FC_LOG("update actions");
         Application::Instance->commandManager().testActive();
+        d->activityTimer->stop();
     }
 }
 

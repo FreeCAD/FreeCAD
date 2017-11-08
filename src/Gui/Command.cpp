@@ -238,16 +238,20 @@ bool Command::isViewOfType(Base::Type t) const
 
 void Command::addTo(QWidget *pcWidget)
 {
-    if (!_pcAction)
+    if (!_pcAction) {
         _pcAction = createAction();
+        testActive();
+    }
 
     _pcAction->addTo(pcWidget);
 }
 
 void Command::addToGroup(ActionGroup* group, bool checkable)
 {
-    if (!_pcAction)
+    if (!_pcAction) {
         _pcAction = createAction();
+        testActive();
+    }
 
     _pcAction->setCheckable(checkable);
     group->addAction(_pcAction->findChild<QAction*>());

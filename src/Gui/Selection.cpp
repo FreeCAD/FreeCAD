@@ -887,6 +887,8 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         signalSelectionChanged(Chng);
         FC_TRACE("done signaling add selection");
 
+        getMainWindow()->updateActions();
+
         // allow selection
         return true;
     }
@@ -948,6 +950,8 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         FC_TRACE("signaling add selection");
         signalSelectionChanged(Chng);
         FC_TRACE("done signaling add selection");
+
+        getMainWindow()->updateActions();
 
         // allow selection
         return true;
@@ -1028,6 +1032,8 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
         signalSelectionChanged(Chng);
     
         rmvList.push_back(Chng);
+
+        getMainWindow()->updateActions();
     }
 }
 
@@ -1195,6 +1201,7 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 
     Notify(Chng);
     signalSelectionChanged(Chng);
+    getMainWindow()->updateActions();
 }
 
 void SelectionSingleton::clearSelection(const char* pDocName)
@@ -1240,6 +1247,8 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         FC_TRACE("signaling clear selection");
         signalSelectionChanged(Chng);
         FC_TRACE("done signaling clear selection");
+
+        getMainWindow()->updateActions();
     }
 }
 
@@ -1258,6 +1267,7 @@ void SelectionSingleton::clearCompleteSelection()
 
     Notify(Chng);
     signalSelectionChanged(Chng);
+    getMainWindow()->updateActions();
 }
 
 bool SelectionSingleton::isSelected(const char* pDocName, const char* pObjectName, const char* pSubName) const
