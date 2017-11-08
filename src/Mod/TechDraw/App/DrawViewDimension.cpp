@@ -225,7 +225,7 @@ std::string  DrawViewDimension::getFormatedValue()
     std::string prefixSym = getPrefix();                                  //get Radius/Diameter/... symbol
 
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.[0-9]*[aefgAEFG]"));     //printf double format spec 
+    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
     QString match;
     QString specVal = Base::Tools::fromStdString("%.2f");                    //sensible default
     pos = 0;
