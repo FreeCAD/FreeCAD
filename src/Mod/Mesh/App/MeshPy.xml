@@ -405,7 +405,8 @@ The argument int is the mode: 0=inner, 1=outer
 		</Methode>
 		<Methode Name="smooth" Const="true">
 			<Documentation>
-				<UserDocu>Smooth the mesh</UserDocu>
+				<UserDocu>Smooth the mesh
+smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="optimizeTopology" Const="true">
