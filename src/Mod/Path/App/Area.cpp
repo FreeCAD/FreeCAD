@@ -208,16 +208,41 @@ void Area::setPlane(const TopoDS_Shape &shape) {
     myTrsf = trsf;
 }
 
+static bool getShapePlane(const TopoDS_Shape &shape, gp_Pln &pln) {
+    if(shape.IsNull())
+        return false;
+    if(shape.ShapeType() == TopAbs_FACE) {
+        BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+        if(adapt.GetType() != GeomAbs_Plane)
+            return false;
+        pln = adapt.Plane();
+        return true;
+    }
+    BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
+    if (!finder.Found())
+        return false;
+
+    // TODO: It seemed that FindSurface disregard shape's
+    // transformation SOMETIME, so we have to transformed the found
+    // plane manually. Need to figure out WHY!
+    //
+    // ADD NOTE: Okay, one thing I find out that for face shape, this
+    // FindSurface may produce plane at the wrong position, so use
+    // adaptor to get the underlaying surface plane directly (see
+    // above).  It remains to be seen that if FindSurface has the same
+    // problem on wires
+    pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+    pln.Transform(shape.Location().Transformation());
+    return true;
+}
+
 bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {
     if(s1.IsNull() || s2.IsNull()) return false;
-    if(s1.IsEqual(s2)) return true;
-    TopoDS_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    builder.Add(comp,s1);
-    builder.Add(comp,s2);
-    BRepLib_FindSurface planeFinder(comp,-1,Standard_True);
-    return planeFinder.Found();
+    if(s1.IsSame(s2)) return true;
+    gp_Pln pln1,pln2;
+    if(!getShapePlane(s1,pln1) || !getShapePlane(s2,pln2))
+        return false;
+    return pln1.Position().IsCoplanar(pln2.Position(),Precision::Confusion(),Precision::Confusion());
 }
 
 int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
@@ -1071,33 +1096,12 @@ struct FindPlane {
     FindPlane(TopoDS_Shape &s, gp_Trsf &t, double &z)
         :myPlaneShape(s),myTrsf(t),myZ(z)
     {}
-    void operator()(const TopoDS_Shape &shape, int type) {
+    void operator()(const TopoDS_Shape &shape, int) {
         gp_Trsf trsf;
 
         gp_Pln pln;
-        if(type == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
-            if(adapt.GetType() != GeomAbs_Plane)
-                return;
-            pln = adapt.Plane();
-        }else{
-            BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
-            if (!finder.Found())
-                return;
-
-            // TODO: It seemed that FindSurface disregard shape's
-            // transformation SOMETIME, so we have to transformed the found
-            // plane manually. Need to figure out WHY!
-            //
-            // ADD NOTE: Okay, one thing I find out that for face shape, this
-            // FindSurface may produce plane at the wrong position, so use
-            // adaptor to get the underlaying surface plane directly (see
-            // above).  It remains to be seen that if FindSurface has the same
-            // problem on wires
-            gp_Pln pln = GeomAdaptor_Surface(finder.Surface()).Plane();
-            pln.Transform(shape.Location().Transformation());
-        }
-
+        if(!getShapePlane(shape,pln))
+            return;
         gp_Ax3 pos = pln.Position();
         AREA_TRACE("plane pos " << AREA_XYZ(pos.Location()) << ", " << AREA_XYZ(pos.Direction()));
 
@@ -2293,8 +2297,8 @@ struct ShapeInfo{
     bool myRebase;
     bool myStart;
 
-    ShapeInfo(BRepLib_FindSurface &finder, const TopoDS_Shape &shape, ShapeParams &params)
-        : myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
+    ShapeInfo(const gp_Pln &pln, const TopoDS_Shape &shape, ShapeParams &params)
+        : myPln(pln)
         , myShape(shape)
         , myStartPt(1e20,1e20,1e20)
         , myParams(params)
@@ -2579,12 +2583,12 @@ struct ShapeInfoBuilder {
     {}
 
     void operator()(const TopoDS_Shape &shape, int type) {
-        BRepLib_FindSurface finder(shape,-1,Standard_True);
-        if(!finder.Found()) {
+        gp_Pln pln;
+        if(!getShapePlane(shape,pln)){
             myList.push_back(ShapeInfo(shape,myParams));
             return;
         }
-        myList.push_back(ShapeInfo(finder,shape,myParams));
+        myList.push_back(ShapeInfo(pln,shape,myParams));
         if(myArcPlaneFound ||
            myArcPlane==Area::ArcPlaneNone ||
            myArcPlane==Area::ArcPlaneVariable)
