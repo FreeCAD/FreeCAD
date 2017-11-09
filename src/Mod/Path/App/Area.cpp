@@ -510,33 +510,41 @@ struct WireJoiner {
         gp_Pnt p2;
         Box box;
         int iteration;
+        int iStart[2]; // adjacent list index start for p1 and p2
+        int iEnd[2]; // adjacent list index end
         bool used;
         bool hasBox;
         EdgeInfo(const TopoDS_Edge &e, bool bbox)
-            :edge(e),iteration(0) ,used(false),hasBox(false)
+            :edge(e),hasBox(false)
         {
             getEndPoints(e,p1,p2);
             if(bbox) hasBox= getBBox(e,box);
+            reset();
         }
         EdgeInfo(const TopoDS_Edge &e, const gp_Pnt &pt1,
                 const gp_Pnt &pt2, bool bbox)
-            :edge(e),p1(pt1),p2(pt2),iteration(0)
-            ,used(false),hasBox(false)
+            :edge(e),p1(pt1),p2(pt2),hasBox(false)
         {
             if(bbox) hasBox= getBBox(e,box);
+            reset();
+        }
+        void reset() {
+            iteration = 0;
+            used = false;
+            iStart[0] = iStart[1] = iEnd[0] = iEnd[1] = -1;
         }
     };
 
     typedef std::list<EdgeInfo> Edges;
     Edges edges;
 
-    struct EdgeValue {
+    struct VertexInfo {
         Edges::iterator it;
         bool start;
-        EdgeValue(Edges::iterator _it, bool _start)
-            :it(_it),start(_start)
+        VertexInfo(Edges::iterator it, bool start)
+            :it(it),start(start)
         {}
-        bool operator==(const EdgeValue &other) const {
+        bool operator==(const VertexInfo &other) const {
             return it==other.it && start==other.start;
         }
         const gp_Pnt &pt() const {
@@ -550,12 +558,12 @@ struct WireJoiner {
     struct PntGetter
     {
         typedef const gp_Pnt& result_type;
-        result_type operator()(const EdgeValue &v) const {
+        result_type operator()(const VertexInfo &v) const {
             return v.pt();
         }
     };
 
-    bgi::rtree<EdgeValue,RParameters, PntGetter> vmap;
+    bgi::rtree<VertexInfo,RParameters, PntGetter> vmap;
 
     struct BoxGetter
     {
@@ -576,14 +584,14 @@ struct WireJoiner {
     void remove(Edges::iterator it) {
         if(it->hasBox)
             boxMap.remove(it);
-        vmap.remove(EdgeValue(it,true));
-        vmap.remove(EdgeValue(it,false));
+        vmap.remove(VertexInfo(it,true));
+        vmap.remove(VertexInfo(it,false));
         edges.erase(it);
     }
 
     void add(Edges::iterator it) {
-        vmap.insert(EdgeValue(it,true));
-        vmap.insert(EdgeValue(it,false));
+        vmap.insert(VertexInfo(it,true));
+        vmap.insert(VertexInfo(it,false));
         if(it->hasBox)
             boxMap.insert(it);
     }
@@ -626,7 +634,7 @@ struct WireJoiner {
             bool done = false;
             for(int idx=0;!done&&idx<2;++idx) {
                 while(edges.size()) {
-                    std::vector<EdgeValue> ret;
+                    std::vector<VertexInfo> ret;
                     ret.reserve(1);
                     const gp_Pnt &pt = idx?pstart:pend;
                     vmap.query(bgi::nearest(pt,1),std::back_inserter(ret));
@@ -749,12 +757,6 @@ struct WireJoiner {
 #endif
     }
 
-    struct StackInfo {
-        std::deque<EdgeValue> ret;
-        int idx;
-        StackInfo():idx(0){}
-    };
-
     // This algorithm tries to find a set of closed wires that includes as many
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
@@ -767,76 +769,122 @@ struct WireJoiner {
         // below, and call makeCleanWire to fix the tolerance
         const double tol = 1e-10;
 
-        std::map<int,TopoDS_Edge> edgesToVisit;
+        std::vector<VertexInfo> adjacentList;
+        std::set<EdgeInfo*> edgesToVisit;
         int count = 0;
-        for(const auto &info : edges) {
+        int skips = 0;
+
+        for(auto &info : edges)
+            info.reset();
+
+        FC_TIME_INIT(t);
+        int rcount = 0;
+
+        for(auto &info : edges) {
 #if OCC_VERSION_HEX >= 0x070000
             if(BRep_Tool::IsClosed(info.edge))
 #else
-            gp_Pnt p1,p2;
-            getEndPoints(info.edge,p1,p2);
-            if(p1.SquareDistance(p2)<tol)
+            if(info.p1.SquareDistance(info.p2)<tol)
 #endif
             {
                 builder.Add(comp,BRepBuilderAPI_MakeWire(info.edge).Wire());
                 ++count;
+                continue;
+            }
+            gp_Pnt pt[2];
+            pt[0] = info.p1;
+            pt[1] = info.p2;
+            for(int i=0;i<2;++i) {
+                if(info.iStart[i]>=0)
+                    continue;
+                info.iEnd[i] = info.iStart[i] = (int)adjacentList.size();
+
+                // populate adjacent list
+                for(auto vit=vmap.qbegin(bgi::nearest(pt[i],INT_MAX));vit!=vmap.qend();++vit) {
+                    ++rcount;
+                    if(vit->pt().SquareDistance(pt[i]) > tol)
+                        break;
+                    auto &vinfo = *vit;
+                    // yse, we push ourself, too, because other edges require
+                    // this info in the adjcent list. We'll do filtering later.
+                    adjacentList.push_back(vinfo);
+                    ++info.iEnd[i];
+                }
+                // copy the adjacent indices to all connected edges
+                for(int j=info.iStart[i];j<info.iEnd[i];++j) {
+                    auto &other = adjacentList[j];
+                    auto &otherInfo = *other.it;
+                    if(&otherInfo != &info) {
+                        int k = other.start?0:1;
+                        otherInfo.iStart[k] = info.iStart[i];
+                        otherInfo.iEnd[k] = info.iEnd[i];
+                    }
+                }
+            }
+            if(info.iStart[0]!=info.iEnd[0] && info.iStart[1]!=info.iEnd[1]) {
+                // add the edge only if it is connected to some other edges on
+                // both ends
+                edgesToVisit.insert(&info);
             }else
-                edgesToVisit[info.edge.HashCode(INT_MAX)] = info.edge;
+                ++skips;
         }
 
-        std::deque<StackInfo> stack;
-        int skips = 0;
+        FC_TIME_LOG(t,"rtree::nearest (" << rcount << ')');
+
+        struct StackInfo {
+            size_t iStart;
+            size_t iEnd;
+            size_t iCurrent;
+            StackInfo(size_t idx):iStart(idx),iEnd(idx),iCurrent(idx){}
+        };
+        std::vector<StackInfo> stack;
+        std::vector<VertexInfo> vertexStack;
 
         for(int iteration=1;edgesToVisit.size();++iteration) {
-            auto it = edgesToVisit.begin();
-            TopoDS_Edge e = it->second;
-            edgesToVisit.erase(it);
-            gp_Pnt pstart,pend;
-            getEndPoints(e,pstart,pend);
-            bool skip_me = true;
+            EdgeInfo *currentInfo = *edgesToVisit.begin();
+            int currentIdx = 1; // used to tell whether search connection from the start(0) or end(1)
+            TopoDS_Edge &e = currentInfo->edge;
+            edgesToVisit.erase(edgesToVisit.begin());
+            gp_Pnt pstart=currentInfo->p1;
+            gp_Pnt pend=currentInfo->p2;
+            currentInfo->used = true;
+            currentInfo->iteration = iteration;
             stack.clear();
+            vertexStack.clear();
 
             // pstart and pend is the start and end vertex of the current wire
             while(true) {
                 // push a new stack entry
-                stack.emplace_back();
+                stack.emplace_back(vertexStack.size());
                 auto &r = stack.back();
 
                 // this loop is to find all edges connected to pend, and save them into stack.back()
-                for(auto vit=vmap.qbegin(bgi::nearest(pend,INT_MAX));
-                    vit!=vmap.qend();++vit)
-                {
-                    if(vit->pt().SquareDistance(pend) > tol)
-                        break;
-
-                    auto &info = *vit->it;
-
-                    // use 'iteration' to make sure we don't visit an edge twice.
-                    if(skip_me && info.edge.IsSame(e)) {
-                        skip_me = false;
-                        info.iteration = iteration;
-                        info.used = true;
-                        continue;
-                    }
+                for(int i=currentInfo->iStart[currentIdx];i<currentInfo->iEnd[currentIdx];++i) {
+                    auto &info = *adjacentList[i].it;
                     if(info.iteration!=iteration) {
                         info.iteration = iteration;
-                        r.ret.push_back(*vit);
+                        vertexStack.push_back(adjacentList[i]);
+                        ++r.iEnd;
                     }
                 }
-                while(stack.size()) {
+                while(true) {
                     auto &r = stack.back();
-                    if(r.idx<(int)r.ret.size()) {
+                    if(r.iCurrent<r.iEnd) {
                         // now pick one edge from stack.back(), connect it to
                         // pend, then extend pend
-                        pend = r.ret[r.idx].ptOther();
+                        auto &vinfo = vertexStack[r.iCurrent];
+                        pend = vinfo.ptOther();
+                        // update current edge info
+                        currentInfo = &(*vinfo.it);
+                        currentIdx = vinfo.start?1:0;
                         break;
                     }
                     // if no edge left in stack.back(), then pop it, and try again
-                    for(auto &v : r.ret)
-                        --v.it->iteration;
+                    vertexStack.erase(vertexStack.begin()+r.iStart,vertexStack.end());
                     stack.pop_back();
-                    if(stack.size())
-                        ++stack.back().idx;
+                    if(stack.empty())
+                        break;
+                    ++stack.back().iCurrent;
                 }
                 if(stack.empty()) {
                     // If stack is empty, it means this wire is open. Try a new
@@ -845,21 +893,16 @@ struct WireJoiner {
                     break;
                 }
                 if(pstart.SquareDistance(pend) > tol) {
-                    // check if the wire is closed
+                    // if the wire is not closed yet, continue search for the
+                    // next connected edge
                     continue;
                 }
 
                 Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
                 wireData->Add(e);
                 for(auto &r : stack) {
-                    const auto &v = r.ret[r.idx];
+                    const auto &v = vertexStack[r.iCurrent];
                     auto &info = *v.it;
-                    if(!info.used) {
-                        info.used = true;
-                        auto it = edgesToVisit.find(info.edge.HashCode(INT_MAX));
-                        if(it!=edgesToVisit.end())
-                            edgesToVisit.erase(it);
-                    }
                     if(v.start)
                         wireData->Add(info.edge);
                     else
@@ -867,14 +910,26 @@ struct WireJoiner {
                 }
                 // TechDraw even uses 0.1 as tolerance. Really? Why?
                 TopoDS_Wire wire = makeCleanWire(wireData,0.01);
-                if(!BRep_Tool::IsClosed(wire))
-                    throw Base::RuntimeError("Area: failed to close projection wire");
-                builder.Add(comp,wire);
-                ++count;
+                if(!BRep_Tool::IsClosed(wire)) {
+                    FC_WARN("failed to close some projection wire");
+                    ++skips;
+                }else{
+                    for(auto &r : stack) {
+                        const auto &v = vertexStack[r.iCurrent];
+                        auto &info = *v.it;
+                        if(!info.used) {
+                            info.used = true;
+                            edgesToVisit.erase(&info);
+                        }
+                    }
+                    Area::showShape(wire,"joined");
+                    builder.Add(comp,wire);
+                    ++count;
+                }
                 break;
             }
         }
-        AREA_TRACE("found " << count << " closed wires, skipped " << skips);
+        FC_TIME_LOG(t,"found " << count << " closed wires, skipped " << skips << "edges. ");
         return skips;
 #endif
     }
@@ -1122,9 +1177,15 @@ int Area::project(TopoDS_Shape &shape_out,
         TopoDS_Shape shape;
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
         ADD_HLR_SHAPE(V)
-        // ADD_HLR_SHAPE(H)
         ADD_HLR_SHAPE(OutLineV);
+        // ADD_HLR_SHAPE(Rg1LineV);
+        // ADD_HLR_SHAPE(RgNLineV);
+        // ADD_HLR_SHAPE(IsoLineV);
+        // ADD_HLR_SHAPE(H)
+        // ADD_HLR_SHAPE(Rg1LineH);
+        // ADD_HLR_SHAPE(RgNLineH);
         // ADD_HLR_SHAPE(OutLineH);
+        // ADD_HLR_SHAPE(IsoLineH);
     }
     catch (...) {
         AREA_ERR("error occurred while extracting edges");
