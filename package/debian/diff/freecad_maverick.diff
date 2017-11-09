@@ -248,9 +248,9 @@
 +\fB\-P, \-\-python\-path\fR \fIarg\fR
 +Additional Python path.
 +.SH SEE ALSO
-+To get more information about \fBFreeCAD\fR, please visit \fIhttp://juergen\-riegel.net/FreeCAD/Docu/index.php/Main_Page\fR
++To get more information about \fBFreeCAD\fR, please visit \fIhttps://freecadweb.org/wiki\fR
 +.SH BUGS
-+To report a bug, please visit \fIhttp://free-cad.sf.net/\fR
++To report a bug, please visit \fIhttps://freecadweb.org/tracker/\fR
 +.SH AUTHOR
 +This manual page was written by Werner Mayer.
 --- freecad-0.11.3729.orig/debian/rules
