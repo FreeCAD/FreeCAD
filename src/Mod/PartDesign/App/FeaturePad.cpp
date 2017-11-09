@@ -50,6 +50,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 //#include "Body.h"
 #include "FeaturePad.h"
@@ -214,12 +215,20 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         if (!base.IsNull()) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
 //             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
-            // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Fuse mkFuse(base, prism);
-            // Let's check if the fusion has been successful
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
-            TopoDS_Shape result = mkFuse.Shape();
+			TopoDS_Shape result;
+			if (getBaseObject()->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
+			{
+				result = prism;
+			}
+			else
+			{
+				// Let's call algorithm computing a fuse operation:
+				BRepAlgoAPI_Fuse mkFuse(base, prism);
+				// Let's check if the fusion has been successful
+				if (!mkFuse.IsDone())
+					return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
+				result = mkFuse.Shape();
+			}
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             // lets check if the result is a solid
