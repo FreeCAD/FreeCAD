@@ -1971,7 +1971,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Or&amp;thogonale Darstellung</translation>
+      <translation>Or&amp;thographische Darstellung</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
