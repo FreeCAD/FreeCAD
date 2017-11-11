@@ -106,7 +106,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt einen Klon der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
@@ -176,7 +176,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt einen Klon der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
@@ -4295,7 +4295,7 @@ Use the sketch validation tool.</source>
       <location filename="../../CommandSketcherTools.cpp" line="-275"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt einen Klon der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
