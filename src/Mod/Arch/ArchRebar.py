@@ -163,8 +163,10 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyPlacementList","PlacementList","Arch",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
         obj.addProperty("App::PropertyLink","Host","Arch",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"))
         obj.addProperty("App::PropertyString", "CustomSpacing", "Arch", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"))
+        obj.addProperty("App::PropertyDistance", "Length", "Arch", QT_TRANSLATE_NOOP("App::Property","Total length of a rebar"))
         self.Type = "Rebar"
-        obj.setEditorMode("Spacing",1)
+        obj.setEditorMode("Spacing", 1)
+        obj.setEditorMode("Length", 1)
 
     def getBaseAndAxis(self,wire):
         "returns a base point and orientation axis from the base wire"
@@ -309,6 +311,10 @@ class _Rebar(ArchComponent.Component):
         if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
             return
         # all tests ok!
+        if hasattr(obj, "Length"):
+            length = getLengthOfRebar(obj)
+            if length:
+                obj.Length = length
         pl = obj.Placement
         import Part
         circle = Part.makeCircle(obj.Diameter.Value/2,bpoint,bvec)
@@ -410,8 +416,8 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
             if hasattr(self,"centerline"):
                 if self.centerline:
                     self.centerlinegroup.removeChild(self.centerline)
-            if hasattr(obj.Proxy,"wires"): 
-                if obj.Proxy.wires: 
+            if hasattr(obj.Proxy,"wires"):
+                if obj.Proxy.wires:
                     from pivy import coin
                     import re,Part
                     self.centerline = coin.SoSeparator()
@@ -447,7 +453,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         self.centerlinegroup.addChild(self.centerlinestyle)
         vobj.addDisplayMode(self.centerlinegroup,"Centerline")
         ArchComponent.ViewProviderComponent.attach(self,vobj)
-        
+
     def onChanged(self,vobj,prop):
         if (prop == "LineColor") and hasattr(vobj,"LineColor"):
             if hasattr(self,"centerlinecolor"):
@@ -512,6 +518,22 @@ def strprocessOfCustomSpacing(span_string):
                 count += 1
         index += 1
     return spacinglist
+
+def getLengthOfRebar(rebar):
+    """ getLengthOfRebar(RebarObject): Calculates the length of the rebar."""
+    base = rebar.Base
+    # When rebar is derived from DWire
+    if hasattr(base, "Length"):
+        return base.Length
+    # When rebar is derived from Sketch
+    elif base.isDerivedFrom("Sketcher::SketchObject"):
+        length = 0
+        for geo in base.Geometry:
+            length += geo.length()
+        return length
+    else:
+        FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
+        return None
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Rebar',_CommandRebar())
