@@ -55,6 +55,7 @@ parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up
 parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
+parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
 
 TOOLTIP_ARGS=parser.format_help()
 
@@ -69,7 +70,9 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = 'mm/min'
+UNIT_SPEED_FORMAT = 'mm/min'
+UNIT_FORMAT = 'mm'
+
 MACHINE_NAME = "LinuxCNC"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
@@ -108,6 +111,9 @@ def processArguments(argstring):
     global PRECISION
     global PREAMBLE
     global POSTAMBLE
+    global UNITS
+    global UNIT_SPEED_FORMAT
+    global UNIT_FORMAT
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -133,6 +139,11 @@ def processArguments(argstring):
             PREAMBLE = args.preamble
         if args.postamble is not None:
             POSTAMBLE = args.postamble
+        if args.inches:
+            UNITS = 'G20'
+            UNIT_SPEED_FORMAT = 'in/min'
+            UNIT_FORMAT = 'in'
+
     except:
         return False
 
@@ -142,7 +153,7 @@ def export(objectslist, filename, argstring):
     if not processArguments(argstring):
         return None
     global UNITS
-    global UNIT_FORMAT
+    global UNIT_SPEED_FORMAT
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -178,15 +189,16 @@ def export(objectslist, filename, argstring):
         if hasattr(job, "MachineUnits"):
             if job.MachineUnits == "Metric":
                UNITS = "G21"
-               UNIT_FORMAT = 'mm/min'
+               UNIT_SPEED_FORMAT = 'mm/min'
+
             else:
                UNITS = "G20"
-               UNIT_FORMAT = 'in/min'
+               UNIT_SPEED_FORMAT = 'in/min'
 
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine: %s, %s)\n" % (myMachine, UNIT_FORMAT)
+            gcode += linenumber() + "(machine: %s, %s)\n" % (myMachine, UNIT_SPEED_FORMAT)
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -276,12 +288,15 @@ def parse(pathobj):
                         if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             outstring.append(
-                                param + format(float(speed.getValueAs(UNIT_FORMAT)), precision_string) )
+                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string) )
                     elif param == 'T':
                         outstring.append(param + str(int(c.Parameters['T'])))
                     else:
+                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param + format(c.Parameters[param], precision_string))
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string) )
+                            #param + format(c.Parameters[param], precision_string))
+
 
             # store the latest command
             lastcommand = command

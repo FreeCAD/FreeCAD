@@ -54,7 +54,6 @@ import sys,os,xml.sax,pycurl,StringIO
 
 files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
           ["Assembly.ts",          "/Mod/Assembly/Gui/Resources/translations/Assembly_de.ts"],
-          ["Complete.ts",          "/Mod/Complete/Gui/Resources/translations/Complete_de.ts"],
           ["draft.ts",             "/Mod/Draft/Resources/translations/Draft.ts"],
           ["Drawing.ts",           "/Mod/Drawing/Gui/Resources/translations/Drawing_de.ts"],
           ["Fem.ts",               "/Mod/Fem/Gui/Resources/translations/Fem.ts"],
@@ -78,6 +77,7 @@ files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
           ["Spreadsheet.ts",       "/Mod/Spreadsheet/Gui/Resources/translations/Spreadsheet.ts"],
           ["Path.ts",              "/Mod/Path/Gui/Resources/translations/Path.ts"],
           ["Tux.ts",               "/Mod/Tux/Resources/translations/Tux.ts"],
+          ["TechDraw.ts",          "/Mod/TechDraw/Resources/translations/TechDraw.ts"],
           ]
 
 

@@ -51,7 +51,7 @@
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton">
           <property name="toolTip">
-           <string>the default color for new objects</string>
+           <string>The default color for new objects</string>
           </property>
           <property name="color">
            <color>
@@ -95,7 +95,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox">
           <property name="toolTip">
-           <string>the default linewidth for new objects</string>
+           <string>The default linewidth for new objects</string>
           </property>
           <property name="value">
            <number>2</number>
@@ -168,7 +168,7 @@
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_2">
           <property name="toolTip">
-           <string>the default color for snap symbols</string>
+           <string>The default color for snap symbols</string>
           </property>
           <property name="color">
            <color>
@@ -192,7 +192,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>check this if you want to use the color/linewidth from the toolbar as default</string>
+           <string>Check this if you want to use the color/linewidth from the toolbar as default</string>
           </property>
           <property name="text">
            <string>Save current color and linewidth across sessions</string>
@@ -212,7 +212,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
           <property name="toolTip">
-           <string>if checked, a widget indicating the current working plane orientation appears during drawing operations</string>
+           <string>If checked, a widget indicating the current working plane orientation appears during drawing operations</string>
           </property>
           <property name="text">
            <string>Show Working Plane tracker</string>
@@ -387,7 +387,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit">
           <property name="toolTip">
-           <string>A SVG linestyle definition</string>
+           <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
            <string>0.09,0.05</string>
@@ -430,7 +430,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
-           <string>A SVG linestyle definition</string>
+           <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
            <string>0.09,0.05,0.02,0.05</string>
@@ -473,7 +473,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_3">
           <property name="toolTip">
-           <string>A SVG linestyle definition</string>
+           <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
            <string>0.02,0.02</string>

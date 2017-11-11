@@ -200,7 +200,7 @@ class ObjectArray:
                 for i in range(obj.Copies):
 
                     ang = 360
-                    if obj.CopiesPolar > 0:
+                    if obj.Copies > 0:
                         ang = obj.Angle / obj.Copies * (1 + i)
 
                     np = self.rotatePath(basepath, ang, obj.Centre)

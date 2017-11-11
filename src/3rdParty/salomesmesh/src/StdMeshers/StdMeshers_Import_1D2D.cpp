@@ -412,7 +412,7 @@ bool StdMeshers_Import_1D2D::Compute(SMESH_Mesh & theMesh, const TopoDS_Shape & 
           proj.Perform( gc );
           if ( !proj.IsDone() || proj.NbPoints() < 1 )
             continue;
-          Quantity_Parameter U,V;
+          Standard_Real U,V;
           proj.LowerDistanceParameters(U,V);
           gp_XY uv( U,V );
           classifier.Perform( geomFace, uv, clsfTol );

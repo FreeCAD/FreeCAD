@@ -678,7 +678,8 @@ void PropertySheet::insertRows(int row, int count)
             moveCell(*i, CellAddress(i->row() + count, i->col()), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
 }
 
 /**
@@ -728,7 +729,8 @@ void PropertySheet::removeRows(int row, int count)
             moveCell(*i, CellAddress(i->row() - count, i->col()), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
 }
 
 void PropertySheet::insertColumns(int col, int count)
@@ -764,7 +766,8 @@ void PropertySheet::insertColumns(int col, int count)
             moveCell(*i, CellAddress(i->row(), i->col() + count), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
 }
 
 /**
@@ -814,7 +817,8 @@ void PropertySheet::removeColumns(int col, int count)
             moveCell(*i, CellAddress(i->row(), i->col() - count), renames);
     }
 
-    owner->getDocument()->renameObjectIdentifiers(renames);
+    const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
+    owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; } );
 }
 
 unsigned int PropertySheet::getMemSize() const
@@ -974,7 +978,7 @@ void PropertySheet::addDependencies(CellAddress key)
 }
 
 /**
-  * Remove dependecies given by \a expression for cell at \a key.
+  * Remove dependencies given by \a expression for cell at \a key.
   *
   * @param expression Expression to extract dependencies from
   * @param key        Address of cell containing the expression

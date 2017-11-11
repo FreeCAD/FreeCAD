@@ -1268,6 +1268,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
     connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
     connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
+    connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
@@ -1283,6 +1284,7 @@ DocumentItem::~DocumentItem()
     connectResObject.disconnect();
     connectHltObject.disconnect();
     connectExpObject.disconnect();
+    connectScrObject.disconnect();
 }
 
 TreeWidget *DocumentItem::getTree() {
@@ -1351,6 +1353,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         }
         data = pdata;
     }
+
     std::string displayName = obj.getObject()->Label.getValue();
     std::string objectName = obj.getObject()->getNameInDocument();
     DocumentObjectItem* item = new DocumentObjectItem(data);
@@ -1445,8 +1448,10 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view,
         ObjectMap.erase(it);
 }
 
-void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
-    if(item->populated && !refresh) return;
+void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
+{
+    if (item->populated && !refresh)
+        return;
 
     // Lazy loading policy: We will create an item for each children object if
     // a) the item is expanded, or b) there is at least one free child, i.e.
@@ -1455,7 +1460,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
     item->setChildIndicatorPolicy(item->myData->children.empty()?
             QTreeWidgetItem::DontShowIndicator:QTreeWidgetItem::ShowIndicator);
 
-    if(!item->populated && !item->isExpanded()) {
+    if (!item->populated && !item->isExpanded()) {
         bool doPopulate = false;
         for(auto child : item->myData->children) {
             auto it = ObjectMap.find(child);
@@ -1472,8 +1477,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
                 }
             }
         }
-        if(!doPopulate) return;
+
+        if (!doPopulate)
+            return;
     }
+
     item->populated = true;
 
     int i=-1;
@@ -1484,15 +1492,22 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
         ++i; // the current index of the claimed child
 
         bool found = false;
-        for(int j=0,count=item->childCount();j<count;++j) {
+        for (int j=0,count=item->childCount();j<count;++j) {
             QTreeWidgetItem *ci = item->child(j);
-            if(ci->type() != TreeWidget::ObjectType) continue;
+            if (ci->type() != TreeWidget::ObjectType)
+                continue;
+
             DocumentObjectItem *childItem = static_cast<DocumentObjectItem*>(ci);
-            if(childItem->object()->getObject() != child) continue;
+            if (childItem->object()->getObject() != child)
+                continue;
+
             found = true;
-            if(j!=i) { // fix index if it is changed
+            if (j!=i) { // fix index if it is changed
                 item->removeChild(ci);
                 item->insertChild(i,ci);
+                if (!ci->parent()) {
+                    delete ci;
+                }
             }
 
             // Check if the item just changed its policy of whether to remove
@@ -1506,7 +1521,9 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
                 createNewItem(*childItem->object(),this,-1,childItem->myData);
             break;
         }
-        if(found) continue;
+
+        if (found)
+            continue;
 
         // This algo will be recursively applied to newly created child items
         // through slotNewObject -> populateItem
@@ -1535,12 +1552,24 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             it->second->rootItem = 0;
             this->removeChild(childItem);
             item->insertChild(i,childItem);
+            if (!childItem->parent()) {
+                delete childItem;
+            }
         }
     }
-    for(++i;item->childCount()>i;) {
+
+    App::GeoFeatureGroupExtension* grp = nullptr;
+    if (item->object()->getObject()->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+        grp = item->object()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+
+    // When removing a child element then it must either be moved to a new
+    // parent or deleted. Just removing and leaving breaks the Qt internal
+    // notification (See #0003201).
+    for (++i;item->childCount()>i;) {
         QTreeWidgetItem *ci = item->child(i);
+        item->removeChild(ci);
         if (ci->type() == TreeWidget::ObjectType) {
-            auto childItem = static_cast<DocumentObjectItem*>(ci);
+            DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             // Add the child item back to document root if it is the only
             // instance.  Now, because of the lazy loading strategy, this may
             // not truly be the last instance of the object. It may belong to
@@ -1548,6 +1577,15 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
             // whole tree to confirm that. Just let it be. If the other
             // parent(s) later expanded, this child item will be moved from
             // root to its parent.
+            if (childItem->myData->items.size()==1) {
+                // We only make a difference for geofeaturegroups, 
+                // as otherwise it comes to confusing behavior to the user when things 
+                // get claimed within the group (e.g. pad/sketch, or group)
+                if (!grp || !grp->hasObject(childItem->object()->getObject(), true)) {
+                    this->addChild(childItem);
+                    continue;
+                }
+            }
             if(childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
                 this->addChild(childItem);
@@ -1555,6 +1593,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh) {
                 continue;
             }
         }
+
         delete ci;
     }
     getTree()->updateGeometries();
@@ -1605,9 +1644,16 @@ void DocumentItem::slotChangeObject(
         return;
     }
 
+
     const auto &children = view.claimChildren();
     bool removeChildrenFromRoot = view.canRemoveChildrenFromRoot();
-    if(removeChildrenFromRoot!=it->second->removeChildrenFromRoot || 
+
+    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+    //of the geofeaturegroup depends on what the childs claim
+    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
+
+    if(grp ||
+       removeChildrenFromRoot!=it->second->removeChildrenFromRoot || 
        children!=it->second->children) 
     {
         it->second->removeChildrenFromRoot = removeChildrenFromRoot;
@@ -1634,7 +1680,7 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
     END_FOREACH_ITEM
 }
 
-void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HighlightMode& high,bool set)
+void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, const Gui::HighlightMode& high, bool set)
 {
     FOREACH_ITEM(item,obj)
         QFont f = item->font(0);
@@ -1644,13 +1690,13 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         case Gui::Underlined: f.setUnderline(set);  break;
         case Gui::Overlined: f.setOverline(set);    break;
         case Gui::Blue:
-            if(set)
+            if (set)
                 item->setBackgroundColor(0,QColor(200,200,255));
             else
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
             break;
         case Gui::LightBlue:
-            if(set)
+            if (set)
                 item->setBackgroundColor(0,QColor(230,230,255));
             else
                 item->setData(0, Qt::BackgroundColorRole,QVariant());
@@ -1687,6 +1733,14 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
             assert(0);
         }
         populateItem(item);
+    END_FOREACH_ITEM
+}
+
+void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj)
+{
+    FOREACH_ITEM(item,obj)
+        QTreeWidget* tree = item->treeWidget();
+        tree->scrollToItem(item, QAbstractItemView::PositionAtTop);
     END_FOREACH_ITEM
 }
 

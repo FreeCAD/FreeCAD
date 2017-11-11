@@ -281,7 +281,7 @@ public:
    * Therefore the two facets must be adjacent.
    */
   inline bool HasSameOrientation(const MeshFacet&) const;
-  /** Checks wether the facet is degenerated to a line of point. */
+  /** Checks whether the facet is degenerated to a line of point. */
   inline bool IsDegenerated() const;
   /** Flips the orientation of the facet. */
   void FlipNormal (void)

@@ -49,17 +49,6 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
 #ifdef FC_DEBUG
     assert(list.size() >= 5);
 #endif
-    QString parDoc = link[3];
-    QString parName = link[4];
-    auto doc = App::GetApplication().getDocument(qPrintable(link[3]));
-    if(doc) {
-        auto obj = doc->getObject(qPrintable(link[4]));
-        if(obj) {
-            inList = obj->getInListEx(true);
-            inList.insert(obj);
-        }
-    }
-
     ui->setupUi(this);
     if(!xlink) 
         ui->comboBox->hide();
@@ -83,19 +72,57 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
  */
 DlgPropertyLink::~DlgPropertyLink()
 {
-  // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgPropertyLink::setSelectionMode(QAbstractItemView::SelectionMode mode)
+{
+    ui->treeWidget->setSelectionMode(mode);
+    ui->treeWidget->clear();
+    findObjects(ui->checkObjectType->isChecked());
 }
 
 void DlgPropertyLink::accept()
 {
-    auto items = ui->treeWidget->selectedItems();
-    if (items.isEmpty()) {
-        QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+    if (ui->treeWidget->selectionMode() == QAbstractItemView::SingleSelection) {
+        QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
+        if (items.isEmpty()) {
+            QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+            return;
+        }
     }
-    else {
-        QDialog::accept();
+
+    QDialog::accept();
+}
+
+static QStringList getLinkFromItem(const QStringList &link, QTreeWidgetItem *selItem) {
+    QStringList list = link;
+    if(link.size()>=6 && selItem->parent()) {
+        QString subname;
+        auto parent = selItem;
+        for(auto item=parent;;item=parent) {
+            parent = item->parent();
+            if(!parent) {
+                list[1] = item->data(0,Qt::UserRole).toString();
+                break;
+            }
+            subname = QString::fromLatin1("%1%2.").
+                arg(subname).arg(item->data(0,Qt::UserRole).toString());
+        }
+        list[5] = subname;
+        if(subname.size())
+            list[2] = QString::fromLatin1("%1 (%2.%3)").
+                arg(selItem->text(0)).arg(list[1]).arg(subname);
+        else
+            list[2] = selItem->text(0);
+    }else{
+        list[1] = selItem->data(0,Qt::UserRole).toString();
+        list[2] = selItem->text(0);
+        if (list[1].isEmpty())
+            list[2] = QString::fromUtf8("");
     }
+    return list;
 }
 
 QStringList DlgPropertyLink::propertyLink() const
@@ -104,43 +131,32 @@ QStringList DlgPropertyLink::propertyLink() const
     if (items.isEmpty()) {
         return link;
     }
-    else {
-        QStringList list = link;
-        if(link.size()>=6 && items[0]->parent()) {
-            QString subname;
-            auto parent = items[0];
-            for(auto item=parent;;item=parent) {
-                parent = item->parent();
-                if(!parent) {
-                    list[1] = item->data(0,Qt::UserRole).toString();
-                    break;
-                }
-                subname = QString::fromLatin1("%1%2.").
-                    arg(subname).arg(item->data(0,Qt::UserRole).toString());
-            }
-            list[5] = subname;
-            if(subname.size())
-                list[2] = QString::fromLatin1("%1 (%2.%3)").
-                    arg(items[0]->text(0)).arg(list[1]).arg(subname);
-            else
-                list[2] = items[0]->text(0);
-        }else{
-            list[1] = items[0]->data(0,Qt::UserRole).toString();
-            list[2] = items[0]->text(0);
-            if (list[1].isEmpty())
-                list[2] = QString::fromUtf8("");
-        }
-        return list;
+    return getLinkFromItem(link,items[0]);
+}
+
+QVariantList DlgPropertyLink::propertyLinkList() const
+{
+    QVariantList varList;
+    QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
+    if (items.isEmpty()) {
+        varList << link;
     }
+    else {
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it)
+            varList << getLinkFromItem(link,*it);
+    }
+
+    return varList;
 }
 
 void DlgPropertyLink::findObjects(bool on)
 {
-    ui->treeWidget->clear();
+    QString docName = link[0]; // document name
+    QString objName = link[1]; // internal object name
+    QString parDocName = link[3];
+    QString parName = link[4]; // internal object name of the parent of the link property
 
-    QString docName = link[0];
-    QString objName = link[1];
-
+    bool isSingleSelection = (ui->treeWidget->selectionMode() == QAbstractItemView::SingleSelection);
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
     if (doc) {
         Base::Type baseType = App::DocumentObject::getClassTypeId();
@@ -165,11 +181,25 @@ void DlgPropertyLink::findObjects(bool on)
             }
         }
 
+        inList.clear();
+        auto parDoc = App::GetApplication().getDocument(qPrintable(parDocName));
+        if(parDoc) {
+            auto obj = parDoc->getObject(qPrintable(parName));
+            if(obj) {
+                // for multi-selection we need all objects
+                if (isSingleSelection)
+                    inList = obj->getInListEx(true);
+                inList.insert(obj);
+            }
+        }
+
         // Add a "None" entry on top
-        auto* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0,tr("None (Remove link)"));
-        QByteArray ba("");
-        item->setData(0,Qt::UserRole, ba);
+        if (isSingleSelection) {
+            auto* item = new QTreeWidgetItem(ui->treeWidget);
+            item->setText(0,tr("None (Remove link)"));
+            QByteArray ba("");
+            item->setData(0,Qt::UserRole, ba);
+        }
 
         for(auto obj : doc->getObjectsOfType(baseType))
             createItem(obj,0);
@@ -223,6 +253,7 @@ void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
 
 void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 {
+    ui->treeWidget->clear();
     findObjects(on);
 }
 

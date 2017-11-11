@@ -52,6 +52,7 @@ from FreeCAD import Vector
 try: import FreeCADGui
 except ImportError: gui = False
 else: gui = True
+
 try: draftui = FreeCADGui.draftToolBar
 except AttributeError: draftui = None
 
@@ -421,7 +422,7 @@ class svgHandler(xml.sax.ContentHandler):
 
         def format(self,obj):
                 "applies styles to passed object"
-                if self.style and gui:
+                if gui:
                         v = obj.ViewObject
                         if self.color: v.LineColor = self.color
                         if self.width: v.LineWidth = self.width
@@ -449,7 +450,7 @@ class svgHandler(xml.sax.ContentHandler):
                         if not data['style']:
                                 pass#empty style attribute stops inhertig from parent
                         else:
-                                content = data['style'][0].replace(' ','')
+                                content = data['style'].replace(' ','')
                                 content = content.split(';')
                                 for i in content:
                                         pair = i.split(':')
@@ -468,12 +469,12 @@ class svgHandler(xml.sax.ContentHandler):
                                         data[k]=data[k][0]
 
                 # extracting style info
-                        
+
                 self.fill = None
                 self.color = None
                 self.width = None
                 self.text = None
-                
+
                 if name == 'svg':
                         m=FreeCAD.Matrix()
                         if not self.disableUnitScaling:
@@ -624,10 +625,11 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(0,-y,0))
                                                 else:
                                                         currentvec = Vector(lastvec.x,-y,0)
-                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
-                                                lastvec = currentvec
-                                                lastpole = None
-                                                path.append(seg)
+                                                if lastvec!=currentvec:
+                                                    seg = Part.LineSegment(lastvec,currentvec).toShape()
+                                                    lastvec = currentvec
+                                                    lastpole = None
+                                                    path.append(seg)
                                 elif (d == "A" or d == "a"):
                                         for rx,ry,xrotation, largeflag, sweepflag,x,y in \
                                                 zip(pointlist[0::7],pointlist[1::7],pointlist[2::7],pointlist[3::7],pointlist[4::7],pointlist[5::7],pointlist[6::7]):
@@ -1277,3 +1279,6 @@ def export(exportList,filename):
         # closing
         svg.write('</svg>')
         svg.close()
+
+
+

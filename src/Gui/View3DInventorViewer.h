@@ -155,7 +155,8 @@ public:
     void setFeedbackSize(const int size);
     int getFeedbackSize(void) const;
 
-    int getNumSamples() const;
+    /// Get the preferred samples from the user settings
+    static int getNumSamples();
     void setRenderType(const RenderType type);
     RenderType getRenderType() const;
     void renderToFramebuffer(QtGLFramebufferObject*);

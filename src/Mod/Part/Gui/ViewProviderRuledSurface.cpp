@@ -55,10 +55,14 @@ ViewProviderRuledSurface::~ViewProviderRuledSurface()
 
 std::vector<App::DocumentObject*> ViewProviderRuledSurface::claimChildren() const
 {
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::RuledSurface*>(getObject())->Curve1.getValue());
-    temp.push_back(static_cast<Part::RuledSurface*>(getObject())->Curve2.getValue());
-    return temp;
+    // in a set each element is unique
+    std::set<App::DocumentObject*> temp;
+    temp.insert(static_cast<Part::RuledSurface*>(getObject())->Curve1.getValue());
+    temp.insert(static_cast<Part::RuledSurface*>(getObject())->Curve2.getValue());
+
+    std::vector<App::DocumentObject*> array;
+    array.insert(array.begin(), temp.begin(), temp.end());
+    return array;
 }
 
 void ViewProviderRuledSurface::updateData(const App::Property* prop)

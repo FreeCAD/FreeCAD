@@ -29,10 +29,15 @@ import Path
 import PathScripts.PathLog as PathLog
 
 from FreeCAD import Vector
+from PySide import QtCore
 
 PathGeomTolerance = 0.000001
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+# Qt tanslation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Side:
     """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
@@ -95,11 +100,7 @@ class PathGeom:
         Return true if the edges start and end at the same point and have the same type of curve.""" % PathGeomTolerance
         if type(e0.Curve) != type(e1.Curve):
             return False
-        if not cls.pointsCoincide(e0.valueAt(e0.FirstParameter), e1.valueAt(e1.FirstParameter)):
-            return False
-        if not cls.pointsCoincide(e0.valueAt(e0.LastParameter), e1.valueAt(e1.LastParameter)):
-            return False
-        return True
+        return all(cls.pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point) for i in range(len(e0.Vertexes)))
 
     @classmethod
     def edgeConnectsTo(cls, edge, vector, error=PathGeomTolerance):
@@ -131,6 +132,62 @@ class PathGeom:
                 a2 += 2*math.pi
             a = a2 - a1
         return a
+
+    @classmethod
+    def isVertical(cls, obj):
+        '''isVertical(obj) ... answer True if obj points into Z'''
+        if type(obj) == FreeCAD.Vector:
+            return PathGeom.isRoughly(obj.x, 0) and PathGeom.isRoughly(obj.y, 0)
+        if obj.ShapeType == 'Face':
+            if type(obj.Surface) == Part.Plane:
+                return cls.isHorizontal(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Cylinder or type(obj.Surface) == Part.Cone:
+                return cls.isVertical(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Sphere:
+                return True
+            if type(obj.Surface) == Part.SurfaceOfExtrusion:
+                return cls.isVertical(obj.Surface.Direction)
+            if type(obj.Surface) != Part.BSplineSurface:
+                PathLog.info(translate('PathGeom', "face %s not handled, assuming not vertical") % type(obj.Surface))
+            return None
+        if obj.ShapeType == 'Edge':
+            if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
+                return cls.isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse: # or type(obj.Curve) == Part.BSplineCurve:
+                return cls.isHorizontal(obj.Curve.Axis)
+            if type(obj.Curve) == Part.BezierCurve:
+                # the current assumption is that a bezier curve is vertical if its end points are vertical
+                return cls.isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
+            if type(obj.Curve) != Part.BSplineCurve:
+                PathLog.info(translate('PathGeom', "edge %s not handled, assuming not vertical") % type(obj.Curve))
+            return None
+        PathLog.error(translate('PathGeom', "isVertical(%s) not supported") % obj)
+        return None
+
+    @classmethod
+    def isHorizontal(cls, obj):
+        '''isHorizontal(obj) ... answer True if obj points into X or Y'''
+        if type(obj) == FreeCAD.Vector:
+            return PathGeom.isRoughly(obj.z, 0)
+        if obj.ShapeType == 'Face':
+            if type(obj.Surface) == Part.Plane:
+                return cls.isVertical(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Cylinder or type(obj.Surface) == Part.Cone:
+                return cls.isHorizontal(obj.Surface.Axis)
+            if type(obj.Surface) == Part.Sphere:
+                return True
+            if type(obj.Surface) == Part.SurfaceOfExtrusion:
+                return cls.isHorizontal(obj.Surface.Direction)
+            return cls.isRoughly(obj.BoundBox.ZLength, 0.0)
+        if obj.ShapeType == 'Edge':
+            if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
+                return cls.isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
+            if type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse: # or type(obj.Curve) == Part.BSplineCurve:
+                return cls.isVertical(obj.Curve.Axis)
+            return cls.isRoughly(obj.BoundBox.ZLength, 0.0)
+        PathLog.error(translate('PathGeom', "isHorizontal(%s) not supported") % obj)
+        return None
+
 
     @classmethod
     def commandEndPoint(cls, cmd, defaultPoint = Vector(), X='X', Y='Y', Z='Z'):
@@ -173,7 +230,7 @@ class PathGeom:
                 else:
                     cmd = 'G3' if not flip else 'G2'
                 pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
-                PathLog.info("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
+                PathLog.debug("**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)" % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y))
 
                 # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
                 pa = PathGeom.xy(p1)
@@ -230,7 +287,7 @@ class PathGeom:
             d = -B.x * A.y + B.y * A.x
 
             if cls.isRoughly(d, 0, 0.005):
-                PathLog.info("Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z))
+                PathLog.debug("Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z))
                 # we're dealing with half a circle here
                 angle = cls.getAngle(A) + math.pi/2
                 if cmd.Name in cls.CmdMoveCW:
@@ -238,7 +295,7 @@ class PathGeom:
             else:
                 C = A + B
                 angle = cls.getAngle(C)
-                PathLog.info("Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f" % (d, center.x, center.y, center.z, angle / math.pi))
+                PathLog.debug("Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f" % (d, center.x, center.y, center.z, angle / math.pi))
 
             R = A.Length
             PathLog.debug("arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)" % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y))
@@ -380,4 +437,32 @@ class PathGeom:
             arc = cls.helixToArc(edge, 0)
             aes = cls.splitArcAt(arc, Vector(pt.x, pt.y, 0))
             return [cls.arcToHelix(aes[0], p1.z, p2.z), cls.arcToHelix(aes[1], p2.z, p3.z)]
+
+    @classmethod
+    def combineConnectedShapes(cls, shapes):
+        done = False
+        while not done:
+            done = True
+            combined = []
+            PathLog.debug("shapes: {}".format(shapes))
+            for shape in shapes:
+                connected = [f for f in combined if cls.isRoughly(shape.distToShape(f)[0], 0.0)]
+                PathLog.debug("  {}: connected: {} dist: {}".format(len(combined), connected, [shape.distToShape(f)[0] for f in combined]))
+                if connected:
+                    combined = [f for f in combined if f not in connected]
+                    connected.append(shape)
+                    combined.append(Part.makeCompound(connected))
+                    done = False
+                else:
+                    combined.append(shape)
+            shapes = combined
+        return shapes
+
+    @classmethod
+    def removeDuplicateEdges(cls, wire):
+        unique = []
+        for e in wire.Edges:
+            if not any(cls.edgesMatch(e, u) for u in unique):
+                unique.append(e)
+        return Part.Wire(unique)
 

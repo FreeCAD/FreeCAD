@@ -51,8 +51,12 @@ Version:
 
 def importFCMat(fileName):
     "Read a FCMat file into a dictionary"
-    import ConfigParser
-    Config = ConfigParser.ConfigParser()
+    try:
+        import ConfigParser as configparser
+    except ImportError:
+        import configparser
+
+    Config = configparser.ConfigParser()
     Config.optionxform = str
     Config.read(fileName)
     dict1 = {}
@@ -66,9 +70,12 @@ def importFCMat(fileName):
 
 def exportFCMat(fileName,matDict):
     "Write a material dictionary to a FCMat file"
-    import ConfigParser
+    try:
+        import ConfigParser as configparser
+    except ImportError:
+        import configparser
     import string
-    Config = ConfigParser.ConfigParser()
+    Config = configparser.ConfigParser()
 
     # create groups
     for x in matDict.keys():

@@ -67,7 +67,6 @@ crowdinpath = "http://crowdin.net/download/project/freecad.zip"
 
 locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
              ["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
-             ["Complete","../Mod/Complete/Gui/Resources/translations","../Mod/Complete/Gui/Resources/Complete.qrc"],
              ["draft","../Mod/Draft/Resources/translations","../Mod/Draft/Resources/Draft.qrc"],
              ["Drawing","../Mod/Drawing/Gui/Resources/translations","../Mod/Drawing/Gui/Resources/Drawing.qrc"],
              ["Fem","../Mod/Fem/Gui/Resources/translations","../Mod/Fem/Gui/Resources/Fem.qrc"],
@@ -91,6 +90,7 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"],
              ["Path","../Mod/Path/Gui/Resources/translations","../Mod/Path/Gui/Resources/Path.qrc"],
              ["Tux","../Mod/Tux/Resources/translations","../Mod/Tux/Resources/Tux.qrc"],
+             ["TechDraw","../Mod/TechDraw/Resources/translations","../Mod/TechDraw/Resources/TechDraw.qrc"],
              ]
              
 default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr" sourcelanguage="en">
+<TS version="2.0" language="fr" sourcelanguage="en">
   <context>
     <name>FEM_Analysis</name>
     <message>
@@ -11,33 +11,59 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_BeamSection</name>
-    <message>
-      <location filename="_CommandFemBeamSection.py" line="41"/>
-      <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemBeamSection.py" line="43"/>
-      <source>Creates a FEM beam cross section</source>
-      <translation>Crée une section transversale d'une poutre MÉF</translation>
+      <translation>Crée un conteneur d’analyse avec le solutionneur standard CalculiX</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
-      <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <source>Constraint self weight</source>
+      <translation>Contraindre le poids propre</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
-      <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <source>Creates a FEM constraint self weight</source>
+      <translation>Crée une contrainte MEF de poids propre</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementFluid1D</name>
+    <message>
+      <location filename="_CommandFemElementFluid1D.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation>Section de fluide pour écoulement 1D</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemElementFluid1D.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation>Crée une section fluide MEF pour écoulement 1D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry1D</name>
+    <message>
+      <location filename="_CommandFemElementGeometry1D.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation>Coupe transversale de poutre</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemElementGeometry1D.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation>Crée une section transversale d'une poutre MÉF</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry2D</name>
+    <message>
+      <location filename="_CommandFemElementGeometry2D.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation>Epaisseur de la coque</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemElementGeometry2D.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>Crée une épaisseur de coque MEF</translation>
     </message>
   </context>
   <context>
@@ -45,25 +71,12 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>MEF maillage à maillage</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_FluidSection</name>
-    <message>
-      <location filename="_CommandFemFluidSection.py" line="42"/>
-      <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemFluidSection.py" line="44"/>
-      <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Convertir la surface d'un maillage MEF en maillage</translation>
     </message>
   </context>
   <context>
@@ -103,6 +116,19 @@
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
       <translation type="unfinished">Creates a FEM material for solid</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
+      <source>FEM mesh boundary layer</source>
+      <translation type="unfinished">FEM mesh boundary layer</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
+      <source>Creates a FEM mesh boundary layer</source>
+      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
     </message>
   </context>
   <context>
@@ -205,19 +231,6 @@
     </message>
   </context>
   <context>
-    <name>FEM_ShellThickness</name>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="41"/>
-      <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
@@ -281,6 +294,55 @@
       <source>Default Fem Command ToolTip</source>
       <translation>Commande par défaut du de l'infobulle</translation>
     </message>
+    <message>
+      <location filename="../../../PyGui/FemCommands.py" line="41"/>
+      <source>Default Fem Command MenuText</source>
+      <translation>Commande par défaut du texte de menu</translation>
+    </message>
+    <message>
+      <location filename="../../../PyGui/FemCommands.py" line="43"/>
+      <source>Default Fem Command ToolTip</source>
+      <translation>Commande par défaut du de l'infobulle</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_BeamSection</name>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <source>Beam cross section</source>
+      <translation>Coupe transversale de poutre</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation>Crée une section transversale d'une poutre MÉF</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FluidSection</name>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="42"/>
+      <source>Fluid section for 1D flow</source>
+      <translation>Section de fluide pour écoulement 1D</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFluidSection.py" line="44"/>
+      <source>Creates a FEM Fluid section for 1D flow</source>
+      <translation>Crée une section fluide MEF pour écoulement 1D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>Shell plate thickness</source>
+      <translation>Epaisseur de la coque</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>Crée une épaisseur de coque MEF</translation>
+    </message>
   </context>
   <context>
     <name>Fem_Analysis</name>
@@ -292,7 +354,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Crée un conteneur d’analyse avec le solutionneur standard CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -310,7 +372,7 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Coupe transversale de poutre</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
@@ -346,12 +408,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <translation>Contraindre le poids propre</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <translation>Crée une contrainte MEF de poids propre</translation>
     </message>
   </context>
   <context>
@@ -372,12 +434,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>MEF maillage à maillage</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Convertir la surface d'un maillage MEF en maillage</translation>
     </message>
   </context>
   <context>
@@ -499,12 +561,12 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Epaisseur de la coque</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Crée une épaisseur de coque MEF</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>

@@ -46,6 +46,8 @@ namespace MeshIO {
         BSTL,
         OBJ,
         OFF,
+        IDTF,
+        MGL,
         IV,
         X3D,
         VRML,
@@ -129,7 +131,7 @@ protected:
 };
 
 /**
- * The MeshOutput class is able to write a mesh object to an ouput stream
+ * The MeshOutput class is able to write a mesh object to an output stream
  * on various formats.
  */
 class MeshExport MeshOutput
@@ -178,6 +180,10 @@ public:
     void SaveXML (Base::Writer &writer) const;
     /** Saves a node to an OpenInventor file. */
     bool SaveMeshNode (std::ostream &rstrIn);
+    /** Writes an IDTF file. */
+    bool SaveIDTF (std::ostream &rstrOut) const;
+    /** Writes an MGL file. */
+    bool SaveMGL (std::ostream &rstrOut) const;
     /** Writes an OpenInventor file. */
     bool SaveInventor (std::ostream &rstrOut) const;
     /** Writes an X3D file. */

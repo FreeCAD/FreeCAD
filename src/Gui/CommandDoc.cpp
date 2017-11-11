@@ -1126,20 +1126,13 @@ void StdCmdDelete::activated(int iMsg)
                     if (!links.empty()) {
                         // check if the referenced objects are groups or are selected too
                         for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
-                            if (
-                                  (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) &&
-                                  (!(*lt)->getTypeId().isDerivedFrom(App::Origin::getClassTypeId())) &&
-                                  (!rSel.isSelected(*lt)) &&
-                                  (!(*lt)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::BodyBase")))
-                                ){
-                                // TODO Do something with this hack of Part::BodyBase (2015-09-09, Fat-Zer)
-                                autoDeletion = false;
-                                affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
+                            if (!rSel.isSelected(*lt)) {
+                                ViewProvider* vp = pGuiDoc->getViewProvider(*lt);
+                                if (!vp->canDelete(obj)) {
+                                    autoDeletion = false;
+                                    affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
+                                }
                             }
-                        }
-
-                        if (!autoDeletion) {
-                            break;
                         }
                     }
                 }
@@ -1166,12 +1159,14 @@ void StdCmdDelete::activated(int iMsg)
                         Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
                         if (vp) {
                             // ask the ViewProvider if it wants to do some clean up
-                            if (vp->onDelete(ft->getSubNames()))
+                            if (vp->onDelete(ft->getSubNames())) {
                                 doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
                                          ,(*it)->getName(), ft->getFeatName());
+                            }
                         }
                     }
                     (*it)->commitTransaction();
+
                     Gui::getMainWindow()->setUpdatesEnabled(true);
                     Gui::getMainWindow()->update();
                 }

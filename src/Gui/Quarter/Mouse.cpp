@@ -55,6 +55,9 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/events/SoEvents.h>
 #include <Inventor/errors/SoDebugError.h>
+#if QT_VERSION >= 0x050000
+#include <Quarter/QuarterWidget.h>
+#endif
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -93,6 +96,12 @@ using namespace SIM::Coin3D::Quarter;
 Mouse::Mouse(void)
 {
   PRIVATE(this) = new MouseP(this);
+}
+
+Mouse::Mouse(QuarterWidget *quarter) :
+    InputDevice(quarter)
+{
+    PRIVATE(this) = new MouseP(this);
 }
 
 Mouse::~Mouse()
@@ -142,7 +151,7 @@ MouseP::mouseMoveEvent(QMouseEvent * event)
   SbVec2s pos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
-  pos *= ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+  pos *= publ->quarter->devicePixelRatio();
 #endif
   this->location2->setPosition(pos);
   this->mousebutton->setPosition(pos);
@@ -156,7 +165,7 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
   SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
-  pos *= ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+  pos *= publ->quarter->devicePixelRatio();
 #endif
   this->location2->setPosition(pos);
   this->mousebutton->setPosition(pos);
@@ -181,7 +190,7 @@ MouseP::mouseButtonEvent(QMouseEvent * event)
   SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
-  pos *= ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+  pos *= publ->quarter->devicePixelRatio();
 #endif
   this->location2->setPosition(pos);
   this->mousebutton->setPosition(pos);

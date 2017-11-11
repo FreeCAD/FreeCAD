@@ -106,7 +106,13 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
         try {
             std::vector<ShapeHistory> history;
             TopoDS_Shape resShape = s.front();
+            if (resShape.IsNull())
+                throw Base::RuntimeError("Input shape is null");
+
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                if (it->IsNull())
+                    throw Base::RuntimeError("Input shape is null");
+
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
                 // Let's check if the fusion has been successful
@@ -176,9 +182,8 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
             }
             this->History.setValues(history);
         }
-        catch (Standard_Failure) {
-            Handle(Standard_Failure) e = Standard_Failure::Caught();
-            return new App::DocumentObjectExecReturn(e->GetMessageString());
+        catch (Standard_Failure& e) {
+            return new App::DocumentObjectExecReturn(e.GetMessageString());
         }
     }
     else {

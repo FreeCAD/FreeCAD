@@ -30,6 +30,7 @@
 // inclusion of the generated files (generated out of MatrixPy.xml)
 #include "VectorPy.h"
 #include "GeometryPyCXX.h"
+#include "QuantityPy.h"
 #include "MatrixPy.h"
 #include "MatrixPy.cpp"
 
@@ -277,12 +278,29 @@ PyObject* MatrixPy::transform(PyObject * args)
 
 PyObject* MatrixPy::rotateX(PyObject * args)
 {
-    double a;
-    if (!PyArg_ParseTuple(args, "d: angle to rotate (double) needed", &a))     // convert args: Python->C
-        return NULL;                                 // NULL triggers exception
+    double angle = 0;
+    do {
+        PyObject *object;
+        if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+            Quantity *q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
+            if (q->getUnit() == Base::Unit::Angle) {
+                angle = q->getValueAs(Base::Quantity::Radian);
+                break;
+            }
+        }
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "d: angle to rotate (double) needed", &angle)) {
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "For angle either float or Quantity expected");
+        return 0;
+    }
+    while (false);
 
     PY_TRY {
-        getMatrixPtr()->rotX(a);
+        getMatrixPtr()->rotX(angle);
     }
     PY_CATCH;
 
@@ -291,12 +309,29 @@ PyObject* MatrixPy::rotateX(PyObject * args)
 
 PyObject* MatrixPy::rotateY(PyObject * args)
 {
-    double a;
-    if (!PyArg_ParseTuple(args, "d: angle to rotate (double) needed", &a))     // convert args: Python->C
-        return NULL;                                 // NULL triggers exception
+    double angle = 0;
+    do {
+        PyObject *object;
+        if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+            Quantity *q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
+            if (q->getUnit() == Base::Unit::Angle) {
+                angle = q->getValueAs(Base::Quantity::Radian);
+                break;
+            }
+        }
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "d: angle to rotate (double) needed", &angle)) {
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "For angle either float or Quantity expected");
+        return 0;
+    }
+    while (false);
 
     PY_TRY {
-        getMatrixPtr()->rotY(a);
+        getMatrixPtr()->rotY(angle);
     }
     PY_CATCH;
 
@@ -305,12 +340,29 @@ PyObject* MatrixPy::rotateY(PyObject * args)
 
 PyObject* MatrixPy::rotateZ(PyObject * args)
 {
-    double a;
-    if (!PyArg_ParseTuple(args, "d: angle to rotate (double) needed", &a))     // convert args: Python->C
-        return NULL;                                 // NULL triggers exception
+    double angle = 0;
+    do {
+        PyObject *object;
+        if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+            Quantity *q = static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
+            if (q->getUnit() == Base::Unit::Angle) {
+                angle = q->getValueAs(Base::Quantity::Radian);
+                break;
+            }
+        }
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "d: angle to rotate (double) needed", &angle)) {
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "For angle either float or Quantity expected");
+        return 0;
+    }
+    while (false);
 
     PY_TRY {
-        getMatrixPtr()->rotZ(a);
+        getMatrixPtr()->rotZ(angle);
     }
     PY_CATCH;
 

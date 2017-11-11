@@ -122,37 +122,20 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     hGrp->Attach(this);
 
     //anti-aliasing settings
-    QtGLFormat f;
     bool smoothing = false;
     bool glformat = false;
-    switch( hGrp->GetInt("AntiAliasing",0) ) {
-      case View3DInventorViewer::MSAA2x:
-          glformat = true;
+    int samples = View3DInventorViewer::getNumSamples();
+    QtGLFormat f;
+
+    if (samples > 1) {
+        glformat = true;
 #if !defined(HAVE_QT5_OPENGL)
-          f.setSampleBuffers(true);
+        f.setSampleBuffers(true);
 #endif
-          f.setSamples(2);
-          break;
-      case View3DInventorViewer::MSAA4x:
-          glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-          f.setSampleBuffers(true);
-#endif
-          f.setSamples(4);
-          break;
-      case View3DInventorViewer::MSAA8x:
-          glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-          f.setSampleBuffers(true);
-#endif
-          f.setSamples(8);
-          break;
-      case View3DInventorViewer::Smoothing:
-          smoothing = true;
-          break;
-      case View3DInventorViewer::None:
-      default:
-          break;
+        f.setSamples(samples);
+    }
+    else if (samples > 0) {
+        smoothing = true;
     }
 
     if (glformat)

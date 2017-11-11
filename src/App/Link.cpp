@@ -599,7 +599,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
 
             for(auto obj : objs) {
                 if(obj && obj->getNameInDocument())
-                    obj->getDocument()->remObject(obj->getNameInDocument());
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
     }else if(prop == getElementCountProperty()) {
@@ -675,7 +675,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 getElementListProperty()->setValue(objs);
                 for(auto obj : tmpObjs) {
                     if(obj && obj->getNameInDocument())
-                        obj->getDocument()->remObject(obj->getNameInDocument());
+                        obj->getDocument()->removeObject(obj->getNameInDocument());
                 }
             }
         }
@@ -892,7 +892,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
 }
 
 void LinkBaseExtension::detachElement(DocumentObject *obj) {
-    if(!obj || !obj->getNameInDocument() || obj->isDeleting())
+    if(!obj || !obj->getNameInDocument() || obj->isRemoving())
         return;
     auto ext = obj->getExtensionByType<LinkBaseExtension>(true);
     if(getLinkModeValue()==LinkModeAutoUnlink) {
@@ -903,7 +903,7 @@ void LinkBaseExtension::detachElement(DocumentObject *obj) {
             ext->myOwner = 0;
         return;
     }
-    obj->getDocument()->remObject(obj->getNameInDocument());
+    obj->getDocument()->removeObject(obj->getNameInDocument());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

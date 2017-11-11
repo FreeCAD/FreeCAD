@@ -24,12 +24,11 @@
 #ifndef SANDBOXGUI_OVERLAY_H
 #define SANDBOXGUI_OVERLAY_H
 
+#include <QtOpenGL.h>
 #include <Gui/MouseSelection.h>
 #include <QColor>
 #include <QPoint>
 #include <QList>
-
-class QGLFramebufferObject;
 
 namespace SandboxGui {
 class DrawingPlane : public Gui::BaseMouseSelection
@@ -56,7 +55,7 @@ private:
     QPoint lastPoint;
     QList<QPoint> selection;
 
-    QGLFramebufferObject* fbo;
+    QtGLFramebufferObject* fbo;
 };
 
 } // SandboxGui

@@ -60,6 +60,8 @@ public:
         );
         add_varargs_method("openBrowserHTML",&Module::openBrowserHTML
         );
+        add_varargs_method("openBrowserWindow",&Module::openBrowserWindow
+        );
         initialize("This module is the WebGui module."); // register with Python
     }
 
@@ -94,10 +96,26 @@ private:
         WebGui::BrowserView* pcBrowserView = 0;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
-        pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)),QString::fromUtf8(TabName));
+        pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
+        pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
         Gui::getMainWindow()->addWindow(pcBrowserView);
 
         return Py::None();
+    }
+
+    Py::Object openBrowserWindow(const Py::Tuple& args)
+    {
+        const char* TabName = "Browser";
+        if (! PyArg_ParseTuple(args.ptr(), "|s",&TabName))
+            throw Py::Exception();
+
+        WebGui::BrowserView* pcBrowserView = 0;
+        pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
+        pcBrowserView->resize(400, 300);
+        pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
+        Gui::getMainWindow()->addWindow(pcBrowserView);
+
+        return Py::asObject(pcBrowserView->getPyObject());
     }
 };
 

@@ -51,6 +51,7 @@
 # include <QMenu>
 # include <QDesktopWidget>
 # include <QSignalMapper>
+# include <QPointer>
 #endif
 
 #include "BrowserView.h"
@@ -64,9 +65,67 @@
 
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <CXX/Extensions.hxx>
 
 using namespace WebGui;
 using namespace Gui;
+
+namespace WebGui {
+class BrowserViewPy : public Py::PythonExtension<BrowserViewPy>
+{
+public:
+    static void init_type(void);    // announce properties and methods
+
+    BrowserViewPy(BrowserView* view);
+    ~BrowserViewPy();
+
+    Py::Object repr();
+
+    Py::Object setHtml(const Py::Tuple&);
+
+private:
+    QPointer<BrowserView> myWebView;
+};
+
+void BrowserViewPy::init_type()
+{
+    behaviors().name("BrowserView");
+    behaviors().doc("Python interface class to BrowserView");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    behaviors().readyType();
+
+    add_varargs_method("setHtml",&BrowserViewPy::setHtml,"setHtml(str)");
+}
+
+BrowserViewPy::BrowserViewPy(BrowserView* view) : myWebView(view)
+{
+}
+
+BrowserViewPy::~BrowserViewPy()
+{
+}
+
+Py::Object BrowserViewPy::repr()
+{
+    std::stringstream s;
+    s << "<BrowserView at " << this << ">";
+    return Py::String(s.str());
+}
+
+Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
+{
+    char* HtmlCode;
+    char* BaseUrl;
+    if (! PyArg_ParseTuple(args.ptr(), "ss",&HtmlCode,&BaseUrl))
+        throw Py::Exception();
+    if (myWebView)
+        myWebView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
+    return Py::None();
+}
+}
 
 /**
  *  Constructs a WebView widget which can be zoomed with Ctrl+Mousewheel
@@ -302,13 +361,12 @@ void BrowserView::load(const QUrl & url)
     setWindowIcon(QWebSettings::iconForUrl(url));
 }
 
-void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName)
+void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl)
 {
     if (isLoading)
         stop();
 
     view->setHtml(HtmlCode,BaseUrl);
-    setWindowTitle(TabName);
     setWindowIcon(QWebSettings::iconForUrl(BaseUrl));
 }
 
@@ -414,6 +472,17 @@ bool BrowserView::onHasMsg(const char* pMsg) const
 bool BrowserView::canClose(void)
 {
     return true;
+}
+
+PyObject* BrowserView::getPyObject(void)
+{
+    static bool init = false;
+    if (!init) {
+        init = true;
+        BrowserViewPy::init_type();
+    }
+
+    return new BrowserViewPy(this);
 }
 
 #include "moc_BrowserView.cpp"

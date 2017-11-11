@@ -42,8 +42,6 @@ public:
     /// destructor.
     virtual ~ViewProviderPart();
 
-    QIcon getIcon(void) const;
-
     virtual bool doubleClicked(void);
 protected:
     /// get called by the container whenever a property has been changed

@@ -31,6 +31,7 @@
 #endif
 
 #include "ViewProviderAnalysis.h"
+#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>
@@ -51,7 +52,7 @@ using namespace FemGui;
 
 /* TRANSLATOR FemGui::ViewProviderFemAnalysis */
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObjectGroup)
 
 
 ViewProviderFemAnalysis::ViewProviderFemAnalysis()
@@ -74,9 +75,28 @@ bool ViewProviderFemAnalysis::doubleClicked(void)
 
 std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)const
 {
-    std::vector<App::DocumentObject*> temp(static_cast<Fem::FemAnalysis*>(getObject())->Member.getValues());
+    return Gui::ViewProviderDocumentObjectGroup::claimChildren();
+}
 
-    return temp;
+bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
+{
+    Q_UNUSED(obj)
+    return true;
+}
+
+std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
+{
+    return { "Analysis" };
+}
+
+void ViewProviderFemAnalysis::hide(void)
+{
+    Gui::ViewProviderDocumentObjectGroup::hide();
+}
+
+void ViewProviderFemAnalysis::show(void)
+{
+    Gui::ViewProviderDocumentObjectGroup::show();
 }
 
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const char* )
@@ -120,7 +140,7 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
         return false;
     }
     else {
-        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
+        return Gui::ViewProviderDocumentObjectGroup::setEdit(ModNum);
     }
 }
 
@@ -131,7 +151,7 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
         Gui::Control().closeDialog();
     }
     else {
-        Gui::ViewProviderDocumentObject::unsetEdit(ModNum);
+        Gui::ViewProviderDocumentObjectGroup::unsetEdit(ModNum);
     }
 }
 
@@ -184,15 +204,7 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)
 {
-    Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
-    std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
-        if (*it == obj) {
-            fem.erase(it);
-            analyze->Member.setValues(fem);
-            break;
-        }
-    }
+    ViewProviderDocumentObjectGroup::dragObject(obj);
 }
 
 bool ViewProviderFemAnalysis::canDropObjects() const
@@ -207,10 +219,7 @@ bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
 {
-    Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
-    std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
-    fem.push_back(obj);
-    analyze->Member.setValues(fem);
+    ViewProviderDocumentObjectGroup::dropObject(obj);
 }
 
 // Python feature -----------------------------------------------------------------------

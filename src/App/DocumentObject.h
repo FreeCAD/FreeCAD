@@ -49,8 +49,9 @@ enum ObjectStatus {
     New = 2,
     Recompute = 3,
     Restore = 4,
-    Delete = 5,
+    Remove = 5,
     PythonCall = 6,
+    Destroy = 7,
     Expand = 16
 };
 
@@ -132,8 +133,8 @@ public:
     bool isRecomputing() const {return StatusBits.test(ObjectStatus::Recompute);}
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const {return StatusBits.test(ObjectStatus::Restore);}
-    /// returns true if this objects is currently restoring from file
-    bool isDeleting() const {return StatusBits.test(ObjectStatus::Delete);}
+    /// returns true if this objects is currently removed from the document
+    bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
@@ -174,6 +175,8 @@ public:
     std::vector<App::DocumentObject*> getOutList(void) const;
     /// returns a list of objects this object is pointing to by Links and all further descended 
     std::vector<App::DocumentObject*> getOutListRecursive(void) const;
+    /// get all possible paths from this to another object following the OutList
+    std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const;
     /// get all objects link directly or indirectly to this object 
@@ -191,9 +194,9 @@ public:
     bool isInOutListRecursive(DocumentObject* objToTest) const;
     /// test if this object is directly (non recursive) in the OutList
     bool isInOutList(DocumentObject* objToTest) const;
-    /// internal, used by ProperyLink to maintain DAG back links
+    /// internal, used by PropertyLink to maintain DAG back links
     void _removeBackLink(DocumentObject*);
-    /// internal, used by ProperyLink to maintain DAG back links
+    /// internal, used by PropertyLink to maintain DAG back links
     void _addBackLink(DocumentObject*);
     //@}
 
@@ -235,7 +238,7 @@ public:
     /** Called in case of losing a link
      * Get called by the document when a object got deleted a link property of this
      * object ist pointing to. The standard behaviour of the DocumentObject implementation
-     * is to reset the links to nothing. You may overide this method to implement
+     * is to reset the links to nothing. You may override this method to implement
      * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);

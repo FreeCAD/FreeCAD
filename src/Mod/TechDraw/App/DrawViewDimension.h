@@ -53,13 +53,13 @@ public:
     DrawViewDimension();
     virtual ~DrawViewDimension();
 
-    App::PropertyEnumeration MeasureType;                              //True/Projected
-    App::PropertyLinkSubList References2D;                             //Points to Projection SubFeatures
-    App::PropertyLinkSubList References3D;                             //Points to 3D Geometry SubFeatures
-    App::PropertyEnumeration Type;                                     //DistanceX,DistanceY,Diameter, etc
+    App::PropertyEnumeration       MeasureType;                        //True/Projected
+    App::PropertyLinkSubList       References2D;                       //Points to Projection SubFeatures
+    App::PropertyLinkSubListGlobal References3D;                       //Points to 3D Geometry SubFeatures
+    App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
 
     /// Properties for Visualisation
-    App::PropertyString  Font;
+    App::PropertyFont  Font;
     App::PropertyFloat   Fontsize;
     App::PropertyString  FormatSpec;
     App::PropertyFloat   LineWidth;
@@ -69,7 +69,7 @@ public:
     bool has2DReferences(void) const;
     bool has3DReferences(void) const;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -97,6 +97,9 @@ protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
     bool showUnits() const;
+    bool useDecimals() const;
+    std::string getPrefix() const;
+    std::string getDefaultFormatSpec() const;
 
 protected:
     Measure::Measurement *measurement;

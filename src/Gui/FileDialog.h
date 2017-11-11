@@ -183,6 +183,9 @@ private Q_SLOTS:
     void chooseFile();
     void editingFinished();
 
+protected:
+    void resizeEvent(QResizeEvent*);
+
 private:
     QLineEdit *lineEdit;
     QCompleter *completer;

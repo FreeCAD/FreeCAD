@@ -570,6 +570,9 @@ def orientEdge(edge, normal=None, make_arc=False):
     elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
         return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
                                     edge.LastParameter,edge.Curve.Axis.z>0)
+    elif make_arc and isinstance(edge.Curve,Part.Ellipse) and not edge.Closed:
+        return Part.ArcOfEllipse(edge.Curve, edge.FirstParameter,
+                                    edge.LastParameter,edge.Curve.Axis.z>0)
     return edge.Curve
 
 def mirror (point, edge):
@@ -2127,6 +2130,29 @@ def rebaseWire(wire,vidx):
         return wire
     #This can be done in one step
     return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
+
+
+def removeSplitter(shape):
+    """an alternative, shared edge-based version of Part.removeSplitter. Returns a
+    face or None if the operation failed"""
+    lut = {}
+    for f in shape.Faces:
+        for e in f.Edges:
+            h = e.hashCode()
+            if h in lut:
+                lut[h].append(e)
+            else:
+                lut[h] = [e]
+    edges = [e[0] for e in lut.values() if len(e) == 1]
+    try:
+        face = Part.Face(Part.Wire(edges))
+    except:
+        # operation failed
+        return None
+    else:
+        if face.isValid():
+            return face
+    return None
 
 
 # circle functions *********************************************************

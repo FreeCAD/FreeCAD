@@ -54,6 +54,7 @@
 # include <GProp_PGProps.hxx>
 # include <GProp_PrincipalProps.hxx>
 # include <BRepGProp.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 #endif
 #include <BRepLProp_SLProps.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -120,6 +121,15 @@ const char* AttachEngine::eMapModeStrings[]= {
 
     "InertialCS",
 
+    "FaceNormal",
+
+    "OZX",
+    "OZY",
+    "OXY",
+    "OXZ",
+    "OYZ",
+    "OYX",
+
     NULL};
 
 //this list must be in sync with eRefType enum.
@@ -167,7 +177,7 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
                          eMapMode mapMode, bool mapReverse,
                          double attachParameter,
                          double surfU, double surfV,
-                         const Base::Placement &superPlacement)
+                         const Base::Placement &attachmentOffset)
 {
     this->references.Paste(references);
     this->mapMode = mapMode;
@@ -175,7 +185,7 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
     this->attachParameter = attachParameter;
     this->surfU = surfU;
     this->surfV = surfV;
-    this->superPlacement = superPlacement;
+    this->attachmentOffset = attachmentOffset;
 }
 
 void AttachEngine::setUp(const AttachEngine &another)
@@ -186,7 +196,7 @@ void AttachEngine::setUp(const AttachEngine &another)
           another.attachParameter,
           another.surfU,
           another.surfV,
-          another.superPlacement);
+          another.attachmentOffset);
 }
 
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
@@ -941,6 +951,17 @@ AttachEngine3D::AttachEngine3D()
     modeRefTypes[mmThreePointsPlane].push_back(s);
     modeRefTypes[mmThreePointsNormal].push_back(s);
 
+    //------------origin-axis-axis modes
+    for (int mmode = mmOZX; mmode <= mmOYX; ++mmode){
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtVertex, rtVertex));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtVertex, rtLine));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtLine, rtVertex));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtLine, rtLine));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtVertex));
+        modeRefTypes[mmode].push_back(cat(rtVertex, rtLine));
+    }
+
+
     modeRefTypes[mmFolding].push_back(cat(rtLine, rtLine, rtLine, rtLine));
 
     this->EnableAllSupportedModes();
@@ -996,7 +1017,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sh));
         Base::Placement plm = Base::Placement();
         plm.setPosition(Base::Vector3d(p.X(), p.Y(), p.Z()));
-        plm.setPosition(plm.getPosition() + this->superPlacement.getPosition());
+        plm.setPosition(plm.getPosition() + this->attachmentOffset.getPosition());
         plm.setRotation(origPlacement.getRotation());
         return plm;
     } break;
@@ -1099,15 +1120,25 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         if (face.IsNull())
             throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
 
+        gp_Pln plane;
         BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane)
-            throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        if (adapt.GetType() == GeomAbs_Plane) {
+            plane = adapt.Plane();
+        }
+        else {
+            TopLoc_Location loc;
+            Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+            GeomLib_IsPlanarSurface check(surf);
+            if (check.IsPlanar())
+                plane = check.Plan();
+            else
+                throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        }
 
         bool Reverse = false;
         if (face.Orientation() == TopAbs_REVERSED)
             Reverse = true;
 
-        gp_Pln plane = adapt.Plane();
         Standard_Boolean ok = plane.Direct();
         if (!ok) {
             // toggle if plane has a left-handed coordinate system
@@ -1221,6 +1252,13 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         if (d.Magnitude()<Precision::Confusion())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: path curve derivative is below 1e-7, too low, can't align");
 
+        //Set origin. Note that it will be overridden later for mmConcentric and mmRevolutionSection
+        if (bThruVertex) {
+            SketchBasePoint = p_in;
+        } else {
+            SketchBasePoint = p;
+        }
+
         if (mmode == mmRevolutionSection
                 || mmode == mmConcentric
                 || mmode == mmFrenetNB
@@ -1247,12 +1285,6 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
                 B = gp_Vec(0.,0.,0.);//redundant, just for consistency
             }
 
-            //Set origin. Note that it will be overridden later for mmConcentric and mmRevolutionSection
-            if (bThruVertex) {
-                SketchBasePoint = p_in;
-            } else {
-                SketchBasePoint = p;
-            }
 
             switch (mmode){
             case mmFrenetNB:
@@ -1289,7 +1321,6 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         } else if (mmode == mmNormalToPath){//mmNormalToPath
             //align sketch origin to the origin of support
             SketchNormal = gp_Dir(d.Reversed());//sketch normal looks at user. It is natural to have the curve directed away from user, so reversed.
-            SketchBasePoint = p;
         }
 
     } break;
@@ -1446,6 +1477,84 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         SketchBasePoint = p;
 
     } break;
+    case mmOZX:
+    case mmOZY:
+    case mmOXY:
+    case mmOXZ:
+    case mmOYZ:
+    case mmOYX: {
+        const char orderStrings[6][4] = {
+            "ZXY",
+            "ZYX",
+            "XYZ",
+            "XZY",
+            "YZX",
+            "YXZ",
+        };
+        const char* orderString = orderStrings[mmode - mmOZX];
+
+        enum dirIndex {
+            X,
+            Y,
+            Z
+        };
+        int order[3];
+        for(int i = 0; i < 3; ++i){
+            order[i] = orderString[i] - 'X';
+        }
+
+        if (shapes.size() < 2)
+            THROWM(Base::ValueError, "AttachEngine3D::calculateAttachedPlacement: not enough shapes linked (at least two are required).");
+
+        gp_Vec dirs[3];
+
+        //read out origin
+        if (shapes[0]->IsNull())
+            THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: null shape!")
+        if (shapes[0]->ShapeType() != TopAbs_VERTEX)
+            THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: first reference must be a vertex, it's not")
+        SketchBasePoint = BRep_Tool::Pnt(TopoDS::Vertex(*(shapes[0])));
+
+        //read out axes directions
+        for(size_t i = 1; i < 3 && i < shapes.size(); ++i){
+            if (shapes[i]->IsNull())
+                THROWM(Base::TypeError, "AttachEngine3D::calculateAttachedPlacement: null shape!")
+            if (shapes[i]->ShapeType() == TopAbs_VERTEX){
+                gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(*(shapes[i])));
+                dirs[order[i-1]] = gp_Vec(SketchBasePoint, p);
+            } else if (shapes[i]->ShapeType() == TopAbs_EDGE){
+                const TopoDS_Edge &e = TopoDS::Edge(*(shapes[i]));
+                BRepAdaptor_Curve crv(e);
+                double u1 = crv.FirstParameter();
+                double u2 = crv.LastParameter();
+                if ( Precision::IsInfinite(u1)
+                     || Precision::IsInfinite(u2) ){
+                    u1 = 0.0;
+                    u2 = 1.0;
+                }
+                gp_Pnt p1 = crv.Value(u1);
+                gp_Pnt p2 = crv.Value(u2);
+                dirs[order[i-1]] = gp_Vec(p1,p2);
+            }
+        }
+
+        //make the placement
+        Base::Rotation rot =
+                Base::Rotation::makeRotationByAxes(
+                    Base::Vector3d(dirs[0].X(), dirs[0].Y(), dirs[0].Z()),
+                    Base::Vector3d(dirs[1].X(), dirs[1].Y(), dirs[1].Z()),
+                    Base::Vector3d(dirs[2].X(), dirs[2].Y(), dirs[2].Z()),
+                    orderString
+                );
+        if(this->mapReverse){
+            rot = rot * Base::Rotation(Base::Vector3d(0,1,0),180);
+        }
+
+        Base::Placement plm =
+                Base::Placement(Base::Vector3d(SketchBasePoint.X(), SketchBasePoint.Y(), SketchBasePoint.Z()), rot);
+        plm *= this->attachmentOffset;
+        return plm;
+    } break;
     default:
         throwWrongMode(mmode);
     }//switch (MapMode)
@@ -1459,7 +1568,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
                                    /*makeYVertical = */ false,
                                    /*makeLegacyFlatFaceOrientation = */ mmode == mmFlatFace,
                                    &Place);
-    plm *= this->superPlacement;
+    plm *= this->attachmentOffset;
     return plm;
 }
 
@@ -1565,6 +1674,8 @@ AttachEngineLine::AttachEngineLine()
     modeRefTypes[mm1AxisInertia2] = modeRefTypes[mm1AxisInertia1];
     modeRefTypes[mm1AxisInertia3] = modeRefTypes[mm1AxisInertia1];
 
+    modeRefTypes[mm1FaceNormal] = attacher3D.modeRefTypes[mmTangentPlane];
+
 
 
     this->EnableAllSupportedModes();
@@ -1612,6 +1723,9 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         break;
     case mm1Tangent:
         mmode = mmNormalToPath;
+        break;
+    case mm1FaceNormal:
+        mmode = mmTangentPlane;
         break;
     default:
         bReUsed = false;
@@ -1791,11 +1905,11 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
-        attacher3D.superPlacement = Base::Placement(); //superplacement is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
         plm *= presuperPlacement;
     }
-    plm *= this->superPlacement;
+    plm *= this->attachmentOffset;
     return plm;
 }
 
@@ -1966,10 +2080,10 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
-        attacher3D.superPlacement = Base::Placement(); //superplacement is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
+        attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
     }
-    plm *= this->superPlacement;
+    plm *= this->attachmentOffset;
     return plm;
 }
 

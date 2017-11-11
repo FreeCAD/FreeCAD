@@ -82,6 +82,9 @@ IF(FREECAD_VERSION VERSION_GREATER 0.16)
     ENDIF()
 ENDIF(FREECAD_VERSION VERSION_GREATER 0.16)
 
+# Log the compiler and version
+MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}, version: ${CMAKE_CXX_COMPILER_VERSION}")
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
@@ -101,6 +104,20 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 if(CMAKE_COMPILER_IS_CLANGXX)
+    # Disable warning about potentially uninstantiated static members
+    # because it leads to a lot of false-positives.
+    #
+    # https://en.wikipedia.org/wiki/Xcode#Latest_versions
+    if (APPLE)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    elseif (UNIX)
+      if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+      endif()
+    endif()
+
     # older boost.preprocessor turn off variadics for clang
     add_definitions(-DBOOST_PP_VARIADICS=1)
     message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
@@ -162,6 +179,7 @@ endif(MSVC)
 
 # Switch to build FreeCAD with Qt5
 OPTION(BUILD_QT5 "Build with Qt5." OFF)
+OPTION(BUILD_QT5_WEBKIT "Build with Qt5." ON)
 OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
@@ -169,6 +187,11 @@ OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bun
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+if (WIN32 OR APPLE)
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
+else()
+    OPTION(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
+endif()
 
 # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
 set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
@@ -802,9 +825,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(Qt5UiTools)
             find_package(Qt5Network)
             find_package(Qt5Concurrent)
-            if (NOT WIN32)
-            # Disable for Windows for now since building the Qt sources always fails
-            find_package(Qt5WebKitWidgets)
+            if (BUILD_QT5_WEBKIT)
+                find_package(Qt5WebKitWidgets)
             endif()
         endif(BUILD_GUI)
 
@@ -910,28 +932,29 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
         find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
 
-        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/PySide)
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/__init__.py "# PySide wrapper\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
+        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py  "from PySide2.QtGui import *\n"
-                                                            "from PySide2.QtWidgets import *\n")
-        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtGui.py  "from PySide2.QtGui import *\n"
+                                                            "from PySide2.QtWidgets import *\n"
+                                                            "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
 	if(APPLE)
 	    INSTALL(
 	        DIRECTORY	
-                    ${CMAKE_BINARY_DIR}/bin/PySide
+                    ${CMAKE_BINARY_DIR}/Ext/PySide
 		DESTINATION
                     MacOS
             )
 	else()
             INSTALL(
 	        DIRECTORY	
-                    ${CMAKE_BINARY_DIR}/bin/PySide
+                    ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
-                    bin
+                    Ext
             )
 	endif()
     else()

@@ -35,13 +35,12 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObject)
+PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObjectGroup)
 
 
 FemAnalysis::FemAnalysis()
 {
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Member,(0), "Analysis member",Prop_None,"All objects belonging to the Analysis");
     ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Analysis");
 }
 
@@ -56,16 +55,25 @@ short FemAnalysis::mustExecute(void) const
 
 PyObject *FemAnalysis::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
+    return App::DocumentObjectGroup::getPyObject();
 }
 
 void FemAnalysis::onChanged(const Property* prop)
 {
-    App::DocumentObject::onChanged(prop);
+    App::DocumentObjectGroup::onChanged(prop);
+}
+
+void FemAnalysis::handleChangedPropertyName(Base::XMLReader &reader,
+                                            const char * TypeName,
+                                            const char *PropName)
+{
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Group.getClassTypeId() == type && strcmp(PropName, "Member") == 0) {
+        Group.Restore(reader);
+    }
+    else {
+        App::DocumentObjectGroup::handleChangedPropertyName(reader, TypeName, PropName);
+    }
 }
 
 
@@ -79,6 +87,10 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Fem::FemAnalysisPython, Fem::FemAnalysis)
 template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
     return "FemGui::ViewProviderFemAnalysisPython";
+}
+
+template<> void Fem::FemAnalysisPython::Restore(Base::XMLReader& reader) {
+    FemAnalysis::Restore(reader);
 }
 //template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
 //    if (PythonObject.is(Py::_None())) {

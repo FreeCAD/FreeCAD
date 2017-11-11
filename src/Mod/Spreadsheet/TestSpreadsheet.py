@@ -660,6 +660,14 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.insertRows('2', 1)
         self.assertEqual(sheet.getContents("B1"),"=B3")
 
+    def testIssue3225(self):
+        """ Inserting rows -- check renaming of internal cells """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('B2', '25')
+        sheet.set('B3', '=B2')
+        sheet.insertRows('2', 1)
+        self.assertEqual(sheet.getContents("B4"),"=B3")
+
     def testRenameAlias(self):
         """ Test renaming of alias1 to alias2 in a spreadsheet """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')

@@ -349,7 +349,6 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawMatting();
-//    drawBorder();
     QGIView::draw();
 }
 
@@ -620,7 +619,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setDirection(arrowDir.x,arrowDir.y);
 
         Base::Vector3d org = viewSection->SectionOrigin.getValue();
-        double scale = viewPart->Scale.getValue();
+        double scale = viewPart->getScale();
         Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
         //now project pOrg onto arrowDir
         Base::Vector3d displace;
@@ -710,8 +709,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
         highlight->setReference(const_cast<char*>(viewDetail->Reference.getValue()));
-        Base::Vector3d center = viewDetail->AnchorPoint.getValue();
-        double radius = viewDetail->Radius.getValue();
+        Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
+        double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
         highlight->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));
         highlight->setFont(m_font,Rez::guiX(6.0));
@@ -731,7 +730,7 @@ void QGIViewPart::drawMatting()
         return;
     }
 
-    double scale = dvd->Scale.getValue();
+    double scale = dvd->getScale();
     double radius = dvd->Radius.getValue() * scale;
     QGIMatting* mat = new QGIMatting();
     addToGroup(mat);

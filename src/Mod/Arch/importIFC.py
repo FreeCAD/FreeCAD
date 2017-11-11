@@ -382,7 +382,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
     materials = ifcfile.by_type("IfcMaterial")
-    overallboundbox = FreeCAD.BoundBox()
 
     if DEBUG: print("Building relationships table...",end="")
 
@@ -476,6 +475,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("Processing objects...")
 
     if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+        overallboundbox = None
         import FreeCADGui
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
 
@@ -569,18 +569,24 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
 
-            if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
-                try:
-                    if not overallboundbox.isInside(shape.BoundBox):
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
-                    overallboundbox.add(shape.BoundBox)
-                except:
-                    pass
-
             if not shape.isNull():
+                if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                    try:
+                        bb = shape.BoundBox
+                        # if DEBUG: print(' ' + str(bb),end="")
+                    except:
+                        bb = None
+                        if DEBUG: print(' BB could not be computed',end="")
+                    if bb.isValid():
+                        if not overallboundbox:
+                            overallboundbox = bb
+                        if not overallboundbox.isInside(bb):
+                            FreeCADGui.SendMsgToActiveView("ViewFit")
+                        overallboundbox.add(bb)
+
                 if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
-                        if DEBUG: print("skipping space ",pid)
+                        if DEBUG: print("skipping space ",pid,end="")
                     elif structobj:
                         structshapes[pid] = shape
                         if DEBUG: print(shape.Solids," ",end="")
@@ -625,7 +631,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 #continue
 
         else:
-            if DEBUG: print(" no brep ")
+            if DEBUG: print(" no brep ",end="")
 
         if MERGE_MODE_ARCH == 0 and archobj:
 
@@ -688,7 +694,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = Arch.makeComponent(baseobj,name=name)
             if obj:
                 sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else ""
-                if DEBUG: print(sols)
+                if DEBUG: print(sols,end="")
                 objects[pid] = obj
 
         elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
@@ -711,6 +717,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
+
+        if DEBUG: print("")  # newline for debug prints, print for a new object should be on a new line
 
         if obj:
 

@@ -436,7 +436,7 @@ Application::Application(bool GUIenabled)
     // global access 
     Instance = this;
 
-    // instanciate the workbench dictionary
+    // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
     if (GUIenabled) {
@@ -599,6 +599,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
 void Application::exportTo(const char* FileName, const char* DocName, const char* Module)
 {
     WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
@@ -660,6 +661,7 @@ void Application::createStandardOperations()
     Gui::CreateMacroCommands();
     Gui::CreateViewStdCommands();
     Gui::CreateWindowStdCommands();
+    Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
     Gui::CreateLinkCommands();
 }
@@ -805,7 +807,11 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
+        catch (const Py::Exception&) {
+            Base::PyException e;
             e.ReportException();
         }
     }

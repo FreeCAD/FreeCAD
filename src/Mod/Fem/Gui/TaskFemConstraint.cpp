@@ -170,7 +170,7 @@ void TaskFemConstraint::onButtonWizCancel()
 {
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
     if (pcConstraint != NULL)
-        pcConstraint->getDocument()->remObject(pcConstraint->getNameInDocument());
+        pcConstraint->getDocument()->removeObject(pcConstraint->getNameInDocument());
     onButtonWizOk();
 }
 

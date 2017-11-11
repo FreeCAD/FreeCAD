@@ -298,7 +298,7 @@ TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger);
 
 PropertyEnumeration::PropertyEnumeration()
 {
-
+    _editorTypeName = "Gui::PropertyEditor::PropertyEnumItem";
 }
 
 PropertyEnumeration::PropertyEnumeration(const App::Enumeration &e)

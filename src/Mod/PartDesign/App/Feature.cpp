@@ -39,6 +39,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include "App/OriginFeature.h"
 #include "Body.h"
+#include "ShapeBinder.h"
 #include "Feature.h"
 #include "FeaturePy.h"
 #include "Mod/Part/App/DatumFeature.h"
@@ -55,6 +56,7 @@ Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
     Placement.setStatus(App::Property::Hidden, true);
+    BaseFeature.setStatus(App::Property::Hidden, true);
 }
 
 short Feature::mustExecute() const
@@ -119,6 +121,10 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 const TopoDS_Shape& Feature::getBaseShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
+    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
+        throw Base::ValueError("Base shape of shape binder cannot be used");
+    }
+
     const TopoDS_Shape& result = BaseObject->Shape.getValue();
     if (result.IsNull())
         throw Base::Exception("Base feature's shape is invalid");
@@ -131,6 +137,10 @@ const TopoDS_Shape& Feature::getBaseShape() const {
 
 const Part::TopoShape Feature::getBaseTopoShape() const {
     const Part::Feature* BaseObject = getBaseObject();
+
+    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
+        throw Base::ValueError("Base shape of shape binder cannot be used");
+    }
 
     const Part::TopoShape& result = BaseObject->Shape.getShape();
     if (result.getShape().IsNull())
@@ -175,6 +185,20 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 
     return builder.Shape();
 }
+
+Body* Feature::getFeatureBody() {
+
+    auto list = getInList();
+    for (auto in : list) {
+        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
+           static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
+               
+               return static_cast<Body*>(in);
+        }
+    }
+    
+    return nullptr;
+};
 
 }//namespace PartDesign
 

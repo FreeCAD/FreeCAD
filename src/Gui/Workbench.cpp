@@ -566,7 +566,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // View
     MenuItem* view = new MenuItem( menuBar );
     view->setCommand("&View");
-    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator" 
+    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator" 
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" 
@@ -649,6 +649,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
+    
+    // Structure
+    ToolBarItem* structure = new ToolBarItem( root );
+    structure->setCommand("Structure");
+    *structure << "Std_Part" << "Std_Group";
+          
     return root;
 }
 

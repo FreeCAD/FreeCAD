@@ -29,6 +29,7 @@
 
 #include "Rotation.h"
 #include "Matrix.h"
+#include "Base/Exception.h"
 
 using namespace Base;
 
@@ -384,6 +385,150 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
 Rotation Rotation::identity(void)
 {
     return Rotation(0.0, 0.0, 0.0, 1.0);
+}
+
+Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
+{
+    const double tol = 1e-7; //equal to OCC Precision::Confusion
+    enum dirIndex {
+        X,
+        Y,
+        Z
+    };
+
+    //convert priorityOrder string into a sequence of ints.
+    if(strlen(priorityOrder)!=3)
+        THROWM(ValueError, "makeRotationByAxes: length of priorityOrder is not 3");
+    int order[3];
+    for(int i = 0; i < 3; ++i){
+        order[i] = priorityOrder[i] - 'X';
+        if (order[i] < 0 || order[i] > 2)
+            THROWM(ValueError, "makeRotationByAxes: characters in priorityOrder must be uppercase X, Y, or Z. Some other character encountered.")
+    }
+
+    //ensure every axis is listed in priority list
+    if( order[0] == order[1] ||
+        order[1] == order[2] ||
+        order[2] == order[0])
+        THROWM(ValueError,"makeRotationByAxes: not all axes are listed in priorityOrder");
+
+
+    //group up dirs into an array, to access them by indexes stored in @order.
+    std::vector<Vector3d*> dirs = {&xdir, &ydir, &zdir};
+
+
+    auto dropPriority = [&order](int index){
+        char tmp;
+        if (index == 0){
+            tmp = order[0];
+            order[0] = order[1];
+            order[1] = order[2];
+            order[2] = tmp;
+        } else if (index == 1) {
+            tmp = order[1];
+            order[1] = order[2];
+            order[2] = tmp;
+        } //else if index == 2 do nothing
+    };
+
+    //pick up the strict direction
+    Vector3d mainDir;
+    for(int i = 0; i < 3; ++i){
+        mainDir = *(dirs[order[0]]);
+        if (mainDir.Length() > tol)
+            break;
+        else
+            dropPriority(0);
+        if (i == 2)
+            THROWM(ValueError, "makeRotationByAxes: all directions supplied are zero");
+    }
+    mainDir.Normalize();
+
+    //pick up the 2nd priority direction, "hint" direction.
+    Vector3d hintDir;
+    for(int i = 0; i < 2; ++i){
+        hintDir = *(dirs[order[1]]);
+        if ((hintDir.Cross(mainDir)).Length() > tol)
+            break;
+        else
+            dropPriority(1);
+        if (i == 1)
+            hintDir = Vector3d(); //no vector can be used as hint direction. Zero it out, to indicate that a guess is needed.
+    }
+    if (hintDir.Length() == 0){
+        switch (order[0]){
+        case X: { //xdir is main
+            //align zdir to OZ
+            order[1] = Z;
+            order[2] = Y;
+            hintDir = Vector3d(0,0,1);
+            if ((hintDir.Cross(mainDir)).Length() <= tol){
+                //aligning to OZ is impossible, align to ydir to OY. Why so? I don't know, just feels right =)
+                hintDir = Vector3d(0,1,0);
+                order[1] = Y;
+                order[2] = Z;
+            }
+        } break;
+        case Y: { //ydir is main
+            //align zdir to OZ
+            order[1] = Z;
+            order[2] = X;
+            hintDir = mainDir.z > -tol ? Vector3d(0,0,1) : Vector3d(0,0,-1);
+            if ((hintDir.Cross(mainDir)).Length() <= tol){
+                //aligning zdir to OZ is impossible, align xdir to OX then.
+                hintDir = Vector3d(1,0,0);
+                order[1] = X;
+                order[2] = Z;
+            }
+        } break;
+        case Z: { //zdir is main
+            //align ydir to OZ
+            order[1] = Y;
+            order[2] = X;
+            hintDir =  Vector3d(0,0,1);
+            if ((hintDir.Cross(mainDir)).Length() <= tol){
+                //aligning ydir to OZ is impossible, align xdir to OX then.
+                hintDir = Vector3d(1,0,0);
+                order[1] = X;
+                order[2] = Y;
+            }
+        } break;
+        }//switch ordet[0]
+    }
+
+    //ensure every axis is listed in priority list
+    assert(order[0] != order[1]);
+    assert(order[1] != order[2]);
+    assert(order[2] != order[0]);
+
+    hintDir.Normalize();
+    //make hintDir perpendicular to mainDir. For that, we cross-product the two to obtain the third axis direction, and then recover back the hint axis by doing another cross product.
+    Vector3d lastDir = mainDir.Cross(hintDir);
+    lastDir.Normalize();
+    hintDir = lastDir.Cross(mainDir);
+    hintDir.Normalize(); //redundant?
+
+    Vector3d finaldirs[3];
+    finaldirs[order[0]] = mainDir;
+    finaldirs[order[1]] = hintDir;
+    finaldirs[order[2]] = lastDir;
+
+    //fix handedness
+    if (finaldirs[X].Cross(finaldirs[Y]) * finaldirs[Z] < 0.0)
+        //handedness is wrong. Switch the direction of the least important axis
+        finaldirs[order[2]] = finaldirs[order[2]] * (-1.0);
+
+    //build the rotation, by constructing a matrix first.
+    Matrix4D m;
+    m.setToUnity();
+    for(int i = 0; i < 3; ++i){
+        //matrix indexing: [row][col]
+        m[0][i] = finaldirs[i].x;
+        m[1][i] = finaldirs[i].y;
+        m[2][i] = finaldirs[i].z;
+    }
+
+    return Rotation(m);
 }
 
 void Rotation::setYawPitchRoll(double y, double p, double r)

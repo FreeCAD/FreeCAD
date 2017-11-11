@@ -9,11 +9,11 @@ blksize = 1024 * 8
 
 
 def BuildDistName():
-    # line seperator 
+    # line separator 
     ls = os.linesep
-    # path seperator
+    # path separator
     ps = os.pathsep
-    # dir seperator
+    # dir separator
     ds = os.sep
 
     # Building dist name
@@ -23,11 +23,11 @@ def BuildDistName():
 
     return DistName
 def BuildSetupName():
-    # line seperator 
+    # line separator 
     ls = os.linesep
-    # path seperator
+    # path separator
     ps = os.pathsep
-    # dir seperator
+    # dir separator
     ds = os.sep
 
     # Building dist name
@@ -38,11 +38,11 @@ def BuildSetupName():
     return DistName
 
 def GetVersion():
-    # line seperator 
+    # line separator 
     ls = os.linesep
-    # path seperator
+    # path separator
     ps = os.pathsep
-    # dir seperator
+    # dir separator
     ds = os.sep
 
     # Building dist name
@@ -51,11 +51,11 @@ def GetVersion():
     return  FCVersionMajor[23:-1] + '.' +FCVersionMinor[23:-1] 
 
 def GetBuildNbr():
-    # line seperator 
+    # line separator 
     ls = os.linesep
-    # path seperator
+    # path separator
     ps = os.pathsep
-    # dir seperator
+    # dir separator
     ds = os.sep
 
     # Building dist name
@@ -64,11 +64,11 @@ def GetBuildNbr():
     return  FCVersionBuild[23:-1] 
 
 def GetBuildDate():
-    # line seperator 
+    # line separator 
     ls = os.linesep
-    # path seperator
+    # path separator
     ps = os.pathsep
-    # dir seperator
+    # dir separator
     ds = os.sep
 
     # Building dist name

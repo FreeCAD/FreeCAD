@@ -310,7 +310,7 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
     DocumentObject *pcFtr = getDocumentPtr()->getObject(sName);
     if(pcFtr) {
-        getDocumentPtr()->remObject( sName );
+        getDocumentPtr()->removeObject( sName );
         Py_Return;
     } else {
         std::stringstream str;
@@ -614,7 +614,7 @@ Py::List DocumentPy::getObjects(void) const
     return res;
 }
 
-Py::List DocumentPy::getToplogicalSortedObjects(void) const
+Py::List DocumentPy::getTopologicalSortedObjects(void) const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;

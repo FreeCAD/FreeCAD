@@ -110,7 +110,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_superplacement">
+    <widget class="QGroupBox" name="groupBox_AttachmentOffset">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -118,10 +118,10 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</string>
+      <string>AttachmentOffset property. The placement is expressed in local space of object being attached.</string>
      </property>
      <property name="title">
-      <string>Extra placement:</string>
+      <string>Attachment Offset:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -154,7 +154,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="superplacementY" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetY" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -183,7 +183,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="superplacementZ" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetZ" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -238,7 +238,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="superplacementX" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetX" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -254,7 +254,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="superplacementYaw" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -276,7 +276,7 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::QuantitySpinBox" name="superplacementPitch" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -298,7 +298,7 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::QuantitySpinBox" name="superplacementRoll" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -353,12 +353,12 @@
   <tabstop>buttonRef4</tabstop>
   <tabstop>lineRef4</tabstop>
   <tabstop>listOfModes</tabstop>
-  <tabstop>superplacementX</tabstop>
-  <tabstop>superplacementY</tabstop>
-  <tabstop>superplacementZ</tabstop>
-  <tabstop>superplacementYaw</tabstop>
-  <tabstop>superplacementPitch</tabstop>
-  <tabstop>superplacementRoll</tabstop>
+  <tabstop>attachmentOffsetX</tabstop>
+  <tabstop>attachmentOffsetY</tabstop>
+  <tabstop>attachmentOffsetZ</tabstop>
+  <tabstop>attachmentOffsetYaw</tabstop>
+  <tabstop>attachmentOffsetPitch</tabstop>
+  <tabstop>attachmentOffsetRoll</tabstop>
   <tabstop>checkBoxFlip</tabstop>
  </tabstops>
  <resources/>

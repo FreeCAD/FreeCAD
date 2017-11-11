@@ -25,6 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathSelection as PathSelection
@@ -60,15 +61,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getForm() ... returns UI, adapted to the resutls from pocketFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
-        if FeatureFacing & self.pocketFeatures():
-            form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
-            form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
-        else:
+        if not FeatureFacing & self.pocketFeatures():
             form.facingWidget.hide()
 
+        if FeaturePocket & self.pocketFeatures():
+            form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
+            form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
+
         if True:
-            # currently doesn't have an effect
+            # currently doesn't have an effect or is experimental
             form.keepToolDown.hide()
+            form.minTravel.hide()
 
         return form
 
@@ -89,7 +92,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.zigZagAngle.setEnabled(True)
 
         if setModel:
-            self.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
+            PathGui.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
@@ -100,7 +103,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
             obj.OffsetPattern = str(self.form.offsetPattern.currentText())
 
-        self.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
+        PathGui.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
         self.updateZigZagAngle(obj)
 

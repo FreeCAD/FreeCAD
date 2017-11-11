@@ -42,7 +42,7 @@ public:
 
     PropertyGeometryList GeometrySet;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);

@@ -88,6 +88,10 @@ void DrawViewDraft::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 {
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
         std::string svgFrag;
@@ -99,7 +103,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 
         std::stringstream paramStr;
         App::Color col = Color.getValue();
-        paramStr << ",scale=" << Scale.getValue() 
+        paramStr << ",scale=" << getScale() 
                  << ",linewidth=" << LineWidth.getValue() 
                  << ",fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here
@@ -120,6 +124,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
         }
+    requestPaint();
     return DrawView::execute();
 }
 

@@ -120,6 +120,8 @@ public:
                                 const Gui::TreeItemMode&)>               signalExpandObject;
     /// signal on changed ShowInTree property in view provider
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalShowItem;
+    /// signal on scrolling to an object
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalScrollToObject;
     /// signal on undo Document
     mutable boost::signal<void (const Gui::Document& doc)> signalUndoDocument;
     /// signal on redo Document
@@ -171,8 +173,8 @@ public:
     /// Create a clone of the given view
     Gui::MDIView* cloneView(Gui::MDIView*);
     /** send messages to the active view
-     * Send a specific massage to the active view and is able to recive a
-     * return massage
+     * Send a specific massage to the active view and is able to receive a
+     * return message
      */
     /// send Messages to all views
     bool sendMsgToViews(const char* pMsg);

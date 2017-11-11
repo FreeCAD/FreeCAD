@@ -987,7 +987,8 @@ class Snapper:
         self.radius = 0
         self.setCursor()
         if hideSnapBar or Draft.getParam("hideSnapBar",False):
-            self.toolbar.hide()
+            if hasattr(self,"toolbar") and self.toolbar:
+                self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
         self.selectMode = False
@@ -1186,6 +1187,7 @@ class Snapper:
         self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
         self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
         self.gridbutton.setObjectName("GridButton")
+        self.gridbutton.setWhatsThis("Draft_ToggleGrid")
         QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
         self.toolbar.addAction(self.gridbutton)
         # master button
@@ -1194,6 +1196,7 @@ class Snapper:
         self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
+        self.masterbutton.setWhatsThis("Draft_ToggleSnap")
         self.masterbutton.setCheckable(True)
         self.masterbutton.setChecked(True)
         QtCore.QObject.connect(self.masterbutton,QtCore.SIGNAL("toggled(bool)"),self.toggle)
@@ -1209,6 +1212,7 @@ class Snapper:
                     b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                 b.setObjectName("SnapButton"+c)
+                b.setWhatsThis("Draft_"+c.capitalize())
                 b.setCheckable(True)
                 b.setChecked(True)
                 self.toolbar.addAction(b)
@@ -1221,6 +1225,7 @@ class Snapper:
             b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setObjectName("SnapButton"+n)
+            b.setWhatsThis("Draft_"+n)
             b.setCheckable(True)
             b.setChecked(True)
             self.toolbar.addAction(b)

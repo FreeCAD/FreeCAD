@@ -61,7 +61,7 @@ public:
     virtual void getBlockDimensions(double &x, double &y, double &width, double &height) const;
     virtual DrawPage* getParentPage() const;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

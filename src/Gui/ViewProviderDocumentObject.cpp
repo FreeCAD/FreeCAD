@@ -39,7 +39,8 @@
 #include <Base/Console.h>
 #include <Base/BoundBox.h>
 #include <App/Material.h>
-#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/Origin.h>
 #include "Application.h"
 #include "Document.h"
 #include "Selection.h"
@@ -309,6 +310,16 @@ void ViewProviderDocumentObject::setActiveMode()
     }
     if (!Visibility.getValue())
         ViewProvider::hide();
+}
+
+bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
+{
+    Q_UNUSED(obj)
+    if (getObject()->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
+        return true;
+    if (getObject()->isDerivedFrom(App::Origin::getClassTypeId()))
+        return true;
+    return false;
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()

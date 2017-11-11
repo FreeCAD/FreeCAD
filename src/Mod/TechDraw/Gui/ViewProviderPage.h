@@ -62,6 +62,7 @@ public:
     virtual void hide(void);
     /// Shows the view provider
     virtual void show(void);
+    virtual bool isShow(void) const;
 
     void onSelectionChanged(const Gui::SelectionChanges& msg);
 
@@ -79,6 +80,10 @@ public:
     bool isRestoring(void) {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
+    void onGuiRepaint(const TechDraw::DrawPage* dp); 
+    typedef boost::signals::scoped_connection Connection;
+    Connection connectGuiRepaint;
+
     void unsetEdit(int ModNum);
     MDIViewPage* getMDIViewPage();
     bool showMDIViewPage();

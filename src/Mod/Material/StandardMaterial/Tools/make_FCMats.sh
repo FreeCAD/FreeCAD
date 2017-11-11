@@ -20,12 +20,12 @@ else
 	exit 1
 fi
 
-# Helper function to retrive string from X,Y position in csv file
+# Helper function to retrieve string from X,Y position in csv file
 function get_xy() {
 	VALUE_XY=$(cat $MATERIALS_FILE.csv | awk -v x=$X -v y=$Y -F\| 'NR==y {print $x}' | sed 's/\"//g')
 }
 
-#Determine number of columns and rows in the Materials.csv file
+# Determine number of columns and rows in the Materials.csv file
 NUMBER_OF_COLUMNS=$(cat $MATERIALS_FILE.csv | awk --field-separator="|" "NR==1 { print NF }")
 NUMBER_OF_ROWS=$(cat $MATERIALS_FILE.csv | wc -l)
 

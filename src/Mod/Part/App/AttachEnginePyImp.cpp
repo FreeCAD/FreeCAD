@@ -83,9 +83,8 @@ Py::String AttachEnginePy::getAttacherType(void) const
   * to avoid repeating the same error handling code over and over again.
   */
 #define ATTACHERPY_STDCATCH_ATTR \
-    catch (Standard_Failure) {\
-        Handle(Standard_Failure) e = Standard_Failure::Caught();\
-        throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());\
+    catch (Standard_Failure& e) {\
+        throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());\
     } catch (Base::Exception &e) {\
         throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());\
     }
@@ -124,21 +123,21 @@ void AttachEnginePy::setReferences(Py::Object arg)
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
-Py::Object AttachEnginePy::getSuperPlacement(void) const
+Py::Object AttachEnginePy::getAttachmentOffset(void) const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        return Py::Object(new Base::PlacementPy(new Base::Placement(attacher.superPlacement)),true);
+        return Py::Object(new Base::PlacementPy(new Base::Placement(attacher.attachmentOffset)),true);
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
-void AttachEnginePy::setSuperPlacement(Py::Object arg)
+void AttachEnginePy::setAttachmentOffset(Py::Object arg)
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
         if (PyObject_TypeCheck(arg.ptr(), &(Base::PlacementPy::Type))) {
             const Base::PlacementPy* plmPy = static_cast<const Base::PlacementPy*>(arg.ptr());
-            attacher.superPlacement = *(plmPy->getPlacementPtr());
+            attacher.attachmentOffset = *(plmPy->getPlacementPtr());
         } else {
             std::string error = std::string("type must be 'Placement', not ");
             error += arg.type().as_string();
@@ -224,9 +223,8 @@ Py::List AttachEnginePy::getImplementedModes(void) const
   * the same error handling code over and over again.
   */
 #define ATTACHERPY_STDCATCH_METH \
-    catch (Standard_Failure) {\
-        Handle(Standard_Failure) e = Standard_Failure::Caught();\
-        PyErr_SetString(Part::PartExceptionOCCError, e->GetMessageString());\
+    catch (Standard_Failure& e) {\
+        PyErr_SetString(Part::PartExceptionOCCError, e.GetMessageString());\
         return NULL;\
     } catch (Base::Exception &e) {\
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());\
@@ -521,7 +519,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
                        feat->MapReversed.getValue(),
                        feat->MapPathParameter.getValue(),
                        0.0,0.0,
-                       feat->superPlacement.getValue());
+                       feat->AttachmentOffset.getValue());
         return Py::new_reference_to(Py::None());
     } ATTACHERPY_STDCATCH_METH;
 }
@@ -545,7 +543,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
         feat->MapMode.setValue(attacher.mapMode);
         feat->MapReversed.setValue(attacher.mapReverse);
         feat->MapPathParameter.setValue(attacher.attachParameter);
-        feat->superPlacement.setValue(attacher.superPlacement);
+        feat->AttachmentOffset.setValue(attacher.attachmentOffset);
         return Py::new_reference_to(Py::None());
     } ATTACHERPY_STDCATCH_METH;
 }

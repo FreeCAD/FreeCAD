@@ -96,7 +96,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      *mesh << "FEM_MeshNetgenFromShape"
            << "FEM_MeshGmshFromShape"
            << "Separator"
-	   << "FEM_MeshBoundaryLayer"
+           << "FEM_MeshBoundaryLayer"
            << "FEM_MeshRegion"
            << "FEM_MeshGroup"
            << "Separator"

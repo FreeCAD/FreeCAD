@@ -43,6 +43,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderPy.h"
+#include "ViewProviderDocumentObjectPy.h"
 
 
 using namespace Gui;
@@ -320,6 +321,18 @@ PyObject* DocumentPy::reorderViewObjects(PyObject *args)
     auto *vp1 = static_cast<Gui::ViewProviderPy*>(obj1)->getViewProviderPtr();
     auto *vp2 = static_cast<Gui::ViewProviderPy*>(obj2)->getViewProviderPtr();
     getDocumentPtr()->reorderViewProviders(vp1,vp2);
+    Py_Return;
+}
+
+PyObject* DocumentPy::scrollToTreeItem(PyObject *args)
+{
+    PyObject *view;
+    if (!PyArg_ParseTuple(args,"O!",&(Gui::ViewProviderDocumentObjectPy::Type), &view))
+        return 0;
+
+    Gui::ViewProviderDocumentObject* vp = static_cast<ViewProviderDocumentObjectPy*>
+            (view)->getViewProviderDocumentObjectPtr();
+    getDocumentPtr()->signalScrollToObject(*vp);
     Py_Return;
 }
 

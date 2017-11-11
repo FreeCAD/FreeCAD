@@ -722,6 +722,23 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     return 0;
 }
 
+int SketchObject::deleteAllGeometry()
+{
+    std::vector< Part::Geometry * > newVals(0);
+    std::vector< Constraint * > newConstraints(0);
+
+    this->Geometry.setValues(newVals);
+    this->Constraints.setValues(newConstraints);
+
+    this->Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
@@ -2036,13 +2053,9 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
         } else if (body_this == body_obj) {
             return true;
         } else {
-            if ( this->allowOtherBody ) { // Selection outside of body not allowed if flag is not set
-                return true;
-            } else {
-                if (rsn)
-                    *rsn = rlOtherBody;
-                return false;
-            }
+            if (rsn)
+                *rsn = rlOtherBody;
+            return false;
         }
     } else {
         // cross-part link. Disallow, should be done via shapebinders only
@@ -2102,7 +2115,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
             }
         }
     } else {
-        // cross-part link. Disallow, should be done via shapebinders only
+        // cross-part relation. Disallow, should be done via shapebinders only
         if (rsn)
             *rsn = rlOtherPart;
         return false;
@@ -2248,8 +2261,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                 Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2259,16 +2270,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = 2.0*M_PI - theta1;
+                theta2 = 2.0*M_PI - theta2;
+                std::swap(theta1, theta2);
+                if (theta1 < 0) {
+                    theta1 += 2.0*M_PI;
+                    theta2 += 2.0*M_PI;
+                }
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2276,8 +2291,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
                 Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2287,16 +2300,16 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = -theta1;
+                theta2 = -theta2;
+                std::swap(theta1, theta2);
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2304,23 +2317,21 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                 Part::GeomArcOfParabola *geosymaoe = static_cast<Part::GeomArcOfParabola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 //double df= geosymaoe->getFocal();
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
                 Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
-                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
-                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
 
                 geosymaoe->setXAxisDir(sf1-scp);
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
-                geosymaoe->closestParameter(sep,theta1);
-                geosymaoe->closestParameter(ssp,theta2);
+                geosymaoe->getRange(theta1,theta2,true);
+                theta1 = -theta1;
+                theta2 = -theta2;
+                std::swap(theta1, theta2);
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
@@ -2511,8 +2522,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                 Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
                 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2522,25 +2531,15 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
                 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
-
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
                 Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
                 
                 Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
                 double majord=geosymaoe->getMajorRadius();
@@ -2550,54 +2549,36 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
                 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
                 geosymaoe->setCenter(scp);
-
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                 Part::GeomArcOfParabola *geosymaoe = static_cast<Part::GeomArcOfParabola *>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
-                Base::Vector3d sp = geosymaoe->getStartPoint(true);
-                Base::Vector3d ep = geosymaoe->getEndPoint(true);
 
                 /*double df= geosymaoe->getFocal();*/
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
                 Base::Vector3d scp = cp + 2.0*(refpoint-cp);
-                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
-                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
 
                 geosymaoe->setXAxisDir(sf1-scp);
                 geosymaoe->setCenter(scp);
 
-                double theta1,theta2;
-                geosymaoe->closestParameter(ssp,theta1);
-                geosymaoe->closestParameter(sep,theta2);
-
-                geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
                 Part::GeomBSplineCurve *geosymbsp = static_cast<Part::GeomBSplineCurve *>(geosym);
-                
+
                 std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
                 
                 for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
-                    
                     (*it) = (*it) + 2.0*(refpoint-(*it));
                 }
-                
+
                 geosymbsp->setPoles(poles);
 
                 //isStartEndInverted.insert(std::make_pair(*it, false));
@@ -4796,9 +4777,9 @@ void SketchObject::rebuildExternalGeometry(void)
                 const Part::TopoShape& refShape=refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
-            catch (Standard_Failure) {
-                Handle(Standard_Failure) e = Standard_Failure::Caught();
-                throw Base::Exception(e->GetMessageString());
+            catch (Standard_Failure& e) {
+        
+                throw Base::Exception(e.GetMessageString());
             }
         } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
             const App::Plane* pl = static_cast<const App::Plane*>(Obj);
@@ -5065,9 +5046,9 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
                     }
-                    catch (Standard_Failure) {
-                        Handle(Standard_Failure) e = Standard_Failure::Caught();
-                        throw Base::Exception(e->GetMessageString());
+                    catch (Standard_Failure& e) {
+                
+                        throw Base::Exception(e.GetMessageString());
                     }
                 }
             }
@@ -5722,6 +5703,14 @@ void SketchObject::onDocumentRestored()
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
+        // this may happen when saving a sketch directly in edit mode
+        // but never performed a recompute before
+        if (Shape.getValue().IsNull() && hasConflicts() == 0) {
+            if (this->solve(true) == 0)
+                Shape.setValue(solvedSketch.toShape());
+        }
+
+        Part::Part2DObject::onDocumentRestored();
     }
     catch (...) {
     }
@@ -5796,7 +5785,8 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
 
 /*!
- * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs, and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
+ * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs,
+ *  and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
  * \param justAnalyze if true, nothing is actually done - only the number of constraints to be affected is returned.
  * \return the number of constraints changed/to be changed.
  */
@@ -5813,8 +5803,8 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         bool affected=false;
         Constraint *constNew = 0;
         for(int ig=1; ig<=3; ig++){//cycle through constraint.first, second, third
-            int geoId;
-            Sketcher::PointPos posId;
+            int geoId = 0;
+            Sketcher::PointPos posId = none;
             switch (ig){
                 case 1: geoId=newVals[ic]->First; posId = newVals[ic]->FirstPos; break;
                 case 2: geoId=newVals[ic]->Second; posId = newVals[ic]->SecondPos; break;

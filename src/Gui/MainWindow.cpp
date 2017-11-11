@@ -1013,6 +1013,12 @@ void MainWindow::processMessages(const QList<QByteArray> & msg)
 
 void MainWindow::delayedStartup()
 {
+    // automatically run unit tests in Gui
+    if (App::Application::Config()["RunMode"] == "Internal") {
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        return;
+    }
+
     // processing all command line files
     try {
         std::list<std::string> files = App::Application::getCmdLineFiles();
@@ -1303,15 +1309,31 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     auto internal = App::Document::getDependencyList(sel,true);
     auto all = App::Document::getDependencyList(sel,false);
     if (internal.size() > sel.size()) {
-        int ret = QMessageBox::question(getMainWindow(),
-            tr("Object dependencies"),
-            tr("The selected objects have a dependency to unselected objects.\n"
-               "Do you want to copy them, too?"),
-            QMessageBox::Yes,QMessageBox::No);
-        if (ret == QMessageBox::Yes)
+        //check if selection are only geofeaturegroup objects, for them it is intuitive and wanted to copy the 
+        //dependencies
+        bool hasGroup = false, hasNormal = false;
+        for(auto obj : sel) {
+            if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
+                hasGroup = true;
+            else 
+                hasNormal = true;
+        }
+        if(hasGroup && !hasNormal) {
             sel.swap(internal);
-        else 
-            keepExternal = true;
+        }
+        else {
+            //if there are normal objects selected it may be possible that some dependencies are 
+            //from them, and not only from groups. so ask the user what to do.
+            int ret = QMessageBox::question(getMainWindow(),
+                tr("Object dependencies"),
+                tr("The selected objects have a dependency to unselected objects.\n"
+                "Do you want to copy them, too?"),
+                QMessageBox::Yes,QMessageBox::No);
+            if (ret == QMessageBox::Yes)
+                sel.swap(internal);
+            else 
+                keepExternal = true;
+        }
     }
     if(!keepExternal && all.size() > sel.size()) {
         int ret = QMessageBox::question(getMainWindow(),

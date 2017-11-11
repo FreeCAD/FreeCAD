@@ -6030,6 +6030,7 @@ public:
         , EditCurve(2)
         , BaseGeoId(-1)
         , ExtendFromStart(false)
+        , Increment(0)
     {
     }
     virtual ~DrawSketchHandlerExtend()
@@ -6307,7 +6308,6 @@ namespace SketcherGui {
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier);
 
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
@@ -6320,7 +6320,7 @@ namespace SketcherGui {
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                     break;
                 case Sketcher::SketchObject::rlOtherBody:
-                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link. Hold Ctrl to allow cross-references.");
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link.");
                     break;
                 case Sketcher::SketchObject::rlOtherPart:
                     this->notAllowedReason = QT_TR_NOOP("This object belongs to another part, can't link.");
@@ -6535,9 +6535,9 @@ namespace SketcherGui {
             Q_UNUSED(sSubName);
             
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
-            sketch->allowUnaligned = QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier);
-            
+            sketch->setAllowOtherBody(QApplication::keyboardModifiers() == Qt::ControlModifier || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
+            sketch->setAllowUnaligned(QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier));
+
             this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
             // Reusing code: All good reasons not to allow a carbon copy

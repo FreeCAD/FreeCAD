@@ -1423,6 +1423,38 @@ bool StdViewUndock::isActive(void)
 }
 
 //===========================================================================
+// Std_MainFullscreen
+//===========================================================================
+DEF_STD_CMD(StdMainFullscreen)
+
+StdMainFullscreen::StdMainFullscreen()
+  : Command("Std_MainFullscreen")
+{
+    sGroup       = QT_TR_NOOP("Standard-View");
+    sMenuText    = QT_TR_NOOP("Fullscreen");
+    sToolTipText = QT_TR_NOOP("Display the main window in fullscreen mode");
+    sWhatsThis   = "Std_MainFullscreen";
+    sStatusTip   = QT_TR_NOOP("Display the main window in fullscreen mode");
+    sPixmap      = "view-fullscreen";
+    sAccel       = "Alt+F11";
+    eType        = Alter3DView;
+}
+
+void StdMainFullscreen::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    MDIView* view = getMainWindow()->activeWindow();
+
+    if (view)
+        view->setCurrentViewMode(MDIView::Child);
+
+    if (getMainWindow()->isFullScreen())
+        getMainWindow()->showNormal();
+    else
+        getMainWindow()->showFullScreen();
+}
+
+//===========================================================================
 // Std_ViewFullscreen
 //===========================================================================
 DEF_STD_CMD_A(StdViewFullscreen)
@@ -1492,6 +1524,10 @@ Action * StdViewDockUndockFullscreen::createAction(void)
 
 void StdViewDockUndockFullscreen::activated(int iMsg)
 {
+    // Check if main window is in fullscreen mode.
+    if (getMainWindow()->isFullScreen())
+        getMainWindow()->showNormal();
+
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) return; // no active view
 
@@ -2446,6 +2482,13 @@ void StdBoxSelection::activated(int iMsg)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
+            // #0002931: Box select misbehaves with touchpad navigation style
+            // Notify the navigation style to cleanup internal states
+            int mode = viewer->navigationStyle()->getViewingMode();
+            if (mode != Gui::NavigationStyle::IDLE) {
+                SoKeyboardEvent ev;
+                viewer->navigationStyle()->processEvent(&ev);
+            }
             viewer->startSelection(View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
             SoNode* root = viewer->getSceneGraph();
@@ -2801,7 +2844,7 @@ void CreateViewStdCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdViewCreate());
     rcCmdMgr.addCommand(new StdViewScreenShot());
-
+    rcCmdMgr.addCommand(new StdMainFullscreen());
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
     rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());

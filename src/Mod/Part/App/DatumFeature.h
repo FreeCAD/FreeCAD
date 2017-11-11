@@ -56,6 +56,7 @@ public:
 
 protected:
     void onDocumentRestored();
+    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
 };
 
 } //namespace Part

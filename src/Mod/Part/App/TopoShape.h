@@ -77,8 +77,12 @@ public:
     //@{
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf);
+    /// set the transformation of the CasCade Shape
+    void setPlacement(const Base::Placement& rclTrf);
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform(void) const;
+    /// get the transformation of the CasCade Shape
+    Base::Placement getPlacemet(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
@@ -209,7 +213,7 @@ public:
     TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
         Standard_Real height, Standard_Real radius) const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid,
-        Standard_Boolean isRuled, Standard_Boolean isClosed = Standard_False) const;
+        Standard_Boolean isRuled, Standard_Boolean isClosed = Standard_False, Standard_Integer maxDegree = 5) const;
     TopoDS_Shape makeOffsetShape(double offset, double tol,
         bool intersection = false, bool selfInter = false,
         short offsetMode = 0, short join = 0, bool fill = false) const;
@@ -246,6 +250,7 @@ public:
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);
+    void getDomains(std::vector<Domain>&) const;
     //@}
 
 private:

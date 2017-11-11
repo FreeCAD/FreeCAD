@@ -203,27 +203,30 @@
         "'2D5' explode shapes into wires, and groups the shapes by its plane. The 'start' position\n"\
         "chooses the first plane to start. The algorithm will then sort within the plane and then\n"\
         "move on to the next nearest plane.\n"\
-        "'3D' makes no assumption of planarity. The sorting is done across 3D space\n",\
-        (None)(2D5)(3D)))\
+        "'3D' makes no assumption of planarity. The sorting is done across 3D space.\n"\
+        "'Greedy' like '2D5' but will try to minimize travel by searching for nearest path below\n"\
+        "the current milling layer. The path in lower layer is only selected if the moving distance\n"\
+        "is within the value given in 'threshold'.",\
+        (None)(2D5)(3D)(Greedy)))\
     AREA_PARAMS_MIN_DIST \
     ((double, abscissa, SortAbscissa, 3.0, "Controls vertex sampling on wire for nearest point searching\n"\
         "The sampling is dong using OCC GCPnts_UniformAbscissa",App::PropertyLength))\
     ((short, nearest_k, NearestK, 3, "Nearest k sampling vertices are considered during sorting"))\
     AREA_PARAMS_ORIENTATION \
     ((enum, direction, Direction, 0, "Enforce open path direction",\
-        (None)(XPositive)(XNegative)(YPositive)(YNegative)(ZPositive)(ZNegative)))
+        (None)(XPositive)(XNegative)(YPositive)(YNegative)(ZPositive)(ZNegative)))\
+    ((double, threshold, RetractThreshold, 0.0,\
+        "If two wire's end points are separated within this threshold, they are consider\n"\
+        "as connected. You may want to set this to the tool diameter to keep the tool down.",\
+        App::PropertyLength))\
+    ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))
        
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
     AREA_PARAMS_ARC_PLANE \
     AREA_PARAMS_SORT \
-    ((double, threshold, RetractThreshold, 0.0,\
-        "If two wire's end points are separated within this threshold, they are consider\n"\
-        "as connected. You may want to set this to the tool diameter to keep the tool down.",\
-        App::PropertyLength))\
     ((double, retraction, Retraction, 0.0,"Tool retraction absolute coordinate along retraction axis",\
         App::PropertyLength))\
-    ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))\
     ((double, resume_height, ResumeHeight, 0.0,\
         "When return from last retraction, this gives the pause height relative to the Z\n"\
         "value of the next move.", App::PropertyLength))\

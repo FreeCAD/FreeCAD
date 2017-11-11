@@ -51,12 +51,16 @@ short int DocumentObjectExtension::extensionMustExecute(void) {
 }
 
 App::DocumentObjectExecReturn* DocumentObjectExtension::extensionExecute(void) {
-    
+
     return App::DocumentObject::StdReturn;
 }
 
 void DocumentObjectExtension::onExtendedSettingDocument() {
-    
+
+}
+
+void DocumentObjectExtension::onExtendedDocumentRestored() {
+
 }
 
 void DocumentObjectExtension::onExtendedSetupObject() {

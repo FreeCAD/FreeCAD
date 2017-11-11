@@ -982,6 +982,11 @@ class PanelSheet(Draft._DraftObject):
         obj.setEditorMode("FillRatio",2)
         obj.Scale = 1.0
 
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, 'Scale'):
+            obj.addProperty("App::PropertyFloat","Scale","Arch", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+            obj.Scale = 1.0
+
     def execute(self, obj):
         import Part
         self.sheettag = None

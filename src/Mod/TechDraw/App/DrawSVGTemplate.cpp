@@ -57,14 +57,14 @@ PROPERTY_SOURCE(TechDraw::DrawSVGTemplate, TechDraw::DrawTemplate)
 
 DrawSVGTemplate::DrawSVGTemplate()
 {
-    static const char *group = "Drawing view";
+    static const char *group = "Template";
 
     //TODO: Do we need PageResult anymore?  -wf Yes!
     // PageResult points to a temporary file in tmp/FreeCAD-AB-CD-EF-.../myTemplate.svg
     // which is really copy of original Template with EditableFields replaced
     // When restoring saved document, Template is redundant/incorrect/not present - PageResult is the correct info.  -wf-
-    ADD_PROPERTY_TYPE(PageResult, (0),  group, App::Prop_Output,    "Resulting SVG document of that page");
-    ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");
+    ADD_PROPERTY_TYPE(PageResult, (0),  group, App::Prop_Output,    "Current SVG code for template");
+    ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");             //sb TemplateFileName???
 
     // Width and Height properties shouldn't be set by the user
     Height.setStatus(App::Property::ReadOnly,true);
@@ -105,7 +105,7 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
             //original template has been stored in fcstd file
             Template.setValue(PageResult.getValue());
         }
-    } else if (prop == &Template) {
+    } else if (prop == &Template) {            //fileName has changed
         if (!isRestoring()) {
             EditableTexts.setValues(getEditableTextsFromTemplate());
             updatePage = true;
@@ -118,11 +118,6 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
 
     if (updatePage) {
         execute();
-
-        // Update the parent page if exists
-        TechDraw::DrawPage *page = getParentPage();
-        if (page)
-            page->touch();
     }
 
     TechDraw::DrawTemplate::onChanged(prop);
@@ -252,11 +247,6 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     bool isLandscape = getWidth() / getHeight() >= 1.;
 
     Orientation.setValue(isLandscape ? 1 : 0);
-
-    // Housekeeping close the file
-    //resultFile.close();
-
-    touch();
 
     return TechDraw::DrawTemplate::execute();
 }

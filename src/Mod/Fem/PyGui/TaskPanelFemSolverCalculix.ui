@@ -113,7 +113,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Run Calculix</string>
+        <string>Run CalculiX</string>
        </property>
       </widget>
      </item>

@@ -46,7 +46,7 @@ def cast_python_object_to_aggregate(obj, aggregate):
     return aggregate
 
 def check_type(instance, expected_type):
-    """ This function checks wether an object is an instance of a given class
+    """ This function checks whether an object is an instance of a given class
     returns False or True
     """
     type_match = False #by default, will be set to True if any match

@@ -99,16 +99,22 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
     auto result = _extensions.find(t);
     if((result == _extensions.end()) && derived) {
         //we need to check for derived types
-        for(auto entry : _extensions) {            
+        for(auto entry : _extensions) {
             if(entry.first.isDerivedFrom(t))
                 return entry.second;
         }
         if(no_except) return 0;
-        //if we arive hear we don't have anything matching
+        //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
-    
-    return result->second;
+    else if (result != _extensions.end()) {
+        return result->second;
+    }
+    else {
+        if(no_except) return 0;
+        //if we arrive here we don't have anything matching
+        throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
+    }
 }
 
 bool ExtensionContainer::hasExtensions() const {

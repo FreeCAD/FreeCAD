@@ -26,13 +26,11 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Section.hxx>
 # include <gp_Trsf.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Ax1.hxx>
-#include <BRepBuilderAPI_GTransform.hxx>
 #endif
 
 #include "Body.h"
@@ -46,127 +44,123 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
-PROPERTY_SOURCE(PartDesign::Boolean, PartDesign::Feature)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common","Section",NULL};
+const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",NULL};
 
 Boolean::Boolean()
 {
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY(Bodies,(0));
-    Bodies.setSize(0);
+
+    initExtension(this);
 }
 
 short Boolean::mustExecute() const
 {
-    if (Bodies.isTouched())
+    if (Group.isTouched())
         return 1;
     return PartDesign::Feature::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
+    // Get the operation type
+    std::string type = Type.getValueAsString();
+   
     // Check the parameters
     const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
 
-    if (!baseFeature) {
-        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid BaseFeature");
+    if (!baseFeature && type == "Cut") {
+        return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
     }
 
-    std::vector<App::DocumentObject*> bodies = Bodies.getValues();
-    if (bodies.empty())
+    std::vector<App::DocumentObject*> tools = Group.getValues();
+    if (tools.empty())
         return App::DocumentObject::StdReturn;
 
     // Get the base shape to operate on
-    Part::TopoShape baseTopShape = baseFeature->Shape.getShape();
+    Part::TopoShape baseTopShape;
+    if(baseFeature)
+        baseTopShape = baseFeature->Shape.getShape();
+    else {
+        auto feature = tools.back();
+        if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
+        
+        baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        tools.pop_back();
+    }
+        
     if (baseTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
-      
+
     //get the body this boolean feature belongs to
     Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
 
     if(!baseBody)
          return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
 
-    // TODO: Why is Feature::getLocation() protected?
-    Base::Placement place = baseBody->Placement.getValue();
-    Base::Rotation rot(place.getRotation());
-    Base::Vector3d axis;
-    double angle;
-    rot.getValue(axis, angle);
-    gp_Trsf trf;
-    trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
-    trf.SetTranslationPart(gp_Vec(place.getPosition().x,place.getPosition().y,place.getPosition().z));
-    TopLoc_Location objLoc(trf);
-
     TopoDS_Shape result = baseTopShape.getShape();
-    result.Move(objLoc);
 
-    // Get the operation type
-    std::string type = Type.getValueAsString();
-
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
+    for (auto tool : tools)
     {
-        // Extract the body shape. Its important to get the actual feature that provides the last solid in the body
-        // so that the placement will be right
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        
-        TopoDS_Shape shape = body->Shape.getValue();
+        if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
 
-        // Move the shape to the location of the base shape in the other body
-        Base::Placement pl = body->Placement.getValue();
-        // TODO: Why is Feature::getLocation() protected?
-        Base::Rotation rot(pl.getRotation());
-        Base::Vector3d axis;
-        double angle;
-        rot.getValue(axis, angle);
-        gp_Trsf trf;
-        trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
-        trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
-        TopLoc_Location bLoc(trf);
-        shape.Move(bLoc);
-
+        TopoDS_Shape shape = static_cast<Part::Feature*>(tool)->Shape.getValue();
         TopoDS_Shape boolOp;
+
+        // Must not pass null shapes to the boolean operations
+        if (result.IsNull())
+            return new App::DocumentObjectExecReturn("Base shape is null");
+
+        if (shape.IsNull())
+            return new App::DocumentObjectExecReturn("Tool shape is null");
 
         if (type == "Fuse") {
             BRepAlgoAPI_Fuse mkFuse(result, shape);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Fusion of bodies failed", *b);
+                return new App::DocumentObjectExecReturn("Fusion of tools failed");
             // we have to get the solids (fuse sometimes creates compounds)
             boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *b);
+                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
         } else if (type == "Cut") {
             BRepAlgoAPI_Cut mkCut(result, shape);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Cut out of first body failed", *b);
+                return new App::DocumentObjectExecReturn("Cut out failed");
             boolOp = mkCut.Shape();
         } else if (type == "Common") {
             BRepAlgoAPI_Common mkCommon(result, shape);
             if (!mkCommon.IsDone())
-                return new App::DocumentObjectExecReturn("Common operation with first body failed", *b);
+                return new App::DocumentObjectExecReturn("Common operation failed");
             boolOp = mkCommon.Shape();
-        } else if (type == "Section") {
-            BRepAlgoAPI_Section mkSection(result, shape);
-            if (!mkSection.IsDone())
-                return new App::DocumentObjectExecReturn("Section out of first body failed", *b);
-            // we have to get the solids
-            boolOp = this->getSolid(mkSection.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *b);
         }
 
         result = boolOp; // Use result of this operation for fuse/cut of next body
-        //bring the result geometry into the correct coordinance of the body the boolean belongs to
-        BRepBuilderAPI_GTransform mkTrf(result, objLoc.Inverted().Transformation());
-        result = mkTrf.Shape();
     }
 
     this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
+}
+
+void Boolean::onChanged(const App::Property* prop) {
+    
+    if(strcmp(prop->getName(), "Group") == 0)
+        touch();
+
+    PartDesign::Feature::onChanged(prop);
+}
+
+void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    // The App::PropertyLinkList property was Bodies in the past
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Group.getClassTypeId() == type && strcmp(PropName, "Bodies") == 0) {
+        Group.Restore(reader);
+    }
 }
 
 }

@@ -134,7 +134,7 @@ public:
     virtual void updateData(const App::Property*);
 
 protected:
-    virtual void cut( const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
+    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
 
 protected:
     SoPointSet          * pcPoints;

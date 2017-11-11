@@ -104,7 +104,7 @@ int _EatSpace( std::istream& is,int* countp=NULL) {
 
 
 // Eats whites, returns, tabs and the delim character
-//  Checks wether delim char. is encountered.
+//  Checks whether delim char. is encountered.
 void Eat( std::istream& is, int delim )
 {   
     int ch;
@@ -117,7 +117,7 @@ void Eat( std::istream& is, int delim )
 }
 
 // Eats whites, returns, tabs and the delim character
-//  Checks wether delim char. is encountered.
+//  Checks whether delim char. is encountered.
 // EatEnd does not eat all space-like char's at the end.
 void EatEnd( std::istream& is, int delim )
 {   

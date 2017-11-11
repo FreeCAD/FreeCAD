@@ -109,7 +109,11 @@ int main( int argc, char ** argv )
     _putenv("PYTHONPATH=");
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
-    _putenv("PYTHONHOME=");
+    const char* fc_py_home = getenv("FC_PYTHONHOME");
+    if (fc_py_home)
+        _putenv_s("PYTHONHOME", fc_py_home);
+    else
+        _putenv("PYTHONHOME=");
 #endif
 
 #if defined (FC_OS_WIN32)
@@ -149,6 +153,7 @@ int main( int argc, char ** argv )
         // Init phase ===========================================================
         // sets the default run mode for FC, starts with gui if not overridden in InitConfig...
         App::Application::Config()["RunMode"] = "Gui";
+        App::Application::Config()["Console"] = "0";
 
         // Inits the Application 
 #if defined (FC_OS_WIN32)
@@ -242,7 +247,11 @@ int main( int argc, char ** argv )
     std::streambuf* oldcerr = std::cerr.rdbuf(&stdcerr);
 
     try {
-        if (App::Application::Config()["RunMode"] == "Gui")
+        // if console option is set then run in cmd mode
+        if (App::Application::Config()["Console"] == "1")
+            App::Application::runApplication();
+        if (App::Application::Config()["RunMode"] == "Gui" ||
+            App::Application::Config()["RunMode"] == "Internal")
             Gui::Application::runApplication();
         else
             App::Application::runApplication();

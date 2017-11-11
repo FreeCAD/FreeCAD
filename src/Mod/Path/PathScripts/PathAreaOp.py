@@ -50,7 +50,7 @@ class ObjectOp(PathOp.ObjectOp):
     '''Base class for all Path.Area based operations.
     Provides standard features including debugging properties AreaParams,
     PathParams and removalshape, all hidding.
-    The main reason for existance is to implement the standard interface
+    The main reason for existence is to implement the standard interface
     to Path.Area so subclasses only have to provide the shapes for the
     operations.'''
 
@@ -59,6 +59,11 @@ class ObjectOp(PathOp.ObjectOp):
         The standard feature list is OR'ed with the return value of areaOpFeatures().
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj)
+
+    def areaOpFeatures(self, obj):
+        '''areaOpFeatures(obj) ... overwrite to add operation specific features.
+        Can safely be overwritten by subclasses.'''
+        return 0
 
     def initOperation(self, obj):
         '''initOperation(obj) ... sets up standard Path.Area properties and calls initAreaOp().
@@ -75,9 +80,14 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.initAreaOp(obj)
 
+    def initAreaOp(self, obj):
+        '''initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
+        Can safely be overwritten by subclasses.'''
+        pass
+
     def areaOpShapeForDepths(self, obj):
         '''areaOpShapeForDepths(obj) ... returns the shape used to make an initial calculation for the depths being used.
-        The default implementation retuns the job's Base.Shape'''
+        The default implementation returns the job's Base.Shape'''
         job = PathUtils.findParentJob(obj)
         if job and job.Base:
             PathLog.debug("job=%s base=%s shape=%s" % (job, job.Base, job.Base.Shape))
@@ -102,42 +112,17 @@ class ObjectOp(PathOp.ObjectOp):
         if prop in ['AreaParams', 'PathParams', 'removalshape']:
             obj.setEditorMode(prop, 2)
 
-        if PathOp.FeatureBaseGeometry & self.opFeatures(obj):
-            if prop == 'Base' and len(obj.Base) == 1:
-                PathLog.info("opOnChanged(%s, %s)" % (obj.Label, prop))
-                try:
-                    (base, sub) = obj.Base[0]
-                    bb = base.Shape.BoundBox  # parent boundbox
-                    subobj = base.Shape.getElement(sub[0])
-                    fbb = subobj.BoundBox  # feature boundbox
-                    obj.StartDepth = bb.ZMax
-                    obj.ClearanceHeight = bb.ZMax + 5.0
-                    obj.SafeHeight = bb.ZMax + 3.0
+        if prop == 'Base' and len(obj.Base) == 1:
+            (base, sub) = obj.Base[0]
+            bb = base.Shape.BoundBox  # parent boundbox
+            subobj = base.Shape.getElement(sub[0])
+            fbb = subobj.BoundBox  # feature boundbox
 
-                    if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                        obj.FinalDepth = bb.ZMin
-                    elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
-                        obj.FinalDepth = fbb.ZMin
-                    elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
-                        obj.FinalDepth = fbb.ZMin
-                    elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
-                        obj.FinalDepth = fbb.ZMin
-                    else:  # catch all
-                        obj.FinalDepth = bb.ZMin
-
-                    if hasattr(obj, 'Side'):
-                        if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                            obj.Side = "Outside"
-                        else:
-                            obj.Side = "Inside"
-
-                except Exception as e:
-                    PathLog.error(translate("PatArea", "Error in calculating depths: %s" % e))
-                    obj.StartDepth = 5.0
-                    obj.ClearanceHeight = 10.0
-                    obj.SafeHeight = 8.0
-                    if hasattr(obj, 'Side'):
-                        obj.Side = "Outside"
+            if hasattr(obj, 'Side'):
+                if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                    obj.Side = "Outside"
+                else:
+                    obj.Side = "Inside"
 
         self.areaOpOnChanged(obj, prop)
 
@@ -146,7 +131,7 @@ class ObjectOp(PathOp.ObjectOp):
         The base implementation sets the depths and heights based on the
         areaOpShapeForDepths() return value.
         Do not overwrite, overwrite areaOpSetDefaultValues(obj) instead.'''
-        PathLog.info("opSetDefaultValues(%s)" % (obj.Label))
+        PathLog.debug("opSetDefaultValues(%s)" % (obj.Label))
         if PathOp.FeatureDepths & self.opFeatures(obj):
             try:
                 shape = self.areaOpShapeForDepths(obj)
@@ -155,29 +140,11 @@ class ObjectOp(PathOp.ObjectOp):
 
             if shape:
                 bb = shape.BoundBox
-                obj.StartDepth      = bb.ZMax
-                obj.FinalDepth      = bb.ZMin
-                if PathOp.FeatureStepDown & self.opFeatures(obj):
-                    obj.StepDown        = 1.0
+                obj.OpStartDepth      = bb.ZMax
+                obj.OpFinalDepth      = bb.ZMin
             else:
-                obj.StartDepth      =  1.0
-                obj.FinalDepth      =  0.0
-                if PathOp.FeatureStepDown & self.opFeatures(obj):
-                    obj.StepDown        =  1.0
-
-        if PathOp.FeatureHeights & self.opFeatures(obj):
-            try:
-                shape = self.areaOpShapeForDepths(obj)
-            except:
-                shape = None
-
-            if shape:
-                bb = shape.BoundBox
-                obj.ClearanceHeight = bb.ZMax + 5.0
-                obj.SafeHeight      = bb.ZMax + 3.0
-            else:
-                obj.ClearanceHeight = 10.0
-                obj.SafeHeight      =  8.0
+                obj.OpStartDepth      =  1.0
+                obj.OpFinalDepth      =  0.0
 
         self.areaOpSetDefaultValues(obj)
 
@@ -212,10 +179,10 @@ class ObjectOp(PathOp.ObjectOp):
         pathParams['feedrate'] = self.horizFeed
         pathParams['feedrate_v'] = self.vertFeed
         pathParams['verbose'] = True
-        pathParams['resume_height'] = obj.StepDown.Value
+        pathParams['resume_height'] = obj.SafeHeight.Value
         pathParams['retraction'] = obj.ClearanceHeight.Value
         pathParams['return_end'] = True
-        # Note that emmitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+        # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams['preamble'] = False
 
         if self.endVector is not None:
@@ -252,12 +219,13 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track()
         self.endVector = None
 
+        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
         self.depthparams = PathUtils.depth_params(
                 clearance_height=obj.ClearanceHeight.Value,
                 safe_height=obj.SafeHeight.Value,
                 start_depth=obj.StartDepth.Value,
                 step_down=obj.StepDown.Value,
-                z_finish_step=0.0,
+                z_finish_step=finish_step,
                 final_depth=obj.FinalDepth.Value,
                 user_depths=None)
 

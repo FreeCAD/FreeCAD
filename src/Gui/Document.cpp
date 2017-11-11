@@ -1164,15 +1164,19 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     // set camera settings
     QString viewPos;
-    if (d->_pcAppWnd->sendHasMsgToActiveView("GetCamera")) {
-        const char* ppReturn=0;
-        d->_pcAppWnd->sendMsgToActiveView("GetCamera",&ppReturn);
-  
-        // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-        QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
-        if (lines.size() > 1) {
-            lines.pop_front();
-            viewPos = lines.join(QLatin1String(" "));
+    std::list<MDIView*> mdi = getMDIViews();
+    for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+        if ((*it)->onHasMsg("GetCamera")) {
+            const char* ppReturn=0;
+            (*it)->onMsg("GetCamera",&ppReturn);
+
+            // remove the first line because it's a comment like '#Inventor V2.1 ascii'
+            QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
+            if (lines.size() > 1) {
+                lines.pop_front();
+                viewPos = lines.join(QLatin1String(" "));
+                break;
+            }
         }
     }
 
@@ -1322,7 +1326,14 @@ void Document::createView(const Base::Type& typeId)
 
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
-        View3DInventor* view3D = new View3DInventor(this, getMainWindow());
+        QtGLWidget* shareWidget = 0;
+        // VBO rendering doesn't work correctly when we don't share the OpenGL widgets
+        if (!theViews.empty()) {
+            View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
+            shareWidget = qobject_cast<QtGLWidget*>(firstView->getViewer()->getGLWidget());
+        }
+
+        View3DInventor* view3D = new View3DInventor(this, getMainWindow(), shareWidget);
         if (!theViews.empty()) {
             View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
             std::string overrideMode = firstView->getViewer()->getOverrideMode();
@@ -1715,7 +1726,7 @@ std::vector<std::string> Document::getRedoVector(void) const
     return getDocument()->getAvailableRedoNames();
 }
 
-/// Will UNDO  one or more steps
+/// Will UNDO one or more steps
 void Document::undo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1723,7 +1734,7 @@ void Document::undo(int iSteps)
     }
 }
 
-/// Will REDO  one or more steps
+/// Will REDO one or more steps
 void Document::redo(int iSteps)
 {
     for (int i=0;i<iSteps;i++) {
@@ -1805,24 +1816,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                 }
             }
         }
-    } else if (!deleting && viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObjectGroup::getClassTypeId())) {
-
-        if (viewProvider->hasExtension(ViewProviderDocumentObjectGroup::getExtensionClassTypeId())) {
-            std::vector<App::DocumentObject*> children = viewProvider->claimChildren();
-
-            for (auto& child : children) {
-                ViewProvider* ChildViewProvider = getViewProvider(child);
-                if (ChildViewProvider) {
-                    for (BaseView* view : d->baseViews) {
-                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                        if (activeView && !activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                            activeView->getViewer()->addViewProvider(ChildViewProvider);
-                        }
-                    }
-                }
-            }
-        }
-    }
+    } 
 }
 
 void Document::reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2) {

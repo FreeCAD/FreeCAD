@@ -61,7 +61,7 @@ ImageView::ImageView(QWidget* parent)
     // In order to fix this problem we directly pass the pointer of the parent
     // of this ImageView, i.e. the main window.
     // Note:
-    // Since Qt the class QGLWidget is marked as deprecated and should be
+    // Since Qt5 the class QGLWidget is marked as deprecated and should be
     // replaced by QOpenGLWidget.
 
 #if defined(HAVE_QT5_OPENGL)
@@ -489,7 +489,7 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
 
 void ImageView::showEvent (QShowEvent *)
 {
-    //_pGLImageBox->setFocus();
+    _pGLImageBox->setFocus();
 }
 
 // Update the status bar with the image parameters for the current mouse position

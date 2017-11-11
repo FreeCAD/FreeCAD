@@ -67,13 +67,13 @@ public:
     bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
-    void onSuperplacementChanged(double, int idx);
-    void onSuperplacementXChanged(double);
-    void onSuperplacementYChanged(double);
-    void onSuperplacementZChanged(double);
-    void onSuperplacementYawChanged(double);
-    void onSuperplacementPitchChanged(double);
-    void onSuperplacementRollChanged(double);
+    void onAttachmentOffsetChanged(double, int idx);
+    void onAttachmentOffsetXChanged(double);
+    void onAttachmentOffsetYChanged(double);
+    void onAttachmentOffsetZChanged(double);
+    void onAttachmentOffsetYawChanged(double);
+    void onAttachmentOffsetPitchChanged(double);
+    void onAttachmentOffsetRollChanged(double);
     void onCheckFlip(bool);
     void onRefName1(const QString& text);
     void onRefName2(const QString& text);
@@ -104,16 +104,18 @@ private:
     void onButtonRef(const bool checked, unsigned idx);
     void onRefName(const QString& text, unsigned idx);
     void updateRefButton(int idx);
-    void updateSuperplacementUI();
+    void updateAttachmentOffsetUI();
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
-     * current set of references.
-     * @param curMode the mode to select in the list. If the mode isn't
-     * contained in the list, nothing is selected. If mmDeactivated is passed,
-     * currently selected mode is kept.
+     * current set of references. Maintains selection when possible.
      */
-    void updateListOfModes(Attacher::eMapMode curMode = Attacher::mmDeactivated);
+    void updateListOfModes();
+    
+    /**
+     * @brief selectMapMode Select the given mode in the list widget
+     */
+    void selectMapMode(Attacher::eMapMode mmode);
 
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;

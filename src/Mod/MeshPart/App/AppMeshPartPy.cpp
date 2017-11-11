@@ -67,8 +67,11 @@ public:
             "Multiple signatures are available:\n"
             "\n"
             "    meshFromShape(Shape)\n"
-            "    meshFromShape(Shape, LinearDeflection, AngularDeflection=0.5,\n"
-            "                         Segments=False, GroupColors=[])\n"
+            "    meshFromShape(Shape, LinearDeflection,\n"
+            "                         AngularDeflection=0.5,\n"
+            "                         Relative=False,"
+            "                         Segments=False,\n"
+            "                         GroupColors=[])\n"
             "    meshFromShape(Shape, MaxLength)\n"
             "    meshFromShape(Shape, MaxArea)\n"
             "    meshFromShape(Shape, LocalLength)\n"
@@ -230,20 +233,23 @@ private:
         PyObject *shape;
 
         static char* kwds_lindeflection[] = {"Shape", "LinearDeflection", "AngularDeflection",
-                                             "Segments", "GroupColors", NULL};
+                                             "Relative", "Segments", "GroupColors", NULL};
         PyErr_Clear();
         double lindeflection=0;
         double angdeflection=0.5;
+        PyObject* relative = Py_False;
         PyObject* segment = Py_False;
         PyObject* groupColors = 0;
-        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dO!O", kwds_lindeflection,
-                                        &(Part::TopoShapePy::Type), &shape, &lindeflection, &angdeflection,
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dO!O!O", kwds_lindeflection,
+                                        &(Part::TopoShapePy::Type), &shape, &lindeflection,
+                                        &angdeflection, &(PyBool_Type), &relative,
                                         &(PyBool_Type), &segment, &groupColors)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Standard);
             mesher.setDeflection(lindeflection);
             mesher.setAngularDeflection(angdeflection);
             mesher.setRegular(true);
+            mesher.setRelative(PyObject_IsTrue(relative) ? true : false);
             mesher.setSegments(PyObject_IsTrue(segment) ? true : false);
             if (groupColors) {
                 Py::Sequence list(groupColors);

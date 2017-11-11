@@ -625,10 +625,11 @@ class _Wall(ArchComponent.Component):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
-                    elif obj.Base.Shape.Wires:
-                        basewires = obj.Base.Shape.Wires
                     elif len(obj.Base.Shape.Edges) == 1:
                         basewires = [Part.Wire(obj.Base.Shape.Edges)]
+                    else:
+                        # basewires = obj.Base.Shape.Wires
+                        basewires = [Part.Wire(cluster) for cluster in Part.getSortedClusters(obj.Base.Shape.Edges)]
                     if basewires and width:
                         if (len(basewires) == 1) and layers:
                             basewires = [basewires[0] for l in layers]
@@ -695,6 +696,10 @@ class _Wall(ArchComponent.Component):
                                         baseface.append(f)
                                     else:
                                         baseface = baseface.fuse(f)
+                                        # baseface = baseface.removeSplitter()
+                                        s = DraftGeomUtils.removeSplitter(baseface)
+                                        if s:
+                                            baseface = s
                                 else:
                                     if layers:
                                         baseface = [f]

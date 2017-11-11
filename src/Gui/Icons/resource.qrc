@@ -153,6 +153,10 @@
         <file>colors.svg</file>
         <file>px.svg</file>
         <file>AddonManager.svg</file>
+        <file>Group.svg</file>
+        <file>Geofeaturegroup.svg</file>
+        <file>Std_Axis.svg</file>
+        <file>Std_Plane.svg</file>
         <file>Link.svg</file>
         <file>LinkArray.svg</file>
         <file>LinkElement.svg</file>

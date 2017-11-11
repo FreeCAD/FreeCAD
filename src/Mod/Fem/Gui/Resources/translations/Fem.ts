@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.0">
 <context>
     <name>FEM_Analysis</name>
     <message>
@@ -22,18 +22,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
-        <source>Constraint self weigt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
         <source>Creates a FEM constraint self weight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
-        <source>Creates a FEM constraint self weigt</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -125,6 +115,19 @@
     <message>
         <location filename="_CommandFemMaterialSolid.py" line="44"/>
         <source>Creates a FEM material for solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+        <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
+        <source>FEM mesh boundary layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
+        <source>Creates a FEM mesh boundary layer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -288,6 +291,16 @@
     </message>
     <message>
         <location filename="FemCommands.py" line="41"/>
+        <source>Default Fem Command ToolTip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PyGui/FemCommands.py" line="41"/>
+        <source>Default Fem Command MenuText</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PyGui/FemCommands.py" line="43"/>
         <source>Default Fem Command ToolTip</source>
         <translation type="unfinished"></translation>
     </message>

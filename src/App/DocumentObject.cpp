@@ -35,6 +35,7 @@
 #include "PropertyLinks.h"
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
+#include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
@@ -82,6 +83,10 @@ DocumentObject::~DocumentObject(void)
 
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
+    //check if the links are valid before making the recompute
+    if(!GeoFeatureGroupExtension::areLinksValid(this))
+        return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
+
     // set/unset the execution bit
     ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
     return this->execute();
@@ -301,7 +306,7 @@ std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
 }
 
 
-void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
+void _getOutListRecursive(std::set<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
 {
     for (const auto objIt : obj->getOutList()){
         // if the check object is in the recursive inList we have a cycle!
@@ -309,28 +314,32 @@ void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentOb
             std::cerr << "DocumentObject::getOutListRecursive(): cyclic dependency detected!" << std::endl;
             throw Base::RuntimeError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
         }
-        objSet.push_back(objIt);
-        _getOutListRecursive(objSet, objIt, checkObj,depth-1);
+
+        // if the element was already in the set then there is no need to process it again
+        auto pair = objSet.insert(objIt);
+        if (pair.second)
+            _getOutListRecursive(objSet, objIt, checkObj, depth-1);
     }
 }
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) const
 {
     // number of objects in document is a good estimate in result size
-    // int maxDepth = getDocument()->countObjects() + 2;
     int maxDepth = GetApplication().checkLinkDepth(0);
-    std::vector<App::DocumentObject*> result;
-    result.reserve(maxDepth);
+    std::set<App::DocumentObject*> result;
 
     // using a recursive helper to collect all OutLists
     _getOutListRecursive(result, this, this, maxDepth);
 
-    // remove duplicate entries and resize the vector
-    std::sort(result.begin(), result.end());
-    auto newEnd = std::unique(result.begin(), result.end());
-    result.resize(std::distance(result.begin(), newEnd));
+    std::vector<App::DocumentObject*> array;
+    array.insert(array.begin(), result.begin(), result.end());
+    return array;
+}
 
-    return result;
+std::vector<std::list<App::DocumentObject*> >
+DocumentObject::getPathsByOutList(App::DocumentObject* to) const
+{
+    return _pDoc->getPathsByOutList(this, to);
 }
 
 DocumentObjectGroup* DocumentObject::getGroup() const
@@ -651,12 +660,6 @@ void DocumentObject::touch(void)
     StatusBits.set(ObjectStatus::Touch);
 }
 
-void DocumentObject::onDocumentRestored() {
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) 
-        ext->extensionOnDocumentRestored();
-}
-
 /**
  * @brief Check whether the document object is touched or not.
  * @return true if document object is touched, false if not.
@@ -724,12 +727,19 @@ void DocumentObject::connectRelabelSignals()
     if (ExpressionEngine.numExpressions() > 0) {
 
         // Not already connected?
-        if (!onRelabledObjectConnection.connected())
-            onRelabledObjectConnection = getDocument()->signalRelabelObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
+        if (!onRelabledObjectConnection.connected()) {
+            onRelabledObjectConnection = getDocument()->signalRelabelObject
+                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed,
+                                         &ExpressionEngine, _1));
+        }
 
-        // Connect to signalDeletedObject, to properly track deletion of other objects that might be referenced in an expression
-        if (!onDeletedObjectConnection.connected())
-            onDeletedObjectConnection = getDocument()->signalDeletedObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted, &ExpressionEngine, _1));
+        // Connect to signalDeletedObject, to properly track deletion of other objects
+        // that might be referenced in an expression
+        if (!onDeletedObjectConnection.connected()) {
+            onDeletedObjectConnection = getDocument()->signalDeletedObject
+                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted,
+                                         &ExpressionEngine, _1));
+        }
 
         try {
             // Crude method to resolve all expression dependencies
@@ -745,6 +755,14 @@ void DocumentObject::connectRelabelSignals()
         onRelabledDocumentConnection.disconnect();
         onDeletedObjectConnection.disconnect();
     }
+}
+
+void DocumentObject::onDocumentRestored()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedDocumentRestored();
 }
 
 void DocumentObject::onSettingDocument()
@@ -774,7 +792,11 @@ void DocumentObject::unsetupObject()
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
 #ifndef USE_OLD_DAG
-       _inList.erase(std::remove(_inList.begin(), _inList.end(), rmvObj), _inList.end());
+    //do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
+    //single one.
+    auto it = std::find(_inList.begin(), _inList.end(), rmvObj);
+    if(it != _inList.end())
+        _inList.erase(it);
 #else
     (void)rmvObj;
 #endif
@@ -783,8 +805,11 @@ void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
 #ifndef USE_OLD_DAG
-    if ( std::find(_inList.begin(), _inList.end(), newObj) == _inList.end() )
-       _inList.push_back(newObj);
+    //we need to add all links, even if they are available multiple times. The reason for this is the
+    //removal: If a link loses this object it removes the backlink. If we would have added it only once
+    //this removal would clear the object from the inlist, even though there may be other link properties 
+    //from this object that link to us.
+    _inList.push_back(newObj);
 #else
     (void)newObj;
 #endif //USE_OLD_DAG    

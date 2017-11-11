@@ -50,7 +50,7 @@ public:
     App::PropertyString ViewResult;
     App::PropertyBool Visible;
 
-    /** @name methods overide Feature */
+    /** @name methods override Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);

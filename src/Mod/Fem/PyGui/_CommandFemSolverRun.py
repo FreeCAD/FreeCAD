@@ -49,9 +49,7 @@ class _CommandFemSolverRun(FemCommands):
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
-            self.solver = sel[0]
+        self.solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in FemCommands for selection check
         if self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)

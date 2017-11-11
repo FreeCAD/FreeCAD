@@ -83,7 +83,6 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-    ArchCommands.fixDAG(obj)
     return obj
 
 

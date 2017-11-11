@@ -25,9 +25,8 @@ PyObject* AttachExtensionPy::positionBySupport(PyObject *args)
     bool bAttached = false;
     try{
         bAttached = this->getAttachExtensionPtr()->positionBySupport();
-    } catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    } catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     } catch (Base::Exception &e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
@@ -44,9 +43,8 @@ PyObject* AttachExtensionPy::changeAttacherType(PyObject *args)
     bool ret;
     try{
         ret = this->getAttachExtensionPtr()->changeAttacherType(typeName);
-    } catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    } catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     } catch (Base::Exception &e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
@@ -65,9 +63,8 @@ Py::Object AttachExtensionPy::getAttacher(void) const
 
     try {
         return Py::Object( new Attacher::AttachEnginePy(this->getAttachExtensionPtr()->attacher().copy()), true);
-    } catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
+    } catch (Standard_Failure& e) {
+        throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
     } catch (Base::Exception &e) {
         throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
     }

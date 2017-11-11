@@ -2,28 +2,18 @@ if(WIN32)
     add_definitions(-DFCAppPoints)
 endif(WIN32)
 
-if(PCL_IO_FOUND)
-    add_definitions(-DHAVE_PCL_IO)
-elseif(PCL_FOUND)
-    message(WARNING "pcl installed but io component not found")
-endif(PCL_IO_FOUND)
-
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
-    ${PCL_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
 )
 
 set(Points_LIBS
     FreeCADApp
-    ${PCL_COMMON_LIBRARIES}
-    ${PCL_IO_LIBRARIES}
 )
 
 generate_from_xml(PointsPy)

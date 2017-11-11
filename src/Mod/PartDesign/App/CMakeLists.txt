@@ -37,6 +37,8 @@ SET(Features_SRCS
     FeatureSolid.h
     Body.cpp
     Body.h
+    FeatureBase.h
+    FeatureBase.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -158,6 +160,7 @@ SET(PartDesign_Scripts
     PartDesignTests/TestShapeBinder.py
     PartDesignTests/TestPad.py
     PartDesignTests/TestPocket.py
+    PartDesignTests/TestHole.py
     PartDesignTests/TestRevolve.py
     PartDesignTests/TestLoft.py
     PartDesignTests/TestPipe.py

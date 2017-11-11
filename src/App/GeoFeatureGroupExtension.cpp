@@ -33,6 +33,7 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
+#include <Base/Console.h>
 //#include "GeoFeatureGroupPy.h"
 //#include "FeaturePythonPyImp.h"
 
@@ -49,6 +50,7 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
     initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
+    Group.setScope(LinkScope::Child);
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
@@ -93,15 +95,25 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     //like OriginGroup. That is needed as we use this function to get all local coordinate systems. Also there
     //is no reason to distinguish between GeoFeatuerGroups, there is only between group/geofeaturegroup
     auto list = obj->getInList();
-    for (auto obj : list) {
-        if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
-            return obj;
+    for (auto inObj : list) {
+        
+        //There is a chance that a derived geofeaturegroup links with a local link and hence is not 
+        //the parent group even though it links to the object. We use hasObject as one and only truth 
+        //if it has the object within the group
+        if(inObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) &&
+           inObj->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(obj)) {            
+
+            return inObj;
+        }
     }
 
     return nullptr;
 }
 
 Base::Placement GeoFeatureGroupExtension::globalGroupPlacement() {
+    
+    if(getExtendedObject()->isRecomputing())
+        throw Base::Exception("Global placement cannot be calculated on recompute");
     
     return recursiveGroupPlacement(this);
 }
@@ -130,8 +142,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<Ap
             continue;
         
         //cross CoordinateSystem links are not allowed, so we need to move the whole link group 
-        std::vector<App::DocumentObject*> links;
-        getCSRelevantLinks(object, links);
+        std::vector<App::DocumentObject*> links = getCSRelevantLinks(object);
         links.push_back(object);
         
         for( auto obj : links) {
@@ -158,8 +169,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     
     for(auto object : objects) {
         //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
-        std::vector< DocumentObject* > links;
-        getCSRelevantLinks(object, links);
+        std::vector< DocumentObject* > links = getCSRelevantLinks(object);
         links.push_back(object);
         
         //remove all links out of group       
@@ -178,47 +188,112 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     return removed;
 }
 
-std::vector< DocumentObject* > GeoFeatureGroupExtension::getObjectsFromLinks(DocumentObject* obj) {
+void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
+
+    //objects are only allowed in a single GeoFeatureGroup
+    if((strcmp(p->getName(), "Group")==0)) {
+    
+        if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
+                
+            bool error = false;
+            auto corrected = Group.getValues();
+            for(auto obj : Group.getValues()) {
+
+                //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
+                //would return anyone of it and hence it is possible that we miss an error. We need a custom check
+                auto list = obj->getInList();
+                for (auto in : list) {
+                    if(in->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) && //is GeoFeatureGroup?
+                    in != getExtendedObject() &&                                                  //is a different one?
+                    in->getExtensionByType<App::GeoFeatureGroupExtension>()->hasObject(obj)) {    //is not a non-grouping link?
+                        error = true;
+                        corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                    }
+                }
+            }
+
+            //if an error was found we need to correct the values and inform the user
+            if(error) {
+                Group.setValues(corrected);
+                throw Base::Exception("Object can only be in a single GeoFeatureGroup");
+            }
+        }
+    }
+
+    App::GroupExtension::extensionOnChanged(p);
+}
+
+
+std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLinks(const DocumentObject* obj, LinkScope scope) {
+
+    if(!obj)
+        return std::vector< DocumentObject* >();
 
     //we get all linked objects. We can't use outList() as this includes the links from expressions
     std::vector< App::DocumentObject* > result;
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
     for(App::Property* prop : list) {
-        if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()))
-            result.push_back(static_cast<App::PropertyLink*>(prop)->getValue());
-        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
-            auto vec = static_cast<App::PropertyLinkList*>(prop)->getValues();
-            result.insert(result.end(), vec.begin(), vec.end());
-        }
-        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
-            result.push_back(static_cast<App::PropertyLinkSub*>(prop)->getValue());
-        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
-            auto vec = static_cast<App::PropertyLinkList*>(prop)->getValues();
-            result.insert(result.end(), vec.begin(), vec.end());
-        }
+        auto vec = getScopedObjectsFromLink(prop, scope);
+        result.insert(result.end(), vec.begin(), vec.end());
     }
 
-    //clear all null objects and douplicates
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
+    //clear all null objects and duplicates
     std::sort(result.begin(), result.end());
     result.erase(std::unique(result.begin(), result.end()), result.end());
-    
+
+    return result;
+}
+
+std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLink(App::Property* prop, LinkScope scope) {
+
+    if(!prop)
+        return std::vector< DocumentObject* >();
+
+    std::vector< App::DocumentObject* > result;
+
+    if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()) && 
+        static_cast<App::PropertyLink*>(prop)->getScope() == scope) {
+
+        result.push_back(static_cast<App::PropertyLink*>(prop)->getValue());
+    }
+
+    if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()) &&
+            static_cast<App::PropertyLinkList*>(prop)->getScope() == scope) {
+
+        auto vec = static_cast<App::PropertyLinkList*>(prop)->getValues();
+        result.insert(result.end(), vec.begin(), vec.end());
+    }
+
+    if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()) &&
+            static_cast<App::PropertyLinkSub*>(prop)->getScope() == scope) {
+
+        result.push_back(static_cast<App::PropertyLinkSub*>(prop)->getValue());
+    }
+
+    if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId()) &&
+            static_cast<App::PropertyLinkSubList*>(prop)->getScope() == scope) {
+
+        auto vec = static_cast<App::PropertyLinkSubList*>(prop)->getValues();
+        result.insert(result.end(), vec.begin(), vec.end());
+    }
+
+    //it is important to remove all nullptrs
+    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
 
 
-void GeoFeatureGroupExtension::getCSOutList(App::DocumentObject* obj, std::vector< DocumentObject* >& vec) {
+
+void GeoFeatureGroupExtension::getCSOutList(const App::DocumentObject* obj,
+                                            std::vector< DocumentObject* >& vec) {
 
     if(!obj)
         return;
 
-    //if the object is a GeoFeatureGroup then all dependencies belong to that CS,  we don't want them
-    if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
-        return;
-    
-    //we get all linked objects. We can't use outList() as this includes the links from expressions
-    auto result = getObjectsFromLinks(obj);
+    //we get all relevant linked objects. We can't use outList() as this includes the links from expressions,
+    //also we only want links with scope Local
+    auto result = getScopedObjectsFromLinks(obj, LinkScope::Local);
     
     //we remove all links to origin features and origins, they belong to a CS too and can't be moved
     result.erase(std::remove_if(result.begin(), result.end(), [](App::DocumentObject* obj)->bool {
@@ -226,83 +301,74 @@ void GeoFeatureGroupExtension::getCSOutList(App::DocumentObject* obj, std::vecto
                 obj->isDerivedFrom(App::Origin::getClassTypeId()));
     }), result.end());
 
-    //collect all dependencies of those objects and store them in the result vector
-    for(App::DocumentObject *obj : result) { 
-        
-        //prevent infinite recursion
-        if(std::find(vec.begin(), vec.end(), obj) != vec.end())
-            throw Base::Exception("Graph is not DAG");
-        
-        vec.push_back(obj);        
-        std::vector< DocumentObject* > links;
-        getCSOutList(obj, links);
-        vec.insert(vec.end(), links.begin(), links.end());
-    }
+    vec.insert(vec.end(), result.begin(), result.end());
 
     //post process the vector
     std::sort(vec.begin(), vec.end());
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 }
 
-void GeoFeatureGroupExtension::getCSInList(DocumentObject* obj, std::vector< DocumentObject* >& vec) {
+void GeoFeatureGroupExtension::getCSInList(const DocumentObject* obj,
+                                           std::vector< DocumentObject* >& vec) {
 
     if(!obj)
         return;
-    
-    //we get all objects that link to it
-    std::vector< App::DocumentObject* > result;
-    
+
     //search the inlist for objects that have non-expression links to us
     for(App::DocumentObject* parent : obj->getInList()) {
-                       
+
         //not interested in other groups (and here we mean all groups, normal ones and geofeaturegroup)
         if(parent->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
             continue;
-        
-        //prevent infinite recursion
-        if(std::find(vec.begin(), vec.end(), parent) != vec.end())
-            throw Base::Exception("Graph is not DAG");
-        
-        //check if the link is real or if it is a expression one (could also be both, so it is not 
+
+        //check if the link is real Local scope one or if it is a expression one (could also be both, so it is not 
         //enough to check the expressions)
-        auto res = getObjectsFromLinks(parent);
+        auto res = getScopedObjectsFromLinks(parent, LinkScope::Local);
         if(std::find(res.begin(), res.end(), obj) != res.end())
-            result.push_back(parent);
+            vec.push_back(parent);
     }
-    
+
     //clear all duplicates
-    std::sort(result.begin(), result.end());
-    result.erase(std::unique(result.begin(), result.end()), result.end());
-
-    //collect all links to those objects
-    for(App::DocumentObject *obj : result) { 
-        vec.push_back(obj);
-        getCSInList(obj, vec);
-    }
-
     std::sort(vec.begin(), vec.end());
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
-
 }
 
-void GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj, std::vector< DocumentObject* >& vec ) {
+std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(const DocumentObject* obj) {
+
+    if(!obj)
+        return std::vector< DocumentObject* >();
 
     //get all out links 
-    getCSOutList(obj, vec); 
-    
-    //we need to get the outlist of all inlist objects. This is needed to handle things
-    //like Booleans: the boolean is our parent, than there is a second object under it which relates 
-    //to obj and needs to be handled.
-    std::vector< DocumentObject* > in;
-    getCSInList(obj, in);
-    for(auto o : in) {      
-        vec.push_back(o);
-        getCSOutList(o, vec);
-    }
-    
-    //post process
+    std::vector<DocumentObject*> vec;
+
+    recursiveCSRelevantLinks(obj, vec);
+
+    //post process the list after we added many things
     std::sort(vec.begin(), vec.end());
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
+    vec.erase(std::remove(vec.begin(), vec.end(), obj), vec.end());
+
+    return vec;
+}
+
+void GeoFeatureGroupExtension::recursiveCSRelevantLinks(const DocumentObject* obj, 
+                                                        std::vector< DocumentObject* >& vec) {
+
+    if(!obj)
+        return;
+
+    std::vector< DocumentObject* > links;
+    getCSOutList(obj, links);
+    getCSInList(obj, links);
+
+    //go on traversing the graph in all directions!
+    for(auto o : links) {   
+        if(!o || o == obj ||  std::find(vec.begin(), vec.end(), o) != vec.end())
+            continue;
+
+        vec.push_back(o);
+        recursiveCSRelevantLinks(o, vec);
+    }
 }
 
 
@@ -344,6 +410,81 @@ bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string>&r
     }
     return true;
 }
+
+bool GeoFeatureGroupExtension::areLinksValid(const DocumentObject* obj) {
+
+    if(!obj)
+        return true;
+
+    //no cross CS link for local links.
+    //Base::Console().Message("Check object links: %s\n", obj->getNameInDocument());
+    std::vector<App::Property*> list;
+    obj->getPropertyList(list);
+    for(App::Property* prop : list) {
+        if(!isLinkValid(prop)) {
+            //Base::Console().Message("Invalid link: %s\n", prop->getName());
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool GeoFeatureGroupExtension::isLinkValid(App::Property* prop) {
+
+    if(!prop)
+        return true;
+
+    //get the object that holds the property
+    if(!prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        return true; //this link comes not from a document object, scopes are meaningless
+    auto obj = static_cast<App::DocumentObject*>(prop->getContainer());
+
+    //no cross CS link for local links.
+    auto result = getScopedObjectsFromLink(prop, LinkScope::Local);
+    auto group = getGroupOfObject(obj);
+    for(auto link : result) {
+        if(getGroupOfObject(link) != group) 
+            return false;
+    }
+
+    //for links with scope SubGroup we need to check if all features are part of subgroups
+    if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        result = getScopedObjectsFromLink(prop, LinkScope::Child);
+        auto groupExt = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
+        for(auto link : result) {
+            if(!groupExt->hasObject(link, true)) 
+                return false;
+        }
+    }
+
+    return true;
+}
+
+void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, std::vector< DocumentObject* >& vec) {
+
+    if(!obj)
+        return;
+
+    //no cross CS link for local links.
+    auto result = getScopedObjectsFromLinks(obj, LinkScope::Local);
+    auto group = obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) ? obj : getGroupOfObject(obj);
+    for(auto link : result) {
+        if(getGroupOfObject(link) != group) 
+            vec.push_back(link);
+    }
+
+    //for links with scope SubGroup we need to check if all features are part of subgroups
+    if(group) {
+        result = getScopedObjectsFromLinks(obj, LinkScope::Child);
+        auto groupExt = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+        for(auto link : result) {
+            if(!groupExt->hasObject(link, true)) 
+                vec.push_back(link);
+        }
+    }
+}
+
 
 // Python feature ---------------------------------------------------------
 

@@ -123,26 +123,6 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     PyObject *pCone;
-    double dist;
-    static char* keywords_cd[] = {"Cone","Distance",NULL};
-    PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd,
-                                        &(ConePy::Type), &pCone, &dist)) {
-        ConePy* pcCone = static_cast<ConePy*>(pCone);
-        Handle(Geom_ConicalSurface) pcone = Handle(Geom_ConicalSurface)::DownCast
-            (pcCone->getGeometryPtr()->handle());
-        GC_MakeConicalSurface mc(pcone->Cone(), dist);
-        if (!mc.IsDone()) {
-            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
-            return -1;
-        }
-
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast
-            (getGeometryPtr()->handle());
-        cone->SetCone(mc.Value()->Cone());
-        return 0;
-    }
-
     static char* keywords_c[] = {"Cone",NULL};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_c,
@@ -187,9 +167,8 @@ PyObject* ConePy::uIso(PyObject * args)
         this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }
@@ -206,9 +185,8 @@ PyObject* ConePy::vIso(PyObject * args)
         Handle(Geom_Curve) c = cone->VIso(v);
         return new CirclePy(new GeomCircle(Handle(Geom_Circle)::DownCast(c)));
     }
-    catch (Standard_Failure) {
-        Handle(Standard_Failure) e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 }

@@ -58,11 +58,6 @@
        <string>Common</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>Section</string>
-      </property>
-     </item>
     </widget>
    </item>
   </layout>

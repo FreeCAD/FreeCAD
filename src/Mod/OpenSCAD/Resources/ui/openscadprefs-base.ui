@@ -202,7 +202,7 @@
         <item>
          <widget class="QLabel" name="label_3">
           <property name="toolTip">
-           <string>minimum angle for a fragment</string>
+           <string>Minimum angle for a fragment</string>
           </property>
           <property name="text">
            <string>angular (fa)</string>
@@ -212,7 +212,7 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2">
           <property name="toolTip">
-           <string>minimum angle for a fragment</string>
+           <string>Minimum angle for a fragment</string>
           </property>
           <property name="suffix">
            <string>°</string>
@@ -244,7 +244,7 @@
         <item>
          <widget class="QLabel" name="label_4">
           <property name="toolTip">
-           <string>minimum size of a fragment</string>
+           <string>Minimum size of a fragment</string>
           </property>
           <property name="text">
            <string>size (fs)</string>
@@ -269,7 +269,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>minimum size of a fragment</string>
+           <string>Minimum size of a fragment</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
