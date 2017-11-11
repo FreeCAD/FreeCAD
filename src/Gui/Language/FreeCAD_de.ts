@@ -1383,27 +1383,26 @@ Diese Datei ist bereits vorhanden.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Makrodatei umbenennen</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Neuen Namen eingeben:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1'
+ist bereits vorhanden.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Umbenennen fehlgeschlagen</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Umbenennen nach '%1' fehlgeschlagen. Möglicherweise ein Dateizugriffsfehler?</translation>
     </message>
   </context>
   <context>
@@ -2246,11 +2245,11 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Programmlogo in Miniaturbild hinzufügen</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Eine URL, unter der der Benutzer weitere Informationen über die Lizenz finden kann</translation>
     </message>
   </context>
   <context>
@@ -3683,15 +3682,15 @@ Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Graphviz konnte auf Ihrem System nicht gefunden werden.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Lesen Sie mehr dazu hier.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Möchten Sie seinen Installationsort angeben, falls es bereits installiert wurde?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -4028,7 +4027,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Verknüpftes Objekt ändern</translation>
     </message>
   </context>
   <context>
@@ -4360,7 +4359,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Text aktualisiert</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
@@ -5608,11 +5607,11 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Gruppe erstellen</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Neue Gruppe zum Ordnen von Objekten erstellen</translation>
     </message>
   </context>
   <context>
@@ -5868,11 +5867,11 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
       <source>Create part</source>
-      <translation>Körper erzeugen</translation>
+      <translation>Baugruppe erstellen</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>erzeuge und aktiviere neuen Körper</translation>
+      <translation>Erstellen und Aktivieren einer neuen Baugruppe</translation>
     </message>
   </context>
   <context>
@@ -6854,7 +6853,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Hauptfenster in Vollansicht zeigen</translation>
     </message>
   </context>
   <context>

@@ -47,7 +47,7 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Multiplikation</translation>
+      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Vielfachheit</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -83,7 +83,7 @@
     <message>
       <location line="+1"/>
       <source>CarbonCopy</source>
-      <translation>CarbonCopy</translation>
+      <translation>Kopie</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -158,7 +158,7 @@
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Multiplikation</translation>
+      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Vielfachheit</translation>
     </message>
   </context>
   <context>
@@ -273,7 +273,7 @@
     <message>
       <location line="+105"/>
       <source>Ellipse by center, major radius, point</source>
-      <translation>Ellipse durch Angabe von Zentrum, großem Radius und Punkt</translation>
+      <translation>Ellipse durch Angabe von Mittelpunkt, Hauptradius und Punkt</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3229,7 +3229,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     </message>
     <message>
       <source>Default vertex color</source>
-      <translation>Standard-Scheitelpunktfarbe</translation>
+      <translation>Standard-Knotenpunktfarbe</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
@@ -3376,7 +3376,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     </message>
     <message>
       <source>The default line thickness for new shapes</source>
-      <translation>Der Standard-Liniendicke für neue Formen</translation>
+      <translation>Die Standard-Linienstärke für neue Formen</translation>
     </message>
     <message>
       <location line="-292"/>
@@ -3385,7 +3385,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     </message>
     <message>
       <source>Default vertex size</source>
-      <translation>Standard-Scheitelpunktgröße</translation>
+      <translation>Standard-Knotenpunktgröße</translation>
     </message>
     <message>
       <source>Default line width</source>
@@ -3464,7 +3464,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="-40"/>
       <source>Default vertex color</source>
-      <translation>Standard-Scheitelpunktfarbe</translation>
+      <translation>Standard-Knotenpunktfarbe</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3535,14 +3535,14 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="+13"/>
       <source>Default vertex size</source>
-      <translation>Standard-Scheitelpunktgröße</translation>
+      <translation>Standard-Knotenpunktgröße</translation>
     </message>
     <message>
       <location line="+7"/>
       <location line="+35"/>
       <location line="+52"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Der Standard-Liniendicke für neue Formen</translation>
+      <translation>Die Standard-Linienstärke für neue Formen</translation>
     </message>
     <message>
       <location line="-84"/>

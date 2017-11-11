@@ -413,41 +413,41 @@ Do you want to continue?</source>
       <location line="+11"/>
       <location line="+200"/>
       <source>X +ve</source>
-      <translation>X +ve</translation>
+      <translation>X +</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+75"/>
       <location line="+125"/>
       <source>Y +ve</source>
-      <translation>Y +ve</translation>
+      <translation>Y +</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+75"/>
       <location line="+125"/>
       <source>Z +ve</source>
-      <translation>Z +ve</translation>
+      <translation>Z +</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+200"/>
       <source>X -ve</source>
-      <translation>X -ve</translation>
+      <translation>X -</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+70"/>
       <location line="+130"/>
       <source>Y -ve</source>
-      <translation>Y -ve</translation>
+      <translation>Y -</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+70"/>
       <location line="+130"/>
       <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <translation>Z -</translation>
     </message>
     <message>
       <location line="-188"/>
@@ -663,7 +663,7 @@ Do you want to continue?</source>
     <message>
       <location line="+17"/>
       <source>Project shapes</source>
-      <translation>Projekt Formen</translation>
+      <translation>Flächen projizieren</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -673,7 +673,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>Es gibt derzeit kein aktives Dokument um die Operation abzuschließen</translation>
+      <translation>Es gibt derzeit kein aktives Dokument, um die Operation abzuschließen</translation>
     </message>
     <message>
       <location line="+5"/>

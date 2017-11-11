@@ -3818,7 +3818,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="74"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Der Standard-Liniendicke für neue Formen</translation>
+      <translation>Die Standard-Linienstärke für neue Formen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="77"/>
