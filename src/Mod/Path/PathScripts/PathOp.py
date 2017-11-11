@@ -166,18 +166,10 @@ class ObjectOp(object):
         if FeatureTool & features and not hasattr(obj, 'OpToolDiameter'):
             self.addOpValues(obj, ['tooldia'])
 
-        if FeatureStepDown & features and not hasattr(obj, 'OpStartDepth'):
-            if PathGeom.isRoughly(obj.StepDown.Value, 1):
-                obj.setExpression('StepDown', 'OpToolDiameter')
-
         if FeatureDepths & features and not hasattr(obj, 'OpStartDepth'):
             self.addOpValues(obj, ['start', 'final'])
-            if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
-                obj.setExpression('StartDepth', 'OpStartDepth')
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('OpFinalDepth', 2)
-            elif not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
-                obj.setExpression('FinalDepth', 'OpFinalDepth')
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
@@ -234,6 +226,13 @@ class ObjectOp(object):
 
         self.opOnChanged(obj, prop)
 
+    def applyExpression(self, obj, prop, expr):
+        '''applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set'''
+        if expr:
+            obj.setExpression(prop, expr)
+            return True
+        return False
+
     def setDefaultValues(self, obj):
         '''setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead.'''
@@ -248,19 +247,26 @@ class ObjectOp(object):
             obj.OpToolDiameter  =  1.0
 
         if FeatureDepths & features:
-            obj.setExpression('StartDepth', job.SetupSheet.StartDepthExpression)
-            obj.setExpression('FinalDepth', job.SetupSheet.FinalDepthExpression)
-            obj.OpStartDepth    =  1.0
-            obj.OpFinalDepth    =  0.0
+            if self.applyExpression(obj, 'StartDepth', job.SetupSheet.StartDepthExpression):
+                obj.OpStartDepth =  1.0
+            else:
+                obj.StartDepth   =  1.0
+            if self.applyExpression(obj, 'FinalDepth', job.SetupSheet.FinalDepthExpression):
+                obj.OpFinalDepth =  0.0
+            else:
+                obj.FinalDepth   =  0.0
 
         if FeatureStepDown & features:
-            obj.setExpression('StepDown', job.SetupSheet.StepDownExpression)
+            if not self.applyExpression(obj, 'StepDown', job.SetupSheet.StepDownExpression):
+                obj.StepDown = '1 mm'
 
         if FeatureHeights & features:
             if job.SetupSheet.SafeHeightExpression:
-                obj.setExpression('SafeHeight', job.SetupSheet.SafeHeightExpression)
+                if not self.applyExpression(obj, 'SafeHeight', job.SetupSheet.SafeHeightExpression):
+                    obj.SafeHeight = '3 mm'
             if job.SetupSheet.ClearanceHeightExpression:
-                obj.setExpression('ClearanceHeight', job.SetupSheet.ClearanceHeightExpression)
+                if not self.applyExpression(obj, 'ClearanceHeight', job.SetupSheet.ClearanceHeightExpression):
+                    obj.ClearanceHeight = '5 mm'
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
