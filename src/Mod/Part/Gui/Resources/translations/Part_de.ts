@@ -7,7 +7,7 @@
       <location filename="../../AttacherTexts.cpp" line="+312"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation>Irgendeins</translation>
+      <translation>Alle</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -148,7 +148,7 @@
       <location line="+1"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt auf Objekt Plazierung.Position geschätzt. Arbeiten an Objekten mit Praktika und Ellipse/Parabel/Hyperbel Kanten.</translation>
+      <translation>Punkt ist auf Position des Objektplacements gesetzt. Dies funktioniert für Objekte mit Placement oder Ellipsen/Parabeln/Hyperbeln.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -178,12 +178,12 @@
       <location line="+2"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Am Rand</translation>
+      <translation>Auf Kante</translation>
     </message>
     <message>
       <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt wird auf Rand gesetzt, MapPathParametr steuert wo. Zusätzlich kann der Scheitelpunkt für eine Projektion verknüpft werden.</translation>
+      <translation>Punkt wird auf Kante gesetzt, MapPathParametr steuert wo. Zusätzlich kann der Knotenpunkt für eine Projektion verknüpft werden.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -194,19 +194,19 @@
     <message>
       <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Mitte des osculierenden Kreises einer Kante. Optionale Scheitelpunkt Verknüpfung definiert wo.</translation>
+      <translation>Mitte des Schmiegekreis einer Kante. Optionale Knoten-Verknüpfung legt fest wo.</translation>
     </message>
     <message>
       <location line="-2"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt wird auf Rand gesetzt, MapPathParametr steuert wo. Zusätzlich kann der Scheitelpunkt für eine Projektion verknüpft werden.</translation>
+      <translation>Punkt wird auf Kante gesetzt, MapPathParametr steuert wo. Zusätzlich kann der Kotenpunkt für eine Projektion verknüpft werden.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Mitte des oszillierenden Kreises einer Kante. Optionale Scheitelpunkt Verknüpfung definiert wo.</translation>
+      <translation>Mitte des Schmiegekreises einer Kante. Optionale Knoten-Verknüpfung legt fest wo.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -242,7 +242,7 @@
       <location line="+1"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Bezugspunkt mit einem anderen Scheitelpunkt zusammenlegen.</translation>
+      <translation>Bezugspunkt mit einem anderen Knotenpunkt zusammenlegen.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -324,7 +324,7 @@
       <location line="+1"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linie, die eine Achse des oszillierenden Kreises der gekrümmten Kante ist. Optional Spitze definiert wo.</translation>
+      <translation>Linie, die eine Achse des Schmiegekreises der gekrümmten Kante ist. Optionaler Vertex definiert wo.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -336,7 +336,7 @@
       <location line="+1"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Directrix Linie für Ellipse, Parabel, Hyperbel.</translation>
+      <translation>Leitgerade für Ellipse, Parabel, Hyperbel.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -348,7 +348,7 @@
       <location line="+1"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Zweite Directrix Linie für Ellipse und Hyperbel.</translation>
+      <translation>Zweite leitgerade für Ellipse und Hyperbel.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -384,19 +384,19 @@
       <location line="+1"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linie tangential zu einer Kante. Optionale Spitzenverknüpfung definiert wo.</translation>
+      <translation>Linie tangential zu einer Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normal zum Rand</translation>
+      <translation>Normal zur Kante</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Senkrecht zur Oberfläche</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -413,7 +413,7 @@
       <location line="-30"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ausrichten des N-Vektors des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optional Spitzen-Verknüpfung definiert wo.</translation>
+      <translation>Ausrichten des N-Vektors des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -425,7 +425,7 @@
       <location line="+1"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ausrichten auf B-Vektor des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optional Spitzenverknüpfung definiert wo.</translation>
+      <translation>Ausrichten auf B-Vektor des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -438,7 +438,7 @@
       <location line="+3"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Tangential zur Oberfläche, entlang der U-Parameter. Spitzen-Verbindung definiert wo.</translation>
+      <translation>Tangential zur Oberfläche, entlang der U-Parameter. Vertex-Verbindung definiert wo.</translation>
     </message>
     <message>
       <location line="-1"/>
@@ -456,7 +456,7 @@
       <location line="+1"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linie, die durch zwei Ecken geht.</translation>
+      <translation>Linie, die durch zwei Knoten geht.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -516,7 +516,7 @@
       <location line="+1"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Die Linie folgt der dritten Hauptträgheitsachse.</translation>
+      <translation>Die Linie folgt der dritten Hauptachse der Trägheit.</translation>
     </message>
   </context>
   <context>
@@ -590,13 +590,13 @@
       <location line="+2"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Ebenen Fläche</translation>
+      <translation>Ebene Fläche</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Die Ebene ist ausgerichtet, um die Ebene Fläche zu decken.</translation>
+      <translation>Die Ebene ist ausgerichtet, um die ebene Fläche zu decken.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -614,13 +614,13 @@
       <location line="+2"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal zum Rand</translation>
+      <translation>Normal zur Kante</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Ebene ist tangential zur Kante gemacht. Optionale Vertex-Link definiert wo.</translation>
+      <translation>Ebene liegt tangential zur Kante. Optionaler Vertex-Link definiert wo.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -634,7 +634,7 @@
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Link definiert wo.</translation>
+      <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
       <location line="-4"/>
@@ -658,19 +658,19 @@
       <location line="+1"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Ausrichten zur Ebene zum osculierenden Kreis einer Kante. Der Ursprung ist auf den Krümmungspunkt ausgerichtet. Optionale Vertex-Link definiert wo.</translation>
+      <translation>Ausrichten zur Ebene zum Schmiegekreis einer Kante. Der Ursprung ist auf den Krümmungspunkt ausgerichtet. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Revolution Abschnitt</translation>
+      <translation>Drehungs-Abschnitt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Ebene ist senkrecht zur Kante und Y-Achse stimmt mit Achse des Krümmungskreises überein. Optional verknüpfter Scheitelpunkt definiert Position.</translation>
+      <translation>Ebene ist senkrecht zur Kante und Y-Achse stimmt mit Achse des Krümmungskreises überein. Optional verknüpfter Knotenpunkt definiert Position.</translation>
     </message>
     <message>
       <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
@@ -687,7 +687,7 @@
       <location line="+1"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Richten Sie die Ebene aus, um durch drei Ecken zu passieren.</translation>
+      <translation>Richten Sie die Ebene aus, um durch drei Knoten zu gehen.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -699,13 +699,13 @@
       <location line="+1"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Die Ebene wird durch die ersten zwei Ecken gehen und senkrecht zur Ebene, die durch drei Ecken geht.</translation>
+      <translation>Die Ebene wird durch die ersten zwei Ecken gehen und senkrecht zur Ebene, die durch drei Knoten geht.</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Zusammenklappbar</translation>
+      <translation>Zusammenfalten</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -841,7 +841,7 @@
       <location line="+3"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Link definiert wo.</translation>
+      <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
       <location line="-4"/>
@@ -871,7 +871,7 @@
       <location line="+2"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Revolution Abschnitt</translation>
+      <translation>Drehungs-Abschnitt</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -907,7 +907,7 @@
       <location line="+2"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Zusammenklappbar</translation>
+      <translation>Zusammenfalten</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1102,13 +1102,13 @@
       <location line="-159"/>
       <location line="+164"/>
       <source>Up to next</source>
-      <translation>Weiter zum Nächsten</translation>
+      <translation>Bis zum Nächsten</translation>
     </message>
     <message>
       <location line="-159"/>
       <location line="+164"/>
       <source>Up to last</source>
-      <translation>Weiter zum Letzten</translation>
+      <translation>Bis zum Letzten</translation>
     </message>
     <message>
       <location line="-159"/>
@@ -1442,7 +1442,7 @@
     <message>
       <location line="+1"/>
       <source>Make an intersection of two shapes</source>
-      <translation>Überschneidet zwei Formen</translation>
+      <translation>Schnitt aus zwei Formen</translation>
     </message>
   </context>
   <context>
@@ -1565,7 +1565,7 @@
     <message>
       <location line="+1"/>
       <source>Cut</source>
-      <translation>Ausschneiden</translation>
+      <translation>Differenz</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1603,7 +1603,7 @@
     <message>
       <location line="+1"/>
       <source>Export CAD...</source>
-      <translation>CAD Export...</translation>
+      <translation>CAD exportieren...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1956,7 +1956,7 @@
     <message>
       <location line="+1"/>
       <source>Section</source>
-      <translation>Ausschnitt</translation>
+      <translation>Schnittkurve</translation>
     </message>
   </context>
   <context>
@@ -2043,7 +2043,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep...</source>
-      <translation>erzeugen eines Objekts (Fläche, Hülle oder Körper) entlang eines bestimmten Pfades zwischen mindestens zwei bestimmten Kurven</translation>
+      <translation>Sweep...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2066,7 +2066,7 @@
     <message>
       <location line="+1"/>
       <source>Utility to apply a thickness</source>
-      <translation>Werkzeug zum aufzudicken</translation>
+      <translation>Werkzeug zum Aufdicken</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -2252,7 +2252,7 @@
     <message>
       <location line="+19"/>
       <source>Sections</source>
-      <translation>Abschnitte</translation>
+      <translation>Schnitte</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -2295,7 +2295,7 @@
     <message>
       <location line="+12"/>
       <source>Section</source>
-      <translation>Ausschnitt</translation>
+      <translation>Schnittkurve</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2405,7 +2405,7 @@
     <message>
       <location line="+6"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation>Wenn aktiviert, ist die Richtung der Extrusion umgekehrt.</translation>
+      <translation>Wenn aktiviert, wird die Richtung der Extrusion umgekehrt.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -2519,7 +2519,7 @@
     <message>
       <location line="+21"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Wenn aktiviert, dann werden durch Extrudieren von Kantenzügen Festkörper und nicht Hüllkörper erzeugt.</translation>
+      <translation>Wenn aktiviert, dann werden durch Extrudieren von Kantenzügen Festkörper und nicht Hüllflächen erzeugt.</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -2601,7 +2601,7 @@
     <message>
       <location line="+10"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation>Richtung der Extrusion ist null, muss jedoch größer als null sein.</translation>
+      <translation>Länge der Extrusionsrichtung ist null, sie muss jedoch größer als Null sein.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -2745,8 +2745,8 @@
       <location line="+1"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>Kein Kantengebilde zum Abrunden markiert.
-Bitte markieren Sie zuerst ein oder mehrere Kantengebilde.</translation>
+      <translation>Kein Kantenelement zum Abrunden markiert.
+Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+40"/>
@@ -2812,17 +2812,17 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+8"/>
       <source>Write solids and shells as</source>
-      <translation>Schreiben von Festkörpern und Schalen als</translation>
+      <translation>Schreiben von Festkörpern und Hüllflächen als</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Gruppen von getrimmten Oberflächen (Typ 144)</translation>
+      <translation>Gruppen getrimmter Oberflächen (Typ 144)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Festkörper (type 186) und Schalen (Typ 514)/ B-REP-Modus</translation>
+      <translation>Festkörper (type 186) und Hüllflächen (Typ 514)/ B-REP-Modus</translation>
     </message>
     <message>
       <source>Enable B-REP mode</source>
@@ -3606,7 +3606,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <location line="+42"/>
       <location line="+41"/>
       <source>Click to set this as axis</source>
-      <translation>Klicken, um dieses als Achse zu setzen</translation>
+      <translation>Klicken, um dies als Achse zu setzen</translation>
     </message>
     <message>
       <location line="-38"/>
@@ -3696,12 +3696,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+9"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>Richtung der Rotationsachse ist null, muss jedoch größer als null sein.</translation>
+      <translation>Länge der Drehachse ist null, sie muss größer als Null sein.</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Bereich des Rotationswinkel ist null, muss jedoch größer als null sein.</translation>
+      <translation>Bereich des Rotationswinkel ist null, er muss jedoch ungleich Null sein.</translation>
     </message>
     <message>
       <location line="+122"/>
@@ -3753,7 +3753,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+61"/>
       <source>Maximum angular deflection</source>
-      <translation>Maximaler Biegungswinkel</translation>
+      <translation>Maximale Winkelabweichung</translation>
     </message>
     <message utf8="true">
       <location line="+7"/>
@@ -3771,7 +3771,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="-20"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Definiert die Abweichung des Mosaiks auf der aktuellen Oberfläche</translation>
+      <translation>Legt die Abweichung der Tessellierung zur Oberfläche fest</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3907,7 +3907,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <location line="+7"/>
       <location line="+68"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Der Standard-Liniendicke für neue Formen</translation>
+      <translation>Die Standard-Linienstärke für neue Formen</translation>
     </message>
     <message>
       <location line="-65"/>
@@ -3918,22 +3918,22 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="-43"/>
       <source>Default vertex color</source>
-      <translation>Standard-Scheitelpunktfarbe</translation>
+      <translation>Standard-Knotenpunktfarbe</translation>
     </message>
     <message>
       <location line="+33"/>
       <source>Default vertex size</source>
-      <translation>Standard-Scheitelpunktgröße</translation>
+      <translation>Standard-Knotenpunktgröße</translation>
     </message>
     <message>
       <location line="+35"/>
       <source>Bounding box color</source>
-      <translation>Rahmenfarbe</translation>
+      <translation>Farbe von Bounding-Boxen</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Farbe der Bounding box in der 3D Ansicht</translation>
+      <translation>Farbe der Bounding-Boxen in der 3D-Ansicht</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -3986,12 +3986,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="+220"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Scheitelpunkt/Kante/Kantenzug/Fläche</translation>
+      <translation>Knoten/Kante/Kantenzug/Fläche</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft</source>
-      <translation>Freiformfläche</translation>
+      <translation>Loft</translation>
     </message>
     <message>
       <location line="-63"/>
@@ -4011,7 +4011,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+82"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Es werden mindestens 2 Punkte, Kantenzüge oder Flächen benötigt.</translation>
+      <translation>Es werden mindestens zwei Knoten, Kanten, Kantenzüge oder Flächen benötigt.</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -4136,7 +4136,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <location line="-214"/>
       <location line="+19"/>
       <source>Select two vertices</source>
-      <translation>Wähle zwei Knotenpunkte</translation>
+      <translation>Wählen Sie zwei Knoten aus</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
@@ -4145,17 +4145,17 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+28"/>
       <source>Select three or more vertices</source>
-      <translation>Wählen Sie mindestens drei Eckpunkte</translation>
+      <translation>Wählen Sie mindestens drei Knoten aus</translation>
     </message>
     <message>
       <location line="+52"/>
       <source>Select one or more edges</source>
-      <translation>Eine oder mehrere Kanten auswählen</translation>
+      <translation>Wählen Sie eine oder mehrere Kanten aus</translation>
     </message>
     <message>
       <location line="+52"/>
       <source>Select two or more faces</source>
-      <translation>Wähle zwei oder mehr Oberflächen aus</translation>
+      <translation>Wähle zwei oder mehr Flächen aus</translation>
     </message>
     <message>
       <location line="+63"/>
@@ -4170,7 +4170,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+7"/>
       <source>Select a list of vertices</source>
-      <translation>Wählen Sie eine Liste der Eckpunkte</translation>
+      <translation>Wählen Sie eine Liste von Knoten</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4180,7 +4180,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+7"/>
       <source>Select adjacent faces</source>
-      <translation>Wähle angrenzende Oberflächen aus</translation>
+      <translation>Wählen Sie benachbarte Flächen aus</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4198,11 +4198,11 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+1"/>
       <source>Sweep</source>
-      <translation>erzeugen eines Objekts (Fläche, Hülle oder Körper) entlang eines bestimmten Pfades zwischen mindestens zwei bestimmten Kurven</translation>
+      <translation>Sweep</translation>
     </message>
     <message>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Scheitelpunkt/Kante/Kantenzug/Fläche</translation>
+      <translation>Knoten/Kante/Kantenzug/Fläche</translation>
     </message>
     <message>
       <location line="-152"/>
@@ -4228,7 +4228,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+128"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>erzeugen eines Sweep-Pfades aus zusammenhängenden Linien</translation>
+      <translation>Erzeugen eines Sweep-Pfades aus zusammenhängenden Kanten.</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -4269,7 +4269,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <location line="+24"/>
       <location line="+8"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>ungültiger Sweep-Pfad </translation>
+      <translation>Der gewählte Sweep-Pfad ist ungültig.</translation>
     </message>
   </context>
   <context>
@@ -4368,22 +4368,22 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+3"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Anhangmodus fehlgeschlagen: %1</translation>
+      <translation>Bindungsmethode fehlgeschlagen: %1</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Not attached</source>
-      <translation>Nicht Abgeschlossen</translation>
+      <translation>Nicht gebunden</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Attached with mode %1</source>
-      <translation>Angehängt mit Modus %1</translation>
+      <translation>Angehängt im Modus: %1</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Extra placement (inactive - not attached):</source>
-      <translation>Zusätzliche Platzierung (inaktiv - nicht angehängt):</translation>
+      <translation>Zusätzliche Platzierung (inaktiv - nicht gebunden):</translation>
     </message>
     <message>
       <location line="+276"/>
@@ -4448,7 +4448,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
       <source>Shape Content</source>
-      <translation>Form Inhalt</translation>
+      <translation>Form-Inhalt</translation>
     </message>
   </context>
   <context>
@@ -4640,12 +4640,12 @@ Reference combinations:
     <message>
       <location line="+6"/>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Klicken Sie auf die Oberflächen in der 3D-Ansicht um sie auszuwählen.</translation>
+      <translation>Klicken Sie auf die Flächen in der 3D-Ansicht um sie auszuwählen.</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Faces:</source>
-      <translation>Oberflächen:</translation>
+      <translation>Flächen:</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -4663,7 +4663,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskLoft.ui" line="+14"/>
       <source>Loft</source>
-      <translation>Freiformfläche</translation>
+      <translation>Loft</translation>
     </message>
     <message>
       <source>Vertex/Wire</source>
@@ -4709,7 +4709,7 @@ Reference combinations:
     <message>
       <location line="+7"/>
       <source>Ruled surface</source>
-      <translation>schraffierte Oberfläche</translation>
+      <translation>Regelfläche</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -4798,17 +4798,17 @@ Reference combinations:
     <message>
       <location line="+6"/>
       <source>Edge from vertices</source>
-      <translation>Kanten aus Knoten</translation>
+      <translation>Kante aus Vertexen</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Face from vertices</source>
-      <translation>Fläche aus Vertices</translation>
+      <translation>Fläche aus Vertexen</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Face from edges</source>
-      <translation>Oberflächen aus Kanten</translation>
+      <translation>Fläche aus Kanten</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -4846,7 +4846,7 @@ Reference combinations:
     <message>
       <location filename="../../TaskSweep.ui" line="+14"/>
       <source>Sweep</source>
-      <translation>erzeugen eines Objekts (Fläche, Hülle oder Körper) entlang eines bestimmten Pfades zwischen mindestens zwei bestimmten Kurven</translation>
+      <translation>Sweep</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -4867,7 +4867,7 @@ Reference combinations:
       <location filename="../../TaskSweep.cpp" line="+42"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Fügen Sie ein oder mehrere Profile zum Sweep hinzu. Markieren Sie dann eine Ecke oder einen Kantenzug in der 3D Ansicht als Sweep Pfad.</translation>
+      <translation>Fügen Sie ein oder mehrere Profile zum Sweep hinzu. Markieren Sie dann eine Kante oder einen Kantenzug in der 3D Ansicht als Sweep Pfad.</translation>
     </message>
   </context>
   <context>
@@ -4882,7 +4882,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location line="-119"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation>Wählen Sie Flächen des Quellobjekts und drücken Sie 'Fertig'</translation>
+      <translation>Wählen Sie Flächen des Ausgangsobjekts und drücken Sie 'Fertig'</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -4935,7 +4935,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location line="+5"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Unterstützt das Erstellen ebener Flächen mit Löchern, unterstützt keine Verschachtelung.</translation>
+      <translation>Unterstützt das Erstellen ebener Flächen mit Löchern, unterstützt keine Verschachtelungen.</translation>
     </message>
   </context>
   <context>
@@ -5034,7 +5034,7 @@ Do you want to continue?</source>
     <message>
       <location line="+86"/>
       <source>Edit thickness</source>
-      <translation>Bearbeite Dicke</translation>
+      <translation>Dicke bearbeiten</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -5074,7 +5074,7 @@ Do you want to continue?</source>
     <message>
       <location line="+963"/>
       <source>You have to select either two edges or two wires.</source>
-      <translation>Wählen Sie entweder zwei Kanten oder zwei Drahtgitter aus.</translation>
+      <translation>Wählen Sie entweder zwei Kanten oder zwei Kantenzüge aus.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="-330"/>
@@ -5084,7 +5084,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="+842"/>
       <source>Set colors...</source>
-      <translation>Legen sie Farben fest...</translation>
+      <translation>Legen Sie Farben fest...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="-307"/>
@@ -5163,12 +5163,12 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>No 3D Curve</source>
-      <translation>Keine 3D Kurve</translation>
+      <translation>Keine 3D-Kurve</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Multiple 3D Curve</source>
-      <translation>Mehrere 3D Kurven</translation>
+      <translation>Mehrere 3D-Kurven</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -5213,7 +5213,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>Invalid MultiConnexity</source>
-      <translation>Ungültige MehrfachVerbindung</translation>
+      <translation>Ungültige Mehrfachverbindung</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -5318,7 +5318,7 @@ Do you want to continue?</source>
     <message>
       <location line="+4"/>
       <source>Out Of Enum Range: </source>
-      <translation>Außerhalb des Bereichs der Enum: </translation>
+      <translation>Außerhalb des Bereichs der Aufzählung: </translation>
     </message>
     <message>
       <location line="+12"/>

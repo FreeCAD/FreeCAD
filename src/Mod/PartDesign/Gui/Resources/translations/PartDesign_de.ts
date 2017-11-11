@@ -11,7 +11,7 @@
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation>zusätzliches, zwischen Kurven erzeugtes Objekt</translation>
+      <translation>Zu addierender Loft</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Erzeugen eines Körpers</translation>
+      <translation>Körper erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation>Erzeugen eines neuen Körpers und diesen aktivieren</translation>
+      <translation>Erzeugen und Aktivieren eines neuen Körpers</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>Bool'sche Verknüpfung zweier oder mehrerer Körper</translation>
+      <translation>Boolsche Operation mit zwei oder mehr Körpern</translation>
     </message>
   </context>
   <context>
@@ -118,7 +118,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Neuen Klon erstellen</translation>
     </message>
   </context>
   <context>
@@ -154,7 +154,7 @@
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Verdoppelt das ausgewählte Objekt und fügt es dem aktiven Körper hinzu</translation>
+      <translation>Vervielfältigt das ausgewählte Objekt und fügt es dem aktiven Körper hinzu</translation>
     </message>
   </context>
   <context>
@@ -261,12 +261,12 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation>verlassen</translation>
+      <translation>Migrieren</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>verschieben des Dokuments in den neueren partDesign-Arbeitsbereich</translation>
+      <translation>Migriere Dokument zum modernen PartDesign-Arbeitsablauf</translation>
     </message>
   </context>
   <context>
@@ -284,11 +284,11 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation>Erzeuge Feature: Spiegelung</translation>
+      <translation>Erzeuge gespiegeltes Objekt</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
-      <translation>Erzeuge Feature: Spiegelung</translation>
+      <translation>erzeuge gespiegeltes Objekt</translation>
     </message>
   </context>
   <context>
@@ -301,12 +301,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation>Objekt auf anderen Körper verschieben</translation>
+      <translation>Objekt in anderen Körper verschieben</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation>Bewegt das ausgewählte Objekt auf anderen Körper</translation>
+      <translation>Verschiebt das ausgewählte Objekt in anderen Körper</translation>
     </message>
   </context>
   <context>
@@ -342,7 +342,7 @@
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation>Bewegen Sie die Spitze des Körpers</translation>
+      <translation>Spitze des Körpers verschieben</translation>
     </message>
   </context>
   <context>
@@ -364,7 +364,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation>Erstelle eine Multitransform-Funktion</translation>
+      <translation>Erstelle eine Multitransform-Objekt</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -415,11 +415,11 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation>Körper erzeugen</translation>
+      <translation>Baugruppe erstellen</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>erzeuge und aktiviere neuen Körper</translation>
+      <translation>Erstellen und Aktivieren einer neuen Baugruppe</translation>
     </message>
   </context>
   <context>
@@ -535,7 +535,7 @@
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation>Erstelle eine skalieren Funktion</translation>
+      <translation>Erstellen eines skalierten Objekts</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -557,7 +557,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation>Erstelle eine neue Formmappe</translation>
+      <translation>Erstellen einer neuen Form-Mappe</translation>
     </message>
   </context>
   <context>
@@ -570,7 +570,7 @@
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>abziehbares, zwischen Kurven erzeugtes Objekt</translation>
+      <translation>Abziehbarer Loft</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -592,7 +592,7 @@
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation>abziehbares Rohr</translation>
+      <translation>Abziehbares Rohr</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -615,7 +615,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation>Erzeugen eines Körpers</translation>
+      <translation>Erzeugen eines aufgedickten Körpers</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>Erzeugen eines/r zusätzlichen geometrischen Körpers/Figur</translation>
+      <translation>Erzeugen eines zusätzlichen geometrischen Körpers</translation>
     </message>
     <message>
       <location line="+113"/>
@@ -649,7 +649,7 @@
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation>Zu addierender Konus</translation>
+      <translation>Zu addierender Kegel</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -703,7 +703,7 @@
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation>Abzuziehender Konus</translation>
+      <translation>Abzuziehender Kegel</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -736,7 +736,7 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>Gewählte Geometrie ist nicht Teil des aktiven Körpers. Bestimmen, wie diese Wahl zu handhaben ist, sonst wird Befehl ignoriert.</translation>
+      <translation>Gewählte Geometrie ist nicht Teil des aktiven Körpers. Bestimmen Sie bitte, wie diese Wahl zu handhaben ist. Möchten Sie diese Referenzen nicht, brechen Sie den Befehl ab.</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -769,17 +769,17 @@
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Kein Draht in Skizze</translation>
+      <translation>Kein geschlossener Kantenzug in Skizze</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation>Skizze wurde bereits für anderes Merkmal gebraucht</translation>
+      <translation>Skizze wurde bereits für anderes Objekt verwendet</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Skizze kennzeichnet einen anderen Körper</translation>
+      <translation>Skizze gehört zu einem anderen Körper</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -789,7 +789,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Feature befindet sich nach der Tip-Funktion</translation>
+      <translation>Objekt folgt nach Spitze</translation>
     </message>
   </context>
   <context>
@@ -847,7 +847,7 @@
     <message>
       <location line="-19"/>
       <source>External gear:</source>
-      <translation>Aussenzahnrad:</translation>
+      <translation>Außenrad:</translation>
     </message>
     <message>
       <location line="-68"/>
@@ -1121,7 +1121,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>verursacht zirkulare Abhängigkeit</translation>
+      <translation>Auswahl verursacht zyklische Abhängigkeit.</translation>
     </message>
   </context>
   <context>
@@ -1149,17 +1149,17 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+5"/>
       <source>Cut</source>
-      <translation>Ausschneiden</translation>
+      <translation>Differenz</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation>Standard</translation>
+      <translation>Schnitt</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Section</source>
-      <translation>Ausschnitt</translation>
+      <translation>Schnittkurve</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
@@ -1177,13 +1177,13 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation>Primitivenparameter</translation>
+      <translation>Parameter des Grundkörpers</translation>
     </message>
     <message>
       <location line="+573"/>
       <location line="+7"/>
       <source>Create primitive</source>
-      <translation>einen geomertrischen Grundkörper erstellen</translation>
+      <translation>Geometrischen Grundkörper erstellen</translation>
     </message>
   </context>
   <context>
@@ -1243,12 +1243,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation>Add ref</translation>
+      <translation>Hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Entferne ref</translation>
+      <translation>Entfernen</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1293,7 +1293,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation>Inkompatibler Referenzsatz</translation>
+      <translation>Inkompatible Referenzen</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1429,7 +1429,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+17"/>
       <source>Pull direction</source>
-      <translation>Entformungsrichtung</translation>
+      <translation>Zugrichtung</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -1456,22 +1456,22 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+9"/>
       <source>Allow used features</source>
-      <translation>Erlaube gebrauchte Funktionen</translation>
+      <translation>Verwendete Objekte zulassen</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Allow external features</source>
-      <translation>Externe Funktionen zulassen</translation>
+      <translation>Externe Objekte zulassen</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>From  other bodies of the same part</source>
-      <translation>Von anderen Körpern des gleichen Teils</translation>
+      <translation>Von anderen Körpern der gleichen Baugruppe</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation>Aus verschiedenen Teilen oder freien Funktionen</translation>
+      <translation>Aus verschiedenen Baugruppen oder freien Objekten</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1501,12 +1501,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Kein Draht in Skizze</translation>
+      <translation>Kein geschlossener Kantenzug in Skizze</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation>Skizze wurde bereits für anderes Merkmal gebraucht</translation>
+      <translation>Skizze wurde bereits für anderes Objekt verwendet</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1516,7 +1516,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+1"/>
       <source>Belongs to another part</source>
-      <translation>Gehört zu einem anderen Teil</translation>
+      <translation>Gehört zu einer anderen Baugruppe</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1535,12 +1535,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Funktion befindet sich nach der Spitze Funktion</translation>
+      <translation>Objekt folgt nach Spitze</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Select feature</source>
-      <translation>Merkmal wählen</translation>
+      <translation>Objekt auswählen</translation>
     </message>
   </context>
   <context>
@@ -1553,12 +1553,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation>Add ref</translation>
+      <translation>Hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Entferne ref</translation>
+      <translation>Entfernen</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1630,7 +1630,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
       <source>Up to last</source>
-      <translation>Weiter zum Letzten</translation>
+      <translation>Bis zum Letzten</translation>
     </message>
     <message>
       <source>Up to first</source>
@@ -1711,12 +1711,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation>Funktion hinzufügen</translation>
+      <translation>Objekt hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation>Funktion entfernen</translation>
+      <translation>Objekt entfernen</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -1772,7 +1772,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+6"/>
       <source>Ruled surface</source>
-      <translation>schraffierte Oberfläche</translation>
+      <translation>Regelfläche</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -1782,12 +1782,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+12"/>
       <source>Add Section</source>
-      <translation>Abschnitt hinzufügen</translation>
+      <translation>Schnitt hinzufügen</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation>Abschnitt entfernen</translation>
+      <translation>Schnitt entfernen</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -1797,7 +1797,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation>Parameter eines zwischen Kurven erzeugten Objekts</translation>
+      <translation>Loft-Parameter</translation>
     </message>
   </context>
   <context>
@@ -1843,12 +1843,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation>Funktion hinzufügen</translation>
+      <translation>Objekt hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation>Funktion entfernen</translation>
+      <translation>Objekt entfernen</translation>
     </message>
     <message>
       <location line="+31"/>
@@ -1897,12 +1897,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation>Funktion hinzufügen</translation>
+      <translation>Objekt hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation>Funktion entfernen</translation>
+      <translation>Objekt entfernen</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2060,7 +2060,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="-306"/>
       <source>Pad parameters</source>
-      <translation>Vorbau-Parameter</translation>
+      <translation>Block-Parameter</translation>
     </message>
     <message>
       <location line="+50"/>
@@ -2190,12 +2190,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation>Füge Rand hinzu</translation>
+      <translation>Kante hinzufügen</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation>Entferne Rand</translation>
+      <translation>Kante entfernen</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -2263,12 +2263,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation>Füge Rand hinzu</translation>
+      <translation>Kante hinzufügen</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation>Entferne Rand</translation>
+      <translation>Kante entfernen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-222"/>
@@ -2301,12 +2301,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+23"/>
       <source>Add Section</source>
-      <translation>Abschnitt hinzufügen</translation>
+      <translation>Schnitt hinzufügen</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation>Abschnitt entfernen</translation>
+      <translation>Schnitt entfernen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="+464"/>
@@ -2449,12 +2449,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation>Funktion hinzufügen</translation>
+      <translation>Objekt hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation>Funktion entfernen</translation>
+      <translation>Objekt entfernen</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -2594,12 +2594,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation>Funktion hinzufügen</translation>
+      <translation>Objekt hinzufügen</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation>Funktion entfernen</translation>
+      <translation>Objekt entfernen</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2652,7 +2652,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation>Datum Form Parameter</translation>
+      <translation>Bezugs-Parameter</translation>
     </message>
   </context>
   <context>
@@ -2702,7 +2702,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+7"/>
       <source>Join Type</source>
-      <translation>Verbinden Typ</translation>
+      <translation>Verbindungstyp</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2844,7 +2844,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+4"/>
       <source>Create an additive cone</source>
-      <translation>Erzeugen eines zu addierenden Konus'</translation>
+      <translation>Erzeugen eines zu addierenden Kegels</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2936,12 +2936,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+150"/>
       <source>Select feature</source>
-      <translation>Merkmal wählen</translation>
+      <translation>Objekt auswählen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a feature from the list</source>
-      <translation>Eine Funktion aus der Liste wählen</translation>
+      <translation>Ein Objekt aus der Liste wählen</translation>
     </message>
   </context>
   <context>
@@ -3255,7 +3255,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location line="+1"/>
       <source>Please select a plane or an edge plus a pull direction</source>
-      <translation>Bitte wählen Sie eine Ebene oder eine Kante und eine Entformungsrichtung</translation>
+      <translation>Bitte wählen Sie eine Ebene oder eine Kante und eine Zugrichtung</translation>
     </message>
     <message>
       <source>Edit draft</source>
@@ -3283,7 +3283,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="+51"/>
       <source>Edit groove</source>
-      <translation>Einstich bearbeiten</translation>
+      <translation>Nut bearbeiten</translation>
     </message>
     <message>
       <source>Edit revolve</source>
@@ -3292,7 +3292,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="-832"/>
       <source>Part creation failed</source>
-      <translation>Erzeugen des Körpers ist fehlgeschlagen</translation>
+      <translation>Erzeugen der Baugruppe ist fehlgeschlagen</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3306,17 +3306,17 @@ Erstelle die Skizze auf der Fläche.</translation>
       <location line="+8"/>
       <location line="+49"/>
       <source>Bad base feature</source>
-      <translation>Schlechte Basis Funktion</translation>
+      <translation>Ungeeignetes Basis-Objekt</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Körper kann nicht auf einer PartDesign-Funktion basieren.</translation>
+      <translation>Körper kann nicht auf einem PartDesign-Objekt basieren.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 gehört bereits zu einem Körper, kann es nicht als Basismerkmal für einen anderen Körper verwenden.</translation>
+      <translation>%1 gehört bereits zu einem Körper, kann nicht als Basis-Objekt für einen anderen Körper verwendet werden.</translation>
     </message>
     <message>
       <source>Body can't be based on annother body.</source>
@@ -3330,11 +3330,11 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Basiselement (%1) gehört zum einem anderen Teil.</translation>
+      <translation>Basis-Objekt (%1) gehört zu einer anderen Baugruppe.</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
-      <translation>Körper kann nicht aus mehr als einem Merkmal bestehen.</translation>
+      <translation>Körper kann nicht auf mehr als einem Objekt basieren.</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -3367,27 +3367,27 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Basis-Objekt</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Körper kann nicht auf mehr als einem Objekt basieren.</translation>
     </message>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation>Nichts, das verlassen werden kann</translation>
+      <translation>Nichts zu Migrieren</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation>Keine PartDesign-Funktionen gefunden, welche zu keinem Körper gehören. Nichts zu migrieren.</translation>
+      <translation>Keine PartDesign-Objekte gefunden, welche zu keinem Körper gehören. Nichts zu migrieren.</translation>
     </message>
     <message>
       <location line="+148"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation>Skizzen-Ebene kann nicht verlassen werden</translation>
+      <translation>Skizzen-Ebene kann nicht migriert werden</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3406,7 +3406,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Wählen Sie genau einen PartDesign Element oder einen Körper.</translation>
+      <translation>Wählen Sie genau ein PartDesign-Objekt oder einen Körper.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3427,12 +3427,12 @@ This may lead to unexpected results.</translation>
       <location line="+22"/>
       <location line="+15"/>
       <source>Features cannot be moved</source>
-      <translation>Elemente können nicht verschoben werden</translation>
+      <translation>Objekte können nicht verschoben werden</translation>
     </message>
     <message>
       <location line="-36"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation>Einige der gewählten Merkmale sind vom Quell-Körper abhängig</translation>
+      <translation>Einige der gewählten Objekte sind vom Quell-Körper abhängig</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -3442,17 +3442,17 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+15"/>
       <source>There are no other bodies to move to</source>
-      <translation>Es gibt keine anderen Körper zu bewegen</translation>
+      <translation>Es gibt keine anderen Körper zu verschieben</translation>
     </message>
     <message>
       <location line="+135"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Es ist nicht möglich das Basiselement des Körpers zu bewegen.</translation>
+      <translation>Es ist nicht möglich, das Basis-Objekt des Körpers zu verschieben.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Select one or more features from the same body.</source>
-      <translation>auswählen eines oder mehrerer Merkmale desselben Körpers</translation>
+      <translation>Auswählen eines oder mehrerer Objekte desselben Körpers.</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3462,12 +3462,12 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-116"/>
       <source>No previous feature found</source>
-      <translation>Vorheriges Merkmal nicht gefunden</translation>
+      <translation>Kein vorheriges Objekt gefunden</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Es ist nicht möglich, ein subtraktives Element ohne ein Basiselement zu erstellen</translation>
+      <translation>Es ist nicht möglich, ein subtraktives Objekt ohne ein Basis-Objekt zu erstellen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3498,7 +3498,7 @@ This may lead to unexpected results.</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation>Um PartDesign nutzen zu können, benötigen Sie einen aktiven Körper im Dokument. Bitte aktivieren Sie einen (Doppelklick) oder erstellen Sie einen. Wenn Sie ein älteres Dokument mit PartDesign Objekten ohne Körper haben, verwenden Sie die Übertragungsfunktion in PartDesign um diese in einen Körper umzuwandeln.</translation>
+      <translation>Um PartDesign nutzen zu können, benötigen Sie einen aktiven Körper im Dokument. Bitte aktivieren Sie einen (Doppelklick) oder erstellen Sie einen. Wenn Sie ein älteres Dokument mit PartDesign Objekten ohne Körper haben, verwenden Sie die Übertragungsfunktion in PartDesign, um diese in einen Körper umzuwandeln.</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3518,12 +3518,12 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Um ein neues PartDesign-Objekt zu erstellen, muss ein aktiver Körper in diesem Dokument vorhanden sein.
-Bitte machen Sie einen Aktiv (Doppelklick) oder erstellen Sie einen neuen Körper.</translation>
+Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</translation>
     </message>
     <message>
       <location line="+35"/>
       <source>Feature is not in a body</source>
-      <translation>Im Körper nicht enthaltenes Merkmal</translation>
+      <translation>Objekt ist nicht Teil eines Körpers</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3533,7 +3533,7 @@ Bitte machen Sie einen Aktiv (Doppelklick) oder erstellen Sie einen neuen Körpe
     <message>
       <location line="+32"/>
       <source>Feature is not in a part</source>
-      <translation>Funktion ist nicht in einem Teil</translation>
+      <translation>Objekt ist nicht Teil einer Baugruppe</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3543,7 +3543,7 @@ Bitte machen Sie einen Aktiv (Doppelklick) oder erstellen Sie einen neuen Körpe
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
       <source>Edit boolean</source>
-      <translation>Boole'sche Beziehung ändern</translation>
+      <translation>Boolesche Operation ändern</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="-131"/>
@@ -3571,11 +3571,11 @@ Bitte machen Sie einen Aktiv (Doppelklick) oder erstellen Sie einen neuen Körpe
     <message>
       <location line="+99"/>
       <source>Edit datum</source>
-      <translation>Verschiebung bearbeiten</translation>
+      <translation>Bezug ändern</translation>
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation>Koordinaten-System</translation>
+      <translation>Koordinatensystem</translation>
     </message>
     <message>
       <source>Edit datum </source>
@@ -3585,24 +3585,24 @@ Bitte machen Sie einen Aktiv (Doppelklick) oder erstellen Sie einen neuen Körpe
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>%1 bearbeiten</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Feature error</source>
-      <translation>Eigenschaften-Fehler</translation>
+      <translation>Objekt-Fehler</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation>%1 vermisst ein Basis-Feature.
-Dieses Feature is beschädigt und kann nicht bearbeitet werden.</translation>
+      <translation>%1 vermisst ein Basis-Objekt.
+Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation>Erzeugen eines Objekts (Fläche, Hülle oder Körper) zwischen Kurven</translation>
+      <translation>Loft bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
@@ -3612,7 +3612,7 @@ Dieses Feature is beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Form-Mappe bearbeiten</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
@@ -3626,17 +3626,17 @@ Dieses Feature is beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Möchten Sie migrieren, um neuere PartDesign-Möglichkeiten zu nutzen?</translation>
+      <translation>Möchten Sie migrieren, um neuere PartDesign-Funktionen zu nutzen?</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Das Dokument "%1" scheint entweder in der Mitte des Migrationsprozesses aus einem älteren PartDesign zu sein, oder hat eine defekte Struktur.</translation>
+      <translation>Das Dokument "%1" scheint entweder inmitten des Migrationsprozesses aus einem älteren PartDesign zu stammen oder hat eine defekte Struktur.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation>Automatisch abbrechen?</translation>
+      <translation>Möchten Sie die Migrierung automatisch durchführen?</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -3644,7 +3644,7 @@ Dieses Feature is beschädigt und kann nicht bearbeitet werden.</translation>
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
       <translation>Hinweis: Wenn Sie migrieren möchten, können sie diese Datei nicht mehr mit einer älteren FreeCAD Version bearbeiten.
-Wenn Sie nicht migrieren wollen werden sie die neuen PartDesign Funktionen wie Körper und Teile nicht verwenden können. Deshalb können Sie auch Ihre Teile nicht im Arbeitsbereich verwenden.
+Wenn Sie nicht migrieren wollen, werden sie die neuen PartDesign-Funktionen wie Körper und Baugruppen nicht verwenden können. Deshalb können Sie auch Ihre Teile nicht in dem Assembly-Arbeitsbereich verwenden.
 Sie können jedoch zu jedem späteren Zeitpunkt mit "Teil Design -&gt; Migrieren..." migrieren können.</translation>
     </message>
     <message>
@@ -3667,7 +3667,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Grundkörper bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -3723,7 +3723,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation>Kegelige Senkung</translation>
+      <translation>Konische Senkung</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3755,7 +3755,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-194"/>
       <source>Bolt/Washer</source>
-      <translation>/Unterlegescheibe</translation>
+      <translation>Unterlegescheibe</translation>
     </message>
     <message>
       <location line="+49"/>
@@ -3791,7 +3791,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+18"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer kegelförmigen Senkung</translation>
+      <translation>Winkel einer konischen Senkung</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3804,7 +3804,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Lochparameter</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3832,12 +3832,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Class</source>
-      <translation type="unfinished">Class</translation>
+      <translation>Klasse</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Tapered</source>
-      <translation type="unfinished">Tapered</translation>
+      <translation>Kegelförmig</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3852,27 +3852,27 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Flach</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>Winkelig</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Steigung</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Right hand</source>
-      <translation type="unfinished">Right hand</translation>
+      <translation>Rechtshändig</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>Linkshändig</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3897,7 +3897,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+10"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer kegelförmigen Senkung</translation>
+      <translation>Winkel einer konischen Senkung</translation>
     </message>
     <message>
       <location line="+56"/>
@@ -3932,22 +3932,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Bohrspitze&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Sonstiges&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Bohrloch&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Gewinde und Größe&lt;/b&gt;</translation>
     </message>
   </context>
   <context>

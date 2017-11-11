@@ -69,13 +69,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation>Strukturierte Punktwolken</translation>
+      <translation>Geordnete Punktwolken</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangulation von strukturierten Punktwolken</translation>
+      <translation>Triangulation von geordneten Punktwolken</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -185,7 +185,7 @@
     <message>
       <location line="+6"/>
       <source>Parameters</source>
-      <translation>Einstellungen</translation>
+      <translation>Parameter</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -220,7 +220,7 @@
       <location line="-134"/>
       <location line="+135"/>
       <source>Please select a single point cloud.</source>
-      <translation>Bitte eine einzelne Punkte-Wolke auswählen.</translation>
+      <translation>Bitte eine einzelne Punktewolke auswählen.</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation>Triangulation anzeigen fehlgeschlagen</translation>
+      <translation>Ansichts-Triangulation fehlgeschlagen</translation>
     </message>
   </context>
   <context>
