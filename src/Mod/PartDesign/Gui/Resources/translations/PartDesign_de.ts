@@ -131,7 +131,7 @@
     <message>
       <location line="+1"/>
       <source>Draft</source>
-      <translation>Tiefgang</translation>
+      <translation>Formschräge</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation>Erzeugen einer Bezugs-Linie</translation>
+      <translation>Bezugslinie erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation>Erzeugen einer neuen Bezugs-Linie</translation>
+      <translation>Erstellen einer neuen Bezugslinie</translation>
     </message>
   </context>
   <context>
@@ -279,7 +279,7 @@
     <message>
       <location line="+1"/>
       <source>Mirrored</source>
-      <translation>Gespiegelt</translation>
+      <translation>Spiegeln</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -355,7 +355,7 @@
     <message>
       <location line="+1"/>
       <source>Create MultiTransform</source>
-      <translation>Erstelle MultiTransform</translation>
+      <translation>Mehrfach-Transformation erstellen</translation>
     </message>
     <message>
       <source>MultiTransform</source>
@@ -364,7 +364,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation>Erstelle eine Multitransform-Objekt</translation>
+      <translation>Erstellen einer Mehrfach-Transformation</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -432,12 +432,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation>Erzeugen einer Bezugs-Ebene</translation>
+      <translation>Bezugsebene erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation>Erzeugen einer neuen Bezugs-Ebene</translation>
+      <translation>Erstellen einer neuen Bezugsebene</translation>
     </message>
   </context>
   <context>
@@ -472,12 +472,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation>Erzeugen eines Bezugs-Punkts</translation>
+      <translation>Bezugspunkt erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation>Erzeugen eines neuen Bezugs-Punkts</translation>
+      <translation>Erstellen eines neuen Bezugspunkts</translation>
     </message>
   </context>
   <context>
@@ -552,7 +552,7 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation>Erstellen einer Form-Mappe</translation>
+      <translation>Form-Mappe erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1932,7 +1932,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+4"/>
       <source>Add mirrored transformation</source>
-      <translation>Gespiegelte Transformation hinzufügen</translation>
+      <translation>Spiegelung hinzufügen</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1962,7 +1962,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+27"/>
       <source>Right-click to add</source>
-      <translation>Hinzufügen miitels Rechtsklick</translation>
+      <translation>Hinzufügen mittels Rechtsklick</translation>
     </message>
   </context>
   <context>
@@ -2296,7 +2296,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location line="+5"/>
       <source>Multisection</source>
-      <translation>Mehrfachauswahl</translation>
+      <translation>Mehrere Schnitte</translation>
     </message>
     <message>
       <location line="+23"/>
@@ -2652,7 +2652,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation>Bezugs-Parameter</translation>
+      <translation>Bezugsparameter</translation>
     </message>
   </context>
   <context>
@@ -3101,7 +3101,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Kein Körper is aktiv. Bitte vor dem Einfügen einer Bezugseinheit einen Körper aktivieren.</translation>
+      <translation>Kein aktiver Körper. Bitte aktivieren Sie einen Körper vor dem Einfügen einer Bezugseinheit.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3340,29 +3340,27 @@ Erstelle die Skizze auf der Fläche.</translation>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Die ausgewählte Form besteht aus mehreren Volumenkörpern.
+Dies kann zu unerwarteten Ergebnissen führen.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Die ausgewählte Form besteht aus mehreren Hüllflächen.
+Dies kann zu unerwarteten Ergebnissen führen.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Die ausgewählte Form besteht nur aus einer Hülle. Dies kann zu unerwarteten Ergebnissen führen.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Die ausgewählte Form besteht aus mehreren Volumenkörpern oder Hüllen. Dies kann zu unerwarteten Ergebnissen führen.</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -3377,12 +3375,12 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation>Nichts zu Migrieren</translation>
+      <translation>Nichts zu migrieren</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation>Keine PartDesign-Objekte gefunden, welche zu keinem Körper gehören. Nichts zu migrieren.</translation>
+      <translation>Keine PartDesign-Objekte gefunden, die nicht zu einem Körper gehören. Nichts zu migrieren.</translation>
     </message>
     <message>
       <location line="+148"/>
@@ -3392,7 +3390,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+1"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Bitte '%1' ändern und eine Basis- oder Bezugsebene als Skizzenebene verwenden.</translation>
+      <translation>Bitte ändern Sie '%1' und verwenden eine Basis- oder Bezugsebene als Zeichnungsebene.</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -3437,7 +3435,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Nur Objekte eines einzigen Ursprungskörpers können verschoben werden</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3505,9 +3503,9 @@ This may lead to unexpected results.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Um PartDesign verwenden zu können, benötigen Sie einen aktiven Körper im Dokument. Bitte aktivieren (Doppelklick) Sie einen Körper oder erstellen Sie einen Körper.
 
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+Wenn Sie ein älteres Dokument mit PartDesign-Objekten ohne Körper haben, verwenden Sie die Transferfunktion in PartDesign, um sie in einen Körper umzuwandeln.</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3528,7 +3526,7 @@ Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</tr
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>Um diese Funktion verwenden zu können, muss es Teil eines Körpers im Dokument sein.</translation>
     </message>
     <message>
       <location line="+32"/>
@@ -3538,7 +3536,7 @@ Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</tr
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>

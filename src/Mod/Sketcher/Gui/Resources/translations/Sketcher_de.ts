@@ -2115,7 +2115,7 @@
     <message>
       <location line="-3059"/>
       <source>Select vertices from the sketch.</source>
-      <translation>Wähle Ecken aus der Skizze.</translation>
+      <translation>Wählen Sie Knoten aus der Skizze aus.</translation>
     </message>
     <message>
       <location line="+344"/>
@@ -3291,7 +3291,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="+6"/>
       <source>When opening sketch, hide all features that depend on it.</source>
-      <translation>Beim Öffnen der Skizze verstecken von allen Funktionen, die davon abhängen.</translation>
+      <translation>Beim Öffnen der Skizze verstecken von allen Objekten, die davon abhängen.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3687,7 +3687,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location line="+12"/>
       <location line="+12"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Lösche Beschränkungen an externer Geometrie.</translation>
+      <translation>Lösche Beschränkungen an externer Geometrie</translation>
     </message>
     <message>
       <location line="-11"/>
@@ -4052,7 +4052,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location line="+26"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Lösche Beschränkungen an externer Geometrie.</translation>
+      <translation>Lösche Beschränkungen an externer Geometrie</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -4067,7 +4067,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location line="+24"/>
       <source>Highlight open vertexes</source>
-      <translation>Markieren Sie offene Ecken</translation>
+      <translation>Endpunkte markieren</translation>
     </message>
     <message>
       <location line="+10"/>
