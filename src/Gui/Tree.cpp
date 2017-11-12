@@ -1169,6 +1169,8 @@ TreeDockWidget::~TreeDockWidget()
 
 typedef std::set<DocumentObjectItem*> DocumentObjectItems;
 
+static std::map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
+
 class Gui::DocumentObjectData {
 public:
     const char *treeName;
@@ -1177,6 +1179,7 @@ public:
     ViewProviderDocumentObject *viewObject;
     DocumentObjectItem *rootItem;
     std::vector<App::DocumentObject*> children;
+    std::set<App::DocumentObject*> childSet;
     bool removeChildrenFromRoot;
     std::string label;
 
@@ -1199,8 +1202,48 @@ public:
                 boost::bind(&DocumentObjectData::slotChangeStatusTip, this, _1));
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
-        children = viewObject->claimChildren();
         label = viewObject->getObject()->Label.getValue();
+        children = viewObject->claimChildren();
+        updateChildren(children);
+    }
+
+    const char *getTreeName() const {
+        return treeName;
+    }
+
+    void updateChildren(std::vector<App::DocumentObject *> &newChildren) {
+        auto obj = viewObject->getObject();
+        std::set<App::DocumentObject *> newSet;
+        for (auto child : newChildren) {
+            if(child && child->getNameInDocument() && 
+               child->getDocument()==obj->getDocument()) 
+            {
+                if(!newSet.insert(child).second) {
+                    TREE_WARN("duplicate child item " << obj->getNameInDocument() 
+                        << '.' << child->getNameInDocument());
+                }else if(childSet.find(child) == childSet.end())
+                    _ParentMap[child].insert(obj);
+            }
+        }
+        if(&newChildren == &children) {
+            childSet.swap(newSet);
+            return;
+        }
+        for (auto child : childSet) {
+            if(newSet.find(child) == newSet.end())
+                _ParentMap[child].erase(obj);
+        }
+        children.swap(newChildren);
+        childSet.swap(newSet);
+    }
+
+    void clearChildren() {
+        auto obj = viewObject->getObject();
+        for (auto child : children) {
+            if(child && child->getDocument() == obj->getDocument())
+                _ParentMap[child].erase(obj);
+        }
+        _ParentMap.erase(obj);
     }
 
     void testStatus(bool resetStatus = false) {
@@ -1275,7 +1318,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     // Setup connections
     connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
     connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1, true));
-    connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1, _2, true));
+    connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1, _2));
     connectRenObject = doc->signalRelabelObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
     connectActObject = doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
@@ -1440,7 +1483,13 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view,
     }
 
     auto it = ObjectMap.find(view.getObject());
-    if(it == ObjectMap.end() || it->second->items.empty()) return;
+    if(it == ObjectMap.end())
+        return;
+
+    TREE_LOG("delete object " << view.getObject()->getNameInDocument());
+
+    it->second->clearChildren();
+
     auto &items = it->second->items;
     for(auto cit=items.begin(),citNext=cit;cit!=items.end();cit=citNext) {
         ++citNext;
@@ -1467,6 +1516,24 @@ void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view,
 
     if(items.empty())
         ObjectMap.erase(it);
+}
+
+void DocumentItem::populateObject(App::DocumentObject *obj) {
+    // make sure at least one of the item corresponding to obj is populated
+    auto it = ObjectMap.find(obj);
+    if(it == ObjectMap.end())
+        return;
+    auto &items = it->second->items;
+    if(items.empty())
+        return;
+    for(auto item : items) {
+        if(item->populated)
+            return;
+    }
+    TREE_LOG("force populate object " << obj->getNameInDocument());
+    auto item = *items.begin();
+    item->populated = true;
+    populateItem(item,true);
 }
 
 void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
@@ -1606,9 +1673,7 @@ void DocumentItem::checkRemoveChildrenFromRoot(const Gui::ViewProviderDocumentOb
     }
 }
 
-void DocumentItem::slotChangeObject(
-    const Gui::ViewProviderDocumentObject& view, const App::Property &prop, bool broadcast)
-{
+void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view, const App::Property &prop) {
     auto obj = view.getObject();
     if(!obj || !obj->getNameInDocument())
         return;
@@ -1618,15 +1683,32 @@ void DocumentItem::slotChangeObject(
     if(&prop == &obj->Visibility)
         return;
 
-    if(broadcast) {
-        for(auto &v : getTree()->DocumentMap)
-            v.second->slotChangeObject(view,prop,false);
-        return;
+    bool updated = false;
+    for(auto &v : getTree()->DocumentMap) {
+        if (v.second->updateObject(view,prop))
+            updated = true;
     }
 
+    if(updated) {
+        //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+        //of the geofeaturegroup depends on what the childs claim
+        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
+        if(grp) {
+            auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+                    Application::Instance->getViewProvider(grp));
+            if (vp) {
+                App::PropertyBool dummy;
+                slotChangeObject(*vp,dummy);
+            }
+        }
+    }
+}
+    
+bool DocumentItem::updateObject(const Gui::ViewProviderDocumentObject& view, const App::Property &prop) {
+    auto obj = view.getObject();
     auto it = ObjectMap.find(obj);
     if(it == ObjectMap.end())
-        return;
+        return false;
 
     if(&prop == &obj->Label) {
         const char *label = obj->Label.getValue();
@@ -1636,26 +1718,24 @@ void DocumentItem::slotChangeObject(
             for(auto item : it->second->items)
                 item->setText(0, displayName);
         }
-        return;
+        return false;
     }
 
-
-    const auto &children = view.claimChildren();
+    auto children = view.claimChildren();
     bool removeChildrenFromRoot = view.canRemoveChildrenFromRoot();
 
-    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
-    //of the geofeaturegroup depends on what the childs claim
-    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
-
-    if(grp ||
-       removeChildrenFromRoot!=it->second->removeChildrenFromRoot || 
+    if(removeChildrenFromRoot!=it->second->removeChildrenFromRoot || 
        children!=it->second->children) 
     {
         it->second->removeChildrenFromRoot = removeChildrenFromRoot;
-        it->second->children = children;
+        it->second->updateChildren(children);
+
         for(auto item : it->second->items)
             populateItem(item,true);
+        return true;
     }
+
+    return false;
 }
 
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
@@ -2344,11 +2424,32 @@ bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
 bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
     if(myData->rootItem || object()->getDocument()!=myData->docItem.document()) 
         return false;
+    bool checkMap = true;
     for(auto item : myData->items) {
         if(excludeSelf && item == this) continue;
         auto pi = item->getParentItem();
         if(!pi || pi->myData->removeChildrenFromRoot)
             return false;
+        checkMap = false;
+    }
+    if(checkMap) {
+        auto it = _ParentMap.find(object()->getObject());
+        if(it!=_ParentMap.end() && it->second.size()) {
+            // Reaching here means all items of this corresponding object is
+            // going to be deleted, but the object itself is not deleted and
+            // still being refered to by some parent item that is not expanded
+            // yet. So, we force populate at least one item of the parent
+            // object to make sure that there is at least one corresponding
+            // item for each object. 
+            //
+            // PS: practically speaking, it won't hurt much to delete all the
+            // items, because the item will be auto created once the user
+            // expand its parent item. It only causes minor problems, such as,
+            // tree scroll to object command won't work properly.
+
+            getOwnerDocument()->populateObject(*it->second.begin());
+            return false;
+        }
     }
     return true;
 }

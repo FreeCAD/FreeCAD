@@ -194,6 +194,7 @@ public:
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
     void populateItem(DocumentObjectItem *item, bool refresh = false);
+    void populateObject(App::DocumentObject *obj);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
@@ -218,7 +219,7 @@ protected:
      * If this view provider is not added nothing happens.
      */
     void slotDeleteObject    (const Gui::ViewProviderDocumentObject&, bool boradcast);
-    void slotChangeObject    (const Gui::ViewProviderDocumentObject&, const App::Property &prop, bool boradcast);
+    void slotChangeObject    (const Gui::ViewProviderDocumentObject&, const App::Property &prop);
     void slotRenameObject    (const Gui::ViewProviderDocumentObject&);
     void slotActiveObject    (const Gui::ViewProviderDocumentObject&);
     void slotInEdit          (const Gui::ViewProviderDocumentObject&);
@@ -226,6 +227,8 @@ protected:
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
+
+    bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
     bool createNewItem(const Gui::ViewProviderDocumentObject&, 
                     QTreeWidgetItem *parent=0, int index=-1, 
