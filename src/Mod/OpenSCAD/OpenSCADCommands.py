@@ -107,7 +107,7 @@ class ExplodeGroup:
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup',\
                 'Explode Group'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup',\
-                'remove fusion, apply placement to children and color randomly')}
+                'Remove fusion, apply placement to children, and color randomly')}
 
 class ColorCodeShape:
     "Change the Color of selected or all Shapes based on their validity"
@@ -231,7 +231,7 @@ class ReplaceObject:
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject',\
                 'Replace Object'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject',\
-                'Replace an object in the Feature Tree. Please select old, new and parent object')}
+                'Replace an object in the Feature Tree. Please select old, new, and parent object')}
 
 
 class RemoveSubtree:
@@ -403,7 +403,7 @@ class OpenSCADMeshBoolean:
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',\
                 'Mesh Boolean...'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',\
-                'Export objects as meshes and use OpenSCAD to perform a boolean operation.')}
+                'Export objects as meshes and use OpenSCAD to perform a boolean operation')}
 
 class Hull:
     def IsActive(self):
