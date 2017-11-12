@@ -61,6 +61,14 @@
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
+#define _TREE_PRINT(_level,_func,_msg) \
+    _FC_PRINT(FC_LOG_INSTANCE,_level,_func, '['<<getTreeName()<<"] " << _msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,Message,_msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,Warning,_msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,Error,_msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,Log,_msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,Log,_msg)
+
 using namespace Gui;
 
 QPixmap*  TreeWidget::documentPixmap = 0;
@@ -69,9 +77,9 @@ const int TreeWidget::ObjectType = 1001;
 
 
 /* TRANSLATOR Gui::TreeWidget */
-TreeWidget::TreeWidget(QWidget* parent)
+TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false), contextItem(0)
-    , editingItem(0), currentDocItem(0),fromOutside(false)
+    , editingItem(0), currentDocItem(0),fromOutside(false),myName(name)
 {
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
@@ -181,6 +189,10 @@ TreeWidget::~TreeWidget()
 {
 }
 
+const char *TreeWidget::getTreeName() const {
+    return myName.c_str();
+}
+
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 {
     // ask workbenches and view provider, ...
@@ -283,13 +295,13 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 }
 
 void TreeWidget::hideEvent(QHideEvent *ev) {
-    FC_TRACE(this << " detaching selection observer");
+    TREE_TRACE("detaching selection observer");
     this->detachSelection();
     QTreeWidget::hideEvent(ev);
 }
 
 void TreeWidget::showEvent(QShowEvent *ev) {
-    FC_TRACE(this << " attaching selection observer");
+    TREE_TRACE("attaching selection observer");
     this->attachSelection();
     this->syncSelection();
     QTreeWidget::showEvent(ev);
@@ -480,20 +492,20 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
         return;
 
     if(!obj || !obj->getNameInDocument()) {
-        FC_ERR("invlaid object");
+        TREE_ERR("invlaid object");
         return;
     }
     if(QApplication::keyboardModifiers() != Qt::ControlModifier)
         Selection().clearCompleteSelection();
     for(auto link: App::GetApplication().getLinksTo(obj,true)) {
         if(!link || !link->getNameInDocument()) {
-            FC_ERR("invalid linked object");
+            TREE_ERR("invalid linked object");
             continue;
         }
         auto vp = dynamic_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(link));
         if(!vp) {
-            FC_ERR("invalid view provider of the linked object");
+            TREE_ERR("invalid view provider of the linked object");
             continue;
         }
         for(auto &v : DocumentMap)
@@ -667,7 +679,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 if(subObj) 
                     obj = subObj;
                 else
-                    FC_WARN("invalid trailing subname " << item->mySub);
+                    TREE_WARN("invalid trailing subname " << item->mySub);
             }
 
             std::ostringstream str;
@@ -736,7 +748,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 if(!parentItem->object()->canDragObjects() || 
                    !parentItem->object()->canDragObject(item->object()->getObject()))
                 {
-                    FC_ERR("'" << item->object()->getObject()->getNameInDocument() << 
+                    TREE_ERR("'" << item->object()->getObject()->getNameInDocument() << 
                            "' cannot be dragged out of '" << 
                            parentItem->object()->getObject()->getNameInDocument() << "'");
                     return;
@@ -757,7 +769,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     if(subObj) 
                         obj = subObj;
                     else
-                        FC_WARN("invalid trailing subname " << item->mySub);
+                        TREE_WARN("invalid trailing subname " << item->mySub);
                 }
                 std::ostringstream str;
                 auto owner = item->getRelativeParent(str,targetItemObj);
@@ -797,7 +809,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if(!parentItem->object()->canDragObjects() || 
                !parentItem->object()->canDragObject(item->object()->getObject()))
             {
-                FC_ERR("'" << item->object()->getObject()->getNameInDocument() << 
+                TREE_ERR("'" << item->object()->getObject()->getNameInDocument() << 
                        "' cannot be dragged out of '" << 
                        parentItem->object()->getObject()->getNameInDocument() << "'");
                 return;
@@ -1087,7 +1099,7 @@ void TreeWidget::onItemSelectionChanged ()
 
 void TreeWidget::syncSelection(const char *pDocName) {
     if(this->isConnectionBlocked()) {
-        FC_TRACE("connection blocked");
+        TREE_TRACE("connection blocked");
         return;
     }
     if (!pDocName || *pDocName==0) {
@@ -1138,7 +1150,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
     setWindowTitle(tr("Tree view"));
-    this->treeWidget = new TreeWidget(this);
+    this->treeWidget = new TreeWidget("TreeView",this);
     this->treeWidget->setRootIsDecorated(false);
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
@@ -1159,6 +1171,7 @@ typedef std::set<DocumentObjectItem*> DocumentObjectItems;
 
 class Gui::DocumentObjectData {
 public:
+    const char *treeName;
     DocumentItem &docItem;
     DocumentObjectItems items;
     ViewProviderDocumentObject *viewObject;
@@ -1176,6 +1189,7 @@ public:
     DocumentObjectData(DocumentItem &docItem, ViewProviderDocumentObject* vpd)
         : docItem(docItem),viewObject(vpd),rootItem(0)
     {
+        treeName = docItem.getTreeName();
         // Setup connections
         connectIcon = viewObject->signalChangeIcon.connect(
                 boost::bind(&DocumentObjectData::slotChangeIcon, this));
@@ -1216,25 +1230,25 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *obj, bool recurse) {
 
     auto linked = obj->getLinkedObject(recurse);
     if(!linked || linked == obj) {
-        FC_ERR("invalid linked object");
+        TREE_ERR("invalid linked object");
         return;
     }
 
     auto linkedVp = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(linked));
     if(!linkedVp) {
-        FC_ERR("invalid linked view provider");
+        TREE_ERR("invalid linked view provider");
         return;
     }
     auto linkedDoc = getDocumentItem(linkedVp->getDocument());
     if(!linkedDoc) {
-        FC_ERR("cannot find document of linked object");
+        TREE_ERR("cannot find document of linked object");
         return;
     }
 
     auto it = linkedDoc->ObjectMap.find(linked);
     if(it == linkedDoc->ObjectMap.end()) {
-        FC_ERR("cannot find tree item of linked object");
+        TREE_ERR("cannot find tree item of linked object");
         return;
     }
     auto linkedItem = it->second->rootItem;
@@ -1271,6 +1285,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
+
+    treeName = getTree()->getTreeName();
 }
 
 DocumentItem::~DocumentItem()
@@ -1287,8 +1303,12 @@ DocumentItem::~DocumentItem()
     connectScrObject.disconnect();
 }
 
-TreeWidget *DocumentItem::getTree() {
+TreeWidget *DocumentItem::getTree() const{
     return static_cast<TreeWidget*>(treeWidget());
+}
+
+const char *DocumentItem::getTreeName() const {
+    return treeName;
 }
 
 #define FOREACH_ITEM(_item, _obj) \
@@ -1848,7 +1868,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         auto parentItem = item->getParentItem();
         assert(parentItem);
         if(selected && parentItem->selected) {
-            FC_TRACE("force unselect parent");
+            TREE_TRACE("force unselect parent");
             // When a group item is selected, all its children objects are
             // highlighted in the 3D view. So, when an item of some group is
             // newly selected, we must force unselect its parent in order to
@@ -1863,7 +1883,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         // Same reasoning as above. When a group item is newly selected, We
         // choose to force unselect all its children to void messing up the
         // selection highlight 
-        FC_TRACE("force unselect all children");
+        TREE_TRACE("force unselect all children");
         updateSelection(item,true);
     }
 
@@ -1887,7 +1907,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         return;
     }
 
-    FC_TRACE("find next " << subname);
+    TREE_TRACE("find next " << subname);
 
     // try to find the next level object name
     const char *nextsub = 0;
@@ -1903,7 +1923,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     std::string name(subname,nextsub-subname);
     auto subObj = item->object()->getObject()->getSubObject(name.c_str());
     if(!subObj) {
-        FC_WARN("sub object not found " << item->getName() << '.' << name.c_str());
+        TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
         item->selected += 2;
         item->mySub = name;
         return;
@@ -1930,7 +1950,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
 
     // The sub object is not found. Maybe it is a non-object sub-element.
     // Select the current object instead.
-    FC_TRACE("element " << subname << " not found");
+    TREE_TRACE("element " << subname << " not found");
     item->selected+=2;
     item->mySub = subname;
 }
@@ -1940,7 +1960,7 @@ void DocumentItem::selectItems(bool sync) {
     for(const auto &sel : sels) {
         auto it = ObjectMap.find(sel.pObject);
         if(it == ObjectMap.end()) continue;
-        FC_TRACE("find select " << sel.FeatName);
+        TREE_TRACE("find select " << sel.FeatName);
         for(auto item : it->second->items) {
             // If the parent is a group, then we have full quanlified
             // selection, which means this item can never be selected directly
@@ -2098,6 +2118,10 @@ DocumentObjectItem::~DocumentObjectItem()
 
     if(myData->rootItem == this)
         myData->rootItem = 0;
+}
+
+const char *DocumentObjectItem::getTreeName() const {
+    return myData->treeName;
 }
 
 Gui::ViewProviderDocumentObject* DocumentObjectItem::object() const

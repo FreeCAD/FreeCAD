@@ -66,7 +66,7 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
     Q_OBJECT
 
 public:
-    TreeWidget(QWidget* parent=0);
+    TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
 
     void scrollItemToTop(Gui::Document*);
@@ -87,6 +87,8 @@ public:
 
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView();
+
+    const char *getTreeName() const;
 
 protected:
     /// Observer message from the Selection
@@ -167,6 +169,8 @@ private:
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;
 
+    std::string myName; // for debugging purpose
+
     friend class DocumentItem;
 };
 
@@ -202,7 +206,8 @@ public:
     bool showHidden() const;
     void setShowHidden(bool show);
 
-    TreeWidget *getTree();
+    TreeWidget *getTree() const;
+    const char *getTreeName() const;
 
 protected:
     /** Adds a view provider to the document item.
@@ -232,6 +237,7 @@ protected:
     void populateParents(const ViewProvider *vp, ParentMap &);
 
 private:
+    const char *treeName; // for debugging purpose
     const Gui::Document* pDocument;
     std::map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
 
@@ -293,6 +299,7 @@ public:
     ViewProviderDocumentObject *getSubName(std::ostringstream &str) const;
 
     const char *getName() const;
+    const char *getTreeName() const;
 
     bool isLink() const;
     bool isLinkFinal() const;
