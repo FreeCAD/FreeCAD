@@ -1960,8 +1960,12 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         if not ob.Shape.isNull():
                             writeMesh(ob,dxf)
                     elif gui and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
+#                        direction = FreeCADGui.ActiveDocument.ActiveView.\
+#                                getViewDirection().multiply(-1)
+                        # workaround for getViewDirection rounding errors
+                        lookat = FreeCAD.Vector(0, 0, -1)
                         direction = FreeCADGui.ActiveDocument.ActiveView.\
-                                getViewDirection().multiply(-1)
+                                getCameraOrientation().multVec(lookat).multiply(-1)
                         sh = projectShape(ob.Shape,direction,tess)
                     else:
                         if ob.Shape.Volume > 0:
