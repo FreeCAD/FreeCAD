@@ -1385,6 +1385,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         parent->addChild(item);
     else
         parent->insertChild(index,item);
+    assert(item->parent() == parent);
     item->setIcon(0, obj.getIcon());
     item->setText(0, QString::fromUtf8(displayName.c_str()));
     item->setHidden(!obj.showInTree() && !showHidden());
@@ -1507,12 +1508,13 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
     int i=-1;
     // iterate through the claimed children, and try to synchronize them with the 
     // children tree item with the same order of apperance. 
+    int childCount = item->childCount();
     for(auto child : item->myData->children) {
 
         ++i; // the current index of the claimed child
 
         bool found = false;
-        for (int j=0,count=item->childCount();j<count;++j) {
+        for (int j=i;j<childCount;++j) {
             QTreeWidgetItem *ci = item->child(j);
             if (ci->type() != TreeWidget::ObjectType)
                 continue;
@@ -1525,9 +1527,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             if (j!=i) { // fix index if it is changed
                 item->removeChild(ci);
                 item->insertChild(i,ci);
-                if (!ci->parent()) {
-                    delete ci;
-                }
+                assert(ci->parent()==item);
             }
 
             // Check if the item just changed its policy of whether to remove
@@ -1563,52 +1563,27 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         }else {
             DocumentObjectItem *childItem = it->second->rootItem;
             if(item->isChildOfItem(childItem)) {
-                Base::Console().Error("Gui::DocumentItem::populateItem(): Cyclic dependency in %s and %s\n",
-                        item->object()->getObject()->Label.getValue(),
-                        childItem->object()->getObject()->Label.getValue());
+                TREE_ERR("Cyclic dependency in " 
+                    << item->object()->getObject()->getNameInDocument()
+                    << '.' << childItem->object()->getObject()->getNameInDocument());
                 --i;
                 continue;
             }
             it->second->rootItem = 0;
             this->removeChild(childItem);
             item->insertChild(i,childItem);
-            if (!childItem->parent()) {
-                delete childItem;
-            }
+            assert(childItem->parent()==item);
         }
     }
 
-    App::GeoFeatureGroupExtension* grp = nullptr;
-    if (item->object()->getObject()->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
-        grp = item->object()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-
-    // When removing a child element then it must either be moved to a new
-    // parent or deleted. Just removing and leaving breaks the Qt internal
-    // notification (See #0003201).
     for (++i;item->childCount()>i;) {
         QTreeWidgetItem *ci = item->child(i);
-        item->removeChild(ci);
         if (ci->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
-            // Add the child item back to document root if it is the only
-            // instance.  Now, because of the lazy loading strategy, this may
-            // not truly be the last instance of the object. It may belong to
-            // other parents not expanded yet. We don't want to traverse the
-            // whole tree to confirm that. Just let it be. If the other
-            // parent(s) later expanded, this child item will be moved from
-            // root to its parent.
-            if (childItem->myData->items.size()==1) {
-                // We only make a difference for geofeaturegroups, 
-                // as otherwise it comes to confusing behavior to the user when things 
-                // get claimed within the group (e.g. pad/sketch, or group)
-                if (!grp || !grp->hasObject(childItem->object()->getObject(), true)) {
-                    this->addChild(childItem);
-                    continue;
-                }
-            }
             if(childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
                 this->addChild(childItem);
+                assert(childItem->parent()==this);
                 childItem->myData->rootItem = childItem;
                 continue;
             }
@@ -1732,8 +1707,11 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
     FOREACH_ITEM(item,obj)
-        if (!item->parent() || // has no parent (see #0003025)
-            !item->parent()->isExpanded()) continue;
+        // All document object items must always have a parent, either another
+        // object item or document item. If not, then there is a bug somewhere
+        // else.
+        assert(item->parent());
+        if (!item->parent()->isExpanded()) continue;
         switch (mode) {
         case Gui::Expand:
             item->setExpanded(true);
@@ -2100,16 +2078,22 @@ void DocumentItem::updateSelection() {
 
 // ----------------------------------------------------------------------------
 
+static int countItems;
+
 DocumentObjectItem::DocumentObjectItem(DocumentObjectDataPtr data)
     : QTreeWidgetItem(TreeWidget::ObjectType)
     , myData(data), previousStatus(-1),selected(0),populated(false)
 {
     setFlags(flags()|Qt::ItemIsEditable);
     myData->items.insert(this);
+    ++countItems;
+    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getNameInDocument());
 }
 
 DocumentObjectItem::~DocumentObjectItem()
 {
+    --countItems;
+    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getNameInDocument());
     auto it = myData->items.find(this);
     if(it == myData->items.end())
         assert(0);
