@@ -84,9 +84,9 @@ void Workbench::activated()
                 foregroundColor->setCurrentColor(palette.color(QPalette::Foreground));
                 QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
             }
-            foregroundColor->setToolTip(QObject::tr("Set cell/s foreground color"));
-            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell/s foreground color"));
-            foregroundColor->setStatusTip(QObject::tr("Set cell/s foreground color"));
+            foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));
+            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) foreground color"));
+            foregroundColor->setStatusTip(QObject::tr("Set cell(s) foreground color"));
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
@@ -99,9 +99,9 @@ void Workbench::activated()
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
                 QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
             }
-            backgroundColor->setToolTip(QObject::tr("Set cell/s background color"));
-            backgroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell/s background color"));
-            backgroundColor->setStatusTip(QObject::tr("Set cell/s background color"));
+            backgroundColor->setToolTip(QObject::tr("Set cell(s) background color"));
+            backgroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) background color"));
+            backgroundColor->setStatusTip(QObject::tr("Set cell(s) background color"));
             bar->addWidget(backgroundColor);
 
             initialized = false;
