@@ -1185,7 +1185,7 @@ class Snapper:
         self.gridbutton = QtGui.QAction(None)
         self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
         self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
-        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
+        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
         self.gridbutton.setObjectName("GridButton")
         self.gridbutton.setWhatsThis("Draft_ToggleGrid")
         QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
