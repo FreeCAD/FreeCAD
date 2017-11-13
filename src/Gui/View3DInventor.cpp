@@ -664,7 +664,7 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("ViewBottom",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(-1, 0, 0, 0));
+        _viewer->setCameraOrientation(SbRotation(0, -1, 0, 0));
         _viewer->viewAll();
         return true;
     }

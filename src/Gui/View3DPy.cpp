@@ -325,7 +325,7 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(-1, 0, 0, 0));
+        _view->getViewer()->setCameraOrientation(SbRotation(0, -1, 0, 0));
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());

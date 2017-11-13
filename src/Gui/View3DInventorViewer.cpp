@@ -1766,10 +1766,8 @@ SbVec3f View3DInventorViewer::getViewDirection() const
 
     if (!cam) return SbVec3f(0,0,-1);  // this is the default
 
-    SbRotation camrot = cam->orientation.getValue();
-    SbVec3f lookat(0, 0, -1); // init to default view direction vector
-    camrot.multVec(lookat, lookat);
-    return lookat;
+    SbVec3f projDir = cam->getViewVolume().getProjectionDirection();
+    return projDir;
 }
 
 void View3DInventorViewer::setViewDirection(SbVec3f dir)
