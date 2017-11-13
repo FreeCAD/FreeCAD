@@ -3705,7 +3705,7 @@ class Drawing(Modifier):
         return {'Pixmap'  : 'Draft_Drawing',
                 'Accel' : "D, D",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Drawing"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet")}
 
     def Activated(self):
         Modifier.Activated(self,"Drawing")
@@ -5206,7 +5206,7 @@ class SetWorkingPlaneProxy():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_SelectPlane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create WP Proxy"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create Working Plane Proxy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Creates a proxy object from the current working plane")}
 
     def IsActive(self):
