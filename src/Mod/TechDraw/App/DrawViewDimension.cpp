@@ -209,12 +209,13 @@ std::string  DrawViewDimension::getFormatedValue()
     QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
                                                                       //but won't give more than Global_Decimals precision
                                                                       //really should be able to ask units for value in appropriate UoM!!
-    QRegExp rxUnits(QString::fromUtf8("\\D*$"));                      //any non digits at end of string
+    QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
 
     QString userVal = userStr;
     userVal.remove(rxUnits);                                           //getUserString(defaultDecimals) without units
-    double userValNum = userVal.toDouble();
 
+    QLocale loc;
+    double userValNum = loc.toDouble(userVal);
 
     QString userUnits;
     int pos = 0;
@@ -227,7 +228,7 @@ std::string  DrawViewDimension::getFormatedValue()
     //find the %x.y tag in FormatSpec
     QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
     QString match;
-    QString specVal = Base::Tools::fromStdString("%.2f");                    //sensible default
+    QString specVal = userVal;                                             //sensible default
     pos = 0;
     if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
         match = rxFormat.cap(0);                                          //entire capture of rx
@@ -256,6 +257,11 @@ std::string  DrawViewDimension::getFormatedValue()
 
     repl = Base::Tools::fromStdString(getPrefix()) + repl;
     specStr.replace(match,repl);
+    //this next bit is so inelegant!!!
+    QChar dp = QChar::fromLatin1('.');
+    if (loc.decimalPoint() != dp) {
+        specStr.replace(dp,loc.decimalPoint());
+    }
 
     return specStr.toUtf8().constData();
 }
