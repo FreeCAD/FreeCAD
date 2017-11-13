@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="labelSlow">
        <property name="text">
-        <string>Global Sensitivity:  </string>
+        <string>Global Sensitivity:</string>
        </property>
       </widget>
      </item>
