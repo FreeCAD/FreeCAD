@@ -163,10 +163,13 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyPlacementList","PlacementList","Arch",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
         obj.addProperty("App::PropertyLink","Host","Arch",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"))
         obj.addProperty("App::PropertyString", "CustomSpacing", "Arch", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"))
-        obj.addProperty("App::PropertyDistance", "Length", "Arch", QT_TRANSLATE_NOOP("App::Property","Total length of a rebar"))
+        obj.addProperty("App::PropertyDistance", "Length", "Arch", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"))
+        obj.addProperty("App::PropertyDistance", "TotalLength", "Arch", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
         self.Type = "Rebar"
         obj.setEditorMode("Spacing", 1)
         obj.setEditorMode("Length", 1)
+        obj.setEditorMode("TotalLength", 1)
+
 
     def getBaseAndAxis(self,wire):
         "returns a base point and orientation axis from the base wire"
@@ -386,6 +389,7 @@ class _Rebar(ArchComponent.Component):
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
+        obj.TotalLength = obj.Length * len(obj.PlacementList)
 
 class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
     "A View Provider for the Rebar object"
