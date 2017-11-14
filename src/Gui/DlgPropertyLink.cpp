@@ -47,8 +47,20 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
   : QDialog(parent, fl), link(list), ui(new Ui_DlgPropertyLink)
 {
 #ifdef FC_DEBUG
-    assert(list.size() >= 5);
+    assert(list.size() >= 4);
 #endif
+
+    // populate inList to filter out any objects that contains the owner object
+    // of the editing link property
+    auto doc = App::GetApplication().getDocument(qPrintable(link[0]));
+    if(doc) {
+        auto obj = doc->getObject(qPrintable(link[3]));
+        if(obj && obj->getNameInDocument()) {
+            inList = obj->getInListEx(true);
+            inList.insert(obj);
+        }
+    }
+
     ui->setupUi(this);
     if(!xlink) 
         ui->comboBox->hide();
@@ -79,7 +91,6 @@ DlgPropertyLink::~DlgPropertyLink()
 void DlgPropertyLink::setSelectionMode(QAbstractItemView::SelectionMode mode)
 {
     ui->treeWidget->setSelectionMode(mode);
-    ui->treeWidget->clear();
     findObjects(ui->checkObjectType->isChecked());
 }
 
@@ -98,7 +109,7 @@ void DlgPropertyLink::accept()
 
 static QStringList getLinkFromItem(const QStringList &link, QTreeWidgetItem *selItem) {
     QStringList list = link;
-    if(link.size()>=6 && selItem->parent()) {
+    if(link.size()>=5) {
         QString subname;
         auto parent = selItem;
         for(auto item=parent;;item=parent) {
@@ -107,15 +118,20 @@ static QStringList getLinkFromItem(const QStringList &link, QTreeWidgetItem *sel
                 list[1] = item->data(0,Qt::UserRole).toString();
                 break;
             }
-            subname = QString::fromLatin1("%1%2.").
-                arg(subname).arg(item->data(0,Qt::UserRole).toString());
+            subname = QString::fromLatin1("%1.%2").
+                arg(item->data(0,Qt::UserRole).toString()).arg(subname);
         }
-        list[5] = subname;
+        list[4] = subname;
         if(subname.size())
             list[2] = QString::fromLatin1("%1 (%2.%3)").
                 arg(selItem->text(0)).arg(list[1]).arg(subname);
         else
             list[2] = selItem->text(0);
+        QString docName(selItem->data(0, Qt::UserRole+1).toString());
+        if(list.size()>5)
+            list[5] = docName;
+        else
+            list << docName;
     }else{
         list[1] = selItem->data(0,Qt::UserRole).toString();
         list[2] = selItem->text(0);
@@ -151,45 +167,38 @@ QVariantList DlgPropertyLink::propertyLinkList() const
 
 void DlgPropertyLink::findObjects(bool on)
 {
-    QString docName = link[0]; // document name
-    QString objName = link[1]; // internal object name
-    QString parDocName = link[3];
-    QString parName = link[4]; // internal object name of the parent of the link property
+    ui->treeWidget->clear();
+
+    QString docName = link[0]; // document name of the owner object of this editing property
+    QString objName = link[1]; // linked object name
 
     bool isSingleSelection = (ui->treeWidget->selectionMode() == QAbstractItemView::SingleSelection);
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
     if (doc) {
         Base::Type baseType = App::DocumentObject::getClassTypeId();
         if (!on) {
-            App::DocumentObject* obj = doc->getObject((const char*)objName.toLatin1());
-            if (obj && inList.find(obj)==inList.end()) {
-                Base::Type objType = obj->getTypeId();
-                // get only geometric types
-                if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId()))
-                    baseType = App::GeoFeature::getClassTypeId();
+            App::Document *linkedDoc = doc;
+            if (link.size()>=6) 
+                linkedDoc = App::GetApplication().getDocument(qPrintable(link[5]));
+            if(linkedDoc) {    
+                App::DocumentObject* obj = linkedDoc->getObject((const char*)objName.toLatin1());
+                if (obj && inList.find(obj)==inList.end()) {
+                    Base::Type objType = obj->getTypeId();
+                    // get only geometric types
+                    if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId()))
+                        baseType = App::GeoFeature::getClassTypeId();
 
-                // get the direct base class of App::DocumentObject which 'obj' is derived from
-                while (!objType.isBad()) {
-                    std::string name = objType.getName();
-                    Base::Type parType = objType.getParent();
-                    if (parType == baseType) {
-                        baseType = objType;
-                        break;
+                    // get the direct base class of App::DocumentObject which 'obj' is derived from
+                    while (!objType.isBad()) {
+                        std::string name = objType.getName();
+                        Base::Type parType = objType.getParent();
+                        if (parType == baseType) {
+                            baseType = objType;
+                            break;
+                        }
+                        objType = parType;
                     }
-                    objType = parType;
                 }
-            }
-        }
-
-        inList.clear();
-        auto parDoc = App::GetApplication().getDocument(qPrintable(parDocName));
-        if(parDoc) {
-            auto obj = parDoc->getObject(qPrintable(parName));
-            if(obj) {
-                // for multi-selection we need all objects
-                if (isSingleSelection)
-                    inList = obj->getInListEx(true);
-                inList.insert(obj);
             }
         }
 
@@ -207,12 +216,15 @@ void DlgPropertyLink::findObjects(bool on)
 }
 
 void DlgPropertyLink::createItem(App::DocumentObject *obj, QTreeWidgetItem *parent) {
-    if(!obj || !obj->getNameInDocument() || inList.find(obj)!=inList.end())
+    if(!obj || !obj->getNameInDocument())
+        return;
+
+    if(inList.find(obj)!=inList.end())
         return;
 
     auto vp = Gui::Application::Instance->getViewProvider(obj);
-    if(!vp) return;
-
+    if(!vp) 
+        return;
     QString searchText = ui->searchBox->text();
     if (!searchText.isEmpty()) { 
         QString label = QString::fromUtf8((obj)->Label.getValue());
@@ -228,14 +240,14 @@ void DlgPropertyLink::createItem(App::DocumentObject *obj, QTreeWidgetItem *pare
     item->setText(0, QString::fromUtf8((obj)->Label.getValue()));
     item->setData(0, Qt::UserRole, QByteArray(obj->getNameInDocument()));
     item->setData(0, Qt::UserRole+1, QByteArray(obj->getDocument()->getName()));
-    if(link.size()>=6) {
+    if(link.size()>=5) {
         item->setChildIndicatorPolicy(obj->hasChildElement()||vp->getChildRoot()?
                 QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
     }
 }
 
 void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
-    if(link.size()<6 || item->childCount()) 
+    if(link.size()<5 || item->childCount()) 
         return;
 
     std::string name(qPrintable(item->data(0, Qt::UserRole).toString()));
@@ -253,7 +265,6 @@ void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
 
 void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 {
-    ui->treeWidget->clear();
     findObjects(on);
 }
 

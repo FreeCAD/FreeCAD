@@ -366,10 +366,11 @@ void PropertyItem::setPropertyName(const QString& name)
     displayText = str;
 }
 
-void PropertyItem::setPropertyValue(const QString& value, bool transaction)
+void PropertyItem::setPropertyValue(const QString& value, const char *transaction)
 {
     std::set<App::Document*> docs;
 
+    bool done = false;
     for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
         it != propertyItems.end(); ++it) {
         App::PropertyContainer* parent = (*it)->getContainer();
@@ -380,17 +381,18 @@ void PropertyItem::setPropertyValue(const QString& value, bool transaction)
                     auto obj = dynamic_cast<App::DocumentObject*>(parent);
                     if(obj) {
                         if(docs.insert(obj->getDocument()).second)
-                            obj->getDocument()->openTransaction("Set property");
+                            obj->getDocument()->openTransaction(transaction);
                     }else{
                         auto vp = dynamic_cast<ViewProviderDocumentObject*>(parent);
                         if(vp) {
                             auto doc = vp->getDocument()->getDocument();
                             if(docs.insert(doc).second)
-                                doc->openTransaction("Set property");
+                                doc->openTransaction(transaction);
                         }
                     }
                 }
                 Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
+                done = true;
             }
             catch (Base::PyException &e) {
                 e.ReportException();
@@ -405,8 +407,14 @@ void PropertyItem::setPropertyValue(const QString& value, bool transaction)
         }
     }
 
-    for(auto doc : docs) 
-        doc->commitTransaction();
+    if(transaction) {
+        for(auto doc : docs)  {
+            if(done)
+                doc->commitTransaction();
+            else
+                doc->abortTransaction();
+        }
+    }
 }
 
 QVariant PropertyItem::data(int column, int role) const
@@ -3498,7 +3506,18 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::PropertyContainer* c = prop_link->getContainer();
 
-    // the list has four elements: [document name, internal name, label, internal name of container]
+    // The list has four mandatory elements: 
+    //
+    //      document name of the container, 
+    //      internal name of the linked object, 
+    //      label, 
+    //      internal name of container,
+    //
+    // and two additional elements if it is a PropertyXLink
+    //
+    //      PropertyXLink and the subname inside is not empty
+    //      (optional) document name of linked object if it is different from the container
+    //
     App::DocumentObject* obj = prop_link->getValue();
     QStringList list;
     if (obj) {
@@ -3538,16 +3557,17 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     // the name of this object
     if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
-        list << QString::fromLatin1(obj->getDocument()->getName());
         list << QString::fromLatin1(obj->getNameInDocument());
     }
-    else {
+    else 
         list << QString::fromLatin1("");
-        list << QString::fromLatin1("");
-    }
 
-    if(xlink)
+    if(xlink) {
         list << QString::fromUtf8(xlink->getSubName());
+        auto cobj = dynamic_cast<App::DocumentObject*>(c);
+        if(cobj && obj && cobj->getDocument()!=obj->getDocument())
+            list << QString::fromLatin1(obj->getDocument()->getName());
+    }
 
     return QVariant(list);
 }
@@ -3563,12 +3583,17 @@ void PropertyLinkItem::setValue(const QVariant& value)
         QString data;
         if ( o.isEmpty() )
             data = QString::fromLatin1("None");
-        else if(isXLink && items.size()>=6) {
+        else if(isXLink && items.size()>5) {
+            QString doc;
+            if(items.size()>=6)
+                doc = items[5];
+            else
+                doc = d;
             data = QString::fromLatin1("(App.getDocument('%1').getObject('%2'),'%3')").
-                    arg(d).arg(o).arg(items[5]);
+                    arg(doc).arg(o).arg(items[4]);
         }else
             data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
-        setPropertyValue(data,true);
+        setPropertyValue(data,"Set PropertyLink");
     }
 }
 
@@ -3751,7 +3776,8 @@ void PropertyLinkListItem::setValue(const QVariant& value)
             data << QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
     }
 
-    setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))));
+    setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))),
+            "Set PropertyLinkList");
 }
 
 QWidget* PropertyLinkListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
