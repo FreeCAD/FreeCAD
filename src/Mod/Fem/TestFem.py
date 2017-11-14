@@ -982,7 +982,7 @@ def fcc_print(message):
 def get_defmake_count():
     '''
     count the def make in module ObjectsFem
-    could also be donn in bash with
+    could also be done in bash with
     grep -c  "def make" src/Mod/Fem/ObjectsFem.py
     '''
     name_modfile = home_path + 'Mod/Fem/ObjectsFem.py'
