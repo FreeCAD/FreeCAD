@@ -1172,16 +1172,17 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
             edges.extend(s.Edges)
         if len(edges) > (100):
             FreeCAD.Console.PrintMessage(str(len(edges))+" edges to join\n")
-            from PySide import QtGui
-            d = QtGui.QMessageBox()
-            d.setText("Warning: High number of entities to join (>100)")
-            d.setInformativeText("This might take a long time or even freeze your computer. Are you sure? You can also disable the \"join geometry\" setting in DXF import preferences")
-            d.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
-            d.setDefaultButton(QtGui.QMessageBox.Cancel)
-            res = d.exec_()
-            if res == QtGui.QMessageBox.Cancel:
-                FreeCAD.Console.PrintMessage("Aborted\n")
-                return
+            if FreeCAD.GuiUp:
+                from PySide import QtGui
+                d = QtGui.QMessageBox()
+                d.setText("Warning: High number of entities to join (>100)")
+                d.setInformativeText("This might take a long time or even freeze your computer. Are you sure? You can also disable the \"join geometry\" setting in DXF import preferences")
+                d.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+                d.setDefaultButton(QtGui.QMessageBox.Cancel)
+                res = d.exec_()
+                if res == QtGui.QMessageBox.Cancel:
+                    FreeCAD.Console.PrintMessage("Aborted\n")
+                    return
         shapes = DraftGeomUtils.findWires(edges)
         for s in shapes:
             newob = addObject(s)
