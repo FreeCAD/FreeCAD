@@ -473,10 +473,10 @@ namespace KDTree
         }
 
       const_iterator
-      find_within_range_iterative(const_reference __a, const_reference __b)
-	{
-	  return const_iterator(begin());
-	}
+        find_within_range_iterative(const_reference /*__a*/, const_reference /*__b*/)
+        {
+          return const_iterator(begin());
+        }
 
       template <typename SearchVal, typename _OutputIterator>
         _OutputIterator
