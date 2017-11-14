@@ -1,0 +1,145 @@
+/** \file
+ * Provides a Python interface for the libkdtree++.
+ *
+ * \author Willi Richert <w.richert@gmx.net>
+ *
+ *
+ * This defines a proxy to a (int, int) -> long long KD-Tree. The long
+ * long is needed to save a reference to Python's object id(). Thereby,
+ * you can associate Python objects with 2D integer points.
+ * 
+ * If you want to customize it you can adapt the following: 
+ * 
+ *  * Dimension of the KD-Tree point vector.
+ *    * DIM: number of dimensions.
+ *    * operator==() and operator<<(): adapt to the number of comparisons
+ *    * py-kdtree.i: Add or adapt all usages of PyArg_ParseTuple() to reflect the 
+ *      number of dimensions.
+ *    * adapt query_records in find_nearest() and count_within_range()
+ *  * Type of points.
+ *    * coord_t: If you want to have e.g. floats you have 
+ *      to adapt all usages of PyArg_ParseTuple(): Change "i" to "f" e.g.
+ *  * Type of associated data. 
+ *    * data_t: currently unsigned long long, which is "L" in py-kdtree.i
+ *    * PyArg_ParseTuple() has to be changed to reflect changes in data_t
+ * 
+ */
+
+
+#ifndef _PY_KDTREE_H_
+#define _PY_KDTREE_H_
+
+#include <kdtree++/kdtree.hpp>
+
+#include <iostream>
+#include <vector>
+#include <limits>
+
+template <size_t DIM, typename COORD_T, typename DATA_T > 
+struct record_t {
+  static const size_t dim = DIM;
+  typedef COORD_T coord_t;
+  typedef DATA_T data_t;
+
+  typedef coord_t point_t[dim];
+ 
+  inline coord_t operator[](size_t const N) const { return point[N]; }
+
+  point_t point;
+  data_t data;
+};
+
+typedef double RANGE_T;
+
+%%TMPL_HPP_DEFS%%
+
+////////////////////////////////////////////////////////////////////////////////
+// END OF TYPE SPECIFIC DEFINITIONS
+////////////////////////////////////////////////////////////////////////////////
+
+
+template <class RECORD_T>
+inline double tac(RECORD_T r, int k) { return r[k]; }
+
+template <size_t DIM, typename COORD_T, typename DATA_T > 
+class PyKDTree {
+public:
+
+  typedef record_t<DIM, COORD_T, DATA_T> RECORD_T;
+  typedef KDTree::KDTree<DIM, RECORD_T, std::pointer_to_binary_function<RECORD_T,int,double> > TREE_T;
+  TREE_T tree;
+
+  PyKDTree() : tree(std::ptr_fun(tac<RECORD_T>)) {  };
+
+  void add(RECORD_T T) { tree.insert(T); };
+
+  /**
+     Exact erase.
+  */
+  bool remove(RECORD_T T) { 
+    bool removed = false;
+
+    typename TREE_T::const_iterator it = tree.find_exact(T);
+    if (it!=tree.end()) {
+      tree.erase_exact(T); 
+      removed = true;
+    }
+    return removed;
+  };
+
+  int size(void) { return tree.size(); }
+
+  void optimize(void) { tree.optimise(); }
+  
+  RECORD_T* find_exact(RECORD_T T) {
+    RECORD_T* found = NULL;
+    typename TREE_T::const_iterator it = tree.find_exact(T);
+    if (it!=tree.end())
+      found = new RECORD_T(*it);
+
+    return found;
+  }
+
+  size_t count_within_range(typename RECORD_T::point_t T, RANGE_T range) {
+    RECORD_T query_record;
+    memcpy(query_record.point, T, sizeof(COORD_T)*DIM);
+
+    return tree.count_within_range(query_record, range);
+  }
+
+  std::vector<RECORD_T >* find_within_range(typename RECORD_T::point_t T, RANGE_T range) {
+    RECORD_T query_record;
+    memcpy(query_record.point, T, sizeof(COORD_T)*DIM);
+
+    std::vector<RECORD_T> *v = new std::vector<RECORD_T>;
+    tree.find_within_range(query_record, range, std::back_inserter(*v));
+    return v;
+  }
+
+  RECORD_T* find_nearest (typename RECORD_T::point_t T) {
+    RECORD_T* found = NULL;
+    RECORD_T query_record;
+    memcpy(query_record.point, T, sizeof(COORD_T)*DIM);
+
+    std::pair<typename TREE_T::const_iterator, typename TREE_T::distance_type> best = 
+      tree.find_nearest(query_record, std::numeric_limits<typename TREE_T::distance_type>::max());
+
+    if (best.first!=tree.end()) {
+      found = new RECORD_T(*best.first);
+    }
+    return found;
+  }
+
+  std::vector<RECORD_T >* get_all() {
+    std::vector<RECORD_T>* v = new std::vector<RECORD_T>;
+
+    for (typename TREE_T::const_iterator iter=tree.begin(); iter!=tree.end(); ++iter) {
+      v->push_back(*iter);
+    }
+
+    return v;
+  }
+
+  size_t __len__() { return tree.size(); }
+};
+#endif //_PY_KDTREE_H_

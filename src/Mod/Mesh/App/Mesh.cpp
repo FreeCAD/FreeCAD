@@ -51,6 +51,7 @@
 #include "Core/Triangulation.h"
 #include "Core/Trim.h"
 #include "Core/Visitor.h"
+#include "Core/Decimation.h"
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -938,6 +939,12 @@ void MeshObject::setPoint(unsigned long index, const Base::Vector3d& p)
 void MeshObject::smooth(int iterations, float d_max)
 {
     _kernel.Smooth(iterations, d_max);
+}
+
+void MeshObject::decimate(float fTolerance, float fReduction)
+{
+    MeshCore::MeshSimplify dm(this->_kernel);
+    dm.simplify(fTolerance, fReduction);
 }
 
 Base::Vector3d MeshObject::getPointNormal(unsigned long index) const
