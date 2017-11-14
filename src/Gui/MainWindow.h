@@ -151,7 +151,7 @@ public:
     void loadUrls(App::Document*, const QList<QUrl>&);
     //@}
 
-    void updateActions();
+    void updateActions(bool delay = false);
 
 public Q_SLOTS:
     /**

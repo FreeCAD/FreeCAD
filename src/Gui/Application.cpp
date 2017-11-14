@@ -787,6 +787,7 @@ void Application::slotDeletedObject(const ViewProvider& vp)
 void Application::slotChangedObject(const ViewProvider& vp, const App::Property& prop)
 {
     this->signalChangedObject(vp,prop);
+    getMainWindow()->updateActions(true);
 }
 
 void Application::slotRelabelObject(const ViewProvider& vp)

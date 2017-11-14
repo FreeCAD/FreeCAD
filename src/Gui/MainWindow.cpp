@@ -152,6 +152,7 @@ struct MainWindowP
     QString whatstext;
     Assistant* assistant;
     int currentStatusType = 100;
+    int actionUpdateDelay = 0;
 };
 
 class MDITabbar : public QTabBar
@@ -1059,18 +1060,24 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
-void MainWindow::updateActions() {
+void MainWindow::updateActions(bool delay) {
     if(this && !d->activityTimer->isActive())
         d->activityTimer->start(300);
+    else if(delay) {
+        if(!d->actionUpdateDelay)
+            d->actionUpdateDelay=1;
+    }else
+        d->actionUpdateDelay=-1;
 }
 
 void MainWindow::_updateActions()
 {
-    if (isVisible()) {
+    if (isVisible() && d->actionUpdateDelay<=0) {
         FC_LOG("update actions");
         Application::Instance->commandManager().testActive();
         d->activityTimer->stop();
     }
+    d->actionUpdateDelay = 0;
 }
 
 void MainWindow::switchToTopLevelMode()
