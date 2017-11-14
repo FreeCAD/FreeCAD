@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="_CommandFemAnalysis.py" line="43"/>
-        <source>Creates a analysis container with standard solver CalculiX</source>
+        <source>Creates an analysis container with standard solver CalculiX</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -114,7 +114,7 @@
     </message>
     <message>
         <location filename="_CommandFemMaterialSolid.py" line="44"/>
-        <source>Creates a FEM material for solid</source>
+        <source>Creates a FEM material for Solid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
