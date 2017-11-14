@@ -40,7 +40,7 @@ class _CommandFemAnalysis(FemCommands):
         self.resources = {'Pixmap': 'fem-analysis',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container"),
                           'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates a analysis container with standard solver CalculiX")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates an analysis container with standard solver CalculiX")}
         self.is_active = 'with_document'
 
     def Activated(self):
