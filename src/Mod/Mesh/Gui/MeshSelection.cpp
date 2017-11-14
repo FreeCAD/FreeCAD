@@ -200,7 +200,7 @@ void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
         freehand->setColor(1.0f, 0.0f, 0.0f);
         freehand->setLineWidth(3.0f);
         viewer->navigationStyle()->startSelection(freehand);
-        
+
         QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
         QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
         QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
