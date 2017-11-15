@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 class _FemMeshGmsh():
-    """A Fem::FemMeshObject python type, add GMSH specific properties
+    """A Fem::FemMeshObject python type, add Gmsh specific properties
     """
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
@@ -55,43 +55,43 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Part object to mesh")
         obj.Part = None
 
-        obj.addProperty("App::PropertyLength", "CharacteristicLengthMax", "FEM GMSH Mesh Params", "Max mesh element size (0.0 = infinity)")
+        obj.addProperty("App::PropertyLength", "CharacteristicLengthMax", "FEM Gmsh Mesh Params", "Max mesh element size (0.0 = infinity)")
         obj.CharacteristicLengthMax = 0.0  # will be 1e+22
 
-        obj.addProperty("App::PropertyLength", "CharacteristicLengthMin", "FEM GMSH Mesh Params", "Min mesh element size")
+        obj.addProperty("App::PropertyLength", "CharacteristicLengthMin", "FEM Gmsh Mesh Params", "Min mesh element size")
         obj.CharacteristicLengthMin = 0.0
 
-        obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM GMSH Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")
+        obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM Gmsh Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")
         obj.ElementDimension = _FemMeshGmsh.known_element_dimensions
         obj.ElementDimension = 'From Shape'  # according ShapeType of Part to mesh
 
-        obj.addProperty("App::PropertyEnumeration", "ElementOrder", "FEM GMSH Mesh Params", "Order of mesh elements")
+        obj.addProperty("App::PropertyEnumeration", "ElementOrder", "FEM Gmsh Mesh Params", "Order of mesh elements")
         obj.ElementOrder = _FemMeshGmsh.known_element_orders
         obj.ElementOrder = '2nd'
 
-        obj.addProperty("App::PropertyBool", "OptimizeStd", "FEM GMSH Mesh Params", "Optimize tetra elements")
+        obj.addProperty("App::PropertyBool", "OptimizeStd", "FEM Gmsh Mesh Params", "Optimize tetra elements")
         obj.OptimizeStd = True
 
-        obj.addProperty("App::PropertyBool", "OptimizeNetgen", "FEM GMSH Mesh Params", "Optimize tetra elements by use of Netgen")
+        obj.addProperty("App::PropertyBool", "OptimizeNetgen", "FEM Gmsh Mesh Params", "Optimize tetra elements by use of Netgen")
         obj.OptimizeNetgen = False
 
-        obj.addProperty("App::PropertyBool", "HighOrderOptimize", "FEM GMSH Mesh Params", "Optimize hight order meshes")
+        obj.addProperty("App::PropertyBool", "HighOrderOptimize", "FEM Gmsh Mesh Params", "Optimize hight order meshes")
         obj.HighOrderOptimize = False
 
-        obj.addProperty("App::PropertyBool", "RecombineAll", "FEM GMSH Mesh Params", "Apply recombination algorithm to all surfaces")
+        obj.addProperty("App::PropertyBool", "RecombineAll", "FEM Gmsh Mesh Params", "Apply recombination algorithm to all surfaces")
         obj.RecombineAll = False
 
-        obj.addProperty("App::PropertyBool", "CoherenceMesh", "FEM GMSH Mesh Params", "Removes all duplicate mesh vertices")
+        obj.addProperty("App::PropertyBool", "CoherenceMesh", "FEM Gmsh Mesh Params", "Removes all duplicate mesh vertices")
         obj.CoherenceMesh = True
 
-        obj.addProperty("App::PropertyFloat", "GeometryTolerance", "FEM GMSH Mesh Params", "Geometrical Tolerance (0.0 = GMSH std = 1e-08)")
+        obj.addProperty("App::PropertyFloat", "GeometryTolerance", "FEM Gmsh Mesh Params", "Geometrical Tolerance (0.0 = GMSH std = 1e-08)")
         obj.GeometryTolerance = 1e-06
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm2D", "FEM GMSH Mesh Params", "mesh algorithm 2D")
+        obj.addProperty("App::PropertyEnumeration", "Algorithm2D", "FEM Gmsh Mesh Params", "mesh algorithm 2D")
         obj.Algorithm2D = _FemMeshGmsh.known_mesh_algorithm_2D
         obj.Algorithm2D = 'Automatic'  # ?
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm3D", "FEM GMSH Mesh Params", "mesh algorithm 3D")
+        obj.addProperty("App::PropertyEnumeration", "Algorithm3D", "FEM Gmsh Mesh Params", "mesh algorithm 3D")
         obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
         obj.Algorithm3D = 'Automatic'  # ?
 
