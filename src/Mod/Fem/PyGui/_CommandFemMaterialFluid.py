@@ -39,9 +39,9 @@ class _CommandFemMaterialFluid(FemCommands):
     def __init__(self):
         super(_CommandFemMaterialFluid, self).__init__()
         self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for Fluid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for fluid"),
                           'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for Fluid")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for fluid")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
