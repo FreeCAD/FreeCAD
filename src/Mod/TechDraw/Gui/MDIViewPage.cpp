@@ -178,12 +178,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate ) {
-        //make sceneRect 1 pagesize bigger in every direction
-        double width  =  Rez::guiX(pageTemplate->Width.getValue());
-        double height =  Rez::guiX(pageTemplate->Height.getValue());
-        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
         attachTemplate(pageTemplate);
-        viewAll();
+        matchSceneRectToTemplate();
     }
 }
 
@@ -193,6 +189,18 @@ MDIViewPage::~MDIViewPage()
     connectDeletedObject.disconnect();
 }
 
+void MDIViewPage::matchSceneRectToTemplate(void)
+{
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    if( pageTemplate ) {
+        //make sceneRect 1 pagesize bigger in every direction
+        double width  =  Rez::guiX(pageTemplate->Width.getValue());
+        double height =  Rez::guiX(pageTemplate->Height.getValue());
+        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
+        viewAll();
+    }
+}
 
 void MDIViewPage::setDimensionGroups(void)
 {
