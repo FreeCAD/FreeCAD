@@ -61,6 +61,7 @@
 #include <Gui/ToolBarManager.h>
 
 #include "GeometryCreationMode.h"
+#include <stdlib.h>
 
 using namespace std;
 using namespace SketcherGui;
@@ -226,10 +227,14 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 /* Sketch commands =======================================================*/
 
+static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
+
+static char cursor_crosshair_color[11];
+
 /* XPM */
 static const char *cursor_createline[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -279,6 +284,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createline),7,7);
     }
 
@@ -436,7 +449,7 @@ bool CmdSketcherCreateLine::isActive(void)
 /* XPM */
 static const char *cursor_createbox[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -486,6 +499,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createbox),7,7);
     }
 
@@ -674,7 +695,7 @@ bool CmdSketcherCreateRectangle::isActive(void)
 /* XPM */
 static const char *cursor_createlineset[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -830,6 +851,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createlineset),7,7);
     }
 
@@ -1365,7 +1394,7 @@ bool CmdSketcherCreatePolyline::isActive(void)
 /* XPM */
 static const char *cursor_createarc[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+...........###...........",
@@ -1424,6 +1453,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createarc),7,7);
     }
 
@@ -1636,7 +1673,7 @@ bool CmdSketcherCreateArc::isActive(void)
 /* XPM */
 static const char *cursor_create3pointarc[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+...........###...........",
@@ -1694,6 +1731,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_create3pointarc),7,7);
     }
 
@@ -2047,7 +2092,7 @@ bool CmdSketcherCompCreateArc::isActive(void)
 /* XPM */
 static const char *cursor_createcircle[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -2097,6 +2142,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createcircle),7,7);
     }
 
@@ -2249,7 +2302,7 @@ bool CmdSketcherCreateCircle::isActive(void)
  */
 static const char *cursor_createellipse[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -2357,6 +2410,14 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createellipse),7,7);
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
@@ -3116,7 +3177,7 @@ bool CmdSketcherCreateEllipseBy3Points::isActive(void)
 /* XPM */
 static const char *cursor_createarcofellipse[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3173,6 +3234,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createarcofellipse),7,7);
     }
 
@@ -3488,7 +3557,7 @@ bool CmdSketcherCreateArcOfEllipse::isActive(void)
 /* XPM */
 static const char *cursor_createarcofhyperbola[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3546,6 +3615,14 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
     }
 
@@ -3870,7 +3947,7 @@ bool CmdSketcherCreateArcOfHyperbola::isActive(void)
 /* XPM */
 static const char *cursor_createarcofparabola[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3930,6 +4007,14 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createarcofparabola),7,7);
     }
 
@@ -4362,7 +4447,7 @@ bool CmdSketcherCompCreateConic::isActive(void)
 /* XPM */
 static const char *cursor_createbspline[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -4423,6 +4508,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createbspline),7,7);
     }
 
@@ -4941,7 +5034,7 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 /* XPM */
 static const char *cursor_create3pointcircle[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -4993,6 +5086,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_create3pointcircle),7,7);
     }
 
@@ -5293,7 +5394,7 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 /* XPM */
 static const char *cursor_createpoint[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -5337,6 +5438,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createpoint),7,7);
     }
 
@@ -5539,7 +5648,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_createfillet[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -5592,6 +5701,14 @@ public:
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createfillet),7,7);
     }
 
@@ -5819,7 +5936,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_trimming[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -5869,6 +5986,14 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_trimming),7,7);
     }
 
@@ -5986,7 +6111,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_extension[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -6049,6 +6174,14 @@ public:
         Gui::Selection().rmvSelectionGate();
         filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_extension),7,7);
     }
 
@@ -6360,7 +6493,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_external[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -6418,6 +6551,14 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_external),7,7);
     }
 
@@ -6580,7 +6721,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_carboncopy[]={
     "32 32 3 1",
-    "+ c white",
+    cursor_crosshair_color,
     "* c red",
     ". c None",
     "......+.........................",
@@ -6638,6 +6779,14 @@ static const char *cursor_carboncopy[]={
             Gui::Selection().clearSelection();
             Gui::Selection().rmvSelectionGate();
             Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+	    unsigned long color = 0xFFFFFF; // white
+	    ParameterGrp::handle hGrp =				\
+		App::GetApplication().GetParameterGroupByPath	\
+		("User parameter:BaseApp/Preferences/View");
+	    color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	    // from rgba to rgb
+	    color = (color >> 8) & 0xFFFFFF;
+	    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
             setCursor(QPixmap(cursor_carboncopy),7,7);
         }
         
@@ -6752,7 +6901,7 @@ static const char *cursor_carboncopy[]={
 /* XPM */
 static const char *cursor_creatslot[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -6807,6 +6956,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_creatslot),7,7);
     }
 
@@ -7031,7 +7188,7 @@ bool CmdSketcherCreateSlot::isActive(void)
 /* XPM */
 static const char *cursor_createregularpolygon[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -7089,6 +7246,14 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+	unsigned long color = 0xFFFFFF; // white
+	ParameterGrp::handle hGrp = \
+	    App::GetApplication().GetParameterGroupByPath\
+	    ("User parameter:BaseApp/Preferences/View");
+	color = hGrp->GetUnsigned("CreateCrosshairColor", color);
+	// from rgba to rgb
+	color = (color >> 8) & 0xFFFFFF;
+	sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
         setCursor(QPixmap(cursor_createregularpolygon),7,7);
     }
 
