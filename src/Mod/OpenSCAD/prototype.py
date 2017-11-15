@@ -235,8 +235,8 @@ class Node:
             obj.ViewObject.Transparency = transp
         elif namel == 'multmatrix':
             assert(len(self.children)>0)
-            m1l=[round(f,12) for f in sum(self.arguments,[])] #Thats the original matrix
-            m1=FreeCAD.Matrix(*tuple(m1l)) #Thats the original matrix
+            m1l=[round(f,12) for f in sum(self.arguments,[])] #That's the original matrix
+            m1=FreeCAD.Matrix(*tuple(m1l)) #That's the original matrix
             if isspecialorthogonalpython(fcsubmatrix(m1)): #a Placement can represent the transformation
                 if len(self.children) == 1:
                     obj = self.children[0].addtofreecad(doc,fcpar or True)

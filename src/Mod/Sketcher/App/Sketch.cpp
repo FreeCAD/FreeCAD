@@ -3376,8 +3376,8 @@ TopoShape Sketch::toShape(void) const
         result = *wires.begin();
     else if (wires.size() > 1) {
         // FIXME: The right way here would be to determine the outer and inner wires and
-        // generate a face with holes (inner wires have to be taged REVERSE or INNER).
-        // thats the only way to transport a somewhat more complex sketch...
+        // generate a face with holes (inner wires have to be tagged REVERSE or INNER).
+        // that's the only way to transport a somewhat more complex sketch...
         //result = *wires.begin();
 
         // I think a compound can be used as container because it is just a collection of

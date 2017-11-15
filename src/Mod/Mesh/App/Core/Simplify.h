@@ -181,7 +181,7 @@ void Simplify::simplify_mesh(int target_count, double tolerance_factor, double a
                     deleted0.resize(v0.tcount); // normals temporarily
                     deleted1.resize(v1.tcount); // normals temporarily
 
-                    // dont remove if flipped
+                    // don't remove if flipped
                     if (flipped(p,i0,i1,v0,v1,deleted0))
                         continue;
                     if (flipped(p,i1,i0,v1,v0,deleted1))

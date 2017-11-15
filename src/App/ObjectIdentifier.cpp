@@ -742,7 +742,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
             }
             else {
 
-                /* Document name set explicitely? */
+                /* Document name set explicitly? */
                 if (documentName.getString().size() > 0) {
                     /* Yes; then document object must follow */
                     results.resolvedDocumentObjectName = String(components[0].name, false, false);
