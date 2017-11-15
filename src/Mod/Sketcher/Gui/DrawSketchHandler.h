@@ -98,6 +98,7 @@ protected:
     void unsetCursor(void);
     void applyCursor(void);
     void applyCursor(QCursor &newCursor);
+    void setCrosshairColor();
 
     ViewProviderSketch *sketchgui;
     QCursor oldCursor;
