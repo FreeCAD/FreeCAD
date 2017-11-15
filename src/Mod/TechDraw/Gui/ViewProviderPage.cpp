@@ -153,6 +153,7 @@ void ViewProviderPage::updateData(const App::Property* prop)
     } else if (prop == &(getDrawPage()->Template)) {
        if(m_mdiView && 
           !getDrawPage()->isUnsetting()) {
+            m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
     }
