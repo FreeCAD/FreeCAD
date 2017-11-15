@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Tools for the work with GMSH mesher"
+__title__ = "Tools for the work with Gmsh mesher"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -116,7 +116,7 @@ class FemGmshTools():
             self.algorithm3D = '1'
 
     def create_mesh(self):
-        print("\nWe are going to start GMSH FEM mesh run!")
+        print("\nWe are going to start Gmsh FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
         print('  CharacteristicLengthMax: ' + str(self.clmax))
         print('  CharacteristicLengthMin: ' + str(self.clmin))
@@ -136,7 +136,7 @@ class FemGmshTools():
     def get_dimension(self):
         # Dimension
         # known_element_dimensions = ['From Shape', '1D', '2D', '3D']
-        # if not given, GMSH uses the highest available.
+        # if not given, Gmsh uses the highest available.
         # A use case for not "From Shape" would be a surface (2D) mesh of a solid
         if self.dimension == 'From Shape':
             shty = self.part_obj.Shape.ShapeType
@@ -185,7 +185,7 @@ class FemGmshTools():
         self.mesh_name = self.part_obj.Name + '_Mesh_TmpGmsh'
         self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + '.unv'
         print('  ' + self.temp_file_mesh)
-        # GMSH input file
+        # Gmsh input file
         self.temp_file_geo = tmpdir + path_sep + 'shape2mesh.geo'
         print('  ' + self.temp_file_geo)
 
@@ -202,7 +202,7 @@ class FemGmshTools():
                 if p1.wait() == 0:
                     gmsh_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
-                    error_message = "GMSH binary gmsh not found in standard system binary path. Please install gmsh or set path to binary in FEM preferences tab GMSH.\n"
+                    error_message = "Gmsh binary gmsh not found in standard system binary path. Please install Gmsh or set path to binary in FEM preferences tab Gmsh.\n"
                     FreeCAD.Console.PrintError(error_message)
                     raise Exception(error_message)
                 self.gmsh_bin = gmsh_path
@@ -269,7 +269,7 @@ class FemGmshTools():
             if self.mesh_obj.MeshRegionList:
                 if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
                     if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
-                        error_message = "  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. GMSH could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                        error_message = "  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. Gmsh could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
                         FreeCAD.Console.PrintError(error_message + "\n")
                         # TODO: no gui popup because FreeCAD will be in a endless print loop
                         #       as long as the pop up is on --> maybe find a better solution for
@@ -328,7 +328,7 @@ class FemGmshTools():
             print ('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-                err = "GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                err = "Gmsh could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
                 FreeCAD.Console.PrintError(err + "\n")
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -397,7 +397,7 @@ class FemGmshTools():
                 for k in item:
                     v = item[k]
                     if k in set(['EdgesList', 'FacesList']):
-                        # the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
+                        # the element name of FreeCAD which starts with 1 (example: 'Face1'), same as Gmsh
                         #el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
                         ele_nodes = (''.join((str(el[4:]) + ', ') for el in v)).rstrip(', ')
                         line = prefix + '.' + str(k) + ' = {' + ele_nodes + ' };\n'
@@ -421,7 +421,7 @@ class FemGmshTools():
 
     def write_geo(self):
         geo = open(self.temp_file_geo, "w")
-        geo.write("// geo file for meshing with GMSH meshing software created by FreeCAD\n")
+        geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
         geo.write("// open brep geometry\n")
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
@@ -429,7 +429,7 @@ class FemGmshTools():
         if self.group_elements:
             # print('  We are going to have to find elements to make mesh groups for.')
             geo.write("// group data\n")
-            # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
+            # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as Gmsh
             for group in sorted(self.group_elements.keys()):  # for unit test we need them to have a fixed order
                 gdata = self.group_elements[group]
                 # print(gdata)
@@ -458,7 +458,7 @@ class FemGmshTools():
             geo.write("\n")
         geo.write("// Characteristic Length\n")
         if self.ele_length_map:
-            # we use the index FreeCAD which starts with 0, we need to add 1 for the index in GMSH
+            # we use the index FreeCAD which starts with 0, we need to add 1 for the index in Gmsh
             geo.write("// Characteristic Length according CharacteristicLengthMap\n")
             for e in self.ele_length_map:
                 ele_nodes = (''.join((str(n + 1) + ', ') for n in self.ele_node_map[e])).rstrip(', ')
@@ -482,12 +482,12 @@ class FemGmshTools():
             geo.write("Mesh.RecombineAll = 1;\n")
             geo.write("\n")
         geo.write("// optimize the mesh\n")
-        # GMSH tetra optimizer
+        # Gmsh tetra optimizer
         if hasattr(self.mesh_obj, 'OptimizeStd') and self.mesh_obj.OptimizeStd is True:
             geo.write("Mesh.Optimize = 1;\n")
         else:
             geo.write("Mesh.Optimize = 0;\n")
-        # Netgen optimizer in GMSH
+        # Netgen optimizer in Gmsh
         if hasattr(self.mesh_obj, 'OptimizeNetgen') and self.mesh_obj.OptimizeNetgen is True:
             geo.write("Mesh.OptimizeNetgen = 1;\n")
         else:
@@ -532,15 +532,15 @@ class FemGmshTools():
         geo.write('Save "' + self.temp_file_mesh + '";\n')
         geo.write("\n\n")
         geo.write("//////////////////////////////////////////////////////////////////////\n")
-        geo.write("// GMSH documentation:\n")
+        geo.write("// Gmsh documentation:\n")
         geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
         geo.write("//\n")
-        geo.write("// We do not check if something went wrong, like negative jacobians etc. You can run GMSH manually yourself: \n")
+        geo.write("// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: \n")
         geo.write("//\n")
-        geo.write("// to see full GMSH log, run in bash:\n")
+        geo.write("// to see full Gmsh log, run in bash:\n")
         geo.write("// " + self.gmsh_bin + " - " + self.temp_file_geo + "\n")
         geo.write("//\n")
-        geo.write("// to run GMSH and keep file in GMSH GUI (with log), run in bash:\n")
+        geo.write("// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:\n")
         geo.write("// " + self.gmsh_bin + " " + self.temp_file_geo + "\n")
         geo.close
 

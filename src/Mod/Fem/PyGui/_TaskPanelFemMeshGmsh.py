@@ -129,7 +129,7 @@ class _TaskPanelFemMeshGmsh:
         if self.mesh_obj.MeshRegionList:
             if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
                 if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
-                    error_message = "The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. GMSH could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                    error_message = "The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. Gmsh could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
                     QtGui.QMessageBox.critical(None, "Shape to mesh is a BooleanFragmentsCompound and mesh regions are defined", error_message)
         self.Start = time.time()
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
@@ -139,7 +139,7 @@ class _TaskPanelFemMeshGmsh:
         self.get_active_analysis()
         import FemGmshTools
         gmsh_mesh = FemGmshTools.FemGmshTools(self.obj, self.analysis)
-        self.console_log("Start GMSH ...")
+        self.console_log("Start Gmsh ...")
         error = ''
         try:
             error = gmsh_mesh.create_mesh()
@@ -148,11 +148,11 @@ class _TaskPanelFemMeshGmsh:
             print("Unexpected error when creating mesh: ", sys.exc_info()[0])
         if error:
             print(error)
-            self.console_log('GMSH had warnings ...')
+            self.console_log('Gmsh had warnings ...')
             self.console_log(error, '#FF0000')
         else:
-            self.console_log('Clean run of GMSH')
-        self.console_log("GMSH done!")
+            self.console_log('Clean run of Gmsh')
+        self.console_log("Gmsh done!")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         self.Timer.stop()
         self.update()
