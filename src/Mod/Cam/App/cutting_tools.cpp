@@ -386,7 +386,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
                 z_level_corrected = z_level;
                 cut(z_level,temp_min, aCutShape,z_level_corrected);
                 if (z_level_corrected != z_level)
-                    std::cout << "Somehow we couldnt cut" << std::endl;
+                    std::cout << "Somehow we couldn't cut" << std::endl;
                 //Jetzt nur das gewünschte Resultat in den vector schieben (von oben nach unten große usw.)
                 Edgesort aCuttingShapeSorter(aCutShape);
                 tempPair.first = z_level_corrected;

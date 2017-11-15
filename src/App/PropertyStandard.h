@@ -210,7 +210,7 @@ private:
 /** Constraint integer properties
  * This property fulfills the need of a constraint integer. It holds basically a 
  * state (integer) and a struct of boundaries. If the boundaries
- * is not set it act basically like a IntegerProperty and do no checking.
+ * is not set it acts basically like an IntegerProperty and does no checking.
  * The constraints struct can be created on the heap or build in.
  */
 class AppExport PropertyIntegerConstraint: public PropertyInteger
@@ -259,7 +259,7 @@ public:
     };
     /** setting the boundaries
      * This sets the constraint struct. It can be dynamically 
-     * allocated or set as an static in the class the property
+     * allocated or set as a static in the class the property
      * belongs to:
      * \code
      * const Constraints percent = {0,100,1}
@@ -393,7 +393,7 @@ private:
 
 
 /** implements a key/value list as property 
- *  The key ought to be ASCII the Value should be treated as UTF8 to be save.
+ *  The key ought to be ASCII the Value should be treated as UTF8 to be saved.
  */
 class AppExport PropertyMap: public Property
 {
@@ -452,7 +452,7 @@ private:
  * This is the father of all properties handling floats.
  * Use this type only in rare cases. Mostly you want to 
  * use the more specialized types like e.g. PropertyLenth.
- * These properties fulfill also the needs of the unit system.
+ * These properties also fulfill the needs of the unit system.
  * See PropertyUnits.h for all properties with units.
  */
 class AppExport PropertyFloat: public Property
@@ -461,7 +461,7 @@ class AppExport PropertyFloat: public Property
 
 public:
     /** Value Constructor
-     *  Construct with explicite Values
+     *  Construct with explicit Values
      */
     PropertyFloat(void);
 
@@ -508,7 +508,7 @@ class AppExport PropertyFloatConstraint: public PropertyFloat
 public:
 
     /** Value Constructor
-     *  Construct with explicite Values
+     *  Construct with explicit Values
      */
     PropertyFloatConstraint(void);
     
