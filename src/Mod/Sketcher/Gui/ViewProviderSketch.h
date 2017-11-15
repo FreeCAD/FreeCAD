@@ -364,6 +364,7 @@ protected:
     // colors
     static SbColor VertexColor;
     static SbColor CurveColor;
+    static SbColor CreateCurveColor;
     static SbColor CurveDraftColor;
     static SbColor CurveExternalColor;
     static SbColor CrossColorV;

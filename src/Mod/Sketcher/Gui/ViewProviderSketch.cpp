@@ -145,6 +145,7 @@ SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     //
 SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -5019,12 +5020,16 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 
     edit->EditCurveSet->numVertices.setNum(1);
     edit->EditCurvesCoordinate->point.setNum(EditCurve.size());
+    edit->EditCurvesMaterials->diffuseColor.setNum(EditCurve.size());
     SbVec3f *verts = edit->EditCurvesCoordinate->point.startEditing();
     int32_t *index = edit->EditCurveSet->numVertices.startEditing();
+    SbColor *color = edit->EditCurvesMaterials->diffuseColor.startEditing();
 
     int i=0; // setting up the line set
-    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++)
+    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++) {
         verts[i].setValue(it->x,it->y,zEdit);
+        color[i] = CreateCurveColor;
+    }
 
     index[0] = EditCurve.size();
     edit->EditCurvesCoordinate->point.finishEditing();
@@ -5180,6 +5185,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveColor.getPackedValue());
     color = hGrp->GetUnsigned("EditedEdgeColor", color);
     CurveColor.setPackedValue((uint32_t)color, transparency);
+    // set the create line (curve) color
+    color = (unsigned long)(CreateCurveColor.getPackedValue());
+    color = hGrp->GetUnsigned("CreateLineColor", color);
+    CreateCurveColor.setPackedValue((uint32_t)color, transparency);
     // set the construction curve color
     color = (unsigned long)(CurveDraftColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstructionColor", color);
