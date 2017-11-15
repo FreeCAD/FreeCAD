@@ -147,7 +147,7 @@ SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  //
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
-SbVec3f ViewProviderSketch::prvClickPoint;
+SbVec2s ViewProviderSketch::prvClickPos;
 SbVec2s ViewProviderSketch::prvCursorPos;
 SbVec2s ViewProviderSketch::newCursorPos;
 
@@ -617,19 +617,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     float dci = (float) QApplication::doubleClickInterval()/1000.0f;
 
                     if (done &&
-                        (point - prvClickPoint).length() <  dblClickRadius &&
+                        SbVec2f(cursorPos - prvClickPos).length() <  dblClickRadius &&
                         (SbTime::getTimeOfDay() - prvClickTime).getValue() < dci) {
 
                         // Double Click Event Occurred
                         editDoubleClicked();
                         // Reset Double Click Static Variables
                         prvClickTime = SbTime();
-                        prvClickPoint = SbVec3f(0.0f, 0.0f, 0.0f);
-                        Mode = STATUS_NONE;
+                        prvClickPos = SbVec2s(-16000,-16000); //certainly far away from any clickable place, to avoid re-trigger of double-click if next click happens fast.
 
+                        Mode = STATUS_NONE;
                     } else {
                         prvClickTime = SbTime::getTimeOfDay();
-                        prvClickPoint = point;
+                        prvClickPos = cursorPos;
                         prvCursorPos = cursorPos;
                         newCursorPos = cursorPos;
                         if (!done)

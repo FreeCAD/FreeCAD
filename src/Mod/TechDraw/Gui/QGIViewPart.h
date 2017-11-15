@@ -67,6 +67,8 @@ public:
     bool showSection;
 
     virtual void draw() override;
+    virtual void rotateView(void) override;
+
 
     static QPainterPath geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rotation = 0.0);
     /// Helper for pathArc()

@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command GMSH Mesh From Shape"
+__title__ = "Command Gmsh Mesh From Shape"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -39,17 +39,17 @@ class _CommandFemMeshGmshFromShape(FemCommands):
     def __init__(self):
         super(_CommandFemMeshGmshFromShape, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-gmsh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "FEM mesh from shape by GMSH"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "Create a FEM mesh from a shape by GMSH mesher")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "FEM mesh from shape by Gmsh"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "Create a FEM mesh from a shape by Gmsh mesher")}
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by GMSH")
+        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
         FreeCADGui.addModule("FemGui")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Part::Feature")):
-                mesh_obj_name = 'FEMMeshGMSH'
+                mesh_obj_name = 'FEMMeshGmsh'
                 # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
                 FreeCADGui.addModule("ObjectsFem")
                 FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")

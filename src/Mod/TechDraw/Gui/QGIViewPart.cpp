@@ -147,6 +147,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
 QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rot)
 {
+    Q_UNUSED(rot);
     QPainterPath path;
 
     switch(baseGeom->geomType) {
@@ -291,11 +292,12 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
           break;
       }
 
-    if (rot != 0.0) {
-        QTransform t;
-        t.rotate(-rot);
-        path = t.map(path);
-    }
+//old rotate path logic. now done on App side.
+//    if (rot != 0.0) {
+//        QTransform t;
+//        t.rotate(-rot);
+//        path = t.map(path);
+//    }
 
     return path;
 }
@@ -643,7 +645,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));          //TODO: add fudge to make sectionLine thinner than reg lines?
         sectionLine->setFont(m_font,Rez::guiX(6.0));
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
-        sectionLine->setRotation(- viewPart->Rotation.getValue());
+        sectionLine->setRotation(viewPart->Rotation.getValue());
         sectionLine->draw();
     }
 }
@@ -673,7 +675,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
             //centerLine->setWidth(viewPart->LineWidth.getValue());
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-            centerLine->setRotation(- viewPart->Rotation.getValue());
+            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
         if (vert) {
@@ -686,7 +688,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
             //centerLine->setWidth(viewPart->LineWidth.getValue());
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-            centerLine->setRotation(- viewPart->Rotation.getValue());
+            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
     }
@@ -952,6 +954,11 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
 QRectF QGIViewPart::boundingRect() const
 {
     return childrenBoundingRect();
+}
+
+//QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
+void QGIViewPart::rotateView(void)
+{
 }
 
 bool QGIViewPart::getFaceEdgesPref(void)

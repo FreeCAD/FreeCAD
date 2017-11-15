@@ -91,14 +91,14 @@
     <message>
       <location line="+1"/>
       <source>Cut point cloud</source>
-      <translation>Schneidet Punktwolke</translation>
+      <translation>Punktwolke schneiden</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <location line="+1"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Ausschneiden einer Punktwolke aus dem gewählten Polygon</translation>
+      <translation>Schneiden einer Punktwolke mit einem gewählten Polygon</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location line="+1"/>
       <source>Transform Points</source>
-      <translation>Transformiere Punkte</translation>
+      <translation>Punkte transformieren</translation>
     </message>
     <message>
       <location line="+1"/>

@@ -129,7 +129,7 @@ namespace KDL
               tmp(i) = weights(i)*(q_in(i) - opt_pos(i)) / A;
           }
 
-          // Calcualte J^-1 * J * Jc^-1 = V*S^-1*U' * U*S*V' * tmp
+          // Calculate J^-1 * J * Jc^-1 = V*S^-1*U' * U*S*V' * tmp
           tmp2 = V * Sinv.asDiagonal() * U.transpose() * U * S.asDiagonal() * V.transpose() * tmp;
 
           for (i = 0; i < nj; ++i) {

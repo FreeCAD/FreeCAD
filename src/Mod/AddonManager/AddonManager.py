@@ -108,6 +108,7 @@ class AddonsInstaller(QtGui.QDialog):
         self.labelDescription.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelDescription.setWordWrap(True)
         self.verticalLayout.addWidget(self.labelDescription)
+        self.doUpdate = []
 
         self.progressBar = QtGui.QProgressBar(self)
         #self.progressBar.setProperty("value", 24)
@@ -197,11 +198,14 @@ class AddonsInstaller(QtGui.QDialog):
 
     def check_updates(self):
         if self.tabWidget.currentIndex() == 0:
-            self.check_worker = CheckWBWorker(self.repos)
-            self.check_worker.mark.connect(self.mark)
-            self.check_worker.info_label.connect(self.set_information_label)
-            self.check_worker.progressbar_show.connect(self.show_progress_bar)
-            self.check_worker.start()
+            if not self.doUpdate:
+                self.check_worker = CheckWBWorker(self.repos)
+                self.check_worker.mark.connect(self.mark)
+                self.check_worker.info_label.connect(self.set_information_label)
+                self.check_worker.progressbar_show.connect(self.show_progress_bar)
+                self.check_worker.start()
+            else:
+                self.install(self.doUpdate)
 
     def add_addon_repo(self, addon_repo):
         self.repos.append(addon_repo)
@@ -261,13 +265,22 @@ class AddonsInstaller(QtGui.QDialog):
         #print("clicked: ",link)
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(link, QtCore.QUrl.TolerantMode))
 
-    def install(self):
+    def install(self,repos=None):
         if self.tabWidget.currentIndex() == 0:
-            idx = self.listWorkbenches.currentRow()
-            self.install_worker = InstallWorker(self.repos, idx)
-            self.install_worker.info_label.connect(self.set_information_label)
-            self.install_worker.progressbar_show.connect(self.show_progress_bar)
-            self.install_worker.start()
+            idx = None
+            if repos:
+                idx = []
+                for repo in repos:
+                    for i,r in enumerate(self.repos):
+                        if r[0] == repo:
+                            idx.append(i)
+            else:
+                idx = self.listWorkbenches.currentRow()
+            if idx != None:
+                self.install_worker = InstallWorker(self.repos, idx)
+                self.install_worker.info_label.connect(self.set_information_label)
+                self.install_worker.progressbar_show.connect(self.show_progress_bar)
+                self.install_worker.start()
         elif self.tabWidget.currentIndex() == 1:
             macropath = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
             if not os.path.isdir(macropath):
@@ -352,7 +365,8 @@ class AddonsInstaller(QtGui.QDialog):
             if w.text().startswith(str(repo)):
                 w.setText(str(repo) + str(" (Update available)"))
                 w.setIcon(QtGui.QIcon.fromTheme("reload"))
-
+                if not repo in self.doUpdate:
+                    self.doUpdate.append(repo)
 
 class UpdateWorker(QtCore.QThread):
 
@@ -483,7 +497,7 @@ class CheckWBWorker(QtCore.QThread):
                         upds.append(repo[0])
         self.progressbar_show.emit(False)
         if upds:
-            self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds))
+            self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds)+". "+translate("AddonsInstaller","Press the update button again to update them all at once."))
         else:
             self.info_label.emit(translate("AddonsInstaller","Everything is up to date"))
         self.stop = True
@@ -699,60 +713,63 @@ class InstallWorker(QtCore.QThread):
                 import StringIO as io
             except ImportError: # StringIO is not available with python3
                 import io
-        if self.idx < 0:
-            return
-        if not self.repos:
-            return
-        if NOGIT:
-            git = None
-        basedir = FreeCAD.ConfigGet("UserAppData")
-        moddir = basedir + os.sep + "Mod"
-        if not os.path.exists(moddir):
-            os.makedirs(moddir)
-        clonedir = moddir + os.sep + self.repos[self.idx][0]
-        self.progressbar_show.emit(True)
-        if os.path.exists(clonedir):
-            self.info_label.emit("Updating module...")
-            if git:
-                if not os.path.exists(clonedir + os.sep + '.git'):
-                    # Repair addon installed with raw download
-                    bare_repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir + os.sep + '.git', bare=True)
-                    try:
-                        with bare_repo.config_writer() as cw:
-                            cw.set('core', 'bare', False)
-                    except AttributeError:
-                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
-                        cw = bare_repo.config_writer()
-                        cw.set('core', 'bare', False)
-                        del cw
-                    repo = git.Repo(clonedir)
-                    repo.head.reset('--hard')
-                repo = git.Git(clonedir)
-                answer = repo.pull()
-            else:
-                answer = self.download(self.repos[self.idx][1],clonedir)
-        else:
-            self.info_label.emit("Checking module dependencies...")
-            depsok,answer = self.checkDependencies(self.repos[self.idx][1])
-            if depsok:
+        if not isinstance(self.idx,list):
+            self.idx = [self.idx]
+        for idx in self.idx:
+            if idx < 0:
+                return
+            if not self.repos:
+                return
+            if NOGIT:
+                git = None
+            basedir = FreeCAD.ConfigGet("UserAppData")
+            moddir = basedir + os.sep + "Mod"
+            if not os.path.exists(moddir):
+                os.makedirs(moddir)
+            clonedir = moddir + os.sep + self.repos[idx][0]
+            self.progressbar_show.emit(True)
+            if os.path.exists(clonedir):
+                self.info_label.emit("Updating module...")
                 if git:
-                    self.info_label.emit("Cloning module...")
-                    repo = git.Repo.clone_from(self.repos[self.idx][1], clonedir, branch='master')
+                    if not os.path.exists(clonedir + os.sep + '.git'):
+                        # Repair addon installed with raw download
+                        bare_repo = git.Repo.clone_from(self.repos[idx][1], clonedir + os.sep + '.git', bare=True)
+                        try:
+                            with bare_repo.config_writer() as cw:
+                                cw.set('core', 'bare', False)
+                        except AttributeError:
+                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                            cw = bare_repo.config_writer()
+                            cw.set('core', 'bare', False)
+                            del cw
+                        repo = git.Repo(clonedir)
+                        repo.head.reset('--hard')
+                    repo = git.Git(clonedir)
+                    answer = repo.pull()
                 else:
-                    self.info_label.emit("Downloading module...")
-                    self.download(self.repos[self.idx][1],clonedir)
-                answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
-                # symlink any macro contained in the module to the macros folder
-                macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
-                if not os.path.exists(macrodir):
-                    os.makedirs(macrodir)
-                for f in os.listdir(clonedir):
-                    if f.lower().endswith(".fcmacro"):
-                        symlink(clonedir+os.sep+f,macrodir+os.sep+f)
-                        FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[self.idx][0]).SetString("destination",clonedir)
-                        answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
-                        answer += f + "</b>"
-        self.info_label.emit(answer)
+                    answer = self.download(self.repos[idx][1],clonedir)
+            else:
+                self.info_label.emit("Checking module dependencies...")
+                depsok,answer = self.checkDependencies(self.repos[idx][1])
+                if depsok:
+                    if git:
+                        self.info_label.emit("Cloning module...")
+                        repo = git.Repo.clone_from(self.repos[idx][1], clonedir, branch='master')
+                    else:
+                        self.info_label.emit("Downloading module...")
+                        self.download(self.repos[idx][1],clonedir)
+                    answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
+                    # symlink any macro contained in the module to the macros folder
+                    macrodir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath",os.path.join(FreeCAD.ConfigGet("UserAppData"),"Macro"))
+                    if not os.path.exists(macrodir):
+                        os.makedirs(macrodir)
+                    for f in os.listdir(clonedir):
+                        if f.lower().endswith(".fcmacro"):
+                            symlink(clonedir+os.sep+f,macrodir+os.sep+f)
+                            FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
+                            answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
+                            answer += f + "</b>"
+            self.info_label.emit(answer)
         self.progressbar_show.emit(False)
         self.stop = True
 

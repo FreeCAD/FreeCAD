@@ -47,12 +47,12 @@
     <message>
       <location line="+1"/>
       <source>Create section from mesh and plane</source>
-      <translation>Erstellen von Abschnitt aus Mesh und Ebene</translation>
+      <translation>Schnitt aus Netz und Ebene erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Section</source>
-      <translation>Ausschnitt</translation>
+      <translation>Schnittkurve</translation>
     </message>
   </context>
   <context>
@@ -65,13 +65,13 @@
     <message>
       <location line="+1"/>
       <source>Trim mesh with a plane</source>
-      <translation>Netz mit Ebene zuschneiden</translation>
+      <translation>Netz mit Ebene trimmen</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Ein Netz mit einer Ebene zuschneiden</translation>
+      <translation>Ein Netz mit einer Ebene trimmen</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location line="+7"/>
       <source>Maximum curve degree</source>
-      <translation>Maximaler Kurvenwinkel</translation>
+      <translation>Maximaler Grad der Kurve</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -200,17 +200,17 @@
     <message>
       <location line="-7"/>
       <source>Apply face colors to mesh</source>
-      <translation>Anwenden von Flächenfarben auf Mesh</translation>
+      <translation>Anwenden von Flächenfarben auf Netz</translation>
     </message>
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Winkelabweichung:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Relative Flächenabweichung</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -329,7 +329,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Bitte wählen Sie eine Ebene, mit welcher Sie das Netz zuschneiden.</translation>
+      <translation>Bitte wählen Sie eine Ebene, mit welcher Sie das Netz trimmen.</translation>
     </message>
   </context>
   <context>

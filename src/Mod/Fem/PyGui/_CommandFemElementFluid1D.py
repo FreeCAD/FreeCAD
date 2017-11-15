@@ -41,7 +41,7 @@ class _CommandFemElementFluid1D(FemCommands):
         self.resources = {'Pixmap': 'fem-fluid-section',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Fluid section for 1D flow"),
                           'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Creates a FEM Fluid section for 1D flow")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Creates a FEM fluid section for 1D flow")}
         self.is_active = 'with_analysis'
 
     def Activated(self):

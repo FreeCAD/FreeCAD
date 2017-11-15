@@ -633,7 +633,7 @@ void  QuantityPy::setFormat(Py::Tuple arg)
         throw Py::ValueError("Invalid format character");
 
     bool ok;
-    fmt.format = Base::QuantityFormat::toFormat(fmtstr.front(), &ok);
+    fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
     if (!ok)
         throw Py::ValueError("Invalid format character");
 

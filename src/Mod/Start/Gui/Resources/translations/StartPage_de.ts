@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>FreeCAD Homepage</source>
-      <translation>FreeCAD Homepage</translation>
+      <translation>FreeCAD-Homepage</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Load a PartDesign example</source>
-      <translation>Lade ein Beispiel für Teile-Konstruktion</translation>
+      <translation>Beispiel für Teile-Konstruktion laden</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Load a Robot simulation example</source>
-      <translation>Lade ein Beispiel für eine Robotersimulations</translation>
+      <translation>Beispiel für eine Robotersimulation laden</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>Der &lt;b&gt;Teile-Konstruktions&lt;/b&gt;-Arbeitsbereich dient zum Erstellen komplexer Teile auf der Grundlage von zweidimensionalen Skizzen. Verwenden Sie sie, um Skizzen zu zeichnen, zu vermaßen, und durch Extrudieren dreidimensionale Körper zu erzeugen.</translation>
+      <translation>Der &lt;b&gt;Teile-Konstruktions&lt;/b&gt;-Arbeitsbereich dient zum Erstellen komplexer Teile auf der Grundlage von zweidimensionalen Skizzen. Verwenden Sie sie, um Skizzen zu zeichnen, zu vermaßen und durch Extrudieren dreidimensionale Körper zu erzeugen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>Der &lt;b&gt;Netz&lt;/b&gt;-Arbeitsbereich wird benutzt, um mit vernetzten Körpern zu arbeiten. Netze sind einfachere 3D-Objekte als Volumenkörper, aber sie sind oft leichter zu anderen Programmen zu exportieren und von ihnen zu importieren.</translation>
+      <translation>Der &lt;b&gt;Netz&lt;/b&gt;-Arbeitsbereich wird benutzt, um mit vernetzten Körpern zu arbeiten. Netze sind einfachere 3D-Objekte als Volumenkörper, aber sie sind oft leichter zu anderen Programmen zu exportieren und von diesen zu importieren.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Latest videos</source>
-      <translation>Neueste Videos/Screencasts</translation>
+      <translation>Neueste Videos</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Dies ist die FreeCAD-Homepage. Hier findest Du eine Menge Informationen über FreeCAD, zum Beispiel Tutorien, Beispiele und Dokumentation.</translation>
+      <translation>Dies ist die FreeCAD-Homepage. Hier finden Sie eine Menge Informationen über FreeCAD wie Tutorien, Beispiele und Dokumentation.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
@@ -216,7 +216,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>Ein Blog um FreeCAD zu lernen. Von und für Mitglieder der FreeCAD-Gemeinschaft</translation>
+      <translation>Ein Blog, um FreeCAD zu lernen. Von und für Mitglieder der FreeCAD-Gemeinschaft</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
       <source>Load an Architectural example model</source>
-      <translation>Lade ein Architektur Beispiel-Modell</translation>
+      <translation>Architektur-Beispiel-Modell laden</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>Der Abschnitt der FreeCAD-Website zu Python scripting, mit Beispielen, Erklärungen und API Befehlen.</translation>
+      <translation>Der Abschnitt der FreeCAD-Website zu Python-Scripten mit Beispielen, Erklärungen und API Befehlen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
@@ -291,12 +291,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
       <source>Load an FEM 3D example analysis</source>
-      <translation>FEM 3D Analyse-Beispiel laden</translation>
+      <translation>FEM-3D-Analyse-Beispiel laden</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
       <source>Load an FEM 2D example analysis</source>
-      <translation>FEM 2D Analyse-Beispiel laden</translation>
+      <translation>FEM-2D-Analyse-Beispiel laden</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
       <source>FreeCAD Standard File</source>
-      <translation>FreeCAD Standard Datei</translation>
+      <translation>FreeCAD-Standarddatei</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation>Der &lt;b&gt;Architektur-Design&lt;/b&gt;-Arbeitsbereich ist speziell für die Arbeit mit Architekturelementen wie Wänden oder Fenstern geeignet. Beginne mit dem Skizzieren von zweidimensionalen Umrissen, und verwende diese als Grundlage, um architektonische Objekte zu erstellen.</translation>
+      <translation>Der &lt;b&gt;Architektur-Design&lt;/b&gt;-Arbeitsbereich ist speziell für die Arbeit mit Architekturelementen wie Wänden oder Fenstern geeignet. Beginnen Sie mit dem Skizzieren von zweidimensionalen Umrissen, und verwenden Sie diese als Grundlage, um architektonische Objekte zu erstellen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>

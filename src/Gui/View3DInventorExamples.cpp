@@ -334,12 +334,12 @@ unsigned char bitmap[texturewidth*textureheight];
 // Parameters:
 //  double cr   - real part of the julia set point
 //  double ci   - imaginary part of the julia set point
-//  float zoon  - lenth of the square to display (zoom*zoom), center (0,0)
+//  float zoom  - length of the square to display (zoom*zoom), center (0,0)
 //  int width   - width of the bitmap
 //  int height  - height of the bitmap
 //  int mult    - number to multiply each color by.
 //  unsigned char * bmp - pointer to the bitmap
-//  int n       - number of itterations 
+//  int n       - number of iterations 
 void
 julia(double crr, double cii, float zoom, int width, int height, int mult, 
       unsigned char * bmp, int n)

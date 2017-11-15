@@ -173,7 +173,7 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Loch interaktiv schließen</translation>
+      <translation>Löcher interaktiv schließen</translation>
     </message>
   </context>
   <context>
@@ -289,7 +289,7 @@
     </message>
     <message>
       <source>Merges selected meshes into one</source>
-      <translation>Ausgwählte Netze zu Einem zusammenführen</translation>
+      <translation>Ausgewählte Netze zu Einem zusammenführen</translation>
     </message>
   </context>
   <context>
@@ -360,11 +360,11 @@
     </message>
     <message>
       <source>Trim mesh</source>
-      <translation>Netz beschneiden</translation>
+      <translation>Netz trimmen</translation>
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Ein Netz mit einem gewählten Polygon beschneiden</translation>
+      <translation>Ein Netz mit einem gewählten Polygon trimmen</translation>
     </message>
   </context>
   <context>
@@ -405,11 +405,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Skalieren...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Skalieren ausgewählter Netze</translation>
     </message>
   </context>
   <context>
@@ -420,11 +420,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation>Erstellen von Abschnitt aus Mesh und Ebene</translation>
+      <translation>Schnitt aus Netz und Ebene erstellen</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation>Abschnitt aus Mesh und Ebene</translation>
+      <translation>Schnitt aus Netz und Ebene</translation>
     </message>
   </context>
   <context>
@@ -465,7 +465,7 @@
     </message>
     <message>
       <source>Segment by tool mesh</source>
-      <translation>Segmentieren</translation>
+      <translation>Segmentieren mit Hilfsnetz</translation>
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
@@ -495,11 +495,11 @@
     </message>
     <message>
       <source>Trim mesh with a plane</source>
-      <translation>Netz mit Ebene zuschneiden</translation>
+      <translation>Netz mit Ebene trimmen</translation>
     </message>
     <message>
       <source>Trims a mesh with a plane</source>
-      <translation>Ein Netz mit einer Ebene zuschneiden</translation>
+      <translation>Ein Netz mit einer Ebene trimmen</translation>
     </message>
   </context>
   <context>
@@ -783,15 +783,15 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation>Überprüfen auf nicht verteilte Punkte</translation>
+      <translation>Überprüfen auf nicht-mannigfaltige Punkte</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation>Aktivieren von Kontrolle auf Falten auf der Oberfläche</translation>
+      <translation>Überprüfung auf Oberflächenfalten aktivieren</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Nur Null Flächen Faces als degeneriert betrachten</translation>
+      <translation>Nur Dreiecke ohne Flächeninhalt als degeneriert betrachten</translation>
     </message>
   </context>
   <context>
@@ -904,7 +904,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Definiert die Abweichung des Mosaiks auf der aktuellen Oberfläche</translation>
+      <translation>Legt die Abweichung der Tessellierung zur Oberfläche fest</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1211,7 +1211,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Bitte wählen Sie eine Ebene, mit welcher Sie das Netz zuschneiden.</translation>
+      <translation>Bitte wählen Sie eine Ebene, mit welcher Sie das Netz trimmen.</translation>
     </message>
   </context>
   <context>
@@ -1418,7 +1418,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation>Objekt-Dateiformat</translation>
+      <translation>OFF-Dateiformat</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
@@ -1462,11 +1462,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Skalieren</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Geben Sie den Skalierungsfaktor an:</translation>
     </message>
   </context>
   <context>

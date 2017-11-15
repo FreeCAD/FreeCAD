@@ -255,35 +255,79 @@ void TaskProjGroup::scaleTypeChanged(int index)
     Gui::Command::updateActive();
 }
 
-// ** David Eppstein / UC Irvine / 8 Aug 1993
-// Reworked 2015 IR to add the power of logarithms!
-void TaskProjGroup::nearestFraction(double val, int &n, int &d) const
+std::pair<int, int> TaskProjGroup::nearestFraction(const double val, const long int maxDenom) const
 {
-    int exponent = std::floor(std::log10(val));
-    if (exponent > 1 || exponent < -1) {
-        val *= std::pow(10, -exponent);
+/*
+** find rational approximation to given real number
+** David Eppstein / UC Irvine / 8 Aug 1993
+**
+** With corrections from Arno Formella, May 2008
+** and additional fiddles by WF 2017
+** usage: a.out r d
+**   r is real number to approx
+**   d is the maximum denominator allowed
+**
+** based on the theory of continued fractions
+** if x = a1 + 1/(a2 + 1/(a3 + 1/(a4 + ...)))
+** then best approximation is found by truncating this series
+** (with some adjustments in the last term).
+**
+** Note the fraction can be recovered as the first column of the matrix
+**  ( a1 1 ) ( a2 1 ) ( a3 1 ) ...
+**  ( 1  0 ) ( 1  0 ) ( 1  0 )
+** Instead of keeping the sequence of continued fraction terms,
+** we just keep the last partial product of these matrices.
+*/
+    std::pair<int, int> result;
+    long m[2][2];
+    long maxden = maxDenom;
+    long ai;
+    double x = val;
+    double startx = x;
+
+    /* initialize matrix */
+    m[0][0] = m[1][1] = 1;
+    m[0][1] = m[1][0] = 0;
+
+    /* loop finding terms until denom gets too big */
+    while (m[1][0] *  ( ai = (long)x ) + m[1][1] <= maxden) {
+        long t;
+        t = m[0][0] * ai + m[0][1];
+        m[0][1] = m[0][0];
+        m[0][0] = t;
+        t = m[1][0] * ai + m[1][1];
+        m[1][1] = m[1][0];
+        m[1][0] = t;
+        if(x == (double) ai)
+            break;     // AF: division by zero
+        x = 1/(x - (double) ai);
+        if(x > (double) std::numeric_limits<int>::max())
+            break;     // AF: representation failure
     }
 
-    n = 1;  // numerator
-    d = 1;  // denominator
-    double fraction = 1.0;                                                      //coverity 152005
-    //double m = fabs(fraction - val);
+    /* now remaining x is between 0 and 1/ai */
+    /* approx as either 0 or 1/m where m is max that will fit in maxden */
+    /* first try zero */
+    double error1 = startx - ((double) m[0][0] / (double) m[1][0]);
+    int n1 = m[0][0];
+    int d1 = m[1][0];
 
-    while (fabs(fraction - val) > 0.001) {
-        if (fraction < val) {
-            ++n;
-        } else {
-            ++d;
-            n = (int) round(val * d);
-        }
-        fraction = n / (double) d;
-    }
+    /* now try other possibility */
+    ai = (maxden - m[1][1]) / m[1][0];
+    m[0][0] = m[0][0] * ai + m[0][1];
+    m[1][0] = m[1][0] * ai + m[1][1];
+    double error2 = startx - ((double) m[0][0] / (double) m[1][0]);
+    int n2 = m[0][0];
+    int d2 = m[1][0];
 
-    if (exponent > 1) {
-            n *= std::pow(10, exponent);
-    } else if (exponent < -1) {
-            d *= std::pow(10, -exponent);
+    if (std::fabs(error1) <= std::fabs(error2)) {
+        result.first  = n1;
+        result.second = d1;
+    } else {
+        result.first  = n2;
+        result.second = d2;
     }
+    return result;
 }
 
 void TaskProjGroup::updateTask()
@@ -302,12 +346,11 @@ void TaskProjGroup::updateTask()
 void TaskProjGroup::setFractionalScale(double newScale)
 {
     blockUpdate = true;
-    int num, den;
 
-    nearestFraction(newScale, num, den);
+    std::pair<int, int> fraction = nearestFraction(newScale);
 
-    ui->sbScaleNum->setValue(num);
-    ui->sbScaleDen->setValue(den);
+    ui->sbScaleNum->setValue(fraction.first);
+    ui->sbScaleDen->setValue(fraction.second);
     blockUpdate = false;
 }
 

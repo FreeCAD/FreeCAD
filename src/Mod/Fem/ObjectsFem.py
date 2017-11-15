@@ -235,8 +235,8 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     return obj
 
 
-def makeMeshGmsh(doc, name="FEMMeshGMSH"):
-    '''makeMeshGmsh(document, [name]): makes a GMSH FEM mesh object'''
+def makeMeshGmsh(doc, name="FEMMeshGmsh"):
+    '''makeMeshGmsh(document, [name]): makes a Gmsh FEM mesh object'''
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
     import PyObjects._FemMeshGmsh
     PyObjects._FemMeshGmsh._FemMeshGmsh(obj)

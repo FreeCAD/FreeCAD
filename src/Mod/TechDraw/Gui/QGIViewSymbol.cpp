@@ -44,7 +44,9 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 
 #include "QGCustomSvg.h"
+#include "QGDisplayArea.h"
 #include "QGIViewSymbol.h"
+#include "DrawGuiUtil.h"
 #include "Rez.h"
 
 using namespace TechDrawGui;
@@ -58,8 +60,12 @@ QGIViewSymbol::QGIViewSymbol()
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
+    m_displayArea = new QGDisplayArea();
+    addToGroup(m_displayArea);
+    m_displayArea->centerAt(0.,0.);
+
     m_svgItem = new QGCustomSvg();
-    addToGroup(m_svgItem);
+    m_displayArea->addToGroup(m_svgItem);
     m_svgItem->centerAt(0.,0.);
 }
 
@@ -126,6 +132,7 @@ void QGIViewSymbol::drawSvg()
 
     QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
     symbolToSvg(qba);
+    rotateView();
 }
 
 void QGIViewSymbol::symbolToSvg(QByteArray qba)
@@ -140,3 +147,12 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
     }
     m_svgItem->centerAt(0.,0.);
 }
+
+void QGIViewSymbol::rotateView(void)
+{
+    QRectF r = m_displayArea->boundingRect();
+    m_displayArea->setTransformOriginPoint(r.center());
+    double rot = getViewObject()->Rotation.getValue();
+    m_displayArea->setRotation(-rot);
+}
+
