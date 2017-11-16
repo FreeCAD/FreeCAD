@@ -308,6 +308,9 @@ public:
     virtual DocumentObject *getLinkedObject(bool recurse=true, 
             Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
 
+    /* Return true to cause PropertyView to show linked object's property */
+    virtual bool canLinkProperties() const {return true;}
+
     friend class Document;
     friend class Transaction;
     friend class ObjectExecution;

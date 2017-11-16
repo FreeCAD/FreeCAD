@@ -60,6 +60,8 @@ public:
     bool getLinkedObject(App::DocumentObject *&ret, bool recurse, 
             Base::Matrix4D *mat, bool transform, int depth) const;
 
+    int canLinkProperties() const;
+
     /// return true to activate tree view group object handling
     int hasChildElement() const;
     /// Get sub-element visibility
@@ -249,6 +251,13 @@ public:
         if(ret == -2)
             return FeatureT::setElementVisible(element,visible);
         return ret;
+    }
+
+    virtual bool canLinkProperties() const override {
+        int ret = imp->canLinkProperties();
+        if(ret < 0)
+            return FeatureT::canLinkProperties();
+        return ret?true:false;
     }
 
     PyObject *getPyObject(void) {

@@ -408,6 +408,8 @@ public:
         LINK_PROPS_SET(LINK_PARAMS_LINK);
         inherited::onDocumentRestored();
     }
+
+    bool canLinkProperties() const override;
 };
 
 typedef App::FeaturePythonT<Link> LinkPython;

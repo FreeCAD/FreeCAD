@@ -952,6 +952,18 @@ Link::Link() {
     ElementCount.setConstraints(&s_constraints);
 }
 
+bool Link::canLinkProperties() const {
+    auto prop = dynamic_cast<const PropertyXLink*>(getLinkedObjectProperty());
+    const char *subname;
+    if(prop && (subname=prop->getSubName()) && *subname) {
+        auto len = strlen(subname);
+        // Do not link properties when we are linking to a sub-element (i.e.
+        // vertex, edge or face)
+        return subname[len-1]=='.';
+    }
+    return true;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App {

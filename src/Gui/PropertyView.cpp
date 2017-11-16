@@ -258,13 +258,6 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
             if(vpLast && cvp!=vpLast)
                 checkLink = false;
             vpLast = cvp;
-            // try to resolve the linked object
-            auto linked = ob->getLinkedObject(true);
-            if(linked && linked!=ob) {
-                vp = Application::Instance->getViewProvider(linked);
-                if(!vp) continue;
-                ob = linked;
-            }
         }
 
         ob->getPropertyList(dataList);
@@ -323,51 +316,54 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
     PropertyModel::PropertyList dataProps;
     PropertyModel::PropertyList viewProps;
 
-    std::set<std::string> linkDataProps;
-    std::set<std::string> linkViewProps;
-
     if(checkLink && vpLast) {
         // In case the only selected object is a link, insert the link's own
         // property before the linked object
         App::DocumentObject *obj = vpLast->getObject();
-        if(obj && obj->getLinkedObject(true)!=obj) {
+        auto linked = obj;
+        if(obj && obj->canLinkProperties() && (linked=obj->getLinkedObject(true))!=obj && linked) {
             std::vector<App::Property*> dataList;
-            obj->getPropertyList(dataList);
+            std::map<std::string, App::Property*> propMap;
+            obj->getPropertyMap(propMap);
+            linked->getPropertyList(dataList);
             for(auto prop : dataList) {
-                if(obj->isHidden(prop) || prop->testStatus(App::Property::Hidden))
+                if(linked->isHidden(prop) || prop->testStatus(App::Property::Hidden))
+                    continue;
+                std::string name(linked->getPropertyName(prop));
+                if(propMap.find(name) != propMap.end())
                     continue;
                 std::vector<App::Property*> v(1,prop);
-                std::string name(obj->getPropertyName(prop));
                 dataProps.push_back(std::make_pair(name, v));
-                linkDataProps.insert(name);
             }
-            dataList.clear();
-            vpLast->getPropertyList(dataList);
-            for(auto prop : dataList) {
-                if(vpLast->isHidden(prop) || prop->testStatus(App::Property::Hidden))
-                    continue;
-                std::vector<App::Property*> v(1,prop);
-                std::string name(vpLast->getPropertyName(prop));
-                viewProps.push_back(std::make_pair(name, v));
-                linkViewProps.insert(name);
+            auto vpLinked = Application::Instance->getViewProvider(linked);
+            if(vpLinked) {
+                propMap.clear();
+                vpLast->getPropertyMap(propMap);
+                dataList.clear();
+                vpLinked->getPropertyList(dataList);
+                for(auto prop : dataList) {
+                    if(vpLinked->isHidden(prop) || prop->testStatus(App::Property::Hidden))
+                        continue;
+                    std::string name(vpLinked->getPropertyName(prop));
+                    if(propMap.find(name) != propMap.end())
+                        continue;
+                    std::vector<App::Property*> v(1,prop);
+                    viewProps.push_back(std::make_pair(name, v));
+                }
             }
         }
     }
 
     for (it = propDataMap.begin(); it != propDataMap.end(); ++it) {
-        if (it->propList.size() == array.size() && 
-            linkDataProps.find(it->propName)==linkDataProps.end()) {
+        if (it->propList.size() == array.size())
             dataProps.push_back(std::make_pair(it->propName, it->propList));
-        }
     }
 
     propertyEditorData->buildUp(dataProps);
 
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
-        if (it->propList.size() == array.size() &&
-            linkViewProps.find(it->propName)==linkViewProps.end()) {
+        if (it->propList.size() == array.size())
             viewProps.push_back(std::make_pair(it->propName, it->propList));
-        }
     }
 
     propertyEditorView->buildUp(viewProps);

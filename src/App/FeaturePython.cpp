@@ -503,6 +503,34 @@ std::string FeaturePythonImp::getViewProviderName()
     return std::string();
 }
 
+int FeaturePythonImp::canLinkProperties() const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *funcName = "canLinkProperties";
+            if (feature.hasAttr(funcName)) {
+                Py::Callable method(feature.getAttr(funcName));
+                Py::Tuple args;
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                }
+                Py::Boolean ok(method.apply(args));
+                return ok?1:0;
+            }
+        }
+        return -1;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        return 0;
+    }
+}
+
+
 // ---------------------------------------------------------
 
 namespace App {
