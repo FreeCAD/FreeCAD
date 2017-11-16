@@ -359,7 +359,7 @@ public:
     bool getElementPicked(bool addname, int type, 
             const SoPickedPoint *pp, std::stringstream &str) const 
     {
-        if(!pp || !isLinked())
+        if(!pp || !isLinked() || !pcLinked->isSelectable())
             return false;
 
         if(addname) 
@@ -1868,6 +1868,7 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
 }
 
 bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+    if(!isSelectable()) return false;
     auto ext = getLinkExtension();
     if(!ext) return false;
     bool ret = linkView->linkGetElementPicked(pp,subname);
