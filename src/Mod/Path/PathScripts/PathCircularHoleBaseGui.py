@@ -165,6 +165,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         '''resetBase() ... push button callback'''
         self.obj.Base = []
         self.obj.Disabled = []
+        self.obj.Proxy.findAllHoles(self.obj)
 
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
@@ -180,4 +181,3 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def taskPanelBaseGeometryPage(self, obj, features):
         '''taskPanelBaseGeometryPage(obj, features) ... Return circular hole specific page controller for Base Geometry.'''
         return TaskPanelHoleGeometryPage(obj, features)
-
