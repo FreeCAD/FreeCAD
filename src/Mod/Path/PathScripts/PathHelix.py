@@ -45,7 +45,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... enable features supported by Helix.'''
-        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels 
+        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... create helix specific properties.'''
@@ -197,4 +197,5 @@ def Create(name):
     '''Create(name) ... Creates and returns a Helix operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectHelix(obj)
+    proxy.findAllHoles(obj)
     return obj
