@@ -124,8 +124,27 @@ private:
     SoColorPacker colorpacker;
 };
 
+class GuiExport SoFCPathAnnotation : public SoSeparator {
+    typedef SoSeparator inherited;
 
-class SoFCSelectionRoot;
+    SO_NODE_HEADER(Gui::SoFCPathAnnotation);
+public:
+    static void initClass(void);
+    static void finish(void);
+    SoFCPathAnnotation();
+
+    void setPath(SoPath *);
+
+    virtual void GLRenderBelowPath(SoGLRenderAction * action);
+    virtual void GLRender(SoGLRenderAction * action);
+    virtual void GLRenderInPath(SoGLRenderAction * action);
+
+protected:
+    virtual ~SoFCPathAnnotation();
+
+protected:
+    SoPath *path;
+};
 
 class GuiExport SoFCSelectionRoot : public SoSeparator {
     typedef SoSeparator inherited;
@@ -135,7 +154,7 @@ class GuiExport SoFCSelectionRoot : public SoSeparator {
 public:
     static void initClass(void);
     static void finish(void);
-    SoFCSelectionRoot();
+    SoFCSelectionRoot(bool secondary=false);
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRender(SoGLRenderAction * action);
@@ -220,12 +239,17 @@ protected:
     static ContextPtr getContext(SoNode *node, ContextPtr def, ContextPtr *ctx2);
     static ContextPtr *getContext(SoAction *action, SoNode *node, ContextPtr *pdef);
 
-    typedef std::vector<SoNode*> Stack;
-    static Stack SelStack;
+    //selection root node stack during rendering
+    typedef std::vector<SoFCSelectionRoot*> Stack;
+    static Stack SelStack; // stack for non-secondary-only nodes
+    static Stack SelStack2; // stack for all selection root nodes
+
     typedef std::map<Stack,ContextPtr> ContextMap;
     ContextMap contextMap;
-    ContextMap contextMap2;
-    bool pushed;
+    ContextMap contextMap2;//holding secondary context
+
+    bool pushed;//to prevent double push into the stack
+    bool secondary;//indicate if this node for secondary context only
 };
 
 /**

@@ -931,11 +931,13 @@ void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
 // ---------------------------------------------------------------------------------
 
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
+SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack2;
 
 SO_NODE_SOURCE(SoFCSelectionRoot);
 
-SoFCSelectionRoot::SoFCSelectionRoot()
+SoFCSelectionRoot::SoFCSelectionRoot(bool secondary)
     :pushed(false)
+    ,secondary(secondary)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
 }
@@ -960,20 +962,21 @@ SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
     return def;
 }
 
-SoFCSelectionRoot::ContextPtr SoFCSelectionRoot::getContext(SoNode *node, ContextPtr def, ContextPtr *ctx2)
+SoFCSelectionRoot::ContextPtr SoFCSelectionRoot::getContext(SoNode *_node, ContextPtr def, ContextPtr *ctx2)
 {
-    if(SelStack.empty())
-        return def;
+    // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
+    // here since we only use it as searching key, although it is probably not
+    // a best practice.
+    auto node = static_cast<SoFCSelectionRoot*>(_node);
 
-    SoFCSelectionRoot *back = static_cast<SoFCSelectionRoot*>(SelStack.back());
-    if(ctx2 && back->contextMap2.size()) {
-        auto &map = back->contextMap2;
+    if(ctx2 && SelStack2.size() && SelStack2.back()->contextMap2.size()) {
+        auto &map = SelStack2.back()->contextMap2;
         Stack key;
         key.resize(2);
         key[0] = node;
-        for(size_t i=0;i<SelStack.size();++i) {
-            if(i+1<SelStack.size())
-                key[1] = SelStack[i];
+        for(size_t i=0;i<SelStack2.size();++i) {
+            if(i+1<SelStack2.size())
+                key[1] = SelStack2[i];
             else 
                 key.resize(1);
             auto it = map.find(key);
@@ -983,7 +986,10 @@ SoFCSelectionRoot::ContextPtr SoFCSelectionRoot::getContext(SoNode *node, Contex
         }
     }
 
-    SoFCSelectionRoot *front = static_cast<SoFCSelectionRoot*>(SelStack.front());
+    if(SelStack.empty())
+        return def;
+
+    SoFCSelectionRoot *front = SelStack.front();
     SelStack.front() = node;
     auto it = front->contextMap.find(SelStack);
     SelStack.front() = front;
@@ -993,8 +999,13 @@ SoFCSelectionRoot::ContextPtr SoFCSelectionRoot::getContext(SoNode *node, Contex
 }
 
 SoFCSelectionRoot::ContextPtr *SoFCSelectionRoot::getContext(
-        SoAction *action, SoNode *node, ContextPtr *pdef) 
+        SoAction *action, SoNode *_node, ContextPtr *pdef) 
 {
+    // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
+    // here since we only use it as searching key. But it is probably not a
+    // best practice.
+    auto node = static_cast<SoFCSelectionRoot*>(_node);
+
     const SoFullPath *path = (const SoFullPath*)action->getCurPath();
     bool secondary = false;
     if(action->isOfType(SoSelectionElementAction::getClassTypeId()))
@@ -1004,7 +1015,8 @@ SoFCSelectionRoot::ContextPtr *SoFCSelectionRoot::getContext(
         SoNode *n = path->getNode(i);
         if(n->getTypeId().isDerivedFrom(SoFCSelectionRoot::getClassTypeId())) {
             auto sel = static_cast<SoFCSelectionRoot*>(n);
-            stack.push_back(sel);
+            if(secondary || !sel->secondary)
+                stack.push_back(sel);
         }
     }
     if(stack.empty())
@@ -1016,14 +1028,14 @@ SoFCSelectionRoot::ContextPtr *SoFCSelectionRoot::getContext(
         key.push_back(node);
         if(stack.size()>1)
             key.push_back(stack.front());
-        SoFCSelectionRoot *back = static_cast<SoFCSelectionRoot*>(stack.back());
+        SoFCSelectionRoot *back = stack.back();
         if(pdef)
             return &back->contextMap2[key];
         back->contextMap2.erase(key);
         return 0;
     }
 
-    SoFCSelectionRoot *front = static_cast<SoFCSelectionRoot*>(stack.front());
+    SoFCSelectionRoot *front = stack.front();
     stack.front() = node;
     if(pdef) 
         return &front->contextMap[stack];
@@ -1037,9 +1049,13 @@ void SoFCSelectionRoot::_name(SoGLRenderAction * action) {\
         inherited::_name(action);\
     else {\
         pushed = true;\
-        SelStack.push_back(this);\
+        if(!secondary)\
+            SelStack.push_back(this);\
+        SelStack2.push_back(this);\
         inherited::_name(action);\
-        SelStack.pop_back();\
+        SelStack2.pop_back();\
+        if(!secondary)\
+            SelStack.pop_back();\
         pushed = false;\
     }\
 }
@@ -1073,3 +1089,83 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
     }
     inherited::doAction(action);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+
+SO_NODE_SOURCE(SoFCPathAnnotation);
+
+SoFCPathAnnotation::SoFCPathAnnotation()
+{
+    SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
+    path = 0;
+}
+
+SoFCPathAnnotation::~SoFCPathAnnotation()
+{
+    if(path) path->unref();
+}
+
+void SoFCPathAnnotation::finish() 
+{
+    atexit_cleanup();
+}
+
+void SoFCPathAnnotation::initClass(void)
+{
+    SO_NODE_INIT_CLASS(SoFCPathAnnotation,SoSeparator,"Separator");
+}
+
+void SoFCPathAnnotation::GLRender(SoGLRenderAction * action)
+{
+    switch (action->getCurPathCode()) {
+    case SoAction::NO_PATH:
+    case SoAction::BELOW_PATH:
+        this->GLRenderBelowPath(action);
+        break;
+    case SoAction::OFF_PATH:
+        break;
+    case SoAction::IN_PATH:
+        this->GLRenderInPath(action);
+        break;
+    }
+}
+
+void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
+{
+    if(!path)
+        return;
+
+    if (action->isRenderingDelayedPaths()) {
+        SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
+        if (zbenabled) glDisable(GL_DEPTH_TEST);
+        inherited::GLRenderInPath(action);
+        if (zbenabled) glEnable(GL_DEPTH_TEST);
+    }
+    else {
+        SoCacheElement::invalidate(action->getState());
+        auto curPath = action->getCurPath();
+        SoPath *newPath = new SoPath(curPath->getLength()+path->getLength());
+        newPath->append(curPath);
+        newPath->append(path);
+        action->addDelayedPath(newPath);
+    }
+}
+
+void SoFCPathAnnotation::GLRenderInPath(SoGLRenderAction * action)
+{
+    GLRenderBelowPath(action);
+}
+
+void SoFCPathAnnotation::setPath(SoPath *newPath) {
+    if(path) {
+        path->unref();
+        removeAllChildren();
+    }
+    if(!newPath || !newPath->getLength())
+        return;
+
+    path = newPath->copy();
+    path->ref();
+    addChild(path->getNode(0));
+}
+

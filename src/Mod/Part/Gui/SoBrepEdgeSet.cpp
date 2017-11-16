@@ -110,7 +110,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
 
-    renderHighlight(action,ctx);
+    if(!action->isRenderingDelayedPaths())
+        renderHighlight(action,ctx);
     if(ctx && ctx->selectionIndex.size()) {
         if(ctx->isSelectAll()) {
             if(ctx2 && ctx2->selectionIndex.size()) {
@@ -118,9 +119,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
                 renderSelection(action,ctx2); 
             }else
                 renderSelection(action,ctx); 
+            if(action->isRenderingDelayedPaths())
+                renderHighlight(action,ctx);
             return;
         }
-        renderSelection(action,ctx); 
+        if(!action->isRenderingDelayedPaths())
+            renderSelection(action,ctx); 
     }
     if(ctx2 && ctx2->selectionIndex.size())
         renderSelection(action,ctx2,false);
@@ -129,9 +133,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-    renderHighlight(action,ctx);
+    if(!action->isRenderingDelayedPaths())
+        renderHighlight(action,ctx);
     if(ctx && ctx->selectionIndex.size())
         renderSelection(action,ctx);
+    if(action->isRenderingDelayedPaths())
+        renderHighlight(action,ctx);
 //#endif
 }
 

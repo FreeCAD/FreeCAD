@@ -65,6 +65,7 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
     ADD_PROPERTY(ShowInTree,(true));
+    ADD_PROPERTY(OnTopWhenSelected,(false));
 
     sPixmap = "Feature";
 }
@@ -345,6 +346,10 @@ bool ViewProviderDocumentObject::canDropObjectEx(
 
 bool ViewProviderDocumentObject::showInTree() const {
     return ShowInTree.getValue();
+}
+
+bool ViewProviderDocumentObject::onTopWhenSelected() const {
+    return OnTopWhenSelected.getValue();
 }
 
 Base::BoundBox3d ViewProviderDocumentObject::getBoundingBox() const {

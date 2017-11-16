@@ -424,8 +424,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
     renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size())
-        renderSelection(action,ctx);
+    renderSelection(action,ctx);
 //#endif
     
     if(normalCacheUsed)
@@ -525,7 +524,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // distinguishable selection highlight. The above material binding
         // override method can't, because Coin does not support per part
         // emission color
-        renderHighlight(action,ctx);
+        if(!action->isRenderingDelayedPaths())
+            renderHighlight(action,ctx);
         if(ctx && ctx->selectionIndex.size()) {
             if(ctx->isSelectAll()) {
                 if(ctx2) {
@@ -533,12 +533,19 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                     renderSelection(action,ctx2); 
                 } else
                     renderSelection(action,ctx); 
+                if(action->isRenderingDelayedPaths())
+                    renderHighlight(action,ctx);
                 return;
             }
-            renderSelection(action,ctx); 
+            if(!action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
         }
         if(ctx2) {
             renderSelection(action,ctx2,false);
+            if(action->isRenderingDelayedPaths()) {
+                renderSelection(action,ctx); 
+                renderHighlight(action,ctx);
+            }
             return;
         }
     }
@@ -616,6 +623,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         materialIndex.setNum(0);
         if(notify) enableNotify(notify);
         state->pop();
+    }else if(action->isRenderingDelayedPaths()) {
+        renderSelection(action,ctx); 
+        renderHighlight(action,ctx);
     }
 }
 #endif
@@ -1107,6 +1117,9 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
 {
+    if(!ctx || ctx->selectionIndex.empty())
+        return;
+
     SoState * state = action->getState();
 
     if(push) {

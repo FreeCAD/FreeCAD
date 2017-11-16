@@ -74,6 +74,7 @@
 # include <Inventor/SoOffscreenRenderer.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -91,6 +92,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
@@ -465,6 +467,16 @@ void View3DInventorViewer::init()
     pcViewProviderRoot->addChild(cb);
 #endif
 
+    pcGroupOnTop = new SoFCSelectionRoot(true);
+    pcGroupOnTop->ref();
+    pcViewProviderRoot->addChild(pcGroupOnTop);
+
+    pcGroupOnTopPickStyle = new SoPickStyle;
+    pcGroupOnTopPickStyle->ref();
+    pcGroupOnTopPickStyle->style = SoPickStyle::UNPICKABLE;
+    // pcGroupOnTopPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
+    pcGroupOnTopPickStyle->setOverride(true);
+
     pcEditingRoot = new SoSeparator;
     pcEditingRoot->ref();
     pcEditingTransform = new SoTransform;
@@ -564,6 +576,8 @@ View3DInventorViewer::~View3DInventorViewer()
     this->backlight->unref();
     this->backlight = 0;
 
+    this->pcGroupOnTop->unref();
+
     this->pcEditingRoot->unref();
     this->pcEditingTransform->unref();
 
@@ -605,19 +619,129 @@ void View3DInventorViewer::initialize()
     this->axiscrossSize = 10;
 }
 
+void View3DInventorViewer::clearGroupOnTop() {
+    if(!pcGroupOnTop->getNumChildren()) 
+        return;
+
+    SoSelectionElementAction action(SoSelectionElementAction::None,true);
+    action.apply(pcGroupOnTop);
+    pcGroupOnTop->removeAllChildren();
+}
+
+void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char *subname) {
+    if(!obj || !obj->getNameInDocument())
+        return;
+    auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+            Application::Instance->getViewProvider(obj));
+    if(!vp || !vp->isSelectable() || !vp->isShow())
+        return;
+    auto svp = vp;
+    if(subname && *subname) {
+        auto sobj = obj->getSubObject(subname);
+        if(!sobj || !sobj->getNameInDocument())
+            return;
+        if(sobj!=obj) {
+            svp = dynamic_cast<ViewProviderDocumentObject*>(
+                    Application::Instance->getViewProvider(sobj));
+            if(!svp || !svp->isSelectable())
+                return;
+        }
+    }
+    if(!svp->onTopWhenSelected())
+        return;
+
+    std::vector<ViewProvider*> groups;
+    auto grpVp = vp;
+    for(auto childVp=vp;;childVp=grpVp) {
+        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(childVp->getObject());
+        if(!grp || !grp->getNameInDocument()) break;
+        grpVp = dynamic_cast<ViewProviderDocumentObject*>(
+                Application::Instance->getViewProvider(grp));
+        if(!grpVp) break;
+        auto childRoot = grpVp->getChildRoot();
+        auto modeSwitch = grpVp->getModeSwitch();
+        auto idx = modeSwitch->whichChild.getValue();
+        if(idx<0 || idx>=modeSwitch->getNumChildren() ||
+           modeSwitch->getChild(idx)!=childRoot)
+        {
+            FC_LOG("skip " << obj->getNameInDocument() << '.' << (subname?subname:"") 
+                    << ", hidden inside geo group");
+            return;
+        }
+        if(childRoot->findChild(childVp->getRoot())<0) {
+            FC_WARN("cannot find '" << childVp->getObject()->getNameInDocument() 
+                    << "' in geo group '" << grp->getNameInDocument() << "'");
+            break;
+        }
+        groups.push_back(grpVp);
+    }
+
+    FC_LOG("add annoation " << obj->getNameInDocument() << '.' << (subname?subname:""));
+
+    SoPath *path = new SoPath(10);
+    path->ref();
+
+    for(auto it=groups.rbegin();it!=groups.rend();++it) {
+        auto grpVp = *it;
+        path->append(grpVp->getRoot());
+        path->append(grpVp->getModeSwitch());
+        path->append(grpVp->getChildRoot());
+    }
+
+    auto det = vp->getDetailPath(subname, static_cast<SoFullPath*>(path),true);
+    if(path->getLength()) {
+        auto node = new SoFCPathAnnotation;
+        node->setPath(path);
+        pcGroupOnTop->addChild(node);
+        if(det) {
+            SoSelectionElementAction action(SoSelectionElementAction::Append,true);
+            action.setElement(det);
+            SoTempPath tmpPath(path->getLength()+2);
+            tmpPath.ref();
+            tmpPath.append(pcGroupOnTop);
+            tmpPath.append(node);
+            tmpPath.append(path);
+            action.apply(&tmpPath);
+            tmpPath.unrefNoDelete();
+        }
+    }
+    delete det;
+    path->unref();
+}
+
 /// @cond DOXERR
 void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                                     Gui::SelectionSingleton::MessageType Reason)
 {
     Q_UNUSED(rCaller); 
-    if (Reason.Type == SelectionChanges::AddSelection ||
-        Reason.Type == SelectionChanges::RmvSelection ||
-        Reason.Type == SelectionChanges::SetSelection ||
-        Reason.Type == SelectionChanges::ClrSelection ||
-        Reason.Type == SelectionChanges::SetPreselectSignal) {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
+    switch(Reason.Type) {
+    case SelectionChanges::SetSelection:
+    case SelectionChanges::AddSelection:     
+    case SelectionChanges::RmvSelection: {
+        if(Reason.pDocName && strcmp(getDocument()->getDocument()->getName(),Reason.pDocName)==0) {
+            clearGroupOnTop();
+            pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
+            const auto &sels = Selection().getSelection(Reason.pDocName,false);
+            for(auto it = sels.rbegin();it!=sels.rend();++it)
+                addToGroupOnTop(it->pObject,it->SubName);
+        }
+        break;
+    } case SelectionChanges::ClrSelection:{
+        if(!Reason.pDocName || !*Reason.pDocName)
+            clearGroupOnTop();
+        else{
+            auto doc = App::GetApplication().getDocument(Reason.pDocName);
+            if(doc && getDocument()->getDocument() == doc)
+                clearGroupOnTop();
+        }
+        break;
+    } case SelectionChanges::SetPreselectSignal:
+        break;
+    default:
+        return;
     }
+    SoFCSelectionAction cAct(Reason);
+    cAct.apply(pcViewProviderRoot);
 }
 /// @endcond
 
@@ -3098,15 +3222,3 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent *e)
     inherited::dragLeaveEvent(e);
 }
 
-void View3DInventorViewer::reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2) {
-    if(!vp1 || !vp2) return;
-    auto node1 = vp1->getRoot();
-    auto node2 = vp2->getRoot();
-    if(!node1 || !node2) return;
-    auto idx1 = pcViewProviderRoot->findChild(node1);
-    auto idx2 = pcViewProviderRoot->findChild(node2);
-    if(idx1<0 || idx2<0 || idx1<idx2) return;
-    pcViewProviderRoot->replaceChild(idx1,node2);
-    pcViewProviderRoot->replaceChild(idx2,node1);
-}
-    

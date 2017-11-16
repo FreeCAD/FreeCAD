@@ -54,6 +54,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;
+class SoPickStyle;
 
 namespace Gui {
 
@@ -62,7 +63,6 @@ class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
 class Document;
-class SoFCUnifiedSelection;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
@@ -132,6 +132,8 @@ public:
     /// Observer message from the Selection
     virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                           Gui::SelectionSingleton::MessageType Reason);
+    void addToGroupOnTop(App::DocumentObject *obj, const char *subname);
+    void clearGroupOnTop();
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);
@@ -203,8 +205,6 @@ public:
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
     std::string getOverrideMode() {return overrideMode;}
-    /// make sure vp1's node is before vp2's node
-    void reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2);
     //@}
 
     /** @name Making pictures */
@@ -418,6 +418,8 @@ private:
     SoDirectionalLight* backlight;
 
     SoSeparator * pcViewProviderRoot;
+    SoSeparator * pcGroupOnTop;
+    SoPickStyle *pcGroupOnTopPickStyle;
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;
     bool restoreEditingRoot;

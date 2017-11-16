@@ -127,6 +127,7 @@ public:
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const;
     /// indicates if the ViewProvider can be selected
+    virtual bool onTopWhenSelected() const {return false;}
     virtual bool isSelectable(void) const {return true;}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
