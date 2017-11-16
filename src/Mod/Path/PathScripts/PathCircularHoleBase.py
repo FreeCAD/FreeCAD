@@ -39,15 +39,18 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class ObjectOp(PathOp.ObjectOp):
     '''Base class for proxy objects of all operations on circular holes.'''
@@ -155,23 +158,7 @@ class ObjectOp(PathOp.ObjectOp):
                 return len(obj.Locations) != 0
             return False
 
-        if len(obj.Base) == 0 and not haveLocations(self, obj):
-            features = []
-            if self.baseIsArchPanel(obj, self.baseobject):
-                holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
-                tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
-                for holeNr, hole in enumerate(holeshapes):
-                    PathLog.debug('Entering new HoleShape')
-                    for wireNr, wire in enumerate(hole.Wires):
-                        PathLog.debug('Entering new Wire')
-                        for edgeNr, edge in enumerate(wire.Edges):
-                            if PathUtils.isDrillable(self.baseobject, edge, tooldiameter):
-                                PathLog.debug('Found drillable hole edges: {}'.format(edge))
-                                features.append((self.baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
-            else:
-                features = self.findHoles(obj, self.baseobject)
-            obj.Base = features
-            obj.Disabled = []
+        # if len(obj.Base) == 0 and not haveLocations(self, obj):
 
         holes = []
 
@@ -194,6 +181,24 @@ class ObjectOp(PathOp.ObjectOp):
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses.'''
         pass
+
+    def findAllHoles(self, obj):
+        features = []
+        if self.baseIsArchPanel(obj, self.baseobject):
+            holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
+            tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+            for holeNr, hole in enumerate(holeshapes):
+                PathLog.debug('Entering new HoleShape')
+                for wireNr, wire in enumerate(hole.Wires):
+                    PathLog.debug('Entering new Wire')
+                    for edgeNr, edge in enumerate(wire.Edges):
+                        if PathUtils.isDrillable(self.baseobject, edge, tooldiameter):
+                            PathLog.debug('Found drillable hole edges: {}'.format(edge))
+                            features.append((self.baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
+        else:
+            features = self.findHoles(obj, self.baseobject)
+        obj.Base = features
+        obj.Disabled = []
 
     def findHoles(self, obj, baseobject):
         '''findHoles(obj, baseobject) ... inspect baseobject and identify all features that resemble a straight cricular hole.'''
