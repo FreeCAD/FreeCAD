@@ -36,7 +36,7 @@ def compute():
         FreeCAD.Console.PrintError("Wrong input! Only numbers allowed...\n")
     
     
-    #tooth hight
+    #tooth hieght
     h=2*y*m+c    
 
     #pitch diameter
@@ -259,7 +259,7 @@ la.addWidget(t3)
 l3 = QtGui.QLineEdit()
 l3.setText("20")
 la.addWidget(l3)
-t4 = QtGui.QLabel("Tooth hight factor (y)")   
+t4 = QtGui.QLabel("Tooth height factor (y)")   
 la.addWidget(t4)
 l4 = QtGui.QLineEdit()
 l4.setText("1.0")
