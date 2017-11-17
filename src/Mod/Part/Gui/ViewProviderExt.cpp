@@ -481,10 +481,10 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     wireframe->addChild(lineset);
 
     // normal viewing with edges and points
+    pcNormalRoot->addChild(pcPointsRoot);
     pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
-    pcNormalRoot->addChild(pcPointsRoot);
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
