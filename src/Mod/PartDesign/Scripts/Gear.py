@@ -36,7 +36,7 @@ def compute():
         FreeCAD.Console.PrintError("Wrong input! Only numbers allowed...\n")
     
     
-    #tooth hieght
+    #tooth height
     h=2*y*m+c    
 
     #pitch diameter
