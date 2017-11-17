@@ -109,7 +109,7 @@ class ShaftFeature:
         if oldLength == 0:
             # create feature
             self.feature = self.Doc.addObject("PartDesign::Revolution","RevolutionShaft")
-            self.feature.Sketch = self.sketch
+            self.feature.Profile = self.sketch
             self.feature.ReferenceAxis = (self.sketch,['H_Axis'])
             self.feature.Angle = 360.0
             self.Doc.recompute()
