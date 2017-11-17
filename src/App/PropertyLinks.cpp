@@ -1581,10 +1581,12 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, 
 
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if(_pcLink)
-        _pcLink->_removeBackLink(owner);
-    if(lValue)
-        lValue->_addBackLink(owner);
+    if (!owner->testStatus(ObjectStatus::Destroy)) {
+        if(_pcLink)
+            _pcLink->_removeBackLink(owner);
+        if(lValue)
+            lValue->_addBackLink(owner);
+    }
 #endif
     if(docInfo!=info) {
         unlink();
@@ -1622,7 +1624,7 @@ void PropertyXLink::setValue(
     }
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if(_pcLink)
+    if (_pcLink && !owner->testStatus(ObjectStatus::Destroy))
         _pcLink->_removeBackLink(owner);
 #endif
     _pcLink = 0;

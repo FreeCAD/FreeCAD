@@ -110,7 +110,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Origin.h"
 #include "OriginGroupExtension.h"
 
-FC_LOG_LEVEL_INIT("App::Document", true);
+FC_LOG_LEVEL_INIT("App::Document", true, true);
 
 using Base::Console;
 using Base::streq;
@@ -2298,15 +2298,28 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
     if(d->objectMap.empty())
         return 0;
 
-    // get the sorted vector of all objects in the document and go though it from the end
-    vector<DocumentObject*> topoSortedObjects = topologicalSort(objs);
+#if 0
+    //////////////////////////////////////////////////////////////////////////
+    // Comment by Realthunder: 
+    // the topologicalSrot() below cannot handle partial recompute, haven't got
+    // time to figure out the code yet, simply use back boost::topological_sort
+    // for now, that is, rely on getDependencyList() to do the sorting. The
+    // downside is, it didn't take advantage of the ready built InList, nor will
+    // it report for cyclic dependency.
+    //////////////////////////////////////////////////////////////////////////
 
-    if (topoSortedObjects.size() != d->objectArray.size()){
+    // get the sorted vector of all dependent objects and go though it from the end
+    auto depObjs = getDependencyList(objs.empty()?d->objectArray:objs);
+    vector<DocumentObject*> topoSortedObjects = topologicalSort(depObjs);
+    if (topoSortedObjects.size() != depObjs.size()){
         cerr << "App::Document::recompute(): topological sort fails, invalid DAG!" << endl;
         return -1;
     }
-
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
+#else
+    auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,false,true);
+    for (auto objIt = topoSortedObjects.begin(); objIt != topoSortedObjects.end(); ++objIt){
+#endif
         // ask the object if it should be recomputed  
         if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
             objectCount++;
@@ -2322,13 +2335,13 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
             }
         }
     }
-#ifdef FC_DEBUG
-    // check if all objects are recalculated which were thouched 
-    for (auto objectIt : d->objectArray) {
-        if (objectIt->isTouched())
-            cerr << "Document::recompute(): " << objectIt->getNameInDocument() << " still touched after recompute" << endl;
+    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        // check if all objects are recalculated which were thouched 
+        for (auto obj : topoSortedObjects) {
+            if (obj->isTouched())
+                FC_ERR(obj->getNameInDocument() << " still touched after recompute");
+        }
     }
-#endif
 
     return objectCount;
 }
@@ -2340,12 +2353,13 @@ std::vector<App::DocumentObject*> Document::topologicalSort(const std::vector<Ap
     // topological sort algorithm described here:
     // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
     vector < App::DocumentObject* > ret;
-    ret.reserve(d->objectArray.size());
+    ret.reserve(objs.size());
     map < App::DocumentObject*,int > countMap;
 
-    const auto &objectArray = objs.empty()?d->objectArray:objs;
-    for (auto obj : objectArray) {
-        if(!obj->getNameInDocument() || obj->getDocument()!=this)
+    for (auto obj : objs) {
+        // We now support externally linked objects
+        // if(!obj->getNameInDocument() || obj->getDocument()!=this)
+        if(!obj->getNameInDocument())
             continue;
         //we need inlist with unique entries
         auto in = obj->getInList();
