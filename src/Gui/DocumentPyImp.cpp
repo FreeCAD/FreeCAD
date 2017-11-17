@@ -311,19 +311,6 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
     Py_Return;
 }
 
-PyObject* DocumentPy::reorderViewObjects(PyObject *args)
-{
-    PyObject *obj1,*obj2;
-    if (!PyArg_ParseTuple(args, "O!O!", &(Gui::ViewProviderPy::Type), &obj1,
-                &(Gui::ViewProviderPy::Type), &obj2)) 
-        return 0;
-
-    auto *vp1 = static_cast<Gui::ViewProviderPy*>(obj1)->getViewProviderPtr();
-    auto *vp2 = static_cast<Gui::ViewProviderPy*>(obj2)->getViewProviderPtr();
-    getDocumentPtr()->reorderViewProviders(vp1,vp2);
-    Py_Return;
-}
-
 PyObject* DocumentPy::scrollToTreeItem(PyObject *args)
 {
     PyObject *view;

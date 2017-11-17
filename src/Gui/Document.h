@@ -233,11 +233,6 @@ public:
             std::string *subname=0, int *mode=0) const;
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
-    /// make sure vp1 is root node is before vp2's in all 3D views
-    //
-    /// In case either view provider belongs to a geo group, then reorder using
-    /// its parent's root
-    void reorderViewProviders(ViewProvider *vp1, ViewProvider *vp2);
     //@}
 
     /** @name methods for the UNDO REDO handling */

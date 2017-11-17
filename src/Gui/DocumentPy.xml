@@ -96,11 +96,6 @@
 			  <UserDocu>toggleTreeItem(DocObject,int=0) - change TreeItem of a document object 0:Toggle,1:Collaps,2:Expand</UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Methode Name="reorderViewObjects">
-		  <Documentation>
-              <UserDocu>reorderViewObject(viewObject1,viewObject2) - put viewObject1's node before viewObject2's in all 3D views</UserDocu>
-		  </Documentation>
-	  </Methode>
       <Methode Name="scrollToTreeItem">
           <Documentation>
               <UserDocu>scrollToTreeItem(ViewObject) - scroll the tree view to the item of a view object</UserDocu>
