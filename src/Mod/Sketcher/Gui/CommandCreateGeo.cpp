@@ -6060,6 +6060,7 @@ public:
         , EditCurve(2)
         , BaseGeoId(-1)
         , ExtendFromStart(false)
+        , SavedExtendFromStart(false)
         , Increment(0)
     {
     }
