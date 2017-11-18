@@ -2535,13 +2535,18 @@ struct ShapeInfo{
     std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,
             double min_dist, double max_dist, gp_Pnt *pentry) {
 
+        std::list<TopoDS_Shape> wires;
+
         if(myWires.empty() ||
-           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
+           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion()) 
+        {
             nearest(pstart);
+            if(myWires.empty())
+                return wires;
+        }
 
         if(pentry) *pentry = myBestPt;
 
-        std::list<TopoDS_Shape> wires;
         if(min_dist < 0.01)
             min_dist = 0.01;
         while(true) {
