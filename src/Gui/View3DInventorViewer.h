@@ -38,6 +38,7 @@
 #include <QImage>
 
 #include <Gui/Selection.h>
+#include <Gui/NaviCube.h>
 
 class SoTranslation;
 class SoTransform;
