@@ -834,7 +834,7 @@ class TaskPanel(object):
             page.pageGetFields()
 
     def panelSetFields(self):
-        '''panelSetFields() ... invoked to trigger a complete transfer of the model's propeties to the UI.'''
+        '''panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI.'''
         PathLog.track()
         for page in self.featurePages:
             page.pageSetFields()
