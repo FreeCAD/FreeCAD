@@ -236,6 +236,8 @@ void SketcherSettingsColors::saveSettings()
     ui->DefaultSketcherLineWidth->onSave();
 
     ui->CursorTextColor->onSave();
+    ui->CreateCrosshairColor->onSave();
+    ui->CreateLineColor->onSave();
 }
 
 void SketcherSettingsColors::loadSettings()
@@ -258,6 +260,8 @@ void SketcherSettingsColors::loadSettings()
     ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
+    ui->CreateCrosshairColor->onRestore();
+    ui->CreateLineColor->onRestore();
 }
 
 /**
