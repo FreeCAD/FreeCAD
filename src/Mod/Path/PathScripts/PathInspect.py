@@ -143,13 +143,13 @@ class GCodeEditorDialog(QtGui.QDialog):
         layout.addWidget(self.buttons)
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
-        self.editor.selectionChanged.connect(self.hightlightpath)
+        self.editor.selectionChanged.connect(self.highlightpath)
         self.finished.connect(self.cleanup)
 
     def cleanup(self):
         FreeCAD.ActiveDocument.removeObject(self.selectionobj.Name)
 
-    def hightlightpath(self):
+    def highlightpath(self):
         cursor = self.editor.textCursor()
         sp = cursor.selectionStart()
         ep = cursor.selectionEnd()
