@@ -214,7 +214,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
 
 TaskAttacher::~TaskAttacher()
 {
-    visibilityAutomation(false);
+    try {
+        visibilityAutomation(false);
+    }
+    catch (...) {
+    }
 
     connectDelObject.disconnect();
     delete ui;

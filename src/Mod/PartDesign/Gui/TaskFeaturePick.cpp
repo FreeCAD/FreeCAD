@@ -507,7 +507,7 @@ TaskDlgFeaturePick::~TaskDlgFeaturePick()
     //do the work now as before in accept() the dialog is still open, hence the work
     //function could not open another dialog
     if (accepted) {
-        workFunction(pick->buildFeatures());
+        try { workFunction(pick->buildFeatures()); } catch (...) {}
     } else if (abortFunction) {
 
         // Get rid of the TaskFeaturePick before the TaskDialog dtor does. The
