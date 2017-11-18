@@ -164,7 +164,7 @@ App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
         return new App::DocumentObjectExecReturn("Curves are disjoint.");
     }
     catch (StdFail_NotDone) {
-        return new App::DocumentObjectExecReturn("A curve was not a b-spline and could not be converted into one.");
+        return new App::DocumentObjectExecReturn("A curve was not a B-spline and could not be converted into one.");
     }
     catch (Standard_Failure& e) {
 
@@ -331,7 +331,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                 ShapeConstruct_Curve scc;
                 Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                 if (spline.IsNull())
-                    Standard_Failure::Raise("A curve was not a b-spline and could not be converted into one.");
+                    Standard_Failure::Raise("A curve was not a B-spline and could not be converted into one.");
                 gp_Trsf transf = heloc2.Transformation();
                 spline->Transform(transf); // apply original transformation to control points
                 crvs.push_back(spline);

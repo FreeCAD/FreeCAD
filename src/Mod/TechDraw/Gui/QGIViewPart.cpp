@@ -273,7 +273,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                                Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y),
                                Rez::guiX(it->pnts[3].x), Rez::guiX(it->pnts[3].y));
               } else {                                                 //can only handle lines,quads,cubes
-                  Base::Console().Error("Bad pole count (%d) for BezierSegment of BSpline geometry\n",it->poles);
+                  Base::Console().Error("Bad pole count (%d) for BezierSegment of B-spline geometry\n",it->poles);
                   path.lineTo(it->pnts[1].x, it->pnts[1].y);         //show something for debugging
               }
           }

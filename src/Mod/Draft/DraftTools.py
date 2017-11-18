@@ -745,8 +745,8 @@ class BSpline(Line):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_BSpline',
                 'Accel' : "B, S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "B-Spline"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "B-spline"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         Line.Activated(self,name=translate("draft","BSpline"))
@@ -824,7 +824,7 @@ class BSpline(Line):
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
-                self.commit(translate("draft","Create BSpline"),
+                self.commit(translate("draft","Create B-spline"),
                             ['points = '+pts,
                              'spline = Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
                              'Draft.autogroup(spline)'])
@@ -4460,7 +4460,7 @@ class AddPoint(Modifier):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_AddPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Add Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing wire/bspline")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing Wire or B-spline")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -4485,7 +4485,7 @@ class DelPoint(Modifier):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_DelPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Remove Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing wire or bspline")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing Wire or B-spline")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -4509,8 +4509,8 @@ class WireToBSpline(Modifier):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_WireToBSpline',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to BSpline"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts between Wire and BSpline")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to B-spline"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts between Wire and B-spline")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
