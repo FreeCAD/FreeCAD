@@ -56,8 +56,8 @@ CmdApproxSurface::CmdApproxSurface()
 {
     sAppModule      = "Reen";
     sGroup          = QT_TR_NOOP("Reverse Engineering");
-    sMenuText       = QT_TR_NOOP("Approximate B-Spline surface...");
-    sToolTipText    = QT_TR_NOOP("Approximate a B-Spline surface");
+    sMenuText       = QT_TR_NOOP("Approximate B-spline surface...");
+    sToolTipText    = QT_TR_NOOP("Approximate a B-spline surface");
     sWhatsThis      = "Reen_ApproxSurface";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/FitSurface";

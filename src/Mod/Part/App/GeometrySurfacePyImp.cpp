@@ -760,7 +760,7 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
             return new BSplineSurfacePy(new GeomBSplineSurface(cvt.Surface()));
         }
         else {
-            Standard_Failure::Raise("Cannot convert to B-Spline surface");
+            Standard_Failure::Raise("Cannot convert to B-spline surface");
         }
     }
     catch (Standard_Failure& e) {

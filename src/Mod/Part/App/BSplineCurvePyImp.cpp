@@ -85,7 +85,7 @@ int BSplineCurvePy::PyInit(PyObject* args, PyObject* kwd)
         return -1;
     }
 
-    PyErr_SetString(PyExc_TypeError, "B-Spline constructor accepts:\n"
+    PyErr_SetString(PyExc_TypeError, "B-spline constructor accepts:\n"
         "-- poles, [ periodic, degree, interpolate ]\n"
         "-- empty parameter list\n");
     return -1;

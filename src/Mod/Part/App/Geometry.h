@@ -148,10 +148,10 @@ public:
 
     TopoDS_Shape toShape() const;
     /*!
-     * \brief toBSpline Converts the curve to a B-Spline
+     * \brief toBSpline Converts the curve to a B-spline
      * \param This is the start parameter of the curve
      * \param This is the end parameter of the curve
-     * \return a B-Spline curve
+     * \return a B-spline curve
      */
     GeomBSplineCurve* toBSpline(double first, double last) const;
     /*!

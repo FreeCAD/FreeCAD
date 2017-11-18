@@ -369,7 +369,7 @@ GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
     if (spline.IsNull())
-        throw Base::RuntimeError("Conversion to B-Spline failed");
+        throw Base::RuntimeError("Conversion to B-spline failed");
     return new GeomBSplineCurve(spline);
 }
 

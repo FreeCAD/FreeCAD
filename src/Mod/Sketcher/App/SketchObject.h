@@ -206,7 +206,7 @@ public:
      */
     int deleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
     /*!
-     \brief Approximates the given geometry with a B-Spline
+     \brief Approximates the given geometry with a B-spline
      \param GeoId - the geometry to approximate
      \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
      \retval bool - returns true if the approximation succeeded, or false if it did not succeed.
