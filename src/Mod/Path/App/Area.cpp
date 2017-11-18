@@ -454,7 +454,7 @@ void Area::add(const TopoDS_Shape &shape,short op) {
     clean();
     if(op!=OperationCompound && myShapes.empty())
         op = OperationUnion;
-    myShapes.push_back(Shape(op,shape));
+    myShapes.emplace_back(op,shape);
 }
 
 
@@ -2197,7 +2197,7 @@ struct GetWires {
         :wires(ws),rtree(rt),params(rp)
     {}
     void operator()(const TopoDS_Shape &shape, int type) {
-        wires.push_back(WireInfo());
+        wires.emplace_back();
         WireInfo &info = wires.back();
         if(type == TopAbs_WIRE)
             info.wire = TopoDS::Wire(shape);
@@ -2585,10 +2585,10 @@ struct ShapeInfoBuilder {
     void operator()(const TopoDS_Shape &shape, int type) {
         gp_Pln pln;
         if(!getShapePlane(shape,pln)){
-            myList.push_back(ShapeInfo(shape,myParams));
+            myList.emplace_back(shape,myParams);
             return;
         }
-        myList.push_back(ShapeInfo(pln,shape,myParams));
+        myList.emplace_back(pln,shape,myParams);
         if(myArcPlaneFound ||
            myArcPlane==Area::ArcPlaneNone ||
            myArcPlane==Area::ArcPlaneVariable)
@@ -2786,7 +2786,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         }
         TopExp_Explorer xp(comp,TopAbs_EDGE);
         if(xp.More())
-            shape_list.push_back(ShapeInfo(comp,rparams));
+            shape_list.emplace_back(comp,rparams);
     }else{
         //first pass, find plane of each shape
         for(auto &shape : shapes) {
