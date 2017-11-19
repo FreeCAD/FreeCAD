@@ -1231,7 +1231,11 @@ class Snapper:
             self.toolbar.addAction(b)
             QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
             self.toolbarButtons.append(b)
-        # restoring states 
+        # set status tip where needed
+        for b in self.toolbar.actions():
+            if len(b.statusTip()) == 0:
+                b.setStatusTip(b.toolTip())
+        # restoring states
         t = Draft.getParam("snapModes","111111111101111")
         if t:
             c = 0
