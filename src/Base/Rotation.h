@@ -103,9 +103,12 @@ public:
     static Rotation makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder = "ZXY");
 
 
+void evaluateVector ();
 private:
     void normalize();
     double quat[4];
+	Vector3d _axis; // the axis kept not to lose direction when angle is 0
+	double _angle; // this angle to keep the angle chozen by the user
 };
 
 }
