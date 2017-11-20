@@ -23,6 +23,7 @@
 #***************************************************************************/
 
 import FreeCAD, os, unittest, tempfile
+import math
 
 
 #---------------------------------------------------------------------------
@@ -1262,18 +1263,24 @@ class DocumentExpressionCases(unittest.TestCase):
     self.Obj1 = self.Doc.addObject("App::FeatureTest","Test")
     self.Obj2 = self.Doc.addObject("App::FeatureTest","Test")
 
+  def assertAlmostEqual (self, v1, v2) :
+    if (math.fabs(v2-v1) > 1E-12) :
+      self.assertEqual(v1,v2)
+
+			
   def testExpression(self):
     # set the object twice to test that the backlinks are removed when overwriting the expression
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
     self.Obj1.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(0,0,1),10))
     self.Doc.recompute()
-    self.assertEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+    self.assertAlmostEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+	
     # clear the expression
     self.Obj2.setExpression('Placement.Rotation.Angle', None)
-    self.assertEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+    self.assertAlmostEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
     self.Doc.recompute()
-    self.assertEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
+    self.assertAlmostEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
     # touch the objects to perform a recompute
     self.Obj1.Placement = self.Obj1.Placement
     self.Obj2.Placement = self.Obj2.Placement
