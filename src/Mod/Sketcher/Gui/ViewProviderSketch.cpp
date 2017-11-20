@@ -1618,58 +1618,64 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
     SoNode *tail = path->getTail();
     SoNode *tailFather = path->getNode(path->getLength()-2);
 
-    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i)
+    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i) {
         if (edit->constrGroup->getChild(i) == tailFather) {
             SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
-            if(sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
+            if (sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
                 SoInfo *constrIds = NULL;
-                if(tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+                if (tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
                     // First icon was hit
                     constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID));
-
-                } else {
+                }
+                else {
                     // Assume second icon was hit
-                    if(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()){
+                    if (CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()) {
                         constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
                     }
                 }
-                if(constrIds) {
+
+                if (constrIds) {
                     QString constrIdsStr = QString::fromLatin1(constrIds->string.getValue().getString());
-                    if(edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
+                    if (edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
                         // If it's a combined constraint icon
 
                         // Screen dimensions of the icon
                         SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
                         // Center of the icon
                         SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
-                        // Coordinates of the mouse cursor on the icon, origin at top-left
+                        // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
+                        // but bottom-left for OIV.
+                        // The coordinates are needed in Qt format, i.e. from top to bottom.
                         int iconX = cursorPos[0] - iconCoords[0] + iconSize[0]/2,
-                            iconY = iconCoords[1] - cursorPos[1] + iconSize[1]/2;
+                            iconY = cursorPos[1] - iconCoords[1] - iconSize[1]/2;
+                        iconY = iconSize[1] - iconY;
 
-                        for(ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
+                        for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
-                            if(b->first.contains(iconX, iconY))
+                            if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
-                                for(std::set<int>::iterator k = b->second.begin();
-                                    k != b->second.end(); ++k)
+                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
                                     constrIndices.insert(*k);
+                            }
                         }
-                    } else {
+                    }
+                    else {
                         // It's a constraint icon, not a combined one
                         QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
-                        while(!constrIdStrings.empty())
+                        while (!constrIdStrings.empty())
                             constrIndices.insert(constrIdStrings.takeAt(0).toInt());
                     }
                 }
             }
-                else {
+            else {
                 // other constraint icons - eg radius...
                 constrIndices.clear();
                 constrIndices.insert(i);
             }
             break;
-
         }
+    }
+
     return constrIndices;
 }
 
@@ -3139,11 +3145,12 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
             if(bb == boundingBoxesVec.begin()) {
                 // The first bounding box is for the icon at left, so assign
                 // all IDs for that type of constraint to the icon.
-                for(std::vector<int>::iterator j = ids.begin();
-                    j != ids.end(); ++j)
+                for(std::vector<int>::iterator j = ids.begin(); j != ids.end(); ++j)
                     nextIds.insert(*j);
-            } else
+            }
+            else {
                 nextIds.insert(*(id++));
+            }
 
             ConstrIconBB newBB(bb->adjusted(0, oldHeight, 0, oldHeight),
                                nextIds);
