@@ -182,9 +182,11 @@ class PathDressupTagTaskPanel:
 
     def generateNewTags(self):
         count = self.form.sbCount.value()
+        PathLog.track(count)
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
-
+        self.Positions = self.obj.Positions
+        self.Disabled  = self.obj.Disabled
         self.updateTagsView()
 
     def updateModel(self):
@@ -212,7 +214,7 @@ class PathDressupTagTaskPanel:
 
     def updateTagsViewWith(self, tags):
         self.tags = tags
-        self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in self.tags]
+        self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in tags]
         self.Disabled = [i for (i,t) in enumerate(self.tags) if not t[2]]
         self.updateTagsView()
 
