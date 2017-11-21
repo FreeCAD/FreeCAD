@@ -64,11 +64,11 @@ struct NavigationStyleP {
     {
         this->animationsteps = 0;
         this->animationdelta = 0;
+        this->animsensor = 0;
         this->sensitivity = 2.0f;
         this->resetcursorpos = false;
         this->dragPointFound = false;
         this->dragAtCursor = false;
-        this->animsensor = 0;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };

@@ -217,7 +217,7 @@ public:
     void slotDeletedObject(const Gui::ViewProvider& Obj);
 
 protected:
-    bool computeAlignment(const std::vector<PickedPoint>& unnavPts, const std::vector<PickedPoint>& fixPts);
+    bool computeAlignment(const std::vector<PickedPoint>& movPts, const std::vector<PickedPoint>& fixPts);
     void continueAlignment();
     void showInstructions();
     /** @name Probe picking */

@@ -470,7 +470,7 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
 
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::ALL);
-    sa.setSearchingAll(TRUE);
+    sa.setSearchingAll(true);
     sa.setType(Gui::SoFCSelection::getClassTypeId());
     sa.apply(pcRoot);
 

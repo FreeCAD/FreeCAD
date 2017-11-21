@@ -192,9 +192,15 @@ int main( int argc, char ** argv )
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc,argv);
         QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-        QString msg = QString::fromLatin1(e.what());
+        QString msg = QString::fromUtf8(e.what());
         QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-        QMessageBox::information(0, appName, s);
+
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setWindowTitle(appName);
+        msgBox.setDetailedText(msg);
+        msgBox.setText(s);
+        msgBox.exec();
         exit(0);
     }
     catch (const Base::Exception& e) {
