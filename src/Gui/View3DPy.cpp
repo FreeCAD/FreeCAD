@@ -1116,7 +1116,7 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        int mode = (int)(_view->getViewer()->stereoMode()); 
+        int mode = (int)(_view->getViewer()->stereoMode());
         return Py::String(StereoTypeEnums[mode]);
     }
     catch (const Base::Exception& e) {
@@ -2163,49 +2163,49 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 {
-	PyObject* dragger;
-	char* type;
-	PyObject* method;
-	if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger, &type, &method))
-		throw Py::Exception();
+    PyObject* dragger;
+    char* type;
+    PyObject* method;
+    if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger, &type, &method))
+        throw Py::Exception();
 
-	//Check if dragger is a SoDragger object and cast
-	void* ptr = 0;
-	try {
-		Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
-	}
-	catch (const Base::Exception&) {
-		throw Py::Exception("The first argument must be of type SoDragger");
-	}
+    //Check if dragger is a SoDragger object and cast
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        throw Py::Exception("The first argument must be of type SoDragger");
+    }
 
-	SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
-	try {
-		if (strcmp(type, "addFinishCallback") == 0) {
-			drag->removeFinishCallback(draggerCallback, method);
-		}
-		else if (strcmp(type, "addStartCallback") == 0) {
-			drag->removeStartCallback(draggerCallback, method);
-		}
-		else if (strcmp(type, "addMotionCallback") == 0) {
-			drag->removeMotionCallback(draggerCallback, method);
-		}
-		else if (strcmp(type, "addValueChangedCallback") == 0) {
-			drag->removeValueChangedCallback(draggerCallback, method);
-		}
-		else {
-			std::string s;
-			std::ostringstream s_out;
-			s_out << type << " is not a valid dragger callback type";
-			throw Py::Exception(s_out.str());
-		}
+    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+    try {
+        if (strcmp(type, "addFinishCallback") == 0) {
+            drag->removeFinishCallback(draggerCallback, method);
+        }
+        else if (strcmp(type, "addStartCallback") == 0) {
+            drag->removeStartCallback(draggerCallback, method);
+        }
+        else if (strcmp(type, "addMotionCallback") == 0) {
+            drag->removeMotionCallback(draggerCallback, method);
+        }
+        else if (strcmp(type, "addValueChangedCallback") == 0) {
+            drag->removeValueChangedCallback(draggerCallback, method);
+        }
+        else {
+            std::string s;
+            std::ostringstream s_out;
+            s_out << type << " is not a valid dragger callback type";
+            throw Py::Exception(s_out.str());
+        }
 
-		callbacks.remove(method);
-		Py_DECREF(method);
-		return Py::Callable(method, false);
-	}
-	catch (const Py::Exception&) {
-		throw;
-	}
+        callbacks.remove(method);
+        Py_DECREF(method);
+        return Py::Callable(method, false);
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
 }
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)

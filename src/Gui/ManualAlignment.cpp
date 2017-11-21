@@ -28,7 +28,6 @@
 # include <QLabel>
 # include <QMenu>
 # include <QMessageBox>
-# include <QGLWidget>
 # include <QPainter>
 # include <QSplitter>
 # include <QStatusBar>

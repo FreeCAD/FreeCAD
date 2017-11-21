@@ -161,7 +161,7 @@ std::string Property::encodeAttribute(const std::string& str)
     for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
         if (*it == '<')
             tmp += "&lt;";
-        else if (*it == '"')
+        else if (*it == '\"')
             tmp += "&quot;";
         else if (*it == '\'')
             tmp += "&apos;";
@@ -170,9 +170,11 @@ std::string Property::encodeAttribute(const std::string& str)
         else if (*it == '>')
             tmp += "&gt;";
         else if (*it == '\r')
-            tmp += "&#xD;";
+            tmp += "&#13;";
         else if (*it == '\n')
-            tmp += "&#xA;";
+            tmp += "&#10;";
+        else if (*it == '\t')
+            tmp += "&#9;";
         else
             tmp += *it;
     }
