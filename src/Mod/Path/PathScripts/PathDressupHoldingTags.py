@@ -651,7 +651,7 @@ class PathData:
         return ordered
 
     def pointIsOnPath(self, p):
-        v = Part.Vertex(FreeCAD.Vector(p.x, p.y, self.minZ))
+        v = Part.Vertex(self.pointAtBottom(p))
         PathLog.debug("pt = (%f, %f, %f)" % (v.X, v.Y, v.Z))
         for e in self.bottomEdges:
             indent = "{} ".format(e.distToShape(v)[0])
@@ -660,6 +660,8 @@ class PathData:
                 return True
         return False
 
+    def pointAtBottom(self, p):
+        return FreeCAD.Vector(p.x, p.y, self.minZ)
 
 class ObjectTagDressup:
 
@@ -958,6 +960,10 @@ class ObjectTagDressup:
             self.setup(obj)
         return self.pathData.pointIsOnPath(point)
 
+    def pointAtBottom(self, obj, point):
+        if not hasattr(self, 'pathData'):
+            self.setup(obj)
+        return self.pathData.pointAtBottom(point)
 
 
 def Create(baseObject, name = 'DressupTag'):

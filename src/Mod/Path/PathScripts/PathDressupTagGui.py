@@ -419,7 +419,7 @@ class PathDressupTagViewProvider:
             self.switch.removeChild(tag.sep)
         tags = []
         for i, p in enumerate(positions):
-            tag = HoldingTagMarker(p, self.colors)
+            tag = HoldingTagMarker(self.obj.Proxy.pointAtBottom(self.obj, p), self.colors)
             tag.setEnabled(not i in disabled)
             tags.append(tag)
             self.switch.addChild(tag.sep)
