@@ -58,7 +58,7 @@
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
 # include <basewrapper.h>
-# include <conversions.h>
+# include <sbkconverter.h>
 # include <sbkmodule.h>
 # include <typeresolver.h>
 # include <shiboken.h>
@@ -75,7 +75,7 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
 # include <basewrapper.h>
-# include <conversions.h>
+# include <sbkconverter.h>
 # include <sbkmodule.h>
 # include <typeresolver.h>
 # include <shiboken.h>
@@ -1254,8 +1254,8 @@ void PyResource::load(const char* name)
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns FALSE, 
- * otherwise it returns TRUE.
+ * If the sender widget does not exist or no resource has been loaded this method returns false, 
+ * otherwise it returns true.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 {
