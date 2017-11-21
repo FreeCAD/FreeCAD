@@ -416,6 +416,7 @@ PythonConsole::PythonConsole(QWidget *parent)
   : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(NULL)
 {
     d = new PythonConsoleP();
+    d->interactive = false;
 
     // create an instance of InteractiveInterpreter
     try { 
