@@ -124,4 +124,5 @@ def Create(name):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectDrilling(obj)
+    proxy.findAllHoles(obj)
     return obj

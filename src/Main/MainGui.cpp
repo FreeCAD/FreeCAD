@@ -208,7 +208,7 @@ int main( int argc, char ** argv )
         QApplication app(argc,argv);
         QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg;
-        msg = QObject::tr("While initializing %1 the  following exception occurred: '%2'\n\n"
+        msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n"
                           "Python is searching for its files in the following directories:\n%3\n\n"
                           "Python version information:\n%4\n")
                           .arg(appName).arg(QString::fromUtf8(e.what()))

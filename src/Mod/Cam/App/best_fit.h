@@ -59,7 +59,7 @@ public:
     /*! \brief Load the input-shapes. Must be called before running the main program
 
         \param InputMesh Input-mesh
-        \param CAD_Shape  Input-shape
+        \param CAD_Shape Input-shape
     */
     void Load(const MeshCore::MeshKernel &InputMesh, const TopoDS_Shape &CAD_Shape);
 
