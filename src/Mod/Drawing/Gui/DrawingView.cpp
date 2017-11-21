@@ -567,7 +567,7 @@ void DrawingView::print(QPrinter* printer)
 
         if (doPrint && printer->orientation() != this->m_orientation) {
             int ret = QMessageBox::warning(this, tr("Different orientation"),
-                tr("The printer uses a different orientation  than the drawing.\n"
+                tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
                    QMessageBox::Yes | QMessageBox::No);
             if (ret != QMessageBox::Yes)

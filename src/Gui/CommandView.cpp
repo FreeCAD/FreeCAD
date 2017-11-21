@@ -1865,9 +1865,9 @@ StdCmdViewCreate::StdCmdViewCreate()
 {
     sGroup      = QT_TR_NOOP("Standard-View");
     sMenuText   = QT_TR_NOOP("Create new view");
-    sToolTipText= QT_TR_NOOP("Creates a new  view window for the active document");
+    sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
     sWhatsThis  = "Std_ViewCreate";
-    sStatusTip  = QT_TR_NOOP("Creates a new  view window for the active document");
+    sStatusTip  = QT_TR_NOOP("Creates a new view window for the active document");
     sPixmap     = "window-new";
     eType         = Alter3DView;
 }

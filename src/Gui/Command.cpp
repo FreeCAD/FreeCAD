@@ -84,7 +84,7 @@ using namespace Gui::DockWnd;
  *
  * \section wayout Way out
  * To solve these problems we have introduced the command framework to decouple QAction and MainWindow. The base classes of the framework are
- * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command  world. 
+ * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world. 
  *
  * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created 
  * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a menu or toolbar.
