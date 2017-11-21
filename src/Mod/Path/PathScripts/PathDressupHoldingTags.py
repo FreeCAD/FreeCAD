@@ -773,7 +773,11 @@ class ObjectTagDressup:
                     debugEdge(edge, '++++++++')
                     if pathData.rapid.isRapid(edge):
                         v = edge.Vertexes[1]
-                        commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
+                        if not commands and PathGeom.isRoughly(0, v.X) and PathGeom.isRoughly(0, v.Y) and not PathGeom.isRoughly(0, v.Z):
+                            # The very first move is just to move to ClearanceHeight
+                            commands.append(Path.Command('G0', {'Z': v.Z}))
+                        else:
+                            commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
                     else:
                         commands.extend(PathGeom.cmdsForEdge(edge, segm=segm))
                 edge = None
