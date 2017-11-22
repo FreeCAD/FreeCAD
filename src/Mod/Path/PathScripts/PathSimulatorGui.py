@@ -102,17 +102,23 @@ class PathSimulation:
         else:
             self.cutMaterial.Shape = self.stock
         self.busy = False
-        self.SetupOperation(0)
+        self.tool = None
+        for i in range(len(self.activeOps)):
+          self.SetupOperation(0)
+          if (self.tool is not None):
+            break
         self.iprogress = 0
         self.UpdateProgress()
 
     def SetupOperation(self, itool):
         self.operation = self.activeOps[itool]
-        self.tool = self.operation.ToolController.Tool
-        toolProf = self.CreateToolProfile(self.tool, Vector(0,1,0), Vector(0,0,0), self.tool.Diameter / 2.0)
-        self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0,0,0), Vector(0,0,1)))
-        self.cutTool.ViewObject.show()
-        self.voxSim.SetCurrentTool(self.tool)
+        if hasattr(self.operation, "ToolController"):
+          self.tool = self.operation.ToolController.Tool
+        if (self.tool is not None):
+          toolProf = self.CreateToolProfile(self.tool, Vector(0,1,0), Vector(0,0,0), self.tool.Diameter / 2.0)
+          self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0,0,0), Vector(0,0,1)))
+          self.cutTool.ViewObject.show()
+          self.voxSim.SetCurrentTool(self.tool)
         self.icmd = 0
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
         #self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
