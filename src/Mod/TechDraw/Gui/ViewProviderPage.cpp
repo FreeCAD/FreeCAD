@@ -346,7 +346,14 @@ void ViewProviderPage::startRestoring()
 void ViewProviderPage::finishRestoring()
 {
     m_docReady = true;
-    static_cast<void>(showMDIViewPage());
+    //control drawing opening on restore based on Preference
+    //mantis #2967 ph2 - don't even show blank page
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
+    if (autoUpdate) {
+        static_cast<void>(showMDIViewPage());
+    }
     Gui::ViewProviderDocumentObject::finishRestoring();
 }
 
