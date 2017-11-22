@@ -117,7 +117,7 @@ class ObjectDressup:
         obj.addProperty('App::PropertyLength', 'Height', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Height of tags.'))
         obj.addProperty('App::PropertyAngle', 'Angle', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Angle of tag plunge and ascent.'))
         obj.addProperty('App::PropertyLength', 'Radius', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Radius of the fillet for the tag.'))
-        obj.addProperty('App::PropertyVectorList', 'Positions', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Locations of interted holding tags'))
+        obj.addProperty('App::PropertyVectorList', 'Positions', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Locations of inserted holding tags'))
         obj.addProperty('App::PropertyIntegerList', 'Disabled', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'IDs of disabled holding tags'))
         obj.addProperty('App::PropertyInteger', 'SegmentationFactor', 'Tag', QtCore.QT_TRANSLATE_NOOP('PathDressup_Tag', 'Factor determining the # of segments used to approximate rounded tags.'))
 

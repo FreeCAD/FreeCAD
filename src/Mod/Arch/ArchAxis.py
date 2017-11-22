@@ -101,7 +101,7 @@ class _CommandAxis:
         return {'Pixmap'  : 'Arch_Axis',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
                 'Accel': "A, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
@@ -120,7 +120,7 @@ class _CommandAxisSystem:
         return {'Pixmap'  : 'Arch_Axis_System',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_AxisSystem","Axis System"),
                 'Accel': "X, S",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes")}
 
     def Activated(self):
         if FreeCADGui.Selection.getSelection():

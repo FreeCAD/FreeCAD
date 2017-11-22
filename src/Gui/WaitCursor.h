@@ -29,7 +29,7 @@
 namespace Gui {
 
 /**
- * This class sets a waitcursor automatically while a  slow operation is running. 
+ * This class sets a waitcursor automatically while a slow operation is running. 
  * Therefore you just have to create an instance of WaitCursor before the time 
  * consuming operation starts.
  *

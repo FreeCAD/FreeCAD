@@ -236,9 +236,9 @@ public:
     std::vector<std::string> getUndoVector(void) const;
     /// Get an Redo string vector with the Redo names
     std::vector<std::string> getRedoVector(void) const;
-    /// Will UNDO  one or more steps
+    /// Will UNDO one or more steps
     void undo(int iSteps);
-    /// Will REDO  one or more steps
+    /// Will REDO one or more steps
     void redo(int iSteps) ;
     //@}
 

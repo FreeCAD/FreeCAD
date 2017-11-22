@@ -151,7 +151,7 @@ public:
     };
 
 private:
-    // unimplemented copy ctor and assignement operator
+    // unimplemented copy ctor and assignment operator
     DOMPrintFilter(const DOMPrintFilter&);
     DOMPrintFilter & operator = (const DOMPrintFilter&);
 

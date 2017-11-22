@@ -272,7 +272,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //----------all this were preparations. Now comes the event handling! ----------
 
-    SbBool processed = false;//a return value for the  BlahblahblahNavigationStyle::processSoEvent
+    SbBool processed = false;//a return value for the BlahblahblahNavigationStyle::processSoEvent
     bool propagated = false;//an internal flag indicating that the event has been already passed to inherited, to suppress the automatic doing of this at the end.
     //goto finalize = return processed. Might be important to do something before done (none now).
 

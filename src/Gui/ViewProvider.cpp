@@ -532,7 +532,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer* viewer) const
 {
-    // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
+    // Note: There seems to be a bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
     
     //first get the path to this node and calculate the current setTransformation

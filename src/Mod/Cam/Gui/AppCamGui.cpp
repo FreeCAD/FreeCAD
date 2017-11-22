@@ -55,7 +55,7 @@ extern "C"
             return;
         }
 
-        // load dependend module
+        // load dependent module
         try {
             Base::Interpreter().loadModule("Cam");
         }

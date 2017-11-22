@@ -48,7 +48,7 @@ public:
     App::DocumentObject*       getExtendedObject();
     const App::DocumentObject* getExtendedObject() const;
   
-    //override if execution is nesseccary
+    //override if execution is necessary
     virtual short extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
     
