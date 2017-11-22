@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
+    <width>294</width>
     <height>182</height>
    </rect>
   </property>
@@ -18,27 +18,21 @@
     <widget class="QWidget" name="wPoint" native="true">
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="lValueX">
+       <widget class="QLabel" name="globalXLabel">
         <property name="text">
          <string>Global X</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::InputField" name="ifValueX"/>
-      </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="lValueY">
+       <widget class="QLabel" name="globalYLabel">
         <property name="text">
          <string>Global Y</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Gui::InputField" name="ifValueY"/>
-      </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="lValueZ">
+       <widget class="QLabel" name="globalZLabel">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -47,10 +41,45 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="globalX">
+        <property name="decimals">
+         <number>6</number>
+        </property>
+        <property name="minimum">
+         <double>-999999999.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="globalY">
+        <property name="decimals">
+         <number>6</number>
+        </property>
+        <property name="minimum">
+         <double>-999999999.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="ifValueZ">
+       <widget class="Gui::QuantitySpinBox" name="globalZ">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="decimals">
+         <number>6</number>
+        </property>
+        <property name="minimum">
+         <double>-999999999.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>999999999.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -68,9 +97,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

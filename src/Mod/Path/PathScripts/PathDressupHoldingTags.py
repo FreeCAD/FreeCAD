@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
-import DraftGeomUtils
 import Part
 import Path
 import PathScripts
@@ -640,27 +639,29 @@ class PathData:
     def sortedTags(self, tags):
         ordered = []
         for edge in self.bottomEdges:
-            ts = [t for t in tags if DraftGeomUtils.isPtOnEdge(t.originAt(self.minZ), edge)]
+            ts = [t for t in tags if PathGeom.isRoughly(0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 0.1)]
             for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)).Length):
                 tags.remove(t)
                 ordered.append(t)
         # disable all tags that are not on the base wire.
         for tag in tags:
-            PathLog.info("Tag #%d (%.2f, %.2f) not on base wire - disabling\n" % (len(ordered), tag.x, tag.y))
+            PathLog.info("Tag #%d (%.2f, %.2f, %.2f) not on base wire - disabling\n" % (len(ordered), tag.x, tag.y, self.minZ))
             tag.enabled = False
             ordered.append(tag)
         return ordered
 
     def pointIsOnPath(self, p):
-        v = Part.Vertex(FreeCAD.Vector(p.x, p.y, self.minZ))
+        v = Part.Vertex(self.pointAtBottom(p))
         PathLog.debug("pt = (%f, %f, %f)" % (v.X, v.Y, v.Z))
         for e in self.bottomEdges:
             indent = "{} ".format(e.distToShape(v)[0])
             debugEdge(e, indent, True)
-            if PathGeom.isRoughly(v.distToShape(e)[0], 0.0, 1.0):
+            if PathGeom.isRoughly(0.0, v.distToShape(e)[0], 0.1):
                 return True
         return False
 
+    def pointAtBottom(self, p):
+        return FreeCAD.Vector(p.x, p.y, self.minZ)
 
 class ObjectTagDressup:
 
@@ -772,7 +773,11 @@ class ObjectTagDressup:
                     debugEdge(edge, '++++++++')
                     if pathData.rapid.isRapid(edge):
                         v = edge.Vertexes[1]
-                        commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
+                        if not commands and PathGeom.isRoughly(0, v.X) and PathGeom.isRoughly(0, v.Y) and not PathGeom.isRoughly(0, v.Z):
+                            # The very first move is just to move to ClearanceHeight
+                            commands.append(Path.Command('G0', {'Z': v.Z}))
+                        else:
+                            commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
                     else:
                         commands.extend(PathGeom.cmdsForEdge(edge, segm=segm))
                 edge = None
@@ -959,6 +964,10 @@ class ObjectTagDressup:
             self.setup(obj)
         return self.pathData.pointIsOnPath(point)
 
+    def pointAtBottom(self, obj, point):
+        if not hasattr(self, 'pathData'):
+            self.setup(obj)
+        return self.pathData.pointAtBottom(point)
 
 
 def Create(baseObject, name = 'DressupTag'):
