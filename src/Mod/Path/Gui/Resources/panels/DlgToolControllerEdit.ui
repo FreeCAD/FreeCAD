@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>492</width>
-    <height>648</height>
+    <width>386</width>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>474</width>
-        <height>535</height>
+        <width>368</width>
+        <height>441</height>
        </rect>
       </property>
       <attribute name="label">
@@ -87,6 +87,12 @@
           </item>
           <item row="0" column="1">
            <widget class="Gui::QuantitySpinBox" name="horizFeed">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -103,6 +109,12 @@
           </item>
           <item row="1" column="1">
            <widget class="Gui::QuantitySpinBox" name="vertFeed">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -119,6 +131,12 @@
           </item>
           <item row="2" column="1">
            <widget class="Gui::QuantitySpinBox" name="horizRapid">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -135,6 +153,12 @@
           </item>
           <item row="3" column="1">
            <widget class="Gui::QuantitySpinBox" name="vertRapid">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -208,8 +232,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>474</width>
-        <height>535</height>
+        <width>368</width>
+        <height>441</height>
        </rect>
       </property>
       <attribute name="label">
@@ -234,6 +258,12 @@
           </item>
           <item row="0" column="1">
            <widget class="QLineEdit" name="toolName">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="maxLength">
              <number>50</number>
             </property>
@@ -406,6 +436,12 @@
           </item>
           <item row="6" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolDiameter">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -428,6 +464,12 @@
           </item>
           <item row="8" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolLengthOffset">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -447,6 +489,12 @@
           </item>
           <item row="12" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolFlatRadius">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -466,6 +514,12 @@
           </item>
           <item row="14" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolCornerRadius">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -485,6 +539,12 @@
           </item>
           <item row="18" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeHeight">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -504,6 +564,12 @@
           </item>
           <item row="16" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeAngle">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
