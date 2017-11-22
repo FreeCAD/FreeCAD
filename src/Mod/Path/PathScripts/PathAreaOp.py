@@ -185,6 +185,9 @@ class ObjectOp(PathOp.ObjectOp):
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams['preamble'] = False
 
+        if not self.areaOpRetractTool(obj):
+            pathParams['threshold'] = 2.001 * self.radius
+
         if self.endVector is not None:
             pathParams['start'] = self.endVector
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
