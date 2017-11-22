@@ -39,7 +39,7 @@ void AppJtReaderExport initJtReader() {
 
    (void) Py_InitModule("JtReader", JtReader_methods);   /* mod name, table ptr */
 
-   // load dependend module
+   // load dependent module
    Base::Interpreter().loadModule("Mesh");
 
     // Initialize JtTk

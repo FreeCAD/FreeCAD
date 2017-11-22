@@ -39,7 +39,7 @@ extern "C"
 {
     void CamExport initCam()
     {
-        // load dependend module
+        // load dependent module
         try {
             Base::Interpreter().loadModule("Part");
             Base::Interpreter().loadModule("Mesh");

@@ -122,7 +122,7 @@ class Preview(object):
                         if bbox.YMin < -0.01 * B * Units.Metre.Value:
                             del edges[k]
                 sections.extend(edges)
-        # Trabform and join all the BSplines into a shape
+        # Transform and join all the B-splines into a shape
         if not sections:
             msg = QtGui.QApplication.translate(
                 "ship_console",
