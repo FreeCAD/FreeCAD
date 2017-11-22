@@ -2198,7 +2198,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 }
             }
 
-            //now we know where to  start at our PointCloud, its the index t
+            //now we know where to start at our PointCloud, it's the index t
 
             //Calculate the Slave Toolpath for the current flat area
             if (!slave_done)//if we did not calculate the slave toolpath for the current flat area
@@ -2256,7 +2256,7 @@ bool cutting_tools::OffsetWires_Spiral()
             //direction_vector.SetZ(0.0);
             direction_vector.Normalize();
             direction_vector.Multiply(1.0); //Zum testen bauen wir keinen Offset ein
-            //switch the Spiral-direction if the clockwise flag is checked and  the
+            //switch the Spiral-direction if the clockwise flag is checked and the
             //angle between the last and current round is more then 90°
             double angle = direction_vector.Angle(last_direction_vector);
             if (m_UserSettings.clockwise && angle<(D_PI*0.5))
@@ -2374,7 +2374,7 @@ bool cutting_tools::OffsetWires_Spiral()
                         continue;
                     }
                     //We switch to the end and skip the last point
-                    //as its the same as the point at j=0;
+                    //as it's the same as the point at j=0;
                     j=j-2;//As the for puts +1 for each step
                 }
             }
@@ -2514,7 +2514,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 }
             }
 
-            //now we know where to  start at our PointCloud, its the index t
+            //now we know where to start at our PointCloud, it's the index t
 
             //Calculate the Slave Toolpath for the current flat area
             if (!slave_done)//if we did not calculate the slave toolpath for the current flat area
@@ -2559,7 +2559,7 @@ bool cutting_tools::OffsetWires_Spiral()
             //direction_vector.SetZ(0.0);
             direction_vector.Normalize();
             direction_vector.Multiply(10.0);
-            //switch the Spiral-direction if the clockwise flag is checked and  the
+            //switch the Spiral-direction if the clockwise flag is checked and the
             //angle between the last and current round is more then 90°
             double angle = direction_vector.Angle(last_direction_vector);
 
@@ -2677,7 +2677,7 @@ bool cutting_tools::OffsetWires_Spiral()
                         continue;
                     }
                     //We switch to the end and skip the last point
-                    //as its the same as the point at j=0;
+                    //as it's the same as the point at j=0;
                     j=j-2;//As the for puts +1 for each step
                 }
             }

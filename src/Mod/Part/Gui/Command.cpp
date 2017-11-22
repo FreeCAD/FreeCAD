@@ -1210,7 +1210,7 @@ CmdPartMakeFace::CmdPartMakeFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Make face from wires");
-    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g., from a sketch).");
+    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g. from a sketch)");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
 }

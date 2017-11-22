@@ -1161,7 +1161,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
                 it = d->passiveViews.begin();
             }
 
-            // is already  closing the document
+            // is already closing the document
             if (d->_isClosing == false)
                 d->_pcAppWnd->onLastWindowClosed(this);
         }

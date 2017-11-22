@@ -120,13 +120,13 @@ public:
 
     Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa = Standard_False);
 
-//! Creates a Curve  to  access to the geometry of edge \p W.
+//! Creates a Curve to access to the geometry of edge \p W.
     Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol);
 
-//! Sets the  wire \p W.
+//! Sets the wire \p W.
     Standard_EXPORT   void Initialize(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa) ;
 
-//! Sets wire \p W and trimmed  parameter.
+//! Sets wire \p W and trimmed parameter.
     Standard_EXPORT   void Initialize(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol) ;
 
 //! Set the flag Periodic. <br>
@@ -155,7 +155,7 @@ public:
 
 //! Stores in \<T\> the parameters bounding the intervals of continuity \<S\>. <br>
 
-//! The array must provide enough room to  accommodate for the parameters.
+//! The array must provide enough room to accommodate for the parameters.
 //! i.e. T.Length() > NbIntervals()
     Standard_EXPORT   void Intervals(TColStd_Array1OfReal& T,const GeomAbs_Shape S) ;
 
