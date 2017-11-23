@@ -450,7 +450,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets base_name
     #  @param self The python object self
-    #  @param base_name  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
+    #  @param base_name base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
     def set_base_name(self, base_name=None):
         if base_name is None:
             self.base_name = ""
