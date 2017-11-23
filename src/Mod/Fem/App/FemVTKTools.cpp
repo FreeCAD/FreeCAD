@@ -813,7 +813,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
                 }
             }
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("Info: PropertyVectorList %s exported as  vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
+            Base::Console().Message("Info: PropertyVectorList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
         }
         else
             Base::Console().Error("field = static_cast<App::PropertyVectorList*> failed or empty for field: %s", kv.first.c_str());
@@ -833,7 +833,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
                 data->SetValue(i, vec[i]);
 
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("Info: PropertyFloatList %s exported as  vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
+            Base::Console().Message("Info: PropertyFloatList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
         }
     }
 
@@ -841,7 +841,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
 
 void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
     // velocity and pressure are essential, Temperature is optional, so are turbulence related variables
-    std::map<std::string, std::string> cfd_vectors; // vector field  defined in openfoam -> property defined in CfdResult.py
+    std::map<std::string, std::string> cfd_vectors; // vector field defined in openfoam -> property defined in CfdResult.py
     cfd_vectors["Velocity"] = "U";
 
     std::map<std::string, std::string> cfd_scalers;  // varable name defined in openfoam -> property defined in CfdResult.py
@@ -853,7 +853,7 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
     cfd_scalers["TurbulenceSpecificDissipation"] = "omega";
     cfd_scalers["TurbulenceThermalDiffusivity"] = "alphat";
 
-    std::map<std::string, int> cfd_varids; // must agree with definition in Stat calc  Cfd/_TaskPanelCfdResult.py
+    std::map<std::string, int> cfd_varids; // must agree with definition in Stat calc Cfd/_TaskPanelCfdResult.py
     cfd_varids["Ux"] = 0;
     cfd_varids["Uy"] = 1;
     cfd_varids["Uz"] = 2;
@@ -874,7 +874,7 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
 
 void FemVTKTools::exportFluidicResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid) {
     // velocity and pressure are essential, Temperature is optional, so are turbulence related variables
-    static std::map<std::string, std::string> cfd_vectors; // vector field  defined in openfoam -> property defined in CfdResult.py
+    static std::map<std::string, std::string> cfd_vectors; // vector field defined in openfoam -> property defined in CfdResult.py
     cfd_vectors["Velocity"] = "U";
 
     static std::map<std::string, std::string> cfd_scalers;  // varable name defined in openfoam -> property defined in CfdResult.py
@@ -917,7 +917,7 @@ void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, Ap
     //scalers["DisplacementLengths"] = "";  // not yet exported in exportMechanicalResult()
 
     std::map<std::string, int> varids;
-    // id sequence must agree with definition in get_result_stats() of  Fem/_TaskPanelResultShow.py
+    // id sequence must agree with definition in get_result_stats() of Fem/_TaskPanelResultShow.py
     varids["U1"] = 0;   // U1, displacement x axis
     varids["U2"] = 1;
     varids["U3"] = 2;

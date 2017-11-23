@@ -41,7 +41,7 @@ class _FemMeshGmsh():
     def __init__(self, obj):
         self.Type = "FemMeshGmsh"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to  this object
+        obj.Proxy = self  # link between App::DocumentObject to this object
 
         obj.addProperty("App::PropertyLinkList", "MeshBoundaryLayerList", "Base", "Mesh boundaries need inflation layers")
         obj.MeshBoundaryLayerList = []

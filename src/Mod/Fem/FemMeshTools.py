@@ -146,7 +146,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     http://forum.freecadweb.org/viewtopic.php?f=18&p=141133&sid=013c93f496a63872951d2ce521702ffa#p141108
     The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
     the information we are searching for:
-    Is this element part of the node list (searching for elements) or  has this element a face we are searching for?
+    Is this element part of the node list (searching for elements) or has this element a face we are searching for?
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
     '''
