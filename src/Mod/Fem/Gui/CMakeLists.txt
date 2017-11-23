@@ -42,6 +42,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemCcxImp.h
+    DlgSettingsFemExportAbaqusImp.h
     DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmshImp.h
     DlgSettingsFemZ88Imp.h
@@ -82,6 +83,7 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
+    DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGmsh.ui
     DlgSettingsFemZ88.ui
@@ -132,6 +134,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGeneralImp.cpp
     DlgSettingsFemGeneralImp.h
+    DlgSettingsFemExportAbaqus.ui
+    DlgSettingsFemExportAbaqusImp.cpp
+    DlgSettingsFemExportAbaqusImp.h
     DlgSettingsFemGmsh.ui
     DlgSettingsFemGmshImp.cpp
     DlgSettingsFemGmshImp.h
