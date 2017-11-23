@@ -144,7 +144,7 @@ class FemTest(unittest.TestCase):
         seg2.addEdge([1, 2])
 
         inp_file = temp_dir + '/seg2_mesh.inp'
-        seg2.writeABAQUS(inp_file)
+        seg2.writeABAQUS(inp_file, 1, False)
 
         read_file = open(inp_file, 'r')
         read_node_line = 'line was not found'
