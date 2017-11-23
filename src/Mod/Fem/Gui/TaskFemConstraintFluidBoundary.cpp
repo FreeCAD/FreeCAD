@@ -231,7 +231,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     pHeatTransfering = NULL;
     pTurbulenceModel = NULL;
     if (pcSolver != NULL) {
-        //if only it is CFD solver, otherwise  exit by SIGSEGV error,  detect  getPropertyByName() !=  NULL
+        //if only it is CFD solver, otherwise exit by SIGSEGV error, detect getPropertyByName() !=  NULL
         if (pcSolver->getPropertyByName("HeatTransfering")) {
             pHeatTransfering = static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransfering"));
             if (pHeatTransfering->getValue()) {

@@ -360,14 +360,14 @@ class FemGmshTools():
                                     if found_element:  # also
                                         elems = found_element
                                     else:
-                                        FreeCAD.Console.PrintError("One element of the mesh boudary layer " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                                        FreeCAD.Console.PrintError("One element of the mesh boundary layer " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
                                 # print(elems)  # element
                                 if elems not in self.bl_boundary_list:
                                     # fetch settings in DocumentObject, fan setting is not implemented
                                     belem_list.append(elems)
                                     self.bl_boundary_list.append(elems)
                                 else:
-                                    FreeCAD.Console.PrintError("The element " + elems + " of the mesh boundary layer " + mr_obj.Name + " has been added to another mesh  boudary layer.\n")
+                                    FreeCAD.Console.PrintError("The element " + elems + " of the mesh boundary layer " + mr_obj.Name + " has been added to another mesh boundary layer.\n")
                         setting = {}
                         setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
                         setting['ratio'] = mr_obj.GrowthRate

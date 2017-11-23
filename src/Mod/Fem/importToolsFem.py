@@ -208,7 +208,7 @@ def make_femmesh(mesh_data):
 
 
 def fill_femresult_mechanical(results, result_set, span):
-    ''' fills  an FreeCAD FEM mechanical result object with result data
+    ''' fills a FreeCAD FEM mechanical result object with result data
     '''
     no_of_values = None
 
