@@ -1,4 +1,5 @@
 ** written by FreeCAD inp file writer for CalculiX,Abaqus meshes
+** highest dimension mesh elements only.
 
 ** Nodes
 *Node, NSET=Nall
