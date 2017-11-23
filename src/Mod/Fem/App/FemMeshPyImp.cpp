@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <algorithm>
 #include <stdexcept>
 
 #include <Base/VectorPy.h>
@@ -1029,6 +1030,18 @@ Py::Tuple FemMeshPy::getEdges(void) const
     return tuple;
 }
 
+Py::Tuple FemMeshPy::getEdgesOnly(void) const
+{
+    std::set<int> resultSet = getFemMeshPtr()->getEdgesOnly();
+    Py::Tuple tuple(resultSet.size());
+    int index = 0;
+    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
+        tuple.setItem(index++, Py::Long(*it));
+    }
+
+    return tuple;
+}
+
 Py::Long FemMeshPy::getEdgeCount(void) const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbEdges());
@@ -1046,6 +1059,18 @@ Py::Tuple FemMeshPy::getFaces(void) const
     Py::Tuple tuple(ids.size());
     int index = 0;
     for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Long(*it));
+    }
+
+    return tuple;
+}
+
+Py::Tuple FemMeshPy::getFacesOnly(void) const
+{
+    std::set<int> resultSet = getFemMeshPtr()->getFacesOnly();
+    Py::Tuple tuple(resultSet.size());
+    int index = 0;
+    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
         tuple.setItem(index++, Py::Long(*it));
     }
 
