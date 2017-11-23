@@ -71,7 +71,11 @@
         </Methode>
         <Methode Name="writeABAQUS" Const="true">
             <Documentation>
-                <UserDocu>write out as ABAQUS.</UserDocu>
+                <UserDocu>write out as ABAQUS inp
+                    writeABAQUS(file, int elemParam, bool groupParam)
+                    elemParam: 0 = all elements, 1 = highest elements only, 2 = FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
+                    groupParam: true = write group data, false = do not write group data
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setTransform">
