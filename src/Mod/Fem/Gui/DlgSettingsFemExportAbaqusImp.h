@@ -26,12 +26,12 @@
 #ifndef FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 #define FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 
-#include "ui_DlgSettingsFemExportAbaqus.h"
 #include <Gui/PropertyPage.h>
 
 namespace FemGui {
 
-class DlgSettingsFemExportAbaqusImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemExportAbaqusImp
+class Ui_DlgSettingsFemExportAbaqus;
+class DlgSettingsFemExportAbaqusImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -43,6 +43,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    Ui_DlgSettingsFemExportAbaqus* ui;
 };
 
 } // namespace FemGui
