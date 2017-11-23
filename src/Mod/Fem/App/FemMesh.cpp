@@ -1175,11 +1175,16 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
     int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
+    bool groupParam = hGrp->GetBool("AbaqusWriteGroups", false);
     /*
      * elemParam:
      * 0 = all elements
      * 1 = highest elements only
      * 2 = FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
+     *
+     * groupParam:
+     * true = write group data
+     * false = do not write group data
      */
 
     static std::map<std::string, std::vector<int> > elemOrderMap;
@@ -1507,7 +1512,57 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
     anABAQUS_Output << elsetname << std::endl;
 
-    anABAQUS_Output.close();
+    // groups
+    if (groupParam == false) {
+        anABAQUS_Output.close();
+    }
+    else {
+        // get and write group data
+        anABAQUS_Output  << std::endl << "** Group data" << std::endl;
+
+        std::list<int> groupIDs = myMesh->GetGroupIds();
+        for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
+
+            // get and write group info and group definition
+            // TODO group element type code has duplicate code of PyObject* FemMeshPy::getGroupElementType()
+            SMDSAbs_ElementType aElementType = myMesh->GetGroup(*it)->GetGroupDS()->GetType();
+            const char* groupElementType = "";
+            switch(aElementType) {
+                case SMDSAbs_All            : groupElementType = "All"; break;
+                case SMDSAbs_Node           : groupElementType = "Node"; break;
+                case SMDSAbs_Edge           : groupElementType = "Edge"; break;
+                case SMDSAbs_Face           : groupElementType = "Face"; break;
+                case SMDSAbs_Volume         : groupElementType = "Volume"; break;
+                case SMDSAbs_0DElement      : groupElementType = "0DElement"; break;
+                case SMDSAbs_Ball           : groupElementType = "Ball"; break;
+                default                     : groupElementType = "Unknown"; break;
+            }
+            const char* groupName = myMesh->GetGroup(*it)->GetName();
+            anABAQUS_Output << "** GroupID: " << (*it) << " --> GroupName: " << groupName << " --> GroupElementType: " << groupElementType << std::endl;
+
+            if (aElementType == SMDSAbs_Node) {
+                anABAQUS_Output << "*NSET, NSET=" << groupName << std::endl;
+            }
+            else {
+                anABAQUS_Output << "*ELSET, ELSET=" << groupName << std::endl;
+            }
+
+            // get and write group elements
+            std::set<int> ids;
+            SMDS_ElemIteratorPtr aElemIter = myMesh->GetGroup(*it)->GetGroupDS()->GetElements();
+            while (aElemIter->more()) {
+                const SMDS_MeshElement* aElement = aElemIter->next();
+                ids.insert(aElement->GetID());
+            }
+            for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+                anABAQUS_Output << *it << std::endl;
+            }
+
+            // write newline after each group
+            anABAQUS_Output << std::endl;
+        }
+        anABAQUS_Output.close();
+    }
 }
 
 void FemMesh::write(const char *FileName) const
