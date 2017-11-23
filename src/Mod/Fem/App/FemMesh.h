@@ -148,7 +148,7 @@ public:
     /// import from files
     void read(const char *FileName);
     void write(const char *FileName) const;
-    void writeABAQUS(const std::string &Filename) const;
+    void writeABAQUS(const std::string &Filename, int elemParam, bool groupParam) const;
 
 private:
     void copyMeshData(const FemMesh&);
