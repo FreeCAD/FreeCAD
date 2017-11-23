@@ -75,7 +75,7 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyBool", "OptimizeNetgen", "FEM Gmsh Mesh Params", "Optimize tetra elements by use of Netgen")
         obj.OptimizeNetgen = False
 
-        obj.addProperty("App::PropertyBool", "HighOrderOptimize", "FEM Gmsh Mesh Params", "Optimize hight order meshes")
+        obj.addProperty("App::PropertyBool", "HighOrderOptimize", "FEM Gmsh Mesh Params", "Optimize high order meshes")
         obj.HighOrderOptimize = False
 
         obj.addProperty("App::PropertyBool", "RecombineAll", "FEM Gmsh Mesh Params", "Apply recombination algorithm to all surfaces")
