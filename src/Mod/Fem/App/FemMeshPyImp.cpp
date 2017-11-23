@@ -640,13 +640,16 @@ PyObject* FemMeshPy::write(PyObject *args)
 PyObject* FemMeshPy::writeABAQUS(PyObject *args)
 {
     char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+    int elemParam;
+    PyObject* groupParam;
+    if (!PyArg_ParseTuple(args, "etiO!","utf-8",&Name,&elemParam,&PyBool_Type,&groupParam))
         return 0;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
+    bool grpParam = PyObject_IsTrue(groupParam) ? true : false;
 
     try {
-        getFemMeshPtr()->writeABAQUS(EncodedName.c_str());
+        getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());

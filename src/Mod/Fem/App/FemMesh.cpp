@@ -1171,11 +1171,8 @@ void FemMesh::read(const char *FileName)
     }
 }
 
-void FemMesh::writeABAQUS(const std::string &Filename) const
+void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool groupParam) const
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
-    int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
-    bool groupParam = hGrp->GetBool("AbaqusWriteGroups", false);
     /*
      * elemParam:
      * 0 = all elements
@@ -1585,8 +1582,12 @@ void FemMesh::write(const char *FileName) const
         myMesh->ExportDAT(File.filePath().c_str());
     }
     else if (File.hasExtension("inp") ) {
+        // get Abaqus inp prefs
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
+        int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
+        bool groupParam = hGrp->GetBool("AbaqusWriteGroups", false);
         // write ABAQUS Output
-        writeABAQUS(File.filePath());
+        writeABAQUS(File.filePath(), elemParam, groupParam);
     }
 #ifdef FC_USE_VTK
     else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
