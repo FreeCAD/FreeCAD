@@ -27,14 +27,15 @@
 
 #include "Gui/Application.h"
 #include "DlgSettingsFemExportAbaqusImp.h"
+#include "ui_DlgSettingsFemExportAbaqus.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
 DlgSettingsFemExportAbaqusImp::DlgSettingsFemExportAbaqusImp( QWidget* parent )
-    : PreferencePage( parent )
+    : PreferencePage( parent ), ui(new Ui_DlgSettingsFemExportAbaqus)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /*
@@ -43,26 +44,27 @@ DlgSettingsFemExportAbaqusImp::DlgSettingsFemExportAbaqusImp( QWidget* parent )
 DlgSettingsFemExportAbaqusImp::~DlgSettingsFemExportAbaqusImp()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void DlgSettingsFemExportAbaqusImp::saveSettings()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
-    hGrp->SetInt("AbaqusElementChoice", comboBoxElemChoiceParam->currentIndex());
+    hGrp->SetInt("AbaqusElementChoice", ui->comboBoxElemChoiceParam->currentIndex());
 
-    comboBoxElemChoiceParam->onSave();
-    checkBoxWriteGroups->onSave();
+    ui->comboBoxElemChoiceParam->onSave();
+    ui->checkBoxWriteGroups->onSave();
 }
 
 void DlgSettingsFemExportAbaqusImp::loadSettings()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
-    hGrp->SetInt("AbaqusElementChoice", comboBoxElemChoiceParam->currentIndex());
+    hGrp->SetInt("AbaqusElementChoice", ui->comboBoxElemChoiceParam->currentIndex());
 
-    comboBoxElemChoiceParam->onRestore();
-    checkBoxWriteGroups->onRestore();
+    ui->comboBoxElemChoiceParam->onRestore();
+    ui->checkBoxWriteGroups->onRestore();
 }
 
 /**
@@ -71,9 +73,9 @@ void DlgSettingsFemExportAbaqusImp::loadSettings()
 void DlgSettingsFemExportAbaqusImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        int c_index = comboBoxElemChoiceParam->currentIndex();
-        retranslateUi(this);
-        comboBoxElemChoiceParam->setCurrentIndex(c_index);
+        int c_index = ui->comboBoxElemChoiceParam->currentIndex();
+        ui->retranslateUi(this);
+        ui->comboBoxElemChoiceParam->setCurrentIndex(c_index);
     }
     else {
         QWidget::changeEvent(e);
