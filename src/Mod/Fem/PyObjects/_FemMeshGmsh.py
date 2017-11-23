@@ -95,6 +95,9 @@ class _FemMeshGmsh():
         obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
         obj.Algorithm3D = 'Automatic'  # ?
 
+        obj.addProperty("App::PropertyBool", "GroupsOfNodes", "FEM Gmsh Mesh Params", "For each group create not only the elements but the nodes too.")
+        obj.GroupsOfNodes = False
+
     def execute(self, obj):
         return
 
