@@ -1291,9 +1291,121 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
         volTypeMap.insert(std::make_pair(elemOrderMap["C3D15"].size(), "C3D15"));
     }
 
+    // get all data --> Extract Nodes and Elements of the current SMESH datastructure
+    typedef std::map<int, Base::Vector3d> VertexMap;
+    typedef std::map<int, std::vector<int> > NodesMap;
+    typedef std::map<std::string, NodesMap> ElementsMap;
+
+    // get nodes
+    VertexMap vertexMap;  // empty nodes map
+    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
+    Base::Vector3d current_node;
+    while (aNodeIter->more()) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
+        current_node = _Mtrx * current_node;
+        vertexMap[aNode->GetID()] = current_node;
+    }
+
+    // get volumes
+    ElementsMap elementsMapVol;  // empty volumes map
+    SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
+    while (aVolIter->more()) {
+        const SMDS_MeshVolume* aVol = aVolIter->next();
+        std::pair<int, std::vector<int> > apair;
+        apair.first = aVol->GetID();
+        int numNodes = aVol->NbNodes();
+        std::map<int, std::string>::iterator it = volTypeMap.find(numNodes);
+        if (it != volTypeMap.end()) {
+            const std::vector<int>& order = elemOrderMap[it->second];
+            for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
+                apair.second.push_back(aVol->GetNode(*jt)->GetID());
+            elementsMapVol[it->second].insert(apair);
+        }
+    }
+
+    //get faces
+    ElementsMap elementsMapFac;  // empty faces map used for elemParam = 1  and elementsMapVol is not empty
+    if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty())) {
+        // for ememParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
+        // we gone fill the elementsMapFac with all faces
+        SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
+        while (aFaceIter->more()) {
+            const SMDS_MeshFace* aFace = aFaceIter->next();
+            std::pair<int, std::vector<int> > apair;
+            apair.first = aFace->GetID();
+            int numNodes = aFace->NbNodes();
+            std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
+            if (it != faceTypeMap.end()) {
+                const std::vector<int>& order = elemOrderMap[it->second];
+                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
+                    apair.second.push_back(aFace->GetNode(*jt)->GetID());
+                elementsMapFac[it->second].insert(apair);
+
+            }
+        }
+    }
+    if (elemParam == 2) {
+        // we gone fill the elementsMapFac with the facesOnly
+        std::set<int> facesOnly = getFacesOnly();
+        for (std::set<int>::iterator itfa = facesOnly.begin(); itfa != facesOnly.end(); ++itfa) {
+            std::pair<int, std::vector<int> > apair;
+            apair.first = *itfa;
+            const SMDS_MeshElement* aFace = myMesh->GetMeshDS()->FindElement(*itfa);
+            int numNodes = aFace->NbNodes();
+            std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
+            if (it != faceTypeMap.end()) {
+                const std::vector<int>& order = elemOrderMap[it->second];
+                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
+                    apair.second.push_back(aFace->GetNode(*jt)->GetID());
+                elementsMapFac[it->second].insert(apair);
+            }
+        }
+    }
+
+    // get edges
+    ElementsMap elementsMapEdg;  // empty edges map used for elemParam == 1 and either elementMapVol or elementsMapFac are not empty
+    if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty() && elementsMapFac.empty())) {
+        // for ememParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
+        // we gone fill the elementsMapEdg with all edges
+        SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
+        while (aEdgeIter->more()) {
+            const SMDS_MeshEdge* aEdge = aEdgeIter->next();
+            std::pair<int, std::vector<int> > apair;
+            apair.first = aEdge->GetID();
+            int numNodes = aEdge->NbNodes();
+            std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
+            if (it != edgeTypeMap.end()) {
+                const std::vector<int>& order = elemOrderMap[it->second];
+                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
+                    apair.second.push_back(aEdge->GetNode(*jt)->GetID());
+                elementsMapEdg[it->second].insert(apair);
+            }
+        }
+    }
+    if (elemParam == 2) {
+        // we gone fill the elementsMapEdg with the edgesOnly
+        std::set<int> edgesOnly = getEdgesOnly();
+        for (std::set<int>::iterator ited = edgesOnly.begin(); ited != edgesOnly.end(); ++ited) {
+            std::pair<int, std::vector<int> > apair;
+            apair.first = *ited;
+            const SMDS_MeshElement* aEdge = myMesh->GetMeshDS()->FindElement(*ited);
+            int numNodes = aEdge->NbNodes();
+            std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
+            if (it != edgeTypeMap.end()) {
+                const std::vector<int>& order = elemOrderMap[it->second];
+                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
+                    apair.second.push_back(aEdge->GetNode(*jt)->GetID());
+                elementsMapEdg[it->second].insert(apair);
+            }
+        }
+    }
+
+    // write all data to file
     std::ofstream anABAQUS_Output;
     anABAQUS_Output.open(Filename.c_str());
     anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+
     // add some text and make sure one of the known elemParam values is used
     anABAQUS_Output << "** written by FreeCAD inp file writer for CalculiX,Abaqus meshes" << std::endl;
     switch(elemParam){
@@ -1306,24 +1418,9 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
             throw std::runtime_error("Not known ABAQUS element choice parameter, [0|1|2] are allowed.");
     }
 
-    // add nodes
-    //
+    // write nodes
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
-    typedef std::map<int, Base::Vector3d> VertexMap;
-    VertexMap vertexMap;
-
-    //Extract Nodes and Elements of the current SMESH datastructure
-    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-
-    Base::Vector3d current_node;
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
-        current_node = _Mtrx * current_node;
-        vertexMap[aNode->GetID()] = current_node;
-    }
-
     // This way we get sorted output.
     // See http://forum.freecadweb.org/viewtopic.php?f=18&t=12646&start=40#p103004
     for (VertexMap::iterator it = vertexMap.begin(); it != vertexMap.end(); ++it) {
@@ -1334,194 +1431,82 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     }
     anABAQUS_Output << std::endl << std::endl;;
 
-    typedef std::map<int, std::vector<int> > NodesMap;
-    typedef std::map<std::string, NodesMap> ElementsMap;
-    ElementsMap elementsMap;
-
-    // volumes
-    // get volumes
-    SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
-    while (aVolIter->more()) {
-        const SMDS_MeshVolume* aVol = aVolIter->next();
-        std::pair<int, std::vector<int> > apair;
-        apair.first = aVol->GetID();
-
-        int numNodes = aVol->NbNodes();
-        std::map<int, std::string>::iterator it = volTypeMap.find(numNodes);
-        if (it != volTypeMap.end()) {
-            const std::vector<int>& order = elemOrderMap[it->second];
-            for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                apair.second.push_back(aVol->GetNode(*jt)->GetID());
-            elementsMap[it->second].insert(apair);
-        }
-    }
 
     // write volumes to file
-    for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
-        anABAQUS_Output << "** Volume elements" << std::endl;
-        anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Evolumes" << std::endl;
-        for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            anABAQUS_Output << jt->first;
-            // Calculix allows max 16 enntries in one line, an hexa20 has more !
-            int ct = 0;  // counter
-            bool first_line = true;
-            for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt, ++ct) {
-                if (ct < 15) {
-                    anABAQUS_Output  << ", " << *kt;
-                }
-                else {
-                    if (first_line == true) {
-                        anABAQUS_Output << "," << std::endl;
-                        first_line = false;
-                    }
-                    anABAQUS_Output << *kt << ", ";
-                }
-            }
-            anABAQUS_Output << std::endl;
-        }
-    anABAQUS_Output << std::endl;
-    }
-
     std::string elsetname = "";
-    if (!elementsMap.empty()) {
-        if (elemParam == 1) {
-            anABAQUS_Output << "** Define element set Eall" << std::endl;
-            anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
-            anABAQUS_Output << "Evolumes" << std::endl;
-            anABAQUS_Output.close();
-            return; // done
-        }
-        else  // elemParam = 0 or 2
-            elsetname += "Evolumes, ";
-    }
-
-    // faces
-    //get faces
-    elementsMap.clear();
-    if (elemParam == 2) {
-        // we gone fill the elementsMap with the facesOnly
-        std::set<int> facesOnly = getFacesOnly();
-        for (std::set<int>::iterator itfa = facesOnly.begin(); itfa != facesOnly.end(); ++itfa) {
-            std::pair<int, std::vector<int> > apair;
-            apair.first = *itfa;
-            const SMDS_MeshElement* aFace = myMesh->GetMeshDS()->FindElement(*itfa);
-
-            int numNodes = aFace->NbNodes();
-            std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
-            if (it != faceTypeMap.end()) {
-                const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aFace->GetNode(*jt)->GetID());
-                elementsMap[it->second].insert(apair);
+    if (!elementsMapVol.empty()) {
+        for (ElementsMap::iterator it = elementsMapVol.begin(); it != elementsMapVol.end(); ++it) {
+            anABAQUS_Output << "** Volume elements" << std::endl;
+            anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Evolumes" << std::endl;
+            for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+                anABAQUS_Output << jt->first;
+                // Calculix allows max 16 enntries in one line, an hexa20 has more !
+                int ct = 0;  // counter
+                bool first_line = true;
+                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt, ++ct) {
+                    if (ct < 15) {
+                        anABAQUS_Output  << ", " << *kt;
+                    }
+                    else {
+                        if (first_line == true) {
+                            anABAQUS_Output << "," << std::endl;
+                            first_line = false;
+                        }
+                        anABAQUS_Output << *kt << ", ";
+                    }
+                }
+                anABAQUS_Output << std::endl;
             }
         }
-    }
-    else {  // elemParam = 0 or 1
-        SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
-        while (aFaceIter->more()) {
-            const SMDS_MeshFace* aFace = aFaceIter->next();
-            std::pair<int, std::vector<int> > apair;
-            apair.first = aFace->GetID();
-
-            int numNodes = aFace->NbNodes();
-            std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
-            if (it != faceTypeMap.end()) {
-                const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aFace->GetNode(*jt)->GetID());
-                elementsMap[it->second].insert(apair);
-
-            }
-        }
+        elsetname += "Evolumes";
+        anABAQUS_Output << std::endl;
     }
 
     // write faces to file
-    for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
-        anABAQUS_Output << "** Face elements" << std::endl;
-        anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Efaces" << std::endl;
-        for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            anABAQUS_Output << jt->first;
-            for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-                anABAQUS_Output << ", " << *kt;
-            }
-            anABAQUS_Output << std::endl;
-        }
-    anABAQUS_Output << std::endl;
-    }
-
-    if (!elementsMap.empty()) {
-        if (elemParam == 1) {
-            anABAQUS_Output << "** Define element set Eall" << std::endl;
-            anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
-            anABAQUS_Output << "Efaces" << std::endl;
-            anABAQUS_Output.close();
-            return; // done
-        }
-        else   // elemParam = 0 or 2
-            elsetname += "Efaces, ";
-    }
-
-    // edges
-    // get edges
-    elementsMap.clear();
-    if (elemParam == 2) {
-        // we gone fill the elementsMap with the edgesOnly
-        std::set<int> edgesOnly = getEdgesOnly();
-        for (std::set<int>::iterator ited = edgesOnly.begin(); ited != edgesOnly.end(); ++ited) {
-            std::pair<int, std::vector<int> > apair;
-            apair.first = *ited;
-            const SMDS_MeshElement* aEdge = myMesh->GetMeshDS()->FindElement(*ited);
-
-            int numNodes = aEdge->NbNodes();
-            std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
-            if (it != edgeTypeMap.end()) {
-                const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aEdge->GetNode(*jt)->GetID());
-                elementsMap[it->second].insert(apair);
+    if (!elementsMapFac.empty()) {
+        for (ElementsMap::iterator it = elementsMapFac.begin(); it != elementsMapFac.end(); ++it) {
+            anABAQUS_Output << "** Face elements" << std::endl;
+            anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Efaces" << std::endl;
+            for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+                anABAQUS_Output << jt->first;
+                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+                    anABAQUS_Output << ", " << *kt;
+                }
+                anABAQUS_Output << std::endl;
             }
         }
-    }
-    else {  // elemParam = 0 or 1
-        SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
-        while (aEdgeIter->more()) {
-            const SMDS_MeshEdge* aEdge = aEdgeIter->next();
-            std::pair<int, std::vector<int> > apair;
-            apair.first = aEdge->GetID();
-
-            int numNodes = aEdge->NbNodes();
-            std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
-            if (it != edgeTypeMap.end()) {
-                const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aEdge->GetNode(*jt)->GetID());
-                elementsMap[it->second].insert(apair);
-            }
-        }
+        if (elsetname == "")
+            elsetname += "Efaces";
+        else
+            elsetname += ", Efaces";
+        anABAQUS_Output << std::endl;
     }
 
     // write edges to file
-    for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
-        anABAQUS_Output << "** Edge elements" << std::endl;
-        anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eedges" << std::endl;
-        for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            anABAQUS_Output << jt->first;
-            for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-                anABAQUS_Output << ", " << *kt;
+    if (!elementsMapEdg.empty()) {
+        for (ElementsMap::iterator it = elementsMapEdg.begin(); it != elementsMapEdg.end(); ++it) {
+            anABAQUS_Output << "** Edge elements" << std::endl;
+            anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eedges" << std::endl;
+            for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+                anABAQUS_Output << jt->first;
+                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+                    anABAQUS_Output << ", " << *kt;
+                }
+                anABAQUS_Output << std::endl;
             }
-            anABAQUS_Output << std::endl;
         }
-    anABAQUS_Output << std::endl;
+        if (elsetname == "")
+            elsetname += "Eedges";
+        else
+            elsetname += ", Eedges";
+        anABAQUS_Output << std::endl;
     }
 
-    if (!elementsMap.empty()) {
-        elsetname += "Eedges, ";
-    }
-    elementsMap.clear();
-
+    // write elset Eall
     anABAQUS_Output << "** Define element set Eall" << std::endl;
     anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
     anABAQUS_Output << elsetname << std::endl;
+
     anABAQUS_Output.close();
 }
 
