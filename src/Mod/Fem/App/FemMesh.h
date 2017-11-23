@@ -104,7 +104,11 @@ public:
     std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
     std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
-    //@}
+    /// retrieving IDs of edges not belonging to any face (and thus not belonging to any volume too)
+    std::set<int> getEdgesOnly(void) const;
+    /// retrieving IDs of faces not belonging to any volume
+    std::set<int> getFacesOnly(void) const;
+     //@}
 
     /** @name Placement control */
     //@{
