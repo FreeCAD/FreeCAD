@@ -25,10 +25,9 @@ from __future__ import absolute_import
 
 import FreeCAD as App
 import Part
-from FreeCAD import Units
-from Units import MilliMetre as mm
-from Units import Degree as deg
-from Units import Quantity as Q
+mm = App.Units.MilliMetre
+deg = App.Units.Degree
+Q = App.Units.Quantity
 
 from AttachmentEditor.FrozenClass import FrozenClass
 try:
