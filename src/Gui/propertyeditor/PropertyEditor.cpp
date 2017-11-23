@@ -203,6 +203,10 @@ void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int en
         if (propItem && propItem->testStatus(App::Property::Hidden)) {
             setRowHidden (i, parent, true);
         }
+        if (propItem && propItem->isSeparator()) {
+            // Set group header rows to span all columns
+            setFirstColumnSpanned(i, parent, true);
+        }
     }
 }
 
