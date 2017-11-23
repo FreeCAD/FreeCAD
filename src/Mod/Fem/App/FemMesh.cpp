@@ -860,6 +860,102 @@ std::list<int> FemMesh::getElementNodes(int id) const
     return result;
 }
 
+std::set<int> FemMesh::getEdgesOnly(void) const
+{
+    std::set<int> resultIDs;
+
+    // edges
+    SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
+    while (aEdgeIter->more()) {
+        const SMDS_MeshEdge* aEdge = aEdgeIter->next();
+        std::list<int> enodes = getElementNodes(aEdge->GetID());
+        std::set<int> aEdgeNodes(enodes.begin(), enodes.end());  // convert list to set
+        bool edgeBelongsToAFace = false;
+
+        // faces
+        SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
+        while (aFaceIter->more()) {
+            const SMDS_MeshFace* aFace = aFaceIter->next();
+            std::list<int> fnodes = getElementNodes(aFace->GetID());
+            std::set<int> aFaceNodes(fnodes.begin(), fnodes.end());  // convert list to set
+
+            // if aEdgeNodes is not a subset of any aFaceNodes --> aEdge does not belong to any Face
+            std::vector<int> inodes;
+            std::set_intersection(aFaceNodes.begin(), aFaceNodes.end(),
+                                  aEdgeNodes.begin(), aEdgeNodes.end(),
+                                  std::back_inserter(inodes));
+            std::set<int> intersection_nodes(inodes.begin(), inodes.end());  // convert vector to set
+            if (aEdgeNodes == intersection_nodes) {
+                edgeBelongsToAFace = true;
+                break;
+            }
+        }
+        if (edgeBelongsToAFace == false)
+            resultIDs.insert(aEdge->GetID());
+    }
+
+    return resultIDs;
+}
+
+std::set<int> FemMesh::getFacesOnly(void) const
+{
+    // How it works ATM:
+    // for each face
+    //     get the face nodes
+    //     for each volume
+    //         get the volume nodes
+    //         if the face nodes are a subset of the volume nodes
+    //             add the face to the volume faces and break
+    //     if face not belongs to a volume
+    //         add it to faces only
+    //
+    // This means it is iterated over a lot of volumes many times, this is quite expensive !
+    //
+    // TODO make this faster
+    // Idea:
+    // for each volume
+    //     get the faces and add them to the volume faces
+    // for each face
+    //     if not in volume faces
+    //     add it to the faces only
+    //
+    // but the volume faces does not seam know their global mesh ID, I could not found any method in SMESH
+
+    std::set<int> resultIDs;
+
+    // faces
+    SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
+    while (aFaceIter->more()) {
+        const SMDS_MeshFace* aFace = aFaceIter->next();
+        std::list<int> fnodes = getElementNodes(aFace->GetID());
+        std::set<int> aFaceNodes(fnodes.begin(), fnodes.end());  // convert list to set
+        bool faceBelongsToAVolume = false;
+
+        // volumes
+        SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
+        while (aVolIter->more()) {
+            const SMDS_MeshVolume* aVol = aVolIter->next();
+            std::list<int> vnodes = getElementNodes(aVol->GetID());
+            std::set<int> aVolNodes(vnodes.begin(), vnodes.end());  // convert list to set
+
+            // if aFaceNodes is not a subset of any aVolNodes --> aFace does not belong to any Volume
+            std::vector<int> inodes;
+            std::set_intersection(aVolNodes.begin(), aVolNodes.end(),
+                                  aFaceNodes.begin(), aFaceNodes.end(),
+                                  std::back_inserter(inodes));
+            std::set<int> intersection_nodes(inodes.begin(), inodes.end());  // convert vector to set
+            if (aFaceNodes == intersection_nodes) {
+                faceBelongsToAVolume = true;
+                break;
+            }
+        }
+        if (faceBelongsToAVolume == false)
+            resultIDs.insert(aFace->GetID());
+    }
+
+    return resultIDs;
+}
+
 void FemMesh::readNastran(const std::string &Filename)
 {
     Base::TimeInfo Start;
