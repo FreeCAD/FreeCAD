@@ -223,6 +223,10 @@ class FemGmshTools():
         print('  ' + self.gmsh_bin)
 
     def get_group_data(self):
+        if self.mesh_obj.GroupsOfNodes is True:
+            self.group_nodes_export = True
+        else:
+            self.group_nodes_export = False
         self.group_elements = {}
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
         #       some print or make them work together
@@ -242,6 +246,7 @@ class FemGmshTools():
                         FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         if self.analysis:
             print('  Group meshing.')
+            self.group_nodes_export = True
             new_group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
             for ge in new_group_elements:
                 if ge not in self.group_elements:
@@ -523,7 +528,7 @@ class FemGmshTools():
         geo.write("\n")
         geo.write("// save\n")
         geo.write("Mesh.Format = 2;\n")  # unv
-        if self.analysis and self.group_elements:
+        if self.group_elements and self.group_nodes_export:
             geo.write("// For each group save not only the elements but the nodes too.;\n")
             geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
             geo.write("// Needed for Group meshing too, because for one material there is no group defined;\n")  # belongs to Mesh.SaveAll but only needed if there are groups
