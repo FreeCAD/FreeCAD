@@ -1363,23 +1363,37 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     anABAQUS_Output << std::endl;
     }
 
+    std::string elsetname = "";
     if (!elementsMap.empty()) {
+        /*
         anABAQUS_Output << "** Define element set Eall" << std::endl;
         anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
         anABAQUS_Output << "Evolumes" << std::endl;
         anABAQUS_Output.close();
         return; // done
+        */
+        elsetname += "Evolumes, ";
     }
 
     // add faces
     //
     elementsMap.clear();
+    /*
     SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
     while (aFaceIter->more()) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
         std::pair<int, std::vector<int> > apair;
         apair.first = aFace->GetID();
+    */
+    // we gone fill the elementsMap with the facesOnly
+    std::set<int> facesOnly = getFacesOnly();
+    for (std::set<int>::iterator itfa = facesOnly.begin(); itfa != facesOnly.end(); ++itfa) {
+        std::pair<int, std::vector<int> > apair;
+        apair.first = *itfa;
 
+        const SMDS_MeshElement* aFace = myMesh->GetMeshDS()->FindElement(*itfa);
+
+        // from here same as above ...
         int numNodes = aFace->NbNodes();
         std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
         if (it != faceTypeMap.end()) {
@@ -1404,22 +1418,35 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     }
 
     if (!elementsMap.empty()) {
+        /*
         anABAQUS_Output << "** Define element set Eall" << std::endl;
         anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
         anABAQUS_Output << "Efaces" << std::endl;
         anABAQUS_Output.close();
         return; // done
+        */
+        elsetname += "Efaces, ";
     }
 
     // add edges
     //
     elementsMap.clear();
+    /*
     SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
     while (aEdgeIter->more()) {
         const SMDS_MeshEdge* aEdge = aEdgeIter->next();
         std::pair<int, std::vector<int> > apair;
         apair.first = aEdge->GetID();
+    */
+    // we gone fill the elementsMap with the edgesOnly
+    std::set<int> edgesOnly = getEdgesOnly();
+    for (std::set<int>::iterator ited = edgesOnly.begin(); ited != edgesOnly.end(); ++ited) {
+        std::pair<int, std::vector<int> > apair;
+        apair.first = *ited;
 
+        const SMDS_MeshElement* aEdge = myMesh->GetMeshDS()->FindElement(*ited);
+
+        // from here same as above ...
         int numNodes = aEdge->NbNodes();
         std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
         if (it != edgeTypeMap.end()) {
@@ -1442,11 +1469,15 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
         }
     anABAQUS_Output << std::endl;
     }
+
+    if (!elementsMap.empty()) {
+        elsetname += "Eedges, ";
+    }
     elementsMap.clear();
 
     anABAQUS_Output << "** Define element set Eall" << std::endl;
     anABAQUS_Output << "*ELSET, ELSET=Eall" << std::endl;
-    anABAQUS_Output << "Eedges" << std::endl;
+    anABAQUS_Output << elsetname << std::endl;
     anABAQUS_Output.close();
 }
 
