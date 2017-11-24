@@ -192,7 +192,7 @@ public:
     /// display override mode
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
-    std::string getOverrideMode() {return overrideMode;}
+    std::string getOverrideMode() const {return overrideMode;}
     //@}
 
     /** @name Making pictures */
@@ -340,7 +340,6 @@ public:
     void setAxisCross(bool b);
     bool hasAxisCross(void);
     
-
     void setEnabledFPSCounter(bool b);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
@@ -393,7 +392,6 @@ private:
     void drawAxisCross(void);
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
-
 
 private:
     std::set<ViewProvider*> _ViewProviderSet;

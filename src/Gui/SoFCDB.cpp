@@ -174,7 +174,7 @@ void Gui::SoFCDB::init()
     qRegisterMetaType<Base::Quantity>("Base::Quantity");
     qRegisterMetaType<QList<Base::Quantity> >("Base::QuantityList");
     init_done = true;
-    
+
     assert(!storage);
     storage = new SoGroup();
     storage->ref();
