@@ -42,7 +42,8 @@ class PathPreferences:
     PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
     # Linear tolerance to use when generating Paths, eg when tesselating geometry
-    GeometryTolerance   = "GeometryTolerance"
+    GeometryTolerance       = "GeometryTolerance"
+    LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
 
     @classmethod
     def preferences(cls):
@@ -91,6 +92,10 @@ class PathPreferences:
         return cls.preferences().GetFloat(cls.GeometryTolerance, 0.01)
 
     @classmethod
+    def defaultLibAreaCurveAccuracy(cls):
+        return cls.preferences().GetFloat(cls.LibAreaCurveAccuracy, 0.01)
+
+    @classmethod
     def defaultFilePath(cls):
         return cls.preferences().GetString(cls.DefaultFilePath)
 
@@ -125,12 +130,13 @@ class PathPreferences:
         return ''
 
     @classmethod
-    def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance):
-        PathLog.track("(%s='%s', %s, %s)" % (cls.DefaultFilePath, filePath, jobTemplate, geometryTolerance))
+    def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance, curveAccuracy):
+        PathLog.track("(%s='%s', %s, %s, %s)" % (cls.DefaultFilePath, filePath, jobTemplate, geometryTolerance, curveAccuracy))
         pref = cls.preferences()
         pref.SetString(cls.DefaultFilePath, filePath)
         pref.SetString(cls.DefaultJobTemplate, jobTemplate)
         pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
+        pref.SetFloat(cls.LibAreaCurveAccuracy, curveAccuracy)
 
     @classmethod
     def postProcessorBlacklist(cls):
