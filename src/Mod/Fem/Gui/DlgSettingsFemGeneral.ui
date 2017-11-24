@@ -23,7 +23,7 @@
    <item row="1" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QGroupBox" name="gb_analysis">
+      <widget class="QGroupBox" name="gb_1_analysis">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -67,9 +67,6 @@
               <property name="prefEntry" stdset="0">
                <cstring>WorkingDir</cstring>
               </property>
-              <property name="mode">
-               <enum>Gui::FileChooser::Directory</enum>
-              </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
               </property>
@@ -99,7 +96,36 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="gb_materials">
+      <widget class="QGroupBox" name="gb_2_mesh">
+       <property name="title">
+        <string>Mesh</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <layout class="QGridLayout" name="gl_2">
+          <item row="0" column="0">
+           <widget class="Gui::PrefCheckBox" name="cb_analysis_group_meshing">
+            <property name="text">
+             <string>Create mesh groups for analysis reference shpapes</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>AnalysisGroupMeshing</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/General</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gb_3_materials">
        <property name="title">
         <string>Materials</string>
        </property>
@@ -205,7 +231,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="gb_results">
+      <widget class="QGroupBox" name="gb_4_results">
        <property name="title">
         <string>Results</string>
        </property>
