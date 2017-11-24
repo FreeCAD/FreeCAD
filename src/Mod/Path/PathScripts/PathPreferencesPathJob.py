@@ -50,7 +50,8 @@ class JobPreferencesPage:
         filePath = self.form.leDefaultFilePath.text()
         jobTemplate = self.form.leDefaultJobTemplate.text()
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
-        PathPreferences.setJobDefaults(filePath, jobTemplate, geometryTolerance)
+        curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
+        PathPreferences.setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy)
 
         processor = str(self.form.defaultPostProcessor.currentText())
         args = str(self.form.defaultPostProcessorArgs.text())
@@ -148,6 +149,7 @@ class JobPreferencesPage:
 
         geomTol = Units.Quantity(PathPreferences.defaultGeometryTolerance(), Units.Length)
         self.form.geometryTolerance.setText(geomTol.UserString)
+        self.form.curveAccuracy.setText(Units.Quantity(PathPreferences.defaultLibAreaCurveAccuracy(), Units.Length).UserString)
 
         self.form.leOutputFile.setText(PathPreferences.defaultOutputFile())
         self.selectComboEntry(self.form.cboOutputPolicy, PathPreferences.defaultOutputPolicy())
