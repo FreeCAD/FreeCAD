@@ -231,7 +231,7 @@ class FemGmshTools():
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
         #       some print or make them work together
 
-        # mesh groups and groups of analysis member
+        # mesh group objects
         if not self.mesh_obj.MeshGroupList:
             # print ('  No mesh group objects.')
             pass
@@ -244,8 +244,11 @@ class FemGmshTools():
                         self.group_elements[ge] = new_group_elements[ge]
                     else:
                         FreeCAD.Console.PrintError("  A group with this name exists already.\n")
-        if self.analysis:
-            print('  Group meshing.')
+
+        # group meshing for analysis
+        analysis_group_meshing = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General").GetBool("AnalysisGroupMeshing", True)
+        if self.analysis and analysis_group_meshing:
+            print('  Group meshing for analysis.')
             self.group_nodes_export = True
             new_group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
             for ge in new_group_elements:
@@ -254,7 +257,8 @@ class FemGmshTools():
                 else:
                     FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         else:
-            print('  No anlysis members for group meshing.')
+            print('  No Group meshing for analysis.')
+
         if self.group_elements:
             print('  {}'.format(self.group_elements))
 
