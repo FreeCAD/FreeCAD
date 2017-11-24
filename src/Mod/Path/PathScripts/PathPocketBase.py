@@ -115,6 +115,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         '''areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters'''
         params = {}
 
+        CutMode = ['Conventional', 'Climb']
+        params['orientation'] = CutMode.index(obj.CutMode)
+
         # if MinTravel is turned on, set path sorting to 3DSort
         # 3DSort shouldn't be used without a valid start point. Can cause
         # tool crash without it.
