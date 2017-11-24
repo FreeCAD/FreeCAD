@@ -827,9 +827,7 @@ void MacroCommand::load()
             if ((*it)->GetASCII("Pixmap", "nix") != "nix")
                 macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
             macro->setAccel       ( (*it)->GetASCII( "Accel",0    ).c_str() );
-	    
-	    macro->systemMacro = (*it)->GetBool("System", false);
-	    
+            macro->systemMacro = (*it)->GetBool("System", false);
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -852,7 +850,7 @@ void MacroCommand::save()
             hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
             hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
             hMacro->SetASCII( "Accel",     macro->getAccel      () );
-	    hMacro->SetBool( "System",     macro->systemMacro );
+            hMacro->SetBool( "System",     macro->systemMacro );
         }
     }
 }

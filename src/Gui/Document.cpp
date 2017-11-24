@@ -28,7 +28,6 @@
 # include <qapplication.h>
 # include <qdir.h>
 # include <qfileinfo.h>
-# include <QGLWidget>
 # include <QKeySequence>
 # include <qmessagebox.h>
 # include <qstatusbar.h>

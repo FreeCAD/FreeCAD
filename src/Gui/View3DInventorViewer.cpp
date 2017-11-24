@@ -214,8 +214,6 @@ public:
     ViewerEventFilter() {}
     ~ViewerEventFilter() {}
 
-
-
     bool eventFilter(QObject* obj, QEvent* event) {
 
 #ifdef GESTURE_MESS
@@ -333,6 +331,7 @@ public:
 
 
 // *************************************************************************
+
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
@@ -1672,11 +1671,9 @@ void View3DInventorViewer::setSeekMode(SbBool on)
 void View3DInventorViewer::printDimension()
 {
     SoCamera* cam = getSoRenderManager()->getCamera();
-
-    if (!cam) return;  // no camera there
+    if (!cam) return; // no camera there
 
     SoType t = getSoRenderManager()->getCamera()->getTypeId();
-
     if (t.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
         const SbViewportRegion& vp = getSoRenderManager()->getViewportRegion();
         const SbVec2s& size = vp.getWindowSize();
@@ -2017,7 +2014,6 @@ void View3DInventorViewer::setCameraType(SoType t)
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-
     if (cam == 0) return;
 
     SbVec3f campos = cam->position.getValue();
@@ -2045,7 +2041,6 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
 void View3DInventorViewer::animatedViewAll(int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-
     if (!cam)
         return;
 

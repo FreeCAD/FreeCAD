@@ -3377,7 +3377,7 @@ void LinkSelection::select()
 // ---------------------------------------------------------------
 
 LinkLabel::LinkLabel (QWidget * parent) : QWidget(parent)
-{   
+{
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(1);
