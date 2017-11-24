@@ -100,7 +100,6 @@ class PathDressupTagTaskPanel:
             FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self, gui):
-        self.removeGlobalCallbacks()
         self.viewProvider.clearTaskPanel()
         if gui:
             FreeCADGui.ActiveDocument.resetEdit()
@@ -254,21 +253,6 @@ class PathDressupTagTaskPanel:
 
     def editSelectedTag(self):
         self.editTag(self.form.lwTags.currentItem())
-
-    def removeGlobalCallbacks(self):
-        if hasattr(self, 'view') and self.view:
-            if self.pointCbClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.pointCbClick)
-                self.pointCbClick = None
-            if self.pointCbMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.pointCbMove)
-                self.pointCbMove = None
-            self.view = None
-
-    def setupSpinBox(self, widget, val, decimals = 2):
-        if decimals:
-            widget.setDecimals(decimals)
-        widget.setValue(val)
 
     def setFields(self):
         self.updateTagsView()
