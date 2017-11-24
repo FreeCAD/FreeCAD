@@ -1050,7 +1050,8 @@ def get_analysis_group_elements(aAnalysis, aPart):
     group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
     for m in aAnalysis.Group:
-        if hasattr(m, "References"):
+        if hasattr(m, "References") and "ReadOnly" not in m.getEditorMode("References"):  
+            # some C++ Constraints have a not used References Property, it is set to Hidden in ReadOnly and PropertyEditor
             if m.References:
                 grp_ele = get_reference_group_elements(m, aPart)
                 group_elements[grp_ele[0]] = grp_ele[1]
