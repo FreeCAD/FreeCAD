@@ -29,3 +29,7 @@ ParGrp.SetString("HelpIndex",        "Path/Help/index.html")
 ParGrp.SetString("WorkBenchName",    "Path")
 ParGrp.SetString("WorkBenchModule",  "PathWorkbench.py")
 
+# Setup global default values
+import Path
+from PathScripts.PathPreferences import PathPreferences
+Path.Area.setDefaultParams(Accuracy = PathPreferences.defaultLibAreaCurveAccuracy())
