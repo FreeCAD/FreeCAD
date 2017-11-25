@@ -339,14 +339,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
+    //if this page has a QView for this obj, delete it.
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        const App::DocumentObject* objPtr = &obj;
-        const TechDraw::DrawView* dv = static_cast<const TechDraw::DrawView*>(objPtr);
-        TechDraw::DrawPage* dvPg = dv->findParentPage();
-        if (dvPg == m_vpPage->getDrawPage()) {
-            //this is a DV that is on our page
-            (void) m_view->removeQViewByDrawView(dv);
-        }
+        (void) m_view->removeQViewByName(obj.getNameInDocument());
     }
 }
 
