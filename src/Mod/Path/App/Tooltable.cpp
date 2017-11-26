@@ -83,7 +83,7 @@ unsigned int Tool::getMemSize (void) const
 void Tool::Save (Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Tool "
-                    << "name=\"" << Name << "\" " 
+                    << "name=\"" << encodeAttribute(Name) << "\" "
                     << "diameter=\"" << Diameter << "\" "
                     << "length=\"" << LengthOffset << "\" "
                     << "flat=\"" <<  FlatRadius << "\" "
