@@ -883,6 +883,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
     ViewProviderDocumentObjectPyImp.cpp
+    ViewProviderDragger.cpp
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
@@ -913,6 +914,7 @@ SET(Viewprovider_SRCS
     ViewProviderAnnotation.h
     ViewProviderDocumentObject.h
     ViewProviderDocumentObjectGroup.h
+    ViewProviderDragger.h
     ViewProviderExtern.h
     ViewProviderFeature.h
     ViewProviderGeometryObject.h
