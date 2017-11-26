@@ -930,7 +930,7 @@ void Application::onUpdate(void)
     std::map<const App::Document*, Gui::Document*>::iterator It;
     for (It = d->documents.begin();It != d->documents.end();++It)
         It->second->onUpdate();
-    // update all the independed views
+    // update all the independent views
     for (std::list<Gui::BaseView*>::iterator It2 = d->passive.begin();It2 != d->passive.end();++It2)
         (*It2)->onUpdate();
 }

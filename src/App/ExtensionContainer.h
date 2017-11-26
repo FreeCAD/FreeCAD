@@ -92,7 +92,7 @@ namespace App {
  * @endcode
  * 
  * From python adding an extension is easier, it must be simply registered to a document object 
- * at object initialisation like done with proeprties. Note that the special python extension objects
+ * at object initialisation like done with properties. Note that the special python extension objects
  * need to be added, not the c++ objects. Normally the only difference in name is the additional 
  * "Python" at the end of the extension name.
  * @code{.py}

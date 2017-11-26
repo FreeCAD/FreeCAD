@@ -141,7 +141,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
 void TaskPocketParameters::updateUI(int index)
 {
-    // disable/hide evrything unless we are sure we don't need it
+    // disable/hide everything unless we are sure we don't need it
     bool isLengthEditVisable  = false;
     bool isOffsetEditVisable  = false;
     bool isOffsetEditEnabled  = true;
