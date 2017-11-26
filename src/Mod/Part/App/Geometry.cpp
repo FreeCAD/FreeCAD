@@ -119,6 +119,7 @@
 #include <Mod/Part/App/ConePy.h>
 #include <Mod/Part/App/CylinderPy.h>
 #include <Mod/Part/App/OffsetSurfacePy.h>
+#include <Mod/Part/App/PointPy.h>
 #include <Mod/Part/App/PlateSurfacePy.h>
 #include <Mod/Part/App/PlanePy.h>
 #include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
@@ -341,7 +342,7 @@ void GeomPoint::Restore(Base::XMLReader &reader)
 
 PyObject *GeomPoint::getPyObject(void)
 {
-    return new Base::VectorPy(getPoint());
+    return new PointPy(new GeomPoint(getPoint()));
 }
 
 // -------------------------------------------------
