@@ -129,7 +129,7 @@ ViewProviderConstraint::ViewProviderConstraint() : m_selected(false)
 {
     Selectable.setValue(false);
 
-    //constraint entiti color
+    //constraint entity color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL);
     float r, g, b;
