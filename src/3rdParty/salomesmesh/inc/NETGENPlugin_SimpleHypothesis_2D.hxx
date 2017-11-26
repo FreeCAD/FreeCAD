@@ -45,7 +45,7 @@ public:
   /*!
    * Sets <number of segments> value
    */
-  void SetNumberOfSegments(int nb) throw (SALOME_Exception);
+  void SetNumberOfSegments(int nb);
   /*!
    * Returns <number of segments> value.
    * Can be zero in case if LocalLength() has been set
@@ -55,7 +55,7 @@ public:
   /*!
    * Sets <segment length> value
    */
-  void SetLocalLength(double segmentLength) throw (SALOME_Exception);
+  void SetLocalLength(double segmentLength);
   /*!
    * Returns <segment length> value.
    * Can be zero in case if NumberOfSegments() has been set

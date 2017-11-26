@@ -1468,9 +1468,13 @@ bool SMDS_VolumeTool::IsLinked (const int theNode1Index,
     {
       switch ( minInd ) {
       case 0: if( maxInd==4 ||  maxInd==6 ||  maxInd==7 ) return true;
+          /* FALLTHRU */
       case 1: if( maxInd==4 ||  maxInd==5 ||  maxInd==8 ) return true;
+          /* FALLTHRU */
       case 2: if( maxInd==5 ||  maxInd==6 ||  maxInd==9 ) return true;
+          /* FALLTHRU */
       case 3: if( maxInd==7 ||  maxInd==8 ||  maxInd==9 ) return true;
+          /* FALLTHRU */
       default:;
       }
       break;
@@ -1479,13 +1483,21 @@ bool SMDS_VolumeTool::IsLinked (const int theNode1Index,
     {
       switch ( minInd ) {
       case 0: if( maxInd==8 ||  maxInd==11 ||  maxInd==16 ) return true;
+          /* FALLTHRU */
       case 1: if( maxInd==8 ||  maxInd==9 ||  maxInd==17 ) return true;
+          /* FALLTHRU */
       case 2: if( maxInd==9 ||  maxInd==10 ||  maxInd==18 ) return true;
+          /* FALLTHRU */
       case 3: if( maxInd==10 ||  maxInd==11 ||  maxInd==19 ) return true;
+          /* FALLTHRU */
       case 4: if( maxInd==12 ||  maxInd==15 ||  maxInd==16 ) return true;
+          /* FALLTHRU */
       case 5: if( maxInd==12 ||  maxInd==13 ||  maxInd==17 ) return true;
+          /* FALLTHRU */
       case 6: if( maxInd==13 ||  maxInd==14 ||  maxInd==18 ) return true;
+          /* FALLTHRU */
       case 7: if( maxInd==14 ||  maxInd==15 ||  maxInd==19 ) return true;
+          /* FALLTHRU */
       default:;
       }
       break;
@@ -1494,9 +1506,13 @@ bool SMDS_VolumeTool::IsLinked (const int theNode1Index,
     {
       switch ( minInd ) {
       case 0: if( maxInd==5 ||  maxInd==8 ||  maxInd==9 ) return true;
+          /* FALLTHRU */
       case 1: if( maxInd==5 ||  maxInd==6 ||  maxInd==10 ) return true;
+          /* FALLTHRU */
       case 2: if( maxInd==6 ||  maxInd==7 ||  maxInd==11 ) return true;
+          /* FALLTHRU */
       case 3: if( maxInd==7 ||  maxInd==8 ||  maxInd==12 ) return true;
+          /* FALLTHRU */
       case 4: if( maxInd==9 ||  maxInd==10 ||  maxInd==11 ||  maxInd==12 ) return true;
       default:;
       }
@@ -1506,11 +1522,17 @@ bool SMDS_VolumeTool::IsLinked (const int theNode1Index,
     {
       switch ( minInd ) {
       case 0: if( maxInd==6 ||  maxInd==8 ||  maxInd==12 ) return true;
+          /* FALLTHRU */
       case 1: if( maxInd==6 ||  maxInd==7 ||  maxInd==13 ) return true;
+          /* FALLTHRU */
       case 2: if( maxInd==7 ||  maxInd==8 ||  maxInd==14 ) return true;
+          /* FALLTHRU */
       case 3: if( maxInd==9 ||  maxInd==11 ||  maxInd==12 ) return true;
+          /* FALLTHRU */
       case 4: if( maxInd==9 ||  maxInd==10 ||  maxInd==13 ) return true;
+          /* FALLTHRU */
       case 5: if( maxInd==10 ||  maxInd==11 ||  maxInd==14 ) return true;
+          /* FALLTHRU */
       default:;
       }
       break;

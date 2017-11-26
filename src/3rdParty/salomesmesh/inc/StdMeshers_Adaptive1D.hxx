@@ -43,20 +43,20 @@ class STDMESHERS_EXPORT StdMeshers_Adaptive1D : public SMESH_Hypothesis
   /*!
    * Sets minimal allowed segment length
    */
-  void SetMinSize( double minSegLen ) throw (SALOME_Exception);
+  void SetMinSize( double minSegLen );
   double GetMinSize() const { return myMinSize; }
 
   /*!
    * Sets maximal allowed segment length
    */
-  void SetMaxSize( double maxSegLen ) throw (SALOME_Exception);
+  void SetMaxSize( double maxSegLen );
   double GetMaxSize() const { return myMaxSize; }
 
   /*!
    * Sets <deflection> parameter value, 
    * i.e. a maximal allowed distance between a segment and an edge.
    */
-  void SetDeflection(double value) throw(SALOME_Exception);
+  void SetDeflection(double value);
   double GetDeflection() const { return myDeflection; }
   
   virtual std::ostream & SaveTo(std::ostream & save);

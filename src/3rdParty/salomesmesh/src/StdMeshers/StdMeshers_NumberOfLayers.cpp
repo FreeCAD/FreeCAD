@@ -73,7 +73,6 @@ StdMeshers_NumberOfLayers::~StdMeshers_NumberOfLayers()
 //=============================================================================
 
 void StdMeshers_NumberOfLayers::SetNumberOfLayers(int numberOfLayers)
-  throw ( SALOME_Exception )
 {
   if ( _nbLayers != numberOfLayers ) {
     if ( numberOfLayers <= 0 )
