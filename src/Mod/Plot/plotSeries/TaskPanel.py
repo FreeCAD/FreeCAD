@@ -217,7 +217,7 @@ class TaskPanel:
                 None))
 
     def fillStyles(self):
-        """Fill the style combo boxes with the availabel ones."""
+        """Fill the style combo boxes with the available ones."""
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.style = self.widget(QtGui.QComboBox, "lineStyle")

@@ -834,11 +834,11 @@ Version: V0.1B63 Date: Sun Jun 08 20:21:25 2003 +++++++++++++++++++++++++++++++
   * drop down button completely new reimplemented
 
 Version: V0.1B62 Date: Sat May 31 11:53:56 2003 +++++++++++++++++++++++++++++++
-  * redesign of Document view modell
+  * redesign of Document view model
   * removing ViewContainer
   * adding the OnHasMsg methodes
   * switching some stdCommands to message stile to allow views with own document
-  * moving scintila to a passiv view modell
+  * moving scintila to a passive view model
   * updated to new version of Scintilla (1.53)
 
 Version: V0.1B61 Date: Sat May 24 17:35:52 2003 +++++++++++++++++++++++++++++++
