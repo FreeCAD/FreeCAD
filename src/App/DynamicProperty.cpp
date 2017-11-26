@@ -304,31 +304,6 @@ std::string DynamicProperty::getUniquePropertyName(const char *Name) const
     }
 }
 
-std::string DynamicProperty::encodeAttribute(const std::string& str) const
-{
-    std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
-            tmp += "&lt;";
-        else if (*it == '"')
-            tmp += "&quot;";
-        else if (*it == '\'')
-            tmp += "&apos;";
-        else if (*it == '&')
-            tmp += "&amp;";
-        else if (*it == '>')
-            tmp += "&gt;";
-        else if (*it == '\r')
-            tmp += "&#xD;";
-        else if (*it == '\n')
-            tmp += "&#xA;";
-        else
-            tmp += *it;
-    }
-
-    return tmp;
-}
-
 void DynamicProperty::Save (Base::Writer &writer) const 
 {
     //extenions must be saved first, as they need to be read and initialised before properties (as 

@@ -68,3 +68,30 @@ void Persistence::SaveDocFile (Writer &/*writer*/) const
 void Persistence::RestoreDocFile(Reader &/*reader*/)
 {
 }
+
+std::string Persistence::encodeAttribute(const std::string& str)
+{
+    std::string tmp;
+    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
+        if (*it == '<')
+            tmp += "&lt;";
+        else if (*it == '\"')
+            tmp += "&quot;";
+        else if (*it == '\'')
+            tmp += "&apos;";
+        else if (*it == '&')
+            tmp += "&amp;";
+        else if (*it == '>')
+            tmp += "&gt;";
+        else if (*it == '\r')
+            tmp += "&#13;";
+        else if (*it == '\n')
+            tmp += "&#10;";
+        else if (*it == '\t')
+            tmp += "&#9;";
+        else
+            tmp += *it;
+    }
+
+    return tmp;
+}
