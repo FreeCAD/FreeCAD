@@ -151,7 +151,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
 
 void TaskPadParameters::updateUI(int index)
 {
-    // disable/hide evrything unless we are sure we don't need it
+    // disable/hide everything unless we are sure we don't need it
     bool isLengthEditVisable  = false;
     bool isLengthEdit2Visable = false;
     bool isOffsetEditVisable  = false;

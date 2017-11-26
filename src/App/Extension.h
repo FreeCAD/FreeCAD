@@ -165,7 +165,7 @@ template<> void _class_::init(void){\
  * extension, which works exactly like the normal FreeCAD python object workflow. There is nothing 
  * special at all for extension python objects, the normal xml + imp.cpp approach is used. It must 
  * only be taken care that the objects father is the correct extension base class. Of course also 
- * make sure your extension returns the correct python ojbect in its "getPyObject" call.
+ * make sure your extension returns the correct python object in its "getPyObject" call.
  * Every method you create in the extensions python will be later added to an extended object. This 
  * happens automatically for both, c++ and python extension, if "getPyObject" returns the correct 
  * python object. No extra work needs to be done.

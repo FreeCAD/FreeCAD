@@ -251,7 +251,7 @@ void ViewProvider::setBodyMode(bool bodymode) {
 
 void ViewProvider::makeTemporaryVisible(bool onoff)
 {
-    //make sure to not use the overridden versions, as they change proeprties
+    //make sure to not use the overridden versions, as they change properties
     if (onoff) {
         if (VisualTouched) {
             updateVisual(static_cast<Part::Feature*>(getObject())->Shape.getValue());
