@@ -522,6 +522,7 @@ void PropertyStringItem::setValue(const QVariant& value)
     if (!value.canConvert(QVariant::String))
         return;
     QString val = value.toString();
+    val = QString::fromUtf8(Base::Interpreter().strToPython(val.toUtf8()).c_str());
     QString data = QString::fromLatin1("\"%1\"").arg(val);
     setPropertyValue(data);
 }
