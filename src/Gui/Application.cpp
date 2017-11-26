@@ -101,6 +101,7 @@
 #include "ViewProviderFeature.h"
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderDocumentObjectGroup.h"
+#include "ViewProviderDragger.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderInventorObject.h"
 #include "ViewProviderVRMLObject.h"
@@ -1534,6 +1535,7 @@ void Application::initTypes(void)
     Gui::ViewProviderFeature                    ::init();
     Gui::ViewProviderDocumentObjectGroup        ::init();
     Gui::ViewProviderDocumentObjectGroupPython  ::init();
+    Gui::ViewProviderDragger                    ::init();
     Gui::ViewProviderGeometryObject             ::init();
     Gui::ViewProviderInventorObject             ::init();
     Gui::ViewProviderVRMLObject                 ::init();

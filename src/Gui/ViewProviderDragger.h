@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,37 +21,63 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
-#define GUI_VIEWPROVIDER_ViewProviderPart_H
+#ifndef GUI_VIEWPROVIDER_DRAGGER_H
+#define GUI_VIEWPROVIDER_DRAGGER_H
 
+#include "ViewProviderDocumentObject.h"
 
-#include "ViewProviderOriginGroup.h"
-#include "ViewProviderDragger.h"
-#include "ViewProviderPythonFeature.h"
+class SoDragger;
+class SoTransform;
 
+namespace Base { class Placement;}
 
 namespace Gui {
 
-class GuiExport ViewProviderPart : public ViewProviderDragger,
-                                   public ViewProviderOriginGroupExtension
+class View3DInventorViewer;
+class SoFCCSysDragger;
+
+/**
+ * The base class for all view providers modifiying the placement
+ * of a geometric feature.
+ * @author Werner Mayer
+ */
+class GuiExport ViewProviderDragger : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderPart);
+    PROPERTY_HEADER(Gui::ViewProviderDragger);
 
 public:
     /// constructor.
-    ViewProviderPart();
+    ViewProviderDragger();
+
     /// destructor.
-    virtual ~ViewProviderPart();
+    virtual ~ViewProviderDragger();
 
-    virtual bool doubleClicked(void);
+    /** @name Edit methods */
+    //@{
+    bool doubleClicked(void);
+    void setupContextMenu(QMenu*, QObject*, const char*);
+    void updateData(const App::Property*);
+
+    /*! synchronize From FC placement to Coin placement*/
+    static void updateTransform(const Base::Placement &from, SoTransform *to);
+
 protected:
-    /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
-};
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
+    void setEditViewer(View3DInventorViewer*, int ModNum);
+    void unsetEditViewer(View3DInventorViewer*);
+    //@}
+    SoFCCSysDragger *csysDragger = nullptr;
 
-typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
+private:
+    static void dragStartCallback(void * data, SoDragger * d);
+    static void dragFinishCallback(void * data, SoDragger * d);
+    
+    static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+};
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+
+#endif // GUI_VIEWPROVIDER_DRAGGER_H
 
