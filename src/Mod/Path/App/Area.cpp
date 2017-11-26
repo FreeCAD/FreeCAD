@@ -356,8 +356,9 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
                             Point(center.X(),center.Y())));
                 break;
             }
-            //fall through
-        } default: {
+        }
+            /* FALLTHRU */
+        default: {
             // Discretize all other type of curves
             GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
                     curve.FirstParameter(), curve.LastParameter());
@@ -3272,9 +3273,9 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                     AREA_WARN("arc plane not aligned, force discretization");
                 }
                 AREA_TRACE("arc discretize " << AREA_XYZ(dir));
-                //fall through
-
-            } default: {
+            }
+                /* FALLTHRU */
+            default: {
                 // Discretize all other type of curves
                 GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
                         curve.FirstParameter(), curve.LastParameter());

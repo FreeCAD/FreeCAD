@@ -581,6 +581,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             }
         }
     } ; //not end of SEEK_WAIT_MODE. Fall through by design!!!
+        /* FALLTHRU */
     case NavigationStyle::SPINNING:
     case NavigationStyle::SEEK_MODE: {
         //animation modes

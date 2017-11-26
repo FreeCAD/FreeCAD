@@ -624,6 +624,7 @@ int DrawingPlane::keyboardEvent(const SoKeyboardEvent * const)
 
 void DrawingPlane::drawLineTo(const QPoint &endPoint)
 {
+    Q_UNUSED(endPoint);
     return;
 #if !defined(HAVE_QT5_OPENGL)
     QPainter painter(fbo);

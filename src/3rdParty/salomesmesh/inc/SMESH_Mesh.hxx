@@ -131,16 +131,13 @@ class SMESH_EXPORT SMESH_Mesh
                                   bool        theMakeRequiredGroups = true );
 
   SMESH_Hypothesis::Hypothesis_Status
-  AddHypothesis(const TopoDS_Shape & aSubShape, int anHypId, std::string* error=0)
-    throw(SALOME_Exception);
+  AddHypothesis(const TopoDS_Shape & aSubShape, int anHypId, std::string* error=0);
   
   SMESH_Hypothesis::Hypothesis_Status
-  RemoveHypothesis(const TopoDS_Shape & aSubShape, int anHypId)
-    throw(SALOME_Exception);
+  RemoveHypothesis(const TopoDS_Shape & aSubShape, int anHypId);
   
   const std::list <const SMESHDS_Hypothesis * >&
-  GetHypothesisList(const TopoDS_Shape & aSubShape) const
-    throw(SALOME_Exception);
+  GetHypothesisList(const TopoDS_Shape & aSubShape) const;
 
   const SMESH_Hypothesis * GetHypothesis(const TopoDS_Shape &    aSubShape,
                                          const SMESH_HypoFilter& aFilter,
@@ -166,9 +163,9 @@ class SMESH_EXPORT SMESH_Mesh
 
   SMESH_Hypothesis * GetHypothesis(const int aHypID) const;
 
-  const std::list<SMESHDS_Command*> & GetLog() throw(SALOME_Exception);
+  const std::list<SMESHDS_Command*> & GetLog();
   
-  void ClearLog() throw(SALOME_Exception);
+  void ClearLog();
   
   int GetId() const          { return _id; }
   
@@ -182,19 +179,15 @@ class SMESH_EXPORT SMESH_Mesh
   
   SMESH_Gen *GetGen()        { return _gen; }
 
-  SMESH_subMesh *GetSubMesh(const TopoDS_Shape & aSubShape)
-    throw(SALOME_Exception);
+  SMESH_subMesh *GetSubMesh(const TopoDS_Shape & aSubShape);
   
-  SMESH_subMesh *GetSubMeshContaining(const TopoDS_Shape & aSubShape) const
-    throw(SALOME_Exception);
+  SMESH_subMesh *GetSubMeshContaining(const TopoDS_Shape & aSubShape) const;
   
-  SMESH_subMesh *GetSubMeshContaining(const int aShapeID) const
-    throw(SALOME_Exception);
+  SMESH_subMesh *GetSubMeshContaining(const int aShapeID) const;
   /*!
    * \brief Return submeshes of groups containing the given subshape
    */
-  std::list<SMESH_subMesh*> GetGroupSubMeshesContaining(const TopoDS_Shape & shape) const
-    throw(SALOME_Exception);
+  std::list<SMESH_subMesh*> GetGroupSubMeshesContaining(const TopoDS_Shape & shape) const;
   /*!
    * \brief Say all submeshes that theChangedHyp has been modified
    */
@@ -219,9 +212,9 @@ class SMESH_EXPORT SMESH_Mesh
    */
   const TopTools_ListOfShape& GetAncestors(const TopoDS_Shape& theSubShape) const;
 
-  void SetAutoColor(bool theAutoColor) throw(SALOME_Exception);
+  void SetAutoColor(bool theAutoColor);
 
-  bool GetAutoColor() throw(SALOME_Exception);
+  bool GetAutoColor();
 
   /*!
    * \brief Set the flag meaning that the mesh has been edited "manually".
@@ -255,16 +248,15 @@ class SMESH_EXPORT SMESH_Mesh
                  int                 theVersion = 0,
                  const SMESHDS_Mesh* theMeshPart = 0,
                  bool                theAutoDimension = false,
-                 bool                theAddODOnVertices = false)
-    throw(SALOME_Exception);
+                 bool                theAddODOnVertices = false);
 
   void ExportDAT(const char *        file,
-                 const SMESHDS_Mesh* meshPart = 0) throw(SALOME_Exception);
+                 const SMESHDS_Mesh* meshPart = 0);
   void ExportUNV(const char *        file,
-                 const SMESHDS_Mesh* meshPart = 0) throw(SALOME_Exception);
+                 const SMESHDS_Mesh* meshPart = 0);
   void ExportSTL(const char *        file,
                  const bool          isascii,
-                 const SMESHDS_Mesh* meshPart = 0) throw(SALOME_Exception);
+                 const SMESHDS_Mesh* meshPart = 0);
   void ExportCGNS(const char *        file,
                   const SMESHDS_Mesh* mesh,
                   const char *        meshName = 0);
@@ -273,33 +265,33 @@ class SMESH_EXPORT SMESH_Mesh
                  bool                withRequiredGroups = true );
   void ExportSAUV(const char *file, 
                   const char* theMeshName = NULL, 
-                  bool theAutoGroups = true) throw(SALOME_Exception);
+                  bool theAutoGroups = true);
 
   double GetComputeProgress() const;
   
-  int NbNodes() const throw(SALOME_Exception);
-  int Nb0DElements() const throw(SALOME_Exception);
-  int NbBalls() const throw(SALOME_Exception);
+  int NbNodes() const;
+  int Nb0DElements() const;
+  int NbBalls() const;
   
-  int NbEdges(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
+  int NbEdges(SMDSAbs_ElementOrder order = ORDER_ANY) const;
   
-  int NbFaces(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbTriangles(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbQuadrangles(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbBiQuadQuadrangles() const throw(SALOME_Exception);
-  int NbBiQuadTriangles() const throw(SALOME_Exception);
-  int NbPolygons(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
+  int NbFaces(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbTriangles(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbQuadrangles(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbBiQuadQuadrangles() const;
+  int NbBiQuadTriangles() const;
+  int NbPolygons(SMDSAbs_ElementOrder order = ORDER_ANY) const;
   
-  int NbVolumes(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbTetras(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbHexas(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbTriQuadraticHexas() const throw(SALOME_Exception);
-  int NbPyramids(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbPrisms(SMDSAbs_ElementOrder order = ORDER_ANY) const throw(SALOME_Exception);
-  int NbHexagonalPrisms() const throw(SALOME_Exception);
-  int NbPolyhedrons() const throw(SALOME_Exception);
+  int NbVolumes(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbTetras(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbHexas(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbTriQuadraticHexas() const;
+  int NbPyramids(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbPrisms(SMDSAbs_ElementOrder order = ORDER_ANY) const;
+  int NbHexagonalPrisms() const;
+  int NbPolyhedrons() const;
   
-  int NbSubMesh() const throw(SALOME_Exception);
+  int NbSubMesh() const;
   
   int NbGroup() const { return _mapGroup.size(); }
 
@@ -311,7 +303,7 @@ class SMESH_EXPORT SMESH_Mesh
                          const TopoDS_Shape&       theShape=TopoDS_Shape(),
                          const SMESH_PredicatePtr& thePredicate=SMESH_PredicatePtr());
 
-  SMESH_Group* AddGroup (SMESHDS_GroupBase* groupDS) throw(SALOME_Exception);
+  SMESH_Group* AddGroup (SMESHDS_GroupBase* groupDS);
 
   typedef boost::shared_ptr< SMDS_Iterator<SMESH_Group*> > GroupIteratorPtr;
   GroupIteratorPtr GetGroups() const;

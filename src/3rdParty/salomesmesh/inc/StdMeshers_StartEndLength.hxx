@@ -40,7 +40,7 @@ class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
   StdMeshers_StartEndLength(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_StartEndLength();
 
-  void SetLength(double length, bool isStartLength) throw(SALOME_Exception);
+  void SetLength(double length, bool isStartLength);
 
   double GetLength(bool isStartLength) const;
 

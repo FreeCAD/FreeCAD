@@ -1420,6 +1420,7 @@ bool SMESH_subMesh::ComputeStateEngine(int event)
     case SUBMESH_LOADED:
       loadDependentMeshes();
       ComputeSubMeshStateEngine( SUBMESH_LOADED );
+      /* FALLTHRU */
       //break;
     case CHECK_COMPUTE_STATE:
       if ( IsMeshComputed() )
@@ -1662,6 +1663,7 @@ bool SMESH_subMesh::ComputeStateEngine(int event)
     case SUBMESH_LOADED:
       loadDependentMeshes();
       ComputeSubMeshStateEngine( SUBMESH_LOADED );
+      /* FALLTHRU */
       //break;
     case CHECK_COMPUTE_STATE:
       if ( IsMeshComputed() )

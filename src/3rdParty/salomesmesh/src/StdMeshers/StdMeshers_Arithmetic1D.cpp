@@ -74,7 +74,6 @@ StdMeshers_Arithmetic1D::~StdMeshers_Arithmetic1D()
 //=============================================================================
 
 void StdMeshers_Arithmetic1D::SetLength(double length, bool isStartLength)
-     throw(SALOME_Exception)
 {
   if ( (isStartLength ? _begLength : _endLength) != length ) {
     if (length <= 0)
