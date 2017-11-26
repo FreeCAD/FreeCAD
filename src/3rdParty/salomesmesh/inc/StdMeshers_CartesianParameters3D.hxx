@@ -54,11 +54,11 @@ public:
   /*!
    * Sets coordinates of node positions along an axis (countered from 0)
    */
-  void SetGrid(std::vector<double>& xNodes, int axis) throw ( SALOME_Exception );
+  void SetGrid(std::vector<double>& xNodes, int axis);
   /*!
    * Return coordinates of node positions along the three axes
    */
-  void GetGrid(std::vector<double>& xNodes, int axis) const throw ( SALOME_Exception );
+  void GetGrid(std::vector<double>& xNodes, int axis) const;
 
   /*!
    * \brief Set grid spacing along the three axes
@@ -70,13 +70,13 @@ public:
    */
   void SetGridSpacing(std::vector<std::string>& spaceFunctions,
                       std::vector<double>&      internalPoints,
-                      const int                 axis) throw ( SALOME_Exception );
+                      const int                 axis);
 
   void GetGridSpacing(std::vector<std::string>& spaceFunctions,
                       std::vector<double>&      internalPoints,
-                      const int                 axis) const throw ( SALOME_Exception );
+                      const int                 axis) const;
 
-  bool IsGridBySpacing(const int axis) const throw ( SALOME_Exception );
+  bool IsGridBySpacing(const int axis) const;
 
   /*!
    * Set/unset a fixed point, at which a node will be created provided that grid
@@ -99,7 +99,7 @@ public:
                                  std::vector<double>&      points,
                                  std::vector<double>&      coords,
                                  const std::string&        axis,
-                                 const double*             xForced=0) throw (SALOME_Exception);
+                                 const double*             xForced=0);
   /*!
    * Return coordinates of node positions along the three axes.
    * If the grid is defined by spacing functions, the coordinates are computed
@@ -107,12 +107,12 @@ public:
   void GetCoordinates(std::vector<double>& xNodes,
                       std::vector<double>& yNodes,
                       std::vector<double>& zNodes,
-                      const Bnd_Box&       bndBox) const throw ( SALOME_Exception );
+                      const Bnd_Box&       bndBox) const;
 
   /*!
    * \brief Set custom direction of axes
    */
-  void SetAxisDirs(const double* the9DirComps) throw ( SALOME_Exception );
+  void SetAxisDirs(const double* the9DirComps);
   const double* GetAxisDirs() const { return _axisDirs; }
   /*!
    * \brief Returns axes at which number of hexahedra is maximal
@@ -125,7 +125,7 @@ public:
    * hexahedron by geometry boundary is considered small and is removed if
    * it's size is \athreshold times less than the size of the initial hexahedron.
    */
-  void SetSizeThreshold(const double threshold) throw ( SALOME_Exception );
+  void SetSizeThreshold(const double threshold);
   /*!
    * \brief Return size threshold
    */

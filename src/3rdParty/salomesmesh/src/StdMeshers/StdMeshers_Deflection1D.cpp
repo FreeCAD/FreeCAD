@@ -76,7 +76,6 @@ StdMeshers_Deflection1D::~StdMeshers_Deflection1D()
 //=============================================================================
 
 void StdMeshers_Deflection1D::SetDeflection(double value)
-     throw(SALOME_Exception)
 {
   if (_value != value) {
     if (value <= 0.)

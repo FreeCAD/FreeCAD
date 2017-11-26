@@ -59,8 +59,7 @@ public:
    * \brief Sets  1D hypothesis specifying distribution of layers
     * \param hyp1D - 1D hypothesis
    */
-  void SetLayerDistribution(SMESH_Hypothesis* hyp1D)
-    throw ( SALOME_Exception );
+  void SetLayerDistribution(SMESH_Hypothesis* hyp1D);
 
   /*!
    * \brief Returns 1D hypothesis specifying distribution of layers

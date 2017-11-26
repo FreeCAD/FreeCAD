@@ -74,7 +74,7 @@ StdMeshers_SegmentLengthAroundVertex::~StdMeshers_SegmentLengthAroundVertex()
  */
 //=============================================================================
 
-void StdMeshers_SegmentLengthAroundVertex::SetLength(double length) throw(SALOME_Exception)
+void StdMeshers_SegmentLengthAroundVertex::SetLength(double length)
 {
   if (length <= 0)
     throw SALOME_Exception(LOCALIZED("length must be positive"));

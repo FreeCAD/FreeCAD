@@ -70,7 +70,6 @@ StdMeshers_LayerDistribution::~StdMeshers_LayerDistribution()
 //=============================================================================
 
 void StdMeshers_LayerDistribution::SetLayerDistribution(SMESH_Hypothesis* hyp1D)
-  throw ( SALOME_Exception )
 {
   if ( myHyp != hyp1D ) {
     if ( myHyp && hyp1D->GetDim() != 1 )

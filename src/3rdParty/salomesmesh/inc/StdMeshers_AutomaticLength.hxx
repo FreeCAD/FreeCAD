@@ -55,14 +55,12 @@ public:
   /*!
    * \brief Computes segment for a given edge
    */
-  double GetLength(const SMESH_Mesh* aMesh, const TopoDS_Shape& anEdge)
-    throw(SALOME_Exception);
+  double GetLength(const SMESH_Mesh* aMesh, const TopoDS_Shape& anEdge);
 
   /*!
    * \brief Computes segment length for an edge of given length
    */
-  double GetLength(const SMESH_Mesh* aMesh, const double edgeLength)
-    throw(SALOME_Exception);
+  double GetLength(const SMESH_Mesh* aMesh, const double edgeLength);
 
   /*!
    * \brief Set Fineness
@@ -74,8 +72,7 @@ public:
    * The "Initial Number of Elements on the Shortest Edge" (S0)
    * is divided by (0.5 + 4.5 x theFineness)
    */
-  void SetFineness(double theFineness)
-    throw(SALOME_Exception);
+  void SetFineness(double theFineness);
 
   /*!
    * \brief Return mesh Fineness
