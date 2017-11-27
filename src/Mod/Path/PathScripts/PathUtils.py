@@ -456,7 +456,7 @@ def findToolController(obj, name=None):
         mylist = [i.Label for i in controllers]
         form.uiToolController.addItems(mylist)
         r = form.exec_()
-        if r is False:
+        if not r:
             tc = None
         else:
             tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]

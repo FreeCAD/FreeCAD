@@ -934,11 +934,14 @@ def Create(res):
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
     obj  = res.objFactory(res.name)
-    vobj = ViewProvider(obj.ViewObject, res)
+    if obj.Proxy:
+        vobj = ViewProvider(obj.ViewObject, res)
 
-    FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
-    return obj
+        FreeCAD.ActiveDocument.commitTransaction()
+        obj.ViewObject.startEditing()
+        return obj
+    FreeCAD.ActiveDocument.abortTransaction()
+    return None
 
 class CommandPathOp:
     '''Generic, data driven implementation of a Path operation creation command.
