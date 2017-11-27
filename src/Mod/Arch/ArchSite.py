@@ -319,7 +319,6 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyAngle","NorthDeviation","Arch",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
         obj.addProperty("App::PropertyLength","Elevation","Arch",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
         obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","An url that shows this site in a mapping website"))
-        obj.addProperty("App::PropertyLinkList","Group","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that are part of this site"))
         obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
         obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
         obj.addProperty("App::PropertyArea","ProjectedArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
@@ -328,6 +327,7 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyVolume","SubtractionVolume","Arch",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"))
         obj.addProperty("App::PropertyVector","ExtrusionVector","Arch",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"))
         obj.addProperty("App::PropertyBool","RemoveSplitter","Arch",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
+        obj.addExtension("App::GroupExtensionPython", self)
         self.Type = "Site"
         obj.setEditorMode('Height',2)
         obj.ExtrusionVector = FreeCAD.Vector(0,0,-100000)

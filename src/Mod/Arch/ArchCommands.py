@@ -94,11 +94,8 @@ def addComponents(objectsList,host):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
     if hostType in ["Floor","Building","Site"]:
-        c = host.Group
         for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Group = c
+            host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
         import DraftGeomUtils
         a = host.Additions
