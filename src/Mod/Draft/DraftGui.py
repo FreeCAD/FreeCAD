@@ -586,8 +586,7 @@ class DraftToolBar:
         #QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("up()"),self.lineUp)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.setFocus)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.selectAll)
+        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
@@ -839,7 +838,16 @@ class DraftToolBar:
     def redraw(self):
         "utility function that is performed after each clicked point"
         self.checkLocal()
-                
+    
+    def setFocus(self):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if p.GetBool("focusOnLength",False):
+            self.lengthValue.setFocus()
+            self.lengthValue.selectAll()
+        else:
+            self.xValue.setFocus()
+            self.xValue.selectAll()
+
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
         self.xyButton.show()
@@ -937,7 +945,7 @@ class DraftToolBar:
         self.zValue.show()
         self.pointButton.show()
         if rel: self.isRelative.show()
-        todo.delay(self.xValue.setFocus,None)
+        todo.delay(self.setFocus,None)
         self.xValue.selectAll()
         
     def labelUi(self,title=translate("draft","Label"),callback=None):
@@ -1181,8 +1189,7 @@ class DraftToolBar:
                 return False
         if (not self.taskmode) or self.isTaskOn:
             if isThere(self.xValue):
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
             elif isThere(self.yValue):
                 self.yValue.setFocus()
                 self.yValue.selectAll()
@@ -1692,8 +1699,7 @@ class DraftToolBar:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(False)
                 self.zValue.setEnabled(False)
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
             elif (mask == "y") or (self.mask == "y"):
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(True)
@@ -1710,8 +1716,7 @@ class DraftToolBar:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(True)
                 self.zValue.setEnabled(True)
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
                 
             
     def getDefaultColor(self,type,rgb=False):
