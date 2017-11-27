@@ -149,8 +149,8 @@ class ObjectOp(object):
 
         self.initOperation(obj)
 
-        obj.Proxy = self
-        self.setDefaultValues(obj)
+        if self.setDefaultValues(obj):
+            obj.Proxy = self
 
     def onDocumentRestored(self, obj):
         features = self.opFeatures(obj)
@@ -244,6 +244,8 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             obj.ToolController = PathUtils.findToolController(obj)
+            if not obj.ToolController:
+                return False
             obj.OpToolDiameter  =  1.0
 
         if FeatureDepths & features:
@@ -273,6 +275,7 @@ class ObjectOp(object):
 
         self.opSetDefaultValues(obj)
         obj.recompute()
+        return True
 
     def _setBaseAndStock(self, obj, ignoreErrors=False):
         job = PathUtils.findParentJob(obj)
