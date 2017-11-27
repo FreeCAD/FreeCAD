@@ -98,7 +98,7 @@ class PathGeom:
     def edgesMatch(cls, e0, e1, error=PathGeomTolerance):
         """(e0, e1, [error=%s]
         Return true if the edges start and end at the same point and have the same type of curve.""" % PathGeomTolerance
-        if type(e0.Curve) != type(e1.Curve):
+        if type(e0.Curve) != type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
             return False
         return all(cls.pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point) for i in range(len(e0.Vertexes)))
 
