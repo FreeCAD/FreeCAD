@@ -81,7 +81,7 @@ class ArchWorkbench(Workbench):
                             "Draft_FinishLine","Draft_CloseLine"]
         self.draftutils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
                            "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
-                           "Draft_Slope","Draft_SetWorkingPlaneProxy"]
+                           "Draft_Slope","Draft_SetWorkingPlaneProxy","Draft_AddConstruction"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
