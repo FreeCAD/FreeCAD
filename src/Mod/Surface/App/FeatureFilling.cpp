@@ -71,6 +71,12 @@ Filling::Filling()
     ADD_PROPERTY_TYPE(MaximumDegree,(8), "Filling", App::Prop_None, "Maximum curve degree");
     ADD_PROPERTY_TYPE(MaximumSegments,(9), "Filling", App::Prop_None, "Maximum number of segments");
 
+    BoundaryEdges.setScope(App::LinkScope::Global);
+    UnboundEdges.setScope(App::LinkScope::Global);
+    FreeFaces.setScope(App::LinkScope::Global);
+    Points.setScope(App::LinkScope::Global);
+    InitialFace.setScope(App::LinkScope::Global);
+
     BoundaryEdges.setSize(0);
     BoundaryFaces.setSize(0);
     BoundaryOrder.setSize(0);

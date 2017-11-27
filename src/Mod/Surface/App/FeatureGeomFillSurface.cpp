@@ -131,6 +131,7 @@ GeomFillSurface::GeomFillSurface(): Spline()
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
     FillType.setEnums(FillTypeEnums);
+    BoundaryList.setScope(App::LinkScope::Global);
 }
 
 
