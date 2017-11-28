@@ -798,8 +798,8 @@ class TaskPanel(object):
     def preCleanup(self):
         for page in self.featurePages:
             page.onDirtyChanged(None)
+        PathSelection.clear()
         FreeCADGui.Selection.removeObserver(self)
-        FreeCADGui.Selection.removeObserver(self.s)
         self.obj.ViewObject.Proxy.clearTaskPanel()
 
     def cleanup(self, resetEdit):
@@ -841,8 +841,7 @@ class TaskPanel(object):
 
     def open(self):
         '''open() ... callback invoked when the task panel is opened.'''
-        self.s = SelObserver(self.selectionFactory)
-        FreeCADGui.Selection.addObserver(self.s)
+        self.selectionFactory()
         FreeCADGui.Selection.addObserver(self)
 
     def getStandardButtons(self):
@@ -888,19 +887,6 @@ class TaskPanel(object):
     def clearSelection(self, doc):
         self.updateSelection()
 
-
-class SelObserver:
-    '''Implementation of the selection observer used by the task panel.
-    Its specific behaviour is determined by the factory function.'''
-    def __init__(self, factory):
-        factory()
-
-    def __del__(self):
-        PathSelection.clear()
-
-    def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
-        FreeCADGui.updateGui()
 
 class CommandSetStartPoint:
     '''Command to set the start point for an operation.'''
