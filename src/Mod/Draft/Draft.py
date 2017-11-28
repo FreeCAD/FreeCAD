@@ -5797,9 +5797,25 @@ class _Clone(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Clone")
-        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this scale object"))
-        obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale vector of this object"))
+        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this clone"))
+        obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale factor of this clone"))
+        obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","If this clones several objects, this specifies if the result is a fusion or a compound"))
         obj.Scale = Vector(1,1,1)
+        
+    def join(self,obj,shapes):
+        if len(shapes) < 2:
+            return shapes[0]
+        import Part
+        if hasattr(obj,"Fuse"):
+            if obj.Fuse:
+                try:
+                    sh = shapes[0].multiFuse(shapes[1:])
+                    sh = sh.removeSplitter()
+                except:
+                    pass
+                else:
+                    return sh
+        return Part.makeCompound(shapes)
 
     def execute(self,obj):
         import Part, DraftGeomUtils
@@ -5824,7 +5840,7 @@ class _Clone(_DraftObject):
                         if not so.Shape.isNull():
                             shps.append(so.Shape)
                 if shps:
-                    sh = Part.makeCompound(shps)
+                    sh = self.join(obj,shps)
             if sh:
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
@@ -5845,7 +5861,7 @@ class _Clone(_DraftObject):
                 obj.Shape = shapes[0]
                 obj.Placement = shapes[0].Placement
             else:
-                obj.Shape = Part.makeCompound(shapes)
+                obj.Shape = self.join(obj,shapes)
         obj.Placement = pl
         if hasattr(obj,"positionBySupport"):
             obj.positionBySupport()
