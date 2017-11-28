@@ -220,7 +220,7 @@ class CommandJobTemplateExport:
     '''
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Job',
+        return {'Pixmap': 'Path-ExportTemplate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 
