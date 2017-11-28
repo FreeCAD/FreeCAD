@@ -55,8 +55,8 @@ body {
   font-family: Fira Sans,Arial,Helvetica,sans-serif;
   font-size: 14px;
   text-align: justify;
-  background: #fff;
-  color: #000;
+  /*background: #fff;
+  color: #000;*/
   max-width: 800px;
   }
 
@@ -87,7 +87,7 @@ li {
 
 pre, .mw-code {
   text-align: left;
-  background: #eee;
+  /*background: #eee;*/
   padding: 5px 5px 5px 20px;
   font-family: mono;
   border-radius: 2px;
@@ -119,7 +119,7 @@ a:hover {
   text-align: left;
   width: 190px;
   float: right;
-  background: #eee;
+  /*background: #eee;*/
   margin-top: 10px;
   border-radius: 2px;
   }
