@@ -105,7 +105,7 @@
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
 	((double,stepover,PocketStepover,0.0,\
         "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
-	((bool,from_center,FromCenter,true,"Start pocketing from center"))\
+	((bool,from_center,FromCenter,false,"Start pocketing from center"))\
 	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
 	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
 	((double,shift,Shift,0.0,"Pattern shift distance for each section.\n"\
