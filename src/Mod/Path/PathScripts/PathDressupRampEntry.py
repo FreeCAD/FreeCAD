@@ -49,14 +49,28 @@ class ObjectDressup:
         obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "The base path to modify"))
         obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "Angle of ramp."))
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
+        obj.addProperty("App::PropertyEnumeration", "RampFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"))
+        obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feedrate"))
         obj.Method = ['RampMethod1', 'RampMethod2', 'RampMethod3', 'Helix']
+        obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Custom']
         obj.Proxy = self
+        self.setEditorProperties(obj)
 
     def __getstate__(self):
         return None
 
     def __setstate__(self, state):
         return None
+
+    def onChanged(self, obj, prop):
+        if prop == "RampFeedRate":
+            self.setEditorProperties(obj)
+
+    def setEditorProperties(self, obj):
+        if obj.RampFeedRate == 'Custom':
+            obj.setEditorMode('CustomFeedRate', 0)
+        else:
+            obj.setEditorMode('CustomFeedRate', 2)
 
     def setup(self, obj):
         obj.Angle = 60
@@ -507,20 +521,38 @@ class ObjectDressup:
 
         horizFeed = obj.ToolController.HorizFeed.Value
         vertFeed = obj.ToolController.VertFeed.Value
+        if obj.RampFeedRate == "Horizontal Feed Rate":
+            rampFeed = obj.ToolController.HorizFeed.Value
+        elif obj.RampFeedRate == "Vertical Feed Rate":
+            rampFeed = obj.ToolController.VertFeed.Value
+        else:
+            rampFeed = obj.CustomFeedRate.Value
         horizRapid = obj.ToolController.HorizRapid.Value
         vertRapid = obj.ToolController.VertRapid.Value
+
 
         for cmd in commands:
             params = cmd.Parameters
             zVal = params.get('Z', None)
             zVal2 = lastCmd.Parameters.get('Z', None)
 
+            xVal = params.get('X', None)
+            xVal2 = lastCmd.Parameters.get('X', None)
+
+            yVal2 = lastCmd.Parameters.get('Y', None)
+            yVal = params.get('Y', None)
+
             zVal = zVal and round(zVal, 8)
             zVal2 = zVal2 and round(zVal2, 8)
 
             if cmd.Name in ['G1', 'G2', 'G3', 'G01', 'G02', 'G03']:
                 if zVal is not None and zVal2 != zVal:
-                    params['F'] = vertFeed
+                    if PathGeom.isRoughly(xVal, xVal2) and PathGeom.isRoughly(yVal, yVal2):
+                        # this is a straight plunge
+                        params['F'] = vertFeed
+                    else:
+                        # this is a ramp
+                        params['F'] = rampFeed
                 else:
                     params['F'] = horizFeed
                 lastCmd = cmd
