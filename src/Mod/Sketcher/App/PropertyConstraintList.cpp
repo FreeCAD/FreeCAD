@@ -185,18 +185,16 @@ void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
     std::vector<Constraint*> oldVals(_lValueList);
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
     std::set<App::ObjectIdentifier> removed;
-    std::set<App::ObjectIdentifier> newRenamedPaths;
-
+    
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(lValue[i]->tag);
 
         if (j != valueMap.end() && (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) ) {
-            App::ObjectIdentifier oid(makePath(i, lValue[i]));
-            renamed[makePath(j->second, _lValueList[j->second] )] = oid;
-
-            /* Keep track of new paths */
-            newRenamedPaths.insert(oid);
+            App::ObjectIdentifier old_oid(makePath(j->second, _lValueList[j->second] ));
+            App::ObjectIdentifier new_oid(makePath(i, lValue[i]));
+            
+            renamed[old_oid] = new_oid;
         }
     }
 
@@ -205,24 +203,24 @@ void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
     for (std::size_t i = 0; i < lValue.size(); i++)
         valueMap[lValue[i]->tag] = i;
 
-    /* Signal renames */
-    if (renamed.size() > 0)
-        signalConstraintsRenamed(renamed);
-
     /* Collect info about removed elements */
     for (std::size_t i = 0; i < oldVals.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(oldVals[i]->tag);
         App::ObjectIdentifier oid(makePath(i, oldVals[i]));
 
-        /* If not found in new values or a renamed expression takes its place, place it in the set to be removed */
-        if (j == valueMap.end() && newRenamedPaths.find(oid) == newRenamedPaths.end())
+        /* If not found in new values, place it in the set to be removed */
+        if (j == valueMap.end())
             removed.insert(oid);
     }
 
-    /* Signal removes */
+    /* Signal removes first, in case renamed values below have the same names as some of the removed ones. */
     if (removed.size() > 0)
         signalConstraintsRemoved(removed);
 
+    /* Signal renames */
+    if (renamed.size() > 0)
+        signalConstraintsRenamed(renamed);
+    
     /* Resize array to new size */
     _lValueList.resize(lValue.size());
 
