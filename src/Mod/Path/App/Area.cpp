@@ -1773,12 +1773,14 @@ TopoDS_Shape Area::getShape(int index) {
     return myShape;
 }
 
-TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET),int reorient) {
+TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET),
+        int reorient, bool from_center) 
+{
     build();
-    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),reorient);
+    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),reorient,from_center);
 
     std::list<shared_ptr<CArea> > areas;
-    makeOffset(areas,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+    makeOffset(areas,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),from_center);
     if(areas.empty()) {
         if(myParams.Thicken && myParams.ToolRadius>Precision::Confusion()) {
             CArea area(*myArea);
@@ -1819,7 +1821,7 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
 }
 
 void Area::makeOffset(list<shared_ptr<CArea> > &areas,
-                      PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET))
+            PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET), bool from_center)
 {
     if(fabs(offset)<Precision::Confusion())
         return;
@@ -1846,8 +1848,11 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
 #endif
 
     for(int i=0;count<0||i<count;++i,offset+=stepover) {
-        areas.push_back(make_shared<CArea>());
-        CArea &area = *areas.back();
+        if(from_center) 
+            areas.push_front(make_shared<CArea>());
+        else
+            areas.push_back(make_shared<CArea>());
+        CArea &area = from_center?(*areas.front()):(*areas.back());
         CArea areaOpen;
 #ifdef AREA_OFFSET_ALGO
         if(myParams.Algo == Area::Algolibarea) {
@@ -1948,7 +1953,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         ExtraPass = -1;
         Stepover = -stepover;
         // make offset and make sure the loop is CW (i.e. inner wires)
-        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET),-1);
+        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET),-1,from_center);
     }case Area::PocketModeZigZagOffset:
         pm = ZigZagThenSingleOffsetPocketMode;
         break;
@@ -2012,7 +2017,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         CAreaPocketParams params(
                 tool_radius,extra_offset,stepover,from_center,pm,angle);
         CArea in(*myArea);
-        // MakePcoketToolPath internally uses libarea Offset which somehow demands
+        // MakePocketToolPath internally uses libarea Offset which somehow demands
         // reorder before input, otherwise nothing is shown.
         in.Reorder();
         in.MakePocketToolpath(out.m_curves,params);
