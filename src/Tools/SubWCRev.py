@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Werner Mayer LGPL
 #
-# FreeCAD RevInfo script to get the revision information from Subversion.
+# FreeCAD RevInfo script to get the revision information from Subversion, Bazaar, and Git.
 #
 # Under Linux the Subversion tool SubWCRev shipped with TortoiseSVN isn't 
 # available which is provided by this script. 
+# 2012/02/01: The script was extended to support git
 # 2011/02/05: The script was extended to support also Bazaar
 
 import os,sys,string,re,time,getopt
