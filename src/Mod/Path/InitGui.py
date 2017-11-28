@@ -35,6 +35,9 @@ class PathWorkbench (Workbench):
         FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
         FreeCADGui.addPreferencePage(PathPreferencesPathDressup.DressupPreferencesPage, "Path")
 
+        # Check enablement of experimental features
+        from PathScripts.PathPreferences import PathPreferences
+
         # load the builtin modules
         import Path
         import PathScripts
@@ -77,14 +80,14 @@ class PathWorkbench (Workbench):
         import PathCommands
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity", "Path_Simulator"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Simulator"]
         toolcmdlist = ["Path_ToolLibraryEdit"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_Custom", "Path_Shape"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
-        threedopcmdlist = ["Path_Pocket_3D", "Path_Surface"]
+        threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
-        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane"]
+        extracmdlist = ["Path_SelectLoop"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
@@ -107,12 +110,19 @@ class PathWorkbench (Workbench):
                                 return True
                 return False
 
-        FreeCADGui.addCommand('Path_3dTools', ThreeDCommandGroup())
+        if PathPreferences.experimentalFeaturesEnabled():
+            projcmdlist.append("Path_Sanity")
+            threedopcmdlist.append("Path_Surface")
+            extracmdlist.extend(["Path_Shape", "Path_Area", "Path_Area_Workplane"])
+            FreeCADGui.addCommand('Path_3dTools', ThreeDCommandGroup())
+            threedcmdgroup = ['Path_3dTools']
+        else:
+            threedcmdgroup = threedopcmdlist
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
         #self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Partial Commands"), prepcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+['Path_3dTools'])
+        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+threedcmdgroup)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
@@ -134,6 +144,8 @@ class PathWorkbench (Workbench):
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
         self.dressupcmds = dressupcmdlist
+
+        Path.Area.setDefaultParams(Accuracy = PathPreferences.defaultLibAreaCurveAccuracy())
 
         Log('Loading Path workbench... done\n')
 
@@ -176,3 +188,4 @@ FreeCAD.addImportType(
     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
 FreeCAD.addExportType(
     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
+

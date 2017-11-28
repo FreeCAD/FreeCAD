@@ -45,6 +45,9 @@ class PathPreferences:
     GeometryTolerance       = "GeometryTolerance"
     LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
 
+    EnableExperimentalFeatures = "EnableExperimentalFeatures"
+
+
     @classmethod
     def preferences(cls):
         return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
@@ -176,4 +179,9 @@ class PathPreferences:
     @classmethod
     def setDefaultStockTemplate(cls, template):
         cls.preferences().SetString(cls.DefaultStockTemplate, template)
+
+
+    @classmethod
+    def experimentalFeaturesEnabled(cls):
+        return cls.preferences().GetBool(cls.EnableExperimentalFeatures, False)
 
