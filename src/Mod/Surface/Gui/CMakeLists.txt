@@ -25,6 +25,7 @@ set(SurfaceGui_LIBS
 
 set(SurfaceGui_MOC_HDRS
     TaskFilling.h
+    TaskFillingUnbound.h
     TaskFillingVertex.h
     TaskGeomFillSurface.h
 )
@@ -39,6 +40,7 @@ endif()
 
 SET(SurfaceGui_UIC_SRCS
     TaskFilling.ui
+    TaskFillingUnbound.ui
     TaskFillingVertex.ui
     TaskGeomFillSurface.ui
 )
@@ -54,6 +56,8 @@ SET(SurfaceGui_SRCS
     ${SurfaceGui_UIC_HDRS}
     TaskFilling.cpp
     TaskFilling.h
+    TaskFillingUnbound.cpp
+    TaskFillingUnbound.h
     TaskFillingVertex.cpp
     TaskFillingVertex.h
     TaskGeomFillSurface.cpp
