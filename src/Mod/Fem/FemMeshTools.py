@@ -35,9 +35,13 @@ def get_femnodes_by_femobj_with_references(femmesh, femobj):
     if femmesh.GroupCount:
         node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Node')
         # print('node_set_group: ', node_set)
+        if node_set:
+            print("  nodes where retrieved from existent FEM mesh group data")
     if not node_set:
+        print("  nodes will be retrieved by searching the appropriate nodes in the FEM mesh")
         node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
         # print('node_set_nogroup: ', node_set)
+
     return node_set
 
 
@@ -73,7 +77,7 @@ def get_femnodes_by_refshape(femmesh, ref):
     nodes = []
     for refelement in ref[1]:
         r = get_element(ref[0], refelement)  # the method getElement(element) does not return Solid elements
-        print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', refelement)
+        print('  ReferenceShape ... Type: ' + r.ShapeType + ', Object name: ' + ref[0].Name + ', Object label: ' + ref[0].Label + ', Element name: ' + refelement)
         if r.ShapeType == 'Vertex':
             nodes += femmesh.getNodesByVertex(r)
         elif r.ShapeType == 'Edge':
@@ -332,6 +336,7 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object['Object']
+        print("Constraint: " + obj.Name + " --> " + "We gone search in the mesh for the element ID's.")
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
         if obj.References:
             ref_shape_femelements = []
@@ -369,7 +374,6 @@ def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
             if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == group_data_type:
                     print("  found mesh group for the IDs: " + grp_name + ', Type: ' + group_data_type)
-                    # print("Constraint: " + obj.Name + " --> " + "IDs are in mesh group: " + grp_name)
                     return femmesh.getGroupElements(g)  # == ref_shape_femelements
     return ()  # an empty tuple is returned if no group data IDs where found
 
@@ -380,6 +384,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
     sum_group_elements = []
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object['Object']
+        print("Constraint: " + obj.Name + " --> " + "We have mesh groups. We will search for appropriate group data.")
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
         group_elements = get_femmesh_groupdata_sets_by_name(femmesh, fem_object, 'Volume')  # see comments over there !
         sum_group_elements += group_elements
