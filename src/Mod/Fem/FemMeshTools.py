@@ -33,7 +33,7 @@ import FreeCAD
 def get_femnodes_by_femobj_with_references(femmesh, femobj):
     node_set = []
     if femmesh.GroupCount:
-        node_set = get_femnode_set_from_group_data(femmesh, femobj)
+        node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Node')
         # print('node_set_group: ', node_set)
     if not node_set:
         node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
@@ -357,20 +357,22 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
 
 
-def get_femnode_set_from_group_data(femmesh, fem_object):
-    # get femnodes from femmesh groupdata for reference shapes of each obj.References
+def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
+    # get ids from femmesh groupdata for reference shapes of each obj.References
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
+    # we just check for the group name and the group data type
     # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
     obj = fem_object['Object']
-    group_nodes = ()  # empty tuple
+    groupElementIDs = ()  # empty tuple
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
             if grp_name.startswith(obj.Name + "_"):
-                if femmesh.getGroupElementType(g) == "Node":
-                    print("Constraint: " + obj.Name + " --> " + "nodes are in mesh group: " + grp_name)
-                    group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
-    return group_nodes  # an empty tuple is returned if no femelements where found
+                if femmesh.getGroupElementType(g) == group_data_type:
+                    print("  found mesh group for the IDs: " + grp_name + ', Type: ' + group_data_type)
+                    # print("Constraint: " + obj.Name + " --> " + "IDs are in mesh group: " + grp_name)
+                    group_data_IDs = femmesh.getGroupElements(g)  # == ref_shape_femelements
+    return group_data_IDs  # an empty tuple is returned if no group data IDs where found
 
 
 def get_femelementface_sets_from_group_data(femmesh, fem_object):
