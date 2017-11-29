@@ -374,20 +374,6 @@ def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
     return ()  # an empty tuple is returned if no group data IDs where found
 
 
-def get_femelementface_sets_from_group_data(femmesh, fem_object):
-    # get femfaceelements from femmesh face groupdata for reference shapes of obj.References
-    obj = fem_object['Object']
-    group_faces = ()  # empty tuple
-    if femmesh.GroupCount:
-        for g in femmesh.Groups:
-            grp_name = femmesh.getGroupName(g)
-            if grp_name.startswith(obj.Name + "_"):
-                if femmesh.getGroupElementType(g) == "Face":
-                    print("Constraint: " + obj.Name + " --> " + "faces are in mesh group: " + grp_name)
-                    group_faces = femmesh.getGroupElements(g)  # == ref_shape_femelements
-    return group_faces  # an empty tuple is returned if no femelements were found
-
-
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
     # get femelements from femmesh groupdata for reference shapes of each obj.References
     count_femelements = 0
@@ -562,7 +548,7 @@ def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj
         pressure_faces = []
         # normally we should call get_femelements_by_references and the group check should be integrated there
         if femmesh.GroupCount:
-            meshfaces = get_femelementface_sets_from_group_data(femmesh, femobj)
+            meshfaces = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Face')
             # print(meshfaces)
             if not meshfaces:
                 FreeCAD.Console.PrintError("Error: Something went wrong in getting the group element faces.\n")
