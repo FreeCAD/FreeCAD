@@ -363,7 +363,6 @@ def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
     # we just check for the group name and the group data type
     # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
     obj = fem_object['Object']
-    groupElementIDs = ()  # empty tuple
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
@@ -371,8 +370,8 @@ def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
                 if femmesh.getGroupElementType(g) == group_data_type:
                     print("  found mesh group for the IDs: " + grp_name + ', Type: ' + group_data_type)
                     # print("Constraint: " + obj.Name + " --> " + "IDs are in mesh group: " + grp_name)
-                    group_data_IDs = femmesh.getGroupElements(g)  # == ref_shape_femelements
-    return group_data_IDs  # an empty tuple is returned if no group data IDs where found
+                    return femmesh.getGroupElements(g)  # == ref_shape_femelements
+    return ()  # an empty tuple is returned if no group data IDs where found
 
 
 def get_femelementface_sets_from_group_data(femmesh, fem_object):
