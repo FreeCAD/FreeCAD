@@ -146,6 +146,20 @@ private:
     Private* d;
 };
 
+template<typename Status, class Object>
+class BaseExport ObjectStatusLocker
+{
+public:
+    ObjectStatusLocker(Status s, Object* o, bool st = true) : status(s), obj(o), state(st)
+    { obj->setStatus(status, state); }
+    ~ObjectStatusLocker()
+    { obj->setStatus(status, !state); }
+private:
+    Status status;
+    Object* obj;
+    bool state;
+};
+
 // ----------------------------------------------------------------------------
 
 struct BaseExport Tools

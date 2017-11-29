@@ -2189,7 +2189,7 @@ int Document::recompute()
     if (skip)
         return 0;
 
-    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
     for (auto LogEntry: _RecomputeLog)
