@@ -300,19 +300,6 @@ private:
     bool _isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
 };
 
-template<typename Status, class Object>
-class ObjectStatusLocker
-{
-public:
-    ObjectStatusLocker(Status s, Object* o) : status(s), obj(o)
-    { obj->setStatus(status, true); }
-    ~ObjectStatusLocker()
-    { obj->setStatus(status, false); }
-private:
-    Status status;
-    Object* obj;
-};
-
 } //namespace App
 
 #endif // APP_DOCUMENTOBJECT_H

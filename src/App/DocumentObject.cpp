@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 
 #include "Document.h"
 #include "DocumentObject.h"
@@ -79,7 +80,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
 
     // set/unset the execution bit
-    ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
+    Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
     return this->execute();
 }
 
