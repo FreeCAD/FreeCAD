@@ -1067,7 +1067,7 @@ def collect_python_modules(femsubdir=None):
             if not femsubdir:
                 collected_modules.append(os.path.splitext(os.path.basename(pyfile))[0])
             else:
-                collected_modules.append(femsubdir.replace('/','.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
+                collected_modules.append(femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
     return collected_modules
 
 
