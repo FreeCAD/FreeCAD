@@ -30,6 +30,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 
 #include <App/DocumentObjectPy.h>
 #include "FeaturePython.h"
@@ -63,7 +64,7 @@ bool FeaturePythonImp::execute()
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr(std::string("execute"))) {
                 if (feature.hasAttr("__object__")) {
-                    ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
+                    Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args;
                     Py::Object res = method.apply(args);
@@ -72,7 +73,7 @@ bool FeaturePythonImp::execute()
                     return true;
                 }
                 else {
-                    ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
+                    Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::PythonCall, object);
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
