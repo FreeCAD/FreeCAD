@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *                      Christophe Grellier <cg[at]grellier.fr>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLING_H
-#define SURFACEGUI_TASKFILLING_H
+#ifndef SURFACEGUI_TASKFILLINGUNBOUND_H
+#define SURFACEGUI_TASKFILLINGUNBOUND_H
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -36,25 +37,10 @@ class QListWidgetItem;
 namespace SurfaceGui
 {
 
-class FillingVertexPanel;
-class FillingUnboundPanel;
-class Ui_TaskFilling;
+class ViewProviderFilling;
+class Ui_TaskFillingUnbound;
 
-class ViewProviderFilling : public PartGui::ViewProviderSpline
-{
-    PROPERTY_HEADER(SurfaceGui::ViewProviderFilling);
-    typedef std::vector<App::PropertyLinkSubList::SubSet> References;
-
-public:
-    enum ShapeType {Vertex, Edge, Face};
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    QIcon getIcon(void) const;
-    void highlightReferences(ShapeType type, const References& refs, bool on);
-};
-
-class FillingPanel : public QWidget,
+class FillingUnboundPanel : public QWidget,
                      public Gui::SelectionObserver,
                      public Gui::DocumentObserver
 {
@@ -62,18 +48,18 @@ class FillingPanel : public QWidget,
 
 protected:
     class ShapeSelection;
-    enum SelectionMode { None, InitFace, AppendEdge, RemoveEdge };
+    enum SelectionMode { None, AppendEdge, RemoveEdge };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;
 
 private:
-    Ui_TaskFilling* ui;
+    Ui_TaskFillingUnbound* ui;
     ViewProviderFilling* vp;
 
 public:
-    FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~FillingPanel();
+    FillingUnboundPanel(ViewProviderFilling* vp, Surface::Filling* obj);
+    ~FillingUnboundPanel();
 
     void open();
     void checkOpenCommand();
@@ -93,40 +79,15 @@ protected:
     void modifyBoundary(bool);
 
 private Q_SLOTS:
-    void on_buttonInitFace_clicked();
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
-    void on_lineInitFaceName_textChanged(const QString&);
-    void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
-    void on_buttonAccept_clicked();
-    void on_buttonIgnore_clicked();
-    void onDeleteEdge(void);
+    void on_buttonUnboundEdgeAdd_clicked();
+    void on_buttonUnboundEdgeRemove_clicked();
+    void on_listUnbound_itemDoubleClicked(QListWidgetItem*);
+    void on_buttonUnboundAccept_clicked();
+    void on_buttonUnboundIgnore_clicked();
+    void onDeleteUnboundEdge(void);
     void clearSelection();
-};
-
-class TaskFilling : public Gui::TaskView::TaskDialog
-{
-    Q_OBJECT
-
-public:
-    TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~TaskFilling();
-    void setEditedObject(Surface::Filling* obj);
-
-public:
-    void open();
-    bool accept();
-    bool reject();
-
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-
-private:
-    FillingPanel* widget1;
-    FillingUnboundPanel* widget2;
-    FillingVertexPanel* widget3;
 };
 
 } //namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKFILLING_H
+#endif // SURFACEGUI_TASKFILLINGUNBOUND_H
