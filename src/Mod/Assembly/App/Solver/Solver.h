@@ -354,7 +354,7 @@ struct placement_accessor {
     template<typename T>
     void finalize(T& t) {
         //need to do it at once as setting every value step by step would always normalize the rotation and
-        //therefor give a false value
+        //therefore give a false value
         Base::Rotation rot(q0,q1,q2,q3);
         t.setRotation(rot);
         t.setPosition(vec);

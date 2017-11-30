@@ -558,8 +558,8 @@ Version: V0.1B117 Date: Sun Mar 20 14:06:55 2005 +++++++++++++++++++++++++++++++
   * Integration of latest Image module source
   * RFE 1159671 implemented (elements in alphabetic order)
   * Finishing drag&drop multiple files
-  * Finishing open from command line and droping on Programm icon
-  * solving load dependand modules
+  * Finishing open from command line and dropping on Program icon
+  * solving load dependent modules
   * more convenient Python console
   * Bug 1149706 fixed (Cannot load CAD curves)
   * RFE 1214187 implemented (Remove views from main window)

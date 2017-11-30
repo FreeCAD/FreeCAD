@@ -68,7 +68,7 @@ ViewProviderMeshTransform::~ViewProviderMeshTransform()
 
 void ViewProviderMeshTransform::attach(App::DocumentObject *pcFeat)
 {
-  // creats the standard viewing modes
+  // creates the standard viewing modes
   ViewProviderMesh::attach(pcFeat);
 
   SoSeparator* pcEditRoot = new SoSeparator();

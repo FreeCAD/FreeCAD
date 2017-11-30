@@ -276,7 +276,7 @@ class GitControl(VersionControl):
             else: # guess
                 self.branch = '(%s)' % \
                     os.popen("git describe --all --dirty").read().strip()
-        #if the branch name conainted any slashes but was not a remote
+        #if the branch name contained any slashes but was not a remote
         #there might be not result by now. Hence we assume origin
         if self.url == "Unknown":
             for i in info:
