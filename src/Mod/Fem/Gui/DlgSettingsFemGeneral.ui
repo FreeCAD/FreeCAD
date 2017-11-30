@@ -34,7 +34,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="title">
-        <string>Analysis</string>
+        <string>Working directory ccx tools</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -84,7 +84,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Working directory</string>
+               <string>Use custom directory</string>
               </property>
              </widget>
             </item>
@@ -104,7 +104,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working Directory</string>
+        <string>Working directory gerneral FEM solver frame work</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -124,7 +124,7 @@
              <string>sdfsdfsdfds</string>
             </property>
             <property name="text">
-             <string>Temporary Directories</string>
+             <string>Temporary directories</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -171,7 +171,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Beside .fcstd File</string>
+             <string>Beside .fcstd file</string>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Elmer</cstring>
@@ -215,7 +215,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Use Custom Directory</string>
+             <string>Use custom directory</string>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Elmer</cstring>
