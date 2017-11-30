@@ -88,7 +88,11 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 	Circle c(p0, p1, p2);
 
 	const CVertex* current_vt = &prev_vt;
-	double accuracy = CArea::m_accuracy * 1.4 / CArea::m_units;
+    // It seems that ClipperLib's offset ArcTolerance (same as m_accuracy here)
+    // is not exactly what's documented at https://goo.gl/4odfQh. Test shows the
+    // maximum arc distance deviate at about 2.2*ArcTolerance units. The maximum
+    // deviance seems to always occur at the end of arc.
+	double accuracy = CArea::m_accuracy * 2.3 / CArea::m_units;
 	for(std::list<const CVertex*>::iterator It = might_be_an_arc.begin(); It != might_be_an_arc.end(); It++)
 	{
 		const CVertex* vt = *It;
