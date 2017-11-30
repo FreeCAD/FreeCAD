@@ -66,16 +66,16 @@ public:
     /// set the filter criterion (same as in constructor)
     bool setFilter(const char*);
 
-    /// set the TaskSelectLinkProperty active, means seting the selection and controls it
+    /// set the TaskSelectLinkProperty active, means setting the selection and control it
     void activate(void);
 
-    /// call this to accept the changes the user have made and put back to the Propterty (Ok)
+    /// call this to accept the changes the user has made and send back to the Propterty (Ok)
     bool accept(void);
-    /// This discard the changes of the user and leaf the Property untouched (Cancel)
+    /// This discards the changes of the user and leaves the Property untouched (Cancel)
     bool reject(void);
     /// send the selection to the Property for e.g. forced recomputation of a feature
     void sendSelection2Property(void);
-    /// checkes if the filter is current met
+    /// checks if the filter is currently met
     inline bool isSelectionValid(void) const {return Filter->match();}
 
 private Q_SLOTS:
@@ -101,7 +101,7 @@ private:
     // selection filter for the session 
     Gui::SelectionFilter *Filter;
 
-    // posible used propetry types, only one is used
+    // possible used property types, only one is used
     App::PropertyLinkSub  *LinkSub;
     App::PropertyLinkList *LinkList;
 

@@ -637,7 +637,7 @@ DEF_STD_CMD_A(CmdTechDrawClip);
 CmdTechDrawClip::CmdTechDrawClip()
   : Command("TechDraw_Clip")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("&Clip");
     sToolTipText  = QT_TR_NOOP("Inserts a clip group in the active drawing");
@@ -999,7 +999,7 @@ DEF_STD_CMD_A(CmdTechDrawSpreadsheet);
 CmdTechDrawSpreadsheet::CmdTechDrawSpreadsheet()
   : Command("TechDraw_Spreadsheet")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Spreadsheet");
     sToolTipText  = QT_TR_NOOP("Inserts a view of a selected spreadsheet into a drawing");
