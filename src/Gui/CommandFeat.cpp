@@ -45,7 +45,7 @@ DEF_STD_CMD(StdCmdFeatRecompute);
 StdCmdFeatRecompute::StdCmdFeatRecompute()
   :Command("Std_Recompute")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Recompute");
     sToolTipText  = QT_TR_NOOP("Recompute feature or document");

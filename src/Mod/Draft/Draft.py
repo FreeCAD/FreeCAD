@@ -5226,7 +5226,7 @@ class _BezCurve(_DraftObject):
 
     def _segpoleslst(self,fp):
         """split the points into segments"""
-        if not fp.Closed and len(fp.Points) >= 2: #allow lower degree segement
+        if not fp.Closed and len(fp.Points) >= 2: #allow lower degree segment
             poles=fp.Points[1:]
         elif fp.Closed and len(fp.Points) >= fp.Degree: #drawable
             #poles=fp.Points[1:(fp.Degree*(len(fp.Points)//fp.Degree))]+fp.Points[0:1]

@@ -312,7 +312,7 @@ The underlying geometry of the following shapes may change:
 
 For example, a circle may be transformed into an ellipse when
 applying an affinity transformation. It may also happen that
-the circle then is represented as a b-spline curve.
+the circle then is represented as a B-spline curve.
 
 The transformation is applied to:
 - all the curves which support edges of the shape, and
@@ -514,7 +514,7 @@ makePerspectiveProjection(shape, pnt)
     </Methode>
     <Methode Name="makeShapeFromMesh">
       <Documentation>
-        <UserDocu>Make a compund shape out of mesh data.
+        <UserDocu>Make a compound shape out of mesh data.
 Note: This should be used for rather small meshes only.</UserDocu>
       </Documentation>
     </Methode>
@@ -522,8 +522,8 @@ Note: This should be used for rather small meshes only.</UserDocu>
       <Documentation>
         <UserDocu>Conversion of the complete geometry of a shape into NURBS geometry.
 For example, all curves supporting edges of the basis shape are converted
-into BSpline curves, and all surfaces supporting its faces are converted
-into BSpline surfaces.</UserDocu>
+into B-spline curves, and all surfaces supporting its faces are converted
+into B-spline surfaces.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="copy" Const="true">
@@ -534,7 +534,7 @@ into BSpline surfaces.</UserDocu>
     <Methode Name="cleaned" Const="true">
       <Documentation>
         <UserDocu>This creates a cleaned copy of the shape with the triangulation removed.
-This can be useful to reduce file size when exporting as a BRep file.
+This can be useful to reduce file size when exporting as a BREP file.
 Warning: Use the cleaned shape with care because certain algorithms may work incorrectly
 if the shape has no internal triangulation any more.
 </UserDocu>
@@ -754,7 +754,7 @@ infos contains additional info on the solutions. It is a list of tuples:
     </Attribute>
     <Attribute Name="Compounds" ReadOnly="true">
       <Documentation>
-        <UserDocu>List of coumpounds in this shape.</UserDocu>
+        <UserDocu>List of compounds in this shape.</UserDocu>
       </Documentation>
       <Parameter Name="Compounds" Type="List"/>
     </Attribute>
