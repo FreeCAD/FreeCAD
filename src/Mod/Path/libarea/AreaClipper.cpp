@@ -83,8 +83,8 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 
         if (Segments < CArea::m_min_arc_points)
             Segments = CArea::m_min_arc_points;
-        if (Segments > CArea::m_max_arc_points)
-            Segments=CArea::m_max_arc_points;
+        // if (Segments > CArea::m_max_arc_points)
+        //     Segments=CArea::m_max_arc_points;
 
 		dphi=phit/(Segments);
 
@@ -521,8 +521,8 @@ void CArea::OffsetWithClipper(double offset,
         int Segments=(int)ceil(PI/dphi);
         if (Segments < 2*CArea::m_min_arc_points)
             Segments = 2*CArea::m_min_arc_points;
-        if (Segments > CArea::m_max_arc_points)
-            Segments=CArea::m_max_arc_points;
+        // if (Segments > CArea::m_max_arc_points)
+        //     Segments=CArea::m_max_arc_points;
         dphi = PI/Segments;
         roundPrecision = (1.0-cos(dphi))*fabs(offset);
     }else
