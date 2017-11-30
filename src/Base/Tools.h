@@ -147,7 +147,7 @@ private:
 };
 
 template<typename Status, class Object>
-class BaseExport ObjectStatusLocker
+class ObjectStatusLocker
 {
 public:
     ObjectStatusLocker(Status s, Object* o, bool st = true) : status(s), obj(o), state(st)
