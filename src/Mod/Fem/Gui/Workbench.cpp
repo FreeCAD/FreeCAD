@@ -162,7 +162,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *thermal << "FEM_ConstraintInitialTemperature"
              << "Separator"
              << "FEM_ConstraintHeatflux"
-             << "FEM_ConstraintTemperature";
+             << "FEM_ConstraintTemperature"
+             << "FEM_AddConstraintBodyHeatSource";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");
