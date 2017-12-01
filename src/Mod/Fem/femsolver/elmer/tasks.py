@@ -67,6 +67,7 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
+        # w = writer.Writer(self.solver, self.directory, True)  # test mode
         w = writer.Writer(self.solver, self.directory)
         try:
             w.write()
