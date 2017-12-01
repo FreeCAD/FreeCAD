@@ -60,4 +60,4 @@ class Command(QtCore.QObject):
                 and analysis.Document == App.ActiveDocument)
 
 
-Gui.addCommand('FEM_AddSolverElmer', Command())
+Gui.addCommand('FEM_SolverElmer', Command())
