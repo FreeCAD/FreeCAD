@@ -21,6 +21,7 @@
         <file>icons/fem-constraint-force.svg</file>
         <file>icons/fem-constraint-gear.svg</file>
         <file>icons/fem-constraint-heatflux.svg</file>
+        <file>icons/fem-constraint-initial-flow-velocity.svg</file>
         <file>icons/fem-constraint-InitialTemperature.svg</file>
         <file>icons/fem-constraint-planerotation.svg</file>
         <file>icons/fem-constraint-pressure.svg</file>
