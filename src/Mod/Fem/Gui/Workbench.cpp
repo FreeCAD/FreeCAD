@@ -104,7 +104,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
     fluid->setCommand("Fluid Constraints");
-    *fluid << "FEM_ConstraintFluidBoundary";
+    *fluid << "FEM_ConstraintFluidBoundary"
+           << "FEM_AddConstraintFlowVelocity";
 
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
@@ -167,7 +168,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");
-    *fluid << "FEM_ConstraintFluidBoundary";
+    *fluid << "FEM_ConstraintFluidBoundary"
+           << "FEM_AddConstraintFlowVelocity";
 
     Gui::MenuItem* model = new Gui::MenuItem;
     root->insertItem(item, model);
