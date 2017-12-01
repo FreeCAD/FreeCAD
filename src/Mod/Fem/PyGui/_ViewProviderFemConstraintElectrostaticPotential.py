@@ -103,7 +103,7 @@ class _TaskPanel(object):
     def _initParamWidget(self):
         unit = "V"
         q = Units.Quantity("{} {}".format(self._obj.Potential, unit))
-        
+
         self._paramWidget.potentialTxt.setText(
             q.UserString)
         self._paramWidget.potentialBox.setChecked(

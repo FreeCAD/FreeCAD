@@ -96,6 +96,7 @@ class Electrostatic(_Base):
             'ToolTip': "Creates a FEM equation for electrostatic"
         }
 
+
 class Fluxsolver(_Base):
 
     def getSpecifier(self):
