@@ -168,7 +168,7 @@ class _Container(object):
         self.contact_constraints = []
         self.transform_constraints = []
 
-        for m in analysis.Member:
+        for m in analysis.Group:
             if m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m

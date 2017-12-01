@@ -31,7 +31,6 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from .FemCommands import FemCommands
 import FreeCADGui
-import FemGui
 from PySide import QtCore
 
 
@@ -46,13 +45,9 @@ class _CommandFemSolverElmer(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        analysis = FemGui.getActiveAnalysis()
         FreeCAD.ActiveDocument.openTransaction("Create Elmer solver object")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FreeCAD.ActiveDocument.%s.Member += "
-            "[ObjectsFem.makeSolverElmer(FreeCAD.ActiveDocument)]"
-            % analysis.Name)
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverElmer(FreeCAD.ActiveDocument))")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
