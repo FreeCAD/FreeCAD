@@ -115,6 +115,29 @@ class FemGmshTools():
         else:
             self.algorithm3D = '1'
 
+        # mesh groups
+        if self.mesh_obj.GroupsOfNodes is True:
+            self.group_nodes_export = True
+        else:
+            self.group_nodes_export = False
+        self.group_elements = {}
+
+        # mesh regions
+        self.ele_length_map = {}  # { 'ElementString' : element length }
+        self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
+
+        # mesh boundary layer
+        self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
+        self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
+
+        # other initializations
+        self.temp_file_geometry = ''
+        self.temp_file_mesh = ''
+        self.temp_file_geo = ''
+        self.mesh_name = ''
+        self.gmsh_bin = ''
+        self.error = False
+
     def create_mesh(self):
         print("\nWe are going to start Gmsh FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
@@ -190,7 +213,6 @@ class FemGmshTools():
         print('  ' + self.temp_file_geo)
 
     def get_gmsh_command(self):
-        self.gmsh_bin = None
         gmsh_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetBool("UseStandardGmshLocation")
         if gmsh_std_location:
             if system() == "Windows":
@@ -223,11 +245,6 @@ class FemGmshTools():
         print('  ' + self.gmsh_bin)
 
     def get_group_data(self):
-        if self.mesh_obj.GroupsOfNodes is True:
-            self.group_nodes_export = True
-        else:
-            self.group_nodes_export = False
-        self.group_elements = {}
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
         #       some print or make them work together
 
@@ -264,8 +281,6 @@ class FemGmshTools():
 
     def get_region_data(self):
         # mesh regions
-        self.ele_length_map = {}  # { 'ElementString' : element length }
-        self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
         if not self.mesh_obj.MeshRegionList:
             # print ('  No mesh regions.')
             pass
@@ -324,12 +339,9 @@ class FemGmshTools():
             print('  {}'.format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
-        # mesh boundary layer,
+        # mesh boundary layer
         # currently only one boundary layer setting object is allowed, but multiple boundary can be selected
         # Mesh.CharacteristicLengthMin, must be zero, or a value less than first inflation layer height
-        self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
-        self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
-
         if not self.mesh_obj.MeshBoundaryLayerList:
             # print ('  No mesh boundary layer setting document object.')
             pass
@@ -554,7 +566,6 @@ class FemGmshTools():
         geo.close
 
     def run_gmsh_with_geo(self):
-        self.error = False
         comandlist = [self.gmsh_bin, '-', self.temp_file_geo]
         # print(comandlist)
         try:
