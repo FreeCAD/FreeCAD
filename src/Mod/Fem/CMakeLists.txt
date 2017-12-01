@@ -34,7 +34,6 @@ INSTALL(
         InitGui.py
         FemGmshTools.py
         FemInputWriter.py
-        FemInputWriterCcx.py
         FemMesh2Mesh.py
         FemMeshTools.py
         FemResultTools.py
@@ -86,6 +85,7 @@ INSTALL(
         femsolver/calculix/__init__.py
         femsolver/calculix/solver.py
         femsolver/calculix/tasks.py
+        femsolver/calculix/writer.py
     DESTINATION
         Mod/Fem/femsolver/calculix
 )
