@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>752</height>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,78 @@
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QGroupBox" name="gb_gmsh_param">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="title">
+        <string>FreeCAD FEM Solver frame work</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetNoConstraint</enum>
+        </property>
+        <item>
+         <layout class="QGridLayout" name="gl_01">
+          <item row="0" column="0">
+           <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_old">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="accessibleDescription">
+             <string>sdfsdfsdfds</string>
+            </property>
+            <property name="text">
+             <string>CCX Tools (well tested)</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>useOldSolverFrameWork</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_new">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>General FEM solver framework</string>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>useNewSolverFrameWork</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
      <item>
       <widget class="QGroupBox" name="gb_01_ccx_param">
        <property name="sizePolicy">
@@ -35,7 +107,7 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
           <item row="3" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path" native="true">
             <property name="enabled">
@@ -79,14 +151,14 @@
           <item row="4" column="0">
            <widget class="QLabel" name="l_editor">
             <property name="text">
-             <string>Editor</string>
+             <string>Input file Editor</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_int_editor">
             <property name="text">
-             <string>Use internal editor for .inp files</string>
+             <string>Use internal editor for *.inp files</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -118,7 +190,7 @@
           <item row="2" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
             <property name="text">
-             <string>Use standard ccx binary path</string>
+             <string>Search in known binary directories</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -143,14 +215,7 @@
              </size>
             </property>
             <property name="text">
-             <string>ccx binary path:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_editor_3">
-            <property name="text">
-             <string>Solver frame work to run CalculiX with</string>
+             <string>ccx binary path</string>
             </property>
            </widget>
           </item>
@@ -170,7 +235,7 @@
           <item row="6" column="0">
            <widget class="QLabel" name="l_editor_2">
             <property name="text">
-             <string>Split .inp</string>
+             <string>Input file splitting</string>
             </property>
            </widget>
           </item>
@@ -180,7 +245,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Split writing of  .inp</string>
+             <string>Split writing of  *.inp</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -200,50 +265,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_new">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>General FEM solver framework</string>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>useNewSolverFrameWork</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="Gui::PrefRadioButton" name="rb_ccx_solver_old">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="accessibleDescription">
-             <string>sdfsdfsdfds</string>
-            </property>
-            <property name="text">
-             <string>CCX Tools (well tested)</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>useOldSolverFrameWork</cstring>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
@@ -256,7 +277,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <layout class="QGridLayout" name="gl_analysis">
+         <layout class="QGridLayout" name="gl_analysis" columnstretch="3,2">
           <item row="0" column="0">
            <widget class="QLabel" name="l_type">
             <property name="text">
@@ -322,7 +343,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_1">
         <item>
-         <layout class="QGridLayout" name="gl_solver">
+         <layout class="QGridLayout" name="gl_solver" columnstretch="3,2">
           <item row="4" column="0">
            <widget class="QLabel" name="l_use_iterations_param">
             <property name="text">
@@ -543,7 +564,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <layout class="QGridLayout" name="gl_thremomech">
+         <layout class="QGridLayout" name="gl_thremomech" columnstretch="3,2">
           <item row="3" column="0">
            <widget class="QLabel" name="l_ccx_max_iterations">
             <property name="text">
@@ -608,7 +629,7 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <layout class="QGridLayout" name="gl_frequ" columnstretch="0,0,0">
+         <layout class="QGridLayout" name="gl_frequ" columnstretch="6,3,1">
           <item row="1" column="1">
            <widget class="Gui::PrefSpinBox" name="sb_eigenmode_number">
             <property name="maximum">
@@ -734,6 +755,11 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -746,11 +772,6 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefRadioButton</class>
-   <extends>QRadioButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
