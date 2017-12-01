@@ -25,35 +25,36 @@ __title__ = "AddConstraintFlowVelocity"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandFemConstraintFlowVelocity
+#  \ingroup FEM
 
+import FreeCAD
+from .FemCommands import FemCommands
+import FreeCADGui
 from PySide import QtCore
 
-import FreeCAD as App
-import FreeCADGui as Gui
-from PyGui import FemCommands
 
-
-class Command(FemCommands.FemCommands):
-
+class _CommandFemConstraintFlowVelocity(FemCommands):
+    "The FEM_ConstraintFlowVelocity command definition"
     def __init__(self):
-        super(Command, self).__init__()
+        super(_CommandFemConstraintFlowVelocity, self).__init__()
         self.resources = {
             'Pixmap': 'fem-constraint-flow-velocity',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Constraint Velocity"),
+                "Constraint Flow Velocity"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Creates a FEM constraint body heat flux")}
+                "Creates a FEM constraint flow velocity")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        App.ActiveDocument.openTransaction(
+        FreeCAD.ActiveDocument.openTransaction(
             "Create FemConstraintFlowVelocity")
-        Gui.addModule("ObjectsFem")
-        Gui.doCommand(
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintFlowVelocity()]")
+            "[ObjectsFem.makeConstraintFlowVelocity(FreeCAD.ActiveDocument)]")
 
 
-Gui.addCommand('FEM_ConstraintFlowVelocity', Command())
+FreeCADGui.addCommand('FEM_ConstraintFlowVelocity', _CommandFemConstraintFlowVelocity())
