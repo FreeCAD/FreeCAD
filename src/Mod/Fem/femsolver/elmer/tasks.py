@@ -132,7 +132,7 @@ class Solve(run.Solve):
             "App::TextDocument", self.solver.Name + "Output")
         self.solver.ElmerOutput.Label = self.solver.Label + "Output"
         self.solver.ElmerOutput.ReadOnly = True
-        self.analysis.Member += [self.solver.ElmerOutput]
+        self.analysis.addObject(self.solver.ElmerOutput)
 
 
 class Results(run.Results):
@@ -149,4 +149,4 @@ class Results(run.Results):
         self.solver.ElmerResult = self.analysis.Document.addObject(
             "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
-        self.analysis.Member += [self.solver.ElmerResult]
+        self.analysis.addObject(self.solver.ElmerResult)

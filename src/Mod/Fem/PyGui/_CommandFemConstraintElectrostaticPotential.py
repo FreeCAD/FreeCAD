@@ -49,12 +49,9 @@ class _CommandFemConstraintElectrostaticPotential(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create FemConstraintElectrostaticPotential")
+        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintElectrostaticPotential")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintElectrostaticPotential(FreeCAD.ActiveDocument)]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintElectrostaticPotential(FreeCAD.ActiveDocument))")
 
 
 FreeCADGui.addCommand('FEM_ConstraintElectrostaticPotential', _CommandFemConstraintElectrostaticPotential())

@@ -42,9 +42,9 @@ def findAnalysisOfMember(member):
         raise ValueError("Member must not be None")
     for obj in member.Document.Objects:
         if obj.isDerivedFrom("Fem::FemAnalysis"):
-            if member in obj.Member:
+            if member in obj.Group:
                 return obj
-            if _searchGroups(member, obj.Member):
+            if _searchGroups(member, obj.Group):
                 return obj
     return None
 
@@ -62,7 +62,7 @@ def getMember(analysis, t):
     if analysis is None:
         raise ValueError("Analysis must not be None")
     matching = []
-    for m in analysis.Member:
+    for m in analysis.Group:
         if isDerivedFrom(m, t):
             matching.append(m)
     return matching
