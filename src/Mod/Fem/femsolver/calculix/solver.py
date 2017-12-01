@@ -162,13 +162,14 @@ class Proxy(solverbase.Proxy):
         dimout = ccx_prefs.GetBool("BeamShellOutput", False)
         obj.BeamShellResultOutput3D = dimout
 
-    def createMachine(self, obj, directory):
+    def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
             solver=obj, directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),
             solve=tasks.Solve(),
-            results=tasks.Results())
+            results=tasks.Results(),
+            testmode=testmode)
 
     def editSupported(self):
         return True
