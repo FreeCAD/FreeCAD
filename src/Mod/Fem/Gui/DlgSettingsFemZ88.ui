@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>FemGui::DlgSettingsFemZ88Imp</class>
  <widget class="QWidget" name="FemGui::DlgSettingsFemZ88Imp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>369</width>
+    <height>144</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Z88</string>
   </property>
@@ -20,7 +28,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="title">
-        <string>Z88</string>
+        <string>Z88 binary</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -34,7 +42,7 @@
           <item row="0" column="2">
            <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
             <property name="text">
-             <string>Use standard z88r binary path</string>
+             <string>Search in known binary directories</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -50,7 +58,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="l_z88_binary_std">
             <property name="text">
-             <string>Z88 binary</string>
+             <string>z88r</string>
             </property>
            </widget>
           </item>
@@ -66,7 +74,7 @@
              </size>
             </property>
             <property name="text">
-             <string>z88r binary path:</string>
+             <string>z88r binary path</string>
             </property>
            </widget>
           </item>
