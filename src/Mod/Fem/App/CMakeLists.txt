@@ -86,7 +86,6 @@ SET(FemScripts_SRCS
     InitGui.py
     FemGmshTools.py
     FemInputWriter.py
-    FemInputWriterCcx.py
     FemMesh2Mesh.py
     FemMeshTools.py
     FemResultTools.py
@@ -130,6 +129,7 @@ SET(FemCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
+    femsolver/calculix/writer.py
 )
 
 SET(FemZ88_SRCS
