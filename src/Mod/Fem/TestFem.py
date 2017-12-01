@@ -385,7 +385,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
 
     def test_pyimport_all_FEM_modules(self):
-        # we're gonna try to import all python modules from FreeCAD Fem
+        # we're going to try to import all python modules from FreeCAD Fem
         pymodules = []
 
         # collect all Python modules in Fem
