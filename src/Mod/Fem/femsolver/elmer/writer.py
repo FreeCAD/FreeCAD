@@ -91,10 +91,11 @@ def getConstant(name, dimension):
 
 class Writer(object):
 
-    def __init__(self, solver, directory):
+    def __init__(self, solver, directory, testmode=False):
         self.analysis = FemUtils.findAnalysisOfMember(solver)
         self.solver = solver
         self.directory = directory
+        self.testmode = testmode
         self._usedVarNames = set()
         self._builder = sifio.Builder()
         self._handledObjects = set()
@@ -122,15 +123,18 @@ class Writer(object):
         groups.extend(self._builder.getBodyNames())
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
-        binary = settings.getBinary("ElmerGrid")
-        if binary is None:
-            raise WriteError("Couldn't find ElmerGrid binary.")
-        args = [binary,
-                _ELMERGRID_IFORMAT,
-                _ELMERGRID_OFORMAT,
-                unvPath,
-                "-out", self.directory]
-        subprocess.call(args)
+        if self.testmode:
+            print("We are in testmode ElmerGrid may not be installed!")
+        else:
+            binary = settings.getBinary("ElmerGrid")
+            if binary is None:
+                raise WriteError("Couldn't find ElmerGrid binary.")
+            args = [binary,
+                    _ELMERGRID_IFORMAT,
+                    _ELMERGRID_OFORMAT,
+                    unvPath,
+                    "-out", self.directory]
+            subprocess.call(args)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
@@ -158,11 +162,16 @@ class Writer(object):
         tools.get_boundary_layer_data()
         tools.write_part_file()
         tools.write_geo()
-        tools.run_gmsh_with_geo()
+        if self.testmode:
+            print("We are in testmode, GMSH may not be installed!")
+            import shutil
+            shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
+        else:
+            tools.run_gmsh_with_geo()
 
-        ioMesh = Fem.FemMesh()
-        ioMesh.read(unvGmshPath)
-        ioMesh.write(meshPath)
+            ioMesh = Fem.FemMesh()
+            ioMesh.read(unvGmshPath)
+            ioMesh.write(meshPath)
 
         os.remove(brepPath)
         os.remove(geoPath)
