@@ -36,6 +36,7 @@ CUSTOM = "custom"
 
 _ELMER_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
 _GRID_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Grid"
+_Z88_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
 
 
 class _BinaryDlg(object):
@@ -65,6 +66,11 @@ _BINARIES = {
         param=_GRID_PARAM,
         useDefault="UseStandardGridLocation",
         customPath="gridBinaryPath"),
+    "Z88": _BinaryDlg(
+        default="z88r",
+        param=_Z88_PARAM,
+        useDefault="UseStandardZ88Location",
+        customPath="z88BinaryPath"),
 }
 
 
