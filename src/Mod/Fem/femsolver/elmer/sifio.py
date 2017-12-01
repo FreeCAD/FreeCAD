@@ -166,7 +166,7 @@ class Builder(object):
         allSections = list(self._customSections)
         allSections.append(self._simulation)
         allSections.append(self._constants)
-        for name, section in self._bodies.iteritems():
+        for name, section in self._bodies.items():
             section["Name"] = name
             allSections.append(section)
             if MATERIAL in section and section[MATERIAL] not in allSections:
@@ -184,7 +184,7 @@ class Builder(object):
             if (INITIAL_CONDITION in section
                     and section[INITIAL_CONDITION] not in allSections):
                 allSections.append(section[INITIAL_CONDITION])
-        for name, section in self._boundaries.iteritems():
+        for name, section in self._boundaries.items():
             section["Name"] = name
             allSections.append(section)
         return iter(allSections)
@@ -254,10 +254,10 @@ class Section(object):
         del self._attrs[key]
 
     def __iter__(self):
-        return self._attrs.iteritems()
+        return self._attrs.items()
 
     def iterkeys(self):
-        return self._attrs.iterkeys()
+        return self._attrs.keys()
 
     def __contains__(self, item):
         return item in self._attrs
@@ -304,7 +304,7 @@ class _Writer(object):
         self._stream.write(_SECTION_DELIM)
 
     def _writeSectionBody(self, s):
-        for key in sorted(s.iterkeys()):
+        for key in sorted(s.iterkeys()):  # def iterkeys() from class sifio.Section is called
             self._writeAttribute(key, s[key])
 
     def _writeAttribute(self, key, data):
@@ -331,7 +331,7 @@ class _Writer(object):
         return it.next()
 
     def _isCollection(self, data):
-        return (not isinstance(data, basestring)
+        return (not isinstance(data, str)
                 and isinstance(data, collections.Iterable))
 
     def _checkScalar(self, dataType):
@@ -341,7 +341,7 @@ class _Writer(object):
             return self._genFloatAttr
         if issubclass(dataType, bool):
             return self._genBoolAttr
-        if issubclass(dataType, basestring):
+        if issubclass(dataType, str):
             return self._genStrAttr
         return None
 
@@ -392,14 +392,14 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        if issubclass(dataType, basestring):
+        if issubclass(dataType, str):
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, basestring):
+        if issubclass(dataType, str):
             return '"%s"' % data
         return str(data)
 
@@ -410,7 +410,7 @@ class _Writer(object):
         if not data:
             raise ValueError("Collections must not be empty.")
         it = iter(data)
-        dataType = type(it.next())
+        dataType = type(next(it))
         for entry in it:
             if not isinstance(entry, dataType):
                 raise ValueError("Collection must be homogenueous")
