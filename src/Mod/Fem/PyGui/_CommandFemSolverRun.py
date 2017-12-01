@@ -64,17 +64,6 @@ class _CommandFemSolverRun(FemCommands):
                 return
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
-        elif self.solver.SolverType == "FemSolverZ88":
-            import FemToolsZ88
-            self.fea = FemToolsZ88.FemToolsZ88(None, self.solver)
-            self.fea.reset_mesh_purge_results_checked()
-            message = self.fea.check_prerequisites()
-            if message:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-                return
-            self.fea.run()  # test z88
-            # self.fea.finished.connect(load_results)
-            # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
