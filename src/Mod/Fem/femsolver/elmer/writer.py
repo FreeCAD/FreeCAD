@@ -151,6 +151,7 @@ class Writer(object):
 
         tools = FemGmshTools.FemGmshTools(mesh)
         tools.group_elements = {g: [g] for g in groups}
+        tools.group_nodes_export = False
         tools.ele_length_map = {}
         tools.temp_file_geometry = brepPath
         tools.temp_file_geo = geoPath
