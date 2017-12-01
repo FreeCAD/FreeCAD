@@ -51,6 +51,7 @@
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 #include "DrawUtil.h"
+#include "LineGroup.h"
 
 
 #include <Mod/TechDraw/App/DrawViewDimensionPy.h>  // generated from DrawViewDimensionPy.xml
@@ -91,7 +92,7 @@ DrawViewDimension::DrawViewDimension(void)
     std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
     hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 4.0);
+    double fontSize = hGrp->GetFloat("FontSize", 3.5);
 
     ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
@@ -99,7 +100,12 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
                   "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
-    ADD_PROPERTY_TYPE(LineWidth,(0.5)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
+
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = LineGroup::lineGroupFactory(lgName);
+    double weight = lg->getWeight("Graphic");
+    ADD_PROPERTY_TYPE(LineWidth,(weight)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
     //ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc

@@ -97,6 +97,7 @@
 #include "DrawViewDetail.h"
 #include "DrawPage.h"
 #include "EdgeWalker.h"
+#include "LineGroup.h"
 
 
 #include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
@@ -116,6 +117,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 {
     static const char *group = "Projection";
     static const char *fgroup = "Format";
+    static const char *lgroup = "Lines";
     static const char *sgroup = "Show";
     nowUnsetting = false;
 
@@ -133,21 +135,33 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(SeamHidden ,(false),sgroup,App::Prop_None,"Hidden Seam lines on/off");
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
+    
+    //default line weights
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = LineGroup::lineGroupFactory(lgName);
+    double weight = lg->getWeight("Thick");
+    ADD_PROPERTY_TYPE(LineWidth,(weight),lgroup,App::Prop_None,"The thickness of visible lines");
+    weight = lg->getWeight("Thin");
+    ADD_PROPERTY_TYPE(HiddenWidth,(weight),lgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
+    weight = lg->getWeight("Graphic");
+    ADD_PROPERTY_TYPE(IsoWidth,(weight),lgroup,App::Prop_None,"The thickness of isoparameter/center/section lines, if enabled");
+    weight = lg->getWeight("Extra");
+    ADD_PROPERTY_TYPE(ExtraWidth,(weight),lgroup,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
 
-    ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
-    ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
-    ADD_PROPERTY_TYPE(IsoWidth,(0.30),fgroup,App::Prop_None,"The thickness of UV isoparameter lines, if enabled");
+    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),lgroup,App::Prop_None,"Show a horizontal centerline through view");
+    ADD_PROPERTY_TYPE(VertCenterLine ,(false),lgroup,App::Prop_None,"Show a vertical centerline through view");
+
     ADD_PROPERTY_TYPE(ArcCenterMarks ,(true),sgroup,App::Prop_None,"Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
-    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),sgroup,App::Prop_None,"Show a horizontal centerline through view");
-    ADD_PROPERTY_TYPE(VertCenterLine ,(false),sgroup,App::Prop_None,"Show a vertical centerline through view");
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup,App::Prop_None,"Show/hide section line if applicable");
 
     geometryObject = nullptr;
     getRunControl();
-
+    delete lg;
 }
 
 DrawViewPart::~DrawViewPart()

@@ -104,6 +104,8 @@ SET(TechDraw_SRCS
     EdgeWalker.h
     DrawProjectSplit.cpp
     DrawProjectSplit.h
+    LineGroup.cpp
+    LineGroup.h
 )
 
 SET(Geometry_SRCS
@@ -162,6 +164,10 @@ SET(TechDraw_PATFile
     PAT/FCPAT.pat
 )
 
+SET(TechDraw_LineGroupFile
+    LineGroup/LineGroup.csv
+)
+
 if(MSVC)
     #add_definitions(-D_PreComp_)
     #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" TechDrawCPP_SRCS ${TechDraw_SRCS} ${Draw_SRCS} )
@@ -191,6 +197,11 @@ fc_target_copy_resource(TechDraw
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_PATFile})
+
+fc_target_copy_resource(TechDraw
+    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_LineGroupFile})
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)

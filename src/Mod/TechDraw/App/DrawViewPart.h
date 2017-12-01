@@ -98,6 +98,7 @@ public:
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
     App::PropertyFloat  IsoWidth;
+    App::PropertyFloat  ExtraWidth;
     App::PropertyBool   ArcCenterMarks;
     App::PropertyFloat  CenterScale;
     App::PropertyBool   HorizCenterLine;

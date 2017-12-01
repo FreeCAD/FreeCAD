@@ -56,6 +56,7 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     cbGlobalDecimals->onSave();
     sbAltDecimals->onSave();
     dsbArrowSize->onSave();
+    leLineGroup->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -73,6 +74,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     cbGlobalDecimals->onRestore();
     sbAltDecimals->onRestore();
     dsbArrowSize->onRestore();
+    leLineGroup->onRestore();
 }
 
 /**
