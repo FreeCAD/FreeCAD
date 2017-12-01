@@ -106,11 +106,11 @@ class Builder(object):
     _ACTIVE_SOLVERS = "Active Solvers"
 
     def __init__(self):
-        self._customSections = set()
+        self._customSections = []
         self._simulation = createSection(SIMULATION)
         self._constants = createSection(CONSTANTS)
-        self._bodies = {}
-        self._boundaries = {}
+        self._bodies = collections.OrderedDict()
+        self._boundaries = collections.OrderedDict()
 
     def getBoundaryNames(self):
         return self._boundaries.keys()
@@ -152,7 +152,8 @@ class Builder(object):
         self._boundaries[boundary][key] = attr
 
     def addSection(self, section):
-        self._customSections.add(section)
+        if section not in self._customSections:
+            self._customSections.append(section)
 
     def _getFromBody(self, body, key):
         if body not in self._bodies:
@@ -162,27 +163,30 @@ class Builder(object):
         return self._bodies[body][key]
 
     def __iter__(self):
-        allSections = set(self._customSections)
-        allSections.add(self._simulation)
-        allSections.add(self._constants)
+        allSections = list(self._customSections)
+        allSections.append(self._simulation)
+        allSections.append(self._constants)
         for name, section in self._bodies.iteritems():
             section["Name"] = name
-            allSections.add(section)
-            if MATERIAL in section:
-                allSections.add(section[MATERIAL])
-            if EQUATION in section:
+            allSections.append(section)
+            if MATERIAL in section and section[MATERIAL] not in allSections:
+                allSections.append(section[MATERIAL])
+            if EQUATION in section and section[EQUATION] not in allSections:
                 eqSection = section[EQUATION]
-                allSections.add(eqSection)
+                allSections.append(eqSection)
                 if self._ACTIVE_SOLVERS in eqSection:
                     for solverSection in eqSection[self._ACTIVE_SOLVERS]:
-                        allSections.add(solverSection)
-            if BODY_FORCE in section:
-                allSections.add(section[BODY_FORCE])
-            if INITIAL_CONDITION in section:
-                allSections.add(section[INITIAL_CONDITION])
+                        if solverSection not in allSections:
+                            allSections.append(solverSection)
+            if (BODY_FORCE in section
+                    and section[BODY_FORCE] not in allSections):
+                allSections.append(section[BODY_FORCE])
+            if (INITIAL_CONDITION in section
+                    and section[INITIAL_CONDITION] not in allSections):
+                allSections.append(section[INITIAL_CONDITION])
         for name, section in self._boundaries.iteritems():
             section["Name"] = name
-            allSections.add(section)
+            allSections.append(section)
         return iter(allSections)
 
 
@@ -252,6 +256,9 @@ class Section(object):
     def __iter__(self):
         return self._attrs.iteritems()
 
+    def iterkeys(self):
+        return self._attrs.iterkeys()
+
     def __contains__(self, item):
         return item in self._attrs
 
@@ -297,8 +304,8 @@ class _Writer(object):
         self._stream.write(_SECTION_DELIM)
 
     def _writeSectionBody(self, s):
-        for key, data in s:
-            self._writeAttribute(key, data)
+        for key in sorted(s.iterkeys()):
+            self._writeAttribute(key, s[key])
 
     def _writeAttribute(self, key, data):
         if isinstance(data, Section):
