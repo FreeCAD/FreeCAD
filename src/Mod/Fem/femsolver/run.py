@@ -54,7 +54,7 @@ def getMachine(solver, path=None):
     _DocObserver.attach()
     m = _machines.get(solver)
     if m is None or not _isPathValid(m, path):
-        m = _createMachine(solver, path)
+        m = _createMachine(solver, path, testmode=False)
     return m
 
 
@@ -78,7 +78,7 @@ def _isPathValid(m, path):
         return False
 
 
-def _createMachine(solver, path):
+def _createMachine(solver, path, testmode):
     global _dirTypes
     setting = settings.getDirSetting()
     if path is not None:
@@ -92,7 +92,7 @@ def _createMachine(solver, path):
     elif setting == settings.CUSTOM:
         path = _getCustomDir(solver)
         _dirTypes[path] = settings.CUSTOM
-    m = solver.Proxy.createMachine(solver, path)
+    m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
     if oldMachine is not None:
         del _dirTypes[oldMachine.directory]
@@ -153,6 +153,7 @@ class BaseTask(task.Thread):
         super(BaseTask, self).__init__()
         self.solver = None
         self.directory = None
+        self.testmode = None
 
     @property
     def analysis(self):
@@ -163,7 +164,7 @@ class Machine(BaseTask):
 
     def __init__(
             self, solver, directory, check,
-            prepare, solve, results):
+            prepare, solve, results, testmode):
         super(Machine, self).__init__()
         self.solver = solver
         self.directory = directory
@@ -176,6 +177,7 @@ class Machine(BaseTask):
         self._state = CHECK
         self._pendingState = None
         self._isReset = False
+        self.testmode = testmode
 
     @property
     def state(self):
@@ -217,6 +219,7 @@ class Machine(BaseTask):
         for t in tasks:
             t.solver = self.solver
             t.directory = self.directory
+            t.testmode = self.testmode
 
     def _applyPending(self):
         if not self._isReset:
