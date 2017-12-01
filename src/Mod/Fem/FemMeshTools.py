@@ -764,7 +764,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
         for n in face_table[veID]:
             index = femelement_table[veID].index(n)
             # print(index)
-            face_nodenumber_table[veID].append(index + 1)  # lokale node number = index + 1
+            face_nodenumber_table[veID].append(index + 1)  # local node number = index + 1
         # print('VolElement:', veID)
         # print('  --> ', femelement_table[veID])
         # print('  --> ', face_table[veID])
@@ -1111,7 +1111,7 @@ def get_reference_group_elements(obj, aPart):
                     FreeCAD.Console.PrintError('This should not happen, please debug!\n')
                     # in this case we would not have needed to use the is_same_geometry() inside find_element_in_shape()
                     # AFAIK we could have used the Part methods isPartner() or even isSame()
-                    # We're gonna find out when we need to debug this :-)!
+                    # We're going to find out when we need to debug this :-)!
     return (key, sorted(elements))
 
 
