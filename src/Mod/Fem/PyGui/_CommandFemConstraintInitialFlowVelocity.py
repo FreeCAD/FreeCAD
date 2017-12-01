@@ -50,12 +50,9 @@ class _CommandFemConstraintInitialFlowVelocity(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create FemConstraintInitialFlowVelocity")
+        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintInitialFlowVelocity")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintInitialFlowVelocity(FreeCAD.ActiveDocument)]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintInitialFlowVelocity(FreeCAD.ActiveDocument))")
 
 
 FreeCADGui.addCommand('FEM_ConstraintInitialFlowVelocity', _CommandFemConstraintInitialFlowVelocity())

@@ -283,7 +283,7 @@ class Check(BaseTask):
         return True
 
     def checkSupported(self, allSupported):
-        for m in self.analysis.Member:
+        for m in self.analysis.Group:
             if FemUtils.isOfType(m, "Fem::Constraint"):
                 supported = False
                 for sc in allSupported:
@@ -326,7 +326,7 @@ class _DocObserver(object):
         for doc in App.listDocuments().itervalues():
             for obj in doc.Objects:
                 if obj.isDerivedFrom("Fem::FemAnalysis"):
-                    self._saved[obj] = obj.Member
+                    self._saved[obj] = obj.Group
 
     @classmethod
     def attach(cls):
@@ -399,8 +399,8 @@ class _DocObserver(object):
     def _getAdded(self, analysis):
         if analysis not in self._saved:
             self._saved[analysis] = []
-        delta = set(analysis.Member) - set(self._saved[analysis])
-        self._saved[analysis] = analysis.Member
+        delta = set(analysis.Group) - set(self._saved[analysis])
+        self._saved[analysis] = analysis.Group
         return delta
 
     def _resetAll(self, analysis):

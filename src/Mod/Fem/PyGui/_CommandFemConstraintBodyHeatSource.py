@@ -49,12 +49,9 @@ class _CommandFemConstraintBodyHeatSource(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Create FemConstraintBodyHeatSource")
+        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintBodyHeatSource")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "FemGui.getActiveAnalysis().Member += "
-            "[ObjectsFem.makeConstraintBodyHeatSource(FreeCAD.ActiveDocument)]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintBodyHeatSource(FreeCAD.ActiveDocument))")
 
 
 FreeCADGui.addCommand('FEM_ConstraintBodyHeatSource', _CommandFemConstraintBodyHeatSource())
