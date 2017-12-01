@@ -103,6 +103,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemConstraintBodyHeatSource.py
     PyObjects/_FemConstraintFlowVelocity.py
     PyObjects/_FemConstraintInitialFlowVelocity.py
+    PyObjects/_FemConstraintElectrostaticPotential.py
     PyObjects/_FemElementFluid1D.py
     PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemElementGeometry2D.py
@@ -144,6 +145,7 @@ SET(FemEquationsElmer_SRCS
     femsolver/elmer/equations/nonlinear.py
     femsolver/elmer/equations/elasticity.py
     femsolver/elmer/equations/electrostatic.py
+    femsolver/elmer/equations/fluxsolver.py
     femsolver/elmer/equations/heat.py
     femsolver/elmer/equations/flow.py
 )
@@ -172,6 +174,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandFemConstraintBodyHeatSource.py
     PyGui/_CommandFemConstraintFlowVelocity.py
     PyGui/_CommandFemConstraintInitialFlowVelocity.py
+    PyGui/_CommandFemConstraintElectrostaticPotential.py
     PyGui/_CommandFemElementFluid1D.py
     PyGui/_CommandFemElementGeometry1D.py
     PyGui/_CommandFemElementGeometry2D.py
@@ -209,6 +212,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemConstraintBodyHeatSource.py
     PyGui/_ViewProviderFemConstraintFlowVelocity.py
     PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
+    PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
     PyGui/_ViewProviderFemElementGeometry2D.py
@@ -234,6 +238,7 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemSolverCalculix.ui
     PyGui/TaskPanelFemFlowVelocity.ui
     PyGui/TaskPanelFemInitialFlowVelocity.ui
+    PyGui/TaskPanelFemElectrostaticPotential.ui
 )
 
 SET(FemTests_SRCS

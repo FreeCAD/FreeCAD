@@ -67,6 +67,17 @@ def makeConstraintDisplacement(doc, name="ConstraintDisplacement"):
     return obj
 
 
+def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
+    '''makeConstraintElectrostaticPotential(document, [name]): makes a Fem ElectrostaticPotential object'''
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintElectrostaticPotential
+    PyObjects._FemConstraintElectrostaticPotential.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintElectrostaticPotential
+        PyGui._ViewProviderFemConstraintElectrostaticPotential.ViewProxy(obj.ViewObject)
+    return obj
+
+
 def makeConstraintFixed(doc, name="ConstraintFixed"):
     '''makeConstraintFixed(document, [name]): makes a Fem ConstraintFixed object'''
     obj = doc.addObject("Fem::ConstraintFixed", name)
