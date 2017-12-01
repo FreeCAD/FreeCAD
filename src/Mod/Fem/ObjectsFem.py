@@ -108,6 +108,17 @@ def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
     return obj
 
 
+def makeConstraintInitialFlowVelocity(doc, name="ConstraintInitialFlowVelocity"):
+    '''makeConstraintInitialFlowVelocity(document, [name]): makes a Fem ConstraintInitialFlowVelocity object'''
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintInitialFlowVelocity
+    PyObjects._FemConstraintInitialFlowVelocity.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintInitialFlowVelocity
+        PyGui._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy(obj.ViewObject)
+    return obj
+
+
 def makeConstraintInitialTemperature(doc, name="ConstraintInitialTemperature"):
     '''makeConstraintInitialTemperature(document, name): makes a Fem ConstraintInitialTemperature object'''
     obj = doc.addObject("Fem::ConstraintInitialTemperature", name)
