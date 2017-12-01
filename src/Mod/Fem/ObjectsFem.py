@@ -44,6 +44,17 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
     return obj
 
 
+def makeConstraintBodyHeatSource(doc, name="ConstraintBodyHeatSource"):
+    '''makeConstraintBodyHeatSource(document, [name]): makes a Fem ConstraintBodyHeatSource object'''
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    import PyObjects._FemConstraintBodyHeatSource
+    PyObjects._FemConstraintBodyHeatSource.Proxy(obj)
+    if FreeCAD.GuiUp:
+        import PyGui._ViewProviderFemConstraintBodyHeatSource
+        PyGui._ViewProviderFemConstraintBodyHeatSource.ViewProxy(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(doc, name="ConstraintContact"):
     '''makeConstraintContact(document, [name]): makes a Fem ConstraintContact object'''
     obj = doc.addObject("Fem::ConstraintContact", name)

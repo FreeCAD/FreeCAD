@@ -100,6 +100,7 @@ SET(FemScripts_SRCS
 SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
     PyObjects/_FemConstraintSelfWeight.py
+    PyObjects/_FemConstraintBodyHeatSource.py
     PyObjects/_FemElementFluid1D.py
     PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemElementGeometry2D.py
@@ -146,6 +147,7 @@ SET(FemGuiScripts_SRCS
     PyGui/__init__.py
     PyGui/_CommandFemAnalysis.py
     PyGui/_CommandFemConstraintSelfWeight.py
+    PyGui/_CommandFemConstraintBodyHeatSource.py
     PyGui/_CommandFemElementFluid1D.py
     PyGui/_CommandFemElementGeometry1D.py
     PyGui/_CommandFemElementGeometry2D.py
@@ -178,6 +180,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelFemSolverCalculix.py
     PyGui/_TaskPanelFemSolverControl.py
     PyGui/_ViewProviderFemConstraintSelfWeight.py
+    PyGui/_ViewProviderFemConstraintBodyHeatSource.py
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
     PyGui/_ViewProviderFemElementGeometry2D.py
