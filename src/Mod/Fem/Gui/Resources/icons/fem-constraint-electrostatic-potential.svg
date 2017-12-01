@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 64 64"
+   height="64"
+   width="64"
+   sodipodi:docname="fem-constraint-electrostatic-potential.svg"
+   inkscape:version="0.92.2 (unknown)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1053"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="2.6074563"
+     inkscape:cx="138.09696"
+     inkscape:cy="-37.662513"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(15.229651,0,0,15.229651,-3.9499368,-4458.0565)"
+     id="layer1"
+     style="stroke-width:0.06566139">
+    <text
+       id="text6140"
+       y="295.535"
+       x="0.35305047"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.6128087px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.00428902"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Bold';stroke-width:0.00428902"
+         y="295.535"
+         x="0.35305047"
+         id="tspan6138">P<tspan
+   style="font-size:1.69832563px;baseline-shift:sub;stroke-width:0.00428902"
+   id="tspan11">es</tspan></tspan></text>
+    <text
+       id="text6144"
+       y="291.55859"
+       x="2.7012193"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.01737291"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.01737291"
+         y="301.09158"
+         x="2.7012193"
+         id="tspan6142" /></text>
+  </g>
+</svg>
