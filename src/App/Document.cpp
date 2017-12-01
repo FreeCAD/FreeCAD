@@ -1924,14 +1924,6 @@ bool Document::isTouched() const
     return false;
 }
 
-bool Document::mustExecute() const
-{
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched() || (*It)->mustExecute())
-            return true;
-    return false;
-}
-
 vector<DocumentObject*> Document::getTouched(void) const
 {
     vector<DocumentObject*> result;
@@ -2016,7 +2008,8 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
 // Return true if it found any external dependency
 static bool _buildDependencyList(const std::vector<App::DocumentObject*> &objectArray,
         bool noExternal, std::vector<App::DocumentObject*> *depObjs, 
-        DependencyList *depList, std::map<DocumentObject*,Vertex> *objectMap)
+        DependencyList *depList, std::map<DocumentObject*,Vertex> *objectMap, 
+        bool *touchCheck = 0)
 {
     bool hasExternal = false;
     std::map<DocumentObject*, std::vector<DocumentObject*> > outLists;
@@ -2037,6 +2030,13 @@ static bool _buildDependencyList(const std::vector<App::DocumentObject*> &object
             if(it!=outLists.end())
                 continue;
 
+            if(touchCheck) {
+                if(obj->isTouched() || obj->mustExecute()) {
+                    // early termination on touch check
+                    *touchCheck = true;
+                    return hasExternal;
+                }
+            }
             if(depObjs) depObjs->push_back(obj);
             if(objectMap && depList)
                 (*objectMap)[obj] = add_vertex(*depList);
@@ -3321,3 +3321,18 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
 
     return array;
 }
+
+bool Document::mustExecute() const
+{
+    if(PropertyXLink::hasXLink(this)) {
+        bool touched = false;
+        _buildDependencyList(d->objectArray,false,0,0,0,&touched);
+        return touched;
+    }
+
+    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
+        if ((*It)->isTouched() || (*It)->mustExecute())
+            return true;
+    return false;
+}
+
