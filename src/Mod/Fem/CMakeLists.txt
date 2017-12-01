@@ -43,6 +43,7 @@ INSTALL(
         FemToolsCcx.py
         FemToolsZ88.py
         ObjectsFem.py
+        FemUtils.py
         TestFem.py
     DESTINATION
         Mod/Fem
