@@ -38,6 +38,7 @@
 #include "DlgSettingsFemExportAbaqusImp.h"
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemZ88Imp.h"
+#include "DlgSettingsFemElmerImp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -160,6 +161,7 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 
     // register preferences pages on Import-Export
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
