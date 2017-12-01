@@ -190,7 +190,7 @@
           <item row="2" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
             <property name="text">
-             <string>Use standard ccx binary path</string>
+             <string>Search in known binary directories</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -215,7 +215,7 @@
              </size>
             </property>
             <property name="text">
-             <string>ccx binary path:</string>
+             <string>ccx binary path</string>
             </property>
            </widget>
           </item>
@@ -755,6 +755,11 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -767,11 +772,6 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefRadioButton</class>
-   <extends>QRadioButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
