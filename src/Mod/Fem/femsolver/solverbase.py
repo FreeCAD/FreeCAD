@@ -44,7 +44,7 @@ class Proxy(object):
         obj.Proxy = self
         obj.addExtension("App::GroupExtensionPython", self)
 
-    def createMachine(self, obj, directory):
+    def createMachine(self, obj, directory, testmode):
         raise NotImplementedError()
 
     def createEquation(self, obj, eqId):
