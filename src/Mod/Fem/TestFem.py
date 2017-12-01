@@ -349,13 +349,17 @@ class FemTest(unittest.TestCase):
         analysis = ObjectsFem.makeAnalysis(doc)
 
         analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
+        analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
         analysis.addObject(ObjectsFem.makeConstraintContact(doc))
         analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
+        analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
         analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
+        analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
         analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
         analysis.addObject(ObjectsFem.makeConstraintForce(doc))
         analysis.addObject(ObjectsFem.makeConstraintGear(doc))
         analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
+        analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
         analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
         analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
         analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
@@ -381,8 +385,17 @@ class FemTest(unittest.TestCase):
 
         analysis.addObject(ObjectsFem.makeResultMechanical(doc))
 
+        analysis.addObject(ObjectsFem.makeSolverCalculixOld(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
+        sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
+
+        analysis.addObject(ObjectsFem.makeEquationElasticity(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationElectrostatic(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
+        # TODO the equations show up twice on Tree (on solver and on analysis), if they are added to the analysis group
 
         doc.recompute()
         self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
