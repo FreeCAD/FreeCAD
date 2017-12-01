@@ -120,12 +120,31 @@ SET(FemObjectsScripts_SRCS
 SET(FemSolver_SRCS
     femsolver/__init__.py
     femsolver/solverbase.py
+    femsolver/equationbase.py
     femsolver/report.py
     femsolver/reportdialog.py
     femsolver/settings.py
     femsolver/task.py
     femsolver/run.py
     femsolver/signal.py
+)
+
+SET(FemElmer_SRCS
+    femsolver/elmer/__init__.py
+    femsolver/elmer/sifio.py
+    femsolver/elmer/solver.py
+    femsolver/elmer/tasks.py
+    femsolver/elmer/writer.py
+)
+
+SET(FemEquationsElmer_SRCS
+    femsolver/elmer/equations/__init__.py
+    femsolver/elmer/equations/equation.py
+    femsolver/elmer/equations/linear.py
+    femsolver/elmer/equations/nonlinear.py
+    femsolver/elmer/equations/elasticity.py
+    femsolver/elmer/equations/heat.py
+    femsolver/elmer/equations/flow.py
 )
 
 SET(FemCalculix_SRCS
@@ -169,6 +188,8 @@ SET(FemGuiScripts_SRCS
     PyGui/_CommandFemResultShow.py
     PyGui/_CommandFemResultsPurge.py
     PyGui/_CommandFemSolverCalculix.py
+    PyGui/_CommandFemSolverElmer.py
+    PyGui/_CommandFemEquation.py
     PyGui/_CommandFemSolverControl.py
     PyGui/_CommandFemSolverRun.py
     PyGui/_CommandFemSolverZ88.py
@@ -353,8 +374,10 @@ fc_target_copy_resource(Fem
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
     ${FemSolver_SRCS}
+    ${FemElmer_SRCS}
     ${FemCalculix_SRCS}
     ${FemZ88_SRCS}
+    ${FemEquationsElmer_SRCS}
 )
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)
