@@ -40,6 +40,7 @@ INSTALL(
         FemToolsCcx.py
         ObjectsFem.py
         FemUtils.py
+        FemConstraint.py
         TestFem.py
     DESTINATION
         Mod/Fem
