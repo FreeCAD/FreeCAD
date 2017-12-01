@@ -117,7 +117,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 
-FC_LOG_LEVEL_INIT("MainWindow",true,true);
+FC_LOG_LEVEL_INIT("MainWindow",false,true,true);
 
 #if defined(Q_OS_WIN32)
 #define slots
@@ -1061,7 +1061,10 @@ void MainWindow::appendRecentFile(const QString& filename)
 }
 
 void MainWindow::updateActions(bool delay) {
-    if(this && !d->activityTimer->isActive())
+    //make it safe to call before the main window is actually created
+    if(!this)
+        return;
+    if(!d->activityTimer->isActive())
         d->activityTimer->start(300);
     else if(delay) {
         if(!d->actionUpdateDelay)
@@ -1074,8 +1077,8 @@ void MainWindow::_updateActions()
 {
     if (isVisible() && d->actionUpdateDelay<=0) {
         FC_LOG("update actions");
-        Application::Instance->commandManager().testActive();
         d->activityTimer->stop();
+        Application::Instance->commandManager().testActive();
     }
     d->actionUpdateDelay = 0;
 }
