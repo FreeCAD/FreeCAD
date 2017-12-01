@@ -56,4 +56,4 @@ class Command(FemCommands.FemCommands):
             "[ObjectsFem.makeConstraintBodyHeatSource()]")
 
 
-Gui.addCommand('FEM_AddConstraintBodyHeatSource', Command())
+Gui.addCommand('FEM_ConstraintBodyHeatSource', Command())
