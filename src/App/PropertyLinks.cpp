@@ -603,16 +603,17 @@ static std::string exportSubName(const App::DocumentObject *obj, const char *sub
 
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
+        // name with trailing '.'
         auto name = std::string(sub,dot-sub+1);
         obj = obj->getSubObject(name.c_str());
         if(!obj || !obj->getNameInDocument()) {
             FC_ERR("missing sub object '" << name << "' in '" << sub <<"'");
             break;
         }
-        if(name == obj->getNameInDocument()) 
+        if(name.compare(0,name.size()-1,obj->getNameInDocument())==0)
             str << obj->getExportName() << '.';
         else
-            str << name << '.';
+            str << name;
     }
     str << sub;
     return str.str();
@@ -627,21 +628,23 @@ static std::string tryImportSubName(const std::map<std::string,std::string> &nam
     bool changed = false;
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
+        // name with trailing '.'
         auto name = std::string(sub,dot-sub+1);
         obj = obj->getSubObject(name.c_str());
         if(!obj || !obj->getNameInDocument()) {
             FC_ERR("missing sub object '" << name << "' in '" << sub <<"'");
             break;
         }
-        if(name == obj->getNameInDocument()) {
+        if(name.compare(0,name.size()-1,obj->getNameInDocument())==0) {
             auto export_name = obj->getExportName(true);
             auto it = nameMap.find(export_name);
-            if(it!=nameMap.end() && it->second!=name) {
-                name = it->second;
+            if(it!=nameMap.end() && name.compare(0,name.size()-1,it->second)!=0) {
+                str << it->second << '.';
                 changed = true;
+                continue;
             }
         }
-        str << name << '.';
+        str << name;
     }
     if(changed) {
         str << sub;
