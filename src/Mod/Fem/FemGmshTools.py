@@ -138,7 +138,6 @@ class FemGmshTools():
         self.gmsh_bin = ''
         self.error = False
 
-
     def create_mesh(self):
         print("\nWe are going to start Gmsh FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
@@ -282,7 +281,7 @@ class FemGmshTools():
 
     def get_region_data(self):
         # mesh regions
-       if not self.mesh_obj.MeshRegionList:
+        if not self.mesh_obj.MeshRegionList:
             # print ('  No mesh regions.')
             pass
         else:
