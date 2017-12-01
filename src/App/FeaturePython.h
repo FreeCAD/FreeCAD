@@ -47,6 +47,7 @@ public:
     bool execute();
     bool mustExecute() const;
     void onBeforeChange(const Property* prop);
+    bool onBeforeChangeLabel(std::string &newLabel);
     void onChanged(const Property* prop);
     void onDocumentRestored();
     std::string getViewProviderName();
@@ -61,6 +62,8 @@ public:
             Base::Matrix4D *mat, bool transform, int depth) const;
 
     int canLinkProperties() const;
+
+    int allowDuplicateLabel() const;
 
     /// return true to activate tree view group object handling
     int hasChildElement() const;
@@ -260,6 +263,13 @@ public:
         return ret?true:false;
     }
 
+    virtual bool allowDuplicateLabel() const override {
+        int ret = imp->allowDuplicateLabel();
+        if(ret < 0)
+            return FeatureT::allowDuplicateLabel();
+        return ret?true:false;
+    }
+
     PyObject *getPyObject(void) {
         if (FeatureT::PythonObject.is(Py::_None())) {
             // ref counter is set to 1
@@ -278,6 +288,10 @@ protected:
     virtual void onBeforeChange(const Property* prop) {
         FeatureT::onBeforeChange(prop);
         imp->onBeforeChange(prop);
+    }
+    virtual void onBeforeChangeLabel(std::string &newLabel) override{
+        if(!imp->onBeforeChangeLabel(newLabel))
+            FeatureT::onBeforeChangeLabel(newLabel);
     }
     virtual void onChanged(const Property* prop) {
         imp->onChanged(prop);

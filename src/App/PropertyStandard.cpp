@@ -37,8 +37,10 @@
 #include <Base/Writer.h>
 #include <Base/Stream.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 
 #include "PropertyStandard.h"
+#include "PropertyLinks.h"
 #include "MaterialPy.h"
 #include "ObjectIdentifier.h"
 #include "Application.h"
@@ -1336,20 +1338,78 @@ PropertyString::~PropertyString()
 
 }
 
-void PropertyString::setValue(const char* sString)
+void PropertyString::setValue(const char* newLabel)
 {
-    if (sString) {
-        aboutToSetValue();
-        _cValue = sString;
-        hasSetValue();
+    if(!newLabel) return;
+
+    if(_cValue == newLabel)
+        return;
+
+    std::vector<std::pair<PropertyXLink*,std::string> > linkChange;
+    std::string label;
+    auto obj = dynamic_cast<DocumentObject*>(getContainer());
+
+    if(obj && obj->getNameInDocument() && this==&obj->Label) {
+        // allow object to control label change
+
+        static ParameterGrp::handle _hPGrp;
+        if(!_hPGrp) {
+            _hPGrp = GetApplication().GetUserParameter().GetGroup("BaseApp");
+            _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
+        }
+        App::Document* doc = obj->getDocument();
+        if(doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
+            std::vector<std::string> objectLabels;
+            std::vector<App::DocumentObject*>::const_iterator it;
+            std::vector<App::DocumentObject*> objs = doc->getObjects();
+            bool match = false;
+            for (it = objs.begin();it != objs.end();++it) {
+                if (*it == obj)
+                    continue; // don't compare object with itself
+                std::string objLabel = (*it)->Label.getValue();
+                if (!match && objLabel == newLabel)
+                    match = true;
+                objectLabels.push_back(objLabel);
+            }
+
+            // make sure that there is a name conflict otherwise we don't have to do anything
+            if (match && *newLabel) {
+                label = newLabel;
+                // remove number from end to avoid lengthy names
+                size_t lastpos = label.length()-1;
+                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
+                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
+                    // the complete label again
+                    if (lastpos == 0) {
+                        lastpos = label.length()-1;
+                        break;
+                    }
+                    lastpos--;
+                }
+
+                label = label.substr(0, lastpos+1);
+                label = Base::Tools::getUniqueName(label, objectLabels, 3);
+            }
+        }
+
+        if(label.empty())
+            label = newLabel;
+        obj->onBeforeChangeLabel(label);
+        newLabel = label.c_str();
+        linkChange = PropertyXLink::updateLabel(obj,newLabel);
     }
+
+    aboutToSetValue();
+    _cValue = newLabel;
+    hasSetValue();
+
+    for(auto change : linkChange)
+        change.first->setSubName(change.second.c_str());
 }
 
 void PropertyString::setValue(const std::string &sString)
 {
-    aboutToSetValue();
-    _cValue = sString;
-    hasSetValue();
+    setValue(sString.c_str());
 }
 
 const char* PropertyString::getValue(void) const
@@ -1391,16 +1451,18 @@ void PropertyString::setPyObject(PyObject *value)
 
 void PropertyString::Save (Base::Writer &writer) const
 {
-    std::string val(_cValue);
+    std::string val;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     if(obj && obj->getNameInDocument() && 
        obj->getDocument()->isExporting() && 
        &obj->Label==this && 
+       !obj->allowDuplicateLabel() &&
        _cValue==obj->getNameInDocument())
     {
-        val = obj->getExportName();
-    }
-    writer.Stream() << writer.ind() << "<String value=\"" << encodeAttribute(val) <<"\"/>" << std::endl;
+        val = encodeAttribute(obj->getExportName());
+    }else
+        val = encodeAttribute(_cValue);
+    writer.Stream() << writer.ind() << "<String value=\"" << val <<"\"/>" << std::endl;
 }
 
 void PropertyString::Restore(Base::XMLReader &reader)
@@ -1424,9 +1486,7 @@ Property *PropertyString::Copy(void) const
 
 void PropertyString::Paste(const Property &from)
 {
-    aboutToSetValue();
-    _cValue = dynamic_cast<const PropertyString&>(from)._cValue;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyString&>(from)._cValue);
 }
 
 unsigned int PropertyString::getMemSize (void) const

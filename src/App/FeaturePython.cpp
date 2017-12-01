@@ -161,6 +161,40 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
     }
 }
 
+bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
+{
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            const char *funcName = "onBeforeChangeLabel";
+            if (feature.hasAttr(funcName)) {
+                Py::Callable method(feature.getAttr(funcName));
+                bool hasObj = feature.hasAttr("__object__");
+                Py::Tuple args(hasObj?1:2);
+                int i = 0;
+                if(!hasObj)
+                    args.setItem(i++, Py::Object(object->getPyObject(), true));
+                args.setItem(i++,Py::String(newLabel));
+                Py::Object ret(method.apply(args));
+                if(!ret.isNone()) {
+                    if(!ret.isString())
+                        throw Base::TypeError("onBeforeChangeLabel expects to return a string");
+                    newLabel = ret.as_string();
+                    return true;
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
+}
+
 void FeaturePythonImp::onChanged(const Property* prop)
 {
     // Run the execute method of the proxy object.
@@ -510,6 +544,33 @@ int FeaturePythonImp::canLinkProperties() const {
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             const char *funcName = "canLinkProperties";
+            if (feature.hasAttr(funcName)) {
+                Py::Callable method(feature.getAttr(funcName));
+                Py::Tuple args;
+                if(!feature.hasAttr("__object__")) {
+                    args = Py::Tuple(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                }
+                Py::Boolean ok(method.apply(args));
+                return ok?1:0;
+            }
+        }
+        return -1;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        return 0;
+    }
+}
+
+int FeaturePythonImp::allowDuplicateLabel() const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *funcName = "allowDuplicateLabel";
             if (feature.hasAttr(funcName)) {
                 Py::Callable method(feature.getAttr(funcName));
                 Py::Tuple args;
