@@ -30,6 +30,8 @@ __url__ = "http://www.freecadweb.org"
 from .FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore, QtGui
+import femsolver.run
+import FemUtils
 
 
 class _CommandFemSolverRun(FemCommands):
@@ -73,6 +75,36 @@ class _CommandFemSolverRun(FemCommands):
             # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
+
+    def _newActivated(self):
+        solver = self._getSelectedSolver()
+        if solver is not None:
+            try:
+                machine = femsolver.run.getMachine(solver)
+            except femsolver.run.MustSaveError:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    "Please save the file before executing the solver. "
+                    "This must be done because the location of the working "
+                    "directory is set to \"Beside .fcstd File\".")
+                return
+            except femsolver.run.DirectoryDoesNotExist:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    "Selected working directory doesn't exist.")
+                return
+            if not machine.running:
+                machine.reset()
+                machine.target = femsolver.run.RESULTS
+                machine.start()
+
+    def _getSelectedSolver(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+            return sel[0]
+        return None
 
 
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())
