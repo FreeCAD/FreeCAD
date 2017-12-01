@@ -84,6 +84,19 @@ class Elasticity(_Base):
         }
 
 
+class Electrostatic(_Base):
+
+    def getSpecifier(self):
+        return "Electrostatic"
+
+    def GetResources(self):
+        return {
+            'Pixmap': 'fem-equation-electrostatic',
+            'MenuText': "Electrostatic Equation",
+            'ToolTip': "Creates a FEM equation for electrostatic"
+        }
+
+
 class Flow(_Base):
 
     def getSpecifier(self):
@@ -99,4 +112,5 @@ class Flow(_Base):
 
 Gui.addCommand('FEM_AddEquationHeat', Heat())
 Gui.addCommand('FEM_AddEquationElasticity', Elasticity())
+Gui.addCommand('FEM_AddEquationElectrostatic', Electrostatic())
 Gui.addCommand('FEM_AddEquationFlow', Flow())
