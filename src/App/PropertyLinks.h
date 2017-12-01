@@ -115,6 +115,8 @@ public:
      */
     virtual ~PropertyLink();
 
+    void resetLink();
+
     /** Sets the property
      */
     virtual void setValue(App::DocumentObject *);
@@ -434,10 +436,14 @@ public:
 
     virtual ~PropertyXLink();
 
+    static std::vector<std::pair<PropertyXLink*,std::string> > updateLabel(
+            App::DocumentObject *obj, const char *newLabel);
+
     void setValue(App::DocumentObject *) override;
     void setValue(App::DocumentObject *, const char *subname, bool relative);
     void setValue(const char *filePath, const char *objectName, const char *subname, bool relative);
     const char *getSubName() const {return subName.c_str();}
+    void setSubName(const char *subname, bool transaction=true);
     bool hasSubName() const {return !subName.empty();}
 
     App::Document *getDocument() const;

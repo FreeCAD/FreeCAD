@@ -76,7 +76,13 @@ PropertyLink::PropertyLink()
 
 PropertyLink::~PropertyLink()
 {
-    
+    resetLink();
+}
+
+//**************************************************************************
+// Base class implementer
+
+void PropertyLink::resetLink() {
     //in case this property gets dynamically removed
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
@@ -90,11 +96,8 @@ PropertyLink::~PropertyLink()
         }
     }
 #endif
-    
+    _pcLink = 0;
 }
-
-//**************************************************************************
-// Base class implementer
 
 void PropertyLink::setValue(App::DocumentObject * lValue)
 {
@@ -1513,9 +1516,77 @@ PropertyXLink::PropertyXLink():relativePath(true)
 
 }
 
-PropertyXLink::~PropertyXLink()
-{
+static std::map<std::string, std::set<PropertyXLink*> > _LabelMap;
+static std::map<PropertyXLink*, std::set<std::string> > _LinkMap;
+
+static void unregisterXLinkLabel(PropertyXLink *link) {
+    auto it = _LinkMap.find(link);
+    if(it == _LinkMap.end())
+        return;
+    for(auto &label : it->second) {
+        auto itLabel = _LabelMap.find(label);
+        if(itLabel!=_LabelMap.end())
+            itLabel->second.erase(link);
+    }
+}
+
+static void registerXLinkLabel(PropertyXLink *link) {
+    unregisterXLinkLabel(link);
+    const char *dot;
+    for(const char *subname=link->getSubName();
+        (subname=strchr(subname,'$'))!=0;
+        subname=dot+1)
+    {
+        ++subname;
+        dot = strchr(subname,'.');
+        if(!dot) break;
+        std::string label(subname,dot-subname);
+        _LabelMap[label].insert(link);
+        _LinkMap[link].insert(label);
+    }
+}
+
+PropertyXLink::~PropertyXLink() {
     unlink();
+    unregisterXLinkLabel(this);
+}
+
+std::vector<std::pair<PropertyXLink*,std::string> > 
+PropertyXLink::updateLabel(App::DocumentObject *obj, const char *newLabel) {
+    std::vector<std::pair<PropertyXLink*,std::string> >  ret;
+    auto it = _LabelMap.find(obj->Label.getValue());
+    if(it == _LabelMap.end())
+        return ret;
+    std::string label("$");
+    label += obj->Label.getValue();
+    label += '.';
+    for(auto link : it->second) {
+        DocumentObject* parent = dynamic_cast<DocumentObject*>(link->getContainer());
+        if(!parent || !parent->getNameInDocument() ||
+           !link->_pcLink || !link->_pcLink->getNameInDocument())
+            continue;
+
+        // Because the label is allowed to be the same across different
+        // hierarchy, we have to search for all occurance, and make sure the
+        // referenced sub-object at the found hierarchy is actually the given
+        // object.
+        for(const char *pos = link->subName.c_str();
+            ((pos=strstr(pos,label.c_str()))!=0);
+            pos += label.size())
+        {
+            const char *subname = link->subName.c_str();
+            auto sub = link->subName.substr(0,pos+label.size()-subname);
+            auto sobj = link->_pcLink->getSubObject(sub.c_str());
+            if(sobj == obj) {
+                ret.push_back(std::make_pair(link,std::string()));
+                auto &change = ret.back();
+                change.second = subname;
+                change.second.replace(pos+1-subname,label.size()-2,newLabel);
+                break;
+            }
+        }
+    }
+    return ret;
 }
 
 void PropertyXLink::unlink() {
@@ -1524,15 +1595,27 @@ void PropertyXLink::unlink() {
         docInfo.reset();
     }
     objectName.clear();
-    _pcLink = 0;
+    resetLink();
 }
 
 void PropertyXLink::detach() {
     if(docInfo) {
         aboutToSetValue();
-        _pcLink = 0;
+        resetLink();
         hasSetValue();
     }
+}
+
+void PropertyXLink::setSubName(const char *subname, bool transaction) {
+    if(transaction)
+        aboutToSetValue();
+    if(subname)
+        subName = subname;
+    else
+        subName.clear();
+    registerXLinkLabel(this);
+    if(transaction)
+        hasSetValue();
 }
 
 void PropertyXLink::setValue(App::DocumentObject * lValue) {
@@ -1594,7 +1677,7 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, 
     }
     _pcLink=lValue;
     objectName = name;
-    subName = subname;
+    setSubName(subname,false);
     hasSetValue();
 }
 
@@ -1633,7 +1716,7 @@ void PropertyXLink::setValue(
         docInfo = info;
     }
     objectName = name;
-    subName = subname;
+    setSubName(subname,false);
     hasSetValue();
 }
 
