@@ -21,75 +21,50 @@
 # ***************************************************************************
 
 
-__title__ = "Elmer"
+__title__ = "Electrostatic"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
 import FemUtils
-
-from .. import run
-from .. import solverbase
-from . import tasks
-
-from .equations import heat
-from .equations import elasticity
-from .equations import electrostatic
-from .equations import flow
+from ... import equationbase
+from . import linear
 
 
-def create(doc, name="ElmerSolver"):
+def create(doc, name="Electrostatic"):
     return FemUtils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(solverbase.Proxy):
-    """Proxy for FemSolverElmers Document Object."""
+class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
 
-    Type = "Fem::FemSolverObjectElmer"
-
-    _EQUATIONS = {
-        "Heat": heat,
-        "Elasticity": elasticity,
-        "Electrostatic": electrostatic,
-        "Flow": flow,
-    }
+    Type = "Fem::FemEquationElmerElectrostatic"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMaxIterations",
-            "Steady State", "")
+            "App::PropertyBool", "CalculateElectricField",
+            "Electrostatic", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMinIterations",
-            "Steady State", "")
+            "App::PropertyBool", "CalculateElectricFlux",
+            "Electrostatic", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyLink", "ElmerResult",
-            "Base", "", 4 | 8)
+            "App::PropertyBool", "CalculateElectricEnergy",
+            "Electrostatic", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyLink", "ElmerOutput",
-            "Base", "", 4 | 8)
+            "App::PropertyBool", "CalculateSurfaceCharge",
+            "Electrostatic", "Select type of solver for linear system")
+        '''
+        #obj.addProperty(
+            #"App::PropertyBool", "CalculateCapacitanceMatrix",
+            #"Electrostatic", "Select type of solver for linear system")
+        #obj.addProperty(
+            #"App::PropertyInteger", "CapacitanceBodies",
+            #"Electrostatic", "Select type of solver for linear system")
+        '''
 
-        obj.SteadyStateMaxIterations = 1
-        obj.SteadyStateMinIterations = 0
-
-    def createMachine(self, obj, directory):
-        return run.Machine(
-            solver=obj, directory=directory,
-            check=tasks.Check(),
-            prepare=tasks.Prepare(),
-            solve=tasks.Solve(),
-            results=tasks.Results())
-
-    def createEquation(self, doc, eqId):
-        return self._EQUATIONS[eqId].create(doc)
-
-    def isSupported(self, eqId):
-        return eqId in self._EQUATIONS
+        obj.Priority = 10
 
 
-class ViewProxy(solverbase.ViewProxy):
-    """Proxy for FemSolverElmers View Provider."""
-
-    def getIcon(self):
-        return ":/icons/fem-elmer.png"
+class ViewProxy(linear.ViewProxy, equationbase.ElectrostaticViewProxy):
+    pass
