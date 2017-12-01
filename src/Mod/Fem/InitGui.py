@@ -50,6 +50,7 @@ class FemWorkbench (Workbench):
         import PyGui._CommandFemConstraintBodyHeatSource
         import PyGui._CommandFemConstraintFlowVelocity
         import PyGui._CommandFemConstraintInitialFlowVelocity
+        import PyGui._CommandFemConstraintElectrostaticPotential
         import PyGui._CommandFemElementFluid1D
         import PyGui._CommandFemElementGeometry1D
         import PyGui._CommandFemElementGeometry2D

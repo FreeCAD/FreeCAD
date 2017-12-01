@@ -35,6 +35,7 @@ from . import tasks
 from .equations import heat
 from .equations import elasticity
 from .equations import electrostatic
+from .equations import fluxsolver
 from .equations import flow
 
 
@@ -52,6 +53,7 @@ class Proxy(solverbase.Proxy):
         "Heat": heat,
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
+        "Fluxsolver": fluxsolver,
         "Flow": flow,
     }
 

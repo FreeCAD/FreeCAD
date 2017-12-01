@@ -109,6 +109,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_ConstraintFluidBoundary"
            << "FEM_ConstraintFlowVelocity";
 
+    Gui::ToolBarItem* electrostat = new Gui::ToolBarItem(root);
+    electrostat->setCommand("Electrostatic Constraints");
+    *electrostat << "FEM_ConstraintElectrostaticPotential";
+
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
      *solve << "FEM_SolverCalculix"
@@ -116,6 +120,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "Separator"
            << "FEM_EquationHeat"
            << "FEM_EquationElasticity"
+           << "FEM_EquationFluxsolver"
            << "FEM_EquationElectrostatic"
            << "FEM_EquationFlow"
            << "Separator"
@@ -220,6 +225,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
            << "FEM_EquationHeat"
            << "FEM_EquationElasticity"
            << "FEM_EquationElectrostatic"
+           << "FEM_EquationFluxsolver"
            << "FEM_EquationFlow"
            << "Separator"
            << "FEM_SolverControl"
