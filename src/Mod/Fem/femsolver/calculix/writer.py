@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemInputWriterCcx"
+__title__ = "CalculiX Writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -874,7 +874,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('\n')
         # grav (erdbeschleunigung) is equal for all elements
         # should be only one constraint
-        # different elment sets for different density are written in the material element sets already
+        # different element sets for different density are written in the material element sets already
 
     def write_constraints_force(self, f):
         # check shape type of reference shape and get node loads

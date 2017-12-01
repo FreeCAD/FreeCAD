@@ -29,6 +29,7 @@ import FemToolsCcx
 import FemResultTools
 import FreeCAD
 import ObjectsFem
+import femsolver.run
 import tempfile
 import unittest
 import os
@@ -41,6 +42,7 @@ temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
 test_file_dir = home_path + 'Mod/Fem/test_files/ccx/'
+test_file_dir_elmer = home_path + 'Mod/Fem/test_files/elmer/'
 
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
@@ -49,6 +51,8 @@ static_analysis_dir = temp_dir + 'FEM_static/'
 static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
 static_expected_values = test_file_dir + "cube_static_expected_values"
+static2_analysis_dir = temp_dir + 'FEM_static2/'
+static2_save_fc_file = static2_analysis_dir + static_base_name + '2.fcstd'
 
 frequency_base_name = 'cube_frequency'
 frequency_analysis_dir = temp_dir + 'FEM_frequency/'
@@ -346,13 +350,17 @@ class FemTest(unittest.TestCase):
         analysis = ObjectsFem.makeAnalysis(doc)
 
         analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
+        analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
         analysis.addObject(ObjectsFem.makeConstraintContact(doc))
         analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
+        analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
         analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
+        analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
         analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
         analysis.addObject(ObjectsFem.makeConstraintForce(doc))
         analysis.addObject(ObjectsFem.makeConstraintGear(doc))
         analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
+        analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
         analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
         analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
         analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
@@ -378,14 +386,23 @@ class FemTest(unittest.TestCase):
 
         analysis.addObject(ObjectsFem.makeResultMechanical(doc))
 
+        analysis.addObject(ObjectsFem.makeSolverCalculixOld(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
+        sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
+
+        analysis.addObject(ObjectsFem.makeEquationElasticity(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationElectrostatic(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
+        analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
+        # TODO the equations show up twice on Tree (on solver and on analysis), if they are added to the analysis group
 
         doc.recompute()
         self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
 
     def test_pyimport_all_FEM_modules(self):
-        # we're gonna try to import all python modules from FreeCAD Fem
+        # we're going to try to import all python modules from FreeCAD Fem
         pymodules = []
 
         # collect all Python modules in Fem
@@ -393,6 +410,11 @@ class FemTest(unittest.TestCase):
         pymodules += collect_python_modules('PyObjects')
         if FreeCAD.GuiUp:
             pymodules += collect_python_modules('PyGui')
+        pymodules += collect_python_modules('femsolver')
+        pymodules += collect_python_modules('femsolver/elmer')
+        pymodules += collect_python_modules('femsolver/elmer/equations')
+        pymodules += collect_python_modules('femsolver/z88')
+        pymodules += collect_python_modules('femsolver/calculix')
 
         # import all collected modules
         # fcc_print(pymodules)
@@ -431,7 +453,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
@@ -592,6 +614,77 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
 
+        # use new solver frame work ccx solver
+        fcc_print('Checking FEM new solver for new solver frame work...')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
+        solver_ccx2_object.GeometricalNonlinearity = 'linear'
+        solver_ccx2_object.ThermoMechSteadyState = False
+        solver_ccx2_object.MatrixSolverType = 'default'
+        solver_ccx2_object.IterationsControlParameterTimeUse = False
+        solver_ccx2_object.EigenmodesCount = 10
+        solver_ccx2_object.EigenmodeHighLimit = 1000000.0
+        solver_ccx2_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
+        analysis.addObject(solver_ccx2_object)
+
+        fcc_print('Checking inpfile writing for new solver frame work...')
+        if not os.path.exists(static2_analysis_dir):  # new solver frameworkd does explicit not create a non existing directory
+            os.makedirs(static2_analysis_dir)
+
+        fcc_print('machine_ccx')
+        machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
+        fcc_print(machine.testmode)
+        machine.target = femsolver.run.PREPARE
+        machine.start()
+        machine.join()  # wait for the machine to finish.
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))
+        ret = compare_inp_files(static_analysis_inp_file, static2_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+
+        # use new solver frame work elmer solver
+        solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
+        self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
+        analysis.addObject(solver_elmer_object)
+        solver_elmer_eqobj = ObjectsFem.makeEquationElasticity(self.active_doc, solver_elmer_object)
+        self.assertTrue(solver_elmer_eqobj, "FemTest of elmer elasticity equation failed")
+
+        # set ThermalExpansionCoefficient, current elmer seams to need it even on simple elasticity analysis
+        mat = material_object.Material
+        mat['ThermalExpansionCoefficient'] = "0 um/m/K"  # FIXME elmer elasticity needs the dictionary key, otherwise it fails
+        material_object.Material = mat
+
+        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.active_doc)
+        mesh_gmsh.CharacteristicLengthMin = "9 mm"
+        mesh_gmsh.FemMesh = mesh_object.FemMesh  # elmer needs a GMHS mesh object, FIXME error message on Python solver run
+        mesh_gmsh.Part = box
+        analysis.addObject(mesh_gmsh)
+        self.active_doc.removeObject(mesh_object.Name)
+
+        fcc_print('machine_elmer')
+        machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, static2_analysis_dir, True)
+        fcc_print(machine_elmer.testmode)
+        machine_elmer.target = femsolver.run.PREPARE
+        machine_elmer.start()
+        machine_elmer.join()  # wait for the machine to finish.
+
+        fcc_print('Test writing STARTINFO file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', static2_analysis_dir + 'ELMERSOLVER_STARTINFO'))
+        ret = compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', static2_analysis_dir + 'ELMERSOLVER_STARTINFO')
+        self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
+
+        fcc_print('Test writing case file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'case.sif', static2_analysis_dir + 'case.sif'))
+        ret = compare_files(test_file_dir_elmer + 'case.sif', static2_analysis_dir + 'case.sif')
+        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
+
+        fcc_print('Test writing GMSH geo file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'group_mesh.geo', static2_analysis_dir + 'group_mesh.geo'))
+        ret = compare_files(test_file_dir_elmer + 'group_mesh.geo', static2_analysis_dir + 'group_mesh.geo')
+        self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
+
+        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(static2_save_fc_file))
+        self.active_doc.saveAs(static2_save_fc_file)
+
         fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
 
     def test_thermomech_analysis(self):
@@ -605,7 +698,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -759,7 +852,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -1006,6 +1099,28 @@ def compare_inp_files(file_name1, file_name2):
     file2.close()
     # TODO see comment on file1
     lf2 = [l for l in f2 if not (l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1'))]
+    lf2 = force_unix_line_ends(lf2)
+    import difflib
+    diff = difflib.unified_diff(lf1, lf2, n=0)
+    result = ''
+    for l in diff:
+        result += l
+    if result:
+        result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
+    return result
+
+
+def compare_files(file_name1, file_name2):
+    file1 = open(file_name1, 'r')
+    f1 = file1.readlines()
+    file1.close()
+    # workaraound for compare geos of elmer test and temporary file path (not only names change, path changes with operating system)
+    lf1 = [l for l in f1 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
+    lf1 = force_unix_line_ends(lf1)
+    file2 = open(file_name2, 'r')
+    f2 = file2.readlines()
+    file2.close()
+    lf2 = [l for l in f2 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
