@@ -224,6 +224,16 @@ PyObject* LinkBaseExtensionPy::setLink(PyObject *_args)
     }PY_CATCH
 }
 
+PyObject* LinkBaseExtensionPy::cacheChildLabel(PyObject *args) {
+    PyObject *enable = Py_True;
+    if(!PyArg_ParseTuple(args,"|O",&enable))
+        return 0;
+    PY_TRY {
+        getLinkBaseExtensionPtr()->cacheChildLabel(PyObject_IsTrue(enable));
+        Py_Return;
+    }PY_CATCH;
+}
+
 PyObject *LinkBaseExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

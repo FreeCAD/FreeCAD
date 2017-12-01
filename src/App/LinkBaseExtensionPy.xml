@@ -73,6 +73,16 @@ subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="cacheChildLabel">
+      <Documentation>
+        <UserDocu>
+cacheChildLabel(enable=True): enable/disable child label cache
+
+The cache is not updated on child label change for performance reason. You must
+call this function on any child label change
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

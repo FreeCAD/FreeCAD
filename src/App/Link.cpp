@@ -41,7 +41,7 @@ using namespace App;
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
-    :myOwner(0)
+    :enableLabelCache(false),myOwner(0)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkRecomputed, (false), " Link", 
@@ -142,6 +142,10 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
             getElementListProperty()->setStatus(
                     Property::Immutable,getLinkedObjectProperty()!=0);
         break;
+    case PropVisibilityList:
+        getVisibilityListProperty()->setStatus(Property::Immutable,true);
+        getVisibilityListProperty()->setStatus(Property::Hidden,true);
+        break;
     }
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE)) {
@@ -205,6 +209,13 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
             propElementVis->setSize(index+1, true);
         }
         propElementVis->set1Value(index,visible,true);
+        const auto &elements = getElementListValue();
+        if(index<(int)elements.size()) {
+            if(!visible)
+                myHiddenElements.insert(elements[index]);
+            else
+                myHiddenElements.erase(elements[index]);
+        }
         return 1;
     }
     DocumentObject *linked = getTrueLinkedObject(true);
@@ -312,8 +323,8 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             auto linked = getTrueLinkedObject(true);
             if(!linked || !linked->getNameInDocument()) return -1;
             if(subname[0]=='$') {
-            if(std::string(subname+1,dot-subname-1) != linked->Label.getValue())
-                return -1;
+                if(std::string(subname+1,dot-subname-1) != linked->Label.getValue())
+                    return -1;
             }else if(std::string(subname,dot-subname)!=linked->getNameInDocument())
                 return -1;
             idx = 0;
@@ -328,13 +339,20 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         ++subname;
         std::string name(subname,dot-subname);
         const auto &elements = getElementListValue();
-        idx = 0;
-        for(auto element : elements) {
-            if(element->Label.getStrValue() == name)
-                break;
-            ++idx;
+        if(enableLabelCache) {
+            auto it = myLabelCache.find(name);
+            if(it == myLabelCache.end())
+                return -1;
+            idx = it->second;
+        }else{
+            idx = 0;
+            for(auto element : elements) {
+                if(element->Label.getStrValue() == name)
+                    break;
+                ++idx;
+            }
         }
-        if(idx >= (int)elements.size())
+        if(idx<0 || idx>=(int)elements.size())
             return -1;
     }
     if(psubname)
@@ -605,9 +623,10 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
     }else if(prop == getElementCountProperty()) {
         size_t elementCount = getElementCountValue()<0?0:(size_t)getElementCountValue();
 
-        if(getVisibilityListProperty()) {
-            if(getVisibilityListValue().size()>elementCount)
-                getVisibilityListProperty()->setSize(getElementCountValue());
+        auto propVis = getVisibilityListProperty();
+        if(propVis) {
+            if(propVis->getSize()>(int)elementCount)
+                propVis->setSize(getElementCountValue(),true);
         }
 
         if(!getShowElementValue()) {
@@ -681,6 +700,10 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         }
     }else if(prop == getElementListProperty()) {
         const auto &elements = getElementListValue();
+
+        if(enableLabelCache)
+            cacheChildLabel();
+
         // Element list changed, we need to sychrnoize VisibilityList.
         if(getShowElementValue() && getVisibilityListProperty()) {
             boost::dynamic_bitset<> vis;
@@ -716,6 +739,21 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             linkPlacement->setStatus(Property::Hidden,!transform);
         }
         syncElementList();
+    }
+}
+
+void LinkBaseExtension::cacheChildLabel(bool enable) {
+    enableLabelCache = enable;
+    myLabelCache.clear();
+    if(!enable)
+        return;
+
+    const auto &elements = getElementListValue();
+    int idx = 0;
+    for(auto child : elements) {
+        if(child && child->getNameInDocument())
+            myLabelCache[child->Label.getStrValue()] = idx;
+        ++idx;
     }
 }
 

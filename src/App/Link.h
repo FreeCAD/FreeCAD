@@ -248,6 +248,8 @@ public:
         return getLinkPlacementProperty() || getPlacementProperty();
     }
 
+    void cacheChildLabel(bool enable=true);
+
 protected:
     void update(App::DocumentObject *parent, const Property *prop);
     bool hasElements() const;
@@ -259,6 +261,8 @@ protected:
     std::set<const App::DocumentObject*> myHiddenElements;
     std::string mySubElement;
     std::string mySubName;
+    std::map<std::string,int> myLabelCache; // for label based subname lookup
+    bool enableLabelCache;
 
     // WARNING! Do not try to access through myOwner, the object may have been
     // deleted. Its purpose here is just to distinguish the owner.
