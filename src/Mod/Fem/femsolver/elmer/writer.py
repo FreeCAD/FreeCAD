@@ -72,7 +72,7 @@ def getFromUi(value, unit, outputDim):
 
 def convert(quantityStr, unit):
     quantity = Units.Quantity(quantityStr)
-    for key, setting in UNITS.iteritems():
+    for key, setting in UNITS.items():
         unit = unit.replace(key, setting)
     return float(quantity.getValueAs(unit))
 
