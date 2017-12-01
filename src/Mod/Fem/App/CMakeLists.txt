@@ -118,6 +118,17 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMaterial.py
 )
 
+SET(FemSolver_SRCS
+    femsolver/__init__.py
+    femsolver/solverbase.py
+    femsolver/report.py
+    femsolver/reportdialog.py
+    femsolver/settings.py
+    femsolver/task.py
+    femsolver/run.py
+    femsolver/signal.py
+)
+
 SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
     PyGui/FemSelectionObserver.py
@@ -154,6 +165,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelFemMeshRegion.py
     PyGui/_TaskPanelFemResultShow.py
     PyGui/_TaskPanelFemSolverCalculix.py
+    PyGui/_TaskPanelFemSolverControl.py
     PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
@@ -319,7 +331,8 @@ fc_target_copy_resource(Fem
     ${FemObjectsScripts_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
-    )
+    ${FemSolver_SRCS}
+)
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(Fem)
