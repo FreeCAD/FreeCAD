@@ -37,7 +37,6 @@ INSTALL(
         FemMesh2Mesh.py
         FemMeshTools.py
         FemResultTools.py
-        FemTools.py
         FemToolsCcx.py
         ObjectsFem.py
         FemUtils.py
