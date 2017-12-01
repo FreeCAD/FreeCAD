@@ -86,6 +86,16 @@ INSTALL(
 
 INSTALL(
     FILES
+        femsolver/z88/__init__.py
+        femsolver/z88/solver.py
+        femsolver/z88/tasks.py
+        femsolver/z88/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/z88
+)
+
+INSTALL(
+    FILES
         PyGui/FemCommands.py
         PyGui/FemSelectionObserver.py
         PyGui/__init__.py
