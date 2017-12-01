@@ -88,6 +88,7 @@ protected:
     void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
     void slotFinishRestoreObject(const App::DocumentObject &obj);
     void slotRecomputed(const App::Document&);
+    void slotTouchedObject(const App::DocumentObject &);
     //@}
 
     void addViewProvider(Gui::ViewProviderDocumentObject*);

@@ -79,7 +79,8 @@ const int TreeWidget::ObjectType = 1001;
 /* TRANSLATOR Gui::TreeWidget */
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false), contextItem(0)
-    , editingItem(0), currentDocItem(0),fromOutside(false),myName(name)
+    , editingItem(0), currentDocItem(0),fromOutside(false)
+    ,statusUpdateDelay(0),myName(name)
 {
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
@@ -168,9 +169,10 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
 #endif
 
     this->statusTimer = new QTimer(this);
+    this->statusTimer->setSingleShot(false);
 
     connect(this->statusTimer, SIGNAL(timeout()),
-            this, SLOT(onTestStatus()));
+            this, SLOT(onUpdateStatus()));
     connect(this, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
             this, SLOT(onItemEntered(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem*)),
@@ -181,7 +183,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onItemSelectionChanged()));
 
     setupText();
-    onTestStatus();
+    _updateStatus();
     documentPixmap = new QPixmap(Gui::BitmapFactory().pixmap("Document"));
 }
 
@@ -191,6 +193,21 @@ TreeWidget::~TreeWidget()
 
 const char *TreeWidget::getTreeName() const {
     return myName.c_str();
+}
+
+void TreeWidget::updateStatus(bool delay) {
+    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+        tree->_updateStatus(delay);
+}
+
+void TreeWidget::_updateStatus(bool delay) {
+    if(!statusTimer->isActive())
+        statusTimer->start(300);
+    else if(delay) {
+        if(!statusUpdateDelay)
+            statusUpdateDelay=1;
+    }else
+        statusUpdateDelay=-1;
 }
 
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
@@ -470,7 +487,7 @@ TreeWidget::getSelection(App::Document *doc)
             continue;
         }
         if(doc && obj->getDocument()!=doc) {
-            FC_WARN("skip objects not from current document");
+            FC_LOG("skip objects not from current document");
             continue;
         }
         ViewProviderDocumentObject *parentVp = 0;
@@ -902,6 +919,8 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property &prop)
 {
+    _updateStatus(true);
+
     if(!vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
         return;
     const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
@@ -943,17 +962,17 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
-void TreeWidget::onTestStatus(void)
+void TreeWidget::onUpdateStatus(void)
 {
-    if (isVisible()) {
+    if (isVisible() && statusUpdateDelay<=0) {
+        statusTimer->stop();
+        FC_LOG("update item status");
         std::map<const Gui::Document*,DocumentItem*>::iterator pos;
         for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
             pos->second->testStatus();
         }
     }
-
-    this->statusTimer->setSingleShot(true);
-    this->statusTimer->start(300);
+    statusUpdateDelay = 0;
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
@@ -1429,9 +1448,9 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     else
         parent->insertChild(index,item);
     assert(item->parent() == parent);
-    item->setIcon(0, obj.getIcon());
     item->setText(0, QString::fromUtf8(displayName.c_str()));
     item->setHidden(!obj.showInTree() && !showHidden());
+    item->testStatus(true);
     populateItem(item);
     return true;
 }
@@ -1677,6 +1696,8 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view,
     auto obj = view.getObject();
     if(!obj || !obj->getNameInDocument())
         return;
+
+    getTree()->_updateStatus(true);
 
     // Let's not waste time on the newly added Visibility property in
     // DocumentObject.

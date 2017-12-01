@@ -121,6 +121,8 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalDeletedObject;
     /// signal on changed Object
     boost::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
+    /// signal on manually called DocumentObject::touch()
+    boost::signal<void (const App::DocumentObject&)> signalTouchedObject;
     /// signal on relabeled Object
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object

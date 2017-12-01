@@ -658,6 +658,8 @@ DocumentObject *DocumentObject::getLinkedObject(
 void DocumentObject::touch(void)
 {
     StatusBits.set(ObjectStatus::Touch);
+    if (_pDoc)
+        _pDoc->signalTouchedObject(*this);
 }
 
 /**

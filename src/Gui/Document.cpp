@@ -118,6 +118,7 @@ struct DocumentP
     Connection connectRecomputed;;
     Connection connectTransactionAppend;
     Connection connectTransactionRemove;
+    Connection connectTouchedObject;;
 };
 
 } // namespace Gui
@@ -179,6 +180,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotRedoDocument, this, _1));
     d->connectRecomputed = pcDocument->signalRecomputed.connect
         (boost::bind(&Gui::Document::slotRecomputed, this, _1));
+    d->connectTouchedObject = pcDocument->signalTouchedObject.connect
+        (boost::bind(&Gui::Document::slotTouchedObject, this, _1));
 
     d->connectTransactionAppend = pcDocument->signalTransactionAppend.connect
         (boost::bind(&Gui::Document::slotTransactionAppend, this, _1, _2));
@@ -220,6 +223,7 @@ Document::~Document()
     d->connectRecomputed.disconnect();
     d->connectTransactionAppend.disconnect();
     d->connectTransactionRemove.disconnect();
+    d->connectTouchedObject.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -755,6 +759,13 @@ void Document::slotRecomputed(const App::Document& doc)
     if (d->_pcDocument != &doc)
         return;
     getMainWindow()->updateActions();
+    TreeWidget::updateStatus();
+}
+
+void Document::slotTouchedObject(const App::DocumentObject &)
+{
+    getMainWindow()->updateActions(true);
+    TreeWidget::updateStatus(true);
 }
 
 void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)

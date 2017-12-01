@@ -90,6 +90,8 @@ public:
 
     const char *getTreeName() const;
 
+    static void updateStatus(bool delay=false);
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg);
@@ -117,6 +119,7 @@ protected:
 protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
+    void _updateStatus(bool delay=false);
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -136,7 +139,7 @@ private Q_SLOTS:
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
-    void onTestStatus(void);
+    void onUpdateStatus(void);
 
 private:
     void slotNewDocument(const Gui::Document&);
@@ -168,6 +171,7 @@ private:
     static QPixmap* documentPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;
+    int statusUpdateDelay;
 
     std::string myName; // for debugging purpose
 
