@@ -102,6 +102,7 @@ INSTALL(
         femsolver/elmer/equations/linear.py
         femsolver/elmer/equations/nonlinear.py
         femsolver/elmer/equations/elasticity.py
+        femsolver/elmer/equations/electrostatic.py
         femsolver/elmer/equations/heat.py
         femsolver/elmer/equations/flow.py
     DESTINATION

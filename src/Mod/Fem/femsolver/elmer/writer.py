@@ -106,6 +106,7 @@ class Writer(object):
         self._handleSimulation()
         self._handleHeat()
         self._handleElasticity()
+        self._handleElectrostatic()
         self._handleFlow()
         self._addOutputSolver()
 
@@ -279,6 +280,59 @@ class Writer(object):
                 self._material(
                     name, "Heat Capacity",
                     convert(m["SpecificHeat"], "L^2/(T^2*O)"))
+
+    def _handleElectrostatic(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if FemUtils.isOfType(equation, "Fem::FemEquationElmerElectrostatic"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getElectrostaticSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+        if activeIn:
+            self._handleElectrostaticConstants()
+            #self._handleElectrostaticBndConditions()
+            #self._handleElectrostaticInitial(activeIn)
+            #self._handleElectrostaticBodyForces(activeIn)
+            self._handleElectrostaticMaterial(activeIn)
+
+    def _getElectrostaticSolver(self, equation):
+        s = self._createLinearSolver(equation)
+        s["Equation"] = "Stat Elec Solver"  # equation.Name
+        s["Procedure"] = sifio.FileAttr("StatElecSolve/StatElecSolver")
+        s["Variable"] = self._getUniqueVarName("Potential")
+        s["Variable DOFs"] = 1
+        s["Calculate Electric Field"] = equation.CalculateElectricField
+        s["Calculate Electric Flux"] = equation.CalculateElectricFlux
+        s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
+        s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
+        s["Displace mesh"] = False
+        s["Exec Solver"] = "Always"
+        s["Stabilize"] = equation.Stabilize
+        s["Bubbles"] = equation.Bubbles
+        s["Optimize Bandwidth"] = True
+        return s
+
+    def _handleElectrostaticConstants(self):
+        self._constant(
+            "Permittivity Of Vacuum",
+            getConstant("PermittivityOfVacuum", "T^4*I^2/(L*M)"))
+
+    def _handleElectrostaticMaterial(self, bodies):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            refs = (
+                obj.References[0][1]
+                if obj.References
+                else self._getAllBodies())
+            for name in (n for n in refs if n in bodies):
+                if "RelativePermittivity" in m:
+                    self._material(
+                        name, "Relative Permittivity",
+                        float(m["RelativePermittivity"]))
 
     def _handleElasticity(self):
         activeIn = []
