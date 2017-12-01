@@ -141,6 +141,7 @@ SET(FemZ88_SRCS
 SET(FemGuiScripts_SRCS
     PyGui/FemCommands.py
     PyGui/FemSelectionObserver.py
+    PyGui/FemSelectionWidgets.py
     PyGui/__init__.py
     PyGui/_CommandFemAnalysis.py
     PyGui/_CommandFemConstraintSelfWeight.py
