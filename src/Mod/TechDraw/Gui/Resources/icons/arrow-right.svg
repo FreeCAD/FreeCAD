@@ -281,7 +281,7 @@
             <rdf:li>right</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>arrow pointing right</dc:description>
+        <dc:description>Arrow pointing right</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>
