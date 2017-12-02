@@ -507,7 +507,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Line Group </string>
+           <string>Line Group</string>
           </property>
          </widget>
         </item>
