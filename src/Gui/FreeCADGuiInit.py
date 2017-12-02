@@ -124,7 +124,7 @@ def InitApplications():
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
-					Err('Please look into the log file for further information')
+					Err('Please look into the log file for further information\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
