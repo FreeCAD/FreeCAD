@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von Juergen Riegel (DCX) -->
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von Juergen Riegel (DCX) -->
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von Juergen Riegel (DCX) -->
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von Juergen Riegel (DCX) -->
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von Juergen Riegel (DCX) -->
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von juergen Riegel (DCX) -->
-<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von juergen Riegel (DCX) -->
 <!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von juergen Riegel (DCX) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="GenerateModel">
@@ -98,7 +91,7 @@
 							<xs:element name="Property" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element name="Feature" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
-									<xs:documentation>Represent a Feature in the modue</xs:documentation>
+									<xs:documentation>Represent a Feature in the module</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
 									<xs:sequence>
@@ -115,7 +108,7 @@
 							</xs:element>
 							<xs:element name="DocObject" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
-									<xs:documentation>Represnts a Document Object in the module</xs:documentation>
+									<xs:documentation>Represents a Document Object in the module</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
 									<xs:sequence>
@@ -127,7 +120,7 @@
 							</xs:element>
 							<xs:element name="GuiCommand" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
-									<xs:documentation>Creats a GuiCommand in this module</xs:documentation>
+									<xs:documentation>Creates a GuiCommand in this module</xs:documentation>
 								</xs:annotation>
 							</xs:element>
 							<xs:element name="PreferencesPage" minOccurs="0" maxOccurs="unbounded"/>
@@ -140,7 +133,7 @@
 	</xs:element>
 	<xs:element name="Property">
 		<xs:annotation>
-			<xs:documentation> Defines a class property</xs:documentation>
+			<xs:documentation>Defines a class property</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -172,7 +165,7 @@
 	</xs:element>
 	<xs:element name="ViewProvider">
 		<xs:annotation>
-			<xs:documentation>Defins a ViewProvider for a Object</xs:documentation>
+			<xs:documentation>Defines a ViewProvider for an Object</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>

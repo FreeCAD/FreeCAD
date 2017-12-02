@@ -2679,7 +2679,7 @@ DEF_3DV_CMD(StdCmdSceneInspector)
 StdCmdSceneInspector::StdCmdSceneInspector()
   : Command("Std_SceneInspector")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Scene inspector...");
     sToolTipText  = QT_TR_NOOP("Scene inspector");
@@ -2711,7 +2711,7 @@ DEF_STD_CMD_A(StdCmdTextureMapping)
 StdCmdTextureMapping::StdCmdTextureMapping()
   : Command("Std_TextureMapping")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Texture mapping...");
     sToolTipText  = QT_TR_NOOP("Texture mapping");

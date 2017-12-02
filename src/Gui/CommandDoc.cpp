@@ -81,7 +81,7 @@ DEF_STD_CMD(StdCmdOpen);
 StdCmdOpen::StdCmdOpen()
   : Command("Std_Open")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Open...");
     sToolTipText  = QT_TR_NOOP("Open a document or import files");
@@ -163,7 +163,7 @@ DEF_STD_CMD_A(StdCmdImport);
 StdCmdImport::StdCmdImport()
   : Command("Std_Import")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Import...");
     sToolTipText  = QT_TR_NOOP("Import a file in the active document");
@@ -249,7 +249,7 @@ DEF_STD_CMD_A(StdCmdExport);
 StdCmdExport::StdCmdExport()
   : Command("Std_Export")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Export...");
     sToolTipText  = QT_TR_NOOP("Export an object in the active document");
@@ -367,7 +367,7 @@ DEF_STD_CMD_A(StdCmdExportGraphviz);
 StdCmdExportGraphviz::StdCmdExportGraphviz()
   : Command("Std_ExportGraphviz")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Dependency graph...");
     sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
@@ -577,7 +577,7 @@ DEF_STD_CMD_A(StdCmdProjectInfo);
 StdCmdProjectInfo::StdCmdProjectInfo()
   :Command("Std_ProjectInfo")
 {
-  // seting the
+  // setting the
   sGroup        = QT_TR_NOOP("File");
   sMenuText     = QT_TR_NOOP("Project i&nformation...");
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
@@ -609,7 +609,7 @@ DEF_STD_CMD_A(StdCmdProjectUtil);
 StdCmdProjectUtil::StdCmdProjectUtil()
   :Command("Std_ProjectUtil")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sWhatsThis    = "Std_ProjectUtil";
     sMenuText     = QT_TR_NOOP("Project utility...");

@@ -432,7 +432,7 @@ DEF_STD_CMD_A(CmdDrawingOpenBrowserView);
 CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
   : Command("Drawing_OpenBrowserView")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("Open &browser view");
     sToolTipText  = QT_TR_NOOP("Opens the selected page in a browser view");
@@ -470,7 +470,7 @@ DEF_STD_CMD_A(CmdDrawingAnnotation);
 CmdDrawingAnnotation::CmdDrawingAnnotation()
   : Command("Drawing_Annotation")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("&Annotation");
     sToolTipText  = QT_TR_NOOP("Inserts an Annotation view in the active drawing");
@@ -518,7 +518,7 @@ DEF_STD_CMD_A(CmdDrawingClip);
 CmdDrawingClip::CmdDrawingClip()
   : Command("Drawing_Clip")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("&Clip");
     sToolTipText  = QT_TR_NOOP("Inserts a clip group in the active drawing");
@@ -563,7 +563,7 @@ DEF_STD_CMD_A(CmdDrawingSymbol);
 CmdDrawingSymbol::CmdDrawingSymbol()
   : Command("Drawing_Symbol")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("&Symbol");
     sToolTipText  = QT_TR_NOOP("Inserts a symbol from a svg file in the active drawing");
@@ -619,7 +619,7 @@ DEF_STD_CMD_A(CmdDrawingExportPage);
 CmdDrawingExportPage::CmdDrawingExportPage()
   : Command("Drawing_ExportPage")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Export page...");
     sToolTipText  = QT_TR_NOOP("Export a page to an SVG file");
@@ -671,7 +671,7 @@ DEF_STD_CMD_A(CmdDrawingProjectShape);
 CmdDrawingProjectShape::CmdDrawingProjectShape()
   : Command("Drawing_ProjectShape")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("Project shape...");
     sToolTipText  = QT_TR_NOOP("Project shape onto a user-defined plane");
@@ -707,7 +707,7 @@ DEF_STD_CMD_A(CmdDrawingDraftView);
 CmdDrawingDraftView::CmdDrawingDraftView()
   : Command("Drawing_DraftView")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("&Draft View");
     sToolTipText  = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
@@ -738,7 +738,7 @@ DEF_STD_CMD_A(CmdDrawingSpreadsheetView);
 CmdDrawingSpreadsheetView::CmdDrawingSpreadsheetView()
   : Command("Drawing_SpreadsheetView")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("&Spreadsheet View");
     sToolTipText  = QT_TR_NOOP("Inserts a view of a selected spreadsheet in the active drawing");
