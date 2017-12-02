@@ -223,7 +223,7 @@ public:
     virtual short extensionMustExecute(void) override;
     virtual void extensionOnChanged(const Property* p) override;
     virtual void onExtendedUnsetupObject () override;
-    virtual void extensionOnDocumentRestored() override;
+    virtual void onExtendedDocumentRestored() override;
 
     virtual int extensionSetElementVisible(const char *, bool) override;
     virtual int extensionIsElementVisible(const char *) override;
@@ -373,9 +373,9 @@ public:
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_EXT)
 
-    void extensionOnDocumentRestored() override {
+    void onExtendedDocumentRestored() override {
         LINK_PROPS_SET(LINK_PARAMS_EXT);
-        inherited::extensionOnDocumentRestored();
+        inherited::onExtendedDocumentRestored();
     }
 };
 

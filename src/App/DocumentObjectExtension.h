@@ -62,8 +62,6 @@ public:
     /// get called when object is going to be removed from the document
     virtual void onExtendedUnsetupObject();
 
-    virtual void extensionOnDocumentRestored() {}
-  
     virtual PyObject* getExtensionPyObject(void) override;
     
     /// returns the type name of the ViewProviderExtension which is automatically attached 

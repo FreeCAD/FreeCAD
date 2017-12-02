@@ -804,11 +804,19 @@ void LinkBaseExtension::syncElementList() {
     }
 }
 
-void LinkBaseExtension::extensionOnDocumentRestored() {
-    inherited::extensionOnDocumentRestored();
+void LinkBaseExtension::onExtendedDocumentRestored() {
+    inherited::onExtendedDocumentRestored();
     auto parent = getContainer();
     myHiddenElements.clear();
     if(parent) {
+        if(getVisibilityListProperty()) {
+            const auto &elements = getElementListValue();
+            const auto &vis = getVisibilityListValue();
+            for(size_t i=0;i<vis.size()&&i<elements.size();++i) {
+                if(!vis[i])
+                    myHiddenElements.insert(elements[i]);
+            }
+        }
         update(parent,getLinkedObjectProperty());
         update(parent,getElementListProperty());
     }
