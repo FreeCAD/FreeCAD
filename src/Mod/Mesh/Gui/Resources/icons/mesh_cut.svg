@@ -899,7 +899,7 @@
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
-        <dc:description>A tesselated planar mesh in between the blades of an open scissors</dc:description>
+        <dc:description>A tesselated planar mesh in between the blades of an open scissor</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>

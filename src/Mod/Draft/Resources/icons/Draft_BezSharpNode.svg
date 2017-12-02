@@ -522,7 +522,7 @@
             <rdf:li>control</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>An irregularly curved lin passing through a dot with unequally spaced control points at an angle to each other</dc:description>
+        <dc:description>An irregularly curved line passing through a dot with unequally spaced control points at an angle to each other</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

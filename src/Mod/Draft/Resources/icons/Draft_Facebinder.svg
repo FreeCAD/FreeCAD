@@ -574,7 +574,7 @@
             <rdf:li>polygon</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A large polygon to the left with two smaller adjacent polygond to the right.</dc:description>
+        <dc:description>A large polygon to the left with two smaller adjacent polygons to the right.</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>
