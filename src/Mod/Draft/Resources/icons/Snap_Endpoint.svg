@@ -185,7 +185,7 @@
             <rdf:li></rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>line with bulge at one endpoint</dc:description>
+        <dc:description>Line with bulge at one endpoint</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

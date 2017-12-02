@@ -73,7 +73,7 @@
         </dc:creator>
         <cc:license rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html"/>
         <dc:source>http://jimmac.musichall.cz</dc:source>
-        <dc:description>Active state - when files are being dragged to.</dc:description>
+        <dc:description>Active state - when files are being dragged to</dc:description>
         <dc:publisher>
           <cc:Agent>
             <dc:title>Novell, Inc.</dc:title>
