@@ -790,10 +790,16 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     // WARNING: This is only valid where the multiplicity of the endpoints conforms with a BSpline
     // only then the startpoint is the first control point and the endpoint is the last control point
     // accordingly, it is never the case for a periodic BSpline.
-    if(!bs.periodic && bs.mult[0] > bs.degree && bs.mult[mult.size()-1] > bs.degree) {
-        GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
-        GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
+    // NOTE: For an external B-spline (i.e. fixed=true) we must not set the coincident constraints
+    // as the points are not movable anyway.
+    // See #issue 0003176: Sketcher: always over-constrained when referencing external B-Spline
+    if (!fixed && !bs.periodic) {
+        if (bs.mult[0] > bs.degree)
+            GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
+        if (bs.mult[mult.size()-1] > bs.degree)
+            GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
     }
+
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
