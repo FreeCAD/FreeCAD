@@ -226,19 +226,13 @@
         </dc:publisher>
         <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Clone.svg</dc:identifier>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson</dc:title>
-          </cc:Agent>
-        </dc:contributor>
         <dc:subject>
           <rdf:Bag>
-            <rdf:li>stormtrooper</rdf:li>
-            <rdf:li>clone</rdf:li>
-            <rdf:li>helmet</rdf:li>
+            <rdf:li>square</rdf:li>
+            <rdf:li>square</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A clone stormtrooper helmet similar in style to a popuar scifi universe based on wars in the stars</dc:description>
+        <dc:description>Two identical orange squares with dark outlines diagonally stacked from left to right and offset of each at the right corner of the leftmost bottom one</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>
