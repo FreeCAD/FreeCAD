@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <Standard_math.hxx>
 # include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoLineSet.h>
@@ -69,6 +70,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 
     GridRoot = new SoSeparator();
     GridRoot->ref();
+    GridRoot->setName("GridRoot");
     MinX = MinY = -100;
     MaxX = MaxY = 100;
     GridStyle.setEnums(GridStyleEnums);
@@ -146,6 +148,10 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     carpet->verticesPerRow = 2;
     carpet->vertexProperty = vts;
     parent->addChild(carpet);*/
+
+    SoDepthBuffer *depth = new SoDepthBuffer;
+    depth->function = SoDepthBuffer::ALWAYS;
+    parent->addChild(depth);
 
     // gridlines
     mycolor = new SoBaseColor;
