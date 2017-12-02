@@ -1046,7 +1046,7 @@ QTextCursor PythonConsole::inputBegin( void ) const
   // construct cursor at begin of input line ...
   QTextCursor inputLineBegin( this->textCursor() );
   inputLineBegin.movePosition( QTextCursor::End );
-  inputLineBegin.movePosition( QTextCursor::StartOfLine );
+  inputLineBegin.movePosition( QTextCursor::StartOfBlock );
   // ... and move cursor right beyond the prompt.
   inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength( inputLineBegin.block().text() ) );
   return inputLineBegin;
