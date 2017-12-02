@@ -183,6 +183,8 @@ class ObjectOp(PathOp.ObjectOp):
         pass
 
     def findAllHoles(self, obj):
+        if not self.getJob(obj):
+            return
         features = []
         if self.baseIsArchPanel(obj, self.baseobject):
             holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
