@@ -81,7 +81,9 @@ struct EdgePoints {
 GeometryObject::GeometryObject(const string& parent, TechDraw::DrawView* parentObj) :
     m_parentName(parent),
     m_parent(parentObj),
-    m_isoCount(0)
+    m_isoCount(0),
+    m_isPersp(false),
+    m_focus(100.0)
 {
 }
 
@@ -158,8 +160,14 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     try {
         brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(input, m_isoCount);
-        HLRAlgo_Projector projector( viewAxis );
-        brep_hlr->Projector(projector);
+        if (m_isPersp) {
+            double fLength = std::max(Precision::Confusion(),m_focus);
+            HLRAlgo_Projector projector( viewAxis, fLength );
+            brep_hlr->Projector(projector);
+        } else {
+            HLRAlgo_Projector projector( viewAxis );
+            brep_hlr->Projector(projector);
+        }
         brep_hlr->Update();
         brep_hlr->Hide();                           //XXXX: what happens if we don't call Hide()?? and only look at VCompound?
                                                     // WF: you get back all the edges in the shape, but very fast!!

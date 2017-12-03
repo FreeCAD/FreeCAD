@@ -32,6 +32,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
@@ -82,7 +83,10 @@ public:
     virtual ~DrawViewPart();
 
     App::PropertyLinkGlobal   Source;                                        //Part Feature
-    App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
+    App::PropertyVector       Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
+    App::PropertyBool         Perspective;
+    App::PropertyDistance     Focus;
+
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;
     //App::PropertyBool   OutlinesVisible;
