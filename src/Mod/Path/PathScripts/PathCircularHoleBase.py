@@ -133,8 +133,11 @@ class ObjectOp(PathOp.ObjectOp):
         if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
             return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-        if shape.ShapeType == 'Face' and hasattr(shape.Surface, 'Center'):
-            return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+        if shape.ShapeType == 'Face':
+            if hasattr(shape.Surface, 'Center'):
+                return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+            if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                return shape.Edges[0].Curve.Center
 
         PathLog.error(translate("Path", "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.") % (base.Label, sub))
         return None
@@ -157,8 +160,6 @@ class ObjectOp(PathOp.ObjectOp):
             if PathOp.FeatureLocations & self.opFeatures(obj):
                 return len(obj.Locations) != 0
             return False
-
-        # if len(obj.Base) == 0 and not haveLocations(self, obj):
 
         holes = []
 
