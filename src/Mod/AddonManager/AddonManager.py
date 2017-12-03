@@ -216,6 +216,10 @@ class AddonsInstaller(QtGui.QDialog):
 
     def set_information_label(self, label):
         self.labelDescription.setText(label)
+        if self.listWorkbenches.isVisible():
+            self.listWorkbenches.setFocus()
+        else:
+            self.listMacros.setFocus()
 
     def show(self,idx):
         if self.repos and idx >= 0:
@@ -314,6 +318,10 @@ class AddonsInstaller(QtGui.QDialog):
             self.buttonRemove.setEnabled(True)
             if self.tabWidget.currentIndex() == 0:
                 self.buttonCheck.setEnabled(True)
+            if self.listWorkbenches.isVisible():
+                self.listWorkbenches.setFocus()
+            else:
+                self.listMacros.setFocus()
 
     def remove(self):
         if self.tabWidget.currentIndex() == 0:
