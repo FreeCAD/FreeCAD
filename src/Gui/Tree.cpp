@@ -1450,8 +1450,12 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     assert(item->parent() == parent);
     item->setText(0, QString::fromUtf8(displayName.c_str()));
     item->setHidden(!obj.showInTree() && !showHidden());
-    item->testStatus(true);
     populateItem(item);
+
+    // Not calling item testStatus below because there seems to have some delay
+    // between new object, and its visual status update. Need to figure out why
+    // item->testStatus(true);
+    getTree()->updateStatus(true);
     return true;
 }
 
