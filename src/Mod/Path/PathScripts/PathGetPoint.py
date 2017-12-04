@@ -36,6 +36,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitray points while the task panel is active."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.track(PathLog.thisModule())
 
 class TaskPanel:
     '''Use an instance of this class in another TaskPanel to invoke the snapper.
@@ -180,6 +181,7 @@ class TaskPanel:
             self.formOrig.setFocus()
 
         if ok:
+            self.updatePoint(False)
             self.pointWhenDone(self.pt, self.obj)
         else:
             self.pointWhenDone(None, None)
@@ -211,9 +213,9 @@ class TaskPanel:
                 self.pointCbMove = None
             self.view = None
 
-    def updatePoint(self):
+    def updatePoint(self, usePoint = True):
         '''updatePoint() ... internal function - do not call.'''
-        if self.point:
+        if usePoint and self.point:
             self.pt = self.point
         else:
             x = FreeCAD.Units.Quantity(self.formPoint.globalX.text()).Value
