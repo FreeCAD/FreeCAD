@@ -34,16 +34,16 @@ namespace Base
 {
 class Matrix4D;
 /** A Builder class for 3D representations on App level
- * On application level is nothing known of the visual representation of data.
+ * On the application level nothing is known of the visual representation of data.
  * Nevertheless it's often needed to see some 3D information, e.g. points, directions,
- * when you program or debug an algorithm. For that purpose Builder3D was made.
- * This class allows you to build up easily a 3D representation of some math and
- * algorithm internals. You can save this representation to a file and see it in an
- * Inventor viewer, or put it to the log. In case of the log and a debug FreeCAD
- * the representation will be loaded into the active viewer.
+ * when you program or debug an algorithm. Builder3D was made for this specific purpose.
+ * This class allows you to easily build up a 3D representation of some mathematical and
+ * algorithm internals. You can save this representation to a file and view it in an
+ * Inventor viewer, or send it to the log. In the case of using the log and a debug 
+ * FreeCAD the representation will be loaded into the active viewer.
  *  \par
- * The usage is the following. Create the a Builder3D object and call the methods to insert
- * the graphical elements. After that call either saveToLog() or saveToFile().
+ * The workflow goes as follows: Create the a Builder3D object and call the methods 
+ * to insert the graphical elements. After that call either saveToLog() or saveToFile().
  *  \par
  * Usage:
  *  \code
@@ -116,7 +116,7 @@ public:
 
   /** @name write the result */
   //@{
-  /// puts the result to the log and gui
+  /// sends the result to the log and gui
   void saveToLog(void);
   /// save the result to a file (*.iv)
   void saveToFile(const char* FileName);
@@ -133,7 +133,7 @@ private:
 /**
  * This class does basically the same as Builder3D except that it writes the data
  * directly into a given stream without buffering the output data in a string stream.
- * Compared to file streams string streams are quite slow when writing data with more
+ * Compared to file streams, string streams are quite slow when writing data with more
  * than a few hundred lines. Due to performance reasons the user should use a file
  * stream in this case.
  * @author Werner Mayer
