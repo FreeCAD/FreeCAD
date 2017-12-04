@@ -232,9 +232,15 @@ class ObjectOp(PathOp.ObjectOp):
                 f = shape.getElement(candidateFaceName)
                 if PathUtils.isDrillable(shape, f, tooldiameter):
                     PathLog.debug('face candidate: {} is drillable '.format(f))
-                    x = f.Surface.Center.x
-                    y = f.Surface.Center.y
-                    diameter = f.BoundBox.XLength
+                    if hasattr(f.Surface, 'Center'):
+                        x = f.Surface.Center.x
+                        y = f.Surface.Center.y
+                        diameter = f.BoundBox.XLength
+                    else:
+                        center = f.Edges[0].Curve.Center
+                        x = center.x
+                        y = center.y
+                        diameter = f.Edges[0].Curve.Radius * 2
                     holelist.append({'featureName': candidateFaceName, 'feature': f, 'x': x, 'y': y, 'd': diameter, 'enabled': True})
                     features.append((baseobject, candidateFaceName))
                     PathLog.debug("Found hole feature %s.%s" % (baseobject.Label, candidateFaceName))
