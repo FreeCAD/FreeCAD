@@ -4559,13 +4559,34 @@ public:
                 //Gui::Command::openCommand("Add Pole circle");
                 
                 //Add pole
+                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
+
+                auto normalize = [](double guess) {
+                    double units=1.0;
+
+                    while (guess >= 10.0) {
+                        guess /= 10.0;
+                        units*=10.0;
+                    }
+
+                    while (guess < 1.0) {
+                        guess *= 10.0;
+                        units/=10.0;
+                    }
+
+                    return round(guess)*units;
+
+                };
+
+                guess = normalize(guess);
+
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                         sketchgui->getObject()->getNameInDocument(),
                                         EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
                 
                 if(EditCurve.size() == 2) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, round( (EditCurve[1]-EditCurve[0]).Length()/6 ));                        
+                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, guess );
                 }
 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
