@@ -164,6 +164,14 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                                     drillable = face.Surface.Radius >= tooldiameter/2
                                 else:
                                     drillable = True
+            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0,0,1)):
+                if len(face.Edges) == 1 and type(face.Edges[0].Curve) == Part.Circle:
+                    center = face.Edges[0].Curve.Center
+                    if obj.isInside(center, 1e-6, False):
+                        if tooldiameter is not None:
+                            drillable = face.Edges[0].Curve.Radius >= tooldiameter/2
+                        else:
+                            drillable = True
         else:
             for edge in candidate.Edges:
                 if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):

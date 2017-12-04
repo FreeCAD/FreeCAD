@@ -233,7 +233,8 @@ class PathDressupTagTaskPanel:
         self.getPoint.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
-        if point and obj and (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
+        PathLog.track(point, obj)
+        if point and self.obj.Proxy.pointIsOnPath(self.obj, point):
             tags = []
             for i, (x, y, enabled) in enumerate(self.tags):
                 if i == self.editItem:
