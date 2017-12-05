@@ -235,7 +235,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & path ) const
 // Code below inspired by blog entry:
 // https://john.nachtimwald.com/2009/07/04/qcompleter-and-comma-separated-tags/
 
-void ExpressionCompleter::slotUpdate(const QString & prefix)
+void ExpressionCompleter::slotUpdate(const QString & prefix, int jumpstart)
 {
     using namespace boost::tuples;
     int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
@@ -257,8 +257,11 @@ void ExpressionCompleter::slotUpdate(const QString & prefix)
                 get<0>(tokens[i]) == '.'))
             break;
     } while (i > 0);
+    if(jumpstart == -1)
+        prefixStart = get<1>(tokens[i]);
+    else
+        prefixStart = jumpstart;
 
-    prefixStart = get<1>(tokens[i]);
     while (i < tokens.size()) {
         completionPrefix += get<2>(tokens[i]);
         ++i;
@@ -280,6 +283,10 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent)
     , block(false)
 {
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
+
+    //enable partial completion and set the required regex by default
+    enablePartialCompletion();
+    setPartFilterSettings(QRegExp(QString::fromLatin1("[+-*=!<>^?: ()/]")), QString::SkipEmptyParts);
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -295,7 +302,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(this, SIGNAL(textChanged2(QString)), completer, SLOT(slotUpdate(QString)));
+        connect(this, SIGNAL(textChanged2(QString, int)), completer, SLOT(slotUpdate(QString, int)));
     }
 }
 
@@ -310,10 +317,38 @@ void ExpressionLineEdit::hideCompleter()
         completer->popup()->setVisible(false);
 }
 
+void ExpressionLineEdit::setPartFilterSettings(QRegExp regex, QString::SplitBehavior behavior)
+{
+    filterRegex = regex;
+    filterSplitBehavior = behavior;
+}
+
+void ExpressionLineEdit::enablePartialCompletion()
+{
+    partialCompletion = true;
+}
+
+void ExpressionLineEdit::disablePartialCompletion()
+{
+    partialCompletion = false;
+}
+
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
-    if (!block) {
-        Q_EMIT textChanged2(text.left(cursorPosition()));
+    if (!block && !partialCompletion) {
+        Q_EMIT textChanged2(text.left(cursorPosition()), -1);
+    }else if (!block && partialCompletion && cursorPosition() != 0){
+        int lastChar = text.left(cursorPosition()).lastIndexOf(QRegExp(QString::fromLatin1("[a-zA-Z.]")));
+        if(text.length() > 0 && lastChar == cursorPosition()-1)
+        {
+            QString toComplete = text.left(cursorPosition()).split(filterRegex, filterSplitBehavior).last();
+            int beginOfVar = text.left(cursorPosition()).lastIndexOf(QRegExp(QString::fromLatin1("[+-*=!<>^?: ()/.]")));//text.length()-toComplete.length();
+            if(beginOfVar < 0)
+                beginOfVar = 0;
+            Q_EMIT textChanged2(toComplete,beginOfVar);
+        } else {
+
+        }
     }
 }
 
@@ -322,6 +357,9 @@ void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix)
     int start = completer->getPrefixStart();
     QString before(text().left(start));
     QString after(text().mid(cursorPosition()));
+
+    if(after.startsWith(QString::fromLatin1(".")))
+        after = after.right(1);
 
     block = true;
     setText(before + completionPrefix + after);
