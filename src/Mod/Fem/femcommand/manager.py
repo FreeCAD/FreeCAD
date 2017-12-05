@@ -35,7 +35,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
 
 
-class FemCommands(object):
+class CommandManager(object):
         def __init__(self):
             self.resources = {'Pixmap': 'fem-frequency-analysis',
                               'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),

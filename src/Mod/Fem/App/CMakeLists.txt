@@ -101,6 +101,13 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMaterial.py
 )
 
+SET(FemCommand_SRCS
+    femcommand/__init__.py
+    femcommand/commands.py
+    femcommand/_CommandFemEquation.py
+    femcommand/manager.py
+)
+
 SET(FemInterfaces_SRCS
     feminterface/__init__.py
     feminterface/convert2TetGen.py
@@ -177,38 +184,9 @@ SET(FemZ88_SRCS
 )
 
 SET(FemGuiScripts_SRCS
-    PyGui/FemCommands.py
     PyGui/FemSelectionObserver.py
     PyGui/FemSelectionWidgets.py
     PyGui/__init__.py
-    PyGui/_CommandFemAnalysis.py
-    PyGui/_CommandFemConstraintSelfWeight.py
-    PyGui/_CommandFemConstraintBodyHeatSource.py
-    PyGui/_CommandFemConstraintFlowVelocity.py
-    PyGui/_CommandFemConstraintInitialFlowVelocity.py
-    PyGui/_CommandFemConstraintElectrostaticPotential.py
-    PyGui/_CommandFemElementFluid1D.py
-    PyGui/_CommandFemElementGeometry1D.py
-    PyGui/_CommandFemElementGeometry2D.py
-    PyGui/_CommandFemMaterialMechanicalNonlinear.py
-    PyGui/_CommandFemMaterialSolid.py
-    PyGui/_CommandFemMaterialFluid.py
-    PyGui/_CommandFemMesh2Mesh.py
-    PyGui/_CommandFemMeshGmshFromShape.py
-    PyGui/_CommandFemMeshNetgenFromShape.py
-    PyGui/_CommandFemMeshBoundaryLayer.py
-    PyGui/_CommandFemMeshClear.py
-    PyGui/_CommandFemMeshGroup.py
-    PyGui/_CommandFemMeshPrintInfo.py
-    PyGui/_CommandFemMeshRegion.py
-    PyGui/_CommandFemResultShow.py
-    PyGui/_CommandFemResultsPurge.py
-    PyGui/_CommandFemSolverCalculix.py
-    PyGui/_CommandFemSolverElmer.py
-    PyGui/_CommandFemEquation.py
-    PyGui/_CommandFemSolverControl.py
-    PyGui/_CommandFemSolverRun.py
-    PyGui/_CommandFemSolverZ88.py
     PyGui/_TaskPanelFemElementFluid1D.py
     PyGui/_TaskPanelFemElementGeometry1D.py
     PyGui/_TaskPanelFemElementGeometry2D.py
@@ -398,6 +376,7 @@ fc_target_copy_resource(Fem
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
     Init.py
+    ${FemCommand_SRCS}
     ${FemScripts_SRCS}
     ${FemObjectsScripts_SRCS}
     ${FemInterfaces_SRCS}
