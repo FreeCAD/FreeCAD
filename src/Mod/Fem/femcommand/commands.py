@@ -198,6 +198,86 @@ class _CommandFemElementGeometry2D(CommandManager):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry2D(FreeCAD.ActiveDocument))")
 
 
+class _CommandFemEquationElectrostatic(CommandManager):
+    "The FEM_EquationElectrostatic command definition"
+    def __init__(self):
+        super(_CommandFemEquationElectrostatic, self).__init__()
+        self.resources = {'Pixmap': 'fem-equation-electrostatic',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElectrostatic", "Electrostatic equation"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElectrostatic", "Creates a FEM equation for electrostatic")}
+        self.is_active = 'with_solver_elmer'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemEquationElasticity")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeEquationElectrostatic(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.Selection.clearSelection()
+
+
+class _CommandFemEquationElasticity(CommandManager):
+    "The FEM_EquationElasticity command definition"
+    def __init__(self):
+        super(_CommandFemEquationElasticity, self).__init__()
+        self.resources = {'Pixmap': 'fem-equation-elasticity',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElasticity", "Elasticity equation"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElasticity", "Creates a FEM equation for elasticity")}
+        self.is_active = 'with_solver_elmer'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemEquationElasticity")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeEquationElasticity(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.Selection.clearSelection()
+
+
+class _CommandFemEquationFlow(CommandManager):
+    "The FEM_EquationFlow command definition"
+    def __init__(self):
+        super(_CommandFemEquationFlow, self).__init__()
+        self.resources = {'Pixmap': 'fem-equation-flow',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Flow equation"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Creates a FEM equation for flow")}
+        self.is_active = 'with_solver_elmer'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemEquationFlow")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeEquationFlow(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.Selection.clearSelection()
+
+
+class _CommandFemEquationFluxsolver(CommandManager):
+    "The FEM_EquationFluxsolver command definition"
+    def __init__(self):
+        super(_CommandFemEquationFluxsolver, self).__init__()
+        self.resources = {'Pixmap': 'fem-equation-fluxsolver',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFluxsolver", "Fluxsolver equation"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFluxsolver", "Creates a FEM equation for fluxsolver")}
+        self.is_active = 'with_solver_elmer'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemEquationFluxsolver")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeEquationFluxsolver(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.Selection.clearSelection()
+
+
+class _CommandFemEquationHeat(CommandManager):
+    "The FEM_EquationHeat command definition"
+    def __init__(self):
+        super(_CommandFemEquationHeat, self).__init__()
+        self.resources = {'Pixmap': 'fem-equation-heat',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Fluxsolver heat"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Creates a FEM equation for heat")}
+        self.is_active = 'with_solver_elmer'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemEquationHeat")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeEquationHeat(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
+        FreeCADGui.Selection.clearSelection()
+
+
 class _CommandFemMaterialFluid(CommandManager):
     "The FEM_MaterialFluid command definition"
     def __init__(self):
@@ -652,6 +732,11 @@ FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeigh
 FreeCADGui.addCommand('FEM_ElementFluid1D', _CommandFemElementFluid1D())
 FreeCADGui.addCommand('FEM_ElementGeometry1D', _CommandFemElementGeometry1D())
 FreeCADGui.addCommand('FEM_ElementGeometry2D', _CommandFemElementGeometry2D())
+FreeCADGui.addCommand('FEM_EquationElectrostatic', _CommandFemEquationElectrostatic())
+FreeCADGui.addCommand('FEM_EquationElasticity', _CommandFemEquationElasticity())
+FreeCADGui.addCommand('FEM_EquationFlow', _CommandFemEquationFlow())
+FreeCADGui.addCommand('FEM_EquationFluxsolver', _CommandFemEquationFluxsolver())
+FreeCADGui.addCommand('FEM_EquationHeat', _CommandFemEquationHeat())
 FreeCADGui.addCommand('FEM_MaterialFluid', _CommandFemMaterialFluid())
 FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandFemMaterialMechanicalNonlinear())
 FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())

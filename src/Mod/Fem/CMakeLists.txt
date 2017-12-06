@@ -57,7 +57,6 @@ INSTALL(
     FILES
         femcommand/__init__.py
         femcommand/commands.py
-        femcommand/_CommandFemEquation.py
         femcommand/manager.py
     DESTINATION
         Mod/Fem/femcommand
