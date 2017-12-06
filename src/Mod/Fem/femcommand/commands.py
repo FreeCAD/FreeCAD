@@ -360,35 +360,21 @@ class _CommandFemMesh2Mesh(CommandManager):
         self.is_active = 'with_femmesh_andor_res'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
-        FreeCADGui.addModule("FemGui")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
-                FreeCADGui.addModule("femmesh.femmesh2mesh")
-                FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
-                FreeCADGui.addModule("Mesh")
-                FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-                FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".ViewObject.hide()")
-        if (len(sel) == 2):
-            femmesh = None
-            res = None
-            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                if(sel[1].isDerivedFrom("Fem::FemResultObject")):
-                    femmesh = sel[0]
-                    res = sel[1]
-            elif(sel[1].isDerivedFrom("Fem::FemMeshObject")):
-                if(sel[0].isDerivedFrom("Fem::FemResultObject")):
-                    femmesh = sel[1]
-                    res = sel[0]
-            if femmesh and res:
-                FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
-                FreeCADGui.addModule("femmesh.femmesh2mesh")
-                FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(App.ActiveDocument." + femmesh.Name + ".FemMesh, App.ActiveDocument." + res.Name + ")")
-                FreeCADGui.addModule("Mesh")
-                FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-                FreeCADGui.doCommand("App.ActiveDocument." + femmesh.Name + ".ViewObject.hide()")
+        FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
+        if self.selobj and not self.selobj2:  # no result object selected
+            FreeCADGui.addModule("femmesh.femmesh2mesh")
+            FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(App.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+            FreeCADGui.addModule("Mesh")
+            FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
+            FreeCADGui.doCommand("App.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()")
+        if self.selobj and self.selobj2:
+            femmesh = self.selobj
+            res = self.selobj2
+            FreeCADGui.addModule("femmesh.femmesh2mesh")
+            FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(App.ActiveDocument." + femmesh.Name + ".FemMesh, App.ActiveDocument." + res.Name + ")")
+            FreeCADGui.addModule("Mesh")
+            FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
+            FreeCADGui.doCommand("App.ActiveDocument." + femmesh.Name + ".ViewObject.hide()")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -405,8 +391,7 @@ class _CommandFemMeshBoundaryLayer(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshBoundaryLayer")
         FreeCADGui.addModule("ObjectsFem")
-        self.mesh = FreeCADGui.Selection.getSelection()[0]  # see 'with_gmsh_femmesh' in CommandManager for selection check
-        FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.mesh.Name + ")")
+        FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -421,12 +406,10 @@ class _CommandFemMeshClear(CommandManager):
         self.is_active = 'with_femmesh'
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
-            FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
-            FreeCADGui.addModule("Fem")
-            FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".FemMesh = Fem.FemMesh()")
-            FreeCADGui.doCommand("App.ActiveDocument.recompute()")
+        FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
+        FreeCADGui.addModule("Fem")
+        FreeCADGui.doCommand("App.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()")
+        FreeCADGui.doCommand("App.ActiveDocument.recompute()")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -442,18 +425,15 @@ class _CommandFemMeshGmshFromShape(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
         FreeCADGui.addModule("FemGui")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Part::Feature")):
-                mesh_obj_name = 'FEMMeshGmsh'
-                # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
-                FreeCADGui.addModule("ObjectsFem")
-                FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument." + sel[0].Name)
-                if FemGui.getActiveAnalysis():
-                    FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
-                FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+        mesh_obj_name = 'FEMMeshGmsh'
+        # mesh_obj_name = self.selobj.Name + "_Mesh"  # if requested by some people add Preference for this
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument." + self.selobj.Name)
+        if FemGui.getActiveAnalysis():
+            FreeCADGui.addModule("FemGui")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
+        FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -470,8 +450,7 @@ class _CommandFemMeshGroup(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
         FreeCADGui.addModule("ObjectsFem")
-        self.mesh = FreeCADGui.Selection.getSelection()[0]  # see 'with_gmsh_femmesh' in CommandManager for selection check
-        FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.mesh.Name + ")")
+        FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -487,17 +466,14 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         FreeCADGui.addModule("FemGui")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Part::Feature")):
-                mesh_obj_name = 'FEMMeshNetgen'
-                # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
-                FreeCADGui.doCommand("App.ActiveDocument.addObject('Fem::FemMeshShapeNetgenObject', '" + mesh_obj_name + "')")
-                FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
-                if FemGui.getActiveAnalysis():
-                    FreeCADGui.addModule("FemGui")
-                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(App.ActiveDocument.ActiveObject)")
-                FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)")
+        mesh_obj_name = 'FEMMeshNetgen'
+        # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
+        FreeCADGui.doCommand("App.ActiveDocument.addObject('Fem::FemMeshShapeNetgenObject', '" + mesh_obj_name + "')")
+        FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Shape = App.activeDocument()." + self.selobj.Name)
+        if FemGui.getActiveAnalysis():
+            FreeCADGui.addModule("FemGui")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(App.ActiveDocument.ActiveObject)")
+        FreeCADGui.doCommand("Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -512,13 +488,11 @@ class _CommandFemMeshPrintInfo(CommandManager):
         self.is_active = 'with_femmesh'
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
-            FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
-            FreeCADGui.doCommand("print(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
-            FreeCADGui.addModule("PySide")
-            FreeCADGui.doCommand("mesh_info = str(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
-            FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
+        FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
+        FreeCADGui.doCommand("print(App.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+        FreeCADGui.addModule("PySide")
+        FreeCADGui.doCommand("mesh_info = str(App.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+        FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -535,8 +509,7 @@ class _CommandFemMeshRegion(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
         FreeCADGui.addModule("ObjectsFem")
-        self.mesh = FreeCADGui.Selection.getSelection()[0]  # see 'with_gmsh_femmesh' in CommandManager for selection check
-        FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.mesh.Name + ")")
+        FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
         FreeCADGui.Selection.clearSelection()
 
 
@@ -551,11 +524,7 @@ class _CommandFemResultShow(CommandManager):
         self.is_active = 'with_selresult'
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if sel[0].isDerivedFrom("Fem::FemResultObject"):
-                result_object = sel[0]
-                result_object.ViewObject.startEditing()
+        self.selobj.ViewObject.startEditing()
 
 
 class _CommandFemResultsPurge(CommandManager):
@@ -621,8 +590,7 @@ class _CommandFemSolverControl(CommandManager):
         self.is_active = 'with_solver'
 
     def Activated(self):
-        solver_obj = FreeCADGui.Selection.getSelection()[0]
-        FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
+        FreeCADGui.ActiveDocument.setEdit(self.selobj, 0)
 
 
 class _CommandFemSolverElmer(CommandManager):
@@ -663,7 +631,7 @@ class _CommandFemSolverRun(CommandManager):
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
-        self.solver = FreeCADGui.Selection.getSelection()[0]  # see 'with_solver' in CommandManager for selection check
+        self.solver = self.selobj
         if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
