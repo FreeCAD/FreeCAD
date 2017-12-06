@@ -788,7 +788,7 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     if (myAlignModel.isEmpty())
         return;
 
-    // create a splitted window for picking the points
+    // create a split window for picking the points
     myViewer = new AlignmentView(myDocument,Gui::getMainWindow());
     myViewer->setWindowTitle(tr("Alignment[*]"));
     myViewer->setWindowIcon(QApplication::windowIcon());
