@@ -5160,7 +5160,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"Drawing::\"), objs)\n"
                         "  tv.hide(objs)\n"
                         "if ActiveSketch.ViewObject.ShowSupport:\n"
-                        "  tv.show([ref[0] for ref in ActiveSketch.Support])\n"
+                        "  tv.show([ref[0] for ref in ActiveSketch.Support if not ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch)\n"
