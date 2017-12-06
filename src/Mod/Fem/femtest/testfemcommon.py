@@ -41,8 +41,8 @@ home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
-test_file_dir = home_path + 'Mod/Fem/test_files/ccx/'
-test_file_dir_elmer = home_path + 'Mod/Fem/test_files/elmer/'
+test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
+test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
 
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
@@ -501,7 +501,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.addObject(pressure_constraint)
 
         fcc_print('Checking FEM new mesh...')
-        from test_files.ccx.cube_mesh import create_nodes_cube, create_elements_cube
+        from .testfiles.ccx.cube_mesh import create_nodes_cube
+        from .testfiles.ccx.cube_mesh import create_elements_cube
         mesh = Fem.FemMesh()
         ret = create_nodes_cube(mesh)
         self.assertTrue(ret, "Import of mesh nodes failed")
@@ -750,7 +751,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.addObject(heatflux_constraint)
 
         fcc_print('Checking FEM new mesh...')
-        from test_files.ccx.spine_mesh import create_nodes_spine, create_elements_spine
+        from .testfiles.ccx.spine_mesh import create_nodes_spine
+        from .testfiles.ccx.spine_mesh import create_elements_spine
         mesh = Fem.FemMesh()
         ret = create_nodes_spine(mesh)
         self.assertTrue(ret, "Import of mesh nodes failed")
@@ -997,7 +999,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         analysis.addObject(Flow1d_self_weight)
 
         fcc_print('Checking FEM new mesh...')
-        from test_files.ccx.Flow1D_mesh import create_nodes_Flow1D, create_elements_Flow1D
+        from .testfiles.ccx.Flow1D_mesh import create_nodes_Flow1D
+        from .testfiles.ccx.Flow1D_mesh import create_elements_Flow1D
         mesh = Fem.FemMesh()
         ret = create_nodes_Flow1D(mesh)
         self.assertTrue(ret, "Import of mesh nodes failed")

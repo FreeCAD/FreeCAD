@@ -250,38 +250,43 @@ SET(FemGuiScripts_SRCS
 )
 
 SET(FemTests_SRCS
-    test_files/__init__.py
-    test_files/ccx/__init__.py
-    test_files/ccx/cube_mesh.py
-    test_files/ccx/cube_frequency.inp
-    test_files/ccx/cube_frequency.dat
-    test_files/ccx/cube_frequency.frd
-    test_files/ccx/cube_frequency_expected_values
-    test_files/ccx/cube_static.inp
-    test_files/ccx/cube_static.dat
-    test_files/ccx/cube_static.frd
-    test_files/ccx/cube_static_expected_values
-    test_files/ccx/cube.fcstd
-    test_files/ccx/spine_mesh.py
-    test_files/ccx/spine_thermomech.inp
-    test_files/ccx/spine_thermomech.dat
-    test_files/ccx/spine_thermomech.frd
-    test_files/ccx/spine_thermomech_expected_values
-    test_files/ccx/spine_thermomech.fcstd
-    test_files/ccx/Flow1D_mesh.py
-    test_files/ccx/Flow1D_thermomech.inp
-    test_files/ccx/Flow1D_thermomech.dat
-    test_files/ccx/Flow1D_thermomech.frd
-    test_files/ccx/Flow1D_thermomech_expected_values
-    test_files/ccx/Flow1D_thermomech_inout_nodes.txt
-    test_files/ccx/Flow1D_thermomech.fcstd
+    femtest/__init__.py
+    femtest/testfemcommon.py
+)
+
+SET(FemTestsCCx_SRCS
+    femtest/testfiles/__init__.py
+    femtest/testfiles/ccx/__init__.py
+    femtest/testfiles/ccx/cube_mesh.py
+    femtest/testfiles/ccx/cube_frequency.inp
+    femtest/testfiles/ccx/cube_frequency.dat
+    femtest/testfiles/ccx/cube_frequency.frd
+    femtest/testfiles/ccx/cube_frequency_expected_values
+    femtest/testfiles/ccx/cube_static.inp
+    femtest/testfiles/ccx/cube_static.dat
+    femtest/testfiles/ccx/cube_static.frd
+    femtest/testfiles/ccx/cube_static_expected_values
+    femtest/testfiles/ccx/cube.fcstd
+    femtest/testfiles/ccx/spine_mesh.py
+    femtest/testfiles/ccx/spine_thermomech.inp
+    femtest/testfiles/ccx/spine_thermomech.dat
+    femtest/testfiles/ccx/spine_thermomech.frd
+    femtest/testfiles/ccx/spine_thermomech_expected_values
+    femtest/testfiles/ccx/spine_thermomech.fcstd
+    femtest/testfiles/ccx/Flow1D_mesh.py
+    femtest/testfiles/ccx/Flow1D_thermomech.inp
+    femtest/testfiles/ccx/Flow1D_thermomech.dat
+    femtest/testfiles/ccx/Flow1D_thermomech.frd
+    femtest/testfiles/ccx/Flow1D_thermomech_expected_values
+    femtest/testfiles/ccx/Flow1D_thermomech_inout_nodes.txt
+    femtest/testfiles/ccx/Flow1D_thermomech.fcstd
 )
 
 SET(FemTestsElmer_SRCS
-    test_files/elmer/__init__.py
-    test_files/elmer/case.sif
-    test_files/elmer/group_mesh.geo
-    test_files/elmer/ELMERSOLVER_STARTINFO
+    femtest/testfiles/elmer/__init__.py
+    femtest/testfiles/elmer/case.sif
+    femtest/testfiles/elmer/group_mesh.geo
+    femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
 )
 
 SET(FemBase_SRCS
@@ -396,6 +401,7 @@ fc_target_copy_resource(Fem
     ${FemMesh_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
+    ${FemTestsCCx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemSolver_SRCS}
     ${FemElmer_SRCS}
