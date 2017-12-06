@@ -254,19 +254,23 @@ void ExpressionCompleter::slotUpdate(const QString & prefix)
     }
 
     // Extract last tokens that can be rebuild to a variable
-    ssize_t i = static_cast<std::size_t>(tokens.size()) - 1;
+    ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
     while (i >= 0) {
         if (get<0>(tokens[i]) != ExpressionParser::IDENTIFIER &&
-                get<0>(tokens[i]) != ExpressionParser::STRING &&
-                get<0>(tokens[i]) != ExpressionParser::UNIT &&
-                get<0>(tokens[i]) != '.')
+            get<0>(tokens[i]) != ExpressionParser::STRING &&
+            get<0>(tokens[i]) != ExpressionParser::UNIT &&
+            get<0>(tokens[i]) != '.')
             break;
         --i;
     }
 
     ++i;
+
     // Set prefix start for use when replacing later
-    prefixStart = (prefix.at(0) == QChar::fromLatin1('=') ? 1 : 0) + get<1>(tokens[i]);
+    if (i == static_cast<ssize_t>(tokens.size()))
+        prefixStart = prefix.size();
+    else
+        prefixStart = (prefix.at(0) == QChar::fromLatin1('=') ? 1 : 0) + get<1>(tokens[i]);
 
     // Build prefix from tokens
     while (i < static_cast<ssize_t>(tokens.size())) {
