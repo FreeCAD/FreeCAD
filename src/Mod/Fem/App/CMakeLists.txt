@@ -72,7 +72,6 @@ SET(FemScripts_SRCS
     Init.py
     InitGui.py
     FemInputWriter.py
-    FemResultTools.py
     FemToolsCcx.py
     ObjectsFem.py
     FemUtils.py
@@ -124,6 +123,11 @@ SET(FemMesh_SRCS
     femmesh/femmesh2mesh.py
     femmesh/gmshtools.py
     femmesh/meshtools.py
+)
+
+SET(FemResult_SRCS
+    femresult/__init__.py
+    femresult/resulttools.py
 )
 
 SET(FemSolver_SRCS
@@ -381,7 +385,6 @@ SET(Fem_SRCS
     ${FemBase_SRCS}
     ${FemSet_SRCS}
     ${FemConstraints_SRCS}
-    ${FemResult_SRCS}
     ${FemPost_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
@@ -399,6 +402,7 @@ fc_target_copy_resource(Fem
     ${FemObjectsScripts_SRCS}
     ${FemInterfaces_SRCS}
     ${FemMesh_SRCS}
+    ${FemResult_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
     ${FemTestsCCx_SRCS}

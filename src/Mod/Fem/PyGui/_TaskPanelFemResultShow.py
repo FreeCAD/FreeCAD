@@ -32,7 +32,7 @@ import numpy as np
 
 import FreeCADGui
 import FemGui
-import FemResultTools
+import femresult.resulttools as resulttools
 from PySide import QtCore, QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
@@ -148,7 +148,7 @@ class _TaskPanelFemResultShow:
         return int(QtGui.QDialogButtonBox.Close)
 
     def get_result_stats(self, type_name):
-        return FemResultTools.get_stats(self.result_obj, type_name)
+        return resulttools.get_stats(self.result_obj, type_name)
 
     def none_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "None"

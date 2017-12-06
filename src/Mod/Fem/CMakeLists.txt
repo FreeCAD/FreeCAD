@@ -20,7 +20,6 @@ INSTALL(
         Init.py
         InitGui.py
         FemInputWriter.py
-        FemResultTools.py
         FemToolsCcx.py
         ObjectsFem.py
         FemUtils.py
@@ -82,6 +81,14 @@ INSTALL(
         femmesh/meshtools.py
     DESTINATION
         Mod/Fem/femmesh
+)
+
+INSTALL(
+    FILES
+        femresult/__init__.py
+        femresult/resulttools.py
+    DESTINATION
+        Mod/Fem/femresult
 )
 
 INSTALL(

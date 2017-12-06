@@ -26,7 +26,7 @@
 
 import Fem
 import FemToolsCcx
-import FemResultTools
+import femresult.resulttools as resulttools
 import FreeCAD
 import ObjectsFem
 import femsolver.run
@@ -1150,7 +1150,7 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
     stats = []
     for s in loc_stat_types:
         if res_obj_name:
-            statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject(res_obj_name), s)
+            statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject(res_obj_name), s)
         else:
             print('No result object name given')
             return False
@@ -1217,7 +1217,7 @@ def create_test_results():
     fea.load_results()
     stats_static = []
     for s in stat_types:
-        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_results'), s)
+        statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_results'), s)
         stats_static.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     static_expected_values_file = static_analysis_dir + 'cube_static_expected_values'
     f = open(static_expected_values_file, 'w')
@@ -1239,7 +1239,7 @@ def create_test_results():
     fea.load_results()
     stats_frequency = []
     for s in stat_types:
-        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_mode_1_results'), s)  # FIXME for some reason result obj name has static
+        statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_mode_1_results'), s)  # FIXME for some reason result obj name has static
         stats_frequency.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     frequency_expected_values_file = frequency_analysis_dir + 'cube_frequency_expected_values'
     f = open(frequency_expected_values_file, 'w')
@@ -1260,7 +1260,7 @@ def create_test_results():
     fea.load_results()
     stats_thermomech = []
     for s in stat_types:
-        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_thermomech_results'), s)
+        statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_thermomech_results'), s)
         stats_thermomech.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     thermomech_expected_values_file = thermomech_analysis_dir + 'spine_thermomech_expected_values'
     f = open(thermomech_expected_values_file, 'w')
@@ -1284,7 +1284,7 @@ def create_test_results():
     fea.load_results()
     stats_flow1D = []
     for s in stat_types:
-        statval = FemResultTools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_thermomech_time_1_0_results'), s)
+        statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_thermomech_time_1_0_results'), s)
         stats_flow1D.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     Flow1D_thermomech_expected_values_file = Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech_expected_values'
     f = open(Flow1D_thermomech_expected_values_file, 'w')
