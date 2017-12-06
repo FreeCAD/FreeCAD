@@ -33,12 +33,12 @@ from PySide import QtGui, QtCore
 
 import FreeCAD
 import FreeCADGui
-import importToolsFem
 import os
 
-import readFenicsXML
-import writeFenicsXML
-import writeFenicsXDMF
+from . import importToolsFem
+from . import readFenicsXML
+from . import writeFenicsXML
+from . import writeFenicsXDMF
 
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!

@@ -61,7 +61,7 @@ def insert(filename, docname):
 
 ########## module specific methods ##########
 def importFrd(filename, analysis=None, result_name_prefix=None):
-    import importToolsFem
+    from . import importToolsFem
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''

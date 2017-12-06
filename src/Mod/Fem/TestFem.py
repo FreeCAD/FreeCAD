@@ -168,7 +168,7 @@ class FemTest(unittest.TestCase):
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
         frd_file = test_file_dir + 'Flow1D_thermomech.frd'
-        import importCcxFrdResults
+        import feminterface.importCcxFrdResults as importCcxFrdResults
         frd_content = importCcxFrdResults.readResult(frd_file)
 
         # do something with the read data

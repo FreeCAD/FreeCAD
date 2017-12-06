@@ -17,19 +17,6 @@ endif(BUILD_GUI)
 # changes on the file list here needs to be made in App/CMakeLists.txt as well
 INSTALL(
     FILES
-        convert2TetGen.py
-        importCcxDatResults.py
-        importCcxFrdResults.py
-        readFenicsXML.py
-        writeFenicsXML.py
-        readFenicsXDMF.py
-        writeFenicsXDMF.py
-        importFenicsMesh.py
-        importInpMesh.py
-        importToolsFem.py
-        importVTKResults.py
-        importZ88Mesh.py
-        importZ88O2Results.py
         Init.py
         InitGui.py
         FemGmshTools.py
@@ -68,6 +55,26 @@ INSTALL(
         PyObjects/_FemMaterial.py
     DESTINATION
         Mod/Fem/PyObjects
+)
+
+INSTALL(
+    FILES
+        feminterface/__init__.py
+        feminterface/convert2TetGen.py
+        feminterface/importCcxDatResults.py
+        feminterface/importCcxFrdResults.py
+        feminterface/importFenicsMesh.py
+        feminterface/importInpMesh.py
+        feminterface/importToolsFem.py
+        feminterface/importVTKResults.py
+        feminterface/importZ88Mesh.py
+        feminterface/importZ88O2Results.py
+        feminterface/readFenicsXDMF.py
+        feminterface/readFenicsXML.py
+        feminterface/writeFenicsXDMF.py
+        feminterface/writeFenicsXML.py
+    DESTINATION
+        Mod/Fem/feminterface
 )
 
 INSTALL(

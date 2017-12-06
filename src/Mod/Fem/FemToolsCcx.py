@@ -761,7 +761,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     #  @param self The python object self
     def load_results_ccxfrd(self):
         import os
-        import importCcxFrdResults
+        import feminterface.importCcxFrdResults as importCcxFrdResults
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
         if os.path.isfile(frd_result_file):
             result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
@@ -779,7 +779,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     #  @param self The python object self
     def load_results_ccxdat(self):
         import os
-        import importCcxDatResults
+        import feminterface.importCcxDatResults as importCcxDatResults
         dat_result_file = os.path.splitext(self.inp_file_name)[0] + '.dat'
         if os.path.isfile(dat_result_file):
             mode_frequencies = importCcxDatResults.import_dat(dat_result_file, self.analysis)

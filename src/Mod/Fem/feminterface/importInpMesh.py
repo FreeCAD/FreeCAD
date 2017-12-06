@@ -64,7 +64,7 @@ def import_inp(filename):
     "create imported objects in FreeCAD, currently only FemMesh"
 
     m = read_inp(filename)
-    import importToolsFem
+    from . import importToolsFem
     mesh = importToolsFem.make_femmesh(m)
     mesh_name = os.path.splitext(os.path.basename(filename))[0]
     mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)

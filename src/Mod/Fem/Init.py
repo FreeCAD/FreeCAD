@@ -27,19 +27,19 @@
 
 import FreeCAD
 
-FreeCAD.addExportType("TetGen file (*.poly)", "convert2TetGen")
+FreeCAD.addExportType("TetGen file (*.poly)", "feminterface.convert2TetGen")
 FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")
 if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
     FreeCAD.addImportType("FEM CFD Unstructure Mesh (*.vtk *.vtu)", "Fem")
     FreeCAD.addExportType("FEM CFD Unstructure Mesh (*.vtk *.vtu)", "Fem")
-    FreeCAD.addImportType("FEM results (*.vtk *.vtu)", "importVTKResults")
-    FreeCAD.addExportType("FEM CFD Result in VTK format (*.vtk *.vtu)", "importVTKResults")
+    FreeCAD.addImportType("FEM results (*.vtk *.vtu)", "feminterface.importVTKResults")
+    FreeCAD.addExportType("FEM CFD Result in VTK format (*.vtk *.vtu)", "feminterface.importVTKResults")
 
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")
-FreeCAD.addImportType("CalculiX result (*.frd)", "importCcxFrdResults")
-FreeCAD.addImportType("Fenics mesh file (*.xml *.xdmf)", "importFenicsMesh")
-FreeCAD.addExportType("Fenics mesh file (*.xml *.xdmf)", "importFenicsMesh")
-FreeCAD.addImportType("Mesh from Calculix/Abaqus input file (*.inp)", "importInpMesh")
-FreeCAD.addImportType("Z88 mesh (i1) file (*.txt)", "importZ88Mesh")
-FreeCAD.addExportType("Z88 mesh (i1) file (*.txt)", "importZ88Mesh")
-FreeCAD.addImportType("Z88 displacement (o2) result file (*.txt)", "importZ88O2Results")
+FreeCAD.addImportType("CalculiX result (*.frd)", "feminterface.importCcxFrdResults")
+FreeCAD.addImportType("Fenics mesh file (*.xml *.xdmf)", "feminterface.importFenicsMesh")
+FreeCAD.addExportType("Fenics mesh file (*.xml *.xdmf)", "feminterface.importFenicsMesh")
+FreeCAD.addImportType("Mesh from Calculix/Abaqus input file (*.inp)", "feminterface.importInpMesh")
+FreeCAD.addImportType("Z88 mesh (i1) file (*.txt)", "feminterface.importZ88Mesh")
+FreeCAD.addExportType("Z88 mesh (i1) file (*.txt)", "feminterface.importZ88Mesh")
+FreeCAD.addImportType("Z88 displacement (o2) result file (*.txt)", "feminterface.importZ88O2Results")
