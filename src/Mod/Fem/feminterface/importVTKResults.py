@@ -87,7 +87,7 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
 
     # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
     if not result_obj.DisplacementLengths:
-        import importToolsFem
+        from . import importToolsFem
         result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
 
     if analysis:

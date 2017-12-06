@@ -64,14 +64,14 @@ def insert(filename, docname):
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM mechanical result object in the ActiveDocument
     pure usage:
-    import importZ88O2Results
+    import feminterfaces.importZ88O2Results as importZ88O2Results
     disp_file = '/pathtofile/z88o2.txt'
     importZ88O2Results.import_z88_disp(disp_file)
 
     the z888i1.txt FEMMesh file needs to be in the same directory as z88o2.txt (ahh, make a new document first ;-))
     '''
-    import importZ88Mesh
-    import importToolsFem
+    from . import importZ88Mesh
+    from . import importToolsFem
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''

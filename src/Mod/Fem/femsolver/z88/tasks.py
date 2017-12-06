@@ -32,7 +32,7 @@ import os.path
 
 import FreeCAD as App
 import FemUtils
-import importZ88O2Results
+import feminterface.importZ88O2Results as importZ88O2Results
 
 from .. import run
 from .. import settings

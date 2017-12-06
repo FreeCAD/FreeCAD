@@ -69,19 +69,6 @@ SET(Mod_SRCS
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
-    convert2TetGen.py
-    importCcxDatResults.py
-    importCcxFrdResults.py
-    readFenicsXML.py
-    writeFenicsXML.py
-    readFenicsXDMF.py
-    writeFenicsXDMF.py
-    importFenicsMesh.py
-    importInpMesh.py
-    importToolsFem.py
-    importVTKResults.py
-    importZ88Mesh.py
-    importZ88O2Results.py
     Init.py
     InitGui.py
     FemGmshTools.py
@@ -116,6 +103,23 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
     PyObjects/_FemMaterial.py
+)
+
+SET(FemInterfaces_SRCS
+    feminterface/__init__.py
+    feminterface/convert2TetGen.py
+    feminterface/importCcxDatResults.py
+    feminterface/importCcxFrdResults.py
+    feminterface/importFenicsMesh.py
+    feminterface/importInpMesh.py
+    feminterface/importToolsFem.py
+    feminterface/importVTKResults.py
+    feminterface/importZ88Mesh.py
+    feminterface/importZ88O2Results.py
+    feminterface/readFenicsXDMF.py
+    feminterface/readFenicsXML.py
+    feminterface/writeFenicsXDMF.py
+    feminterface/writeFenicsXML.py
 )
 
 SET(FemSolver_SRCS
@@ -384,6 +388,7 @@ fc_target_copy_resource(Fem
     Init.py
     ${FemScripts_SRCS}
     ${FemObjectsScripts_SRCS}
+    ${FemInterfaces_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
     ${FemTestsElmer_SRCS}

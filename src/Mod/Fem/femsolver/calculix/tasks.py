@@ -33,8 +33,8 @@ import os.path
 
 import FreeCAD as App
 import FemUtils
-import importCcxFrdResults
-import importCcxDatResults
+import feminterface.importCcxFrdResults as importCcxFrdResults
+import feminterface.importCcxDatResults as importCcxDatResults
 
 from .. import run
 from .. import settings
