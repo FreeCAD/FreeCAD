@@ -104,7 +104,6 @@ SET(FemObjectsScripts_SRCS
 SET(FemCommand_SRCS
     femcommand/__init__.py
     femcommand/commands.py
-    femcommand/_CommandFemEquation.py
     femcommand/manager.py
 )
 

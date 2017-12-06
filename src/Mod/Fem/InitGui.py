@@ -45,7 +45,6 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
         import femcommand.commands
-        import femcommand._CommandFemEquation
 
     def GetClassName(self):
         return "FemGui::Workbench"

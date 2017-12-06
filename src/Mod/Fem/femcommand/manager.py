@@ -43,6 +43,7 @@ class CommandManager(object):
                               'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
             # FIXME add option description
             self.is_active = None
+            self.selobj = None
 
         def GetResources(self):
             return self.resources
@@ -72,6 +73,8 @@ class CommandManager(object):
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_solid_selected()
             elif self.is_active == 'with_solver':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
+            elif self.is_active == 'with_solver_elmer':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_elmer_selected()
             elif self.is_active == 'with_analysis_without_solver':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and not self.analysis_has_solver()
             return active
@@ -158,6 +161,14 @@ class CommandManager(object):
         def solver_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+                return True
+            else:
+                return False
+
+        def solver_elmer_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "Fem::FemSolverObjectElmer":
+                self.selobj = sel[0]
                 return True
             else:
                 return False
