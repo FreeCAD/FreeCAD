@@ -44,6 +44,7 @@ class CommandManager(object):
             # FIXME add option description
             self.is_active = None
             self.selobj = None
+            self.selobj2 = None
 
         def GetResources(self):
             return self.resources
@@ -88,21 +89,18 @@ class CommandManager(object):
             return results
 
         def result_selected(self):
-            result_is_in_active_analysis = False
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemResultObject"):
                 for o in FemGui.getActiveAnalysis().Group:
                     if o == sel[0]:
-                        result_is_in_active_analysis = True
-                        break
-            if result_is_in_active_analysis:
-                return True
-            else:
-                return False
+                        self.selobj = o
+                        return True
+            return False
 
         def part_feature_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Part::Feature"):
+                self.selobj = sel[0]
                 return True
             else:
                 return False
@@ -110,6 +108,7 @@ class CommandManager(object):
         def femmesh_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+                self.selobj = sel[0]
                 return True
             else:
                 return False
@@ -117,6 +116,7 @@ class CommandManager(object):
         def gmsh_femmesh_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "FemMeshGmsh":
+                self.selobj = sel[0]
                 return True
             else:
                 return False
@@ -147,15 +147,20 @@ class CommandManager(object):
         def with_femmesh_andor_res_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+                self.selobj = sel[0]
                 return True
             elif len(sel) == 2:
                 if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
                     if(sel[1].isDerivedFrom("Fem::FemResultObject")):
+                        self.selobj = sel[0]  # mesh
+                        self.selobj2 = sel[1]  # res
                         return True
                     else:
                         return False
                 elif(sel[1].isDerivedFrom("Fem::FemMeshObject")):
                     if(sel[0].isDerivedFrom("Fem::FemResultObject")):
+                        self.selobj = sel[1]  # mesh
+                        self.selobj2 = sel[0]  # res
                         return True
                     else:
                         return False
@@ -170,6 +175,7 @@ class CommandManager(object):
         def solver_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+                self.selobj = sel[0]
                 return True
             else:
                 return False
