@@ -71,10 +71,7 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 SET(FemScripts_SRCS
     Init.py
     InitGui.py
-    FemGmshTools.py
     FemInputWriter.py
-    FemMesh2Mesh.py
-    FemMeshTools.py
     FemResultTools.py
     FemToolsCcx.py
     ObjectsFem.py
@@ -120,6 +117,13 @@ SET(FemInterfaces_SRCS
     feminterface/readFenicsXML.py
     feminterface/writeFenicsXDMF.py
     feminterface/writeFenicsXML.py
+)
+
+SET(FemMesh_SRCS
+    femmesh/__init__.py
+    femmesh/femmesh2mesh.py
+    femmesh/gmshtools.py
+    femmesh/meshtools.py
 )
 
 SET(FemSolver_SRCS
@@ -389,6 +393,7 @@ fc_target_copy_resource(Fem
     ${FemScripts_SRCS}
     ${FemObjectsScripts_SRCS}
     ${FemInterfaces_SRCS}
+    ${FemMesh_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
     ${FemTestsElmer_SRCS}

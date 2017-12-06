@@ -19,10 +19,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
-        FemGmshTools.py
         FemInputWriter.py
-        FemMesh2Mesh.py
-        FemMeshTools.py
         FemResultTools.py
         FemToolsCcx.py
         ObjectsFem.py
@@ -75,6 +72,16 @@ INSTALL(
         feminterface/writeFenicsXML.py
     DESTINATION
         Mod/Fem/feminterface
+)
+
+INSTALL(
+    FILES
+        femmesh/__init__.py
+        femmesh/femmesh2mesh.py
+        femmesh/gmshtools.py
+        femmesh/meshtools.py
+    DESTINATION
+        Mod/Fem/femmesh
 )
 
 INSTALL(
