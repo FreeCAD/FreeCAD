@@ -227,50 +227,55 @@ INSTALL(
 
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        test_files/__init__.py
+        femtest/__init__.py
+        femtest/testfemcommon.py
     DESTINATION
-        Mod/Fem/test_files
+        Mod/Fem/femtest
 )
 
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        test_files/ccx/__init__.py
-        test_files/ccx/cube_mesh.py
-        test_files/ccx/cube_frequency.inp
-        test_files/ccx/cube_frequency.dat
-        test_files/ccx/cube_frequency.frd
-        test_files/ccx/cube_frequency_expected_values
-        test_files/ccx/cube_static.inp
-        test_files/ccx/cube_static.dat
-        test_files/ccx/cube_static.frd
-        test_files/ccx/cube_static_expected_values
-        test_files/ccx/cube.fcstd
-        test_files/ccx/spine_mesh.py
-        test_files/ccx/spine_thermomech.inp
-        test_files/ccx/spine_thermomech.dat
-        test_files/ccx/spine_thermomech.frd
-        test_files/ccx/spine_thermomech_expected_values
-        test_files/ccx/spine_thermomech.fcstd
-        test_files/ccx/Flow1D_mesh.py
-        test_files/ccx/Flow1D_thermomech.inp
-        test_files/ccx/Flow1D_thermomech.dat
-        test_files/ccx/Flow1D_thermomech.frd
-        test_files/ccx/Flow1D_thermomech_expected_values
-        test_files/ccx/Flow1D_thermomech_inout_nodes.txt
-        test_files/ccx/Flow1D_thermomech.fcstd
+        femtest/testfiles/__init__.py
     DESTINATION
-        Mod/Fem/test_files/ccx
+        Mod/Fem/femtest/testfiles
 )
 
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        test_files/elmer/__init__.py
-        test_files/elmer/case.sif
-        test_files/elmer/group_mesh.geo
-        test_files/elmer/ELMERSOLVER_STARTINFO
+        femtest/testfiles/ccx/__init__.py
+        femtest/testfiles/ccx/cube_mesh.py
+        femtest/testfiles/ccx/cube_frequency.inp
+        femtest/testfiles/ccx/cube_frequency.dat
+        femtest/testfiles/ccx/cube_frequency.frd
+        femtest/testfiles/ccx/cube_frequency_expected_values
+        femtest/testfiles/ccx/cube_static.inp
+        femtest/testfiles/ccx/cube_static.dat
+        femtest/testfiles/ccx/cube_static.frd
+        femtest/testfiles/ccx/cube_static_expected_values
+        femtest/testfiles/ccx/cube.fcstd
+        femtest/testfiles/ccx/spine_mesh.py
+        femtest/testfiles/ccx/spine_thermomech.inp
+        femtest/testfiles/ccx/spine_thermomech.dat
+        femtest/testfiles/ccx/spine_thermomech.frd
+        femtest/testfiles/ccx/spine_thermomech_expected_values
+        femtest/testfiles/ccx/spine_thermomech.fcstd
+        femtest/testfiles/ccx/Flow1D_mesh.py
+        femtest/testfiles/ccx/Flow1D_thermomech.inp
+        femtest/testfiles/ccx/Flow1D_thermomech.dat
+        femtest/testfiles/ccx/Flow1D_thermomech.frd
+        femtest/testfiles/ccx/Flow1D_thermomech_expected_values
+        femtest/testfiles/ccx/Flow1D_thermomech_inout_nodes.txt
+        femtest/testfiles/ccx/Flow1D_thermomech.fcstd
     DESTINATION
-        Mod/Fem/test_files/elmer
+        Mod/Fem/femtest/testfiles/ccx
+)
+
+INSTALL(
+    FILES
+        femtest/testfiles/elmer/__init__.py
+        femtest/testfiles/elmer/case.sif
+        femtest/testfiles/elmer/group_mesh.geo
+        femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
+    DESTINATION
+        Mod/Fem/femtest/testfiles/elmer
 )
