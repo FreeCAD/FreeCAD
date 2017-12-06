@@ -23,7 +23,6 @@
 
 import FreeCAD
 import FreeCADGui
-import FemGui
 from .manager import CommandManager
 from PySide import QtCore
 
@@ -291,8 +290,7 @@ class _CommandFemMaterialFluid(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMaterialFluid(FreeCAD.ActiveDocument, 'FluidMaterial')")
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".addObject(App.ActiveDocument.ActiveObject)")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialFluid(FreeCAD.ActiveDocument, 'FluidMaterial'))")
         FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
 
 
@@ -316,7 +314,7 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
         # nonlinear material
         # nonlinear geometry --> its is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
         solver_object = None
-        for m in FemGui.getActiveAnalysis().Group:
+        for m in self.active_analysis.Group:
             if m.isDerivedFrom('Fem::FemSolverObjectPython'):
                 if not solver_object:
                     solver_object = m
@@ -345,8 +343,7 @@ class _CommandFemMaterialSolid(CommandManager):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMaterialSolid(FreeCAD.ActiveDocument, 'SolidMaterial')")
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + FemGui.getActiveAnalysis().Name + ".addObject(FreeCAD.ActiveDocument.ActiveObject)")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialSolid(FreeCAD.ActiveDocument, 'SolidMaterial'))")
         FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
 
 
@@ -423,13 +420,14 @@ class _CommandFemMeshGmshFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
+        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
-        FreeCADGui.addModule("FemGui")
         mesh_obj_name = 'FEMMeshGmsh'
         # mesh_obj_name = self.selobj.Name + "_Mesh"  # if requested by some people add Preference for this
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument." + self.selobj.Name)
+        import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
@@ -464,12 +462,14 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
+        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
-        FreeCADGui.addModule("FemGui")
         mesh_obj_name = 'FEMMeshNetgen'
         # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
-        FreeCADGui.doCommand("App.ActiveDocument.addObject('Fem::FemMeshShapeNetgenObject', '" + mesh_obj_name + "')")
-        FreeCADGui.doCommand("App.ActiveDocument.ActiveObject.Shape = App.activeDocument()." + self.selobj.Name)
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument." + self.selobj.Name)
+        import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(App.ActiveDocument.ActiveObject)")
@@ -539,7 +539,7 @@ class _CommandFemResultsPurge(CommandManager):
 
     def Activated(self):
         import femresult.resulttools as resulttools
-        resulttools.purge_results(FemGui.getActiveAnalysis())
+        resulttools.purge_results(self.active_analysis)
 
 
 class _CommandFemSolverCalculix(CommandManager):
@@ -558,7 +558,7 @@ class _CommandFemSolverCalculix(CommandManager):
         use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
         if use_old_solver_frame_work and not use_new_solver_frame_work:
             has_nonlinear_material_obj = False
-            for m in FemGui.getActiveAnalysis().Group:
+            for m in self.active_analysis.Group:
                 if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
                     has_nonlinear_material_obj = True
             FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")

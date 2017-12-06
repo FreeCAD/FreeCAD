@@ -45,6 +45,7 @@ class CommandManager(object):
             self.is_active = None
             self.selobj = None
             self.selobj2 = None
+            self.active_analysis = None
 
         def GetResources(self):
             return self.resources
@@ -170,7 +171,12 @@ class CommandManager(object):
                 return False
 
         def active_analysis_in_active_doc(self):
-            return FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument
+            analysis = FemGui.getActiveAnalysis()
+            if analysis.Document is FreeCAD.ActiveDocument:
+                self.active_analysis = analysis
+                return True
+            else:
+                return False
 
         def solver_selected(self):
             sel = FreeCADGui.Selection.getSelection()
