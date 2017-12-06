@@ -694,7 +694,7 @@ def get_ref_edgenodes_lengths(femnodes_mesh, edge_table):
 
         elif femmesh_edgetype == 3:  # 3 node femmesh edge
             # end_node_length = mesh_edge_length / 6
-            # middle_node_length = mesh_face_area * 2 / 3
+            # middle_node_length = mesh_edge_length * 2 / 3
             #   _______ _______
             # P1       P3      P2
             P1 = femnodes_mesh[edge_table[me][0]]
