@@ -69,8 +69,8 @@ class CommandManager(object):
                 active = FreeCADGui.ActiveDocument is not None and self.with_femmesh_andor_res_selected()
             elif self.is_active == 'with_material':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_selected()
-            elif self.is_active == 'with_material_solid':
-                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_solid_selected()
+            elif self.is_active == 'with_material_solid_which_has_no_nonlinear_material':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_solid_selected() and self.has_no_nonlinear_material()
             elif self.is_active == 'with_solver':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
             elif self.is_active == 'with_solver_elmer':
@@ -131,9 +131,18 @@ class CommandManager(object):
         def material_solid_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython") and hasattr(sel[0], "Category") and sel[0].Category == "Solid":
+                self.selobj = sel[0]
                 return True
             else:
                 return False
+
+        def has_no_nonlinear_material(self):
+            "check if an nonlinear material exists which is already based on the selected material"
+            for o in FreeCAD.ActiveDocument.Objects:
+                if hasattr(o, "Proxy") and o.Proxy is not None and o.Proxy.Type == "FemMaterialMechanicalNonlinear" and o.LinearBaseMaterial == self.selobj:
+                    # FreeCAD.Console.PrintError(o.Name + ' is based on the selected material: ' + self.selobj + '. Only one nonlinear object for each material allowed.\n')
+                    return False
+            return True
 
         def with_femmesh_andor_res_selected(self):
             sel = FreeCADGui.Selection.getSelection()
