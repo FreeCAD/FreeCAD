@@ -2481,7 +2481,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
         polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
 
         // when selecting from right to left then select by intersection
-        // oterwise if the center is inside the rectangle
+        // otherwise if the center is inside the rectangle
         if (picked[0][0] > picked[1][0])
             selectionMode = INTERSECT;
     }

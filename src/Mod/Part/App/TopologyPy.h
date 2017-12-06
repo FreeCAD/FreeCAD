@@ -37,8 +37,8 @@ namespace Part
 {
 
 /** The TopoDSShape wrapper class
- *  This class wrapps the functionality of the Topology package. It wrapps not
- *  strictly after the OCC rules. It includes also a lot algorithems from oter
+ *  This class wraps the functionality of the Topology package. It wraps not
+ *  strictly after the OCC rules. It also includes a lot of algorithms from other
  *  packages like BRepTools and BRepBuilder. Also iterators and so on.
  */
 class AppPartExport TopoShapePyOld :public Base::PyObjectBase

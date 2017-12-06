@@ -47,7 +47,7 @@ using MeshCore::MeshKernel;
 namespace MeshPart
 {
 
-/** The mesh algorithems container class
+/** The mesh algorithms container class
  */
 class MeshPartExport MeshAlgos
 {

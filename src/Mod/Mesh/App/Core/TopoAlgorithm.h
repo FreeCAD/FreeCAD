@@ -59,7 +59,7 @@ public:
     /** @name Topological Operations */
     //@{
     /**
-     * Inserts a new vertex in the given triangle so that is splitted into three
+     * Inserts a new vertex in the given triangle so that is split into three
      * triangles. The given point must lie inside the triangle not outside or on
      * an edge.
      */
@@ -106,7 +106,7 @@ public:
      * \a rP1 and \a rP2 should lie on two different edges of the facet. This method
      * splits up the both neighbour facets as well.
      * If either \a rP1 or \a rP2 (probably due to a previous call of SplitFacet())
-     * is coincident with a corner point then the facet is splitted into two facets.
+     * is coincident with a corner point then the facet is split into two facets.
      * If both points are coincident with corner points of this facet nothing is done.
      */
     void SplitFacet(unsigned long ulFacetPos, const Base::Vector3f& rP1,
