@@ -38,8 +38,8 @@ load FreeCADs 3D FEM example from Start Workbench
 
 femmesh = App.ActiveDocument.getObject("Box_Mesh").FemMesh
 result = App.ActiveDocument.getObject("CalculiX_static_results")
-import FemMesh2Mesh
-out_mesh = FemMesh2Mesh.femmesh_2_mesh(femmesh, result)
+import femmesh.femmesh2mesh
+out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(femmesh, result)
 import Mesh
 Mesh.show(Mesh.Mesh(out_mesh))
 

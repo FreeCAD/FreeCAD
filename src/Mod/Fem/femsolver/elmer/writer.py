@@ -34,7 +34,7 @@ import tempfile
 from FreeCAD import Units
 import Fem
 import FemUtils
-import FemGmshTools
+import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio
 
@@ -149,7 +149,7 @@ class Writer(object):
         os.close(geoFd)
         os.close(unvGmshFd)
 
-        tools = FemGmshTools.FemGmshTools(mesh)
+        tools = gmshtools.GmshTools(mesh)
         tools.group_elements = {g: [g] for g in groups}
         tools.group_nodes_export = False
         tools.ele_length_map = {}

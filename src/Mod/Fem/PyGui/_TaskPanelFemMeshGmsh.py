@@ -137,8 +137,8 @@ class _TaskPanelFemMeshGmsh:
         self.gmsh_runs = True
         self.console_log("We are going to start ...")
         self.get_active_analysis()
-        import FemGmshTools
-        gmsh_mesh = FemGmshTools.FemGmshTools(self.obj, self.analysis)
+        import femmesh.gmshtools as gmshtools
+        gmsh_mesh = gmshtools.GmshTools(self.obj, self.analysis)
         self.console_log("Start Gmsh ...")
         error = ''
         try:

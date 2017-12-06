@@ -29,14 +29,14 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import Fem
-import FemMeshTools
+from . import meshtools as FemMeshTools
 from FreeCAD import Units
 import subprocess
 import tempfile
 from platform import system
 
 
-class FemGmshTools():
+class GmshTools():
     def __init__(self, gmsh_mesh_obj, analysis=None):
         self.mesh_obj = gmsh_mesh_obj
         if analysis:

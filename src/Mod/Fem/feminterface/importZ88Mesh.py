@@ -71,7 +71,7 @@ def export(objectslist, filename):
         FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
         return
     femnodes_mesh = obj.FemMesh.Nodes
-    import FemMeshTools
+    import femmesh.meshtools as FemMeshTools
     femelement_table = FemMeshTools.get_femelement_table(obj.FemMesh)
     z88_element_type = get_z88_element_type(obj.FemMesh, femelement_table)
     f = pyopen(filename, "wb")
@@ -399,7 +399,7 @@ def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
 
 # Helper
 def get_z88_element_type(femmesh, femelement_table=None):
-    import FemMeshTools
+    import femmesh.meshtools as FemMeshTools
     if not femmesh:
         print("Error: No femmesh!")
     if not femelement_table:

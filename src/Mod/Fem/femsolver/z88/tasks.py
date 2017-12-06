@@ -249,7 +249,7 @@ class _Container(object):
         # in GUI defined material_obj could have no RefShape and RefShapes could be different type
         # we gone need the RefShapes to be the same type inside one fem_doc_object
         # TODO here: check if all RefShapes inside the object really have the same type
-        import FemMeshTools
+        import femmesh.meshtools as FemMeshTools
         if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
             first_ref_obj = fem_doc_object.References[0]
             first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])

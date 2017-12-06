@@ -50,8 +50,8 @@ class _CommandFemMesh2Mesh(FemCommands):
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
                 FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
-                FreeCADGui.addModule("FemMesh2Mesh")
-                FreeCADGui.doCommand("out_mesh = FemMesh2Mesh.femmesh_2_mesh(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
+                FreeCADGui.addModule("femmesh.femmesh2mesh")
+                FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
                 FreeCADGui.addModule("Mesh")
                 FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
                 FreeCADGui.doCommand("App.ActiveDocument." + sel[0].Name + ".ViewObject.hide()")
@@ -68,8 +68,8 @@ class _CommandFemMesh2Mesh(FemCommands):
                     res = sel[0]
             if femmesh and res:
                 FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
-                FreeCADGui.addModule("FemMesh2Mesh")
-                FreeCADGui.doCommand("out_mesh = FemMesh2Mesh.femmesh_2_mesh(App.ActiveDocument." + femmesh.Name + ".FemMesh, App.ActiveDocument." + res.Name + ")")
+                FreeCADGui.addModule("femmesh.femmesh2mesh")
+                FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(App.ActiveDocument." + femmesh.Name + ".FemMesh, App.ActiveDocument." + res.Name + ")")
                 FreeCADGui.addModule("Mesh")
                 FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
                 FreeCADGui.doCommand("App.ActiveDocument." + femmesh.Name + ".ViewObject.hide()")

@@ -32,7 +32,7 @@ import FreeCAD
 import os
 import sys
 import time
-import FemMeshTools
+import femmesh.meshtools as FemMeshTools
 import FemInputWriter
 import six
 
