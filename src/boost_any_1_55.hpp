@@ -120,7 +120,7 @@ namespace boost
             return *this;
         }
 
-        // move assignement
+        // move assignment
         any & operator=(any&& rhs) BOOST_NOEXCEPT
         {
             rhs.swap(*this);

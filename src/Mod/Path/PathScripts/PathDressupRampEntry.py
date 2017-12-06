@@ -321,7 +321,7 @@ class ObjectDressup:
         while not done:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
-                    # will reach end of ramp within this edge, needs to be splitted
+                    # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
                     PathLog.debug("Ramp remaining: {}".format(rampremaining))
@@ -387,7 +387,7 @@ class ObjectDressup:
         while not done:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
-                    # will reach end of ramp within this edge, needs to be splitted
+                    # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
                     PathLog.debug("Got split edge (index: {}) with lengths: {}, {}".format(i, splitEdge[0].Length, splitEdge[1].Length))
@@ -454,7 +454,7 @@ class ObjectDressup:
         else:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
-                    # this edge needs to be splitted
+                    # this edge needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
                     PathLog.debug("Got split edges with lengths: {}, {}".format(splitEdge[0].Length, splitEdge[1].Length))

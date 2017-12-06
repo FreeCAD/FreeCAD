@@ -119,7 +119,7 @@ static const PyMethodDef areaOverrides[] = {
         "\nThe first shape's wires will be unioned together regardless of the op code given\n"
         "(except for 'Compound'). Subsequent shape's wire will be combined using the op code.\n"
         "All shape wires shall be coplanar, and are used to determine a working plane for face\n"
-        "making and offseting. You can call setPlane() to supply a reference shape to determine\n"
+        "making and offsetting. You can call setPlane() to supply a reference shape to determine\n"
         "the workplane in case the added shapes are all colinear lines.\n",
     },
 

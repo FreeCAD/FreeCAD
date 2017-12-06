@@ -2483,7 +2483,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             offsetShape = mkOffset.Shape();
 
             if(offsetShape.IsNull())
-                throw Base::Exception("makeOffset2D: result of offseting is null!");
+                throw Base::Exception("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699

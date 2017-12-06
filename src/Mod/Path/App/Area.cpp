@@ -1733,7 +1733,7 @@ TopoDS_Shape Area::getShape(int index) {
     }
 
     // for pocketing, we discard the outer most offset wire in order to achieve
-    // the effect of offseting shape first than pocket, where the actual offset
+    // the effect of offsetting shape first than pocket, where the actual offset
     // path is not wanted. For extra outline profiling, add extra_offset
     if(front) {
         areaPocket.add(toShape(*areas.front(),myParams.Fill));

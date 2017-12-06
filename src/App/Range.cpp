@@ -137,7 +137,7 @@ int App::decodeColumn(const std::string &colstr)
 }
 
 /**
-  * @brief Determine wheter a row specification is valid or not.
+  * @brief Determine whether a row specification is valid or not.
   *
   * @param rowstr Row specified as a string, with "1" being the first row.
   *

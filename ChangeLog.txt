@@ -679,7 +679,7 @@ Version: V0.1B95 Date: Wed Nov 03 17:34:53 2004 +++++++++++++++++++++++++++++++
 
 Version: V0.1B94 Date: Sat Oct 23 18:58:52 2004 +++++++++++++++++++++++++++++++
   * finished implementation of the Tip of the day
-  * splitted several big files in smaller ones
+  * split several big files in smaller ones
   * namespace Gui::Kexi for property editor
   * namespace Gui::Dialog   * documentation for most dialogs
   * use QToolBox provided by Qt instead of StackBar
