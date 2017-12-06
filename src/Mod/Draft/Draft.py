@@ -5969,10 +5969,14 @@ class _ShapeString(_DraftObject):
         import Part
         # import OpenSCAD2Dgeom
         import os
+        from DraftTools import msg
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
             CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
+            if len(CharList) == 0:
+                msg(translate("draft","ShapeString: string has no wires\n"), 'warning')
+                return
             SSChars = []
 
             # test a simple letter to know if we have a sticky font or not
