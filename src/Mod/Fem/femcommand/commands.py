@@ -304,40 +304,32 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
-        self.is_active = 'with_material_solid'
+        self.is_active = 'with_material_solid_which_has_no_nonlinear_material'
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython"):
-            lin_mat_obj = sel[0]
-            # check if an nonlinear material exists which is based on the selected material already
-            allow_nonlinear_material = True
-            for o in FreeCAD.ActiveDocument.Objects:
-                if hasattr(o, "Proxy") and o.Proxy is not None and o.Proxy.Type == "FemMaterialMechanicalNonlinear" and o.LinearBaseMaterial == lin_mat_obj:
-                    FreeCAD.Console.PrintError(o.Name + ' is based on the selected material: ' + lin_mat_obj.Name + '. Only one nonlinear object for each material allowed.\n')
-                    allow_nonlinear_material = False
+        string_lin_mat_obj = "FreeCAD.ActiveDocument.getObject('" + self.selobj.Name + "')"
+        command_to_run = "FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, " + string_lin_mat_obj + "))"
+        FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(command_to_run)
+        # set some property of the solver to nonlinear (only if one solver is available and if this solver is a CalculiX solver):
+        # nonlinear material
+        # nonlinear geometry --> its is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
+        solver_object = None
+        for m in FemGui.getActiveAnalysis().Group:
+            if m.isDerivedFrom('Fem::FemSolverObjectPython'):
+                if not solver_object:
+                    solver_object = m
+                else:
+                    # we do not change attributes if we have more than one solver, since we do not know which one to take
+                    solver_object = None
                     break
-            if allow_nonlinear_material:
-                string_lin_mat_obj = "FreeCAD.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
-                command_to_run = "FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, " + string_lin_mat_obj + "))"
-                FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
-                FreeCADGui.addModule("ObjectsFem")
-                FreeCADGui.doCommand(command_to_run)
-            # set some property of the solver to nonlinear (only if one solver is available and if this solver is a CalculiX solver):
-            # nonlinear material
-            # nonlinear geometry --> its is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
-            solver_object = None
-            for m in FemGui.getActiveAnalysis().Group:
-                if m.isDerivedFrom('Fem::FemSolverObjectPython'):
-                    if not solver_object:
-                        solver_object = m
-                    else:
-                        # we do not change attributes if we have more than one solver, since we do not know which one to take
-                        solver_object = None
-                        break
-            if solver_object and solver_object.SolverType == 'FemSolverCalculix':
-                solver_object.MaterialNonlinearity = "nonlinear"
-                solver_object.GeometricalNonlinearity = "nonlinear"
+        # check new frame work solver and old frame work solver
+        if solver_object and (hasattr(solver_object, "SolverType") and solver_object.SolverType == 'FemSolverCalculix' or (hasattr(solver_object, "Proxy") and solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix')):
+            solver_object.MaterialNonlinearity = "nonlinear"
+            solver_object.GeometricalNonlinearity = "nonlinear"
+        FreeCADGui.doCommand("App.ActiveDocument.recompute()")
+        FreeCADGui.Selection.clearSelection()
 
 
 class _CommandFemMaterialSolid(CommandManager):
