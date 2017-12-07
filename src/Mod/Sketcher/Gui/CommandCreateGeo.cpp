@@ -1216,7 +1216,9 @@ public:
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), 
+                                          (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
+                                            Sketcher::start : Sketcher::end);
                     sugConstr2.clear();
                 }
 
