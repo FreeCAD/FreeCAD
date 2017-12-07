@@ -46,6 +46,12 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefSaveTransaction->hide();
     ui->prefDiscardTransaction->hide();
 
+    QString tip = QString::fromLatin1("<html><head/><body><p>%1</p>"
+                                      "<p>%2: %Y%m%d-%H%M%S</p>"
+                                      "<p>%3: <a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">C++ strftime</a>"
+                                      "</p></body></html>").arg(tr("The format of the date to use."), tr("Default"), tr("Format"));
+    ui->prefSaveBackupDateFormat->setToolTip(tip);
+
     ui->prefCountBackupFiles->setMaximum(INT_MAX);
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
@@ -74,6 +80,8 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefAddLogo->onSave();
     ui->prefSaveBackupFiles->onSave();
     ui->prefCountBackupFiles->onSave();
+    ui->prefSaveBackupExtension->onSave();
+    ui->prefSaveBackupDateFormat->onSave();
     ui->prefDuplicateLabel->onSave();
     ui->prefPartialLoading->onSave();
     ui->prefLicenseType->onSave();
@@ -105,6 +113,8 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefAddLogo->onRestore();
     ui->prefSaveBackupFiles->onRestore();
     ui->prefCountBackupFiles->onRestore();
+    ui->prefSaveBackupExtension->onRestore();
+    ui->prefSaveBackupDateFormat->onRestore();
     ui->prefDuplicateLabel->onRestore();
     ui->prefPartialLoading->onRestore();
     ui->prefLicenseType->onRestore();
