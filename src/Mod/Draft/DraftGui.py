@@ -1437,17 +1437,18 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    # print(fname)
-                    #fname = str(fname.toUtf8())                                 # QString to PyString
-                    fname = utf8_decode(fname[0])
-#                    print("debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname)))
-                                                              
+#                    fname = utf8_decode(fname[0])  # 1947: utf8_decode fails ('ascii' codec can't encode character)
+                                                    # when fname[0] contains accented chars
+                    fname = fname[0].encode('utf8') #TODO: this needs changing for Py3??
+                                                    # accented chars cause "UnicodeEncodeError" failure in DraftGui.todo without 
+                                                    # .encode('utf8')
+
                 except Exception as e:
                     FreeCAD.Console.PrintMessage("DraftGui.pickFile: unable to select a font file.")
                     print(type(e))
                     print(e.args)
                 else:
-                    if fname:
+                    if fname[0]:
                         self.FFileValue.setText(fname)
                         self.sourceCmd.validFFile(fname)                      
                     else:
