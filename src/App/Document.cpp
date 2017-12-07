@@ -1622,6 +1622,8 @@ bool Document::saveCopy(const char* file)
     return false;
 }
 
+bool fileComparisonByDate (Base::FileInfo i,Base::FileInfo j) { return (i.lastModified()>j.lastModified()); }
+
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
@@ -1648,9 +1650,9 @@ bool Document::save (void)
         // make a tmp. file where to save the project data first and then rename to
         // the actual file name. This may be useful if overwriting an existing file
         // fails so that the data of the work up to now isn't lost.
-        std::string uuid = Base::Uuid::createUuid();
+        std::string uuid = "."+ Base::Uuid::createUuid();
         std::string fn = FileName.getValue();
-        fn += "."; fn += uuid;
+        fn += uuid;
         Base::FileInfo tmp(fn);
 
         // open extra scope to close ZipWriter properly
@@ -1679,16 +1681,22 @@ bool Document::save (void)
 
             GetApplication().signalSaveDocument(*this);
         }
-
         // if saving the project data succeeded rename to the actual file name
         Base::FileInfo fi(FileName.getValue());
-        if (fi.exists()) {
-            bool backup = App::GetApplication().GetParameterGroupByPath
+		bool backup = true;
+		if (fi.exists()) {
+            backup = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
             int count_bak = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
-            if (backup) {
-                int nSuff = 0;
+		
+            if (!backup) {
+				count_bak=1; // for cleaning eventuals backups
+			}		
+		
+            // if (backup) 
+			{
+                //int nSuff = 0;
                 std::string fn = fi.fileName();
                 Base::FileInfo di(fi.dirPath());
                 std::vector<Base::FileInfo> backup;
@@ -1697,46 +1705,71 @@ bool Document::save (void)
                     std::string file = it->fileName();
                     if (file.substr(0,fn.length()) == fn) {
                         // starts with the same file name
-                        std::string suf(file.substr(fn.length()));
-                        if (suf.size() > 0) {
-                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
-                            if (nPos==std::string::npos) {
-                                // store all backup files
-                                backup.push_back(*it);
-                                nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
-                            }
+						std::string suf(file.substr(fn.length()));
+                        if (suf.size() > 0 && suf != uuid) {
+                            backup.push_back(*it);
                         }
                     }
                 }
+				 
 
                 if (!backup.empty() && (int)backup.size() >= count_bak) {
-                    // delete the oldest backup file we found
+					std::sort (backup.begin(), backup.end(), fileComparisonByDate);
+                   // delete the oldest backup file we found
                     Base::FileInfo del = backup.front();
+					int nb = 0;
                     for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                        if (it->lastModified() < del.lastModified())
-                            del = *it;
+                        if (it->lastModified() < del.lastModified()) {
+							nb ++;   
+							if (nb >= count_bak) {
+								it->deleteFile(); // this is not perfect but usually should delete all extrafiles in most cases ()
+							} else {
+								del = *it;
+							}
+						}
                     }
 
                     del.deleteFile();
-                    fn = del.filePath();
+                    //fn = del.filePath();
                 }
-                else {
-                    // create a new backup file
-                    std::stringstream str;
-                    str << fi.filePath() << (nSuff + 1);
-                    fn = str.str();
-                }
+				
+				// create a new backup file
+				std::stringstream str;
+				//str << fi.filePath() << (nSuff + 1);
+				Base::TimeInfo ti = fi.lastModified();
+				time_t s =ti.getSeconds();
+				struct tm * timeinfo = localtime(& s);
+				char buffer[20];
+				strftime(buffer,sizeof(buffer),"%Y%m%d-%H%M%S",timeinfo);
+				str << fi.filePath() << "." << buffer << "-";
+				sprintf(buffer, "%03d", ti.getMiliseconds());
+				str<<buffer;
+				fn = str.str();
 
-                if (fi.renameFile(fn.c_str()) == false)
-                    Base::Console().Warning("Cannot rename project file to backup file\n");
+                if (fi.renameFile(fn.c_str()) == false) {
+					int ext = 0; 
+					while (ext < 99) {
+						ext++;
+						if (fi.renameFile((fn+"-"+std::to_string(ext)).c_str()) == true) break;
+					}
+					if (ext >99) {
+						Base::Console().Warning("Cannot rename project file to backup file\n");
+						throw Base::FileException("Cannot rename project file to backup file", fi);
+					}
+				}
             }
-            else {
-                fi.deleteFile();
-            }
-        }
-        if (tmp.renameFile(FileName.getValue()) == false)
+            // else {
+                // fi.deleteFile();
+            // }
+        } 
+		if (tmp.renameFile(FileName.getValue()) == false) {
             Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
             fn.c_str(), FileName.getValue());
+			throw Base::FileException("Cannot rename temporary file to project file", tmp);
+		}
+		if (!backup) {
+			fi.deleteFile();
+		}
 
         return true;
     }
