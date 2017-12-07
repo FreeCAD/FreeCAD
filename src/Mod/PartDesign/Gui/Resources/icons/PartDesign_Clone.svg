@@ -177,19 +177,6 @@
        id="linearGradient4655"
        xlink:href="#linearGradient4165"
        inkscape:collect="always" />
-    <filter
-       height="1.0263666"
-       y="-0.013183307"
-       width="1.0220232"
-       x="-0.011011619"
-       id="filter4679"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur4681"
-         stdDeviation="0.25734896"
-         inkscape:collect="always" />
-    </filter>
     <linearGradient
        y2="31.812008"
        x2="45.765244"
@@ -218,9 +205,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.5742108"
-     inkscape:cx="24.922506"
+     inkscape:cx="-42.088323"
      inkscape:cy="-25.517691"
-     inkscape:current-layer="g4675"
+     inkscape:current-layer="g1020"
      showgrid="false"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
@@ -262,7 +249,7 @@
            inkscape:connector-curvature="0"
            id="path4647"
            d="m 46.862923,19.416557 c 1.66448,-7.41576 -2.46805,-8.904332 -8.5834,-8.36557 -4.11598,-2.663978 -8.27216,-3.770605 -12.55492,0.02414 -9.092843,-1.4097023 -9.656833,2.766969 -7.92369,8.256193 -2.73442,1.388934 -5.868243,2.528459 -4.07631,6.743807 -7.680309,2.33437 -5.7802556,8.942561 -4.1199056,15.266333 5.5618756,0.0094 4.4051156,-7.129743 8.5057256,-11.000703 0.59642,13.168027 3.40522,23.70858 13.88958,25.133475 9.57683,-1.495739 14.31812,-9.769102 13.97992,-25.161985 3.71316,4.605098 2.370548,10.614916 9.210148,10.704411 -0.5217,-5.949656 3.023801,-12.794017 -3.914549,-15.177637 1.68354,-4.071161 -1.666449,-5.112266 -4.412599,-6.422464 z"
-           style="fill:url(#linearGradient4743);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4679)"
+           style="fill:url(#linearGradient4743);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
            transform="matrix(1.1051629,0,0,1.1051629,77.309604,-5.2337101)" />
         <path
            sodipodi:nodetypes="cccc"
