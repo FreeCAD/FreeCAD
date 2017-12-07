@@ -74,7 +74,13 @@ ENDIF(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
 
 # Enabled C++11 for Freecad 0.17 and later
 IF(FREECAD_VERSION VERSION_GREATER 0.16)
-    OPTION(BUILD_ENABLE_CXX11 "Enable C++11 support." ON)
+    set(BUILD_ENABLE_CXX_STD "C++11"  CACHE STRING  "Enable C++ standard")
+    set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
+                 "C++11"
+                 "C++14"
+                 "C++17"
+    )
+
     IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
         MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  G++ must be 4.7 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
     ELSEIF(CMAKE_COMPILER_IS_CLANGXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.3)
@@ -89,9 +95,15 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
-    if(BUILD_ENABLE_CXX11)
-       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    endif(BUILD_ENABLE_CXX11)
+
+    if(${BUILD_ENABLE_CXX_STD} MATCHES "C++17")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C++14")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    elseif (${BUILD_ENABLE_CXX_STD} MATCHES "C++11")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    endif()
+
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
