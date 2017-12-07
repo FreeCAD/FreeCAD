@@ -5973,7 +5973,11 @@ class _ShapeString(_DraftObject):
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
-            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
+            ff8 = obj.FontFile.encode('utf8')                  # 1947 accents in filepath
+                                                               # TODO: change for Py3?? bytes?
+                                                               # Part.makeWireString uses FontFile as char* string
+#            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
+            CharList = Part.makeWireString(obj.String,ff8,obj.Size,obj.Tracking)
             if len(CharList) == 0:
                 msg(translate("draft","ShapeString: string has no wires\n"), 'warning')
                 return
@@ -5981,7 +5985,8 @@ class _ShapeString(_DraftObject):
 
             # test a simple letter to know if we have a sticky font or not
             sticky = False
-            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+#            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+            testWire = Part.makeWireString("L",ff8,obj.Size,obj.Tracking)[0][0]
             if testWire.isClosed:
                 try:
                     testFace = Part.Face(testWire)
