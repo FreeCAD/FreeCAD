@@ -21,7 +21,7 @@ IF (COIN3D_FOUND)
     ELSE(APPLE)
       # Unix systems
       find_path(COIN3D_DOC_PATH index.html 
-                /usr/share/doc/libcoin60-doc/html
+                /usr/share/doc/libcoin80-doc/html
                 /usr/share/doc/coin/html
       )
       IF( EXISTS ${COIN3D_DOC_PATH})
