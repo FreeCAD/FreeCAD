@@ -1846,9 +1846,7 @@ void Document::afterRestore(bool checkXLink) {
 }
 
 void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkXLink) {
-    std::set<DocumentObject*> objSet;
-    for(auto obj : objArray)
-        objSet.insert(obj);
+    std::set<DocumentObject*> objSet(objArray.begin(),objArray.end());
     for (auto obj : getDependencyList(objArray,true,true)) {
         if(objSet.find(obj)==objSet.end())
             continue;
@@ -1858,7 +1856,8 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             obj->ExpressionEngine.onDocumentRestored();
         }
         catch (const Base::Exception& e) {
-            FC_ERR(getName() << ": Error in " << obj->Label.getValue() << ": " << e.what());
+            FC_ERR("'" << getName() << "' failed to restore object '" 
+                    << obj->getNameInDocument() << "': " << e.what());
         }
 
         bool purge = true;
@@ -1866,20 +1865,18 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             std::vector<Property*> props;
             obj->getPropertyList(props);
             for(auto prop : props) {
-                if(prop->isDerivedFrom(PropertyXLink::getClassTypeId()) &&
-                   !static_cast<PropertyXLink*>(prop)->isRestored())
-                {
+                auto link = dynamic_cast<PropertyXLink*>(prop);
+                if(link && !link->isRestored()) {
                     purge = false;
+                    FC_WARN("'" << getName() << "' object '" << obj->getNameInDocument() 
+                        << "' xlink property '" << obj->getPropertyName(prop) 
+                        << (link->getValue()?"' time stamp changed":"' not restored"));
                     break;
                 }
             }
         }
-        if(purge) {
-            FC_TRACE(getName() << ": purge touched " << obj->getNameInDocument());
+        if(purge) 
             obj->purgeTouched();
-        }else
-            FC_WARN(getName() << ": xlink not restured, not purge touched " << 
-                    obj->getNameInDocument());
 
         signalFinishRestoreObject(*obj);
     }
