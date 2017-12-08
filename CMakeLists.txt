@@ -96,7 +96,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
 
-    # Escape the two plus chars as otherwise cmak complains about invalid regex
+    # Escape the two plus chars as otherwise cmake complains about invalid regex
     if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
     elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
