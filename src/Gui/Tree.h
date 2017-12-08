@@ -92,6 +92,8 @@ public:
 
     static void updateStatus(bool delay=false);
 
+    DocumentItem *getDocumentItem(const Gui::Document *) const;
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg);
@@ -113,8 +115,6 @@ protected:
     bool event(QEvent *e);
     void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
-
-    DocumentItem *getDocumentItem(const Gui::Document *) const;
 
 protected:
     void showEvent(QShowEvent *) override;
@@ -271,7 +271,7 @@ private:
 class DocumentObjectItem : public QTreeWidgetItem
 {
 public:
-    DocumentObjectItem(DocumentObjectDataPtr data);
+    DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjectDataPtr data);
     ~DocumentObjectItem();
 
     Gui::ViewProviderDocumentObject* object() const;
@@ -282,9 +282,10 @@ public:
     void setData(int column, int role, const QVariant & value);
     bool isChildOfItem(DocumentObjectItem*);
 
-    // Get the top level parent document item of this item
+    // Get the parent document (where the object is stored) of this item
     DocumentItem *getParentDocument() const;
-    // Get the document item that is the owner of this object
+    // Get the owner document (where the object is displayed, either stored or
+    // linked in) of this object
     DocumentItem *getOwnerDocument() const;
 
     // check if a new item is required at root
@@ -315,8 +316,10 @@ public:
     int isParentGroup() const;
 
     DocumentObjectItem *getParentItem() const;
+    TreeWidget *getTree() const;
 
 private:
+    DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
     std::string mySub;
     int previousStatus;

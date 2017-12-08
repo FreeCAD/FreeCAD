@@ -374,7 +374,7 @@ void TreeWidget::onStartEditing()
             App::DocumentObject* obj = objitem->object()->getObject();
             if (!obj || !obj->getNameInDocument()) 
                 return;
-            auto doc = const_cast<Document*>(objitem->getParentDocument()->document());
+            auto doc = const_cast<Document*>(objitem->getOwnerDocument()->document());
             MDIView *view = doc->getActiveView();
             if (view) getMainWindow()->setActiveWindow(view);
 
@@ -988,8 +988,7 @@ void TreeWidget::onItemCollapsed(QTreeWidgetItem * item)
 {
     // object item collapsed
     if (item && item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
-        obj->setExpandedStatus(false);
+        static_cast<DocumentObjectItem*>(item)->setExpandedStatus(false);
     }
 }
 
@@ -997,14 +996,9 @@ void TreeWidget::onItemExpanded(QTreeWidgetItem * item)
 {
     // object item expanded
     if (item && item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
-        auto it = DocumentMap.find(obj->object()->getDocument());
-        if(it==DocumentMap.end()) 
-            Base::Console().Warning("DocumentItem::onItemExpanded: cannot find object document\n");
-        else {
-            it->second->populateItem(obj);
-            obj->setExpandedStatus(true);
-        }
+        DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
+        objItem->getOwnerDocument()->populateItem(objItem);
+        objItem->setExpandedStatus(true);
     }
 }
 
@@ -1077,7 +1071,7 @@ void TreeWidget::onShowHidden() {
     if(this->contextItem->type() == DocumentType)
         docItem = static_cast<DocumentItem*>(contextItem);
     else if(this->contextItem->type() == ObjectType)
-        docItem = static_cast<DocumentObjectItem*>(contextItem)->getParentDocument();
+        docItem = static_cast<DocumentObjectItem*>(contextItem)->getOwnerDocument();
     if(docItem)
         docItem->setShowHidden(showHiddenAction->isChecked());
 }
@@ -1193,7 +1187,6 @@ static std::map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMa
 class Gui::DocumentObjectData {
 public:
     const char *treeName;
-    DocumentItem &docItem;
     DocumentObjectItems items;
     ViewProviderDocumentObject *viewObject;
     DocumentObjectItem *rootItem;
@@ -1208,10 +1201,10 @@ public:
     Connection connectTool;
     Connection connectStat;
 
-    DocumentObjectData(DocumentItem &docItem, ViewProviderDocumentObject* vpd)
-        : docItem(docItem),viewObject(vpd),rootItem(0)
+    DocumentObjectData(TreeWidget *tree, ViewProviderDocumentObject* vpd)
+        : viewObject(vpd),rootItem(0)
     {
-        treeName = docItem.getTreeName();
+        treeName = tree->getTreeName();
         // Setup connections
         connectIcon = viewObject->signalChangeIcon.connect(
                 boost::bind(&DocumentObjectData::slotChangeIcon, this));
@@ -1427,8 +1420,8 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     if(!data) {
         auto &pdata = ObjectMap[obj.getObject()];
         if(!pdata) {
-            pdata = std::make_shared<DocumentObjectData>(*this,
-                    const_cast<ViewProviderDocumentObject*>(&obj));
+            pdata = std::make_shared<DocumentObjectData>(
+                    getTree(), const_cast<ViewProviderDocumentObject*>(&obj));
         }else if(pdata->rootItem && parent==NULL) {
             Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
             return false;
@@ -1438,7 +1431,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 
     std::string displayName = obj.getObject()->Label.getValue();
     std::string objectName = obj.getObject()->getNameInDocument();
-    DocumentObjectItem* item = new DocumentObjectItem(data);
+    DocumentObjectItem* item = new DocumentObjectItem(this,data);
     if(!parent || parent==this) {
         parent = this;
         data->rootItem = item;
@@ -2185,9 +2178,9 @@ void DocumentItem::updateSelection() {
 
 static int countItems;
 
-DocumentObjectItem::DocumentObjectItem(DocumentObjectDataPtr data)
+DocumentObjectItem::DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjectDataPtr data)
     : QTreeWidgetItem(TreeWidget::ObjectType)
-    , myData(data), previousStatus(-1),selected(0),populated(false)
+    , myOwner(ownerDocItem), myData(data), previousStatus(-1),selected(0),populated(false)
 {
     setFlags(flags()|Qt::ItemIsEditable);
     myData->items.insert(this);
@@ -2237,7 +2230,7 @@ void DocumentObjectItem::testStatus(bool resetStatus,QIcon &icon1, QIcon &icon2)
 
     auto obj = object()->getObject();
     auto linked = obj->getLinkedObject(false);
-    bool external = object()->getDocument()!=myData->docItem.document() ||
+    bool external = object()->getDocument()!=getOwnerDocument()->document() ||
             (linked && linked->getDocument()!=obj->getDocument());
 
     int currentStatus =
@@ -2425,8 +2418,8 @@ void DocumentObjectItem::displayStatusInfo()
 
 void DocumentObjectItem::setExpandedStatus(bool on)
 {
-    App::DocumentObject* Obj = object()->getObject();
-    Obj->setStatus(App::Expand, on);
+    if(getOwnerDocument()->document() == object()->getDocument())
+        object()->getObject()->setStatus(App::Expand, on);
 }
 
 void DocumentObjectItem::setData (int column, int role, const QVariant & value)
@@ -2447,7 +2440,7 @@ bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
 }
 
 bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
-    if(myData->rootItem || object()->getDocument()!=myData->docItem.document()) 
+    if(myData->rootItem || object()->getDocument()!=getOwnerDocument()->document()) 
         return false;
     bool checkMap = true;
     for(auto item : myData->items) {
@@ -2604,18 +2597,16 @@ App::DocumentObject *DocumentObjectItem::getRelativeParent(
 }
 
 DocumentItem *DocumentObjectItem::getParentDocument() const {
-    for(auto pi = parent(); pi ; pi = pi->parent()) {
-        if(pi->type()==TreeWidget::DocumentType)
-            return static_cast<DocumentItem*>(pi);
-    }
-    assert(false);
-    return 0;
+    return getTree()->getDocumentItem(object()->getDocument());
 }
 
 DocumentItem *DocumentObjectItem::getOwnerDocument() const {
-    return const_cast<DocumentItem*>(&myData->docItem);
+    return myOwner;
 }
 
+TreeWidget *DocumentObjectItem::getTree() const{
+    return static_cast<TreeWidget*>(treeWidget());
+}
 
 #include "moc_Tree.cpp"
 
