@@ -2089,8 +2089,9 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     try {
         boost::topological_sort(depList, std::front_inserter(make_order));
     } catch (const std::exception& e) {
-        std::cerr << "Document::getDependencyList: " << e.what() << std::endl;
-        return ret;
+        std::string msg("Document::getDependencyList: ");
+        msg += e.what();
+        throw Base::RuntimeError(msg);
     }
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i)
