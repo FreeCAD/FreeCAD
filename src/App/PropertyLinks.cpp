@@ -1891,6 +1891,39 @@ bool PropertyXLink::hasXLink(const App::Document *doc) {
     return false;
 }
 
+std::map<App::Document*,std::set<App::Document*> > 
+PropertyXLink::getDocumentOutList(App::Document *doc) {
+    std::map<App::Document*,std::set<App::Document*> > ret;
+    for(auto &v : _DocInfoMap) {
+        for(auto link : v.second->links) {
+            if(!v.second->pcDoc) continue;
+            auto obj = dynamic_cast<App::DocumentObject*>(link->getContainer());
+            if(!obj || !obj->getNameInDocument() || !obj->getDocument())
+                continue;
+            if(doc && obj->getDocument()!=doc)
+                continue;
+            ret[obj->getDocument()].insert(v.second->pcDoc);
+        }
+    }
+    return ret;
+}
+
+std::map<App::Document*,std::set<App::Document*> > 
+PropertyXLink::getDocumentInList(App::Document *doc) {
+    std::map<App::Document*,std::set<App::Document*> > ret;
+    for(auto &v : _DocInfoMap) {
+        if(!v.second->pcDoc || (doc && doc!=v.second->pcDoc))
+            continue;
+        auto &docs = ret[v.second->pcDoc];
+        for(auto link : v.second->links) {
+            auto obj = dynamic_cast<App::DocumentObject*>(link->getContainer());
+            if(obj && obj->getNameInDocument() && obj->getDocument())
+                docs.insert(obj->getDocument());
+        }
+    }
+    return ret;
+}
+
 PyObject *PropertyXLink::getPyObject(void)
 {
     if(!_pcLink)

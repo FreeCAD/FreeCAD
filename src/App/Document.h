@@ -376,6 +376,9 @@ public:
     static std::vector<App::DocumentObject*> getDependencyList
         (const std::vector<App::DocumentObject*> &objs,
          bool noExternal=false, bool sort=false, bool *hasExternal=0);
+
+    std::vector<App::Document*> getDependentDocuments(bool sort=true);
+
     // set Changed
     //void setChanged(DocumentObject* change);
     /// get a list of topological sorted objects (https://en.wikipedia.org/wiki/Topological_sorting)

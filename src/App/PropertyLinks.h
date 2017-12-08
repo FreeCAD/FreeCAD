@@ -468,6 +468,8 @@ public:
     typedef std::shared_ptr<DocInfo> DocInfoPtr;
 
     static bool hasXLink(const App::Document *doc);
+    static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
+    static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
 
 protected:
     void unlink();

@@ -836,36 +836,28 @@ bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
         try {
-            std::set<App::Document*> docSet;
             std::vector<App::Document*> docs;
-            // find all dependent objects, including external ones
-            const auto &deps = App::Document::getDependencyList(
-                    getDocument()->getObjects(),false,true);
-            for(auto obj : deps) {
-                // collect all modified documents
-                auto doc = obj->getDocument();
-                if(docSet.find(doc)!=docSet.end()) 
-                    continue;
-                auto gdoc = Application::Instance->getDocument(doc);
-                if(doc==getDocument() || (gdoc && gdoc->isModified())) {
-                    docSet.insert(doc);
-                    docs.push_back(doc);
+            try {
+                for(auto doc : getDocument()->getDependentDocuments()) {
+                    auto gdoc = Application::Instance->getDocument(doc);
+                    if(gdoc && (gdoc==this || gdoc->isModified()))
+                        docs.push_back(doc);
                 }
+            }catch(const Base::RuntimeError &e) {
+                FC_ERR(e.what());
+                docs.push_back(getDocument());
             }
             if(docs.size()>1) {
                 int ret = QMessageBox::question(getMainWindow(),
                         QObject::tr("Save dependent files"),
                         QObject::tr("The file contain external depencencies. "
-                           "Do you want to save the dependent files, too?"),
+                        "Do you want to save the dependent files, too?"),
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
                     docs.clear();
-                    docSet.clear();
+                    docs.push_back(getDocument());
                 }
             }
-            // make sure to include this document
-            if(docSet.find(getDocument())==docSet.end())
-                docs.push_back(getDocument());
             Gui::WaitCursor wc;
             // save all documents
             for(auto doc : docs) {

@@ -2099,6 +2099,63 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     return ret;
 }
 
+std::vector<App::Document*> Document::getDependentDocuments(bool sort) {
+    DependencyList depList;
+    std::map<Document*,Vertex> docMap;
+    std::map<Vertex,Document*> vertexMap;
+
+    std::vector<App::Document*> ret,pending;
+    auto outLists = PropertyXLink::getDocumentOutList();
+    std::set<App::Document*> docs;
+    docs.insert(this);
+    pending.push_back(this);
+
+    if(sort)
+        docMap[this] = add_vertex(depList);
+
+    while(pending.size()) {
+        auto doc = pending.back();
+        pending.pop_back();
+
+        auto it = outLists.find(doc);
+        if(it == outLists.end())
+            continue;
+
+        auto &vertex = docMap[doc];
+        for(auto depDoc : it->second) {
+            if(docs.insert(depDoc).second) {
+                pending.push_back(depDoc);
+                if(sort)
+                    docMap[depDoc] = add_vertex(depList);
+            }
+            add_edge(vertex,docMap[depDoc],depList);
+        }
+    }
+
+    if(!sort) {
+        for(auto doc : docs) {
+            if(doc!=this)
+                ret.push_back(doc);
+        }
+        return ret;
+    }
+
+    std::list<Vertex> make_order;
+    try {
+        boost::topological_sort(depList, std::front_inserter(make_order));
+    } catch (const std::exception& e) {
+        std::string msg("Document::getDependentDocuments: ");
+        msg += e.what();
+        throw Base::RuntimeError(msg);
+    }
+
+    for(auto &v : docMap)
+        vertexMap[v.second] = v.first;
+    for (auto rIt=make_order.rbegin(); rIt!=make_order.rend(); ++rIt)
+        ret.push_back(vertexMap[*rIt]);
+    return ret;
+}
+
 void Document::_rebuildDependencyList(const std::vector<App::DocumentObject*> &objs)
 {
 #ifdef USE_OLD_DAG
