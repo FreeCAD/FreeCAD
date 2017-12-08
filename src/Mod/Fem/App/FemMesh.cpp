@@ -78,6 +78,8 @@
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Shape.hxx>
 
+# include <ShapeAnalysis_ShapeTolerance.hxx>
+
 //to simplify parsing input files we use the boost lib
 #include <boost/tokenizer.hpp>
 
@@ -715,10 +717,12 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
 
     Bnd_Box box;
     BRepBndLib::Add(solid, box);
-    // limit where the mesh node belongs to the solid:
-    double limit = box.SquareExtent()/10000.0;
-    //double limit = BRep_Tool::Tolerance(solid);   // does not compile --> no matching function for call to 'BRep_Tool::Tolerance(const TopoDS_Solid&)'
-    box.Enlarge(limit);
+
+    // limit where the mesh node belongs to the solid
+    TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+    ShapeAnalysis_ShapeTolerance analysis;
+    double limit = analysis.Tolerance(solid, 1, shapetype);
+    Base::Console().Log("The limit if a node is in or out: %.12lf in scientific: %.4e \n", limit, limit);
 
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
