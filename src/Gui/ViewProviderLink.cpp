@@ -366,7 +366,7 @@ public:
             str << getLinkedName() <<'.';
         
         auto pcSwitch = pcSwitches[type];
-        if(pcChildGroup && pcSwitch && 
+        if(pcChildGroup && pcSwitch && pcSwitch->whichChild.getValue()>=0 && 
             pcSwitch->getChild(pcSwitch->whichChild.getValue())==pcChildGroup)
         {
             SoPath *path = pp->getPath();
@@ -420,7 +420,7 @@ public:
         if(*subname == 0) return true;
 
         auto pcSwitch = pcSwitches[type];
-        if(!pcChildGroup || !pcSwitch ||
+        if(!pcChildGroup || !pcSwitch || pcSwitch->whichChild.getValue()<0 ||
             pcSwitch->getChild(pcSwitch->whichChild.getValue())!=pcChildGroup)
         {
             det = pcLinked->getDetailPath(subname,path,false);
