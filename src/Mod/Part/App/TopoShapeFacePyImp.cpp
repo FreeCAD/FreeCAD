@@ -424,6 +424,7 @@ PyObject* TopoShapeFacePy::normalAt(PyObject *args)
         gp_Pnt pnt; gp_Vec vec;
         // handles the orientation state of the shape
         BRepGProp_Face(f).Normal(u,v,pnt,vec);
+        vec.Normalize();
         return new Base::VectorPy(new Base::Vector3d(vec.X(),vec.Y(),vec.Z()));
     }
     else {
