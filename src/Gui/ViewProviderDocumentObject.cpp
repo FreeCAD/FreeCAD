@@ -150,24 +150,24 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 
 void ViewProviderDocumentObject::hide(void)
 {
+    ViewProvider::hide();
     // use this bit to check whether 'Visibility' must be adjusted
     if (Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(false);
         Visibility.setStatus(App::Property::User2, false);
     }
-    ViewProvider::hide();
 }
 
 void ViewProviderDocumentObject::show(void)
 {
+    ViewProvider::show();
     // use this bit to check whether 'Visibility' must be adjusted
     if (Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
     }
-    ViewProvider::show();
 }
 
 void ViewProviderDocumentObject::updateView()

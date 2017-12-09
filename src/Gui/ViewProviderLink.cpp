@@ -509,7 +509,9 @@ void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
 }
 
 void ViewProviderLinkObserver::extensionUpdateData(const App::Property *prop) {
-    if(linkInfo) linkInfo->updateData(prop);
+    if(linkInfo && linkInfo->pcLinked && linkInfo->pcLinked->getObject() && 
+       prop != &linkInfo->pcLinked->getObject()->Visibility) 
+        linkInfo->updateData(prop);
 }
 
 void ViewProviderLinkObserver::extensionFinishRestoring() {
