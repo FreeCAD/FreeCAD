@@ -647,8 +647,24 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
                 return;
         }
     }
-    if(!svp->onTopWhenSelected())
+    int onTop = svp->OnTopWhenSelected.getValue();
+    if(!onTop)
         return;
+    // onTop==2 means on top only if whole object is selected,
+    // onTop==3 means on top only if some sub-element is selected
+    // onTop==1 means either
+    if(onTop==2 || onTop==3) {
+        if(subname && *subname) {
+            size_t len = strlen(subname);
+            if(subname[len-1]=='.') {
+                // ending with '.' means whole object selection
+                if(onTop == 3)
+                    return;
+            }else if(onTop==2)
+                return;
+        }else if(onTop==3)
+            return;
+    }
 
     std::vector<ViewProvider*> groups;
     auto grpVp = vp;

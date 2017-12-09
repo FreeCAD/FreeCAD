@@ -65,7 +65,14 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
     ADD_PROPERTY(ShowInTree,(true));
-    ADD_PROPERTY(OnTopWhenSelected,(false));
+
+    static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
+    ADD_PROPERTY(OnTopWhenSelected,((long int)0));
+    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), "Base", App::Prop_None, 
+            "Enabled: Display the object on top of any other object when selected\n"
+            "Object: On top only if the whole object is selected\n"
+            "Element: On top only if some sub-element of the object is selected");
+    OnTopWhenSelected.setEnums(OnTopEnum);
 
     sPixmap = "Feature";
 }
@@ -346,10 +353,6 @@ bool ViewProviderDocumentObject::canDropObjectEx(
 
 bool ViewProviderDocumentObject::showInTree() const {
     return ShowInTree.getValue();
-}
-
-bool ViewProviderDocumentObject::onTopWhenSelected() const {
-    return OnTopWhenSelected.getValue();
 }
 
 Base::BoundBox3d ViewProviderDocumentObject::getBoundingBox() const {
