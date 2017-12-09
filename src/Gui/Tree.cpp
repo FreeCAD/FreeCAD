@@ -202,7 +202,7 @@ void TreeWidget::updateStatus(bool delay) {
 
 void TreeWidget::_updateStatus(bool delay) {
     if(!statusTimer->isActive())
-        statusTimer->start(300);
+        statusTimer->start(150);
     else if(delay) {
         if(!statusUpdateDelay)
             statusUpdateDelay=1;
