@@ -68,7 +68,7 @@ TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
 : SolveTime(0), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
-    defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
+defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
 {
 }
 
@@ -3193,8 +3193,22 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
     if (hasConflicts())
         return -1;
 
-    if (!isInitMove)
+    if (!isInitMove) {
         initMove(geoId, pos);
+        initToPoint = toPoint;
+        moveStep = 0;
+    }
+    else {
+        if (moveStep == 0) {
+            moveStep = (toPoint-initToPoint).Length();
+        }
+        else {
+            if( (toPoint-initToPoint).Length() > 20*moveStep) { // I am getting too far away from the original solution so reinit the solution
+                initMove(geoId, pos);
+                initToPoint = toPoint;
+            }
+        }
+    }
 
     if (relative) {
         for (int i=0; i < int(MoveParameters.size()-1); i+=2) {

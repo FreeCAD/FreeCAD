@@ -397,6 +397,8 @@ protected:
 
     bool isInitMove;
     bool isFine;
+    Base::Vector3d initToPoint;
+    double moveStep;
 
 public:
     GCS::Algorithm defaultSolver;
