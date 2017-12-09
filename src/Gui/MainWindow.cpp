@@ -309,7 +309,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
     connect(d->activityTimer, SIGNAL(timeout()),this, SLOT(_updateActions()));
     d->activityTimer->setSingleShot(false);
-    d->activityTimer->start(300);
+    d->activityTimer->start(150);
 
     // show main window timer
     d->visibleTimer = new QTimer(this);
@@ -1065,7 +1065,7 @@ void MainWindow::updateActions(bool delay) {
     if(!this)
         return;
     if(!d->activityTimer->isActive())
-        d->activityTimer->start(300);
+        d->activityTimer->start(150);
     else if(delay) {
         if(!d->actionUpdateDelay)
             d->actionUpdateDelay=1;
