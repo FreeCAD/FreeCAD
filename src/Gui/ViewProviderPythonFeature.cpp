@@ -76,6 +76,12 @@ namespace Gui {
 struct ProxyInfo {
     Py::Object viewObject;
     Py::Object proxy;
+
+    ~ProxyInfo() {
+        Base::PyGILStateLocker lock;
+        viewObject = Py::Object();
+        proxy = Py::Object();
+    }
 };
 
 class PropertyEvent : public QEvent
