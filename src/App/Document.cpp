@@ -178,6 +178,8 @@ struct DocumentP
     static
     void findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
                         std::vector <Path> &all_paths, Path tmp);
+    std::vector<App::DocumentObject*>
+    topologicalSort(const std::vector<App::DocumentObject*>& objects) const;
 };
 
 } // namespace App
@@ -2245,21 +2247,21 @@ int Document::recompute()
 
 #endif // USE_OLD_DAG
 
-std::vector<App::DocumentObject*> Document::topologicalSort() const
+std::vector<App::DocumentObject*> DocumentP::topologicalSort(const std::vector<App::DocumentObject*>& objects) const
 {
     // topological sort algorithm described here:
     // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
     vector < App::DocumentObject* > ret;
-    ret.reserve(d->objectArray.size());
+    ret.reserve(objects.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto objectIt : d->objectMap) {
+    for (auto objectIt : objects) {
         //we need inlist with unique entries
-        auto in = objectIt.second->getInList();
+        auto in = objectIt->getInList();
         std::sort(in.begin(), in.end());
         in.erase(std::unique(in.begin(), in.end()), in.end());
 
-        countMap[objectIt.second] = in.size();
+        countMap[objectIt] = in.size();
     }
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
@@ -2267,7 +2269,7 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     });
 
     if (rootObjeIt == countMap.end()){
-        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << endl;
+        cerr << "DocumentP::topologicalSort: cyclic dependency detected (no root object)" << endl;
         return ret;
     }
 
@@ -2278,7 +2280,7 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
         auto out = rootObjeIt->first->getOutList();
         std::sort(out.begin(), out.end());
         out.erase(std::unique(out.begin(), out.end()), out.end());
-        
+
         for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
             outListMapIt->second = outListMapIt->second - 1;
@@ -2291,6 +2293,11 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
     }
 
     return ret;
+}
+
+std::vector<App::DocumentObject*> Document::topologicalSort() const
+{
+    return d->topologicalSort(d->objectArray);
 }
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
