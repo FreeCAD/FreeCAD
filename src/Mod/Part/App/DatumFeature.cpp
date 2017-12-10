@@ -58,6 +58,42 @@ TopoDS_Shape Datum::getShape() const
     return sh.getShape();
 }
 
+namespace Part {
+Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
+
+App::DocumentObject *Datum::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    // For the sake of simplicity, we don't bother to check for subname, just
+    // return the shape as it is, because a datum object only holds shape with
+    // one single geometry element. 
+    (void)subname;
+    (void)depth;
+
+    if(pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+
+    if(!pyObj)
+        return const_cast<Datum*>(this);
+
+    try {
+        TopoShape ts(Shape.getValue().Located(TopLoc_Location()));
+        if(pmat && !ts.isNull()) 
+            ts.transformShape(*pmat,false,true);
+        *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));
+        return const_cast<Datum*>(this);
+    }catch(Standard_Failure &e) {
+        std::string str;
+        Standard_CString msg = e.GetMessageString();
+        str += typeid(e).name();
+        str += " ";
+        if (msg) {str += msg;}
+        else     {str += "No OCCT Exception Message";}
+        throw Base::Exception(str.c_str());
+    }
+}
+
 Base::Vector3d Datum::getBasePoint () const {
     return Placement.getValue().getPosition();
 }
