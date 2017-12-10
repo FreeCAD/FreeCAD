@@ -135,6 +135,8 @@ boost::listS           // class EdgeListS:
 typedef boost::graph_traits<DependencyList> Traits;
 typedef Traits::vertex_descriptor Vertex;
 typedef Traits::edge_descriptor Edge;
+typedef std::vector <size_t> Node;
+typedef std::vector <size_t> Path;
 
 namespace App {
 
@@ -172,6 +174,10 @@ struct DocumentP
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
     }
+
+    static
+    void findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
+                        std::vector <Path> &all_paths, Path tmp);
 };
 
 } // namespace App
@@ -3035,11 +3041,8 @@ std::vector<App::DocumentObject*> Document::getRootObjects() const
     return ret;
 }
 
-namespace App {
-typedef vector <size_t> Node;
-typedef vector <size_t> Path;
-void _findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
-                     std::vector <Path> &all_paths, Path tmp)
+void DocumentP::findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
+                                std::vector <Path> &all_paths, Path tmp)
 {
     if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
         Path tmp2(tmp);
@@ -3056,9 +3059,8 @@ void _findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
 
     for (size_t i=0; i < all_nodes[id].size(); i++) {
         Path tmp2(tmp);
-        _findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
     }
-}
 }
 
 std::vector<std::list<App::DocumentObject*> >
@@ -3086,7 +3088,7 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
     size_t index_to = indexMap[to];
     Path tmp;
     std::vector<Path> all_paths;
-    _findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
 
     for (std::vector<Path>::iterator it = all_paths.begin(); it != all_paths.end(); ++it) {
         Path::iterator jt = std::find(it->begin(), it->end(), index_to);
