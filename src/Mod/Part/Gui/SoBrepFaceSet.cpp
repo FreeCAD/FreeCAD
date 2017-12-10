@@ -419,6 +419,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderShape(state, vboAvailable, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
             pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
+        if(normalCacheUsed)
+            this->readUnlockNormalCache();
     }
 
     // Workaround for #0000433
@@ -426,9 +428,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     renderHighlight(action,ctx);
     renderSelection(action,ctx);
 //#endif
-    
-    if(normalCacheUsed)
-        this->readUnlockNormalCache();
 }
 
 //****************************************************************************
@@ -609,9 +608,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if (!hasVBO) {
             // Disable caching for this node
             SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-
-            if (normalCacheUsed)
-                this->readUnlockNormalCache();
         }
 
         if (normalCacheUsed)
