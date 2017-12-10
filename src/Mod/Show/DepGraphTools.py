@@ -70,6 +70,8 @@ def isContainer(obj):
     Group, Part, Body. The important characterisic of an object being a 
     container is visibility nesting.'''
     
+    if obj.hasChildElement():
+        return True
     if obj.hasExtension('App::OriginGroupExtension'):
         return True
     if obj.hasExtension('App::GroupExtension'):
