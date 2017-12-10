@@ -180,6 +180,8 @@ struct DocumentP
                         std::vector <Path> &all_paths, Path tmp);
     std::vector<App::DocumentObject*>
     topologicalSort(const std::vector<App::DocumentObject*>& objects) const;
+    std::vector<App::DocumentObject*>
+    partialTopologicalSort(const std::vector<App::DocumentObject*>& objects) const;
 };
 
 } // namespace App
@@ -2214,8 +2216,8 @@ int Document::recompute()
     vector<DocumentObject*> topoSortedObjects = topologicalSort();
 
     if (topoSortedObjects.size() != d->objectArray.size()){
-        cerr << "App::Document::recompute(): topological sort fails, invalid DAG!" << endl;
-        return -1;
+        cerr << "App::Document::recompute(): cyclic dependency detected" << endl;
+        topoSortedObjects = d->partialTopologicalSort(d->objectArray);
     }
 
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
@@ -2246,6 +2248,112 @@ int Document::recompute()
 }
 
 #endif // USE_OLD_DAG
+
+/*!
+  Does almost the same as topologicalSort() until no object with an input degree of zero
+  can be found. It then searches for objects with an output degree of zero until neither
+  an object with input or output degree can be found. The remaining objects form one or
+  multiple cycles.
+  An alternative to this method might be:
+  https://en.wikipedia.org/wiki/Tarjan%E2%80%99s_strongly_connected_components_algorithm
+ */
+std::vector<App::DocumentObject*> DocumentP::partialTopologicalSort(const std::vector<App::DocumentObject*>& objects) const
+{
+    vector < App::DocumentObject* > ret;
+    ret.reserve(objects.size());
+    // pairs of input and output degree
+    map < App::DocumentObject*, std::pair<int, int> > countMap;
+
+    for (auto objectIt : objects) {
+        //we need inlist with unique entries
+        auto in = objectIt->getInList();
+        std::sort(in.begin(), in.end());
+        in.erase(std::unique(in.begin(), in.end()), in.end());
+
+        //we need outlist with unique entries
+        auto out = objectIt->getOutList();
+        std::sort(out.begin(), out.end());
+        out.erase(std::unique(out.begin(), out.end()), out.end());
+
+        countMap[objectIt] = std::make_pair(in.size(), out.size());
+    }
+
+    std::list<App::DocumentObject*> degIn;
+    std::list<App::DocumentObject*> degOut;
+
+    bool removeVertex = true;
+    while (removeVertex) {
+        removeVertex = false;
+
+        // try input degree
+        auto degInIt = find_if(countMap.begin(), countMap.end(),
+                               [](pair< App::DocumentObject*, pair<int, int> > vertex)->bool {
+            return vertex.second.first == 0;
+        });
+
+        if (degInIt != countMap.end()) {
+            removeVertex = true;
+            degIn.push_back(degInIt->first);
+            degInIt->second.first = degInIt->second.first - 1;
+
+            //we need outlist with unique entries
+            auto out = degInIt->first->getOutList();
+            std::sort(out.begin(), out.end());
+            out.erase(std::unique(out.begin(), out.end()), out.end());
+
+            for (auto outListIt : out) {
+                auto outListMapIt = countMap.find(outListIt);
+                outListMapIt->second.first = outListMapIt->second.first - 1;
+            }
+        }
+    }
+
+    // make the output degree negative if input degree is negative
+    // to mark the vertex as processed
+    for (auto& countIt : countMap) {
+        if (countIt.second.first < 0) {
+            countIt.second.second = -1;
+        }
+    }
+
+    removeVertex = degIn.size() != objects.size();
+    while (removeVertex) {
+        removeVertex = false;
+
+        auto degOutIt = find_if(countMap.begin(), countMap.end(),
+                               [](pair< App::DocumentObject*, pair<int, int> > vertex)->bool {
+            return vertex.second.second == 0;
+        });
+
+        if (degOutIt != countMap.end()) {
+            removeVertex = true;
+            degOut.push_front(degOutIt->first);
+            degOutIt->second.second = degOutIt->second.second - 1;
+
+            //we need inlist with unique entries
+            auto in = degOutIt->first->getInList();
+            std::sort(in.begin(), in.end());
+            in.erase(std::unique(in.begin(), in.end()), in.end());
+
+            for (auto inListIt : in) {
+                auto inListMapIt = countMap.find(inListIt);
+                inListMapIt->second.second = inListMapIt->second.second - 1;
+            }
+        }
+    }
+
+    // at this point we have no root object any more
+    for (auto countIt : countMap) {
+        if (countIt.second.first > 0 && countIt.second.second > 0) {
+            degIn.push_back(countIt.first);
+        }
+    }
+
+    ret.insert(ret.end(), degIn.begin(), degIn.end());
+    ret.insert(ret.end(), degOut.begin(), degOut.end());
+
+    return ret;
+}
 
 std::vector<App::DocumentObject*> DocumentP::topologicalSort(const std::vector<App::DocumentObject*>& objects) const
 {
