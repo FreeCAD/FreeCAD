@@ -3199,13 +3199,15 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
         moveStep = 0;
     }
     else {
-        if (moveStep == 0) {
-            moveStep = (toPoint-initToPoint).Length();
-        }
-        else {
-            if( (toPoint-initToPoint).Length() > 20*moveStep) { // I am getting too far away from the original solution so reinit the solution
-                initMove(geoId, pos);
-                initToPoint = toPoint;
+        if(!relative) {
+            if (moveStep == 0) {
+                moveStep = (toPoint-initToPoint).Length();
+            }
+            else {
+                if( (toPoint-initToPoint).Length() > 20*moveStep) { // I am getting too far away from the original solution so reinit the solution
+                    initMove(geoId, pos);
+                    initToPoint = toPoint;
+                }
             }
         }
     }
