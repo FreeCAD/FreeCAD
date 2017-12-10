@@ -67,8 +67,10 @@ public:
     void extensionOnChanged(const App::Property *) override;
     void extensionUpdateData(const App::Property*) override;
     void extensionFinishRestoring() override;
-    bool extensionCanDragObject(App::DocumentObject*) const { return false; }
-    bool extensionCanDropObject(App::DocumentObject*) const { return false; }
+    bool extensionCanDragObject(App::DocumentObject*) const override { return false; }
+    bool extensionCanDropObject(App::DocumentObject*) const override { return false; }
+    void extensionHide(void) override;
+    void extensionShow(void) override;
 
     LinkInfoPtr linkInfo;
 };
