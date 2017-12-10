@@ -1879,10 +1879,9 @@ bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &su
         const char *sub = 0;
         int idx = App::LinkBaseExtension::getArrayIndex(subname.c_str(),&sub);
         assert(idx>=0 && idx<(int)elements.size());
-        if(*sub) {
-            --sub;
-            assert(*sub == '.');
-        }
+        assert(sub!=subname.c_str());
+        --sub;
+        assert(*sub == '.');
         subname.replace(0,sub-subname.c_str(),elements[idx]->getNameInDocument());
     }
     return ret;
