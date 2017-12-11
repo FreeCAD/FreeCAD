@@ -75,7 +75,6 @@ using namespace TechDrawGui;
 using namespace TechDrawGeometry;
 
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
-const float vertexScaleFactor = 2.; // temp fiddle for devel
 
 QGIViewPart::QGIViewPart()
 {
@@ -367,6 +366,7 @@ void QGIViewPart::drawViewPart()
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
     float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
+//    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
@@ -473,6 +473,10 @@ void QGIViewPart::drawViewPart()
     }
 
     // Draw Vertexs:
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double vertexScaleFactor = hGrp->GetFloat("VertexScale", 3.0);
+
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
     bool showCenters = viewPart->ArcCenterMarks.getValue();
