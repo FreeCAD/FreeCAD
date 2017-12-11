@@ -65,6 +65,7 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/draggers/SoTrackballDragger.h>
+#include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>

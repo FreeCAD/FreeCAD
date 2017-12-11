@@ -90,6 +90,8 @@ public:
 
     LinkView();
     ~LinkView();
+    LinkView &operator=(const LinkView&) = delete;
+    LinkView(const LinkView&) = delete;
 
     virtual PyObject *getPyObject(void);
 

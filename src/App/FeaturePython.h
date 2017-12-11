@@ -53,7 +53,7 @@ public:
     std::string getViewProviderName();
     PyObject *getPyObject(void);
 
-    bool getSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj, 
+    bool getSubObject(App::DocumentObject *&ret, const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const;
 
     bool getSubObjects(std::vector<std::string> &ret) const;
@@ -131,10 +131,10 @@ public:
         //return "Gui::ViewProviderPythonFeature";
     }
 
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const override 
     {
-        DocumentObject *ret = 0;
+        App::DocumentObject *ret = 0;
         if(imp->getSubObject(ret,subname,pyObj,mat,transform,depth))
             return ret;
         return FeatureT::getSubObject(subname,pyObj,mat,transform,depth);
