@@ -104,6 +104,10 @@ public:
       * sketch status as a reference
       */
     int initMove(int geoId, PointPos pos, bool fine=true);
+    
+    /** Resets the initialization of a point or curve drag
+     */
+    void resetInitMove();
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
