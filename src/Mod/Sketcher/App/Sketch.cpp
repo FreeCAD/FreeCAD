@@ -67,7 +67,7 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-: SolveTime(0), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
+: SolveTime(0), RecalculateInitialSolutionWhileMovingPoint(false), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
 defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
 {
 }
@@ -3199,7 +3199,7 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
         moveStep = 0;
     }
     else {
-        if(!relative) {
+        if(!relative && RecalculateInitialSolutionWhileMovingPoint) {
             if (moveStep == 0) {
                 moveStep = (toPoint-initToPoint).Length();
             }

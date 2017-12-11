@@ -348,6 +348,7 @@ public:
     };
 
     float SolveTime;
+    bool RecalculateInitialSolutionWhileMovingPoint;
 
 protected:
     /// container element to store and work with the geometric elements of this sketch
