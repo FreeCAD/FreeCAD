@@ -749,9 +749,9 @@ void PropertyPlacement::Save (Base::Writer &writer) const
                     << "\" Q1=\"" <<  _cPos.getRotation()[1]
                     << "\" Q2=\"" <<  _cPos.getRotation()[2]
                     << "\" Q3=\"" <<  _cPos.getRotation()[3] << "\"";
-	Vector3d axis;
-	double rfAngle;
-	_cPos.getRotation().getValue(axis, rfAngle);
+    Vector3d axis;
+    double rfAngle;
+    _cPos.getRotation().getValue(axis, rfAngle);
     writer.Stream() << " A=\"" <<  rfAngle
                     << "\" Ox=\"" <<  axis.x
                     << "\" Oy=\"" <<  axis.y
@@ -765,25 +765,26 @@ void PropertyPlacement::Restore(Base::XMLReader &reader)
     reader.readElement("PropertyPlacement");
     // get the value of my Attribute
     aboutToSetValue();
-	if (reader.hasAttribute("A")) {
-		_cPos = Base::Placement(Vector3d(reader.getAttributeAsFloat("Px"),
-                                     reader.getAttributeAsFloat("Py"),
-                                     reader.getAttributeAsFloat("Pz")),
-                            Rotation(
-                                     Vector3d(reader.getAttributeAsFloat("Ox"),
-											  reader.getAttributeAsFloat("Oy"),
-											  reader.getAttributeAsFloat("Oz")),
-									  reader.getAttributeAsFloat("A")));
-	} else {
-		_cPos = Base::Placement(Vector3d(reader.getAttributeAsFloat("Px"),
-                                     reader.getAttributeAsFloat("Py"),
-                                     reader.getAttributeAsFloat("Pz")),
-                            Rotation(reader.getAttributeAsFloat("Q0"),
-                                     reader.getAttributeAsFloat("Q1"),
-                                     reader.getAttributeAsFloat("Q2"),
-                                     reader.getAttributeAsFloat("Q3")));
-	
-	}
+
+    if (reader.hasAttribute("A")) {
+        _cPos = Base::Placement(Vector3d(reader.getAttributeAsFloat("Px"),
+                                         reader.getAttributeAsFloat("Py"),
+                                         reader.getAttributeAsFloat("Pz")),
+                       Rotation(Vector3d(reader.getAttributeAsFloat("Ox"),
+                                         reader.getAttributeAsFloat("Oy"),
+                                         reader.getAttributeAsFloat("Oz")),
+                                reader.getAttributeAsFloat("A")));
+    }
+    else {
+        _cPos = Base::Placement(Vector3d(reader.getAttributeAsFloat("Px"),
+                                         reader.getAttributeAsFloat("Py"),
+                                         reader.getAttributeAsFloat("Pz")),
+                                Rotation(reader.getAttributeAsFloat("Q0"),
+                                         reader.getAttributeAsFloat("Q1"),
+                                         reader.getAttributeAsFloat("Q2"),
+                                         reader.getAttributeAsFloat("Q3")));
+    }
+
     hasSetValue();
 }
 
