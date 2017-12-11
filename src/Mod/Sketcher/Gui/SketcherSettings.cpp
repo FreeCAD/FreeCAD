@@ -101,6 +101,7 @@ void SketcherSettings::saveSettings()
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
@@ -126,6 +127,7 @@ void SketcherSettings::loadSettings()
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
