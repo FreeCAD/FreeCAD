@@ -3185,6 +3185,11 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     return 0;
 }
 
+void Sketch::resetInitMove()
+{
+    isInitMove = false;
+}
+
 int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
     geoId = checkGeoId(geoId);
