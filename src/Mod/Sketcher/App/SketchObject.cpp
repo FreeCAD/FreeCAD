@@ -202,10 +202,13 @@ int SketchObject::hasConflicts(void) const
 
 int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 {
+    // Reset the initial movement in case of a dragging operation was ongoing on the solver.
+    solvedSketch.resetInitMove();
+
     // if updateGeoAfterSolving=false, the solver information is updated, but the Sketch is nothing
     // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
     // the solver needs to be updated.
-    
+
     // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have happened
     // therefore we update our sketch solver geometry with the SketchObject one.
     //
