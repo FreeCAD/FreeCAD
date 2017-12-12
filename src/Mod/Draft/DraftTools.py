@@ -5127,7 +5127,7 @@ class Draft_Slope():
         self.spinbox.setMinimum(-9999.99)
         self.spinbox.setMaximum(9999.99)
         self.spinbox.setSingleStep(0.01)
-        self.spinbox.setToolTip(translate("Draft", "Slope to give toselected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down"))
+        self.spinbox.setToolTip(translate("Draft", "Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down"))
         layout.addWidget(self.spinbox)
         taskwidget = QtGui.QWidget()
         taskwidget.form = w
