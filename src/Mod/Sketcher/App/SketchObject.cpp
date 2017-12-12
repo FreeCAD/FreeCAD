@@ -813,6 +813,45 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
     return this->Constraints.getSize()-1;
 }
 
+int SketchObject::addCopyOfConstraints(const SketchObject &orig)
+{
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    const std::vector< Constraint * > &origvals = orig.Constraints.getValues();
+
+    std::vector< Constraint * > newVals(vals);
+
+    for(std::size_t j = 0; j<origvals.size(); j++)
+        newVals.push_back(origvals[j]->copy());
+    
+    std::size_t valssize = vals.size();
+    
+    this->Constraints.setValues(newVals);
+    
+    for(std::size_t i = valssize, j = 0; i<newVals.size(); i++,j++){
+        if ( newVals[i]->isDriving && (
+            newVals[i]->Type == Sketcher::Distance ||
+            newVals[i]->Type == Sketcher::DistanceX ||
+            newVals[i]->Type == Sketcher::DistanceY ||
+            newVals[i]->Type == Sketcher::Radius || 
+            newVals[i]->Type == Sketcher::Angle ||
+            newVals[i]->Type == Sketcher::SnellsLaw)) {
+
+            App::ObjectIdentifier spath = orig.Constraints.createPath(j);
+
+            App::PropertyExpressionEngine::ExpressionInfo expr_info = orig.getExpression(spath);
+
+            if (expr_info.expression) { // if there is an expression on the source dimensional
+                App::ObjectIdentifier dpath = this->Constraints.createPath(i);
+                setExpression(dpath, boost::shared_ptr<App::Expression>(expr_info.expression->copy()));
+            }
+
+        }
+    }
+
+    return this->Constraints.getSize()-1;
+}
+
 int SketchObject::addConstraint(const Constraint *constraint)
 {
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
