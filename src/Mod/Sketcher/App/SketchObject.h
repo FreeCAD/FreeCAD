@@ -101,6 +101,8 @@ public:
     int deleteAllGeometry();
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
+    /// Copy the constraints instead of cloning them and copying the expressions if any
+    int addCopyOfConstraints(const SketchObject &orig);
     /// add constraint
     int addConstraint(const Constraint *constraint);
     /// delete constraint
