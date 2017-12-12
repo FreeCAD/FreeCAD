@@ -818,7 +818,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
         int addedGeometries=mergesketch->addGeometry(Obj->getInternalGeometry());
 
-        int addedConstraints=mergesketch->addConstraints(Obj->Constraints.getValues());
+        int addedConstraints=mergesketch->addCopyOfConstraints(*Obj);
 
         for (int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
