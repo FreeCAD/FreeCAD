@@ -116,9 +116,11 @@ void Rotation::evaluateVector () {
         double rfAngle = double(acos(this->quat[3])) * 2.0;
         double scale = (double)sin(rfAngle / 2.0);
         // Get a normalized vector 
-        this->_axis.x = this->quat[0] / scale;
-        this->_axis.y = this->quat[1] / scale;
-        this->_axis.z = this->quat[2] / scale;
+		double l = this->_axis.Length();
+		if (l < Base::Vector3d::epsilon()) l = 1;
+        this->_axis.x = this->quat[0] * l / scale;
+        this->_axis.y = this->quat[1] * l / scale;
+        this->_axis.z = this->quat[2] * l / scale;
 		
 		_angle=double(acos(this->quat[3])) * 2.0;
 		if (_angle>=D_PI) {
@@ -147,6 +149,12 @@ void Rotation::getValue(Vector3d & axis, double & rfAngle) const
 	axis.x = _axis.x;
 	axis.y = _axis.y;
 	axis.z = _axis.z;
+}
+
+void Rotation::getValueNormalized(Vector3d & axis, double & rfAngle) const
+{
+	getValue(axis, rfAngle);
+	axis.Normalize();
 }
 
 /**
@@ -236,13 +244,16 @@ void Rotation::setValue(const Vector3d & axis, const double fAngle)
     norm.Normalize();
 	double l = norm.Length();
 	if (l>0.5) {
-		this->_axis = norm;
+		this->_axis = axis;
+	} else {
+		norm = _axis;
+		norm.Normalize();
 	}
 
     double scale = (double)sin(theAngle/2.0);
-    this->quat[0] = this->_axis.x * scale;
-    this->quat[1] = this->_axis.y * scale;
-    this->quat[2] = this->_axis.z * scale;
+    this->quat[0] = norm.x * scale;
+    this->quat[1] = norm.y * scale;
+    this->quat[2] = norm.z * scale;
 }
 
 void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)

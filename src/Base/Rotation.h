@@ -51,6 +51,8 @@ public:
     void getValue(double & q0, double & q1, double & q2, double & q3) const;
     void setValue(const double q0, const double q1, const double q2, const double q3);
     void getValue(Vector3d & axis, double & rfAngle) const;
+    void getValueNormalized(Vector3d & axis, double & rfAngle) const;
+
     void getValue(Matrix4D & matrix) const;
     void setValue(const double q[4]);
     void setValue(const Matrix4D& matrix);
