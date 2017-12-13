@@ -4,9 +4,11 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+
 if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
+
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -23,7 +25,9 @@ include_directories(
     ${VTK_INCLUDE_DIRS}
 )
 
+
 link_directories(${OCC_LIBRARY_DIR})
+
 
 set(Fem_LIBS
     Part
@@ -34,14 +38,17 @@ set(Fem_LIBS
     SMESHDS
 )
 
+
 if(BUILD_FEM_NETGEN)
     list(APPEND Fem_LIBS
         NETGENPlugin
     )
 endif(BUILD_FEM_NETGEN)
 
+
 generate_from_xml(FemMeshPy)
 generate_from_xml(FemPostPipelinePy)
+
 
 SET(Python_SRCS
     FemMeshPy.xml
@@ -49,14 +56,36 @@ SET(Python_SRCS
     HypothesisPy.cpp
     HypothesisPy.h
 )
+
+
 if(BUILD_FEM_VTK)
-SET(Python_SRCS
-    ${Python_SRCS}
-    FemPostPipelinePy.xml
-    FemPostPipelinePyImp.cpp
-)
+    SET(Python_SRCS
+        ${Python_SRCS}
+        FemPostPipelinePy.xml
+        FemPostPipelinePyImp.cpp
+    )
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
+
+if(BUILD_FEM_VTK)
+    SET(FemPost_SRCS
+        PropertyPostDataObject.h
+        PropertyPostDataObject.cpp
+        FemPostObject.h
+        FemPostObject.cpp
+        FemPostPipeline.h
+        FemPostPipeline.cpp
+        FemPostFilter.h
+        FemPostFilter.cpp
+        FemPostFunction.h
+        FemPostFunction.cpp
+        FemVTKTools.h
+        FemVTKTools.cpp
+    )
+    SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+endif(BUILD_FEM_VTK)
+
 
 SET(Mod_SRCS
     AppFem.cpp
@@ -68,44 +97,48 @@ SET(Mod_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
+
 SET(FemScripts_SRCS
     Init.py
     InitGui.py
+    FemConstraint.py
     FemInputWriter.py
     FemToolsCcx.py
-    ObjectsFem.py
     FemUtils.py
-    FemConstraint.py
+    ObjectsFem.py
     TestFem.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
+
 SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
-    PyObjects/_FemConstraintSelfWeight.py
     PyObjects/_FemConstraintBodyHeatSource.py
+    PyObjects/_FemConstraintElectrostaticPotential.py
     PyObjects/_FemConstraintFlowVelocity.py
     PyObjects/_FemConstraintInitialFlowVelocity.py
-    PyObjects/_FemConstraintElectrostaticPotential.py
+    PyObjects/_FemConstraintSelfWeight.py
     PyObjects/_FemElementFluid1D.py
     PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemElementGeometry2D.py
+    PyObjects/_FemMaterial.py
     PyObjects/_FemMaterialMechanicalNonlinear.py
     PyObjects/_FemMeshBoundaryLayer.py
     PyObjects/_FemMeshGmsh.py
     PyObjects/_FemMeshGroup.py
-    PyObjects/_FemMeshResult.py
     PyObjects/_FemMeshRegion.py
+    PyObjects/_FemMeshResult.py
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
-    PyObjects/_FemMaterial.py
 )
+
 
 SET(FemCommand_SRCS
     femcommand/__init__.py
     femcommand/commands.py
     femcommand/manager.py
 )
+
 
 SET(FemInterfaces_SRCS
     feminterface/__init__.py
@@ -124,6 +157,7 @@ SET(FemInterfaces_SRCS
     feminterface/writeFenicsXML.py
 )
 
+
 SET(FemMesh_SRCS
     femmesh/__init__.py
     femmesh/femmesh2mesh.py
@@ -131,24 +165,27 @@ SET(FemMesh_SRCS
     femmesh/meshtools.py
 )
 
+
 SET(FemResult_SRCS
     femresult/__init__.py
     femresult/resulttools.py
 )
 
+
 SET(FemSolver_SRCS
     femsolver/__init__.py
-    femsolver/solverbase.py
     femsolver/equationbase.py
     femsolver/report.py
     femsolver/reportdialog.py
-    femsolver/settings.py
-    femsolver/task.py
     femsolver/run.py
+    femsolver/settings.py
     femsolver/signal.py
+    femsolver/solverbase.py
+    femsolver/task.py
 )
 
-SET(FemElmer_SRCS
+
+SET(FemSolverElmer_SRCS
     femsolver/elmer/__init__.py
     femsolver/elmer/sifio.py
     femsolver/elmer/solver.py
@@ -156,35 +193,37 @@ SET(FemElmer_SRCS
     femsolver/elmer/writer.py
 )
 
-SET(FemEquationsElmer_SRCS
+
+SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/__init__.py
-    femsolver/elmer/equations/equation.py
-    femsolver/elmer/equations/linear.py
-    femsolver/elmer/equations/nonlinear.py
-    femsolver/elmer/equations/elasticity.py
     femsolver/elmer/equations/electrostatic.py
+    femsolver/elmer/equations/elasticity.py
+    femsolver/elmer/equations/equation.py
+    femsolver/elmer/equations/flow.py
     femsolver/elmer/equations/fluxsolver.py
     femsolver/elmer/equations/heat.py
-    femsolver/elmer/equations/flow.py
+    femsolver/elmer/equations/linear.py
+    femsolver/elmer/equations/nonlinear.py
 )
 
-SET(FemCalculix_SRCS
+
+SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
     femsolver/calculix/writer.py
 )
 
-SET(FemZ88_SRCS
+
+SET(FemSolverZ88_SRCS
     femsolver/z88/__init__.py
     femsolver/z88/solver.py
     femsolver/z88/tasks.py
     femsolver/z88/writer.py
 )
 
+
 SET(FemGuiScripts_SRCS
-    PyGui/FemSelectionObserver.py
-    PyGui/FemSelectionWidgets.py
     PyGui/__init__.py
     PyGui/_TaskPanelFemElementFluid1D.py
     PyGui/_TaskPanelFemElementGeometry1D.py
@@ -197,11 +236,11 @@ SET(FemGuiScripts_SRCS
     PyGui/_TaskPanelFemResultShow.py
     PyGui/_TaskPanelFemSolverCalculix.py
     PyGui/_TaskPanelFemSolverControl.py
-    PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemConstraintBodyHeatSource.py
+    PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
     PyGui/_ViewProviderFemConstraintFlowVelocity.py
     PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
-    PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
+    PyGui/_ViewProviderFemConstraintSelfWeight.py
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
     PyGui/_ViewProviderFemElementGeometry2D.py
@@ -214,9 +253,14 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemMeshResult.py
     PyGui/_ViewProviderFemResultMechanical.py
     PyGui/_ViewProviderFemSolverCalculix.py
+    PyGui/FemSelectionObserver.py
+    PyGui/FemSelectionWidgets.py
+    PyGui/TaskPanelFemElectrostaticPotential.ui
     PyGui/TaskPanelFemElementFluid1D.ui
     PyGui/TaskPanelFemElementGeometry1D.ui
     PyGui/TaskPanelFemElementGeometry2D.ui
+    PyGui/TaskPanelFemFlowVelocity.ui
+    PyGui/TaskPanelFemInitialFlowVelocity.ui
     PyGui/TaskPanelFemMaterial.ui
     PyGui/TaskPanelFemMeshBoundaryLayer.ui
     PyGui/TaskPanelFemMeshGmsh.ui
@@ -225,17 +269,16 @@ SET(FemGuiScripts_SRCS
     PyGui/TaskPanelFemMeshRegion.ui
     PyGui/TaskPanelFemResultShow.ui
     PyGui/TaskPanelFemSolverCalculix.ui
-    PyGui/TaskPanelFemFlowVelocity.ui
-    PyGui/TaskPanelFemInitialFlowVelocity.ui
-    PyGui/TaskPanelFemElectrostaticPotential.ui
 )
+
 
 SET(FemTests_SRCS
     femtest/__init__.py
     femtest/testfemcommon.py
 )
 
-SET(FemTestsCCx_SRCS
+
+SET(FemTestsCcx_SRCS
     femtest/testfiles/__init__.py
     femtest/testfiles/ccx/__init__.py
     femtest/testfiles/ccx/cube_mesh.py
@@ -263,12 +306,14 @@ SET(FemTestsCCx_SRCS
     femtest/testfiles/ccx/Flow1D_thermomech.fcstd
 )
 
+
 SET(FemTestsElmer_SRCS
     femtest/testfiles/elmer/__init__.py
     femtest/testfiles/elmer/case.sif
     femtest/testfiles/elmer/group_mesh.geo
     femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
 )
+
 
 SET(FemBase_SRCS
     FemMeshObject.cpp
@@ -307,6 +352,7 @@ SET(FemSet_SRCS
     )
 SOURCE_GROUP("Set objects" FILES ${FemSet_SRCS})
 
+
 SET(FemConstraints_SRCS
     FemConstraintBearing.h
     FemConstraintBearing.cpp
@@ -339,33 +385,18 @@ SET(FemConstraints_SRCS
     )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-if(BUILD_FEM_VTK)
-    SET(FemPost_SRCS
-        PropertyPostDataObject.h
-        PropertyPostDataObject.cpp
-        FemPostObject.h
-        FemPostObject.cpp
-        FemPostPipeline.h
-        FemPostPipeline.cpp
-        FemPostFilter.h
-        FemPostFilter.cpp
-        FemPostFunction.h
-        FemPostFunction.cpp
-        FemVTKTools.h
-        FemVTKTools.cpp
-    )
-    SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
-endif(BUILD_FEM_VTK)
+
 
 
 SET(Fem_SRCS
     ${FemBase_SRCS}
-    ${FemSet_SRCS}
     ${FemConstraints_SRCS}
     ${FemPost_SRCS}
+    ${FemSet_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
+
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
@@ -376,23 +407,25 @@ fc_target_copy_resource(Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
     Init.py
     ${FemCommand_SRCS}
-    ${FemScripts_SRCS}
-    ${FemObjectsScripts_SRCS}
+    ${FemGuiScripts_SRCS}
     ${FemInterfaces_SRCS}
     ${FemMesh_SRCS}
+    ${FemObjectsScripts_SRCS}
+    ${FemScripts_SRCS}
     ${FemResult_SRCS}
-    ${FemGuiScripts_SRCS}
-    ${FemTests_SRCS}
-    ${FemTestsCCx_SRCS}
-    ${FemTestsElmer_SRCS}
     ${FemSolver_SRCS}
-    ${FemElmer_SRCS}
-    ${FemCalculix_SRCS}
-    ${FemZ88_SRCS}
-    ${FemEquationsElmer_SRCS}
+    ${FemSolverCalculix_SRCS}
+    ${FemSolverElmer_SRCS}
+    ${FemSolverElmerEquations_SRCS}
+    ${FemSolverZ88_SRCS}
+    ${FemTests_SRCS}
+    ${FemTestsCcx_SRCS}
+    ${FemTestsElmer_SRCS}
 )
+
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(Fem)
+
 
 INSTALL(TARGETS Fem DESTINATION ${CMAKE_INSTALL_LIBDIR})

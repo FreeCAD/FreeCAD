@@ -439,7 +439,7 @@ void TaskFemConstraintTransform::onReferenceDeleted() {
 std::string TaskFemConstraintTransform::getSurfaceReferences(std::string showConstr="")
 {
     return "for obj in FreeCAD.ActiveDocument.Objects:\n\
-        if obj.isDerivedFrom(\"Fem::FemAnalysisPython\"):\n\
+        if obj.isDerivedFrom(\"Fem::FemAnalysis\"):\n\
                 if FreeCAD.ActiveDocument."+showConstr+" in obj.Group:\n\
                         members = obj.Group\n\
 A = []\n\

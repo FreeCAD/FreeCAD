@@ -384,8 +384,8 @@ def makeEquationHeat(doc, base_solver):
     return obj
 
 
-def makeSolverCalculixOld(doc, name="CalculiXccxTools"):
-    '''makeSolverCalculixOld(document, [name]): makes a Calculix solver object for the ccx tools module'''
+def makeSolverCalculixCcxTools(doc, name="CalculiXccxTools"):
+    '''makeSolverCalculixCcxTools(document, [name]): makes a Calculix solver object for the ccx tools module'''
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
     import PyObjects._FemSolverCalculix
     PyObjects._FemSolverCalculix._FemSolverCalculix(obj)

@@ -31,30 +31,6 @@ INSTALL(
 
 INSTALL(
     FILES
-        PyObjects/__init__.py
-        PyObjects/_FemConstraintSelfWeight.py
-        PyObjects/_FemConstraintBodyHeatSource.py
-        PyObjects/_FemConstraintFlowVelocity.py
-        PyObjects/_FemConstraintInitialFlowVelocity.py
-        PyObjects/_FemConstraintElectrostaticPotential.py
-        PyObjects/_FemElementFluid1D.py
-        PyObjects/_FemElementGeometry1D.py
-        PyObjects/_FemElementGeometry2D.py
-        PyObjects/_FemMaterialMechanicalNonlinear.py
-        PyObjects/_FemMeshBoundaryLayer.py
-        PyObjects/_FemMeshGmsh.py
-        PyObjects/_FemMeshGroup.py
-        PyObjects/_FemMeshRegion.py
-        PyObjects/_FemMeshResult.py
-        PyObjects/_FemResultMechanical.py
-        PyObjects/_FemSolverCalculix.py
-        PyObjects/_FemMaterial.py
-    DESTINATION
-        Mod/Fem/PyObjects
-)
-
-INSTALL(
-    FILES
         femcommand/__init__.py
         femcommand/commands.py
         femcommand/manager.py
@@ -117,6 +93,16 @@ INSTALL(
 
 INSTALL(
     FILES
+        femsolver/calculix/__init__.py
+        femsolver/calculix/solver.py
+        femsolver/calculix/tasks.py
+        femsolver/calculix/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/calculix
+)
+
+INSTALL(
+    FILES
         femsolver/elmer/__init__.py
         femsolver/elmer/sifio.py
         femsolver/elmer/solver.py
@@ -143,73 +129,12 @@ INSTALL(
 
 INSTALL(
     FILES
-        femsolver/calculix/__init__.py
-        femsolver/calculix/solver.py
-        femsolver/calculix/tasks.py
-        femsolver/calculix/writer.py
-    DESTINATION
-        Mod/Fem/femsolver/calculix
-)
-
-INSTALL(
-    FILES
         femsolver/z88/__init__.py
         femsolver/z88/solver.py
         femsolver/z88/tasks.py
         femsolver/z88/writer.py
     DESTINATION
         Mod/Fem/femsolver/z88
-)
-
-INSTALL(
-    FILES
-        PyGui/FemSelectionObserver.py
-        PyGui/FemSelectionWidgets.py
-        PyGui/__init__.py
-        PyGui/_TaskPanelFemElementFluid1D.py
-        PyGui/_TaskPanelFemElementGeometry1D.py
-        PyGui/_TaskPanelFemElementGeometry2D.py
-        PyGui/_TaskPanelFemMaterial.py
-        PyGui/_TaskPanelFemMeshBoundaryLayer.py
-        PyGui/_TaskPanelFemMeshGmsh.py
-        PyGui/_TaskPanelFemMeshGroup.py
-        PyGui/_TaskPanelFemMeshRegion.py
-        PyGui/_TaskPanelFemResultShow.py
-        PyGui/_TaskPanelFemSolverCalculix.py
-        PyGui/_TaskPanelFemSolverControl.py
-        PyGui/_ViewProviderFemConstraintSelfWeight.py
-        PyGui/_ViewProviderFemConstraintBodyHeatSource.py
-        PyGui/_ViewProviderFemConstraintFlowVelocity.py
-        PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
-        PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
-        PyGui/_ViewProviderFemElementFluid1D.py
-        PyGui/_ViewProviderFemElementGeometry1D.py
-        PyGui/_ViewProviderFemElementGeometry2D.py
-        PyGui/_ViewProviderFemMaterial.py
-        PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
-        PyGui/_ViewProviderFemMeshBoundaryLayer.py
-        PyGui/_ViewProviderFemMeshGmsh.py
-        PyGui/_ViewProviderFemMeshGroup.py
-        PyGui/_ViewProviderFemMeshRegion.py
-        PyGui/_ViewProviderFemMeshResult.py
-        PyGui/_ViewProviderFemResultMechanical.py
-        PyGui/_ViewProviderFemSolverCalculix.py
-        PyGui/TaskPanelFemElementFluid1D.ui
-        PyGui/TaskPanelFemElementGeometry1D.ui
-        PyGui/TaskPanelFemElementGeometry2D.ui
-        PyGui/TaskPanelFemMaterial.ui
-        PyGui/TaskPanelFemMeshBoundaryLayer.ui
-        PyGui/TaskPanelFemMeshGmsh.ui
-        PyGui/TaskPanelFemMeshGroup.ui
-        PyGui/TaskPanelFemMeshGroupXDMFExport.ui
-        PyGui/TaskPanelFemMeshRegion.ui
-        PyGui/TaskPanelFemResultShow.ui
-        PyGui/TaskPanelFemSolverCalculix.ui
-        PyGui/TaskPanelFemFlowVelocity.ui
-        PyGui/TaskPanelFemInitialFlowVelocity.ui
-        PyGui/TaskPanelFemElectrostaticPotential.ui
-    DESTINATION
-        Mod/Fem/PyGui
 )
 
 INSTALL(
@@ -265,4 +190,79 @@ INSTALL(
         femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
     DESTINATION
         Mod/Fem/femtest/testfiles/elmer
+)
+
+INSTALL(
+    FILES
+        PyObjects/__init__.py
+        PyObjects/_FemConstraintSelfWeight.py
+        PyObjects/_FemConstraintBodyHeatSource.py
+        PyObjects/_FemConstraintFlowVelocity.py
+        PyObjects/_FemConstraintInitialFlowVelocity.py
+        PyObjects/_FemConstraintElectrostaticPotential.py
+        PyObjects/_FemElementFluid1D.py
+        PyObjects/_FemElementGeometry1D.py
+        PyObjects/_FemElementGeometry2D.py
+        PyObjects/_FemMaterialMechanicalNonlinear.py
+        PyObjects/_FemMeshBoundaryLayer.py
+        PyObjects/_FemMeshGmsh.py
+        PyObjects/_FemMeshGroup.py
+        PyObjects/_FemMeshRegion.py
+        PyObjects/_FemMeshResult.py
+        PyObjects/_FemResultMechanical.py
+        PyObjects/_FemSolverCalculix.py
+        PyObjects/_FemMaterial.py
+    DESTINATION
+        Mod/Fem/PyObjects
+)
+
+INSTALL(
+    FILES
+        PyGui/FemSelectionObserver.py
+        PyGui/FemSelectionWidgets.py
+        PyGui/__init__.py
+        PyGui/_TaskPanelFemElementFluid1D.py
+        PyGui/_TaskPanelFemElementGeometry1D.py
+        PyGui/_TaskPanelFemElementGeometry2D.py
+        PyGui/_TaskPanelFemMaterial.py
+        PyGui/_TaskPanelFemMeshBoundaryLayer.py
+        PyGui/_TaskPanelFemMeshGmsh.py
+        PyGui/_TaskPanelFemMeshGroup.py
+        PyGui/_TaskPanelFemMeshRegion.py
+        PyGui/_TaskPanelFemResultShow.py
+        PyGui/_TaskPanelFemSolverCalculix.py
+        PyGui/_TaskPanelFemSolverControl.py
+        PyGui/_ViewProviderFemConstraintSelfWeight.py
+        PyGui/_ViewProviderFemConstraintBodyHeatSource.py
+        PyGui/_ViewProviderFemConstraintFlowVelocity.py
+        PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
+        PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
+        PyGui/_ViewProviderFemElementFluid1D.py
+        PyGui/_ViewProviderFemElementGeometry1D.py
+        PyGui/_ViewProviderFemElementGeometry2D.py
+        PyGui/_ViewProviderFemMaterial.py
+        PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+        PyGui/_ViewProviderFemMeshBoundaryLayer.py
+        PyGui/_ViewProviderFemMeshGmsh.py
+        PyGui/_ViewProviderFemMeshGroup.py
+        PyGui/_ViewProviderFemMeshRegion.py
+        PyGui/_ViewProviderFemMeshResult.py
+        PyGui/_ViewProviderFemResultMechanical.py
+        PyGui/_ViewProviderFemSolverCalculix.py
+        PyGui/TaskPanelFemElementFluid1D.ui
+        PyGui/TaskPanelFemElementGeometry1D.ui
+        PyGui/TaskPanelFemElementGeometry2D.ui
+        PyGui/TaskPanelFemMaterial.ui
+        PyGui/TaskPanelFemMeshBoundaryLayer.ui
+        PyGui/TaskPanelFemMeshGmsh.ui
+        PyGui/TaskPanelFemMeshGroup.ui
+        PyGui/TaskPanelFemMeshGroupXDMFExport.ui
+        PyGui/TaskPanelFemMeshRegion.ui
+        PyGui/TaskPanelFemResultShow.ui
+        PyGui/TaskPanelFemSolverCalculix.ui
+        PyGui/TaskPanelFemFlowVelocity.ui
+        PyGui/TaskPanelFemInitialFlowVelocity.ui
+        PyGui/TaskPanelFemElectrostaticPotential.ui
+    DESTINATION
+        Mod/Fem/PyGui
 )

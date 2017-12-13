@@ -66,7 +66,11 @@ class _TaskPanel(object):
         self.form = [self._refWidget, self._paramWidget]
         analysis = FemUtils.findAnalysisOfMember(obj)
         self._mesh = FemUtils.getSingleMember(analysis, "Fem::FemMeshObject")
-        self._part = self._mesh.Part if self._mesh is not None else None
+        self._part = None
+        if hasattr(self._mesh, "Part"):  # Geometry of Gmesh mesh obj
+            self._part = self._mesh.Part
+        elif hasattr(self._mesh, "Shape"):  # Geometry of Netgen mesh obj
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
 
