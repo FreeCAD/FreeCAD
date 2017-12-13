@@ -188,7 +188,8 @@ def makeSpace(objects=None,baseobj=None,name="Space"):
             objects = [objects]
         if len(objects) == 1:
             obj.Base = objects[0]
-            objects[0].ViewObject.hide()
+            if FreeCAD.GuiUp:
+                objects[0].ViewObject.hide()
         else:
             obj.Proxy.addSubobjects(obj,objects)
     return obj
