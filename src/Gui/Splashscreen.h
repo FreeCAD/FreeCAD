@@ -31,7 +31,7 @@ namespace Gui {
 
 class SplashObserver;
 
-/** This widget provides a splash screen that can be shown  during application startup.
+/** This widget provides a splash screen that can be shown during application startup.
  *
  * \author Werner Mayer
  */

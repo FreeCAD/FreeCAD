@@ -1,5 +1,5 @@
 # Example how to use the basic robot class Robot6Axis which represent a 6-Axis 
-# industrial robot. The Robot Module is  dependend on Part but nor on other Modules.
+# industrial robot. The Robot Module is dependent on Part but not on other Modules.
 # It works mostly with the basic types Placement, Vector and Matrix. So we need 
 # only:
 from Robot import *
@@ -56,7 +56,7 @@ del rob,Start,t,l,w
 # === working with the document ===
 # 
 # Working with the robot document objects:
-# first creat a robot in the active document
+# first create a robot in the active document
 if(App.activeDocument() == None):App.newDocument()
 
 App.activeDocument().addObject("Robot::RobotObject","Robot")
@@ -96,12 +96,12 @@ print(App.activeDocument().Trajectory.Trajectory)
 
 # === Exporting the trajectory ===
 # the Trajectory is exported by python. That means for every Control Cabinet type is a Post processor
-# python module. Here is in detail the Kuka Postprocessor descriped
+# python module. Here is in detail the Kuka Postprocessor described
 from KukaExporter import ExportCompactSub
 
 ExportCompactSub(App.activeDocument().Robot,App.activeDocument().Trajectory,tempfile.gettempdir()+'/TestOut.src')
 
-# and thats kind of how its done:
+# and that's kind of how its done:
 for w in App.activeDocument().Trajectory.Trajectory.Waypoints:
 	(A,B,C) = (w.Pos.Rotation.toEuler())
 	print("LIN {X %.3f,Y %.3f,Z %.3f,A %.3f,B %.3f,C %.3f} ; %s"%(w.Pos.Base.x,w.Pos.Base.y,w.Pos.Base.z,A,B,C,w.Name))

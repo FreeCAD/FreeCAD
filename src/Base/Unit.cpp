@@ -127,7 +127,7 @@ Unit::Unit(const QString& expr)
     }
 }
 
-Unit Unit::pow(char exp) const
+Unit Unit::pow(signed char exp) const
 {
     checkRange("pow()",
                (int32_t)Sig.Length * (int32_t)exp,

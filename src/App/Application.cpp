@@ -2532,7 +2532,8 @@ std::string Application::FindHomePath(const char* sCall)
 #else
     QString str = QString::fromStdWString(homePath);
 #endif
-    return str.toStdString();
+    // convert to utf-8
+    return str.toUtf8().data();
 }
 
 #else

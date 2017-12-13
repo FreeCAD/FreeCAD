@@ -107,7 +107,8 @@ class ToolController:
                 obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
             if template.get(ToolControllerTemplate.Expressions):
                 for exprDef in template.get(ToolControllerTemplate.Expressions):
-                    obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
+                    if exprDef[ToolControllerTemplate.ExprExpr]:
+                        obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
         else:
             PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
 

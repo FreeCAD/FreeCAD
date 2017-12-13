@@ -155,31 +155,6 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
-std::string Property::encodeAttribute(const std::string& str)
-{
-    std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
-            tmp += "&lt;";
-        else if (*it == '"')
-            tmp += "&quot;";
-        else if (*it == '\'')
-            tmp += "&apos;";
-        else if (*it == '&')
-            tmp += "&amp;";
-        else if (*it == '>')
-            tmp += "&gt;";
-        else if (*it == '\r')
-            tmp += "&#xD;";
-        else if (*it == '\n')
-            tmp += "&#xA;";
-        else
-            tmp += *it;
-    }
-
-    return tmp;
-}
-
 //**************************************************************************
 //**************************************************************************
 // PropertyLists

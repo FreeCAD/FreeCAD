@@ -41,8 +41,7 @@ public:
   StdMeshers_LengthFromEdges(int hypId, int studyId, SMESH_Gen* gen);
   virtual ~StdMeshers_LengthFromEdges();
 
-  void SetMode(int mode)
-    throw (SALOME_Exception);
+  void SetMode(int mode);
 
   int GetMode();
 

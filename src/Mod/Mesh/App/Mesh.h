@@ -216,6 +216,7 @@ public:
     void movePoint(unsigned long, const Base::Vector3d& v);
     void setPoint(unsigned long, const Base::Vector3d& v);
     void smooth(int iterations, float d_max);
+    void decimate(float fTolerance, float fReduction);
     Base::Vector3d getPointNormal(unsigned long) const;
     std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,

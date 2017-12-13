@@ -99,7 +99,7 @@ class DlgJobCreate:
 
 class CommandJobCreate:
     '''
-    Command used to creat a command.
+    Command used to create a command.
     When activated the command opens a dialog allowing the user to select a base object (has to be a solid)
     and a template to be used for the initial creation.
     '''
@@ -220,7 +220,7 @@ class CommandJobTemplateExport:
     '''
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Job',
+        return {'Pixmap': 'Path-ExportTemplate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 

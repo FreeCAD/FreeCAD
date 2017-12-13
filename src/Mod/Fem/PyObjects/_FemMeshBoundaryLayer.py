@@ -33,7 +33,7 @@ class _FemMeshBoundaryLayer:
     def __init__(self, obj):
         self.Type = "FemMeshBoundaryLayer"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to  this object
+        obj.Proxy = self  # link between App::DocumentObject to this object
 
         obj.addProperty("App::PropertyInteger", "NumberOfLayers", "MeshBoundaryLayerProperties", "set number of inflation layers for this boundary")
 

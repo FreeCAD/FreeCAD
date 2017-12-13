@@ -94,11 +94,8 @@ def addComponents(objectsList,host):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
     if hostType in ["Floor","Building","Site"]:
-        c = host.Group
         for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Group = c
+            host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
         import DraftGeomUtils
         a = host.Additions
@@ -126,11 +123,8 @@ def addComponents(objectsList,host):
                 a.append(o)
         host.Objects = a
     elif host.isDerivedFrom("App::DocumentObjectGroup"):
-        c = host.Group
         for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Group = c
+            host.addObject(o)
 
 def removeComponents(objectsList,host=None):
     '''removeComponents(objectsList,[hostObject]): removes the given component or

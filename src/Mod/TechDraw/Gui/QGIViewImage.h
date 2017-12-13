@@ -51,6 +51,7 @@ public:
     void setViewImageFeature(TechDraw::DrawViewImage *obj);
 
     virtual void draw() override;
+    virtual void rotateView(void) override;
 
 protected:
     virtual void drawImage();

@@ -25,30 +25,25 @@
 #define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 
 #include <Inventor/lists/SoPickedPointList.h> 
-#include "ViewProviderDocumentObject.h"
+#include "ViewProviderDragger.h"
 
 class SoPickedPointList;
 class SoSwitch;
 class SoSensor;
-class SoDragger;
 class SbVec2s;
-class SoTransform;
 class SoBaseColor;
-
-namespace Base { class Placement;}
 
 namespace Gui {
 
 class SoFCSelection;
 class SoFCBoundingBox;
 class View3DInventorViewer;
-class SoFCCSysDragger;
 
 /**
  * The base class for all view providers that display geometric data, like mesh, point cloudes and shapes.
  * @author Werner Mayer
  */
-class GuiExport ViewProviderGeometryObject : public ViewProviderDocumentObject
+class GuiExport ViewProviderGeometryObject : public ViewProviderDragger
 {
     PROPERTY_HEADER(Gui::ViewProviderGeometryObject);
 
@@ -90,21 +85,8 @@ public:
 
     /** @name Edit methods */
     //@{
-    bool doubleClicked(void);
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    
-    /*! synchronize From FC placement to Coin placement*/
-    static void updateTransform(const Base::Placement &from, SoTransform *to);
-    
     virtual void showBoundingBox(bool);
-
-protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
-    void setEditViewer(View3DInventorViewer*, int ModNum);
-    void unsetEditViewer(View3DInventorViewer*);
     //@}
-    SoFCCSysDragger *csysDragger = nullptr;
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -113,12 +95,6 @@ protected:
 
     virtual unsigned long getBoundColor() const;
     void applyBoundColor();
-
-private:
-    static void dragStartCallback(void * data, SoDragger * d);
-    static void dragFinishCallback(void * data, SoDragger * d);
-    
-    static void updatePlacementFromDragger(ViewProviderGeometryObject *sudoThis, SoFCCSysDragger *draggerIn);
 
 protected:
     SoMaterial       * pcShapeMaterial;

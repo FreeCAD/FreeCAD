@@ -281,7 +281,7 @@
             <rdf:li>up</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>arrow pointing upwards</dc:description>
+        <dc:description>Arrow pointing upwards</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

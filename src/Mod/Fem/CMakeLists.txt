@@ -17,32 +17,13 @@ endif(BUILD_GUI)
 # changes on the file list here needs to be made in App/CMakeLists.txt as well
 INSTALL(
     FILES
-        convert2TetGen.py
-        importCcxDatResults.py
-        importCcxFrdResults.py
-        readFenicsXML.py
-        writeFenicsXML.py
-        readFenicsXDMF.py
-        writeFenicsXDMF.py
-        importFenicsMesh.py
-        importInpMesh.py
-        importToolsFem.py
-        importVTKResults.py
-        importZ88Mesh.py
-        importZ88O2Results.py
         Init.py
         InitGui.py
-        FemGmshTools.py
         FemInputWriter.py
-        FemInputWriterCcx.py
-        FemInputWriterZ88.py
-        FemMesh2Mesh.py
-        FemMeshTools.py
-        FemResultTools.py
-        FemTools.py
         FemToolsCcx.py
-        FemToolsZ88.py
         ObjectsFem.py
+        FemUtils.py
+        FemConstraint.py
         TestFem.py
     DESTINATION
         Mod/Fem
@@ -52,6 +33,10 @@ INSTALL(
     FILES
         PyObjects/__init__.py
         PyObjects/_FemConstraintSelfWeight.py
+        PyObjects/_FemConstraintBodyHeatSource.py
+        PyObjects/_FemConstraintFlowVelocity.py
+        PyObjects/_FemConstraintInitialFlowVelocity.py
+        PyObjects/_FemConstraintElectrostaticPotential.py
         PyObjects/_FemElementFluid1D.py
         PyObjects/_FemElementGeometry1D.py
         PyObjects/_FemElementGeometry2D.py
@@ -63,7 +48,6 @@ INSTALL(
         PyObjects/_FemMeshResult.py
         PyObjects/_FemResultMechanical.py
         PyObjects/_FemSolverCalculix.py
-        PyObjects/_FemSolverZ88.py
         PyObjects/_FemMaterial.py
     DESTINATION
         Mod/Fem/PyObjects
@@ -71,31 +55,117 @@ INSTALL(
 
 INSTALL(
     FILES
-        PyGui/FemCommands.py
+        femcommand/__init__.py
+        femcommand/commands.py
+        femcommand/manager.py
+    DESTINATION
+        Mod/Fem/femcommand
+)
+
+INSTALL(
+    FILES
+        feminterface/__init__.py
+        feminterface/convert2TetGen.py
+        feminterface/importCcxDatResults.py
+        feminterface/importCcxFrdResults.py
+        feminterface/importFenicsMesh.py
+        feminterface/importInpMesh.py
+        feminterface/importToolsFem.py
+        feminterface/importVTKResults.py
+        feminterface/importZ88Mesh.py
+        feminterface/importZ88O2Results.py
+        feminterface/readFenicsXDMF.py
+        feminterface/readFenicsXML.py
+        feminterface/writeFenicsXDMF.py
+        feminterface/writeFenicsXML.py
+    DESTINATION
+        Mod/Fem/feminterface
+)
+
+INSTALL(
+    FILES
+        femmesh/__init__.py
+        femmesh/femmesh2mesh.py
+        femmesh/gmshtools.py
+        femmesh/meshtools.py
+    DESTINATION
+        Mod/Fem/femmesh
+)
+
+INSTALL(
+    FILES
+        femresult/__init__.py
+        femresult/resulttools.py
+    DESTINATION
+        Mod/Fem/femresult
+)
+
+INSTALL(
+    FILES
+        femsolver/__init__.py
+        femsolver/solverbase.py
+        femsolver/equationbase.py
+        femsolver/report.py
+        femsolver/reportdialog.py
+        femsolver/settings.py
+        femsolver/task.py
+        femsolver/run.py
+        femsolver/signal.py
+    DESTINATION
+        Mod/Fem/femsolver
+)
+
+INSTALL(
+    FILES
+        femsolver/elmer/__init__.py
+        femsolver/elmer/sifio.py
+        femsolver/elmer/solver.py
+        femsolver/elmer/tasks.py
+        femsolver/elmer/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/elmer
+)
+
+INSTALL(
+    FILES
+        femsolver/elmer/equations/__init__.py
+        femsolver/elmer/equations/equation.py
+        femsolver/elmer/equations/linear.py
+        femsolver/elmer/equations/nonlinear.py
+        femsolver/elmer/equations/elasticity.py
+        femsolver/elmer/equations/electrostatic.py
+        femsolver/elmer/equations/fluxsolver.py
+        femsolver/elmer/equations/heat.py
+        femsolver/elmer/equations/flow.py
+    DESTINATION
+        Mod/Fem/femsolver/elmer/equations
+)
+
+INSTALL(
+    FILES
+        femsolver/calculix/__init__.py
+        femsolver/calculix/solver.py
+        femsolver/calculix/tasks.py
+        femsolver/calculix/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/calculix
+)
+
+INSTALL(
+    FILES
+        femsolver/z88/__init__.py
+        femsolver/z88/solver.py
+        femsolver/z88/tasks.py
+        femsolver/z88/writer.py
+    DESTINATION
+        Mod/Fem/femsolver/z88
+)
+
+INSTALL(
+    FILES
         PyGui/FemSelectionObserver.py
+        PyGui/FemSelectionWidgets.py
         PyGui/__init__.py
-        PyGui/_CommandFemAnalysis.py
-        PyGui/_CommandFemConstraintSelfWeight.py
-        PyGui/_CommandFemElementFluid1D.py
-        PyGui/_CommandFemElementGeometry1D.py
-        PyGui/_CommandFemElementGeometry2D.py
-        PyGui/_CommandFemMaterialMechanicalNonlinear.py
-        PyGui/_CommandFemMaterialSolid.py
-        PyGui/_CommandFemMaterialFluid.py
-        PyGui/_CommandFemMesh2Mesh.py
-        PyGui/_CommandFemMeshBoundaryLayer.py
-        PyGui/_CommandFemMeshClear.py
-        PyGui/_CommandFemMeshGmshFromShape.py
-        PyGui/_CommandFemMeshGroup.py
-        PyGui/_CommandFemMeshNetgenFromShape.py
-        PyGui/_CommandFemMeshPrintInfo.py
-        PyGui/_CommandFemMeshRegion.py
-        PyGui/_CommandFemResultShow.py
-        PyGui/_CommandFemResultsPurge.py
-        PyGui/_CommandFemSolverCalculix.py
-        PyGui/_CommandFemSolverControl.py
-        PyGui/_CommandFemSolverRun.py
-        PyGui/_CommandFemSolverZ88.py
         PyGui/_TaskPanelFemElementFluid1D.py
         PyGui/_TaskPanelFemElementGeometry1D.py
         PyGui/_TaskPanelFemElementGeometry2D.py
@@ -106,7 +176,12 @@ INSTALL(
         PyGui/_TaskPanelFemMeshRegion.py
         PyGui/_TaskPanelFemResultShow.py
         PyGui/_TaskPanelFemSolverCalculix.py
+        PyGui/_TaskPanelFemSolverControl.py
         PyGui/_ViewProviderFemConstraintSelfWeight.py
+        PyGui/_ViewProviderFemConstraintBodyHeatSource.py
+        PyGui/_ViewProviderFemConstraintFlowVelocity.py
+        PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
+        PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
         PyGui/_ViewProviderFemElementFluid1D.py
         PyGui/_ViewProviderFemElementGeometry1D.py
         PyGui/_ViewProviderFemElementGeometry2D.py
@@ -119,7 +194,6 @@ INSTALL(
         PyGui/_ViewProviderFemMeshResult.py
         PyGui/_ViewProviderFemResultMechanical.py
         PyGui/_ViewProviderFemSolverCalculix.py
-        PyGui/_ViewProviderFemSolverZ88.py
         PyGui/TaskPanelFemElementFluid1D.ui
         PyGui/TaskPanelFemElementGeometry1D.ui
         PyGui/TaskPanelFemElementGeometry2D.ui
@@ -131,45 +205,64 @@ INSTALL(
         PyGui/TaskPanelFemMeshRegion.ui
         PyGui/TaskPanelFemResultShow.ui
         PyGui/TaskPanelFemSolverCalculix.ui
+        PyGui/TaskPanelFemFlowVelocity.ui
+        PyGui/TaskPanelFemInitialFlowVelocity.ui
+        PyGui/TaskPanelFemElectrostaticPotential.ui
     DESTINATION
         Mod/Fem/PyGui
 )
 
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        test_files/__init__.py
+        femtest/__init__.py
+        femtest/testfemcommon.py
     DESTINATION
-        Mod/Fem/test_files
+        Mod/Fem/femtest
 )
 
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        test_files/ccx/__init__.py
-        test_files/ccx/cube_mesh.py
-        test_files/ccx/cube_frequency.inp
-        test_files/ccx/cube_frequency.dat
-        test_files/ccx/cube_frequency.frd
-        test_files/ccx/cube_frequency_expected_values
-        test_files/ccx/cube_static.inp
-        test_files/ccx/cube_static.dat
-        test_files/ccx/cube_static.frd
-        test_files/ccx/cube_static_expected_values
-        test_files/ccx/cube.fcstd
-        test_files/ccx/spine_mesh.py
-        test_files/ccx/spine_thermomech.inp
-        test_files/ccx/spine_thermomech.dat
-        test_files/ccx/spine_thermomech.frd
-        test_files/ccx/spine_thermomech_expected_values
-        test_files/ccx/spine_thermomech.fcstd
-        test_files/ccx/Flow1D_mesh.py
-        test_files/ccx/Flow1D_thermomech.inp
-        test_files/ccx/Flow1D_thermomech.dat
-        test_files/ccx/Flow1D_thermomech.frd
-        test_files/ccx/Flow1D_thermomech_expected_values
-        test_files/ccx/Flow1D_thermomech_inout_nodes.txt
-        test_files/ccx/Flow1D_thermomech.fcstd
+        femtest/testfiles/__init__.py
     DESTINATION
-        Mod/Fem/test_files/ccx
+        Mod/Fem/femtest/testfiles
+)
+
+INSTALL(
+    FILES
+        femtest/testfiles/ccx/__init__.py
+        femtest/testfiles/ccx/cube_mesh.py
+        femtest/testfiles/ccx/cube_frequency.inp
+        femtest/testfiles/ccx/cube_frequency.dat
+        femtest/testfiles/ccx/cube_frequency.frd
+        femtest/testfiles/ccx/cube_frequency_expected_values
+        femtest/testfiles/ccx/cube_static.inp
+        femtest/testfiles/ccx/cube_static.dat
+        femtest/testfiles/ccx/cube_static.frd
+        femtest/testfiles/ccx/cube_static_expected_values
+        femtest/testfiles/ccx/cube.fcstd
+        femtest/testfiles/ccx/spine_mesh.py
+        femtest/testfiles/ccx/spine_thermomech.inp
+        femtest/testfiles/ccx/spine_thermomech.dat
+        femtest/testfiles/ccx/spine_thermomech.frd
+        femtest/testfiles/ccx/spine_thermomech_expected_values
+        femtest/testfiles/ccx/spine_thermomech.fcstd
+        femtest/testfiles/ccx/Flow1D_mesh.py
+        femtest/testfiles/ccx/Flow1D_thermomech.inp
+        femtest/testfiles/ccx/Flow1D_thermomech.dat
+        femtest/testfiles/ccx/Flow1D_thermomech.frd
+        femtest/testfiles/ccx/Flow1D_thermomech_expected_values
+        femtest/testfiles/ccx/Flow1D_thermomech_inout_nodes.txt
+        femtest/testfiles/ccx/Flow1D_thermomech.fcstd
+    DESTINATION
+        Mod/Fem/femtest/testfiles/ccx
+)
+
+INSTALL(
+    FILES
+        femtest/testfiles/elmer/__init__.py
+        femtest/testfiles/elmer/case.sif
+        femtest/testfiles/elmer/group_mesh.geo
+        femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
+    DESTINATION
+        Mod/Fem/femtest/testfiles/elmer
 )

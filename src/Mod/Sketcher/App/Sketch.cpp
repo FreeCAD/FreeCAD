@@ -67,8 +67,8 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-: SolveTime(0), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
-    defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
+: SolveTime(0), RecalculateInitialSolutionWhileMovingPoint(false), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
+defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
 {
 }
 
@@ -790,10 +790,16 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     // WARNING: This is only valid where the multiplicity of the endpoints conforms with a BSpline
     // only then the startpoint is the first control point and the endpoint is the last control point
     // accordingly, it is never the case for a periodic BSpline.
-    if(!bs.periodic && bs.mult[0] > bs.degree && bs.mult[mult.size()-1] > bs.degree) {
-        GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
-        GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
+    // NOTE: For an external B-spline (i.e. fixed=true) we must not set the coincident constraints
+    // as the points are not movable anyway.
+    // See #issue 0003176: Sketcher: always over-constrained when referencing external B-Spline
+    if (!fixed && !bs.periodic) {
+        if (bs.mult[0] > bs.degree)
+            GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
+        if (bs.mult[mult.size()-1] > bs.degree)
+            GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
     }
+
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -3179,6 +3185,11 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     return 0;
 }
 
+void Sketch::resetInitMove()
+{
+    isInitMove = false;
+}
+
 int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
     geoId = checkGeoId(geoId);
@@ -3187,8 +3198,24 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
     if (hasConflicts())
         return -1;
 
-    if (!isInitMove)
+    if (!isInitMove) {
         initMove(geoId, pos);
+        initToPoint = toPoint;
+        moveStep = 0;
+    }
+    else {
+        if(!relative && RecalculateInitialSolutionWhileMovingPoint) {
+            if (moveStep == 0) {
+                moveStep = (toPoint-initToPoint).Length();
+            }
+            else {
+                if( (toPoint-initToPoint).Length() > 20*moveStep) { // I am getting too far away from the original solution so reinit the solution
+                    initMove(geoId, pos);
+                    initToPoint = toPoint;
+                }
+            }
+        }
+    }
 
     if (relative) {
         for (int i=0; i < int(MoveParameters.size()-1); i+=2) {
@@ -3376,8 +3403,8 @@ TopoShape Sketch::toShape(void) const
         result = *wires.begin();
     else if (wires.size() > 1) {
         // FIXME: The right way here would be to determine the outer and inner wires and
-        // generate a face with holes (inner wires have to be taged REVERSE or INNER).
-        // thats the only way to transport a somewhat more complex sketch...
+        // generate a face with holes (inner wires have to be tagged REVERSE or INNER).
+        // that's the only way to transport a somewhat more complex sketch...
         //result = *wires.begin();
 
         // I think a compound can be used as container because it is just a collection of

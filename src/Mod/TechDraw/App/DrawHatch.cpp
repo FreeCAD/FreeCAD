@@ -109,8 +109,7 @@ App::DocumentObjectExecReturn *DrawHatch::execute(void)
 {
     DrawViewPart* parent = getSourceView();
     if (parent) {
-        parent->touch();
-        parent->recomputeFeature();
+        parent->requestPaint();
     }
     return App::DocumentObject::StdReturn;
 }

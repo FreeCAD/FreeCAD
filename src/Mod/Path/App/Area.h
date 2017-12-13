@@ -153,7 +153,7 @@ protected:
      * See #AREA_PARAMS_OFFSET for description of the arguments.
      */
     void makeOffset(std::list<std::shared_ptr<CArea> > &areas,
-                    PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
+                    PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), bool from_center=false);
 
     /** Make a pocket of the combined shape
      *
@@ -218,7 +218,8 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), int reoirent=0);
+    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), 
+            int reoirent=0, bool from_center=false);
 
     /** Make a pocket of the combined shape
      *

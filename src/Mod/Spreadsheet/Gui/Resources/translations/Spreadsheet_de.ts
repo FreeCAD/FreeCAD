@@ -24,11 +24,11 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation>Unten Ausrichten</translation>
+      <translation>Nach unten ausrichten</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Richtet den Inhalt der ausgewählten Zelle am Boden aus</translation>
+      <translation>Richtet den Inhalt der ausgewählten Zelle nach unten aus</translation>
     </message>
   </context>
   <context>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Zentral Ausrichten</translation>
+      <translation>Zentrieren</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Richtet den Inhalt der gewählten Zelle am Zentrum aus</translation>
+      <translation>Inhalt der gewählten Zellen zentrieren</translation>
     </message>
   </context>
   <context>
@@ -54,11 +54,11 @@
     </message>
     <message>
       <source>Align left</source>
-      <translation>Links Ausrichten</translation>
+      <translation>Linksbündig</translation>
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Richtet den Inhalt der gewählten Zelle am linken Rand aus</translation>
+      <translation>Richtet den Inhalt der gewählten Zellen am linken Rand aus</translation>
     </message>
   </context>
   <context>
@@ -69,11 +69,11 @@
     </message>
     <message>
       <source>Align right</source>
-      <translation>Rechts Ausrichten</translation>
+      <translation>Rechtsbündig</translation>
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Richtet den Inhalt der gewählten Zelle am rechten Rand aus</translation>
+      <translation>Richtet den Inhalt der gewählten Zellen am rechten Rand aus</translation>
     </message>
   </context>
   <context>
@@ -84,11 +84,11 @@
     </message>
     <message>
       <source>Align top</source>
-      <translation>Oben Ausrichten</translation>
+      <translation>Nach oben ausrichten</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Richtet den Inhalt der gewählten Zelle an der oberen Kante aus</translation>
+      <translation>Richtet den Inhalt der gewählten Zellen an der oberen Kante aus</translation>
     </message>
   </context>
   <context>
@@ -99,11 +99,11 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Vertikal zentral Ausrichten</translation>
+      <translation>Vertikal zentrieren</translation>
     </message>
     <message>
       <source>Center-align contents vertically of selected cells</source>
-      <translation>Richtet den Inhalt der gewählten Zelle vertikal am Zentrum aus</translation>
+      <translation>Inhalt der gewählten Zellen vertikal zentrieren</translation>
     </message>
   </context>
   <context>
@@ -114,11 +114,11 @@
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>Exportiere Kalkulationstabelle</translation>
+      <translation>Kalkulationstabelle exportieren</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Exportiere Kalkulationstabelle in CSV Datei</translation>
+      <translation>Kalkulationstabelle in CSV-Datei exportieren</translation>
     </message>
   </context>
   <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importiere Kalkulationstabelle</translation>
+      <translation>Kalkulationstabelle importieren</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importiere CSV Datei in Kalkulationstabelle</translation>
+      <translation>CSV-Datei in Kalkulationstabelle importieren</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>Anzeige-Namen festlegen</translation>
+      <translation>Alias-Namen festlegen</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Anzeige-Namen für ausgewählte Zelle festlegen</translation>
+      <translation>Alias-Namen für ausgewählte Zelle festlegen</translation>
     </message>
   </context>
   <context>
@@ -174,7 +174,7 @@
     </message>
     <message>
       <source>Split cell</source>
-      <translation>Trenne Zellen</translation>
+      <translation>Zelle teilen</translation>
     </message>
     <message>
       <source>Split previously merged cells in spreadsheet</source>
@@ -189,11 +189,11 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation>Fett formatierter Text</translation>
+      <translation>Text in Fettschrift</translation>
     </message>
     <message>
       <source>Set bold text in selected cells</source>
-      <translation>Druckt Text in den gewählten Zellen fett</translation>
+      <translation>Setzt Text in den gewählten Zellen in Fettschrift</translation>
     </message>
   </context>
   <context>
@@ -204,11 +204,11 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation>Kursiver Text</translation>
+      <translation>Text in Kursivschrift</translation>
     </message>
     <message>
       <source>Set italic text in selected cells</source>
-      <translation>Druckt Text in den gewählten Zellen kursiv</translation>
+      <translation>Setzt Text in den gewählten Zellen in Kursivschrift</translation>
     </message>
   </context>
   <context>
@@ -219,7 +219,7 @@
     </message>
     <message>
       <source>Underline text</source>
-      <translation>Unterstrichener Text</translation>
+      <translation>Text unterstreichen</translation>
     </message>
     <message>
       <source>Set underline text in selected cells</source>
@@ -355,15 +355,15 @@
     </message>
     <message>
       <source>Dark red</source>
-      <translation>Dunkles Rot</translation>
+      <translation>Dunkelrot</translation>
     </message>
     <message>
       <source>Green</source>
-      <translation>Green</translation>
+      <translation>Grün</translation>
     </message>
     <message>
       <source>Dark green</source>
-      <translation>Dunkles Grün</translation>
+      <translation>Dunkelgrün</translation>
     </message>
     <message>
       <source>Blue</source>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <source>Dark blue</source>
-      <translation>Dunkles Blau</translation>
+      <translation>Dunkelblau</translation>
     </message>
     <message>
       <source>Cyan</source>
@@ -395,7 +395,7 @@
     </message>
     <message>
       <source>Dark yellow</source>
-      <translation>Dunkles Gelb</translation>
+      <translation>Dunkelgelb</translation>
     </message>
     <message>
       <source>Gray</source>
@@ -403,11 +403,11 @@
     </message>
     <message>
       <source>Dark gray</source>
-      <translation>Dunkles Grau</translation>
+      <translation>Dunkelgrau</translation>
     </message>
     <message>
       <source>Light gray</source>
-      <translation>Helles Grau</translation>
+      <translation>Hellgrau</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -440,7 +440,7 @@
     </message>
     <message>
       <source>Remove rows</source>
-      <translation>Reihen entfernen</translation>
+      <translation>Zeilen entfernen</translation>
     </message>
     <message>
       <source>Insert columns</source>

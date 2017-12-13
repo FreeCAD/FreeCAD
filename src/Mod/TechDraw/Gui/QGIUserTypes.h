@@ -25,6 +25,7 @@ QGCustomClip: 132
 QGCustomRect: 133
 QGCustomLabel:135
 QGCustomBorder: 136
+QGDisplayArea: 137
 QGraphicsItemTemplate: 150
 QGraphicsItemDrawingTemplate: 151
 QGraphicsItemSVGTemplate: 153

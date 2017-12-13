@@ -1216,7 +1216,7 @@
     <message>
       <location filename="../../ArchFrame.py" line="105"/>
       <source>The type of edges to consider</source>
-      <translation type="unfinished">The type of edges to consider</translation>
+      <translation>Die Art der Kanten, die berücksichtigt werden müssen</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="106"/>
@@ -2530,13 +2530,13 @@ Site creation aborted.</source>
       <location filename="../../ArchAxis.py" line="140"/>
       <source>Please select at least one axis
 </source>
-      <translation type="unfinished">Please select at least one axis
+      <translation>Bitte wählen Sie mindestens eine Achse
 </translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="155"/>
       <source>Create Grid</source>
-      <translation type="unfinished">Create Grid</translation>
+      <translation>Raster erzeugen</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="660"/>
@@ -2546,7 +2546,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="872"/>
       <source>Axis system components</source>
-      <translation type="unfinished">Axis system components</translation>
+      <translation>Achsensystemkomponenten</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="910"/>
@@ -2626,7 +2626,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="1293"/>
       <source>This object has no face</source>
-      <translation type="unfinished">This object has no face</translation>
+      <translation>Dieses Objekt hat keine Fläche</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="615"/>
@@ -2641,7 +2641,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchWindow.py" line="1473"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Fensterelemente</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="952"/>
@@ -2651,7 +2651,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="953"/>
       <source>Set description</source>
-      <translation type="unfinished">Set description</translation>
+      <translation>Beschreibung erstellen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="954"/>
@@ -2661,17 +2661,17 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="955"/>
       <source>Copy Length</source>
-      <translation type="unfinished">Copy Length</translation>
+      <translation>Länge kopieren</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="956"/>
       <source>Copy Area</source>
-      <translation type="unfinished">Copy Area</translation>
+      <translation>Fläche kopieren</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="957"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Als CSV exportieren</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="958"/>
@@ -2681,7 +2681,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="958"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1006"/>
@@ -2846,7 +2846,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="121"/>
       <source>Axis System</source>
-      <translation type="unfinished">Axis System</translation>
+      <translation>Achsensystem</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="123"/>
@@ -2859,7 +2859,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="1321"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>Achsenwerkzeuge</translation>
     </message>
   </context>
   <context>
@@ -3799,7 +3799,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation type="unfinished">Add selected</translation>
+      <translation>Auswahl hinzufügen</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
@@ -3844,7 +3844,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="135"/>
       <source>0,90,180,270</source>
-      <translation type="unfinished">0,90,180,270</translation>
+      <translation>0,90,180,270</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="145"/>

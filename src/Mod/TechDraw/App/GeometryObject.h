@@ -26,6 +26,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Ax2.hxx>
 
 #include <Base/Vector3D.h>
 #include <Base/BoundBox.h>
@@ -55,6 +56,10 @@ TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
                         double scale = 1.0);
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
                                        double scale);
+TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape &input,
+                             gp_Ax2& viewAxis,
+                             double rotAngle);
+
 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
@@ -93,6 +98,10 @@ public:
     void clearFaceGeom();
     void setIsoCount(int i) { m_isoCount = i; }
     void setParentName(std::string n);                          //for debug messages
+    void isPerspective(bool b) { m_isPersp = b; }
+    bool isPerspective(void) { return m_isPersp; }
+    void setFocus(double f) { m_focus = f; }
+    double getFocus(void) { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
 
     TopoDS_Shape getVisHard(void)    { return visHard; }
@@ -139,6 +148,8 @@ protected:
     std::string m_parentName;
     TechDraw::DrawView* m_parent;
     int m_isoCount;
+    bool m_isPersp;
+    double m_focus;
 };
 
 } //namespace TechDrawGeometry

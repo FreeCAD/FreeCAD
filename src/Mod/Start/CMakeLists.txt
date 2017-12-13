@@ -21,6 +21,7 @@ if(BUILD_GUI)
         LoadArchExample.py
         LoadFemExample2D.py
         LoadFemExample3D.py
+        LoadFemExample3DNewSolver.py
         Mesh.py
         PartDesign.py
         Ship.py

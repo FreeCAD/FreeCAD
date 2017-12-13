@@ -53,11 +53,11 @@ class TestPathSetupSheet(PathTestBase):
 
         attrs = ss.templateAttributes(True, True)
 
-        self.assertEqual(attrs[PathSetupSheet.Template.HorizRapid], '0.00 mm/s')
-        self.assertEqual(attrs[PathSetupSheet.Template.VertRapid], '0.00 mm/s')
-        self.assertEqual(attrs[PathSetupSheet.Template.SafeHeightOffset], '3.00 mm')
+        self.assertEqualLocale(attrs[PathSetupSheet.Template.HorizRapid], '0.00 mm/s')
+        self.assertEqualLocale(attrs[PathSetupSheet.Template.VertRapid], '0.00 mm/s')
+        self.assertEqualLocale(attrs[PathSetupSheet.Template.SafeHeightOffset], '3.00 mm')
         self.assertEqual(attrs[PathSetupSheet.Template.SafeHeightExpression], 'StartDepth+SetupSheet.SafeHeightOffset')
-        self.assertEqual(attrs[PathSetupSheet.Template.ClearanceHeightOffset], '5.00 mm')
+        self.assertEqualLocale(attrs[PathSetupSheet.Template.ClearanceHeightOffset], '5.00 mm')
         self.assertEqual(attrs[PathSetupSheet.Template.ClearanceHeightExpression], 'StartDepth+SetupSheet.ClearanceHeightOffset')
 
     def test01(self):

@@ -44,6 +44,7 @@ TOOLTIP_ARGS = '''
 ''' example post for Maho M 600E mill'''
 import FreeCAD
 import time
+from PathScripts import PathUtils
 from PathScripts import PostUtils
 import math
 

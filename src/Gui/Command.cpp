@@ -84,7 +84,7 @@ using namespace Gui::DockWnd;
  *
  * \section wayout Way out
  * To solve these problems we have introduced the command framework to decouple QAction and MainWindow. The base classes of the framework are
- * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command  world. 
+ * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world. 
  *
  * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created 
  * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a menu or toolbar.
@@ -835,9 +835,7 @@ void MacroCommand::load()
             if ((*it)->GetASCII("Pixmap", "nix") != "nix")
                 macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
             macro->setAccel       ( (*it)->GetASCII( "Accel",0    ).c_str() );
-	    
-	    macro->systemMacro = (*it)->GetBool("System", false);
-	    
+            macro->systemMacro = (*it)->GetBool("System", false);
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -860,7 +858,7 @@ void MacroCommand::save()
             hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
             hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
             hMacro->SetASCII( "Accel",     macro->getAccel      () );
-	    hMacro->SetBool( "System",     macro->systemMacro );
+            hMacro->SetBool( "System",     macro->systemMacro );
         }
     }
 }

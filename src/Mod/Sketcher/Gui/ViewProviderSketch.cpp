@@ -147,9 +147,10 @@ SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     //
 SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
-SbVec3f ViewProviderSketch::prvClickPoint;
+SbVec2s ViewProviderSketch::prvClickPos;
 SbVec2s ViewProviderSketch::prvCursorPos;
 SbVec2s ViewProviderSketch::newCursorPos;
 
@@ -335,7 +336,6 @@ ViewProviderSketch::ViewProviderSketch()
     
     //rubberband selection
     rubberband = new Gui::Rubberband();
-
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -628,19 +628,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     float dci = (float) QApplication::doubleClickInterval()/1000.0f;
 
                     if (done &&
-                        (point - prvClickPoint).length() <  dblClickRadius &&
+                        SbVec2f(cursorPos - prvClickPos).length() <  dblClickRadius &&
                         (SbTime::getTimeOfDay() - prvClickTime).getValue() < dci) {
 
                         // Double Click Event Occurred
                         editDoubleClicked();
                         // Reset Double Click Static Variables
                         prvClickTime = SbTime();
-                        prvClickPoint = SbVec3f(0.0f, 0.0f, 0.0f);
-                        Mode = STATUS_NONE;
+                        prvClickPos = SbVec2s(-16000,-16000); //certainly far away from any clickable place, to avoid re-trigger of double-click if next click happens fast.
 
+                        Mode = STATUS_NONE;
                     } else {
                         prvClickTime = SbTime::getTimeOfDay();
-                        prvClickPoint = point;
+                        prvClickPos = cursorPos;
                         prvCursorPos = cursorPos;
                         newCursorPos = cursorPos;
                         if (!done)
@@ -779,7 +779,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                         "App.getDocument('%s').%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                         ,getDocument()->getDocument()->getName() 
                                         ,getObject()->getNameInDocument()
-                                        ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0);
+                                        ,GeoId, PosId, x-xInit, y-yInit, 0);
                                 getDocument()->commitCommand();
 
                                 tryAutoRecomputeIfNotSolve(getSketchObject());
@@ -1149,9 +1149,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 int GeoId;
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
-                Base::Vector3d vec(x-xInit,y-yInit,0);
+                Base::Vector3d vec(x,y,0);
                 if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                    if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, relative) == 0) {
+                    if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, false) == 0) {
                         setPositionText(Base::Vector2d(x,y));
                         draw(true,false);
                         signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
@@ -1631,58 +1631,64 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
     SoNode *tail = path->getTail();
     SoNode *tailFather = path->getNode(path->getLength()-2);
 
-    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i)
+    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i) {
         if (edit->constrGroup->getChild(i) == tailFather) {
             SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
-            if(sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
+            if (sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
                 SoInfo *constrIds = NULL;
-                if(tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+                if (tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
                     // First icon was hit
                     constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID));
-
-                } else {
+                }
+                else {
                     // Assume second icon was hit
-                    if(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()){
+                    if (CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()) {
                         constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
                     }
                 }
-                if(constrIds) {
+
+                if (constrIds) {
                     QString constrIdsStr = QString::fromLatin1(constrIds->string.getValue().getString());
-                    if(edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
+                    if (edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
                         // If it's a combined constraint icon
 
                         // Screen dimensions of the icon
                         SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
                         // Center of the icon
                         SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
-                        // Coordinates of the mouse cursor on the icon, origin at top-left
+                        // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
+                        // but bottom-left for OIV.
+                        // The coordinates are needed in Qt format, i.e. from top to bottom.
                         int iconX = cursorPos[0] - iconCoords[0] + iconSize[0]/2,
-                            iconY = iconCoords[1] - cursorPos[1] + iconSize[1]/2;
+                            iconY = cursorPos[1] - iconCoords[1] - iconSize[1]/2;
+                        iconY = iconSize[1] - iconY;
 
-                        for(ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
+                        for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
-                            if(b->first.contains(iconX, iconY))
+                            if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
-                                for(std::set<int>::iterator k = b->second.begin();
-                                    k != b->second.end(); ++k)
+                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
                                     constrIndices.insert(*k);
+                            }
                         }
-                    } else {
+                    }
+                    else {
                         // It's a constraint icon, not a combined one
                         QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
-                        while(!constrIdStrings.empty())
+                        while (!constrIdStrings.empty())
                             constrIndices.insert(constrIdStrings.takeAt(0).toInt());
                     }
                 }
             }
-                else {
+            else {
                 // other constraint icons - eg radius...
                 constrIndices.clear();
                 constrIndices.insert(i);
             }
             break;
-
         }
+    }
+
     return constrIndices;
 }
 
@@ -3152,11 +3158,12 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
             if(bb == boundingBoxesVec.begin()) {
                 // The first bounding box is for the icon at left, so assign
                 // all IDs for that type of constraint to the icon.
-                for(std::vector<int>::iterator j = ids.begin();
-                    j != ids.end(); ++j)
+                for(std::vector<int>::iterator j = ids.begin(); j != ids.end(); ++j)
                     nextIds.insert(*j);
-            } else
+            }
+            else {
                 nextIds.insert(*(id++));
+            }
 
             ConstrIconBB newBB(bb->adjusted(0, oldHeight, 0, oldHeight),
                                nextIds);
@@ -5033,12 +5040,16 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 
     edit->EditCurveSet->numVertices.setNum(1);
     edit->EditCurvesCoordinate->point.setNum(EditCurve.size());
+    edit->EditCurvesMaterials->diffuseColor.setNum(EditCurve.size());
     SbVec3f *verts = edit->EditCurvesCoordinate->point.startEditing();
     int32_t *index = edit->EditCurveSet->numVertices.startEditing();
+    SbColor *color = edit->EditCurvesMaterials->diffuseColor.startEditing();
 
     int i=0; // setting up the line set
-    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++)
+    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++) {
         verts[i].setValue(it->x,it->y,zEdit);
+        color[i] = CreateCurveColor;
+    }
 
     index[0] = EditCurve.size();
     edit->EditCurvesCoordinate->point.finishEditing();
@@ -5162,7 +5173,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"Drawing::\"), objs)\n"
                         "  tv.hide(objs)\n"
                         "if ActiveSketch.ViewObject.ShowSupport:\n"
-                        "  tv.show([ref[0] for ref in ActiveSketch.Support])\n"
+                        "  tv.show([ref[0] for ref in ActiveSketch.Support if not ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch)\n"
@@ -5194,6 +5205,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveColor.getPackedValue());
     color = hGrp->GetUnsigned("EditedEdgeColor", color);
     CurveColor.setPackedValue((uint32_t)color, transparency);
+    // set the create line (curve) color
+    color = (unsigned long)(CreateCurveColor.getPackedValue());
+    color = hGrp->GetUnsigned("CreateLineColor", color);
+    CreateCurveColor.setPackedValue((uint32_t)color, transparency);
     // set the construction curve color
     color = (unsigned long)(CurveDraftColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstructionColor", color);
@@ -5254,6 +5269,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
     connectRedoDocument = getDocument()
         ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, _1));
+
+    // Enable solver initial solution update while dragging.
+    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+    getSketchObject()->getSolvedSketch().RecalculateInitialSolutionWhileMovingPoint = hGrp2->GetBool("RecalculateInitialSolutionWhileDragging",true);
 
     return true;
 }

@@ -104,6 +104,10 @@ public:
       * sketch status as a reference
       */
     int initMove(int geoId, PointPos pos, bool fine=true);
+    
+    /** Resets the initialization of a point or curve drag
+     */
+    void resetInitMove();
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
@@ -348,6 +352,7 @@ public:
     };
 
     float SolveTime;
+    bool RecalculateInitialSolutionWhileMovingPoint;
 
 protected:
     /// container element to store and work with the geometric elements of this sketch
@@ -397,6 +402,8 @@ protected:
 
     bool isInitMove;
     bool isFine;
+    Base::Vector3d initToPoint;
+    double moveStep;
 
 public:
     GCS::Algorithm defaultSolver;

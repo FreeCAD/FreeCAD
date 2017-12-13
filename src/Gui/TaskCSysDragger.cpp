@@ -36,7 +36,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderDragger.h>
 #include <Gui/SoFCCSysDragger.h>
 
 #include "TaskCSysDragger.h"
@@ -57,7 +57,7 @@ static double degreesToRadains(const double &degreesIn)
 static double lastTranslationIncrement = 1.0;
 static double lastRotationIncrement = degreesToRadains(15.0);
 
-TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderGeometryObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
+TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDragger* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
 {
   assert(vpObjectIn);

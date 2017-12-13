@@ -586,8 +586,7 @@ class DraftToolBar:
         #QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("up()"),self.lineUp)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.setFocus)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.selectAll)
+        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
@@ -839,7 +838,16 @@ class DraftToolBar:
     def redraw(self):
         "utility function that is performed after each clicked point"
         self.checkLocal()
-                
+    
+    def setFocus(self):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if p.GetBool("focusOnLength",False):
+            self.lengthValue.setFocus()
+            self.lengthValue.selectAll()
+        else:
+            self.xValue.setFocus()
+            self.xValue.selectAll()
+
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
         self.xyButton.show()
@@ -937,7 +945,7 @@ class DraftToolBar:
         self.zValue.show()
         self.pointButton.show()
         if rel: self.isRelative.show()
-        todo.delay(self.xValue.setFocus,None)
+        todo.delay(self.setFocus,None)
         self.xValue.selectAll()
         
     def labelUi(self,title=translate("draft","Label"),callback=None):
@@ -1181,8 +1189,7 @@ class DraftToolBar:
                 return False
         if (not self.taskmode) or self.isTaskOn:
             if isThere(self.xValue):
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
             elif isThere(self.yValue):
                 self.yValue.setFocus()
                 self.yValue.selectAll()
@@ -1430,17 +1437,18 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    # print(fname)
-                    #fname = str(fname.toUtf8())                                 # QString to PyString
-                    fname = utf8_decode(fname[0])
-#                    print("debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname)))
-                                                              
+#                    fname = utf8_decode(fname[0])  # 1947: utf8_decode fails ('ascii' codec can't encode character)
+                                                    # when fname[0] contains accented chars
+                    fname = fname[0].encode('utf8') #TODO: this needs changing for Py3??
+                                                    # accented chars cause "UnicodeEncodeError" failure in DraftGui.todo without 
+                                                    # .encode('utf8')
+
                 except Exception as e:
                     FreeCAD.Console.PrintMessage("DraftGui.pickFile: unable to select a font file.")
                     print(type(e))
                     print(e.args)
                 else:
-                    if fname:
+                    if fname[0]:
                         self.FFileValue.setText(fname)
                         self.sourceCmd.validFFile(fname)                      
                     else:
@@ -1692,8 +1700,7 @@ class DraftToolBar:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(False)
                 self.zValue.setEnabled(False)
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
             elif (mask == "y") or (self.mask == "y"):
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(True)
@@ -1710,8 +1717,7 @@ class DraftToolBar:
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(True)
                 self.zValue.setEnabled(True)
-                self.xValue.setFocus()
-                self.xValue.selectAll()
+                self.setFocus()
                 
             
     def getDefaultColor(self,type,rgb=False):

@@ -76,7 +76,7 @@ ViewProviderMeshTransformDemolding::~ViewProviderMeshTransformDemolding()
 
 void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
 {
-  // creats the satandard viewing modes
+  // creates the standard viewing modes
   ViewProviderMesh::attach(pcFeat);
 
   SoGroup* pcDemoldRoot = new SoGroup();

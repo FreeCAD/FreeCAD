@@ -260,6 +260,11 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                     inputCenter,
                                                     getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+                                                          viewAxis,
+                                                          Rotation.getValue());
+        }
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);   //this is original shape after cut by section prism
 
 #if MOD_TECHDRAW_HANDLE_FACES
@@ -276,6 +281,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
                                                                      inputCenter,
                                                                      getScale());
+        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            mirroredSection = TechDrawGeometry::rotateShape(mirroredSection,
+                                                            viewAxis,
+                                                            Rotation.getValue());
+        }
 
         sectionFaceWires.clear();
         TopoDS_Compound newFaces;

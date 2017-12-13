@@ -100,7 +100,6 @@ class PathDressupTagTaskPanel:
             FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self, gui):
-        self.removeGlobalCallbacks()
         self.viewProvider.clearTaskPanel()
         if gui:
             FreeCADGui.ActiveDocument.resetEdit()
@@ -182,9 +181,11 @@ class PathDressupTagTaskPanel:
 
     def generateNewTags(self):
         count = self.form.sbCount.value()
+        PathLog.track(count)
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
-
+        self.Positions = self.obj.Positions
+        self.Disabled  = self.obj.Disabled
         self.updateTagsView()
 
     def updateModel(self):
@@ -212,7 +213,7 @@ class PathDressupTagTaskPanel:
 
     def updateTagsViewWith(self, tags):
         self.tags = tags
-        self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in self.tags]
+        self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in tags]
         self.Disabled = [i for (i,t) in enumerate(self.tags) if not t[2]]
         self.updateTagsView()
 
@@ -232,7 +233,8 @@ class PathDressupTagTaskPanel:
         self.getPoint.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
-        if point and obj and (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
+        PathLog.track(point, obj)
+        if point and self.obj.Proxy.pointIsOnPath(self.obj, point):
             tags = []
             for i, (x, y, enabled) in enumerate(self.tags):
                 if i == self.editItem:
@@ -252,21 +254,6 @@ class PathDressupTagTaskPanel:
 
     def editSelectedTag(self):
         self.editTag(self.form.lwTags.currentItem())
-
-    def removeGlobalCallbacks(self):
-        if hasattr(self, 'view') and self.view:
-            if self.pointCbClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.pointCbClick)
-                self.pointCbClick = None
-            if self.pointCbMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.pointCbMove)
-                self.pointCbMove = None
-            self.view = None
-
-    def setupSpinBox(self, widget, val, decimals = 2):
-        if decimals:
-            widget.setDecimals(decimals)
-        widget.setValue(val)
 
     def setFields(self):
         self.updateTagsView()
@@ -417,7 +404,7 @@ class PathDressupTagViewProvider:
             self.switch.removeChild(tag.sep)
         tags = []
         for i, p in enumerate(positions):
-            tag = HoldingTagMarker(p, self.colors)
+            tag = HoldingTagMarker(self.obj.Proxy.pointAtBottom(self.obj, p), self.colors)
             tag.setEnabled(not i in disabled)
             tags.append(tag)
             self.switch.addChild(tag.sep)

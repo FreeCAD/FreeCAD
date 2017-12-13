@@ -279,7 +279,7 @@ Py::List DocumentObjectPy::getOutListRecursive(void) const
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
-        // creat the python list for the output
+        // create the python list for the output
         for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
             ret.append(Py::Object((*It)->getPyObject(), true));
     }
@@ -634,9 +634,7 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
     try {
         Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
         if (prop) {
-            if(prop->testStatus(Property::Immutable) ||
-               (getDocumentObjectPtr()->getPropertyType(prop) & Prop_ReadOnly))
-            {
+            if(prop->testStatus(Property::Immutable)) {
                 std::stringstream s;
                 s << "'DocumentObject' attribute '" << attr << "' is read-only"; 
                 throw Py::AttributeError(s.str());

@@ -558,8 +558,8 @@ Version: V0.1B117 Date: Sun Mar 20 14:06:55 2005 +++++++++++++++++++++++++++++++
   * Integration of latest Image module source
   * RFE 1159671 implemented (elements in alphabetic order)
   * Finishing drag&drop multiple files
-  * Finishing open from command line and droping on Programm icon
-  * solving load dependand modules
+  * Finishing open from command line and dropping on Program icon
+  * solving load dependent modules
   * more convenient Python console
   * Bug 1149706 fixed (Cannot load CAD curves)
   * RFE 1214187 implemented (Remove views from main window)
@@ -679,7 +679,7 @@ Version: V0.1B95 Date: Wed Nov 03 17:34:53 2004 +++++++++++++++++++++++++++++++
 
 Version: V0.1B94 Date: Sat Oct 23 18:58:52 2004 +++++++++++++++++++++++++++++++
   * finished implementation of the Tip of the day
-  * splitted several big files in smaller ones
+  * split several big files in smaller ones
   * namespace Gui::Kexi for property editor
   * namespace Gui::Dialog   * documentation for most dialogs
   * use QToolBox provided by Qt instead of StackBar
@@ -834,11 +834,11 @@ Version: V0.1B63 Date: Sun Jun 08 20:21:25 2003 +++++++++++++++++++++++++++++++
   * drop down button completely new reimplemented
 
 Version: V0.1B62 Date: Sat May 31 11:53:56 2003 +++++++++++++++++++++++++++++++
-  * redesign of Document view modell
+  * redesign of Document view model
   * removing ViewContainer
   * adding the OnHasMsg methodes
   * switching some stdCommands to message stile to allow views with own document
-  * moving scintila to a passiv view modell
+  * moving scintila to a passive view model
   * updated to new version of Scintilla (1.53)
 
 Version: V0.1B61 Date: Sat May 24 17:35:52 2003 +++++++++++++++++++++++++++++++

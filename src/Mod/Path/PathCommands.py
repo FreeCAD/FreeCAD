@@ -56,6 +56,7 @@ class _CommandSelectLoop:
     def GetResources(self):
         return {'Pixmap': 'Path-SelectLoop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
+                'Accel': "P, L",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Complete loop selection from two edges"),
                 'CmdType': "ForEdit"}
 

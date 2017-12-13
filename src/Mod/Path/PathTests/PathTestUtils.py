@@ -127,3 +127,8 @@ class PathTestBase(unittest.TestCase):
         self.assertRoughly(c1.Parameters.get('I', 0), c2.Parameters.get('I', 0))
         self.assertRoughly(c1.Parameters.get('J', 0), c2.Parameters.get('J', 0))
         self.assertRoughly(c1.Parameters.get('K', 0), c2.Parameters.get('K', 0))
+
+    def assertEqualLocale(self,s1,s2):
+        """Verify that the 2 strings are equivalent, but converts eventual , into . for the first string that may be affected by locale."""
+        self.assertEqual(s1.replace(",","."), s2)
+		

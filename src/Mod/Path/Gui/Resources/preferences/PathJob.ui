@@ -17,7 +17,7 @@
    <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="geometry">
@@ -91,18 +91,28 @@
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
            <widget class="QWidget" name="widget_5" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="1">
+              <widget class="Gui::InputField" name="geometryTolerance">
+               <property name="toolTip">
+                <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
               <widget class="QLabel" name="label_6">
                <property name="text">
                 <string>Default Geometry Tolerance</string>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="Gui::InputField" name="geometryTolerance">
-               <property name="toolTip">
-                <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+             <item row="1" column="1">
+              <widget class="Gui::InputField" name="curveAccuracy"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>Default Curve Accuracy</string>
                </property>
               </widget>
              </item>
@@ -132,8 +142,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>422</width>
-        <height>558</height>
+        <width>406</width>
+        <height>360</height>
        </rect>
       </property>
       <attribute name="label">
@@ -334,6 +344,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="page_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>422</width>
+        <height>558</height>
+       </rect>
+      </property>
       <attribute name="label">
        <string>Setup</string>
       </attribute>

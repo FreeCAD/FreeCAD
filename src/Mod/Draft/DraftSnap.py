@@ -1185,7 +1185,7 @@ class Snapper:
         self.gridbutton = QtGui.QAction(None)
         self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
         self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
-        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
+        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
         self.gridbutton.setObjectName("GridButton")
         self.gridbutton.setWhatsThis("Draft_ToggleGrid")
         QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
@@ -1231,7 +1231,11 @@ class Snapper:
             self.toolbar.addAction(b)
             QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
             self.toolbarButtons.append(b)
-        # restoring states 
+        # set status tip where needed
+        for b in self.toolbar.actions():
+            if len(b.statusTip()) == 0:
+                b.setStatusTip(b.toolTip())
+        # restoring states
         t = Draft.getParam("snapModes","111111111101111")
         if t:
             c = 0

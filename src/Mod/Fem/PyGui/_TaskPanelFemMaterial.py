@@ -148,7 +148,7 @@ class _TaskPanelFemMaterial:
                 self.references.append((ref[0], elem))
 
     def has_equal_references_shape_types(self):
-        import FemMeshTools
+        import femmesh.meshtools as FemMeshTools
         ref_shty = ''
         for ref in self.references:
             r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements

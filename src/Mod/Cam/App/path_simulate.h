@@ -232,7 +232,7 @@ private:
     std::vector<double> m_Output_time2;
     /** @brief timestep for the simulation-output*/
     double m_step;
-    /** @brief pointing to the knot-vector of the current B-Spline Curve*/
+    /** @brief pointing to the knot-vector of the current B-spline Curve*/
     TColStd_Array1OfReal *m_Knots;
     /** @brief maximum curvature of current curve*/
     double m_curMax;

@@ -178,6 +178,7 @@ int readLine (list <const char*> & theFields,
     case '+':
     case '.':
       isNumber = true;
+      /* FALLTHRU */
     default: // data
       isNumber = isNumber || ( *theLineBeg >= '0' && *theLineBeg <= '9' );
       if ( isNumber ) {
@@ -4249,11 +4250,13 @@ void SMESH_Pattern::createElements(SMESH_Mesh*                            theMes
           elem = aMeshDS->AddFace (nodes[0], nodes[1], nodes[2], nodes[3],
                                    nodes[4], nodes[5] ); break;
         } // else do not break but create a polygon
+        /* FALLTHRU */
       case 8:
         if ( !onMeshElements ) {// create a quadratic face
           elem = aMeshDS->AddFace (nodes[0], nodes[1], nodes[2], nodes[3],
                                    nodes[4], nodes[5], nodes[6], nodes[7] ); break;
         } // else do not break but create a polygon
+        /* FALLTHRU */
       default:
         elem = aMeshDS->AddPolygonalFace( nodes );
       }

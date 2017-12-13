@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <algorithm>
 #include <stdexcept>
 
 #include <Base/VectorPy.h>
@@ -639,13 +640,16 @@ PyObject* FemMeshPy::write(PyObject *args)
 PyObject* FemMeshPy::writeABAQUS(PyObject *args)
 {
     char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+    int elemParam;
+    PyObject* groupParam;
+    if (!PyArg_ParseTuple(args, "etiO!","utf-8",&Name,&elemParam,&PyBool_Type,&groupParam))
         return 0;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
+    bool grpParam = PyObject_IsTrue(groupParam) ? true : false;
 
     try {
-        getFemMeshPtr()->writeABAQUS(EncodedName.c_str());
+        getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
@@ -1029,6 +1033,18 @@ Py::Tuple FemMeshPy::getEdges(void) const
     return tuple;
 }
 
+Py::Tuple FemMeshPy::getEdgesOnly(void) const
+{
+    std::set<int> resultSet = getFemMeshPtr()->getEdgesOnly();
+    Py::Tuple tuple(resultSet.size());
+    int index = 0;
+    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
+        tuple.setItem(index++, Py::Long(*it));
+    }
+
+    return tuple;
+}
+
 Py::Long FemMeshPy::getEdgeCount(void) const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbEdges());
@@ -1046,6 +1062,18 @@ Py::Tuple FemMeshPy::getFaces(void) const
     Py::Tuple tuple(ids.size());
     int index = 0;
     for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Long(*it));
+    }
+
+    return tuple;
+}
+
+Py::Tuple FemMeshPy::getFacesOnly(void) const
+{
+    std::set<int> resultSet = getFemMeshPtr()->getFacesOnly();
+    Py::Tuple tuple(resultSet.size());
+    int index = 0;
+    for (std::set<int>::iterator it = resultSet.begin(); it != resultSet.end(); ++it) {
         tuple.setItem(index++, Py::Long(*it));
     }
 

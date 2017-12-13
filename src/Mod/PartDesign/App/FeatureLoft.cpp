@@ -139,7 +139,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
             mkTS.Build();
             if (!mkTS.IsDone())
-                return new App::DocumentObjectExecReturn("Loft could not be build");
+                return new App::DocumentObjectExecReturn("Loft could not be built");
             
             //build the shell use simulate to get the top and bottom wires in an easy way
             shells.push_back(mkTS.Shape());

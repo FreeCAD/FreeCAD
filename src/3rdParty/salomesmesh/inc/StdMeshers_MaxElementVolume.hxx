@@ -41,8 +41,7 @@ public:
   StdMeshers_MaxElementVolume(int hypId, int studyId, SMESH_Gen* gen);
   virtual ~StdMeshers_MaxElementVolume();
 
-  void SetMaxVolume(double maxVolume)
-    throw (SALOME_Exception);
+  void SetMaxVolume(double maxVolume);
 
   double GetMaxVolume() const;
 

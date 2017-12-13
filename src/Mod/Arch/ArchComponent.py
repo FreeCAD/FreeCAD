@@ -338,7 +338,7 @@ class Component:
         if self.clone(obj):
             return
         if obj.Base:
-            obj.Shape = obj.Base.Shape
+            obj.Shape = self.spread(obj,obj.Base.Shape)
 
     def __getstate__(self):
         return self.Type
@@ -585,7 +585,7 @@ class Component:
                                         print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
 
-    def spread(self,obj,shape,placement):
+    def spread(self,obj,shape,placement=None):
         "spreads this shape along axis positions"
         points = None
         if hasattr(obj,"Axis"):

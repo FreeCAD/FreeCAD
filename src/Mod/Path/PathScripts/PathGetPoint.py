@@ -36,6 +36,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitray points while the task panel is active."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.track(PathLog.thisModule())
 
 class TaskPanel:
     '''Use an instance of this class in another TaskPanel to invoke the snapper.
@@ -63,9 +64,13 @@ class TaskPanel:
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
         self.formPoint.buttonBox.rejected.connect(self.pointReject)
 
-        self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
+        self.formPoint.globalX.editingFinished.connect(self.updatePoint)
+        self.formPoint.globalY.editingFinished.connect(self.updatePoint)
+        self.formPoint.globalZ.editingFinished.connect(self.updatePoint)
+
+        self.formPoint.globalX.setProperty('unit', FreeCAD.Units.MilliMetre.getUserPreferred()[2])
+        self.formPoint.globalY.setProperty('unit', FreeCAD.Units.MilliMetre.getUserPreferred()[2])
+        self.formPoint.globalZ.setProperty('unit', FreeCAD.Units.MilliMetre.getUserPreferred()[2])
 
     def addEscapeShortcut(self):
         '''addEscapeShortcut() ... internal function - do not call.'''
@@ -93,11 +98,12 @@ class TaskPanel:
         until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.'''
 
         def displayPoint(p):
-            self.formPoint.ifValueX.setText(FreeCAD.Units.Quantity(p.x, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueY.setText(FreeCAD.Units.Quantity(p.y, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueZ.setText(FreeCAD.Units.Quantity(p.z, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueX.setFocus()
-            self.formPoint.ifValueX.selectAll()
+            self.point = p
+            self.formPoint.globalX.setProperty('rawValue', p.x)
+            self.formPoint.globalY.setProperty('rawValue', p.y)
+            self.formPoint.globalZ.setProperty('rawValue', p.z)
+            self.formPoint.globalX.setFocus()
+            self.formPoint.globalX.selectAll()
 
         def mouseMove(cb):
             p = None
@@ -114,6 +120,7 @@ class TaskPanel:
                     if hasattr(obj, 'Path'):
                         self.obj = obj
                         p = FreeCAD.Vector(snapInfo['x'], snapInfo['y'], snapInfo['z'])
+                        self.pt = p
                     else:
                         self.obj = None
             else:
@@ -124,6 +131,7 @@ class TaskPanel:
                 plane = FreeCAD.DraftWorkingPlane
                 p = plane.getLocalCoords(self.pt)
                 self.obj = FreeCADGui.Snapper.lastSnappedObject
+
             if p:
                 displayPoint(p)
 
@@ -173,6 +181,7 @@ class TaskPanel:
             self.formOrig.setFocus()
 
         if ok:
+            self.updatePoint(False)
             self.pointWhenDone(self.pt, self.obj)
         else:
             self.pointWhenDone(None, None)
@@ -204,10 +213,13 @@ class TaskPanel:
                 self.pointCbMove = None
             self.view = None
 
-    def updatePoint(self):
+    def updatePoint(self, usePoint = True):
         '''updatePoint() ... internal function - do not call.'''
-        x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
-        y = FreeCAD.Units.Quantity(self.formPoint.ifValueY.text()).Value
-        z = FreeCAD.Units.Quantity(self.formPoint.ifValueZ.text()).Value
-        self.pt = FreeCAD.Vector(x, y, z)
+        if usePoint and self.point:
+            self.pt = self.point
+        else:
+            x = FreeCAD.Units.Quantity(self.formPoint.globalX.text()).Value
+            y = FreeCAD.Units.Quantity(self.formPoint.globalY.text()).Value
+            z = FreeCAD.Units.Quantity(self.formPoint.globalZ.text()).Value
+            self.pt = FreeCAD.Vector(x, y, z)
 

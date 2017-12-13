@@ -50,6 +50,7 @@ public:
     void setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj);
 
     virtual void draw() override;
+    virtual void rotateView(void) override;
 
 protected:
     void drawAnnotation();

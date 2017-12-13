@@ -27,6 +27,7 @@
 # include <QApplication>
 #endif
 
+#include <stdlib.h>
 #include <qdebug.h>
 #include <QString>
 #include <GC_MakeEllipse.hxx>
@@ -226,10 +227,24 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 /* Sketch commands =======================================================*/
 
+static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
+static char cursor_crosshair_color[12];
+
+void DrawSketchHandler::setCrosshairColor()
+{
+    unsigned long color = 0xFFFFFFFF; // white
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
+    // from rgba to rgb
+    color = (color >> 8) & 0xFFFFFF;
+    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
+}
+
 /* XPM */
 static const char *cursor_createline[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -279,6 +294,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createline),7,7);
     }
 
@@ -436,7 +452,7 @@ bool CmdSketcherCreateLine::isActive(void)
 /* XPM */
 static const char *cursor_createbox[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -486,6 +502,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createbox),7,7);
     }
 
@@ -674,7 +691,7 @@ bool CmdSketcherCreateRectangle::isActive(void)
 /* XPM */
 static const char *cursor_createlineset[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -830,6 +847,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createlineset),7,7);
     }
 
@@ -1198,7 +1216,9 @@ public:
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), 
+                                          (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
+                                            Sketcher::start : Sketcher::end);
                     sugConstr2.clear();
                 }
 
@@ -1365,7 +1385,7 @@ bool CmdSketcherCreatePolyline::isActive(void)
 /* XPM */
 static const char *cursor_createarc[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+...........###...........",
@@ -1424,6 +1444,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarc),7,7);
     }
 
@@ -1636,7 +1657,7 @@ bool CmdSketcherCreateArc::isActive(void)
 /* XPM */
 static const char *cursor_create3pointarc[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+...........###...........",
@@ -1694,6 +1715,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_create3pointarc),7,7);
     }
 
@@ -2047,7 +2069,7 @@ bool CmdSketcherCompCreateArc::isActive(void)
 /* XPM */
 static const char *cursor_createcircle[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -2097,6 +2119,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createcircle),7,7);
     }
 
@@ -2249,7 +2272,7 @@ bool CmdSketcherCreateCircle::isActive(void)
  */
 static const char *cursor_createellipse[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -2357,6 +2380,7 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createellipse),7,7);
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
@@ -3116,7 +3140,7 @@ bool CmdSketcherCreateEllipseBy3Points::isActive(void)
 /* XPM */
 static const char *cursor_createarcofellipse[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3173,6 +3197,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarcofellipse),7,7);
     }
 
@@ -3488,7 +3513,7 @@ bool CmdSketcherCreateArcOfEllipse::isActive(void)
 /* XPM */
 static const char *cursor_createarcofhyperbola[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3546,6 +3571,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
     }
 
@@ -3870,7 +3896,7 @@ bool CmdSketcherCreateArcOfHyperbola::isActive(void)
 /* XPM */
 static const char *cursor_createarcofparabola[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -3930,6 +3956,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createarcofparabola),7,7);
     }
 
@@ -4362,7 +4389,7 @@ bool CmdSketcherCompCreateConic::isActive(void)
 /* XPM */
 static const char *cursor_createbspline[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -4423,6 +4450,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createbspline),7,7);
     }
 
@@ -4533,13 +4561,34 @@ public:
                 //Gui::Command::openCommand("Add Pole circle");
                 
                 //Add pole
+                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
+
+                auto normalize = [](double guess) {
+                    double units=1.0;
+
+                    while (guess >= 10.0) {
+                        guess /= 10.0;
+                        units*=10.0;
+                    }
+
+                    while (guess < 1.0) {
+                        guess *= 10.0;
+                        units/=10.0;
+                    }
+
+                    return round(guess)*units;
+
+                };
+
+                guess = normalize(guess);
+
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                         sketchgui->getObject()->getNameInDocument(),
                                         EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
                 
                 if(EditCurve.size() == 2) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, round( (EditCurve[1]-EditCurve[0]).Length()/6 ));                        
+                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, guess );
                 }
 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
@@ -4941,7 +4990,7 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 /* XPM */
 static const char *cursor_create3pointcircle[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -4993,6 +5042,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_create3pointcircle),7,7);
     }
 
@@ -5293,7 +5343,7 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 /* XPM */
 static const char *cursor_createpoint[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -5337,6 +5387,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createpoint),7,7);
     }
 
@@ -5539,7 +5590,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_createfillet[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -5592,6 +5643,7 @@ public:
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createfillet),7,7);
     }
 
@@ -5819,7 +5871,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_trimming[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -5869,6 +5921,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
+        setCrosshairColor();
         setCursor(QPixmap(cursor_trimming),7,7);
     }
 
@@ -5986,7 +6039,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_extension[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -6030,6 +6083,7 @@ public:
         , EditCurve(2)
         , BaseGeoId(-1)
         , ExtendFromStart(false)
+        , SavedExtendFromStart(false)
         , Increment(0)
     {
     }
@@ -6049,6 +6103,7 @@ public:
         Gui::Selection().rmvSelectionGate();
         filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
+        setCrosshairColor();
         setCursor(QPixmap(cursor_extension),7,7);
     }
 
@@ -6360,7 +6415,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_external[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "* c red",
 ". c None",
 "......+.........................",
@@ -6418,6 +6473,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
+        setCrosshairColor();
         setCursor(QPixmap(cursor_external),7,7);
     }
 
@@ -6580,7 +6636,7 @@ namespace SketcherGui {
 /* XPM */
 static const char *cursor_carboncopy[]={
     "32 32 3 1",
-    "+ c white",
+    cursor_crosshair_color,
     "* c red",
     ". c None",
     "......+.........................",
@@ -6638,6 +6694,7 @@ static const char *cursor_carboncopy[]={
             Gui::Selection().clearSelection();
             Gui::Selection().rmvSelectionGate();
             Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+            setCrosshairColor();
             setCursor(QPixmap(cursor_carboncopy),7,7);
         }
         
@@ -6752,7 +6809,7 @@ static const char *cursor_carboncopy[]={
 /* XPM */
 static const char *cursor_creatslot[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -6807,6 +6864,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_creatslot),7,7);
     }
 
@@ -7031,7 +7089,7 @@ bool CmdSketcherCreateSlot::isActive(void)
 /* XPM */
 static const char *cursor_createregularpolygon[]={
 "32 32 3 1",
-"+ c white",
+cursor_crosshair_color,
 "# c red",
 ". c None",
 "......+.........................",
@@ -7089,6 +7147,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        setCrosshairColor();
         setCursor(QPixmap(cursor_createregularpolygon),7,7);
     }
 
@@ -7125,7 +7184,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, dV)) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }

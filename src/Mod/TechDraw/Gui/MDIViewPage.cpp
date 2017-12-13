@@ -178,12 +178,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate ) {
-        //make sceneRect 1 pagesize bigger in every direction
-        double width  =  Rez::guiX(pageTemplate->Width.getValue());
-        double height =  Rez::guiX(pageTemplate->Height.getValue());
-        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
         attachTemplate(pageTemplate);
-        viewAll();
+        matchSceneRectToTemplate();
     }
 }
 
@@ -193,6 +189,18 @@ MDIViewPage::~MDIViewPage()
     connectDeletedObject.disconnect();
 }
 
+void MDIViewPage::matchSceneRectToTemplate(void)
+{
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    if( pageTemplate ) {
+        //make sceneRect 1 pagesize bigger in every direction
+        double width  =  Rez::guiX(pageTemplate->Width.getValue());
+        double height =  Rez::guiX(pageTemplate->Height.getValue());
+        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
+        viewAll();
+    }
+}
 
 void MDIViewPage::setDimensionGroups(void)
 {
@@ -331,14 +339,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
+    //if this page has a QView for this obj, delete it.
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        const App::DocumentObject* objPtr = &obj;
-        const TechDraw::DrawView* dv = static_cast<const TechDraw::DrawView*>(objPtr);
-        TechDraw::DrawPage* dvPg = dv->findParentPage();
-        if (dvPg == m_vpPage->getDrawPage()) {
-            //this is a DV that is on our page
-            (void) m_view->removeQViewByDrawView(dv);
-        }
+        (void) m_view->removeQViewByName(obj.getNameInDocument());
     }
 }
 

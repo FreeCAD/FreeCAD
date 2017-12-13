@@ -75,7 +75,6 @@ using namespace TechDrawGui;
 using namespace TechDrawGeometry;
 
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
-const float vertexScaleFactor = 2.; // temp fiddle for devel
 
 QGIViewPart::QGIViewPart()
 {
@@ -147,6 +146,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
 QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rot)
 {
+    Q_UNUSED(rot);
     QPainterPath path;
 
     switch(baseGeom->geomType) {
@@ -272,7 +272,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                                Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y),
                                Rez::guiX(it->pnts[3].x), Rez::guiX(it->pnts[3].y));
               } else {                                                 //can only handle lines,quads,cubes
-                  Base::Console().Error("Bad pole count (%d) for BezierSegment of BSpline geometry\n",it->poles);
+                  Base::Console().Error("Bad pole count (%d) for BezierSegment of B-spline geometry\n",it->poles);
                   path.lineTo(it->pnts[1].x, it->pnts[1].y);         //show something for debugging
               }
           }
@@ -291,11 +291,12 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
           break;
       }
 
-    if (rot != 0.0) {
-        QTransform t;
-        t.rotate(-rot);
-        path = t.map(path);
-    }
+//old rotate path logic. now done on App side.
+//    if (rot != 0.0) {
+//        QTransform t;
+//        t.rotate(-rot);
+//        path = t.map(path);
+//    }
 
     return path;
 }
@@ -365,6 +366,7 @@ void QGIViewPart::drawViewPart()
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
     float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
+//    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
@@ -471,6 +473,10 @@ void QGIViewPart::drawViewPart()
     }
 
     // Draw Vertexs:
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double vertexScaleFactor = hGrp->GetFloat("VertexScale", 3.0);
+
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
     bool showCenters = viewPart->ArcCenterMarks.getValue();
@@ -640,10 +646,10 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             yVal = sectionSpan / 2.0;
         }
         sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
-        sectionLine->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));          //TODO: add fudge to make sectionLine thinner than reg lines?
+        sectionLine->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
         sectionLine->setFont(m_font,Rez::guiX(6.0));
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
-        sectionLine->setRotation(- viewPart->Rotation.getValue());
+        sectionLine->setRotation(viewPart->Rotation.getValue());
         sectionLine->draw();
     }
 }
@@ -671,9 +677,9 @@ void QGIViewPart::drawCenterLines(bool b)
             xVal = sectionSpan / 2.0;
             yVal = 0.0;
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
-            //centerLine->setWidth(viewPart->LineWidth.getValue());
+            centerLine->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-            centerLine->setRotation(- viewPart->Rotation.getValue());
+            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
         if (vert) {
@@ -684,9 +690,9 @@ void QGIViewPart::drawCenterLines(bool b)
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
-            //centerLine->setWidth(viewPart->LineWidth.getValue());
+            centerLine->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-            centerLine->setRotation(- viewPart->Rotation.getValue());
+            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
     }
@@ -712,7 +718,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
-        highlight->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));
+        highlight->setWidth(Rez::guiX(viewPart->IsoWidth.getValue()));
         highlight->setFont(m_font,Rez::guiX(6.0));
         highlight->setZValue(ZVALUE::HIGHLIGHT);
         highlight->draw();
@@ -952,6 +958,11 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
 QRectF QGIViewPart::boundingRect() const
 {
     return childrenBoundingRect();
+}
+
+//QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
+void QGIViewPart::rotateView(void)
+{
 }
 
 bool QGIViewPart::getFaceEdgesPref(void)

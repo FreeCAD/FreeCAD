@@ -28,7 +28,6 @@
 # include <qapplication.h>
 # include <qdir.h>
 # include <qfileinfo.h>
-# include <QGLWidget>
 # include <QKeySequence>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
@@ -1424,7 +1423,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
                 it = d->passiveViews.begin();
             }
 
-            // is already  closing the document
+            // is already closing the document
             if (d->_isClosing == false)
                 d->_pcAppWnd->onLastWindowClosed(this);
         }

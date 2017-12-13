@@ -101,6 +101,7 @@ void SketcherSettings::saveSettings()
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
@@ -126,6 +127,7 @@ void SketcherSettings::loadSettings()
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
@@ -236,6 +238,8 @@ void SketcherSettingsColors::saveSettings()
     ui->DefaultSketcherLineWidth->onSave();
 
     ui->CursorTextColor->onSave();
+    ui->CursorCrosshairColor->onSave();
+    ui->CreateLineColor->onSave();
 }
 
 void SketcherSettingsColors::loadSettings()
@@ -258,6 +262,8 @@ void SketcherSettingsColors::loadSettings()
     ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
+    ui->CursorCrosshairColor->onRestore();
+    ui->CreateLineColor->onRestore();
 }
 
 /**

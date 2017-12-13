@@ -89,7 +89,7 @@ void PropertyLink::resetLink() {
     if (_pcLink && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if (_pcLink)
                 _pcLink->_removeBackLink(parent);
@@ -107,7 +107,7 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if (_pcLink)
                 _pcLink->_removeBackLink(parent);
@@ -234,7 +234,7 @@ PropertyLinkList::~PropertyLinkList()
     if (!_lValueList.empty() && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             for(auto *obj : _lValueList)
                 obj->_removeBackLink(parent);
@@ -281,7 +281,7 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const &value, bool tou
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if(obj) 
                 obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
@@ -312,7 +312,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             for(auto obj : _lValueList)
                 if(obj) obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
@@ -468,7 +468,7 @@ PropertyLinkSub::~PropertyLinkSub()
     if (_pcLinkSub && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if (_pcLinkSub)
                 _pcLinkSub->_removeBackLink(parent);
@@ -487,7 +487,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if (_pcLinkSub)
                 _pcLinkSub->_removeBackLink(parent);
@@ -769,7 +769,7 @@ PropertyLinkSubList::~PropertyLinkSubList()
     if (!_lValueList.empty() && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             for(auto *obj : _lValueList)
                 obj->_removeBackLink(parent);
@@ -796,7 +796,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             for(auto *obj : _lValueList)
                 obj->_removeBackLink(parent);
@@ -832,7 +832,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
@@ -866,7 +866,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
@@ -894,7 +894,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
-        // as otherwise the backlink contains dangling pointers
+        // otherwise the backlink contains dangling pointers
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works

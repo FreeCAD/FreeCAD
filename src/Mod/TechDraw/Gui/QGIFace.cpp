@@ -76,7 +76,7 @@ QGIFace::QGIFace(int index) :
     m_segCount = 0;
     setFillMode(NoFill);
     isHatched(false);
-    setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);

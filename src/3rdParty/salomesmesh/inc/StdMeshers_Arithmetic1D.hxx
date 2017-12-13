@@ -44,7 +44,7 @@ public:
   StdMeshers_Arithmetic1D(int hypId, int studyId, SMESH_Gen* gen);
   virtual ~StdMeshers_Arithmetic1D();
 
-  void SetLength(double length, bool isStartLength) throw(SALOME_Exception);
+  void SetLength(double length, bool isStartLength);
 
   double GetLength(bool isStartLength) const;
 

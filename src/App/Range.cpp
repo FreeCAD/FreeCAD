@@ -100,7 +100,7 @@ bool Range::next()
 }
 
 /**
-  * Decode a row specification into a 0-based integer.
+  * @brief Decode a row specification into a 0-based integer.
   *
   * @param rowstr Row specified as a string, with "1" being the first row.
   *
@@ -118,7 +118,7 @@ int App::decodeRow(const std::string &rowstr)
 }
 
 /**
-  * Decode a column specification into a 0-based integer.
+  * @brief Decode a column specification into a 0-based integer.
   *
   * @param colstr Column specified as a string, with "A" begin the first column.
   *
@@ -137,7 +137,7 @@ int App::decodeColumn(const std::string &colstr)
 }
 
 /**
-  * Determine wheter a row specification is valid or not.
+  * @brief Determine whether a row specification is valid or not.
   *
   * @param rowstr Row specified as a string, with "1" being the first row.
   *
@@ -156,7 +156,7 @@ int App::validRow(const std::string &rowstr)
 }
 
 /**
-  * Determine whether a column specification is valid or not.
+  * @brief Determine whether a column specification is valid or not.
   *
   * @param colstr Column specified as a string, with "A" begin the first column.
   *
@@ -192,7 +192,7 @@ int App::validColumn(const std::string &colstr)
 }
 
 /**
-  * Convert a string address into integer \a row and \a column.
+  * @brief Convert a string address into integer \a row and \a column.
   * row and col are 0-based.
   *
   * This function will throw an exception if the specified \a address is invalid.
@@ -219,7 +219,7 @@ App::CellAddress App::stringToAddress(const char * strAddress)
 }
 
 /**
-  * Convert given \a cell address into its string representation.
+  * @brief Convert given \a cell address into its string representation.
   *
   * @returns Address given as a string.
   */

@@ -43,7 +43,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDragger)
 
 
 /**
@@ -65,7 +65,7 @@ ViewProviderPart::~ViewProviderPart()
  * associated view providers of the objects of the object group get changed as well.
  */
 void ViewProviderPart::onChanged(const App::Property* prop) {
-    ViewProviderDocumentObject::onChanged(prop);
+    ViewProviderDragger::onChanged(prop);
 }
 
 bool ViewProviderPart::doubleClicked(void)

@@ -154,6 +154,4 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
-
-
 #endif

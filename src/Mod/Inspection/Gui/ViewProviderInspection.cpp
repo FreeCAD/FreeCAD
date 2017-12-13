@@ -141,7 +141,7 @@ void ViewProviderInspection::show(void)
 
 void ViewProviderInspection::attach(App::DocumentObject *pcFeat)
 {
-    // creats the standard viewing modes
+    // creates the standard viewing modes
     inherited::attach(pcFeat);
 
     SoShapeHints * flathints = new SoShapeHints;

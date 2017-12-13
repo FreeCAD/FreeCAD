@@ -296,7 +296,7 @@ void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
 
 void ViewProvider::setDisplayMaskMode(const char* type)
 {
-    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find( type );
+    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(type);
     if (it != _sDisplayMaskModes.end())
         _iActualMode = it->second;
     else
@@ -354,7 +354,6 @@ vector<std::string> ViewProvider::getDisplayModes(void) const {
     return modes;
 }
 
-
 std::string ViewProvider::getActiveDisplayMode(void) const
 {
     return _sCurrentMode;
@@ -396,7 +395,7 @@ bool ViewProvider::isVisible() const
 }
 
 void ViewProvider::setOverrideMode(const std::string &mode)
-{    
+{
     if (mode == "As Is") {
         viewOverrideMode = -1;
         overrideMode = mode;

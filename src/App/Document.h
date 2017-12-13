@@ -382,8 +382,7 @@ public:
     // set Changed
     //void setChanged(DocumentObject* change);
     /// get a list of topological sorted objects (https://en.wikipedia.org/wiki/Topological_sorting)
-    std::vector<App::DocumentObject*> topologicalSort(
-            const std::vector<App::DocumentObject*> &objs = std::vector<App::DocumentObject*>()) const;
+    std::vector<App::DocumentObject*> topologicalSort() const;
     /// get all root objects (objects no other one reference too)
     std::vector<App::DocumentObject*> getRootObjects() const;
     /// get all possible paths from one object to another following the OutList

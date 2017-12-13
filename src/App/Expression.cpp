@@ -1035,9 +1035,14 @@ Expression * FunctionExpression::eval() const
     }
     case HYPOT:
     case CATH:
+        if (v2 == 0)
+            throw ExpressionError("Invalid second argument.");
         if (v1->getUnit() != v2->getUnit())
             throw ExpressionError("Units must be equal");
+
         if (args.size() > 2) {
+            if (v3 == 0)
+                throw ExpressionError("Invalid second argument.");
             if (v2->getUnit() != v3->getUnit())
                 throw ExpressionError("Units must be equal");
         }

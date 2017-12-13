@@ -35,7 +35,7 @@ class _FemResultMechanical():
     def __init__(self, obj):
         self.Type = "FemResultMechanical"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to  this object
+        obj.Proxy = self  # link between App::DocumentObject to this object
 
         obj.addProperty("App::PropertyString", "ResultType", "Base", "Type of the result", 1)  # the 1 set the property to ReadOnly
         obj.ResultType = str(self.Type)

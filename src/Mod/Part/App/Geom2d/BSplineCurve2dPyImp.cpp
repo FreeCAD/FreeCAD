@@ -70,7 +70,7 @@ int BSplineCurve2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "B-Spline constructor accepts:\n"
+    PyErr_SetString(PyExc_TypeError, "B-spline constructor accepts:\n"
         "-- empty parameter list\n");
     return -1;
 }

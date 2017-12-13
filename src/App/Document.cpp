@@ -137,6 +137,8 @@ boost::listS           // class EdgeListS:
 typedef boost::graph_traits<DependencyList> Traits;
 typedef Traits::vertex_descriptor Vertex;
 typedef Traits::edge_descriptor Edge;
+typedef std::vector <size_t> Node;
+typedef std::vector <size_t> Path;
 
 namespace App {
 
@@ -174,6 +176,14 @@ struct DocumentP
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
     }
+
+    static
+    void findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
+                        std::vector <Path> &all_paths, Path tmp);
+    std::vector<App::DocumentObject*>
+    topologicalSort(const std::vector<App::DocumentObject*>& objects) const;
+    std::vector<App::DocumentObject*>
+    partialTopologicalSort(const std::vector<App::DocumentObject*>& objects) const;
 };
 
 } // namespace App
@@ -1320,6 +1330,8 @@ void Document::Save (Base::Writer &writer) const
 void Document::Restore(Base::XMLReader &reader)
 {
     int i,Cnt;
+    Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
+
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1847,7 +1859,15 @@ void Document::afterRestore(bool checkXLink) {
 
 void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkXLink) {
     std::set<DocumentObject*> objSet(objArray.begin(),objArray.end());
-    for (auto obj : getDependencyList(objArray,true,true)) {
+    std::vector<DocumentObject *> objs;
+    try {
+        objs = getDependencyList(objArray.empty()?d->objectArray:objArray,false,true);
+    }catch (Base::Exception &e) {
+        e.ReportException();
+        objs = d->partialTopologicalSort(objArray.empty()?d->objectArray:objArray);
+        std::reverse(objs.begin(),objs.end());
+    }
+    for (auto obj : objs) {
         if(objSet.find(obj)==objSet.end())
             continue;
         obj->connectRelabelSignals();
@@ -2342,7 +2362,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
     if (skip)
         return 0;
 
-    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
     for (auto LogEntry: _RecomputeLog)
@@ -2367,12 +2387,19 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
     auto depObjs = getDependencyList(objs.empty()?d->objectArray:objs);
     vector<DocumentObject*> topoSortedObjects = topologicalSort(depObjs);
     if (topoSortedObjects.size() != depObjs.size()){
-        cerr << "App::Document::recompute(): topological sort fails, invalid DAG!" << endl;
-        return -1;
+        cerr << "App::Document::recompute(): cyclic dependency detected" << endl;
+        topoSortedObjects = d->partialTopologicalSort(depObjs);
     }
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
 #else
-    auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,false,true);
+    vector<DocumentObject*> topoSortedObjects;
+    try {
+        topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,false,true);
+    }catch (Base::Exception &e) {
+        e.ReportException();
+        topoSortedObjects = d->partialTopologicalSort(getDependencyList(objs.empty()?d->objectArray:objs,false));
+        std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
+    }
     for (auto objIt = topoSortedObjects.begin(); objIt != topoSortedObjects.end(); ++objIt){
 #endif
         // ask the object if it should be recomputed  
@@ -2403,25 +2430,131 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
 
 #endif // USE_OLD_DAG
 
-std::vector<App::DocumentObject*> Document::topologicalSort(const std::vector<App::DocumentObject*> &objs) const
+/*!
+  Does almost the same as topologicalSort() until no object with an input degree of zero
+  can be found. It then searches for objects with an output degree of zero until neither
+  an object with input or output degree can be found. The remaining objects form one or
+  multiple cycles.
+  An alternative to this method might be:
+  https://en.wikipedia.org/wiki/Tarjan%E2%80%99s_strongly_connected_components_algorithm
+ */
+std::vector<App::DocumentObject*> DocumentP::partialTopologicalSort(const std::vector<App::DocumentObject*>& objects) const
+{
+    vector < App::DocumentObject* > ret;
+    ret.reserve(objects.size());
+    // pairs of input and output degree
+    map < App::DocumentObject*, std::pair<int, int> > countMap;
+
+    for (auto objectIt : objects) {
+        //we need inlist with unique entries
+        auto in = objectIt->getInList();
+        std::sort(in.begin(), in.end());
+        in.erase(std::unique(in.begin(), in.end()), in.end());
+
+        //we need outlist with unique entries
+        auto out = objectIt->getOutList();
+        std::sort(out.begin(), out.end());
+        out.erase(std::unique(out.begin(), out.end()), out.end());
+
+        countMap[objectIt] = std::make_pair(in.size(), out.size());
+    }
+
+    std::list<App::DocumentObject*> degIn;
+    std::list<App::DocumentObject*> degOut;
+
+    bool removeVertex = true;
+    while (removeVertex) {
+        removeVertex = false;
+
+        // try input degree
+        auto degInIt = find_if(countMap.begin(), countMap.end(),
+                               [](pair< App::DocumentObject*, pair<int, int> > vertex)->bool {
+            return vertex.second.first == 0;
+        });
+
+        if (degInIt != countMap.end()) {
+            removeVertex = true;
+            degIn.push_back(degInIt->first);
+            degInIt->second.first = degInIt->second.first - 1;
+
+            //we need outlist with unique entries
+            auto out = degInIt->first->getOutList();
+            std::sort(out.begin(), out.end());
+            out.erase(std::unique(out.begin(), out.end()), out.end());
+
+            for (auto outListIt : out) {
+                auto outListMapIt = countMap.find(outListIt);
+                outListMapIt->second.first = outListMapIt->second.first - 1;
+            }
+        }
+    }
+
+    // make the output degree negative if input degree is negative
+    // to mark the vertex as processed
+    for (auto& countIt : countMap) {
+        if (countIt.second.first < 0) {
+            countIt.second.second = -1;
+        }
+    }
+
+    removeVertex = degIn.size() != objects.size();
+    while (removeVertex) {
+        removeVertex = false;
+
+        auto degOutIt = find_if(countMap.begin(), countMap.end(),
+                               [](pair< App::DocumentObject*, pair<int, int> > vertex)->bool {
+            return vertex.second.second == 0;
+        });
+
+        if (degOutIt != countMap.end()) {
+            removeVertex = true;
+            degOut.push_front(degOutIt->first);
+            degOutIt->second.second = degOutIt->second.second - 1;
+
+            //we need inlist with unique entries
+            auto in = degOutIt->first->getInList();
+            std::sort(in.begin(), in.end());
+            in.erase(std::unique(in.begin(), in.end()), in.end());
+
+            for (auto inListIt : in) {
+                auto inListMapIt = countMap.find(inListIt);
+                inListMapIt->second.second = inListMapIt->second.second - 1;
+            }
+        }
+    }
+
+    // at this point we have no root object any more
+    for (auto countIt : countMap) {
+        if (countIt.second.first > 0 && countIt.second.second > 0) {
+            degIn.push_back(countIt.first);
+        }
+    }
+
+    ret.insert(ret.end(), degIn.begin(), degIn.end());
+    ret.insert(ret.end(), degOut.begin(), degOut.end());
+
+    return ret;
+}
+
+std::vector<App::DocumentObject*> DocumentP::topologicalSort(const std::vector<App::DocumentObject*>& objects) const
 {
     // topological sort algorithm described here:
     // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
     vector < App::DocumentObject* > ret;
-    ret.reserve(objs.size());
+    ret.reserve(objects.size());
     map < App::DocumentObject*,int > countMap;
 
-    for (auto obj : objs) {
+    for (auto objectIt : objects) {
         // We now support externally linked objects
         // if(!obj->getNameInDocument() || obj->getDocument()!=this)
-        if(!obj->getNameInDocument())
+        if(!objectIt->getNameInDocument())
             continue;
         //we need inlist with unique entries
-        auto in = obj->getInList();
+        auto in = objectIt->getInList();
         std::sort(in.begin(), in.end());
         in.erase(std::unique(in.begin(), in.end()), in.end());
 
-        countMap[obj] = in.size();
+        countMap[objectIt] = in.size();
     }
 
     auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
@@ -2440,7 +2573,7 @@ std::vector<App::DocumentObject*> Document::topologicalSort(const std::vector<Ap
         auto out = rootObjeIt->first->getOutList();
         std::sort(out.begin(), out.end());
         out.erase(std::unique(out.begin(), out.end()), out.end());
-        
+
         for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
             outListMapIt->second = outListMapIt->second - 1;
@@ -2453,6 +2586,11 @@ std::vector<App::DocumentObject*> Document::topologicalSort(const std::vector<Ap
     }
 
     return ret;
+}
+
+std::vector<App::DocumentObject*> Document::topologicalSort() const
+{
+    return d->topologicalSort(d->objectArray);
 }
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
@@ -2593,7 +2731,10 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     // insert in the adjacence list and referenc through the ConectionMap
     //_DepConMap[pcObject] = add_vertex(_DepList);
 
-    pcObject->Label.setValue( ObjectName );
+    // If we are restoring, don't set the Label object now; it will be restored later. This is to avoid potential duplicate
+    // label conflicts later.
+    if (!d->StatusBits.test(Restoring))
+        pcObject->Label.setValue( ObjectName );
 
     // Call the object-specific initialization
     if (!d->undoing && !d->rollback && isNew) {
@@ -3304,11 +3445,8 @@ std::vector<App::DocumentObject*> Document::getRootObjects() const
     return ret;
 }
 
-namespace App {
-typedef vector <size_t> Node;
-typedef vector <size_t> Path;
-void _findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
-                     std::vector <Path> &all_paths, Path tmp)
+void DocumentP::findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
+                                std::vector <Path> &all_paths, Path tmp)
 {
     if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
         Path tmp2(tmp);
@@ -3325,9 +3463,8 @@ void _findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
 
     for (size_t i=0; i < all_nodes[id].size(); i++) {
         Path tmp2(tmp);
-        _findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
     }
-}
 }
 
 std::vector<std::list<App::DocumentObject*> >
@@ -3355,7 +3492,7 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
     size_t index_to = indexMap[to];
     Path tmp;
     std::vector<Path> all_paths;
-    _findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
 
     for (std::vector<Path>::iterator it = all_paths.begin(); it != all_paths.end(); ++it) {
         Path::iterator jt = std::find(it->begin(), it->end(), index_to);

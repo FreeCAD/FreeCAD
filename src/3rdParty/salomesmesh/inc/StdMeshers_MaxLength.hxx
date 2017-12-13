@@ -35,7 +35,7 @@ class STDMESHERS_EXPORT StdMeshers_MaxLength: public SMESH_Hypothesis
   StdMeshers_MaxLength(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_MaxLength();
 
-  void SetLength(double length) throw(SALOME_Exception);
+  void SetLength(double length);
   double GetLength() const;
 
   bool HavePreestimatedLength() const  { return _preestimated > 0.; }

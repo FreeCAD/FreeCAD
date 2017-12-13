@@ -79,7 +79,7 @@ public:
     bool operator ==(const Unit&) const;
     bool operator !=(const Unit&that) const {return !(*this == that);}
     Unit& operator =(const Unit&);
-    Unit pow(char exp)const;
+    Unit pow(signed char exp)const;
     //@}
     /// get the unit signature
     const UnitSignature & getSignature(void)const {return Sig;} 

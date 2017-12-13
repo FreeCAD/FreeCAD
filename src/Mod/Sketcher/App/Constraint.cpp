@@ -175,7 +175,7 @@ unsigned int Constraint::getMemSize (void) const
 
 void Constraint::Save (Writer &writer) const
 {
-    std::string encodeName = App::Property::encodeAttribute(Name);
+    std::string encodeName = encodeAttribute(Name);
     writer.Stream() << writer.ind()     << "<Constrain "
     << "Name=\""                        <<  encodeName              << "\" "
     << "Type=\""                        <<  (int)Type               << "\" ";

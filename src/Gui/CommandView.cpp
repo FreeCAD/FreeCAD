@@ -1809,9 +1809,9 @@ StdCmdViewCreate::StdCmdViewCreate()
 {
     sGroup      = QT_TR_NOOP("Standard-View");
     sMenuText   = QT_TR_NOOP("Create new view");
-    sToolTipText= QT_TR_NOOP("Creates a new  view window for the active document");
+    sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
     sWhatsThis  = "Std_ViewCreate";
-    sStatusTip  = QT_TR_NOOP("Creates a new  view window for the active document");
+    sStatusTip  = QT_TR_NOOP("Creates a new view window for the active document");
     sPixmap     = "window-new";
     eType         = Alter3DView;
 }
@@ -2425,7 +2425,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
         polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
 
         // when selecting from right to left then select by intersection
-        // oterwise if the center is inside the rectangle
+        // otherwise if the center is inside the rectangle
         if (picked[0][0] > picked[1][0])
             selectionMode = INTERSECT;
     }
@@ -2669,7 +2669,7 @@ DEF_3DV_CMD(StdCmdSceneInspector)
 StdCmdSceneInspector::StdCmdSceneInspector()
   : Command("Std_SceneInspector")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Scene inspector...");
     sToolTipText  = QT_TR_NOOP("Scene inspector");
@@ -2701,7 +2701,7 @@ DEF_STD_CMD_A(StdCmdTextureMapping)
 StdCmdTextureMapping::StdCmdTextureMapping()
   : Command("Std_TextureMapping")
 {
-    // seting the
+    // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Texture mapping...");
     sToolTipText  = QT_TR_NOOP("Texture mapping");

@@ -5,7 +5,7 @@ endif(WIN32)
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -50,6 +50,8 @@ SET(Core_SRCS
     Core/Builder.h
     Core/Curvature.cpp
     Core/Curvature.h
+    Core/Decimation.cpp
+    Core/Decimation.h
     Core/Definitions.cpp
     Core/Definitions.h
     Core/Degeneration.cpp
@@ -64,6 +66,8 @@ SET(Core_SRCS
     Core/Info.cpp
     Core/Info.h
     Core/Iterator.h
+    Core/KDTree.cpp
+    Core/KDTree.h
     Core/MeshIO.cpp
     Core/MeshIO.h
     Core/MeshKernel.cpp

@@ -331,7 +331,7 @@ protected:
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
 
         ConstraintItem * item = dynamic_cast<ConstraintItem*>(view->item(index.row()));
-        if (!item || item->sketch->Constraints.getSize() < item->ConstraintNbr)
+        if (!item || item->sketch->Constraints.getSize() <= item->ConstraintNbr)
             return;
 
         App::ObjectIdentifier path = item->sketch->Constraints.createPath(item->ConstraintNbr);

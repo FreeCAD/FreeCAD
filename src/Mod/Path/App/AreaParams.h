@@ -89,7 +89,7 @@
     ((double,accuracy,Accuracy,0.01,"Arc fitting accuracy",App::PropertyPrecision))\
     ((double,units,Unit,1.0,"Scaling factor for conversion to inch",App::PropertyFloat))\
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
-    ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
+    ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization (ignored currently)"))\
     ((double,clipper_scale,ClipperScale,1e7,\
         "ClipperLib operate on intergers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
@@ -105,7 +105,7 @@
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
 	((double,stepover,PocketStepover,0.0,\
         "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
-	((bool,from_center,FromCenter,true,"Start pocketing from center"))\
+	((bool,from_center,FromCenter,false,"Start pocketing from center"))\
 	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
 	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
 	((double,shift,Shift,0.0,"Pattern shift distance for each section.\n"\

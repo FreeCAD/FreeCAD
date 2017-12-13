@@ -47,7 +47,7 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Multiplikation</translation>
+      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Vielfachheit</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -83,7 +83,7 @@
     <message>
       <location line="+1"/>
       <source>CarbonCopy</source>
-      <translation>CarbonCopy</translation>
+      <translation>Kopie</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -106,7 +106,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt einen Klon der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
@@ -158,7 +158,7 @@
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Multiplikation</translation>
+      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Vielfachheit</translation>
     </message>
   </context>
   <context>
@@ -176,7 +176,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt einen Klon der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
@@ -273,7 +273,7 @@
     <message>
       <location line="+105"/>
       <source>Ellipse by center, major radius, point</source>
-      <translation>Ellipse durch Angabe von Zentrum, großem Radius und Punkt</translation>
+      <translation>Ellipse durch Angabe von Mittelpunkt, Hauptradius und Punkt</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2115,7 +2115,7 @@
     <message>
       <location line="-3059"/>
       <source>Select vertices from the sketch.</source>
-      <translation>Wähle Ecken aus der Skizze.</translation>
+      <translation>Wählen Sie Knoten aus der Skizze aus.</translation>
     </message>
     <message>
       <location line="+344"/>
@@ -3229,7 +3229,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     </message>
     <message>
       <source>Default vertex color</source>
-      <translation>Standard-Scheitelpunktfarbe</translation>
+      <translation>Standard-Knotenpunktfarbe</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
@@ -3291,7 +3291,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="+6"/>
       <source>When opening sketch, hide all features that depend on it.</source>
-      <translation>Beim Öffnen der Skizze verstecken von allen Funktionen, die davon abhängen.</translation>
+      <translation>Beim Öffnen der Skizze verstecken von allen Objekten, die davon abhängen.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3376,7 +3376,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     </message>
     <message>
       <source>The default line thickness for new shapes</source>
-      <translation>Der Standard-Liniendicke für neue Formen</translation>
+      <translation>Die Standard-Linienstärke für neue Formen</translation>
     </message>
     <message>
       <location line="-292"/>
@@ -3385,7 +3385,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     </message>
     <message>
       <source>Default vertex size</source>
-      <translation>Standard-Scheitelpunktgröße</translation>
+      <translation>Standard-Knotenpunktgröße</translation>
     </message>
     <message>
       <source>Default line width</source>
@@ -3464,7 +3464,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="-40"/>
       <source>Default vertex color</source>
-      <translation>Standard-Scheitelpunktfarbe</translation>
+      <translation>Standard-Knotenpunktfarbe</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3535,14 +3535,14 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="+13"/>
       <source>Default vertex size</source>
-      <translation>Standard-Scheitelpunktgröße</translation>
+      <translation>Standard-Knotenpunktgröße</translation>
     </message>
     <message>
       <location line="+7"/>
       <location line="+35"/>
       <location line="+52"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Der Standard-Liniendicke für neue Formen</translation>
+      <translation>Die Standard-Linienstärke für neue Formen</translation>
     </message>
     <message>
       <location line="-84"/>
@@ -3687,7 +3687,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location line="+12"/>
       <location line="+12"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Lösche Beschränkungen an externer Geometrie.</translation>
+      <translation>Lösche Beschränkungen an externer Geometrie</translation>
     </message>
     <message>
       <location line="-11"/>
@@ -4052,7 +4052,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location line="+26"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Lösche Beschränkungen an externer Geometrie.</translation>
+      <translation>Lösche Beschränkungen an externer Geometrie</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -4067,7 +4067,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location line="+24"/>
       <source>Highlight open vertexes</source>
-      <translation>Markieren Sie offene Ecken</translation>
+      <translation>Endpunkte markieren</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -4295,7 +4295,7 @@ Use the sketch validation tool.</source>
       <location filename="../../CommandSketcherTools.cpp" line="-275"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt einen Klon der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>

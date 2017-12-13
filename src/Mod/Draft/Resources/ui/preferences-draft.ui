@@ -319,6 +319,23 @@ Values with differences below this value will be treated as same.</string>
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="text">
+           <string>When drawing lines, set focus on Length instead of X coordinate</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>focusOnLength</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QLabel" name="label">

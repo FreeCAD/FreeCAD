@@ -188,9 +188,6 @@ class ObjectEngrave(PathOp.ObjectOp):
             obj.OpFinalDepth = bb.ZMin
         else:
             obj.OpFinalDepth = -0.1
-        if obj.OpStartDepth.Value != obj.OpFinalDepth.Value:
-            # maintain behaviour of a single run
-            obj.OpStepDown = obj.OpStartDepth.Value - obj.OpFinalDepth.Value
 
 def Create(name):
     '''Create(name) ... Creates and returns a Engrave operation.'''

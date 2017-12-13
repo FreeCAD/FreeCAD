@@ -51,7 +51,7 @@ TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
 // here the implemataion! description should take place in the header file!
 PropertyContainer::PropertyContainer()
 {
-    propertyData.parentPropertyData = 0; 
+    propertyData.parentPropertyData = 0;
 }
 
 PropertyContainer::~PropertyContainer()

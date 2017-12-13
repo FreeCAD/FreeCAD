@@ -366,6 +366,7 @@ protected:
     // colors
     static SbColor VertexColor;
     static SbColor CurveColor;
+    static SbColor CreateCurveColor;
     static SbColor CurveDraftColor;
     static SbColor CurveExternalColor;
     static SbColor CrossColorV;
@@ -380,7 +381,7 @@ protected:
     static SbColor InformationColor;
 
     static SbTime prvClickTime;
-    static SbVec3f prvClickPoint;
+    static SbVec2s prvClickPos; //used by double-click-detector
     static SbVec2s prvCursorPos;
     static SbVec2s newCursorPos;
 

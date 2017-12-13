@@ -5176,8 +5176,8 @@ class _BSpline(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"BSpline")
-        obj.addProperty("App::PropertyVectorList","Points","Draft", QT_TRANSLATE_NOOP("App::Property","The points of the b-spline"))
-        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the b-spline is closed or not"))
+        obj.addProperty("App::PropertyVectorList","Points","Draft", QT_TRANSLATE_NOOP("App::Property","The points of the B-spline"))
+        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the B-spline is closed or not"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this spline is closed"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
@@ -5269,7 +5269,7 @@ class _BezCurve(_DraftObject):
 
     def _segpoleslst(self,fp):
         """split the points into segments"""
-        if not fp.Closed and len(fp.Points) >= 2: #allow lower degree segement
+        if not fp.Closed and len(fp.Points) >= 2: #allow lower degree segment
             poles=fp.Points[1:]
         elif fp.Closed and len(fp.Points) >= fp.Degree: #drawable
             #poles=fp.Points[1:(fp.Degree*(len(fp.Points)//fp.Degree))]+fp.Points[0:1]
@@ -5398,9 +5398,9 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft",QT_TRANSLATE_NOOP("App::Property","The way the viewed object must be projected"))
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
         obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
-        obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and BSplines into line segments"))
+        obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and B-splines into line segments"))
         obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
-        obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or BSplines into line segments"))
+        obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or B-splines into line segments"))
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
@@ -5938,9 +5938,25 @@ class _Clone(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Clone")
-        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this scale object"))
-        obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale vector of this object"))
+        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this clone"))
+        obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale factor of this clone"))
+        obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","If this clones several objects, this specifies if the result is a fusion or a compound"))
         obj.Scale = Vector(1,1,1)
+        
+    def join(self,obj,shapes):
+        if len(shapes) < 2:
+            return shapes[0]
+        import Part
+        if hasattr(obj,"Fuse"):
+            if obj.Fuse:
+                try:
+                    sh = shapes[0].multiFuse(shapes[1:])
+                    sh = sh.removeSplitter()
+                except:
+                    pass
+                else:
+                    return sh
+        return Part.makeCompound(shapes)
 
     def execute(self,obj):
         import Part, DraftGeomUtils
@@ -5965,7 +5981,7 @@ class _Clone(_DraftObject):
                         if not so.Shape.isNull():
                             shps.append(so.Shape)
                 if shps:
-                    sh = Part.makeCompound(shps)
+                    sh = self.join(obj,shps)
             if sh:
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
@@ -5986,7 +6002,7 @@ class _Clone(_DraftObject):
                 obj.Shape = shapes[0]
                 obj.Placement = shapes[0].Placement
             else:
-                obj.Shape = Part.makeCompound(shapes)
+                obj.Shape = self.join(obj,shapes)
         obj.Placement = pl
         if hasattr(obj,"positionBySupport"):
             obj.positionBySupport()
@@ -6094,15 +6110,24 @@ class _ShapeString(_DraftObject):
         import Part
         # import OpenSCAD2Dgeom
         import os
+        from DraftTools import msg
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
-            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
+            ff8 = obj.FontFile.encode('utf8')                  # 1947 accents in filepath
+                                                               # TODO: change for Py3?? bytes?
+                                                               # Part.makeWireString uses FontFile as char* string
+#            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
+            CharList = Part.makeWireString(obj.String,ff8,obj.Size,obj.Tracking)
+            if len(CharList) == 0:
+                msg(translate("draft","ShapeString: string has no wires\n"), 'warning')
+                return
             SSChars = []
 
             # test a simple letter to know if we have a sticky font or not
             sticky = False
-            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+#            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+            testWire = Part.makeWireString("L",ff8,obj.Size,obj.Tracking)[0][0]
             if testWire.isClosed:
                 try:
                     testFace = Part.Face(testWire)

@@ -1158,12 +1158,12 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
             // check if the edge has already a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId){
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                         QObject::tr("The selected edge has already a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
@@ -1388,12 +1388,12 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
             // check if the edge has already a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId){
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                          QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId) {
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge has already a horizontral constraint!"));
                     return;

@@ -124,8 +124,10 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGrou
     
     auto inList = group->getExtendedObject()->getInList();
     for(auto* link : inList) {
-        if(link->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
-            return recursiveGroupPlacement(link->getExtensionByType<GeoFeatureGroupExtension>()) * group->placement().getValue();
+        if(link->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())){
+            if (link->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(group->getExtendedObject()))
+                return recursiveGroupPlacement(link->getExtensionByType<GeoFeatureGroupExtension>()) * group->placement().getValue();
+        }
     }
     
     return group->placement().getValue();
