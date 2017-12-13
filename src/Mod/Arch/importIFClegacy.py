@@ -1212,7 +1212,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
             for v in verts:
                 pt = v.Point
                 if placement:
-                    if not placement.isNull():
+                    if not placement.isIdentity():
                         pt = placement.multVec(pt)
                 if rnd:
                     pt = DraftVecUtils.rounded(pt)

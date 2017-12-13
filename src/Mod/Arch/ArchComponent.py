@@ -491,7 +491,7 @@ class Component:
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
-            if placement.isNull():
+            if placement.isIdentity():
                 placement = None
             else:
                 placement = FreeCAD.Placement(placement)
@@ -625,19 +625,19 @@ class Component:
                         else:
                             shape = r
                         obj.Shape = self.spread(obj,shape,placement)
-                        if not placement.isNull():
+                        if not placement.isIdentity():
                             obj.Placement = placement
                     else:
                         if allownosolid:
                             obj.Shape = self.spread(obj,shape,placement)
-                            if not placement.isNull():
+                            if not placement.isIdentity():
                                 obj.Placement = placement
                         else:
                             FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                 else:
                     if allowinvalid:
                         obj.Shape = self.spread(obj,shape,placement)
-                        if not placement.isNull():
+                        if not placement.isIdentity():
                             obj.Placement = placement
                     else:
                         FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
