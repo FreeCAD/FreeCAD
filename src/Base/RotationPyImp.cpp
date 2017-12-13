@@ -282,13 +282,19 @@ PyObject* RotationPy::isSame(PyObject *args)
     return Py_BuildValue("O", (same ? Py_True : Py_False));
 }
 
+PyObject* RotationPy::isIdentity(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool null = getRotationPtr()->isIdentity();
+    return Py_BuildValue("O", (null ? Py_True : Py_False));
+}
+
 PyObject* RotationPy::isNull(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-    Base::Rotation rot = * getRotationPtr();
-    Base::Rotation nullrot(0,0,0,1);
-    bool null = rot.isSame(nullrot);
+    bool null = getRotationPtr()->isNull();
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 

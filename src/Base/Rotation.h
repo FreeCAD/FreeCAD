@@ -63,6 +63,7 @@ public:
     void setYawPitchRoll(double y, double p, double r);
     /// Euler angles in yaw,pitch,roll notation
     void getYawPitchRoll(double& y, double& p, double& r) const;
+    bool isIdentity() const;
     bool isNull() const;
     //@}
 

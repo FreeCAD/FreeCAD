@@ -200,16 +200,14 @@ PyObject* PlacementPy::inverse(PyObject * args)
     return new PlacementPy(new Placement(p));
 }
 
-PyObject* PlacementPy::isNull(PyObject *args)
+PyObject* PlacementPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
+    Base::Vector3d nullvec(0,0,0);
     Base::Vector3d pos = getPlacementPtr()->getPosition();
     Base::Rotation rot = getPlacementPtr()->getRotation();
-    Base::Vector3d nullvec(0,0,0);
-    Base::Rotation nullrot(0,0,0,1);
-    Base::Rotation nullrotinv(0,0,0,-1);
-    bool null = (pos == nullvec) & ((rot == nullrot) | (rot == nullrotinv));
+    bool null = (pos == nullvec) && (rot.isIdentity());
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 
