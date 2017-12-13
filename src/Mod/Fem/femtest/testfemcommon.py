@@ -386,7 +386,7 @@ class FemTest(unittest.TestCase):
 
         analysis.addObject(ObjectsFem.makeResultMechanical(doc))
 
-        analysis.addObject(ObjectsFem.makeSolverCalculixOld(doc))
+        analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
         sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
@@ -453,7 +453,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
@@ -699,7 +699,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -854,7 +854,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
