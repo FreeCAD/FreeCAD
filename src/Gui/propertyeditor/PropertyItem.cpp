@@ -1744,7 +1744,7 @@ void PlacementEditor::showValue(const QVariant& d)
     const Base::Placement& p = d.value<Base::Placement>();
     double angle;
     Base::Vector3d dir, pos;
-    p.getRotation().getValue(dir, angle);
+    p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
     QString data = QString::fromUtf8("[(%1 %2 %3);%4 \xc2\xb0;(%5 %6 %7)]")
@@ -1806,7 +1806,7 @@ Base::Quantity PropertyPlacementItem::getAngle() const
     const Base::Placement& val = value.value<Base::Placement>();
     double angle;
     Base::Vector3d dir;
-    val.getRotation().getValue(dir, angle);
+    val.getRotation().getRawValue(dir, angle);
     if (dir * this->rot_axis < 0.0)
         angle = -angle;
     return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
@@ -1883,7 +1883,7 @@ void PropertyPlacementItem::assignProperty(const App::Property* prop)
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         double angle;
         Base::Vector3d dir;
-        value.getRotation().getValue(dir, angle);
+        value.getRotation().getRawValue(dir, angle);
         Base::Vector3d cross = this->rot_axis.Cross(dir);
         double len2 = cross.Sqr();
         if (angle != 0) {
@@ -1905,7 +1905,7 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
     const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
     double angle;
     Base::Vector3d dir;
-    value.getRotation().getValue(dir, angle);
+    value.getRotation().getRawValue(dir, angle);
     if (!init_axis) {
         if (m_a->hasExpression()) {
             QString str = m_a->expressionAsString();
@@ -1943,7 +1943,7 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     const Base::Placement& p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
     double angle;
     Base::Vector3d dir, pos;
-    p.getRotation().getValue(dir, angle);
+    p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
     QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
@@ -1964,7 +1964,7 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
     const Base::Placement& p = prop.value<Base::Placement>();
     double angle;
     Base::Vector3d dir, pos;
-    p.getRotation().getValue(dir, angle);
+    p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
     QString data = QString::fromUtf8("[(%1 %2 %3); %4; (%5  %6  %7)]")
