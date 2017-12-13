@@ -658,6 +658,15 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     r = (r/D_PI)*180;
 }
 
+bool Rotation::isIdentity() const
+{
+    return ((this->quat[0] == 0  &&
+             this->quat[1] == 0  &&
+             this->quat[2] == 0) &&
+            (this->quat[3] == 1 ||
+             this->quat[3] == -1);
+}
+
 bool Rotation::isNull() const
 {
     return (this->quat[0] == 0 &&
