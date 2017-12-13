@@ -50,7 +50,10 @@ public:
     const double * getValue(void) const;
     void getValue(double & q0, double & q1, double & q2, double & q3) const;
     void setValue(const double q0, const double q1, const double q2, const double q3);
+    /// If not a null quaternion then \a axis will be normalized
     void getValue(Vector3d & axis, double & rfAngle) const;
+    /// Does the same as the method above unless normalizing the axis.
+    void getRawValue(Vector3d & axis, double & rfAngle) const;
     void getValue(Matrix4D & matrix) const;
     void setValue(const double q[4]);
     void setValue(const Matrix4D& matrix);
@@ -60,6 +63,7 @@ public:
     void setYawPitchRoll(double y, double p, double r);
     /// Euler angles in yaw,pitch,roll notation
     void getYawPitchRoll(double& y, double& p, double& r) const;
+    bool isNull() const;
     //@}
 
     /** Invert rotations. */
