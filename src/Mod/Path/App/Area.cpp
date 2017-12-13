@@ -440,11 +440,8 @@ void Area::add(const TopoDS_Shape &shape,short op) {
     if(op!=OperationCompound)
         toClipperOp(op);
 
-    bool haveSolid = false;
-    for(TopExp_Explorer it(shape, TopAbs_SOLID);it.More();) {
-        haveSolid = true;
-        break;
-    }
+    bool haveSolid = TopExp_Explorer(shape, TopAbs_SOLID).More();
+
     //TODO: shall we support Shells?
     if((!haveSolid && myHaveSolid) ||
         (haveSolid && !myHaveSolid && !myShapes.empty()))
@@ -1677,7 +1674,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
                 if(s.IsNull()) continue;\
                 builder.Add(compound,s);\
             }\
-            for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)\
+            if(TopExp_Explorer(compound,TopAbs_EDGE).More())\
                 return compound;\
             return TopoDS_Shape();\
         }\
@@ -1763,11 +1760,10 @@ TopoDS_Shape Area::getShape(int index) {
         FC_DURATION_LOG(d,"Thicken");
 
     // make sure the compound has at least one edge
-    for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();) {
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More()) {
         builder.Add(compound,areaPocket.makePocket(
                     -1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET)));
         myShape = compound;
-        break;
     }
     myShapeDone = true;
     FC_TIME_LOG(t,"total");
@@ -1816,7 +1812,7 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
     }
     if(thicken)
         FC_DURATION_LOG(d,"Thicken");
-    for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More())
         return compound;
     return TopoDS_Shape();
 }
