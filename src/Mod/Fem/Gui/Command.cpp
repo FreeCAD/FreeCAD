@@ -118,7 +118,7 @@ void CmdFemCreateAnalysis::activated(int)
 {
 #ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
     return;
 #endif
 
@@ -180,7 +180,7 @@ void CmdFemAddPart::activated(int)
 {
 #ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
     return;
 #endif
 
@@ -243,7 +243,7 @@ void CmdFemCreateSolver::activated(int)
 {
 #ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
     return;
 #endif
 
@@ -401,7 +401,7 @@ CmdFemConstraintContact::CmdFemConstraintContact()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint contact ");
+    sMenuText       = QT_TR_NOOP("Constraint contact");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
     sWhatsThis      = "FEM_ConstraintContact";
     sStatusTip      = sToolTipText;
@@ -489,7 +489,7 @@ CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint heatflux ");
+    sMenuText       = QT_TR_NOOP("Constraint heatflux");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a heatflux acting on a face");
     sWhatsThis      = "FEM_ConstraintHeatflux";
     sStatusTip      = sToolTipText;
@@ -797,7 +797,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint temperature ");
+    sMenuText       = QT_TR_NOOP("Constraint temperature");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
     sWhatsThis      = "FEM_ConstraintTemperature";
     sStatusTip      = sToolTipText;

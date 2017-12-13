@@ -253,7 +253,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix)
         return;
     }
 
-    // Extract last tokens that can be rebuild to a variable
+    // Extract last tokens that can be rebuilt to a variable
     ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
     while (i >= 0) {
         if (get<0>(tokens[i]) != ExpressionParser::IDENTIFIER &&
