@@ -4,9 +4,11 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+
 if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
 endif(BUILD_FEM_NETGEN)
+
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -25,13 +27,14 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 
-
 set(FemGui_LIBS
     Fem
     FreeCADGui
 )
 
+
 generate_from_xml(ViewProviderFemMeshPy)
+
 
 SET(Python_SRCS
     ViewProviderFemMeshPy.xml
@@ -82,6 +85,7 @@ endif(BUILD_FEM_VTK)
 fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
+
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemExportAbaqus.ui
@@ -122,11 +126,13 @@ if(BUILD_FEM_VTK)
     )
 endif(BUILD_FEM_VTK)
 
+
 if(BUILD_QT5)
     qt5_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 else()
     qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 endif()
+
 
 SET(FemGui_DLG_SRCS
     ${FemGui_UIC_HDRS}
@@ -194,13 +200,14 @@ SET(FemGui_DLG_SRCS
 )
 SOURCE_GROUP("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
 
+
 if(BUILD_QT5)
     qt5_add_resources(FemResource_SRCS Resources/Fem.qrc)
 else()
     qt4_add_resources(FemResource_SRCS Resources/Fem.qrc)
 endif()
-
 SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
+
 
 SET(FemGui_SRCS_ViewProvider
     ViewProviderFemMesh.cpp
@@ -258,6 +265,7 @@ SET(FemGui_SRCS_ViewProvider
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
+
 SET(FemGui_SRCS_TaskBoxes
     TaskObjectName.ui
     TaskObjectName.cpp
@@ -292,6 +300,7 @@ if(BUILD_FEM_VTK)
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
+
 SET(FemGui_SRCS_TaskDlg
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
@@ -301,6 +310,7 @@ SET(FemGui_SRCS_TaskDlg
     TaskDlgAnalysis.cpp
 )
 SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
+
 
 SET(FemGui_SRCS_Module
     AppFemGui.cpp
@@ -320,6 +330,7 @@ SET(FemGui_SRCS_Module
 )
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
 
+
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_Post
         ViewProviderFemPostObject.h
@@ -333,6 +344,7 @@ if(BUILD_FEM_VTK)
         )
     SOURCE_GROUP("PostObjects" FILES ${FemGui_SRCS_Post})
 endif(BUILD_FEM_VTK)
+
 
 SET(FemGui_SRCS
     ${Python_SRCS}
@@ -356,15 +368,20 @@ fc_target_copy_resource(FemGui
     InitGui.py
     )
 
+
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
 
+
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
+
 
 INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
 
+
 SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(FemGui)
+
 
 INSTALL(TARGETS FemGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
