@@ -664,7 +664,7 @@ bool Rotation::isIdentity() const
              this->quat[1] == 0  &&
              this->quat[2] == 0) &&
             (this->quat[3] == 1 ||
-             this->quat[3] == -1);
+             this->quat[3] == -1));
 }
 
 bool Rotation::isNull() const
