@@ -51,6 +51,8 @@ public:
     void getValue(double & q0, double & q1, double & q2, double & q3) const;
     void setValue(const double q0, const double q1, const double q2, const double q3);
     void getValue(Vector3d & axis, double & rfAngle) const;
+    void getValueNormalized(Vector3d & axis, double & rfAngle) const;
+
     void getValue(Matrix4D & matrix) const;
     void setValue(const double q[4]);
     void setValue(const Matrix4D& matrix);
@@ -103,9 +105,12 @@ public:
     static Rotation makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder = "ZXY");
 
 
+void evaluateVector ();
 private:
     void normalize();
     double quat[4];
+	Vector3d _axis; // the axis kept not to lose direction when angle is 0
+	double _angle; // this angle to keep the angle chozen by the user
 };
 
 }
