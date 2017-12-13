@@ -303,6 +303,10 @@ def TemplateAttributes(stock, includeExtent=True, includePlacement=True):
             attrs['rotY'] = rot.Q[1]
             attrs['rotZ'] = rot.Q[2]
             attrs['rotW'] = rot.Q[3]
+            attrs['oX'] = rot.Axis.x
+            attrs['oY'] = rot.Axis.y
+            attrs['oZ'] = rot.Axis.z
+            attrs['angle'] = rot.Angle*180.0/math.pi
 
     return attrs
 
@@ -318,13 +322,23 @@ def CreateFromTemplate(job, template):
             rotY = template.get('rotY')
             rotZ = template.get('rotZ')
             rotW = template.get('rotW')
-            if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
+            oX = template.get('oX')
+            oY = template.get('oY')
+            oZ = template.get('oZ')
+            angle = template.get('angle')
+            if posX is not None and posY is not None and posZ is not None :
                 pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
-                rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
-                placement = FreeCAD.Placement(pos, rot)
-            elif posX is not None or posY is not None or posZ is not None or rotX is not None or rotY is not None or rotZ is not None or rotW is not None:
+                if oX is not None and oY is not None and oZ is not None and angle is not None :
+                    placement = FreeCAD.Placement(FreeCAD.Vector(posX, posY, posZ), FreeCAD.Vector(oX, oY, oZ), angle)
+                elif rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
+                    pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
+                    rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
+                    placement = FreeCAD.Placement(pos, rot)
+                else:
+                    PathLog.warning(translate('PathStock', 'Corrupted or incomplete placement information in template - ignoring'))
+            else:
                 PathLog.warning(translate('PathStock', 'Corrupted or incomplete placement information in template - ignoring'))
-
+			
             if stockType == StockType.FromBase:
                 xneg = template.get('xneg')
                 xpos = template.get('xpos')
