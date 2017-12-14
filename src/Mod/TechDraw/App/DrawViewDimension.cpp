@@ -105,6 +105,7 @@ DrawViewDimension::DrawViewDimension(void)
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
+    delete lg;   //Coverity CID 169507
     ADD_PROPERTY_TYPE(LineWidth,(weight)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
     //ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
 
