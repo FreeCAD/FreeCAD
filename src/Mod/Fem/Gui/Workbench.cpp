@@ -235,8 +235,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, results);
     results->setCommand("&Results");
     *results << "FEM_ResultsPurge"
-             << "FEM_ResultShow"
-             << "Separator"
+             << "FEM_ResultShow";
+
+#ifdef FC_USE_VTK
+    *results << "Separator"
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
              << "Separator"
@@ -248,6 +250,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostCreateLinearizedStressesFilter"
              << "Separator"
              << "FEM_PostCreateFunctions";
+#endif
 
     return root;
 }
