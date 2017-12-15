@@ -105,7 +105,7 @@ class _TaskPanelFemMeshBoundaryLayer:
         self.selection_mode_std_print_message = "Select Faces for 3D, Edges for 2D by single click on them to add them to the list."
         self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshBoundaryLayer.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui")
 
         QtCore.QObject.connect(self.form.bl_number_of_layers, QtCore.SIGNAL("valueChanged(int)"), self.bl_number_of_layers_changed)
         QtCore.QObject.connect(self.form.bl_min_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bl_min_thickness_changed)

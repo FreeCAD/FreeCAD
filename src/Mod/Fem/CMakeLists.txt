@@ -175,20 +175,6 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/FemSelectionObserver.py
     PyGui/FemSelectionWidgets.py
-    PyGui/TaskPanelFemElectrostaticPotential.ui
-    PyGui/TaskPanelFemElementFluid1D.ui
-    PyGui/TaskPanelFemElementGeometry1D.ui
-    PyGui/TaskPanelFemElementGeometry2D.ui
-    PyGui/TaskPanelFemFlowVelocity.ui
-    PyGui/TaskPanelFemInitialFlowVelocity.ui
-    PyGui/TaskPanelFemMaterial.ui
-    PyGui/TaskPanelFemMeshBoundaryLayer.ui
-    PyGui/TaskPanelFemMeshGmsh.ui
-    PyGui/TaskPanelFemMeshGroup.ui
-    PyGui/TaskPanelFemMeshGroupXDMFExport.ui
-    PyGui/TaskPanelFemMeshRegion.ui
-    PyGui/TaskPanelFemResultShow.ui
-    PyGui/TaskPanelFemSolverCalculix.ui
 )
 
 SET(FemObjectsScripts_SRCS
