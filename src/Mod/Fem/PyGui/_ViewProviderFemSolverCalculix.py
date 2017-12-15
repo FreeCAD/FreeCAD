@@ -102,7 +102,7 @@ class _TaskPanelFemSolverCalculix:
     '''The TaskPanel for CalculiX ccx tools solver object'''
 
     def __init__(self, solver_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemSolverCalculix.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui")
         self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
         ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:

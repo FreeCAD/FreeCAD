@@ -57,7 +57,7 @@ class WriteXDMFTaskPanel:
     It will called if there are mesh groups detected. Else it will be bypassed.
     """
     def __init__(self, fem_mesh_obj, fileString):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGroupXDMFExport.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGroupXDMFExport.ui")
         self.result_dict = {}
         self.fem_mesh_obj = fem_mesh_obj
         self.fileString = fileString
