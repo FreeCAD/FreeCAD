@@ -70,7 +70,7 @@ using namespace MeshGui;
  *
  * The GLRender() method checks the status of the SoFCInteractiveElement to decide to be in interactive mode or not.
  * To take advantage of this facility the client programmer must set the status of the SoFCInteractiveElement to \a true
- * if there is a user interation and set the status to \a false if not. This can be done e.g. in the actualRedraw() method of
+ * if there is a user interaction and set the status to \a false if not. This can be done e.g. in the actualRedraw() method of
  * the viewer.
  * \author Werner Mayer
  */
