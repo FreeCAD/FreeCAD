@@ -32,8 +32,18 @@ import FreeCADGui
 import FemGui
 
 
+# for the panel
+import PyObjects._FemMeshGmsh
+from PySide import QtCore
+from PySide import QtGui
+from PySide.QtCore import Qt
+from PySide.QtGui import QApplication
+import time
+
+
 class _ViewProviderFemMeshGmsh:
     "A View Provider for the FemMeshGmsh object"
+
     def __init__(self, vobj):
         vobj.Proxy = self
 
@@ -52,8 +62,7 @@ class _ViewProviderFemMeshGmsh:
 
     def setEdit(self, vobj, mode):
         self.ViewObject.show()  # show the mesh on edit if it is hided
-        import PyGui._TaskPanelFemMeshGmsh
-        taskd = PyGui._TaskPanelFemMeshGmsh._TaskPanelFemMeshGmsh(self.Object)
+        taskd = _TaskPanelFemMeshGmsh(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
@@ -139,3 +148,141 @@ class _ViewProviderFemMeshGmsh:
         except Exception as err:
             FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
         return True
+
+
+class _TaskPanelFemMeshGmsh:
+    '''The TaskPanel for editing References property of FemMeshGmsh objects and creation of new FEM mesh'''
+
+    def __init__(self, obj):
+        self.mesh_obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemMeshGmsh.ui")
+
+        self.Timer = QtCore.QTimer()
+        self.Timer.start(100)  # 100 milli seconds
+        self.gmsh_runs = False
+        self.console_message_gmsh = ''
+
+        QtCore.QObject.connect(self.form.if_max, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.max_changed)
+        QtCore.QObject.connect(self.form.if_min, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.min_changed)
+        QtCore.QObject.connect(self.form.cb_dimension, QtCore.SIGNAL("activated(int)"), self.choose_dimension)
+        QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
+
+        self.form.cb_dimension.addItems(PyObjects._FemMeshGmsh._FemMeshGmsh.known_element_dimensions)
+
+        self.get_mesh_params()
+        self.get_active_analysis()
+        self.update()
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+        # show a OK, a apply and a Cancel button
+        # def reject() is called on Cancel button
+        # def clicked(self, button) is needed, to access the apply button
+
+    def accept(self):
+        self.set_mesh_params()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
+        return True
+
+    def reject(self):
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
+        return True
+
+    def clicked(self, button):
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.set_mesh_params()
+            self.run_gmsh()
+
+    def get_mesh_params(self):
+        self.clmax = self.mesh_obj.CharacteristicLengthMax
+        self.clmin = self.mesh_obj.CharacteristicLengthMin
+        self.dimension = self.mesh_obj.ElementDimension
+
+    def set_mesh_params(self):
+        self.mesh_obj.CharacteristicLengthMax = self.clmax
+        self.mesh_obj.CharacteristicLengthMin = self.clmin
+        self.mesh_obj.ElementDimension = self.dimension
+
+    def update(self):
+        'fills the widgets'
+        self.form.if_max.setText(self.clmax.UserString)
+        self.form.if_min.setText(self.clmin.UserString)
+        index_dimension = self.form.cb_dimension.findText(self.dimension)
+        self.form.cb_dimension.setCurrentIndex(index_dimension)
+
+    def console_log(self, message="", color="#000000"):
+        self.console_message_gmsh = self.console_message_gmsh + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
+            format(time.time() - self.Start, color, message.encode('utf-8', 'replace'))
+        self.form.te_output.setText(self.console_message_gmsh)
+        self.form.te_output.moveCursor(QtGui.QTextCursor.End)
+
+    def update_timer_text(self):
+        # print('timer1')
+        if self.gmsh_runs:
+            print('timer2')
+            # print('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+
+    def max_changed(self, base_quantity_value):
+        self.clmax = base_quantity_value
+
+    def min_changed(self, base_quantity_value):
+        self.clmin = base_quantity_value
+
+    def choose_dimension(self, index):
+        if index < 0:
+            return
+        self.form.cb_dimension.setCurrentIndex(index)
+        self.dimension = str(self.form.cb_dimension.itemText(index))  # form returns unicode
+
+    def run_gmsh(self):
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        part = self.obj.Part
+        if self.mesh_obj.MeshRegionList:
+            if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
+                if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
+                    error_message = "The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. Gmsh could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                    QtGui.QMessageBox.critical(None, "Shape to mesh is a BooleanFragmentsCompound and mesh regions are defined", error_message)
+        self.Start = time.time()
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.console_message_gmsh = ''
+        self.gmsh_runs = True
+        self.console_log("We are going to start ...")
+        self.get_active_analysis()
+        import femmesh.gmshtools as gmshtools
+        gmsh_mesh = gmshtools.GmshTools(self.obj, self.analysis)
+        self.console_log("Start Gmsh ...")
+        error = ''
+        try:
+            error = gmsh_mesh.create_mesh()
+        except:
+            import sys
+            print("Unexpected error when creating mesh: ", sys.exc_info()[0])
+        if error:
+            print(error)
+            self.console_log('Gmsh had warnings ...')
+            self.console_log(error, '#FF0000')
+        else:
+            self.console_log('Clean run of Gmsh')
+        self.console_log("Gmsh done!")
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.Timer.stop()
+        self.update()
+        QApplication.restoreOverrideCursor()
+
+    def get_active_analysis(self):
+        import FemGui
+        self.analysis = FemGui.getActiveAnalysis()
+        if self.analysis:
+            for m in FemGui.getActiveAnalysis().Group:
+                if m.Name == self.mesh_obj.Name:
+                    print('Active analysis found: ' + self.analysis.Name)
+                    return
+            else:
+                # print('Mesh is not member of active analysis, means no group meshing')
+                self.analysis = None  # no group meshing
+        else:
+            # print('No active analyis, means no group meshing')
+            self.analysis = None  # no group meshing

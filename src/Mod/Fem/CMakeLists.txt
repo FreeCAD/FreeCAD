@@ -155,16 +155,6 @@ SET(FemTestsElmer_SRCS
 
 SET(FemGuiScripts_SRCS
     PyGui/__init__.py
-    PyGui/_TaskPanelFemElementFluid1D.py
-    PyGui/_TaskPanelFemElementGeometry1D.py
-    PyGui/_TaskPanelFemElementGeometry2D.py
-    PyGui/_TaskPanelFemMaterial.py
-    PyGui/_TaskPanelFemMeshBoundaryLayer.py
-    PyGui/_TaskPanelFemMeshGmsh.py
-    PyGui/_TaskPanelFemMeshGroup.py
-    PyGui/_TaskPanelFemMeshRegion.py
-    PyGui/_TaskPanelFemResultShow.py
-    PyGui/_TaskPanelFemSolverCalculix.py
     PyGui/_TaskPanelFemSolverControl.py
     PyGui/_ViewProviderFemConstraintBodyHeatSource.py
     PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
