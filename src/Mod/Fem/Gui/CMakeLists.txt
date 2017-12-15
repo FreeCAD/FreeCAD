@@ -379,6 +379,35 @@ fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${
 INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
 
 
+# Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc
+# see https://forum.freecadweb.org/viewtopic.php?f=10&t=25833
+SET(FemGuiPythonUI_SRCS
+    Resources/ui/ElectrostaticPotential.ui
+    Resources/ui/ElementFluid1D.ui
+    Resources/ui/ElementGeometry1D.ui
+    Resources/ui/ElementGeometry2D.ui
+    Resources/ui/FlowVelocity.ui
+    Resources/ui/InitialFlowVelocity.ui
+    Resources/ui/Material.ui
+    Resources/ui/MeshBoundaryLayer.ui
+    Resources/ui/MeshGmsh.ui
+    Resources/ui/MeshGroup.ui
+    Resources/ui/MeshGroupXDMFExport.ui
+    Resources/ui/MeshRegion.ui
+    Resources/ui/ResultShow.ui
+    Resources/ui/SolverCalculix.ui
+)
+
+ADD_CUSTOM_TARGET(FemPythonUi ALL
+    SOURCES ${FemGuiPythonUI_SRCS}
+)
+
+fc_copy_sources(FemPythonUi "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiPythonUI_SRCS})
+
+INSTALL(FILES ${FemGuiPythonUI_SRCS} DESTINATION Mod/Fem/Resources/ui)
+
+
+
 SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(FemGui)
 

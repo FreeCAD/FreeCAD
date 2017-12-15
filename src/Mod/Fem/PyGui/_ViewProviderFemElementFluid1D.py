@@ -100,7 +100,7 @@ class _TaskPanelFemElementFluid1D:
         self.obj = obj
         self.obj_notvisible = []
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemElementFluid1D.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementFluid1D.ui")
         QtCore.QObject.connect(self.form.btn_add, QtCore.SIGNAL("clicked()"), self.add_references)
         QtCore.QObject.connect(self.form.btn_remove, QtCore.SIGNAL("clicked()"), self.remove_reference)
         QtCore.QObject.connect(self.form.cb_section_type, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
