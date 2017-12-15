@@ -180,7 +180,7 @@ class _Stairs(ArchComponent.Component):
                     return
                 if (len(obj.Base.Shape.Edges) == 1):
                     edge = obj.Base.Shape.Edges[0]
-                    if isinstance(edge.Curve,Part.LineSegment):
+                    if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
                         if obj.Landings == "At center":
                             landings = 1
                             self.makeStraightStairsWithLanding(obj,edge)
