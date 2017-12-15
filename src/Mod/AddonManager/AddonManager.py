@@ -270,6 +270,7 @@ class AddonsInstaller(QtGui.QDialog):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(link, QtCore.QUrl.TolerantMode))
 
     def install(self,repos=None):
+        self.buttonInstall.setEnabled(False)
         if self.tabWidget.currentIndex() == 0:
             idx = None
             if repos:
@@ -292,6 +293,7 @@ class AddonsInstaller(QtGui.QDialog):
             macro = self.macros[self.listMacros.currentRow()]
             if len(macro) < 5:
                 self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
+                self.buttonInstall.setEnabled(True)
                 return
             macroname = "Macro_"+macro[0]+".FCMacro"
             macroname = macroname.replace(" ","_")
@@ -301,6 +303,7 @@ class AddonsInstaller(QtGui.QDialog):
             macrofile.close()
             self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
         self.update_status()
+        self.buttonInstall.setEnabled(True)
 
     def show_progress_bar(self, state):
         if state == True:
