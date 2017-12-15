@@ -836,6 +836,7 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
                 dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                 dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
     if(node) {
+        restoreEditingRoot = false;
         pcEditingRoot->addChild(node);
         return;
     }
@@ -857,7 +858,7 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
         pcEditingRoot->removeAllChildren();
         return;
     }
-
+    restoreEditingRoot = false;
     auto root = editViewProvider->getRoot();
     if(root->getNumChildren()) 
         FC_ERR("WARNING!!! Editing view provider root node is tampered");
@@ -969,20 +970,11 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
-SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
+void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
 {
-    if (this->editViewProvider)
-        return false; // only one view provider is editable at a time
-
-    bool ok = p->startEditing(ModNum);
-
-    if (ok) {
-        this->editViewProvider = p;
-        this->editViewProvider->setEditViewer(this, ModNum);
-        addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
-    }
-
-    return ok;
+    this->editViewProvider = p;
+    this->editViewProvider->setEditViewer(this, ModNum);
+    addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
 }
 
 /// reset from edit mode

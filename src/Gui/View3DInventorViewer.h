@@ -186,7 +186,7 @@ public:
     /// get all view providers of given type
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     /// set the ViewProvider in special edit mode
-    SbBool setEditingViewProvider(Gui::ViewProvider* p, int ModNum=0);
+    void setEditingViewProvider(Gui::ViewProvider* p, int ModNum);
     /// return whether a view provider is edited
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
