@@ -178,7 +178,7 @@ void ViewProviderOriginFeature::setDisplayMode (const char* ModeName)
 
 bool ViewProviderOriginFeature::onDelete(const std::vector<std::string> &) {
     App::OriginFeature *feat = static_cast <App::OriginFeature *> ( getObject() );
-    // Forbid deletion if there is an origin thes feature belongs to
+    // Forbid deletion if there is an origin this feature belongs to
 
     if ( feat->getOrigin () ) {
         return false;
