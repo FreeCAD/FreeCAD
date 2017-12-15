@@ -93,8 +93,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
      Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
      mesh->setCommand("Mesh");
-     *mesh << "FEM_MeshNetgenFromShape"
-           << "FEM_MeshGmshFromShape"
+#ifdef FCWithNetgen
+     *mesh << "FEM_MeshNetgenFromShape";
+#endif
+     *mesh << "FEM_MeshGmshFromShape"
            << "Separator"
            << "FEM_MeshBoundaryLayer"
            << "FEM_MeshRegion"
@@ -205,8 +207,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
     mesh->setCommand("M&esh");
-    *mesh << "FEM_MeshNetgenFromShape"
-          << "FEM_MeshGmshFromShape"
+#ifdef FCWithNetgen
+     *mesh << "FEM_MeshNetgenFromShape";
+#endif
+     *mesh << "FEM_MeshGmshFromShape"
           << "Separator"
           << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"

@@ -29,27 +29,27 @@ SET(FemScripts_SRCS
     TestFem.py
 )
 
-SET(FemCommand_SRCS
-    femcommand/__init__.py
-    femcommand/commands.py
-    femcommand/manager.py
+SET(FemCommands_SRCS
+    femcommands/__init__.py
+    femcommands/commands.py
+    femcommands/manager.py
 )
 
-SET(FemInterface_SRCS
-    feminterface/__init__.py
-    feminterface/convert2TetGen.py
-    feminterface/importCcxDatResults.py
-    feminterface/importCcxFrdResults.py
-    feminterface/importFenicsMesh.py
-    feminterface/importInpMesh.py
-    feminterface/importToolsFem.py
-    feminterface/importVTKResults.py
-    feminterface/importZ88Mesh.py
-    feminterface/importZ88O2Results.py
-    feminterface/readFenicsXDMF.py
-    feminterface/readFenicsXML.py
-    feminterface/writeFenicsXDMF.py
-    feminterface/writeFenicsXML.py
+SET(FemInOut_SRCS
+    feminout/__init__.py
+    feminout/convert2TetGen.py
+    feminout/importCcxDatResults.py
+    feminout/importCcxFrdResults.py
+    feminout/importFenicsMesh.py
+    feminout/importInpMesh.py
+    feminout/importToolsFem.py
+    feminout/importVTKResults.py
+    feminout/importZ88Mesh.py
+    feminout/importZ88O2Results.py
+    feminout/readFenicsXDMF.py
+    feminout/readFenicsXML.py
+    feminout/writeFenicsXDMF.py
+    feminout/writeFenicsXML.py
 )
 
 SET(FemMesh_SRCS
@@ -155,16 +155,6 @@ SET(FemTestsElmer_SRCS
 
 SET(FemGuiScripts_SRCS
     PyGui/__init__.py
-    PyGui/_TaskPanelFemElementFluid1D.py
-    PyGui/_TaskPanelFemElementGeometry1D.py
-    PyGui/_TaskPanelFemElementGeometry2D.py
-    PyGui/_TaskPanelFemMaterial.py
-    PyGui/_TaskPanelFemMeshBoundaryLayer.py
-    PyGui/_TaskPanelFemMeshGmsh.py
-    PyGui/_TaskPanelFemMeshGroup.py
-    PyGui/_TaskPanelFemMeshRegion.py
-    PyGui/_TaskPanelFemResultShow.py
-    PyGui/_TaskPanelFemSolverCalculix.py
     PyGui/_TaskPanelFemSolverControl.py
     PyGui/_ViewProviderFemConstraintBodyHeatSource.py
     PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
@@ -185,20 +175,6 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/FemSelectionObserver.py
     PyGui/FemSelectionWidgets.py
-    PyGui/TaskPanelFemElectrostaticPotential.ui
-    PyGui/TaskPanelFemElementFluid1D.ui
-    PyGui/TaskPanelFemElementGeometry1D.ui
-    PyGui/TaskPanelFemElementGeometry2D.ui
-    PyGui/TaskPanelFemFlowVelocity.ui
-    PyGui/TaskPanelFemInitialFlowVelocity.ui
-    PyGui/TaskPanelFemMaterial.ui
-    PyGui/TaskPanelFemMeshBoundaryLayer.ui
-    PyGui/TaskPanelFemMeshGmsh.ui
-    PyGui/TaskPanelFemMeshGroup.ui
-    PyGui/TaskPanelFemMeshGroupXDMFExport.ui
-    PyGui/TaskPanelFemMeshRegion.ui
-    PyGui/TaskPanelFemResultShow.ui
-    PyGui/TaskPanelFemSolverCalculix.ui
 )
 
 SET(FemObjectsScripts_SRCS
@@ -224,8 +200,8 @@ SET(FemObjectsScripts_SRCS
 
 SET(FemAllScripts
     ${FemScripts_SRCS}
-    ${FemCommand_SRCS}
-    ${FemInterface_SRCS}
+    ${FemCommands_SRCS}
+    ${FemInOut_SRCS}
     ${FemMesh_SRCS}
     ${FemResult_SRCS}
     ${FemSolver_SRCS}
@@ -251,8 +227,8 @@ fc_copy_sources(FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 
 # install Python packages (for make install)
 INSTALL(FILES ${FemScripts_SRCS} DESTINATION Mod/Fem)
-INSTALL(FILES ${FemCommand_SRCS} DESTINATION Mod/Fem/femcommand)
-INSTALL(FILES ${FemInterface_SRCS} DESTINATION Mod/Fem/feminterface)
+INSTALL(FILES ${FemCommands_SRCS} DESTINATION Mod/Fem/femcommands)
+INSTALL(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
 INSTALL(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
 INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
 INSTALL(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)

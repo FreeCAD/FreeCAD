@@ -61,7 +61,7 @@ class _TaskPanel(object):
         self._refWidget = FemSelectionWidgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
         self._paramWidget = Gui.PySideUic.loadUi(
-            App.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemFlowVelocity.ui")
+            App.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui")
         self._initParamWidget()
         self.form = [self._refWidget, self._paramWidget]
         analysis = FemUtils.findAnalysisOfMember(obj)
