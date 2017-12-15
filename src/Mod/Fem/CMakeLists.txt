@@ -29,10 +29,10 @@ SET(FemScripts_SRCS
     TestFem.py
 )
 
-SET(FemCommand_SRCS
-    femcommand/__init__.py
-    femcommand/commands.py
-    femcommand/manager.py
+SET(FemCommands_SRCS
+    femcommands/__init__.py
+    femcommands/commands.py
+    femcommands/manager.py
 )
 
 SET(FemInOut_SRCS
@@ -200,7 +200,7 @@ SET(FemObjectsScripts_SRCS
 
 SET(FemAllScripts
     ${FemScripts_SRCS}
-    ${FemCommand_SRCS}
+    ${FemCommands_SRCS}
     ${FemInOut_SRCS}
     ${FemMesh_SRCS}
     ${FemResult_SRCS}
@@ -227,7 +227,7 @@ fc_copy_sources(FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 
 # install Python packages (for make install)
 INSTALL(FILES ${FemScripts_SRCS} DESTINATION Mod/Fem)
-INSTALL(FILES ${FemCommand_SRCS} DESTINATION Mod/Fem/femcommand)
+INSTALL(FILES ${FemCommands_SRCS} DESTINATION Mod/Fem/femcommands)
 INSTALL(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
 INSTALL(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
 INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
