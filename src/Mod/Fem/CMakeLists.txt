@@ -35,21 +35,21 @@ SET(FemCommand_SRCS
     femcommand/manager.py
 )
 
-SET(FemInterface_SRCS
-    feminterface/__init__.py
-    feminterface/convert2TetGen.py
-    feminterface/importCcxDatResults.py
-    feminterface/importCcxFrdResults.py
-    feminterface/importFenicsMesh.py
-    feminterface/importInpMesh.py
-    feminterface/importToolsFem.py
-    feminterface/importVTKResults.py
-    feminterface/importZ88Mesh.py
-    feminterface/importZ88O2Results.py
-    feminterface/readFenicsXDMF.py
-    feminterface/readFenicsXML.py
-    feminterface/writeFenicsXDMF.py
-    feminterface/writeFenicsXML.py
+SET(FemInOut_SRCS
+    feminout/__init__.py
+    feminout/convert2TetGen.py
+    feminout/importCcxDatResults.py
+    feminout/importCcxFrdResults.py
+    feminout/importFenicsMesh.py
+    feminout/importInpMesh.py
+    feminout/importToolsFem.py
+    feminout/importVTKResults.py
+    feminout/importZ88Mesh.py
+    feminout/importZ88O2Results.py
+    feminout/readFenicsXDMF.py
+    feminout/readFenicsXML.py
+    feminout/writeFenicsXDMF.py
+    feminout/writeFenicsXML.py
 )
 
 SET(FemMesh_SRCS
@@ -201,7 +201,7 @@ SET(FemObjectsScripts_SRCS
 SET(FemAllScripts
     ${FemScripts_SRCS}
     ${FemCommand_SRCS}
-    ${FemInterface_SRCS}
+    ${FemInOut_SRCS}
     ${FemMesh_SRCS}
     ${FemResult_SRCS}
     ${FemSolver_SRCS}
@@ -228,7 +228,7 @@ fc_copy_sources(FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 # install Python packages (for make install)
 INSTALL(FILES ${FemScripts_SRCS} DESTINATION Mod/Fem)
 INSTALL(FILES ${FemCommand_SRCS} DESTINATION Mod/Fem/femcommand)
-INSTALL(FILES ${FemInterface_SRCS} DESTINATION Mod/Fem/feminterface)
+INSTALL(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
 INSTALL(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
 INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
 INSTALL(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)
