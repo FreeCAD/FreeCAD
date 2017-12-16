@@ -73,7 +73,8 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
         _ViewProviderPanel(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
-        obj.Base.ViewObject.hide()
+        if FreeCAD.GuiUp:
+            obj.Base.ViewObject.hide()
     if width:
         obj.Width = width
     if thickness:
