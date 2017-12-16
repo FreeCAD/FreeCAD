@@ -56,6 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
 # include <QAction>
@@ -249,7 +250,7 @@ struct EditData {
     SoText2       *textX;
     SoTranslation *textPos;
 
-    SoGroup       *constrGroup;
+    SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
 };
@@ -276,7 +277,8 @@ ViewProviderSketch::ViewProviderSketch()
   : edit(0),
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
-    combrepscalehyst(0)
+    combrepscalehyst(0),
+    isShowVirtualSpace(false)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -5130,7 +5132,29 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         sep->unref();
         mat->unref();
     }
+    
+    updateVirtualSpace();
 }
+
+void ViewProviderSketch::updateVirtualSpace(void)
+{
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
+
+    if(constrlist.size() == edit->vConstrType.size()) {
+
+        edit->constrGroup->enable.setNum(constrlist.size());
+
+        SbBool *sws = edit->constrGroup->enable.startEditing();
+
+        for (size_t i = 0; i < constrlist.size(); i++) {
+        //for (size_t i = 0; i < 15; i++) {
+            sws[i] = !constrlist[i]->isInVirtualSpace;
+        }
+
+        edit->constrGroup->enable.finishEditing();
+    }
+}
+
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 {
@@ -5633,7 +5657,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(DrawStyle);
 
     // add the group where all the constraints has its SoSeparator
-    edit->constrGroup = new SoGroup();
+    edit->constrGroup = new SmSwitchboard();
     edit->constrGroup->setName("ConstraintGroup");
     edit->EditRoot->addChild(edit->constrGroup);
     

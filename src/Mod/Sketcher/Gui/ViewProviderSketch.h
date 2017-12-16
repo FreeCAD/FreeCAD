@@ -225,6 +225,8 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    /// updates the visibility of the virtual space
+    void updateVirtualSpace(void);
     
     friend class DrawSketchHandler;
     friend struct ::EditData;
@@ -408,6 +410,9 @@ protected:
     // information layer variables
     bool visibleInformationChanged;
     double combrepscalehyst;
+    
+    // Virtual space variables
+    bool isShowVirtualSpace;
 };
 
 } // namespace PartGui
