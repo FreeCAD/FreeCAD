@@ -444,6 +444,9 @@ class Component:
         return None
         
     def rebase(self,shape):
+        """returns a shape that is a copy ofthe original shape
+        but centered on the (0,0) origin, and a placement that is needed to
+        reposition that shape to its original location/orientation"""
         import DraftGeomUtils,math
         if not isinstance(shape,list):
             shape = [shape]
@@ -453,7 +456,7 @@ class Component:
             v = shape[0].BoundBox.Center
         n = DraftGeomUtils.getNormal(shape[0])
         r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
-        if round(r.Angle,8) == round(math.pi,8):
+        if round(abs(r.Angle),8) == round(math.pi,8):
             r = FreeCAD.Rotation()
         shapes = []
         for s in shape:
