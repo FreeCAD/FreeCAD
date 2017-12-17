@@ -54,7 +54,7 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
-    App::PropertyLinkGlobal  Source;
+    App::PropertyLinkList  Source;
     App::PropertyEnumeration ProjectionType;
 
     App::PropertyBool AutoDistribute;
