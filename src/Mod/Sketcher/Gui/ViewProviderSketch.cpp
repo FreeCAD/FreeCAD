@@ -5048,6 +5048,8 @@ void ViewProviderSketch::setIsShownVirtualSpace(bool isshownvirtualspace)
     this->isShownVirtualSpace = isshownvirtualspace;
 
     updateVirtualSpace();
+    
+    signalConstraintsChanged();
 }
 
 bool ViewProviderSketch::getIsShownVirtualSpace() const
