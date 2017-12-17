@@ -4031,6 +4031,8 @@ Restart:
         rebuildConstraintsVisual();
     assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
+    // update the virtual space
+    updateVirtualSpace();
     // go through the constraints and update the position
     i = 0;
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
@@ -5021,8 +5023,6 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         sep->unref();
         mat->unref();
     }
-    
-    updateVirtualSpace();
 }
 
 void ViewProviderSketch::updateVirtualSpace(void)
