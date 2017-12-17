@@ -102,7 +102,22 @@
       <Documentation>
         <UserDocu>toggle the Driving status of a datum constraint</UserDocu>
       </Documentation>
-    </Methode>    
+    </Methode>
+    <Methode Name="setVirtualSpace">
+        <Documentation>
+            <UserDocu>set the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getVirtualSpace">
+        <Documentation>
+            <UserDocu>Get the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="toggleVirtualSpace">
+        <Documentation>
+            <UserDocu>toggle the VirtualSpace status of a constraint</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>

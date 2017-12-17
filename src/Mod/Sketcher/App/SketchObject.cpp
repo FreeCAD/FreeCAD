@@ -417,6 +417,62 @@ int SketchObject::toggleDriving(int ConstrId)
     return 0;
 }
 
+int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isInVirtualSpace = isinvirtualspace;
+    newVals[ConstrId] = constNew;
+
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    return 0;
+}
+
+int SketchObject::getVirtualSpace(int ConstrId, bool &isinvirtualspace)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    isinvirtualspace=vals[ConstrId]->isInVirtualSpace;
+    return 0;
+}
+
+int SketchObject::toggleVirtualSpace(int ConstrId)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isInVirtualSpace = !constNew->isInVirtualSpace;
+    newVals[ConstrId] = constNew;
+
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    return 0;
+}
+
+
 int SketchObject::setUpSketch()
 {
     return solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),

@@ -169,6 +169,12 @@ public:
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
+    /// set the driving status of this constraint and solve
+    int setVirtualSpace(int ConstrId, bool isinvirtualspace);
+    /// get the driving status of this constraint
+    int getVirtualSpace(int ConstrId, bool &isinvirtualspace);
+    /// toggle the driving status of this constraint
+    int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
     int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeoBeforeMoving=false);
     /// retrieves the coordinates of a point
