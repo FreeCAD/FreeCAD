@@ -272,34 +272,17 @@ void CmdTechDrawNewView::activated(int iMsg)
     Gui::WaitCursor wc;
     const auto selectedProjections( getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()) );
 
-    float newScale = 1.0;
-    float newRotation = 0.0;
-    Base::Vector3d newDirection(0.0, 0.0, 1.0);
-    if (!selectedProjections.empty()) {
-        const auto myView( static_cast<TechDraw::DrawView*>(selectedProjections.front()) );
-
-        newScale = myView->getScale();
-        newRotation = myView->Rotation.getValue();
-
-        // The "Direction" property does not belong to TechDraw::DrawView, but to one of the
-        // many child classes that are projecting objects into the drawing. Therefore, we get the
-        // property by name.
-        const App::PropertyVector* const propDirection = dynamic_cast<App::PropertyVector*>(myView->getPropertyByName("Direction"));
-        if (propDirection) {
-            newDirection = propDirection->getValue();
-        }
-    }
 
     openCommand("Create view");
-    for (std::vector<App::DocumentObject*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        std::string FeatName = getUniqueObjectName("View");
-        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewPart','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
-        doCommand(Doc,"App.activeDocument().%s.Direction = (%e,%e,%e)",FeatName.c_str(), newDirection.x, newDirection.y, newDirection.z);
-        doCommand(Doc,"App.activeDocument().%s.Scale = %e",FeatName.c_str(), newScale);
-        doCommand(Doc,"App.activeDocument().%s.Rotation = %e",FeatName.c_str(), newRotation);
-        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    std::string FeatName = getUniqueObjectName("View");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewPart','%s')",FeatName.c_str());
+    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart *>(docObj);
+    if (!dvp) {
+        throw Base::Exception("CmdTechDrawNewView DVP not found\n");
     }
+    dvp->Source.setValues(shapes);
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
     commitCommand();
 }
@@ -335,35 +318,32 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
         return;
     }
 
-    //std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (shapes.empty()) {
+    std::vector<App::DocumentObject*> baseObj = getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least 1 DrawingView object."));
+            QObject::tr("Select at least 1 DrawViewPart object as Base."));
         return;
     }
-    App::DocumentObject* dObj = *(shapes.begin());
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(dObj);
-
+    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
+    std::string BaseName = dvp->getNameInDocument();
     std::string PageName = page->getNameInDocument();
 
     Gui::WaitCursor wc;
     openCommand("Create view");
-
     std::string FeatName = getUniqueObjectName("Section");
-    std::string SourceName = dvp->Source.getValue()->getNameInDocument();
-    std::string BaseName = (dObj)->getNameInDocument();
+
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
     if (!dsv) {
         throw Base::Exception("CmdTechDrawNewViewSection DSV not found\n");
     }
+    dsv->Source.setValues(dvp->Source.getValues());
+    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
 
     updateActive();
@@ -407,14 +387,13 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (shapes.empty()) {
+    std::vector<App::DocumentObject*> baseObj = getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least 1 DrawingView object."));
+            QObject::tr("Select at least 1 DrawViewPart object as Base."));
         return;
     }
-    App::DocumentObject* dObj = *(shapes.begin());
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(dObj);
+    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*(baseObj.begin()));
 
     std::string PageName = page->getNameInDocument();
 
@@ -422,11 +401,16 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
     openCommand("Create view");
 
     std::string FeatName = getUniqueObjectName("Detail");
-    std::string SourceName = dvp->Source.getValue()->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDetail','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),(dObj)->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),(dObj)->getNameInDocument());
+    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
+    if (!dvd) {
+        throw Base::Exception("CmdTechDrawNewViewDetail DVD not found\n");
+    }
+    dvd->Source.setValues(dvp->Source.getValues());
+    
+    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),dvp->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     updateActive();
@@ -500,10 +484,11 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     std::string SourceName = (*shapes.begin())->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawProjGroup','%s')",multiViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",multiViewName.c_str(),SourceName.c_str());
 
+//    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",multiViewName.c_str(),SourceName.c_str());
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
+    multiView->Source.setValues(shapes);
 
     //updateActive();    //exec all pending actions, but there's nothing to do here.
     commitCommand();   //write the undo
