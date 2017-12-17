@@ -141,6 +141,7 @@ SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     //
 SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::ExprBasedConstrDimColor     (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
 SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
@@ -2689,7 +2690,10 @@ void ViewProviderSketch::updateColor(void)
         else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                l->textColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+
+                l->textColor = (getSketchObject()->constraintHasExpression(i) ? ExprBasedConstrDimColor: 
+                                        (constraint->isDriving ? ConstrDimColor : NonDrivingConstrDimColor));
+
             } else if (hasMaterial) {
                 m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
             }
@@ -5223,7 +5227,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // set non-driving constraint color
     color = (unsigned long)(NonDrivingConstrDimColor.getPackedValue());
     color = hGrp->GetUnsigned("NonDrivingConstrDimColor", color);
-    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);    
+    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
+    ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+
     // set the external geometry color
     color = (unsigned long)(CurveExternalColor.getPackedValue());
     color = hGrp->GetUnsigned("ExternalColor", color);
