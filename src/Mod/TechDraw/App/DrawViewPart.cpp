@@ -33,6 +33,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepLib.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
@@ -127,6 +128,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking from.");
     ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,"Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
@@ -178,14 +180,33 @@ DrawViewPart::~DrawViewPart()
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
     TopoDS_Shape result;
-    App::DocumentObject *link = Source.getValue();
-    if (!link) {
-        Base::Console().Error("DVP - No Source object linked - %s\n",getNameInDocument());
-    } else if (link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        result = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
-    } else if (link->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-        result = getShapeFromPart(static_cast<App::Part*>(link));
-    } else {        Base::Console().Error("DVP - Can't handle this Source - %s\n",getNameInDocument());
+    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    if (links.empty())  {
+        Base::Console().Log("DVP::getSourceShape - No Sources - creation? - %s\n",getNameInDocument());
+    } else {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        for (auto& l:links) {
+            if (l->isDerivedFrom(Part::Feature::getClassTypeId())){
+                const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
+                if (partTopo.isNull()) {
+                    continue;    //has no shape
+                }
+                BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
+                TopoDS_Shape shape = BuilderCopy.Shape();
+                builder.Add(comp, shape);
+            } else if (l->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+                TopoDS_Shape s = getShapeFromPart(static_cast<App::Part*>(l));
+                if (s.IsNull()) {
+                    continue;
+                }
+                BRepBuilderAPI_Copy BuilderCopy(s);
+                TopoDS_Shape shape = BuilderCopy.Shape();
+                builder.Add(comp, shape);
+            }
+        }        
+        result = comp;
     }
     return result;
 }
@@ -214,7 +235,25 @@ TopoDS_Shape DrawViewPart::getShapeFromPart(App::Part* ap) const
     return result;
 }
 
-
+TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
+{
+    TopoDS_Shape baseShape = getSourceShape();
+    TopoDS_Iterator it(baseShape);
+    TopoDS_Shape fusedShape = it.Value();
+    it.Next();
+    for (; it.More(); it.Next()) {
+        const TopoDS_Shape& aChild = it.Value();
+        BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
+        // Let's check if the fusion has been successful
+        if (!mkFuse.IsDone()) {
+            Base::Console().Error("DVp - Fusion failed\n");
+            return baseShape;
+        }
+        fusedShape = mkFuse.Shape();
+    }
+    baseShape = fusedShape;
+    return baseShape;
+}
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
