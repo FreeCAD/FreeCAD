@@ -5839,6 +5839,15 @@ int SketchObject::changeConstraintsLocking(bool bLock)
     return cntSuccess;
 }
 
+bool SketchObject::constraintHasExpression(int constrid)
+{
+    App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
+
+    App::PropertyExpressionEngine::ExpressionInfo expr_info = this->getExpression(spath);
+
+    return (expr_info.expression != 0);
+}
+
 
 /*!
  * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs,

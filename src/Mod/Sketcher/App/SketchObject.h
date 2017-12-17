@@ -265,6 +265,8 @@ public:
     bool isPointOnCurve(int geoIdCurve, double px, double py);
     double calculateConstraintError(int ConstrId);
     int changeConstraintsLocking(bool bLock);
+    /// returns whether a given constraint has an associated expression or not
+    bool constraintHasExpression(int constrid);
 
     ///porting functions
     int port_reversedExternalArcs(bool justAnalyze);
