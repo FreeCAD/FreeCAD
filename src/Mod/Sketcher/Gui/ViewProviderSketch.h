@@ -373,6 +373,7 @@ protected:
     static SbColor ConstrDimColor;
     static SbColor ConstrIcoColor;
     static SbColor NonDrivingConstrDimColor;
+    static SbColor ExprBasedConstrDimColor;
     static SbColor PreselectColor;
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
