@@ -78,14 +78,15 @@ void ConstraintView::FUNC(){                               \
 class ConstraintItem : public QListWidgetItem
 {
 public:
-    ConstraintItem(const Sketcher::SketchObject * s, int ConstNbr)
+    ConstraintItem(const Sketcher::SketchObject * s, ViewProviderSketch *sketchview, int ConstNbr)
         : QListWidgetItem(QString()),
           sketch(s),
+          sketchView(sketchview),
           ConstraintNbr(ConstNbr)
     {
         this->setFlags(this->flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
 
-        this->setCheckState(this->isInVirtualSpace()?Qt::Unchecked:Qt::Checked);
+        updateVirtualSpaceStatus();
     }
     ~ConstraintItem()
     {
@@ -301,8 +302,13 @@ public:
 
         return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
     }
+    
+    void updateVirtualSpaceStatus() {
+        this->setCheckState((this->isInVirtualSpace() != sketchView->getIsShownVirtualSpace())?Qt::Unchecked:Qt::Checked);
+    }
 
     const Sketcher::SketchObject * sketch;
+    const ViewProviderSketch *sketchView;
     int ConstraintNbr;
     QVariant value;
 };
@@ -738,7 +744,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
     const std::vector< Sketcher::Constraint * > &vals = sketch->Constraints.getValues();
 
-    /* Update constraint number */
+    /* Update constraint number and virtual space check status */
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
         ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
 
@@ -746,6 +752,10 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
 
         it->ConstraintNbr = i;
         it->value = QVariant();
+        
+        ui->listWidgetConstraints->blockSignals(true);
+        it->updateVirtualSpaceStatus();
+        ui->listWidgetConstraints->blockSignals(false);
     }
 
     /* Remove entries, if any */
@@ -754,7 +764,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
 
     /* Add new entries, if any */
     for (std::size_t i = ui->listWidgetConstraints->count(); i < vals.size(); ++i)
-        ui->listWidgetConstraints->addItem(new ConstraintItem(sketch, i));
+        ui->listWidgetConstraints->addItem(new ConstraintItem(sketch, sketchView, i));
 
     /* Update filtering */
     int Filter = ui->comboBoxFilter->currentIndex();
