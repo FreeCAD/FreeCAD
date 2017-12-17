@@ -735,9 +735,21 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         }
     }
 
-    const_cast<Sketcher::Constraint*>(v)->isInVirtualSpace = !(item->checkState() == Qt::Checked); // update constraint virtual space status
-
-    sketchView->updateVirtualSpace();
+    // update constraint virtual space status
+    Gui::Command::openCommand("Update constraint's virtual space");
+    try {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setVirtualSpace(%d, %s)",
+                                sketch->getNameInDocument(),
+                                it->ConstraintNbr, 
+                                ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
+        Gui::Command::commitCommand();
+    }
+    catch (const Base::Exception & e) {
+        Gui::Command::abortCommand();
+        
+        QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                              QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+    }
 
     inEditMode = false;
 }
