@@ -156,7 +156,6 @@
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
-        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
@@ -169,6 +168,7 @@
         <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
+        <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
         <file>icons/Sketcher_Symmetry.svg</file>
         <file>icons/Sketcher_ToggleConstraint.svg</file>
         <file>icons/Sketcher_ToggleConstruction.svg</file>
