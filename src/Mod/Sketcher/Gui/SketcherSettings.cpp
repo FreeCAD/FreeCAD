@@ -230,6 +230,7 @@ void SketcherSettingsColors::saveSettings()
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
+    ui->ExprBasedConstrDimColor->onSave();
 
     ui->SketcherDatumWidth->onSave();
     ui->DefaultSketcherVertexWidth->onSave();
@@ -254,6 +255,7 @@ void SketcherSettingsColors::loadSettings()
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
+    ui->ExprBasedConstrDimColor->onRestore();
 
     ui->SketcherDatumWidth->onRestore();
     ui->DefaultSketcherVertexWidth->onRestore();
