@@ -278,7 +278,7 @@ ViewProviderSketch::ViewProviderSketch()
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
     combrepscalehyst(0),
-    isShowVirtualSpace(false)
+    isShownVirtualSpace(false)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -5146,13 +5146,24 @@ void ViewProviderSketch::updateVirtualSpace(void)
 
         SbBool *sws = edit->constrGroup->enable.startEditing();
 
-        for (size_t i = 0; i < constrlist.size(); i++) {
-        //for (size_t i = 0; i < 15; i++) {
-            sws[i] = !constrlist[i]->isInVirtualSpace;
-        }
+        for (size_t i = 0; i < constrlist.size(); i++)
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isShownVirtualSpace); // XOR of constraint mode and VP mode
+
 
         edit->constrGroup->enable.finishEditing();
     }
+}
+
+void ViewProviderSketch::setIsShownVirtualSpace(bool isshownvirtualspace)
+{
+    this->isShownVirtualSpace = isshownvirtualspace;
+
+    updateVirtualSpace();
+}
+
+bool ViewProviderSketch::getIsShownVirtualSpace() const
+{
+    return this->isShownVirtualSpace;
 }
 
 
