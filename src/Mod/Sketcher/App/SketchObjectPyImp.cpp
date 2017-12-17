@@ -743,6 +743,56 @@ PyObject* SketchObjectPy::toggleDriving(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::setVirtualSpace(PyObject *args)
+{
+    PyObject* invirtualspace;
+    int constrid;
+
+    if (!PyArg_ParseTuple(args, "iO!", &constrid, &PyBool_Type, &invirtualspace))
+        return 0;
+
+    if (this->getSketchObjectPtr()->setVirtualSpace(constrid, PyObject_IsTrue(invirtualspace) ? true : false)) {
+        std::stringstream str;
+        str << "Not able set virtual space for constraint with the given index: " << constrid;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::getVirtualSpace(PyObject *args)
+{
+    int constrid;
+    bool invirtualspace;
+
+    if (!PyArg_ParseTuple(args, "i", &constrid))
+        return 0;
+
+    if (this->getSketchObjectPtr()->getVirtualSpace(constrid, invirtualspace)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return 0;
+    }
+
+    return Py::new_reference_to(Py::Boolean(invirtualspace));
+}
+
+PyObject* SketchObjectPy::toggleVirtualSpace(PyObject *args)
+{
+    int constrid;
+
+    if (!PyArg_ParseTuple(args, "i", &constrid))
+        return 0;
+
+    if (this->getSketchObjectPtr()->toggleVirtualSpace(constrid)) {
+        std::stringstream str;
+        str << "Not able toggle virtual space for constraint with the given index: " << constrid;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
 
 PyObject* SketchObjectPy::movePoint(PyObject *args)
 {
