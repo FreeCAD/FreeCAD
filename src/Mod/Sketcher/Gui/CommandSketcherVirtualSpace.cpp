@@ -96,7 +96,7 @@ CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Switch virtual space");
-    sToolTipText    = QT_TR_NOOP("Switches between the two virtual spaces");
+    sToolTipText    = QT_TR_NOOP("Switches the selected constraints or the view to the other virtual space");
     sWhatsThis      = "Sketcher_SwitchVirtualSpace";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SwitchVirtualSpace";
@@ -107,20 +107,95 @@ CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
 void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    bool modeChange=true;
+    
+    std::vector<Gui::SelectionObject> selection;
+    
+    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0){
+        // Now we check whether we have a constraint selected or not.
+        
+        // get the selection
+        selection = getSelection().getSelectionEx();
+        
+        // only one sketch with its subelements are allowed to be selected
+        if (selection.size() != 1) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+        
+        // get the needed lists and objects
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        if (SubNames.empty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+        
+        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+            // see if we have constraints, if we do it is not a mode change, but a toggle.
+            if (it->size() > 10 && it->substr(0,10) == "Constraint")
+                modeChange=false;
+        }
+    }
 
-    Gui::Document * doc= getActiveGuiDocument();
+    if (modeChange) {
+        Gui::Document * doc= getActiveGuiDocument();
 
-    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
-    vp->setIsShownVirtualSpace(!vp->getIsShownVirtualSpace());
+        vp->setIsShownVirtualSpace(!vp->getIsShownVirtualSpace());
+    }
+    else // toggle the selected constraint(s)
+    {
+        // get the needed lists and objects
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        if (SubNames.empty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+        
+        SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+        Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+        
+        // undo command open
+        openCommand("Toggle constraints to the other virtual space");
+        
+        int successful=SubNames.size();
+        // go through the selected subelements
+        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+            // only handle constraints
+            if (it->size() > 10 && it->substr(0,10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
+                Gui::Command::openCommand("Update constraint's virtual space");
+                try {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleVirtualSpace(%d)",
+                                            Obj->getNameInDocument(),
+                                            ConstrId);
+                }
+                catch(const Base::Exception&) {
+                    successful--;
+                }
+            }
+        }
 
+        if (successful > 0)
+            commitCommand();
+        else
+            abortCommand();
+
+        tryAutoRecompute();
+
+        // clear the selection (convenience)
+        getSelection().clearSelection();
+    }
 }
 
 bool CmdSketcherSwitchVirtualSpace::isActive(void)
 {
     return isSketcherVirtualSpaceActive( getActiveGuiDocument(), false );
 }
-
 
 void CreateSketcherCommandsVirtualSpace(void)
 {
