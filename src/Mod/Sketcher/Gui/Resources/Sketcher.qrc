@@ -97,6 +97,8 @@
         <file>icons/Sketcher_CreatePolyline_Constr.svg</file>
         <file>icons/Sketcher_CreateRectangle.svg</file>
         <file>icons/Sketcher_CreateRectangle_Constr.svg</file>
+        <file>icons/Sketcher_CreateRegularPolygon.svg</file>
+        <file>icons/Sketcher_CreateRegularPolygon_Constr.svg</file>
         <file>icons/Sketcher_CreateSlot.svg</file>
         <file>icons/Sketcher_CreateSlot_Constr.svg</file>
         <file>icons/Sketcher_CreateSquare.svg</file>
@@ -153,7 +155,6 @@
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
-        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
