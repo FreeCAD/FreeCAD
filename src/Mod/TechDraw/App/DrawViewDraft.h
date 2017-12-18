@@ -43,7 +43,7 @@ public:
     DrawViewDraft(void);
     virtual ~DrawViewDraft();
 
-    App::PropertyLinkGlobal   Source;
+    App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;
     App::PropertyFloat        FontSize;
     App::PropertyVector       Direction;
