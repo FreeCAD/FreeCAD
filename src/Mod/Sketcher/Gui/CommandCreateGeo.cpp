@@ -63,6 +63,8 @@
 
 #include "GeometryCreationMode.h"
 
+#include "SketcherRegularPolygonDialog.h"
+
 using namespace std;
 using namespace SketcherGui;
 
@@ -7433,6 +7435,31 @@ bool CmdSketcherCreateOctagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+DEF_STD_CMD_A(CmdSketcherCreateRegularPolygon);
+CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
+: Command("Sketcher_CreateRegularPolygon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create regular polygon");
+    sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketch");
+    sWhatsThis      = "CreateRegularPolygon";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "CreateRegularPolygon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateRegularPolygon::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8) );
+}
+
+bool CmdSketcherCreateRegularPolygon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateRegularPolygon);
 
@@ -7463,6 +7490,17 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7)); break;
     case 5:
         ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8)); break;
+    case 6:
+    {
+        // Pop-up asking for values
+        SketcherRegularPolygonDialog * srpd = new SketcherRegularPolygonDialog();
+
+        if (srpd->exec() == QDialog::Accepted)
+            ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(srpd->sides));
+
+        delete srpd;
+    }
+    break;
     default:
         return;
     }
@@ -7494,6 +7532,8 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
     heptagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
     QAction* octagon = pcAction->addAction(QString());
     octagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
+    QAction* regular = pcAction->addAction(QString());
+    regular->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon"));
 
     _pcAction = pcAction;
     languageChange();
@@ -7521,6 +7561,7 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
         a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
         a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
         a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
+        a[6]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
@@ -7530,6 +7571,7 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
         a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon_Constr"));
         a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon_Constr"));
         a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon_Constr"));
+        a[6]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -7568,6 +7610,10 @@ void CmdSketcherCompCreateRegularPolygon::languageChange()
     octagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Octagon"));
     octagon->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
     octagon->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
+    QAction* regular = a[6];
+    regular->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Regular Polygon"));
+    regular->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
+    regular->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create a regular polygon by its center and by one corner"));
 }
 
 bool CmdSketcherCompCreateRegularPolygon::isActive(void)
