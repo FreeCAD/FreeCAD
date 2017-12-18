@@ -38,6 +38,7 @@ set(SketcherGui_MOC_HDRS
     SketchMirrorDialog.h
     SketcherSettings.h
     SketchRectangularArrayDialog.h
+    SketcherRegularPolygonDialog.h
     PropertyConstraintListItem.h
 )
 fc_wrap_cpp(SketcherGui_MOC_SRCS ${SketcherGui_MOC_HDRS})
@@ -62,6 +63,7 @@ set(SketcherGui_UIC_SRCS
     SketcherSettings.ui
     SketcherSettingsColors.ui
     SketchRectangularArrayDialog.ui
+    SketcherRegularPolygonDialog.ui
 )
 
 if(BUILD_QT5)
@@ -127,6 +129,8 @@ SET(SketcherGui_SRCS
     SketcherSettings.h
     SketchRectangularArrayDialog.h
     SketchRectangularArrayDialog.cpp
+    SketcherRegularPolygonDialog.h
+    SketcherRegularPolygonDialog.cpp
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
