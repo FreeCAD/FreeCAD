@@ -78,6 +78,10 @@ public:
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
+    /// add unspecified geometry, where each element's "fixed" status is given by the blockedGeometry array
+    int addGeometry(const std::vector<Part::Geometry *> &geo, std::vector<bool> &blockedGeometry);
+    /// get boolean list indicating whether the geometry is to be blocked or not
+    void getBlockedGeometry(std::vector<bool> & blockedGeometry, const std::vector<Constraint *> &ConstraintList);
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
