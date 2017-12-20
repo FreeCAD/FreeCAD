@@ -72,6 +72,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             this->getConstraintPtr()->First = FirstIndex;
             return 0;
         }
+        else if (strcmp("Blocked",ConstraintType) == 0) {
+            this->getConstraintPtr()->Type = Blocked;
+            this->getConstraintPtr()->First = FirstIndex;
+            return 0;
+        }
     }
     PyErr_Clear();
 
@@ -484,6 +489,7 @@ std::string ConstraintPy::representation(void) const
         case Coincident         : result << "'Coincident'>";break;
         case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
+        case Blocked            : result << "'Blocked' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
