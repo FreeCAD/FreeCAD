@@ -48,7 +48,8 @@ public:
     }
     
     virtual void onChanged(const App::Property* prop);
-    virtual App::DocumentObjectExecReturn* execute(void);   
+    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual void onDocumentRestored();
 };
 
 } //namespace PartDesign
