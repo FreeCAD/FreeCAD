@@ -128,7 +128,12 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
         extGeoList.push_back(GeoList[i]);
 
-    addGeometry(intGeoList);
+    std::vector<bool> blockedGeometry(intGeoList.size(),false);
+
+    if(!intGeoList.empty())
+        getBlockedGeometry(blockedGeometry,ConstraintList);
+
+    addGeometry(intGeoList,blockedGeometry);
     int extStart=Geoms.size();
     addGeometry(extGeoList, true);
     int extEnd=Geoms.size()-1;
@@ -248,6 +253,19 @@ int Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
     int ret = -1;
     for (std::vector<Part::Geometry *>::const_iterator it=geo.begin(); it != geo.end(); ++it)
         ret = addGeometry(*it, fixed);
+    return ret;
+}
+
+int Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, std::vector<bool> &blockedGeometry)
+{
+    assert(geo.size() == blockedGeometry.size());
+
+    int ret = -1;
+    std::vector<Part::Geometry *>::const_iterator it;
+    std::vector<bool>::iterator bit;
+
+    for (it=geo.begin(),bit=blockedGeometry.begin(); it != geo.end() && bit !=blockedGeometry.end(); ++it,++bit)
+        ret = addGeometry(*it, *bit);
     return ret;
 }
 
@@ -1307,6 +1325,19 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
         rtn = addConstraint (*it);
 
     return rtn;
+}
+
+void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry, const std::vector<Constraint *> &ConstraintList)
+{
+
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it) {
+        if((*it)->Type == Blocked) {
+            int geoid = (*it)->First;
+
+            if(geoid>=0 && geoid<blockedGeometry.size())
+                blockedGeometry[geoid]=true;
+        }
+    }
 }
 
 int Sketch::addCoordinateXConstraint(int geoId, PointPos pos, double * value)
