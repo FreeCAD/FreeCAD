@@ -1746,6 +1746,191 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 // ======================================================================================
 
 /* XPM */
+static const char *cursor_createblocked[]={
+    "32 32 3 1",
+    "+ c white",
+    "# c red",
+    ". c None",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "................................",
+    "+++++...+++++...................",
+    "................................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+.........................",
+    "......+..........###............",
+    "....................##..........",
+    ".....................##.........",
+    "......................##........",
+    "......................##........",
+    ".............############.......",
+    ".............###########........",
+    ".............##########.........",
+    ".............########...........",
+    ".............#######............",    
+    ".............########...........",
+    ".............##########.........",
+    ".............###########........",
+    ".............############.......",
+    "......................##........",
+    "......................##........",
+    ".....................##.........",
+    "....................##..........",
+    ".................###............",
+    "................................"};
+    
+class CmdSketcherConstrainBlocked : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainBlocked();
+    virtual ~CmdSketcherConstrainBlocked(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainBlocked"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
+
+CmdSketcherConstrainBlocked::CmdSketcherConstrainBlocked()
+:CmdSketcherConstraint("Sketcher_ConstrainBlocked")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Constrain Blocked");
+    sToolTipText    = QT_TR_NOOP("Create a blocked constraint on the selected item");
+    sWhatsThis      = "Sketcher_ConstrainBlocked";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ConstrainBlocked";
+    eType           = ForEdit;
+    
+    allowedSelSequences = {{SelEdge}};
+    constraintCursor = cursor_createblocked;
+}
+
+void CmdSketcherConstrainBlocked::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
+        
+        if (constraintMode) {
+            ActivateHandler(getActiveGuiDocument(),
+                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+            getSelection().clearSelection();
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                    QObject::tr("Select vertices from the sketch."));
+        }
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    std::vector<int> GeoId;
+
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        int GeoIdt;
+        Sketcher::PointPos PosIdt;
+        getIdsFromName((*it), Obj, GeoIdt, PosIdt);
+        GeoId.push_back(GeoIdt);
+
+        if ( isVertex(GeoIdt,PosIdt) || GeoIdt < 0 ) {
+            if(selection.size() == 1) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                        QObject::tr("Select one edge from the sketch."));
+            }
+            else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                        QObject::tr("Select only edges from the sketch."));
+            }
+            // clear the selection
+            getSelection().clearSelection();
+            return;
+            }
+    }
+
+    for (std::vector<int>::iterator itg = GeoId.begin(); itg != GeoId.end(); ++itg) {
+        // undo command open
+        openCommand("add blocked constraint");
+
+        try {
+
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Blocked',%d)) ",
+                selection[0].getFeatName(),(*itg));
+
+        } catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Error"),
+                                 QString::fromLatin1(e.what()));
+
+            Gui::Command::abortCommand();
+
+            tryAutoRecompute();
+            return;
+        }
+
+        commitCommand();
+        tryAutoRecompute();
+    }
+
+    // clear the selection (convenience)
+    getSelection().clearSelection();
+}
+
+void CmdSketcherConstrainBlocked::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+{
+    switch (seqIndex) {
+        case 0: // {Edge}
+            // Create the constraints
+            SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+
+            // undo command open
+            openCommand("add blocked constraint");
+
+            try {
+
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Blocked',%d)) ",
+                                        sketchgui->getObject()->getNameInDocument(),selSeq.front().GeoId);
+
+            } catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("Error"),
+                                     QString::fromLatin1(e.what()));
+
+                Gui::Command::abortCommand();
+
+                tryAutoRecompute();
+                return;
+            }
+
+            commitCommand();
+            tryAutoRecompute();
+
+        break;
+    }
+}
+
+
+// ======================================================================================
+
+/* XPM */
 static const char *cursor_createcoincident[]={
 "32 32 3 1",
 "+ c white",
@@ -6601,6 +6786,7 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainHorizontal());
     rcCmdMgr.addCommand(new CmdSketcherConstrainVertical());
     rcCmdMgr.addCommand(new CmdSketcherConstrainLock());
+    rcCmdMgr.addCommand(new CmdSketcherConstrainBlocked());
     rcCmdMgr.addCommand(new CmdSketcherConstrainCoincident());
     rcCmdMgr.addCommand(new CmdSketcherConstrainParallel());
     rcCmdMgr.addCommand(new CmdSketcherConstrainPerpendicular());
