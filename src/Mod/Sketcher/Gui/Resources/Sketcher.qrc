@@ -59,6 +59,7 @@
         <file>icons/Sketcher_Conics_Ellipse_3points.svg</file>
         <file>icons/Sketcher_Conics_Ellipse_Center.svg</file>
         <file>icons/Sketcher_ConnectLines.svg</file>
+        <file>icons/Sketcher_ConstrainBlocked.svg</file>
         <file>icons/Sketcher_ConstrainCoincident.svg</file>
         <file>icons/Sketcher_ConstrainDistance.svg</file>
         <file>icons/Sketcher_ConstrainHorizontal.svg</file>
@@ -155,7 +156,6 @@
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
-        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
@@ -176,6 +176,7 @@
         <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
+        <file>icons/small/Constraint_Blocked_sm.xpm</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
         <file>icons/small/Constraint_EqualLength_sm.xpm</file>
         <file>icons/small/Constraint_ExternalAngle_sm.xpm</file>
