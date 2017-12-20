@@ -76,8 +76,16 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
     if (this->coordIndex.getNum() < 3)
         return;
 
-    if (!this->shouldGLRender(action))
+    if (!this->shouldGLRender(action)) {
+        // Transparency is handled inside 'shouldGLRender' but the base class
+        // somehow misses to reset the blending mode. This causes SoGLLazyElement
+        // not to switch on and off GL_BLEND mode and thus transparency doesn't
+        // work as expected. Calling SoMaterialBundle::sendFirst seems to fix the
+        // problem.
+        SoMaterialBundle mb(action);
+        mb.sendFirst();
         return;
+    }
 
     SoState * state = action->getState();
     SbBool mode = Gui::SoFCInteractiveElement::get(state);
