@@ -642,11 +642,12 @@ struct WireJoiner {
 
     //This algorithm tries to join connected edges into wires
     //
-    //tol>Precision::SquareConfusion() is used to join points that are close
-    //but do not coincide with a line segment. The close points my the results
-    //of rounding issue.
+    //tol*tol>Precision::SquareConfusion() can be used to join points that are
+    //close but do not coincide with a line segment. The close points may be
+    //the results of rounding issue.
     //
     void join(double tol) {
+        tol = tol*tol;
         while(edges.size()) {
             auto it = edges.begin();
             BRepBuilderAPI_MakeWire mkWire;
@@ -659,7 +660,7 @@ struct WireJoiner {
                 while(edges.size()) {
                     std::vector<VertexInfo> ret;
                     ret.reserve(1);
-                    const gp_Pnt &pt = idx?pstart:pend;
+                    const gp_Pnt &pt = idx==0?pstart:pend;
                     vmap.query(bgi::nearest(pt,1),std::back_inserter(ret));
                     assert(ret.size()==1);
                     double d = ret[0].pt().SquareDistance(pt);
