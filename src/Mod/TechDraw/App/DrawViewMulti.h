@@ -56,8 +56,8 @@ public:
     /// Constructor
     DrawViewMulti(void);
     virtual ~DrawViewMulti();
-
-    App::PropertyLinkListGlobal Sources;
+  
+    App::PropertyLinkList    Sources;
 
     virtual short mustExecute() const override;
     /** @name methods override Feature */

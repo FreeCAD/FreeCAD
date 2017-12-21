@@ -82,7 +82,7 @@ public:
     DrawViewPart(void);
     virtual ~DrawViewPart();
 
-    App::PropertyLinkGlobal   Source;                                        //Part Feature
+    App::PropertyLinkList     Source;
     App::PropertyVector       Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyBool         Perspective;
     App::PropertyDistance     Focus;
@@ -166,7 +166,8 @@ public:
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
     virtual TopoDS_Shape getSourceShape(void) const; 
     virtual TopoDS_Shape getShapeFromPart(App::Part* ap) const;
-    
+    virtual TopoDS_Shape getSourceShapeFused(void) const; 
+
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;

@@ -64,6 +64,7 @@ DrawProjGroup::DrawProjGroup(void)
 
 
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
@@ -96,8 +97,8 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
         if (prop == &Source) {
-            App::DocumentObject* sourceObj = Source.getValue();
-            if (sourceObj != nullptr) {
+            std::vector<App::DocumentObject*> sourceObjs = Source.getValues();
+            if (!sourceObjs.empty()) {
                 if (!hasAnchor()) {
                     // if we have a Source, but no Anchor, make an anchor
                     Anchor.setValue(addProjection("Front"));
@@ -142,12 +143,12 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    App::DocumentObject* docObj = Source.getValue();
-    if (docObj == nullptr) {
+    std::vector<App::DocumentObject*> docObjs = Source.getValues();
+    if (docObjs.empty()) {
         return DrawViewCollection::execute();
     }
 
-    docObj = Anchor.getValue();
+    App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
         return DrawViewCollection::execute();
     }
@@ -380,7 +381,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
-        view->Source.setValue( Source.getValue() );
+        view->Source.setValues( Source.getValues() );
         if (ScaleType.isValue("Automatic")) {
             view->ScaleType.setValue("Custom");
         } else {
@@ -389,7 +390,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Scale.setValue( getScale() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
-        view->Source.setValue( Source.getValue() );
+        view->Source.setValues( Source.getValues() );
         view->Direction.setValue(m_cube->getViewDir(viewProjType));
         view->RotationVector.setValue(m_cube->getRotationDir(viewProjType));
         addView(view);         //from DrawViewCollection

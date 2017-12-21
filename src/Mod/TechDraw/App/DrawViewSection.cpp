@@ -199,7 +199,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
-    TopoDS_Shape baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShape();
+    TopoDS_Shape baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
     if (baseShape.IsNull()) {
         Base::Console().Log("DVS::execute - baseShape is Null\n");
     }
@@ -244,6 +244,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     TopoDS_Shape rawShape = mkCut.Shape();
+
     Bnd_Box testBox;
     BRepBndLib::Add(rawShape, testBox);
     testBox.SetGap(0.0);
