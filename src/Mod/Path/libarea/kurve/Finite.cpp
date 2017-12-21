@@ -220,7 +220,7 @@ namespace geoff_geometry {
 	}
 
 	Line::Line(const Span& sp){
-		// contructor from linear span
+		// constructor from linear span
 		p0 = sp.p0;
 		v = sp.vs * sp.length;
 		length = sp.length;
