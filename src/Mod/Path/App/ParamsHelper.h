@@ -105,10 +105,10 @@
  *   keyword \a _short, and supply all relavant macros.  It's quite trivial
  *   actually.
  *
- * - \c arg is the agument name. It is intended to be used as function argument.
+ * - \c arg is the argument name. It is intended to be used as function argument.
  *   By convention, the name shall be all small cases, but that's not required.
  *   This \c arg can be repurposed, if the parameter is not going to be used as
- *   function agument.  The #AREA_PARAMS_CAREA parameters repurposed this field
+ *   function argument.  The #AREA_PARAMS_CAREA parameters repurposed this field
  *   to CArea internal setting variables to implement save, apply and restore
  *   function using CAreaConfig class.
  *
@@ -157,7 +157,7 @@
  * Boost.PP tuple, and is usually supplied by various \ref ParamLooper "looper macros"
  *
  * You can of course directly use various Boost.PP sequence looper to pass
- * aditional arguments to the operation macro. See #PARAM_PY_DICT_SET_VALUE for
+ * additional arguments to the operation macro. See #PARAM_PY_DICT_SET_VALUE for
  * an example of using tuple, and the more complex example #PARAM_ENUM_CONVERT
  *
  * Note that when generating comma separated list, the first and last comma are
@@ -247,7 +247,7 @@
 
 /** Apply macro \a _op to each parameter in sequence \a _seq
  *
- * Operation macro \a _op shoud be defined as,
+ * Operation macro \a _op should be defined as,
  * \code
  *      _op(_param)
  * \endcode
@@ -261,7 +261,7 @@
 
 /** Apply macro \a _op to each parameter in sequence \a _seq with additional index 
  *
- * Operation macro \a _op shoud be defined as,
+ * Operation macro \a _op should be defined as,
  * \code
  *      _op(_i,_param)
  * \endcode
@@ -447,7 +447,7 @@
  *
  * This assumes the user defined enum type is given in \ref ParamSeq "seq_type"
  * of the parameter definition, and it has the same postfix as the ones
- * speficied in \ref ParamSeq "seq" member of the parameter definition. See 
+ * specified in \ref ParamSeq "seq" member of the parameter definition. See 
  * \ref ParamEnumHelper "here" for implementations
  *
  * \ingroup ParamEnumHelper

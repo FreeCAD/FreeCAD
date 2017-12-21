@@ -685,7 +685,7 @@ class TaskPanel(object):
     This class only implements the framework and takes care of bringing all pages up and down in a controller fashion.
     It implements the standard editor behaviour for OK, Cancel and Apply and tracks if the model is still in sync with
     the UI.
-    However, all display and processing of fields is handled by the page contollers which are managed in a list. All
+    However, all display and processing of fields is handled by the page controllers which are managed in a list. All
     event callbacks and framework actions are forwarded to the page controllers in turn and each page controller is
     expected to process all events concerning the data it manages.
     '''
