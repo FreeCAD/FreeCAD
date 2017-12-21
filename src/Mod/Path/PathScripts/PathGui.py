@@ -73,7 +73,7 @@ def setProperty(obj, prop, value):
 def updateInputField(obj, prop, widget, onBeforeChange=None):
     '''updateInputField(obj, prop, widget) ... update obj's property prop with the value of widget.
 The property's value is only assigned if the new value differs from the current value.
-This prevents onChanged notifications where the value didn't acutally change.
+This prevents onChanged notifications where the value didn't actually change.
 Gui::InputField and Gui::QuantitySpinBox widgets are supported - and the property can
 be of type Quantity or Float.
 If onBeforeChange is specified it is called before a new value is assigned to the property.
