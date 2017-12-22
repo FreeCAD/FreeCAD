@@ -91,7 +91,7 @@
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
     ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization (ignored currently)"))\
     ((double,clipper_scale,ClipperScale,1e7,\
-        "ClipperLib operate on intergers. This is the scale factor to convert\n"\
+        "ClipperLib operate on integers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
 
 /** Pocket parameters 
@@ -109,7 +109,7 @@
 	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
 	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
 	((double,shift,Shift,0.0,"Pattern shift distance for each section.\n"\
-        "The pocket patter will be shifted in othgnal direction by this amount for each section.\n"\
+        "The pocket patter will be shifted in orthogonal direction by this amount for each section.\n"\
         "This gives a 3D pattern mainly for 3D printing. The shift only applies to 'Offset', 'Grid'\n"\
         "and 'Triangle'", App::PropertyDistance))
 
@@ -137,9 +137,9 @@
         "'BoundBox' means relative Z height to the bounding box of all the children shape.\n"\
         "'Workplane' means relative to workplane, minus SectionOffset.\n"\
         "Note that OCC has trouble getting the minimum bounding box of some solids, particularly\n"\
-        "those with non-planar surface. It is recommended to use Workplane to specifiy the intended\n"\
+        "those with non-planar surface. It is recommended to use Workplane to specify the intended\n"\
         "starting z height.\n",(Absolute)(BoundBox)(Workplane)))\
-    ((bool,project,Project,false, "The section is produced by normal pojecting the outline\n"\
+    ((bool,project,Project,false, "The section is produced by normal projecting the outline\n"\
         "of all added shapes to the section plane, instead of slicing."))
 
 /** Section parameters */
@@ -152,7 +152,7 @@
         "a positive value means offset downward, and if bottom up, it means upward",App::PropertyDistance))\
     ((double,tolerance,SectionTolerance,1e-6,"Offset value added when hitting the boundary.\n"\
         "When the section hits or over the shape boundary, a section with the height of that boundary\n"\
-        "will be created. A small offset is usually required to avoid the tagnetial cut.",\
+        "will be created. A small offset is usually required to avoid the tangential cut.",\
         App::PropertyPrecision))\
      AREA_PARAMS_SECTION_EXTRA
 
@@ -188,7 +188,7 @@
         "and the corresponding GCode will be inserted.\n"\
         "'Auto' means the plane is determined by the first encountered arc plane. If the found\n"\
         "plane does not align to any GCode plane, XY plane is used.\n"\
-        "'Variable' means the arc plane can be changed during operation to align to the the\n"\
+        "'Variable' means the arc plane can be changed during operation to align to the\n"\
         "arc encountered.",\
         (None)(Auto)(XY)(ZX)(YZ)(Variable)))
 

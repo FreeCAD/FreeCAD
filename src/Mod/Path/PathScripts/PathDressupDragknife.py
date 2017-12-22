@@ -163,7 +163,7 @@ class ObjectDressup:
 
     def arcTwist(self, obj, queue, lastXY, twistCW=False):
         '''returns gcode to do an arc move toward an arc to perform
-        a corner action twist. Inclues lifting and plungeing the knife'''
+        a corner action twist. Includes lifting and plungeing the knife'''
 
         global currLocation
         pivotheight = obj.pivotheight
@@ -176,7 +176,7 @@ class ObjectDressup:
         else:
             arcdir = "G2"
 
-        # move to the pivot heigth
+        # move to the pivot height
         zdepth = currLocation["Z"]
         retract = Path.Command("G0", {"Z": pivotheight})
         results.append(retract)

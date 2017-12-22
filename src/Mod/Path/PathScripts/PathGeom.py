@@ -396,7 +396,7 @@ class PathGeom:
     def splitArcAt(cls, edge, pt):
         """(edge, pt)
         Returns a list of 2 edges which together form the original arc split at the given point.
-        The Vector pt has to represnt a point on the given arc."""
+        The Vector pt has to represent a point on the given arc."""
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = pt
         p3 = edge.valueAt(edge.LastParameter)

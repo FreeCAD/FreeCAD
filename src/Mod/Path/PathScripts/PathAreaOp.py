@@ -49,7 +49,7 @@ def translate(context, text, disambig=None):
 class ObjectOp(PathOp.ObjectOp):
     '''Base class for all Path.Area based operations.
     Provides standard features including debugging properties AreaParams,
-    PathParams and removalshape, all hidding.
+    PathParams and removalshape, all hidden.
     The main reason for existence is to implement the standard interface
     to Path.Area so subclasses only have to provide the shapes for the
     operations.'''
@@ -104,7 +104,7 @@ class ObjectOp(PathOp.ObjectOp):
         pass
 
     def opOnChanged(self, obj, prop):
-        '''opOnChanged(obj, prop) ... base implemenation of the notification framework - do not overwrite.
+        '''opOnChanged(obj, prop) ... base implementation of the notification framework - do not overwrite.
         The base implementation takes a stab at determining Heights and Depths if the operations's Base
         changes.
         Do not overwrite, overwrite areaOpOnChanged(obj, prop) instead.'''
