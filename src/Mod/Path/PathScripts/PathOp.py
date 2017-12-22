@@ -246,7 +246,7 @@ class ObjectOp(object):
             obj.ToolController = PathUtils.findToolController(obj)
             if not obj.ToolController:
                 return False
-            obj.OpToolDiameter  =  1.0
+            obj.OpToolDiameter  =  obj.ToolController.Tool.Diameter
 
         if FeatureDepths & features:
             if self.applyExpression(obj, 'StartDepth', job.SetupSheet.StartDepthExpression):
