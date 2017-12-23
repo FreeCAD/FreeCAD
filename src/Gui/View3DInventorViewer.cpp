@@ -1022,6 +1022,8 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
         else {
             SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
             renderer.setViewportRegion(vp);
+            renderer.getGLRenderAction()->setSmoothing(true);
+            renderer.getGLRenderAction()->setNumPasses(4);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
             if (!renderer.render(root))
