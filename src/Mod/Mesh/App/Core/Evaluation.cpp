@@ -233,7 +233,7 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
             ulStartFacet = ULONG_MAX;
     }
 
-    // in some very rare cases where we have some strange artefacts in the mesh structure
+    // in some very rare cases where we have some strange artifacts in the mesh structure
     // we get false-positives. If we find some we check all 'invalid' faces again
     cAlg.ResetFacetFlag(MeshFacet::TMP0);
     cAlg.SetFacetsFlag(uIndices, MeshFacet::TMP0);

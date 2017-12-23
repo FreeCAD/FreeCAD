@@ -266,7 +266,7 @@ public:
 
     /** PyInit method
     * Override this method to initialize a newly created
-    * instance of the class (Constuctor)
+    * instance of the class (Constructor)
     */
     virtual int PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     {

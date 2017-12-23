@@ -463,7 +463,7 @@ void OrthoViews::calc_scale()                               // compute scale req
 
 void OrthoViews::calc_offsets()                             // calcs SVG coords for centre of upper left view
 {
-    // space_x is the emptry clear white space between views
+    // space_x is the empty clear white space between views
     // gap_x is the centre - centre distance between views
 
     float space_x = (page_dims[2] - scale * layout_width) / num_gaps_x;

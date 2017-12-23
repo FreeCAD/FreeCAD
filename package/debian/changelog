@@ -92,7 +92,7 @@ freecad (0.10.3247.dfsg-2) unstable; urgency=low
   * control:
     - Update to standars-version 3.9.0.
     - Remove libblas-dev, libatlas-dev from build-deps.
-  * Add debian/shlibs.local file containing the the correct binary dep
+  * Add debian/shlibs.local file containing the correct binary dep
     to libsoqt4-20 (closes: #575239).
   * copyright: Add a verbatim copy of Tiddlywiki BSD license. Fixes
     the lintian warning copyright-refers-to-deprecated-bsd-license-file.

@@ -118,8 +118,8 @@ public:
 
     /** pointer and default constructor
      *  the good way would be not using pointer
-     *  instead using a overwriten new operator in the
-     *  HandledType class! But is not easy to inforce!
+     *  instead using a overwritten new operator in the
+     *  HandledType class! But is not easy to enforce!
      */
     PyHandle(HandledType *ToHandel=0L)
             :_pHandels(ToHandel) {

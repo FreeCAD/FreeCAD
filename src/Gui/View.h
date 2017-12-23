@@ -81,7 +81,7 @@ public:
     /// indicates if the view is in passive mode
     bool isPassive(void) const {return bIsPassive;}
 
-    /** @name methods to overrride 
+    /** @name methods to override 
      */
     //@{
     /// get called when the document is updated

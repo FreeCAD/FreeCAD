@@ -118,7 +118,7 @@ public:
     Base::Reference<ParameterGrp> GetGroup(const char* Name);
     /// get a vector of all sub groups in this group
     std::vector<Base::Reference<ParameterGrp> > GetGroups(void);
-    /// test if this group is emty
+    /// test if this group is empty
     bool IsEmpty(void) const;
     /// test if a special sub group is in this group
     bool HasGroup(const char* Name) const;

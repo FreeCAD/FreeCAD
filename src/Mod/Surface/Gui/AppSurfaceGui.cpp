@@ -73,7 +73,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     Base::Interpreter().runString("import Surface");
     Base::Interpreter().runString("import PartGui");
 
-    // instanciating the commands
+    // instantiating the commands
     CreateSurfaceCommands();
 
     SurfaceGui::Workbench::init();
