@@ -253,6 +253,8 @@ double DrawView::getScale(void) const
 
 void DrawView::Restore(Base::XMLReader &reader)
 {
+// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
+// fcstd files with old property types in use. 
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 
@@ -268,7 +270,7 @@ void DrawView::Restore(Base::XMLReader &reader)
                 } else  {
                     if (strcmp(PropName, "Scale") == 0) {
                         if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do
+                            schemaProp->Restore(reader);                                                  //nothing special to do (redundant)
                         } else {                                                                //Scale, but not PropertyFloatConstraint
                             App::PropertyFloat tmp;
                             if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
@@ -285,6 +287,29 @@ void DrawView::Restore(Base::XMLReader &reader)
                                 Base::Console().Log("DrawView::Restore - old Document Scale is Not Float!\n");
                                 // no idea
                             }
+                        }
+                    } else if (strcmp(PropName, "Source") == 0) {
+                        App::PropertyLinkGlobal glink;
+                        App::PropertyLink link;
+                        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+                            glink.setContainer(this);
+                            glink.Restore(reader);
+                            if (glink.getValue() != nullptr) {
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(glink.getValue());
+                            }
+                        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+                            link.setContainer(this);
+                            link.Restore(reader);
+                            if (link.getValue() != nullptr) {
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
+                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(link.getValue());
+                            }
+                        
+                        } else {
+                            // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
+                            Base::Console().Log("DrawView::Restore - old Document Source is weird: %s\n", TypeName);
+                            // no idea
                         }
                     } else {
                         Base::Console().Log("DrawView::Restore - old Document has unknown Property\n");
