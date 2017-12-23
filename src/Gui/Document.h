@@ -273,6 +273,9 @@ private:
     //handles the scene graph nodes to correctly group child and parents
     void handleChildren3D(ViewProvider* viewProvider, bool deleting=false);
 
+    /// Check other documents for the same transaction ID
+    bool checkTransactionID(bool undo, int iSteps);
+
     struct DocumentP* d;
     static int _iDocCount;
 

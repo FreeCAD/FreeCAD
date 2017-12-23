@@ -147,6 +147,17 @@ PyMethodDef Application::Methods[] = {
      "Return a list of dependent objects including the given objects.\n\n"
      "noExternal: If true, exclude externally linked objects from dependencies.\n"
      "sort: If True, return the list in topological order."},
+    {"setActiveTransaction", (PyCFunction) Application::sSetActiveTransaction, 1,
+     "setActiveTransaction(name) -- setup active transaction with the given name\n\n"
+     "Returns the transaction ID for the active transaction. An application-wide\n"
+     "active transaction causing any document changes to open a transaction with\n"
+     "the given name and ID."},
+    {"getActiveTransaction", (PyCFunction) Application::sGetActiveTransaction, 1,
+     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},     
+    {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, 1,
+     "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},     
+    {"autoTransaction", (PyCFunction) Application::sAutoTransaction, 1,
+     "autoTransaction() -> Bool -- Test if auto transaction is enabled"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -798,4 +809,57 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args,
     return Py::new_reference_to(tuple);
 }
 
+
+PyObject *Application::sSetActiveTransaction(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return 0;
+    
+    PY_TRY {
+        Py::Int ret(GetApplication().setActiveTransaction(name));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetActiveTransaction(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    
+    PY_TRY {
+        int id = 0;
+        const char *name = GetApplication().getActiveTransaction(&id);
+        if(!name || id<=0)
+            Py_Return;
+        Py::Tuple ret(2);
+        ret.setItem(0,Py::String(name));
+        ret.setItem(1,Py::Int(id));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    PyObject *abort = Py_False;
+    int id = 0;
+    if (!PyArg_ParseTuple(args, "|Oi", &abort,&id))
+        return 0;
+    
+    PY_TRY {
+        GetApplication().closeActiveTransaction(PyObject_IsTrue(abort),id);
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject *Application::sAutoTransaction(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(GetApplication().autoTransaction()));
+        Py_Return;
+    } PY_CATCH;
+}
 

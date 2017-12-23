@@ -366,33 +366,15 @@ void PropertyItem::setPropertyName(const QString& name)
     displayText = str;
 }
 
-void PropertyItem::setPropertyValue(const QString& value, const char *transaction)
+void PropertyItem::setPropertyValue(const QString& value)
 {
-    std::set<App::Document*> docs;
-
-    bool done = false;
     for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
         it != propertyItems.end(); ++it) {
         App::PropertyContainer* parent = (*it)->getContainer();
         if (parent && !parent->isReadOnly(*it) && !(*it)->testStatus(App::Property::ReadOnly)) {
             QString cmd = QString::fromLatin1("%1 = %2").arg(pythonIdentifier(*it)).arg(value);
             try {
-                if(transaction) {
-                    auto obj = dynamic_cast<App::DocumentObject*>(parent);
-                    if(obj) {
-                        if(docs.insert(obj->getDocument()).second)
-                            obj->getDocument()->openTransaction(transaction);
-                    }else{
-                        auto vp = dynamic_cast<ViewProviderDocumentObject*>(parent);
-                        if(vp) {
-                            auto doc = vp->getDocument()->getDocument();
-                            if(docs.insert(doc).second)
-                                doc->openTransaction(transaction);
-                        }
-                    }
-                }
                 Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-                done = true;
             }
             catch (Base::PyException &e) {
                 e.ReportException();
@@ -404,15 +386,6 @@ void PropertyItem::setPropertyValue(const QString& value, const char *transactio
             catch (...) {
                 Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
             }
-        }
-    }
-
-    if(transaction) {
-        for(auto doc : docs)  {
-            if(done)
-                doc->commitTransaction();
-            else
-                doc->abortTransaction();
         }
     }
 }
@@ -3596,7 +3569,7 @@ void PropertyLinkItem::setValue(const QVariant& value)
                     arg(doc).arg(o).arg(items[4]);
         }else
             data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
-        setPropertyValue(data,"Set PropertyLink");
+        setPropertyValue(data);
     }
 }
 
@@ -3779,8 +3752,7 @@ void PropertyLinkListItem::setValue(const QVariant& value)
             data << QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
     }
 
-    setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))),
-            "Set PropertyLinkList");
+    setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))));
 }
 
 QWidget* PropertyLinkListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const

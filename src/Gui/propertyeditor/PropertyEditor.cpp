@@ -100,7 +100,7 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
 {
     if (autoupdate) {
         App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc && doc->isTouched())
+        if (doc && doc->mustExecute())
             doc->recompute();
     }
     QTreeView::closeEditor(editor, hint);

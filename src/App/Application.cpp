@@ -605,6 +605,46 @@ void Application::setActiveDocument(const char *Name)
     }
 }
 
+int Application::setActiveTransaction(const char *name) {
+    if(!name || !name[0])
+        throw Base::ValueError("Invalid transaction name");
+    _activeTransactionID = 0;
+    for(auto &v : DocMap)
+        v.second->commitTransaction();
+    _activeTransactionID = Transaction::getNewID();
+    _activeTransactionName = name;
+    return _activeTransactionID;
+}
+
+const char *Application::getActiveTransaction(int *id) const {
+    int tid = 0;
+    if(Transaction::getLastID() == _activeTransactionID)
+        tid = _activeTransactionID;
+    if(id) *id = tid;
+    return tid?_activeTransactionName.c_str():0;
+}
+
+void Application::closeActiveTransaction(bool abort, int id) {
+    if(!id) id = _activeTransactionID;
+    if(!id) return;
+    _activeTransactionID = 0;
+    for(auto &v : DocMap) {
+        if(v.second->getTransactionID(true) != id)
+            continue;
+        if(abort)
+            v.second->abortTransaction();
+        else
+            v.second->commitTransaction();
+    }
+}
+
+bool Application::autoTransaction() {
+    static ParameterGrp::handle hGrp;
+    if(!hGrp) 
+        hGrp = GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Document");
+    return hGrp->GetBool("AutoTransaction",true);
+}
+
 const char* Application::getHomePath(void) const
 {
     return _mConfig["AppHomePath"].c_str();

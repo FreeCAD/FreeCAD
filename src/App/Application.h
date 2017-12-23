@@ -98,6 +98,42 @@ public:
     /// Add pending document to open together with the current opening document
     bool addPendingDocument(const char *FileName);
     //@}
+    
+    /** @name Application-wide trandaction setting */
+    //@{
+    /** Setup a pending application-wide active transaction
+     *
+     * @param name: new transaction name
+     *
+     * @return The new transaction ID.
+     *
+     * Call this function to setup an application-wide transaction. All current
+     * pending transactions of opening documents will be commited first.
+     * However, no new transaction is created by this call. Any subsequent
+     * changes in any current opening document will auto create a transaction
+     * with the given name and ID. If more than one document is changed, the
+     * transactions will share the same ID, and will be undo/redo together.
+     */
+    int setActiveTransaction(const char *name);
+    /// Return the current active transaction name and ID
+    const char *getActiveTransaction(int *tid=0) const;
+    /** Commit/abort current active transactions
+     *
+     * @param abort: whether to abort or commit the transactions
+     *
+     * Bsides calling this function directly, it will be called by automatically
+     * if 1) any new transaction is created with a different ID, or 2) any
+     * transaction with the current active transaction ID is either commited or
+     * aborted
+     */
+    void closeActiveTransaction(bool abort=false, int id=0);
+    /** Return auto transaction parameter setting
+     *
+     * When enabled, any transaction created on non-active document will create
+     * a new transaction in the active document if there isn't one open.
+     */
+    bool autoTransaction();
+    //@}
 
     /** @name Signals of the Application */
     //@{
@@ -348,6 +384,11 @@ private:
 
     static PyObject *sGetDependentObjects(PyObject *self,PyObject *args,PyObject *kwd);
 
+    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sAutoTransaction(PyObject *self,PyObject *args,PyObject *kwd);
+
     static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
@@ -402,6 +443,9 @@ private:
 
     // for estimate max link depth
     int _objCount;
+
+    std::string _activeTransactionName;
+    int _activeTransactionID;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

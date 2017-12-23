@@ -1721,9 +1721,65 @@ std::vector<std::string> Document::getRedoVector(void) const
     return getDocument()->getAvailableRedoNames();
 }
 
+bool Document::checkTransactionID(bool undo, int iSteps) {
+    std::vector<int> ids;
+    for (int i=0;i<iSteps;i++) {
+        int id = getDocument()->getTransactionID(undo,i);
+        if(!id) break;
+        ids.push_back(id);
+    }
+    std::set<App::Document*> prompts;
+    std::map<App::Document*,int> dmap;
+    for(auto doc : App::GetApplication().getDocuments()) {
+        if(doc == getDocument())
+            continue;
+        for(auto id : ids) {
+            int steps = undo?doc->getAvailableUndos(id):doc->getAvailableRedos(id);
+            if(!steps) continue;
+            int &currentSteps = dmap[doc];
+            if(currentSteps+1 != steps)
+                prompts.insert(doc);
+            if(currentSteps < steps)
+                currentSteps = steps;
+        }
+    }
+    if(prompts.size()) {
+        std::ostringstream str;
+        for(auto doc : prompts)
+            str << "    " << doc->getName() << "\n";
+        int ret = QMessageBox::warning(getMainWindow(), 
+                    undo?QObject::tr("Undo"):QObject::tr("Redo"),
+                    QString::fromLatin1("%1,\n%2%3")
+                        .arg(QObject::tr(
+                            "There are grouped transactions in the following documents with "
+                            "other preceding transactions"))
+                        .arg(QString::fromUtf8(str.str().c_str()))
+                        .arg(QObject::tr("Choose 'Yes' to roll back all preceeding transactions.\n"
+                                         "Choose 'No' to roll back in the active document only.\n"
+                                         "Choose 'Abort' to abort")),
+                    QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort, QMessageBox::Yes);
+        if(ret == QMessageBox::Abort)
+            return false;
+        if(ret == QMessageBox::No)
+            return true;
+    }
+    for(auto &v : dmap) {
+        for(int i=0;i<v.second;++i) {
+            if(undo)
+                v.first->undo();
+            else
+                v.first->redo();
+        }
+    }
+    return true;
+}
+
 /// Will UNDO one or more steps
 void Document::undo(int iSteps)
 {
+    if(!checkTransactionID(true,iSteps))
+        return;
+
     for (int i=0;i<iSteps;i++) {
         getDocument()->undo();
     }
@@ -1732,6 +1788,9 @@ void Document::undo(int iSteps)
 /// Will REDO one or more steps
 void Document::redo(int iSteps)
 {
+    if(!checkTransactionID(false,iSteps))
+        return;
+
     for (int i=0;i<iSteps;i++) {
         getDocument()->redo();
     }

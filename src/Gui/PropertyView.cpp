@@ -111,6 +111,12 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(boost::bind
         (&PropertyView::slotChangePropertyEditor, this, _1));
+    this->connectUndoDocument =
+    App::GetApplication().signalUndoDocument.connect(boost::bind
+        (&PropertyView::slotRollback, this));
+    this->connectRedoDocument =
+    App::GetApplication().signalRedoDocument.connect(boost::bind
+        (&PropertyView::slotRollback, this));
 }
 
 PropertyView::~PropertyView()
@@ -120,6 +126,8 @@ PropertyView::~PropertyView()
     this->connectPropAppend.disconnect();
     this->connectPropRemove.disconnect();
     this->connectPropChange.disconnect();
+    this->connectUndoDocument.disconnect();
+    this->connectRedoDocument.disconnect();
 }
 
 void PropertyView::hideEvent(QHideEvent *ev) {
@@ -134,6 +142,21 @@ void PropertyView::hideEvent(QHideEvent *ev) {
 void PropertyView::showEvent(QShowEvent *ev) {
     this->attachSelection();
     QWidget::showEvent(ev);
+}
+
+void PropertyView::slotRollback() {
+    // If auto transaction (BaseApp->Preferences->Document->AutoTransaction) is
+    // enabled, PropertyItemDelegate will setup application active transaction
+    // on entering edit mode, and close active transaction when exit editing.
+    // But, when the user clicks undo/redo button while editing some property,
+    // the current active transaction will be closed by design, which cause
+    // further editing to be not recorded. Hence, we force unselect any property
+    // item on undo/redo
+    QModelIndex index;
+    propertyEditorData->clearSelection();
+    propertyEditorData->setCurrentIndex(index);
+    propertyEditorView->clearSelection();
+    propertyEditorView->setCurrentIndex(index);
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)

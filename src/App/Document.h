@@ -68,7 +68,8 @@ public:
         KeepTrailingDigits = 1,
         Closable = 2,
         Restoring = 3,
-        Recomputing = 4
+        Recomputing = 4,
+        Importing = 5,
     };
 
     /** @name Properties */
@@ -309,7 +310,22 @@ public:
     //@}
 
 
-    /** @name methods for the UNDO REDO and Transaction handling */
+    /** @name methods for the UNDO REDO and Transaction handling 
+     *
+     * Introduce a new concept of transaction ID. Each transaction must be
+     * unique inside the document. Multiple transactions from different
+     * documents can be grouped together with the same transaction ID.
+     *
+     * When undo, Gui component can query getAvailableUndo(id) to see if it is
+     * possible to undo with a given ID. If there more than one undo
+     * transactions, meaning that there are other transactions before the given
+     * ID. The Gui component shall ask user if he wants to undo multiple steps.
+     * And if the user agrees, call undo(id) to unroll all transaction before
+     * and including the the one with the give ID. Same apllies for redo.
+     *
+     * The new transaction ID describe here is fully backward compatible.
+     * Calling the APIs with a default id=0 gives the original behavior.
+     */
     //@{
     /// switch the level of Undo/Redo
     void setUndoMode(int iMode);
@@ -317,14 +333,33 @@ public:
     int getUndoMode(void) const;
     /// switch the tranaction mode
     void setTransactionMode(int iMode);
-    /// Open a new command Undo/Redo, an UTF-8 name can be specified
+    /** Open a new command Undo/Redo, an UTF-8 name can be specified
+     *
+     * @param name: transaction name
+     *
+     * If BaseApp->Preference->Document->AutoTransaction is enabled, this
+     * function calls App::Application::setActiveTransaction(name) instead.
+     */
     void openTransaction(const char* name=0);
+    /** Open a new command Undo/Redo, an UTF-8 name can be specified
+     *
+     * @param name: transaction name
+     * @param id: transaction ID, if 0 then the ID is auto generated.
+     *
+     * @return: Return the ID of the new transaction.
+     *
+     * This function creates an actual transaction regardless of Application
+     * AutoTransaction setting.
+     */
+    int _openTransaction(const char* name=0, int id=0);
     // Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
     /// Abort the actually running transaction.
     void abortTransaction();
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
+    /// Return the undo/redo transaction ID starting from the back
+    int getTransactionID(bool undo, unsigned pos=0) const;
     /// Set the Undo limit in Byte!
     void setUndoLimit(unsigned int UndoMemSize=0);
     /// Returns the actual memory consumption of the Undo redo stuff.
@@ -336,17 +371,17 @@ public:
     /// Remove all stored Undos and Redos
     void clearUndos();
     /// Returns the number of stored Undos. If greater than 0 Undo will be effective.
-    int getAvailableUndos() const;
+    int getAvailableUndos(int id=0) const;
     /// Returns a list of the Undo names
     std::vector<std::string> getAvailableUndoNames() const;
     /// Will UNDO one step, returns False if no undo was done (Undos == 0).
-    bool undo();
+    bool undo(int id=0);
     /// Returns the number of stored Redos. If greater than 0 Redo will be effective.
-    int getAvailableRedos() const;
+    int getAvailableRedos(int id=0) const;
     /// Returns a list of the Redo names.
     std::vector<std::string> getAvailableRedoNames() const;
     /// Will REDO one step, returns False if no redo was done (Redos == 0).
-    bool redo() ;
+    bool redo(int id=0) ;
     /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
     bool isPerformingTransaction() const;
     /// \internal remove property from a transactional object with name \a name
@@ -427,7 +462,7 @@ protected:
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
     /// checks if a valid transaction is open
-    void _checkTransaction(DocumentObject* pcObject);
+    void _checkTransaction(DocumentObject* pcDelObj, const Property *What, int line);
     void breakDependency(DocumentObject* pcObject, bool clear);
     std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
@@ -452,7 +487,9 @@ protected:
 private:
     // # Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     std::list<Transaction*> mUndoTransactions;
+    std::map<int,Transaction*> mUndoMap;
     std::list<Transaction*> mRedoTransactions;
+    std::map<int,Transaction*> mRedoMap;
     // recompute log
     std::vector<App::DocumentObjectExecReturn*> _RecomputeLog;
 

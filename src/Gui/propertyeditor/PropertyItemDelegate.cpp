@@ -29,6 +29,9 @@
 # include <QPainter>
 #endif
 
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include "PropertyItemDelegate.h"
 #include "PropertyItem.h"
 
@@ -36,8 +39,11 @@ using namespace Gui::PropertyEditor;
 
 
 PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
-    : QItemDelegate(parent), pressed(false)
+    : QItemDelegate(parent), pressed(false), activeTransactionID(0)
 {
+
+    connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
+            this, SLOT(editorClosed()));
 }
 
 PropertyItemDelegate::~PropertyItemDelegate()
@@ -112,6 +118,16 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
+void PropertyItemDelegate::editorClosed() {
+    int id = 0;
+    auto &app = App::GetApplication();
+    app.getActiveTransaction(&id);
+    if(id && id==activeTransactionID) {
+        app.closeActiveTransaction(false,id);
+        activeTransactionID = 0;
+    }
+}
+
 QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem & /*option*/, 
                                               const QModelIndex & index ) const
 {
@@ -129,6 +145,37 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     else if (editor && this->pressed)
         editor->setFocus();
     this->pressed = false;
+
+    auto &app = App::GetApplication();
+    if(app.autoTransaction() && !app.getActiveTransaction()) {
+        auto items = childItem->getPropertyData();
+        for(auto propItem=childItem->parent();items.empty() && propItem;propItem=propItem->parent())
+            items = propItem->getPropertyData();
+        if(items.size()) {
+            auto prop = items[0];
+            auto parent = prop->getContainer();
+            auto obj  = dynamic_cast<App::DocumentObject*>(parent);
+            if(obj && obj->getDocument() && !obj->getDocument()->hasPendingTransaction()) {
+                std::ostringstream str;
+                str << "Change ";
+                for(auto prop : items) {
+                    if(prop->getContainer()!=obj) {
+                        obj = 0;
+                        break;
+                    }
+                }
+                if(obj && obj->getNameInDocument())
+                    str << obj->getNameInDocument() << '.';
+                else
+                    str << "property ";
+                if(parent)
+                    str << parent->getPropertyName(prop);
+                if(items.size()>1)
+                    str << "...";
+                activeTransactionID = app.setActiveTransaction(str.str().c_str());
+            }
+        }
+    }
     return editor;
 }
 

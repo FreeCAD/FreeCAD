@@ -44,11 +44,16 @@ class AppExport Transaction : public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
+    /** Construction
+     *
+     * @param id: transaction id. If zero, then it will be generated
+     * automatically as a monotonically increasing index across the entire
+     * application. User can pass in a transaction id to group multiple
+     * transactions from different document, so that they can be undo/redo
+     * together.
+     */
+    Transaction(int id = 0);
     /// Construction
-    Transaction();
-    /// Construction
-    Transaction(int pos);
-    /// Destruction
     virtual ~Transaction();
 
     /// apply the content to the document
@@ -62,8 +67,13 @@ public:
     /// This method is used to restore properties from an XML document.
     virtual void Restore(Base::XMLReader &reader);
 
-    /// get the position in the transaction history
-    int getPos(void) const;
+    /// Return the transaction ID
+    int getID(void) const;
+
+    /// Generate a new unique transaction ID
+    static int getNewID(void);
+    static int getLastID(void);
+
     /// check if this object is used in a transaction
     bool hasObject(const TransactionalObject *Obj) const;
     void removeProperty(TransactionalObject *Obj, const Property* pcProp);
@@ -73,7 +83,7 @@ public:
     void addObjectChange(const TransactionalObject *Obj, const Property *Prop);
 
 private:
-    int iPos;
+    int transID;
     typedef std::list <std::pair<const TransactionalObject*, TransactionObject*> > TransactionList;
     TransactionList _Objects;
 };

@@ -437,6 +437,41 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     Py_Return; 
 }
 
+PyObject*  DocumentPy::_openTransaction(PyObject *args)
+{
+    PyObject *value = 0;
+    int id = 0;
+    if (!PyArg_ParseTuple(args, "|Oi",&value,&id))
+        return NULL;    // NULL triggers exception
+    std::string cmd;
+
+    if (!value) {
+        cmd = "<empty>";
+    }
+#if PY_MAJOR_VERSION >= 3
+    else if (PyUnicode_Check(value)) {
+        cmd = PyUnicode_AsUTF8(value);
+    }
+#else
+    else if (PyUnicode_Check(value)) {
+        PyObject* unicode = PyUnicode_AsLatin1String(value);
+        cmd = PyString_AsString(unicode);
+        Py_DECREF(unicode);
+    }
+    else if (PyString_Check(value)) {
+        cmd = PyString_AsString(value);
+    }
+#endif
+    else {
+        PyErr_SetString(PyExc_TypeError, "string or unicode expected");
+        return NULL;
+    }
+
+    Py::Int ret(getDocumentPtr()->_openTransaction(cmd.c_str(),id));
+    return Py::new_reference_to(ret);
+}
+
+
 PyObject*  DocumentPy::abortTransaction(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 

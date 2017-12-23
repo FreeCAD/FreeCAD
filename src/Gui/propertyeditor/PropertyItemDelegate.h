@@ -47,9 +47,11 @@ public:
 
 public Q_SLOTS:
     void valueChanged();
+    void editorClosed();
 
 private:
     mutable bool pressed;
+    mutable int activeTransactionID;
 };
 
 } // namespace PropertyEditor
