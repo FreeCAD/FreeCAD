@@ -202,6 +202,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     TopoDS_Shape baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
     if (baseShape.IsNull()) {
         Base::Console().Log("DVS::execute - baseShape is Null\n");
+        return new App::DocumentObjectExecReturn("BaseView Source object is Null");
     }
 
     //is SectionOrigin valid?
