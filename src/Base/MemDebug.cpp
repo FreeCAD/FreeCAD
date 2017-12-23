@@ -161,7 +161,7 @@ MemDebug::~MemDebug()
 
 
 //**************************************************************************
-// separator for other implemetation aspects
+// separator for other implementation aspects
 
 
 /* REPORT HOOK FUNCTION

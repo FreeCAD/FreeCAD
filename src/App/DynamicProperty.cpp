@@ -306,7 +306,7 @@ std::string DynamicProperty::getUniquePropertyName(const char *Name) const
 
 void DynamicProperty::Save (Base::Writer &writer) const 
 {
-    //extenions must be saved first, as they need to be read and initialised before properties (as 
+    //extensions must be saved first, as they need to be read and initialised before properties (as 
     //they have their own properties which they need to handle on restore)
     if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
         static_cast<App::ExtensionContainer*>(this->pc)->saveExtensions(writer);

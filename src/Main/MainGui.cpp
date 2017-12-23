@@ -331,7 +331,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 #ifdef _M_IX86 
   if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)   
   { 
-    // be sure that we have enought space... 
+    // be sure that we have enough space... 
     static char MyStack[1024*128];   
     // it assumes that DS and SS are the same!!! (this is the case for Win32) 
     // change the stack only if the selectors are the same (this is the case for Win32) 

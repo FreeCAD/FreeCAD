@@ -33,7 +33,7 @@ namespace Dialog {
 /** This class implements the creation of user defined toolbars.
  * In the left panel are shown all command groups with their command objects.
  * If any changeable toolbar was created in the left panel are shown all commands 
- * of the currently edited toolbar, otherwise it is emtpy.
+ * of the currently edited toolbar, otherwise it is empty.
  * All changes to a toolbar is done immediately.
  * 
  * \author Werner Mayer

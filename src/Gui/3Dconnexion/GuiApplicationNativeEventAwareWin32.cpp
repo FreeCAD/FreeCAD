@@ -703,7 +703,7 @@ bool Gui::GUIApplicationNativeEventAware::TranslateRawInputData(UINT nInputCode,
 #endif
 						return true;
 					}
-				} else { // Zero out the data if the app is not in forground
+				} else { // Zero out the data if the app is not in foreground
 					deviceData.fAxes.assign(6, 0.f);
 				}
 			} else if (pRawInput->data.hid.bRawData[0] == 0x02) { // Rotation vector

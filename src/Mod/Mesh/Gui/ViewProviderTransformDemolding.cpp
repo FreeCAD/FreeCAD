@@ -123,7 +123,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
 
   calcNormalVector();
   calcMaterialIndex(SbRotation());
-  // geting center point
+  // getting center point
   center = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
 
   //SoGetBoundingBoxAction  boxAction;
@@ -183,7 +183,7 @@ void ViewProviderMeshTransformDemolding::DragEndCallback(void)
   SbRotation rot = pcTrackballDragger->rotation.getValue();
   calcMaterialIndex(rot);
 
-  Base::Console().Log("View: Finish draging\n");
+  Base::Console().Log("View: Finish dragging\n");
 
 }
 

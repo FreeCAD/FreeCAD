@@ -88,7 +88,7 @@ protected:
 };
 
 /** The general Link Property
- *  Main Purpose of this property is to Link Objects and Feautures in a document. Like all links this 
+ *  Main Purpose of this property is to Link Objects and Features in a document. Like all links this 
  *  property is scope aware, meaning it does define which objects are allowed to be linked depending 
  *  of the GeoFeatureGroup where it is in. Default is Local.
  * 

@@ -151,7 +151,7 @@ void NetworkRetriever::setEnableTimestamp(bool ts)
 
 /**
  * If you are behind a proxy server then you have to specify your proxy url with \a proxy.
- * Moreover, if the proxy requires user authentification then you can specify the username
+ * Moreover, if the proxy requires user authentication then you can specify the username
  * with \a user and the password with \a passwd.
  */
 void NetworkRetriever::setProxy( const QString& proxy, const QString& user, const QString& passwd )
@@ -272,7 +272,7 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         wget->setWorkingDirectory( dir.path() );
     }
 
-    // user authentification
+    // user authentication
     if ( !d->proxy.isEmpty() )
     {
         if ( !d->user.isEmpty() )

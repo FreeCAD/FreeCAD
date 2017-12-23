@@ -83,7 +83,7 @@ AutocadPatterns = {
     "AR-RROOF":"", # seemingly random lines
     "AR-RSHKE":"", # seemingly random tiles
     "AR-SAND":"sand",
-    "BOX":"", # stupid unuseful square-inside-square
+    "BOX":"", # stupid useless square-inside-square
     "BRASS":"", # horizontal ansi33
     "BRICK":"brick",
     "BRSTONE":"", # material symbol

@@ -343,7 +343,7 @@ private:
 };
 
 /** the general Link Poperty
- *  Main Purpose of this property is to Link Objects and Feautures in a document.
+ *  Main Purpose of this property is to Link Objects and Features in a document.
  */
 class AppExport PropertyPlacementLink : public PropertyLink
 {

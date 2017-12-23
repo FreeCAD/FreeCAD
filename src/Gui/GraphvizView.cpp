@@ -57,7 +57,7 @@ namespace Gui {
  * @brief The GraphvizWorker class
  *
  * Implements a QThread class that does the actual conversion from dot to
- * svg. All critical communcation is done using queued signals.
+ * svg. All critical communication is done using queued signals.
  *
  */
 

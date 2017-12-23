@@ -531,7 +531,7 @@ bool SetOperations::CollectFacetVisitor::AllowVisit (const MeshFacet& rclFacet, 
 
         if (it != _edges.end()) {
             if (_addFacets == -1) {
-                // detemine if the facets shoud add or not only once
+                // determine if the facets should add or not only once
                 MeshGeomFacet facet = _mesh.GetFacet(rclFrom); // triangulated facet
                 MeshGeomFacet facetOther = it->second.facets[1-_side][0]; // triangulated facet from same edge and other mesh
                 Vector3f normalOther = facetOther.GetNormal();

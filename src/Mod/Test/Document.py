@@ -89,7 +89,7 @@ class DocumentBasicCases(unittest.TestCase):
     except:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
-      self.fail("no exeption thrown")
+      self.fail("no exception thrown")
     self.Doc.RedoCount
     self.Doc.UndoNames
     self.Doc.RedoNames

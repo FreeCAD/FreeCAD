@@ -1077,7 +1077,7 @@ IF(MSVC)
 	ENDIF(FREECAD_RELEASE_PDB)
 
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
-	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the the linker switch 'Enable Large Addresses'
+	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
 		set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LARGEADDRESSAWARE")
 		SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")

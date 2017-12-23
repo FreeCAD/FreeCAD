@@ -124,7 +124,7 @@ void Transaction::removeProperty(TransactionalObject *Obj,
 }
 
 //**************************************************************************
-// separator for other implemetation aspects
+// separator for other implementation aspects
 
 
 void Transaction::apply(Document &Doc, bool forward)
