@@ -76,7 +76,7 @@ public:
     /// Removes and destroys the QDockWidget and returns the widget
     /// with name \a name added with @ref addDockWindow.
     QWidget* removeDockWindow(const char* name);
-    /// Removes and destroys the QDockWidget that conains \a dock. \a dock
+    /// Removes and destroys the QDockWidget that contains \a dock. \a dock
     /// does not get destroyed.
     void removeDockWindow(QWidget* dock);
     /// Returns the widget with name \a name added with @ref addDockWindow.

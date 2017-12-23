@@ -40,7 +40,7 @@ namespace Gui {
 class ViewProvider;
 namespace TaskView {
 
-/** General Link/Selction editor for the Task view
+/** General Link/Selection editor for the Task view
  *  This can be used as part of a TaskDialog to alter
  *  the content of a LinkProperty by user input/selection.
  *  If set active it reflects the selection to the Property 

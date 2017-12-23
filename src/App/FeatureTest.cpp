@@ -133,7 +133,7 @@ DocumentObjectExecReturn *FeatureTest::execute(void)
   switch(ExceptionType.getValue()) 
   {
     case 0: break;
-    case 1: throw "Test Exeption";
+    case 1: throw "Test Exception";
     case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
     case 3: *i=0;printf("%i",*i);break; // seg-vault
     case 4: j=0; printf("%i",1/j); break; // int devision by zero

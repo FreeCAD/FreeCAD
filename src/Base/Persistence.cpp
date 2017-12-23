@@ -40,7 +40,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Base::Persistence,Base::BaseClass);
 
 
 //**************************************************************************
-// separator for other implemetation aspects
+// separator for other implementation aspects
 
 unsigned int Persistence::getMemSize (void) const
 {

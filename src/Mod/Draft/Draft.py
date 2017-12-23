@@ -1553,7 +1553,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         print("the offset tool is currently unable to offset a non-Draft object directly - Creating a copy")
 
     def getRect(p,obj):
-        "returns length,heigh,placement"
+        "returns length,height,placement"
         pl = obj.Placement.copy()
         pl.Base = p[0]
         diag = p[2].sub(p[0])

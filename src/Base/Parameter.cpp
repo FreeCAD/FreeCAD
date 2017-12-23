@@ -319,7 +319,7 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
     else {
         // path, split the first path
         std::string cTemp;
-        // geting the first part
+        // getting the first part
         cTemp.assign(cName,0,pos);
         // removing the first part from the original
         cName.erase(0,pos+1);
@@ -373,7 +373,7 @@ std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups(void)
     return vrParamGrp;
 }
 
-/// test if this group is emty
+/// test if this group is empty
 bool ParameterGrp::IsEmpty(void) const
 {
     if ( _pGroupNode->getFirstChild() )

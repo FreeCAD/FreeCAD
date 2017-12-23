@@ -1456,7 +1456,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 }
 
 /**
- * If any resouce has been loaded this methods shows it as a modal dialog.
+ * If any resource has been loaded this methods shows it as a modal dialog.
  */
 Py::Object PyResource::show(const Py::Tuple&)
 {

@@ -578,7 +578,7 @@ protected:
 /** Precision properties
  * This property fulfills the need of a floating value with many decimal points,
  * e.g. for holding values like Precision::Confusion(). The value has a default
- * constraint for non-negative, but can be overidden
+ * constraint for non-negative, but can be overridden
  */
 class AppExport PropertyPrecision: public PropertyFloatConstraint
 {

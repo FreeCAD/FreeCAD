@@ -34,7 +34,7 @@ echo "DESTROYING ALL STATE OF SNAPD"
 if systemctl is-active --quiet snapd.service snapd.socket; then
     snapd_was_active=yes
     echo
-    echo "Stoping snapd..."
+    echo "Stopping snapd..."
     echo
     (
         set -x

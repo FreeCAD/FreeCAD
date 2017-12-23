@@ -161,7 +161,7 @@ def saveShape(csg,filename,shape,name,hasplacement = True,cleanshape=False):
         sh=shape.copy()
         sh.Placement=FreeCAD.Placement()
         # it not yet tested if changing the placement recreated the
-        # tesselation. but for now we simply do the cleaing once again
+        # tessellation. but for now we simply do the cleaing once again
         # to stay on the safe side
         if cleanshape:
             shape = shape.cleaned()
@@ -347,7 +347,7 @@ class Drawexporter(object):
                         self.csg.write('explode %s E\n' % subobj.Name )
                         self.csg.write('wire %s %s_1\n' %(sectionname,subobj.Name))
                     if sh.ShapeType == 'Face':
-                        #we should use outer wire when it becomes avaiable
+                        #we should use outer wire when it becomes available
                         self.csg.write('explode %s W\n' % subobj.Name )
                         #csg.write('tcopy %s_1 %s\n' %(subobj.Name,sectionname))
                         sectionname ='%s_1' % subobj.Name
@@ -551,7 +551,7 @@ class Drawexporter(object):
         elif ob.TypeId == "Part::Extrusion" and ob.TaperAngle.Value == 0:
             if checksupported: return True # The object is supported
             self.process_object(ob.Base)
-            #Warning does not fully ressemle the functionallity of
+            #Warning does not fully resemble the functionality of
             #Part::Extrusion
             #csg.write('tcopy %s %s\n'%(ob.Base.Name,d1['name']))
             facename=ob.Base.Name
@@ -589,7 +589,7 @@ class Drawexporter(object):
             for i,subobj in enumerate(ob.Sections):
                 explodeshape = self.alwaysexplode or \
                         self.process_object(suboobj,True)
-                if explodeshape and False: #diabled TBD
+                if explodeshape and False: #disabled TBD
                     try:
                         raise NotImplementedError
                         sectionname = '%s-%02d-section' % (ob.Name,i)

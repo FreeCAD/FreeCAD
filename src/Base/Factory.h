@@ -42,7 +42,7 @@ class BaseExport AbstractProducer
 public:
     AbstractProducer() {}
     virtual ~AbstractProducer() {}
-    /// overwriten by a concret producer to produce the needed object
+    /// overwritten by a concrete producer to produce the needed object
     virtual void* Produce (void) const = 0;
 };
 
@@ -101,7 +101,7 @@ inline ScriptFactorySingleton& ScriptFactory(void)
 // --------------------------------------------------------------------
 
 /** Script Factory
-  * This class produce Scirpts. 
+  * This class produce Scripts. 
   * @see Factory
   */
 class BaseExport ScriptProducer: public AbstractProducer

@@ -40,10 +40,10 @@ UltimateTensileStrength = value MPa
 ; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
 PoissonRatio =
 
-; Descrition to be updated
+; Description to be updated
 AmbientColor =
 
-; Descrition to be updated
+; Description to be updated
 Color =
 
 ; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
@@ -52,76 +52,76 @@ CompressiveStrength =
 ; Density in [kg/m^3] https://en.wikipedia.org/wiki/Density
 Density = value kg/m^3
 
-; Descrition to be updated
+; Description to be updated
 DiffuseColor =
 
 ; Elasticity https://en.wikipedia.org/wiki/Elasticity_%28physics%29
 Elasticity =
 
-; Descrition to be updated
+; Description to be updated
 EmissiveColor =
 
-; Descrition to be updated
+; Description to be updated
 Enlargen =
 
-; Descrition to be updated
+; Description to be updated
 EnvironmentalEfficiencyClass =
 
-; Descrition to be updated
+; Description to be updated
 ExecutionInstructions =
 
-; Descrition to be updated
+; Description to be updated
 Finish =
 
-; Descrition to be updated
+; Description to be updated
 FireResistanceClass =
 
-; Descrition to be updated
+; Description to be updated
 FractureToughness =
 
-; Descrition to be updated
+; Description to be updated
 FragmentShader =
 
-; Descrition to be updated
+; Description to be updated
 KindOfMaterial =
 
-; Descrition to be updated
+; Description to be updated
 KindOfMaterialDE =
 
-; Descrition to be updated
+; Description to be updated
 MaterialNumber =
 
-; Descrition to be updated
+; Description to be updated
 Model =
 
-; Descrition to be updated
+; Description to be updated
 ModulusOfShare =
 
-; Descrition to be updated
+; Description to be updated
 Norm =
 
-; Descrition to be updated
+; Description to be updated
 SectionFillPattern =
 
-; Descrition to be updated
+; Description to be updated
 SectionLinewidth =
 
-; Descrition to be updated
+; Description to be updated
 Shininess =
 
-; Descrition to be updated
+; Description to be updated
 SoundTransmissionClass =
 
-; Descrition to be updated
+; Description to be updated
 SpecularColor =
 
-; Descrition to be updated
+; Description to be updated
 StandardCode =
 
-; Descrition to be updated
+; Description to be updated
 TexturePath =
 
-; Descrition to be updated
+; Description to be updated
 TextureScaling =
 
 ; Thermal conductivity https://en.wikipedia.org/wiki/Thermal_conductivity
@@ -130,25 +130,25 @@ ThermalConductivity =
 ; Thermal expansion coefficient (linear) in [1/K] https://en.wikipedia.org/wiki/Thermal_expansion
 ThermalExpansionCoefficient =
 
-; Descrition to be updated
+; Description to be updated
 Transparency =
 
-; Descrition to be updated
+; Description to be updated
 UltimateStrain =
 
-; Descrition to be updated
+; Description to be updated
 UnitsPerQuantity =
 
-; Descrition to be updated
+; Description to be updated
 VertexShader =
 
-; Descrition to be updated
+; Description to be updated
 ViewColor =
 
-; Descrition to be updated
+; Description to be updated
 ViewFillPattern =
 
-; Descrition to be updated
+; Description to be updated
 ViewLinewidth =
 
 ; Yield strength in [MPa] https://en.wikipedia.org/wiki/Yield_%28engineering%29

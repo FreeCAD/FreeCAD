@@ -587,7 +587,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition(void)
     }
 
     // otherwise, cameras have changed in ways we don't understand since
-    // the last saveHomePosition() invokation, and so we're just going
+    // the last saveHomePosition() invocation, and so we're just going
     // to ignore the reset request
 }
 
