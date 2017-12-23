@@ -1,5 +1,5 @@
 /*
- * Extends the QuarterWidget with all funcions the SoQtViewer has
+ * Extends the QuarterWidget with all functions the SoQtViewer has
  * Copyright (C) 2014  Stefan Tröger <stefantroeger@gmx.net>
  *
  * This library is free software; you can redistribute it and/or

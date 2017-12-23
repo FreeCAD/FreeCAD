@@ -448,7 +448,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
-    // Avoid any Z-buffer artefacts, so that the lines always
+    // Avoid any Z-buffer artifacts, so that the lines always
     // appear on top of the faces
     SoPolygonOffset* offset = new SoPolygonOffset();
     offset->styles = SoPolygonOffset::FILLED;

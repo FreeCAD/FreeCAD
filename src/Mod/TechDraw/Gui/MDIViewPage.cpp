@@ -914,7 +914,7 @@ void MDIViewPage::clearSelection()
   blockSelection(false);
 }
 
-//!Update QGVPage's selection based on Selection made outside Drawing Interace
+//!Update QGVPage's selection based on Selection made outside Drawing Interface
 //invoked from VPP
 void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
 {

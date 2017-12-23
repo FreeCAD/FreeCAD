@@ -430,7 +430,7 @@ Version: V0.5B5 Date: Sat Feb 25 2006 +++++++++++++++++++++++++++++++
   * Return the edge list by reference in mesh kernel (to avoid memory leak)
   * PropertyVectorList implemented
   * Use PropertyVectorLists and PropertyFloatLists in Mesh::Curvature feature and its associated view provider
-  * PropertyColor(List) implemeted
+  * PropertyColor(List) implemented
   * PropertyMeshKernel added
   * move all Projects to NODEFAULTLIBS
   * move all Projects to xcopy
@@ -912,7 +912,7 @@ Version: V0.1B48 Date: Sun Mar 30 15:06:23 2003 +++++++++++++++++++++++++++++++
   * Big patch from Werner about:
     - feeding toolbars and Commandbar and menus from the parameterts
     - customizing works with positions in command bar and toolbar
-    - customizing by draging from menu into toolbar and commandbar
+    - customizing by dragging from menu into toolbar and commandbar
 
 Version: V0.1B47 Date: Fri Mar 28 18:24:36 2003 +++++++++++++++++++++++++++++++
   * Import App Module added

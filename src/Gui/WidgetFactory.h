@@ -116,8 +116,8 @@ public:
     virtual ~UiLoader();
 
     /**
-     * Creates a widget of the type \a className withe the parent \a parent.
-     * Fore more details see the documentation to QWidgetFactory.
+     * Creates a widget of the type \a className with the parent \a parent.
+     * For more details see the documentation to QWidgetFactory.
      */
     QWidget* createWidget(const QString & className, QWidget * parent=0, 
                           const QString& name = QString());

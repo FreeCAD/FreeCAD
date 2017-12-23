@@ -49,7 +49,7 @@ class Snapper:
     3 functions are useful for the scriptwriter: snap(), constrain()
     or getPoint() which is an all-in-one combo.
 
-    The indivudual snapToXXX() functions return a snap definition in
+    The individual snapToXXX() functions return a snap definition in
     the form [real_point,marker_type,visual_point], and are not
     meant to be used directly, they are all called when necessary by
     the general snap() function.

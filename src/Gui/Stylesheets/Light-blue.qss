@@ -504,7 +504,7 @@ QTabBar {
     background-color: transparent;
 }
 
-/* Workaround for QTabBars created from docked QDockWidgets which don't draw the border if not set and reseted as follows: */
+/* Workaround for QTabBars created from docked QDockWidgets which don't draw the border if not set and reset as follows: */
 QTabBar {
     border-top: 1px solid #d2d2d2;  /* set color for all QTabBars */
 }

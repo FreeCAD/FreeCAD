@@ -53,7 +53,7 @@ TimeInfo::~TimeInfo()
 
 
 //**************************************************************************
-// separator for other implemetation aspects
+// separator for other implementation aspects
 
 void TimeInfo::setCurrent(void)
 {

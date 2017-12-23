@@ -128,7 +128,7 @@ public:
     virtual std::string getElement(const SoDetail *) const { return std::string(); }
     virtual SoDetail* getDetail(const char*) const { return 0; }
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
-    /// return the higlight lines for a given element or the whole shape
+    /// return the highlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
         (void)Element;
         return std::vector<Base::Vector3d>();

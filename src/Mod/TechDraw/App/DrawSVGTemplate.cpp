@@ -228,7 +228,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     // Parse the document XML
     QDomElement docElem = doc.documentElement();
 
-    // Obtain the size of the SVG document by reading the document attirbutes
+    // Obtain the size of the SVG document by reading the document attributes
     Base::Quantity quantity;
 
     // Obtain the width

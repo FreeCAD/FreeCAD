@@ -379,7 +379,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         std::string name = reader.getAttribute("value");
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
-        // document. Thus, we should silently ingore this.
+        // document. Thus, we should silently ignore this.
         // Property not in an object!
         DocumentObject* father = static_cast<DocumentObject*>(getContainer());
         App::Document* document = father->getDocument();
