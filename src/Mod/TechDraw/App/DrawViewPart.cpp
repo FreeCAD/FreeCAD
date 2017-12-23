@@ -238,20 +238,22 @@ TopoDS_Shape DrawViewPart::getShapeFromPart(App::Part* ap) const
 TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 {
     TopoDS_Shape baseShape = getSourceShape();
-    TopoDS_Iterator it(baseShape);
-    TopoDS_Shape fusedShape = it.Value();
-    it.Next();
-    for (; it.More(); it.Next()) {
-        const TopoDS_Shape& aChild = it.Value();
-        BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
-        // Let's check if the fusion has been successful
-        if (!mkFuse.IsDone()) {
-            Base::Console().Error("DVp - Fusion failed\n");
-            return baseShape;
+    if (!baseShape.IsNull()) {
+        TopoDS_Iterator it(baseShape);
+        TopoDS_Shape fusedShape = it.Value();
+        it.Next();
+        for (; it.More(); it.Next()) {
+            const TopoDS_Shape& aChild = it.Value();
+            BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
+            // Let's check if the fusion has been successful
+            if (!mkFuse.IsDone()) {
+                Base::Console().Error("DVp - Fusion failed\n");
+                return baseShape;
+            }
+            fusedShape = mkFuse.Shape();
         }
-        fusedShape = mkFuse.Shape();
+        baseShape = fusedShape;
     }
-    baseShape = fusedShape;
     return baseShape;
 }
 
@@ -795,10 +797,12 @@ void DrawViewPart::unsetupObject()
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
         for (; it3 != dims.end(); it3++) {
-              page->removeView(*it3);
-              std::string viewName = (*it3)->getNameInDocument();
-              Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                docName.c_str(), viewName.c_str());
+            page->removeView(*it3);
+            const char* name = (*it3)->getNameInDocument();
+            if (name) {
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), name);
+            }
         }
     }
 
