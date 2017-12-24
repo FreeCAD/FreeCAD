@@ -155,11 +155,11 @@
             <rdf:li>mesh</rdf:li>
             <rdf:li>sphere</rdf:li>
             <rdf:li>workbench</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
         <dc:coverage />
-        <dc:description>Tesselated sphere mesh, lit from top</dc:description>
+        <dc:description>Tessellated sphere mesh, lit from top</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>

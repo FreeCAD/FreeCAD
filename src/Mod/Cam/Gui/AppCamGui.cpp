@@ -69,7 +69,7 @@ extern "C"
 
         CamGui::Workbench           ::init();
 
-        // instanciating the commands
+        // instantiating the commands
         CreateCamCommands();
 
         return;

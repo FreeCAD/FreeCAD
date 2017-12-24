@@ -192,7 +192,7 @@ class XschemaElement:
         # Attribute definitions for the current attributeGroup, if there is one.
         self.attributeGroup = None
         # List of names of attributes for this element.
-        # We will add the attribute defintions in each of these groups
+        # We will add the attribute definitions in each of these groups
         #   to this element in annotate().
         self.attributeGroupNameList = []
         self.topLevel = 0

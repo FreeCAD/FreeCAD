@@ -84,7 +84,7 @@ public:
     //hide and show in the normal way
     virtual bool isShow(void) const;
     
-    //avoid unneeded context menu entrys
+    //avoid unneeded context menu entries
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
     //only flat lines supported
