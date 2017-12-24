@@ -444,7 +444,7 @@ class Component:
         return None
         
     def rebase(self,shape):
-        """returns a shape that is a copy ofthe original shape
+        """returns a shape that is a copy of the original shape
         but centered on the (0,0) origin, and a placement that is needed to
         reposition that shape to its original location/orientation"""
         import DraftGeomUtils,math

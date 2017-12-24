@@ -1319,10 +1319,10 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
     return None   
     
 def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
-    """getIfcBrepFacesData(obj,[scale,tesselation]): returns a list(0) of lists(1) of lists(2) of lists(3), 
+    """getIfcBrepFacesData(obj,[scale,tessellation]): returns a list(0) of lists(1) of lists(2) of lists(3), 
     list(3) being a list of vertices defining a loop, list(2) describing a face from one or 
     more loops, list(1) being the whole solid made of several faces, list(0) being the list
-    of solids inside the object. Scale can indicate a scaling factor. Tesselation is the tesselation
+    of solids inside the object. Scale can indicate a scaling factor. Tessellation is the tessellation
     factor to apply on curved faces."""
     shape = None
     if sub:
