@@ -490,7 +490,7 @@ Orientation is not taken into account.</UserDocu>
     </Methode>
     <Methode Name="tessellate" Const="true">
       <Documentation>
-        <UserDocu>Tessellate the the shape and return a list of vertices and face indices</UserDocu>
+        <UserDocu>Tessellate the shape and return a list of vertices and face indices</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="project" Const="true">
