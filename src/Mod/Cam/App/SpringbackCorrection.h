@@ -152,7 +152,7 @@ public:
     bool Load(const TopoDS_Shape& aShape);
     /** @brief loads input-shape and -mesh */
     bool Load(const TopoDS_Shape& aShape, const MeshCore::MeshKernel& aMesh);
-    /** @brief sets parameter-values to initial state, tesselates the input
+    /** @brief sets parameter-values to initial state, tessellates the input
                shape and computes a curvature-radius-value at each edge
                contained in the input-shape */ 
     bool Init();

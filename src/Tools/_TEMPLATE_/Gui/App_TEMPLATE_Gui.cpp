@@ -69,7 +69,7 @@ PyMOD_INIT_FUNC(_TEMPLATE_Gui)
         PyMOD_Return(0);
     }
 
-    // instanciating the commands
+    // instantiating the commands
     Create_TEMPLATE_Commands();
     _TEMPLATE_Gui::Workbench::init();
 
