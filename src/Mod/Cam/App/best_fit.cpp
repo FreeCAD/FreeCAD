@@ -175,13 +175,13 @@ bool best_fit::Perform()
 	Runtime_BestFit << "Runtime Best-Fit" << std::endl;
 
 
-    cout << "tesselate shape" << endl;
+    cout << "tessellate shape" << endl;
 
 	sec1 = time(NULL);
-   	  Tesselate_Shape(m_Cad, m_CadMesh, 1); // Tesselates m_Cad Shape and stores Tesselation in m_CadMesh 
+   	  Tesselate_Shape(m_Cad, m_CadMesh, 1); // Tessellates m_Cad Shape and stores Tessellation in m_CadMesh 
 	sec2 = time(NULL);
 
-	Runtime_BestFit << "Tesselate Shape: " << sec2 - sec1 << " sec" << std::endl;  
+	Runtime_BestFit << "Tessellate Shape: " << sec2 - sec1 << " sec" << std::endl;  
 
 	sec1 = time(NULL);
       Comp_Weights(); // m_pntCloud_1, m_weights, m_normals des/r Cad-Meshs/Punktewolke werden hier gefüllt

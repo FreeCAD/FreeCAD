@@ -47,7 +47,7 @@ public:
 
     virtual const char *getName(void) const;
 
-    /// Mesage handler
+    /// Message handler
     virtual bool onMsg(const char* pMsg, const char** ppReturn);
     virtual bool onHasMsg(const char* pMsg) const;
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);

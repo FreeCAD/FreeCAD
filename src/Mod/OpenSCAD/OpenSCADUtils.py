@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - Utility Fuctions"
+__title__="FreeCAD OpenSCAD Workbench - Utility Functions"
 __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
@@ -89,7 +89,7 @@ def searchforopenscadexe():
             return opath
 
 def workaroundforissue128needed():
-    '''sets the import path depending on the OpenSCAD Verion
+    '''sets the import path depending on the OpenSCAD Version
     for versions <= 2012.06.23 to the current working dir
     for versions above to the inputfile dir
     see https://github.com/openscad/openscad/issues/128'''
@@ -161,7 +161,7 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
         check_output2([osfilename,'-o',outputfilename, inputfilename])
         return outputfilename
     else:
-        raise OpenSCADError('OpenSCAD executeable unavailable')
+        raise OpenSCADError('OpenSCAD executable unavailable')
 
 def callopenscadstring(scadstr,outputext='csg'):
     '''create a tempfile and call the open scad binary
@@ -490,7 +490,7 @@ def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
     # TBD: assure the given doc is active
     face = importDXFface(tmpfilename,None,None)
     #clean up
-    filenames.append(tmpfilename) #delete the ouptut file as well
+    filenames.append(tmpfilename) #delete the output file as well
     try:
         os.unlink(tmpfilename)
     except OSError:

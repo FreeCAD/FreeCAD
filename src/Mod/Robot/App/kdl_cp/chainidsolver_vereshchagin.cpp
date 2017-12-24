@@ -436,7 +436,7 @@ void ChainIdSolver_Vereshchagin::getJointNullSpaceAcceleration(JntArray& nullspa
 
 //This is not only a bias force energy but also includes generalized forces
 //change type of parameter G
-//this method should retur array of G's
+//this method should return array of G's
 
 void ChainIdSolver_Vereshchagin::getLinkBiasForceAcceleratoinEnergy(Eigen::VectorXd& G)
 {
@@ -453,7 +453,7 @@ void ChainIdSolver_Vereshchagin::getLinkBiasForceAcceleratoinEnergy(Eigen::Vecto
 
 }
 
-//this method should retur array of R's
+//this method should return array of R's
 
 void ChainIdSolver_Vereshchagin::getLinkBiasForceMatrix(Wrenches& R_tilde)
 {

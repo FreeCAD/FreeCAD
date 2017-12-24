@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - 2D helper fuctions"
+__title__="FreeCAD OpenSCAD Workbench - 2D helper functions"
 __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
@@ -277,7 +277,7 @@ def findConnectedEdges(edgelist,eps=1e-6,debug=False):
 
 def endpointdistance(edges):
     '''return the distance of of vertices in path (list of edges) as
-    maximum, mininum and distance between start and endpoint
+    maximum, minimum and distance between start and endpoint
     it expects the edges to be traversed forward from starting from Vertex 0'''
     numedges=len(edges)
     if numedges == 1 and len(edges[0].Vertexes) == 1:
@@ -293,7 +293,7 @@ def endpointdistance(edges):
 
 def endpointdistancedebuglist(debuglist):
     '''return the distance of of vertices in path (list of edges) as
-    maximum, mininum and distance between start and endpoint
+    maximum, minimum and distance between start and endpoint
     it it expects a 'not reversed' flag for every edge'''
     numedges=len(debuglist)
     if numedges == 1 and len(debuglist[0][0].Vertexes) == 1:

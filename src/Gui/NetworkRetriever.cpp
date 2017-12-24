@@ -162,8 +162,8 @@ void NetworkRetriever::setProxy( const QString& proxy, const QString& user, cons
 }
 
 /**
- * If \a recursive is true all referenced files are downloaded recursivly.
- * As default recursivion is disabled. \a level specifies the maximum recursion 
+ * If \a recursive is true all referenced files are downloaded recursively.
+ * As default recursion is disabled. \a level specifies the maximum recursion 
  * depth. If \a level is 0 the recursion depth is infinite. As default the level
  * property is 1.
  * \note: Use this with care!

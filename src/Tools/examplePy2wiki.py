@@ -7,12 +7,12 @@ Usage:
    examplePy2wiki [Optionen] 
    
 Options:
- -o  --out-file=FILENAME  use this file name for output, default resorces.qrc
+ -o  --out-file=FILENAME  use this file name for output, default resources.qrc
  -i, --in-file=FILENAME   directory to search, default PWD
  -h, --help               print this help message
  
 This program reads python files and generate a output suited for a Mediawiki page.
-The python comments get translated to text and the code blocks get indended to 
+The python comments get translated to text and the code blocks get intended to 
 show up us code in the wiki.
 
 

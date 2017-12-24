@@ -20,12 +20,12 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - replace object fuction"
+__title__="FreeCAD OpenSCAD Workbench - replace object function"
 __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
 '''
-This fucntions allows to replace an object in the feature hierarchy
+This functions allows to replace an object in the feature hierarchy
 '''
 
 def replaceobj(parent,oldchild,newchild):
