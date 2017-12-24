@@ -412,7 +412,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
 
 std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
     
-    //we get all dislay modes and remove the "Group" mode, as this is what we use for "Through" 
+    //we get all display modes and remove the "Group" mode, as this is what we use for "Through" 
     //body display mode
     std::vector< std::string > modes = ViewProviderPart::getDisplayModes();
     modes.erase(modes.begin());

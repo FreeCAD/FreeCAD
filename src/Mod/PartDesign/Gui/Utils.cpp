@@ -199,7 +199,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the sketch");
+        throw Base::Exception ("Couldn't find body for the sketch");
     }
 
     // Get the Origin for the body
@@ -322,7 +322,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the feature");
+        throw Base::Exception ("Couldn't find body for the feature");
     }
 
     std::string bodyName = body->getNameInDocument ();
