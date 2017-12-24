@@ -1094,7 +1094,7 @@ def toggleIfcBrepFlag(obj):
 
 def makeCompoundFromSelected(objects=None):
     """makeCompoundFromSelected([objects]): Creates a new compound object from the given
-    subobjects (faces, edges) or from the the selection if objects is None"""
+    subobjects (faces, edges) or from the selection if objects is None"""
     import FreeCADGui,Part
     so = []
     if not objects:
