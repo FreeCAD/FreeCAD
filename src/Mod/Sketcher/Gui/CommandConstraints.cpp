@@ -5958,7 +5958,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
         getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
 
-        //sink the egde to be the last item
+        //sink the edge to be the last item
         if (isEdge(GeoId1,PosId1) ) {
             std::swap(GeoId1,GeoId2);
             std::swap(PosId1,PosId2);
