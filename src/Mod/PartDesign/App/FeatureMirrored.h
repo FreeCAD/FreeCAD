@@ -53,8 +53,8 @@ public:
     /** Create transformations
       * Returns a list containing one transformation since the first, untransformed instance
       * is not counted. The transformation will mirror the shape it is applied to on a plane
-      * If MirrorPlane contains a feature and an face name, then the mirror plane will be
-      *   the the given face, which must be planar
+      * If MirrorPlane contains a feature and a face name, then the mirror plane will be
+      * the given face, which must be planar
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>);
 };
