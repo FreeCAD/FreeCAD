@@ -150,7 +150,7 @@ void Transformed::Restore(Base::XMLReader &reader)
                 Base::Type inputType = Base::Type::fromName(TypeName);
                 if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
                     inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-                    // Do not directly call the property's Restore method in case the implmentation
+                    // Do not directly call the property's Restore method in case the implementation
                     // has changed. So, create a temporary PropertyFloat object and assign the value.
                     App::PropertyFloat floatProp;
                     floatProp.Restore(reader);
@@ -288,7 +288,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     // above you need:
                     // 1. The original support
                     // 2. Any extra support gained by any previous transformation of any previous feature (multi-feature transform)
-                    // 3. Any extra support gained by any previous tranformation of this feature (feature multi-trasform)
+                    // 3. Any extra support gained by any previous transformation of this feature (feature multi-trasform)
                     //
                     // Therefore, if the transformation succeeded, then we fuse it with the support now, before checking the intersection
                     // of the next transformation.

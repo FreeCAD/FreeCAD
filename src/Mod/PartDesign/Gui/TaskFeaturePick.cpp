@@ -340,7 +340,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             cprop->Paste(*prop);
 
             //we are a independent copy, therefore no external geometry was copied. WE therefore can delete all
-            //contraints
+            //constraints
             if(obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId()))
                 static_cast<Sketcher::SketchObject*>(copy)->delConstraintsToExternal();
         }

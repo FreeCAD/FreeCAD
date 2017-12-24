@@ -43,7 +43,7 @@ class Shaft:
     wstr = ["",  "wy",  "wz"] # Translations
     sigmaNstr = ["sigmax","sigmay","sigmaz"] # Normal/shear stresses
     sigmaBstr = ["taut","sigmabz", "sigmaby"] # Torsion/bending stresses
-    # For diagram labelling
+    # For diagram labeling
     Qstrings = (("Normal force [x]",  "x", "mm", "N_x",  "N"), 
                         ("Shear force [y]",  "x",  "mm",  "Q_y",  "N"), 
                         ("Shear force [z]",  "x",  "mm",  "Q_z",  "N"))
