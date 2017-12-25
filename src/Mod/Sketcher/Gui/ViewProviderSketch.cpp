@@ -5136,6 +5136,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
+    Gui::Selection().rmvPreselect();
 
     // create the container for the additional edit data
     assert(!edit);
