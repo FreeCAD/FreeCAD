@@ -371,7 +371,7 @@
         <dc:title>Mesh_Regular_Solid</dc:title>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
-        <dc:description>A tesselated cube mesh in front of a tesselated cylindrical mesh</dc:description>
+        <dc:description>A tessellated cube mesh in front of a tessellated cylindrical mesh</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -394,7 +394,7 @@
             <rdf:li>mesh</rdf:li>
             <rdf:li>cube</rdf:li>
             <rdf:li>cylinder</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
         <dc:date>Fri Dec 20 16:28:14 2013 +0100</dc:date>

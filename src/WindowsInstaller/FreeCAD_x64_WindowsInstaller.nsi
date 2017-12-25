@@ -142,7 +142,7 @@ sectionEnd
 
 # http://forums.winamp.com/showthread.php?t=255747
 function unSelectPythonPath
-	# Unselect the PYTHONPATH option
+	# Deselect the PYTHONPATH option
 	!insertmacro UnselectSection ${PythonPathSection}
 functionEnd
 

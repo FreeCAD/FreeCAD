@@ -237,12 +237,12 @@
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
-        <dc:description>Tesselated cylindrical mesh, lit from top</dc:description>
+        <dc:description>Tessellated cylindrical mesh, lit from top</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>cylinder</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
         <dc:date>Sat Dec 21 21:54:56 2013 +1100</dc:date>

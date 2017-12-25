@@ -189,7 +189,7 @@
         <dc:title>Mesh_Export_Mesh</dc:title>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
-        <dc:description>Tesselated cube mesh with arrow pointing away from document</dc:description>
+        <dc:description>Tessellated cube mesh with arrow pointing away from document</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -199,7 +199,7 @@
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>cube</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
             <rdf:li>arrow</rdf:li>
             <rdf:li>document</rdf:li>
           </rdf:Bag>

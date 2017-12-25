@@ -249,10 +249,10 @@
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>cube</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Tesselated cube mesh, lit from top</dc:description>
+        <dc:description>Tessellated cube mesh, lit from top</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
