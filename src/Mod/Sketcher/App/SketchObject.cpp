@@ -427,8 +427,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 {
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
     // if we have conflicts we can forget about moving. However, there is the possibility that we
-    // need to do programatically moves of new geometry that has not been solved yet and that because
-    // they were programmetically generated won't generate a conflict. This is the case of Fillet for
+    // need to do programmatically moves of new geometry that has not been solved yet and that because
+    // they were programmatically generated won't generate a conflict. This is the case of Fillet for
     // example. This is why exceptionally, it may be required to update the sketch geometry to that of
     // of SketchObject upon moving. => use updateGeometry parameter = true then
     

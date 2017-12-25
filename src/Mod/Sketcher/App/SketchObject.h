@@ -111,7 +111,7 @@ public:
     int delConstraintOnPoint(int VertexId, bool onlyCoincident=true);
     /// Deletes all constraints referencing an external geometry
     int delConstraintsToExternal();
-    /// transfers all contraints of a point to a new point
+    /// transfers all constraints of a point to a new point
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject * pObj, bool construction = true);
