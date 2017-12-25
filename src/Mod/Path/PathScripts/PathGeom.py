@@ -61,7 +61,7 @@ class Side:
         """(ptRef, pt)
         Determine the side of pt in relation to ptRef.
         If both Points are viewed as vectors with their origin in (0,0,0)
-        then the two vectors are either form a straigt line (On) or pt
+        then the two vectors either form a straight line (On) or pt
         lies in the left or right hemishpere in regards to ptRef."""
         d = -ptRef.x*pt.y + ptRef.y*pt.x
         if d < 0:
