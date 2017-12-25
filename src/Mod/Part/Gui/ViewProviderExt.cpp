@@ -468,7 +468,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
 
-    // Avoid any Z-buffer artefacts, so that the lines always appear on top of the faces
+    // Avoid any Z-buffer artifacts, so that the lines always appear on top of the faces
     // The correct order is Edges, Polygon offset, Faces.
     SoPolygonOffset* offset = new SoPolygonOffset();
 

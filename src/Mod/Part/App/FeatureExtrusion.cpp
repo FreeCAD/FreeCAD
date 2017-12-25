@@ -229,7 +229,7 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     gp_Dir normal = surf.Plane().Axis().Direction();
 
     //now se know the plane. But if there are faces, the
-    //plane normal direction is not dependent on face orientation (because findPlane only uses egdes).
+    //plane normal direction is not dependent on face orientation (because findPlane only uses edges).
     //let's fix that.
     TopExp_Explorer ex(sh, TopAbs_FACE);
     if(ex.More()) {

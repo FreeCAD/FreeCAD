@@ -43,7 +43,7 @@ def editAttachment(feature = None,
     selection.
     take_selection: if True, current selection is filled into first references (but only 
     if object to be attached doesn't have any references already)
-    create_transaction = if False, no undo transation operations will be done by the 
+    create_transaction = if False, no undo transaction operations will be done by the 
     dialog (consequently, canceling the dialog will not reset the feature to original 
     state).
     callback_OK: function to be called upon OK. Invoked after writing values to feature, 
