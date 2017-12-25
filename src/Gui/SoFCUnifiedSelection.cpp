@@ -119,6 +119,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
     highlighted = false;
+    setPreSelection = false;
     preSelection = -1;
 }
 
@@ -268,6 +269,19 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         this->colorHighlight = colaction->highlightColor;
     }
 
+    if (highlightMode.getValue() != OFF && action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
+        SoFCHighlightAction *hilaction = static_cast<SoFCHighlightAction*>(action);
+        // Do not clear currently highlighted object when setting new pre-selection
+        if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
+            if (currenthighlight) {
+                SoHighlightElementAction action;
+                action.apply(currenthighlight);
+                currenthighlight->unref();
+                currenthighlight = 0;
+            }
+        }
+    }
+
     if (selectionMode.getValue() == ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
         SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
         if (selaction->SelChange.Type == SelectionChanges::AddSelection || 
@@ -391,6 +405,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
 
                 getMainWindow()->showMessage(QString::fromUtf8(buf));
 
+                setPreSelection = true;
                 if (Gui::Selection().setPreselect(documentName.c_str()
                                        ,objectName.c_str()
                                        ,subElementName.c_str()
@@ -421,6 +436,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         currenthighlight->ref();
                     }
                 }
+
+                setPreSelection = false;
             }
             // nothing picked
             else if (!pp) {
