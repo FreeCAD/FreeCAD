@@ -41,7 +41,7 @@ class PathPreferences:
     PostProcessorOutputFile   = "PostProcessorOutputFile"
     PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
-    # Linear tolerance to use when generating Paths, eg when tesselating geometry
+    # Linear tolerance to use when generating Paths, eg when tessellating geometry
     GeometryTolerance       = "GeometryTolerance"
     LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
 
