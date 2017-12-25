@@ -208,7 +208,9 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
             if(visible) return 1;
             propElementVis->setSize(index+1, true);
         }
+        propElementVis->setStatus(Property::User3,true);
         propElementVis->set1Value(index,visible,true);
+        propElementVis->setStatus(Property::User3,false);
         const auto &elements = getElementListValue();
         if(index<(int)elements.size()) {
             if(!visible)
@@ -698,6 +700,18 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 }
             }
         }
+    }else if(prop == getVisibilityListProperty()) {
+        if(getShowElementValue()) {
+            const auto &elements = getElementListValue();
+            const auto &vis = getVisibilityListValue();
+            myHiddenElements.clear();
+            for(size_t i=0;i<vis.size();++i) {
+                if(i>=elements.size())
+                    break;
+                if(!vis[i])
+                    myHiddenElements.insert(elements[i]);
+            }
+        }
     }else if(prop == getElementListProperty()) {
         const auto &elements = getElementListValue();
 
@@ -706,18 +720,26 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
 
         // Element list changed, we need to sychrnoize VisibilityList.
         if(getShowElementValue() && getVisibilityListProperty()) {
-            boost::dynamic_bitset<> vis;
-            vis.resize(elements.size(),true);
-            std::set<const App::DocumentObject *> hiddenElements;
-            for(size_t i=0;i<elements.size();++i) {
-                if(myHiddenElements.find(elements[i])!=myHiddenElements.end()) {
-                    hiddenElements.insert(elements[i]);
-                    vis[i] = false;
+            if(parent->getDocument()->isPerformingTransaction()) {
+                update(parent,getVisibilityListProperty());
+            }else{
+                boost::dynamic_bitset<> vis;
+                vis.resize(elements.size(),true);
+                std::set<const App::DocumentObject *> hiddenElements;
+                for(size_t i=0;i<elements.size();++i) {
+                    if(myHiddenElements.find(elements[i])!=myHiddenElements.end()) {
+                        hiddenElements.insert(elements[i]);
+                        vis[i] = false;
+                    }
+                }
+                myHiddenElements.swap(hiddenElements);
+                if(vis != getVisibilityListValue()) {
+                    auto propVis = getVisibilityListProperty();
+                    propVis->setStatus(Property::User3,true);
+                    propVis->setValue(vis);
+                    propVis->setStatus(Property::User3,false);
                 }
             }
-            myHiddenElements.swap(hiddenElements);
-            if(vis != getVisibilityListValue())
-                getVisibilityListProperty()->setValue(vis);
         }
         syncElementList();
         if(getShowElementValue() && getElementCountProperty() && 
@@ -809,14 +831,7 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
     auto parent = getContainer();
     myHiddenElements.clear();
     if(parent) {
-        if(getVisibilityListProperty()) {
-            const auto &elements = getElementListValue();
-            const auto &vis = getVisibilityListValue();
-            for(size_t i=0;i<vis.size()&&i<elements.size();++i) {
-                if(!vis[i])
-                    myHiddenElements.insert(elements[i]);
-            }
-        }
+        update(parent,getVisibilityListProperty());
         update(parent,getLinkedObjectProperty());
         update(parent,getElementListProperty());
     }
