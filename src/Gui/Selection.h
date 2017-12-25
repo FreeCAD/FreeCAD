@@ -336,6 +336,8 @@ protected:
     static PyObject *sIsSelected          (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sCountObjectsOfType  (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelection        (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetPreselection     (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sRemPreselection     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetCompleteSelection(PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelectionEx      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelectionObject  (PyObject *self,PyObject *args,PyObject *kwd);

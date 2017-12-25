@@ -89,6 +89,7 @@ void Gui::SoFCDB::init()
     SoFCBoundingBox                 ::initClass();
     SoFCSelection                   ::initClass();
     SoFCUnifiedSelection            ::initClass();
+    SoFCHighlightAction             ::initClass();
     SoFCSelectionAction             ::initClass();
     SoFCDocumentAction              ::initClass();
     SoGLWidgetNode                  ::initClass();
@@ -192,6 +193,7 @@ void Gui::SoFCDB::finish()
     SoFCBackgroundGradient          ::finish();
     SoFCBoundingBox                 ::finish();
     SoFCSelection                   ::finish();
+    SoFCHighlightAction             ::finish();
     SoFCSelectionAction             ::finish();
     SoFCDocumentAction              ::finish();
     SoFCDocumentObjectAction        ::finish();
