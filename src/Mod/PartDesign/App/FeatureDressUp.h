@@ -40,7 +40,7 @@ public:
     /**
      * Base feature and it's subelements to which dressup operation will be applied to.
      * Unlike Feature::BaseFeature it includes Sublinks and set not only inside a body.
-     * But for consistancy if BaseFeature is nonzero this links to the same body as it.
+     * But for consistency if BaseFeature is nonzero this links to the same body as it.
      */
     App::PropertyLinkSub Base;
 
