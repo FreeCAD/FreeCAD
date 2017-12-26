@@ -946,7 +946,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
 
         file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
-        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n"
+                                                              "from PySide2 import __version__"
+                                                              "from PySide2 import __version_info__")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
