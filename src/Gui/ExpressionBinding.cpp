@@ -183,9 +183,7 @@ bool ExpressionBinding::apply()
     if (prop->isReadOnly())
         return true;
     
-    std::string name = docObj->getNameInDocument();
-
-    return apply("App.ActiveDocument." + name + "." + getPath().toEscapedString());
+    return apply(Gui::Command::getObjectCmd(docObj) + "." + getPath().toEscapedString());
 }
 
 void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {

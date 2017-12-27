@@ -49,6 +49,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView);
 
 MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
   : QMainWindow(parent, wflags), BaseView(pcDocument),currentMode(Child), wstate(Qt::WindowNoState)
+  , ActiveObjects(pcDocument)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     

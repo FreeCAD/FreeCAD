@@ -942,7 +942,8 @@ const string PropertyLinkSubList::getPyReprString() const
             strm << "(";
         App::DocumentObject* obj = this->_lValueList[i];
         if (obj) {
-            strm << "App.getDocument('" << obj->getDocument()->getName() << "')." << obj->getNameInDocument();
+            strm << "App.getDocument('" << obj->getDocument()->getName() 
+                 << "').getObject('" << obj->getNameInDocument() << "')";
         } else {
             strm << "None";
         }

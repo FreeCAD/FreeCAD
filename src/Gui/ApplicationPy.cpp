@@ -1088,6 +1088,7 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args, PyObject 
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
 
+    Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
 
     PyObject *module, *dict;
@@ -1109,6 +1110,7 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args, PyObje
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
 
+    Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
 
     PyObject *module, *dict;

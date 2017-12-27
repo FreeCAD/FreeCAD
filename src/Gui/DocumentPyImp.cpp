@@ -31,6 +31,7 @@
 
 #include <App/Document.h>
 
+#include "Application.h"
 #include "Document.h"
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
@@ -105,38 +106,41 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     char *psFeatStr;
     int mod = 0;
     char *subname = 0;
+    ViewProvider *vp = 0;
+    App::DocumentObject *obj = 0;
 
     // by name
     if (PyArg_ParseTuple(args, "s|is;Name of the object to edit has to be given!", &psFeatStr,&mod,&subname)) {
-        App::DocumentObject * obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
+        obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
         if (!obj) {
             PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
             return 0;
         }
+    }else{
+        PyErr_Clear();
+        PyObject *pyObj;
+        if(!PyArg_ParseTuple(args, "O|is", &pyObj,&mod,&subname))
+            return 0;
 
-        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod,subname);
-        return PyBool_FromLong(ok ? 1 : 0);
+        if(PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
+            obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+        else if(PyObject_TypeCheck(pyObj,&ViewProviderPy::Type))
+            vp = static_cast<ViewProviderPy*>(pyObj)->getViewProviderPtr();
+        else {
+            PyErr_SetString(PyExc_TypeError,"Expect the first argument to be string|DocObject|ViewObject");
+            return 0;
+        }
     }
 
-    // by document object
-    PyErr_Clear();
-    PyObject *docObj;
-    if (PyArg_ParseTuple(args, "O!|i", &(App::DocumentObjectPy::Type), &docObj,&mod)) {
-        App::DocumentObject * obj = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod,subname);
-        return PyBool_FromLong(ok ? 1 : 0);
+    if(!vp) {
+        if(!obj || !obj->getNameInDocument() || !(vp=Application::Instance->getViewProvider(obj))) {
+            PyErr_SetString(PyExc_ValueError,"Invalid document object");
+            return 0;
+        }
     }
 
-    // by view provider
-    PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!|i", &(Gui::ViewProviderPy::Type), &docObj,&mod)) {
-        Gui::ViewProvider * view = static_cast<Gui::ViewProviderPy*>(docObj)->getViewProviderPtr();
-        bool ok = getDocumentPtr()->setEdit(view,mod,subname);
-        return PyBool_FromLong(ok ? 1 : 0);
-    }
-
-    PyErr_SetString(PyExc_TypeError, "Either string, document object or view provider expected.");
-    return 0;
+    bool ok = getDocumentPtr()->setEdit(vp,mod,subname);
+    return PyBool_FromLong(ok ? 1 : 0);
 }
 
 PyObject* DocumentPy::getInEdit(PyObject *args)
