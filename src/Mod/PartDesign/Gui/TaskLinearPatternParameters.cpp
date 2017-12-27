@@ -409,15 +409,14 @@ void TaskLinearPatternParameters::changeEvent(QEvent *e)
 
 void TaskLinearPatternParameters::apply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
     std::vector<std::string> directions;
     App::DocumentObject* obj;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), direction.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+    auto tobj = TransformedView->getObject();
+    FCMD_OBJ_CMD(tobj,"Direction = " << direction);
+    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
 
     ui->spinLength->apply();
     ui->spinOccurrences->apply();

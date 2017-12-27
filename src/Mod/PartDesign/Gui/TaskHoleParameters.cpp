@@ -689,9 +689,8 @@ Base::Quantity TaskHoleParameters::getTaperedAngle() const
 
 void TaskHoleParameters::apply()
 {
-    std::string name = vp->getObject()->getNameInDocument();
+    auto obj = vp->getObject();
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());    
-    const char * cname = name.c_str();
 
     isApplying = true;
             
@@ -708,27 +707,27 @@ void TaskHoleParameters::apply()
     ui->TaperedAngle->apply();
    
     if (!pcHole->Threaded.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Threaded = %u", cname, getThreaded() ? 1 : 0);
+        FCMD_OBJ_CMD(obj,"Threaded = " << (getThreaded() ? 1 : 0));
     if (!pcHole->ModelActualThread.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ModelActualThread = %u", cname, getThreaded() ? 1 : 0);
+        FCMD_OBJ_CMD(obj,"ModelActualThread = " << (getThreaded() ? 1 : 0));
     if (!pcHole->ThreadType.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadType = %u", cname, getThreadType());
+        FCMD_OBJ_CMD(obj,"ThreadType = " << getThreadType());
     if (!pcHole->ThreadSize.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadSize = %u", cname, getThreadSize());
+        FCMD_OBJ_CMD(obj,"ThreadSize = " << getThreadSize());
     if (!pcHole->ThreadClass.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadClass = %u", cname, getThreadClass());
+        FCMD_OBJ_CMD(obj,"ThreadClass = " << getThreadClass());
     if (!pcHole->ThreadFit.isReadOnly())    
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadFit = %u", cname, getThreadFit());
+        FCMD_OBJ_CMD(obj,"ThreadFit = " << getThreadFit());
     if (!pcHole->ThreadDirection.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadDirection = %u", cname, getThreadDirection());
+        FCMD_OBJ_CMD(obj,"ThreadDirection = " << getThreadDirection());
     if (!pcHole->HoleCutType.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutType = %u", cname, getHoleCutType());
+        FCMD_OBJ_CMD(obj,"HoleCutType = " << getHoleCutType());
     if (!pcHole->DepthType.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DepthType = %u", cname, getDepthType());
+        FCMD_OBJ_CMD(obj,"DepthType = " << getDepthType());
     if (!pcHole->DrillPoint.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DrillPoint = %u", cname, getDrillPoint());
+        FCMD_OBJ_CMD(obj,"DrillPoint = " << getDrillPoint());
     if (!pcHole->Tapered.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Tapered = %u", cname, getTapered());
+        FCMD_OBJ_CMD(obj,"Tapered = " << getTapered());
     
     isApplying = false;
 }

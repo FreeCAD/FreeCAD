@@ -143,18 +143,17 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 bool ViewProviderBody::doubleClicked(void)
 {
     //first, check if the body is already active.
-    App::DocumentObject* activeBody = nullptr;
-    Gui::MDIView* activeView = this->getActiveView();
-    if ( activeView ) {
-        activeBody = activeView->getActiveObject<App::DocumentObject*> (PDBODYKEY);
-    }
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(!activeDoc)
+        activeDoc = getDocument();
+    auto activeView = activeDoc->getActiveView();
+    if(!activeView) return false;
 
-    if (activeBody == this->getObject()){
+    if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
         //active body double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY);
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
+
     } else {
 
         // assure the PartDesign workbench
@@ -164,19 +163,13 @@ bool ViewProviderBody::doubleClicked(void)
         auto* part = App::Part::getPartOfObject ( getObject() );
         if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
             Gui::Command::doCommand(Gui::Command::Gui,
-                    "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                    part->getDocument()->getName(),
-                    PARTKEY,
-                    part->getDocument()->getName(),
-                    part->getNameInDocument());
+                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s','%s')",
+                    PARTKEY, Gui::Command::getObjectCmd(part).c_str());
         }
 
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY,
-                this->getObject()->getDocument()->getName(),
-                this->getObject()->getNameInDocument());
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
+                PDBODYKEY, Gui::Command::getObjectCmd(getObject()).c_str());
     }
 
     return true;
@@ -209,9 +202,7 @@ bool ViewProviderBody::doubleClicked(void)
 
 bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
     // TODO May be do it conditionally? (2015-09-05, Fat-Zer)
-    Gui::Command::doCommand(Gui::Command::Doc,
-            "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-            ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    FCMD_OBJ_CMD(getObject(),"removeObjectsFromDocument()");
     return true;
 }
 

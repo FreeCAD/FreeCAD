@@ -289,16 +289,12 @@ bool ViewProviderDatum::doubleClicked(void)
     
     if (datumBody != NULL) {
         if (datumBody != activeBody) {
-            Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                datumBody->getDocument()->getName(),
-                PDBODYKEY,
-                datumBody->getDocument()->getName(),
-                datumBody->getNameInDocument());
+            _FCMD_OBJ_DOC_CMD(Gui,datumBody,"ActiveView.setActiveObject('" << PDBODYKEY << "', " 
+                    << Gui::Command::getObjectCmd(datumBody) << ")");
+            activeBody = datumBody;
         }
     }
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject,activeBody);
 }
 
 void ViewProviderDatum::unsetEdit(int ModNum)

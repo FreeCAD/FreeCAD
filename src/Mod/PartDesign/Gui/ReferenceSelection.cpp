@@ -37,6 +37,7 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Command.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -287,9 +288,9 @@ std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
         return "None";
 
     if (PartDesign::Feature::isDatum(obj))
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+        return Gui::Command::getObjectCmd(obj,"(",", [''])");
     else
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + subs.front() + "\"])";
+        return Gui::Command::getObjectCmd(obj,"(",", ['") + subs.front() + "'])";
 }
 
 std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs)
@@ -301,7 +302,7 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
     std::string result("[");
 
     for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
-        result += std::string("App.activeDocument().") + (*o)->getNameInDocument() + ",";
+        result += Gui::Command::getObjectCmd(*o,0,",");
     result += "]";
 
     return result;
@@ -321,7 +322,7 @@ std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & 
     for (size_t i=0, objs_sz=objs.size(); i < objs_sz; i++) {
         if (objs[i] ) {
             result += '(';
-            result += std::string("App.activeDocument().").append( objs[i]->getNameInDocument () );
+            result += Gui::Command::getObjectCmd(objs[i]);
             result += ",\"";
             result += subs[i];
             result += "\"),";

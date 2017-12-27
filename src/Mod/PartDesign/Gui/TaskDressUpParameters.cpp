@@ -209,13 +209,12 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters()
 
 bool TaskDlgDressUpParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
     getDressUpView()->highlightReferences(false);
 
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
-    str << "App.ActiveDocument." << name.c_str() << ".Base = (App.ActiveDocument."
-        << parameter->getBase()->getNameInDocument() << ",[";
+    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = (" 
+        << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
     for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
         str << "\"" << *it << "\",";
     str << "])";

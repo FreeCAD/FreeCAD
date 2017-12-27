@@ -261,18 +261,16 @@ void CmdPartDesignBody::activated(int iMsg)
                     };
 
                     // Called by dialog when user hits "OK" and accepter returns true
-                    std::string FeatName = baseFeature->getNameInDocument();
-                    auto worker = [FeatName](const std::vector<App::DocumentObject*>& features) {
+                    auto worker = [baseFeature](const std::vector<App::DocumentObject*>& features) {
                         // may happen when the user switched to an empty document while the
                         // dialog is open
                         if (features.empty())
                             return;
                         App::Plane* plane = static_cast<App::Plane*>(features.front());
-                        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
-                                                    ", [''])";
+                        std::string supportString = Gui::Command::getObjectCmd(plane,"(",", [''])");
 
-                        Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
-                        Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
+                        FCMD_OBJ_CMD(baseFeature,"Support = " << supportString);
+                        FCMD_OBJ_CMD(baseFeature,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
                         Gui::Command::updateActive();
                     };
 
@@ -454,7 +452,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
-#ifndef FC_DEBUG
+#ifndef FCMD_DEBUG
         if ( chainIt->empty () ) { // prevent crash in release in case of errors
             continue;
         }
@@ -598,13 +596,12 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     openCommand("Move tip to selected feature");
 
     if (selFeature == body) {
-        doCommand(Doc,"App.activeDocument().%s.Tip = None", body->getNameInDocument());
+        FCMD_OBJ_CMD(body,"Tip = None");
     } else {
-        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",body->getNameInDocument(),
-                selFeature->getNameInDocument());
+        FCMD_OBJ_CMD(body,"Tip = " << getObjectCmd(selFeature));
 
         // Adjust visibility to show only the Tip feature
-        doCommand(Gui,"Gui.activeDocument().show(\"%s\")", selFeature->getNameInDocument());
+        FCMD_OBJ_SHOW(selFeature);
     }
 
     // TOOD: Hide all datum features after the Tip feature? But the user might have already hidden some and wants to see
@@ -655,14 +652,13 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
         for (auto feature : newFeatures) {
             if (PartDesign::Body::isAllowed(feature)) {
-                doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                          pcActiveBody->getNameInDocument(), feature->getNameInDocument());
-                doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", feature->getNameInDocument());
+                FCMD_OBJ_CMD(pcActiveBody,"addObject(" << getObjectCmd(feature) << ")");
+                FCMD_OBJ_HIDE(feature);
             }
         }
 
         // Adjust visibility of features
-        doCommand(Gui,"Gui.activeDocument().show(\"%s\")", newFeatures.back()->getNameInDocument());
+        FCMD_OBJ_SHOW(newFeatures.back());
     }
 
     updateActive();
@@ -762,17 +758,16 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     openCommand("Move an object");
 
     std::stringstream stream;
-    stream << "features_ = [App.ActiveDocument." << features.back()->getNameInDocument();
+    stream << "features_ = [" << getObjectCmd(features.back());
     features.pop_back();
 
     for (auto feat: features)
-        stream << ", App.ActiveDocument." << feat->getNameInDocument();
+        stream << ", " << getObjectCmd(feat);
 
     stream << "]";
-    doCommand(Doc, stream.str().c_str());
-    if (source_body)
-        doCommand(Doc, "App.ActiveDocument.%s.removeObjects(features_)", source_body->getNameInDocument());
-    doCommand(Doc, "App.ActiveDocument.%s.addObjects(features_)", target->getNameInDocument());
+    runCommand(Doc, stream.str().c_str());
+    FCMD_OBJ_CMD(source_body,"removeObjects(features_)");
+    FCMD_OBJ_CMD(target,"addObjects(features_)");
     /*
 
         // Find body of this feature
@@ -914,20 +909,11 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     for ( auto feat: features ) {
         if ( feat == target ) continue;
 
-        std::string targetStr;
-        if (target) {
-            targetStr.append("App.activeDocument().").append(target->getNameInDocument());
-        } else {
-            targetStr = "None";
-        }
-
         // Remove and re-insert the feature to/from the Body
         // TODO: if tip was moved the new position of tip is quite undetermined (2015-08-07, Fat-Zer)
         // TODO: warn the user if we are moving an object to some place before the object's link (2015-08-07, Fat-Zer)
-        doCommand ( Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                body->getNameInDocument(), feat->getNameInDocument() );
-        doCommand ( Doc, "App.activeDocument().%s.insertObject(App.activeDocument().%s, %s, True)",
-                body->getNameInDocument(), feat->getNameInDocument(), targetStr.c_str () );
+        FCMD_OBJ_CMD(body,"removeObject(" << getObjectCmd(feat) << ")");
+        FCMD_OBJ_CMD(body,"insertObject(" << getObjectCmd(feat) << ","<< getObjectCmd(target) << ", True)");
     }
 
     updateActive();

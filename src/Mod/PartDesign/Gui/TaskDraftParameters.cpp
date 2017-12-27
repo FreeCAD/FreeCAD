@@ -301,12 +301,11 @@ bool TaskDlgDraftParameters::accept()
         return false;
     }
 
-    std::string name = vp->getObject()->getNameInDocument();
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),draftparameter->getAngle());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), pullDirection.c_str());
+    auto tobj = vp->getObject();
+    FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
+    FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());
+    FCMD_OBJ_CMD(tobj,"NeutralPlane = " << neutralPlane);
+    FCMD_OBJ_CMD(tobj,"PullDirection = " << pullDirection);
 
     return TaskDlgDressUpParameters::accept();
 }

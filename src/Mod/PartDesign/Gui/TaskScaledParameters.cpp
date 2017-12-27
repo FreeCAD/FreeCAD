@@ -245,9 +245,7 @@ void TaskScaledParameters::changeEvent(QEvent *e)
 
 void TaskScaledParameters::apply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
+    FCMD_OBJ_CMD(TransformedView->getObject(),"Factor = " << getFactor());
     ui->spinOccurrences->apply();
 }
 

@@ -249,12 +249,12 @@ bool TaskDlgThicknessParameters::accept()
 
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
 
-    std::string name = vp->getObject()->getNameInDocument();
+    auto obj = vp->getObject();
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",name.c_str(),draftparameter->getValue());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %u",name.c_str(),draftparameter->getMode());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %u",name.c_str(),draftparameter->getJoinType());
+    FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());
+    FCMD_OBJ_CMD(obj,"Reversed = " << draftparameter->getReversed());
+    FCMD_OBJ_CMD(obj,"Mode = " << draftparameter->getMode());
+    FCMD_OBJ_CMD(obj,"Join = " << draftparameter->getJoinType());
 
     return TaskDlgDressUpParameters::accept();
 }

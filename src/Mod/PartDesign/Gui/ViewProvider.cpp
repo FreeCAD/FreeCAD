@@ -37,6 +37,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 
+#include "Utils.h"
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
@@ -75,8 +76,7 @@ bool ViewProvider::doubleClicked(void)
         std::string Msg("Edit ");
         Msg += this->pcObject->Label.getValue();
         Gui::Command::openCommand(Msg.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",
-                this->pcObject->getNameInDocument());
+        PartDesignGui::setEdit(pcObject,body);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();
@@ -183,11 +183,8 @@ void ViewProvider::onChanged(const App::Property* prop) {
             for(App::DocumentObject* obj : body->Group.getValues()) {
              
                 if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
-                   Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(obj);
-                   if(!vp) 
-                       return;
-                   
-                   Gui::ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
+                   auto vpd = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                           Gui::Application::Instance->getViewProvider(obj));
                    if(vpd && vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);
                 }

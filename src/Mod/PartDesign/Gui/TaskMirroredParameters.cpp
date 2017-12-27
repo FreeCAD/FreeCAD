@@ -328,15 +328,13 @@ TaskDlgMirroredParameters::TaskDlgMirroredParameters(ViewProviderMirrored *Mirro
 
 bool TaskDlgMirroredParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
     TaskMirroredParameters* mirrorParameter = static_cast<TaskMirroredParameters*>(parameter);
     std::vector<std::string> mirrorPlanes;
     App::DocumentObject* obj;
     mirrorParameter->getMirrorPlane(obj, mirrorPlanes);
     std::string mirrorPlane = buildLinkSingleSubPythonStr(obj, mirrorPlanes);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), mirrorPlane.c_str());
+    FCMD_OBJ_CMD(vp->getObject(),"MirrorPlane = " << mirrorPlane);
 
     return TaskDlgTransformedParameters::accept();
 }

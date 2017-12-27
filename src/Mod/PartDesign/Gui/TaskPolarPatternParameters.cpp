@@ -402,14 +402,14 @@ void TaskPolarPatternParameters::changeEvent(QEvent *e)
 
 void TaskPolarPatternParameters::apply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
+    auto tobj = TransformedView->getObject();
     std::vector<std::string> axes;
     App::DocumentObject* obj;
     getAxis(obj, axes);
     std::string axis = buildLinkSingleSubPythonStr(obj, axes);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), axis.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+    FCMD_OBJ_CMD(tobj,"Axis = " << axis.c_str());
+    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
     ui->polarAngle->apply();
     ui->spinOccurrences->apply();
 }

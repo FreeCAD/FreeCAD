@@ -28,6 +28,7 @@
 #include <QMenu>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderPipe.h"
 //#include "TaskPipeParameters.h"
 #include "TaskPipeParameters.h"
@@ -83,8 +84,7 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderPipe::doubleClicked(void)
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {

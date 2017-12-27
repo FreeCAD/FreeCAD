@@ -387,23 +387,21 @@ void TaskPocketParameters::saveHistory(void)
 
 void TaskPocketParameters::apply()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-    const char * cname = name.c_str();
+    auto obj = vp->getObject();
 
     ui->lengthEdit->apply();
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u", cname, getMode());
+    FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
 
     if (!facename.isEmpty()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
-                cname, facename.toLatin1().data());
+        FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
     } else {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
+        FCMD_OBJ_CMD(obj,"UpToFace = None");
     }
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i", cname, getReversed()?1:0);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i", cname, getMidplane()?1:0);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f", name.c_str(), getOffset());
+    FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
+    FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));
+    FCMD_OBJ_CMD(obj,"Offset = " << getOffset());
 }
 
 //**************************************************************************

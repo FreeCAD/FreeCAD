@@ -43,6 +43,9 @@ namespace Sketcher {
 
 namespace PartDesignGui {
 
+/// Activate edit mode of the given object
+bool setEdit(App::DocumentObject *obj, PartDesign::Body *body = 0);
+
 /// Return active body or show a warning message
 PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true);
 

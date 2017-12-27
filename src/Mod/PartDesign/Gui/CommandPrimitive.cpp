@@ -98,27 +98,26 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
     auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType) );
 
     Gui::Command::openCommand( (std::string("Make additive ") + shapeType).c_str() );
     if (shouldMakeBody) {
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
 
-    Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
-            shapeType, FeatName.c_str() );
+    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
 
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    FCMD_OBJ_DOC_CMD(pcActiveBody,"addObject('PartDesign::Additive"<<shapeType<<"','"<<FeatName<<"')");
+
+    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(
+            pcActiveBody->getDocument()->getObject(FeatName.c_str()));
+
+    if(!prm) return;
+    FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
     Gui::Command::updateActive();
 
-    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
-    if (prm->BaseFeature.getValue())
-       doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
-
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
+    FCMD_OBJ_HIDE(prm->BaseFeature.getValue());
+    
+    PartDesignGui::setEdit(prm,pcActiveBody);
 }
 
 Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
@@ -256,26 +255,19 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     }
 
     auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType) );
+    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
 
     Gui::Command::openCommand( (std::string("Make subtractive ") + shapeType).c_str() );
-    Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.addObject(\'PartDesign::Subtractive%s\',\'%s\')",
-            shapeType, FeatName.c_str() );
-
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Subtractive"<<shapeType<<"','"<<FeatName<<"')");
     Gui::Command::updateActive();
 
     if ( isActiveObjectValid() ) {
         // TODO  (2015-08-05, Fat-Zer)
-        if (prevSolid) {
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolid->getNameInDocument());
-        }
+        FCMD_OBJ_HIDE(prevSolid);
     }
 
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    PartDesignGui::setEdit(Feat,pcActiveBody);
 }
 
 Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)

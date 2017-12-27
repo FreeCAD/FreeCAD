@@ -306,38 +306,22 @@ App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
 
 void TaskTransformedParameters::hideObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        doc->setHide(getTopTransformedObject()->getNameInDocument());
-    }
+    FCMD_OBJ_HIDE(getTopTransformedObject());
 }
 
 void TaskTransformedParameters::showObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        doc->setShow(getTopTransformedObject()->getNameInDocument());
-    }
+    FCMD_OBJ_SHOW(getTopTransformedObject());
 }
 
 void TaskTransformedParameters::hideBase()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        try {
-            doc->setHide(getBaseObject()->getNameInDocument());
-        } catch (const Base::Exception &) { }
-    }
+    FCMD_OBJ_HIDE(getBaseObject());
 }
 
 void TaskTransformedParameters::showBase()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        try {
-            doc->setShow(getBaseObject()->getNameInDocument());
-        } catch (const Base::Exception &) { }
-    }
+    FCMD_OBJ_SHOW(getBaseObject());
 }
 
 void TaskTransformedParameters::exitSelectionMode()
@@ -374,16 +358,14 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 
 bool TaskDlgTransformedParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
     //Gui::Command::openCommand(featureName + " changed");
     std::vector<App::DocumentObject*> originals = parameter->getOriginals();
     std::stringstream str;
-    str << "App.ActiveDocument." << name.c_str() << ".Originals = [";
+    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Originals = [";
     for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
     {
         if ((*it) != NULL)
-            str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
+            str << Gui::Command::getObjectCmd(*it) << ",";
     }
     str << "]";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());

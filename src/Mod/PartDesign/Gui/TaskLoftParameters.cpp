@@ -289,7 +289,7 @@ bool TaskDlgLoftParameters::accept()
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
 
     for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")", obj->getNameInDocument());
+        FCMD_OBJ_HIDE(obj);
     }
 
 
