@@ -775,10 +775,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
                             getDocument()->openCommand("Drag Point");
                             try {
-                                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.getDocument('%s').%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                        ,getDocument()->getDocument()->getName() 
-                                        ,getObject()->getNameInDocument()
+                                FCMD_OBJ_CMD2("movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                        ,getObject()
                                         ,GeoId, PosId, x-xInit, y-yInit, 0);
                                 getDocument()->commitCommand();
 
@@ -809,10 +807,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                             getDocument()->openCommand("Drag Curve");
                             try {
-                                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.getDocument('%s').%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                        ,getDocument()->getDocument()->getName() 
-                                        ,getObject()->getNameInDocument()
+                                FCMD_OBJ_CMD2("movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                        ,getObject()
                                         ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0);
                                 getDocument()->commitCommand();
 
@@ -1012,9 +1008,7 @@ void ViewProviderSketch::editDoubleClicked(void)
                 Constr->Type == Sketcher::SnellsLaw)) {
 
                 if(!Constr->isDriving) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setDriving(%i,%s)",
-                                            getDocument()->getDocument()->getName(),
-                                            getObject()->getNameInDocument(),*it,"True");
+                    FCMD_OBJ_CMD2("setDriving(%i,%s)", getObject(),*it,"True");
                 }
 
                 // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
@@ -5166,7 +5160,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         try{
             QString cmdstr = QString::fromLatin1(
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
-                        "tv = Show.TempoVis(App.getDocument('%1'))\n"
+                        "tv = Show.TempoVis(App.ActiveDocument)\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
                         "  objs = tv.get_all_dependent(ActiveSketch)\n"
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"TechDraw::\"), objs)\n"
@@ -5596,9 +5590,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // clear the selection and set the new/edited sketch(convenience)
     Gui::Selection().clearSelection();
-    std::string ObjName = getSketchObject()->getNameInDocument();
-    std::string DocName = getSketchObject()->getDocument()->getName();
-    Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str());
+    Gui::Selection().addSelection(editDocName.c_str(),editObjName.c_str(),editSubName.c_str());
 
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
@@ -5630,6 +5622,22 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
             Base::Console().Error("ViewProviderSketch::setEdit: visibility automation failed with an error: \n");
             e.ReportException();
         }
+    }
+
+    auto editDoc = Gui::Application::Instance->editDocument();
+    editDocName.clear();
+    if(editDoc) {
+        ViewProviderDocumentObject *parent=0;
+        editDoc->getInEdit(&parent,&editSubName);
+        if(parent) {
+            editDocName = editDoc->getDocument()->getName();
+            editObjName = parent->getObject()->getNameInDocument();
+        }
+    }
+    if(editDocName.empty()) {
+        editDocName = getObject()->getDocument()->getName();
+        editObjName = getObject()->getNameInDocument();
+        editSubName.clear();
     }
 
     Base::Placement plm = getEditingPlacement();
@@ -5860,9 +5868,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         std::set<int>::const_reverse_iterator rit;
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delConstraint(%i)"
-                                       ,getDocument()->getDocument()->getName()
-                                       ,getObject()->getNameInDocument(), *rit);
+                FCMD_OBJ_CMD2("delConstraint(%i)" ,getObject(), *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -5871,9 +5877,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delConstraintOnPoint(%i)"
-                                       ,getDocument()->getDocument()->getName()
-                                       ,getObject()->getNameInDocument(), *rit);
+                FCMD_OBJ_CMD2("delConstraintOnPoint(%i)" ,getObject(), *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -5882,9 +5886,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delGeometry(%i)"
-                                           ,getDocument()->getDocument()->getName()
-                                           ,getObject()->getNameInDocument(), *rit);
+                FCMD_OBJ_CMD2("delGeometry(%i)" ,getObject(), *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -5893,8 +5895,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.delExternal(%i)"
-                    ,getDocument()->getDocument()->getName(),getObject()->getNameInDocument(), *rit);
+                FCMD_OBJ_CMD2("delExternal(%i)",getObject(), *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());

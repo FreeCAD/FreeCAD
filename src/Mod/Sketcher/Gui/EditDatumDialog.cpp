@@ -152,16 +152,16 @@ void EditDatumDialog::exec(bool atCursor)
                         if (ui_ins_datum.labelEdit->hasExpression())
                             ui_ins_datum.labelEdit->apply();
                         else
-                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                                    sketch->getNameInDocument(),
+                            FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))",
+                                                    sketch,
                                                     ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
                     }
 
                     QString constraintName = ui_ins_datum.name->text().trimmed();
                     if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                                sketch->getNameInDocument(),
+                        FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                                                sketch,
                                                 ConstrNbr, escapedstr.c_str());
                     }
 

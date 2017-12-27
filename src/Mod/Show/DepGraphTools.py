@@ -65,7 +65,7 @@ def getAllDependent(feat):
     
     return list_of_deps
 
-def isContainer(obj):
+def _isContainer(obj):
     '''isContainer(obj): returns True if obj is an object container, such as 
     Group, Part, Body. The important characterisic of an object being a 
     container is visibility nesting.'''
@@ -79,3 +79,10 @@ def isContainer(obj):
     if obj.isDerivedFrom('App::Origin'):
         return True
     return False
+
+def isContainer(obj):
+    if _isContainer(obj):
+        return True
+    linked = obj.getLinkedObject()
+    return linked and linked!=obj and _isContainer(linked)
+

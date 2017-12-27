@@ -71,13 +71,16 @@ class TempoVis(FrozenClass):
                                              .format(obj= doc_obj.Name, attr= prop_name))
                     continue # silently ignore if object doesn't have the property...
 
-                if doc_obj.Document is not self.document:  #ignore objects from other documents
-                    raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
+                # Because the introduction of external objects, we shall now
+                # accept objects from all opening documents.
+                #
+                #  if doc_obj.Document is not self.document:  #ignore objects from other documents
+                #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
                 oldval = getattr(doc_obj.ViewObject, prop_name)
                 setattr(doc_obj.ViewObject, prop_name, new_value)
                 self.restore_on_delete = True
                 if (doc_obj.Name,prop_name) not in self.data:
-                    self.data[(doc_obj.Name,prop_name)] = oldval
+                    self.data[(doc_obj.Name,prop_name,doc_obj.Document.Name)] = oldval
 
     def show(self, doc_obj_or_list):
         '''show(doc_obj_or_list): shows objects (sets their Visibility to True). doc_obj_or_list can be a document object, or a list of document objects'''
@@ -134,9 +137,9 @@ class TempoVis(FrozenClass):
             self.viewer = Gui.ActiveDocument.ActiveView
             self.links_are_lost = False
             
-        for obj_name, prop_name in self.data:
+        for (obj_name, prop_name, doc_name), value in self.data.items():
             try:
-                setattr(self.document.getObject(obj_name).ViewObject, prop_name, self.data[(obj_name, prop_name)])
+                setattr(App.getDocument(doc_name).getObject(obj_name).ViewObject,prop_name,value)
             except Exception as err:
                 App.Console.PrintWarning("TempoVis: failed to restore {obj}.{prop}. {err}\n"
                                          .format(err= err.message,

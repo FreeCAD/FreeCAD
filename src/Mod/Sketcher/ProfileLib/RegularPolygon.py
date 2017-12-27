@@ -32,20 +32,18 @@ App = FreeCAD
 Gui = FreeCADGui
 
 def makeRegularPolygon(
-        sketchName, 
+        sketch, 
         sides, 
         centerPoint=App.Vector(0,0,0), 
         firstCornerPoint=App.Vector(-20.00,34.64,0),
 	construction=False):
 
-    if not sketchName:
+    if not sketch:
         App.Console.PrintError("No sketch specified in 'makeRegularPolygon'")
         return
     if sides < 3:
         App.Console.PrintError("Number of sides must be at least 3 in 'makeRegularPolygon'")
         return
-
-    sketch = App.ActiveDocument.getObject(sketchName)
 
     diffVec = firstCornerPoint - centerPoint
     diffVec.z = 0

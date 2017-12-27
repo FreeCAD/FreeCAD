@@ -409,6 +409,10 @@ protected:
     // information layer variables
     bool visibleInformationChanged;
     double combrepscalehyst;
+
+    std::string editDocName;
+    std::string editObjName;
+    std::string editSubName;
 };
 
 } // namespace PartGui

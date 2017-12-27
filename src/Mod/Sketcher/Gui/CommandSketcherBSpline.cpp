@@ -381,9 +381,8 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
 
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.convertToNURBS(%d) ",
-                                    selection[0].getFeatName(),GeoId);
+            FCMD_OBJ_CMD2("convertToNURBS(%d) ",
+                                    selection[0].getObject(),GeoId);
             
             nurbsized = true;
         }
@@ -391,9 +390,8 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
             
             int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
             
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.convertToNURBS(%d) ",
-                                    selection[0].getFeatName(),GeoId);
+            FCMD_OBJ_CMD2("convertToNURBS(%d) ",
+                                    selection[0].getObject(),GeoId);
             
             nurbsized = true;
         }
@@ -459,14 +457,12 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.increaseBSplineDegree(%d) ",
-                                    selection[0].getFeatName(),GeoId);
+            FCMD_OBJ_CMD2("increaseBSplineDegree(%d) ",
+                                    selection[0].getObject(),GeoId);
             
             // add new control points
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                    selection[0].getFeatName(),
+            FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
+                                    selection[0].getObject(),
                                     GeoId);
         }
     }
@@ -552,9 +548,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                 notaknot = false;
                 
                 try {
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
-                        selection[0].getFeatName(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
+                    FCMD_OBJ_CMD2("modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                        selection[0].getObject(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
 
                     applied = true;
 
@@ -612,9 +607,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         if(ngfound) {
             try {
                 // add internalalignment for new pole
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                        selection[0].getFeatName(),
+                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
+                                        selection[0].getObject(),
                                         ngeoid);
             }
             catch (const Base::Exception& e) {
@@ -712,9 +706,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
                 notaknot = false;
                 
                 try {
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.modifyBSplineKnotMultiplicity(%d,%d,%d) ",
-                                            selection[0].getFeatName(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
+                    FCMD_OBJ_CMD2("modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                                            selection[0].getObject(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
                     
                     applied = true;
                     
@@ -759,9 +752,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         if(ngfound) {
             try {
                 // add internalalignment for new pole
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.exposeInternalGeometry(%d)",
-                                        selection[0].getFeatName(),
+                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
+                                        selection[0].getObject(),
                                         ngeoid);
             }
             catch (const Base::Exception& e) {
