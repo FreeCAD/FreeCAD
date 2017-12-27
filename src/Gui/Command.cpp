@@ -34,6 +34,9 @@
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
+#include <Python.h>
+#include <frameobject.h>
+
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
@@ -59,6 +62,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
+FC_LOG_LEVEL_INIT("Command", true, true);
 
 using Base::Interpreter;
 using namespace Gui;
@@ -385,11 +389,35 @@ Gui::SelectionSingleton&  Command::getSelection(void)
     return Gui::Selection();
 }
 
-std::string Command::getUniqueObjectName(const char *BaseName) const
+std::string Command::getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj) const
 {
-    assert(hasActiveDocument());
+    auto doc = obj?obj->getDocument():App::GetApplication().getActiveDocument();
+    assert(doc);
+    return doc->getUniqueObjectName(BaseName);
+}
 
-    return getActiveGuiDocument()->getDocument()->getUniqueObjectName(BaseName);
+std::string Command::getObjectCmd(const char *Name, const App::Document *doc, 
+        const char *prefix, const char *postfix) 
+{
+    if(!doc) doc = App::GetApplication().getActiveDocument();
+    if(!doc || !Name)
+        return std::string("None");
+    std::ostringstream str;
+    if(prefix)
+        str << prefix;
+    str << "App.getDocument('" << doc->getName() 
+        << "').getObject('" << Name << "')";
+    if(postfix)
+        str << postfix;
+    return str.str();
+}
+
+std::string Command::getObjectCmd(const App::DocumentObject *obj,
+        const char *prefix, const char *postfix) 
+{
+    if(!obj || !obj->getNameInDocument())
+        return std::string("None");
+    return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix);
 }
 
 void Command::setAppModuleName(const char* s)
@@ -456,7 +484,7 @@ void Command::blockCommand(bool block)
 }
 
 /// Run a App level Action
-void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
+void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const char* sCmd, ...)
 {
     va_list ap;
     va_start(ap, sCmd);
@@ -471,17 +499,41 @@ void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
     Base::Console().Log("CmdC: %s\n", format.constData());
 #endif
 
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, format.constData());
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, format.constData());
+    _runCommand(file,line,eType,format.constData());
+}
 
-    Base::Interpreter().runString(format.constData());
+void Command::printPyCaller() {
+    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        return;
+    PyFrameObject* frame = PyEval_GetFrame();
+    if(!frame) 
+        return;
+    int line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+    const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+    const char *file = PyString_AsString(frame->f_code->co_filename);
+#endif
+    printCaller(file?file:"<no file>",line);
+}
+
+void Command::printCaller(const char *file, int line) {
+    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) 
+        return;
+    std::ostringstream str;
+#ifdef FC_OS_WIN32
+    const char *_f = std::strstr(file, "\\src\\");
+#else
+    const char *_f = std::strstr(file, "/src/");
+#endif
+    str << "# " << (_f?_f+5:file)<<'('<<line<<')';
+    Gui::Application::Instance->macroManager()->addLine(MacroManager::Cmt,str.str().c_str());
 }
 
 /// Run a App level Action
-void Command::runCommand(DoCmd_Type eType, const char* sCmd)
+void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const char* sCmd)
 {
+    printCaller(file,line);
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
@@ -490,13 +542,9 @@ void Command::runCommand(DoCmd_Type eType, const char* sCmd)
 }
 
 /// Run a App level Action
-void Command::runCommand(DoCmd_Type eType, const QByteArray& sCmd)
+void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const QByteArray& sCmd)
 {
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.constData());
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.constData());
-    Base::Interpreter().runString(sCmd.constData());
+    _runCommand(file,line,eType,sCmd.constData());
 }
 
 void Command::addModule(DoCmd_Type eType,const char* sModuleName)
@@ -513,7 +561,7 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
     }
 }
 
-std::string Command::assureWorkbench(const char * sName)
+std::string Command::_assureWorkbench(const char *file, int line, const char * sName)
 {
     // check if the WB is already open? 
     std::string actName = WorkbenchManager::instance()->active()->name();
@@ -522,24 +570,34 @@ std::string Command::assureWorkbench(const char * sName)
         return actName;
 
     // else - switch to new WB
-    doCommand(Gui,"Gui.activateWorkbench('%s')",sName);
+    _doCommand(file,line,Gui,"Gui.activateWorkbench('%s')",sName);
 
     return actName;
 
 }
 
-void Command::copyVisual(const char* to, const char* attr, const char* from)
+void Command::_copyVisual(const char *file, int line, const char* to, const char* attr, const char* from)
 {
-    doCommand(Gui,"Gui.ActiveDocument.%s.%s=getattr("
-        "App.ActiveDocument.%s.getLinkedObject().ViewObject,'%s',Gui.ActiveDocument.%s.%s)", 
-        to, attr, from, attr, to, attr);
+    _copyVisual(file,line,to,attr,from,attr);
 }
 
-void Command::copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from)
+void Command::_copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from)
 {
-    doCommand(Gui,"Gui.ActiveDocument.%s.%s=getattr("
+    _doCommand(file,line,Gui,"Gui.ActiveDocument.%s.%s=getattr("
         "App.ActiveDocument.%s.getLinkedObject().ViewObject,'%s',Gui.ActiveDocument.%s.%s)", 
         to, attr_to, from, attr_from, to, attr_to);
+}
+
+void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr_to, const App::DocumentObject *from, const char *attr_from)
+{
+    auto objCmd = getObjectCmd(to);
+    _doCommand(file,line,Gui,"%s.ViewObject.%s=getattr(%s.getLinkedObject().ViewObject,'%s',%s.ViewObject.%s)",
+            objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
+}
+
+void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr, const App::DocumentObject *from)
+{
+    _copyVisual(file,line,to,attr,from,attr);
 }
 
 std::string Command::getPythonTuple(const std::string& name, const std::vector<std::string>& subnames)

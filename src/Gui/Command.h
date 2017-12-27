@@ -32,6 +32,67 @@
 
 #include <Base/Type.h>
 
+#define _FCMD_DOC_CMD(_type,_doc,_cmd) do{\
+    auto __doc = _doc;\
+    if(__doc && __doc->getName()) {\
+        std::ostringstream _str;\
+        _str << #_type ".getDocument('" << __doc->getName() << "')." << _cmd;\
+        Gui::Command::runCommand(Gui::Command::Doc,_str.str().c_str());\
+    }\
+}while(0)
+
+#define FCMD_DOC_CMD(_doc,_cmd) _FCMD_DOC_CMD(App,_doc,_cmd)
+
+#define _FCMD_OBJ_DOC_CMD(_type,_obj,_cmd) do{\
+    auto __obj = _obj;\
+    if(__obj)\
+        _FCMD_DOC_CMD(_type,__obj->getDocument(),_cmd);\
+}while(0)
+
+#define FCMD_OBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(App,_obj,_cmd)
+
+#define _FCMD_OBJ_CMD(_type,_obj,_cmd) do{\
+    auto __obj = _obj;\
+    if(__obj && __obj->getNameInDocument()) {\
+        std::ostringstream _str;\
+        _str << #_type ".getDocument('" << __obj->getDocument()->getName() \
+             << "').getObject('" <<  __obj->getNameInDocument() << "')." << _cmd;\
+        Gui::Command::runCommand(Gui::Command::_type,_str.str().c_str());\
+    }\
+}while(0)
+
+#define FCMD_OBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(App,_obj,_cmd)
+#define FCMD_VOBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(Gui,_obj,_cmd)
+
+#define FCMD_OBJ_CMD2(_cmd,_obj,...) do{\
+    auto __obj = _obj;\
+    if(__obj && __obj->getNameInDocument()) {\
+        Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').getObject('%s')." _cmd,\
+                __obj->getDocument()->getName(),__obj->getNameInDocument(),## __VA_ARGS__);\
+    }\
+}while(0)
+
+#define FCMD_VOBJ_CMD2(_cmd,_obj,...) do{\
+    auto __obj = _obj;\
+    if(__obj && __obj->getNameInDocument()) {\
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').getObject('%s')." _cmd,\
+                __obj->getDocument()->getName(),__obj->getNameInDocument(),## __VA_ARGS__);\
+    }\
+}while(0)
+
+#define FCMD_SET_EDIT(_obj) do{\
+    auto __obj = _obj;\
+    if(__obj && __obj->getNameInDocument()) {\
+        Gui::Command::doCommand(Gui::Command::Gui,\
+            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",\
+            __obj->getDocument()->getName(), __obj->getNameInDocument());\
+    }\
+}while(0)
+
+
+#define FCMD_OBJ_HIDE(_obj) FCMD_OBJ_CMD(_obj,"Visibility = False")
+#define FCMD_OBJ_SHOW(_obj) FCMD_OBJ_CMD(_obj,"Visibility = True")
+
 class QWidget;
 class QByteArray;
 
@@ -207,8 +268,17 @@ public:
     bool isViewOfType(Base::Type t) const;
     /// returns the named feature or the active one from the active document or NULL
     App::DocumentObject*  getObject(const char* Name) const;
-    /// Get unique Feature name from the active document 
-    std::string getUniqueObjectName(const char *BaseName) const;
+    /// returns a python command string to retrieve an object from a document
+    static std::string getObjectCmd(const char *Name, const App::Document *doc=0, const char *prefix=0, const char *postfix=0);
+    /// returns a python command string to retrieve the given object
+    static std::string getObjectCmd(const App::DocumentObject *obj, const char *prefix=0, const char *postfix=0);
+    /** Get unique Feature name from the active document 
+     *
+     *  @param BaseName: the base name
+     *  @param obj: if not zero, then request the unique name in the document of
+     *  the given object.
+     */
+    std::string getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj=0) const;
     //@}
 
     /** @name Helper methods for the Undo/Redo and Update handling */
@@ -246,17 +316,25 @@ public:
     };
     /// Blocks all command objects
     static void blockCommand(bool);
+    static void printPyCaller();
+    static void printCaller(const char *file, int line);
     /// Run a App level Action 
-    static void doCommand(DoCmd_Type eType,const char* sCmd,...);
-    static void runCommand(DoCmd_Type eType,const char* sCmd);
-    static void runCommand(DoCmd_Type eType,const QByteArray& sCmd);
+#define doCommand(_type,_cmd,...) _doCommand(__FILE__,__LINE__,_type,_cmd,##__VA_ARGS__)
+    static void _doCommand(const char *file, int line, DoCmd_Type eType,const char* sCmd,...);
+#define runCommand(_type,_cmd) _runCommand(__FILE__,__LINE__,_type,_cmd)
+    static void _runCommand(const char *file, int line, DoCmd_Type eType,const char* sCmd);
+    static void _runCommand(const char *file, int line, DoCmd_Type eType,const QByteArray& sCmd);
     /// import an external (or own) module only once 
     static void addModule(DoCmd_Type eType,const char* sModuleName);
     /// assures the switch to a certain workbench, if already in the workbench, does nothing.
-    static std::string assureWorkbench(const char * sName);
+#define assureWorkbench(_name) _assureWorkbench(__FILE__,__LINE__,_name)
+    static std::string _assureWorkbench(const char *file, int line, const char * sName);
 
-    static void copyVisual(const char* to, const char* attr, const char* from);
-    static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);
+#define copyVisual(...) _copyVisual(__FILE__,__LINE__,## __VA_ARGS__)
+    static void _copyVisual(const char *file, int line, const char* to, const char* attr, const char* from);
+    static void _copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from);
+    static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr, const App::DocumentObject *from);
+    static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr_to, const App::DocumentObject *from, const char *attr_from);
     /// Get Python tuple from object and sub-elements 
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
