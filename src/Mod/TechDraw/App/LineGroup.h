@@ -43,6 +43,8 @@ public:
     void setWeight(std::string s, double weight);
 //    void setWeight(const char* s, double weight);
     void dump(char* title);
+    std::string getName(void) { return m_name; }
+    void setName(std::string s) { m_name = s; }
 
     //static support function: split comma separated string of values into vector of numbers
     static std::vector<double> split(std::string line);
