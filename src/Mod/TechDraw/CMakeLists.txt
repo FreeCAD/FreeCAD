@@ -23,3 +23,21 @@ INSTALL(
     FILES_MATCHING
         PATTERN "*.svg*"
 )
+
+INSTALL(
+    DIRECTORY
+        PAT
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    FILES_MATCHING
+        PATTERN "*.pat*"
+)
+
+INSTALL(
+    DIRECTORY
+        LineGroup
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    FILES_MATCHING
+        PATTERN "*.csv*"
+)
