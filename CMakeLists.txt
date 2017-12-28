@@ -947,8 +947,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
         file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Ext/PySide)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/__init__.py "# PySide wrapper\n"
-                                                              "from PySide2 import __version__"
-                                                              "from PySide2 import __version_info__")
+                                                              "from PySide2 import __version__\n"
+                                                              "from PySide2 import __version_info__\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
                                                             "#QCoreApplication.CodecForTr=0\n"
                                                             "#QCoreApplication.UnicodeUTF8=1\n")
