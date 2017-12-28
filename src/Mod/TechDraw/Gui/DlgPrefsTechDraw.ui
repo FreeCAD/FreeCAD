@@ -61,6 +61,9 @@
         </item>
         <item row="1" column="1">
          <widget class="Gui::PrefComboBox" name="cb_HidLine">
+          <property name="toolTip">
+           <string>Style for hidden lines</string>
+          </property>
           <property name="currentIndex">
            <number>1</number>
           </property>
@@ -104,6 +107,9 @@
         </item>
         <item row="2" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_Faces">
+          <property name="toolTip">
+           <string>Perform/skip face processing</string>
+          </property>
           <property name="text">
            <string>Detect Faces</string>
           </property>
@@ -120,6 +126,9 @@
         </item>
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
+          <property name="toolTip">
+           <string>deugging option</string>
+          </property>
           <property name="text">
            <string>Show Section Edges</string>
           </property>
@@ -133,6 +142,9 @@
         </item>
         <item row="4" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_PageUpdate">
+          <property name="toolTip">
+           <string>Update Pages as scheduled or skip</string>
+          </property>
           <property name="text">
            <string>Keep Pages Up to Date</string>
           </property>
@@ -156,6 +168,9 @@
         </item>
         <item row="5" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="dsb_TemplateDot">
+          <property name="toolTip">
+           <string>EditableText Dot Size in mm</string>
+          </property>
           <property name="value">
            <double>3.000000000000000</double>
           </property>
@@ -591,8 +606,14 @@
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,0">
         <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="dsb_LabelSize">
+          <property name="toolTip">
+           <string>Label height in millimeters</string>
+          </property>
           <property name="minimum">
            <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelSize</cstring>
