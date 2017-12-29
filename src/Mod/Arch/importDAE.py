@@ -204,16 +204,18 @@ def export(exportList,filename,tessellation=1):
             print("exporting object ",obj.Name, obj.Mesh)
             m = obj.Mesh
         if m:
+            Topology = m.Topology
+
             # vertex indices
-            for v in m.Topology[0]:
+            for v in Topology[0]:
                 vindex.extend([v.x*scale,v.y*scale,v.z*scale])
             # normals
             for f in m.Facets:
                 n = f.Normal
                 nindex.extend([n.x,n.y,n.z])
             # face indices
-            for i in xrange(len(m.Topology[1])):
-                f = m.Topology[1][i]
+            for i in xrange(len(Topology[1])):
+                f = Topology[1][i]
                 findex.extend([f[0],i,f[1],i,f[2],i])
         print(len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices.")
         vert_src = collada.source.FloatSource("cubeverts-array"+str(objind), numpy.array(vindex), ('X', 'Y', 'Z'))
