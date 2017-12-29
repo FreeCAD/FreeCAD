@@ -1485,9 +1485,15 @@ public:
     void slotDeleteDocument(const App::Document &doc) {
         for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
             ++itNext;
-            auto obj = dynamic_cast<DocumentObject*>((*it)->getContainer());
-            if(obj && obj->getDocument() == &doc)
+            auto link = *it;
+            auto obj = dynamic_cast<DocumentObject*>(link->getContainer());
+            if(obj && obj->getDocument() == &doc) {
                 links.erase(it);
+                // must call unlink here, so that PropertyLink::resetLink can
+                // remove back link before the owner object is marked as being
+                // destroyed
+                link->unlink();
+            }
         }
         if(links.empty()) {
             deinit();
