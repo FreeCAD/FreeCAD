@@ -175,14 +175,21 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
  */
 void ConsoleSingleton::Message( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
+#define FC_CONSOLE_FMT(_type) \
+    char format[4024];\
+    format[sizeof(format)-4] = '.';\
+    format[sizeof(format)-3] = '.';\
+    format[sizeof(format)-2] = '\n';\
+    format[sizeof(format)-1] = 0;\
+    const unsigned int format_len = sizeof(format)-4;\
+    va_list namelessVars;\
+    va_start(namelessVars, pMsg);\
+    vsnprintf(format, format_len, pMsg, namelessVars);\
+    format[sizeof(format)-5] = '.';\
+    va_end(namelessVars);\
+    Notify##_type(format);
 
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-    NotifyMessage(format);
+    FC_CONSOLE_FMT(Message);
 }
 
 /** Prints a Message
@@ -202,14 +209,7 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
  */
 void ConsoleSingleton::Warning( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
-
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-    NotifyWarning(format);
+    FC_CONSOLE_FMT(Warning);
 }
 
 /** Prints a Message
@@ -229,14 +229,7 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
  */
 void ConsoleSingleton::Error( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
-
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-    NotifyError(format);
+    FC_CONSOLE_FMT(Error);
 }
 
 
@@ -258,19 +251,11 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 void ConsoleSingleton::Log( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
-
     if (!_bVerbose)
     {
-        va_list namelessVars;
-        va_start(namelessVars, pMsg);  // Get the "..." vars
-        vsnprintf(format, format_len, pMsg, namelessVars);
-        va_end(namelessVars);
-        NotifyLog(format);
+        FC_CONSOLE_FMT(Log);
     }
 }
-
 
 /** Delivers the time/date
  *  This method gives you a string with the actual time/date. You can
@@ -460,7 +445,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
 
     PY_TRY {
         if (string)
-            Instance().Message("%s",string);            // process message
+            Instance().NotifyMessage(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -506,7 +491,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
 
     PY_TRY {
         if (string)
-            Instance().Warning("%s",string);            // process message
+            Instance().NotifyWarning(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -552,7 +537,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
 
     PY_TRY {
         if (string)
-            Instance().Error("%s",string);            // process message
+            Instance().NotifyError(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -598,7 +583,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
 
     PY_TRY {
         if (string)
-            Instance().Log("%s",string);            // process message
+            Instance().NotifyLog(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -877,7 +862,11 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
     }
     if(print_tag) str << '<' << tag << "> ";
     if(print_src) {
+#ifdef FC_OS_WIN32
+        const char *_f = std::strrchr(src, '\\');
+#else
         const char *_f = std::strrchr(src, '/');
+#endif
         str << (_f?_f+1:src)<<"("<<line<<"): ";
     }
     return str;

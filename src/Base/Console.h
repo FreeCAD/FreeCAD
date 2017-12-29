@@ -349,22 +349,31 @@
 #define FC_LOG_LEVEL_INIT(_tag,...) \
     _FC_LOG_LEVEL_INIT(FC_LOG_INSTANCE, _tag, ## __VA_ARGS__)
 
-#define _FC_PRINT(_instance,_l,_func,_msg) do{\
+#define __FC_PRINT(_instance,_l,_func,_msg,_file,_line) do{\
     if(_instance.isEnabled(_l)) {\
         std::stringstream str;\
-        _instance.prefix(str,__FILE__,__LINE__) << _msg;\
+        _instance.prefix(str,_file,_line) << _msg;\
         if(_instance.add_eol) \
             str<<std::endl;\
-        Base::Console()._func("%s",str.str().c_str());\
+        Base::Console()._func(str.str().c_str());\
         if(_instance.refresh) Base::Console().Refresh();\
     }\
 }while(0)
 
-#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,_msg)
-#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,Warning,_msg)
-#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,Error,_msg)
-#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,_msg)
-#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,_msg)
+#define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,_msg,__FILE__,__LINE__)
+
+#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg)
+#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg)
+#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg)
+#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg)
+#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg)
+
+#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg,_file,_line)
+#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg,_file,_line)
+#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg,_file,_line)
+#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg,_file,_line)
+#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg,_file,_line)
+
 #define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
 #define FC_XY(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
 
@@ -506,6 +515,12 @@ public:
     /// Prints a log Message 
     virtual void Log     ( const char * pMsg, ... ) ;
 
+    // observer processing 
+    void NotifyMessage(const char *sMsg);
+    void NotifyWarning(const char *sMsg);
+    void NotifyError  (const char *sMsg);
+    void NotifyLog    (const char *sMsg);
+
     /// Delivers a time/date string 
     const char* Time(void);
     /// Attaches an Observer to FCConsole
@@ -575,12 +590,6 @@ private:
     // singleton
     static void Destruct(void);
     static ConsoleSingleton *_pcSingleton;
-
-    // observer processing 
-    void NotifyMessage(const char *sMsg);
-    void NotifyWarning(const char *sMsg);
-    void NotifyError  (const char *sMsg);
-    void NotifyLog    (const char *sMsg);
 
     // observer list
     std::set<ConsoleObserver * > _aclObservers;

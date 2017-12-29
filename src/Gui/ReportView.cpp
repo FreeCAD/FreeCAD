@@ -347,11 +347,15 @@ void ReportOutput::Error  (const char * s)
 void ReportOutput::Log (const char * s)
 {
     QString msg = QString::fromUtf8(s);
-    if (msg.length() < 1000){
-        // Send the event to itself to allow thread-safety. Qt will delete it when done.
-        CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
-        QApplication::postEvent(this, ev);
+#ifndef FC_DEBUG
+    if(msg.size() > 2048) {
+        msg.truncate(2048);
+        msg += u"...\n";
     }
+#endif
+    // Send the event to itself to allow thread-safety. Qt will delete it when done.
+    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
+    QApplication::postEvent(this, ev);
 }
 
 void ReportOutput::customEvent ( QEvent* ev )
