@@ -149,8 +149,17 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         item->setData(Qt::UserRole, list);
     }
     else if (Reason.Type == SelectionChanges::ClrSelection) {
-        // remove all items
-        selectionView->clear();
+        if(!Reason.pDocName[0]) {
+            // remove all items
+            selectionView->clear();
+        }else{
+            // build name
+            str << Reason.pDocName;
+            str << ".";
+            // remove all items
+            for(auto item : selectionView->findItems(selObject,Qt::MatchStartsWith))
+                delete item;
+        }
     }
     else if (Reason.Type == SelectionChanges::RmvSelection) {
         // build name

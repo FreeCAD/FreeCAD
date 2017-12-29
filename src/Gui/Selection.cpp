@@ -331,7 +331,7 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
         const char *subelement = 0;
         auto obj = getObjectOfType(It->pObject,It->SubName.c_str(),
                 App::DocumentObject::getClassTypeId(),resolve,&subelement);
-        if(!obj || (pcDoc && obj->getDocument()!=pcDoc))
+        if(!obj || (pcDoc && It->pObject->getDocument()!=pcDoc))
             continue;
 
         // In case we are resolving objects, make sure no duplicates
@@ -343,12 +343,12 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
             break;
         }
 
-        tempSelObj.DocName  = pcDoc->getName();
+        tempSelObj.DocName  = obj->getDocument()->getName();
         tempSelObj.FeatName = obj->getNameInDocument();
         tempSelObj.SubName  = subelement;
         tempSelObj.TypeName = obj->getTypeId().getName();
         tempSelObj.pObject  = obj;
-        tempSelObj.pDoc     = pcDoc;
+        tempSelObj.pDoc     = obj->getDocument();
         tempSelObj.x        = It->x;
         tempSelObj.y        = It->y;
         tempSelObj.z        = It->z;
@@ -361,15 +361,17 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
 
 bool SelectionSingleton::hasSelection(const char* doc, bool resolve) const
 {
-    App::Document *pcDoc;
-    pcDoc = getDocument(doc);
-    if (!pcDoc)
-        return false;
+    App::Document *pcDoc = 0;
+    if(!doc || strcmp(doc,"*")!=0) {
+        pcDoc = getDocument(doc);
+        if (!pcDoc)
+            return false;
+    }
     for(std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if(!It->pDoc) continue;
         auto obj = getObjectOfType(It->pObject, It->SubName.c_str(),
                 App::DocumentObject::getClassTypeId(),resolve);
-        if(obj && obj->getDocument() == pcDoc) {
+        if(obj && (!pcDoc || It->pObject->getDocument()==pcDoc)) {
             return true;
         }
     }
@@ -438,7 +440,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
         if(!sel.pDoc) continue;
         const char *subelement = 0;
         auto obj = getObjectOfType(sel.pObject,sel.SubName.c_str(),typeId,resolve,&subelement);
-        if(!obj || (pcDoc && obj->getDocument()!=pcDoc))
+        if(!obj || (pcDoc && sel.pObject->getDocument()!=pcDoc))
             continue;
         auto it = SortMap.find(obj);
         if(it!=SortMap.end()) {
@@ -1181,6 +1183,14 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 
 void SelectionSingleton::clearSelection(const char* pDocName)
 {
+    // Because the introduction of external editing, it is best to make
+    // clearSelection(0) behave as clearCompleteSelection(), which is the same
+    // behavior of python Selection.clearSelection(None)
+    if(!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
+        clearCompleteSelection();
+        return;
+    }
+
     if(_PickedList.size()) {
         _PickedList.clear();
         SelectionChanges Chng;
@@ -1191,12 +1201,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
 
     App::Document* pDoc;
     pDoc = getDocument(pDocName);
-
-    // the document 'pDocName' has already been removed
-    if (!pDoc && !pDocName) {
-        clearCompleteSelection();
-    }
-    else {
+    if(pDoc) {
         std::string docName;
         if (pDocName)
             docName = pDocName;
@@ -1229,6 +1234,14 @@ void SelectionSingleton::clearSelection(const char* pDocName)
 
 void SelectionSingleton::clearCompleteSelection()
 {
+    if(_PickedList.size()) {
+        _PickedList.clear();
+        SelectionChanges Chng;
+        Chng.Type      = SelectionChanges::PickedListChanged;
+        Notify(Chng);
+        signalSelectionChanged(Chng);
+    }
+
     _SelList.clear();
 
     SelectionChanges Chng;
