@@ -1814,7 +1814,7 @@ CmdSketcherConstrainBlocked::CmdSketcherConstrainBlocked()
 
 void CmdSketcherConstrainBlocked::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -1838,6 +1838,13 @@ void CmdSketcherConstrainBlocked::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    
+    // Check that the solver does not report redundant/conflicting constraints
+    if(Obj->getLastSolverStatus()!=GCS::Success || Obj->getLastHasConflicts() || Obj->getLastHasRedundancies()) {
+      QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong solver status"),
+			      QObject::tr("A block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints."));      
+      return;
+    }
 
     std::vector<int> GeoId;
 
