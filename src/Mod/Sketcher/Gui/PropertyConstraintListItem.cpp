@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QDebug>
 # include <QTextStream>
 #endif
 
@@ -42,6 +43,10 @@ PropertyConstraintListItem::PropertyConstraintListItem()
 {
     blockEvent = false;
     onlyUnnamed = false;
+}
+
+PropertyConstraintListItem::~PropertyConstraintListItem()
+{
 }
 
 QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
@@ -175,10 +180,17 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             if ((*it)->Name.empty() && !onlyUnnamed) {
                 onlyNamed = false;
                 subquantities.append(quant);
-                PropertyConstraintListItem* unnamednode = static_cast<PropertyConstraintListItem*>(self->child(self->childCount()-1));
-                unnamednode->blockEvent = true;
-                unnamednode->setProperty(internalName.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
-                unnamednode->blockEvent = false;
+                PropertyItem* child = self->child(self->childCount()-1);
+                PropertyConstraintListItem* unnamednode = qobject_cast<PropertyConstraintListItem*>(child);
+                if (unnamednode) {
+                    unnamednode->blockEvent = true;
+                    unnamednode->setProperty(internalName.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
+                    unnamednode->blockEvent = false;
+                }
+                else {
+                    qWarning() << "Item is not of type PropertyConstraintListItem but"
+                               << typeid(*child).name();
+                }
             }
             else {
                 self->setProperty(internalName.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
