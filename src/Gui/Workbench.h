@@ -95,6 +95,8 @@ public:
     /// remove the added TaskWatcher
     void removeTaskWatcher(void);
 
+    static void createLinkMenu(MenuItem *);
+
 protected:
     /** Returns a MenuItem tree structure of menus for this workbench. */
     virtual MenuItem* setupMenuBar() const=0;

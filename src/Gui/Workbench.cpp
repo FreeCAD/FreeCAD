@@ -340,6 +340,35 @@ void Workbench::createMainWindowPopupMenu(MenuItem*) const
 {
 }
 
+void Workbench::createLinkMenu(MenuItem *item) {
+    if(!item || !App::GetApplication().getActiveDocument())
+        return;
+    MenuItem* linkMenu = new MenuItem;
+    linkMenu->setCommand("Link actions");
+    *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
+
+    auto &rMgr = Application::Instance->commandManager();
+    const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
+        "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkSelectLinked",
+        "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
+    bool separator = true;
+    for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {
+        if(!cmds[i]) {
+            if(separator) {
+                separator = false;
+                *linkMenu << "Separator";
+            }
+            continue;
+        }
+        auto cmd = rMgr.getCommandByName(cmds[i]);
+        if(cmd->isActive()) {
+            separator = true;
+            *linkMenu << cmds[i];
+        }
+    }
+    *item << linkMenu;
+}
+
 void Workbench::activated()
 {
 }
@@ -475,32 +504,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Separator";
         }
 
-        if(App::GetApplication().getActiveDocument()) {
-            MenuItem* linkMenu = new MenuItem;
-            linkMenu->setCommand("Link actions");
-            *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
-            
-            auto &rMgr = Application::Instance->commandManager();
-            const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
-                "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkSelectLinked",
-                "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
-            bool separator = true;
-            for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {
-                if(!cmds[i]) {
-                    if(separator) {
-                        separator = false;
-                        *linkMenu << "Separator";
-                    }
-                    continue;
-                }
-                auto cmd = rMgr.getCommandByName(cmds[i]);
-                if(cmd->isActive()) {
-                    separator = true;
-                    *linkMenu << cmds[i];
-                }
-            }
-            *item << linkMenu;
-        }
+        createLinkMenu(item);
     }
 }
 

@@ -217,6 +217,8 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                 *item << "PartDesign_MultiTransform";
         }
     }
+    if (strcmp(recipient, "Tree") == 0)
+        createLinkMenu(item);
 }
 
 void Workbench::activated()
