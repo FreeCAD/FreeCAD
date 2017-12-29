@@ -438,16 +438,16 @@ void DlgExtrusion::apply()
                 //label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
             }
 
-            Gui::Command::doCommand(Gui::Command::Doc, "f = FreeCAD.getDocument('%s').addObject('Part::Extrusion', '%s')", sourceObj->getDocument()->getName(), name.c_str());
+            FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Extrusion','" << name << "')");
+            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
-            this->writeParametersToFeature(*(sourceObj->getDocument()->getObject(name.c_str())), sourceObj);
+            this->writeParametersToFeature(*newObj, sourceObj);
 
-            std::string sourceObjectName = sourceObj->getNameInDocument();
-            Gui::Command::copyVisual(name.c_str(), "ShapeColor", sourceObjectName.c_str());
-            Gui::Command::copyVisual(name.c_str(), "LineColor", sourceObjectName.c_str());
-            Gui::Command::copyVisual(name.c_str(), "PointColor", sourceObjectName.c_str());
+            Gui::Command::copyVisual(newObj, "ShapeColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 
-            Gui::Command::doCommand(Gui::Command::Gui,"f.Base.ViewObject.hide()");
+            FCMD_OBJ_HIDE(newObj);
         }
 
         activeDoc->commitTransaction();

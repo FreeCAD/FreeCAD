@@ -965,24 +965,24 @@ bool TaskDlgAttacher::accept()
 
     try {
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-        std::string name = ViewProvider->getObject()->getNameInDocument();
+        auto obj = ViewProvider->getObject();
 
         //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
         if (pcAttach->AttachmentOffset.isTouched()){
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-                                    name.c_str(),
+            FCMD_OBJ_CMD2("AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                    obj,
                                     plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
                                     yaw, pitch, roll);
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapReversed = %s", name.c_str(), pcAttach->MapReversed.getValue() ? "True" : "False");
+        FCMD_OBJ_CMD2("MapReversed = %s", obj, pcAttach->MapReversed.getValue() ? "True" : "False");
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Support = %s", name.c_str(), pcAttach->Support.getPyReprString().c_str());
+        FCMD_OBJ_CMD2("Support = %s", obj, pcAttach->Support.getPyReprString().c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        FCMD_OBJ_CMD2("MapMode = '%s'", obj, AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!ViewProvider->getObject()->isValid())

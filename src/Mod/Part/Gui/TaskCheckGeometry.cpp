@@ -416,7 +416,7 @@ void TaskCheckGeometryResults::goCheck()
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull())
             continue;
-        currentSeparator = Gui::Application::Instance->activeDocument()->getViewProvider(sel.pObject)->getRoot();
+        currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
         if (!currentSeparator)
             continue;
         QString baseName;

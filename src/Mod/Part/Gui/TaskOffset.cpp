@@ -178,21 +178,14 @@ void OffsetWidget::on_updateView_toggled(bool on)
 
 bool OffsetWidget::accept()
 {
-    std::string name = d->offset->getNameInDocument();
-
     try {
         double offsetValue = d->ui.spinOffset->value().getValue();
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),offsetValue);
+        FCMD_OBJ_CMD2("Value = %f", d->offset,offsetValue);
         d->ui.spinOffset->apply();
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
-            name.c_str(),d->ui.modeType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
-            name.c_str(),d->ui.joinType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Intersection = %s",
-            name.c_str(),d->ui.intersection->isChecked() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.SelfIntersection = %s",
-            name.c_str(),d->ui.selfIntersection->isChecked() ? "True" : "False");
+        FCMD_OBJ_CMD2("Mode = %i", d->offset,d->ui.modeType->currentIndex());
+        FCMD_OBJ_CMD2("Join = %i", d->offset,d->ui.joinType->currentIndex());
+        FCMD_OBJ_CMD2("Intersection = %s", d->offset,d->ui.intersection->isChecked() ? "True" : "False");
+        FCMD_OBJ_CMD2("SelfIntersection = %s", d->offset,d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->offset->isValid())
