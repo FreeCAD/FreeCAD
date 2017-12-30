@@ -230,7 +230,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         ViewProvider *vp = 0;
         SoFullPath *path = static_cast<SoFullPath *>(info.pp->getPath());
         if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
-            vp = this->pcDocument->getViewProviderByPathFromTail(path);
+            vp = this->pcDocument->getViewProviderByPathFromHead(path);
             if(singlePick && last_vp && last_vp!=vp)
                 return ret;
         }
@@ -573,6 +573,8 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         }
     }
 
+#if 0 // geo feature group now implements getElementPicked
+
     // If no next hierarchy is found, do another try on view provider hierarchies, 
     // which is used by geo feature group.
     if(!hasNext) {
@@ -595,6 +597,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             break;
         }
     }
+#endif
 
     FC_TRACE("clearing selection");
     Gui::Selection().clearSelection(docname);

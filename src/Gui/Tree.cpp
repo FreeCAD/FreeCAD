@@ -1115,7 +1115,7 @@ void TreeWidget::syncSelection(const char *pDocName) {
         TREE_TRACE("connection blocked");
         return;
     }
-    if (!pDocName || *pDocName==0) {
+    if (!pDocName || *pDocName==0 || strcmp(pDocName,"*")==0) {
         if(Selection().hasSelection()) {
             for(auto &v : DocumentMap) {
                 bool lock = this->blockConnection(true);
@@ -1931,12 +1931,23 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     item->mySub.clear();
     item->selected = selected;
 
+    auto obj = item->object()->getObject();
+    if(!obj || !obj->getNameInDocument())
+        return;
+
     std::ostringstream str;
-    auto vobj = item->getSubName(str);
-    if(!vobj) return;
-    auto obj = vobj->getObject();
+    App::DocumentObject *topParent = 0;
+    item->getSubName(str,topParent);
+    if(topParent) {
+        if(topParent->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            // remove legacy selection, i.e. those without subname
+            Gui::Selection().rmvSelection(obj->getDocument()->getName(),
+                    obj->getNameInDocument(),0);
+        }
+        str << obj->getNameInDocument() << '.';
+        obj = topParent;
+    }
     const char *objname = obj->getNameInDocument();
-    if(!objname) return;
     const char *docname = obj->getDocument()->getName();
     const auto &subname = str.str();
 
@@ -2024,11 +2035,26 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         }
     }
 
-    // The sub object is not found. Maybe it is a non-object sub-element.
-    // Select the current object instead.
-    TREE_TRACE("element " << subname << " not found");
-    item->selected+=2;
-    item->mySub = subname;
+    // The sub object is not found. This could happen for geo group, since its
+    // children may be in more than one hierarchy down.
+    bool found = false;
+    auto it = ObjectMap.find(subObj);
+    if(it != ObjectMap.end()) {
+        for(auto child : it->second->items) {
+            if(child->isChildOfItem(item)) {
+                found = true;
+                findSelection(sync,child,nextsub);
+            }
+        }
+    }
+
+    if(!found) {
+        // The sub object is still not found. Maybe it is a non-object sub-element.
+        // Select the current object instead.
+        TREE_TRACE("element " << subname << " not found");
+        item->selected+=2;
+        item->mySub = subname;
+    }
 }
 
 void DocumentItem::selectItems(bool sync) {
@@ -2490,16 +2516,23 @@ bool DocumentObjectItem::isParentLink() const {
     return pi && pi->isLink();
 }
 
+enum GroupType {
+    NotGroup = 0,
+    LinkGroup = 1,
+    PartGroup = 2,
+    SuperGroup = 3, //reversed for future
+};
+
 int DocumentObjectItem::isGroup() const {
     auto obj = object()->getObject();
     if(obj->hasChildElement())
-        return 1;
+        return LinkGroup;
     auto linked = obj->getLinkedObject(true);
-    if(!linked) return 0;
+    if(!linked) return NotGroup;
     auto vp = Application::Instance->getViewProvider(linked);
     if(vp && vp->getChildRoot())
-        return 2;
-    return 0;
+        return PartGroup;
+    return NotGroup;
 }
 
 int DocumentObjectItem::isParentGroup() const {
@@ -2518,24 +2551,34 @@ const char *DocumentObjectItem::getName() const {
     return name?name:"";
 }
 
-ViewProviderDocumentObject *DocumentObjectItem::getSubName(std::ostringstream &str) const 
-{
-    const char *name = object()->getObject()->getNameInDocument();
-    if(!name) return 0;
+int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const {
     auto parent = getParentItem();
+    if(!parent)
+        return NotGroup;
+    int ret = parent->getSubName(str,topParent);
+    if(ret != SuperGroup) {
+        int group = parent->isGroup();
+        if(group == NotGroup) {
+            if(ret!=PartGroup) {
+                topParent = 0;
+                str.str(""); //reset the current subname
+                return NotGroup;
+            }
+            return PartGroup;
+        }
+        ret = group;
+    }
 
-    int group;
-    if(!parent || !(group=parent->isGroup())) 
-        return object();
-
-    auto vobj = parent->getSubName(str);
-    if(!vobj) return 0;
-
-    if(str.tellp()>0 || group==1)
-        str << name << '.';
-    else 
-        vobj = object();
-    return vobj;
+    auto obj = parent->object()->getObject();
+    if(!obj || !obj->getNameInDocument()) {
+        str.str("");
+        return NotGroup;
+    }
+    if(!topParent)
+        topParent = obj;
+    else
+        str << obj->getNameInDocument() << '.';
+    return ret;
 }
 
 App::DocumentObject *DocumentObjectItem::getFullSubName(

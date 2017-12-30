@@ -191,6 +191,8 @@ public:
     void detachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// helper for selection
     ViewProviderDocumentObject* getViewProviderByPathFromTail(SoPath * path) const;
+    /// helper for selection
+    ViewProviderDocumentObject* getViewProviderByPathFromHead(SoPath * path) const;
     /// Get all view providers along the path and the corresponding node index in the path
     std::vector<std::pair<ViewProviderDocumentObject*,int> > getViewProvidersByPath(SoPath * path) const;
     /// call update on all attached views
@@ -207,6 +209,7 @@ public:
     //@{
     /// Get the view provider for that object
     ViewProvider* getViewProvider(const App::DocumentObject *) const;
+    ViewProviderDocumentObject *getViewProvider(SoNode *node) const;
     /// set an annotation view provider
     void setAnnotationViewProvider(const char* name, ViewProvider *pcProvider);
     /// get an annotation view provider

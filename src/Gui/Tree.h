@@ -304,7 +304,7 @@ public:
     // is necssary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
-    ViewProviderDocumentObject *getSubName(std::ostringstream &str) const;
+    int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
 
     const char *getName() const;
     const char *getTreeName() const;

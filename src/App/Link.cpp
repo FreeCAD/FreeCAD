@@ -193,7 +193,7 @@ bool LinkBaseExtension::extensionHasChildElement() const {
     if(linked) {
         if(linked->hasChildElement())
             return true;
-        return linked->hasExtension(App::GroupExtension::getExtensionClassTypeId(),true);
+        // return linked->hasExtension(App::GroupExtension::getExtensionClassTypeId(),true);
     }
     return false;
 }

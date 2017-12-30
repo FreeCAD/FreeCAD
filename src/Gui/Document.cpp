@@ -325,12 +325,14 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         return false;
     }
 
-    auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-    if(group) {
-        auto ext = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-        d->_editingTransform = ext->globalGroupPlacement().toMatrix();
-    }else
-        d->_editingTransform = Base::Matrix4D();
+    d->_editingTransform = Base::Matrix4D();
+    if(!subname || !subname[0]) {
+        auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+        if(group) {
+            auto ext = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+            d->_editingTransform = ext->globalGroupPlacement().toMatrix();
+        }
+    }
     auto sobj = obj->getSubObject(subname,0,&d->_editingTransform);
     if(!sobj || !sobj->getNameInDocument()) {
         FC_ERR("Invalid sub object '" << obj->getNameInDocument() 
@@ -808,6 +810,29 @@ ViewProviderDocumentObject* Document::getViewProviderByPathFromTail(SoPath * pat
         }
     }
 
+    return 0;
+}
+
+ViewProviderDocumentObject* Document::getViewProviderByPathFromHead(SoPath * path) const
+{
+    for (int i = 0; i < path->getLength(); i++) {
+        SoNode *node = path->getNode(i);
+        if (node->isOfType(SoSeparator::getClassTypeId())) {
+            auto it = d->_CoinMap.find(static_cast<SoSeparator*>(node));
+            if(it!=d->_CoinMap.end())
+                return it->second;
+        }
+    }
+
+    return 0;
+}
+
+ViewProviderDocumentObject *Document::getViewProvider(SoNode *node) const {
+    if(!node || !node->isOfType(SoSeparator::getClassTypeId()))
+        return 0;
+    auto it = d->_CoinMap.find(static_cast<SoSeparator*>(node));
+    if(it!=d->_CoinMap.end())
+        return it->second;
     return 0;
 }
 
