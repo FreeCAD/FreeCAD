@@ -136,6 +136,7 @@ public:
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
     void removeChildren(int from, int to);
+    PropertyItem *takeChild(int);
 
     void setReadOnly(bool);
     bool isReadOnly() const;
