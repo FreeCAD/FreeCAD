@@ -124,7 +124,7 @@ void PropertyConstraintListItem::initialize()
     else {
         onlyUnnamed = false;
         if (!unnamed.empty()) {
-            PropertyConstraintListItem* item = static_cast<PropertyConstraintListItem*>(PropertyConstraintListItem::create()); 
+            PropertyConstraintListItem* item = static_cast<PropertyConstraintListItem*>(PropertyConstraintListItem::create());
             item->setParent(this);
             item->setPropertyName(tr("Unnamed"));
             this->appendChild(item);
@@ -134,6 +134,98 @@ void PropertyConstraintListItem::initialize()
                 item->appendChild((*it));
             }
         }
+    }
+}
+
+void PropertyConstraintListItem::assignProperty(const App::Property* prop)
+{
+    // Hint: When renaming a constraint that was unnamed before then it can happen that
+    // a constraint appears twice in the property editor, one time in this group and a
+    // second time inside the Unnamed group
+    if (!prop->getTypeId().isDerivedFrom(Sketcher::PropertyConstraintList::getClassTypeId()))
+        return;
+
+    const Sketcher::PropertyConstraintList* list = static_cast<const Sketcher::PropertyConstraintList*>(prop);
+    const std::vector< Sketcher::Constraint * > &vals = list->getValues();
+
+    // search for the group of unnamed items if available and take it out
+    int numUnnamed = 0;
+    PropertyConstraintListItem* unnamed = nullptr;
+    for (int i = this->childCount() - 1; i >= 0; i--) {
+        unnamed = qobject_cast<PropertyConstraintListItem*>(this->child(i));
+        if (unnamed) {
+            numUnnamed = unnamed->childCount();
+            this->takeChild(i);
+            break;
+        }
+    }
+
+    int id = 1;
+    int namedIndex = 0;
+    int unnamedIndex = 0;
+    int numNamed = this->childCount();
+    this->onlyUnnamed = true;
+
+    for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
+        if ((*it)->Type == Sketcher::Distance || // Datum constraint
+            (*it)->Type == Sketcher::DistanceX ||
+            (*it)->Type == Sketcher::DistanceY ||
+            (*it)->Type == Sketcher::Radius ||
+            (*it)->Type == Sketcher::Angle ) {
+
+            PropertyUnitItem* child = nullptr;
+            if ((*it)->Name.empty()) {
+                // search inside the group item for unnamed constraints
+                if (!unnamed) {
+                    unnamed = static_cast<PropertyConstraintListItem*>(PropertyConstraintListItem::create());
+                    unnamed->setPropertyName(tr("Unnamed"));
+                }
+
+                if (unnamedIndex < numUnnamed) {
+                    child = static_cast<PropertyUnitItem*>(unnamed->child(unnamedIndex));
+                }
+                else {
+                    child = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
+                    unnamed->appendChild(child);
+                    child->setParent(unnamed);
+                }
+                unnamedIndex++;
+            }
+            else {
+                // search inside this item
+                if (namedIndex < numNamed)
+                    child = dynamic_cast<PropertyUnitItem*>(this->child(namedIndex));
+
+                if (!child) {
+                    child = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
+                    this->appendChild(child);
+                    child->setParent(this);
+                }
+                namedIndex++;
+                this->onlyUnnamed = false;
+            }
+
+            // Get the name
+            QString internalName = QString::fromLatin1("Constraint%1").arg(id);
+            QString name = QString::fromUtf8((*it)->Name.c_str());
+            if (name.isEmpty()) {
+                name = internalName;
+            }
+
+            if (child->objectName() != internalName) {
+                child->setPropertyName(name);
+                child->setObjectName(internalName);
+
+                child->bind(list->createPath(id-1));
+                child->setAutoApply(false);
+            }
+        }
+    }
+
+    // at the Unnamed group at very the end
+    if (unnamed) {
+        this->appendChild(unnamed);
+        unnamed->setParent(this);
     }
 }
 
@@ -173,9 +265,6 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             // Use a 7-bit ASCII string for the internal name.
             // See also comment in PropertyConstraintListItem::initialize()
             QString internalName = QString::fromLatin1("Constraint%1").arg(id);
-            PropertyConstraintListItem* self = const_cast<PropertyConstraintListItem*>(this);
-
-            self->blockEvent = true;
 
             if ((*it)->Name.empty() && !onlyUnnamed) {
                 onlyNamed = false;
@@ -193,10 +282,10 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
                 }
             }
             else {
+                self->blockEvent = true;
                 self->setProperty(internalName.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
+                self->blockEvent = false;
             }
-
-            self->blockEvent = false;
         }
     }
 

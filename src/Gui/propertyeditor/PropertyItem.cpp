@@ -206,6 +206,10 @@ void PropertyItem::appendChild(PropertyItem *item)
     childItems.append(item);
 }
 
+/*!
+ * \brief PropertyItem::removeChildren
+ * Deletes the children in the range of [from, to]
+ */
 void PropertyItem::removeChildren(int from, int to)
 {
     int count = to-from+1;
@@ -213,6 +217,17 @@ void PropertyItem::removeChildren(int from, int to)
         PropertyItem* child = childItems.takeAt(from);
         delete child;
     }
+}
+
+/*!
+ * \brief PropertyItem::takeChild
+ * Removes the child at index row but doesn't delete it
+ */
+PropertyItem *PropertyItem::takeChild(int row)
+{
+    PropertyItem* child = childItems.takeAt(row);
+    child->setParent(nullptr);
+    return child;
 }
 
 PropertyItem *PropertyItem::child(int row)
