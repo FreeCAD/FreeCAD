@@ -529,7 +529,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Setting analysis type to \'static\"')
         fea.set_analysis_type("static")
-        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting anlysis type to \'static\' failed")
+        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting analysis type to \'static\' failed")
 
         fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, mesh_name))
         error = fea.write_inp_file()
@@ -570,7 +570,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fea.reset_all()
         fcc_print('Setting analysis type to \'frequency\"')
         fea.set_analysis_type("frequency")
-        self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting anlysis type to \'frequency\' failed")
+        self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting analysis type to \'frequency\' failed")
 
         fcc_print('Setting up working directory to {} in order to write frequency calculations'.format(frequency_analysis_dir))
         fea.setup_working_dir(frequency_analysis_dir)
@@ -773,7 +773,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Setting analysis type to \'thermomech\"')
         fea.set_analysis_type("thermomech")
-        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting anlysis type to \'thermomech\' failed")
+        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting analysis type to \'thermomech\' failed")
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
@@ -1021,7 +1021,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Setting analysis type to \'thermomech\"')
         fea.set_analysis_type("thermomech")
-        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting anlysis type to \'thermomech\' failed")
+        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting analysis type to \'thermomech\' failed")
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()

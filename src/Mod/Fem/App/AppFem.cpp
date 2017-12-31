@@ -76,7 +76,7 @@ extern PyObject* initModule();
 /* Python entry */
 PyMOD_INIT_FUNC(Fem)
 {
-    // load dependend module
+    // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
         //Base::Interpreter().loadModule("Mesh");

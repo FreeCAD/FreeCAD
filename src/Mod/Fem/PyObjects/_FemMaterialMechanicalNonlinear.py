@@ -34,7 +34,7 @@ class _FemMaterialMechanicalNonlinear:
         obj.Proxy = self
         self.Type = "FemMaterialMechanicalNonlinear"
 
-        obj.addProperty("App::PropertyLink", "LinearBaseMaterial", "Base", "Set the linear material the nonlinear build uppon.")
+        obj.addProperty("App::PropertyLink", "LinearBaseMaterial", "Base", "Set the linear material the nonlinear builds upon.")
 
         choices_nonlinear_material_models = ["simple hardening"]
         obj.addProperty("App::PropertyEnumeration", "MaterialModelNonlinearity", "Fem", "Set the type on nonlinear material model")
