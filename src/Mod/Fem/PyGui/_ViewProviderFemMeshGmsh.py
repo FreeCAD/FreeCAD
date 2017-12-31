@@ -33,7 +33,7 @@ import FemGui
 
 
 # for the panel
-import PyObjects._FemMeshGmsh
+from PyObjects import _FemMeshGmsh
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
@@ -167,7 +167,7 @@ class _TaskPanelFemMeshGmsh:
         QtCore.QObject.connect(self.form.cb_dimension, QtCore.SIGNAL("activated(int)"), self.choose_dimension)
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
 
-        self.form.cb_dimension.addItems(PyObjects._FemMeshGmsh._FemMeshGmsh.known_element_dimensions)
+        self.form.cb_dimension.addItems(_FemMeshGmsh._FemMeshGmsh.known_element_dimensions)
 
         self.get_mesh_params()
         self.get_active_analysis()
