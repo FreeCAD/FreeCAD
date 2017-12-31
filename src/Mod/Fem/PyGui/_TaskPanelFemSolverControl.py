@@ -45,7 +45,7 @@ class ControlTaskPanel(QtCore.QObject):
 
     machineChanged = QtCore.Signal(object)
     machineStarted = QtCore.Signal(object)
-    machineStoped = QtCore.Signal(object)
+    machineStopped = QtCore.Signal(object)
     machineStatusChanged = QtCore.Signal(str)
     machineStatusCleared = QtCore.Signal()
     machineTimeChanged = QtCore.Signal(float)
@@ -79,9 +79,9 @@ class ControlTaskPanel(QtCore.QObject):
         # Connect all proxy signals.
         self.machineStarted.connect(self._timer.start)
         self.machineStarted.connect(self.form.updateState)
-        self.machineStoped.connect(self._timer.stop)
-        self.machineStoped.connect(self._displayReport)
-        self.machineStoped.connect(self.form.updateState)
+        self.machineStopped.connect(self._timer.stop)
+        self.machineStopped.connect(self._displayReport)
+        self.machineStopped.connect(self.form.updateState)
         self.machineStatusChanged.connect(self.form.appendStatus)
         self.machineStatusCleared.connect(self.form.clearStatus)
         self.machineTimeChanged.connect(self.form.setTime)
@@ -162,7 +162,7 @@ class ControlTaskPanel(QtCore.QObject):
         machine.signalStatus.add(self._statusProxy)
         machine.signalStatusCleared.add(self._statusClearedProxy)
         machine.signalStarted.add(self._startedProxy)
-        machine.signalStoped.add(self._stopedProxy)
+        machine.signalStopped.add(self._stoppedProxy)
         machine.signalState.add(self._stateProxy)
 
     def _disconnectMachine(self):
@@ -170,14 +170,14 @@ class ControlTaskPanel(QtCore.QObject):
             self.machine.signalStatus.remove(self._statusProxy)
             self.machine.signalStatusCleared.add(self._statusClearedProxy)
             self.machine.signalStarted.remove(self._startedProxy)
-            self.machine.signalStoped.remove(self._stopedProxy)
+            self.machine.signalStopped.remove(self._stoppedProxy)
             self.machine.signalState.remove(self._stateProxy)
 
     def _startedProxy(self):
         self.machineStarted.emit(self.machine)
 
-    def _stopedProxy(self):
-        self.machineStoped.emit(self.machine)
+    def _stoppedProxy(self):
+        self.machineStopped.emit(self.machine)
 
     def _statusProxy(self, line):
         self.machineStatusChanged.emit(line)
