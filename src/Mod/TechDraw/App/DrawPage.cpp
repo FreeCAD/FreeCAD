@@ -272,22 +272,36 @@ int DrawPage::addView(App::DocumentObject *docObj)
     return Views.getSize();
 }
 
+//Note Views might be removed from document elsewhere so need to check if a View is still in Document here
 int DrawPage::removeView(App::DocumentObject *docObj)
 {
     if(!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()))
         return -1;
 
+    App::Document* doc = docObj->getDocument();
+    if (doc == nullptr) {
+        return -1;
+    }
+
+    const char* name = docObj->getNameInDocument();
+    if (!name) {
+         return -1;
+    }
     const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
     std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
     for (; it != currViews.end(); it++) {
-        std::string viewName = docObj->getNameInDocument();
+        App::Document* viewDoc = (*it)->getDocument();
+        if (viewDoc == nullptr) {
+            continue;
+        }
+
+        std::string viewName = name;
         if (viewName.compare((*it)->getNameInDocument()) != 0) {
             newViews.push_back((*it));
         }
     }
     Views.setValues(newViews);
-
     return Views.getSize();
 }
 

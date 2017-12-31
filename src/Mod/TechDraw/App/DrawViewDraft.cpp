@@ -52,6 +52,7 @@ DrawViewDraft::DrawViewDraft(void)
     static const char *group = "Draft view";
 
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Draft object for this view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0),group,App::Prop_None,"Projection direction. The direction you are looking from.");
