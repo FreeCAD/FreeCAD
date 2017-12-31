@@ -98,7 +98,7 @@ private:
 
 private:
     Ui_TaskFemConstraintFluidBoundary* ui;
-    int dimension;  // -1: unknow, 2 for 2D and 3 for 3D
+    int dimension;  // -1: unknown, 2 for 2D and 3 for 3D
     Fem::FemSolverObject* pcSolver;
     App::PropertyBool* pHeatTransfering;
     App::PropertyEnumeration* pTurbulenceModel;
