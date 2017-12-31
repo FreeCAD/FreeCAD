@@ -95,11 +95,14 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    void setValue(double newValue);
     Base::Quantity getPresentationValue() const;
-    double getValue() const;
+    inline void setValue(double newValue) {
+        Value = newValue;
+    }
+    inline double getValue() const {
+        return Value;
+    }
 
-    friend class Sketch;
     friend class PropertyConstraintList;
 
 private:
