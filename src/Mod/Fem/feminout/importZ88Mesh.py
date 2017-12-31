@@ -454,6 +454,6 @@ def get_z88_element_type(femmesh, femelement_table=None):
         print('Edge femmesh will be exported as 3D truss element nr 4')
         return 4
     else:
-        print('Neither, edge, face or solid femmesh')
+        print('Neither edge nor face nor solid femmesh')
         return 0
     return 0
