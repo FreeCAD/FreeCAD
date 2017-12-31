@@ -208,7 +208,7 @@ def export(exportList,filename):
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","successfully written ") + filenamemtl + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","successfully written") + ' ' + filenamemtl + "\n")
 
 
 def decode(name):
@@ -286,7 +286,7 @@ def insert(filename,docname):
                 material = line[7:]
         if activeobject:
             makeMesh(doc,activeobject,verts,facets,material,colortable)
-    FreeCAD.Console.PrintMessage(translate("Arch","successfully imported ")+filename+"\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
     return doc
 
 def makeMesh(doc,activeobject,verts,facets,material,colortable):
