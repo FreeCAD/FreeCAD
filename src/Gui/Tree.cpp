@@ -584,9 +584,7 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     }
     else if (item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-        App::DocumentObject* obj = objitem->object()->getObject();
-        Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
-        MDIView *view = doc->getActiveView();
+        auto view = objitem->getOwnerDocument()->document()->getActiveView();
         if (view) getMainWindow()->setActiveWindow(view);
         if (!objitem->object()->doubleClicked())
             QTreeWidget::mouseDoubleClickEvent(event);
