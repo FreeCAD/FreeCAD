@@ -39,8 +39,8 @@ class Task(object):
         self.report = None
         self.signalStarting = set()
         self.signalStarted = set()
-        self.signalStoping = set()
-        self.signalStoped = set()
+        self.signalStopping = set()
+        self.signalStopped = set()
         self.signalAbort = set()
         self.signalStatus = set()
         self.signalStatusCleared = set()
@@ -51,10 +51,10 @@ class Task(object):
         self._failed = False
         self._status = []
 
-        def stoping():
+        def stopping():
             self.stopTime = time.time()
             self.running = False
-        self.signalStoping.add(stoping)
+        self.signalStopping.add(stopping)
 
     @property
     def time(self):
@@ -139,8 +139,8 @@ class Thread(Task):
     def _attachObserver(self):
         def waitForStop():
             self._thread.join()
-            signal.notify(self.signalStoping)
-            signal.notify(self.signalStoped)
+            signal.notify(self.signalStopping)
+            signal.notify(self.signalStopped)
         thread = threading.Thread(target=waitForStop)
         thread.daemon = True
         thread.start()
