@@ -127,16 +127,6 @@ PyObject *Constraint::getPyObject(void)
     return new ConstraintPy(new Constraint(*this));
 }
 
-void Constraint::setValue(double newValue)
-{
-    Value = newValue;
-}
-
-double Constraint::getValue() const
-{
-    return Value;
-}
-
 Quantity Constraint::getPresentationValue() const
 {
     Quantity quantity;
