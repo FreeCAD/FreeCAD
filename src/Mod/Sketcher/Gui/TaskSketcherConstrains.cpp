@@ -782,8 +782,15 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
             break;
         }
 
+        // block signals as there is no need to invoke the
+        // on_listWidgetConstraints_itemChanged() slot in
+        // case a name has changed because this function gets
+        // called after changing the constraint list property
+        QAbstractItemModel* model = ui->listWidgetConstraints->model();
+        bool block = model->blockSignals(true);
         it->setHidden(!visible);
         it->setData(Qt::EditRole, Base::Tools::fromStdString(constraint->Name));
+        model->blockSignals(block);
     }
 }
 
