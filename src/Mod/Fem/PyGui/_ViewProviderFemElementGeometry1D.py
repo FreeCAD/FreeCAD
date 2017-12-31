@@ -32,7 +32,7 @@ import FreeCADGui
 
 
 # for the panel
-import PyObjects._FemElementGeometry1D
+from PyObjects import _FemElementGeometry1D
 from PySide import QtCore
 from PySide import QtGui
 
@@ -111,7 +111,7 @@ class _TaskPanelFemElementGeometry1D:
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.form.cb_crosssectiontype.addItems(PyObjects._FemElementGeometry1D._FemElementGeometry1D.known_beam_types)  # it is inside the class thus double _FemElementGeometry1D
+        self.form.cb_crosssectiontype.addItems(_FemElementGeometry1D._FemElementGeometry1D.known_beam_types)  # it is inside the class thus double _FemElementGeometry1D
 
         self.get_beamsection_props()
         self.update()

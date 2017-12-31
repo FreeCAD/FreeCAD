@@ -33,7 +33,7 @@ import FreeCADGui
 
 
 # for the panel
-import PyObjects._FemElementFluid1D
+from PyObjects import _FemElementFluid1D
 from PySide import QtCore
 from PySide import QtGui
 
@@ -138,10 +138,10 @@ class _TaskPanelFemElementFluid1D:
         self.form.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
-        self.form.cb_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_fluid_types)
-        self.form.cb_liquid_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_liquid_types)
-        self.form.cb_gas_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_gas_types)
-        self.form.cb_channel_section_type.addItems(PyObjects._FemElementFluid1D._FemElementFluid1D.known_channel_types)
+        self.form.cb_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_fluid_types)
+        self.form.cb_liquid_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_liquid_types)
+        self.form.cb_gas_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_gas_types)
+        self.form.cb_channel_section_type.addItems(_FemElementFluid1D._FemElementFluid1D.known_channel_types)
 
         self.get_fluidsection_props()
         self.update()

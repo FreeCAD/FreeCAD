@@ -32,8 +32,7 @@ import FemUtils
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    import PyGui.FemSelectionWidgets as FemSelectionWidgets
-
+    from PyGui import FemSelectionWidgets
 
 class Proxy(equationbase.BaseProxy):
 
