@@ -1,5 +1,5 @@
 /* XPM */
-static char * Constraint_Blocked_sm_xpm[] = {
+static char * Constraint_Block_sm_xpm[] = {
 "15 16 4 1",
 " 	c None",
 ".	c #CC0000",

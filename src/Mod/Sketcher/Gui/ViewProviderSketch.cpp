@@ -2743,8 +2743,8 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
         return QString::fromLatin1("small/Constraint_Symmetric_sm");
     case SnellsLaw:
         return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
-    case Blocked:
-        return QString::fromLatin1("small/Constraint_Blocked_sm");
+    case Block:
+        return QString::fromLatin1("small/Constraint_Block_sm");
     default:
         return QString();
     }
@@ -4052,12 +4052,12 @@ Restart:
 
             // distinquish different constraint types to build up
             switch (Constr->Type) {
-                case Blocked:
+                case Block:
                 case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
                 case Vertical: // write the new position of the Vertical constraint
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-                        bool alignment = Constr->Type!=Blocked && Constr->Second != Constraint::GeoUndef;
+                        bool alignment = Constr->Type!=Block && Constr->Second != Constraint::GeoUndef;
 
                         // get the geometry
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
@@ -5023,7 +5023,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             break;
             case Horizontal:
             case Vertical:
-            case Blocked:
+            case Block:
             {
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
