@@ -1310,7 +1310,7 @@ update the results of FEM unit tests:
 import TestFem
 TestFem.create_test_results()
 
-copy result files from your_temp_directory/FEM_unittests/   test directories into the src dirctory
+copy result files from your_temp_directory/FEM_unittests/   test directories into the src directory
 compare the results with git difftool
 run make
 start FreeCAD and run FEM unit test

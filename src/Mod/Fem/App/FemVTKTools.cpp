@@ -844,7 +844,7 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
     std::map<std::string, std::string> cfd_vectors; // vector field defined in openfoam -> property defined in CfdResult.py
     cfd_vectors["Velocity"] = "U";
 
-    std::map<std::string, std::string> cfd_scalers;  // varable name defined in openfoam -> property defined in CfdResult.py
+    std::map<std::string, std::string> cfd_scalers;  // variable name defined in openfoam -> property defined in CfdResult.py
     cfd_scalers["Pressure"] = "p";
     cfd_scalers["Temperature"] = "T";
     cfd_scalers["TurbulenceEnergy"] = "k";
@@ -877,7 +877,7 @@ void FemVTKTools::exportFluidicResult(const App::DocumentObject* res, vtkSmartPo
     static std::map<std::string, std::string> cfd_vectors; // vector field defined in openfoam -> property defined in CfdResult.py
     cfd_vectors["Velocity"] = "U";
 
-    static std::map<std::string, std::string> cfd_scalers;  // varable name defined in openfoam -> property defined in CfdResult.py
+    static std::map<std::string, std::string> cfd_scalers;  // variable name defined in openfoam -> property defined in CfdResult.py
     cfd_scalers["Pressure"] = "p";
     cfd_scalers["Temperature"] = "T";
     cfd_scalers["TurbulenceEnergy"] = "k";

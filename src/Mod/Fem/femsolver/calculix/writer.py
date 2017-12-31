@@ -1001,7 +1001,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                             for line in lines:
                                 b = line.split(',')
                                 if int(b[0]) == n and b[3] == 'PIPE INLET\n':
-                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.InletFlowRate * 0.001) + '\n')  # degree of freedom 1 is for defining flow rate, factor applied to convet unit from kg/s to t/s
+                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.InletFlowRate * 0.001) + '\n')  # degree of freedom 1 is for defining flow rate, factor applied to convert unit from kg/s to t/s
                 elif fluidsection_obj.LiquidSectionType == 'PIPE OUTLET':
                     f.write('**Fluid Section Outlet \n')
                     if fluidsection_obj.OutletPressureActive is True:
@@ -1017,7 +1017,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                             for line in lines:
                                 b = line.split(',')
                                 if int(b[0]) == n and b[3] == 'PIPE OUTLET\n':
-                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.OutletFlowRate * 0.001) + '\n')  # degree of freedom 1 is for defining flow rate, factor applied to convet unit from kg/s to t/s
+                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.OutletFlowRate * 0.001) + '\n')  # degree of freedom 1 is for defining flow rate, factor applied to convert unit from kg/s to t/s
 
     def write_outputs_types(self, f):
         f.write('\n***********************************************************\n')

@@ -324,7 +324,7 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
             if nodecount == 6 or nodecount == 8:
                 e.append(elementID)
         else:
-            FreeCAD.Console.PrintError('Error in get_femvolumeelements_by_femfacenodes(): not known volume element: ' + el_nd_ct + '\n')
+            FreeCAD.Console.PrintError('Error in get_femvolumeelements_by_femfacenodes(): unknown volume element: ' + el_nd_ct + '\n')
     # print(sorted(e))
     return e
 
