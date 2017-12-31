@@ -281,7 +281,7 @@ class _TaskPanelFemSolverCalculix:
         fea.update_objects()
         message = fea.check_prerequisites()
         if message != "":
-            QtGui.QMessageBox.critical(None, "Missing prerequisit(s)", message)
+            QtGui.QMessageBox.critical(None, "Missing prerequisite(s)", message)
             return False
         return True
 

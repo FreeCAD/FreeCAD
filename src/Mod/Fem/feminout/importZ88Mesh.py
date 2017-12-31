@@ -290,9 +290,9 @@ def read_z88_mesh(z88_mesh_input):
                                                 nd11, nd12, nd13, nd14, nd15, nd16, nd17, nd18, nd19, nd20)
                     input_continues = False
 
-                # not known elements, some example have -1 for some teaching reasons to show some other stuff
+                # unknown elements, some examples have -1 for some teaching reasons to show some other stuff
                 else:
-                    FreeCAD.Console.PrintError("Not known element\n")
+                    FreeCAD.Console.PrintError("Unknown element\n")
                     return {}
 
     if Debug:

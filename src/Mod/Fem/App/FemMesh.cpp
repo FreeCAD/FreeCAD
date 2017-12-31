@@ -1420,7 +1420,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         default:
             anABAQUS_Output << "** Problem on writing" << std::endl;
             anABAQUS_Output.close();
-            throw std::runtime_error("Not known ABAQUS element choice parameter, [0|1|2] are allowed.");
+            throw std::runtime_error("Unknown ABAQUS element choice parameter, [0|1|2] are allowed.");
     }
 
     // write nodes

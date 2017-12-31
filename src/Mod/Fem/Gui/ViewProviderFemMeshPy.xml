@@ -32,31 +32,31 @@
         </Methode>
         <Attribute Name="NodeColor" ReadOnly="false">
             <Documentation>
-                <UserDocu>Postprocessing color of the nodes. The faces between the nodes gets interpolated. </UserDocu>
+                <UserDocu>Postprocessing color of the nodes. The faces between the nodes get interpolated.</UserDocu>
             </Documentation>
             <Parameter Name="NodeColor" Type="Dict"/>
         </Attribute>
         <Attribute Name="ElementColor" ReadOnly="false">
             <Documentation>
-                <UserDocu>Postprocessing color of the elements. All faces of the element get the same color. </UserDocu>
+                <UserDocu>Postprocessing color of the elements. All faces of the element get the same color.</UserDocu>
             </Documentation>
             <Parameter Name="ElementColor" Type="Dict"/>
         </Attribute>
         <Attribute Name="NodeDisplacement" ReadOnly="false">
             <Documentation>
-                <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
+                <UserDocu>Postprocessing color of the nodes. The faces between the nodes get interpolated.</UserDocu>
             </Documentation>
             <Parameter Name="NodeDisplacement" Type="Dict"/>
         </Attribute>
         <Attribute Name="HighlightedNodes" ReadOnly="false">
             <Documentation>
-                <UserDocu>List of nodes which gets highlighted</UserDocu>
+                <UserDocu>List of nodes which get highlighted.</UserDocu>
             </Documentation>
             <Parameter Name="HighlightedNodes" Type="List"/>
         </Attribute>
         <Attribute Name="VisibleElementFaces" ReadOnly="true">
             <Documentation>
-                <UserDocu>A List of elements and faces which are actually shown. This are all surface faces of the mesh</UserDocu>
+                <UserDocu>List of elements and faces which are actually shown. These are all surface faces of the mesh.</UserDocu>
             </Documentation>
             <Parameter Name="VisibleElementFaces" Type="List"/>
         </Attribute>
