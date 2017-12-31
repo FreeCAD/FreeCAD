@@ -1310,6 +1310,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case Sketcher::None: // ambiguous enum value
+    case Sketcher::Block: // handled separately while adding geometry
     case NumConstraintTypes:
         break;
     }
@@ -1334,7 +1335,7 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList, std:
 
     int cid = 0;
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
-        if (!unenforceableConstraints[cid] && (*it)->Type != Blocked) {
+        if (!unenforceableConstraints[cid] && (*it)->Type != Block) {
             rtn = addConstraint (*it);
 	}
 	else {
@@ -1357,7 +1358,7 @@ void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry, std::vector
     int i = 0;
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++i) {
         switch((*it)->Type) {
-            case Blocked:
+            case Block:
             {
                 int geoid = (*it)->First;
 
