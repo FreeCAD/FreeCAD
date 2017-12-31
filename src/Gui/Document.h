@@ -230,8 +230,10 @@ public:
     bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=0);
     Base::Matrix4D getEditingTransform() const;
     void setEditingTransform(const Base::Matrix4D &mat);
-    /// reset from edit mode
+    /// reset from edit mode, this cause all document to reset edit
     void resetEdit(void);
+    /// reset edit of this document
+    void _resetEdit(void);
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0, 
             std::string *subname=0, int *mode=0) const;

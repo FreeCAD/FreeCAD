@@ -709,9 +709,6 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
 
-    if (d->editDocument == doc->second)
-        setEditDocument(0);
-
     doc->second->beforeDelete();
 
     // For exception-safety use a smart pointer
@@ -849,12 +846,10 @@ Gui::MDIView* Application::editViewOfNode(SoNode *node) const
 }
 
 void Application::setEditDocument(Gui::Document *doc) {
-    if(!doc) {
+    if(!doc) 
         d->editDocument = 0;
-        return;
-    }
     for(auto &v : d->documents)
-        v.second->resetEdit();
+        v.second->_resetEdit();
     d->editDocument = doc;
 }
 

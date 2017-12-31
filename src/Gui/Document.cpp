@@ -390,7 +390,11 @@ void Document::setEditingTransform(const Base::Matrix4D &mat) {
     d->_editingTransform = mat;
 }
 
-void Document::resetEdit(void)
+void Document::resetEdit(void) {
+    Application::Instance->setEditDocument(0);
+}
+
+void Document::_resetEdit(void)
 {
     std::list<Gui::BaseView*>::iterator it;
     if (d->_editViewProvider) {
@@ -404,6 +408,7 @@ void Document::resetEdit(void)
         if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
         d->_editViewProvider = 0;
+        d->_editViewProviderParent = 0;
     }
     if(Application::Instance->editDocument() == this)
         Application::Instance->setEditDocument(0);
@@ -632,6 +637,16 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if(!viewProvider) return;
+
+    if (d->_editViewProvider==viewProvider || d->_editViewProviderParent==viewProvider)
+        _resetEdit();
+    else if(Application::Instance->editDocument()) {
+        auto editDoc = Application::Instance->editDocument();
+        if(editDoc->d->_editViewProvider==viewProvider ||
+           editDoc->d->_editViewProviderParent==viewProvider)
+            Application::Instance->setEditDocument(0);
+    }
+
     handleChildren3D(viewProvider,true);
 
 #if 0 // With this we can show child objects again if this method was called by undo
@@ -642,11 +657,8 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
         // go through the views
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-            if (activeView) {
-                if (d->_editViewProvider == viewProvider)
-                    resetEdit();
+            if (activeView)
                 activeView->getViewer()->removeViewProvider(viewProvider);
-            }
         }
 
         // removing from tree
@@ -657,6 +669,17 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 }
 
 void Document::beforeDelete() {
+    auto editDoc = Application::Instance->editDocument();
+    if(editDoc) {
+        auto vp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
+        auto vpp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
+        if(editDoc == this || 
+           (vp && vp->getDocument()==this) ||
+           (vpp && vpp->getDocument()==this))
+        {
+            Application::Instance->setEditDocument(0);
+        }
+    }
     for(auto &v : d->_ViewProviderMap)
         v.second->beforeDelete();
 }
@@ -1572,7 +1595,7 @@ bool Document::canClose ()
             std::string name = Gui::Control().activeDialog()->getDocumentName();
             if (name == this->getDocument()->getName()) {
                 if (this->getInEdit())
-                    this->resetEdit();
+                    this->_resetEdit();
             }
         }
     }
@@ -1864,8 +1887,6 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                                 // remove the viewprovider serves the purpose of detaching the inventor nodes from the
                                 // top level root in the viewer. However, if some of the children were grouped beneath the object
                                 // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
-                                if (d->_editViewProvider == ChildViewProvider)
-                                    resetEdit();
                                 activeView->getViewer()->removeViewProvider(ChildViewProvider);
                             }
                         }
