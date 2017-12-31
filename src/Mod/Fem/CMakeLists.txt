@@ -18,6 +18,7 @@ if(BUILD_GUI)
 endif(BUILD_GUI)
 
 
+# Python non Gui packages and modules
 SET(FemScripts_SRCS
     Init.py
     InitGui.py
@@ -153,30 +154,6 @@ SET(FemTestsElmer_SRCS
     femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
 )
 
-SET(FemGuiScripts_SRCS
-    PyGui/__init__.py
-    PyGui/_TaskPanelFemSolverControl.py
-    PyGui/_ViewProviderFemConstraintBodyHeatSource.py
-    PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
-    PyGui/_ViewProviderFemConstraintFlowVelocity.py
-    PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
-    PyGui/_ViewProviderFemConstraintSelfWeight.py
-    PyGui/_ViewProviderFemElementFluid1D.py
-    PyGui/_ViewProviderFemElementGeometry1D.py
-    PyGui/_ViewProviderFemElementGeometry2D.py
-    PyGui/_ViewProviderFemMaterial.py
-    PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
-    PyGui/_ViewProviderFemMeshBoundaryLayer.py
-    PyGui/_ViewProviderFemMeshGmsh.py
-    PyGui/_ViewProviderFemMeshGroup.py
-    PyGui/_ViewProviderFemMeshRegion.py
-    PyGui/_ViewProviderFemMeshResult.py
-    PyGui/_ViewProviderFemResultMechanical.py
-    PyGui/_ViewProviderFemSolverCalculix.py
-    PyGui/FemSelectionObserver.py
-    PyGui/FemSelectionWidgets.py
-)
-
 SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
     PyObjects/_FemConstraintBodyHeatSource.py
@@ -213,7 +190,6 @@ SET(FemAllScripts
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
-    ${FemGuiScripts_SRCS}
     ${FemObjectsScripts_SRCS}
 )
 
@@ -241,4 +217,41 @@ INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/testfiles)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/testfiles/ccx)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/testfiles/elmer)
 INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/PyObjects)
-INSTALL(FILES ${FemGuiScripts_SRCS} DESTINATION Mod/Fem/PyGui)
+
+
+
+# Python Gui packages and modules
+SET(FemGuiScripts_SRCS
+    PyGui/__init__.py
+    PyGui/_TaskPanelFemSolverControl.py
+    PyGui/_ViewProviderFemConstraintBodyHeatSource.py
+    PyGui/_ViewProviderFemConstraintElectrostaticPotential.py
+    PyGui/_ViewProviderFemConstraintFlowVelocity.py
+    PyGui/_ViewProviderFemConstraintInitialFlowVelocity.py
+    PyGui/_ViewProviderFemConstraintSelfWeight.py
+    PyGui/_ViewProviderFemElementFluid1D.py
+    PyGui/_ViewProviderFemElementGeometry1D.py
+    PyGui/_ViewProviderFemElementGeometry2D.py
+    PyGui/_ViewProviderFemMaterial.py
+    PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+    PyGui/_ViewProviderFemMeshBoundaryLayer.py
+    PyGui/_ViewProviderFemMeshGmsh.py
+    PyGui/_ViewProviderFemMeshGroup.py
+    PyGui/_ViewProviderFemMeshRegion.py
+    PyGui/_ViewProviderFemMeshResult.py
+    PyGui/_ViewProviderFemResultMechanical.py
+    PyGui/_ViewProviderFemSolverCalculix.py
+    PyGui/FemSelectionObserver.py
+    PyGui/FemSelectionWidgets.py
+)
+
+
+if(BUILD_GUI)
+    ADD_CUSTOM_TARGET(FemGuiScriptsTarget ALL
+        SOURCES ${FemGuiScripts_SRCS}
+    )
+    fc_copy_sources(FemGuiScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiScripts_SRCS})
+
+    # install Python packages (for make install)
+    INSTALL(FILES ${FemGuiScripts_SRCS} DESTINATION Mod/Fem/PyGui)
+endif(BUILD_GUI)
