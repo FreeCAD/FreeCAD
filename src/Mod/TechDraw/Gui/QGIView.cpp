@@ -512,7 +512,7 @@ QString QGIView::getPrefFont()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
     return QString::fromStdString(fontName);
 }
 
