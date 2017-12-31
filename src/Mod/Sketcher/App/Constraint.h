@@ -55,7 +55,7 @@ enum ConstraintType {
     Symmetric = 14,
     InternalAlignment = 15,
     SnellsLaw = 16,
-    Blocked = 17,
+    Block = 17,
     NumConstraintTypes // must be the last item!
 };
 

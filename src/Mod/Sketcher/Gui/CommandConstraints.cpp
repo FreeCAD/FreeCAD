@@ -258,7 +258,7 @@ bool SketcherGui::isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int G
     if (GeoId == Constraint::GeoUndef)
         return false;
     else    
-	return checkConstraint(vals, Sketcher::Blocked, GeoId, Sketcher::none) || GeoId <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId);
+	return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::none) || GeoId <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId);
 }
 
 bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2) 
@@ -268,8 +268,8 @@ bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
         return false;
     else    
-	return (  (checkConstraint(vals, Sketcher::Blocked, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1)) &&
-		  (checkConstraint(vals, Sketcher::Blocked, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId2)));
+	return (  (checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1)) &&
+		  (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId2)));
 }
 
 bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, int GeoId3)
@@ -279,9 +279,9 @@ bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef || GeoId3 == Constraint::GeoUndef)
         return false;
     else    
-	return (  (checkConstraint(vals, Sketcher::Blocked, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1)) &&
-		  (checkConstraint(vals, Sketcher::Blocked, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId2)) &&	
-		  (checkConstraint(vals, Sketcher::Blocked, GeoId3, Sketcher::none) || GeoId3 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId3)));  
+	return (  (checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1)) &&
+		  (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId2)) &&	
+		  (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::none) || GeoId3 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId3)));  
 }
 
 void SketcherGui::getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
@@ -1218,8 +1218,8 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
                                          QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
                 }
-		// check if the edge has already a Blocked constraint
-		if ((*it)->Type == Sketcher::Blocked && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
+		// check if the edge has already a Block constraint
+		if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
 		  QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
 					QObject::tr("The selected edge has already a Block constraint!"));
 		  return;
@@ -1298,7 +1298,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
                 return;
             }
 
-            // check if the edge has already a Horizontal/Vertical/Blocked constraint
+            // check if the edge has already a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
@@ -1311,8 +1311,8 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
                                          QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
                 }
-		// check if the edge has already a Blocked constraint
-		if ((*it)->Type == Sketcher::Blocked && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
+		// check if the edge has already a Block constraint
+		if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
 		  QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
 					QObject::tr("The selected edge has already a Block constraint!"));
 		  return;
@@ -1465,8 +1465,8 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
                                          QObject::tr("The selected edge has already a horizontral constraint!"));
                     return;
                 }
-		// check if the edge has already a Blocked constraint
-		if ((*it)->Type == Sketcher::Blocked && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
+		// check if the edge has already a Block constraint
+		if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
 		  QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
 					QObject::tr("The selected edge has already a Block constraint!"));
 		  return;
@@ -1558,8 +1558,8 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
                                          QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
                 }
-		// check if the edge has already a Blocked constraint
-		if ((*it)->Type == Sketcher::Blocked && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
+		// check if the edge has already a Block constraint
+		if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
 		  QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
 					QObject::tr("The selected edge has already a Block constraint!"));
 		  return;
@@ -1707,7 +1707,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     if( GeoId.size() == 1 ) { // absolute mode
       
-	// check if the edge has already a Blocked constraint
+	// check if the edge has already a Block constraint
 	bool edgeisblocked = false;
 	
 	if ( isPointOrSegmentFixed(Obj, GeoId[0])) {
@@ -1743,7 +1743,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
         Base::Vector3d pntr = Obj->getPoint(GeoId.back(),PosId.back());
 	
-	// check if the edge has already a Blocked constraint
+	// check if the edge has already a Block constraint
 	bool refpointfixed = false;
 	    
 	if ( isPointOrSegmentFixed(Obj, GeoId.back()))
@@ -1797,7 +1797,7 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair> &selSeq, i
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 	
-	// check if the edge has already a Blocked constraint
+	// check if the edge has already a Block constraint
 	bool pointfixed = false;
 	    
 	if ( isPointOrSegmentFixed(Obj, selSeq.front().GeoId))
@@ -1854,7 +1854,7 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 // ======================================================================================
 
 /* XPM */
-static const char *cursor_createblocked[]={
+static const char *cursor_createblock[]={
     "32 32 3 1",
     "+ c white",
     "# c red",
@@ -1892,35 +1892,35 @@ static const char *cursor_createblocked[]={
     ".................###............",
     "................................"};
     
-class CmdSketcherConstrainBlocked : public CmdSketcherConstraint
+class CmdSketcherConstrainBlock : public CmdSketcherConstraint
 {
 public:
-    CmdSketcherConstrainBlocked();
-    virtual ~CmdSketcherConstrainBlocked(){}
+    CmdSketcherConstrainBlock();
+    virtual ~CmdSketcherConstrainBlock(){}
     virtual const char* className() const
-    { return "CmdSketcherConstrainBlocked"; }
+    { return "CmdSketcherConstrainBlock"; }
 protected:
     virtual void activated(int iMsg);
     virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
 };
 
-CmdSketcherConstrainBlocked::CmdSketcherConstrainBlocked()
-:CmdSketcherConstraint("Sketcher_ConstrainBlocked")
+CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
+:CmdSketcherConstraint("Sketcher_ConstrainBlock")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Constrain Blocked");
-    sToolTipText    = QT_TR_NOOP("Create a blocked constraint on the selected item");
-    sWhatsThis      = "Sketcher_ConstrainBlocked";
+    sMenuText       = QT_TR_NOOP("Constrain Block");
+    sToolTipText    = QT_TR_NOOP("Create a Block constraint on the selected item");
+    sWhatsThis      = "Sketcher_ConstrainBlock";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_ConstrainBlocked";
+    sPixmap         = "Sketcher_ConstrainBlock";
     eType           = ForEdit;
     
     allowedSelSequences = {{SelEdge}};
-    constraintCursor = cursor_createblocked;
+    constraintCursor = cursor_createblock;
 }
 
-void CmdSketcherConstrainBlocked::activated(int iMsg)
+void CmdSketcherConstrainBlock::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     
@@ -1950,7 +1950,7 @@ void CmdSketcherConstrainBlocked::activated(int iMsg)
     // Check that the solver does not report redundant/conflicting constraints
     if(Obj->getLastSolverStatus()!=GCS::Success || Obj->getLastHasConflicts() || Obj->getLastHasRedundancies()) {
       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong solver status"),
-			      QObject::tr("A block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints."));      
+			      QObject::tr("A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints."));      
       return;
     }
 
@@ -1976,8 +1976,8 @@ void CmdSketcherConstrainBlocked::activated(int iMsg)
             return;
 	}
 	
-	// check if the edge has already a Blocked constraint
-	if ( checkConstraint(vals, Sketcher::Blocked, GeoIdt, Sketcher::none)) {
+	// check if the edge has already a Block constraint
+	if ( checkConstraint(vals, Sketcher::Block, GeoIdt, Sketcher::none)) {
 	  QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
 	      QObject::tr("The selected edge has already a Block constraint!"));
 	  return;
@@ -1988,12 +1988,12 @@ void CmdSketcherConstrainBlocked::activated(int iMsg)
 
     for (std::vector<int>::iterator itg = GeoId.begin(); itg != GeoId.end(); ++itg) {
         // undo command open
-        openCommand("add blocked constraint");
+        openCommand("add block constraint");
 
         try {
 
             Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Blocked',%d)) ",
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Block',%d)) ",
                 selection[0].getFeatName(),(*itg));
 
         } catch (const Base::Exception& e) {
@@ -2016,29 +2016,29 @@ void CmdSketcherConstrainBlocked::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-void CmdSketcherConstrainBlocked::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
     switch (seqIndex) {
         case 0: // {Edge}
             // Create the constraints
             SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
 
-	    // check if the edge has already a Blocked constraint
+	    // check if the edge has already a Block constraint
 	    const std::vector< Sketcher::Constraint * > &vals = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues();
 
-	    if ( checkConstraint(vals, Sketcher::Blocked, selSeq.front().GeoId, Sketcher::none)) {
+	    if ( checkConstraint(vals, Sketcher::Block, selSeq.front().GeoId, Sketcher::none)) {
 	      QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
 		  QObject::tr("The selected edge has already a Block constraint!"));
 	      return;
 	    }
     
             // undo command open
-            openCommand("add blocked constraint");
+            openCommand("add block constraint");
 
             try {
 
                 Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Blocked',%d)) ",
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Block',%d)) ",
                                         sketchgui->getObject()->getNameInDocument(),selSeq.front().GeoId);
 
             } catch (const Base::Exception& e) {
@@ -2282,7 +2282,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     for (std::size_t i=1; i<SubNames.size(); i++) {
         getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
 
-        // check if the edge has already a Blocked constraint
+        // check if the edge has already a Block constraint
 	if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
 	  showNoConstraintBetweenFixedGeometry();    
 	  return;
@@ -2323,7 +2323,7 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
         int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
         Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
 	
-	// check if the edge has already a Blocked constraint
+	// check if the edge has already a Block constraint
 	if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
 	  showNoConstraintBetweenFixedGeometry();
 	  return;
@@ -4032,7 +4032,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
-    // check if the edge has already a Blocked constraint
+    // check if the edge has already a Block constraint
     if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
       showNoConstraintBetweenFixedGeometry();    
       return;
@@ -4618,7 +4618,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
-    // check if the edge has already a Blocked constraint
+    // check if the edge has already a Block constraint
     if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
       showNoConstraintBetweenFixedGeometry();    
       return;
@@ -5997,7 +5997,7 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
 	
-	// check if the edge has already a Blocked constraint
+	// check if the edge has already a Block constraint
 	if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
 	  showNoConstraintBetweenFixedGeometry();    
 	  return;
@@ -6999,7 +6999,7 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainHorizontal());
     rcCmdMgr.addCommand(new CmdSketcherConstrainVertical());
     rcCmdMgr.addCommand(new CmdSketcherConstrainLock());
-    rcCmdMgr.addCommand(new CmdSketcherConstrainBlocked());
+    rcCmdMgr.addCommand(new CmdSketcherConstrainBlock());
     rcCmdMgr.addCommand(new CmdSketcherConstrainCoincident());
     rcCmdMgr.addCommand(new CmdSketcherConstrainParallel());
     rcCmdMgr.addCommand(new CmdSketcherConstrainPerpendicular());
