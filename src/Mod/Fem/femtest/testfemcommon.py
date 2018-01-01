@@ -407,8 +407,13 @@ class FemTest(unittest.TestCase):
 
         # collect all Python modules in Fem
         pymodules += collect_python_modules('')  # Fem main dir
+        pymodules += collect_python_modules('feminout')
+        pymodules += collect_python_modules('femmesh')
+        pymodules += collect_python_modules('femresult')
+        pymodules += collect_python_modules('femtest')
         pymodules += collect_python_modules('PyObjects')
         if FreeCAD.GuiUp:
+            pymodules += collect_python_modules('femcommands')
             pymodules += collect_python_modules('PyGui')
         pymodules += collect_python_modules('femsolver')
         pymodules += collect_python_modules('femsolver/elmer')
