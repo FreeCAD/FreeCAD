@@ -2749,7 +2749,7 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if((*it).constr->Type==Angle) {
                 
-                (*it).constr->setValue(std::fmod(*((*it).value), M_PI));
+                (*it).constr->setValue(std::remainder(*((*it).value), 2.0*M_PI));
             }
             else {
                 (*it).constr->setValue(*((*it).value));

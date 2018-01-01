@@ -4708,6 +4708,10 @@ Restart:
                                         p0 = SbVec3f(x,y,0);
                                     }
                                 }
+                                
+				range = Constr->getValue(); // WYSIWYG
+				startangle = atan2(dir1.y,dir1.x);
+                                
                             } else {//angle-via-point
                                 Base::Vector3d p = getSketchObject()->getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
                                 p0 = SbVec3f(p.x, p.y, 0);
@@ -4715,11 +4719,12 @@ Restart:
                                 dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
                                 dir2 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
                                 dir2.RotateZ(-M_PI/2);
+				
+				startangle = atan2(dir1.y,dir1.x);
+				range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
+                                          dir1.x*dir2.x+dir1.y*dir2.y);
                             }
 
-                            startangle = atan2(dir1.y,dir1.x);
-                            range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
-                                          dir1.x*dir2.x+dir1.y*dir2.y);
                             endangle = startangle + range;
 
                         } else if (Constr->First != Constraint::GeoUndef) {
