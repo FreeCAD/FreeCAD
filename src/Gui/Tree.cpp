@@ -321,6 +321,7 @@ void TreeWidget::showEvent(QShowEvent *ev) {
     TREE_TRACE("attaching selection observer");
     this->attachSelection();
     this->syncSelection();
+    _updateStatus(false);
     QTreeWidget::showEvent(ev);
 }
 
@@ -962,12 +963,14 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
 
 void TreeWidget::onUpdateStatus(void)
 {
-    if (isVisible() && statusUpdateDelay<=0) {
+    if (statusUpdateDelay<=0) {
         statusTimer->stop();
-        FC_LOG("update item status");
-        std::map<const Gui::Document*,DocumentItem*>::iterator pos;
-        for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
-            pos->second->testStatus();
+        if(isVisible()) {
+            FC_LOG("update item status");
+            std::map<const Gui::Document*,DocumentItem*>::iterator pos;
+            for (pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
+                pos->second->testStatus();
+            }
         }
     }
     statusUpdateDelay = 0;
