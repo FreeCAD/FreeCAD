@@ -80,7 +80,7 @@ def isOfType(obj, t):
 
 
 def isDerivedFrom(obj, t):
-    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type")
-            and obj.Proxy.Type == t):
+    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
+            obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
