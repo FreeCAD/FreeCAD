@@ -253,7 +253,7 @@ class GmshTools():
             # print ('  No mesh group objects.')
             pass
         else:
-            print ('  Mesh group objects, we need to get the elements.')
+            print('  Mesh group objects, we need to get the elements.')
             for mg in self.mesh_obj.MeshGroupList:
                 new_group_elements = FemMeshTools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
@@ -285,7 +285,7 @@ class GmshTools():
             # print ('  No mesh regions.')
             pass
         else:
-            print ('  Mesh regions, we need to get the elements.')
+            print('  Mesh regions, we need to get the elements.')
             # by the use of MeshRegion object and a BooleanSplitCompound there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
@@ -346,7 +346,7 @@ class GmshTools():
             # print ('  No mesh boundary layer setting document object.')
             pass
         else:
-            print ('  Mesh boundary layers, we need to get the elements.')
+            print('  Mesh boundary layers, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 err = "Gmsh could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."

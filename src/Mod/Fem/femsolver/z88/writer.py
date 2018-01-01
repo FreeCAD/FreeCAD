@@ -229,6 +229,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         f.write(z88_dyn_template)
         f.close()
 
+
 # for solver parameter file Z88man.txt
 z88_man_template = '''DYNAMIC START
 ---------------------------------------------------------------------------

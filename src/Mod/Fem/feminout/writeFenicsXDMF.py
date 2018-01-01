@@ -172,6 +172,7 @@ def write_fenics_mesh_scalar_cellfunctions(name, cell_array, attributenode, enco
     elif encoding == ENCODING_HDF5:
         pass
 
+
 """
 Example: mesh with two topologies and one mesh function for the facet one
 
