@@ -125,7 +125,7 @@ def read_fenics_mesh_xml(xmlfilename):
                 Works only with tet4 and tri3 elements at the moment
             '''
             if dim == 3:
-                for (ind, tet) in element_dict['tetra4'].iteritems():
+                for (ind, tet) in list(element_dict['tetra4'].items()):
                     v0 = nodes[tet[0]]
                     v1 = nodes[tet[1]]
                     v2 = nodes[tet[2]]
@@ -137,7 +137,7 @@ def read_fenics_mesh_xml(xmlfilename):
                         element_dict['tetra4'][ind] = (tet[1], tet[0], tet[2], tet[3])
             if dim == 2:
                 nz = FreeCAD.Vector(0., 0., 1.)
-                for (ind, tria) in element_dict['tria3'].iteritems():
+                for (ind, tria) in list(element_dict['tria3'].items()):
                     v0 = nodes[tria[0]]
                     v1 = nodes[tria[1]]
                     v2 = nodes[tria[2]]
@@ -150,7 +150,7 @@ def read_fenics_mesh_xml(xmlfilename):
         element_counter = {}
 
         # TODO: remove upper level lookup
-        for (key, val) in Fenics_to_FreeCAD_dict.iteritems():
+        for (key, val) in list(Fenics_to_FreeCAD_dict.items()):
             element_dict[val] = {}
             element_counter[key] = 0  # count every distinct element and sub element type
 
@@ -163,7 +163,7 @@ def read_fenics_mesh_xml(xmlfilename):
 
         def invertdict(dic):
             invdic = {}
-            for (key, it) in dic.iteritems():
+            for (key, it) in list(dic.items()):
                 invdic[it] = key
             return invdic
 
@@ -178,7 +178,7 @@ def read_fenics_mesh_xml(xmlfilename):
                            'hexahedron': ['quadrilateral', 'interval'],
                            'quadrilateral': ['interval']}
 
-        for (cell_index, cell) in cell_dict.iteritems():
+        for (cell_index, cell) in list(cell_dict.items()):
             cell_lower_dims = lower_dims_dict[cell_type]
             element_counter[cell_type] += 1
             element_dict[Fenics_to_FreeCAD_dict[cell_type]][cell] = element_counter[cell_type]
@@ -190,9 +190,9 @@ def read_fenics_mesh_xml(xmlfilename):
                         element_counter[ld])
 
         length_counter = len(nodes)
-        for (key, val_dict) in element_dict.iteritems():
+        for (key, val_dict) in list(element_dict.items()):
             # to ensure distinct indices for FreeCAD
-            for (vkey, it) in val_dict.iteritems():
+            for (vkey, it) in list(val_dict.items()):
                 val_dict[vkey] = it + length_counter
             length_counter += len(val_dict)
             # inverse of the dict (dict[key] = val -> dict[val] = key)
@@ -205,7 +205,7 @@ def read_fenics_mesh_xml(xmlfilename):
     nodes = {}
     element_dict = {}
     # TODO: remove two times initialization
-    for val in Fenics_to_FreeCAD_dict.itervalues():
+    for val in list(Fenics_to_FreeCAD_dict.values()):
         element_dict[val] = {}
 
     tree = ET.parse(xmlfilename)
