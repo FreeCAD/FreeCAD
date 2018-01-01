@@ -1015,34 +1015,34 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId) &&
             !(toGeoId < 0 && vals[i]->Second <0) ) {
-	    // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
-	    // the transfer destination edge most likely won't be intended to be tangent. However, if it is
-	    // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
-	    Constraint *constNew = newVals[i]->clone();
-	    constNew->First = toGeoId;
-	    constNew->FirstPos = toPosId;
-	      
-	    if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
-	      constNew->Type = Sketcher::Coincident;
-	    
-	    newVals[i] = constNew;
-	    changed.push_back(constNew);	      
+            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
+            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
+            Constraint *constNew = newVals[i]->clone();
+            constNew->First = toGeoId;
+            constNew->FirstPos = toPosId;
+
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+                constNew->Type = Sketcher::Coincident;
+
+            newVals[i] = constNew;
+            changed.push_back(constNew);
         }
         else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
                  !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId) &&
                  !(toGeoId < 0 && vals[i]->First< 0)) {
 
-	    Constraint *constNew = newVals[i]->clone();
-	    constNew->Second = toGeoId;
-	    constNew->SecondPos = toPosId;
-	    // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
-	    // the transfer destination edge most likely won't be intended to be tangent. However, if it is
-	    // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.	  
-	    if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)  
-	      constNew->Type = Sketcher::Coincident;
+            Constraint *constNew = newVals[i]->clone();
+            constNew->Second = toGeoId;
+            constNew->SecondPos = toPosId;
+            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
+            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+                constNew->Type = Sketcher::Coincident;
 
-	    newVals[i] = constNew;
-	    changed.push_back(constNew);	      
+            newVals[i] = constNew;
+            changed.push_back(constNew);
         }
     }
 
