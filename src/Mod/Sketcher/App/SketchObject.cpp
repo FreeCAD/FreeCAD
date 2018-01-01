@@ -5839,7 +5839,7 @@ int SketchObject::changeConstraintsLocking(bool bLock)
     return cntSuccess;
 }
 
-bool SketchObject::constraintHasExpression(int constrid)
+bool SketchObject::constraintHasExpression(int constrid) const
 {
     App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
 
