@@ -100,7 +100,8 @@ def get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True
         "Node": 0, "Edge": 1, "Hexa": 3, "Polygon": 2, "Polyhedron": 3,
         "Prism": 3, "Pyramid": 3, "Quadrangle": 2, "Tetra": 3, "Triangle": 2}
 
-    elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count"), s, d) for (s, d) in FreeCAD_element_names_dims.iteritems()]
+    eval_dict = locals() # to access local variables from eval
+    elements_list_with_zero = [(eval("fem_mesh_obj.FemMesh." + s + "Count", eval_dict), s, d) for (s, d) in FreeCAD_element_names_dims.items()]
     # ugly but necessary
     if remove_zero_element_entries:
         elements_list = [(num, s, d) for (num, s, d) in elements_list_with_zero if num > 0]
