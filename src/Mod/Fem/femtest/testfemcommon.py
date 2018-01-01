@@ -1304,6 +1304,7 @@ def create_test_results():
     shutil.copyfile(dat_result_file, dat_Flow1D_thermomech_test_result_file)
     print('Flow1D thermomech results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
+
 '''
 update the results of FEM unit tests:
 

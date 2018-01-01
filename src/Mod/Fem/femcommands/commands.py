@@ -629,7 +629,7 @@ class _CommandFemSolverRun(CommandManager):
             if ret_code == 0:
                 self.fea.load_results()
             else:
-                print ("CalculiX failed ccx finished with error {}".format(ret_code))
+                print("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = self.selobj
         if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
