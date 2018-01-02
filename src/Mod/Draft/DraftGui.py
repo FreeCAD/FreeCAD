@@ -49,7 +49,7 @@ except ImportError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, utf8_decode=False):
+    def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
                 context is typically a class name (e.g., "MyDialog")
