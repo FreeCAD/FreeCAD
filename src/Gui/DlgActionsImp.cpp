@@ -203,7 +203,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
         if (!bFound)
         {
             QMessageBox::critical(this, tr("Macro not found"), 
-                    tr("Sorry, couldn't find macro file '%1'.").arg(scriptName));
+                    tr("Sorry, could not find macro file %1.").arg(scriptName));
         }
 
         // fill up labels with the command's data

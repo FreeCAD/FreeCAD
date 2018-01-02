@@ -761,7 +761,7 @@ void MacroCommand::activated(int iMsg)
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),
             qApp->translate("Gui::MacroCommand", "Macro file doesn't exist"),
-            qApp->translate("Gui::MacroCommand", "No such macro file: '%1'").arg(fi.absoluteFilePath()));
+            qApp->translate("Gui::MacroCommand", "No such macro file: %1").arg(fi.absoluteFilePath()));
     }
     else {
         Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());

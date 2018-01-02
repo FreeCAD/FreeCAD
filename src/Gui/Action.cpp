@@ -543,7 +543,7 @@ void WorkbenchGroup::setWorkbenchData(int i, const QString& wb)
     workbenches[i]->setIcon(px);
     workbenches[i]->setText(name);
     workbenches[i]->setToolTip(tip);
-    workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(name));
+    workbenches[i]->setStatusTip(tr("Select the %1 workbench").arg(name));
     workbenches[i]->setVisible(true);
     if (i < 9)
         workbenches[i]->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(i+1)));
@@ -607,7 +607,7 @@ void WorkbenchGroup::slotAddWorkbench(const char* name)
             (*it)->setObjectName(wb);
             (*it)->setText(text);
             (*it)->setToolTip(tip);
-            (*it)->setStatusTip(tr("Select the '%1' workbench").arg(wb));
+            (*it)->setStatusTip(tr("Select the %1 workbench").arg(wb));
             (*it)->setVisible(true); // do this at last
             break;
         }
@@ -720,7 +720,7 @@ void RecentFilesAction::activateFile(int id)
     QString filename = files[id];
     QFileInfo fi(filename);
     if (!fi.exists() || !fi.isFile()) {
-        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
+        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file %1 cannot be opened.").arg(filename));
         files.removeAll(filename);
         setFiles(files);
     }

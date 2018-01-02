@@ -370,7 +370,7 @@ void StdCmdFreezeViews::onRestoreViews()
     QFile file(fn);
     if (!file.open(QFile::ReadOnly)) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Restore views"),
-            QObject::tr("Cannot open file '%1'.").arg(fn));
+            QObject::tr("Can not open file %1.").arg(fn));
         return;
     }
 
