@@ -620,14 +620,18 @@ void InputField::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Up:
         {
             double val = actUnitValue + StepSize;
-            this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+            Base::Quantity quant = actQuantity;
+            quant.setValue(val);
+            this->setText(quant.getUserString());
             event->accept();
         }
         break;
     case Qt::Key_Down:
         {
             double val = actUnitValue - StepSize;
-            this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+            Base::Quantity quant = actQuantity;
+            quant.setValue(val);
+            this->setText(quant.getUserString());
             event->accept();
         }
         break;
@@ -651,7 +655,9 @@ void InputField::wheelEvent (QWheelEvent * event)
     else if (val < Minimum)
         val = Minimum;
 
-    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+    Base::Quantity quant = actQuantity;
+    quant.setValue(val);
+    this->setText(quant.getUserString());
     selectNumber();
     event->accept();
 }
