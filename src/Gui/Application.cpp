@@ -632,6 +632,10 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
             e.ReportException();
+            wc.restoreCursor();
+            QMessageBox::critical(getMainWindow(), QObject::tr("Export failed"),
+                QString::fromUtf8(e.what()));
+            wc.setWaitCursor();
         }
     }
     else {
