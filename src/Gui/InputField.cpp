@@ -614,6 +614,12 @@ void InputField::focusInEvent(QFocusEvent *event)
     QLineEdit::focusInEvent(event);
 }
 
+void InputField::focusOutEvent(QFocusEvent *event)
+{
+    this->setText(actQuantity.getUserString());
+    QLineEdit::focusOutEvent(event);
+}
+
 void InputField::keyPressEvent(QKeyEvent *event)
 {
     if (isReadOnly()) {
