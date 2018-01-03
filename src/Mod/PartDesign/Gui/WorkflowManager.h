@@ -107,7 +107,7 @@ private:
 
 /// Assures that workflow of the given document is determined and returns true if it is Workflow::Legacy
 inline bool assureLegacyWorkflow (App::Document *doc) {
-    return WorkflowManager::instance()->determinWorkflow( doc ) == Workflow::Legacy ;
+    return WorkflowManager::instance()->determineWorkflow( doc ) == Workflow::Legacy ;
 }
 
 /// Assures that workflow of the given document is determined and returns true if it is Workflow::Modern
