@@ -642,8 +642,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   {
     const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
     
-    const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
-    BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
+    const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
+    TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
     for (;faultyShapes1It.More(); faultyShapes1It.Next())
     {
       const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
