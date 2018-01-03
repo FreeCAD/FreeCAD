@@ -299,6 +299,18 @@ sort: whether to topologically sort the return list
 	  </Documentation>
 	  <Parameter Name="OutList" Type="List" />
 	</Attribute>
+	<Attribute Name="Restoring" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is restoring</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Restoring" Type="Boolean" />
+	</Attribute>
+	<Attribute Name="Importing" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is importing. Note the document will also report Restoring while importing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Importing" Type="Boolean" />
+	</Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

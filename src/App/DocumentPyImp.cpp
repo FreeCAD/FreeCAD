@@ -884,3 +884,14 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     } PY_CATCH;
 }
 
+Py::Boolean DocumentPy::getRestoring(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
+}
+
+Py::Boolean DocumentPy::getImporting(void) const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));
+}
+
+
