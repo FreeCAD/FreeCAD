@@ -67,7 +67,7 @@ namespace PartDesignGui {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
@@ -75,7 +75,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
     if (activeView) {
         bool singleBodyDocument = activeView->getAppDocument()->
             countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
-        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
             if (!activeBody && singleBodyDocument && autoActivate) {
@@ -122,12 +122,13 @@ PartDesign::Body * makeBody(App::Document *doc)
     return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 }
 
-PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot, bool autoActivate)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
+                             bool autoActivate, bool assertModern)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate);
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern);
     if (rv && rv->hasObject(obj))
         return rv;
 
