@@ -99,8 +99,10 @@ CmdPartDesignBody::CmdPartDesignBody()
 void CmdPartDesignBody::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
+    // if user decides for old-style workflow then abort the command
+    if (PartDesignGui::assureLegacyWorkflow(getDocument()))
         return;
+
     App::Part *actPart = PartDesignGui::getActivePart ();
     App::Part* partOfBaseFeature = nullptr;
 
