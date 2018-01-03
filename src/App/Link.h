@@ -208,9 +208,14 @@ public:
 
     bool linkTransform() const;
 
-    void parseSubName();
-    const char *getSubName() const { return mySubName.size()?mySubName.c_str():0;}
-    const char *getSubElement() const { return mySubElement.size()?mySubElement.c_str():0;}
+    const char *getSubName() const { 
+        parseSubName();
+        return mySubName.size()?mySubName.c_str():0;
+    }
+    const char *getSubElement() const { 
+        parseSubName();
+        return mySubElement.size()?mySubElement.c_str():0;
+    }
 
     bool extensionGetSubObject(DocumentObject *&ret, const char *subname, 
             PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
@@ -251,6 +256,7 @@ public:
     void cacheChildLabel(bool enable=true);
 
 protected:
+    void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     bool hasElements() const;
     void syncElementList();
@@ -259,8 +265,9 @@ protected:
 protected:
     std::vector<Property *> props;
     std::set<const App::DocumentObject*> myHiddenElements;
-    std::string mySubElement;
-    std::string mySubName;
+    mutable std::string mySubElement;
+    mutable std::string mySubName;
+    mutable const char *lastSubname;
     std::map<std::string,int> myLabelCache; // for label based subname lookup
     bool enableLabelCache;
 

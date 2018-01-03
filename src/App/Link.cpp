@@ -41,7 +41,7 @@ using namespace App;
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
-    :enableLabelCache(false),myOwner(0)
+    :lastSubname(0),enableLabelCache(false),myOwner(0)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkRecomputed, (false), " Link", 
@@ -506,8 +506,9 @@ DocumentObject *LinkBaseExtension::getTrueLinkedObject(
     auto ret = getLink(depth);
     if(!ret) return 0;
     bool transform = linkTransform();
-    if(mySubName.size()) {
-        ret = ret->getSubObject(mySubName.c_str(),0,mat,transform,depth+1);
+    const char *subname = getSubName();
+    if(subname) {
+        ret = ret->getSubObject(subname,0,mat,transform,depth+1);
         transform = false;
     }
     if(ret && recurse)
@@ -538,9 +539,16 @@ void LinkBaseExtension::extensionOnChanged(const Property *prop) {
     inherited::extensionOnChanged(prop);
 }
 
-void LinkBaseExtension::parseSubName() {
+void LinkBaseExtension::parseSubName() const {
     auto xlink = dynamic_cast<const PropertyXLink*>(getLinkedObjectProperty());
     const char* subname = xlink?xlink->getSubName():0;
+    // For performance reason, we don't compare the content of the string. Just
+    // check the pointer value as a heck. This is not reliable as the string may
+    // not be re-allocated every time. However, we'll do force update in
+    // onChanged()
+    if(subname == lastSubname)
+        return;
+    lastSubname = subname;
     mySubName.clear();
     mySubElement.clear();
     if(!subname || !subname[0])
@@ -748,6 +756,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             getElementCountProperty()->setValue(elements.size());
         }
     }else if(prop == getLinkedObjectProperty()) {
+        lastSubname = 0;
         parseSubName();
         syncElementList();
     }else if(prop == getSubElementsProperty()) {

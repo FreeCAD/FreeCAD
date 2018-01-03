@@ -1524,10 +1524,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     {
         if(!prop->testStatus(App::Property::User3)) {
             std::vector<std::string> subs;
-            // Because DocumentObject::onChanged is called after updateData() here,
-            // we have to call parseSubName here
-            if(prop == ext->getLinkedObjectProperty())
-                ext->parseSubName();
             const char *subname = ext->getSubName();
             std::string sub;
             if(subname)
