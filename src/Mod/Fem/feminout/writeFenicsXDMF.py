@@ -21,7 +21,7 @@
 # ***************************************************************************
 from __future__ import print_function
 
-from importToolsFem import \
+from .importToolsFem import \
     get_FemMeshObjectDimension,\
     get_FemMeshObjectElementTypes,\
     get_MaxDimElementFromList,\
