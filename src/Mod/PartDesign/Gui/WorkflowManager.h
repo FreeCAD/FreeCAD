@@ -65,7 +65,7 @@ public:
      * If the user agrees the file will be migrated and the workflow will be set as modern.
      * If the user refuses to migrate use the old workflow.
      */
-    Workflow determinWorkflow(App::Document *doc);
+    Workflow determineWorkflow(App::Document *doc);
 
     /**
      * Force the desired workflow in document
@@ -112,7 +112,7 @@ inline bool assureLegacyWorkflow (App::Document *doc) {
 
 /// Assures that workflow of the given document is determined and returns true if it is Workflow::Modern
 inline bool assureModernWorkflow (App::Document *doc) {
-    return WorkflowManager::instance()->determinWorkflow( doc ) == Workflow::Modern ;
+    return WorkflowManager::instance()->determineWorkflow( doc ) == Workflow::Modern ;
 }
 
 /// Returns true if the workflow of the given document is Workflow::Legacy
