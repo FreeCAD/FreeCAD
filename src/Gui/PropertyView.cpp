@@ -353,7 +353,10 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 if(linked->isHidden(prop) || prop->testStatus(App::Property::Hidden))
                     continue;
                 std::string name(linked->getPropertyName(prop));
-                if(propMap.find(name) != propMap.end())
+                auto it = propMap.find(name);
+                if(it!=propMap.end() && 
+                   !it->second->testStatus(App::Property::Hidden) &&
+                   !obj->isHidden(it->second))
                     continue;
                 std::vector<App::Property*> v(1,prop);
                 dataProps.push_back(std::make_pair(name, v));
@@ -368,7 +371,10 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                     if(vpLinked->isHidden(prop) || prop->testStatus(App::Property::Hidden))
                         continue;
                     std::string name(vpLinked->getPropertyName(prop));
-                    if(propMap.find(name) != propMap.end())
+                    auto it = propMap.find(name);
+                    if(it!=propMap.end() && 
+                       !it->second->testStatus(App::Property::Hidden) &&
+                       !vpLast->isHidden(it->second))
                         continue;
                     std::vector<App::Property*> v(1,prop);
                     viewProps.push_back(std::make_pair(name, v));
