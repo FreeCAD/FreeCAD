@@ -1472,7 +1472,6 @@ void Document::Save (Base::Writer &writer) const
 void Document::Restore(Base::XMLReader &reader)
 {
     int i,Cnt;
-    Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
 
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
@@ -1738,8 +1737,8 @@ Document::readObjects(Base::XMLReader& reader)
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
-    setStatus(Document::Restoring, true);
-    setStatus(Document::Importing, true);
+    Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
+    Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1768,8 +1767,6 @@ Document::importObjects(Base::XMLReader& reader)
 
     afterRestore(objs);
     signalFinishImportObjects(objs);
-    setStatus(Document::Restoring, false);
-    setStatus(Document::Importing, false);
     return objs;
 }
 
