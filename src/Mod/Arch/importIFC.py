@@ -257,6 +257,8 @@ def explore(filename=None):
                 item.setIcon(1,QtGui.QIcon(":icons/Tree_Annotation.svg"))
             elif entity.is_a() in ["IfcMaterial"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Material.svg"))
+            elif entity.is_a() in ["IfcReinforcingBar"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Rebar.svg"))
             item.setText(2,str(entity.is_a()))
             item.setFont(2,bold);
 
@@ -1142,36 +1144,40 @@ def export(exportList,filename):
         if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # setting the arguments
-        args = [uid,history,name,description,None,placement,representation,None]
+        kwargs = {"GlobalId": uid, "OwnerHistory": history, "Name": name,
+            "Description": description, "ObjectPlacement": placement, "Representation": representation}
         if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
-            args = args + ["NOTDEFINED"]
+            kwargs.update({"PredefinedType": "NOTDEFINED"})
         elif ifctype in ["IfcWindow","IfcDoor"]:
             if hasattr(obj,"Width") and hasattr(obj,"Height"):
-                args = args + [obj.Width.Value/1000.0, obj.Height.Value/1000.0]
+                kwargs.update({"OverallHeight": obj.Width.Value/1000.0,
+                    "OverallWidth": obj.Height.Value/1000.0})
             else:
                 if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
                     l = obj.Shape.BoundBox.XLength
                 else:
                     l = obj.Shape.BoundBox.YLength
-                args = args + [l/1000.0,obj.Shape.BoundBox.ZLength/1000.0]
+                kwargs.update({"OverallHeight": l/1000.0,
+                    "OverallWidth": obj.Shape.BoundBox.ZLength/1000.0})
         elif ifctype == "IfcSpace":
-            args = args + ["ELEMENT","INTERNAL",obj.Shape.BoundBox.ZMin/1000.0]
+            kwargs.update({"CompositionType": "ELEMENT",
+                "InteriorOrExteriorSpace": "INTERNAL",
+                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
         elif ifctype == "IfcBuildingElementProxy":
-            args = args + ["ELEMENT"]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcSite":
-            latitude = None
-            longitude = None
-            elevation = None
-            landtitlenumber = None
-            address = None
-            args = args + ["ELEMENT",latitude,longitude,elevation,landtitlenumber,address]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuilding":
-            args = args + ["ELEMENT",None,None,None]
+            kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuildingStorey":
-            args = args + ["ELEMENT",obj.Placement.Base.z]
+            kwargs.update({"CompositionType": "ELEMENT",
+                "Elevation": obj.Placement.Base.z})
+        elif ifctype == "IfcReinforcingBar":
+            kwargs.update({"NominalDiameter": obj.Diameter.Value,
+                "BarLength": obj.Length.Value})
 
         # creating the product
-        product = getattr(ifcfile,"create"+ifctype)(*args)
+        product = getattr(ifcfile,"create"+ifctype)(**kwargs)
         products[obj.Name] = product
 
         # additions
