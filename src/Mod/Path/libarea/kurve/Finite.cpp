@@ -354,13 +354,13 @@ namespace geoff_geometry {
 
 	Point3d Near(const Line& l, const Point3d& p, double& t){
 		// returns the near point from a line on the extended line and the parameter of the near point (0-length) in range
-		t = (Vector3d(l.p0, p) * l.v) / l.length;		// t parametised 0 - line length
+		t = (Vector3d(l.p0, p) * l.v) / l.length;		// t parametrised 0 - line length
 		return l.v * (t / l.length) + l.p0;
 	}
 
 	Point3d Line::Near(const Point3d& p, double& t)const{
 		// returns the near point from a line on the extended line and the parameter of the near point (0-length) in range
-		t = (Vector3d(this->p0, p) * this->v) / this->length;		// t parametised 0 - line length
+		t = (Vector3d(this->p0, p) * this->v) / this->length;		// t parametrised 0 - line length
 		return this->v * (t / this->length) + this->p0;
 	}
 
