@@ -978,7 +978,7 @@ def SetupOperation(name,
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
     (see ViewProvider in this module) and starts the editor specifically for this operation (driven by opPageClass).
-    This is an internal function that is automatically called by the intialisation code for each operation.
+    This is an internal function that is automatically called by the initialisation code for each operation.
     It is not expected to be called manually.
     '''
 
