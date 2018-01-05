@@ -357,6 +357,9 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
     for obj in objectslist:
         if obj:
             if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Space","Site"]) and hasattr(obj,"Group")):
+                if getType(obj) == "Site":
+                    if obj.Shape:
+                        newlist.append(obj)
                 if obj.isDerivedFrom("Drawing::FeaturePage"):
                     # skip if the group is a page
                     newlist.append(obj)
