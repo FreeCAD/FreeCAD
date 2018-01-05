@@ -52,7 +52,7 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 
 
     scale        = new SoScale         ;
-    scale->scaleFactor.setValue(0.001f,0.001f,0.001f); // scale from mm to m as neede by the Rift
+    scale->scaleFactor.setValue(0.001f,0.001f,0.001f); // scale from mm to m as needed by the Rift
     workplace->addChild(scale);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Oculus");
