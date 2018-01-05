@@ -1302,7 +1302,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
             case mmFrenetTB:
                 if (N.Magnitude() == 0.0)
                     throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: Frenet-Serret normal is undefined. Can't align to TB plane.");
-                SketchNormal = N.Reversed();//it is more convenient to sketch on something looking it it so it is convex.
+                SketchNormal = N.Reversed();//it is more convenient to sketch on something looking at it so it is convex.
                 SketchXAxis = T;
                 break;
             default:

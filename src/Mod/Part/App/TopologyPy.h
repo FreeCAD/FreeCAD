@@ -52,7 +52,7 @@ protected:
 
 public:
 
-	/// Constructer 
+	/// Constructor 
   TopoShapePyOld(PyTypeObject *T = &Type);
   TopoShapePyOld(const TopoDS_Shape &cShape, PyTypeObject *T = &TopoShapePyOld::Type);
 	/// for Construction in python 
