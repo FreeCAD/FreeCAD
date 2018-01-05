@@ -462,7 +462,7 @@ class Component:
         for s in shape:
             s = s.copy()
             s.translate(v.negative())
-            s.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
+            s.rotate(FreeCAD.Vector(0,0,0),r.Axis,math.degrees(-r.Angle))
             shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v

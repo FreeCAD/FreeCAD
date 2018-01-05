@@ -526,9 +526,9 @@ class _Structure(ArchComponent.Component):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
-                v2 = Vector(0,-w2,h2)
+                v4 = Vector(0,-w2,h2)
                 v3 = Vector(0,w2,h2)
-                v4 = Vector(0,w2,-h2)
+                v2 = Vector(0,w2,-h2)
             else:
                 l2 = length/2 or 0.5
                 w2 = width/2 or 0.5
