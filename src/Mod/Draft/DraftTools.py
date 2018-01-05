@@ -277,7 +277,7 @@ class DraftTool:
         self.commitList.append((name,func))
 
     def getStrings(self,addrot=None):
-        "returns a couple of useful strings fro building python commands"
+        "returns a couple of useful strings for building python commands"
 
         # current plane rotation
         p = plane.getRotation()

@@ -784,8 +784,8 @@ void PythonConsole::appendOutput(const QString& output, int state)
 void PythonConsole::runSource(const QString& line)
 {
     /**
-     * Check if there's a "source drain", which want's to consume the source in another way then just executing it.
-     * If so, put the source to the drain and emit a signal to notify the consumer, whoever this may be.
+     * Check if there's a "source drain", which wants to consume the source in another way then just executing it.
+     * If so, put the source to the drain and emit a signal to notify the consumer, whomever this may be.
      */
     if (this->_sourceDrain)
     {

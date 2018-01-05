@@ -111,7 +111,7 @@ void ViewProviderBody::setDisplayMode(const char* ModeName) {
     
     //if we show "Through" we must avoid to set the display mask modes, as this would result 
     //in going into "tip" mode. When through is chosen the child features are displayed, and all
-    //we need to ensure is that the display mode change is propagated to them fro within the
+    //we need to ensure is that the display mode change is propagated to them from within the
     //onChanged() method.
     if(DisplayModeBody.getValue() == 1)
         PartGui::ViewProviderPartExt::setDisplayMode(ModeName);

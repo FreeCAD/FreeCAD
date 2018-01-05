@@ -580,7 +580,7 @@ def SQRT(V):
 # ===================  
 #15.24 Tan - arithmetic function
 #FUNCTION TAN ( V:NUMBER ) : REAL;
-#The tan function returns the tangent of of an angle.
+#The tan function returns the tangent of an angle.
 #Parameters : V is a number representing an angle expressed in radians.
 #Result : The tangent of the angle. If the angle is npi/2, where n is an odd integer, indeterminate
 #(?) is returned.
