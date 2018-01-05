@@ -757,6 +757,11 @@ class InstallWorker(QtCore.QThread):
                         repo.head.reset('--hard')
                     repo = git.Git(clonedir)
                     answer = repo.pull()
+
+                    # Update the submodules for this repository
+                    repo_sms = git.Repo(clonedir)
+                    for submodule in repo_sms.submodules:
+                        submodule.update(init=True, recursive=True)
                 else:
                     answer = self.download(self.repos[idx][1],clonedir)
             else:
@@ -766,6 +771,10 @@ class InstallWorker(QtCore.QThread):
                     if git:
                         self.info_label.emit("Cloning module...")
                         repo = git.Repo.clone_from(self.repos[idx][1], clonedir, branch='master')
+
+                        # Make sure to clone all the submodules as well
+                        if repo.submodules:
+                            repo.submodule_update(recursive=True)
                     else:
                         self.info_label.emit("Downloading module...")
                         self.download(self.repos[idx][1],clonedir)
