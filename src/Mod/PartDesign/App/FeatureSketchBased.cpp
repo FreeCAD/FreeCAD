@@ -436,10 +436,28 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             }
         }
 
+        // It must also be checked that all projected inner wires of the upToFace
+        // lie outside the sketch shape. If this is not the case then the sketch
+        // shape is not completely covered by the upToFace. See #0003141
+        if (!remove_limits) {
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(upToFace);
+            for (Ex.Init(upToFace, TopAbs_WIRE); Ex.More(); Ex.Next()) {
+                if (!outerWire.IsSame(Ex.Current())) {
+                    BRepProj_Projection proj(TopoDS::Wire(Ex.Current()), sketchshape, -dir);
+                    if (proj.More()) {
+                        remove_limits = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         if (remove_limits) {
             // Note: Using an unlimited face every time gives unnecessary failures for concave faces
             TopLoc_Location loc = upToFace.Location();
             BRepAdaptor_Surface adapt(upToFace, Standard_False);
+            // use the placement of the adapter, not of the upToFace
+            loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
     #if OCC_VERSION_HEX >= 0x060502
                   , Precision::Confusion()
