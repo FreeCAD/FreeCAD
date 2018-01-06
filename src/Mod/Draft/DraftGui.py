@@ -118,8 +118,9 @@ class todo:
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                if isinstance(name,unicode):
-                    name = name.encode("utf8")
+                if sys.version_info.major < 3:
+                    if isinstance(name,unicode):
+                        name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
                     name = str(name)
