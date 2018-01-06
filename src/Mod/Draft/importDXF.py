@@ -128,8 +128,9 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
-            if not isinstance(message,unicode):
-                message = message.decode('utf8')
+            if sys.version_info.major < 3:
+                if not isinstance(message,unicode):
+                    message = message.decode('utf8')
             reply = QtGui.QMessageBox.question(None,"",message,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
@@ -1542,9 +1543,10 @@ def open(filename):
         getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
-            if isinstance(docname,unicode): 
-                import sys #workaround since newDocument currently can't handle unicode filenames
-                docname = docname.encode(sys.getfilesystemencoding())
+            if sys.version_info.major < 3
+                if isinstance(docname,unicode): 
+                    import sys #workaround since newDocument currently can't handle unicode filenames
+                    docname = docname.encode(sys.getfilesystemencoding())
             doc = FreeCAD.newDocument(docname)
             doc.Label = decodeName(docname)
             processdxf(doc,filename)
@@ -1553,9 +1555,10 @@ def open(filename):
             errorDXFLib(gui)
     else:
         docname = os.path.splitext(os.path.basename(filename))[0]
-        if isinstance(docname,unicode): 
-            import sys #workaround since newDocument currently can't handle unicode filenames
-            docname = docname.encode(sys.getfilesystemencoding())
+        if sys.version_info.major < 3:
+            if isinstance(docname,unicode): 
+                #workaround since newDocument currently can't handle unicode filenames
+                docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
         FreeCAD.setActiveDocument(doc.Name)
@@ -1574,9 +1577,10 @@ def insert(filename,docname):
         getDXFlibs()
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
-            if isinstance(groupname,unicode): 
-                import sys #workaround since newDocument currently can't handle unicode filenames
-                groupname = groupname.encode(sys.getfilesystemencoding())
+            if sys.version_info.major < 3:
+                if isinstance(groupname,unicode): 
+                    #workaround since newDocument currently can't handle unicode filenames
+                    groupname = groupname.encode(sys.getfilesystemencoding())
             importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
             importgroup.Label = decodeName(groupname)
             processdxf(doc,filename)
@@ -1889,16 +1893,17 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
 def getStrGroup(ob):
     "gets a string version of the group name"
     l = getGroup(ob)
-    if isinstance(l,unicode):
-        # dxf R12 files are rather over-sensitive with utf8...
-        try:
-            import unicodedata
-        except:
-            # fallback
-            return l.encode("ascii",errors="replace")
-        else:
-            # better encoding, replaces accented latin characters with corrsponding ascii letter
-            return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
+    if sys.version_info.major < 3:
+        if isinstance(l,unicode):
+            # dxf R12 files are rather over-sensitive with utf8...
+            try:
+                import unicodedata
+            except:
+                # fallback
+                return l.encode("ascii",errors="replace")
+            else:
+                # better encoding, replaces accented latin characters with corrsponding ascii letter
+                return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
     return l
 
 def export(objectslist,filename,nospline=False,lwPoly=False):
@@ -2021,9 +2026,9 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         pbase = DraftVecUtils.tup(ob.End.add(proj.negative()))
                     dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
                                                     layer=getStrGroup(ob)))
-
-            if isinstance(filename,unicode):
-                filename = filename.encode("utf8")
+            if sys.version_info.major < 3:
+                if isinstance(filename,unicode):
+                    filename = filename.encode("utf8")
             dxf.saveas(filename)
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
     else:
