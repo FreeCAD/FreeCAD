@@ -52,7 +52,7 @@ parser.add_argument('--line-numbers', action='store_true', help='prefix with lin
 parser.add_argument('--no-line-numbers', action='store_true', help='don\'t prefix with line numbers (default)')
 parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output (default)')
 parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
-parser.add_argument('--precision', default='3', help='number of digits of precision, default=4')
+parser.add_argument('--precision', default='3', help='number of digits of precision, default=3')
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
