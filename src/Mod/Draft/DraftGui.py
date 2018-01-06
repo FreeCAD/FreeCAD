@@ -118,11 +118,13 @@ class todo:
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                if isinstance(name,unicode):
-                    name = name.encode("utf8")
+                if sys.version_info.major < 3:
+                    # openTransaction is not working with utf-8 decoded unicode in python2
+                    if isinstance(name, unicode):
+                        # transform it back to str
+                        name = name.encode('utf-8')
                 #print("debug: committing ",str(name))
                 try:
-                    name = str(name)
                     FreeCAD.ActiveDocument.openTransaction(name)
                     if isinstance(func,list):
                         for l in func:
