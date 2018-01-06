@@ -2903,9 +2903,12 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     obj.Z = Z
     if gui:
         _ViewProviderPoint(obj.ViewObject)
-        if not color:
+        if hasattr(FreeCADGui,"draftToolBar"):
             color = FreeCADGui.draftToolBar.getDefaultColor('ui')
-        obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
+        else:
+            pc = getParam("color",255)>>8
+            color = (float(pc/255.0),float(pc/255.0),float(pc/255.0))
+        obj.ViewObject.PointColor = color
         obj.ViewObject.PointSize = point_size
         obj.ViewObject.Visibility = True
     select(obj)
