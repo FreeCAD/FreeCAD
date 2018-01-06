@@ -59,6 +59,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     proxy = new QWidget(this);
     ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
+#if QT_VERSION >= 0x040700
+    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+#endif
 
     this->groupLayout()->addWidget(proxy);
 
@@ -97,14 +100,26 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
-    if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
-        ui->lineFaceName->setText(QString::fromLatin1(obj->getNameInDocument()));
-    else if (faceId >= 0)
-        ui->lineFaceName->setText(QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + tr("Face") +
-                                  QString::number(faceId));
-    else
-        ui->lineFaceName->setText(tr("No face selected"));
+
+    // Set object labels
+    if (obj && PartDesign::Feature::isDatum(obj)) {
+        ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+    }
+    else if (obj && faceId >= 0) {
+        ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+                                  .arg(QString::fromUtf8(obj->Label.getValue()))
+                                  .arg(tr("Face"))
+                                  .arg(faceId));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+    }
+    else {
+        ui->lineFaceName->clear();
+        ui->lineFaceName->setProperty("FeatureName", QVariant());
+    }
+
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
+
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
     ui->changeMode->insertItem(1, tr("To last"));
@@ -159,7 +174,8 @@ void TaskPadParameters::updateUI(int index)
     bool isReversedEnabled    = false;
     bool isFaceEditEnabled    = false;
 
-    if (index == 0) {  // dimension
+    // dimension
+    if (index == 0) {
         isLengthEditVisable = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
@@ -169,17 +185,23 @@ void TaskPadParameters::updateUI(int index)
         isMidplateEnabled = true;
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
-    } else if (index == 1 || index == 2) { // up to first/last
+    }
+    // up to first/last
+    else if (index == 1 || index == 2) {
         isOffsetEditVisable  = true;
         isReversedEnabled = true;
-    } else if (index == 3) { // up to face
+    }
+    // up to face
+    else if (index == 3) {
         isOffsetEditVisable  = true;
         isFaceEditEnabled    = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
-        if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
+        if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
-    } else { // two dimensions
+    }
+    // two dimensions
+    else {
         isLengthEditVisable = true;
         isLengthEdit2Visable = true;
     }
@@ -214,20 +236,23 @@ void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (refText.length() > 0) {
             ui->lineFaceName->blockSignals(true);
             ui->lineFaceName->setText(refText);
+            ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
             ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
             ui->lineFaceName->blockSignals(false);
             // Turn off reference selection mode
             onButtonFace(false);
         } else {
             ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->setText(tr("No face selected"));
-            ui->lineFaceName->setProperty("FaceName", QByteArray());
+            ui->lineFaceName->clear();
+            ui->lineFaceName->setProperty("FeatureName", QVariant());
+            ui->lineFaceName->setProperty("FaceName", QVariant());
             ui->lineFaceName->blockSignals(false);
         }
     } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->setText(tr("No face selected"));
-        ui->lineFaceName->setProperty("FaceName", QByteArray());
+        ui->lineFaceName->clear();
+        ui->lineFaceName->setProperty("FeatureName", QVariant());
+        ui->lineFaceName->setProperty("FaceName", QVariant());
         ui->lineFaceName->blockSignals(false);
     }
 }
@@ -289,7 +314,10 @@ void TaskPadParameters::onModeChanged(int index)
     recomputeFeature();
 }
 
-void TaskPadParameters::onButtonFace(const bool pressed) {
+void TaskPadParameters::onButtonFace(const bool pressed)
+{
+    this->blockConnection(!pressed);
+
     TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
@@ -298,7 +326,27 @@ void TaskPadParameters::onButtonFace(const bool pressed) {
 
 void TaskPadParameters::onFaceName(const QString& text)
 {
-    ui->lineFaceName->setProperty("FaceName", TaskSketchBasedParameters::onFaceName(text));
+    if (text.isEmpty()) {
+        // if user cleared the text field then also clear the properties
+        ui->lineFaceName->setProperty("FeatureName", QVariant());
+        ui->lineFaceName->setProperty("FaceName", QVariant());
+    }
+    else {
+        // expect that the label of an object is used
+        QStringList parts = text.split(QChar::fromLatin1(':'));
+        QString label = parts[0];
+        QVariant name = objectNameByLabel(label, ui->lineFaceName->property("FeatureName"));
+        if (name.isValid()) {
+            parts[0] = name.toString();
+            QString uptoface = parts.join(QString::fromLatin1(":"));
+            ui->lineFaceName->setProperty("FeatureName", name);
+            ui->lineFaceName->setProperty("FaceName", setUpToFace(uptoface));
+        }
+        else {
+            ui->lineFaceName->setProperty("FeatureName", QVariant());
+            ui->lineFaceName->setProperty("FaceName", QVariant());
+        }
+    }
 }
 
 double TaskPadParameters::getLength(void) const
@@ -333,13 +381,15 @@ int TaskPadParameters::getMode(void) const
 
 QString TaskPadParameters::getFaceName(void) const
 {
+    // 'Up to face' mode
     if (getMode() == 3) {
-        QString faceName = ui->lineFaceName->property("FaceName").toString();
-        if (!faceName.isEmpty()) {
-            return getFaceReference(ui->lineFaceName->text(), faceName);
+        QVariant featureName = ui->lineFaceName->property("FeatureName");
+        if (featureName.isValid()) {
+            QString faceName = ui->lineFaceName->property("FaceName").toString();
+            return getFaceReference(featureName.toString(), faceName);
         }
     }
-    return QString();
+    return QString::fromLatin1("None");
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -366,19 +416,30 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
-        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
-        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
-        int faceId = -1;
-        bool ok = false;
-        if (upToFace.indexOf("Face") == 0) {
-            faceId = upToFace.remove(0,4).toInt(&ok);
-        }
 #if QT_VERSION >= 0x040700
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
-        ui->lineFaceName->setText(ok ?
-                                  parts[0] + QString::fromLatin1(":") + tr("Face") + QString::number(faceId) :
-                                  tr(""));
+        QVariant featureName = ui->lineFaceName->property("FeatureName");
+        if (featureName.isValid()) {
+            QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
+            QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
+            int faceId = -1;
+            bool ok = false;
+            if (upToFace.indexOf("Face") == 0) {
+                faceId = upToFace.remove(0,4).toInt(&ok);
+            }
+
+            if (ok) {
+                ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+                                          .arg(parts[0])
+                                          .arg(tr("Face"))
+                                          .arg(faceId));
+            }
+            else {
+                ui->lineFaceName->setText(parts[0]);
+            }
+        }
+
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);
         ui->offsetEdit->blockSignals(false);
@@ -405,14 +466,8 @@ void TaskPadParameters::apply()
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u", cname, getMode());
     QString facename = getFaceName();
-
-    // TODO get rid of this if (2015-12-05, Fat-Zer)
-    if (!facename.isEmpty()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
-                cname, facename.toLatin1().data());
-    } else {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
-    }
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
+                            cname, facename.toLatin1().data());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i", cname, getReversed()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i", cname, getMidplane()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f", name.c_str(), getOffset());
