@@ -538,6 +538,8 @@ class Line(Creator):
                 self.ui.wireUi(name)
             else:
                 self.ui.lineUi(name)
+            if isinstance(self.featureName,unicode):
+                self.featureName = self.featureName.encode("utf8")
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
@@ -917,7 +919,8 @@ class BezCurve(Line):
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.ui:
-            self.bezcurvetrack.finalize()
+            if hasattr(self,"bezcurvetrack"):
+                self.bezcurvetrack.finalize()
         if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
         if self.obj:
