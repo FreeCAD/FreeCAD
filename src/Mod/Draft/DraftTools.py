@@ -538,8 +538,9 @@ class Line(Creator):
                 self.ui.wireUi(name)
             else:
                 self.ui.lineUi(name)
-            if isinstance(self.featureName,unicode):
-                self.featureName = self.featureName.encode("utf8")
+            if sys.version_info.major < 3:
+                if isinstance(self.featureName,unicode):
+                    self.featureName = self.featureName.encode("utf8")
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
