@@ -1787,7 +1787,9 @@ class Text(Creator):
         for l in self.text:
             if len(tx) > 1:
                 tx += ','
-            tx += '"'+str(unicode(l).encode("utf8"))+'"' #Python3 no more unicode
+            if sys.version_info.major < 3:
+                l = unicode(l)
+            tx += '"'+str(l.encode("utf8"))+'"' #Python3 no more unicode
         tx += ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Create Text"),
