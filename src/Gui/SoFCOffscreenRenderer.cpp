@@ -411,11 +411,7 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     this->framebuffer = NULL;
     this->numSamples = -1;
     this->cache_context = 0;
-#if !defined(HAVE_QT5_OPENGL)
-    this->pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
-#else
     this->pbuffer = false;
-#endif
 }
 
 /*!
