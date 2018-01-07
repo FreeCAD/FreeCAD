@@ -925,7 +925,7 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
     }
 }
 
-void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& img) const
+void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QImage& img) const
 {
     bool useCoinOffscreenRenderer = false;
     useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
@@ -1007,7 +1007,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
         // render the scene
         if (!useCoinOffscreenRenderer) {
             SoQtOffscreenRenderer renderer(vp);
-            renderer.setNumPasses(4);
+            renderer.setNumPasses(s);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
             if (!renderer.render(root))
@@ -1020,7 +1020,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
             SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
             renderer.setViewportRegion(vp);
             renderer.getGLRenderAction()->setSmoothing(true);
-            renderer.getGLRenderAction()->setNumPasses(4);
+            renderer.getGLRenderAction()->setNumPasses(s);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
             if (!renderer.render(root))
@@ -1403,6 +1403,46 @@ QImage View3DInventorViewer::grabFramebuffer()
 #endif
 
     return res;
+}
+
+void View3DInventorViewer::imageFromFramebuffer(int width, int height, int samples,
+                                                const QColor& bgcolor, QImage& img)
+{
+    QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
+    gl->makeCurrent();
+
+    const QtGLContext* context = QtGLContext::currentContext();
+    if (!context) {
+        Base::Console().Warning("imageFromFramebuffer failed because no context is active\n");
+        return;
+    }
+
+    QtGLFramebufferObjectFormat fboFormat;
+    fboFormat.setSamples(samples);
+    fboFormat.setAttachment(QtGLFramebufferObject::Depth);
+    //With enabled alpha a transparent background is supported but
+    //at the same time breaks semi-transparent models
+#if defined(HAVE_QT5_OPENGL)
+    //fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
+    fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+#else
+    //fboFormat.setInternalTextureFormat(GL_RGBA);
+    fboFormat.setInternalTextureFormat(GL_RGB);
+#endif
+    QtGLFramebufferObject fbo(width, height, fboFormat);
+
+    const QColor col = backgroundColor();
+    bool on = hasGradientBackground();
+
+    if (bgcolor.isValid()) {
+        setBackgroundColor(bgcolor);
+        setGradientBackground(false);
+    }
+
+    renderToFramebuffer(&fbo);
+    setBackgroundColor(col);
+    setGradientBackground(on);
+    img = fbo.toImage();
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
