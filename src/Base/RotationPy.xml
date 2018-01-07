@@ -106,6 +106,12 @@
 			</Documentation>
 			<Parameter Name="Angle" Type="Float" />
 		</Attribute>
+		<Attribute Name="Matrix" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The rotation matrix</UserDocu>
+			</Documentation>
+			<Parameter Name="Matrix" Type="Object" />
+		</Attribute>
 		<ClassDeclarations>
 			public:
 			RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)

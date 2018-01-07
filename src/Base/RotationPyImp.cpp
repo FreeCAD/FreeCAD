@@ -344,6 +344,20 @@ void RotationPy::setAngle(Py::Float arg)
     this->getRotationPtr()->setValue(axis, angle);
 }
 
+Py::Object RotationPy::getMatrix(void) const
+{
+    Base::Matrix4D *mat = new Base::Matrix4D();
+    this->getRotationPtr()->getValue(*mat);
+    return Py::Object(new Base::MatrixPy(mat));
+}
+
+void RotationPy::setMatrix(Py::Object arg) 
+{
+    if(!PyObject_TypeCheck(arg.ptr(),&Base::MatrixPy::Type))
+        throw Py::TypeError("expect object of type matrix");
+    this->getRotationPtr()->setValue(*static_cast<Base::MatrixPy*>(arg.ptr())->getMatrixPtr());
+}
+
 PyObject *RotationPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
