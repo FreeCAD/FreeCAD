@@ -276,9 +276,9 @@ def findConnectedEdges(edgelist,eps=1e-6,debug=False):
         return retlist
 
 def endpointdistance(edges):
-    '''return the distance of of vertices in path (list of edges) as
+    '''return the distance of vertices in path (list of edges) as
     maximum, minimum and distance between start and endpoint
-    it expects the edges to be traversed forward from starting from Vertex 0'''
+    it expects the edges to be traversed forward starting from Vertex 0'''
     numedges=len(edges)
     if numedges == 1 and len(edges[0].Vertexes) == 1:
             return 0.0,0.0,0.0
@@ -292,9 +292,9 @@ def endpointdistance(edges):
         return 0.0,0.0,outerdistance
 
 def endpointdistancedebuglist(debuglist):
-    '''return the distance of of vertices in path (list of edges) as
+    '''return the distance of vertices in path (list of edges) as
     maximum, minimum and distance between start and endpoint
-    it it expects a 'not reversed' flag for every edge'''
+    it expects a 'not reversed' flag for every edge'''
     numedges=len(debuglist)
     if numedges == 1 and len(debuglist[0][0].Vertexes) == 1:
             return 0.0,0.0,0.0
