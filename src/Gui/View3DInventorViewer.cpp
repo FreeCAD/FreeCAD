@@ -927,14 +927,7 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
 
 void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& img) const
 {
-    // If 'QGLPixelBuffer::hasOpenGLPbuffers()' returns false then
-    // SoQtOffscreenRenderer won't work. In this case we try to use
-    // Coin's implementation of the off-screen rendering.
-#if !defined(HAVE_QT5_OPENGL)
-    bool useCoinOffscreenRenderer = !QGLPixelBuffer::hasOpenGLPbuffers();
-#else
     bool useCoinOffscreenRenderer = false;
-#endif
     useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->
         GetBool("CoinOffscreenRenderer", useCoinOffscreenRenderer);

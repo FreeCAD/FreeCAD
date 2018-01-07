@@ -755,13 +755,8 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-#if !defined(HAVE_QT5_OPENGL)
-    bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
-#else
-    bool pbuffer = false;
-#endif
     if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers", false)) {
         createImageFromFramebuffer(w, h, bg, img);
     }
     else {
