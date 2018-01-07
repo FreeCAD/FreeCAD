@@ -695,43 +695,6 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
     return Py::Boolean(ok ? true : false);
 }
 
-void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
-{
-    View3DInventorViewer* viewer = _view->getViewer();
-    static_cast<QtGLWidget*>(viewer->getGLWidget())->makeCurrent();
-
-    const QtGLContext* context = QtGLContext::currentContext();
-    if (!context) {
-        Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
-        return;
-    }
-#if QT_VERSION >= 0x040600
-    QtGLFramebufferObjectFormat format;
-    format.setSamples(8);
-    format.setAttachment(QtGLFramebufferObject::Depth);
-#if defined(HAVE_QT5_OPENGL)
-    format.setInternalTextureFormat(GL_RGB32F_ARB);
-#else
-    format.setInternalTextureFormat(GL_RGB);
-#endif
-    QtGLFramebufferObject fbo(width, height, format);
-#else
-    QtGLFramebufferObject fbo(width, height, QtGLFramebufferObject::Depth);
-#endif
-    const QColor col = viewer->backgroundColor();
-    bool on = viewer->hasGradientBackground();
-
-    if (bgcolor.isValid()) {
-        viewer->setBackgroundColor(bgcolor);
-        viewer->setGradientBackground(false);
-    }
-
-    viewer->renderToFramebuffer(&fbo);
-    viewer->setBackgroundColor(col);
-    viewer->setGradientBackground(on);
-    img = fbo.toImage();
-}
-
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cColor="Current",*cComment="$MIBA";
@@ -757,15 +720,10 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     QImage img;
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers", false)) {
-        createImageFromFramebuffer(w, h, bg, img);
+        _view->getViewer()->imageFromFramebuffer(w, h, 8, bg, img);
     }
     else {
-        try {
-            _view->getViewer()->savePicture(w, h, bg, img);
-        }
-        catch (const Base::Exception&) {
-            createImageFromFramebuffer(w, h, bg, img);
-        }
+        _view->getViewer()->savePicture(w, h, 8, bg, img);
     }
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
