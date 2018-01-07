@@ -999,7 +999,11 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
             group = what[1];
         }
         else {
-            group = module;
+            boost::regex rx("/Ext/freecad/(\\w+)/");
+            if (boost::regex_search(file, what, rx))
+                group = what[1];
+            else
+                group = module;
         }
     }
     catch (Py::Exception& e) {
