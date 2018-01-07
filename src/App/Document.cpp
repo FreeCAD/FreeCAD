@@ -937,6 +937,8 @@ void Document::removePropertyOfObject(TransactionalObject* obj, const char* name
             d->activeUndoTransaction->removeProperty(obj, prop);
         for (auto it : mUndoTransactions)
             it->removeProperty(obj, prop);
+        for (auto it : mRedoTransactions)
+            it->removeProperty(obj, prop);
     }
 }
 
