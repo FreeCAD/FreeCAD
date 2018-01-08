@@ -131,7 +131,7 @@ void Sheet::clearAll()
   * Import a file into the spreadsheet object.
   *
   * @param filename   Name of file to import
-  * @param delimiter  The field delimiter charater used.
+  * @param delimiter  The field delimiter character used.
   * @param quoteChar  Quote character, if any (set to '\0' to disable).
   * @param escapeChar The escape character used, if any (set to '0' to disable).
   *
