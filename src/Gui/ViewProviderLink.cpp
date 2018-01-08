@@ -61,6 +61,8 @@
 #include "View3DInventor.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCCSysDragger.h"
+#include "Control.h"
+#include "TaskCSysDragger.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -2114,6 +2116,9 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             dragger->draggerSize.setValue(0.05f);
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
+
+            TaskCSysDragger *task = new TaskCSysDragger(this, dragger);
+            Gui::Control().showDialog(task);
         }
     }
 }
@@ -2125,6 +2130,7 @@ void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
         static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
     pcDragger.reset();
     dragCtx.reset();
+    Gui::Control().closeDialog();
 }
 
 Base::Placement ViewProviderLink::currentDraggingPlacement() const{

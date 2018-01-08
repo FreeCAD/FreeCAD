@@ -57,7 +57,7 @@ static double degreesToRadains(const double &degreesIn)
 static double lastTranslationIncrement = 1.0;
 static double lastRotationIncrement = degreesToRadains(15.0);
 
-TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDragger* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
+TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDocumentObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
 {
   assert(vpObjectIn);
