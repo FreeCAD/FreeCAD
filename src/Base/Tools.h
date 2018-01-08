@@ -146,6 +146,17 @@ private:
     Private* d;
 };
 
+template<typename Flag=bool>
+struct FlagToggler {
+    Flag &flag;
+    FlagToggler(Flag &_flag):flag(_flag) {
+        flag = !flag;
+    }
+    ~FlagToggler() {
+        flag = !flag;
+    }
+};
+
 template<typename Status, class Object>
 class ObjectStatusLocker
 {
