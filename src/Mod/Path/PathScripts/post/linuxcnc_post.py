@@ -272,7 +272,7 @@ def parse(pathobj):
     params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'I', 'J', 'F', 'S', 'T', 'Q', 'R', 'L', 'H', 'D', 'P']
     # keep track for no doubles
     currLocation = {}
-    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": -1})
+    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
@@ -306,8 +306,11 @@ def parse(pathobj):
                     if param == 'F' and (currLocation[param] == c.Parameters[param] and OUTPUT_DOUBLES):
                         if c.Name not in ["G0", "G00"]:  # linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
-                            outstring.append(
+                            if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
+                                outstring.append(
                                 param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
+                        else:
+                            continue
                     elif param == 'T':
                         outstring.append(param + str(int(c.Parameters['T'])))
                     elif param == 'H':
