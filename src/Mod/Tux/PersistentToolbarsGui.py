@@ -44,7 +44,7 @@ def pythonToolbars():
             try:
                 Gui.Snapper.show()
             except:
-                m = "Persistent toolbars: Snapper toolbar not managed\n."
+                m = "Persistent toolbars: Snapper toolbar not managed.\n"
                 App.Console.PrintMessage(m)
     else:
         pass
