@@ -306,6 +306,7 @@ private:
     static PyObject* sGetExportType     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sGetHomePath       (PyObject *self,PyObject *args,PyObject *kwd);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args,PyObject *kwd);

@@ -112,7 +112,7 @@ class PathPreferences:
     @classmethod
     def macroFilePath(cls):
         grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        return grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
+        return grp.GetString("MacroPath", FreeCAD.getUserMacroDir())
 
     @classmethod
     def searchPaths(cls):
