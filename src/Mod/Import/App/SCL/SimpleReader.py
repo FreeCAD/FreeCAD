@@ -51,7 +51,7 @@ class SimpleParser:
 
     Part21.Part21Parser Loads all instances definition of a Part21 file into memory.
     Two dicts are created:
-    Part21.Part21Parser._instance_definition : stores attibutes, key is the instance integer id
+    Part21.Part21Parser._instance_definition : stores attributes, key is the instance integer id
     Part21.Part21Parser._number_of_ancestors : stores the number of ancestors of entity id. This enables
     to define the order of instances creation.
     """
