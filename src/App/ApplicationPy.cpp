@@ -158,6 +158,8 @@ PyMethodDef Application::Methods[] = {
      "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},     
     {"autoTransaction", (PyCFunction) Application::sAutoTransaction, 1,
      "autoTransaction() -> Bool -- Test if auto transaction is enabled"},
+    {"isRestoring", (PyCFunction) Application::sIsRestoring, 1,
+     "isRestoring() -> Bool -- Test if the application is opening some document"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -205,6 +207,12 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args,PyObject * 
         PyErr_Format(PyExc_IOError, "Invalid project file %s: %s", path, e.what());
         return 0;
     }
+}
+
+PyObject* Application::sIsRestoring(PyObject * /*self*/, PyObject *args, PyObject *) {
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
 PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

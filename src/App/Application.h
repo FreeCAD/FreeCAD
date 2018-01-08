@@ -97,6 +97,8 @@ public:
     void closeAllDocuments(void);
     /// Add pending document to open together with the current opening document
     bool addPendingDocument(const char *FileName);
+    /// Indicate whether the application is opening (restoring) some document
+    bool isRestoring() const;
     //@}
     
     /** @name Application-wide trandaction setting */
@@ -375,6 +377,7 @@ private:
     static PyObject* sAddDocObserver    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject* sTranslateUnit     (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sIsRestoring       (PyObject *self,PyObject *args,PyObject *kwd);
 
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetLogLevel       (PyObject *self,PyObject *args,PyObject *kwd);
@@ -440,6 +443,7 @@ private:
     std::deque<const char *> _pendingDocs;
     std::set<std::string> _pendingDocMap;
     bool _allowPending;
+    bool _isRestoring;
 
     // for estimate max link depth
     int _objCount;

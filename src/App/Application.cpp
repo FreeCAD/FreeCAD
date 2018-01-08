@@ -185,7 +185,7 @@ PyDoc_STRVAR(Base_doc,
     );
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0),_allowPending(false),_objCount(-1)
+  : _mConfig(mConfig), _pActiveDoc(0),_allowPending(false),_isRestoring(false),_objCount(-1)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -473,8 +473,13 @@ bool Application::addPendingDocument(const char *FileName) {
     return true;
 }
 
+bool Application::isRestoring() const {
+    return _isRestoring;
+}
+
 Document* Application::openDocument(const char * FileName)
 {
+    Base::FlagToggler<> flag(_isRestoring);
     _pendingDocs.clear();
     _pendingDocMap.clear();
     _allowPending = true;
