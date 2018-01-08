@@ -407,6 +407,10 @@ Py::Int DocumentPy::getEditMode(void) const {
     return Py::Int(mode);
 }
 
+Py::Boolean DocumentPy::getTransacting() const {
+    return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
+}
+
 Py::Boolean DocumentPy::getModified(void) const
 {
     return Py::Boolean(getDocumentPtr()->isModified());

@@ -137,6 +137,12 @@
 	  </Documentation>
 	  <Parameter Name="Document" Type="Object" />
 	</Attribute>
+	<Attribute Name="Transacting" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Transacting" Type="Boolean" />
+	</Attribute>
 		<Attribute Name="Modified" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns True if the document is marked as modified, and False otherwse</UserDocu>

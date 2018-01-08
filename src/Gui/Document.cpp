@@ -81,6 +81,7 @@ struct DocumentP
     int        _iDocId;
     bool       _isClosing;
     bool       _isModified;
+    bool       _isTransacting;
     int                         _editMode;
     ViewProvider*               _editViewProvider;
     ViewProviderDocumentObject* _editViewProviderParent;
@@ -136,6 +137,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_iDocId = (++_iDocCount);
     d->_isClosing = false;
     d->_isModified = false;
+    d->_isTransacting = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = 0;
@@ -1822,9 +1824,15 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
     return true;
 }
 
+bool Document::isPerformingTransaction() const {
+    return d->_isTransacting;
+}
+
 /// Will UNDO one or more steps
 void Document::undo(int iSteps)
 {
+    Base::FlagToggler<> flag(d->_isTransacting);
+
     if(!checkTransactionID(true,iSteps))
         return;
 
@@ -1836,6 +1844,8 @@ void Document::undo(int iSteps)
 /// Will REDO one or more steps
 void Document::redo(int iSteps)
 {
+    Base::FlagToggler<> flag(d->_isTransacting);
+
     if(!checkTransactionID(false,iSteps))
         return;
 

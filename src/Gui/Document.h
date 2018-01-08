@@ -259,6 +259,12 @@ public:
     void undo(int iSteps);
     /// Will REDO one or more steps
     void redo(int iSteps) ;
+    /** Check if the document is performing undo/redo transaction
+     *
+     * Unlink App::Document::isPerformingTransaction(), Gui::Document will
+     * report transacting when triggering grouped undo/redo in other documents
+     */
+    bool isPerformingTransaction() const;
     //@}
 
     /// handels the application close event
