@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD as App
 import FemUtils
-import ViewProviderFemConstraint
+from . import ViewProviderFemConstraint
 from FreeCAD import Units
 
 import FreeCADGui as Gui
