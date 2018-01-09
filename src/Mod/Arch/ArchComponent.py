@@ -354,9 +354,32 @@ class Component:
                 obj.Material = obj.BaseMaterial
                 obj.removeProperty("BaseMaterial")
                 print("Migrated old BaseMaterial property -> Material in ",obj.Label)
-                
+
+    def onBeforeChange(self,obj,prop):
+        if prop == "Placement":
+            self.placementBefore = FreeCAD.Placement(obj.Placement)
+
     def onChanged(self,obj,prop):
-        return
+        if prop == "Placement":
+            if hasattr(self,"placementBefore"):
+                delta = FreeCAD.Placement()
+                delta.Base = obj.Placement.Base.sub(self.placementBefore.Base)
+                delta.Rotation = obj.Placement.multiply(self.placementBefore.inverse()).Rotation
+                for o in self.getIncluded(obj,movable=True):
+                    o.Placement = o.Placement.multiply(delta)
+
+    def getIncluded(self,obj,movable=False):
+        ilist = []
+        for o in obj.InList:
+            if hasattr(o,"Hosts"):
+                if obj in o.Hosts:
+                    if movable:
+                        if hasattr(o,"MoveWithHost"):
+                            if o.MoveWithHost:
+                                ilist.append(o) 
+                    else:
+                        ilist.append(o)
+        return ilist
 
     def clone(self,obj):
         "if this object is a clone, sets the shape. Returns True if this is the case"
