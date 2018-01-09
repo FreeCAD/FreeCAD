@@ -309,22 +309,22 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
-        obj.addProperty("App::PropertyLink","CloneOf","Arch",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
-        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
-        obj.addProperty("App::PropertyString","Tag","Arch",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
-        obj.addProperty("App::PropertyLink","IfcProperties","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
-        obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
-        obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
-        obj.addProperty("App::PropertyLink","HiRes","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
-        obj.addProperty("App::PropertyLink","Axis","Arch",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+        obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+        obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+        obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+        obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyEnumeration","Role","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+        obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+        obj.addProperty("App::PropertyLink","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+        obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+        obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+        obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
+        obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
