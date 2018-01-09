@@ -401,6 +401,57 @@ class FemTest(unittest.TestCase):
         doc.recompute()
         self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
 
+    def test_femobjects_type(self):
+        doc = self.active_doc
+
+        from femtools.femutils import typeOfObj
+        self.assertEqual('Fem::FemAnalysis', typeOfObj(ObjectsFem.makeAnalysis(doc)))
+        self.assertEqual('Fem::ConstraintBearing', typeOfObj(ObjectsFem.makeConstraintBearing(doc)))
+        self.assertEqual('Fem::ConstraintBodyHeatSource', typeOfObj(ObjectsFem.makeConstraintBodyHeatSource(doc)))
+        self.assertEqual('Fem::ConstraintContact', typeOfObj(ObjectsFem.makeConstraintContact(doc)))
+        self.assertEqual('Fem::ConstraintDisplacement', typeOfObj(ObjectsFem.makeConstraintDisplacement(doc)))
+        self.assertEqual('Fem::ConstraintElectrostaticPotential', typeOfObj(ObjectsFem.makeConstraintElectrostaticPotential(doc)))
+        self.assertEqual('Fem::ConstraintFixed', typeOfObj(ObjectsFem.makeConstraintFixed(doc)))
+        self.assertEqual('Fem::ConstraintFlowVelocity', typeOfObj(ObjectsFem.makeConstraintFlowVelocity(doc)))
+        self.assertEqual('Fem::ConstraintFluidBoundary', typeOfObj(ObjectsFem.makeConstraintFluidBoundary(doc)))
+        self.assertEqual('Fem::ConstraintForce', typeOfObj(ObjectsFem.makeConstraintForce(doc)))
+        self.assertEqual('Fem::ConstraintGear', typeOfObj(ObjectsFem.makeConstraintGear(doc)))
+        self.assertEqual('Fem::ConstraintHeatflux', typeOfObj(ObjectsFem.makeConstraintHeatflux(doc)))
+        self.assertEqual('Fem::ConstraintInitialFlowVelocity', typeOfObj(ObjectsFem.makeConstraintInitialFlowVelocity(doc)))
+        self.assertEqual('Fem::ConstraintInitialTemperature', typeOfObj(ObjectsFem.makeConstraintInitialTemperature(doc)))
+        self.assertEqual('Fem::ConstraintPlaneRotation', typeOfObj(ObjectsFem.makeConstraintPlaneRotation(doc)))
+        self.assertEqual('Fem::ConstraintPressure', typeOfObj(ObjectsFem.makeConstraintPressure(doc)))
+        self.assertEqual('Fem::ConstraintPulley', typeOfObj(ObjectsFem.makeConstraintPulley(doc)))
+        self.assertEqual('Fem::ConstraintSelfWeight', typeOfObj(ObjectsFem.makeConstraintSelfWeight(doc)))
+        self.assertEqual('Fem::ConstraintTemperature', typeOfObj(ObjectsFem.makeConstraintTemperature(doc)))
+        self.assertEqual('Fem::ConstraintTransform', typeOfObj(ObjectsFem.makeConstraintTransform(doc)))
+        self.assertEqual('Fem::FemElementFluid1D', typeOfObj(ObjectsFem.makeElementFluid1D(doc)))
+        self.assertEqual('Fem::FemElementGeometry1D', typeOfObj(ObjectsFem.makeElementGeometry1D(doc)))
+        self.assertEqual('Fem::FemElementGeometry2D', typeOfObj(ObjectsFem.makeElementGeometry2D(doc)))
+        materialsolid = ObjectsFem.makeMaterialSolid(doc)
+        self.assertEqual('Fem::Material', typeOfObj(ObjectsFem.makeMaterialFluid(doc)))
+        self.assertEqual('Fem::Material', typeOfObj(materialsolid))
+        self.assertEqual('Fem::MaterialMechanicalNonlinear', typeOfObj(ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid)))
+        mesh = ObjectsFem.makeMeshGmsh(doc)
+        self.assertEqual('Fem::FemMeshGmsh', typeOfObj(mesh))
+        self.assertEqual('Fem::FemMeshBoundaryLayer', typeOfObj(ObjectsFem.makeMeshBoundaryLayer(doc, mesh)))
+        self.assertEqual('Fem::FemMeshGroup', typeOfObj(ObjectsFem.makeMeshGroup(doc, mesh)))
+        self.assertEqual('Fem::FemMeshRegion', typeOfObj(ObjectsFem.makeMeshRegion(doc, mesh)))
+        self.assertEqual('Fem::FemMeshShapeNetgenObject', typeOfObj(ObjectsFem.makeMeshNetgen(doc)))
+        self.assertEqual('Fem::FemMeshResult', typeOfObj(ObjectsFem.makeMeshResult(doc)))
+        self.assertEqual('Fem::FemResultMechanical', typeOfObj(ObjectsFem.makeResultMechanical(doc)))
+        solverelmer = ObjectsFem.makeSolverElmer(doc)
+        self.assertEqual('Fem::FemSolverCalculix', typeOfObj(ObjectsFem.makeSolverCalculixCcxTools(doc)))
+        self.assertEqual('Fem::FemSolverObjectCalculix', typeOfObj(ObjectsFem.makeSolverCalculix(doc)))
+        self.assertEqual('Fem::FemSolverObjectElmer', typeOfObj(solverelmer))
+        self.assertEqual('Fem::FemSolverObjectZ88', typeOfObj(ObjectsFem.makeSolverZ88(doc)))
+        self.assertEqual('Fem::FemEquationElmerElasticity', typeOfObj(ObjectsFem.makeEquationElasticity(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerElectrostatic', typeOfObj(ObjectsFem.makeEquationElectrostatic(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerFlow', typeOfObj(ObjectsFem.makeEquationFlow(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerFluxsolver', typeOfObj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerHeat', typeOfObj(ObjectsFem.makeEquationHeat(doc, solverelmer)))
+        # TODO: equation linear missing, equation nonlinear missing, use different type for fluid and solid material
+
     def test_pyimport_all_FEM_modules(self):
         # we're going to try to import all python modules from FreeCAD Fem
         pymodules = []
