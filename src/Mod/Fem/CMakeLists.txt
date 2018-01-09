@@ -154,6 +154,10 @@ SET(FemTestsElmer_SRCS
     femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
 )
 
+SET(FemTools_SRCS
+    femtools/__init__.py
+)
+
 SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
     PyObjects/_FemConstraintBodyHeatSource.py
@@ -190,6 +194,7 @@ SET(FemAllScripts
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
+    ${FemTools_SRCS}
     ${FemObjectsScripts_SRCS}
 )
 
@@ -216,6 +221,7 @@ INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/testfiles)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/testfiles/ccx)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/testfiles/elmer)
+INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/PyObjects)
 
 
