@@ -541,7 +541,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, mesh_name))
-        ret = compare_inp_files(static_analysis_inp_file, static_analysis_dir + "/" + mesh_name + '.inp')
+        ret = compare_inp_files(static_analysis_inp_file, static_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
@@ -591,7 +591,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, mesh_name))
-        ret = compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + "/" + mesh_name + '.inp')
+        ret = compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
@@ -791,7 +791,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, mesh_name))
-        ret = compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + "/" + mesh_name + '.inp')
+        ret = compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
@@ -1039,7 +1039,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir, mesh_name))
-        ret = compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + "/" + mesh_name + '.inp')
+        ret = compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
