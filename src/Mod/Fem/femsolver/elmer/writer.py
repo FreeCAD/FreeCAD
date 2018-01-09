@@ -262,7 +262,7 @@ class Writer(object):
             self._handled(obj)
 
     def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::FemConstraintBodyHeatSource")
+        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
         if obj is not None:
             for name in bodies:
                 heatSource = getFromUi(obj.HeatFlux, "W/kg", "L^2*T^-3")
