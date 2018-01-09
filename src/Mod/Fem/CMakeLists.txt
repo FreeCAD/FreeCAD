@@ -22,11 +22,9 @@ endif(BUILD_GUI)
 SET(FemScripts_SRCS
     Init.py
     InitGui.py
-    FemConstraint.py
     FemUtils.py
     ObjectsFem.py
     TestFem.py
-    ViewProviderFemConstraint.py
 )
 
 SET(FemCommands_SRCS
@@ -178,6 +176,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMeshResult.py
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
+    PyObjects/FemConstraint.py
 )
 
 SET(FemAllScripts
@@ -250,6 +249,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/FemSelectionObserver.py
     PyGui/FemSelectionWidgets.py
+    PyGui/ViewProviderFemConstraint.py
 )
 
 

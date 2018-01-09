@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import ViewProviderFemConstraint
+from . import ViewProviderFemConstraint
 
 
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
