@@ -69,14 +69,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
 
     def write_calculix_input_file(self):
+        timestart = time.clock()
         if self.solver_obj.SplitInputWriter is True:
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
+        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
         return self.file_name
 
     def write_calculix_one_input_file(self):
-        timestart = time.clock()
         self.femmesh.writeABAQUS(self.file_name, 1, False)
 
         # reopen file with "append" and add the analysis definition
@@ -163,11 +164,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # footer
         self.write_footer(inpfile)
         inpfile.close()
-        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
 
     def write_calculix_splitted_input_file(self):
-        timestart = time.clock()
-
         # reopen file with "append" and add the analysis definition
         # first open file with "write" to ensure that each new iteration of writing of inputfile starts in new file
         # first open file with "write" to ensure that the .writeABAQUS also writes in inputfile
@@ -333,7 +331,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # footer
         self.write_footer(inpfileMain)
         inpfileMain.close()
-        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
 
     def write_element_sets_material_and_femelement_type(self, f):
         f.write('\n***********************************************************\n')
