@@ -633,8 +633,8 @@ class _CommandFemSolverRun(CommandManager):
 
         self.solver = self.selobj
         if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
-            import FemToolsCcx
-            self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
+            from femtools import ccxtools
+            self.fea = ccxtools.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:
