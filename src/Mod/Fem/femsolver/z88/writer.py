@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+import time
 import femmesh.meshtools as FemMeshTools
 import feminout.importZ88Mesh as importZ88Mesh
 import FemInputWriter
@@ -61,6 +62,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         print('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name)
 
     def write_z88_input(self):
+        timestart = time.clock()
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -75,6 +77,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
+        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
         return self.dir_name
 
     def set_z88_elparam(self):
