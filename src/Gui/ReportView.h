@@ -183,6 +183,7 @@ private:
     Data* d;
     bool gotoEnd;
     ReportHighlighter* reportHl; /**< Syntax highlighter */
+    int messageSize;
     ParameterGrp::handle _prefs; 
 };
 

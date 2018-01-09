@@ -301,6 +301,12 @@ ReportOutput::ReportOutput(QWidget* parent)
     _prefs->Attach(this);
     _prefs->Notify("FontSize");
 
+#ifdef FC_DEBUG
+    messageSize = _prefs->GetInt("LogMessageSize",0);
+#else
+    messageSize = _prefs->GetInt("LogMessageSize",2048);
+#endif
+
     // scroll to bottom at startup to make sure that last appended text is visible
     ensureCursorVisible();
 }
@@ -347,12 +353,10 @@ void ReportOutput::Error  (const char * s)
 void ReportOutput::Log (const char * s)
 {
     QString msg = QString::fromUtf8(s);
-#ifndef FC_DEBUG
-    if(msg.size() > 2048) {
-        msg.truncate(2048);
-        msg += u"...\n";
+    if(messageSize>0 && msg.size()>messageSize) {
+        msg.truncate(messageSize);
+        msg += QString::fromLatin1("...\n");
     }
-#endif
     // Send the event to itself to allow thread-safety. Qt will delete it when done.
     CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
     QApplication::postEvent(this, ev);
@@ -573,6 +577,12 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stderr)
             onToggleRedirectPythonStderr();
+    }else if(strcmp(sReason, "LogMessageSize") == 0) {
+#ifdef FC_DEBUG
+        messageSize = rclGrp.GetInt(sReason,0);
+#else
+        messageSize = rclGrp.GetInt(sReason,2048);
+#endif
     }
 }
 
