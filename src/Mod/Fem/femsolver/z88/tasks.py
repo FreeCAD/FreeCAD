@@ -67,6 +67,10 @@ class Prepare(run.Prepare):
             c.beam_sections, c.shell_thicknesses, c.fluid_sections,
             self.solver.AnalysisType, self.directory)
         path = w.write_z88_input()
+        if path is not None:
+            self.pushStatus("Write completed!")
+        else:
+            self.pushStatus("Writing Z88 input files failed!")
         _inputFileName = os.path.splitext(os.path.basename(path))[0]  # AFAIK empty for z88
         print(path)
         print(_inputFileName)
