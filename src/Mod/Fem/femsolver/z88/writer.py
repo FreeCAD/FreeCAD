@@ -31,7 +31,7 @@ import FreeCAD
 import time
 import femmesh.meshtools as FemMeshTools
 import feminout.importZ88Mesh as importZ88Mesh
-import FemInputWriter
+from .. import writerbase as FemInputWriter
 
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):

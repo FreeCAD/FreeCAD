@@ -23,7 +23,6 @@ SET(FemScripts_SRCS
     Init.py
     InitGui.py
     FemConstraint.py
-    FemInputWriter.py
     FemToolsCcx.py
     FemUtils.py
     ObjectsFem.py
@@ -75,6 +74,7 @@ SET(FemSolver_SRCS
     femsolver/signal.py
     femsolver/solverbase.py
     femsolver/task.py
+    femsolver/writerbase.py
 )
 
 SET(FemSolverElmer_SRCS

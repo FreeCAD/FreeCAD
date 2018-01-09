@@ -33,7 +33,7 @@ import os
 import sys
 import time
 import femmesh.meshtools as FemMeshTools
-import FemInputWriter
+from .. import writerbase as FemInputWriter
 import six
 
 
