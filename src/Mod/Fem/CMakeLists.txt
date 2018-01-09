@@ -23,7 +23,6 @@ SET(FemScripts_SRCS
     Init.py
     InitGui.py
     FemConstraint.py
-    FemToolsCcx.py
     FemUtils.py
     ObjectsFem.py
     TestFem.py
@@ -156,6 +155,7 @@ SET(FemTestsElmer_SRCS
 
 SET(FemTools_SRCS
     femtools/__init__.py
+    femtools/ccxtools.py
 )
 
 SET(FemObjectsScripts_SRCS
