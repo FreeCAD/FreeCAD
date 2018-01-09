@@ -559,7 +559,7 @@ class _CommandFemSolverCalculix(CommandManager):
         if use_old_solver_frame_work and not use_new_solver_frame_work:
             has_nonlinear_material_obj = False
             for m in self.active_analysis.Group:
-                if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                if hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
                     has_nonlinear_material_obj = True
             FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
             FreeCADGui.addModule("ObjectsFem")

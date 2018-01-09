@@ -34,7 +34,7 @@ class _FemElementGeometry2D:
         obj.addProperty("App::PropertyLength", "Thickness", "ShellThickness", "set thickness of the shell elements")
         obj.addProperty("App::PropertyLinkSubList", "References", "ShellThickness", "List of shell thickness shapes")
         obj.Proxy = self
-        self.Type = "FemElementGeometry2D"
+        self.Type = "Fem::FemElementGeometry2D"
 
     def execute(self, obj):
         return

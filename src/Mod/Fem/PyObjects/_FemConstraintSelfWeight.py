@@ -38,7 +38,7 @@ class _FemConstraintSelfWeight:
         obj.Gravity_y = 0.0
         obj.Gravity_z = -1.0
         obj.Proxy = self
-        self.Type = "FemConstraintSelfWeight"
+        self.Type = "Fem::ConstraintSelfWeight"
 
     def execute(self, obj):
         return

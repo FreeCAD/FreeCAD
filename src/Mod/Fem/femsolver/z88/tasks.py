@@ -182,7 +182,7 @@ class _Container(object):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m
                 self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
                 material_nonlinear_dict = {}
                 material_nonlinear_dict['Object'] = m
                 self.materials_nonlinear.append(material_nonlinear_dict)
@@ -190,7 +190,7 @@ class _Container(object):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
                 selfweight_dict = {}
                 selfweight_dict['Object'] = m
                 self.selfweight_constraints.append(selfweight_dict)
@@ -232,15 +232,15 @@ class _Container(object):
                 transform_constraint_dict = {}
                 transform_constraint_dict['Object'] = m
                 self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry1D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementFluid1D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
                 self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry2D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)

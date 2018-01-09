@@ -35,7 +35,7 @@ class _FemSolverCalculix():
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
     def __init__(self, obj):
-        self.Type = "FemSolverCalculix"
+        self.Type = "Fem::FemSolverCalculix"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 
