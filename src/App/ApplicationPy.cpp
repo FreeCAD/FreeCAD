@@ -85,6 +85,8 @@ PyMethodDef Application::Methods[] = {
      "Get the root directory of all resources"},
     {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir  ,1,
      "Get the root directory of user settings"},
+    {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroDir  ,1,
+     "Get the directory of the user's macro directory"},
     {"getHomePath",    (PyCFunction) Application::sGetHomePath  ,1,
      "Get the home path, i.e. the parent directory of the executable"},
 
@@ -580,6 +582,15 @@ PyObject* Application::sGetUserAppDataDir(PyObject * /*self*/, PyObject *args,Py
 
     Py::String user_data_dir(Application::getUserAppDataDir(),"utf-8");
     return Py::new_reference_to(user_data_dir);
+}
+
+PyObject* Application::sGetUserMacroDir(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
+
+    Py::String user_macro_dir(Application::getUserMacroDir(),"utf-8");
+    return Py::new_reference_to(user_macro_dir);
 }
 
 PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

@@ -910,8 +910,12 @@ def drawInsert(insert,num=None,clone=False):
 
 def drawLayerBlock(objlist):
     "draws a Draft block with the given shapes or objects"
+    isObj = True
+    for o in objlist:
+        if isinstance(o,Part.Shape):
+            isObj = False
     obj = None
-    if (dxfCreateDraft or dxfCreateSketch):
+    if (dxfCreateDraft or dxfCreateSketch) and isObj:
         try:
             obj = Draft.makeBlock(objlist)
         except Part.OCCError:

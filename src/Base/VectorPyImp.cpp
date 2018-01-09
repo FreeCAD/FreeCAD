@@ -706,7 +706,7 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 
 PyObject * VectorPy::number_remainder_handler (PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for %: '%s' and '%s'",
+    PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for %%: '%s' and '%s'",
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;
 }
@@ -842,13 +842,13 @@ PyObject * VectorPy::number_float_handler (PyObject* self)
 }
 
 #if PY_MAJOR_VERSION < 3
-PyObject * VectorPy::number_oct_handler (PyObject* self)
+PyObject * VectorPy::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
     return 0;
 }
 
-PyObject * VectorPy::number_hex_handler (PyObject* self)
+PyObject * VectorPy::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
     return 0;

@@ -5361,10 +5361,12 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and B-splines into line segments"))
         obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
         obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or B-splines into line segments"))
+        obj.addProperty("App::PropertyBool","VisibleOnly","Draft",QT_TRANSLATE_NOOP("App::Property","If this is True, this object will be recomputed only if it is visible"))
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
         obj.Tessellation = False
+        obj.VisibleOnly = False
         obj.InPlace = True
         obj.SegmentLength = .05
         _DraftObject.__init__(self,obj,"Shape2DView")
@@ -5389,6 +5391,11 @@ class _Shape2DView(_DraftObject):
             #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def execute(self,obj):
+        if hasattr(obj,"VisibleOnly"):
+            if obj.VisibleOnly:
+                if obj.ViewObject:
+                    if obj.ViewObject.Visibility == False:
+                        return False
         import DraftGeomUtils
         obj.positionBySupport()
         pl = obj.Placement

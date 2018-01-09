@@ -1224,7 +1224,7 @@ int Area::project(TopoDS_Shape &shape_out,
     FC_TIME_LOG(t,"project total");
 
     if(shape.IsNull()) {
-        AREA_ERR("poject failed");
+        AREA_ERR("project failed");
         return -1;
     }
     shape_out = shape;
