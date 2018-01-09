@@ -21,15 +21,33 @@
 # ***************************************************************************
 
 
-__title__ = "view provider for constraint body heat source object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__title__ = "_Base ViewProvider"
+__author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import ViewProviderFemConstraint
+import FreeCAD
+if FreeCAD.GuiUp:
+    from pivy import coin
 
 
-class ViewProxy(ViewProviderFemConstraint.ViewProxy):
+class ViewProxy(object):
+    """Proxy for FemSolverElmers View Provider."""
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-heatflux.svg"
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        default = coin.SoGroup()
+        vobj.addDisplayMode(default, "Default")
+
+    def getDisplayModes(self, obj):
+        "Return a list of display modes."
+        modes = ["Default"]
+        return modes
+
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self, mode):
+        return mode

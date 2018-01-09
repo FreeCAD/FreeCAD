@@ -26,6 +26,7 @@ SET(FemScripts_SRCS
     FemUtils.py
     ObjectsFem.py
     TestFem.py
+    ViewProviderFemConstraint.py
 )
 
 SET(FemCommands_SRCS
