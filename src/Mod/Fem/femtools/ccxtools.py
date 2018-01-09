@@ -128,68 +128,52 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         #  Free text input used only by elmer (for sif file)
         self.elmer_free_text = None
         ## @var materials_linear
-        # set of linear materials from the analysis. Updated with update_objects
-        #  Individual materials are "App::MaterialObjectPython" type
+        #  list of linear materials from the analysis. Updated with update_objects
         self.materials_linear = []
         ## @var materials_nonlinear
-        # set of nonlinear materials from the analysis. Updated with update_objects
-        #  Individual materials are Proxy.Type "FemMaterialMechanicalNonlinear"
+        #  list of nonlinear materials from the analysis. Updated with update_objects
         self.materials_nonlinear = []
         ## @var fixed_constraints
-        #  set of fixed constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintFixed" type
+        #  list of fixed constraints from the analysis. Updated with update_objects
         self.fixed_constraints = []
         ## @var selfweight_constraints
-        #  set of selfweight constraints from the analysis. Updated with update_objects
-        #  Individual constraints are Proxy.Type "FemConstraintSelfWeight"
+        #  list of selfweight constraints from the analysis. Updated with update_objects
         self.selfweight_constraints = []
         ## @var force_constraints
-        #  set of force constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintForce" type
+        #  list of force constraints from the analysis. Updated with update_objects
         self.force_constraints = []
         ## @var pressure_constraints
-        #  set of pressure constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintPressure" type
+        #  list of pressure constraints from the analysis. Updated with update_objects
         self.pressure_constraints = []
         ## @var beam_sections
-        # set of beam sections from the analysis. Updated with update_objects
-        # Individual beam sections are Proxy.Type "FemElementGeometry1D"
+        # list of beam sections from the analysis. Updated with update_objects
         self.beam_sections = []
         ## @var fluid_sections
-        # set of fluid sections from the analysis. Updated with update_objects
-        # Individual fluid sections are Proxy.Type "FemElementFluid1D"
+        # list of fluid sections from the analysis. Updated with update_objects
         self.fluid_sections = []
         ## @var shell_thicknesses
-        # set of shell thicknesses from the analysis. Updated with update_objects
-        # Individual shell thicknesses are Proxy.Type "FemElementGeometry2D"
+        # list of shell thicknesses from the analysis. Updated with update_objects
         self.shell_thicknesses = []
         ## @var displacement_constraints
-        # set of displacements for the analysis. Updated with update_objects
-        # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
+        # list of displacements for the analysis. Updated with update_objects
         self.displacement_constraints = []
         ## @var temperature_constraints
-        # set of temperatures for the analysis. Updated with update_objects
-        # Individual temperature_constraints are Proxy.Type "FemConstraintTemperature"
+        # list of temperatures for the analysis. Updated with update_objects
         self.temperature_constraints = []
         ## @var heatflux_constraints
-        # set of heatflux constraints for the analysis. Updated with update_objects
-        # Individual heatflux_constraints are Proxy.Type "FemConstraintHeatflux"
+        # list of heatflux constraints for the analysis. Updated with update_objects
         self.heatflux_constraints = []
         ## @var initialtemperature_constraints
-        # set of initial temperatures for the analysis. Updated with update_objects
-        # Individual initialTemperature_constraints are Proxy.Type "FemConstraintInitialTemperature"
+        # list of initial temperatures for the analysis. Updated with update_objects
         self.initialtemperature_constraints = []
         ## @var planerotation_constraints
-        #  set of plane rotation constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintPlaneRotation" type
+        #  list of plane rotation constraints from the analysis. Updated with update_objects
         self.planerotation_constraints = []
         ## @var contact_constraints
-        #  set of contact constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintContact" type
+        #  list of contact constraints from the analysis. Updated with update_objects
         self.contact_constraints = []
         ## @var transform_constraints
-        #  set of transform constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintTransform" type
+        #  list of transform constraints from the analysis. Updated with update_objects
         self.transform_constraints = []
 
         found_solver_for_use = False
