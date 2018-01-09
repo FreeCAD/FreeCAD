@@ -554,8 +554,8 @@ class _CommandFemSolverCalculix(CommandManager):
 
     def Activated(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
-        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
+        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", True)
+        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", False)
         if use_old_solver_frame_work and not use_new_solver_frame_work:
             has_nonlinear_material_obj = False
             for m in self.active_analysis.Group:
