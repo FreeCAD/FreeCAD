@@ -124,9 +124,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        ## @var elmer_free_text
-        #  Free text input used only by elmer (for sif file)
-        self.elmer_free_text = None
         ## @var materials_linear
         #  list of linear materials from the analysis. Updated with update_objects
         self.materials_linear = []
@@ -197,13 +194,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.mesh = m
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElmerFreeText":
-                if self.elmer_free_text is None:
-                    self.elmer_free_text = m
-                else:
-                    raise Exception(
-                        'FEM: Multiple free text objects '
-                        'in analysis not supported!')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m
