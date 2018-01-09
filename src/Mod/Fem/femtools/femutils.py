@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,7 +23,7 @@
 
 
 __title__ = "FEM Utilities"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
@@ -71,6 +72,21 @@ def getMember(analysis, t):
 def getSingleMember(analysis, t):
     objs = getMember(analysis, t)
     return objs[0] if objs else None
+
+
+def typeOfObj(obj):
+    '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
+        return obj.Proxy.Type
+    return obj.TypeId
+
+
+def isOfTypeNew(obj, ty):
+    '''returns if an object is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    if typeOfObj(obj) == ty:
+        return True
+    else:
+        return False
 
 
 def isOfType(obj, t):
