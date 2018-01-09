@@ -638,11 +638,11 @@ class FemCcxAnalysisTest(unittest.TestCase):
             os.makedirs(static2_analysis_dir)
 
         fcc_print('machine_ccx')
-        machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
-        fcc_print(machine.testmode)
-        machine.target = femsolver.run.PREPARE
-        machine.start()
-        machine.join()  # wait for the machine to finish.
+        machine_ccx = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
+        fcc_print('Machine testmode: ' + str(machine_ccx.testmode))
+        machine_ccx.target = femsolver.run.PREPARE
+        machine_ccx.start()
+        machine_ccx.join()  # wait for the machine to finish.
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))
         ret = compare_inp_files(static_analysis_inp_file, static2_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
@@ -668,7 +668,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('machine_elmer')
         machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, static2_analysis_dir, True)
-        fcc_print(machine_elmer.testmode)
+        fcc_print('Machine testmode: ' + str(machine_elmer.testmode))
         machine_elmer.target = femsolver.run.PREPARE
         machine_elmer.start()
         machine_elmer.join()  # wait for the machine to finish.
