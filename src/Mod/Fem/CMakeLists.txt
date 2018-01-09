@@ -22,7 +22,6 @@ endif(BUILD_GUI)
 SET(FemScripts_SRCS
     Init.py
     InitGui.py
-    FemUtils.py
     ObjectsFem.py
     TestFem.py
 )
@@ -155,6 +154,7 @@ SET(FemTestsElmer_SRCS
 SET(FemTools_SRCS
     femtools/__init__.py
     femtools/ccxtools.py
+    femtools/femutils.py
 )
 
 SET(FemObjectsScripts_SRCS

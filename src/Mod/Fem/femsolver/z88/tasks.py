@@ -31,7 +31,7 @@ import subprocess
 import os.path
 
 import FreeCAD as App
-import FemUtils
+import femtools.femutils as FemUtils
 import feminout.importZ88O2Results as importZ88O2Results
 
 from .. import run
