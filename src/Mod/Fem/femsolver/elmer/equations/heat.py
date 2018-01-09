@@ -26,7 +26,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemUtils
+import femtools.femutils as FemUtils
 from . import nonlinear
 from ... import equationbase
 

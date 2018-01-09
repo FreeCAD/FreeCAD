@@ -33,7 +33,7 @@ import tempfile
 
 from FreeCAD import Units
 import Fem
-import FemUtils
+import femtools.femutils as FemUtils
 import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio

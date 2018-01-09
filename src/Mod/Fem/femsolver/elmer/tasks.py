@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import subprocess
 import os.path
-import FemUtils
+import femtools.femutils as FemUtils
 
 from .. import run
 from .. import settings

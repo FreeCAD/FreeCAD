@@ -33,7 +33,7 @@ import threading
 import shutil
 
 import FreeCAD as App
-import FemUtils
+import femtools.femutils as FemUtils
 from . import settings
 from . import signal
 from . import task
