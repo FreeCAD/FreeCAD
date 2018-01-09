@@ -72,8 +72,8 @@ class Prepare(run.Prepare):
         else:
             self.pushStatus("Writing Z88 input files failed!")
         _inputFileName = os.path.splitext(os.path.basename(path))[0]  # AFAIK empty for z88
-        print(path)
-        print(_inputFileName)
+        # print(path)
+        # print(_inputFileName)
 
 
 class Solve(run.Solve):
