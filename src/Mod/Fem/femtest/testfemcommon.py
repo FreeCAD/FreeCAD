@@ -345,7 +345,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
 
-    def test_makeFemObjects(self):
+    def test_femobjects_make(self):
         doc = self.active_doc
         analysis = ObjectsFem.makeAnalysis(doc)
 
