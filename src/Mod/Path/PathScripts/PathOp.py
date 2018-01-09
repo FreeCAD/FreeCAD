@@ -36,7 +36,7 @@ from PySide import QtCore
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-__doc__ = "Base class and properties implemenation for all Path operations."
+__doc__ = "Base class and properties implementation for all Path operations."
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -246,7 +246,7 @@ class ObjectOp(object):
             obj.ToolController = PathUtils.findToolController(obj)
             if not obj.ToolController:
                 return False
-            obj.OpToolDiameter  =  1.0
+            obj.OpToolDiameter  =  obj.ToolController.Tool.Diameter
 
         if FeatureDepths & features:
             if self.applyExpression(obj, 'StartDepth', job.SetupSheet.StartDepthExpression):

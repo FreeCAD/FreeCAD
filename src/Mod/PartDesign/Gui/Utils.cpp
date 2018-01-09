@@ -98,16 +98,18 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
     if (activeView) {
-        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        bool singleBodyDocument = activeView->getAppDocument()->
+            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
+        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-            if (!activeBody && autoActivate &&
+            if (!activeBody && singleBodyDocument && autoActivate &&
                 activeView->getAppDocument()->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1)
             {
                 Gui::Command::doCommand( Gui::Command::Gui,
@@ -157,12 +159,13 @@ PartDesign::Body * makeBody(App::Document *doc)
     return body;
 }
 
-PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot, bool autoActivate)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
+                             bool autoActivate, bool assertModern)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate);
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern);
     if (rv && rv->hasObject(obj))
         return rv;
 
@@ -234,7 +237,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the sketch");
+        throw Base::Exception ("Couldn't find body for the sketch");
     }
 
     // Get the Origin for the body
@@ -344,7 +347,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the feature");
+        throw Base::Exception ("Couldn't find body for the feature");
     }
 
     for ( const auto & obj: doc->getObjects () ) {

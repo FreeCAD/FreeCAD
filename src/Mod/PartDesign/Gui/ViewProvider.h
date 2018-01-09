@@ -55,7 +55,7 @@ public:
     //viewprovider properties.
     void setBodyMode(bool bodymode);
     
-    //makes this viewprovider visible in the scene graph without chaning any properties,
+    //makes this viewprovider visible in the scene graph without changing any properties,
     //not the visibility one and also not the display mode. This can be used to show the 
     //shape of this viewprovider from other viewproviders without doing anything to the 
     //document and properties.

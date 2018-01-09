@@ -65,7 +65,7 @@ for pre in Presets:
 
 
 def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structure"):
-    '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
+    '''makeStructure([obj],[length],[width],[height],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
@@ -526,9 +526,9 @@ class _Structure(ArchComponent.Component):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
-                v2 = Vector(0,-w2,h2)
+                v4 = Vector(0,-w2,h2)
                 v3 = Vector(0,w2,h2)
-                v4 = Vector(0,w2,-h2)
+                v2 = Vector(0,w2,-h2)
             else:
                 l2 = length/2 or 0.5
                 w2 = width/2 or 0.5

@@ -58,7 +58,7 @@ BaseClass::~BaseClass()
 
 
 //**************************************************************************
-// separator for other implemetation aspects
+// separator for other implementation aspects
 
 void BaseClass::init(void)
 {

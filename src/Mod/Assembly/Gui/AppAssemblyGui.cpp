@@ -75,7 +75,7 @@ void AssemblyGuiExport initAssemblyGui()
     Base::Interpreter().runString("import AssemblyGui");
     Base::Interpreter().runString("import PartGui");
 
-    // instanciating the commands
+    // instantiating the commands
     CreateAssemblyCommands();
     CreateAssemblyConstraintCommands();
 

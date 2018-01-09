@@ -411,11 +411,7 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     this->framebuffer = NULL;
     this->numSamples = -1;
     this->cache_context = 0;
-#if !defined(HAVE_QT5_OPENGL)
-    this->pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
-#else
     this->pbuffer = false;
-#endif
 }
 
 /*!
@@ -560,6 +556,9 @@ SoQtOffscreenRenderer::makePixelBuffer(int width, int height, int samples)
     viewport.setWindowSize(width, height);
 
     QGLFormat fmt;
+    //With enabled alpha a transparent background is supported but
+    //at the same time breaks semi-transparent models
+    //fmt.setAlpha(true);
     if (samples > 0) {
         fmt.setSampleBuffers(true);
         fmt.setSamples(samples);
@@ -587,9 +586,13 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     QtGLFramebufferObjectFormat fmt;
     fmt.setSamples(samples);
     fmt.setAttachment(QtGLFramebufferObject::Depth);
+    //With enabled alpha a transparent background is supported but
+    //at the same time breaks semi-transparent models
 #if defined(HAVE_QT5_OPENGL)
+    //fmt.setInternalTextureFormat(GL_RGBA32F_ARB);
     fmt.setInternalTextureFormat(GL_RGB32F_ARB);
 #else
+    //fmt.setInternalTextureFormat(GL_RGBA);
     fmt.setInternalTextureFormat(GL_RGB);
 #endif
 #else
@@ -672,7 +675,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
     this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
 
 #if !defined(HAVE_QT5_OPENGL)
-    if (PRIVATE(this)->pbuffer) {
+    if (pixelbuffer) {
         pixelbuffer->doneCurrent();
     }
     else
@@ -754,14 +757,10 @@ void
 SoQtOffscreenRenderer::writeToImage (QImage& img) const
 {
 #if !defined(HAVE_QT5_OPENGL)
-    if (PRIVATE(this)->pbuffer) {
-        if (pixelbuffer)
-            img = pixelbuffer->toImage();
-    }
-    else {
-        if (framebuffer)
-            img = framebuffer->toImage();
-    }
+    if (pixelbuffer)
+        img = pixelbuffer->toImage();
+    else if (framebuffer)
+        img = framebuffer->toImage();
 #else
     img = this->glImage;
 #endif

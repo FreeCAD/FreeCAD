@@ -127,7 +127,7 @@ public:
         );
         initialize("The functions in this module allow working with mesh objects.\n"
                    "A set of functions are provided for reading in registered mesh\n"
-                   "file formats to either a new or exising document.\n"
+                   "file formats to either a new or existing document.\n"
                    "\n"
                    "open(string) -- Create a new document and a Mesh feature\n"
                    "                to load the file into the document.\n"

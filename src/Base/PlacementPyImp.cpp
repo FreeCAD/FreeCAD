@@ -229,16 +229,14 @@ PyObject* PlacementPy::inverse(PyObject * args)
     return new PlacementPy(new Placement(p));
 }
 
-PyObject* PlacementPy::isNull(PyObject *args)
+PyObject* PlacementPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
+    Base::Vector3d nullvec(0,0,0);
     Base::Vector3d pos = getPlacementPtr()->getPosition();
     Base::Rotation rot = getPlacementPtr()->getRotation();
-    Base::Vector3d nullvec(0,0,0);
-    Base::Rotation nullrot(0,0,0,1);
-    Base::Rotation nullrotinv(0,0,0,-1);
-    bool null = (pos == nullvec) & ((rot == nullrot) | (rot == nullrotinv));
+    bool null = (pos == nullvec) && (rot.isIdentity());
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 
@@ -278,8 +276,20 @@ void PlacementPy::setRotation(Py::Object arg)
     throw Py::TypeError("either Rotation or tuple of four floats expected");
 }
 
-PyObject *PlacementPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *PlacementPy::getCustomAttributes(const char* attr) const
 {
+    // for backward compatibility
+    if (strcmp(attr, "isNull") == 0) {
+        PyObject *w, *res;
+#if PY_MAJOR_VERSION >= 3
+        w = PyUnicode_InternFromString("isIdentity");
+#else
+        w = PyString_InternFromString("isIdentity");
+#endif
+        res = PyObject_GenericGetAttr(const_cast<PlacementPy *>(this), w);
+        Py_XDECREF(w);
+        return res;
+    }
     return 0;
 }
 

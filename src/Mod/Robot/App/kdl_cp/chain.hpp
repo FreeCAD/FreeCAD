@@ -28,7 +28,7 @@
 namespace KDL {
     /**
 	  * \brief This class encapsulates a <strong>serial</strong> kinematic
-	  * interconnection structure. It is build out of segments.
+	  * interconnection structure. It is built out of segments.
      *
      * @ingroup KinematicFamily
      */

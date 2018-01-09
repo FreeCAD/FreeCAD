@@ -32,7 +32,7 @@
 
 namespace AssemblyGui {
 
-//class for internal use to alllow access to protected functions of view provider part.
+//class for internal use to allow access to protected functions of view provider part.
 class AssemblyGuiExport ViewProviderConstraintInternal : public PartGui::ViewProviderPart {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintInternal);
@@ -84,7 +84,7 @@ public:
     //hide and show in the normal way
     virtual bool isShow(void) const;
     
-    //avoid unneeded context menu entrys
+    //avoid unneeded context menu entries
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
     //only flat lines supported

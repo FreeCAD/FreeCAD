@@ -42,7 +42,7 @@ public:
     DrawViewArch(void);
     virtual ~DrawViewArch();
 
-    App::PropertyLinkGlobal   Source;
+    App::PropertyLink         Source;
     App::PropertyBool         AllOn;
     App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
     App::PropertyBool         ShowHidden;
@@ -60,6 +60,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderArch";
     }
+    void Restore(Base::XMLReader &reader) override;
+
 
 protected:
     virtual void onChanged(const App::Property* prop);

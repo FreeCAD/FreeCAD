@@ -51,7 +51,7 @@ Strip comments and white spaces
 Add file name in brackets limited to 8 alpha numeric no spaces all caps as first line in file
 Change Q to K For depth of peck on G83
 Fix tool change
-Limit comments length and characters to Uppercase, alpha numeric and spaces add / prior to coments
+Limit comments length and characters to Uppercase, alpha numeric and spaces add / prior to comments
 
 import linuxcnc_post
 linuxcnc_post.export(object,"/path/to/file.ncc","")

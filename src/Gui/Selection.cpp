@@ -1400,8 +1400,12 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
      "isSelected(object) -- Check if a given object is selected"},
-    {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, 1,
-     "countObjectsOfType(string, [string], resolve=True) -- Get the number of selected objects\n"
+    {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
+     "getPreselection() -- Get preselected object"},
+    {"clearPreselection",   (PyCFunction) SelectionSingleton::sRemPreselection, METH_VARARGS,
+     "clearPreselection() -- Clear the preselection"},
+    {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, METH_VARARGS,
+     "countObjectsOfType(string, [string]) -- Get the number of selected objects\n"
      "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
@@ -1621,6 +1625,25 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
         return NULL;                             // NULL triggers exception
 
     Selection().enablePickedList(PyObject_IsTrue(enable));
+    Py_Return;
+}
+
+PyObject *SelectionSingleton::sGetPreselection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const SelectionChanges& sel = Selection().getPreselection();
+    SelectionObject obj(sel);
+    return obj.getPyObject();
+}
+
+PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    Selection().rmvPreselect();
     Py_Return;
 }
 

@@ -131,7 +131,7 @@ template<> void _class_::init(void){\
  * 
  * Extensions are like every other FreeCAD object and based on properties. All information storage 
  * and persistence should be achieved by use of those. Additional any number of methods can be 
- * added to provide funtionality around the properties. There are 3 samll difference to normal objects:
+ * added to provide functionality around the properties. There are 3 small difference to normal objects:
  * 1. They must be derived from Extension class
  * 2. Properties must be handled with special extension macros
  * 3. Extensions must be initialised
@@ -159,7 +159,7 @@ template<> void _class_::init(void){\
  * This means one should carefully design the API and make only necessary methods public or protected.
  * Every internal method should be private.
  * 
- * The automatic availibility of methods in the class does not hold for the python interface, only 
+ * The automatic availability of methods in the class does not hold for the python interface, only 
  * for c++ classes. This is like every where else in FreeCAD, there is no automatic creation of python 
  * API from c++ classes. Hence the extension creator must also create a custom python object of its 
  * extension, which works exactly like the normal FreeCAD python object workflow. There is nothing 

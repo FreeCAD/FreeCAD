@@ -119,6 +119,8 @@ private:
     static SoFullPath * currenthighlight;
     SoFullPath * detailPath;
 
+    SbBool setPreSelection;
+
     // -1 = not handled, 0 = not selected, 1 = selected
     int32_t preSelection;
     SoColorPacker colorpacker;

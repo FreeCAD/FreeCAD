@@ -21,7 +21,7 @@
 # ***************************************************************************
 from __future__ import print_function
 
-from importToolsFem import \
+from .importToolsFem import \
     get_FemMeshObjectDimension,\
     get_FemMeshObjectElementTypes,\
     get_MaxDimElementFromList,\
@@ -171,6 +171,7 @@ def write_fenics_mesh_scalar_cellfunctions(name, cell_array, attributenode, enco
         dataitem.text = numpy_array_to_str(cell_array)
     elif encoding == ENCODING_HDF5:
         pass
+
 
 """
 Example: mesh with two topologies and one mesh function for the facet one

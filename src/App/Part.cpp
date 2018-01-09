@@ -92,7 +92,7 @@ PyObject *Part::getPyObject()
 
 // Python feature ---------------------------------------------------------
 
-// Not quit sure yet makeing Part derivable in Python is good Idea!
+// Not quite sure yet making Part derivable in Python is good Idea!
 // JR 2014
 
 //namespace App {

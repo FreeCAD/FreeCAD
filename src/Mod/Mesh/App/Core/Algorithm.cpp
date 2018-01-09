@@ -932,12 +932,12 @@ void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Bas
     MeshAlgorithm cToolAlg(rToolMesh);
 
     // To speed up the algorithm we use the grid built up from the associated mesh. For each grid
-    // element we check whether it lies completely inside or outside the toolmesh or even intersect
+    // element we check whether it lies completely inside or outside the toolmesh or even intersects
     // with the toolmesh. So we can reduce the number of facets with further tests dramatically.
     // If the grid box is outside the toolmesh all the facets inside can be skipped. If the grid
     // box is inside the toolmesh all facets are stored with no further tests because they must
-    // also lie inside the toolmesh. Finally, if the grid box intersect with the toolmesh we must
-    // also check for each whether it intersect we the toolmesh as well.
+    // also lie inside the toolmesh. Finally, if the grid box intersects with the toolmesh we must
+    // also check for each whether it intersects with the toolmesh as well.
     std::vector<unsigned long> aulInds;
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         int ret = cToolAlg.Surround(clGridIter.GetBoundBox(), rcDir);
@@ -947,15 +947,15 @@ void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Bas
             // these facets can be removed without more checks
             clGridIter.GetElements(raclCutted);
         } 
-        // the box intersect with toolmesh
+        // the box intersects with toolmesh
         else if (ret == 0) {
-            // these facets must be tested for intersectons with the toolmesh
+            // these facets must be tested for intersections with the toolmesh
             clGridIter.GetElements(aulInds);
         }
         // the box is outside the toolmesh but this could still mean that the triangles
         // inside the grid intersect with the toolmesh
         else if (ret == -1) {
-            // these facets must be tested for intersectons with the toolmesh
+            // these facets must be tested for intersections with the toolmesh
             clGridIter.GetElements(aulInds);
         }
     }

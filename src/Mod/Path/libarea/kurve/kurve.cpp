@@ -321,7 +321,7 @@ namespace geoff_geometry {
 		// returns the near point to span from p 
 		if(this->dir == LINEAR) {
 			double t;
-			t = (Vector2d(this->p0, p) * this->vs);		// t parametised 0 - line length
+			t = (Vector2d(this->p0, p) * this->vs);		// t parametrised 0 - line length
 			return this->vs * t + this->p0;
 		} else {
 			double r = p.Dist(this->pc);

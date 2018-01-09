@@ -143,6 +143,7 @@ SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     //
 SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::ExprBasedConstrDimColor     (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
 SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
@@ -2697,7 +2698,10 @@ void ViewProviderSketch::updateColor(void)
         else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                l->textColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+
+                l->textColor = (getSketchObject()->constraintHasExpression(i) ? ExprBasedConstrDimColor: 
+                                        (constraint->isDriving ? ConstrDimColor : NonDrivingConstrDimColor));
+
             } else if (hasMaterial) {
                 m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
             }
@@ -4716,18 +4720,23 @@ Restart:
                                         p0 = SbVec3f(x,y,0);
                                     }
                                 }
-                            } else {//angle-via-point
+
+                                range = Constr->getValue(); // WYSIWYG
+                                startangle = atan2(dir1.y,dir1.x);
+                            }
+                            else {//angle-via-point
                                 Base::Vector3d p = getSketchObject()->getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
                                 p0 = SbVec3f(p.x, p.y, 0);
                                 dir1 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x, p.y);
                                 dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
                                 dir2 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
                                 dir2.RotateZ(-M_PI/2);
+
+                                startangle = atan2(dir1.y,dir1.x);
+                                range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
+                                          dir1.x*dir2.x+dir1.y*dir2.y);
                             }
 
-                            startangle = atan2(dir1.y,dir1.x);
-                            range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
-                                          dir1.x*dir2.x+dir1.y*dir2.y);
                             endangle = startangle + range;
 
                         } else if (Constr->First != Constraint::GeoUndef) {
@@ -5144,6 +5153,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
+    Gui::Selection().rmvPreselect();
 
     // create the container for the additional edit data
     assert(!edit);
@@ -5225,7 +5235,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // set non-driving constraint color
     color = (unsigned long)(NonDrivingConstrDimColor.getPackedValue());
     color = hGrp->GetUnsigned("NonDrivingConstrDimColor", color);
-    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);    
+    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
+    ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+
     // set the external geometry color
     color = (unsigned long)(CurveExternalColor.getPackedValue());
     color = hGrp->GetUnsigned("ExternalColor", color);

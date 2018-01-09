@@ -1389,7 +1389,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                         if dxfUseStandardSize and draftui:
                             newob.ViewObject.FontSize = draftui.fontsize
                         else:
-                            st = vec(rawValue(dim,3))
+                            st = rawValue(dim,3)
                             size = getdimheight(st) or 1
                             newob.ViewObject.FontSize = float(size)*TEXTSCALING
     else:

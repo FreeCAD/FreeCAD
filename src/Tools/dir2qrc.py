@@ -9,7 +9,7 @@ Usage:
    
 Options:
  -v, --verbose            print out all files collected
- -o  --out-file=FILENAME  use this file name for output, default resorces.qrc
+ -o  --out-file=FILENAME  use this file name for output, default resources.qrc
  -d, --directory=DIRNAME  directory to search, default PWD
  -h, --help               print this help message
  

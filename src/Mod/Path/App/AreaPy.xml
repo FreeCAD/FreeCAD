@@ -15,7 +15,7 @@
       <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
       <UserDocu>FreeCAD python wrapper of libarea\n
 Path.Area(key=value ...)\n
-The constuctor accepts the same parameters as setParams(...) to configure the object
+The constructor accepts the same parameters as setParams(...) to configure the object
 All arguments are optional.</UserDocu>
     </Documentation>
     <Methode Name="add" Keyword='true'>

@@ -187,8 +187,8 @@ class Machine(BaseTask):
         self._confTasks()
         self._isReset = False
         self._pendingState = self.state
-        while (not self.aborted and not self.failed
-                and self._pendingState <= self.target):
+        while (not self.aborted and not self.failed and
+                self._pendingState <= self.target):
             task = self._getTask(self._pendingState)
             self._runTask(task)
             self.report.extend(task.report)
@@ -368,8 +368,8 @@ class _DocObserver(object):
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
-            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject")
-                    and hasattr(o, "Group") and obj in o.Group):
+            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject") and
+                    hasattr(o, "Group") and obj in o.Group):
                 if o in _machines:
                     _machines[o].reset()
 

@@ -84,10 +84,18 @@
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
-					returns True if the rotation equals the unity matrix
+                    returns True if all Q values are zero
 				</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="isIdentity" Const="true">
+            <Documentation>
+                <UserDocu>
+                    isIdentity() -> Bool
+                    returns True if the rotation equals the unity matrix
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Attribute Name="Q" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation elements (as quaternion)</UserDocu>

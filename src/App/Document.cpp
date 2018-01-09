@@ -1316,7 +1316,7 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
     ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the the name of the company");
+    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the name of the company");
     ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
     ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
     ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
@@ -1943,7 +1943,7 @@ bool Document::save (void)
 void Document::restore (bool delaySignal)
 {
     // clean up if the document is not empty
-    // !TODO mind exeptions while restoring!
+    // !TODO mind exceptions while restoring!
     clearUndos();
     // first notify the objects to being deleted and then delete them in a second loop (#0002521)
     // FIXME: To delete every object individually is inefficient. Add a new signal 'signalClear'
@@ -2466,7 +2466,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
         if (recomputeList.find(Cur) != recomputeList.end() ||
                 Cur->ExpressionEngine.depsAreTouched()) {
             if ( _recomputeFeature(Cur)) {
-                // if somthing happen break execution of recompute
+                // if something happened break execution of recompute
                 d->vertexMap.clear();
                 return -1;
             }
@@ -2549,7 +2549,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
         if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
             objectCount++;
             if (_recomputeFeature(*objIt)) {
-                // if something happen break execution of recompute
+                // if something happened break execution of recompute
                 return -1;
             }
             else{
@@ -2793,7 +2793,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 #ifndef FC_DEBUG
     catch (...) {
         Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Feat->getNameInDocument());
-        _RecomputeLog.push_back(new DocumentObjectExecReturn("Unknown exeption!"));
+        _RecomputeLog.push_back(new DocumentObjectExecReturn("Unknown exception!"));
         Feat->setError();
         return true;
     }
@@ -2872,7 +2872,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
     d->objectArray.push_back(pcObject);
-    // insert in the adjacence list and referenc through the ConectionMap
+    // insert in the adjacence list and reference through the ConectionMap
     //_DepConMap[pcObject] = add_vertex(_DepList);
 
     // If we are restoring, don't set the Label object now; it will be restored later. This is to avoid potential duplicate

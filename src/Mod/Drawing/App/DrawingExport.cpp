@@ -436,7 +436,7 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& o
         }
         out << "\" />" << endl;
     } else if (c.GetType() == GeomAbs_Line) {
-        //BRep_Tool::Polygon3D assumes the edge has polygon representation - ie already been "tesselated"
+        //BRep_Tool::Polygon3D assumes the edge has polygon representation - ie already been "tessellated"
         //this is not true for all edges, especially "floating edges"
         double f = c.FirstParameter();
         double l = c.LastParameter();

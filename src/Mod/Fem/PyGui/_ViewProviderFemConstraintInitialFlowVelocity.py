@@ -58,7 +58,7 @@ class _TaskPanel(object):
     def __init__(self, obj):
         self._obj = obj
         self._paramWidget = Gui.PySideUic.loadUi(
-            App.getHomePath() + "Mod/Fem/PyGui/TaskPanelFemInitialFlowVelocity.ui")
+            App.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
         self._initParamWidget()
         self.form = [self._paramWidget]
         analysis = FemUtils.findAnalysisOfMember(obj)

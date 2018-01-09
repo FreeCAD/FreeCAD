@@ -347,7 +347,7 @@ void ViewProviderScattered::attach(App::DocumentObject* pcObj)
     pcHighlight->documentName = pcObj->getDocument()->getName();
     pcHighlight->subElementName = "Main";
 
-    // Hilight for selection
+    // Highlight for selection
     pcHighlight->addChild(pcPointsCoord);
     pcHighlight->addChild(pcPoints);
 
@@ -508,7 +508,7 @@ void ViewProviderStructured::attach(App::DocumentObject* pcObj)
     pcHighlight->documentName = pcObj->getDocument()->getName();
     pcHighlight->subElementName = "Main";
 
-    // Hilight for selection
+    // Highlight for selection
     pcHighlight->addChild(pcPointsCoord);
     pcHighlight->addChild(pcPoints);
 

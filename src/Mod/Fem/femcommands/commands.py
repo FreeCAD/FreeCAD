@@ -47,7 +47,7 @@ class _CommandFemAnalysis(CommandManager):
         use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
         use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
         if use_old_solver_frame_work and not use_new_solver_frame_work:
-            FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixOld(FreeCAD.ActiveDocument)")
+            FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
         else:
             FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
@@ -565,12 +565,12 @@ class _CommandFemSolverCalculix(CommandManager):
             FreeCADGui.addModule("ObjectsFem")
             FreeCADGui.addModule("FemGui")
             if has_nonlinear_material_obj:
-                FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculixOld(FreeCAD.ActiveDocument)")
+                FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
                 FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
                 FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(solver)")
             else:
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculixOld(FreeCAD.ActiveDocument))")
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))")
         else:
             FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
             FreeCADGui.addModule("ObjectsFem")
@@ -629,7 +629,7 @@ class _CommandFemSolverRun(CommandManager):
             if ret_code == 0:
                 self.fea.load_results()
             else:
-                print ("CalculiX failed ccx finished with error {}".format(ret_code))
+                print("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = self.selobj
         if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":

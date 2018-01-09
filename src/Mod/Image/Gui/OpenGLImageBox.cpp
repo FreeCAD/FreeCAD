@@ -200,7 +200,7 @@ void GLImageBox::drawImage()
     if (_image.hasValidData() == false)
         return;
 
-    // Gets the size of the diplayed image area using the current display settings 
+    // Gets the size of the displayed image area using the current display settings 
     // (in units of image pixels)
     int dx, dy;
     getDisplayedImageAreaSize(dx, dy);
@@ -265,7 +265,7 @@ void GLImageBox::drawImage()
     }
 }
 
-// Gets the size of the diplayed image area using the current display settings 
+// Gets the size of the displayed image area using the current display settings 
 // (in units of image pixels)
 void GLImageBox::getDisplayedImageAreaSize(int &dx, int &dy)
 {

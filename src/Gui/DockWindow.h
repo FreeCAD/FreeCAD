@@ -60,7 +60,7 @@ public:
    */
   virtual ~DockWindow();
 
-  /** @name methods to overrride 
+  /** @name methods to override 
    */
   //@{
   /// get called when the document is updated

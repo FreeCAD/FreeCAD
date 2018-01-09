@@ -37,7 +37,8 @@ namespace PartDesignGui {
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters : public PartDesignGui::TaskFeatureParameters, public Gui::SelectionObserver
+class TaskSketchBasedParameters : public PartDesignGui::TaskFeatureParameters,
+                                  public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -51,7 +52,10 @@ protected:
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
     void exitSelectionMode();
-    const QByteArray onFaceName(const QString& text);
+    QVariant setUpToFace(const QString& text);
+    /// Try to find the name of a feature with the given label.
+    /// For faster access a suggeted name can be tested, first.
+    QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
     static QString getFaceReference(const QString& obj, const QString& sub);
 };

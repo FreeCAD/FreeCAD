@@ -377,7 +377,7 @@ void PovTools::transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec
         return;
     }
 
-    // geting the transformation of the shape/face
+    // getting the transformation of the shape/face
     gp_Trsf myTransf;
     Standard_Boolean identity = true;
     if (!aLoc.IsIdentity())  {
@@ -386,7 +386,7 @@ void PovTools::transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec
     }
 
     Standard_Integer i;
-    // geting size and create the array
+    // getting size and create the array
     nbNodesInFace = aPoly->NbNodes();
     nbTriInFace = aPoly->NbTriangles();
     *vertices = new gp_Vec[nbNodesInFace];

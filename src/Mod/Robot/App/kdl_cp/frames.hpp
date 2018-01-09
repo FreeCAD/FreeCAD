@@ -274,7 +274,7 @@ public:
      Suppose V2 = R*V,                                    (1)
      V is expressed in frame B
      V2 is expressed in frame A
-     This matrix R consists of 3 collumns [ X,Y,Z ],
+     This matrix R consists of 3 columns [ X,Y,Z ],
      X,Y, and Z contain the axes of frame B, expressed in frame A
      Because of linearity expr(1) is valid.
  \endverbatim

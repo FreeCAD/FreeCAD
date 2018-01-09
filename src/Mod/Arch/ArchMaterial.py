@@ -64,7 +64,8 @@ def getMaterialContainer():
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","MaterialContainer")
     obj.Label = "Materials"
     _ArchMaterialContainer(obj)
-    _ViewProviderArchMaterialContainer(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderArchMaterialContainer(obj.ViewObject)
     return obj
 
 

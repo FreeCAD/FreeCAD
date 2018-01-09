@@ -25,7 +25,7 @@ flt=['__init__.py', '_rc.py', 'CxImage',
     # tritritest.h has no licensing information, but Tomas Moller replied
     # the following, when asked about it:
     #
-    # The code is is free to use for anyone and any projects, but I give no
+    # The code is free to use for anyone and any projects, but I give no
     # warranties.
     #
     # See: http://anonscm.debian.org/gitweb/?p=debian-science/packages/freecad.git;a=blob;f=debian/copyright

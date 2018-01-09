@@ -180,13 +180,13 @@
           <rdf:Bag>
             <rdf:li>cube</rdf:li>
             <rdf:li>mesh</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
             <rdf:li>arrow</rdf:li>
             <rdf:li>file</rdf:li>
             <rdf:li>document</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Tesselated cube mesh with arrow pointing towards document</dc:description>
+        <dc:description>Tessellated cube mesh with arrow pointing towards document</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>

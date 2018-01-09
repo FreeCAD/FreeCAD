@@ -58,7 +58,7 @@
 #include <Gui/SoFCUnifiedSelection.h>
 
 
-#define ARC_MIN_SEGMENTS   20.0  // minimum # segements to interpolate an arc
+#define ARC_MIN_SEGMENTS   20.0  // minimum # segments to interpolate an arc
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846

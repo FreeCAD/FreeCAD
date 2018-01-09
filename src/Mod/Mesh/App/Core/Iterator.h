@@ -59,7 +59,7 @@ public:
 
   /** @name Transformation */
   //@{
-  /// Transforms the returned facet points with the current tranformation
+  /// Transforms the returned facet points with the current transformation
   inline void Transform( const Base::Matrix4D& rclTrf );
   //@}
 
@@ -180,7 +180,7 @@ public:
  
   /** @name Transformation */
   //@{
-  /// Transforms the returned points with the current tranformation
+  /// Transforms the returned points with the current transformation
   inline void Transform( const Base::Matrix4D& rclTrf );
   //@}
  

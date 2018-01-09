@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import femmesh.meshtools as FemMeshTools
-import feminterface.importZ88Mesh as importZ88Mesh
+import feminout.importZ88Mesh as importZ88Mesh
 import FemInputWriter
 
 
@@ -228,6 +228,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         f = open(solver_parameter_file_path, 'w')
         f.write(z88_dyn_template)
         f.close()
+
 
 # for solver parameter file Z88man.txt
 z88_man_template = '''DYNAMIC START

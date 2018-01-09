@@ -105,7 +105,7 @@ private:
 // Main simplification function 
 //
 // target_count  : target nr. of triangles
-// agressiveness : sharpness to increase the threashold.
+// agressiveness : sharpness to increase the threshold.
 //                 5..8 are good numbers
 //                 more iterations yield higher quality
 //

@@ -155,7 +155,7 @@ referencing subobject.
     </Attribute>
     <Attribute Name="OutListRecursive" ReadOnly="true">
       <Documentation>
-        <UserDocu>A list of all objects this object links to recursivly.</UserDocu>
+        <UserDocu>A list of all objects this object links to recursively.</UserDocu>
       </Documentation>
       <Parameter Name="OutListRecursive" Type="List"/>
     </Attribute>
@@ -167,7 +167,7 @@ referencing subobject.
     </Attribute>
     <Attribute Name="InListRecursive" ReadOnly="true">
       <Documentation>
-        <UserDocu>A list of all objects which link to this object recursivly.</UserDocu>
+        <UserDocu>A list of all objects which link to this object recursively.</UserDocu>
       </Documentation>
       <Parameter Name="InListRecursive" Type="List"/>
     </Attribute>

@@ -673,7 +673,7 @@ void MDIViewPage::print(QPrinter* printer)
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
-            tr("Can't open file '%1' for writing.").arg(printer->outputFileName()));
+            tr("Can't open file %1 for writing.").arg(printer->outputFileName()));
         qApp->restoreOverrideCursor();
         return;
     }
@@ -914,7 +914,7 @@ void MDIViewPage::clearSelection()
   blockSelection(false);
 }
 
-//!Update QGVPage's selection based on Selection made outside Drawing Interace
+//!Update QGVPage's selection based on Selection made outside Drawing Interface
 //invoked from VPP
 void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
 {

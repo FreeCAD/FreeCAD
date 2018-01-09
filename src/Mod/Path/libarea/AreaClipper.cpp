@@ -71,7 +71,7 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 				phit=-(ang2-ang1);
 		}
 
-		//what is the delta phi to get an accurancy of aber
+		//what is the delta phi to get an accuracy of aber
 		double radius = sqrt(dx*dx + dy*dy);
 		dphi=2*acos((radius-CArea::m_accuracy)/radius);
 

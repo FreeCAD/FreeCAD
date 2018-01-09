@@ -46,6 +46,8 @@ Offset::Offset()
     ADD_PROPERTY_TYPE(Intersection,(false),"Offset",App::Prop_None,"Intersection");
     ADD_PROPERTY_TYPE(SelfIntersection,(false),"Offset",App::Prop_None,"Self Intersection");
     ADD_PROPERTY_TYPE(Fill,(false),"Offset",App::Prop_None,"Fill offset");
+
+    Source.setScope(App::LinkScope::Global);
 }
 
 Offset::~Offset()

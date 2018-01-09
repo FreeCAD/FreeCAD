@@ -143,7 +143,7 @@ void UnitsApi::setSchema(UnitSystem s)
         actSystem = SI1;
     }
 
-    UserPrefSystem->setSchemaUnits(); // if necesarry a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
+    UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
 

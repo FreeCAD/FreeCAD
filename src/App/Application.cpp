@@ -1220,7 +1220,7 @@ void segmentation_fault_handler(int sig)
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
 #if !defined(_DEBUG)
-            throw Base::AbnormalProgramTermination("Break signal occoured");
+            throw Base::AbnormalProgramTermination("Break signal occurred");
 #endif
             break;
         default:
@@ -1794,7 +1794,7 @@ void Application::runApplication()
         Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
-        // geting out
+        // getting out
         Console().Log("Exiting on purpose\n");
     }
     else {

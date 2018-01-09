@@ -118,7 +118,7 @@ void PyException::ReportException (void) const
 SystemExitException::SystemExitException()
 {
     // Set exception message and code based upon the pthon sys.exit() code and/or message 
-    // based upon the the following sys.exit() call semantics.
+    // based upon the following sys.exit() call semantics.
     //
     // Invocation       |  _exitCode  |  _sErrMsg
     // ---------------- +  ---------  +  --------

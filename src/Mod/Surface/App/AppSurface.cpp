@@ -32,6 +32,7 @@
 #include "FeatureSewing.h"
 #include "FeatureCut.h"
 #include "FeatureGeomFillSurface.h"
+#include "FeatureExtend.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -78,6 +79,7 @@ PyMOD_INIT_FUNC(Surface)
     Surface::Sewing          ::init();
     Surface::Cut             ::init();
     Surface::GeomFillSurface ::init();
+    Surface::Extend          ::init();
 
     PyMOD_Return(mod);
 }

@@ -175,7 +175,7 @@ void Extension::extensionGetPropertyMap(std::map< std::string, Property* >& Map)
 void Extension::initExtensionSubclass(Base::Type& toInit, const char* ClassName, const char* ParentName, 
                              Base::Type::instantiationMethod method) {
 
-    // dont't init twice!
+    // don't init twice!
     assert(toInit == Base::Type::badType());
     // get the parent class
     Base::Type parentType(Base::Type::fromName(ParentName)); 

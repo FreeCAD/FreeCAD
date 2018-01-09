@@ -371,7 +371,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
         // The left mouse button has been released right now but
-        // we want to avoid that the event is procesed elsewhere
+        // we want to avoid that the event is processed elsewhere
         if (this->lockButton1) {
             this->lockButton1 = false;
             processed = true;

@@ -168,7 +168,7 @@ class FemTest(unittest.TestCase):
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
         frd_file = test_file_dir + 'Flow1D_thermomech.frd'
-        import feminterface.importCcxFrdResults as importCcxFrdResults
+        import feminout.importCcxFrdResults as importCcxFrdResults
         frd_content = importCcxFrdResults.readResult(frd_file)
 
         # do something with the read data
@@ -386,7 +386,7 @@ class FemTest(unittest.TestCase):
 
         analysis.addObject(ObjectsFem.makeResultMechanical(doc))
 
-        analysis.addObject(ObjectsFem.makeSolverCalculixOld(doc))
+        analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
         sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
@@ -407,8 +407,13 @@ class FemTest(unittest.TestCase):
 
         # collect all Python modules in Fem
         pymodules += collect_python_modules('')  # Fem main dir
+        pymodules += collect_python_modules('feminout')
+        pymodules += collect_python_modules('femmesh')
+        pymodules += collect_python_modules('femresult')
+        pymodules += collect_python_modules('femtest')
         pymodules += collect_python_modules('PyObjects')
         if FreeCAD.GuiUp:
+            pymodules += collect_python_modules('femcommands')
             pymodules += collect_python_modules('PyGui')
         pymodules += collect_python_modules('femsolver')
         pymodules += collect_python_modules('femsolver/elmer')
@@ -453,7 +458,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
@@ -529,7 +534,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Setting analysis type to \'static\"')
         fea.set_analysis_type("static")
-        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting anlysis type to \'static\' failed")
+        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting analysis type to \'static\' failed")
 
         fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, mesh_name))
         error = fea.write_inp_file()
@@ -570,7 +575,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fea.reset_all()
         fcc_print('Setting analysis type to \'frequency\"')
         fea.set_analysis_type("frequency")
-        self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting anlysis type to \'frequency\' failed")
+        self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting analysis type to \'frequency\' failed")
 
         fcc_print('Setting up working directory to {} in order to write frequency calculations'.format(frequency_analysis_dir))
         fea.setup_working_dir(frequency_analysis_dir)
@@ -699,7 +704,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -773,7 +778,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Setting analysis type to \'thermomech\"')
         fea.set_analysis_type("thermomech")
-        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting anlysis type to \'thermomech\' failed")
+        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting analysis type to \'thermomech\' failed")
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
@@ -854,7 +859,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
         fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixOld(self.active_doc, 'CalculiX')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'thermomech'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = True
@@ -1021,7 +1026,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Setting analysis type to \'thermomech\"')
         fea.set_analysis_type("thermomech")
-        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting anlysis type to \'thermomech\' failed")
+        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting analysis type to \'thermomech\' failed")
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
@@ -1299,13 +1304,14 @@ def create_test_results():
     shutil.copyfile(dat_result_file, dat_Flow1D_thermomech_test_result_file)
     print('Flow1D thermomech results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
+
 '''
 update the results of FEM unit tests:
 
 import TestFem
 TestFem.create_test_results()
 
-copy result files from your_temp_directory/FEM_unittests/   test directories into the src dirctory
+copy result files from your_temp_directory/FEM_unittests/   test directories into the src directory
 compare the results with git difftool
 run make
 start FreeCAD and run FEM unit test

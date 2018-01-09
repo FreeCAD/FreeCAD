@@ -444,6 +444,9 @@ class Component:
         return None
         
     def rebase(self,shape):
+        """returns a shape that is a copy of the original shape
+        but centered on the (0,0) origin, and a placement that is needed to
+        reposition that shape to its original location/orientation"""
         import DraftGeomUtils,math
         if not isinstance(shape,list):
             shape = [shape]
@@ -453,13 +456,13 @@ class Component:
             v = shape[0].BoundBox.Center
         n = DraftGeomUtils.getNormal(shape[0])
         r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
-        if round(r.Angle,8) == round(math.pi,8):
+        if round(abs(r.Angle),8) == round(math.pi,8):
             r = FreeCAD.Rotation()
         shapes = []
         for s in shape:
             s = s.copy()
             s.translate(v.negative())
-            s.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
+            s.rotate(FreeCAD.Vector(0,0,0),r.Axis,math.degrees(-r.Angle))
             shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v
@@ -491,7 +494,7 @@ class Component:
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
-            if placement.isNull():
+            if placement.isIdentity():
                 placement = None
             else:
                 placement = FreeCAD.Placement(placement)
@@ -625,19 +628,19 @@ class Component:
                         else:
                             shape = r
                         obj.Shape = self.spread(obj,shape,placement)
-                        if not placement.isNull():
+                        if not placement.isIdentity():
                             obj.Placement = placement
                     else:
                         if allownosolid:
                             obj.Shape = self.spread(obj,shape,placement)
-                            if not placement.isNull():
+                            if not placement.isIdentity():
                                 obj.Placement = placement
                         else:
                             FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                 else:
                     if allowinvalid:
                         obj.Shape = self.spread(obj,shape,placement)
-                        if not placement.isNull():
+                        if not placement.isIdentity():
                             obj.Placement = placement
                     else:
                         FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")

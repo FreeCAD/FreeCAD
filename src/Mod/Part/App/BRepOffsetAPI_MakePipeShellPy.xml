@@ -39,7 +39,7 @@
 				<UserDocu>
 					setBiNormalMode(direction)
 					Sets a fixed BiNormal direction to perform the sweeping.
-					Angular relations beetween the section(s) and the BiNormal direction will be constant.
+					Angular relations between the section(s) and the BiNormal direction will be constant.
 				</UserDocu>
 			</Documentation>
 		</Methode>

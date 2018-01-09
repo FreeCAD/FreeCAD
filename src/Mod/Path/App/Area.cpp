@@ -440,11 +440,8 @@ void Area::add(const TopoDS_Shape &shape,short op) {
     if(op!=OperationCompound)
         toClipperOp(op);
 
-    bool haveSolid = false;
-    for(TopExp_Explorer it(shape, TopAbs_SOLID);it.More();) {
-        haveSolid = true;
-        break;
-    }
+    bool haveSolid = TopExp_Explorer(shape, TopAbs_SOLID).More();
+
     //TODO: shall we support Shells?
     if((!haveSolid && myHaveSolid) ||
         (haveSolid && !myHaveSolid && !myShapes.empty()))
@@ -645,11 +642,12 @@ struct WireJoiner {
 
     //This algorithm tries to join connected edges into wires
     //
-    //tol>Precision::SquareConfusion() is used to join points that are close
-    //but do not coincide with a line segment. The close points my the results
-    //of rounding issue.
+    //tol*tol>Precision::SquareConfusion() can be used to join points that are
+    //close but do not coincide with a line segment. The close points may be
+    //the results of rounding issue.
     //
     void join(double tol) {
+        tol = tol*tol;
         while(edges.size()) {
             auto it = edges.begin();
             BRepBuilderAPI_MakeWire mkWire;
@@ -662,7 +660,7 @@ struct WireJoiner {
                 while(edges.size()) {
                     std::vector<VertexInfo> ret;
                     ret.reserve(1);
-                    const gp_Pnt &pt = idx?pstart:pend;
+                    const gp_Pnt &pt = idx==0?pstart:pend;
                     vmap.query(bgi::nearest(pt,1),std::back_inserter(ret));
                     assert(ret.size()==1);
                     double d = ret[0].pt().SquareDistance(pt);
@@ -1677,7 +1675,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
                 if(s.IsNull()) continue;\
                 builder.Add(compound,s);\
             }\
-            for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)\
+            if(TopExp_Explorer(compound,TopAbs_EDGE).More())\
                 return compound;\
             return TopoDS_Shape();\
         }\
@@ -1763,11 +1761,10 @@ TopoDS_Shape Area::getShape(int index) {
         FC_DURATION_LOG(d,"Thicken");
 
     // make sure the compound has at least one edge
-    for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();) {
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More()) {
         builder.Add(compound,areaPocket.makePocket(
                     -1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET)));
         myShape = compound;
-        break;
     }
     myShapeDone = true;
     FC_TIME_LOG(t,"total");
@@ -1816,7 +1813,7 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
     }
     if(thicken)
         FC_DURATION_LOG(d,"Thicken");
-    for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More())
         return compound;
     return TopoDS_Shape();
 }

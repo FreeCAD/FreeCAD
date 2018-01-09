@@ -59,13 +59,13 @@
  *
  * \section Motivation 
  *
- * FreeCAD Base::Console() is capable of outputing to different targets, and has
+ * FreeCAD Base::Console() is capable of outputting to different targets, and has
  * some basic enable/disable control of different types of logs. There is,
- * however, no easy to use logging facility for various FC modules.  This set of
- * helper macros and function is aimed to provide a unified logging (and timing)
+ * however, no easy way to use logging facility for various FC modules.  This set
+ * of helper macros and function is aimed to provide a unified logging (and timing)
  * interface.  The interface is mainly designed for C++ code.  Python code can
  * also take some advantage of log level control interface. The developer can
- * now leave their logging code permantly active in the source code without
+ * now leave their logging code permanently active in the source code without
  * impact on performance, and the log can be easily turned on/off dynamically
  * using Python console for debugging purpose, even in release build.
  *

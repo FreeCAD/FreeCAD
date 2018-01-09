@@ -242,7 +242,7 @@ void CoinRiftWidget::resizeGL(int width, int height) {
 void CoinRiftWidget::initializeGL()
 {
     makeCurrent();
-    // Infer hardware capabilites.
+    // Infer hardware capabilities.
 #ifdef USE_FRAMEBUFFER
     OVR::CAPI::GL::InitGLExtensions();
     if (OVR::CAPI::GL::glBindFramebuffer == NULL) {

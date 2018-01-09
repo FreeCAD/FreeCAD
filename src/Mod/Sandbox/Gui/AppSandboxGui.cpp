@@ -270,7 +270,7 @@ PyMOD_INIT_FUNC(SandboxGui)
         PyMOD_Return(0);
     }
 
-    // instanciating the commands
+    // instantiating the commands
     CreateSandboxCommands();
     SandboxGui::Workbench::init();
     SandboxGui::SoWidgetShape::initClass();

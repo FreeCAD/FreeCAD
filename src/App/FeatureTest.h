@@ -125,7 +125,7 @@ public:
   /// this property defines which kind of exceptio the feature throw on you
   App::PropertyInteger ExceptionType;
 
-  /// recalculate the Feature and throw an exeption
+  /// recalculate the Feature and throw an exception
   virtual DocumentObjectExecReturn *execute(void);
   /// returns the type name of the ViewProvider
   virtual const char* getViewProviderName(void) const {

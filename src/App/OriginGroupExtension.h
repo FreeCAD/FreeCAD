@@ -30,7 +30,7 @@ namespace App {
 class Origin;
 
 /**
- * Represents an abstact placeable group of objects with an associated Origin
+ * Represents an abstract placeable group of objects with an associated Origin
  */
 class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 {

@@ -44,7 +44,7 @@ class FemWorkbench (Workbench):
         # load the module
         import Fem
         import FemGui
-        import femcommand.commands
+        import femcommands.commands
 
     def GetClassName(self):
         return "FemGui::Workbench"

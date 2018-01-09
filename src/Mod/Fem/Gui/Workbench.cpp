@@ -93,8 +93,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
      Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
      mesh->setCommand("Mesh");
-     *mesh << "FEM_MeshNetgenFromShape"
-           << "FEM_MeshGmshFromShape"
+#ifdef FCWithNetgen
+     *mesh << "FEM_MeshNetgenFromShape";
+#endif
+     *mesh << "FEM_MeshGmshFromShape"
            << "Separator"
            << "FEM_MeshBoundaryLayer"
            << "FEM_MeshRegion"
@@ -205,8 +207,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
     mesh->setCommand("M&esh");
-    *mesh << "FEM_MeshNetgenFromShape"
-          << "FEM_MeshGmshFromShape"
+#ifdef FCWithNetgen
+     *mesh << "FEM_MeshNetgenFromShape";
+#endif
+     *mesh << "FEM_MeshGmshFromShape"
           << "Separator"
           << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
@@ -235,8 +239,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, results);
     results->setCommand("&Results");
     *results << "FEM_ResultsPurge"
-             << "FEM_ResultShow"
-             << "Separator"
+             << "FEM_ResultShow";
+
+#ifdef FC_USE_VTK
+    *results << "Separator"
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
              << "Separator"
@@ -248,6 +254,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostCreateLinearizedStressesFilter"
              << "Separator"
              << "FEM_PostCreateFunctions";
+#endif
 
     return root;
 }

@@ -49,7 +49,7 @@ except ImportError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, utf8_decode=False):
+    def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
                 context is typically a class name (e.g., "MyDialog")
@@ -118,6 +118,9 @@ class todo:
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
+                if sys.version_info.major < 3:
+                    if isinstance(name,unicode):
+                        name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
                     name = str(name)

@@ -72,6 +72,16 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     setFractionalScale(multiView->getScale());
     ui->cmbScaleType->setCurrentIndex(multiView->ScaleType.getValue());
+    
+    //Allow or prevent scale changing initially 
+    if (multiView->ScaleType.isValue("Custom"))	{
+        ui->sbScaleNum->setEnabled(true);
+        ui->sbScaleDen->setEnabled(true);
+    }
+    else {
+        ui->sbScaleNum->setEnabled(false);
+        ui->sbScaleDen->setEnabled(false);
+    }
 
     // Initially toggle view checkboxes if needed
     setupViewCheckboxes(true);
@@ -229,6 +239,10 @@ void TaskProjGroup::scaleTypeChanged(int index)
     if(blockUpdate)
         return;
 
+    //defaults to prevent scale changing 
+    ui->sbScaleNum->setEnabled(false);
+    ui->sbScaleDen->setEnabled(false);
+
     if(index == 0) {
         // Document Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
@@ -241,6 +255,9 @@ void TaskProjGroup::scaleTypeChanged(int index)
         // Custom Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
                                                                                              , "Custom");
+        ui->sbScaleNum->setEnabled(true);
+        ui->sbScaleDen->setEnabled(true);
+
         int a = ui->sbScaleNum->value();
         int b = ui->sbScaleDen->value();
         double scale = (double) a / (double) b;

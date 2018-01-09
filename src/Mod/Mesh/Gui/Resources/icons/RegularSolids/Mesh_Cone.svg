@@ -182,12 +182,12 @@
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
-        <dc:description>Tesselated conic mesh, lit from top</dc:description>
+        <dc:description>Tessellated conic mesh, lit from top</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>mesh</rdf:li>
             <rdf:li>cone</rdf:li>
-            <rdf:li>tesselated</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>

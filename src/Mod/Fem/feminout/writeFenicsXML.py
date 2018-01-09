@@ -30,7 +30,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Fenics Mesh XML writer for FEM workbench
 
 
-from importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList
+from .importToolsFem import get_FemMeshObjectDimension, get_FemMeshObjectElementTypes, get_MaxDimElementFromList
 from xml.etree import ElementTree as ET  # parsing xml files and exporting
 
 

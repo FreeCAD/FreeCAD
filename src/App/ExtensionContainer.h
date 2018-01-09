@@ -182,7 +182,7 @@ public:
     virtual void Save(Base::Writer& writer) const override;
     virtual void Restore(Base::XMLReader& reader) override;
     
-    //those methods save/restore the dynamic extenions without handling properties, which is something
+    //those methods save/restore the dynamic extensions without handling properties, which is something
     //done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);

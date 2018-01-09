@@ -688,7 +688,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"CloneOf"):
@@ -1094,7 +1094,7 @@ def toggleIfcBrepFlag(obj):
 
 def makeCompoundFromSelected(objects=None):
     """makeCompoundFromSelected([objects]): Creates a new compound object from the given
-    subobjects (faces, edges) or from the the selection if objects is None"""
+    subobjects (faces, edges) or from the selection if objects is None"""
     import FreeCADGui,Part
     so = []
     if not objects:

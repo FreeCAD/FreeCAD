@@ -427,8 +427,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 {
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
     // if we have conflicts we can forget about moving. However, there is the possibility that we
-    // need to do programatically moves of new geometry that has not been solved yet and that because
-    // they were programmetically generated won't generate a conflict. This is the case of Fillet for
+    // need to do programmatically moves of new geometry that has not been solved yet and that because
+    // they were programmatically generated won't generate a conflict. This is the case of Fillet for
     // example. This is why exceptionally, it may be required to update the sketch geometry to that of
     // of SketchObject upon moving. => use updateGeometry parameter = true then
     
@@ -1015,18 +1015,32 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId) &&
             !(toGeoId < 0 && vals[i]->Second <0) ) {
+            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
+            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
             Constraint *constNew = newVals[i]->clone();
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
+
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+                constNew->Type = Sketcher::Coincident;
+
             newVals[i] = constNew;
             changed.push_back(constNew);
         }
         else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
                  !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId) &&
                  !(toGeoId < 0 && vals[i]->First< 0)) {
+
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
+            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
+            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+                constNew->Type = Sketcher::Coincident;
+
             newVals[i] = constNew;
             changed.push_back(constNew);
         }
@@ -5823,6 +5837,15 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                         cntSuccess, cntToBeAffected);
 
     return cntSuccess;
+}
+
+bool SketchObject::constraintHasExpression(int constrid) const
+{
+    App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
+
+    App::PropertyExpressionEngine::ExpressionInfo expr_info = this->getExpression(spath);
+
+    return (expr_info.expression != 0);
 }
 
 

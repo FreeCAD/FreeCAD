@@ -67,7 +67,7 @@ App::Part* assertActivePart () {
 
     if ( !rv ) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-        rcCmdMgr.runCommandByName("PartDesign_Part");
+        rcCmdMgr.runCommandByName("Std_Part");
         rv = Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
         if ( !rv ) {
             QMessageBox::critical ( 0, QObject::tr( "Part creation failed" ),
@@ -99,8 +99,10 @@ CmdPartDesignBody::CmdPartDesignBody()
 void CmdPartDesignBody::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
+    // if user decides for old-style workflow then abort the command
+    if (PartDesignGui::assureLegacyWorkflow(getDocument()))
         return;
+
     App::Part *actPart = PartDesignGui::getActivePart ();
     App::Part* partOfBaseFeature = nullptr;
 
