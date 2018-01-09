@@ -32,7 +32,7 @@ if FreeCAD.GuiUp:
 
 
 class ViewProxy(object):
-    """Proxy for FemSolverElmers View Provider."""
+    """Proxy View Provider for Pythons base constraint."""
 
     def __init__(self, vobj):
         vobj.Proxy = self
