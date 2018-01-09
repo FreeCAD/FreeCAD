@@ -33,7 +33,7 @@ class _FemResultMechanical():
     """The Fem::_FemResultMechanical's Proxy python type, add result specific properties
     """
     def __init__(self, obj):
-        self.Type = "FemResultMechanical"
+        self.Type = "Fem::FemResultMechanical"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 

@@ -39,7 +39,7 @@ class _FemMeshGmsh():
     known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
 
     def __init__(self, obj):
-        self.Type = "FemMeshGmsh"
+        self.Type = "Fem::FemMeshGmsh"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 

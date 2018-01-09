@@ -32,7 +32,7 @@ class _FemMaterialMechanicalNonlinear:
     "The FemMaterialMechanicalNonlinear object"
     def __init__(self, obj):
         obj.Proxy = self
-        self.Type = "FemMaterialMechanicalNonlinear"
+        self.Type = "Fem::MaterialMechanicalNonlinear"
 
         obj.addProperty("App::PropertyLink", "LinearBaseMaterial", "Base", "Set the linear material the nonlinear builds upon.")
 

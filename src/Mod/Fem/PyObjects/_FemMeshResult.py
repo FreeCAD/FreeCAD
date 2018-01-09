@@ -33,7 +33,7 @@ class _FemMeshResult():
     """
 
     def __init__(self, obj):
-        self.Type = "FemMeshResult"
+        self.Type = "Fem::FemMeshResult"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 

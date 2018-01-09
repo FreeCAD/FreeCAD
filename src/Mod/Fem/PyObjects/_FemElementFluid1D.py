@@ -116,7 +116,7 @@ class _FemElementFluid1D:
         obj.InletFlowRateActive = False
         obj.OutletFlowRateActive = False
         obj.Proxy = self
-        self.Type = "FemElementFluid1D"
+        self.Type = "Fem::FemElementFluid1D"
 
     def execute(self, obj):
         return
