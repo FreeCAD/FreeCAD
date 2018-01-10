@@ -1286,8 +1286,8 @@ class SolverFrameWorkTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        # new solver frame work ccx solver
-        fcc_print('Checking FEM new solver for new solver frame work...')
+        # solver frame work ccx solver
+        fcc_print('Checking FEM solver for solver frame work...')
         solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
         solver_ccx2_object.GeometricalNonlinearity = 'linear'
         solver_ccx2_object.ThermoMechSteadyState = False
@@ -1300,7 +1300,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         analysis.addObject(solver_ccx2_object)
 
         fcc_print('Checking inpfile writing for solverframework_save_fc_file frame work...')
-        if not os.path.exists(solverframework_analysis_dir):  # new solver frameworkd does explicit not create a non existing directory
+        if not os.path.exists(solverframework_analysis_dir):  # solver frameworkd does explicit not create a non existing directory
             os.makedirs(solverframework_analysis_dir)
 
         fcc_print('machine_ccx')
@@ -1313,7 +1313,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         ret = compare_inp_files(static_analysis_inp_file, solverframework_analysis_dir + mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        # use new solver frame work elmer solver
+        # use solver frame work elmer solver
         solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
         self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
         analysis.addObject(solver_elmer_object)
