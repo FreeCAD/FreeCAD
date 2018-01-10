@@ -15,7 +15,7 @@
    id="svg5821"
    sodipodi:version="0.32"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="links.svg"
+   sodipodi:docname="LinkArray.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/Draft_wb_primitives/Draft_Array/Draft_Array_Ortho_16px.png"
@@ -197,9 +197,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.12"
-     inkscape:cx="17.730688"
-     inkscape:cy="53.821555"
+     inkscape:zoom="8.24"
+     inkscape:cx="-8.9932963"
+     inkscape:cy="55.262288"
      inkscape:current-layer="g3360"
      showgrid="true"
      inkscape:document-units="px"
@@ -292,7 +292,7 @@
          transform="matrix(1.2405632,0,0,1.2405632,-322.70498,-237.15777)"
          id="g4218">
         <path
-           style="opacity:1;fill:#8ae234;fill-opacity:1;stroke:#0e1a04;stroke-width:17.67908396;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="opacity:1;fill:#8ae234;fill-opacity:1;stroke:#172a04;stroke-width:14.73256997;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            inkscape:connector-curvature="0"
            d="m 1145.5648,1074.1543 c 18.5937,-18.383 48.2169,-28.9064 88.8688,-31.5737 l 0,-37.4326 c 0,-4.0003 1.9294,-6.80966 5.7868,-8.43006 4.0547,-1.61639 7.5171,-0.95178 10.3849,2.00121 l 75.9581,73.15065 c 1.8799,1.8121 2.8184,3.9543 2.8184,6.4303 0,2.4767 -0.9389,4.6185 -2.8184,6.429 l -75.9602,73.1502 c -1.7833,1.81 -4.0064,2.7148 -6.6772,2.7148 -1.1865,0 -2.4222,-0.2382 -3.7083,-0.7141 -3.8572,-1.6204 -5.7882,-4.4273 -5.7882,-8.4296 l 0,-35.8618 c -15.9228,1.2386 -29.1503,3.7387 -39.6881,7.5008 -10.5331,3.7627 -18.9637,9.0247 -25.2946,15.7879 -14.738,15.7158 -19.9806,42.6214 -15.7274,80.7237 0.1953,2.4775 -0.9389,4.0963 -3.4125,4.858 -0.2967,0.097 -0.7414,0.142 -1.3349,0.142 -1.9778,0 -3.361,-0.8095 -4.154,-2.4285 l -2.9667,-5.7148 c -1.3832,-2.6676 -3.3858,-6.9784 -6.007,-12.9313 -2.6194,-5.9556 -4.9969,-11.9071 -7.1237,-17.8612 -2.1269,-5.9515 -4.0298,-12.5235 -5.7119,-19.7147 -1.6805,-7.194 -2.5219,-13.5508 -2.5219,-19.074 0,-32.0039 8.3606,-56.2428 25.078,-72.7222 z"
            id="path4228" />

@@ -68,6 +68,7 @@ StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
     sWhatsThis    = "Std_LinkMakeGroup";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "LinkGroup";
 }
 
 bool StdCmdLinkMakeGroup::isActive() {
@@ -138,6 +139,7 @@ StdCmdLinkMake::StdCmdLinkMake()
     sWhatsThis    = "Std_LinkMake";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "Link";
 }
 
 void StdCmdLinkMake::activated(int) {
@@ -190,6 +192,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
     sWhatsThis    = "Std_LinkMakeRelative";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "LinkSub";
 }
 
 static App::DocumentObject *resolveLinkRelative(std::string *subname=0) {
@@ -563,6 +566,7 @@ StdCmdLinkReplace::StdCmdLinkReplace()
     sWhatsThis    = "Std_LinkReplace";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "LinkReplace";
 }
 
 bool StdCmdLinkReplace::isActive() {
@@ -586,6 +590,7 @@ StdCmdLinkUnlink::StdCmdLinkUnlink()
     sWhatsThis    = "Std_LinkUnlink";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "Unlink";
 }
 
 bool StdCmdLinkUnlink::isActive() {
@@ -609,6 +614,7 @@ StdCmdLinkImport::StdCmdLinkImport()
     sWhatsThis    = "Std_LinkImport";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "LinkImport";
 }
 
 static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections(bool checking) 
@@ -666,6 +672,7 @@ StdCmdLinkImportAll::StdCmdLinkImportAll()
     sWhatsThis    = "Std_LinkImportAll";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
+    sPixmap       = "LinkImportAll";
 }
 
 bool StdCmdLinkImportAll::isActive() {
@@ -704,6 +711,7 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
     sWhatsThis    = "Std_LinkSelectLinked";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
+    sPixmap       = "LinkSelect";
 }
 
 static App::DocumentObject *getSelectedLink(bool finalLink) {
@@ -750,6 +758,7 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
+    sPixmap       = "LinkSelectFinal";
 }
 
 bool StdCmdLinkSelectLinkedFinal::isActive() {
@@ -779,6 +788,7 @@ StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
     sWhatsThis    = "Std_LinkSelectAllLinks";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
+    sPixmap       = "LinkSelectAll";
 }
 
 bool StdCmdLinkSelectAllLinks::isActive() {
