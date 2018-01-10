@@ -373,6 +373,10 @@ void SketcherValidation::on_highlightButton_clicked()
     std::vector<Base::Vector3d> points;
     TopoDS_Shape shape = sketch->Shape.getValue();
 
+    Base::Placement Plm = sketch->Placement.getValue();
+
+    Base::Placement invPlm = Plm.inverse();
+
     // build up map vertex->edge
     TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
     TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
@@ -381,7 +385,9 @@ void SketcherValidation::on_highlightButton_clicked()
         if (los.Extent() != 2) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
             gp_Pnt pnt = BRep_Tool::Pnt(vertex);
-            points.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Base::Vector3d pos;
+            invPlm.multVec(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),pos);
+            points.push_back(pos);
         }
     }
 
