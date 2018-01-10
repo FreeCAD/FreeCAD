@@ -1122,6 +1122,8 @@ def export(exportList,filename):
         if ifctype in translationtable.keys():
             ifctype = translationtable[ifctype]
         ifctype = "Ifc" + ifctype
+        if ifctype == "IfcVisGroup":
+            ifctype = "IfcGroup"
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
@@ -1164,7 +1166,10 @@ def export(exportList,filename):
                 "InteriorOrExteriorSpace": "INTERNAL",
                 "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
         elif ifctype == "IfcBuildingElementProxy":
-            kwargs.update({"CompositionType": "ELEMENT"})
+            if ifcopenshell.schema_identifier == "IFC4":
+                kwargs.update({"PredefinedType": "ELEMENT"})
+            else:
+                kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcSite":
             kwargs.update({"CompositionType": "ELEMENT"})
         elif ifctype == "IfcBuilding":
@@ -1177,6 +1182,7 @@ def export(exportList,filename):
                 "BarLength": obj.Length.Value})
 
         # creating the product
+        #print(obj.Label," : ",ifctype," : ",kwargs)
         product = getattr(ifcfile,"create"+ifctype)(**kwargs)
         products[obj.Name] = product
 
