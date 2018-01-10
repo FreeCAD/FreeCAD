@@ -656,7 +656,13 @@ QRectF DrawViewPart::getRect() const
 //used to project pt (ex SectionOrigin) onto paper plane
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
 {
-    Base::Vector3d centeredPoint = pt - shapeCentroid;
+    gp_Trsf mirrorTransform;
+    mirrorTransform.SetMirror( gp_Ax2(gp_Pnt(shapeCentroid.x,shapeCentroid.y,shapeCentroid.z),
+                                      gp_Dir(0, -1, 0)) );
+    gp_Pnt basePt(pt.x,pt.y,pt.z);
+    gp_Pnt mirrorGp = basePt.Transformed(mirrorTransform);
+    Base::Vector3d mirrorPt(mirrorGp.X(),mirrorGp.Y(), mirrorGp.Z());
+    Base::Vector3d centeredPoint = mirrorPt - shapeCentroid;
     Base::Vector3d direction = Direction.getValue();
     gp_Ax2 viewAxis = getViewAxis(centeredPoint,direction);
     HLRAlgo_Projector projector( viewAxis );
