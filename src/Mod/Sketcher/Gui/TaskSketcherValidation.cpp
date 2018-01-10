@@ -179,6 +179,10 @@ void SketcherValidation::on_findButton_clicked()
     const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
+
+        if(g->Construction)
+            continue;
+
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
             VertexIds id;
