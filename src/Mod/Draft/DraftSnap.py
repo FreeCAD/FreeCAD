@@ -1177,12 +1177,14 @@ class Snapper:
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"
-        self.toolbar = QtGui.QToolBar(None)
+        mw = FreeCADGui.getMainWindow()
+        self.toolbar = QtGui.QToolBar(mw)
+        mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         # grid button
-        self.gridbutton = QtGui.QAction(None)
+        self.gridbutton = QtGui.QAction(mw)
         self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
         self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
         self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
@@ -1191,7 +1193,7 @@ class Snapper:
         QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
         self.toolbar.addAction(self.gridbutton)
         # master button
-        self.masterbutton = QtGui.QAction(None)
+        self.masterbutton = QtGui.QAction(mw)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
         self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
@@ -1203,7 +1205,7 @@ class Snapper:
         self.toolbar.addAction(self.masterbutton)
         for c,i in self.cursors.items():
             if i:
-                b = QtGui.QAction(None)
+                b = QtGui.QAction(mw)
                 b.setIcon(QtGui.QIcon(i))
                 if c == "passive":
                     b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
@@ -1220,7 +1222,7 @@ class Snapper:
                 QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # adding non-snap button
         for n in ["Dimensions","WorkingPlane"]:
-            b = QtGui.QAction(None)
+            b = QtGui.QAction(mw)
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
             b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
