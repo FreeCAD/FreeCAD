@@ -1223,18 +1223,6 @@ class SolverFrameWorkTest(unittest.TestCase):
         analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
         self.assertTrue(analysis, "FemTest of new analysis failed")
 
-        fcc_print('Checking FEM new solver...')
-        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
-        solver_object.GeometricalNonlinearity = 'linear'
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = 'default'
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.0
-        self.assertTrue(solver_object, "FemTest of new solver failed")
-        analysis.addObject(solver_object)
-
         fcc_print('Checking FEM new material...')
         material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
         mat = material_object.Material
