@@ -1904,7 +1904,7 @@ QToolButton#qt_toolbutton_menubutton::menu-button {
     background-color: transparent;
 }
 
-QQToolButton#qt_toolbutton_menubutton::menu-button:hover,
+QToolButton#qt_toolbutton_menubutton::menu-button:hover,
 QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
 QToolButton#qt_toolbutton_menubutton::menu-button:open {
     background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #daa116, stop:1 #e3b64d);
