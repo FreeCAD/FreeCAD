@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>242</width>
-    <height>423</height>
+    <width>311</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QPushButton" name="fixButton">
         <property name="text">
          <string>Fix</string>
@@ -67,17 +67,27 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="comboBoxTolerance"/>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QPushButton" name="findButton">
         <property name="text">
          <string>Find</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="highlightButton">
         <property name="text">
          <string>Highlight open vertexes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxIgnoreConstruction">
+        <property name="text">
+         <string>Ignore construction geometry</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
