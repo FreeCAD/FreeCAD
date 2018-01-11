@@ -70,6 +70,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->fixButton->setEnabled(false);
     ui->fixConstraint->setEnabled(false);
     ui->swapReversed->setEnabled(false);
+    ui->checkBoxIgnoreConstruction->setEnabled(true);
     double tolerances[8] = {
         Precision::Confusion() / 100,
         Precision::Confusion() / 10,
@@ -180,7 +181,7 @@ void SketcherValidation::on_findButton_clicked()
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if(g->Construction)
+        if(g->Construction && ui->checkBoxIgnoreConstruction->isChecked())
             continue;
 
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
