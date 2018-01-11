@@ -69,6 +69,7 @@ class Prepare(run.Prepare):
             c.beam_sections, c.shell_thicknesses, c.fluid_sections,
             self.solver.AnalysisType, self.directory)
         path = w.write_calculix_input_file()
+        # report to user if task succeeded
         if path is not None:
             self.pushStatus("Write completed!")
         else:
