@@ -1885,20 +1885,20 @@ QToolBar > QToolButton:pressed {
 }
 
 /* ToolBar menu buttons (buttons with drop-down menu) */
-QToolBar > QToolButton#qt_toolbutton_menubutton {
+QToolButton#qt_toolbutton_menubutton {
     padding-right: 20px; /* Hack to add more width to buttons with menu */
     border: 1px solid transparent;
     border-radius: 3px;
 }
 
-QToolBar > QToolButton#qt_toolbutton_menubutton:hover,
-QToolBar > QToolButton#qt_toolbutton_menubutton:pressed,
-QToolBar > QToolButton#qt_toolbutton_menubutton:open {
+QToolButton#qt_toolbutton_menubutton:hover,
+QToolButton#qt_toolbutton_menubutton:pressed,
+QToolButton#qt_toolbutton_menubutton:open {
     border: 1px solid #7cabf9;
 }
 
 QToolBar QToolButton::menu-button,
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button {
+QToolButton#qt_toolbutton_menubutton::menu-button {
     border: none;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
@@ -1907,9 +1907,9 @@ QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button {
     background-color: transparent;
 }
 
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover,
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:open {
+QToolButton#qt_toolbutton_menubutton::menu-button:hover,
+QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
+QToolButton#qt_toolbutton_menubutton::menu-button:open {
     background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:0, stop:0 #5e90fa, stop:1 #7cabf9);
 }
 
