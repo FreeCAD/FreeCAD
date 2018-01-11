@@ -21,66 +21,33 @@
 # ***************************************************************************
 
 
-__title__ = "FEM Utilities"
+__title__ = "_Base ViewProvider"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD as App
+import FreeCAD
+if FreeCAD.GuiUp:
+    from pivy import coin
 
 
-def createObject(doc, name, proxy, viewProxy):
-    obj = doc.addObject(proxy.BaseType, name)
-    proxy(obj)
-    if App.GuiUp:
-        viewProxy(obj.ViewObject)
-    return obj
+class ViewProxy(object):
+    """Proxy View Provider for Pythons base constraint."""
 
+    def __init__(self, vobj):
+        vobj.Proxy = self
 
-def findAnalysisOfMember(member):
-    if member is None:
-        raise ValueError("Member must not be None")
-    for obj in member.Document.Objects:
-        if obj.isDerivedFrom("Fem::FemAnalysis"):
-            if member in obj.Group:
-                return obj
-            if _searchGroups(member, obj.Group):
-                return obj
-    return None
+    def attach(self, vobj):
+        default = coin.SoGroup()
+        vobj.addDisplayMode(default, "Default")
 
+    def getDisplayModes(self, obj):
+        "Return a list of display modes."
+        modes = ["Default"]
+        return modes
 
-def _searchGroups(member, objs):
-    for o in objs:
-        if o == member:
-            return True
-        if hasattr(o, "Group"):
-            return _searchGroups(member, o.Group)
-    return False
+    def getDefaultDisplayMode(self):
+        return "Default"
 
-
-def getMember(analysis, t):
-    if analysis is None:
-        raise ValueError("Analysis must not be None")
-    matching = []
-    for m in analysis.Group:
-        if isDerivedFrom(m, t):
-            matching.append(m)
-    return matching
-
-
-def getSingleMember(analysis, t):
-    objs = getMember(analysis, t)
-    return objs[0] if objs else None
-
-
-def isOfType(obj, t):
-    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
-        return obj.Proxy.Type == t
-    return obj.TypeId == t
-
-
-def isDerivedFrom(obj, t):
-    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
-            obj.Proxy.Type == t):
-        return True
-    return obj.isDerivedFrom(t)
+    def setDisplayMode(self, mode):
+        return mode

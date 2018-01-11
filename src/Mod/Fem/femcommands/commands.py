@@ -554,12 +554,12 @@ class _CommandFemSolverCalculix(CommandManager):
 
     def Activated(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
-        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
+        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", True)
+        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", False)
         if use_old_solver_frame_work and not use_new_solver_frame_work:
             has_nonlinear_material_obj = False
             for m in self.active_analysis.Group:
-                if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                if hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
                     has_nonlinear_material_obj = True
             FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
             FreeCADGui.addModule("ObjectsFem")
@@ -633,8 +633,8 @@ class _CommandFemSolverRun(CommandManager):
 
         self.solver = self.selobj
         if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
-            import FemToolsCcx
-            self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
+            from femtools import ccxtools
+            self.fea = ccxtools.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:

@@ -25,7 +25,7 @@
 # ***************************************************************************/
 
 import Fem
-import FemToolsCcx
+from femtools import ccxtools
 import femresult.resulttools as resulttools
 import FreeCAD
 import ObjectsFem
@@ -47,30 +47,32 @@ test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
 # define some locations fot the analysis tests
 # since they are also used in the helper def which create results they should stay global for the module
 static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + 'FEM_static/'
+static_analysis_dir = temp_dir + 'FEM_ccx_static/'
 static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
 static_expected_values = test_file_dir + "cube_static_expected_values"
-static2_analysis_dir = temp_dir + 'FEM_static2/'
-static2_save_fc_file = static2_analysis_dir + static_base_name + '2.fcstd'
 
 frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + 'FEM_frequency/'
+frequency_analysis_dir = temp_dir + 'FEM_ccx_frequency/'
 frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
 frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
 frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
 
 thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + 'FEM_thermomech/'
+thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
 thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
 thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
 thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
 
 Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_Flow1D_thermomech/'
+Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
 Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
 Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
 Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
+
+solverframework_analysis_dir = temp_dir + 'FEM_solverframework/'
+solverframework_save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
+
 
 
 class FemTest(unittest.TestCase):
@@ -345,7 +347,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
         self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
 
-    def test_makeFemObjects(self):
+    def test_femobjects_make(self):
         doc = self.active_doc
         analysis = ObjectsFem.makeAnalysis(doc)
 
@@ -400,6 +402,206 @@ class FemTest(unittest.TestCase):
 
         doc.recompute()
         self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
+
+    def test_femobjects_type(self):
+        doc = self.active_doc
+
+        from femtools.femutils import typeOfObj
+        self.assertEqual('Fem::FemAnalysis', typeOfObj(ObjectsFem.makeAnalysis(doc)))
+        self.assertEqual('Fem::ConstraintBearing', typeOfObj(ObjectsFem.makeConstraintBearing(doc)))
+        self.assertEqual('Fem::ConstraintBodyHeatSource', typeOfObj(ObjectsFem.makeConstraintBodyHeatSource(doc)))
+        self.assertEqual('Fem::ConstraintContact', typeOfObj(ObjectsFem.makeConstraintContact(doc)))
+        self.assertEqual('Fem::ConstraintDisplacement', typeOfObj(ObjectsFem.makeConstraintDisplacement(doc)))
+        self.assertEqual('Fem::ConstraintElectrostaticPotential', typeOfObj(ObjectsFem.makeConstraintElectrostaticPotential(doc)))
+        self.assertEqual('Fem::ConstraintFixed', typeOfObj(ObjectsFem.makeConstraintFixed(doc)))
+        self.assertEqual('Fem::ConstraintFlowVelocity', typeOfObj(ObjectsFem.makeConstraintFlowVelocity(doc)))
+        self.assertEqual('Fem::ConstraintFluidBoundary', typeOfObj(ObjectsFem.makeConstraintFluidBoundary(doc)))
+        self.assertEqual('Fem::ConstraintForce', typeOfObj(ObjectsFem.makeConstraintForce(doc)))
+        self.assertEqual('Fem::ConstraintGear', typeOfObj(ObjectsFem.makeConstraintGear(doc)))
+        self.assertEqual('Fem::ConstraintHeatflux', typeOfObj(ObjectsFem.makeConstraintHeatflux(doc)))
+        self.assertEqual('Fem::ConstraintInitialFlowVelocity', typeOfObj(ObjectsFem.makeConstraintInitialFlowVelocity(doc)))
+        self.assertEqual('Fem::ConstraintInitialTemperature', typeOfObj(ObjectsFem.makeConstraintInitialTemperature(doc)))
+        self.assertEqual('Fem::ConstraintPlaneRotation', typeOfObj(ObjectsFem.makeConstraintPlaneRotation(doc)))
+        self.assertEqual('Fem::ConstraintPressure', typeOfObj(ObjectsFem.makeConstraintPressure(doc)))
+        self.assertEqual('Fem::ConstraintPulley', typeOfObj(ObjectsFem.makeConstraintPulley(doc)))
+        self.assertEqual('Fem::ConstraintSelfWeight', typeOfObj(ObjectsFem.makeConstraintSelfWeight(doc)))
+        self.assertEqual('Fem::ConstraintTemperature', typeOfObj(ObjectsFem.makeConstraintTemperature(doc)))
+        self.assertEqual('Fem::ConstraintTransform', typeOfObj(ObjectsFem.makeConstraintTransform(doc)))
+        self.assertEqual('Fem::FemElementFluid1D', typeOfObj(ObjectsFem.makeElementFluid1D(doc)))
+        self.assertEqual('Fem::FemElementGeometry1D', typeOfObj(ObjectsFem.makeElementGeometry1D(doc)))
+        self.assertEqual('Fem::FemElementGeometry2D', typeOfObj(ObjectsFem.makeElementGeometry2D(doc)))
+        materialsolid = ObjectsFem.makeMaterialSolid(doc)
+        self.assertEqual('Fem::Material', typeOfObj(ObjectsFem.makeMaterialFluid(doc)))
+        self.assertEqual('Fem::Material', typeOfObj(materialsolid))
+        self.assertEqual('Fem::MaterialMechanicalNonlinear', typeOfObj(ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid)))
+        mesh = ObjectsFem.makeMeshGmsh(doc)
+        self.assertEqual('Fem::FemMeshGmsh', typeOfObj(mesh))
+        self.assertEqual('Fem::FemMeshBoundaryLayer', typeOfObj(ObjectsFem.makeMeshBoundaryLayer(doc, mesh)))
+        self.assertEqual('Fem::FemMeshGroup', typeOfObj(ObjectsFem.makeMeshGroup(doc, mesh)))
+        self.assertEqual('Fem::FemMeshRegion', typeOfObj(ObjectsFem.makeMeshRegion(doc, mesh)))
+        self.assertEqual('Fem::FemMeshShapeNetgenObject', typeOfObj(ObjectsFem.makeMeshNetgen(doc)))
+        self.assertEqual('Fem::FemMeshResult', typeOfObj(ObjectsFem.makeMeshResult(doc)))
+        self.assertEqual('Fem::FemResultMechanical', typeOfObj(ObjectsFem.makeResultMechanical(doc)))
+        solverelmer = ObjectsFem.makeSolverElmer(doc)
+        self.assertEqual('Fem::FemSolverCalculix', typeOfObj(ObjectsFem.makeSolverCalculixCcxTools(doc)))
+        self.assertEqual('Fem::FemSolverObjectCalculix', typeOfObj(ObjectsFem.makeSolverCalculix(doc)))
+        self.assertEqual('Fem::FemSolverObjectElmer', typeOfObj(solverelmer))
+        self.assertEqual('Fem::FemSolverObjectZ88', typeOfObj(ObjectsFem.makeSolverZ88(doc)))
+        self.assertEqual('Fem::FemEquationElmerElasticity', typeOfObj(ObjectsFem.makeEquationElasticity(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerElectrostatic', typeOfObj(ObjectsFem.makeEquationElectrostatic(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerFlow', typeOfObj(ObjectsFem.makeEquationFlow(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerFluxsolver', typeOfObj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer)))
+        self.assertEqual('Fem::FemEquationElmerHeat', typeOfObj(ObjectsFem.makeEquationHeat(doc, solverelmer)))
+        # TODO: equation linear missing, equation nonlinear missing, use different type for fluid and solid material
+
+    def test_femobjects_isoftypenew(self):
+        doc = self.active_doc
+
+        from femtools.femutils import isOfTypeNew
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeAnalysis(doc), 'Fem::FemAnalysis'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintBearing(doc), 'Fem::ConstraintBearing'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintBodyHeatSource(doc), 'Fem::ConstraintBodyHeatSource'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintContact(doc), 'Fem::ConstraintContact'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintDisplacement(doc), 'Fem::ConstraintDisplacement'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintElectrostaticPotential(doc), 'Fem::ConstraintElectrostaticPotential'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintFixed(doc), 'Fem::ConstraintFixed'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintFlowVelocity(doc), 'Fem::ConstraintFlowVelocity'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintFluidBoundary(doc), 'Fem::ConstraintFluidBoundary'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintForce(doc), 'Fem::ConstraintForce'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintGear(doc), 'Fem::ConstraintGear'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintHeatflux(doc), 'Fem::ConstraintHeatflux'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintInitialFlowVelocity(doc), 'Fem::ConstraintInitialFlowVelocity'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintInitialTemperature(doc), 'Fem::ConstraintInitialTemperature'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintPlaneRotation(doc), 'Fem::ConstraintPlaneRotation'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintPressure(doc), 'Fem::ConstraintPressure'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintPulley(doc), 'Fem::ConstraintPulley'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintSelfWeight(doc), 'Fem::ConstraintSelfWeight'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintTemperature(doc), 'Fem::ConstraintTemperature'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeConstraintTransform(doc), 'Fem::ConstraintTransform'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeElementFluid1D(doc), 'Fem::FemElementFluid1D'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeElementGeometry1D(doc), 'Fem::FemElementGeometry1D'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeElementGeometry2D(doc), 'Fem::FemElementGeometry2D'))
+        materialsolid = ObjectsFem.makeMaterialSolid(doc)
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMaterialFluid(doc), 'Fem::Material'))
+        self.assertTrue(isOfTypeNew(materialsolid, 'Fem::Material'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid), 'Fem::MaterialMechanicalNonlinear'))
+        mesh = ObjectsFem.makeMeshGmsh(doc)
+        self.assertTrue(isOfTypeNew(mesh, 'Fem::FemMeshGmsh'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMeshBoundaryLayer(doc, mesh), 'Fem::FemMeshBoundaryLayer'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMeshGroup(doc, mesh), 'Fem::FemMeshGroup'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMeshRegion(doc, mesh), 'Fem::FemMeshRegion'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMeshNetgen(doc), 'Fem::FemMeshShapeNetgenObject'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeMeshResult(doc), 'Fem::FemMeshResult'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeResultMechanical(doc), 'Fem::FemResultMechanical'))
+        solverelmer = ObjectsFem.makeSolverElmer(doc)
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverCalculixCcxTools(doc), 'Fem::FemSolverCalculix'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverCalculix(doc), 'Fem::FemSolverObjectCalculix'))
+        self.assertTrue(isOfTypeNew(solverelmer, 'Fem::FemSolverObjectElmer'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverZ88(doc), 'Fem::FemSolverObjectZ88'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationElasticity(doc, solverelmer), 'Fem::FemEquationElmerElasticity'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationElectrostatic(doc, solverelmer), 'Fem::FemEquationElmerElectrostatic'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationFlow(doc, solverelmer), 'Fem::FemEquationElmerFlow'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationFluxsolver(doc, solverelmer), 'Fem::FemEquationElmerFluxsolver'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeEquationHeat(doc, solverelmer), 'Fem::FemEquationElmerHeat'))
+
+    def test_femobjects_derivedfromfem(self):
+        doc = self.active_doc
+
+        from femtools.femutils import isDerivedFrom as isDerivedFromFem
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeAnalysis(doc), 'Fem::FemAnalysis'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintBearing(doc), 'Fem::ConstraintBearing'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintBodyHeatSource(doc), 'Fem::ConstraintBodyHeatSource'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintContact(doc), 'Fem::ConstraintContact'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintDisplacement(doc), 'Fem::ConstraintDisplacement'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintElectrostaticPotential(doc), 'Fem::ConstraintElectrostaticPotential'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintFixed(doc), 'Fem::ConstraintFixed'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintFlowVelocity(doc), 'Fem::ConstraintFlowVelocity'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintFluidBoundary(doc), 'Fem::ConstraintFluidBoundary'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintForce(doc), 'Fem::ConstraintForce'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintGear(doc), 'Fem::ConstraintGear'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintHeatflux(doc), 'Fem::ConstraintHeatflux'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintInitialFlowVelocity(doc), 'Fem::ConstraintInitialFlowVelocity'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintInitialTemperature(doc), 'Fem::ConstraintInitialTemperature'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintPlaneRotation(doc), 'Fem::ConstraintPlaneRotation'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintPressure(doc), 'Fem::ConstraintPressure'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintPulley(doc), 'Fem::ConstraintPulley'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintSelfWeight(doc), 'Fem::ConstraintSelfWeight'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintTemperature(doc), 'Fem::ConstraintTemperature'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeConstraintTransform(doc), 'Fem::ConstraintTransform'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeElementFluid1D(doc), 'Fem::FemElementFluid1D'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeElementGeometry1D(doc), 'Fem::FemElementGeometry1D'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeElementGeometry2D(doc), 'Fem::FemElementGeometry2D'))
+        materialsolid = ObjectsFem.makeMaterialSolid(doc)
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMaterialFluid(doc), 'Fem::Material'))
+        self.assertTrue(isDerivedFromFem(materialsolid, 'Fem::Material'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid), 'Fem::MaterialMechanicalNonlinear'))
+        mesh = ObjectsFem.makeMeshGmsh(doc)
+        self.assertTrue(isDerivedFromFem(mesh, 'Fem::FemMeshGmsh'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMeshBoundaryLayer(doc, mesh), 'Fem::FemMeshBoundaryLayer'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMeshGroup(doc, mesh), 'Fem::FemMeshGroup'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMeshRegion(doc, mesh), 'Fem::FemMeshRegion'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMeshNetgen(doc), 'Fem::FemMeshShapeNetgenObject'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeMeshResult(doc), 'Fem::FemMeshResult'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeResultMechanical(doc), 'Fem::FemResultMechanical'))
+        solverelmer = ObjectsFem.makeSolverElmer(doc)
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverCalculixCcxTools(doc), 'Fem::FemSolverCalculix'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverCalculix(doc), 'Fem::FemSolverObjectCalculix'))
+        self.assertTrue(isDerivedFromFem(solverelmer, 'Fem::FemSolverObjectElmer'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverZ88(doc), 'Fem::FemSolverObjectZ88'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationElasticity(doc, solverelmer), 'Fem::FemEquationElmerElasticity'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationElectrostatic(doc, solverelmer), 'Fem::FemEquationElmerElectrostatic'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationFlow(doc, solverelmer), 'Fem::FemEquationElmerFlow'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationFluxsolver(doc, solverelmer), 'Fem::FemEquationElmerFluxsolver'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeEquationHeat(doc, solverelmer), 'Fem::FemEquationElmerHeat'))
+
+    def test_femobjects_derivedfromstd(self):
+        doc = self.active_doc
+
+        self.assertTrue(ObjectsFem.makeAnalysis(doc).isDerivedFrom('Fem::FemAnalysis'))
+        self.assertTrue(ObjectsFem.makeConstraintBearing(doc).isDerivedFrom('Fem::ConstraintBearing'))
+        self.assertTrue(ObjectsFem.makeConstraintBodyHeatSource(doc).isDerivedFrom('Fem::ConstraintPython'))
+        self.assertTrue(ObjectsFem.makeConstraintContact(doc).isDerivedFrom('Fem::ConstraintContact'))
+        self.assertTrue(ObjectsFem.makeConstraintDisplacement(doc).isDerivedFrom('Fem::ConstraintDisplacement'))
+        self.assertTrue(ObjectsFem.makeConstraintElectrostaticPotential(doc).isDerivedFrom('Fem::ConstraintPython'))
+        self.assertTrue(ObjectsFem.makeConstraintFixed(doc).isDerivedFrom('Fem::ConstraintFixed'))
+        self.assertTrue(ObjectsFem.makeConstraintFlowVelocity(doc).isDerivedFrom('Fem::ConstraintPython'))
+        self.assertTrue(ObjectsFem.makeConstraintFluidBoundary(doc).isDerivedFrom('Fem::ConstraintFluidBoundary'))
+        self.assertTrue(ObjectsFem.makeConstraintForce(doc).isDerivedFrom('Fem::ConstraintForce'))
+        self.assertTrue(ObjectsFem.makeConstraintGear(doc).isDerivedFrom('Fem::ConstraintGear'))
+        self.assertTrue(ObjectsFem.makeConstraintHeatflux(doc).isDerivedFrom('Fem::ConstraintHeatflux'))
+        self.assertTrue(ObjectsFem.makeConstraintInitialFlowVelocity(doc).isDerivedFrom('Fem::ConstraintPython'))
+        self.assertTrue(ObjectsFem.makeConstraintInitialTemperature(doc).isDerivedFrom('Fem::ConstraintInitialTemperature'))
+        self.assertTrue(ObjectsFem.makeConstraintPlaneRotation(doc).isDerivedFrom('Fem::ConstraintPlaneRotation'))
+        self.assertTrue(ObjectsFem.makeConstraintPressure(doc).isDerivedFrom('Fem::ConstraintPressure'))
+        self.assertTrue(ObjectsFem.makeConstraintPulley(doc).isDerivedFrom('Fem::ConstraintPulley'))
+        self.assertTrue(ObjectsFem.makeConstraintSelfWeight(doc).isDerivedFrom('Fem::ConstraintPython'))
+        self.assertTrue(ObjectsFem.makeConstraintTemperature(doc).isDerivedFrom('Fem::ConstraintTemperature'))
+        self.assertTrue(ObjectsFem.makeConstraintTransform(doc).isDerivedFrom('Fem::ConstraintTransform'))
+        self.assertTrue(ObjectsFem.makeElementFluid1D(doc).isDerivedFrom('Fem::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeElementGeometry1D(doc).isDerivedFrom('Fem::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeElementGeometry2D(doc).isDerivedFrom('Fem::FeaturePython'))
+        materialsolid = ObjectsFem.makeMaterialSolid(doc)
+        self.assertTrue(ObjectsFem.makeMaterialFluid(doc).isDerivedFrom('App::MaterialObjectPython'))
+        self.assertTrue(materialsolid.isDerivedFrom('App::MaterialObjectPython'))
+        self.assertTrue(ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid).isDerivedFrom('Fem::FeaturePython'))
+        mesh = ObjectsFem.makeMeshGmsh(doc)
+        self.assertTrue(mesh.isDerivedFrom('Fem::FemMeshObjectPython'))
+        self.assertTrue(ObjectsFem.makeMeshBoundaryLayer(doc, mesh).isDerivedFrom('Fem::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeMeshGroup(doc, mesh).isDerivedFrom('Fem::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeMeshRegion(doc, mesh).isDerivedFrom('Fem::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeMeshNetgen(doc).isDerivedFrom('Fem::FemMeshShapeNetgenObject'))
+        self.assertTrue(ObjectsFem.makeMeshResult(doc).isDerivedFrom('Fem::FemMeshObjectPython'))
+        self.assertTrue(ObjectsFem.makeResultMechanical(doc).isDerivedFrom('Fem::FemResultObjectPython'))
+        solverelmer = ObjectsFem.makeSolverElmer(doc)
+        self.assertTrue(ObjectsFem.makeSolverCalculixCcxTools(doc).isDerivedFrom('Fem::FemSolverObjectPython'))
+        self.assertTrue(ObjectsFem.makeSolverCalculix(doc).isDerivedFrom('Fem::FemSolverObjectPython'))
+        self.assertTrue(solverelmer.isDerivedFrom('Fem::FemSolverObjectPython'))
+        self.assertTrue(ObjectsFem.makeSolverZ88(doc).isDerivedFrom('Fem::FemSolverObjectPython'))
+        self.assertTrue(ObjectsFem.makeEquationElasticity(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeEquationElectrostatic(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeEquationFlow(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeEquationFluxsolver(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
+        self.assertTrue(ObjectsFem.makeEquationHeat(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
 
     def test_pyimport_all_FEM_modules(self):
         # we're going to try to import all python modules from FreeCAD Fem
@@ -520,7 +722,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        fea = FemToolsCcx.FemToolsCcx(analysis, solver_object, test_mode=True)
+        fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
@@ -528,7 +730,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for static analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
 
@@ -541,8 +743,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, mesh_name))
-        ret = compare_inp_files(static_analysis_inp_file, static_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+        ret = compare_inp_files(static_analysis_inp_file, static_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -584,15 +786,15 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, mesh_name))
-        ret = compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+        ret = compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -619,78 +821,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
-
-        # use new solver frame work ccx solver
-        fcc_print('Checking FEM new solver for new solver frame work...')
-        solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
-        solver_ccx2_object.GeometricalNonlinearity = 'linear'
-        solver_ccx2_object.ThermoMechSteadyState = False
-        solver_ccx2_object.MatrixSolverType = 'default'
-        solver_ccx2_object.IterationsControlParameterTimeUse = False
-        solver_ccx2_object.EigenmodesCount = 10
-        solver_ccx2_object.EigenmodeHighLimit = 1000000.0
-        solver_ccx2_object.EigenmodeLowLimit = 0.0
-        self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
-        analysis.addObject(solver_ccx2_object)
-
-        fcc_print('Checking inpfile writing for new solver frame work...')
-        if not os.path.exists(static2_analysis_dir):  # new solver frameworkd does explicit not create a non existing directory
-            os.makedirs(static2_analysis_dir)
-
-        fcc_print('machine_ccx')
-        machine = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, static2_analysis_dir)
-        fcc_print(machine.testmode)
-        machine.target = femsolver.run.PREPARE
-        machine.start()
-        machine.join()  # wait for the machine to finish.
-        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static2_analysis_dir, mesh_name))
-        ret = compare_inp_files(static_analysis_inp_file, static2_analysis_dir + mesh_name + '.inp')
-        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
-
-        # use new solver frame work elmer solver
-        solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
-        self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
-        analysis.addObject(solver_elmer_object)
-        solver_elmer_eqobj = ObjectsFem.makeEquationElasticity(self.active_doc, solver_elmer_object)
-        self.assertTrue(solver_elmer_eqobj, "FemTest of elmer elasticity equation failed")
-
-        # set ThermalExpansionCoefficient, current elmer seams to need it even on simple elasticity analysis
-        mat = material_object.Material
-        mat['ThermalExpansionCoefficient'] = "0 um/m/K"  # FIXME elmer elasticity needs the dictionary key, otherwise it fails
-        material_object.Material = mat
-
-        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.active_doc)
-        mesh_gmsh.CharacteristicLengthMin = "9 mm"
-        mesh_gmsh.FemMesh = mesh_object.FemMesh  # elmer needs a GMHS mesh object, FIXME error message on Python solver run
-        mesh_gmsh.Part = box
-        analysis.addObject(mesh_gmsh)
-        self.active_doc.removeObject(mesh_object.Name)
-
-        fcc_print('machine_elmer')
-        machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, static2_analysis_dir, True)
-        fcc_print(machine_elmer.testmode)
-        machine_elmer.target = femsolver.run.PREPARE
-        machine_elmer.start()
-        machine_elmer.join()  # wait for the machine to finish.
-
-        fcc_print('Test writing STARTINFO file')
-        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', static2_analysis_dir + 'ELMERSOLVER_STARTINFO'))
-        ret = compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', static2_analysis_dir + 'ELMERSOLVER_STARTINFO')
-        self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
-
-        fcc_print('Test writing case file')
-        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'case.sif', static2_analysis_dir + 'case.sif'))
-        ret = compare_files(test_file_dir_elmer + 'case.sif', static2_analysis_dir + 'case.sif')
-        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
-
-        fcc_print('Test writing GMSH geo file')
-        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'group_mesh.geo', static2_analysis_dir + 'group_mesh.geo'))
-        ret = compare_files(test_file_dir_elmer + 'group_mesh.geo', static2_analysis_dir + 'group_mesh.geo')
-        self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
-
-        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(static2_save_fc_file))
-        self.active_doc.saveAs(static2_save_fc_file)
-
         fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
 
     def test_thermomech_analysis(self):
@@ -770,7 +900,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        fea = FemToolsCcx.FemToolsCcx(analysis, test_mode=True)
+        fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
         fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
         fea.setup_working_dir(thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
@@ -782,7 +912,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
 
@@ -791,8 +921,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, mesh_name))
-        ret = compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+        ret = compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -1018,7 +1148,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        fea = FemToolsCcx.FemToolsCcx(analysis, test_mode=True)
+        fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
         fcc_print('Setting up working directory {}'.format(Flow1D_thermomech_analysis_dir))
         fea.setup_working_dir(Flow1D_thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == Flow1D_thermomech_analysis_dir else False,
@@ -1030,7 +1160,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
 
@@ -1039,8 +1169,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "Writing failed")
 
         fcc_print('Comparing {} to {}/{}.inp'.format(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir, mesh_name))
-        ret = compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+        ret = compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -1070,6 +1200,166 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('--------------- End of FEM tests FLow 1D thermomech analysis ---------------')
 
+    def tearDown(self):
+        FreeCAD.closeDocument("FemTest")
+        pass
+
+
+class SolverFrameWorkTest(unittest.TestCase):
+
+    def setUp(self):
+        try:
+            FreeCAD.setActiveDocument("FemTest")
+        except:
+            FreeCAD.newDocument("FemTest")
+        finally:
+            FreeCAD.setActiveDocument("FemTest")
+        self.active_doc = FreeCAD.ActiveDocument
+
+    def test_solver_framework(self):
+        fcc_print('--------------- Start of FEM tests  solver frame work ---------------')
+        box = self.active_doc.addObject("Part::Box", "Box")
+        fcc_print('Checking FEM new analysis...')
+        analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
+        self.assertTrue(analysis, "FemTest of new analysis failed")
+
+        fcc_print('Checking FEM new solver...')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
+        solver_object.GeometricalNonlinearity = 'linear'
+        solver_object.ThermoMechSteadyState = False
+        solver_object.MatrixSolverType = 'default'
+        solver_object.IterationsControlParameterTimeUse = False
+        solver_object.EigenmodesCount = 10
+        solver_object.EigenmodeHighLimit = 1000000.0
+        solver_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_object, "FemTest of new solver failed")
+        analysis.addObject(solver_object)
+
+        fcc_print('Checking FEM new material...')
+        material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
+        mat = material_object.Material
+        mat['Name'] = "Steel-Generic"
+        mat['YoungsModulus'] = "200000 MPa"
+        mat['PoissonRatio'] = "0.30"
+        mat['Density'] = "7900 kg/m^3"
+        material_object.Material = mat
+        self.assertTrue(material_object, "FemTest of new material failed")
+        analysis.addObject(material_object)
+
+        fcc_print('Checking FEM new fixed constraint...')
+        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        fixed_constraint.References = [(box, "Face1")]
+        self.assertTrue(fixed_constraint, "FemTest of new fixed constraint failed")
+        analysis.addObject(fixed_constraint)
+
+        fcc_print('Checking FEM new force constraint...')
+        force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
+        force_constraint.References = [(box, "Face6")]
+        force_constraint.Force = 40000.0
+        force_constraint.Direction = (box, ["Edge5"])
+        self.active_doc.recompute()
+        force_constraint.Reversed = True
+        self.active_doc.recompute()
+        self.assertTrue(force_constraint, "FemTest of new force constraint failed")
+        analysis.addObject(force_constraint)
+
+        fcc_print('Checking FEM new pressure constraint...')
+        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
+        pressure_constraint.References = [(box, "Face2")]
+        pressure_constraint.Pressure = 1000.0
+        pressure_constraint.Reversed = False
+        self.assertTrue(pressure_constraint, "FemTest of new pressure constraint failed")
+        analysis.addObject(pressure_constraint)
+
+        fcc_print('Checking FEM new mesh...')
+        from .testfiles.ccx.cube_mesh import create_nodes_cube
+        from .testfiles.ccx.cube_mesh import create_elements_cube
+        mesh = Fem.FemMesh()
+        ret = create_nodes_cube(mesh)
+        self.assertTrue(ret, "Import of mesh nodes failed")
+        ret = create_elements_cube(mesh)
+        self.assertTrue(ret, "Import of mesh volumes failed")
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = mesh
+        self.assertTrue(mesh, "FemTest of new mesh failed")
+        analysis.addObject(mesh_object)
+
+        self.active_doc.recompute()
+
+        # solver frame work ccx solver
+        fcc_print('Checking FEM solver for solver frame work...')
+        solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
+        solver_ccx2_object.GeometricalNonlinearity = 'linear'
+        solver_ccx2_object.ThermoMechSteadyState = False
+        solver_ccx2_object.MatrixSolverType = 'default'
+        solver_ccx2_object.IterationsControlParameterTimeUse = False
+        solver_ccx2_object.EigenmodesCount = 10
+        solver_ccx2_object.EigenmodeHighLimit = 1000000.0
+        solver_ccx2_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
+        analysis.addObject(solver_ccx2_object)
+
+        fcc_print('Checking inpfile writing for solverframework_save_fc_file frame work...')
+        if not os.path.exists(solverframework_analysis_dir):  # solver frameworkd does explicit not create a non existing directory
+            os.makedirs(solverframework_analysis_dir)
+
+        fcc_print('machine_ccx')
+        machine_ccx = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, solverframework_analysis_dir)
+        fcc_print('Machine testmode: ' + str(machine_ccx.testmode))
+        machine_ccx.target = femsolver.run.PREPARE
+        machine_ccx.start()
+        machine_ccx.join()  # wait for the machine to finish.
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, solverframework_analysis_dir, mesh_name))
+        ret = compare_inp_files(static_analysis_inp_file, solverframework_analysis_dir + mesh_name + '.inp')
+        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
+
+        # use solver frame work elmer solver
+        solver_elmer_object = ObjectsFem.makeSolverElmer(self.active_doc, 'SolverElmer')
+        self.assertTrue(solver_elmer_object, "FemTest of elmer solver failed")
+        analysis.addObject(solver_elmer_object)
+        solver_elmer_eqobj = ObjectsFem.makeEquationElasticity(self.active_doc, solver_elmer_object)
+        self.assertTrue(solver_elmer_eqobj, "FemTest of elmer elasticity equation failed")
+
+        # set ThermalExpansionCoefficient, current elmer seams to need it even on simple elasticity analysis
+        mat = material_object.Material
+        mat['ThermalExpansionCoefficient'] = "0 um/m/K"  # FIXME elmer elasticity needs the dictionary key, otherwise it fails
+        material_object.Material = mat
+
+        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.active_doc)
+        mesh_gmsh.CharacteristicLengthMin = "9 mm"
+        mesh_gmsh.FemMesh = mesh_object.FemMesh  # elmer needs a GMHS mesh object, FIXME error message on Python solver run
+        mesh_gmsh.Part = box
+        analysis.addObject(mesh_gmsh)
+        self.active_doc.removeObject(mesh_object.Name)
+
+        fcc_print('machine_elmer')
+        machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, solverframework_analysis_dir, True)
+        fcc_print('Machine testmode: ' + str(machine_elmer.testmode))
+        machine_elmer.target = femsolver.run.PREPARE
+        machine_elmer.start()
+        machine_elmer.join()  # wait for the machine to finish.
+
+        '''
+        fcc_print('Test writing STARTINFO file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO'))
+        ret = compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO')
+        self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
+
+        fcc_print('Test writing case file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif'))
+        ret = compare_files(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif')
+        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
+
+        fcc_print('Test writing GMSH geo file')
+        fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo'))
+        ret = compare_files(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo')
+        self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
+        '''
+
+        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(solverframework_save_fc_file))
+        self.active_doc.saveAs(solverframework_save_fc_file)
+        fcc_print('--------------- End of FEM tests solver frame work ---------------')
+ 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
@@ -1214,7 +1504,7 @@ def create_test_results():
     # static and frequency cube
     FreeCAD.open(static_save_fc_file)
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
-    fea = FemToolsCcx.FemToolsCcx()
+    fea = ccxtools.FemToolsCcx()
 
     print("create static result files")
     fea.reset_all()
@@ -1259,7 +1549,7 @@ def create_test_results():
     print("create thermomech result files")
     FreeCAD.open(thermomech_save_fc_file)
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
-    fea = FemToolsCcx.FemToolsCcx()
+    fea = ccxtools.FemToolsCcx()
     fea.reset_all()
     fea.run()
     fea.load_results()
@@ -1283,7 +1573,7 @@ def create_test_results():
     print("create Flow1D result files")
     FreeCAD.open(Flow1D_thermomech_save_fc_file)
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
-    fea = FemToolsCcx.FemToolsCcx()
+    fea = ccxtools.FemToolsCcx()
     fea.reset_all()
     fea.run()
     fea.load_results()

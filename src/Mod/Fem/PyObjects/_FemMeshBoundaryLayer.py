@@ -31,7 +31,7 @@ __url__ = "http://www.freecadweb.org"
 class _FemMeshBoundaryLayer:
     "The FemMeshBoundaryLayer object"
     def __init__(self, obj):
-        self.Type = "FemMeshBoundaryLayer"
+        self.Type = "Fem::FemMeshBoundaryLayer"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 

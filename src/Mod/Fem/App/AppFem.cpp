@@ -149,19 +149,20 @@ PyMOD_INIT_FUNC(Fem)
 
     Fem::Constraint                 ::init();
     Fem::ConstraintPython           ::init();
+
     Fem::ConstraintBearing          ::init();
+    Fem::ConstraintContact          ::init();
     Fem::ConstraintFixed            ::init();
+    Fem::ConstraintFluidBoundary    ::init();
     Fem::ConstraintForce            ::init();
-    Fem::ConstraintPressure         ::init();
-    Fem::ConstraintGear             ::init();
-    Fem::ConstraintPulley           ::init();
     Fem::ConstraintDisplacement     ::init();
-    Fem::ConstraintTemperature      ::init();
+    Fem::ConstraintGear             ::init();
     Fem::ConstraintHeatflux         ::init();
     Fem::ConstraintInitialTemperature ::init();
     Fem::ConstraintPlaneRotation    ::init();
-    Fem::ConstraintContact          ::init();
-    Fem::ConstraintFluidBoundary    ::init();
+    Fem::ConstraintPressure         ::init();
+    Fem::ConstraintPulley           ::init();
+    Fem::ConstraintTemperature      ::init();
     Fem::ConstraintTransform        ::init();
 
     Fem::FemResultObject            ::init();

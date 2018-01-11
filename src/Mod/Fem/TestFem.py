@@ -27,3 +27,4 @@
 
 from femtest.testfemcommon import FemTest
 from femtest.testfemcommon import FemCcxAnalysisTest
+from femtest.testfemcommon import SolverFrameWorkTest

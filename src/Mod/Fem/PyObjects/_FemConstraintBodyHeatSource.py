@@ -26,12 +26,12 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemConstraint
+from . import FemConstraint
 
 
 class Proxy(FemConstraint.Proxy):
 
-    Type = "Fem::FemConstraintBodyHeatSource"
+    Type = "Fem::ConstraintBodyHeatSource"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
