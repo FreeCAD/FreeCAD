@@ -89,7 +89,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     def purge_results(self):
         for m in self.analysis.Group:
             if (m.isDerivedFrom('Fem::FemResultObject')):
-                if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "FemMeshResult":
+                if m.Mesh and hasattr(m.Mesh, "Proxy") and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
                     self.analysis.Document.removeObject(m.Mesh.Name)
                 self.analysis.Document.removeObject(m.Name)
         FreeCAD.ActiveDocument.recompute()
@@ -124,72 +124,53 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        ## @var elmer_free_text
-        #  Free text input used only by elmer (for sif file)
-        self.elmer_free_text = None
         ## @var materials_linear
-        # set of linear materials from the analysis. Updated with update_objects
-        #  Individual materials are "App::MaterialObjectPython" type
+        #  list of linear materials from the analysis. Updated with update_objects
         self.materials_linear = []
         ## @var materials_nonlinear
-        # set of nonlinear materials from the analysis. Updated with update_objects
-        #  Individual materials are Proxy.Type "FemMaterialMechanicalNonlinear"
+        #  list of nonlinear materials from the analysis. Updated with update_objects
         self.materials_nonlinear = []
         ## @var fixed_constraints
-        #  set of fixed constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintFixed" type
+        #  list of fixed constraints from the analysis. Updated with update_objects
         self.fixed_constraints = []
         ## @var selfweight_constraints
-        #  set of selfweight constraints from the analysis. Updated with update_objects
-        #  Individual constraints are Proxy.Type "FemConstraintSelfWeight"
+        #  list of selfweight constraints from the analysis. Updated with update_objects
         self.selfweight_constraints = []
         ## @var force_constraints
-        #  set of force constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintForce" type
+        #  list of force constraints from the analysis. Updated with update_objects
         self.force_constraints = []
         ## @var pressure_constraints
-        #  set of pressure constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintPressure" type
+        #  list of pressure constraints from the analysis. Updated with update_objects
         self.pressure_constraints = []
         ## @var beam_sections
-        # set of beam sections from the analysis. Updated with update_objects
-        # Individual beam sections are Proxy.Type "FemElementGeometry1D"
+        # list of beam sections from the analysis. Updated with update_objects
         self.beam_sections = []
         ## @var fluid_sections
-        # set of fluid sections from the analysis. Updated with update_objects
-        # Individual fluid sections are Proxy.Type "FemElementFluid1D"
+        # list of fluid sections from the analysis. Updated with update_objects
         self.fluid_sections = []
         ## @var shell_thicknesses
-        # set of shell thicknesses from the analysis. Updated with update_objects
-        # Individual shell thicknesses are Proxy.Type "FemElementGeometry2D"
+        # list of shell thicknesses from the analysis. Updated with update_objects
         self.shell_thicknesses = []
         ## @var displacement_constraints
-        # set of displacements for the analysis. Updated with update_objects
-        # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
+        # list of displacements for the analysis. Updated with update_objects
         self.displacement_constraints = []
         ## @var temperature_constraints
-        # set of temperatures for the analysis. Updated with update_objects
-        # Individual temperature_constraints are Proxy.Type "FemConstraintTemperature"
+        # list of temperatures for the analysis. Updated with update_objects
         self.temperature_constraints = []
         ## @var heatflux_constraints
-        # set of heatflux constraints for the analysis. Updated with update_objects
-        # Individual heatflux_constraints are Proxy.Type "FemConstraintHeatflux"
+        # list of heatflux constraints for the analysis. Updated with update_objects
         self.heatflux_constraints = []
         ## @var initialtemperature_constraints
-        # set of initial temperatures for the analysis. Updated with update_objects
-        # Individual initialTemperature_constraints are Proxy.Type "FemConstraintInitialTemperature"
+        # list of initial temperatures for the analysis. Updated with update_objects
         self.initialtemperature_constraints = []
         ## @var planerotation_constraints
-        #  set of plane rotation constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintPlaneRotation" type
+        #  list of plane rotation constraints from the analysis. Updated with update_objects
         self.planerotation_constraints = []
         ## @var contact_constraints
-        #  set of contact constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintContact" type
+        #  list of contact constraints from the analysis. Updated with update_objects
         self.contact_constraints = []
         ## @var transform_constraints
-        #  set of transform constraints from the analysis. Updated with update_objects
-        #  Individual constraints are "Fem::ConstraintTransform" type
+        #  list of transform constraints from the analysis. Updated with update_objects
         self.transform_constraints = []
 
         found_solver_for_use = False
@@ -213,18 +194,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.mesh = m
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElmerFreeText":
-                if self.elmer_free_text is None:
-                    self.elmer_free_text = m
-                else:
-                    raise Exception(
-                        'FEM: Multiple free text objects '
-                        'in analysis not supported!')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m
                 self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
                 material_nonlinear_dict = {}
                 material_nonlinear_dict['Object'] = m
                 self.materials_nonlinear.append(material_nonlinear_dict)
@@ -232,7 +206,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
                 selfweight_dict = {}
                 selfweight_dict['Object'] = m
                 self.selfweight_constraints.append(selfweight_dict)
@@ -273,15 +247,15 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 transform_constraint_dict = {}
                 transform_constraint_dict['Object'] = m
                 self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry1D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementFluid1D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
                 self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemElementGeometry2D":
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)

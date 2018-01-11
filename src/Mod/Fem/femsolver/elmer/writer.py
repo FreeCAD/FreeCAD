@@ -33,7 +33,7 @@ import tempfile
 
 from FreeCAD import Units
 import Fem
-import FemUtils
+import femtools.femutils as FemUtils
 import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio
@@ -262,7 +262,7 @@ class Writer(object):
             self._handled(obj)
 
     def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::FemConstraintBodyHeatSource")
+        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
         if obj is not None:
             for name in bodies:
                 heatSource = getFromUi(obj.HeatFlux, "W/kg", "L^2*T^-3")

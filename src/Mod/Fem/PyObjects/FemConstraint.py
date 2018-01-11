@@ -37,25 +37,3 @@ class Proxy(object):
 
     def __init__(self, obj):
         obj.Proxy = self
-
-
-class ViewProxy(object):
-    """Proxy for FemSolverElmers View Provider."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode

@@ -27,14 +27,14 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD as App
-import FemUtils
-import FemConstraint
+import femtools.femutils as FemUtils
+from . import ViewProviderFemConstraint
 from FreeCAD import Units
 
 import FreeCADGui as Gui
 
 
-class ViewProxy(FemConstraint.ViewProxy):
+class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-constraint-initial-flow-velocity.svg"

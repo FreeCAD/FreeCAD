@@ -22,10 +22,6 @@ endif(BUILD_GUI)
 SET(FemScripts_SRCS
     Init.py
     InitGui.py
-    FemConstraint.py
-    FemInputWriter.py
-    FemToolsCcx.py
-    FemUtils.py
     ObjectsFem.py
     TestFem.py
 )
@@ -75,6 +71,7 @@ SET(FemSolver_SRCS
     femsolver/signal.py
     femsolver/solverbase.py
     femsolver/task.py
+    femsolver/writerbase.py
 )
 
 SET(FemSolverElmer_SRCS
@@ -154,6 +151,12 @@ SET(FemTestsElmer_SRCS
     femtest/testfiles/elmer/ELMERSOLVER_STARTINFO
 )
 
+SET(FemTools_SRCS
+    femtools/__init__.py
+    femtools/ccxtools.py
+    femtools/femutils.py
+)
+
 SET(FemObjectsScripts_SRCS
     PyObjects/__init__.py
     PyObjects/_FemConstraintBodyHeatSource.py
@@ -173,6 +176,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemMeshResult.py
     PyObjects/_FemResultMechanical.py
     PyObjects/_FemSolverCalculix.py
+    PyObjects/FemConstraint.py
 )
 
 SET(FemAllScripts
@@ -190,6 +194,7 @@ SET(FemAllScripts
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
+    ${FemTools_SRCS}
     ${FemObjectsScripts_SRCS}
 )
 
@@ -216,6 +221,7 @@ INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/testfiles)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/testfiles/ccx)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/testfiles/elmer)
+INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/PyObjects)
 
 
@@ -243,6 +249,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemSolverCalculix.py
     PyGui/FemSelectionObserver.py
     PyGui/FemSelectionWidgets.py
+    PyGui/ViewProviderFemConstraint.py
 )
 
 

@@ -28,14 +28,14 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 import FreeCAD
-import FemToolsCcx
+from femtools import ccxtools
 
 
 class _FemSolverCalculix():
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
     def __init__(self, obj):
-        self.Type = "FemSolverCalculix"
+        self.Type = "Fem::FemSolverCalculix"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 
@@ -49,9 +49,9 @@ class _FemSolverCalculix():
         # the working directory is not set, the solver working directory is only used if the preferences working directory is left blank
 
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types
+        obj.AnalysisType = ccxtools.FemToolsCcx.known_analysis_types
         analysis_type = ccx_prefs.GetInt("AnalysisType", 0)
-        obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types[analysis_type]
+        obj.AnalysisType = ccxtools.FemToolsCcx.known_analysis_types[analysis_type]
 
         choices_geom_nonlinear = ["linear", "nonlinear"]
         obj.addProperty("App::PropertyEnumeration", "GeometricalNonlinearity", "Fem", "Set geometrical nonlinearity")
