@@ -1420,8 +1420,11 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     QtGLFramebufferObjectFormat fboFormat;
     fboFormat.setSamples(samples);
     fboFormat.setAttachment(QtGLFramebufferObject::Depth);
-    //With enabled alpha a transparent background is supported but
-    //at the same time breaks semi-transparent models
+    // With enabled alpha a transparent background is supported but
+    // at the same time breaks semi-transparent models. A workaround
+    // is to use a certain background color using GL_RGB as texture
+    // format and in the output image search for the above color and
+    // replaces it with the color requested by the user.
 #if defined(HAVE_QT5_OPENGL)
     //fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
     fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
@@ -1434,8 +1437,14 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     const QColor col = backgroundColor();
     bool on = hasGradientBackground();
 
-    if (bgcolor.isValid()) {
-        setBackgroundColor(bgcolor);
+    int alpha = 255;
+    QColor bgopaque = bgcolor;
+    if (bgopaque.isValid()) {
+        // force an opaque background color
+        alpha = bgopaque.alpha();
+        if (alpha < 255)
+            bgopaque.setRgb(255,255,255);
+        setBackgroundColor(bgopaque);
         setGradientBackground(false);
     }
 
@@ -1443,6 +1452,20 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     setBackgroundColor(col);
     setGradientBackground(on);
     img = fbo.toImage();
+
+    // if background color isn't opaque manipulate the image
+    if (alpha < 255) {
+        QRgb rgba = bgcolor.rgba();
+        QRgb rgb = bgopaque.rgb();
+        QRgb * bits = (QRgb*) img.bits();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (*bits == rgb)
+                    *bits = rgba;
+                bits++;
+            }
+        }
+    }
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
