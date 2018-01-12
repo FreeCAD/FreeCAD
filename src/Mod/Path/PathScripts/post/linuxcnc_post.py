@@ -261,7 +261,8 @@ def parse(pathobj):
     global PRECISION
     global MODAL
     global OUTPUT_DOUBLES
-
+    global UNIT_SPEED_FORMAT
+    
     out = ""
     lastcommand = None
     precision_string = '.' + str(PRECISION) + 'f'
