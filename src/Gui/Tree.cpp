@@ -91,7 +91,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     ParameterGrp::handle _name = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView")
 
     GET_TREEVIEW_PARAM(hGrp);
-    bool sync = hGrp->GetBool("SyncSelection",false);
+    bool sync = hGrp->GetBool("SyncSelection",true);
     this->syncSelectionAction = new QAction(this);
     this->syncSelectionAction->setCheckable(true);
     this->syncSelectionAction->setChecked(sync);
