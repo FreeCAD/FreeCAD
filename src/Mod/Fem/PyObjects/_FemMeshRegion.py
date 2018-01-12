@@ -34,7 +34,7 @@ class _FemMeshRegion:
         obj.addProperty("App::PropertyLength", "CharacteristicLength", "MeshRegionProperties", "set characteristic length of FEM elements for this region")
         obj.addProperty("App::PropertyLinkSubList", "References", "MeshRegionShapes", "List of FEM mesh region shapes")
         obj.Proxy = self
-        self.Type = "FemMeshRegion"
+        self.Type = "Fem::FemMeshRegion"
 
     def execute(self, obj):
         return

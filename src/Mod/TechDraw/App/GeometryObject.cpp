@@ -555,7 +555,7 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
         gp_Trsf tempTransform;
         tempTransform.SetScale(inputCenter, scale);
         gp_Trsf mirrorTransform;
-        mirrorTransform.SetMirror( gp_Ax2(inputCenter, gp_Dir(0, 1, 0)) );
+        mirrorTransform.SetMirror( gp_Ax2(inputCenter, gp_Dir(0, -1, 0)) );
         tempTransform.Multiply(mirrorTransform);
 
         // Apply that transform to the shape.  This should preserve the centre.

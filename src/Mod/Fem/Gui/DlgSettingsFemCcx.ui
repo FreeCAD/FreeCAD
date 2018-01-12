@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>768</height>
+    <height>886</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="title">
-        <string>FreeCAD FEM Solver frame work</string>
+        <string>CalculiX solver base</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -73,7 +73,7 @@
              </font>
             </property>
             <property name="text">
-             <string>General FEM solver framework</string>
+             <string>General FEM solver framework (new)</string>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Ccx</cstring>

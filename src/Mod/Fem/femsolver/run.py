@@ -33,7 +33,7 @@ import threading
 import shutil
 
 import FreeCAD as App
-import FemUtils
+import femtools.femutils as FemUtils
 from . import settings
 from . import signal
 from . import task
@@ -59,7 +59,7 @@ def getMachine(solver, path=None):
 
 
 def _isPathValid(m, path):
-    t = _dirTypes[m.directory]
+    t = _dirTypes.get(m.directory) # setting default None
     setting = settings.getDirSetting()
     if path is not None:
         return t is None and m.directory == path
@@ -94,7 +94,7 @@ def _createMachine(solver, path, testmode):
         _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
-    if oldMachine is not None:
+    if oldMachine is not None and _dirTypes.get(oldMachine.directory) is not None:
         del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m

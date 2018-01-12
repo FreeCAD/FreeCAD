@@ -26,10 +26,10 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FemConstraint
+from . import ViewProviderFemConstraint
 
 
-class ViewProxy(FemConstraint.ViewProxy):
+class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-constraint-heatflux.svg"

@@ -122,7 +122,7 @@ class BoundarySelector(_Selector):
         self.setWindowTitle(self.tr("Select Faces/Edges/Vertexes"))
         self.setHelpText(self.tr(
             "To add references select them in the 3D view and then"
-            "click \"Add\"."))
+            " click \"Add\"."))
 
     def getSelection(self):
         selection = []

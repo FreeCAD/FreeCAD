@@ -35,7 +35,7 @@ class _FemMaterial:
         obj.addProperty("App::PropertyEnumeration", "Category", "Material", "Material type: fluid or solid")
         obj.Category = ['Solid', 'Fluid']  # used in TaskPanel
         obj.Proxy = self
-        self.Type = "FemMaterial"
+        self.Type = "Fem::Material"
 
     def execute(self, obj):
         return

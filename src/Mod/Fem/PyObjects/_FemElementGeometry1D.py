@@ -44,7 +44,7 @@ class _FemElementGeometry1D:
         obj.SectionType = _FemElementGeometry1D.known_beam_types
         obj.SectionType = 'Rectangular'
         obj.Proxy = self
-        self.Type = "FemElementGeometry1D"
+        self.Type = "Fem::FemElementGeometry1D"
 
     def execute(self, obj):
         return

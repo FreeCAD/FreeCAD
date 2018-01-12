@@ -400,13 +400,13 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
 
 
 def get_elset_short_name(obj, i):
-    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemMaterial':
+    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::Material':
         return 'Mat' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemElementGeometry1D':
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry1D':
         return 'Beam' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemElementFluid1D':
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementFluid1D':
         return 'Fluid' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemElementGeometry2D':
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry2D':
         return 'Shell' + str(i)
     else:
         print('Error: ', obj.Name, ' --> ', obj.Proxy.Type)

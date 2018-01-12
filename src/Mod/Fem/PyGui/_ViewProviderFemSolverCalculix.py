@@ -33,7 +33,7 @@ import FemGui
 
 
 # for the panel
-import FemToolsCcx
+from femtools import ccxtools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
@@ -223,7 +223,7 @@ class _TaskPanelFemSolverCalculix:
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
+        fea = ccxtools.FemToolsCcx(None, self.solver_object)
         fea.reset_mesh_purge_results_checked()
         fea.inp_file_name = self.inp_file_name
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -258,7 +258,7 @@ class _TaskPanelFemSolverCalculix:
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
-            fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
+            fea = ccxtools.FemToolsCcx(None, self.solver_object)
             fea.set_analysis_type(self.solver_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
@@ -277,7 +277,7 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("Check dependencies...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-        fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
+        fea = ccxtools.FemToolsCcx(None, self.solver_object)
         fea.update_objects()
         message = fea.check_prerequisites()
         if message != "":
@@ -336,7 +336,7 @@ class _TaskPanelFemSolverCalculix:
     def select_thermomech_analysis(self):
         self.select_analysis_type('thermomech')
 
-    # That function overlaps with FemToolsCcx setup_working_dir and could be removed when the one from FemToolsCcx would be used
+    # That function overlaps with ccxtools setup_working_dir and could be removed when the one from ccxtools would be used
     def setup_working_dir(self):
         wd = self.solver_object.WorkingDir
         if not (os.path.isdir(wd)):

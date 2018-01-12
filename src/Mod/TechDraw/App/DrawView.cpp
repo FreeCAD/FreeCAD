@@ -76,6 +76,7 @@ DrawView::DrawView(void)
 
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
+    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Prevent View from moving in Gui");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);

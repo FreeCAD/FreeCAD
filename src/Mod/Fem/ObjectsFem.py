@@ -96,8 +96,8 @@ def makeConstraintFlowVelocity(doc, name="ConstraintFlowVelocity"):
 
 
 def makeConstraintFluidBoundary(doc, name="ConstraintFluidBoundary"):
-    '''makeConstraintFluidBoundary(document, name): makes a Fem ConstraintForce object'''
-    obj = doc.addObject("Fem::ConstraintForce", name)
+    '''makeConstraintFluidBoundary(document, name): makes a Fem ConstraintFluidBoundary object'''
+    obj = doc.addObject("Fem::ConstraintFluidBoundary", name)
     return obj
 
 

@@ -257,6 +257,11 @@ double QGIView::getYInClip(double y)
 
 void QGIView::updateView(bool update)
 {
+    if (getViewObject()->LockPosition.getValue()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+    } else {
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
     if (update ||
         getViewObject()->X.isTouched() ||
         getViewObject()->Y.isTouched()) {
