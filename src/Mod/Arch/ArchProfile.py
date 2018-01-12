@@ -118,9 +118,9 @@ class _ProfileC(_Profile):
         import Part
         pl = obj.Placement
         c1=Part.Circle()
-        c1.Radius=obj.OutDiameter.Value
+        c1.Radius=obj.OutDiameter.Value/2
         c2=Part.Circle()
-        c2.Radius=obj.OutDiameter.Value-2*obj.Thickness.Value
+        c2.Radius=obj.OutDiameter.Value/2-obj.Thickness.Value
         cs1=c1.toShape()
         cs2=c2.toShape()
         p=Part.makeRuledSurface(cs2,cs1)
