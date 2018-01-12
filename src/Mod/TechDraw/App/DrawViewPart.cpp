@@ -522,11 +522,14 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     return result;
 }
 
+//return *unique* list of Dimensions which reference this DVP
 std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
 {
     std::vector<TechDraw::DrawViewDimension*> result;
     std::vector<App::DocumentObject*> children = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+    std::sort(children.begin(),children.end(),std::less<App::DocumentObject*>());
+    std::vector<App::DocumentObject*>::iterator newEnd = std::unique(children.begin(),children.end());
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawViewDimension::getClassTypeId())) {
             TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
             result.push_back(dim);
