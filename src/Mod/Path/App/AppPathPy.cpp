@@ -116,7 +116,7 @@ public:
             "show(path,[string]): Add the path to the active document or create one if no document exists"
         );
         add_varargs_method("fromShape",&Module::fromShape,
-            "fromShape(Shape): Returns a Path object from a Part Shape"
+            "fromShape(Shape): Returns a Path object from a Part Shape (deprecated - use fromShapes() instead)"
         );
         add_keyword_method("fromShapes",&Module::fromShapes,
             "fromShapes(shapes, start=Vector(), return_end=False" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_PATH) ")\n"
