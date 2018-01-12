@@ -134,6 +134,36 @@ MainWindow* MainWindow::instance = 0L;
 
 namespace Gui {
 
+/**
+ * The CustomMessageEvent class is used to send messages as events in the methods  
+ * Error(), Warning() and Message() of the StatusBarObserver class to the main window 
+ * to display them on the status bar instead of printing them directly to the status bar.
+ *
+ * This makes the usage of StatusBarObserver thread-safe.
+ * @author Werner Mayer
+ */
+class CustomMessageEvent : public QEvent
+{
+public:
+    enum Type {None, Err, Wrn, Pane, Msg, Log, Tmp};
+    CustomMessageEvent(Type t, const QString& s, int timeout=0)
+      : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
+    { }
+    ~CustomMessageEvent()
+    { }
+    Type type() const
+    { return _type; }
+    const QString& message() const
+    { return msg; }
+    int timeout() const
+    { return _timeout; }
+private:
+    Type _type;
+    QString msg;
+    int _timeout;
+};
+
+// -------------------------------------
 // Pimpl class
 struct MainWindowP
 {
@@ -607,6 +637,10 @@ bool MainWindow::event(QEvent *e)
             qApp->sendEvent(viewWidget, &anotherEvent);
         }
         return true;
+    }else if(e->type() == QEvent::StatusTip) {
+        // make sure warning and error message don't get blocked by tooltips
+        if(std::abs(d->currentStatusType) <= CustomMessageEvent::Wrn)
+            return true;
     }
     return QMainWindow::event(e);
 }
@@ -1588,40 +1622,6 @@ void MainWindow::statusMessageChanged() {
         d->statusTimer->stop();
         clearStatus();
     }
-}
-
-// -------------------------------------------------------------
-
-namespace Gui {
-
-/**
- * The CustomMessageEvent class is used to send messages as events in the methods  
- * Error(), Warning() and Message() of the StatusBarObserver class to the main window 
- * to display them on the status bar instead of printing them directly to the status bar.
- *
- * This makes the usage of StatusBarObserver thread-safe.
- * @author Werner Mayer
- */
-class CustomMessageEvent : public QEvent
-{
-public:
-    enum Type {None, Err, Wrn, Pane, Msg, Log, Tmp};
-    CustomMessageEvent(Type t, const QString& s, int timeout=0)
-      : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
-    { }
-    ~CustomMessageEvent()
-    { }
-    Type type() const
-    { return _type; }
-    const QString& message() const
-    { return msg; }
-    int timeout() const
-    { return _timeout; }
-private:
-    Type _type;
-    QString msg;
-    int _timeout;
-};
 }
 
 void MainWindow::showMessage(const QString& message, int timeout) {
