@@ -784,6 +784,8 @@ SoQtOffscreenRenderer::writeToImage (QImage& img) const
         c2.setBlueF(PRIVATE(this)->backgroundopaque[2]);
         c2.setAlphaF(PRIVATE(this)->backgroundopaque[3]);
 
+        QImage image(img.constBits(), img.width(), img.height(), QImage::Format_ARGB32);
+        img = image.copy();
         QRgb rgba = c1.rgba();
         QRgb rgb = c2.rgb();
         QRgb * bits = (QRgb*) img.bits();

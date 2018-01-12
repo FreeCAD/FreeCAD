@@ -1455,6 +1455,8 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
 
     // if background color isn't opaque manipulate the image
     if (alpha < 255) {
+        QImage image(img.constBits(), img.width(), img.height(), QImage::Format_ARGB32);
+        img = image.copy();
         QRgb rgba = bgcolor.rgba();
         QRgb rgb = bgopaque.rgb();
         QRgb * bits = (QRgb*) img.bits();
