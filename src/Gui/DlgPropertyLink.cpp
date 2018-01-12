@@ -161,12 +161,10 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
         }
 
         // Add a "None" entry on top
-        if (isSingleSelection) {
-            QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-            item->setText(tr("None (Remove link)"));
-            QByteArray ba("");
-            item->setData(Qt::UserRole, ba);
-        }
+        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+        item->setText(tr("None (Remove link)"));
+        QByteArray ba("");
+        item->setData(Qt::UserRole, ba);
 
         std::vector<App::DocumentObject*> obj = doc->getObjectsOfType(baseType);
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
