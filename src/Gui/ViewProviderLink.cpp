@@ -2146,7 +2146,9 @@ Base::Placement ViewProviderLink::currentDraggingPlacement() const{
         v = dragger->translation.getValue();
         r = dragger->rotation.getValue();
     }
-    return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(r[0],r[1],r[2],r[3]));
+    float q1,q2,q3,q4;
+    r.getValue(q1,q2,q3,q4);
+    return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
 }
 
 void ViewProviderLink::enableCenterballDragger(bool enable) {
