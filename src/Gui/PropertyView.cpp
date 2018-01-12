@@ -136,12 +136,23 @@ void PropertyView::hideEvent(QHideEvent *ev) {
     // clear the properties before hiding.
     propertyEditorData->buildUp(props);
     propertyEditorView->buildUp(props);
+    clearPropertyItemSelection();
     QWidget::hideEvent(ev);
 }
 
 void PropertyView::showEvent(QShowEvent *ev) {
     this->attachSelection();
     QWidget::showEvent(ev);
+}
+
+void PropertyView::clearPropertyItemSelection() {
+    if(App::GetApplication().autoTransaction()) {
+        QModelIndex index;
+        propertyEditorData->clearSelection();
+        propertyEditorData->setCurrentIndex(index);
+        propertyEditorView->clearSelection();
+        propertyEditorView->setCurrentIndex(index);
+    }
 }
 
 void PropertyView::slotRollback() {
@@ -152,11 +163,7 @@ void PropertyView::slotRollback() {
     // the current active transaction will be closed by design, which cause
     // further editing to be not recorded. Hence, we force unselect any property
     // item on undo/redo
-    QModelIndex index;
-    propertyEditorData->clearSelection();
-    propertyEditorData->setCurrentIndex(index);
-    propertyEditorView->clearSelection();
-    propertyEditorView->setCurrentIndex(index);
+    clearPropertyItemSelection();
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
@@ -229,6 +236,8 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::SetSelection &&
         msg.Type != SelectionChanges::ClrSelection)
         return;
+
+    clearPropertyItemSelection();
 
     std::set<App::DocumentObject *> objSet;
 

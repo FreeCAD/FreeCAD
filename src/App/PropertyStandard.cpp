@@ -1348,8 +1348,12 @@ void PropertyString::setValue(const char* newLabel)
     std::vector<std::pair<PropertyXLink*,std::string> > linkChange;
     std::string label;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
+    bool commit = false;
 
-    if(obj && obj->getNameInDocument() && this==&obj->Label) {
+    if(!GetApplication().isRestoring() && 
+       obj && obj->getNameInDocument() && this==&obj->Label &&
+       !obj->getDocument()->isPerformingTransaction()) 
+    {
         // allow object to control label change
 
         static ParameterGrp::handle _hPGrp;
@@ -1397,6 +1401,17 @@ void PropertyString::setValue(const char* newLabel)
         obj->onBeforeChangeLabel(label);
         newLabel = label.c_str();
         linkChange = PropertyXLink::updateLabel(obj,newLabel);
+
+        if(linkChange.size() && 
+           !obj->getDocument()->hasPendingTransaction() &&
+           !GetApplication().getActiveTransaction()) 
+        {
+            commit = true;
+            std::ostringstream str;
+            str << "Change " << obj->getNameInDocument() << ".Label";
+            GetApplication().setActiveTransaction(str.str().c_str());
+        }
+
     }
 
     aboutToSetValue();
@@ -1405,6 +1420,9 @@ void PropertyString::setValue(const char* newLabel)
 
     for(auto change : linkChange)
         change.first->setSubName(change.second.c_str());
+
+    if(commit)
+        GetApplication().closeActiveTransaction();
 }
 
 void PropertyString::setValue(const std::string &sString)

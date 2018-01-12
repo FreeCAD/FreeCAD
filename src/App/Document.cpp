@@ -1018,13 +1018,14 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                 if(name && tid>0) {
                     bool ignore = false;
                     if(What) {
-                        if(What->testStatus(Property::Output))
+                        auto parent = What->getContainer();
+                        auto obj = dynamic_cast<DocumentObject*>(parent);
+                        if(!obj)
                             ignore = true;
-                        else {
-                            auto parent = What->getContainer();
-                            if(parent && (parent->getPropertyType(What) & Prop_Output))
-                                ignore = true;
-                        }
+                        else if(What!=&obj->Label &&
+                               (What->testStatus(Property::Output) ||
+                                (parent->getPropertyType(What) & Prop_Output)))
+                            ignore = true;
                     }
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                         if(What) {

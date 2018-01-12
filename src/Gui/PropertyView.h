@@ -64,6 +64,7 @@ public:
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
     Gui::PropertyEditor::PropertyEditor* propertyEditorData;
+    void clearPropertyItemSelection();
 
 public Q_SLOTS:
     /// Stores a preference for the last tab selected
