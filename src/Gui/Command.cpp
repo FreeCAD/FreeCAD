@@ -908,6 +908,7 @@ PythonCommand::~PythonCommand()
 
 const char* PythonCommand::getResource(const char* sName) const
 {
+    Base::PyGILStateLocker lock;
     PyObject* pcTemp;
 
     // get the "MenuText" resource string
@@ -1303,6 +1304,7 @@ const char* PythonGroupCommand::getHelpUrl(void) const
 
 const char* PythonGroupCommand::getResource(const char* sName) const
 {
+    Base::PyGILStateLocker lock;
     PyObject* pcTemp;
 
     // get the "MenuText" resource string
