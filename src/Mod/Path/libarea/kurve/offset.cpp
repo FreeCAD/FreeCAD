@@ -168,7 +168,7 @@ namespace geoff_geometry {
 	static Kurve eliminateLoops(const Kurve& k , const Kurve& originalk, double offset, int& ret) {
 		// a simple loop elimination routine based on first offset ideas in Peps
 		// this needs extensive work for future
-		// start point musn't disappear & only one valid offset is determined
+		// start point mustn't disappear & only one valid offset is determined
 		//
 		// ret = 0 for ok
 		// ret = 2 for impossible geometry
