@@ -125,7 +125,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double defDist = hGrp->GetFloat("FocusDistance",100.0);
-
+    bool coarseView = hGrp->GetBool("CoarseView", false);
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -135,6 +135,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
     //properties that affect Appearance
+    ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
     //visible outline
     ADD_PROPERTY_TYPE(SmoothVisible ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
     ADD_PROPERTY_TYPE(SeamVisible ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
@@ -278,7 +279,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
      geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    if (handleFaces()) {
+    if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
         }
@@ -323,12 +324,19 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
+    go->usePolygonHLR(CoarseView.getValue());
 
     Base::Vector3d baseProjDir = Direction.getValue();
     saveParamSpace(baseProjDir);
 
-    go->projectShape(shape,
-                     viewAxis);
+    if (go->usePolygonHLR()){
+        go->projectShapeWithPolygonAlgo(shape,
+            viewAxis);
+    }
+    else{
+        go->projectShape(shape,
+            viewAxis);
+    }
     go->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                         true);
     go->extractGeometry(TechDrawGeometry::ecOUTLINE,

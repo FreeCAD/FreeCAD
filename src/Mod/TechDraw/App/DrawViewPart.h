@@ -87,6 +87,7 @@ public:
     App::PropertyBool         Perspective;
     App::PropertyDistance     Focus;
 
+    App::PropertyBool   CoarseView;
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;
     //App::PropertyBool   OutlinesVisible;
