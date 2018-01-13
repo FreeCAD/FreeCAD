@@ -1,0 +1,19 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/test
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: docker pull condaforge/linux-anvil
+      - run:
+          # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
+          command: ./package/conda/run_docker_build.sh
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
