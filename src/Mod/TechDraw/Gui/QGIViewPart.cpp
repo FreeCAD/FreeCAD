@@ -477,6 +477,7 @@ void QGIViewPart::drawViewPart()
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double vertexScaleFactor = hGrp->GetFloat("VertexScale", 3.0);
 
+    bool usePolygonHLR = viewPart->CoarseView.getValue();
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
     bool showCenters = viewPart->ArcCenterMarks.getValue();
@@ -491,7 +492,7 @@ void QGIViewPart::drawViewPart()
                 cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
                 cmItem->setZValue(ZVALUE::VERTEX);
             }
-        } else {
+        } else if(!usePolygonHLR){ //Disable dots WHEN usePolygonHLR
             QGIVertex *item = new QGIVertex(i);
             addToGroup(item);
             item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
