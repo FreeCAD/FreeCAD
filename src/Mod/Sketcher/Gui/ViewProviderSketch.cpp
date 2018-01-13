@@ -5855,8 +5855,11 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                 delConstraints.insert(ConstrId);
             }
         }
+        // We stored the vertices, but is there really a coincident constraint? Check
+        const std::vector< Sketcher::Constraint * > &vals = getSketchObject()->Constraints.getValues();
+        
+	std::set<int>::const_reverse_iterator rit;
 
-        std::set<int>::const_reverse_iterator rit;
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
@@ -5868,13 +5871,33 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         }
 
         for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); ++rit) {
-            try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i)"
-                                       ,getObject()->getNameInDocument(), *rit);
-            }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
-            }
+	    int GeoId;
+	    PointPos PosId;
+	    
+	    if (*rit == GeoEnum::RtPnt) { // RootPoint
+		GeoId = Sketcher::GeoEnum::RtPnt;
+		PosId = start;
+	    } else {
+		getSketchObject()->getGeoVertexIndex(*rit, GeoId, PosId);
+	    }
+	    
+	    if(GeoId != Constraint::GeoUndef) {
+	    
+	      for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+
+		if ( ((*it)->Type == Sketcher::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) || 
+		     ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) ) {
+		  try {
+		      Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)"
+					    ,getObject()->getNameInDocument(), GeoId, (int)PosId);
+		  }
+		  catch (const Base::Exception& e) {
+		      Base::Console().Error("%s\n", e.what());
+		  }
+		  break;
+		}
+	      }
+	    }
         }
 
         for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
