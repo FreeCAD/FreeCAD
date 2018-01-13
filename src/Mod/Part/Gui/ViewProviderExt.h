@@ -165,8 +165,6 @@ protected:
 
 private:
     // settings stuff
-    bool noPerVertexNormals;
-    bool qualityNormals;
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
     static App::PropertyQuantityConstraint::Constraints angDeflectionRange;
