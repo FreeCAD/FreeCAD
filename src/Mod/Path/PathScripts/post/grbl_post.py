@@ -146,7 +146,7 @@ def export(objectslist,filename,argstring):
 
     for obj in objectslist:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
 
     print "postprocessing..."
