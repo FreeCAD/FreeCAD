@@ -784,8 +784,6 @@ bool ViewProviderPartExt::loadParameter()
         ("User parameter:BaseApp/Preferences/Mod/Part");
     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
     float angularDeflection = hGrp->GetFloat("MeshAngularDeflection",28.65);
-    bool novertexnormals = hGrp->GetBool("NoPerVertexNormals",false);
-    bool qualitynormals = hGrp->GetBool("QualityNormals",false);
 
     if (Deviation.getValue() != deviation) {
         Deviation.setValue(deviation);
@@ -793,14 +791,6 @@ bool ViewProviderPartExt::loadParameter()
     }
     if (AngularDeflection.getValue() != angularDeflection ) {
         AngularDeflection.setValue(angularDeflection);
-    }
-    if (this->noPerVertexNormals != novertexnormals) {
-        this->noPerVertexNormals = novertexnormals;
-        changed = true;
-    }
-    if (this->qualityNormals != qualitynormals) {
-        this->qualityNormals = qualitynormals;
-        changed = true;
     }
 
     return changed;
