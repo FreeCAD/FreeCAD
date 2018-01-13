@@ -59,7 +59,7 @@ def getMachine(solver, path=None):
 
 
 def _isPathValid(m, path):
-    t = _dirTypes.get(m.directory) # setting default None
+    t = _dirTypes.get(m.directory)  # setting default None
     setting = settings.getDirSetting()
     if path is not None:
         return t is None and m.directory == path

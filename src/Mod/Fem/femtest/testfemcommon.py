@@ -74,7 +74,6 @@ solverframework_analysis_dir = temp_dir + 'FEM_solverframework/'
 solverframework_save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
 
 
-
 class FemTest(unittest.TestCase):
     def setUp(self):
         try:
@@ -1347,7 +1346,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(solverframework_save_fc_file))
         self.active_doc.saveAs(solverframework_save_fc_file)
         fcc_print('--------------- End of FEM tests solver frame work ---------------')
- 
+
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
