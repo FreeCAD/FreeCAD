@@ -92,6 +92,9 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::REAMER:
 	case Tool::TAP:
 	case Tool::ENDMILL:
+			tp = cSimTool::FLAT;
+			angle = 180;
+			break;
 	case Tool::SLOTCUTTER:
 	case Tool::CORNERROUND:
 	case Tool::ENGRAVER:
@@ -103,7 +106,11 @@ void PathSim::SetCurrentTool(Tool * tool)
         }
 		break;
 
-		break; // quiet warnings
+	default:
+			tp = cSimTool::FLAT;
+			angle = 180;
+			break;
+
 	}
 	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
 }
