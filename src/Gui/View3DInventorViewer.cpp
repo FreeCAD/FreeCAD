@@ -927,10 +927,32 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
 
 void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QImage& img) const
 {
+    // Save picture methods:
+    // FramebufferObject -- viewer renders into FBO (no offscreen)
+    // CoinOffscreenRenderer -- Coin's offscreen rendering method
+    // PixelBuffer -- Qt's pixel buffer used for offscreen rendering (only Qt4)
+    // Otherwise (Default) -- Qt's FBO used for offscreen rendering
+    std::string saveMethod = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetASCII("SavePicture");
+
+    bool useFramebufferObject = false;
+    bool usePixelBuffer = false;
     bool useCoinOffscreenRenderer = false;
-    useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->
-        GetBool("CoinOffscreenRenderer", useCoinOffscreenRenderer);
+    if (saveMethod == "FramebufferObject") {
+        useFramebufferObject = true;
+    }
+    else if (saveMethod == "PixelBuffer") {
+        usePixelBuffer = true;
+    }
+    else if (saveMethod == "CoinOffscreenRenderer") {
+        useCoinOffscreenRenderer = true;
+    }
+
+    if (useFramebufferObject) {
+        View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
+        self->imageFromFramebuffer(w, h, s, bg, img);
+        return;
+    }
 
     // if no valid color use the current background
     bool useBackground = false;
@@ -1008,6 +1030,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         if (!useCoinOffscreenRenderer) {
             SoQtOffscreenRenderer renderer(vp);
             renderer.setNumPasses(s);
+            renderer.setPbufferEnable(usePixelBuffer);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
             if (!renderer.render(root))
