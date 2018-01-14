@@ -197,7 +197,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
-            GetNormals(actFace, mesh, Normals);
+            getNormals(actFace, mesh, Normals);
             
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
