@@ -49,11 +49,17 @@
 # include <gp_Hypr.hxx>
 # include <gp_Parab.hxx>
 # include <gp_Lin.hxx>
+# include <Poly_Polygon2D.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Poly_Triangulation.hxx>
+# include <Poly_PolygonOnTriangulation.hxx>
+# include <TColStd_Array1OfReal.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Vertex.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
@@ -219,6 +225,65 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
     BRepLProp_CLProps prop(adapt,u,0,Precision::Confusion());
     const gp_Pnt& V = prop.Value();
     return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+}
+
+PyObject* TopoShapeEdgePy::parameters(PyObject *args)
+{
+    PyObject* pyface = 0;
+    if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface))
+        return 0;
+
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    TopLoc_Location aLoc;
+    Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(e, aLoc);
+    if (!aPoly.IsNull()) {
+        Py::List list;
+        if (!aPoly->HasParameters()) {
+            return Py::new_reference_to(list);
+        }
+
+        const TColStd_Array1OfReal& aNodes = aPoly->Parameters();
+        for (int i=aNodes.Lower(); i<=aNodes.Upper(); i++) {
+            list.append(Py::Float(aNodes(i)));
+        }
+
+        return Py::new_reference_to(list);
+    }
+    else if (pyface) {
+        // build up map edge->face
+        const TopoDS_Shape& face = static_cast<TopoShapeFacePy*>(pyface)->getTopoShapePtr()->getShape();
+        TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
+        TopExp::MapShapesAndAncestors(TopoDS::Face(face), TopAbs_EDGE, TopAbs_FACE, edge2Face);
+        if (edge2Face.Contains(e)) {
+            Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(face),aLoc);
+            if (!aPolyTria.IsNull()) {
+                Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(e, aPolyTria, aLoc);
+                if (!aPoly.IsNull()) {
+                    if (!aPoly->HasParameters()) {
+                        Py::List list;
+                        return Py::new_reference_to(list);
+                    }
+
+                    Handle(TColStd_HArray1OfReal) aNodes = aPoly->Parameters();
+                    if (!aNodes.IsNull()) {
+                        Py::List list;
+                        for (int i=aNodes->Lower(); i<=aNodes->Upper(); i++) {
+                            list.append(Py::Float(aNodes->Value(i)));
+                        }
+
+                        return Py::new_reference_to(list);
+                    }
+                }
+            }
+        }
+        else {
+            PyErr_SetString(PyExc_ValueError, "Edge is not part of the face");
+            return 0;
+        }
+    }
+
+    PyErr_SetString(PyExc_RuntimeError, "Edge has no polygon");
+    return 0;
 }
 
 PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
