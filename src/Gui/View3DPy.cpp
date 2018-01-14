@@ -719,13 +719,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers", false)) {
-        _view->getViewer()->imageFromFramebuffer(w, h, 8, bg, img);
-    }
-    else {
-        _view->getViewer()->savePicture(w, h, 8, bg, img);
-    }
+    _view->getViewer()->savePicture(w, h, 8, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
