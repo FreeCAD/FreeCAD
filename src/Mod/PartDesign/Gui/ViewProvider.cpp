@@ -234,8 +234,6 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
 
         Gui::Command::doCommand ( Gui::Command::Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                                 body->getNameInDocument(), feature->getNameInDocument() );
-
-        return false; // no need for the document to delete the feature, we have just done it, see StdCmdDelete::activated
     }
 
     return true;
