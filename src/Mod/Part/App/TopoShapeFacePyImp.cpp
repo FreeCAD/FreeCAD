@@ -43,6 +43,7 @@
 # include <Geom_ToroidalSurface.hxx>
 # include <Geom_Surface.hxx>
 # include <Geom2d_Curve.hxx>
+# include <Poly_Triangulation.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
@@ -56,6 +57,7 @@
 # include <Standard_Version.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_Wire.hxx>
+# include <TColgp_Array1OfPnt2d.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
@@ -431,6 +433,36 @@ PyObject* TopoShapeFacePy::normalAt(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, "normal not defined");
         return 0;
     }
+}
+
+PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
+    TopLoc_Location aLoc;
+    Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(f,aLoc);
+    if (mesh.IsNull()) {
+        PyErr_SetString(PyExc_RuntimeError, "Face has no triangulation");
+        return 0;
+    }
+
+    Py::List list;
+    if (!mesh->HasUVNodes()) {
+        return Py::new_reference_to(list);
+    }
+
+    const TColgp_Array1OfPnt2d& aNodesUV = mesh->UVNodes();
+    for (int i=aNodesUV.Lower(); i<=aNodesUV.Upper(); i++) {
+        gp_Pnt2d pt2d = aNodesUV(i);
+        Py::Tuple uv(2);
+        uv.setItem(0, Py::Float(pt2d.X()));
+        uv.setItem(1, Py::Float(pt2d.Y()));
+        list.append(uv);
+    }
+
+    return Py::new_reference_to(list);
 }
 
 PyObject* TopoShapeFacePy::tangentAt(PyObject *args)
