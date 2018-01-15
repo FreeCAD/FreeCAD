@@ -56,8 +56,8 @@ parser.add_argument('--precision', default='3', help='number of digits of precis
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
-parser.add_argument('--modal', action='store_true', help='Dont output the Same Gcommand Name USE Modal Mode')
-parser.add_argument('--no-doubles', action='store_true', help='Dont output the Same Axis Value Mode')
+parser.add_argument('--no-modal', action='store_true', help='Output the Same Gcommand Name USE NonModal Mode')
+parser.add_argument('--output-doubles', action='store_true', help='Output the Same Axis Value Mode')
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -66,10 +66,10 @@ OUTPUT_COMMENTS = True
 OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
-MODAL = False  # if true commands are suppressed if the same as previous line.
-OUTPUT_DOUBLES = True
+MODAL = True  # if true commands are suppressed if the same as previous line.
+OUTPUT_DOUBLES = False
 COMMAND_SPACE = " "
-LINENR = 100  # line number starting value
+LINENR = 10  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
@@ -82,15 +82,14 @@ CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
 PRECISION = 3
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = '''G17 G90
+PREAMBLE = '''G17 G54 G40 G49 G80 G90
 '''
 
 # Postamble text will appear following the last operation.
 POSTAMBLE = '''M05
-G17 G90
+G17 G54 G90 G80 G40 
 M2
 '''
-
 
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = ''''''
@@ -101,11 +100,9 @@ POST_OPERATION = ''''''
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
 
-
 # to distinguish python built-in open function from the one declared below
 if open.__module__ == '__builtin__':
     pythonopen = open
-
 
 def processArguments(argstring):
     global OUTPUT_HEADER
@@ -150,21 +147,21 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = 'in/min'
             UNIT_FORMAT = 'in'
             PRECISION = 4
-        if args.modal:
-            MODAL = True
-        if args.no_doubles:
-            OUTPUT_DOUBLES = False
+        if args.no_modal:
+            MODAL = False
+        if args.output_doubles:
+            OUTPUT_DOUBLES = True
 
     except:
         return False
 
     return True
 
-
 def export(objectslist, filename, argstring):
     if not processArguments(argstring):
         return None
     global UNITS
+    global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
 
     for obj in objectslist:
@@ -201,9 +198,11 @@ def export(objectslist, filename, argstring):
         if hasattr(job, "MachineUnits"):
             if job.MachineUnits == "Metric":
                 UNITS = "G21"
+                UNIT_FORMAT = 'mm'
                 UNIT_SPEED_FORMAT = 'mm/min'
             else:
                 UNITS = "G20"
+                UNIT_FORMAT = 'in'
                 UNIT_SPEED_FORMAT = 'in/min'
 
         # do the pre_op
@@ -222,7 +221,6 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
     # do the post_amble
-
     if OUTPUT_COMMENTS:
         gcode += "(begin postamble)\n"
     for line in POSTAMBLE.splitlines(True):
@@ -248,7 +246,6 @@ def export(objectslist, filename, argstring):
 
     return final
 
-
 def linenumber():
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
@@ -256,24 +253,23 @@ def linenumber():
         return "N" + str(LINENR) + " "
     return ""
 
-
 def parse(pathobj):
     global PRECISION
     global MODAL
     global OUTPUT_DOUBLES
-
+    global UNIT_FORMAT
+    global UNIT_SPEED_FORMAT
+    
     out = ""
     lastcommand = None
     precision_string = '.' + str(PRECISION) + 'f'
+    currLocation = {} # keep track for no doubles
 
-    # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
     # linuxcnc doesn't want K properties on XY plane  Arcs need work.
     params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'I', 'J', 'F', 'S', 'T', 'Q', 'R', 'L', 'H', 'D', 'P']
-    # keep track for no doubles
-    currLocation = {}
-    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
-    currLocation.update(firstmove.Parameters)
+    firstmove = Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 0.0, "F": 0.0})
+    currLocation.update(firstmove.Parameters) #set First location Parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         # if OUTPUT_COMMENTS:
@@ -326,7 +322,6 @@ def parse(pathobj):
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
                                 param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
-                                # param + format(c.Parameters[param], precision_string))
 
             # store the latest command
             lastcommand = command
@@ -356,6 +351,5 @@ def parse(pathobj):
                 out = out.strip() + "\n"
 
         return out
-
 
 print(__name__ + " gcode postprocessor loaded.")
