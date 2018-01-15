@@ -2244,6 +2244,8 @@ int Document::recompute()
     }
 #endif
 
+    signalRecomputed(*this);
+
     return objectCount;
 }
 
