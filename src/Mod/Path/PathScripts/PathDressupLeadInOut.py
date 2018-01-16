@@ -26,18 +26,17 @@ from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 import Path
-import Part
-from PySide import QtCore, QtGui
+from PySide import QtCore
 import math
-#import DraftVecUtils as D
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 from PathScripts.PathGeom import PathGeom
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
+
 # Qt tanslation handling
-def translate(text, context="PathDressup_LeadInOut", disambig=None):
+def translate(text, context="Path_DressupLeadInOut", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -53,17 +52,17 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
-        obj.addProperty("App::PropertyBool", "LeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Calculate roll-on to path"))
-        obj.addProperty("App::PropertyBool", "LeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Calculate roll-off from path"))
-        obj.addProperty("App::PropertyBool", "KeepToolDown", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Keep the Tool Down in Path"))
-        obj.addProperty("App::PropertyBool", "UseMashineCRC", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Use Mashine Cutter Radius Compensation /Tool Path Offset G41/G42"))
-        obj.addProperty("App::PropertyDistance", "Length", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Length or Radius of the approach"))
-        obj.addProperty("App::PropertyEnumeration", "StyleOn", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_LeadInOut", "The Style of LeadIn the Path"))
+        obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base path to modify"))
+        obj.addProperty("App::PropertyBool", "LeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"))
+        obj.addProperty("App::PropertyBool", "LeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"))
+        obj.addProperty("App::PropertyBool", "KeepToolDown", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"))
+        obj.addProperty("App::PropertyBool", "UseMashineCRC", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use Mashine Cutter Radius Compensation /Tool Path Offset G41/G42"))
+        obj.addProperty("App::PropertyDistance", "Length", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"))
+        obj.addProperty("App::PropertyEnumeration", "StyleOn", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "The Style of LeadIn the Path"))
         obj.StyleOn = ["Arc", "Tangent", "Perpendicular"]
-        obj.addProperty("App::PropertyEnumeration", "StyleOff", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_LeadInOut", "The Style of LeadOut the Path"))
+        obj.addProperty("App::PropertyEnumeration", "StyleOff", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "The Style of LeadOut the Path"))
         obj.StyleOff = ["Arc", "Tangent", "Perpendicular"]
-        obj.addProperty("App::PropertyEnumeration", "RadiusCenter", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_LeadInOut", "The Mode of Point Radiusoffset or Center"))
+        obj.addProperty("App::PropertyEnumeration", "RadiusCenter", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "The Mode of Point Radiusoffset or Center"))
         obj.RadiusCenter = ["Radius", "Center"]
         obj.Proxy = self
 
@@ -72,16 +71,17 @@ class ObjectDressup:
 
     def __setstate__(self, state):
         return None
+
     def setup(self, obj):
         obj.Length = 5.0
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.KeepToolDown=False
-        obj.UseMashineCRC=False
+        obj.KeepToolDown = False
+        obj.UseMashineCRC = False
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
- 
+
     def execute(self, obj):
         if not obj.Base:
             return
@@ -95,31 +95,31 @@ class ObjectDressup:
         self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
         obj.Path = self.generateLeadInOutCurve(obj)
 
-    def getDirectionOfPath(self,obj):
+    def getDirectionOfPath(self, obj):
         if obj.Base.Side == 'Outside':
-            if obj.Base.Direction =='CW':
+            if obj.Base.Direction == 'CW':
                 return 'left'
             else:
                 return 'right'
-        else: 
-            if obj.Base.Direction =='CW':
+        else:
+            if obj.Base.Direction == 'CW':
                 return 'right'
-        return 'left' 
+        return 'left'
 
     def normalize(self, Vector):
-        x=Vector.x
-        y=Vector.y
-        len = math.sqrt( x*x + y*y )
-        if((math.fabs(len))> 0.0000000000001):
-            vx = round(x / len,0)
-            vy = round(y / len,0)  
-        return FreeCAD.Base.Vector(vx,vy,0)
+        x = Vector.x
+        y = Vector.y
+        length = math.sqrt(x*x + y*y)
+        if((math.fabs(length)) > 0.0000000000001):
+            vx = round(x / length, 0)
+            vy = round(y / length, 0)
+        return FreeCAD.Base.Vector(vx, vy, 0)
 
-    def getLeadStart(self,obj, queue,action):
+    def getLeadStart(self, obj, queue, action):
         '''returns Lead In G-code.'''
         global currLocation
         results = []
-        zdepth = currLocation["Z"]
+        # zdepth = currLocation["Z"]
         horizFeed = obj.Base.ToolController.HorizFeed.Value
         vertFeed = obj.Base.ToolController.VertFeed.Value
         toolnummer = obj.Base.ToolController.ToolNumber
@@ -128,26 +128,26 @@ class ObjectDressup:
             arcdir = "G3"
         else:
             arcdir = "G2"
-        R= obj.Length.Value #Radius of roll or length
-        if queue[1].Name == "G1": #line
+        R = obj.Length.Value  # Radius of roll or length
+        if queue[1].Name == "G1":  # line
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            #PathLog.notice(" CURRENT_IN  : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
+            # PathLog.notice(" CURRENT_IN  : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
         else:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
-            #PathLog.notice(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
+            # PathLog.notice(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
             v = self.normalize(p1.sub(p0))
         if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Base.Vector(v.y*R,-v.x*R,0.0)
+            off_v = FreeCAD.Base.Vector(v.y*R, -v.x*R, 0.0)
         else:
-            off_v = FreeCAD.Base.Vector(-v.y*R,v.x*R,0.0)
-        offsetvector = FreeCAD.Base.Vector(v.x*R,v.y*R, 0) #IJ
+            off_v = FreeCAD.Base.Vector(-v.y*R, v.x*R, 0.0)
+        offsetvector = FreeCAD.Base.Vector(v.x*R, v.y*R, 0)  # IJ
         if obj.RadiusCenter == 'Radius':
-            leadstart = (p0.add(off_v)).sub(offsetvector) #Rmode
-        else: 
-            leadstart = p0.add(off_v) #Dmode
+            leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
+        else:
+            leadstart = p0.add(off_v)  # Dmode
         if action == 'start':
             extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": obj.Base.ClearanceHeight.Value})
             results.append(extendcommand)
@@ -165,48 +165,48 @@ class ObjectDressup:
         results.append(extendcommand)
         if obj.UseMashineCRC:
                 if self.getDirectionOfPath(obj) == 'right':
-                    results.append(Path.Command('G42', {'D':toolnummer}))
+                    results.append(Path.Command('G42', {'D': toolnummer}))
                 else:
-                    results.append(Path.Command('G41', {'D':toolnummer}))
+                    results.append(Path.Command('G41', {'D': toolnummer}))
         if obj.StyleOn == 'Arc':
             arcmove = Path.Command(arcdir, {"X": p0.x, "Y": p0.y, "I": offsetvector.x, "J": offsetvector.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
         elif obj.StyleOn == 'Tangent':
             extendcommand = Path.Command('G1', {"X": p0.x, "Y": p0.y, "Z": p0.z, "F": horizFeed})
             results.append(extendcommand)
-        else :
+        else:
             PathLog.notice(" CURRENT_IN Perp")
-        return results     
+        return results
 
-    def getLeadEnd(self,obj, queue,action):
+    def getLeadEnd(self, obj, queue, action):
         '''returns the  Gcode of LeadOut.'''
         global currLocation
         results = []
         horizFeed = obj.Base.ToolController.HorizFeed.Value
-        R= obj.Length.Value #Radius of roll or length
+        R = obj.Length.Value  # Radius of roll or length
         # set the correct twist command
         if self.getDirectionOfPath(obj) == 'right':
             arcdir = "G2"
         else:
             arcdir = "G3"
-        if queue[1].Name == "G1": #line
+        if queue[1].Name == "G1":  # line
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-        else:#dealing with a circle
+        else:  # dealing with a circle
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
         if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Base.Vector(v.y*R,-v.x*R,0.0)
+            off_v = FreeCAD.Base.Vector(v.y*R, -v.x*R, 0.0)
         else:
-            off_v = FreeCAD.Base.Vector(-v.y*R,v.x*R,0.0)
-        offsetvector = FreeCAD.Base.Vector(v.x*R,v.y*R, 0.0) 
+            off_v = FreeCAD.Base.Vector(-v.y*R, v.x*R, 0.0)
+        offsetvector = FreeCAD.Base.Vector(v.x*R, v.y*R, 0.0)
         if obj.RadiusCenter == 'Radius':
-            leadend = (p1.add(off_v)).add(offsetvector) #Rmode
-        else: 
-            leadend = p1.add(off_v) #Dmode
-        IJ= off_v#.negative()
+            leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
+        else:
+            leadend = p1.add(off_v)  # Dmode
+        IJ = off_v  # .negative()
         results.append(queue[1])
         if obj.StyleOff == 'Arc':
             arcmove = Path.Command(arcdir, {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed})  # add G2/G3 move
@@ -214,11 +214,11 @@ class ObjectDressup:
         elif obj.StyleOff == 'Tangent':
             extendcommand = Path.Command('G1', {"X": leadend.x, "Y": leadend.y, "Z": currLocation["Z"], "F": horizFeed})
             results.append(extendcommand)
-        else :
+        else:
             PathLog.notice(" CURRENT_IN Perp")
-        if obj.UseMashineCRC:#crc off
+        if obj.UseMashineCRC:  # crc off
             results.append(Path.Command('G40', {}))
-        return results     
+        return results
 
     def generateLeadInOutCurve(self, obj):
         global currLocation
@@ -226,10 +226,9 @@ class ObjectDressup:
         currLocation.update(firstmove.Parameters)
         newpath = []
         queue = []
-        num=0
-        action= 'start'
+        action = 'start'
         for curCommand in obj.Base.Path.Commands:
-            replace = None
+            # replace = None
             # don't worry about non-move commands, just add to output
             if curCommand.Name not in movecommands + rapidcommands:
                 newpath.append(curCommand)
@@ -237,52 +236,57 @@ class ObjectDressup:
 
             # rapid retract triggers exit move, else just add to output
             if curCommand.Name in rapidcommands:
-                #detect start position
-                if (curCommand.x != None) or (curCommand.y != None):
+                # detect start position
+                if (curCommand.x is not None) or (curCommand.y is not None):
                     firstmove = curCommand
                 currLocation.update(curCommand.Parameters)
-                if action !='start':#done move out 
+                if action != 'start':  # done move out
                     if obj.LeadOut:
-                        temp = self.getLeadEnd(obj,queue,'end')
+                        temp = self.getLeadEnd(obj, queue, 'end')
                         newpath.extend(temp)
-                        newpath.append(curCommand) #Z clear DONE
- 
+                        newpath.append(curCommand)  # Z clear DONE
+
             if curCommand.Name in movecommands:
                 queue.append(curCommand)
-                if action == 'start' and len(queue) <2:
+                if action == 'start' and len(queue) < 2:
                     continue
                 if action == 'layer':
-                    if len(queue) > 2: queue.pop(0)
+                    if len(queue) > 2:
+                        queue.pop(0)
                     if obj.LeadIn:
-                        temp=self.getLeadStart(obj,queue,action)
+                        temp = self.getLeadStart(obj, queue, action)
                         newpath.extend(temp)
                         newpath.append(curCommand)
-                        action='none'
+                        action = 'none'
                         currLocation.update(curCommand.Parameters)
                     else:
                         newpath.append(curCommand)
-                if curCommand.z != currLocation["Z"] and action != 'start':# vertical feeding to depth
-                    if obj.LeadOut:#fish cycle 
-                        if len(queue) > 2: queue.pop(len(queue)-1)
-                        temp = self.getLeadEnd(obj,queue,action)
+                if curCommand.z != currLocation["Z"] and action != 'start':  # vertical feeding to depth
+                    if obj.LeadOut:  # fish cycle
+                        if len(queue) > 2:
+                            queue.pop(len(queue)-1)
+                        temp = self.getLeadEnd(obj, queue, action)
                         newpath.extend(temp)
                         action = 'layer'
-                        if len(queue) > 2: queue.pop(0)
+                        if len(queue) > 2:
+                            queue.pop(0)
                         continue
                     else:
                         newpath.append(curCommand)
-                if len(queue) > 2: queue.pop(0)
-                if obj.LeadIn and len(queue)>=2 and action == 'start':
-                    temp=self.getLeadStart(obj,queue,action)
+                if len(queue) > 2:
+                    queue.pop(0)
+                if obj.LeadIn and len(queue) >= 2 and action == 'start':
+                    temp = self.getLeadStart(obj, queue, action)
                     newpath.extend(temp)
                     newpath.append(curCommand)
-                    action='none'
+                    action = 'none'
                     currLocation.update(curCommand.Parameters)
                 else:
                     newpath.append(curCommand)
                 currLocation.update(curCommand.Parameters)
         commands = newpath
         return Path.Path(commands)
+
 
 class ViewProviderDressup:
 
@@ -325,8 +329,8 @@ class CommandPathDressupLeadInOut:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_LeadInOut", "LeadInOut Dressup"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_LeadInOut", "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "LeadInOut Dressup"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -367,6 +371,6 @@ class CommandPathDressupLeadInOut:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_LeadInOut', CommandPathDressupLeadInOut())
+    FreeCADGui.addCommand('Path_DressupLeadInOut', CommandPathDressupLeadInOut())
 
 PathLog.notice("Loading PathDressupLeadInOut... done\n")
