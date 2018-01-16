@@ -135,6 +135,8 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
         }
         break;
     case PropElementList:
+        getElementListProperty()->setStatus(Property::Hidden,true);
+        // fall through
     case PropLinkedObject:
         // Make ElementList as read-only if we are not a group (i.e. having
         // LinkedObject property), because it is for holding array elements.
