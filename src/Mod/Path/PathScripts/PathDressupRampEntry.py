@@ -34,7 +34,7 @@ from PySide import QtCore
 
 
 # Qt tanslation handling
-def translate(text, context="PathDressup_RampEntry", disambig=None):
+def translate(text, context="Path_DressupRampEntry", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
@@ -46,8 +46,8 @@ class ObjectDressup:
     def __init__(self, obj):
         self.obj = obj
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
-        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "The base path to modify"))
-        obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "Angle of ramp."))
+        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "The base path to modify"))
+        obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Angle of ramp."))
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
         obj.addProperty("App::PropertyEnumeration", "RampFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"))
         obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feedrate"))
@@ -530,7 +530,6 @@ class ObjectDressup:
         horizRapid = obj.ToolController.HorizRapid.Value
         vertRapid = obj.ToolController.VertRapid.Value
 
-
         for cmd in commands:
             params = cmd.Parameters
             zVal = params.get('Z', None)
@@ -610,8 +609,8 @@ class CommandPathDressupRampEntry:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "RampEntry Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_RampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "RampEntry Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -653,6 +652,6 @@ class CommandPathDressupRampEntry:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_RampEntry', CommandPathDressupRampEntry())
+    FreeCADGui.addCommand('Path_DressupRampEntry', CommandPathDressupRampEntry())
 
-PathLog.notice("Loading PathDressupRampEntry... done\n")
+PathLog.notice("Loading Path_DressupRampEntry... done\n")
