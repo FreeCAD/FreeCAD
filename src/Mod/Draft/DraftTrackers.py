@@ -679,6 +679,7 @@ class editTracker(Tracker):
             selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
             selnode.objectName.setValue(name)
             selnode.subElementName.setValue("EditNode"+str(idx))
+            selnode.useNewSelection = False
         node = coin.SoAnnotation()
         selnode.addChild(self.coords)
         selnode.addChild(color)

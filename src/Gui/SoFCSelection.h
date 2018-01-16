@@ -41,6 +41,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <memory>
 
 class SoFullPath;
@@ -95,6 +96,7 @@ public:
     SoSFString documentName;
     SoSFString objectName;
     SoSFString subElementName;
+    SoSFBool useNewSelection;
 
     virtual void doAction(SoAction *action);
     virtual void GLRender(SoGLRenderAction * action);
@@ -130,7 +132,6 @@ private:
 
     SbBool bShift;
     SbBool bCtrl;
-    SbBool bUseNewSelection;
 };
 
 
