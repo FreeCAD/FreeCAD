@@ -946,6 +946,13 @@ class DraftToolBar:
         self.xValue.show()
         self.yValue.show()
         self.zValue.show()
+        # reset UI to (0,0,0) on start
+        self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.x = 0
+        self.y = 0
+        self.z = 0
         self.pointButton.show()
         if rel: self.isRelative.show()
         todo.delay(self.setFocus,None)
