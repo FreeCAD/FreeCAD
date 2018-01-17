@@ -19,20 +19,16 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 #endif
 
 #include <boost/regex.hpp>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
-
 #include "PathSim.h"
 //#include "VolSim.h"
 
@@ -55,7 +51,6 @@ PathSim::~PathSim()
 		delete m_tool;
 }
 
-
 void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
 	Base::BoundBox3d bbox = stock->getBoundBox();
@@ -69,41 +64,48 @@ void PathSim::SetCurrentTool(Tool * tool)
 	switch (tool->Type)
 	{
 	case Tool::BALLENDMILL:
-		tp = cSimTool::ROUND;
-		break;
-
+			tp = cSimTool::ROUND;
+			break;
 	case Tool::CHAMFERMILL:
-		tp = cSimTool::CHAMFER;
-		angle = tool->CuttingEdgeAngle;
-		break;
-
+			tp = cSimTool::CHAMFER;
+			angle = tool->CuttingEdgeAngle;
+			if (angle >180){angle = 180;}
+			break;
 	case Tool::UNDEFINED:
+			tp = cSimTool::FLAT;
+			angle = 180;
+			break;
 	case Tool::DRILL:
-		tp = cSimTool::CHAMFER;
-		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
-        {
-            angle = 180;
-        }
-		break;
+			tp = cSimTool::CHAMFER;
+			if (angle <10){angle = 10;}
+			angle = tool->CuttingEdgeAngle;
+			break;
 	case Tool::CENTERDRILL:
+			tp = cSimTool::CHAMFER;
+			angle = tool->CuttingEdgeAngle;
+			if (angle <10){angle = 10;}
+			break;
 	case Tool::COUNTERSINK:
 	case Tool::COUNTERBORE:
 	case Tool::REAMER:
+			tp = cSimTool::FLAT;
+			angle = 180;
+			break;
 	case Tool::TAP:
 	case Tool::ENDMILL:
+			tp = cSimTool::FLAT;
+			angle = 180;
+			break;
 	case Tool::SLOTCUTTER:
 	case Tool::CORNERROUND:
 	case Tool::ENGRAVER:
-		tp = cSimTool::CHAMFER;
-		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
-        {
-            angle = 180;
-        }
-		break;
-
-		break; // quiet warnings
+			tp = cSimTool::CHAMFER;
+			angle = tool->CuttingEdgeAngle;
+			break;
+	default:
+			tp = cSimTool::FLAT;
+			angle = 180;
+			break;
 	}
 	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
 }
@@ -135,9 +137,3 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	plc->setPosition(vec);
 	return plc;
 }
-
-
-
-
-
- 
