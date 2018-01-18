@@ -996,6 +996,11 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
                             values.insert(values.end(), list.size(), pcObj->getDocumentObjectPtr());
                         }
                     }
+                    else {
+                        std::string error = std::string("type of first item must be 'DocumentObject', not ");
+                        error += Py_TYPE(tup[0].ptr())->tp_name;
+                        throw Base::TypeError(error);
+                    }
                 }
                 else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
                     DocumentObjectPy *pcObj;
