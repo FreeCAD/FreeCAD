@@ -49,6 +49,8 @@ public:
       */
     App::PropertyLinkList Originals;
 
+    App::PropertyBool Refine;
+
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
      *         which serves as "Support" for old style workflows
