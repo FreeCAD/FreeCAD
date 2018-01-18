@@ -66,6 +66,13 @@ MultiCommon::MultiCommon(void)
     ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
         (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
     History.setSize(0);
+
+    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+
+    //init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 short MultiCommon::mustExecute() const
@@ -145,7 +152,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                      return new App::DocumentObjectExecReturn("Resulting shape is invalid");
                  }
             }
-            if (hGrp->GetBool("RefineModel", false)) {
+            if (this->Refine.getValue()) {
                 try {
                     TopoDS_Shape oldShape = resShape;
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
