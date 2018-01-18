@@ -440,7 +440,7 @@ void cStock::AddQuad(Point3D & p1, Point3D & p2, Point3D & p3, Point3D & p4, std
 	facets.push_back(facet);
 }
 
-void cStock::Tesselate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner)
+void cStock::Tessellate(Mesh::MeshObject & meshOuter, Mesh::MeshObject & meshInner)
 {
 	// reset attribs
 	for (int y = 0; y < m_y; y++)
