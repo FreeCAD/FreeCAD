@@ -78,6 +78,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/GroupExtension.h>
 #include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -184,53 +185,43 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
     if (links.empty())  {
         Base::Console().Log("DVP::getSourceShape - No Sources - creation? - %s\n",getNameInDocument());
     } else {
+        std::vector<TopoDS_Shape> sourceShapes;
+        for (auto& l:links) {
+            std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
+            sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+        }
+
         BRep_Builder builder;
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
-        for (auto& l:links) {
-            if (l->isDerivedFrom(Part::Feature::getClassTypeId())){
-                const Part::TopoShape &partTopo = static_cast<Part::Feature*>(l)->Shape.getShape();
-                if (partTopo.isNull()) {
-                    continue;    //has no shape
-                }
-                BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
-                TopoDS_Shape shape = BuilderCopy.Shape();
-                builder.Add(comp, shape);
-            } else if (l->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-                TopoDS_Shape s = getShapeFromPart(static_cast<App::Part*>(l));
-                if (s.IsNull()) {
-                    continue;
-                }
-                BRepBuilderAPI_Copy BuilderCopy(s);
-                TopoDS_Shape shape = BuilderCopy.Shape();
-                builder.Add(comp, shape);
+        for (auto& s:sourceShapes) {
+            if (s.IsNull()) {
+                continue;    //has no shape
             }
+            BRepBuilderAPI_Copy BuilderCopy(s);
+            TopoDS_Shape shape = BuilderCopy.Shape();
+            builder.Add(comp, shape);
         }        
         result = comp;
     }
     return result;
 }
 
-TopoDS_Shape DrawViewPart::getShapeFromPart(App::Part* ap) const
+std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject* docObj) const
 {
-    TopoDS_Shape result;
-    std::vector<App::DocumentObject*> objs = ap->Group.getValues();
-    std::vector<TopoDS_Shape> shapes;
-    for (auto& d: objs) {
-        if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            shapes.push_back(static_cast<Part::Feature*>(d)->Shape.getShape().getShape());
+    std::vector<TopoDS_Shape> result;
+    App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
+    if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        result.push_back(static_cast<Part::Feature*>(docObj)->Shape.getShape().getShape());
+    } else if (gex != nullptr) {
+        std::vector<App::DocumentObject*> objs = gex->Group.getValues();
+        std::vector<TopoDS_Shape> shapes;
+        for (auto& d: objs) {
+            shapes = getShapesFromObject(d);
+            if (!shapes.empty()) {
+                result.insert(result.end(),shapes.begin(),shapes.end());
+            }
         }
-    }
-    if (!shapes.empty()) {
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-        for (auto& s: shapes) {
-            BRepBuilderAPI_Copy BuilderCopy(s);
-            TopoDS_Shape shape = BuilderCopy.Shape();
-            builder.Add(comp, shape);
-        }
-        result = comp;
     }
     return result;
 }

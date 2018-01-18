@@ -165,7 +165,7 @@ public:
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
     virtual TopoDS_Shape getSourceShape(void) const; 
-    virtual TopoDS_Shape getShapeFromPart(App::Part* ap) const;
+    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; 
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
 
 protected:
