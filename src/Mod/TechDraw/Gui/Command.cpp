@@ -485,57 +485,57 @@ bool CmdTechDrawProjGroup::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewMulti
+// TechDraw_NewMulti  **deprecated**
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewMulti);
+//DEF_STD_CMD_A(CmdTechDrawNewMulti);
 
-CmdTechDrawNewMulti::CmdTechDrawNewMulti()
-  : Command("TechDraw_NewMulti")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert multi-part view in drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new View of a multiple Parts in the active drawing");
-    sWhatsThis      = "TechDraw_NewMulti";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-multiview";
-}
+//CmdTechDrawNewMulti::CmdTechDrawNewMulti()
+//  : Command("TechDraw_NewMulti")
+//{
+//    sAppModule      = "TechDraw";
+//    sGroup          = QT_TR_NOOP("TechDraw");
+//    sMenuText       = QT_TR_NOOP("Insert multi-part view in drawing");
+//    sToolTipText    = QT_TR_NOOP("Insert a new View of a multiple Parts in the active drawing");
+//    sWhatsThis      = "TechDraw_NewMulti";
+//    sStatusTip      = sToolTipText;
+//    sPixmap         = "actions/techdraw-multiview";
+//}
 
-void CmdTechDrawNewMulti::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
+//void CmdTechDrawNewMulti::activated(int iMsg)
+//{
+//    Q_UNUSED(iMsg);
+//    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+//    if (!page) {
+//        return;
+//    }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (shapes.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Can not make a MultiView from this selection."));
-        return;
-    }
+//    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+//    if (shapes.empty()) {
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Can not make a MultiView from this selection."));
+//        return;
+//    }
 
-    std::string PageName = page->getNameInDocument();
+//    std::string PageName = page->getNameInDocument();
 
-    Gui::WaitCursor wc;
+//    Gui::WaitCursor wc;
 
-    openCommand("Create view");
-    std::string FeatName = getUniqueObjectName("MultiView");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewMulti','%s')",FeatName.c_str());
-    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
-    auto multiView( static_cast<TechDraw::DrawViewMulti *>(docObj) );
-    multiView->Sources.setValues(shapes);
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    updateActive();
-    commitCommand();
-}
+//    openCommand("Create view");
+//    std::string FeatName = getUniqueObjectName("MultiView");
+//    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewMulti','%s')",FeatName.c_str());
+//    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+//    auto multiView( static_cast<TechDraw::DrawViewMulti *>(docObj) );
+//    multiView->Sources.setValues(shapes);
+//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+//    updateActive();
+//    commitCommand();
+//}
 
-bool CmdTechDrawNewMulti::isActive(void)
-{
-    return DrawGuiUtil::needPage(this);
-}
+//bool CmdTechDrawNewMulti::isActive(void)
+//{
+//    return DrawGuiUtil::needPage(this);
+//}
 
 //===========================================================================
 // TechDraw_Annotation
@@ -1054,7 +1054,7 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewView());
     rcCmdMgr.addCommand(new CmdTechDrawNewViewSection());
     rcCmdMgr.addCommand(new CmdTechDrawNewViewDetail());
-    rcCmdMgr.addCommand(new CmdTechDrawNewMulti());
+//    rcCmdMgr.addCommand(new CmdTechDrawNewMulti());          //deprecated
     rcCmdMgr.addCommand(new CmdTechDrawProjGroup());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawClip());
