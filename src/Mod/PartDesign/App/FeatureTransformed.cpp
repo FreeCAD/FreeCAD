@@ -261,7 +261,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> v_transformedShapes;*/
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        ++t; // Skip first transformation, which is always the identity transformation
+        // When there is only a feature, one can skip the first identity transformation.
+        // However, it is not ok to skip the first transformation, as when there are multiple features, there is a need
+        // to cut or fuse the features among another.
+        //++t; // Skip first transformation, which is always the identity transformation 
         for (; t != transformations.end(); ++t) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
