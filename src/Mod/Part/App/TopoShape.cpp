@@ -3177,8 +3177,10 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         // parameter ranges
         Standard_Real uFirst = surface.FirstUParameter();
         Standard_Real uLast = surface.LastUParameter();
+        Standard_Real uMid = (uFirst+uLast)/2;
         Standard_Real vFirst = surface.FirstVParameter();
         Standard_Real vLast = surface.LastVParameter();
+        Standard_Real vMid = (vFirst+vLast)/2;
 
         // get geometrical length and width of the surface
         //
@@ -3187,11 +3189,11 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         for (int i = 1; i <= pointsPerEdge; i++) {
             double u1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
             double s1 = (1.0-u1)*uFirst + u1*uLast;
-            p1 = surface.Value(s1,0.0);
+            p1 = surface.Value(s1,vMid);
 
             double u2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
             double s2 = (1.0-u2)*uFirst + u2*uLast;
-            p2 = surface.Value(s2,0.0);
+            p2 = surface.Value(s2,vMid);
 
             fLengthU += p1.Distance(p2);
         }
@@ -3199,17 +3201,19 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         for (int i = 1; i <= pointsPerEdge; i++) {
             double v1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
             double t1 = (1.0-v1)*vFirst + v1*vLast;
-            p1 = surface.Value(0.0,t1);
+            p1 = surface.Value(uMid,t1);
 
             double v2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
             double t2 = (1.0-v2)*vFirst + v2*vLast;
-            p2 = surface.Value(0.0,t2);
+            p2 = surface.Value(uMid,t2);
 
             fLengthV += p1.Distance(p2);
         }
 
         int uPointsPerEdge = static_cast<int>(fLengthU / lateralDistance);
         int vPointsPerEdge = static_cast<int>(fLengthV / lateralDistance);
+        uPointsPerEdge = std::max(uPointsPerEdge, 1);
+        vPointsPerEdge = std::max(vPointsPerEdge, 1);
 
         for (int i = 0; i <= uPointsPerEdge; i++) {
             double u = static_cast<double>(i)/static_cast<double>(uPointsPerEdge);
