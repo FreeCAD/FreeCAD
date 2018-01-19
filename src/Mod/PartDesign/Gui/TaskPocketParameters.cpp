@@ -68,11 +68,13 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     // set the history path
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength"));
+    ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
 
     // Get the feature data
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     Base::Quantity l = pcPocket->Length.getQuantityValue();
+    Base::Quantity l2 = pcPocket->Length2.getQuantityValue();
     Base::Quantity off = pcPocket->Offset.getQuantityValue();
     bool midplane = pcPocket->Midplane.getValue();
     bool reversed = pcPocket->Reversed.getValue();
@@ -89,6 +91,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
+    ui->lengthEdit2->setValue(l2);
     ui->offsetEdit->setValue(off);
     ui->checkBoxMidplane->setChecked(midplane);
     ui->checkBoxReversed->setChecked(reversed);
@@ -117,15 +120,19 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->changeMode->insertItem(1, tr("Through all"));
     ui->changeMode->insertItem(2, tr("To first"));
     ui->changeMode->insertItem(3, tr("Up to face"));
+    ui->changeMode->insertItem(4, tr("Two dimensions"));
     ui->changeMode->setCurrentIndex(index);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPocket->Length);
+    ui->lengthEdit2->bind(pcPocket->Length2);
 
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
+    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onLength2Changed(double)));
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
@@ -149,6 +156,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     if(newObj){
         ui->lengthEdit->setToLastUsedValue();
         ui->lengthEdit->selectNumber();
+        ui->lengthEdit2->setToLastUsedValue();
+        ui->lengthEdit2->selectNumber();
         ui->offsetEdit->setToLastUsedValue();
         ui->offsetEdit->selectNumber();
     }
@@ -158,6 +167,7 @@ void TaskPocketParameters::updateUI(int index)
 {
     // disable/hide everything unless we are sure we don't need it
     bool isLengthEditVisable  = false;
+    bool isLengthEdit2Visable = false;    
     bool isOffsetEditVisable  = false;
     bool isOffsetEditEnabled  = true;
     bool isMidplateEnabled    = false;
@@ -200,10 +210,19 @@ void TaskPocketParameters::updateUI(int index)
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
     }
+    // two dimensions
+    else {
+        isLengthEditVisable = true;
+        isLengthEdit2Visable = true;
+    }    
 
     ui->lengthEdit->setVisible( isLengthEditVisable );
     ui->lengthEdit->setEnabled( isLengthEditVisable );
     ui->labelLength->setVisible( isLengthEditVisable );
+
+    ui->lengthEdit2->setVisible( isLengthEdit2Visable );
+    ui->lengthEdit2->setEnabled( isLengthEdit2Visable );
+    ui->labelLength2->setVisible( isLengthEdit2Visable );
 
     ui->offsetEdit->setVisible( isOffsetEditVisable );
     ui->offsetEdit->setEnabled( isOffsetEditVisable && isOffsetEditEnabled );
@@ -255,6 +274,13 @@ void TaskPocketParameters::onLengthChanged(double len)
     recomputeFeature();
 }
 
+void TaskPocketParameters::onLength2Changed(double len)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->Length2.setValue(len);
+    recomputeFeature();
+}
+
 void TaskPocketParameters::onOffsetChanged(double len)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
@@ -288,6 +314,7 @@ void TaskPocketParameters::onModeChanged(int index)
                 oldLength = 5.0;
             pcPocket->Length.setValue(oldLength);
             ui->lengthEdit->setValue(oldLength);
+            pcPocket->Type.setValue("Length");
             break;
         case 1:
             oldLength = pcPocket->Length.getValue();
@@ -305,7 +332,9 @@ void TaskPocketParameters::onModeChanged(int index)
             pcPocket->Length.setValue(0.0);
             ui->lengthEdit->setValue(0.0);
             break;
-        default: pcPocket->Type.setValue("Length"); break;
+        default: 
+            oldLength = pcPocket->Length.getValue();
+            pcPocket->Type.setValue("TwoLengths");
     }
 
     updateUI(index);
@@ -352,6 +381,11 @@ double TaskPocketParameters::getLength(void) const
     return ui->lengthEdit->value().getValue();
 }
 
+double TaskPocketParameters::getLength2(void) const
+{
+    return ui->lengthEdit2->value().getValue();
+}
+
 double TaskPocketParameters::getOffset(void) const
 {
     return ui->offsetEdit->value().getValue();
@@ -395,6 +429,7 @@ void TaskPocketParameters::changeEvent(QEvent *e)
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->lengthEdit->blockSignals(true);
+        ui->lengthEdit2->blockSignals(true);
         ui->offsetEdit->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
@@ -405,6 +440,7 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Through all"));
         ui->changeMode->addItem(tr("To first"));
         ui->changeMode->addItem(tr("Up to face"));
+        ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
 #if QT_VERSION >= 0x040700
@@ -432,6 +468,7 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         }
 
         ui->lengthEdit->blockSignals(false);
+        ui->lengthEdit2->blockSignals(false);
         ui->offsetEdit->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
@@ -442,6 +479,7 @@ void TaskPocketParameters::saveHistory(void)
 {
     // save the user values to history
     ui->lengthEdit->pushToHistory();
+    ui->lengthEdit2->pushToHistory();
     ui->offsetEdit->pushToHistory();
 }
 
@@ -451,6 +489,7 @@ void TaskPocketParameters::apply()
     const char * cname = name.c_str();
 
     ui->lengthEdit->apply();
+    ui->lengthEdit2->apply();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u", cname, getMode());
     QString facename = getFaceName();
