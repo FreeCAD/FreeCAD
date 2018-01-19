@@ -48,12 +48,12 @@ class PathWorkbench (Workbench):
         # load python modules
         from PathScripts import PathArray
         from PathScripts import PathComment
-        # from PathScripts import PathCompoundExtended
         from PathScripts import PathCustom
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
+        from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
         from PathScripts import PathFixture
@@ -86,7 +86,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupTag", "Path_DressupRampEntry"]
+        dressupcmdlist = ["Path_DressupDogbone", "Path_DressupDragKnife", "PathDressup_LeadInOut", "Path_DressupTag", "Path_DressupRampEntry"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
