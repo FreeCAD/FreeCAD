@@ -52,8 +52,8 @@ parser.add_argument('--precision', default='3', help='number of digits of precis
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
-parser.add_argument('--modal', action='store_true', help='Output the Same Gcommand Name USE NonModal Mode')
-parser.add_argument('--output-doubles', action='store_true', help='Output the Same Axis Value Mode')
+parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
+parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -63,7 +63,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-OUTPUT_DOUBLES = False
+OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
@@ -138,8 +138,9 @@ def processArguments(argstring):
             PRECISION = 4
         if args.modal:
             MODAL = True
-        if args.output_doubles:
-            OUTPUT_DOUBLES = True
+        if args.axis_modal:
+            print ('here')
+            OUTPUT_DOUBLES = False
 
     except:
         return False
