@@ -2249,7 +2249,7 @@ void DocumentObjectItem::testStatus(bool resetStatus,QIcon &icon1, QIcon &icon2)
 
     int visible = -1;
     auto parentItem = getParentItem();
-    if(parentItem && parentItem->object()->getObject()->hasChildElement())
+    if(parentItem)
         visible = parentItem->object()->getObject()->isElementVisible(
                 pObject->getNameInDocument());
     if(visible<0)
