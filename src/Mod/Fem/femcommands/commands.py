@@ -76,7 +76,7 @@ class _CommandFemConstraintElectrostaticPotential(CommandManager):
             'Pixmap': 'fem-constraint-electrostatic-potential',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
-                "Constraint Potenial"),
+                "Constraint Potential"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
                 "Creates a FEM constraint electrostatic potential")}
