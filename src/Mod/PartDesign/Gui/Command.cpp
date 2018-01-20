@@ -1738,6 +1738,17 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
         // TODO Wjat that function supposed to do? (2015-08-05, Fat-Zer)
         func(FeatName, features);
 
+        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+        if(pcActiveBody) {
+            App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
+
+            if (prevSolid) {
+                // Set the tip of the body
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
+                                        FeatName.c_str(), prevSolid->getNameInDocument());
+            } 
+        }
         // Set the tip of the body
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
                                 bodyName.c_str(), FeatName.c_str());
