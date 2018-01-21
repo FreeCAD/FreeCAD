@@ -647,7 +647,6 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
             if (!aChecker.IsValid()) {
                 ShapeFix_Shape fix(mkFace.Face());
                 fix.SetPrecision(Precision::Confusion());
-                fix.SetMinTolerance(Precision::Confusion());
                 fix.SetMaxTolerance(Precision::Confusion());
                 fix.Perform();
                 fix.FixWireTool()->Perform();
