@@ -661,7 +661,9 @@ class ShowMacroWorker(QtCore.QThread):
             u.close()
             code = re.findall("<pre>(.*?)<\/pre>",p.replace("\n","--endl--"))
             if code:
-                code = code[0]
+                # code = code[0]
+                # take the biggest code block
+                code = sorted(code,key=len)[-1]
                 code = code.replace("--endl--","\n")
             else:
                 self.info_label.emit(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
