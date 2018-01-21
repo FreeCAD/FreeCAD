@@ -27,7 +27,7 @@
         <Methode Name="fixWire">
             <Documentation>
                 <UserDocu>Fix wire
-A face and a tolerance can optionally be supplied to the algorithm :
+A face and a tolerance can optionally be supplied to the algorithm:
 myWire.fixWire( face, tolerance )
 </UserDocu>
             </Documentation>
