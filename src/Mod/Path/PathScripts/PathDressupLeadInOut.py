@@ -52,6 +52,7 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base path to modify"))
         obj.addProperty("App::PropertyBool", "LeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"))
         obj.addProperty("App::PropertyBool", "LeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"))
@@ -81,6 +82,7 @@ class ObjectDressup:
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
+        obj.ToolController = obj.Base.ToolController
 
     def execute(self, obj):
         if not obj.Base:
