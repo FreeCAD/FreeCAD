@@ -82,7 +82,9 @@ class ObjectDressup:
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
-        obj.ToolController = obj.Base.ToolController
+        if obj.Base:
+            if hasattr(obj.Base,"ToolController"):
+                obj.ToolController = obj.Base.ToolController
 
     def execute(self, obj):
         if not obj.Base:
