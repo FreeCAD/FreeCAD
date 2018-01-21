@@ -135,7 +135,9 @@ Part.show(r)
     <Methode Name="check" Const="true">
       <Documentation>
         <UserDocu>Checks the shape and report errors in the shape structure.
-This is a more detailed check as done in isValid().</UserDocu>
+This is a more detailed check as done in isValid().
+myShape.check(runBopCheck = False)
+if runBopCheck is True, a BOPCheck analysis is also performed.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fuse" Const="true">
