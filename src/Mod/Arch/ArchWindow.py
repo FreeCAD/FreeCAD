@@ -866,20 +866,20 @@ class _Window(ArchComponent.Component):
                                     if hasattr(obj,"LouvreWidth"):
                                         if obj.LouvreWidth and obj.LouvreSpacing:
                                             bb = shape.BoundBox
-                                            bb.enlarge(bb.DiagonalLength)
+                                            bb.enlarge(10)
                                             step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
-                                            if step < bb.YLength:
-                                                box = Part.makeBox(bb.XLength,obj.LouvreWidth.Value,bb.ZLength)
+                                            if step < bb.ZLength:
+                                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreWidth.Value)
                                                 boxes = []
-                                                for i in range(int(bb.YLength/step)+1):
+                                                for i in range(int(bb.ZLength/step)+1):
                                                     b = box.copy()
-                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin+i*step,bb.ZMin))
+                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin+i*step))
                                                     boxes.append(b)
                                                 self.boxes = Part.makeCompound(boxes)
-                                                rot = obj.Base.Placement.Rotation
-                                                self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
+                                                #rot = obj.Base.Placement.Rotation
+                                                #self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
                                                 self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
-                                                shape = shape.common(self.boxes)
+                                                shape = shape.cut(self.boxes)
                                 if rotdata:
                                     shape.rotate(rotdata[0],rotdata[1],rotdata[2])
                                 shapes.append(shape)
@@ -1063,19 +1063,20 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         base = obj.ViewObject.ShapeColor
         for i in range(len(solids)):
             ccol = None
-            name = obj.WindowParts[(i*5)]
-            typeidx = (i*5)+1
-            if hasattr(obj,"Material"):
-                if obj.Material:
-                    if hasattr(obj.Material,"Materials"):
-                        if obj.Material.Names:
-                            if name in obj.Material.Names:
-                                mat = obj.Material.Materials[obj.Material.Names.index(name)]
-                                if 'DiffuseColor' in mat.Material:
-                                    if "(" in mat.Material['DiffuseColor']:
-                                        ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                                if 'Transparency' in mat.Material:
-                                    ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
+            if len(obj.WindowParts) > i*5:
+                name = obj.WindowParts[(i*5)]
+                typeidx = (i*5)+1
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        if hasattr(obj.Material,"Materials"):
+                            if obj.Material.Names:
+                                if name in obj.Material.Names:
+                                    mat = obj.Material.Materials[obj.Material.Names.index(name)]
+                                    if 'DiffuseColor' in mat.Material:
+                                        if "(" in mat.Material['DiffuseColor']:
+                                            ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                                    if 'Transparency' in mat.Material:
+                                        ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
             if not ccol:
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
