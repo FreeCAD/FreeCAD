@@ -24,6 +24,7 @@
 import FreeCAD
 import Part
 import Path
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
@@ -788,10 +789,11 @@ class ObjectTagDressup:
         lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0})
         outCommands = []
 
-        horizFeed = obj.Base.ToolController.HorizFeed.Value
-        vertFeed = obj.Base.ToolController.VertFeed.Value
-        horizRapid = obj.Base.ToolController.HorizRapid.Value
-        vertRapid = obj.Base.ToolController.VertRapid.Value
+        tc = PathDressup.toolController(obj.Base)
+        horizFeed = tc.HorizFeed.Value
+        vertFeed = tc.VertFeed.Value
+        horizRapid = tc.HorizRapid.Value
+        vertRapid = tc.VertRapid.Value
 
         for cmd in commands:
             params = cmd.Parameters
@@ -936,7 +938,7 @@ class ObjectTagDressup:
             PathLog.error(translate("Path_DressupTag", "Cannot insert holding tags for this path - please select a Profile path\n"))
             return None
 
-        self.toolRadius = obj.Base.ToolController.Tool.Diameter / 2
+        self.toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter / 2
         self.pathData = pathData
         if generate:
             obj.Height = self.pathData.defaultTagHeight()
