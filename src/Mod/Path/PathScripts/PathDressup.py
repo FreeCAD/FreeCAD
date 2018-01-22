@@ -42,3 +42,13 @@ def hasEntryMethod(path):
         return hasEntryMethod(path.Base)
     return False
 
+def baseOp(path):
+    '''baseOp(path) ... return the base operation underlying the given path'''
+    if 'Dressup' in path.Name:
+        return baseOp(path.Base)
+    return path
+
+def toolController(path):
+    '''toolController(path) ... return the tool controller from the base op.'''
+    return baseOp(path).ToolController
+
