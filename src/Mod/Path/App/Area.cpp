@@ -2721,7 +2721,8 @@ typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
 typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
-    gp_Pnt *_pstart, gp_Pnt *_pend, double *stepdown_hint, short *_parc_plane,
+    bool has_start, gp_Pnt *_pstart, gp_Pnt *_pend, 
+    double *stepdown_hint, short *_parc_plane,
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {
     std::list<TopoDS_Shape> wires;
@@ -2814,9 +2815,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pnt pstart,pend;
     if(_pstart)
         pstart = *_pstart;
-    bool use_bound = fabs(pstart.X())<Precision::Confusion() &&
-                     fabs(pstart.Y())<Precision::Confusion() &&
-                     fabs(pstart.Z())<Precision::Confusion();
+    bool use_bound = !has_start || _pstart==NULL;
 
     if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
         //Second stage, group shape by its plane, and find overall boundary
@@ -3079,7 +3078,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     if(_pstart) pstart = *_pstart;
 
     double stepdown_hint = 1.0;
-    wires = sortWires(shapes,&pstart,pend,&stepdown_hint,
+    wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 
