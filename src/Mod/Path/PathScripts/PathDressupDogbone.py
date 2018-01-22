@@ -798,7 +798,7 @@ class ObjectDressup:
                 side = Side.Right
                 if hasattr(obj.Base, 'Side') and obj.Base.Side == 'Inside':
                     side = Side.Left
-                if obj.Base.Direction == 'CCW':
+                if hasattr(obj.Base, 'Directin') and obj.Base.Direction == 'CCW':
                     side = Side.oppositeOf(side)
                 obj.Side = side
 
@@ -1043,9 +1043,6 @@ class CommandDressupDogbone:
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "The selected object is not a path\n"))
-            return
-        if not hasattr(baseObject, "Side") and not hasattr(baseObject, 'Direction'):
-            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "Please select a Profile/Contour or Dogbone Dressup object"))
             return
 
         # everything ok!
