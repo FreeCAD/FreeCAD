@@ -486,22 +486,15 @@ def findParentJob(obj):
 
 def GetJobs(jobname=None):
     '''returns all jobs in the current document.  If name is given, returns that job'''
-    PathLog.track()
-    jobs = []
-    for o in FreeCAD.ActiveDocument.Objects:
-        if hasattr(o, 'Proxy') and isinstance(o.Proxy, PathJob.ObjectJob):
-            if jobname is not None:
-                if o.Name == jobname:
-                    jobs.append(o)
-            else:
-                jobs.append(o)
-    return jobs
+    if jobname:
+        return [job for job in PathJob.Instances() if job.Name == jobname]
+    return PathJob.Instances()
 
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
     jobname = None'''
-    PathLog.track()
+    PathLog.track(jobname)
     if jobname is not None:
         jobs = GetJobs(jobname)
         if len(jobs) == 1:
@@ -513,7 +506,6 @@ def addToJob(obj, jobname=None):
         jobs = GetJobs()
         if len(jobs) == 0:
             job = PathJobCmd.CommandJobCreate().Activated()
-
         elif len(jobs) == 1:
             job = jobs[0]
         else:
@@ -528,7 +520,7 @@ def addToJob(obj, jobname=None):
                 print(form.cboProject.currentText())
                 job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
 
-    if obj:
+    if obj and job:
         job.Proxy.addOperation(obj)
     return job
 
