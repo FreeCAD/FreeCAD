@@ -201,16 +201,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     rejected.clear();
 
     std::vector<App::DocumentObject*> originals = Originals.getValues();
-    if (originals.empty()) {// typically InsideMultiTransform
+    if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
-    }
-    else {
-        if(!this->BaseFeature.getValue()) {
-            auto body = getFeatureBody();
 
-            if(body) {
-                body->setBaseProperty(this);
-            }
+    if(!this->BaseFeature.getValue()) {
+        auto body = getFeatureBody();
+        if(body) {
+            body->setBaseProperty(this);
         }
     }
 
@@ -409,61 +406,56 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
 void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
                               TopoDS_Compound &compoundOut) const
 {
-  typedef std::pair<TopoDS_Shape, Bnd_Box> ShapeBoundPair;
-  typedef std::list<ShapeBoundPair> PairList;
-  typedef std::vector<ShapeBoundPair> PairVector;
-  
-  PairList pairList;
-  
-  std::vector<TopoDS_Shape>::const_iterator it;
-  for (it = toolsIn.begin(); it != toolsIn.end(); ++it)
-  {
-    Bnd_Box bound;
-    BRepBndLib::Add(*it, bound);
-    bound.SetGap(0.0);
-    ShapeBoundPair temp = std::make_pair(*it, bound);
-    pairList.push_back(temp);
-  }
-  
-  BRep_Builder builder;
-  builder.MakeCompound(compoundOut);
-  
-  while(!pairList.empty())
-  {
-    PairVector currentGroup;
-    currentGroup.push_back(pairList.front());
-    pairList.pop_front();
-    PairList::iterator it = pairList.begin();
-    while(it != pairList.end())
-    {
-      PairVector::const_iterator groupIt;
-      bool found(false);
-      for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
-      {
-	if (!(*it).second.IsOut((*groupIt).second))//touching means is out.
-	{
-	  found = true;
-	  break;
-	}
-      }
-      if (found)
-      {
-	currentGroup.push_back(*it);
-	pairList.erase(it);
-	it=pairList.begin();
-	continue;
-      }
-      it++;
+    typedef std::pair<TopoDS_Shape, Bnd_Box> ShapeBoundPair;
+    typedef std::list<ShapeBoundPair> PairList;
+    typedef std::vector<ShapeBoundPair> PairVector;
+
+    PairList pairList;
+
+    std::vector<TopoDS_Shape>::const_iterator it;
+    for (it = toolsIn.begin(); it != toolsIn.end(); ++it) {
+        Bnd_Box bound;
+        BRepBndLib::Add(*it, bound);
+        bound.SetGap(0.0);
+        ShapeBoundPair temp = std::make_pair(*it, bound);
+        pairList.push_back(temp);
     }
-    if (currentGroup.size() == 1)
-      builder.Add(compoundOut, currentGroup.front().first);
-    else
-    {
-      PairVector::const_iterator groupIt;
-      for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
-	individualsOut.push_back((*groupIt).first);
+
+    BRep_Builder builder;
+    builder.MakeCompound(compoundOut);
+
+    while(!pairList.empty()) {
+        PairVector currentGroup;
+        currentGroup.push_back(pairList.front());
+        pairList.pop_front();
+        PairList::iterator it = pairList.begin();
+        while(it != pairList.end()) {
+            PairVector::const_iterator groupIt;
+            bool found(false);
+            for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt) {
+                if (!(*it).second.IsOut((*groupIt).second)) {//touching means is out.
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                currentGroup.push_back(*it);
+                pairList.erase(it);
+                it=pairList.begin();
+                continue;
+            }
+            ++it;
+        }
+
+        if (currentGroup.size() == 1) {
+            builder.Add(compoundOut, currentGroup.front().first);
+        }
+        else {
+            PairVector::const_iterator groupIt;
+            for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
+                individualsOut.push_back((*groupIt).first);
+        }
     }
-  }
 }
-  
+
 }
