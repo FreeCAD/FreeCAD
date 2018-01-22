@@ -44,6 +44,7 @@
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
+#include "Body.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -200,8 +201,18 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     rejected.clear();
 
     std::vector<App::DocumentObject*> originals = Originals.getValues();
-    if (originals.empty()) // typically InsideMultiTransform
+    if (originals.empty()) {// typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
+    }
+    else {
+        if(!this->BaseFeature.getValue()) {
+            auto body = getFeatureBody();
+
+            if(body) {
+                body->setBaseProperty(this);
+            }
+        }
+    }
 
     this->positionBySupport();
 
