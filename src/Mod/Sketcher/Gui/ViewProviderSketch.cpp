@@ -4066,10 +4066,9 @@ Restart:
                             // Vertical & Horiz can only be a GeomLineSegment, but Blocked can be anything.
                             Base::Vector3d midpos;
                             Base::Vector3d dir;
-			                                
                             Base::Vector3d norm;
 
-                            if(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
 
                                 // calculate the half distance between the start and endpoint
@@ -4078,28 +4077,28 @@ Restart:
                                 //Get a set of vectors perpendicular and tangential to these
                                 dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
 
-				norm = Base::Vector3d(-dir.y,dir.x,0);
-                            } else 
-			      if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-				const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
-				midpos = Base::Vector3d(0,0,0);
-				
-				std::vector<Base::Vector3d> poles = bsp->getPoles();
-            
-				// Move center of gravity towards start not to collide with bspline degree information.
-				double ws = 1.0 / poles.size();
-				double w = 1.0;
-				
-				for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
-				    midpos += w*(*it);
-				    w -= ws;
-				}
-				
-				midpos /= poles.size();			
-				
-				dir = (bsp->getEndPoint() - bsp->getStartPoint()).Normalize();
-				norm = Base::Vector3d(-dir.y,dir.x,0);
-			    }
+                                norm = Base::Vector3d(-dir.y,dir.x,0);
+                            }
+                            else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                                const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+                                midpos = Base::Vector3d(0,0,0);
+
+                                std::vector<Base::Vector3d> poles = bsp->getPoles();
+
+                                // Move center of gravity towards start not to collide with bspline degree information.
+                                double ws = 1.0 / poles.size();
+                                double w = 1.0;
+
+                                for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
+                                    midpos += w*(*it);
+                                    w -= ws;
+                                }
+
+                                midpos /= poles.size();
+
+                                dir = (bsp->getEndPoint() - bsp->getStartPoint()).Normalize();
+                                norm = Base::Vector3d(-dir.y,dir.x,0);
+                            }
                             else {
                                 double ra=0,rb=0;
                                 double angle,angleplus=0.;//angle = rotation of object as a whole; angleplus = arc angle (t parameter for ellipses).
@@ -4173,7 +4172,6 @@ Restart:
                                     dir = Base::Vector3d(-norm.y,norm.x,0);
                                     midpos += ra*norm;
                                 }
-				
                             }
 
                             Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
@@ -4300,7 +4298,6 @@ Restart:
                             } else
                                 break;
                             twoIcons = true;
-
                         }
 
                         Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
