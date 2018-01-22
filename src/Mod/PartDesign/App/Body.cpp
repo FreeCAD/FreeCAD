@@ -330,7 +330,6 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
 
     // Set the BaseFeature property
     setBaseProperty(feature);
-
 }
 
 void Body::setBaseProperty(App::DocumentObject* feature)
@@ -340,7 +339,7 @@ void Body::setBaseProperty(App::DocumentObject* feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
         // NULL is ok here, it just means we made the current one fiature the base solid
         static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
-        
+
         // Reroute the next solid feature's BaseFeature property to this feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
         if (nextSolidFeature) {
