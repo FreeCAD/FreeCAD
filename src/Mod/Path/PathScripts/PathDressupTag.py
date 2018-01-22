@@ -24,6 +24,7 @@
 import FreeCAD
 import DraftGeomUtils
 import Part
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
@@ -211,7 +212,7 @@ class ObjectDressup:
         PathLog.track()
 
     def toolRadius(self):
-        return self.obj.Base.ToolController.Tool.Diameter / 2.0
+        return PathDressup.toolController(self.obj.Base).Tool.Diameter / 2.0
 
     def addTagsToDocuemnt(self):
         for i, solid in enumerate(self.solids):

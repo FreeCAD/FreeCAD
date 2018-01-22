@@ -58,4 +58,5 @@ if [ -z "$(which pylint)" ]; then
   exit 1
 fi
 
-pylint ${ARGS} PathScripts/ PathTests/
+#pylint ${ARGS} PathScripts/ PathTests/
+pylint ${ARGS} PathScripts/

@@ -55,7 +55,6 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base path to modify"))
         obj.addProperty("App::PropertyBool", "LeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"))
         obj.addProperty("App::PropertyBool", "LeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"))
@@ -85,9 +84,6 @@ class ObjectDressup:
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
-        if obj.Base:
-            if hasattr(obj.Base,"ToolController"):
-                obj.ToolController = obj.Base.ToolController
 
     def execute(self, obj):
         if not obj.Base:
@@ -127,9 +123,10 @@ class ObjectDressup:
         global currLocation
         results = []
         # zdepth = currLocation["Z"]
-        horizFeed = obj.Base.ToolController.HorizFeed.Value
-        vertFeed = obj.Base.ToolController.VertFeed.Value
-        toolnummer = obj.Base.ToolController.ToolNumber
+        tc = PathDressup.toolController(obj.Base)
+        horizFeed = tc.HorizFeed.Value
+        vertFeed = tc.VertFeed.Value
+        toolnummer = tc.ToolNumber
         # set the correct twist command
         if self.getDirectionOfPath(obj) == 'left':
             arcdir = "G3"
@@ -189,7 +186,7 @@ class ObjectDressup:
         '''returns the  Gcode of LeadOut.'''
         global currLocation
         results = []
-        horizFeed = obj.Base.ToolController.HorizFeed.Value
+        horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         R = obj.Length.Value  # Radius of roll or length
         # set the correct twist command
         if self.getDirectionOfPath(obj) == 'right':
