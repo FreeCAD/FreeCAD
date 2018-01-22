@@ -99,13 +99,14 @@ class ObjectDressup:
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def getDirectionOfPath(self, obj):
-        if obj.Base.Side == 'Outside':
-            if obj.Base.Direction == 'CW':
+        op = PathDressup.baseOp(obj.Base)
+        if hasattr(op, 'Side') and op.Side == 'Outside':
+            if hasattr(op, 'Direction') and op.Direction == 'CW':
                 return 'left'
             else:
                 return 'right'
         else:
-            if obj.Base.Direction == 'CW':
+            if hasattr(op, 'Direction') and op.Direction == 'CW':
                 return 'right'
         return 'left'
 
@@ -116,13 +117,14 @@ class ObjectDressup:
         if((math.fabs(length)) > 0.0000000000001):
             vx = round(x / length, 0)
             vy = round(y / length, 0)
-        return FreeCAD.Base.Vector(vx, vy, 0)
+        return FreeCAD.Vector(vx, vy, 0)
 
     def getLeadStart(self, obj, queue, action):
         '''returns Lead In G-code.'''
         global currLocation
         results = []
         # zdepth = currLocation["Z"]
+        op = PathDressup.baseOp(obj.Base)
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
@@ -144,24 +146,24 @@ class ObjectDressup:
             # PathLog.notice(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
             v = self.normalize(p1.sub(p0))
         if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Base.Vector(v.y*R, -v.x*R, 0.0)
+            off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
         else:
-            off_v = FreeCAD.Base.Vector(-v.y*R, v.x*R, 0.0)
-        offsetvector = FreeCAD.Base.Vector(v.x*R, v.y*R, 0)  # IJ
+            off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+        offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0)  # IJ
         if obj.RadiusCenter == 'Radius':
             leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
         else:
             leadstart = p0.add(off_v)  # Dmode
         if action == 'start':
-            extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": obj.Base.ClearanceHeight.Value})
+            extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)
-            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": obj.Base.ClearanceHeight.Value})
+            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)
-            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": obj.Base.SafeHeight.Value})
+            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.SafeHeight.Value})
             results.append(extendcommand)
         if action == 'layer':
             if not obj.KeepToolDown:
-                extendcommand = Path.Command('G0', {"Z": obj.Base.SafeHeight.Value})
+                extendcommand = Path.Command('G0', {"Z": op.SafeHeight.Value})
                 results.append(extendcommand)
             extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y})
             results.append(extendcommand)
@@ -202,10 +204,10 @@ class ObjectDressup:
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
         if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Base.Vector(v.y*R, -v.x*R, 0.0)
+            off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
         else:
-            off_v = FreeCAD.Base.Vector(-v.y*R, v.x*R, 0.0)
-        offsetvector = FreeCAD.Base.Vector(v.x*R, v.y*R, 0.0)
+            off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+        offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0.0)
         if obj.RadiusCenter == 'Radius':
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
         else:
