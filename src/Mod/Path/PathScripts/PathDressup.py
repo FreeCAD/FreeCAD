@@ -38,7 +38,7 @@ def hasEntryMethod(path):
     '''hasEntryDressup(path) ... returns true if the given object already has an entry method attached.'''
     if 'RampEntry' in path.Name or 'LeadInOut' in path.Name:
         return True
-    if hasattr(path, 'Base'):
+    if 'Dressup' in path.Name and hasattr(path, 'Base'):
         return hasEntryMethod(path.Base)
     return False
 
