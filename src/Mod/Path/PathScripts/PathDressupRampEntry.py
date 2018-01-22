@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Part
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import math
 
@@ -613,10 +614,9 @@ class CommandPathDressupRampEntry:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
+        op = PathDressup.selection()
+        if op:
+            return not PathDressup.hasEntryMethod(op)
         return False
 
     def Activated(self):
