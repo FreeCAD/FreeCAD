@@ -263,18 +263,28 @@ class Chord (object):
     def getAngleXY(self):
         return self.getAngle(FreeCAD.Vector(1, 0, 0))
 
-    def g1Command(self):
-        return Path.Command("G1", {"X": self.End.x, "Y": self.End.y, "Z": self.End.z})
+    def commandParams(self, f):
+        params = {"X": self.End.x, "Y": self.End.y, "Z": self.End.z}
+        if f:
+            params['F'] = f
+        return params
 
-    def arcCommand(self, cmd, center):
+    def g1Command(self, f):
+        return Path.Command("G1", self.commandParams(f))
+
+    def arcCommand(self, cmd, center, f):
+        params = self.commandParams(f)
         d = center - self.Start
-        return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "Z": self.End.z, "I": d.x, "J": d.y, "K": 0})
+        params['I'] = d.x
+        params['J'] = d.y
+        params['K'] = 0
+        return Path.Command(cmd, params)
 
-    def g2Command(self, center):
-        return self.arcCommand("G2", center)
+    def g2Command(self, center, f):
+        return self.arcCommand("G2", center, f)
 
-    def g3Command(self, center):
-        return self.arcCommand("G3", center)
+    def g3Command(self, center, f):
+        return self.arcCommand("G3", center, f)
 
     def isAPlungeMove(self):
         return not PathGeom.isRoughly(self.End.z, self.Start.z)
@@ -289,7 +299,7 @@ class Chord (object):
 
 
 class Bone:
-    def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth):
+    def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth, F):
         self.obj = obj
         self.boneId = boneId
         self.lastCommand = lastCommand
@@ -297,6 +307,7 @@ class Bone:
         self.outChord = outChord
         self.smooth = smooth
         self.smooth = Smooth.Neither
+        self.F = F
 
     def angle(self):
         if not hasattr(self, 'cAngle'):
@@ -429,7 +440,7 @@ class ObjectDressup:
     def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color=None):
         if smooth == 0:
             PathLog.info(" No smoothing requested")
-            return [bone.lastCommand, outChord.g1Command()]
+            return [bone.lastCommand, outChord.g1Command(bone.F)]
 
         d = 'in'
         refPoint = inChord.Start
@@ -439,7 +450,7 @@ class ObjectDressup:
 
         if DraftGeomUtils.areColinear(inChord.asEdge(), outChord.asEdge()):
             PathLog.info(" straight edge %s" % d)
-            return [outChord.g1Command()]
+            return [outChord.g1Command(bone.F)]
 
         pivot = None
         pivotDistance = 0
@@ -472,16 +483,16 @@ class ObjectDressup:
             commands = []
             if not PathGeom.pointsCoincide(t1, inChord.Start):
                 PathLog.debug("  add lead in")
-                commands.append(Chord(inChord.Start, t1).g1Command())
+                commands.append(Chord(inChord.Start, t1).g1Command(bone.F))
             if bone.obj.Side == Side.Left:
                 PathLog.debug("  add g3 command")
-                commands.append(Chord(t1, t2).g3Command(pivot))
+                commands.append(Chord(t1, t2).g3Command(pivot, bone.F))
             else:
                 PathLog.debug("  add g2 command center=(%.2f, %.2f) -> from (%2f, %.2f) to (%.2f, %.2f" % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y))
-                commands.append(Chord(t1, t2).g2Command(pivot))
+                commands.append(Chord(t1, t2).g2Command(pivot, bone.F))
             if not PathGeom.pointsCoincide(t2, outChord.End):
                 PathLog.debug("  add lead out")
-                commands.append(Chord(t2, outChord.End).g1Command())
+                commands.append(Chord(t2, outChord.End).g1Command(bone.F))
 
             # debugMarker(pivot, "pivot.%d-%s"     % (self.boneId, d), color, 0.2)
             # debugMarker(t1,    "pivot.%d-%s.in"  % (self.boneId, d), color, 0.1)
@@ -490,7 +501,7 @@ class ObjectDressup:
             return commands
 
         PathLog.info(" no pivot found - straight command")
-        return [inChord.g1Command(), outChord.g1Command()]
+        return [inChord.g1Command(bone.F), outChord.g1Command(bone.F)]
 
     def inOutBoneCommands(self, bone, boneAngle, fixedLength):
         corner = bone.corner(self.toolRadius)
@@ -508,7 +519,7 @@ class ObjectDressup:
 
         if length == 0:
             PathLog.info("no bone after all ..")
-            return [bone.lastCommand, bone.outChord.g1Command()]
+            return [bone.lastCommand, bone.outChord.g1Command(bone.F)]
 
         boneInChord = bone.inChord.move(length, boneAngle)
         boneOutChord = boneInChord.moveTo(bone.outChord.Start)
@@ -519,7 +530,7 @@ class ObjectDressup:
         bone.tip = boneInChord.End
 
         if bone.smooth == 0:
-            return [bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), bone.outChord.g1Command()]
+            return [bone.lastCommand, boneInChord.g1Command(bone.F), boneOutChord.g1Command(bone.F), bone.outChord.g1Command(bone.F)]
 
         # reconstruct the corner and convert to an edge
         offset = corner - bone.inChord.End
@@ -626,7 +637,7 @@ class ObjectDressup:
             if bone.obj.Style == Style.Tbone_S:
                 return self.tboneShortEdge(bone)
         else:
-            return [bone.lastCommand, bone.outChord.g1Command()]
+            return [bone.lastCommand, bone.outChord.g1Command(bone.F)]
 
     def insertBone(self, bone):
         PathLog.debug(">----------------------------------- %d --------------------------------------" % bone.boneId)
@@ -725,7 +736,7 @@ class ObjectDressup:
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
                     PathLog.info("  Found bone corner")
-                    bone = Bone(boneId, obj, lastCommand, lastChord, thisChord, Smooth.InAndOut)
+                    bone = Bone(boneId, obj, lastCommand, lastChord, thisChord, Smooth.InAndOut, thisCommand.Parameters.get('F'))
                     bones = self.insertBone(bone)
                     boneId += 1
                     if lastBone:
@@ -741,7 +752,7 @@ class ObjectDressup:
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
                             PathLog.info("    and there is one")
-                            bone = Bone(boneId, obj, lastCommand, lastChord, chord, Smooth.In)
+                            bone = Bone(boneId, obj, lastCommand, lastChord, chord, Smooth.In, lastCommand.Parameters.get('F'))
                             bones = self.insertBone(bone)
                             boneId += 1
                             if lastBone:
