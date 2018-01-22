@@ -23,13 +23,16 @@
 # ***************************************************************************
 
 from __future__ import print_function
+
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore
-import math
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
+import math
+
+from PySide import QtCore
 from PathScripts.PathGeom import PathGeom
 
 """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
@@ -337,10 +340,9 @@ class CommandPathDressupLeadInOut:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
+        op = PathDressup.selection()
+        if op:
+            return not PathDressup.hasEntryMethod(op)
         return False
 
     def Activated(self):
