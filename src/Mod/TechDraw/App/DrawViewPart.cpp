@@ -195,15 +195,20 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
         BRep_Builder builder;
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
+        bool found = false;
         for (auto& s:sourceShapes) {
             if (s.IsNull()) {
                 continue;    //has no shape
             }
+            found = true;
             BRepBuilderAPI_Copy BuilderCopy(s);
             TopoDS_Shape shape = BuilderCopy.Shape();
             builder.Add(comp, shape);
-        }        
-        result = comp;
+        }
+        //it appears that an empty compound is !IsNull(), so we need to check if we added anything to the compound.
+        if (found) {
+            result = comp;
+        }
     }
     return result;
 }
