@@ -340,7 +340,10 @@ public:
      * minimize traval distance
      *
      * \arg \c shapes: input list of shapes.
-     * \arg \c pstart: optional start point
+     * \arg \c has_start: if false or pstart is 0, then a start point will be
+     * auto selected.
+     * \arg \c pstart: optional start point. If has_start is false, then the
+     * auto selected start point will be returned with this point if not NULL.
      * \arg \c pend: optional output containing the ending point of the returned
      * \arg \c stepdown_hint: optional output of a hint of step down as the max
      * distance between two sections.
@@ -352,7 +355,7 @@ public:
      * \return sorted wires
      */
     static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape> &shapes,
-            gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, double *stepdown_hint=NULL,
+            bool has_start=false, gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, double *stepdown_hint=NULL,
             short *arc_plane = NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
 
     /** Convert a list of wires to gcode

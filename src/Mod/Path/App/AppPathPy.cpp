@@ -362,7 +362,7 @@ private:
         try {
             gp_Pnt pend;
             std::unique_ptr<Toolpath> path(new Toolpath);
-            Area::toPath(*path,shapes,&pstart, &pend,
+            Area::toPath(*path,shapes,start?&pstart:0, &pend,
                     PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
             if(!PyObject_IsTrue(return_end))
                 return Py::asObject(new PathPy(path.release()));
@@ -415,7 +415,7 @@ private:
         
         try {
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
-            std::list<TopoDS_Shape> wires = Area::sortWires(shapes,&pstart,
+            std::list<TopoDS_Shape> wires = Area::sortWires(shapes,start!=0,&pstart,
                     &pend, 0, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             PyObject *list = PyList_New(0);
             for(auto &wire : wires)
