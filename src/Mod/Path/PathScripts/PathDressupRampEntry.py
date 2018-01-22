@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Part
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import math
 
@@ -45,7 +46,6 @@ class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "The base path to modify"))
         obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Angle of ramp."))
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
@@ -75,15 +75,6 @@ class ObjectDressup:
     def setup(self, obj):
         obj.Angle = 60
         obj.Method = 2
-        toolLoad = obj.ToolController
-        if toolLoad is None or toolLoad.ToolNumber == 0:
-            PathLog.error(translate("No Tool Controller is selected. We need a tool to build a Path\n"))
-            return
-        else:
-            tool = toolLoad.Proxy.getTool(toolLoad)
-            if not tool:
-                PathLog.error(translate("No Tool found. We need a tool to build a Path.\n"))
-                return
 
     def execute(self, obj):
 
@@ -519,16 +510,18 @@ class ObjectDressup:
 
         outCommands = []
 
-        horizFeed = obj.ToolController.HorizFeed.Value
-        vertFeed = obj.ToolController.VertFeed.Value
+        tc = PathDressup.toolController(obj.Base)
+
+        horizFeed = tc.HorizFeed.Value
+        vertFeed = tc.VertFeed.Value
         if obj.RampFeedRate == "Horizontal Feed Rate":
-            rampFeed = obj.ToolController.HorizFeed.Value
+            rampFeed = tc.HorizFeed.Value
         elif obj.RampFeedRate == "Vertical Feed Rate":
-            rampFeed = obj.ToolController.VertFeed.Value
+            rampFeed = tc.VertFeed.Value
         else:
             rampFeed = obj.CustomFeedRate.Value
-        horizRapid = obj.ToolController.HorizRapid.Value
-        vertRapid = obj.ToolController.VertRapid.Value
+        horizRapid = tc.HorizRapid.Value
+        vertRapid = tc.VertRapid.Value
 
         for cmd in commands:
             params = cmd.Parameters
@@ -613,10 +606,9 @@ class CommandPathDressupRampEntry:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
+        op = PathDressup.selection()
+        if op:
+            return not PathDressup.hasEntryMethod(op)
         return False
 
     def Activated(self):
@@ -644,7 +636,6 @@ class CommandPathDressupRampEntry:
         FreeCADGui.doCommand('PathScripts.PathDressupRampEntry.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

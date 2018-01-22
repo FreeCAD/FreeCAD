@@ -28,6 +28,7 @@ import FreeCADGui
 import math
 import Part
 import Path
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
@@ -362,7 +363,6 @@ class ObjectDressup:
 
     def __init__(self, obj, base):
         # Tool Properties
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The base path to modify"))
         obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
@@ -798,12 +798,12 @@ class ObjectDressup:
                 side = Side.Right
                 if hasattr(obj.Base, 'Side') and obj.Base.Side == 'Inside':
                     side = Side.Left
-                if obj.Base.Direction == 'CCW':
+                if hasattr(obj.Base, 'Directin') and obj.Base.Direction == 'CCW':
                     side = Side.oppositeOf(side)
                 obj.Side = side
 
         self.toolRadius = 5
-        tc = obj.ToolController
+        tc = PathDressup.toolController(obj.Base)
         if tc is None or tc.ToolNumber == 0:
             self.toolRadius = 5
         else:
@@ -1014,7 +1014,6 @@ def Create(base, name='DogboneDressup'):
         ViewProviderDressup(obj.ViewObject)
         obj.Base.ViewObject.Visibility = False
 
-    obj.ToolController = base.ToolController
     dbo.setup(obj, True)
     return obj
 
@@ -1043,9 +1042,6 @@ class CommandDressupDogbone:
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "The selected object is not a path\n"))
-            return
-        if not hasattr(baseObject, "Side") and not hasattr(baseObject, 'Direction'):
-            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "Please select a Profile/Contour or Dogbone Dressup object"))
             return
 
         # everything ok!

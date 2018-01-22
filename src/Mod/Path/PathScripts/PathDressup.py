@@ -1,8 +1,8 @@
-#!/bin/bash
-#
+# -*- coding: utf-8 -*-
+
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,41 +22,33 @@
 # *                                                                         *
 # ***************************************************************************
 
-# Script to run pylint on Path. Currently only checks for errors.
+import FreeCAD
+import FreeCADGui
+import PathScripts.PathJob as PathJob
 
-if [ 'utils' == $(basename ${PWD}) ]; then
-  cd ..
-elif [ 'PathScripts' == $(basename ${PWD}) ]; then
-  cd ..
-elif [ 'PathTests' == $(basename ${PWD}) ]; then
-  cd ..
-elif [ -d 'src/Mod/Path' ]; then
-  cd src/Mod/Path
-elif [ -d 'Mod/Path' ]; then
-  cd Mod/Path
-elif [ -d 'Path' ]; then
-  cd Path
-fi
+def selection():
+    '''isActive() ... return True if a dressup command is possible.'''
+    if FreeCAD.ActiveDocument:
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature") and PathJob.Instances():
+            return sel[0].Object
+    return None
 
-if [ ! -d 'PathScripts' ]; then
-  echo "Cannot determine source directory, please call from within Path source directory."
-  exit 2
-fi
+def hasEntryMethod(path):
+    '''hasEntryDressup(path) ... returns true if the given object already has an entry method attached.'''
+    if 'RampEntry' in path.Name or 'LeadInOut' in path.Name:
+        return True
+    if hasattr(path, 'Base'):
+        return hasEntryMethod(path.Base)
+    return False
 
-EXTERNAL_MODULES+=' PySide.QtCore'
-EXTERNAL_MODULES+=' PySide.QtGui'
-EXTERNAL_MODULES+=' FreeCAD'
-EXTERNAL_MODULES+=' DraftGeomUtils'
-EXTERNAL_MODULES+=' importlib'
+def baseOp(path):
+    '''baseOp(path) ... return the base operation underlying the given path'''
+    if 'Dressup' in path.Name:
+        return baseOp(path.Base)
+    return path
 
-ARGS+=" --errors-only"
-ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"
-ARGS+=" --jobs=4"
+def toolController(path):
+    '''toolController(path) ... return the tool controller from the base op.'''
+    return baseOp(path).ToolController
 
-if [ -z "$(which pylint)" ]; then
-  echo "Cannot find pylint, please install and try again!"
-  exit 1
-fi
-
-#pylint ${ARGS} PathScripts/ PathTests/
-pylint ${ARGS} PathScripts/

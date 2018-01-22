@@ -41,6 +41,7 @@ class TestProfile:
         self.Direction = direction
         self.Path = Path.Path(path)
         self.ToolController = None # default tool 5mm
+        self.Name = 'Profile'
 
 class TestFeature:
     def __init__(self):

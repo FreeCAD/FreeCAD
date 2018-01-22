@@ -224,11 +224,26 @@ class CommandJobTemplateExport:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 
+    def GetJob(self):
+        # if there's only one Job in the document ...
+        jobs = PathJob.Instances()
+        if not jobs:
+            return None
+        if len(jobs) == 1:
+            return jobs[0]
+        # more than one job, is one of them selected?
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1:
+            job = sel[0]
+            return hasattr(job, 'Proxy') and isinstance(job.Proxy, PathJob.ObjectJob)
+        return None
+
+
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        return self.GetJob() is not None
 
     def Activated(self):
-        job = FreeCADGui.Selection.getSelection()[0]
+        job = self.GetJob()
         dialog = DlgJobTemplateExport(job)
         if dialog.exec_() == 1:
             foo = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),
