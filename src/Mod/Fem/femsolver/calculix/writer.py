@@ -337,14 +337,18 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
 
+        # in any case if we have beams, we gone need the element ids for the rotation elsets
+        if self.beamsection_objects:
+            # we will need to split the beam even for one beamobj
+            # because no beam in z-direction can be used in ccx without a special adjustment
+            # thus they need an own ccx_elset
+            self.get_element_rotation1D_elements()
+
         # get the element ids for face and edge elements and write them into the objects
         if len(self.shellthickness_objects) > 1:
             self.get_element_geometry2D_elements()
         elif len(self.beamsection_objects) > 1:
             self.get_element_geometry1D_elements()
-            # we will need to split the beams even for one beamobj
-            # because no beam in z-direction can be used in ccx without a special adjustment
-            # thus they need an own ccx_elset --> but this is ccx specific and thus should not be in input writer!
         elif len(self.fluidsection_objects) > 1:
             self.get_element_fluid1D_elements()
 
@@ -631,25 +635,30 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     beamsec_obj = ccx_elset['beamsection_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                     material = 'MATERIAL=' + ccx_elset['mat_obj_name']
+                    normal = ccx_elset['beam_normal']
                     if beamsec_obj.SectionType == 'Rectangular':
                         height = beamsec_obj.RectHeight.getValueAs('mm')
                         width = beamsec_obj.RectWidth.getValueAs('mm')
                         section_type = ', SECTION=RECT'
                         setion_geo = str(height) + ', ' + str(width) + '\n'
                         setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                        setion_nor = str(normal[0]) + ', ' + str(normal[1]) + ', ' + str(normal[2]) + '\n'
                     elif beamsec_obj.SectionType == 'Circular':
                         radius = 0.5 * beamsec_obj.CircDiameter.getValueAs('mm')
                         section_type = ', SECTION=CIRC'
                         setion_geo = str(radius) + '\n'
                         setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                        setion_nor = str(normal[0]) + ', ' + str(normal[1]) + ', ' + str(normal[2]) + '\n'
                     elif beamsec_obj.SectionType == 'Pipe':
                         radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs('mm')
                         thickness = beamsec_obj.PipeThickness.getValueAs('mm')
                         section_type = ', SECTION=PIPE'
                         setion_geo = str(radius) + ', ' + str(thickness) + '\n'
                         setion_def = '*BEAM GENERAL SECTION, ' + elsetdef + material + section_type + '\n'
+                        setion_nor = str(normal[0]) + ', ' + str(normal[1]) + ', ' + str(normal[2]) + '\n'
                     f.write(setion_def)
                     f.write(setion_geo)
+                    f.write(setion_nor)
                 elif 'fluidsection_obj'in ccx_elset:  # fluid mesh
                     fluidsec_obj = ccx_elset['fluidsection_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
@@ -1071,71 +1080,93 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     #                        'ccx_elset_name' : 'ccx_identifier_elset'
     #                        'mat_obj_name' : 'mat_obj.Name'
     #                        'ccx_mat_name' : 'mat_obj.Material['Name']'   !!! not unique !!!
-    #                        'beamsection_obj' : 'beamsection_obj'       if exists
-    #                        'fluidsection_obj' : 'fluidsection_obj'     if exists
-    #                        'shellthickness_obj' : shellthickness_obj'  if exists
+    #                        'beamsection_obj' : 'beamsection_obj'         if exists
+    #                        'fluidsection_obj' : 'fluidsection_obj'       if exists
+    #                        'shellthickness_obj' : shellthickness_obj'    if exists
+    #                        'beam_normal' : normal vector                 for beams only
     #                     },
     #                     {}, ... , {} ]
 
     # beam
+    # TODO support multiple beamrotations
+    # we do not need any more any data from the rotation document object, thus we do not need to save the rotation document object name in the else
     def get_ccx_elsets_single_mat_single_beam(self):
         mat_obj = self.material_objects[0]['Object']
         beamsec_obj = self.beamsection_objects[0]['Object']
-        elset_data = self.ccx_eedges
-        names = [{'short': 'M0'}, {'short': 'B0'}]
-        ccx_elset = {}
-        ccx_elset['ccx_elset'] = elset_data
-        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-        ccx_elset['mat_obj_name'] = mat_obj.Name
-        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-        ccx_elset['beamsection_obj'] = beamsec_obj
-        self.ccx_elsets.append(ccx_elset)
+        beamrot_data = self.beamrotation_objects[0]
+        for i, beamdirection in enumerate(beamrot_data['FEMRotations1D']):
+            elset_data = beamdirection['ids']  # ID's for this direction
+            names = [{'short': 'M0'}, {'short': 'B0'}, {'short': beamrot_data['ShortName']}, {'short': 'D' + str(i)}]
+            ccx_elset = {}
+            ccx_elset['ccx_elset'] = elset_data
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+            ccx_elset['beamsection_obj'] = beamsec_obj
+            ccx_elset['beam_normal'] = beamdirection['normal']  # normal for this direction
+            self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_single_mat_multiple_beam(self):
         mat_obj = self.material_objects[0]['Object']
+        beamrot_data = self.beamrotation_objects[0]
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
-            elset_data = beamsec_data['FEMElements']
-            names = [{'short': 'M0'}, {'short': beamsec_data['ShortName']}]
-            ccx_elset = {}
-            ccx_elset['ccx_elset'] = elset_data
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            ccx_elset['beamsection_obj'] = beamsec_obj
-            self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_multiple_mat_single_beam(self):
-        beamsec_obj = self.beamsection_objects[0]['Object']
-        for mat_data in self.material_objects:
-            mat_obj = mat_data['Object']
-            elset_data = mat_data['FEMElements']
-            names = [{'short': mat_data['ShortName']}, {'short': 'B0'}]
-            ccx_elset = {}
-            ccx_elset['ccx_elset'] = elset_data
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            ccx_elset['beamsection_obj'] = beamsec_obj
-            self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_multiple_mat_multiple_beam(self):
-        for beamsec_data in self.beamsection_objects:
-            beamsec_obj = beamsec_data['Object']
-            for mat_data in self.material_objects:
-                mat_obj = mat_data['Object']
-                beamsec_ids = set(beamsec_data['FEMElements'])
-                mat_ids = set(mat_data['FEMElements'])
-                elset_data = list(sorted(beamsec_ids.intersection(mat_ids)))  # empty intersection sets possible
+            beamsec_ids = set(beamsec_data['FEMElements'])
+            for i, beamdirection in enumerate(beamrot_data['FEMRotations1D']):
+                beamdir_ids = set(beamdirection['ids'])
+                elset_data = list(sorted(beamsec_ids.intersection(beamdir_ids)))  # empty intersection sets possible
                 if elset_data:
-                    names = [{'short': mat_data['ShortName']}, {'short': beamsec_data['ShortName']}]
+                    names = [{'short': 'M0'}, {'short': beamsec_data['ShortName']}, {'short': beamrot_data['ShortName']}, {'short': 'D' + str(i)}]
                     ccx_elset = {}
                     ccx_elset['ccx_elset'] = elset_data
                     ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
                     ccx_elset['mat_obj_name'] = mat_obj.Name
                     ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
                     ccx_elset['beamsection_obj'] = beamsec_obj
+                    ccx_elset['beam_normal'] = beamdirection['normal']  # normal for this direction
                     self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_single_beam(self):
+        beamsec_obj = self.beamsection_objects[0]['Object']
+        beamrot_data = self.beamrotation_objects[0]
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            mat_ids = set(mat_data['FEMElements'])
+            for i, beamdirection in enumerate(beamrot_data['FEMRotations1D']):
+                beamdir_ids = set(beamdirection['ids'])
+                elset_data = list(sorted(mat_ids.intersection(beamdir_ids)))
+                if elset_data:
+                    names = [{'short': mat_data['ShortName']}, {'short': 'B0'}, {'short': beamrot_data['ShortName']}, {'short': 'D' + str(i)}]
+                    ccx_elset = {}
+                    ccx_elset['ccx_elset'] = elset_data
+                    ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+                    ccx_elset['mat_obj_name'] = mat_obj.Name
+                    ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+                    ccx_elset['beamsection_obj'] = beamsec_obj
+                    ccx_elset['beam_normal'] = beamdirection['normal']  # normal for this direction
+                    self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_multiple_beam(self):
+        beamrot_data = self.beamrotation_objects[0]
+        for beamsec_data in self.beamsection_objects:
+            beamsec_obj = beamsec_data['Object']
+            beamsec_ids = set(beamsec_data['FEMElements'])
+            for mat_data in self.material_objects:
+                mat_obj = mat_data['Object']
+                mat_ids = set(mat_data['FEMElements'])
+                for i, beamdirection in enumerate(beamrot_data['FEMRotations1D']):
+                    beamdir_ids = set(beamdirection['ids'])
+                    elset_data = list(sorted(beamsec_ids.intersection(mat_ids).intersection(beamdir_ids)))  # empty intersection sets possible
+                    if elset_data:
+                        names = [{'short': mat_data['ShortName']}, {'short': beamsec_data['ShortName']}, {'short': beamrot_data['ShortName']}, {'short': 'D' + str(i)}]
+                        ccx_elset = {}
+                        ccx_elset['ccx_elset'] = elset_data
+                        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+                        ccx_elset['mat_obj_name'] = mat_obj.Name
+                        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+                        ccx_elset['beamsection_obj'] = beamsec_obj
+                        ccx_elset['beam_normal'] = beamdirection['normal']  # normal for this direction
+                        self.ccx_elsets.append(ccx_elset)
 
     # fluid
     def get_ccx_elsets_single_mat_single_fluid(self):
@@ -1283,7 +1314,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
 
 
 # Helpers
-# ccx elset names: M .. Material, B .. Beam, F .. Fluid, S .. Shell, TODO write comment into input file to elset ids and elset attributes
+# ccx elset names: M .. Material, B .. Beam, R .. BeamRotation, D ..Direction, F .. Fluid, S .. Shell, TODO write comment into input file to elset ids and elset attributes
 def get_ccx_elset_name_standard(names):
     # standard max length = 80
     ccx_elset_name = ''
