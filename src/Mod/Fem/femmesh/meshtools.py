@@ -401,15 +401,15 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
 
 def get_elset_short_name(obj, i):
     if hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::Material':
-        return 'Mat' + str(i)
+        return 'M' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry1D':
-        return 'Beam' + str(i)
+        return 'B' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementFluid1D':
-        return 'Fluid' + str(i)
+        return 'F' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry2D':
-        return 'Shell' + str(i)
+        return 'S' + str(i)
     else:
-        print('Error: ', obj.Name, ' --> ', obj.Proxy.Type)
+        FreeCAD.Console.PrintError('Error in creating short elset name for obj: ' + obj.Name + ' --> Proxy.Type: ' + str(obj.Proxy.Type) + '\n')
 
 
 def get_force_obj_vertex_nodeload_table(femmesh, frc_obj):
