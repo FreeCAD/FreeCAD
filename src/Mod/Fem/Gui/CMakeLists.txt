@@ -118,6 +118,7 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostClip.ui
         TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
         TaskPostCut.ui
@@ -290,6 +291,7 @@ if(BUILD_FEM_VTK)
         SphereWidget.ui
         TaskPostClip.ui
         TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
         TaskPostDisplay.ui
         TaskPostWarpVector.ui
