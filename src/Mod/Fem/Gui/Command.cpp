@@ -1204,6 +1204,32 @@ bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
     return hasActiveDocument();
 }
 
+DEF_STD_CMD_A(CmdFemPostCreateDataAtPointFilter);
+
+CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
+  : Command("FEM_PostCreateDataAtPointFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-DataAtPoint";
+}
+
+void CmdFemPostCreateDataAtPointFilter::activated(int)
+{
+
+   setupFilter(this, "DataAtPoint");
+
+}
+
+bool CmdFemPostCreateDataAtPointFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 DEF_STD_CMD_A(CmdFemPostCreateLinearizedStressesFilter);
 
 CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilter()
@@ -1600,6 +1626,7 @@ void CreateFemCommands(void)
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCreateDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
