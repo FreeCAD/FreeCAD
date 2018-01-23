@@ -36,6 +36,7 @@
 #include <vtkWarpVector.h>
 #include <vtkCutter.h>
 #include <vtkLineSource.h>
+#include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
 #include <vtkThreshold.h>
 
@@ -128,6 +129,37 @@ protected:
 private:
 
     vtkSmartPointer<vtkLineSource>              m_line;
+    vtkSmartPointer<vtkProbeFilter>             m_probe;
+
+};
+
+class AppFemExport FemPostDataAtPointFilter : public FemPostFilter {
+
+    PROPERTY_HEADER(Fem::FemPostDataAtPointFilter);
+
+public:
+    FemPostDataAtPointFilter(void);
+    virtual ~FemPostDataAtPointFilter();
+
+    App::PropertyVectorDistance   Center;
+    App::PropertyDistance         Radius;
+    App::PropertyString           FieldName;
+    App::PropertyFloatList        PointData;
+    App::PropertyString           Unit;
+
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostDataAtPoint";
+    }
+    virtual short int mustExecute(void) const;
+
+protected:
+    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual void onChanged(const App::Property* prop);
+    void GetPointData();
+
+private:
+
+    vtkSmartPointer<vtkPointSource>             m_point;
     vtkSmartPointer<vtkProbeFilter>             m_probe;
 
 };
