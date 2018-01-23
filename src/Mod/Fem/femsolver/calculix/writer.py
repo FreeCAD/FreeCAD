@@ -412,14 +412,11 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # write ccx_elsets to file
         for ccx_elset in self.ccx_elsets:
             f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
-            if ccx_elset['ccx_elset']:
-                if isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
-                    f.write(ccx_elset['ccx_elset'] + '\n')
-                else:
-                    for elid in ccx_elset['ccx_elset']:
-                        f.write(str(elid) + ',\n')
+            if isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
+                f.write(ccx_elset['ccx_elset'] + '\n')
             else:
-                f.write('**No elements found for these objects\n')
+                for elid in ccx_elset['ccx_elset']:
+                    f.write(str(elid) + ',\n')
 
     def write_node_sets_constraints_fixed(self, f):
         # get nodes
@@ -1129,14 +1126,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 beamsec_ids = set(beamsec_data['FEMElements'])
                 mat_ids = set(mat_data['FEMElements'])
                 elset_data = list(sorted(beamsec_ids.intersection(mat_ids)))  # empty intersection sets possible
-                names = [{'short': mat_data['ShortName']}, {'short': beamsec_data['ShortName']}]
-                ccx_elset = {}
-                ccx_elset['beamsection_obj'] = beamsec_obj
-                ccx_elset['ccx_elset'] = elset_data
-                ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-                ccx_elset['mat_obj_name'] = mat_obj.Name
-                ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-                self.ccx_elsets.append(ccx_elset)
+                if elset_data:
+                    names = [{'short': mat_data['ShortName']}, {'short': beamsec_data['ShortName']}]
+                    ccx_elset = {}
+                    ccx_elset['beamsection_obj'] = beamsec_obj
+                    ccx_elset['ccx_elset'] = elset_data
+                    ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+                    ccx_elset['mat_obj_name'] = mat_obj.Name
+                    ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+                    self.ccx_elsets.append(ccx_elset)
 
     # fluid
     def get_ccx_elsets_single_mat_single_fluid(self):
@@ -1188,14 +1186,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 fluidsec_ids = set(fluidsec_data['FEMElements'])
                 mat_ids = set(mat_data['FEMElements'])
                 elset_data = list(sorted(fluidsec_ids.intersection(mat_ids)))  # empty intersection sets possible
-                names = [{'short': mat_data['ShortName']}, {'short': fluidsec_data['ShortName']}]
-                ccx_elset = {}
-                ccx_elset['fluidsection_obj'] = fluidsec_obj
-                ccx_elset['ccx_elset'] = elset_data
-                ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-                ccx_elset['mat_obj_name'] = mat_obj.Name
-                ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-                self.ccx_elsets.append(ccx_elset)
+                if elset_data:
+                    names = [{'short': mat_data['ShortName']}, {'short': fluidsec_data['ShortName']}]
+                    ccx_elset = {}
+                    ccx_elset['fluidsection_obj'] = fluidsec_obj
+                    ccx_elset['ccx_elset'] = elset_data
+                    ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+                    ccx_elset['mat_obj_name'] = mat_obj.Name
+                    ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+                    self.ccx_elsets.append(ccx_elset)
 
     # shell
     def get_ccx_elsets_single_mat_single_shell(self):
@@ -1247,14 +1246,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 shellth_ids = set(shellth_data['FEMElements'])
                 mat_ids = set(mat_data['FEMElements'])
                 elset_data = list(sorted(shellth_ids.intersection(mat_ids)))  # empty intersection sets possible
-                names = [{'long': mat_obj.Name, 'short': mat_data['ShortName']}, {'long': shellth_obj.Name, 'short': shellth_data['ShortName']}]
-                ccx_elset = {}
-                ccx_elset['shellthickness_obj'] = shellth_obj
-                ccx_elset['ccx_elset'] = elset_data
-                ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
-                ccx_elset['mat_obj_name'] = mat_obj.Name
-                ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-                self.ccx_elsets.append(ccx_elset)
+                if elset_data:
+                    names = [{'long': mat_obj.Name, 'short': mat_data['ShortName']}, {'long': shellth_obj.Name, 'short': shellth_data['ShortName']}]
+                    ccx_elset = {}
+                    ccx_elset['shellthickness_obj'] = shellth_obj
+                    ccx_elset['ccx_elset'] = ccx_elset
+                    ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
+                    ccx_elset['mat_obj_name'] = mat_obj.Name
+                    ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+                    self.ccx_elsets.append(ccx_elset)
 
     # solid
     def get_ccx_elsets_single_mat_solid(self):
