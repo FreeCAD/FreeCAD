@@ -69,8 +69,8 @@ def get_femnodes_by_references(femmesh, references):
 
     # return references_femnodes  # keeps duplicate nodes, keeps node order
 
-    # if nodes are used for nodesets, duplicats should be removed
-    return list(set(references_femnodes))  # removes duplicate nodes, sortes node order
+    # if nodes are used for nodesets, duplicates should be removed
+    return list(set(references_femnodes))  # removes duplicate nodes, sorts node order
 
 
 def get_femnodes_by_refshape(femmesh, ref):
@@ -231,7 +231,7 @@ def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_l
     '''for every femelement of femelement_table
     if all nodes of the femelement are in node_list,
     the femelement is added to the list which is returned
-    blind fast binary search, but workd for volumes only
+    blind fast binary search, but works for volumes only
     '''
     print('binary search: get_femelements_by_femnodes_bin')
     vol_masks = {
@@ -336,7 +336,7 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object['Object']
-        print("Constraint: " + obj.Name + " --> " + "We gone search in the mesh for the element ID's.")
+        print("Constraint: " + obj.Name + " --> " + "We're going to search in the mesh for the element ID's.")
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
         if obj.References:
             ref_shape_femelements = []
@@ -365,7 +365,7 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
 def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objects, theshape=None):
     '''
     get for each geometry edge direction, the normal and the element ids and write all into the beamrotation_objects
-    means no return value, we gone write into the beamrotation_objects dictionary
+    means no return value, we're going to write into the beamrotation_objects dictionary
     FEMRotations1D is a list of dictionaries for every beamdirection of all edges
     beamrot_obj['FEMRotations1D'] = [ {'ids' : [theids],
                                        'direction' : direction,
@@ -374,8 +374,8 @@ def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objec
                                     ]
     '''
     if len(beamrotation_objects) == 0:
-        # no beamrotation document object, all beams use standard rotation of 0 degree (angle), we need theshape (the shpae which was meshed)
-        # since ccx needs to split them in sets anyway we need to dake care of this too
+        # no beamrotation document object, all beams use standard rotation of 0 degree (angle), we need theshape (the shape which was meshed)
+        # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
         rotation_angle = 0
@@ -383,8 +383,8 @@ def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objec
             rot['normal'] = get_beam_normal(rot['direction'], rotation_angle)
         beamrotation_objects.append({'FEMRotations1D': rotations_ids, 'ShortName': 'Rstd'})  # key 'Object' will be empty
     elif len(beamrotation_objects) == 1:
-        # one beamrotaion document object with no references, all beams use rotation from this object, we need theshape (the shpae which was meshed)
-        # since ccx needs to split them in sets anyway we need to dake care of this too
+        # one beamrotation document object with no references, all beams use rotation from this object, we need theshape (the shape which was meshed)
+        # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
         rotation_angle = beamrotation_objects[0]['Object'].Rotation
@@ -398,7 +398,7 @@ def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objec
         # one beam rotation object, but not all edges are ref shapes
         # more than one beam rotation object, but not all edges are in the ref shapes
         # for the both cases above, all other edges get standard rotation.
-        # more than one beam roataion objects and on has no ref shapes, all edges no in an rotation object use this rotation
+        # more than one beam rotation objects and on has no ref shapes, all edges no in an rotation object use this rotation
         # one edge is in more than one beam rotation object, error
         # pre check, only one beam rotation with empty ref shapes is allowed
         # we need theshape for multiple rotations too, because of the corner cases mentioned above

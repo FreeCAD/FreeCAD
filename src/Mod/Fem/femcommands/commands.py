@@ -431,7 +431,8 @@ class _CommandFemMeshGmshFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
+        # a mesh could be made with and without an analysis,
+        # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
         mesh_obj_name = 'FEMMeshGmsh'
         # mesh_obj_name = self.selobj.Name + "_Mesh"  # if requested by some people add Preference for this
@@ -473,7 +474,8 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
+        # a mesh could be made with and without an analysis, 
+        # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         mesh_obj_name = 'FEMMeshNetgen'
         # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
