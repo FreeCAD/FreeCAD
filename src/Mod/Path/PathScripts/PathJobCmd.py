@@ -235,7 +235,8 @@ class CommandJobTemplateExport:
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1:
             job = sel[0]
-            return hasattr(job, 'Proxy') and isinstance(job.Proxy, PathJob.ObjectJob)
+            if hasattr(job, 'Proxy') and isinstance(job.Proxy, PathJob.ObjectJob):
+                return job
         return None
 
 
