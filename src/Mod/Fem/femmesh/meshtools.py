@@ -362,6 +362,56 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
 
 
+def get_beam_normal(beam_direction, defined_angle):
+    import math
+    vector_a = beam_direction
+    angle_rad = (math.pi / 180) * defined_angle
+    nx = abs(math.cos(angle_rad))
+    ny = abs(math.sin(angle_rad))
+    if nx < 0.0000001:
+        nx = 0
+    if ny < 0.0000001:
+        ny = 0
+    # vector_n = [nx, ny]  # not used ATM
+
+    if vector_a[0] != 0:
+        temp_valx = -(vector_a[1] + vector_a[2]) / vector_a[0]
+    else:
+        temp_valx = 0
+    if vector_a[1] != 0:
+        temp_valy = -(vector_a[0] + vector_a[2]) / vector_a[1]
+    else:
+        temp_valy = 0
+    if vector_a[2] != 0:
+        temp_valz = -(vector_a[0] + vector_a[1]) / vector_a[2]
+    else:
+        temp_valz = 0
+
+    if vector_a[0] != 0 and vector_a[1] == 0 and vector_a[2] == 0:
+        normal_n = [temp_valx, nx, ny]
+        Dot_product_check_x = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    elif vector_a[0] == 0 and vector_a[1] != 0 and vector_a[2] == 0:
+        normal_n = [nx, temp_valy, ny]
+        Dot_product_check_y = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    elif vector_a[0] == 0 and vector_a[1] == 0 and vector_a[2] != 0:
+        normal_n = [nx, ny, temp_valz]
+        Dot_product_check_z = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    elif vector_a[0] == 0 and vector_a[1] != 0 and vector_a[2] != 0:
+        normal_n = [nx, temp_valy, ny]
+        Dot_product_check_y = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    elif vector_a[0] != 0 and vector_a[1] == 0 and vector_a[2] != 0:
+        normal_n = [nx, ny, temp_valz]
+        Dot_product_check_z = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    else:
+        normal_n = [temp_valx, nx, ny]
+        Dot_product_check_nt = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+
+    Dot_product_check = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    # print(Dot_product_check)
+    # print(normal_n)
+    return normal_n
+
+
 def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
     # get ids from femmesh groupdata for reference shapes of each obj.References
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
