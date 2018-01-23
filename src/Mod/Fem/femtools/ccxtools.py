@@ -117,6 +117,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':heatflux_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':initialtemperature_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':beam_rotations, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':fluid_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
@@ -145,6 +146,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var beam_sections
         # list of beam sections from the analysis. Updated with update_objects
         self.beam_sections = []
+        ## @var beam_rotations
+        # list of beam rotations from the analysis. Updated with update_objects
+        self.beam_rotations = []
         ## @var fluid_sections
         # list of fluid sections from the analysis. Updated with update_objects
         self.fluid_sections = []
@@ -251,6 +255,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
+                beam_rotation_dict = {}
+                beam_rotation_dict['Object'] = m
+                self.beam_rotations.append(beam_rotation_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
@@ -543,7 +551,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.shell_thicknesses, self.fluid_sections,
+                self.beam_sections, self.beam_rotations, self.shell_thicknesses, self.fluid_sections,
                 self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:

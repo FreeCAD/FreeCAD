@@ -45,7 +45,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, shellthickness_obj, fluidsection_obj,
+                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
                  analysis_type=None, dir_name=None
                  ):
 
@@ -57,7 +57,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             contact_obj, planerotation_obj, transform_obj,
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
-            beamsection_obj, shellthickness_obj, fluidsection_obj,
+            beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
             analysis_type, dir_name)
         # self.dir_name does have a slash at the end
         self.main_file_name = self.mesh_object.Name + '.inp'
