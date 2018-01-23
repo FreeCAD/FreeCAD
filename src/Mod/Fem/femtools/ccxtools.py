@@ -117,6 +117,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':heatflux_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':initialtemperature_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':beam_rotations, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':fluid_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
@@ -145,6 +146,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var beam_sections
         # list of beam sections from the analysis. Updated with update_objects
         self.beam_sections = []
+        ## @var beam_rotations
+        # list of beam rotations from the analysis. Updated with update_objects
+        self.beam_rotations = []
         ## @var fluid_sections
         # list of fluid sections from the analysis. Updated with update_objects
         self.fluid_sections = []
@@ -251,6 +255,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
+                beam_rotation_dict = {}
+                beam_rotation_dict['Object'] = m
+                self.beam_rotations.append(beam_rotation_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
@@ -410,10 +418,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.beam_sections:
             if self.shell_thicknesses:
                 # this needs to be checked only once either here or in shell_thicknesses
-                message += "Beam Sections and shell thicknesses in one analysis is not supported at the moment.\n"
+                message += "Beam sections and shell thicknesses in one analysis is not supported at the moment.\n"
             if self.fluid_sections:
                 # this needs to be checked only once either here or in shell_thicknesses
-                message += "Beam Sections and Fluid Sections in one analysis is not supported at the moment.\n"
+                message += "Beam sections and fluid sections in one analysis is not supported at the moment.\n"
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
@@ -425,6 +433,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Beam sections defined but FEM mesh has volume or shell elements.\n"
                 if self.mesh.FemMesh.EdgeCount == 0:
                     message += "Beam sections defined but FEM mesh has no edge elements.\n"
+            if len(self.beam_rotations) > 1:
+                message += "Multiple beam rotations in one analysis are not supported at the moment.\n"
+        # beam rotations
+        if self.beam_rotations and not self.beam_sections:
+            message += "Beam rotations in the analysis but no beam sections defined.\n"
         # shell thickness
         if self.shell_thicknesses:
             has_no_references = False
@@ -543,7 +556,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                self.beam_sections, self.shell_thicknesses, self.fluid_sections,
+                self.beam_sections, self.beam_rotations, self.shell_thicknesses, self.fluid_sections,
                 self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
@@ -607,7 +620,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.ccx_binary_present = True
             else:
                 raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
-                # TODO: I'm still able to break it. If user gives not a file but a path without a file or a file which is not a binary no excetion at all is raised.
+                # TODO: I'm still able to break it. If user doesn't give a file but a path without a file or a file which is not a binary no exception at all is raised.
         except OSError as e:
             FreeCAD.Console.PrintError(str(e))
             if e.errno == 2:
@@ -772,7 +785,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 def get_refshape_type(fem_doc_object):
     # returns the reference shape type
     # for force object:
-    # in GUI defined frc_obj all frc_obj have at leas one ref_shape and ref_shape have all the same shape type
+    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
     # for material object:
     # in GUI defined material_obj could have no RefShape and RefShapes could be different type
     # we're going to need the RefShapes to be the same type inside one fem_doc_object

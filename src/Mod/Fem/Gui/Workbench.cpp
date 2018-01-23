@@ -69,6 +69,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
            << "FEM_ElementGeometry1D"
+           << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D";
 
@@ -146,6 +147,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "FEM_PostCreateWarpVectorFilter"
               << "FEM_PostCreateDataAlongLineFilter"
               << "FEM_PostCreateLinearizedStressesFilter"
+              << "FEM_PostCreateDataAtPointFilter"
               << "Separator"
               << "FEM_PostCreateFunctions";
 #endif
@@ -198,6 +200,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
            << "FEM_ElementGeometry1D"
+           << "FEM_ElementRotation1D"
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D"
            << "Separator"
@@ -254,6 +257,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostCreateWarpVectorFilter"
              << "FEM_PostCreateDataAlongLineFilter"
              << "FEM_PostCreateLinearizedStressesFilter"
+             << "FEM_PostCreateDataAtPointFilter"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif

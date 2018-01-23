@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>628</height>
+    <height>662</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,9 @@
               </property>
               <property name="prefEntry" stdset="0">
                <cstring>WorkingDir</cstring>
+              </property>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
               </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
@@ -320,7 +323,7 @@
           <item row="0" column="0">
            <widget class="Gui::PrefCheckBox" name="cb_analysis_group_meshing">
             <property name="text">
-             <string>Create mesh groups for analysis reference shpapes</string>
+             <string>Create mesh groups for analysis reference shapes</string>
             </property>
             <property name="checked">
              <bool>true</bool>

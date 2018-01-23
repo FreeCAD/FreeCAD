@@ -192,6 +192,22 @@ class _CommandFemElementGeometry2D(CommandManager):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry2D(FreeCAD.ActiveDocument))")
 
 
+class _CommandFemElementRotation1D(CommandManager):
+    "The Fem_ElementRotation1D command definition"
+    def __init__(self):
+        super(_CommandFemElementRotation1D, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-rotation',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Beam rotation"),
+                          'Accel': "C, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Creates a FEM beam rotation")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemElementRotation1D")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementRotation1D(FreeCAD.ActiveDocument))")
+
+
 class _CommandFemEquationElectrostatic(CommandManager):
     "The FEM_EquationElectrostatic command definition"
     def __init__(self):
@@ -415,7 +431,8 @@ class _CommandFemMeshGmshFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
+        # a mesh could be made with and without an analysis,
+        # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
         mesh_obj_name = 'FEMMeshGmsh'
         # mesh_obj_name = self.selobj.Name + "_Mesh"  # if requested by some people add Preference for this
@@ -457,7 +474,8 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
+        # a mesh could be made with and without an analysis, 
+        # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         mesh_obj_name = 'FEMMeshNetgen'
         # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
@@ -698,6 +716,7 @@ FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeigh
 FreeCADGui.addCommand('FEM_ElementFluid1D', _CommandFemElementFluid1D())
 FreeCADGui.addCommand('FEM_ElementGeometry1D', _CommandFemElementGeometry1D())
 FreeCADGui.addCommand('FEM_ElementGeometry2D', _CommandFemElementGeometry2D())
+FreeCADGui.addCommand('FEM_ElementRotation1D', _CommandFemElementRotation1D())
 FreeCADGui.addCommand('FEM_EquationElectrostatic', _CommandFemEquationElectrostatic())
 FreeCADGui.addCommand('FEM_EquationElasticity', _CommandFemEquationElasticity())
 FreeCADGui.addCommand('FEM_EquationFlow', _CommandFemEquationFlow())

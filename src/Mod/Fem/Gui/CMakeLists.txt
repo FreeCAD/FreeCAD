@@ -118,6 +118,7 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostClip.ui
         TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
         TaskPostCut.ui
@@ -290,6 +291,7 @@ if(BUILD_FEM_VTK)
         SphereWidget.ui
         TaskPostClip.ui
         TaskPostDataAlongLine.ui
+        TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
         TaskPostDisplay.ui
         TaskPostWarpVector.ui
@@ -386,6 +388,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
     Resources/ui/ElementGeometry2D.ui
+    Resources/ui/ElementRotation1D.ui
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/Material.ui

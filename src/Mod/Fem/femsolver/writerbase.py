@@ -40,7 +40,7 @@ class FemInputWriter():
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, shellthickness_obj, fluidsection_obj,
+                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
                  analysis_type, dir_name
                  ):
         self.analysis = analysis_obj
@@ -60,6 +60,7 @@ class FemInputWriter():
         self.heatflux_objects = heatflux_obj
         self.initialtemperature_objects = initialtemperature_obj
         self.beamsection_objects = beamsection_obj
+        self.beamrotation_objects = beamrotation_obj
         self.fluidsection_objects = fluidsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.analysis_type = analysis_type
@@ -77,6 +78,10 @@ class FemInputWriter():
         self.ccx_efaces = 'Efaces'
         self.ccx_eedges = 'Eedges'
         self.ccx_elsets = []
+        if hasattr(self.mesh_object, "Shape"):
+            self.theshape = self.mesh_object.Shape
+        elif hasattr(self.mesh_object, "Part"):
+            self.theshape = self.mesh_object.Part
         self.femmesh = self.mesh_object.FemMesh
         self.femnodes_mesh = {}
         self.femelement_table = {}
@@ -193,6 +198,12 @@ class FemInputWriter():
         if not self.femelement_table:
             self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.beamsection_objects)
+
+    def get_element_rotation1D_elements(self):
+        # get for each geometry edge direction the element ids and rotation norma
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+        FemMeshTools.get_femelement_direction1D_set(self.femmesh, self.femelement_table, self.beamrotation_objects, self.theshape)
 
     def get_element_fluid1D_elements(self):
         # get element ids and write them into the objects
