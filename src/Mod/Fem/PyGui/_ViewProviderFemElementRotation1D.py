@@ -63,6 +63,8 @@ class _ViewProviderFemElementRotation1D:
     def onChanged(self, vobj, prop):
         return
 
+    '''
+    # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):
         taskd = _TaskPanelFemElementRotation1D(self.Object)
         taskd.obj = vobj.Object
@@ -80,6 +82,7 @@ class _ViewProviderFemElementRotation1D:
         else:
             FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
         return True
+    '''
 
     def __getstate__(self):
         return None
