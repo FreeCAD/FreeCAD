@@ -254,10 +254,10 @@ class _Container(object):
     def get_refshape_type(self, fem_doc_object):
         # returns the reference shape type
         # for force object:
-        # in GUI defined frc_obj all frc_obj have at leas one ref_shape and ref_shape have all the same shape type
+        # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
         # for material object:
         # in GUI defined material_obj could have no RefShape and RefShapes could be different type
-        # we gone need the RefShapes to be the same type inside one fem_doc_object
+        # we're going to need the RefShapes to be the same type inside one fem_doc_object
         # TODO here: check if all RefShapes inside the object really have the same type
         import femmesh.meshtools as FemMeshTools
         if hasattr(fem_doc_object, 'References') and fem_doc_object.References:

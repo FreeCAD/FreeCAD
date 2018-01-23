@@ -337,7 +337,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
 
-        # in any case if we have beams, we gone need the element ids for the rotation elsets
+        # in any case if we have beams, we're going to need the element ids for the rotation elsets
         if self.beamsection_objects:
             # we will need to split the beam even for one beamobj
             # because no beam in z-direction can be used in ccx without a special adjustment
@@ -396,7 +396,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             elif len(self.fluidsection_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
 
-        # TODO: some elemetIDs are collected for 1D-Flow calculation, this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
+        # TODO: some elemetIDs are collected for 1D-Flow calculation, 
+        # this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
             if ccx_elset['ccx_elset'] and not isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
                 if 'fluidsection_obj'in ccx_elset:
