@@ -113,7 +113,7 @@ class PathWorkbench (Workbench):
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             threedopcmdlist.append("Path_Surface")
-            extracmdlist.extend(["Path_Shape", "Path_Area", "Path_Area_Workplane"])
+            extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             FreeCADGui.addCommand('Path_3dTools', ThreeDCommandGroup())
             threedcmdgroup = ['Path_3dTools']
         else:
@@ -121,27 +121,18 @@ class PathWorkbench (Workbench):
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
-        #self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Partial Commands"), prepcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+threedcmdgroup)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist)
         if extracmdlist:
             self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "Tools")], toolcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Partial Commands")], prepcmdlist)
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "New Operations")], opcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "Path Modification")], modcmdmore)
-        # self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #     "Path", "Remote Operations")], remotecmdlist)
         if extracmdlist:
             self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
