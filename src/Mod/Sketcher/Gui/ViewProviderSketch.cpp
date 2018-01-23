@@ -2589,7 +2589,7 @@ void ViewProviderSketch::updateColor(void)
             color[i] = FullyConstrainedColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zLowLines);
+                verts[j] = SbVec3f(x,y,zNormLine);
             }
         }
         else {
