@@ -32,7 +32,7 @@ class _FemElementRotation1D:
     "The FemElementRotation1D object"
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyAngle", "Rotation", "BeamRotation", "set the rotation of beam elements")
+        obj.addProperty("App::PropertyAngle", "Rotation", "BeamRotation", "Set the rotation of beam elements")
         obj.addProperty("App::PropertyLinkSubList", "References", "BeamRotation", "List of beam rotation shapes")
         obj.Proxy = self
         self.Type = "Fem::FemElementRotation1D"

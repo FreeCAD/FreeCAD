@@ -421,7 +421,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 message += "Beam sections and shell thicknesses in one analysis is not supported at the moment.\n"
             if self.fluid_sections:
                 # this needs to be checked only once either here or in shell_thicknesses
-                message += "Beam sections and fluid Sections in one analysis is not supported at the moment.\n"
+                message += "Beam sections and fluid sections in one analysis is not supported at the moment.\n"
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
@@ -620,7 +620,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.ccx_binary_present = True
             else:
                 raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
-                # TODO: I'm still able to break it. If user gives not a file but a path without a file or a file which is not a binary no excetion at all is raised.
+                # TODO: I'm still able to break it. If user doesn't give a file but a path without a file or a file which is not a binary no exception at all is raised.
         except OSError as e:
             FreeCAD.Console.PrintError(str(e))
             if e.errno == 2:
@@ -785,7 +785,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 def get_refshape_type(fem_doc_object):
     # returns the reference shape type
     # for force object:
-    # in GUI defined frc_obj all frc_obj have at leas one ref_shape and ref_shape have all the same shape type
+    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
     # for material object:
     # in GUI defined material_obj could have no RefShape and RefShapes could be different type
     # we're going to need the RefShapes to be the same type inside one fem_doc_object
