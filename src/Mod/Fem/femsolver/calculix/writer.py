@@ -1078,6 +1078,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     #                        'ccx_mat_name' : 'mat_obj.Material['Name']'   !!! not unique !!!
     #                     },
     #                     {}, ... , {} ]
+
+    # beam
     def get_ccx_elsets_single_mat_single_beam(self):
         mat_obj = self.material_objects[0]['Object']
         beamsec_obj = self.beamsection_objects[0]['Object']
@@ -1086,40 +1088,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         ccx_elset['beamsection_obj'] = beamsec_obj
         ccx_elset['ccx_elset'] = self.ccx_eedges
         ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-        ccx_elset['mat_obj_name'] = mat_obj.Name
-        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-        self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_single_mat_single_fluid(self):
-        mat_obj = self.material_objects[0]['Object']
-        fluidsec_obj = self.fluidsection_objects[0]['Object']
-        names = [{'short': 'Mat0'}, {'short': 'Fluid0'}]
-        ccx_elset = {}
-        ccx_elset['fluidsection_obj'] = fluidsec_obj
-        ccx_elset['ccx_elset'] = self.ccx_eedges
-        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-        ccx_elset['mat_obj_name'] = mat_obj.Name
-        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-        self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_single_mat_single_shell(self):
-        mat_obj = self.material_objects[0]['Object']
-        shellth_obj = self.shellthickness_objects[0]['Object']
-        names = [{'long': mat_obj.Name, 'short': 'Mat0'}, {'long': shellth_obj.Name, 'short': 'Shell0'}]
-        ccx_elset = {}
-        ccx_elset['shellthickness_obj'] = shellth_obj
-        ccx_elset['ccx_elset'] = self.ccx_efaces
-        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
-        ccx_elset['mat_obj_name'] = mat_obj.Name
-        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-        self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_single_mat_solid(self):
-        mat_obj = self.material_objects[0]['Object']
-        names = [{'long': mat_obj.Name, 'short': 'Mat0'}, {'long': 'Solid', 'short': 'Solid'}]
-        ccx_elset = {}
-        ccx_elset['ccx_elset'] = self.ccx_evolumes
-        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
         ccx_elset['mat_obj_name'] = mat_obj.Name
         ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
         self.ccx_elsets.append(ccx_elset)
@@ -1137,32 +1105,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
             self.ccx_elsets.append(ccx_elset)
 
-    def get_ccx_elsets_single_mat_multiple_fluid(self):
-        mat_obj = self.material_objects[0]['Object']
-        for fluidsec_data in self.fluidsection_objects:
-            fluidsec_obj = fluidsec_data['Object']
-            names = [{'short': 'Mat0'}, {'short': fluidsec_data['ShortName']}]
-            ccx_elset = {}
-            ccx_elset['fluidsection_obj'] = fluidsec_obj
-            ccx_elset['ccx_elset'] = fluidsec_data['FEMElements']
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_single_mat_multiple_shell(self):
-        mat_obj = self.material_objects[0]['Object']
-        for shellth_data in self.shellthickness_objects:
-            shellth_obj = shellth_data['Object']
-            names = [{'long': mat_obj.Name, 'short': 'Mat0'}, {'long': shellth_obj.Name, 'short': shellth_data['ShortName']}]
-            ccx_elset = {}
-            ccx_elset['shellthickness_obj'] = shellth_obj
-            ccx_elset['ccx_elset'] = shellth_data['FEMElements']
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            self.ccx_elsets.append(ccx_elset)
-
     def get_ccx_elsets_multiple_mat_single_beam(self):
         beamsec_obj = self.beamsection_objects[0]['Object']
         for mat_data in self.material_objects:
@@ -1172,43 +1114,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             ccx_elset['beamsection_obj'] = beamsec_obj
             ccx_elset['ccx_elset'] = mat_data['FEMElements']
             ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_multiple_mat_single_fluid(self):
-        fluidsec_obj = self.fluidsection_objects[0]['Object']
-        for mat_data in self.material_objects:
-            mat_obj = mat_data['Object']
-            names = [{'short': mat_data['ShortName']}, {'short': 'Fluid0'}]
-            ccx_elset = {}
-            ccx_elset['fluidsection_obj'] = fluidsec_obj
-            ccx_elset['ccx_elset'] = mat_data['FEMElements']
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_multiple_mat_single_shell(self):
-        shellth_obj = self.shellthickness_objects[0]['Object']
-        for mat_data in self.material_objects:
-            mat_obj = mat_data['Object']
-            names = [{'long': mat_obj.Name, 'short': mat_data['ShortName']}, {'long': shellth_obj.Name, 'short': 'Shell0'}]
-            ccx_elset = {}
-            ccx_elset['shellthickness_obj'] = shellth_obj
-            ccx_elset['ccx_elset'] = mat_data['FEMElements']
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
-            ccx_elset['mat_obj_name'] = mat_obj.Name
-            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
-            self.ccx_elsets.append(ccx_elset)
-
-    def get_ccx_elsets_multiple_mat_solid(self):
-        for mat_data in self.material_objects:
-            mat_obj = mat_data['Object']
-            names = [{'long': mat_obj.Name, 'short': mat_data['ShortName']}, {'long': 'Solid', 'short': 'Solid'}]
-            ccx_elset = {}
-            ccx_elset['ccx_elset'] = mat_data['FEMElements']
-            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
             ccx_elset['mat_obj_name'] = mat_obj.Name
             ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
             self.ccx_elsets.append(ccx_elset)
@@ -1231,6 +1136,45 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
                 self.ccx_elsets.append(ccx_elset)
 
+    # fluid
+    def get_ccx_elsets_single_mat_single_fluid(self):
+        mat_obj = self.material_objects[0]['Object']
+        fluidsec_obj = self.fluidsection_objects[0]['Object']
+        names = [{'short': 'Mat0'}, {'short': 'Fluid0'}]
+        ccx_elset = {}
+        ccx_elset['fluidsection_obj'] = fluidsec_obj
+        ccx_elset['ccx_elset'] = self.ccx_eedges
+        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+        ccx_elset['mat_obj_name'] = mat_obj.Name
+        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+        self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_single_mat_multiple_fluid(self):
+        mat_obj = self.material_objects[0]['Object']
+        for fluidsec_data in self.fluidsection_objects:
+            fluidsec_obj = fluidsec_data['Object']
+            names = [{'short': 'Mat0'}, {'short': fluidsec_data['ShortName']}]
+            ccx_elset = {}
+            ccx_elset['fluidsection_obj'] = fluidsec_obj
+            ccx_elset['ccx_elset'] = fluidsec_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_single_fluid(self):
+        fluidsec_obj = self.fluidsection_objects[0]['Object']
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            names = [{'short': mat_data['ShortName']}, {'short': 'Fluid0'}]
+            ccx_elset = {}
+            ccx_elset['fluidsection_obj'] = fluidsec_obj
+            ccx_elset['ccx_elset'] = mat_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_short(names)
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+            self.ccx_elsets.append(ccx_elset)
+
     def get_ccx_elsets_multiple_mat_multiple_fluid(self):
         for fluidsec_data in self.fluidsection_objects:
             fluidsec_obj = fluidsec_data['Object']
@@ -1249,6 +1193,45 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
                 self.ccx_elsets.append(ccx_elset)
 
+    # shell
+    def get_ccx_elsets_single_mat_single_shell(self):
+        mat_obj = self.material_objects[0]['Object']
+        shellth_obj = self.shellthickness_objects[0]['Object']
+        names = [{'long': mat_obj.Name, 'short': 'Mat0'}, {'long': shellth_obj.Name, 'short': 'Shell0'}]
+        ccx_elset = {}
+        ccx_elset['shellthickness_obj'] = shellth_obj
+        ccx_elset['ccx_elset'] = self.ccx_efaces
+        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
+        ccx_elset['mat_obj_name'] = mat_obj.Name
+        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+        self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_single_mat_multiple_shell(self):
+        mat_obj = self.material_objects[0]['Object']
+        for shellth_data in self.shellthickness_objects:
+            shellth_obj = shellth_data['Object']
+            names = [{'long': mat_obj.Name, 'short': 'Mat0'}, {'long': shellth_obj.Name, 'short': shellth_data['ShortName']}]
+            ccx_elset = {}
+            ccx_elset['shellthickness_obj'] = shellth_obj
+            ccx_elset['ccx_elset'] = shellth_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_single_shell(self):
+        shellth_obj = self.shellthickness_objects[0]['Object']
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            names = [{'long': mat_obj.Name, 'short': mat_data['ShortName']}, {'long': shellth_obj.Name, 'short': 'Shell0'}]
+            ccx_elset = {}
+            ccx_elset['shellthickness_obj'] = shellth_obj
+            ccx_elset['ccx_elset'] = mat_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+            self.ccx_elsets.append(ccx_elset)
+
     def get_ccx_elsets_multiple_mat_multiple_shell(self):
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
@@ -1266,6 +1249,27 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 ccx_elset['mat_obj_name'] = mat_obj.Name
                 ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
                 self.ccx_elsets.append(ccx_elset)
+    # solid
+    def get_ccx_elsets_single_mat_solid(self):
+        mat_obj = self.material_objects[0]['Object']
+        names = [{'long': mat_obj.Name, 'short': 'Mat0'}, {'long': 'Solid', 'short': 'Solid'}]
+        ccx_elset = {}
+        ccx_elset['ccx_elset'] = self.ccx_evolumes
+        ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
+        ccx_elset['mat_obj_name'] = mat_obj.Name
+        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+        self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_solid(self):
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            names = [{'long': mat_obj.Name, 'short': mat_data['ShortName']}, {'long': 'Solid', 'short': 'Solid'}]
+            ccx_elset = {}
+            ccx_elset['ccx_elset'] = mat_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_name_standard(names)
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name']
+            self.ccx_elsets.append(ccx_elset)
 
 
 # Helpers
