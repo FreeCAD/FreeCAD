@@ -66,7 +66,7 @@ class Prepare(run.Prepare):
             c.selfweight_constraints, c.force_constraints,
             c.pressure_constraints, c.temperature_constraints,
             c.heatflux_constraints, c.initialtemperature_constraints,
-            c.beam_sections, c.shell_thicknesses, c.fluid_sections,
+            c.beam_sections, c.beam_rotations, c.shell_thicknesses, c.fluid_sections,
             self.solver.AnalysisType, self.directory)
         path = w.write_calculix_input_file()
         # report to user if task succeeded
@@ -165,6 +165,7 @@ class _Container(object):
         self.force_constraints = []
         self.pressure_constraints = []
         self.beam_sections = []
+        self.beam_rotations = []
         self.fluid_sections = []
         self.shell_thicknesses = []
         self.displacement_constraints = []
@@ -239,6 +240,10 @@ class _Container(object):
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
+                beam_rotation_dict = {}
+                beam_rotation_dict['Object'] = m
+                self.beam_rotations.append(beam_rotation_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
                 fluid_section_dict = {}
                 fluid_section_dict['Object'] = m
