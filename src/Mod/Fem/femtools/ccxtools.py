@@ -433,6 +433,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Beam sections defined but FEM mesh has volume or shell elements.\n"
                 if self.mesh.FemMesh.EdgeCount == 0:
                     message += "Beam sections defined but FEM mesh has no edge elements.\n"
+            if len(self.beam_rotations) > 1:
+                message += "Multiple beam rotations in one analysis are not supported at the moment.\n"
+        # beam rotations
+        if self.beam_rotations and not self.beam_sections:
+            message += "Beam rotations in the analysis but no beam sections defined.\n"
         # shell thickness
         if self.shell_thicknesses:
             has_no_references = False
