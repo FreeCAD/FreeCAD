@@ -223,6 +223,17 @@ def makeElementGeometry2D(doc, thickness=20.0, name="ElementGeometry2D"):
     return obj
 
 
+def makeElementRotation1D(doc, name="ElementRotation1D"):
+    '''makeElementRotation1D(document, [name]): creates an 1D geometry rotation element object to rotate a 1D cross section'''
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from PyObjects import _FemElementRotation1D
+    _FemElementRotation1D._FemElementRotation1D(obj)
+    if FreeCAD.GuiUp:
+        from PyGui import _ViewProviderFemElementRotation1D
+        _ViewProviderFemElementRotation1D._ViewProviderFemElementRotation1D(obj.ViewObject)
+    return obj
+
+
 ########## material objects ##########
 def makeMaterialFluid(doc, name="FluidMaterial"):
     '''makeMaterialFluid(document, [name]): makes a FEM Material for fluid'''

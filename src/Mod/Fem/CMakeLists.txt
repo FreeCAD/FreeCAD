@@ -167,6 +167,7 @@ SET(FemObjectsScripts_SRCS
     PyObjects/_FemElementFluid1D.py
     PyObjects/_FemElementGeometry1D.py
     PyObjects/_FemElementGeometry2D.py
+    PyObjects/_FemElementRotation1D.py
     PyObjects/_FemMaterial.py
     PyObjects/_FemMaterialMechanicalNonlinear.py
     PyObjects/_FemMeshBoundaryLayer.py
@@ -238,6 +239,7 @@ SET(FemGuiScripts_SRCS
     PyGui/_ViewProviderFemElementFluid1D.py
     PyGui/_ViewProviderFemElementGeometry1D.py
     PyGui/_ViewProviderFemElementGeometry2D.py
+    PyGui/_ViewProviderFemElementRotation1D.py
     PyGui/_ViewProviderFemMaterial.py
     PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
     PyGui/_ViewProviderFemMeshBoundaryLayer.py
