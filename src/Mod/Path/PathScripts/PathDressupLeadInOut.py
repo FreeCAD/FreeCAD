@@ -178,7 +178,7 @@ class ObjectDressup:
             arcmove = Path.Command(arcdir, {"X": p0.x, "Y": p0.y, "I": offsetvector.x, "J": offsetvector.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
         elif obj.StyleOn == 'Tangent':
-            extendcommand = Path.Command('G1', {"X": p0.x, "Y": p0.y, "Z": p0.z, "F": horizFeed})
+            extendcommand = Path.Command('G1', {"X": p0.x, "Y": p0.y, "F": horizFeed})
             results.append(extendcommand)
         else:
             PathLog.notice(" CURRENT_IN Perp")
@@ -213,12 +213,12 @@ class ObjectDressup:
         else:
             leadend = p1.add(off_v)  # Dmode
         IJ = off_v  # .negative()
-        results.append(queue[1])
+        #results.append(queue[1])
         if obj.StyleOff == 'Arc':
             arcmove = Path.Command(arcdir, {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
         elif obj.StyleOff == 'Tangent':
-            extendcommand = Path.Command('G1', {"X": leadend.x, "Y": leadend.y, "Z": currLocation["Z"], "F": horizFeed})
+            extendcommand = Path.Command('G1', {"X": leadend.x, "Y": leadend.y, "F": horizFeed})
             results.append(extendcommand)
         else:
             PathLog.notice(" CURRENT_IN Perp")
@@ -262,7 +262,7 @@ class ObjectDressup:
                     if obj.LeadIn:
                         temp = self.getLeadStart(obj, queue, action)
                         newpath.extend(temp)
-                        newpath.append(curCommand)
+                        #newpath.append(curCommand)
                         action = 'none'
                         currLocation.update(curCommand.Parameters)
                     else:
