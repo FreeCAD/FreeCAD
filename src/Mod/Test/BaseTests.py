@@ -178,7 +178,7 @@ class ParameterTestCase(unittest.TestCase):
         self.failUnless(m2==m3*m4    ,"Wrong multiplication order")
         self.failUnless(not m2==m4*m3,"Wrong multiplication order")
 
-    def testRoation(self):
+    def testRotation(self):
         r=FreeCAD.Rotation(1,0,0,0) # 180 deg around (1,0,0)
         self.assertEqual(r.Axis, FreeCAD.Vector(1,0,0))
         self.assertAlmostEqual(math.fabs(r.Angle), math.fabs(math.pi))
