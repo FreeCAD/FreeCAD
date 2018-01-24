@@ -87,11 +87,21 @@ void PathSim::SetCurrentTool(Tool * tool)
         }
 		break;
 	case Tool::CENTERDRILL:
+		tp = cSimTool::CHAMFER;
+		angle = tool->CuttingEdgeAngle;
+        if (angle > 180) 
+        {
+            angle = 180;
+        }
+		break;
 	case Tool::COUNTERSINK:
 	case Tool::COUNTERBORE:
 	case Tool::REAMER:
 	case Tool::TAP:
 	case Tool::ENDMILL:
+		tp = cSimTool::FLAT;
+		angle = 180;
+		break;
 	case Tool::SLOTCUTTER:
 	case Tool::CORNERROUND:
 	case Tool::ENGRAVER:
@@ -102,8 +112,10 @@ void PathSim::SetCurrentTool(Tool * tool)
             angle = 180;
         }
 		break;
-
-		break; // quiet warnings
+	default:
+		tp = cSimTool::FLAT;
+		angle = 180;
+		break;
 	}
 	m_tool = new cSimTool(tp, tool->Diameter / 2.0, angle);
 }
