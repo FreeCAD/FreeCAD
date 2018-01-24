@@ -789,7 +789,7 @@ struct WireJoiner {
         throw Base::RuntimeError("Module must be built with boost version >= 1.55");
 #else
         // It seems OCC projector sometimes mess up the tolerance of edges
-        // which are supposed to be connected. So use a lesser preceision
+        // which are supposed to be connected. So use a lesser precision
         // below, and call makeCleanWire to fix the tolerance
         const double tol = 1e-10;
 
@@ -1879,7 +1879,7 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
         case Area::AlgoClipperOffset:
 #endif
             area.OffsetWithClipper(offset,JoinType,EndType,
-                    myParams.MiterLimit,myParams.RoundPreceision);
+                    myParams.MiterLimit,myParams.RoundPrecision);
 #ifdef AREA_OFFSET_ALGO
             break;
         }
@@ -2003,7 +2003,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
         auto area = *myArea;
         area.OffsetWithClipper(-tool_radius,JoinType,EndType,
-                myParams.MiterLimit,myParams.RoundPreceision);
+                myParams.MiterLimit,myParams.RoundPrecision);
         out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;
         break;
