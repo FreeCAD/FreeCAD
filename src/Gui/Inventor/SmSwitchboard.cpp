@@ -57,6 +57,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoOutput.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -123,88 +124,183 @@ SmSwitchboard::~SmSwitchboard(void) // virtual, protected
 void
 SmSwitchboard::doAction(SoAction * action)
 {
-  // FIXME: take PathCode and stuff into consideration...
-  if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
-    // calculate center of bbox if bboxaction. This makes the
-    // switchboard node behave exactly like a group node
-    SoGetBoundingBoxAction * bbaction = (SoGetBoundingBoxAction*) action;
-    // Initialize accumulation variables.
-    SbVec3f acccenter(0.0f, 0.0f, 0.0f);
-    int numcenters = 0;
-    for (int idx = 0; idx < this->enable.getNum(); idx++) {
-      const int numchildren = this->children->getLength();
-      if ( numchildren > 0 )
-        action->traverse((*this->children)[idx % numchildren]);
-      // If center point is set, accumulate.
-      if (bbaction->isCenterSet()) {
-        acccenter += bbaction->getCenter();
-        numcenters++;
-        bbaction->resetCenter();
-      }
+    int numindices;
+    const int * indices;
+    if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+        // FIXME: We ignore the IN_PATH optimization
+        for ( int i = 0; i < this->getChildren()->getLength(); i++ ) {
+            if ( this->enable[i % this->enable.getNum()] )
+                this->getChildren()->traverse(action,i);
+        }
+
+        //this->getChildren()->traverse(action); // traverse all children
+        //this->getChildren()->traverseInPath(action, newnumindices, newindices);
     }
-    if (numcenters != 0) {
-      bbaction->setCenter(acccenter / float(numcenters), FALSE);
+    else {
+
+        for ( int i = 0; i < this->getChildren()->getLength(); i++ ) {
+            if ( this->enable[i % this->enable.getNum()] )
+                this->getChildren()->traverse(action,i);
+        }
+
+        //this->getChildren()->traverse(action); // traverse all children
     }
-  } else { // not a GetBoundingBoxAction
-    for ( int idx = 0; idx < this->enable.getNum(); idx++ ) {
-      if ( this->enable[idx] ) {
-        const int numchildren = this->children->getLength();
-        if ( numchildren > 0 )
-          action->traverse((*this->children)[idx % numchildren]);
-      }
-    }
-  }
 }
 
 void
 SmSwitchboard::GLRender(SoGLRenderAction * action)
 {
-  SmSwitchboard::doAction((SoAction *) action);
+    int numindices;
+    const int * indices;
+    SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+    
+    SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
+    SoState * state = action->getState();
+    
+    if (pathcode == SoAction::IN_PATH) {
+        int lastchild = indices[numindices - 1];
+        for (int i = 0; i <= lastchild && !action->hasTerminated(); i++) {
+            SoNode * child = childarray[i];
+            
+            action->pushCurPath(i, child);
+            if (action->getCurPathCode() != SoAction::OFF_PATH ||
+                child->affectsState()) {
+                if (!action->abortNow()) {
+                    if ( this->enable[i % this->enable.getNum()] ) {
+                        child->GLRender(action);
+                    }
+                }
+                else {
+                    SoCacheElement::invalidate(state);
+                }
+                }
+                action->popCurPath(pathcode);
+        }
+    }
+    else {
+        action->pushCurPath();
+        int n = this->getChildren()->getLength();
+        for (int i = 0; i < n && !action->hasTerminated(); i++) {
+            action->popPushCurPath(i, childarray[i]);
+            
+            if (pathcode == SoAction::OFF_PATH && !childarray[i]->affectsState()) {
+                continue;
+            }
+            
+            if (action->abortNow()) {
+                // only cache if we do a full traversal
+                SoCacheElement::invalidate(state);
+                break;
+            }
+
+            if ( this->enable[i % this->enable.getNum()] )
+                childarray[i]->GLRender(action);
+            
+            #if COIN_DEBUG
+            // The GL error test is default disabled for this optimized
+            // path.  If you get a GL error reporting an error in the
+            // Separator node, enable this code by setting the environment
+            // variable COIN_GLERROR_DEBUGGING to "1" to see exactly which
+            // node caused the error.
+            static SbBool chkglerr = sogl_glerror_debugging();
+            if (chkglerr) {
+                cc_string str;
+                cc_string_construct(&str);
+                const unsigned int errs = coin_catch_gl_errors(&str);
+                if (errs > 0) {
+                    SoDebugError::post("SoGroup::GLRender",
+                                       "glGetError()s => '%s', nodetype: '%s'",
+                                       cc_string_get_text(&str),
+                                       (*this->getChildren())[i]->getTypeId().getName().getString());
+                }
+                cc_string_clean(&str);
+            }
+            #endif // COIN_DEBUG
+            
+        }
+        action->popCurPath();
+    }
 }
 
 void
 SmSwitchboard::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SmSwitchboard::doAction((SoAction *) action);
+    // Sanity check. This has caught bugs.
+    assert(this->getNumChildren() == this->getChildren()->getLength());
+    
+    int numindices;
+    const int * indices;
+    int lastchildindex;
+    
+    if (action->getPathCode(numindices, indices) == SoAction::IN_PATH)
+        lastchildindex = indices[numindices-1];
+    else
+        lastchildindex = this->getNumChildren() - 1;
+    
+    assert(lastchildindex < this->getNumChildren());
+    
+    // Initialize accumulation variables.
+    SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+    int numcenters = 0;
+    
+    for (int i = 0; i <= lastchildindex; i++) {
+        
+        if ( this->enable[i % this->enable.getNum()] )
+            this->getChildren()->traverse(action, i);
+        
+        // If center point is set, accumulate.
+        if (action->isCenterSet()) {
+            acccenter += action->getCenter();
+            numcenters++;
+            action->resetCenter();
+        }
+    }
+    
+    if (numcenters != 0)
+        action->setCenter(acccenter / float(numcenters), FALSE);
 }
 
 void
 SmSwitchboard::getMatrix(SoGetMatrixAction * action)
 {
-  switch (action->getCurPathCode()) {
-  case SoAction::OFF_PATH:
-  case SoAction::IN_PATH:
-    SmSwitchboard::doAction((SoAction *) action);
-    break;
-  default:
-    break;
-  }
+    switch (action->getCurPathCode()) {
+        case SoAction::NO_PATH:
+        case SoAction::BELOW_PATH:
+            break;
+        case SoAction::OFF_PATH:
+        case SoAction::IN_PATH:
+            SmSwitchboard::doAction((SoAction *)action);
+            break;
+    }
 }
 
 void
 SmSwitchboard::callback(SoCallbackAction *action)
 {
-  SmSwitchboard::doAction(action);
+    SmSwitchboard::doAction(action);
 }
 
 // Documented in superclass.
 void
 SmSwitchboard::pick(SoPickAction *action)
 {
-  SmSwitchboard::doAction((SoAction*)action);
+    SmSwitchboard::doAction(action);
 }
 
 // Documented in superclass.
 void
 SmSwitchboard::handleEvent(SoHandleEventAction *action)
 {
-  SmSwitchboard::doAction(action);
+    SmSwitchboard::doAction(action);
 }
 
 void
 SmSwitchboard::search(SoSearchAction * action)
 {
-  SoNode::search(action);
-  if (action->isFound()) return;
-  SmSwitchboard::doAction(action);
+    // Include this node in the search.
+    inherited::search(action);
+    if (action->isFound()) return;
+    
+    // If we're not the one being sought after, try child subgraphs.
+    SmSwitchboard::doAction((SoAction *)action);
 }

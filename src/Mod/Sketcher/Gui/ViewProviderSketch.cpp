@@ -56,6 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
 # include <QAction>
@@ -249,7 +250,7 @@ struct EditData {
     SoText2       *textX;
     SoTranslation *textPos;
 
-    SoGroup       *constrGroup;
+    SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
 };
@@ -276,7 +277,8 @@ ViewProviderSketch::ViewProviderSketch()
   : edit(0),
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
-    combrepscalehyst(0)
+    combrepscalehyst(0),
+    isShownVirtualSpace(false)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -4034,6 +4036,8 @@ Restart:
         rebuildConstraintsVisual();
     assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
+    // update the virtual space
+    updateVirtualSpace();
     // go through the constraints and update the position
     i = 0;
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
@@ -5132,6 +5136,39 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     }
 }
 
+void ViewProviderSketch::updateVirtualSpace(void)
+{
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
+
+    if(constrlist.size() == edit->vConstrType.size()) {
+
+        edit->constrGroup->enable.setNum(constrlist.size());
+
+        SbBool *sws = edit->constrGroup->enable.startEditing();
+
+        for (size_t i = 0; i < constrlist.size(); i++)
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isShownVirtualSpace); // XOR of constraint mode and VP mode
+
+
+        edit->constrGroup->enable.finishEditing();
+    }
+}
+
+void ViewProviderSketch::setIsShownVirtualSpace(bool isshownvirtualspace)
+{
+    this->isShownVirtualSpace = isshownvirtualspace;
+
+    updateVirtualSpace();
+    
+    signalConstraintsChanged();
+}
+
+bool ViewProviderSketch::getIsShownVirtualSpace() const
+{
+    return this->isShownVirtualSpace;
+}
+
+
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 {
     assert(edit);
@@ -5633,7 +5670,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(DrawStyle);
 
     // add the group where all the constraints has its SoSeparator
-    edit->constrGroup = new SoGroup();
+    edit->constrGroup = new SmSwitchboard();
     edit->constrGroup->setName("ConstraintGroup");
     edit->EditRoot->addChild(edit->constrGroup);
     
