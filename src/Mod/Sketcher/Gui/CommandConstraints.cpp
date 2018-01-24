@@ -691,6 +691,28 @@ bool SketcherGui::checkConstraint(const std::vector< Sketcher::Constraint * > &v
 }
 
 
+void SketcherGui::doendpointtangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection, int GeoId1, int GeoId2, PointPos PosId1, PointPos PosId2){
+    // This code supports simple B-spline endpoint tangency to any other geometric curve
+    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+    
+    if( geom1 && geom2 &&
+        ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+        geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+        
+        if(geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+        }
+        // GeoId1 is the B-spline now
+        } // end of code supports simple B-spline endpoint tangency
+        
+        Gui::Command::doCommand(
+            Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
+                                selection.getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+}
+
+
 namespace SketcherGui {
 
 struct SelIdPair{
@@ -4349,6 +4371,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         return;
 
     }
+    
+
 
     int GeoId1, GeoId2, GeoId3;
     Sketcher::PointPos PosId1, PosId2, PosId3;
@@ -4429,28 +4453,11 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
-            // This code supports simple B-spline endpoint tangency to any other geometric curve
-            const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
-            const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
-
-            if( geom1 && geom2 &&
-                ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
-                geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
-
-                if(geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
-                    std::swap(GeoId1,GeoId2);
-                    std::swap(PosId1,PosId2);
-                }
-                // GeoId1 is the B-spline now
-            } // end of code supports simple B-spline endpoint tangency
-
             openCommand("add tangent constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+            doendpointtangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
             commitCommand();
             tryAutoRecompute();
-            
+
             getSelection().clearSelection();
             return;
         }
@@ -4501,6 +4508,31 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
             
+            // check if there is a coincidence constraint on GeoId1, GeoId2
+            const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
+
+            for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it) {
+                if( (*it)->Type == Sketcher::Coincident &&
+                    (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
+                    ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+
+                    Gui::Command::openCommand("swap coincident+tangency with ptp tangency");
+
+                    doendpointtangency(Obj, selection[0], (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
+
+                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)",
+                                            selection[0].getFeatName(), (*it)->First, (int)(*it)->FirstPos);
+
+                    commitCommand();
+                    tryAutoRecomputeIfNotSolve(Obj);
+
+                    QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
+                                         QObject::tr("Endpoint to endpoint tangency was applied. The coincident constraint was deleted."));
+
+                    getSelection().clearSelection();
+                    return;
+                }
+            }
 
             if( geom1 && geom2 &&
                 ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
