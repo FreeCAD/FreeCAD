@@ -44,7 +44,7 @@ namespace DockWnd {
 /** A test class. A more elaborate class description.
  */
 class SelectionView : public Gui::DockWindow, 
-                      public Gui::SelectionSingleton::ObserverType
+                      public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -62,8 +62,7 @@ public:
     virtual ~SelectionView();
 
     /// Observer message from the Selection
-    virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                          Gui::SelectionSingleton::MessageType Reason);
+    virtual void onSelectionChanged(const SelectionChanges& msg);
 
 
     bool onMsg(const char* pMsg,const char** ppReturn);

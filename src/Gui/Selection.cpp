@@ -56,7 +56,8 @@ FC_LOG_LEVEL_INIT("Selection",false,true,true)
 using namespace Gui;
 using namespace std;
 
-SelectionObserver::SelectionObserver(bool attach)
+SelectionObserver::SelectionObserver(bool attach,bool resolve)
+    :resolve(resolve)
 {
     if(attach)
         attachSelection();
@@ -93,7 +94,9 @@ bool SelectionObserver::isConnectionAttached() const
 void SelectionObserver::attachSelection()
 {
     if (!connectSelection.connected()) {
-        connectSelection = Selection().signalSelectionChanged.connect(boost::bind
+        auto &signal = resolve?Selection().signalSelectionChanged2:
+            Selection().signalSelectionChanged;
+        connectSelection = signal.connect(boost::bind
             (&SelectionObserver::onSelectionChanged, this, _1));
     }
 }
@@ -109,7 +112,8 @@ void SelectionObserver::detachSelection()
 
 std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 
-SelectionObserverPython::SelectionObserverPython(const Py::Object& obj) : inst(obj)
+SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, bool resolve) 
+    : SelectionObserver(true,resolve),inst(obj)
 {
 }
 
@@ -117,9 +121,9 @@ SelectionObserverPython::~SelectionObserverPython()
 {
 }
 
-void SelectionObserverPython::addObserver(const Py::Object& obj)
+void SelectionObserverPython::addObserver(const Py::Object& obj, bool resolve)
 {
-    _instances.push_back(new SelectionObserverPython(obj));
+    _instances.push_back(new SelectionObserverPython(obj,resolve));
 }
 
 void SelectionObserverPython::removeObserver(const Py::Object& obj)
@@ -603,6 +607,32 @@ unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const 
     if (typeId == Base::Type::badType())
         return 0;
     return countObjectsOfType(typeId, pDocName, resolve);
+}
+
+
+void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
+    if(msg.Type == SelectionChanges::SetPreselectSignal)
+        return;
+    
+    SelectionChanges msg2(msg);
+
+    if(msg.pDocName && 
+       msg.pObjectName && msg.pObjectName[0] &&
+       msg.pSubName && msg.pSubName[0])
+    {
+        App::Document* pDoc = getDocument(msg.pDocName);
+        if(!pDoc) return;
+        const char *subname = 0;
+        App::DocumentObject* pObject = getObjectOfType(pDoc->getObject(msg.pObjectName),
+                msg.pSubName, App::DocumentObject::getClassTypeId(),true,&subname);
+        if (!pObject) return;
+        std::string docName(pObject->getDocument()->getName());
+        std::string objName(pObject->getNameInDocument());
+        msg2.pDocName = docName.c_str();
+        msg2.pObjectName = objName.c_str();
+        msg2.pSubName = subname;
+    }
+    signalSelectionChanged2(msg2);
 }
 
 bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, bool signal)
@@ -1358,6 +1388,7 @@ SelectionSingleton::SelectionSingleton():_needPickedList(false)
     CurrentPreselection.x = 0.0;
     CurrentPreselection.y = 0.0;
     CurrentPreselection.z = 0.0;
+    signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, _1));
 }
 
 /**
@@ -1433,7 +1464,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, 1,
      "getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, METH_VARARGS,
-     "addObserver(Object) -- Install an observer\n"},
+     "addObserver(Object, resolve=True) -- Install an observer\n"},
     {"removeObserver",      (PyCFunction) SelectionSingleton::sRemSelObserver, METH_VARARGS,
      "removeObserver(Object) -- Uninstall an observer\n"},
     {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, 1,
@@ -1751,10 +1782,11 @@ PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject 
 PyObject *SelectionSingleton::sAddSelObserver(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O",&o))
+    PyObject *resolve=Py_True;
+    if (!PyArg_ParseTuple(args, "O|O",&o,&resolve))
         return NULL;
     PY_TRY {
-        SelectionObserverPython::addObserver(Py::Object(o));
+        SelectionObserverPython::addObserver(Py::Object(o),PyObject_IsTrue(resolve));
         Py_Return;
     } PY_CATCH;
 }

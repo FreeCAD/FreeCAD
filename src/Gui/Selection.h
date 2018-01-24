@@ -131,7 +131,7 @@ class GuiExport SelectionObserver
 
 public:
     /// Constructor
-    SelectionObserver(bool attach = true);
+    SelectionObserver(bool attach = true, bool resolve = true);
     virtual ~SelectionObserver();
     bool blockConnection(bool block);
     bool isConnectionBlocked() const;
@@ -148,6 +148,7 @@ private:
 private:
     typedef boost::signals::connection Connection;
     Connection connectSelection;
+    bool resolve;
 };
 
 /**
@@ -162,10 +163,10 @@ class GuiExport SelectionObserverPython : public SelectionObserver
 
 public:
     /// Constructor
-    SelectionObserverPython(const Py::Object& obj);
+    SelectionObserverPython(const Py::Object& obj, bool resolve=true);
     virtual ~SelectionObserverPython();
 
-    static void addObserver(const Py::Object& obj);
+    static void addObserver(const Py::Object& obj, bool resolve=true);
     static void removeObserver(const Py::Object& obj);
 
 private:
@@ -324,8 +325,11 @@ public:
      */
     void setVisible(int visible) const;
 
-    /// signal on new object
+    /// signal on selection with un-resolved object if inside a container
     boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
+
+    /// signal on selection change with resolved object
+    boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged2;
 
     /** Returns a vector of selection objects
      *
@@ -417,6 +421,8 @@ protected:
 
     /// helper to retrieve document by name
     App::Document* getDocument(const char* pDocName=0) const;
+
+    void slotSelectionChanged(const SelectionChanges& msg);
 
     SelectionChanges CurrentPreselection;
 

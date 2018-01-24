@@ -55,6 +55,7 @@ using namespace Gui::DockWnd;
 
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
+  , SelectionObserver(false,false)
 {
     setWindowTitle(tr("Selection View"));
 
@@ -105,21 +106,15 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     connect(pickList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
     connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
     connect(enablePickList, SIGNAL(stateChanged(int)), this, SLOT(onEnablePickList()));
-    
-    Gui::Selection().Attach(this);
 }
 
 SelectionView::~SelectionView()
 {
-    Gui::Selection().Detach(this);
 }
 
 /// @cond DOXERR
-void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                             Gui::SelectionSingleton::MessageType Reason)
+void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 {
-    Q_UNUSED(rCaller); 
-
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -540,13 +535,13 @@ bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 
 void SelectionView::hideEvent(QHideEvent *ev) {
     FC_TRACE(this << " detaching selection observer");
-    Gui::Selection().Detach(this);
-    Gui::DockWindow::hideEvent(ev);
+    this->detachSelection();
+    DockWindow::hideEvent(ev);
 }
 
 void SelectionView::showEvent(QShowEvent *ev) {
     FC_TRACE(this << " attaching selection observer");
-    Gui::Selection().Attach(this);
+    this->attachSelection();
     enablePickList->setChecked(Selection().needPickedList());
     Gui::DockWindow::showEvent(ev);
 }
