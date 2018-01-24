@@ -49,6 +49,7 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 class ObjectFace(PathPocketBase.ObjectPocket):
     '''Proxy object for Mill Facing operation.'''
 
@@ -67,12 +68,25 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             obj.StepOver = 1
 
         # default depths calculation not correct for facing
-        if prop == "Base" and len(obj.Base) == 1:
-            base, sub = obj.Base[0]
-            shape = base.Shape.getElement(sub[0])
-            d = PathUtils.guessDepths(shape, None)
-            obj.OpStartDepth = d.safe_height
-            obj.OpFinalDepth = d.start_depth
+        if prop == "Base":
+            job = PathUtils.findParentJob(obj)
+            obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+
+            if len(obj.Base) >= 1:
+                print ('processing')
+                sublist = []
+                for i in obj.Base:
+                    o = i[0]
+                    for s in i[1]:
+                        sublist.append(o.Shape.getElement(s))
+
+            # If the operation has a geometry identified the Finaldepth
+            # is the top of the bboundbox which includes all features.
+            # Otherwise, top of part.
+
+                obj.OpFinalDepth = Part.makeCompound(sublist).BoundBox.ZMax
+            else:
+                obj.OpFinalDepth = job.Base.Shape.BoundBox.ZMax
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return top face'''
@@ -112,12 +126,18 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
 
-        # need to overwrite the default depth calculations for facing
         job = PathUtils.findParentJob(obj)
+
+        # need to overwrite the default depth calculations for facing
         if job and job.Base:
-            d = PathUtils.guessDepths(job.Base.Shape, None)
-            obj.OpStartDepth = d.safe_height
-            obj.OpFinalDepth = d.start_depth
+            obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+            obj.OpFinalDepth = job.Base.Shape.BoundBox.ZMax
+
+            # If the operation has a geometry identified the Finaldepth
+            # is the top of the bboundbox which includes all features.
+            if len(obj.Base) >= 1:
+                obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
+
 
 def Create(name):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
