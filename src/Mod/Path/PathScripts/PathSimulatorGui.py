@@ -6,6 +6,7 @@ import Mesh
 import PathSimulator
 import math
 from FreeCAD import Vector, Base
+import PathScripts.PathLog as PathLog
 from PathScripts.PathGeom import PathGeom
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
@@ -382,6 +383,9 @@ class PathSimulation:
         yp = pos[1]
         zp = pos[2]
         h = tool.CuttingEdgeHeight
+        if h <= 0.0: #set default if user fails to avoid freeze
+            h = 1.0
+            PathLog.error("SET Tool Length")
         # common to all tools
         vTR = Vector(xp + yf, yp - xf, zp + h)
         vTC = Vector(xp, yp, zp + h)
