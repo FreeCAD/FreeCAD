@@ -92,6 +92,11 @@ public:
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
+    /// return a hit element given the picked point which contains the full node path
+    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
+    /// return the coin node detail and path to the node of the subelement
+    virtual SoDetail* getDetailPath(const char *subelement, SoFullPath *pPath, bool append) const override;
+
     /* Force update visual
      *
      * These method exists because some view provider skips visual update when

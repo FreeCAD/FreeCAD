@@ -33,6 +33,8 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/SoFullPath.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -378,3 +380,54 @@ Base::BoundBox3d ViewProviderDocumentObject::getBoundingBox() const {
     bbox.getMin().getValue(minX,minY,minZ);
     return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
 }
+
+bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
+{
+    auto childRoot = getChildRoot();
+    if(!childRoot)
+        return ViewProvider::getElementPicked(pp,subname);
+
+    if(!isSelectable()) return false;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionGetElementPicked(pp,subname))
+            return true;
+
+    SoPath* path = pp->getPath();
+    auto idx = path->findNode(childRoot);
+    if(idx<0 || idx+1>=path->getLength())
+        return false;
+    auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
+    if(!vp) return false;
+    auto obj = vp->getObject();
+    if(!obj || !obj->getNameInDocument())
+        return false;
+    std::ostringstream str;
+    str << obj->getNameInDocument() << '.';
+    if(vp->getElementPicked(pp,subname))
+        str << subname;
+    subname = str.str();
+    return true;
+}
+
+SoDetail *ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append) const
+{
+    auto det = ViewProvider::getDetailPath(subname,path,append);
+    if(det) return det;
+
+    auto childRoot = getChildRoot();
+    if(childRoot && subname) {
+        const char *dot = strchr(subname,'.');
+        if(!dot) return 0;
+        auto obj = getObject();
+        if(!obj || !obj->getNameInDocument()) return 0;
+        auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
+        if(!sobj) return 0;
+        auto vp = Application::Instance->getViewProvider(sobj);
+        if(!vp) return 0;
+        path->append(childRoot);
+        det = vp->getDetailPath(dot+1,path,true);
+    }
+    return det;
+}
+

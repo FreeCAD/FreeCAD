@@ -59,9 +59,6 @@ public:
 
     virtual void extensionUpdateData(const App::Property*) override;
 
-    virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const override;
-    virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const override;
-
 protected:
     SoGroup *pcGroupChildren;
 };

@@ -34,8 +34,6 @@
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/SoFullPath.h>
 
 using namespace Gui;
 
@@ -131,42 +129,6 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
     else {
         ViewProviderGroupExtension::extensionUpdateData ( prop );
     }
-}
-
-bool ViewProviderGeoFeatureGroupExtension::extensionGetElementPicked(
-        const SoPickedPoint *pp, std::string &subname) const
-{
-    SoPath* path = pp->getPath();
-    auto idx = path->findNode(pcGroupChildren);
-    if(idx<0 || idx+1>=path->getLength())
-        return false;
-    auto vp = getExtendedViewProvider()->getDocument()->getViewProvider(path->getNode(idx+1));
-    if(!vp) return false;
-    auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
-        return false;
-    std::ostringstream str;
-    str << obj->getNameInDocument() << '.';
-    if(vp->getElementPicked(pp,subname))
-        str << subname;
-    subname = str.str();
-    return true;
-}
-
-bool ViewProviderGeoFeatureGroupExtension::extensionGetDetailPath(
-        const char *subname, SoFullPath *path, SoDetail *&det) const
-{
-    if(!subname) return false;
-    const char *dot = strchr(subname,'.');
-    if(!dot) return false;
-    auto obj = getExtendedViewProvider()->getObject();
-    auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj) return false;
-    auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp) return false;
-    path->append(pcGroupChildren);
-    det = vp->getDetailPath(dot+1,path,true);
-    return true;
 }
 
 namespace Gui {
