@@ -280,7 +280,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    const char* typeName = typeid(icon).name();
+    const char* typeName = typeid(*const_cast<QIcon*>(icon)).name();
     PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QIcon>()),
                               const_cast<QIcon*>(icon), true, false, typeName);
     if (pyobj)
