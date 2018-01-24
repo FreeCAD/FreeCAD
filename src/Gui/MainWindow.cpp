@@ -544,6 +544,7 @@ void MainWindow::activateWorkbench(const QString& name)
 {
     // emit this signal
     workbenchActivated(name);
+    updateActions(true);
 }
 
 void MainWindow::whatsThis()
