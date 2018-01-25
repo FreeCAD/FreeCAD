@@ -33,7 +33,7 @@ import FemGui
 
 
 # for the panel
-from PyObjects import _FemMeshGmsh
+from femobjects import _FemMeshGmsh
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
