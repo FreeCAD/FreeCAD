@@ -617,10 +617,10 @@ class FemTest(unittest.TestCase):
         pymodules += collect_python_modules('femmesh')
         pymodules += collect_python_modules('femresult')
         pymodules += collect_python_modules('femtest')
-        pymodules += collect_python_modules('PyObjects')
+        pymodules += collect_python_modules('femobjects')
         if FreeCAD.GuiUp:
             pymodules += collect_python_modules('femcommands')
-            pymodules += collect_python_modules('PyGui')
+            pymodules += collect_python_modules('femguiobjects')
         pymodules += collect_python_modules('femsolver')
         pymodules += collect_python_modules('femsolver/elmer')
         pymodules += collect_python_modules('femsolver/elmer/equations')
