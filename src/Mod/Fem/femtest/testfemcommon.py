@@ -607,6 +607,22 @@ class FemTest(unittest.TestCase):
         self.assertTrue(ObjectsFem.makeEquationFluxsolver(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
         self.assertTrue(ObjectsFem.makeEquationHeat(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
 
+    def test_adding_refshaps(self):
+        doc = self.active_doc
+        slab = doc.addObject("Part::Plane","Face")
+        slab.Length=500.00
+        slab.Width=500.00
+        cf = ObjectsFem.makeConstraintFixed(doc)
+        ref_eles = []
+        # FreeCAD list property seam not to support append, thus we need some workaround, which is on many elements even much faster
+        for i, face in enumerate(slab.Shape.Edges):
+            ref_eles.append("Edge%d" % (i+1))
+        cf.References = [(slab, ref_eles)]
+        doc.recompute()
+        expected_reflist = [(slab, ('Edge1', 'Edge2', 'Edge3', 'Edge4'))]
+        assert_err_message = 'Adding reference shapes did not result in expected list ' + str(cf.References) + ' != ' + str(expected_reflist)
+        self.assertEqual(cf.References, expected_reflist, assert_err_message)
+
     def test_pyimport_all_FEM_modules(self):
         # we're going to try to import all python modules from FreeCAD Fem
         pymodules = []
