@@ -295,7 +295,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             if hasattr(self.solver, "MaterialNonlinearity") and self.solver.MaterialNonlinearity == "nonlinear":
                 if not self.materials_nonlinear:
                     message += "Solver is set to nonlinear materials, but there is no nonlinear material in the analysis.\n"
-                if self.solver.SolverType == 'FemSolverCalculix' and self.solver.GeometricalNonlinearity != "nonlinear":
+                if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' and self.solver.GeometricalNonlinearity != "nonlinear":
                     # nonlinear geometry --> should be set https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
                     message += "Solver CalculiX triggers nonlinear geometry for nonlinear material, thus it should to be set too.\n"
         # mesh
