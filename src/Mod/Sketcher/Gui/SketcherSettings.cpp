@@ -106,6 +106,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
+    ui->checkBoxNotifyConstraintSubstitutions->onSave();
     form->saveSettings();
 
     ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -132,6 +133,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
     ui->checkBoxTVRestoreCamera->onRestore();
+    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     form->loadSettings();
 
     std::list<int> sizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_FILLED");
