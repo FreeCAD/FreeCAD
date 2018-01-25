@@ -655,7 +655,8 @@ class _CommandFemSolverRun(CommandManager):
                 print("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = self.selobj
-        if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
+        if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
+            print('CalxuliX ccx tools solver!')
             from femtools import ccxtools
             self.fea = ccxtools.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
@@ -666,6 +667,7 @@ class _CommandFemSolverRun(CommandManager):
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
+            print('Frame work solver!')
             try:
                 machine = femsolver.run.getMachine(self.solver)
             except femsolver.run.MustSaveError:

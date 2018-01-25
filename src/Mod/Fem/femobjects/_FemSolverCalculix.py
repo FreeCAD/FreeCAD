@@ -35,12 +35,9 @@ class _FemSolverCalculix():
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
     def __init__(self, obj):
-        self.Type = "Fem::FemSolverCalculix"
+        self.Type = "Fem::FemSolverCalculixCcxTools"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
-
-        obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver", 1)  # the 1 set the property to ReadOnly
-        obj.SolverType = 'FemSolverCalculix'
 
         # fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")  # not needed ATM
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
