@@ -444,7 +444,7 @@ class FemTest(unittest.TestCase):
         self.assertEqual('Fem::FemMeshResult', typeOfObj(ObjectsFem.makeMeshResult(doc)))
         self.assertEqual('Fem::FemResultMechanical', typeOfObj(ObjectsFem.makeResultMechanical(doc)))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
-        self.assertEqual('Fem::FemSolverCalculix', typeOfObj(ObjectsFem.makeSolverCalculixCcxTools(doc)))
+        self.assertEqual('Fem::FemSolverCalculixCcxTools', typeOfObj(ObjectsFem.makeSolverCalculixCcxTools(doc)))
         self.assertEqual('Fem::FemSolverObjectCalculix', typeOfObj(ObjectsFem.makeSolverCalculix(doc)))
         self.assertEqual('Fem::FemSolverObjectElmer', typeOfObj(solverelmer))
         self.assertEqual('Fem::FemSolverObjectZ88', typeOfObj(ObjectsFem.makeSolverZ88(doc)))
@@ -496,7 +496,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(isOfTypeNew(ObjectsFem.makeMeshResult(doc), 'Fem::FemMeshResult'))
         self.assertTrue(isOfTypeNew(ObjectsFem.makeResultMechanical(doc), 'Fem::FemResultMechanical'))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
-        self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverCalculixCcxTools(doc), 'Fem::FemSolverCalculix'))
+        self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverCalculixCcxTools(doc), 'Fem::FemSolverCalculixCcxTools'))
         self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverCalculix(doc), 'Fem::FemSolverObjectCalculix'))
         self.assertTrue(isOfTypeNew(solverelmer, 'Fem::FemSolverObjectElmer'))
         self.assertTrue(isOfTypeNew(ObjectsFem.makeSolverZ88(doc), 'Fem::FemSolverObjectZ88'))
@@ -547,7 +547,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeMeshResult(doc), 'Fem::FemMeshResult'))
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeResultMechanical(doc), 'Fem::FemResultMechanical'))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
-        self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverCalculixCcxTools(doc), 'Fem::FemSolverCalculix'))
+        self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverCalculixCcxTools(doc), 'Fem::FemSolverCalculixCcxTools'))
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverCalculix(doc), 'Fem::FemSolverObjectCalculix'))
         self.assertTrue(isDerivedFromFem(solverelmer, 'Fem::FemSolverObjectElmer'))
         self.assertTrue(isDerivedFromFem(ObjectsFem.makeSolverZ88(doc), 'Fem::FemSolverObjectZ88'))
@@ -607,6 +607,22 @@ class FemTest(unittest.TestCase):
         self.assertTrue(ObjectsFem.makeEquationFluxsolver(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
         self.assertTrue(ObjectsFem.makeEquationHeat(doc, solverelmer).isDerivedFrom('App::FeaturePython'))
 
+    def test_adding_refshaps(self):
+        doc = self.active_doc
+        slab = doc.addObject("Part::Plane","Face")
+        slab.Length=500.00
+        slab.Width=500.00
+        cf = ObjectsFem.makeConstraintFixed(doc)
+        ref_eles = []
+        # FreeCAD list property seam not to support append, thus we need some workaround, which is on many elements even much faster
+        for i, face in enumerate(slab.Shape.Edges):
+            ref_eles.append("Edge%d" % (i+1))
+        cf.References = [(slab, ref_eles)]
+        doc.recompute()
+        expected_reflist = [(slab, ('Edge1', 'Edge2', 'Edge3', 'Edge4'))]
+        assert_err_message = 'Adding reference shapes did not result in expected list ' + str(cf.References) + ' != ' + str(expected_reflist)
+        self.assertEqual(cf.References, expected_reflist, assert_err_message)
+
     def test_pyimport_all_FEM_modules(self):
         # we're going to try to import all python modules from FreeCAD Fem
         pymodules = []
@@ -617,10 +633,10 @@ class FemTest(unittest.TestCase):
         pymodules += collect_python_modules('femmesh')
         pymodules += collect_python_modules('femresult')
         pymodules += collect_python_modules('femtest')
-        pymodules += collect_python_modules('PyObjects')
+        pymodules += collect_python_modules('femobjects')
         if FreeCAD.GuiUp:
             pymodules += collect_python_modules('femcommands')
-            pymodules += collect_python_modules('PyGui')
+            pymodules += collect_python_modules('femguiobjects')
         pymodules += collect_python_modules('femsolver')
         pymodules += collect_python_modules('femsolver/elmer')
         pymodules += collect_python_modules('femsolver/elmer/equations')

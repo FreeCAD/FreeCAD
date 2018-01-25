@@ -47,10 +47,10 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
 def makeConstraintBodyHeatSource(doc, name="ConstraintBodyHeatSource"):
     '''makeConstraintBodyHeatSource(document, [name]): makes a Fem ConstraintBodyHeatSource object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from PyObjects import _FemConstraintBodyHeatSource
+    from femobjects import _FemConstraintBodyHeatSource
     _FemConstraintBodyHeatSource.Proxy(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemConstraintBodyHeatSource
+        from femguiobjects import _ViewProviderFemConstraintBodyHeatSource
         _ViewProviderFemConstraintBodyHeatSource.ViewProxy(obj.ViewObject)
     return obj
 
@@ -70,10 +70,10 @@ def makeConstraintDisplacement(doc, name="ConstraintDisplacement"):
 def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
     '''makeConstraintElectrostaticPotential(document, [name]): makes a Fem ElectrostaticPotential object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from PyObjects import _FemConstraintElectrostaticPotential
+    from femobjects import _FemConstraintElectrostaticPotential
     _FemConstraintElectrostaticPotential.Proxy(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemConstraintElectrostaticPotential
+        from femguiobjects import _ViewProviderFemConstraintElectrostaticPotential
         _ViewProviderFemConstraintElectrostaticPotential.ViewProxy(obj.ViewObject)
     return obj
 
@@ -87,10 +87,10 @@ def makeConstraintFixed(doc, name="ConstraintFixed"):
 def makeConstraintFlowVelocity(doc, name="ConstraintFlowVelocity"):
     '''makeConstraintFlowVelocity(document, [name]): makes a Fem ConstraintFlowVelocity object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from PyObjects import _FemConstraintFlowVelocity
+    from femobjects import _FemConstraintFlowVelocity
     _FemConstraintFlowVelocity.Proxy(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemConstraintFlowVelocity
+        from femguiobjects import _ViewProviderFemConstraintFlowVelocity
         _ViewProviderFemConstraintFlowVelocity.ViewProxy(obj.ViewObject)
     return obj
 
@@ -122,10 +122,10 @@ def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
 def makeConstraintInitialFlowVelocity(doc, name="ConstraintInitialFlowVelocity"):
     '''makeConstraintInitialFlowVelocity(document, [name]): makes a Fem ConstraintInitialFlowVelocity object'''
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from PyObjects import _FemConstraintInitialFlowVelocity
+    from femobjects import _FemConstraintInitialFlowVelocity
     _FemConstraintInitialFlowVelocity.Proxy(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemConstraintInitialFlowVelocity
+        from femguiobjects import _ViewProviderFemConstraintInitialFlowVelocity
         _ViewProviderFemConstraintInitialFlowVelocity.ViewProxy(obj.ViewObject)
     return obj
 
@@ -157,10 +157,10 @@ def makeConstraintPulley(doc, name="ConstraintPulley"):
 def makeConstraintSelfWeight(doc, name="ConstraintSelfWeight"):
     '''makeConstraintSelfWeight(document, [name]): creates an self weight object to define a gravity load'''
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from PyObjects import _FemConstraintSelfWeight
+    from femobjects import _FemConstraintSelfWeight
     _FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemConstraintSelfWeight
+        from femguiobjects import _ViewProviderFemConstraintSelfWeight
         _ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
     return obj
 
@@ -181,10 +181,10 @@ def makeConstraintTransform(doc, name="ConstraintTransform"):
 def makeElementFluid1D(doc, name="ElementFluid1D"):
     '''makeElementFluid1D(document, [name]): creates an 1D fluid element object to define 1D flow'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemElementFluid1D
+    from femobjects import _FemElementFluid1D
     _FemElementFluid1D._FemElementFluid1D(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemElementFluid1D
+        from femguiobjects import _ViewProviderFemElementFluid1D
         _ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D(obj.ViewObject)
     return obj
 
@@ -192,7 +192,7 @@ def makeElementFluid1D(doc, name="ElementFluid1D"):
 def makeElementGeometry1D(doc, sectiontype='Rectangular', width=10.0, height=25.0, name="ElementGeometry1D"):
     '''makeElementGeometry1D(document, [width], [height], [name]): creates an 1D geometry element object to define a cross section'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemElementGeometry1D
+    from femobjects import _FemElementGeometry1D
     _FemElementGeometry1D._FemElementGeometry1D(obj)
     sec_types = _FemElementGeometry1D._FemElementGeometry1D.known_beam_types
     if sectiontype not in sec_types:
@@ -206,7 +206,7 @@ def makeElementGeometry1D(doc, sectiontype='Rectangular', width=10.0, height=25.
     obj.PipeDiameter = height
     obj.PipeThickness = width
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemElementGeometry1D
+        from femguiobjects import _ViewProviderFemElementGeometry1D
         _ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D(obj.ViewObject)
     return obj
 
@@ -214,11 +214,11 @@ def makeElementGeometry1D(doc, sectiontype='Rectangular', width=10.0, height=25.
 def makeElementGeometry2D(doc, thickness=20.0, name="ElementGeometry2D"):
     '''makeElementGeometry2D(document, [thickness], [name]): creates an 2D geometry element object to define a plate thickness'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemElementGeometry2D
+    from femobjects import _FemElementGeometry2D
     _FemElementGeometry2D._FemElementGeometry2D(obj)
     obj.Thickness = thickness
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemElementGeometry2D
+        from femguiobjects import _ViewProviderFemElementGeometry2D
         _ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D(obj.ViewObject)
     return obj
 
@@ -226,10 +226,10 @@ def makeElementGeometry2D(doc, thickness=20.0, name="ElementGeometry2D"):
 def makeElementRotation1D(doc, name="ElementRotation1D"):
     '''makeElementRotation1D(document, [name]): creates an 1D geometry rotation element object to rotate a 1D cross section'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemElementRotation1D
+    from femobjects import _FemElementRotation1D
     _FemElementRotation1D._FemElementRotation1D(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemElementRotation1D
+        from femguiobjects import _ViewProviderFemElementRotation1D
         _ViewProviderFemElementRotation1D._ViewProviderFemElementRotation1D(obj.ViewObject)
     return obj
 
@@ -238,11 +238,11 @@ def makeElementRotation1D(doc, name="ElementRotation1D"):
 def makeMaterialFluid(doc, name="FluidMaterial"):
     '''makeMaterialFluid(document, [name]): makes a FEM Material for fluid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
-    from PyObjects import _FemMaterial
+    from femobjects import _FemMaterial
     _FemMaterial._FemMaterial(obj)
     obj.Category = 'Fluid'
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMaterial
+        from femguiobjects import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
     # doc.recompute()
     return obj
@@ -251,11 +251,11 @@ def makeMaterialFluid(doc, name="FluidMaterial"):
 def makeMaterialMechanicalNonlinear(doc, base_material, name="MechanicalMaterialNonlinear"):
     '''makeMaterialMechanicalNonlinear(document, base_material, [name]): creates a nonlinear material object'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemMaterialMechanicalNonlinear
+    from femobjects import _FemMaterialMechanicalNonlinear
     _FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
     obj.LinearBaseMaterial = base_material
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMaterialMechanicalNonlinear
+        from femguiobjects import _ViewProviderFemMaterialMechanicalNonlinear
         _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
     return obj
 
@@ -263,11 +263,11 @@ def makeMaterialMechanicalNonlinear(doc, base_material, name="MechanicalMaterial
 def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
     '''makeMaterialSolid(document, [name]): makes a FEM Material for solid'''
     obj = doc.addObject("App::MaterialObjectPython", name)
-    from PyObjects import _FemMaterial
+    from femobjects import _FemMaterial
     _FemMaterial._FemMaterial(obj)
     obj.Category = 'Solid'
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMaterial
+        from femguiobjects import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
     # doc.recompute()
     return obj
@@ -277,7 +277,7 @@ def makeMaterialSolid(doc, name="MechanicalSolidMaterial"):
 def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     '''makeMeshBoundaryLayer(document, base_mesh, [name]): creates a FEM mesh BoundaryLayer object to define boundary layer properties'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemMeshBoundaryLayer
+    from femobjects import _FemMeshBoundaryLayer
     _FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append, we will use a temporary list to append the mesh BoundaryLayer obj. to the list
@@ -285,7 +285,7 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     tmplist.append(obj)
     base_mesh.MeshBoundaryLayerList = tmplist
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMeshBoundaryLayer
+        from femguiobjects import _ViewProviderFemMeshBoundaryLayer
         _ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer(obj.ViewObject)
     return obj
 
@@ -293,10 +293,10 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
 def makeMeshGmsh(doc, name="FEMMeshGmsh"):
     '''makeMeshGmsh(document, [name]): makes a Gmsh FEM mesh object'''
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
-    from PyObjects import _FemMeshGmsh
+    from femobjects import _FemMeshGmsh
     _FemMeshGmsh._FemMeshGmsh(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMeshGmsh
+        from femguiobjects import _ViewProviderFemMeshGmsh
         _ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh(obj.ViewObject)
     return obj
 
@@ -304,7 +304,7 @@ def makeMeshGmsh(doc, name="FEMMeshGmsh"):
 def makeMeshGroup(doc, base_mesh, use_label=False, name="FEMMeshGroup"):
     '''makeMeshGroup(document, base_mesh, [use_label], [name]): creates a FEM mesh region object to define properties for a region of a FEM mesh'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemMeshGroup
+    from femobjects import _FemMeshGroup
     _FemMeshGroup._FemMeshGroup(obj)
     obj.UseLabel = use_label
     # obj.BaseMesh = base_mesh
@@ -313,7 +313,7 @@ def makeMeshGroup(doc, base_mesh, use_label=False, name="FEMMeshGroup"):
     tmplist.append(obj)
     base_mesh.MeshGroupList = tmplist
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMeshGroup
+        from femguiobjects import _ViewProviderFemMeshGroup
         _ViewProviderFemMeshGroup._ViewProviderFemMeshGroup(obj.ViewObject)
     return obj
 
@@ -327,7 +327,7 @@ def makeMeshNetgen(doc, name="FEMMeshNetgen"):
 def makeMeshRegion(doc, base_mesh, element_length=0.0, name="FEMMeshRegion"):
     '''makeMeshRegion(document, base_mesh, [element_length], [name]): creates a FEM mesh region object to define properties for a region of a FEM mesh'''
     obj = doc.addObject("Fem::FeaturePython", name)
-    from PyObjects import _FemMeshRegion
+    from femobjects import _FemMeshRegion
     _FemMeshRegion._FemMeshRegion(obj)
     obj.CharacteristicLength = element_length
     # obj.BaseMesh = base_mesh
@@ -336,7 +336,7 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="FEMMeshRegion"):
     tmplist.append(obj)
     base_mesh.MeshRegionList = tmplist
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMeshRegion
+        from femguiobjects import _ViewProviderFemMeshRegion
         _ViewProviderFemMeshRegion._ViewProviderFemMeshRegion(obj.ViewObject)
     return obj
 
@@ -344,10 +344,10 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="FEMMeshRegion"):
 def makeMeshResult(doc, name="FEMMeshResult"):
     '''makeMeshResult(document, name): makes a Fem MeshResult object'''
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
-    from PyObjects import _FemMeshResult
+    from femobjects import _FemMeshResult
     _FemMeshResult._FemMeshResult(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemMeshResult
+        from femguiobjects import _ViewProviderFemMeshResult
         _ViewProviderFemMeshResult._ViewProviderFemMeshResult(obj.ViewObject)
     return obj
 
@@ -356,10 +356,10 @@ def makeMeshResult(doc, name="FEMMeshResult"):
 def makeResultMechanical(doc, name="MechanicalResult"):
     '''makeResultMechanical(document, [name]): creates an mechanical result object to hold FEM results'''
     obj = doc.addObject('Fem::FemResultObjectPython', name)
-    from PyObjects import _FemResultMechanical
+    from femobjects import _FemResultMechanical
     _FemResultMechanical._FemResultMechanical(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemResultMechanical
+        from femguiobjects import _ViewProviderFemResultMechanical
         _ViewProviderFemResultMechanical._ViewProviderFemResultMechanical(obj.ViewObject)
     return obj
 
@@ -398,10 +398,10 @@ def makeEquationHeat(doc, base_solver):
 def makeSolverCalculixCcxTools(doc, name="CalculiXccxTools"):
     '''makeSolverCalculixCcxTools(document, [name]): makes a Calculix solver object for the ccx tools module'''
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
-    from PyObjects import _FemSolverCalculix
+    from femobjects import _FemSolverCalculix
     _FemSolverCalculix._FemSolverCalculix(obj)
     if FreeCAD.GuiUp:
-        from PyGui import _ViewProviderFemSolverCalculix
+        from femguiobjects import _ViewProviderFemSolverCalculix
         _ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
     return obj
 

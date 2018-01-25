@@ -32,7 +32,7 @@ import FreeCADGui
 
 
 # for the panel
-from PyObjects import _FemElementGeometry1D
+from femobjects import _FemElementGeometry1D
 from PySide import QtCore
 from PySide import QtGui
 
