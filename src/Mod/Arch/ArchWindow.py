@@ -1022,6 +1022,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                     self.colorize(obj)
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
+    def onDelete(self,vobj,subelements):
+        for o in vobj.Object.Hosts:
+            o.touch()
+        return True
+
     def onChanged(self,vobj,prop):
         if (prop == "DiffuseColor") and vobj.Object:
             if vobj.Object.Base:
