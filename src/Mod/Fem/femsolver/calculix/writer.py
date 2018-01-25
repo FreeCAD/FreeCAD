@@ -1330,19 +1330,19 @@ def get_ccx_elset_name_standard(names):
         if len(ccx_elset_name) < 81:
             return ccx_elset_name
         else:
-            error = 'FEM: Touble in ccx input file, because a elset name is longer than 80 character!' + ' ' + ccx_elset_name + '\n'
+            error = 'FEM: Trouble in ccx input file, because an elset name is longer than 80 character!' + ' ' + ccx_elset_name + '\n'
             raise Exception(error)
 
 
 def get_ccx_elset_name_short(names):
-    # restricted max lenght = 20 (beam elsets)
+    # restricted max length = 20 (beam elsets)
     ccx_elset_name = ''
     for name in names:
         ccx_elset_name += name['short']
     if len(ccx_elset_name) < 21:
         return ccx_elset_name
     else:
-        error = 'FEM: Touble in ccx input file, because a beam elset name is longer than 20 character!' + ' ' + ccx_elset_name + '\n'
+        error = 'FEM: Trouble in ccx input file, because a beam elset name is longer than 20 character!' + ' ' + ccx_elset_name + '\n'
         raise Exception(error)
 
 
