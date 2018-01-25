@@ -2339,8 +2339,12 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 commitCommand();
                 tryAutoRecomputeIfNotSolve(Obj);
 
-                QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
-                                        QObject::tr("Endpoint to endpoint tangency was applied instead."));
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                
+                if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
+                    QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
+                                            QObject::tr("Endpoint to endpoint tangency was applied instead."));
+                }
 
                 getSelection().clearSelection();
                 return;
@@ -4561,9 +4565,12 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     commitCommand();
                     tryAutoRecomputeIfNotSolve(Obj);
 
-                    QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                    
+                    if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
+                        QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
                                          QObject::tr("Endpoint to endpoint tangency was applied. The coincident constraint was deleted."));
-
+                    }
                     getSelection().clearSelection();
                     return;
                 }
