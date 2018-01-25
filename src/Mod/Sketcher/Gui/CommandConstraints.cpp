@@ -2312,6 +2312,41 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         // check if this coincidence is already enforced (even indirectly)
         bool constraintExists=Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
 
+        // check for a preexisting edge-to-edge tangency
+        const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
+
+        int j=0;
+        for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it,++j) {
+            if( (*it)->Type == Sketcher::Tangent && 
+                (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
+                (*it)->Third == Constraint::GeoUndef &&
+                (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
+                ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+
+                Gui::Command::openCommand("swap edge tangency with ptp tangency");
+
+                if(constraintExists) {
+                    // try to remove any pre-existing direct coincident constraints
+                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)",
+                                            selection[0].getFeatName(), GeoId1, PosId1);
+                }
+            
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
+                                        ,selection[0].getFeatName(), j);
+
+                doendpointtangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
+
+                commitCommand();
+                tryAutoRecomputeIfNotSolve(Obj);
+
+                QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
+                                        QObject::tr("Endpoint to endpoint tangency was applied instead."));
+
+                getSelection().clearSelection();
+                return;
+                }
+        }
+
         if (!constraintExists) {
             constraintsAdded = true;
             Gui::Command::doCommand(
