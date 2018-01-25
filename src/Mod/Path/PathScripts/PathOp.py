@@ -305,7 +305,7 @@ class ObjectOp(object):
 
         def faceZmin(bb, fbb):
             if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                return bb.ZMin
+                return fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax: # vertical face, full cut
                 return fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
@@ -331,7 +331,9 @@ class ObjectOp(object):
                     zmax = max(zmax, fbb.ZMax)
         else:
             # clearing with stock boundaries
-            pass
+            job = PathUtils.findParentJob(obj)
+            zmax = stockBB.ZMax
+            zmin = job.Base.Shape.BoundBox.ZMax
 
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
