@@ -4851,6 +4851,11 @@ class _Wire(_DraftObject):
                                 npts.append(p1.add(FreeCAD.Vector(v).multiply(j+1)))
                         pts = npts
                 shape = Part.makePolygon(pts+[pts[0]])
+                if "ChamferSize" in obj.PropertiesList:
+                    if obj.ChamferSize.Value != 0:
+                        w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
+                        if w:
+                            shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
                         w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
