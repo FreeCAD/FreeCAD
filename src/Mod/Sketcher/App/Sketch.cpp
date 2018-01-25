@@ -1383,7 +1383,7 @@ void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry,
     for(std::vector<int>::iterator it = internalAlignmentConstraintIndex.begin(); it != internalAlignmentConstraintIndex.end() ; it++) {
         if (blockedGeometry[ConstraintList[(*it)]->Second]) {
             blockedGeometry[ConstraintList[(*it)]->First] = true;
-            // asociated geometry gets the same blocking constraint index as the blocked element
+            // associated geometry gets the same blocking constraint index as the blocked element
             geo2blockingconstraintindex[ConstraintList[(*it)]->First]= geo2blockingconstraintindex[ConstraintList[(*it)]->Second];
             internalAlignmentgeo.push_back(ConstraintList[(*it)]->First);
             unenforceableConstraints[(*it)]= true;
@@ -1393,7 +1393,7 @@ void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry,
     i = 0;
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++i) {
         if((*it)->isDriving) {
-            // additionally any further constraint on auxiliary elements linked via Internal Alignment are also uneforceable.
+            // additionally any further constraint on auxiliary elements linked via Internal Alignment are also unenforceable.
             for(std::vector<int>::iterator itg = internalAlignmentgeo.begin(); itg != internalAlignmentgeo.end() ; itg++) {
                 if( (*it)->First==*itg || (*it)->Second==*itg || (*it)->Third==*itg ) {
                     unenforceableConstraints[i]= true;
