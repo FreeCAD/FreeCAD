@@ -20,10 +20,10 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Fem object modules"
+__title__ = "Fem Gui modules"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package PyObjects
+## @package PyGui
 #  \ingroup Fem
-#  \brief Fem objects module
+#  \brief Fem Gui module
