@@ -4555,12 +4555,15 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
                     ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
 
+                    int first = (*it)->First;
+                    int firstpos = (int)(*it)->FirstPos;
+                
                     Gui::Command::openCommand("swap coincident+tangency with ptp tangency");
 
                     doendpointtangency(Obj, selection[0], (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
 
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)",
-                                            selection[0].getFeatName(), (*it)->First, (int)(*it)->FirstPos);
+                                            selection[0].getFeatName(), first, firstpos);
 
                     commitCommand();
                     tryAutoRecomputeIfNotSolve(Obj);
