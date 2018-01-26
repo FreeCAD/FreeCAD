@@ -368,7 +368,7 @@
           <item>
            <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_config_dir">
             <property name="text">
-             <string>Use materials from .FreeCAD/Materials directory</string>
+             <string>Use materials from Materials directory in users FreeCAD user pref directory.</string>
             </property>
             <property name="checked">
              <bool>true</bool>
