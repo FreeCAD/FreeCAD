@@ -172,7 +172,7 @@ public:
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// get the driving status of this constraint
-    int getVirtualSpace(int ConstrId, bool &isinvirtualspace);
+    int getVirtualSpace(int ConstrId, bool &isinvirtualspace) const;
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve

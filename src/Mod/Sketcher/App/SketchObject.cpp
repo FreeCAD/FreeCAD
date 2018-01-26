@@ -439,7 +439,7 @@ int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
     return 0;
 }
 
-int SketchObject::getVirtualSpace(int ConstrId, bool &isinvirtualspace)
+int SketchObject::getVirtualSpace(int ConstrId, bool &isinvirtualspace) const
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
