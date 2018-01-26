@@ -337,28 +337,37 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
             }
             break;
         } case GeomAbs_Circle:{
-            if(!to_edges) {
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Dir dir = circle.Axis().Direction();
-                gp_Pnt center = circle.Location();
-                int type = dir.Z()<0?-1:1;
-                if(reversed) type = -type;
-                if(fabs(first-last)>M_PI) {
-                    // Split arc(circle) larger than half circle. Because gcode
-                    // can't handle full circle?
-                    gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                    ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
-                                Point(center.X(),center.Y())));
-                }
-                ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+            double first = curve.FirstParameter();
+            double last = curve.LastParameter();
+            gp_Circ circle = curve.Circle();
+            gp_Dir dir = circle.Axis().Direction();
+            gp_Pnt center = circle.Location();
+            int type = dir.Z()<0?-1:1;
+            if(reversed) type = -type;
+            if(fabs(first-last)>M_PI) {
+                // Split arc(circle) larger than half circle. Because gcode
+                // can't handle full circle?
+                gp_Pnt mid = curve.Value((last-first)*0.5+first);
+                ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
                             Point(center.X(),center.Y())));
-                break;
             }
-        }
-            /* FALLTHRU */
-        default: {
+            ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+                        Point(center.X(),center.Y())));
+            if(to_edges) {
+                ccurve.UnFitArcs();
+                CCurve c;
+                c.append(ccurve.m_vertices.front());
+                auto it = ccurve.m_vertices.begin();
+                for(++it;it!=ccurve.m_vertices.end();++it) {
+                    c.append(*it);
+                    area.append(c);
+                    c.m_vertices.pop_front();
+                }
+                ccurve.m_vertices.clear();
+                ccurve.append(c.m_vertices.front());
+            }
+            break;
+        } default: {
             // Discretize all other type of curves
             GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
                     curve.FirstParameter(), curve.LastParameter());
