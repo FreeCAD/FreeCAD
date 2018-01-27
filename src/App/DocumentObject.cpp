@@ -28,6 +28,7 @@
 
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 
 #include "Document.h"
 #include "DocumentObject.h"
@@ -77,7 +78,11 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this))
+#if 1
+        Base::Console().Warning("%s: Links go out of the allowed scope\n", getTypeId().getName());
+#else
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
+#endif
 
     // set/unset the execution bit
     Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
