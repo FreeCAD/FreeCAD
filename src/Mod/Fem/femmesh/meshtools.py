@@ -1247,7 +1247,7 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
                 if not empty_reference_material:
                     empty_reference_material = m.Name
                 else:
-                    FreeCAD.Console.PrintError('Problem in get_anlysis_empty_references_group_elements, we seams to have two or more materials with empty referneces')
+                    FreeCAD.Console.PrintError('Problem in get_anlysis_empty_references_group_elements, we seem to have two or more materials with empty references')
                     return {}
             elif hasattr(m, "References") and m.References:
                 # ShapeType of the group elements, strip the number of the first group element

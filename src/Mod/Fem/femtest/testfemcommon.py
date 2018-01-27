@@ -1328,7 +1328,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         solver_elmer_eqobj = ObjectsFem.makeEquationElasticity(self.active_doc, solver_elmer_object)
         self.assertTrue(solver_elmer_eqobj, "FemTest of elmer elasticity equation failed")
 
-        # set ThermalExpansionCoefficient, current elmer seams to need it even on simple elasticity analysis
+        # set ThermalExpansionCoefficient, current elmer seems to need it even on simple elasticity analysis
         mat = material_object.Material
         mat['ThermalExpansionCoefficient'] = "0 um/m/K"  # FIXME elmer elasticity needs the dictionary key, otherwise it fails
         material_object.Material = mat
