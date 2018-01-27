@@ -55,6 +55,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
@@ -1153,6 +1154,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
     if(!path)
         return;
+
+    SoState * state = action->getState();
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 
     if (action->isRenderingDelayedPaths()) {
         SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
