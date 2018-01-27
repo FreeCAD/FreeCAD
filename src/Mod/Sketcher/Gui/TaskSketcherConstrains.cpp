@@ -131,7 +131,7 @@ public:
             case Sketcher::Tangent:
             case Sketcher::Equal:
             case Sketcher::Symmetric:
-	    case Sketcher::Block:
+            case Sketcher::Block:
                 break;
             case Sketcher::Distance:
             case Sketcher::DistanceX:
@@ -165,7 +165,7 @@ public:
             static QIcon horiz( Gui::BitmapFactory().pixmap("Constraint_Horizontal") );
             static QIcon vert ( Gui::BitmapFactory().pixmap("Constraint_Vertical") );
             static QIcon lock ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock") );
-	    static QIcon block ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainBlock") );
+            static QIcon block ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainBlock") );
             static QIcon coinc( Gui::BitmapFactory().pixmap("Constraint_PointOnPoint") );
             static QIcon para ( Gui::BitmapFactory().pixmap("Constraint_Parallel") );
             static QIcon perp ( Gui::BitmapFactory().pixmap("Constraint_Perpendicular") );
@@ -200,8 +200,8 @@ public:
                 return vert;
             case Sketcher::Coincident:
                 return coinc;
-	    case Sketcher::Block:
-		return block;
+            case Sketcher::Block:
+                return block;
             case Sketcher::PointOnObject:
                 return pntoo;
             case Sketcher::Parallel:
@@ -275,7 +275,7 @@ public:
         case Sketcher::Horizontal:
         case Sketcher::Vertical:
         case Sketcher::Coincident:
-	case Sketcher::Block:
+        case Sketcher::Block:
         case Sketcher::PointOnObject:
         case Sketcher::Parallel:
         case Sketcher::Perpendicular:
@@ -814,7 +814,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         case Sketcher::Tangent:
         case Sketcher::Equal:
         case Sketcher::Symmetric:
-	case Sketcher::Block:
+        case Sketcher::Block:
             visible = showNormal || showNamed;
             break;
         case Sketcher::Distance:
