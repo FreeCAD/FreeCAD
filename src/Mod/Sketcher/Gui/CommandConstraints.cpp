@@ -691,14 +691,15 @@ bool SketcherGui::checkConstraint(const std::vector< Sketcher::Constraint * > &v
 }
 
 
-void SketcherGui::doendpointtangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection, int GeoId1, int GeoId2, PointPos PosId1, PointPos PosId2){
+void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection,
+                                     int GeoId1, int GeoId2, PointPos PosId1, PointPos PosId2){
     // This code supports simple B-spline endpoint tangency to any other geometric curve
     const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
     const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
     
-    if( geom1 && geom2 &&
-        ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
-        geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+    if (geom1 && geom2 &&
+       (geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+        geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())){
         
         if(geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
             std::swap(GeoId1,GeoId2);
@@ -2334,7 +2335,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
                                         ,selection[0].getFeatName(), j);
 
-                doendpointtangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
+                doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
 
                 commitCommand();
                 tryAutoRecomputeIfNotSolve(Obj);
@@ -4493,7 +4494,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             openCommand("add tangent constraint");
-            doendpointtangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
+            doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
             commitCommand();
             tryAutoRecompute();
 
@@ -4546,7 +4547,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                                      QObject::tr("Tangency to B-spline edge currently unsupported."));
                 return;
             }
-            
+
             // check if there is a coincidence constraint on GeoId1, GeoId2
             const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
 
@@ -4555,12 +4556,17 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
                     ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
 
+                    // save values because 'doEndpointTangency' changes the
+                    // constraint property and thus invalidates this iterator
+                    int first = (*it)->First;
+                    int firstpos = static_cast<int>((*it)->FirstPos);
+
                     Gui::Command::openCommand("swap coincident+tangency with ptp tangency");
 
-                    doendpointtangency(Obj, selection[0], (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
+                    doEndpointTangency(Obj, selection[0], (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
 
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)",
-                                            selection[0].getFeatName(), (*it)->First, (int)(*it)->FirstPos);
+                                            selection[0].getFeatName(), first, firstpos);
 
                     commitCommand();
                     tryAutoRecomputeIfNotSolve(Obj);
