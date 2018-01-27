@@ -217,6 +217,9 @@ class _TaskPanelFemMaterial:
         webbrowser.open("http://matweb.com")
 
     def check_material_keys(self):
+        if not self.material:
+            print('For some reason all material data is empty!')
+            self.material['Name'] = 'Empty'
         if 'Density' in self.material:
             if 'Density' not in str(Units.Unit(self.material['Density'])):
                 print('Density in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
