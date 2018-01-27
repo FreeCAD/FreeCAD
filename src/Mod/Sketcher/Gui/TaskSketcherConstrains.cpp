@@ -420,6 +420,12 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     driven->setEnabled(isToggleDriving);
 
     menu.addSeparator();
+    QAction* show = menu.addAction(tr("Show constraints"), this, SLOT(showConstraints()));
+    show->setEnabled(!items.isEmpty());
+    QAction* hide = menu.addAction(tr("Hide constraints"), this, SLOT(hideConstraints()));
+    hide->setEnabled(!items.isEmpty());
+
+    menu.addSeparator();
     CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
 
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
@@ -451,6 +457,24 @@ void ConstraintView::updateDrivingStatus()
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
         onUpdateDrivingStatus(item, !it->isDriving());
+    }
+}
+
+void ConstraintView::showConstraints()
+{
+    QList<QListWidgetItem *> items = selectedItems();
+    for (auto it : items) {
+        if (it->checkState() != Qt::Checked)
+            it->setCheckState(Qt::Checked);
+    }
+}
+
+void ConstraintView::hideConstraints()
+{
+    QList<QListWidgetItem *> items = selectedItems();
+    for (auto it : items) {
+        if (it->checkState() != Qt::Unchecked)
+            it->setCheckState(Qt::Unchecked);
     }
 }
 
