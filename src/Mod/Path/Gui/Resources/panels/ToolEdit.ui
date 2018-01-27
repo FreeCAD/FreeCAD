@@ -212,13 +212,13 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="singleStep" stdset="0">
+        <property name="singleStep">
          <double>0.125000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -231,10 +231,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -247,10 +247,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -263,10 +263,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -279,10 +279,10 @@
         <property name="text">
          <string>0 mm</string>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>100.000000000000000</double>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
         <property name="unit" stdset="0">
@@ -292,6 +292,12 @@
       </item>
       <item row="16" column="1">
        <widget class="Gui::InputField" name="CuttingEdgeAngleField">
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">°</string>
         </property>
