@@ -532,6 +532,8 @@ class _TaskPanelFemMaterial:
             configfile.write(Preamble)
             Config.write(configfile)
 
+        print(matDict)  # matDic ist nicht mit den aktuellen geaenderten werten im taskpanel upgedated
+
     def export_material(self):
         import os
         if self.obj.Category == 'Fluid':
@@ -555,10 +557,10 @@ class _TaskPanelFemMaterial:
             knownMaterials = [self.form.cb_materials.itemText(i) for i in range(self.form.cb_materials.count())]
             material_name = os.path.basename(saveName[:-len('.FCMat')])
             if material_name not in knownMaterials:
-                self.export_FCMat(saveName, self.obj.Material)
+                self.export_FCMat(saveName, self.material)
                 FreeCAD.Console.PrintMessage("Successfully save the Material property file: " + saveName + "\n")
             else:
-                self.export_FCMat(saveName, self.obj.Material)
+                self.export_FCMat(saveName, self.material)
                 FreeCAD.Console.PrintMessage("Successfully overwritren the Material property file: " + saveName + "\n")
                 """
                 msgBox = QMessageBox()
