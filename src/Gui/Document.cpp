@@ -714,7 +714,8 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     }
 
     // a property of an object has changed
-    setModified(true);
+    if(!Prop.testStatus(App::Property::NoModify))
+        setModified(true);
 }
 
 void Document::slotRelabelObject(const App::DocumentObject& Obj)

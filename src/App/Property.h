@@ -68,6 +68,7 @@ public:
         NoMaterialListEdit = 6, // to turn OFF PropertyMaterialList edit
         Output = 7, // same effect as Prop_Output
         LockDynamic = 8, // prevent being removed from dynamic property
+        NoModify = 9, // prevent causing Gui::Document::setModified()
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status
