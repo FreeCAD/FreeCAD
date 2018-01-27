@@ -118,6 +118,9 @@ void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
 
 /// Checks whether there is a constraint of the given type with a First element geoid and a FirstPos PosId
 bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher::ConstraintType type, int geoid, Sketcher::PointPos pos);
+
+/// Does an endpoint-to-endpoint tangency
+void doendpointtangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 
