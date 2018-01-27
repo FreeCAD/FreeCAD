@@ -222,7 +222,7 @@ class _TaskPanelFemMaterial:
             self.material['Name'] = 'Empty'
         if 'Density' in self.material:
             if 'Density' not in str(Units.Unit(self.material['Density'])):
-                print('Density in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                print('Density in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                 self.material['Density'] = '0 kg/m^3'
         else:
             print('Density not found in material data of: ' + self.material['Name'])
@@ -231,26 +231,26 @@ class _TaskPanelFemMaterial:
             # mechanical properties
             if 'YoungsModulus' in self.material:
                 if 'Pressure' not in str(Units.Unit(self.material['YoungsModulus'])):  # unit type of YoungsModulus is Pressure
-                    print('YoungsModulus in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                    print('YoungsModulus in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                     self.material['YoungsModulus'] = '0 MPa'
             else:
                 print('YoungsModulus not found in material data of: ' + self.material['Name'])
                 self.material['YoungsModulus'] = '0 MPa'
-            if 'PoissonRatio' not in self.material:  # PoissonRatio does not have a unit, we do not gone check for a unit
+            if 'PoissonRatio' not in self.material:  # PoissonRatio does not have a unit, we're not going to check for a unit
                 print('PoissonRatio not found in material data of: ' + self.material['Name'])
                 self.material['PoissonRatio'] = '0'
         if self.obj.Category == 'Fluid':
             # Fluidic properties
             if 'KinematicViscosity' in self.material:
                 if 'KinematicViscosity' not in str(Units.Unit(self.material['KinematicViscosity'])):
-                    print('KinematicViscosity in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                    print('KinematicViscosity in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                     self.material['KinematicViscosity'] = '0 m^2/s'
             else:
                 print('KinematicViscosity not found in material data of: ' + self.material['Name'])
                 self.material['KinematicViscosity'] = '0 m^2/s'
             if 'VolumetricThermalExpansionCoefficient' in self.material:
                 if 'ThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):  # unit type of VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
-                    print('VolumetricThermalExpansionCoefficient in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                    print('VolumetricThermalExpansionCoefficient in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                     self.material['VolumetricThermalExpansionCoefficient'] = '0 m/m/K'
             else:
                 print('VolumetricThermalExpansionCoefficient not found in material data of: ' + self.material['Name'])
@@ -258,21 +258,21 @@ class _TaskPanelFemMaterial:
         # Thermal properties
         if 'ThermalConductivity' in self.material:
             if 'ThermalConductivity' not in str(Units.Unit(self.material['ThermalConductivity'])):
-                print('ThermalConductivity in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                print('ThermalConductivity in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                 self.material['ThermalConductivity'] = '0 W/m/K'
         else:
             print('ThermalConductivity not found in material data of: ' + self.material['Name'])
             self.material['ThermalConductivity'] = '0 W/m/K'
         if 'ThermalExpansionCoefficient' in self.material:
             if 'ThermalExpansionCoefficient' not in str(Units.Unit(self.material['ThermalExpansionCoefficient'])):
-                print('ThermalExpansionCoefficient in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                print('ThermalExpansionCoefficient in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                 self.material['ThermalExpansionCoefficient'] = '0 um/m/K'
         else:
             print('ThermalExpansionCoefficient not found in material data of: ' + self.material['Name'])
             self.material['ThermalExpansionCoefficient'] = '0 um/m/K'
         if 'SpecificHeat' in self.material:
             if 'SpecificHeat' not in str(Units.Unit(self.material['SpecificHeat'])):
-                print('SpecificHeat in material data seams to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
+                print('SpecificHeat in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                 self.material['SpecificHeat'] = '0 J/kg/K'
         else:
             print('SpecificHeat not found in material data of: ' + self.material['Name'])
@@ -563,8 +563,8 @@ class _TaskPanelFemMaterial:
                 self.export_FCMat(saveName, self.material)
                 FreeCAD.Console.PrintMessage("Successfully save the Material property file: " + saveName + "\n")
             else:
-                self.export_FCMat(saveName, self.material)
-                FreeCAD.Console.PrintMessage("Successfully overwritren the Material property file: " + saveName + "\n")
+                self.export_FCMat(saveName, self.obj.Material)
+                FreeCAD.Console.PrintMessage("Successfully overwritten the Material property file: " + saveName + "\n")
                 """
                 msgBox = QMessageBox()
                 msgBox.setText("FcMat file name {} has existed in {} or system folder, overwriting?\n".format(saveName, TargetDir))
@@ -574,7 +574,7 @@ class _TaskPanelFemMaterial:
                 ret = msgBox.exec_()
                 if ret == QMessageBox.Yes:
                     self.export_FCMat(saveName, self.obj.Material)
-                    FreeCAD.Console.PrintMessage("Successfully overwritren the Material property file: "+ saveName + "\n")
+                    FreeCAD.Console.PrintMessage("Successfully overwritten the Material property file: "+ saveName + "\n")
                 """
 
     ###################geometry reference selection #################
