@@ -339,7 +339,8 @@ public:
 // *************************************************************************
 
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
+    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,false),
+      editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
 {
@@ -347,7 +348,8 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sh
 }
 
 View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
+    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,false),
+      editViewProvider(0), navigation(0),
       renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
       allowredir(false), overrideMode("As Is"), _viewerPy(0)
 {
@@ -360,7 +362,7 @@ void View3DInventorViewer::init()
     fpsEnabled = false;
     vboEnabled = false;
 
-    Gui::Selection().Attach(this);
+    attachSelection();
 
     // Coin should not clear the pixel-buffer, so the background image
     // is not removed.
@@ -586,7 +588,7 @@ View3DInventorViewer::~View3DInventorViewer()
     if (getMainWindow())
         getMainWindow()->setPaneText(2, QLatin1String(""));
 
-    Gui::Selection().Detach(this);
+    detachSelection();
 
     removeEventFilter(viewerEventFilter);
     delete viewerEventFilter;
@@ -625,6 +627,7 @@ void View3DInventorViewer::clearGroupOnTop() {
     SoSelectionElementAction action(SoSelectionElementAction::None,true);
     action.apply(pcGroupOnTop);
     pcGroupOnTop->removeAllChildren();
+    FC_LOG("clear annoation");
 }
 
 void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char *subname) {
@@ -725,30 +728,31 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
 }
 
 /// @cond DOXERR
-void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                                    Gui::SelectionSingleton::MessageType Reason)
+void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 {
-    Q_UNUSED(rCaller); 
+    SelectionChanges Reason(_Reason);
+
+    if(Reason.pDocName && *Reason.pDocName && 
+       strcmp(getDocument()->getDocument()->getName(),Reason.pDocName)!=0)
+        return;
+
     switch(Reason.Type) {
+    case SelectionChanges::UpdateSelection:
+        Reason.Type = SelectionChanges::AddSelection;
+        // fall through
     case SelectionChanges::SetSelection:
     case SelectionChanges::AddSelection:     
     case SelectionChanges::RmvSelection: {
-        if(Reason.pDocName && strcmp(getDocument()->getDocument()->getName(),Reason.pDocName)==0) {
-            clearGroupOnTop();
-            pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
-            const auto &sels = Selection().getSelection(Reason.pDocName,false);
-            for(auto it = sels.rbegin();it!=sels.rend();++it)
-                addToGroupOnTop(it->pObject,it->SubName);
-        }
+        if(!Reason.pDocName)
+            return;
+        clearGroupOnTop();
+        pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
+        const auto &sels = Selection().getSelection(Reason.pDocName,false);
+        for(auto it = sels.rbegin();it!=sels.rend();++it)
+            addToGroupOnTop(it->pObject,it->SubName);
         break;
     } case SelectionChanges::ClrSelection:{
-        if(!Reason.pDocName || !*Reason.pDocName)
-            clearGroupOnTop();
-        else{
-            auto doc = App::GetApplication().getDocument(Reason.pDocName);
-            if(doc && getDocument()->getDocument() == doc)
-                clearGroupOnTop();
-        }
+        clearGroupOnTop();
         break;
     } case SelectionChanges::SetPreselectSignal:
         break;

@@ -71,6 +71,7 @@ public:
         RmvPreselect,
         SetPreselectSignal, // to request 3D view to change preselect
         PickedListChanged,
+        UpdateSelection, // to update a selection (e.g. in case of visibile change)
     };
     SelectionChanges()
     : Type(ClrSelection)
@@ -237,6 +238,8 @@ public:
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0);
     /// Add to selection with several sub-elements
     bool addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
+    /// Update a selection 
+    bool updateSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
     /// Remove from selection (for internal use)
     void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             const std::vector<SelObj> *pickedList = 0);
@@ -323,7 +326,7 @@ public:
      *
      * @param visible: 1: make visible, 0: make invisible, -1: toggle visibility
      */
-    void setVisible(int visible) const;
+    void setVisible(int visible);
 
     /// signal on selection with un-resolved object if inside a container
     boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
@@ -390,6 +393,7 @@ public:
 
 protected:
     static PyObject *sAddSelection        (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sUpdateSelection     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sRemoveSelection     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sClearSelection      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sIsSelected          (PyObject *self,PyObject *args,PyObject *kwd);

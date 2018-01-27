@@ -611,7 +611,8 @@ unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const 
 
 
 void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
-    if(msg.Type == SelectionChanges::SetPreselectSignal)
+    if(msg.Type == SelectionChanges::SetPreselectSignal ||
+       msg.Type == SelectionChanges::UpdateSelection)
         return;
     
     SelectionChanges msg2(msg);
@@ -971,6 +972,38 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     }
 }
 
+bool SelectionSingleton::updateSelection(const char* pDocName, const char* pObjectName, const char* pSubName)
+{
+    if(!pDocName || !pObjectName)
+        return false;
+    if (!isSelected(pDocName, pObjectName, pSubName))
+        return false;
+    auto pDoc = getDocument(pDocName);
+    if(!pDoc) return false;
+    auto pObject = pDoc->getObject(pObjectName);
+    if(!pObject) return false;
+
+    SelectionChanges Chng;
+    Chng.pDocName  = pDocName;
+    Chng.pObjectName = pObjectName;
+    Chng.pSubName  = pSubName ? pSubName : "";
+    Chng.pTypeName = pObject->getTypeId().getName();
+    Chng.x         = 0;
+    Chng.y         = 0;
+    Chng.z         = 0;
+    Chng.Type      = SelectionChanges::UpdateSelection;
+
+    FC_LOG("Update Selection "<<pDocName << '.' << pObjectName << '.' 
+            << (pSubName?pSubName:"(null)"));
+
+    FC_TRACE("signaling update selection");
+    Notify(Chng);
+    signalSelectionChanged(Chng);
+    FC_TRACE("done signaling update selection");
+    return true;
+}
+
+
 void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectName, const char* pSubName, 
         const std::vector<SelObj> *pickedList)
 {
@@ -1088,7 +1121,7 @@ App::DocumentObject *SelectionSingleton::resolveObject(
     return obj;
 }
 
-void SelectionSingleton::setVisible(int visible) const {
+void SelectionSingleton::setVisible(int visible) {
     std::set<std::pair<App::DocumentObject*,App::DocumentObject*> > filter;
     if(visible<0) 
         visible = -1;
@@ -1120,6 +1153,8 @@ void SelectionSingleton::setVisible(int visible) const {
                     vis = !vis;
 
                 parent->setElementVisible(elementName.c_str(),vis?true:false);
+                if(vis) 
+                    updateSelection(sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 continue;
             }
 
@@ -1137,9 +1172,10 @@ void SelectionSingleton::setVisible(int visible) const {
             else
                 vis = !vp->isShow();
 
-            if(vis)
+            if(vis) {
                 vp->show();
-            else
+                updateSelection(sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+            }else
                 vp->hide();
         }
     }
@@ -1423,6 +1459,9 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"addSelection",         (PyCFunction) SelectionSingleton::sAddSelection, METH_VARARGS,
      "addSelection(object,[string,float,float,float]) -- Add an object to the selection\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
+    {"updateSelection",      (PyCFunction) SelectionSingleton::sUpdateSelection, METH_VARARGS,
+     "updateSelection(object,[string]) -- update an object in the selection\n"
+     "where string is the sub-element name and the three floats represent a 3d point"},
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, METH_VARARGS,
      "removeSelection(object) -- Remove an object from the selection"},
     {"clearSelection"  ,     (PyCFunction) SelectionSingleton::sClearSelection, METH_VARARGS,
@@ -1549,6 +1588,55 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
     PyErr_SetString(PyExc_ValueError, "type must be 'DocumentObject[,subname[,x,y,z]]' or 'DocumentObject, list or tuple of subnames'");
     return 0;
 }
+
+PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    PyObject *object;
+    char* subname=0;
+    if (PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type),&object,&subname)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
+
+        Selection().updateSelection(docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    PyObject *sequence;
+    if (PyArg_ParseTuple(args, "O!O", &(App::DocumentObjectPy::Type),&object,&sequence)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
+
+        try {
+            if (PyTuple_Check(sequence) || PyList_Check(sequence)) {
+                Py::Sequence list(sequence);
+                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                    std::string subname = static_cast<std::string>(Py::String(*it));
+                    Selection().updateSelection(docObj->getDocument()->getName(),
+                                                docObj->getNameInDocument(),
+                                                subname.c_str());
+                }
+
+                Py_Return;
+            }
+        }
+        catch (const Py::Exception&) {
+            // do nothing here
+        }
+    }
+
+    PyErr_SetString(PyExc_ValueError, "type must be 'DocumentObject[,subname[,x,y,z]]' or 'DocumentObject, list or tuple of subnames'");
+    return 0;
+}
+
 
 PyObject *SelectionSingleton::sPreselect(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
