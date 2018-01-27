@@ -80,9 +80,9 @@ class Prepare(run.Prepare):
 class Solve(run.Solve):
 
     def run(self):
-        # AFAIK: z88r needs to be run twice, once in test mode ond once in real solve mode
-        # the subprocess was just copied, it seams to work :-)
-        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compare with the used ones
+        # AFAIK: z88r needs to be run twice, once in test mode and once in real solve mode
+        # the subprocess was just copied, it seems to work :-)
+        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compared with the used ones
         self.pushStatus("Executing test solver...\n")
         binary = settings.getBinary("Z88")
         self._process = subprocess.Popen(
@@ -258,7 +258,7 @@ class _Container(object):
         # for material object:
         # in GUI defined material_obj could have no RefShape and RefShapes could be different type
         # we're going to need the RefShapes to be the same type inside one fem_doc_object
-        # TODO here: check if all RefShapes inside the object really have the same type
+        # TODO: check if all RefShapes inside the object really have the same type
         import femmesh.meshtools as FemMeshTools
         if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
             first_ref_obj = fem_doc_object.References[0]
