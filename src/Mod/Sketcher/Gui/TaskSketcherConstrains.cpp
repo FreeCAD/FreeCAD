@@ -769,10 +769,6 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
 
         it->ConstraintNbr = i;
         it->value = QVariant();
-        
-        ui->listWidgetConstraints->blockSignals(true);
-        it->updateVirtualSpaceStatus();
-        ui->listWidgetConstraints->blockSignals(false);
     }
 
     /* Remove entries, if any */
@@ -782,6 +778,14 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     /* Add new entries, if any */
     for (std::size_t i = ui->listWidgetConstraints->count(); i < vals.size(); ++i)
         ui->listWidgetConstraints->addItem(new ConstraintItem(sketch, sketchView, i));
+
+    /* Update the states */
+    ui->listWidgetConstraints->blockSignals(true);
+    for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
+        ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        it->updateVirtualSpaceStatus();
+    }
+    ui->listWidgetConstraints->blockSignals(false);
 
     /* Update filtering */
     int Filter = ui->comboBoxFilter->currentIndex();
