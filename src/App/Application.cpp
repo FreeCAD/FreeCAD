@@ -1417,7 +1417,7 @@ void Application::initConfig(int argc, char ** argv)
     // init python
     mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
 
-    // Parse the options which have impact to the init process
+    // Parse the options that have impact on the init process
     ParseOptions(argc,argv);
 
     // Init console ===========================================================

@@ -261,7 +261,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d u(rotateFrom); u.Normalize();
     Vector3d v(rotateTo); v.Normalize();
 
-    // The vector from x to is the roatation axis because it's the normal of the plane defined by (0,u,v) 
+    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v) 
     const double dot = u * v;
     Vector3d w = u % v;
     const double wlen = w.Length();
