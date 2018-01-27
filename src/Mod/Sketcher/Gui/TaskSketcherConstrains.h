@@ -61,6 +61,8 @@ protected Q_SLOTS:
     void doSelectConstraints();
     void updateDrivingStatus();
     void swapNamedOfSelectedItems();
+    void showConstraints();
+    void hideConstraints();
 };
 
 class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
