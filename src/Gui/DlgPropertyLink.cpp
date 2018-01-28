@@ -48,7 +48,7 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
   : QDialog(parent, fl), link(list), ui(new Ui_DlgPropertyLink)
 {
 #ifdef FC_DEBUG
-    assert(list.size() == 4);
+    assert(list.size() >= 5);
 #endif
     ui->setupUi(this);
     findObjects(ui->checkObjectType->isChecked(), QString());
@@ -125,6 +125,7 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
     QString docName = link[0]; // document name
     QString objName = link[1]; // internal object name
     QString parName = link[3]; // internal object name of the parent of the link property
+    QString proName = link[4]; // property name
 
     bool isSingleSelection = (ui->listWidget->selectionMode() == QAbstractItemView::SingleSelection);
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
@@ -155,8 +156,10 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
         App::DocumentObject* par = doc->getObject((const char*)parName.toLatin1());
         if (par) {
             // for multi-selection we need all objects
-            if (isSingleSelection)
-                outList = par->getOutList();
+            if (isSingleSelection) {
+                App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
+                outList = par->getOutListOfProperty(prop);
+            }
             outList.push_back(par);
         }
 
