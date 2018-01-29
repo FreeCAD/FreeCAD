@@ -37,6 +37,8 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
+FC_LOG_LEVEL_INIT("DynamicProperty",true,true)
+
 
 using namespace App;
 
@@ -327,8 +329,8 @@ void DynamicProperty::Save (Base::Writer &writer) const
         // check whether a static or dynamic property
         std::map<std::string,PropData>::const_iterator pt = props.find(it->first);
         if (pt == props.end()) {
-            writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
-                            << it->second->getTypeId().getName() << "\">" << std::endl;
+            writer.Stream() << writer.ind() << "<Property name=\"" << it->first 
+                << "\" type=\"" << it->second->getTypeId().getName();
         }
         else {
             writer.Stream() << writer.ind() << "<Property name=\"" << it->first
@@ -336,8 +338,12 @@ void DynamicProperty::Save (Base::Writer &writer) const
                             << "\" group=\"" << encodeAttribute(pt->second.group)
                             << "\" doc=\"" << encodeAttribute(pt->second.doc)
                             << "\" attr=\"" << pt->second.attr << "\" ro=\"" << pt->second.readonly
-                            << "\" hide=\"" << pt->second.hidden << "\">" << std::endl;
+                            << "\" hide=\"" << pt->second.hidden;
         }
+        auto status = it->second->getStatus();
+        if(status)
+            writer.Stream() << "\" status=\"" << status;
+        writer.Stream() << "\">" << std::endl;
 
         writer.incInd(); // indentation for the actual property
         try {
@@ -346,7 +352,8 @@ void DynamicProperty::Save (Base::Writer &writer) const
             // means to proceed instead of aborting the write operation.
 
             // Don't write transient properties 
-            if (!(getPropertyType(it->second) & Prop_Transient))
+            if (!it->second->testStatus(Property::Transient) && 
+                !(getPropertyType(it->second) & Prop_Transient))
                 it->second->Save(writer);
         }
         catch (const Base::Exception &e) {
@@ -408,6 +415,8 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
                 }
                 prop = addDynamicProperty(TypeName, PropName, group, doc, attribute, readonly, hidden);
             }
+            if(reader.hasAttribute("status")) 
+                prop->setStatus(reader.getAttributeAsUnsigned("status"));
         }
         catch(const Base::Exception& e) {
             // only handle this exception type
@@ -420,7 +429,9 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
         //undefined.
 
         // Don't read transient properties
-        if (!(getPropertyType(prop) & Prop_Transient)) {
+        if (!prop->testStatus(Property::Transient) && 
+            !(getPropertyType(prop) & Prop_Transient)) 
+        {
             if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
                 try {
                     prop->Restore(reader);

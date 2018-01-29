@@ -145,6 +145,9 @@ public:
     inline void setStatus(Status pos, bool on) {
         StatusBits.set(static_cast<size_t>(pos), on);
     }
+    inline void setStatus(unsigned long status) {
+        StatusBits = decltype(StatusBits)(status);
+    }
     ///Sets property editable/grayed out in property editor
     void setReadOnly(bool readOnly);
     inline bool isReadOnly() const {

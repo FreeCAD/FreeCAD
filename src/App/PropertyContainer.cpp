@@ -192,46 +192,30 @@ void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char 
 
 PropertyData PropertyContainer::propertyData;
 
-/**
- * Binary function to query the flags for use with generic STL functions.
- */
-template <class TCLASS>
-class PropertyAttribute : public std::binary_function<TCLASS, typename App::PropertyType, bool>
-{
-public:
-    PropertyAttribute(const PropertyContainer* c) : cont(c) {}
-    bool operator () (const TCLASS& prop, typename App::PropertyType attr) const
-    { 
-        if((cont->getPropertyType(prop.second) & attr) == attr) return true;
-        return attr==Prop_Transient && prop.second->testStatus(Property::Transient);
-    }
-private:
-    const PropertyContainer* cont;
-};
-
 void PropertyContainer::Save (Base::Writer &writer) const 
 {
     std::map<std::string,Property*> Map;
     getPropertyMap(Map);
   
-    // ignore the properties we won't store
-    size_t ct = std::count_if(Map.begin(), Map.end(), std::bind2nd(PropertyAttribute
-        <std::pair<std::string,Property*> >(this), Prop_Transient));
-    size_t size = Map.size() - ct;
-
     writer.incInd(); // indentation for 'Properties Count'
-    writer.Stream() << writer.ind() << "<Properties Count=\"" << size << "\">" << endl;
+    writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size() << "\">" << endl;
     std::map<std::string,Property*>::iterator it;
     for (it = Map.begin(); it != Map.end(); ++it)
     {
+        writer.incInd(); // indentation for 'Property name'
+        writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
+                        << it->second->getTypeId().getName();
+        auto status = it->second->getStatus();
+        if(status)
+            writer.Stream() << "\" status=\"" << status;
+        writer.Stream() << "\">" << std::endl;
+
+        writer.incInd(); // indentation for the actual property
+
         // Don't write transient properties 
-        if (!(getPropertyType(it->second) & Prop_Transient) && 
-            !it->second->testStatus(Property::Transient))
+        if (!it->second->testStatus(Property::Transient) &&
+            !(getPropertyType(it->second) & Prop_Transient))
         {
-            writer.incInd(); // indentation for 'Property name'
-            writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
-                            << it->second->getTypeId().getName() << "\">" << endl;;
-            writer.incInd(); // indentation for the actual property
             try {
                 // We must make sure to handle all exceptions accordingly so that
                 // the project file doesn't get invalidated. In the error case this
@@ -252,10 +236,10 @@ void PropertyContainer::Save (Base::Writer &writer) const
                 Base::Console().Error("PropertyContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
             }
 #endif
-            writer.decInd(); // indentation for the actual property
-            writer.Stream() << writer.ind() << "</Property>" << endl;    
-            writer.decInd(); // indentation for 'Property name'
         }
+        writer.decInd(); // indentation for the actual property
+        writer.Stream() << writer.ind() << "</Property>" << endl;    
+        writer.decInd(); // indentation for 'Property name'
     }
     writer.Stream() << writer.ind() << "</Properties>" << endl;
     writer.decInd(); // indentation for 'Properties Count'
@@ -271,6 +255,8 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         const char* PropName = reader.getAttribute("name");
         const char* TypeName = reader.getAttribute("type");
         Property* prop = getPropertyByName(PropName);
+        if(prop && reader.hasAttribute("status"))
+            prop->setStatus(reader.getAttributeAsUnsigned("status"));
         // NOTE: We must also check the type of the current property because a
         // subclass of PropertyContainer might change the type of a property but
         // not its name. In this case we would force to read-in a wrong property
@@ -278,7 +264,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         try {
             // name and type match
             if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-                prop->Restore(reader);
+                if (!prop->testStatus(Property::Transient) &&
+                    !(getPropertyType(prop) & Prop_Transient))
+                    prop->Restore(reader);
             }
             // name matches but not the type
             else if (prop) {
