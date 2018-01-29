@@ -196,6 +196,42 @@ std::vector<DocumentObject*> DocumentObject::getOutList(void) const
     return ret;
 }
 
+std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
+{
+    std::vector<DocumentObject*> ret;
+    if (!prop || prop->getContainer() != this)
+        return ret;
+
+    if (prop->isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkList*>(prop)->getValues();
+        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
+            if (*It2)
+                ret.push_back(*It2);
+        }
+    }
+    else if (prop->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkSubList*>(prop)->getValues();
+        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
+            if (*It2)
+                ret.push_back(*It2);
+        }
+    }
+    else if (prop->isDerivedFrom(PropertyLink::getClassTypeId())) {
+        if (static_cast<PropertyLink*>(prop)->getValue())
+            ret.push_back(static_cast<PropertyLink*>(prop)->getValue());
+    }
+    else if (prop->isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+        if (static_cast<PropertyLinkSub*>(prop)->getValue())
+            ret.push_back(static_cast<PropertyLinkSub*>(prop)->getValue());
+    }
+    else if (prop == &ExpressionEngine) {
+        // Get document objects that this document object relies on
+        ExpressionEngine.getDocumentObjectDeps(ret);
+    }
+
+    return ret;
+}
+
 #ifdef USE_OLD_DAG
 std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 {
