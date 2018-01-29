@@ -246,8 +246,12 @@ void CCurve::FitArcs(bool retry)
                     if(arc_found) {
                         // this means the last edge has already been fitted with
                         // some arc, so we move the first edge to the end
-                        m_vertices.push_back(m_vertices.front());
+                        
+                        // Must pop first, because this is a closed curve,
+                        // meaning the last point must be equal to the first
+                        // point.
                         m_vertices.pop_front();
+                        m_vertices.push_back(m_vertices.front());
                     }else{
                         m_vertices.push_front(CVertex(new_vertices.back().m_p));
                         m_vertices.pop_back();
