@@ -1547,10 +1547,10 @@ def open(filename):
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
-            #workaround since newDocument currently can't handle unicode filenames
             docname = os.path.splitext(os.path.basename(filename))[0]
             if sys.version_info.major < 3:
                 if isinstance(docname,unicode): 
+                    #workaround since newDocument currently can't handle unicode filenames
                     docname = docname.encode(sys.getfilesystemencoding())
             doc = FreeCAD.newDocument(docname)
             doc.Label = decodeName(docname)
