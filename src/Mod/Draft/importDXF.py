@@ -1542,6 +1542,7 @@ def warn(dxfobject,num=None):
 
 def open(filename):
     "called when freecad opens a file."
+    import sys
     readPreferences()
     if dxfUseLegacyImporter:
         getDXFlibs()
@@ -1549,7 +1550,7 @@ def open(filename):
             docname = os.path.splitext(os.path.basename(filename))[0]
             if sys.version_info.major < 3:
                 if isinstance(docname,unicode): 
-                    import sys #workaround since newDocument currently can't handle unicode filenames
+                    #workaround since newDocument currently can't handle unicode filenames
                     docname = docname.encode(sys.getfilesystemencoding())
             doc = FreeCAD.newDocument(docname)
             doc.Label = decodeName(docname)
