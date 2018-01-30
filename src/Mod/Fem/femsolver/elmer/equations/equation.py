@@ -35,7 +35,6 @@ if App.GuiUp:
     from femguiobjects import FemSelectionWidgets
 
 
-
 class Proxy(equationbase.BaseProxy):
 
     def __init__(self, obj):
