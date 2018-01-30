@@ -27,13 +27,10 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import Fem
 from femtools import ccxtools
 import femresult.resulttools as resulttools
 import FreeCAD
-import ObjectsFem
 import tempfile
-import unittest
 import os
 
 
