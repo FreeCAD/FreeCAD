@@ -87,7 +87,7 @@ class WriteXDMFTaskPanel:
             self.form.tableGroups.setItem(ind, 3, QtGui.QTableWidgetItem(str(0)))
             # default value for marked elements
             self.form.tableGroups.setItem(ind, 4, QtGui.QTableWidgetItem(str(1)))
-            
+
         header = self.form.tableGroups.horizontalHeader()
         header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
         header.setResizeMode(1, QtGui.QHeaderView.ResizeToContents)
@@ -100,7 +100,7 @@ class WriteXDMFTaskPanel:
         num_rows = self.form.tableGroups.rowCount()
 
         for r in range(num_rows):
-            g = int(self.form.tableGroups.item(r, 0).text()) # read-only no prob
+            g = int(self.form.tableGroups.item(r, 0).text())  # read-only no prob
             default_value = 0
             marked_value = 1
             try:

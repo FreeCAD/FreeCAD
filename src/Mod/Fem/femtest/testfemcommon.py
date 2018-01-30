@@ -609,14 +609,14 @@ class FemTest(unittest.TestCase):
 
     def test_adding_refshaps(self):
         doc = self.active_doc
-        slab = doc.addObject("Part::Plane","Face")
-        slab.Length=500.00
-        slab.Width=500.00
+        slab = doc.addObject("Part::Plane", "Face")
+        slab.Length = 500.00
+        slab.Width = 500.00
         cf = ObjectsFem.makeConstraintFixed(doc)
         ref_eles = []
         # FreeCAD list property seam not to support append, thus we need some workaround, which is on many elements even much faster
         for i, face in enumerate(slab.Shape.Edges):
-            ref_eles.append("Edge%d" % (i+1))
+            ref_eles.append("Edge%d" % (i + 1))
         cf.References = [(slab, ref_eles)]
         doc.recompute()
         expected_reflist = [(slab, ('Edge1', 'Edge2', 'Edge3', 'Edge4'))]
