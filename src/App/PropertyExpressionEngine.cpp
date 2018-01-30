@@ -681,6 +681,44 @@ void PropertyExpressionEngine::getDocumentObjectDeps(std::vector<DocumentObject 
 }
 
 /**
+ * @brief Find paths to document object.
+ * @param obj Document object
+ * @param paths Object identifier
+ */
+
+void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
+                                 std::vector<App::ObjectIdentifier> & paths) const
+{
+    DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
+
+    if (owner == 0)
+        return;
+
+    ExpressionMap::const_iterator i = expressions.begin();
+
+    while (i != expressions.end()) {
+        std::set<ObjectIdentifier> deps;
+
+        i->second.expression->getDeps(deps);
+
+        std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+
+        while (j != deps.end()) {
+            const ObjectIdentifier & p = *j;
+            DocumentObject* docObj = p.getDocumentObject();
+
+            if (docObj == obj && docObj != owner) {
+                paths.push_back(i->first);
+                break;
+            }
+
+            ++j;
+        }
+        ++i;
+    }
+}
+
+/**
  * @brief Determine whether any dependencies of any of the registered expressions have been touched.
  * @return True if at least on dependency has been touched.
  */
