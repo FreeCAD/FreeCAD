@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2018 - FreeCAD Developers                               *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -34,18 +34,15 @@ import tempfile
 import os
 
 
-mesh_name = 'Mesh'
 stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
 
 home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
-test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
-test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
 
-# define some locations fot the analysis tests
-# since they are also used in the helper def which create results they should stay global for the module
+test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
+
 static_base_name = 'cube_static'
 static_analysis_dir = temp_dir + 'FEM_ccx_static/'
 static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'

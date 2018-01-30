@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2015 - FreeCAD Developers                               *
 # *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -71,9 +72,6 @@ Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
 Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
 Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
 Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
-
-solverframework_analysis_dir = temp_dir + 'FEM_solverframework/'
-solverframework_save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
 
 
 class FemCcxAnalysisTest(unittest.TestCase):
