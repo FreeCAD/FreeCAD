@@ -68,7 +68,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
     meshchild = ET.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
     vertices = ET.SubElement(meshchild, "vertices", size=str(fem_mesh_obj.FemMesh.NodeCount))
 
-    for (nodeind, fc_vec) in fem_mesh_obj.FemMesh.Nodes.iteritems():  # python2
+    for (nodeind, fc_vec) in list(fem_mesh_obj.FemMesh.Nodes.items()):
         ET.SubElement(
             vertices, "vertex", index=str(nodeind - 1),
             # FC starts from 1, fenics starts from 0 to size-1
@@ -97,7 +97,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
     ET.SubElement(meshchild, "data")
 
-    fp = open(outputfile, "w")
+    fp = open(outputfile, "wb")
     fp.write(ET.tostring(root))
     # xml core functionality does not support pretty printing
     # so the output file looks quite ugly

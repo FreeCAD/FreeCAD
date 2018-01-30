@@ -110,7 +110,10 @@ SET(FemSolverZ88_SRCS
 
 SET(FemTests_SRCS
     femtest/__init__.py
-    femtest/testfemcommon.py
+    femtest/testccxtools.py
+    femtest/testcommon.py
+    femtest/testsolverframework.py
+    femtest/testtools.py
 )
 
 SET(FemTestsFiles_SRCS
