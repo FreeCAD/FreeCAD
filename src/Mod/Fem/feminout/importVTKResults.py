@@ -93,7 +93,7 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
     if analysis:
         analysis_object.addObject(result_obj)
 
-    ''' seams not used at the moment
+    ''' seems unused at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
     ts = filenamebase.split('_')[-1]
     try:
