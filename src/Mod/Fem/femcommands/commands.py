@@ -474,7 +474,7 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, 
+        # a mesh could be made with and without an analysis,
         # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         mesh_obj_name = 'FEMMeshNetgen'
