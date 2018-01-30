@@ -442,7 +442,8 @@ void Body::onSettingDocument() {
 }
 
 void Body::onChanged (const App::Property* prop) {
-    if (!this->getDocument()->isPerformingTransaction()) {
+    // we neither load a project nor perform undo/redo
+    if (!this->isRestoring() && !this->getDocument()->isPerformingTransaction()) {
         if ( prop == &BaseFeature ) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
