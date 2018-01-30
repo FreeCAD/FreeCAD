@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QApplication>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
@@ -33,6 +34,7 @@
 #include <Gui/Control.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
 #include <Base/Exception.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -48,7 +50,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-    :oldWb(""), oldTip(NULL)
+:oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
 }
 
@@ -199,6 +201,51 @@ void ViewProvider::onChanged(const App::Property* prop) {
     PartGui::ViewProviderPartExt::onChanged(prop);
 }
 
+void ViewProvider::setTipIcon(bool onoff) {
+    isSetTipIcon = onoff;
+    
+    signalChangeIcon();
+}
+
+QIcon ViewProvider::getIcon(void) const
+{
+    return mergeTip(Gui::BitmapFactory().pixmap(sPixmap));
+}
+
+QIcon ViewProvider::mergeTip(QIcon orig) const
+{
+    if(isSetTipIcon) {
+        QPixmap px;
+        
+        static const char * const feature_error_xpm[]={
+            "9 9 3 1",
+            ". c None",
+            "# c #00ff00",
+            "a c #ffffff",
+            "...###...",
+            ".##aaa##.",
+            ".##aaa##.",
+            "###aaa###",
+            "##aaaaa##",
+            "##aaaaa##",
+            ".##aaa##.",
+            ".##aaa##.",
+            "...###..."};
+        px = QPixmap(feature_error_xpm);
+
+        QIcon icon_mod;
+
+        int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::Off),
+                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::On ),
+                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+        return icon_mod;
+    }
+    else
+        return orig;
+}
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {
