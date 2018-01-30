@@ -225,6 +225,21 @@ void ViewProviderBody::updateData(const App::Property* prop)
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
     } 
+    
+    if (prop == &body->Tip) {
+        // We changed Tip
+        App::DocumentObject* tip = body->Tip.getValue();
+
+        auto features = body->Group.getValues();
+
+        // restore icons
+        for ( auto feature : features) {
+            Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(feature);
+            if(vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+                static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
+            }
+        }
+    }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
