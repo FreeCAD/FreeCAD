@@ -468,7 +468,7 @@ class _TaskPanelFemMaterial:
 
         use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
         if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Materials"
+            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Material"
             self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
 
         use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
