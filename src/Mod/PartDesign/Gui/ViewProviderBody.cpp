@@ -365,6 +365,9 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }
+
+        // #0002559: Body becomes visible upon changing DisplayModeBody
+        Visibility.touch();
     }
     else 
         unifyVisualProperty(prop);
