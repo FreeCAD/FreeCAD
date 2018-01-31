@@ -298,7 +298,7 @@ void Document::exportGraphviz(std::ostream& out) const
         std::string getClusterName(const DocumentObject * docObj) const {
             return std::string("cluster") + docObj->getNameInDocument();
         }
-        
+
         void setGraphLabel(Graph& g, const DocumentObject* obj) const {
             std::string name(obj->getNameInDocument());
             std::string label(obj->Label.getValue());
@@ -346,7 +346,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
         void addExpressionSubgraphIfNeeded(DocumentObject * obj, bool CSsubgraphs) {
 
-            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();             
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();
 
             if (!expressions.empty()) {
 
@@ -407,11 +407,11 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         void add(DocumentObject * docObj, const std::string & name, const std::string & label, bool CSSubgraphs) {
-            
+
             //don't add objects twice
             if(std::find(objects.begin(), objects.end(), docObj) != objects.end())
                 return;
-                       
+
             //find the correct graph to add the vertex to. Check first expression graphs, afterwards
             //the parent CS and origin graphs
             Graph * sgraph = GraphList[docObj];
@@ -421,7 +421,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     if(group) {
                         if(docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                             sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
-                        else 
+                        else
                             sgraph = GraphList[group];
                     }
                 }
@@ -432,14 +432,14 @@ void Document::exportGraphviz(std::ostream& out) const
             }
             if(!sgraph)
                 sgraph = &DepList;
-            
+
             // Keep a list of all added document objects.
             objects.insert(docObj);
 
             // Add vertex to graph. Track global and local index
             LocalVertexList[getId(docObj)] = add_vertex(*sgraph);
             GlobalVertexList[getId(docObj)] = vertex_no++;
-               
+
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
             if (!GraphList[docObj]) {
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
@@ -502,7 +502,7 @@ void Document::exportGraphviz(std::ostream& out) const
         }
 
         void recursiveCSSubgraphs(DocumentObject* cs, DocumentObject* parent) {
-            
+
             auto graph = parent ? GraphList[parent] : &DepList;
             // check if the value for the key 'parent' is null
             if (!graph)
@@ -514,20 +514,20 @@ void Document::exportGraphviz(std::ostream& out) const
             //build random color string
             std::stringstream stream;
             stream << "#" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
-                   << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed) 
+                   << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
                    << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed) << 80;
             std::string result(stream.str());
 
             get_property(sub, graph_graph_attribute)["bgcolor"] = result;
             get_property(sub, graph_graph_attribute)["style"] = "rounded,filled";
             setGraphLabel(sub, cs);
- 
+
             for(auto obj : cs->getOutList()) {
                 if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                     recursiveCSSubgraphs(obj, cs);
             }
 
-            //setup the origin if available 
+            //setup the origin if available
             if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
                 auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
                 auto& osub = sub.create_subgraph();
@@ -571,10 +571,10 @@ void Document::exportGraphviz(std::ostream& out) const
 
         // Filling up the adjacency List
         void buildAdjacencyList() {
-            
+
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
-            
+
             // Add internal document objects
             for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 add(It->second, It->second->getNameInDocument(), It->second->Label.getValue(), CSSubgraphs);
@@ -640,20 +640,20 @@ void Document::exportGraphviz(std::ostream& out) const
 
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
             bool omitGeoFeatureGroups = depGrp->GetBool("GeoFeatureSubgraphs", true);
-                    
+
             // Add edges between document objects
             for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-                      
+
                 if(omitGeoFeatureGroups) {
                     //coordinate systems are represented by subgraphs
                     if(It->second->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                         continue;
-                    
+
                     //as well as origins
                     if(It->second->isDerivedFrom(Origin::getClassTypeId()))
                         continue;
                 }
-                
+
                 std::map<DocumentObject*, int> dups;
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 const DocumentObject * docObj = It->second;
@@ -797,7 +797,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 GeoFeatureGroupExtension::getInvalidLinkObjects(obj, invalids);
                 //isLinkValid returns true for non-link properties
                 for(auto linkedObj : invalids) {
-    
+
                     auto res = edge(GlobalVertexList[getId(obj)], GlobalVertexList[getId(linkedObj)], DepList);
                     if(res.second)
                         edgeAttrMap[res.first]["color"] = "red";
@@ -1465,7 +1465,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\"";
         if((*it)->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
-            
+
         writer.Stream() << ">" << endl;
         (*it)->Save(writer);
         writer.Stream() << writer.ind() << "</Object>" << endl;
@@ -2065,7 +2065,7 @@ int Document::recompute()
     }
 
     int objectCount = 0;
-    
+
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
     bool skip = testStatus(Document::SkipRecompute);
@@ -2180,7 +2180,7 @@ int Document::recompute()
     d->vertexMap.clear();
 
     signalRecomputed(*this);
-    
+
     return objectCount;
 }
 
@@ -2221,7 +2221,7 @@ int Document::recompute()
     }
 
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
-        // ask the object if it should be recomputed  
+        // ask the object if it should be recomputed
         if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
             objectCount++;
             if (_recomputeFeature(*objIt)) {
@@ -2237,7 +2237,7 @@ int Document::recompute()
         }
     }
 #ifdef FC_DEBUG
-    // check if all objects are recalculated which were thouched 
+    // check if all objects are recalculated which were thouched
     for (auto objectIt : d->objectArray) {
         if (objectIt->isTouched())
             cerr << "Document::recompute(): " << objectIt->getNameInDocument() << " still touched after recompute" << endl;
@@ -2771,7 +2771,7 @@ void Document::removeObject(const char* sName)
         }
     }
 #endif //USE_OLD_DAG
-    
+
     // Before deleting we must nullify all dependent objects
     breakDependency(pos->second, true);
 
@@ -2899,7 +2899,7 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                     if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
                         std::vector<DocumentObject*> newLinks;
                         for(auto obj : links) {
-                            if (obj != pcObject) 
+                            if (obj != pcObject)
                                 newLinks.push_back(obj);
                         }
                         link->setValues(newLinks);
