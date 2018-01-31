@@ -13,14 +13,14 @@ import os
 
 def DVAnnoSymImageTest():
     path = os.path.dirname(os.path.abspath(__file__))
-#    print ('path: ' + path)
+    print ('TDTestAnno path: ' + path)
     templateFileSpec = path + '/TestTemplate.svg'
     symbolFileSpec = path + '/TestSymbol.svg'
     imageFileSpec = path + '/TestImage.png'
 
-    FreeCAD.newDocument("TDTest")
-    FreeCAD.setActiveDocument("TDTest")
-    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDTest")
+    FreeCAD.newDocument("TDAnno")
+    FreeCAD.setActiveDocument("TDAnno")
+    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDAnno")
 
     page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
     FreeCAD.ActiveDocument.addObject('TechDraw::DrawSVGTemplate','Template')
@@ -58,7 +58,7 @@ def DVAnnoSymImageTest():
     rc = False
     if ("Up-to-date" in anno.State) and ("Up-to-date" in sym.State) and ("Up-to-date" in img.State):
         rc = True
-    FreeCAD.closeDocument("TDTest")
+    FreeCAD.closeDocument("TDAnno")
     return rc
 
 if __name__ == '__main__':

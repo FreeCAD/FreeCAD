@@ -17,12 +17,12 @@ import os
 
 def DProjGroupTest():
     path = os.path.dirname(os.path.abspath(__file__))
-#    print ('path: ' + path)
+    print ('TDGroup path: ' + path)
     templateFileSpec = path + '/TestTemplate.svg'
 
-    FreeCAD.newDocument("TDTest")
-    FreeCAD.setActiveDocument("TDTest")
-    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDTest")
+    FreeCAD.newDocument("TDGroup")
+    FreeCAD.setActiveDocument("TDGroup")
+    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDGroup")
 
     #make Fusion feature
     box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
@@ -72,7 +72,7 @@ def DProjGroupTest():
     rc = False
     if ("Up-to-date" in group.State):
         rc = True
-    FreeCAD.closeDocument("TDTest")
+    FreeCAD.closeDocument("TDGroup")
     return rc
     
 if __name__ == '__main__':

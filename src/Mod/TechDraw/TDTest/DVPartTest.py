@@ -13,12 +13,12 @@ import os
 
 def DVPartTest():
     path = os.path.dirname(os.path.abspath(__file__))
-#    print ('path: ' + path)
+    print ('TDPart path: ' + path)
     templateFileSpec = path + '/TestTemplate.svg'
 
-    FreeCAD.newDocument("TDTest")
-    FreeCAD.setActiveDocument("TDTest")
-    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDTest")
+    FreeCAD.newDocument("TDPart")
+    FreeCAD.setActiveDocument("TDPart")
+    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDPart")
 
     box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
 
@@ -40,7 +40,7 @@ def DVPartTest():
     rc = False
     if ("Up-to-date" in view.State):
         rc = True
-    FreeCAD.closeDocument("TDTest")
+    FreeCAD.closeDocument("TDPart")
     return rc
 
 if __name__ == '__main__':

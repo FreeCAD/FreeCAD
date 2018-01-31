@@ -15,12 +15,12 @@ import os
 
 def DVDimensionTest():
     path = os.path.dirname(os.path.abspath(__file__))
-#    print ('path: ' + path)
+    print ('TDDim path: ' + path)
     templateFileSpec = path + '/TestTemplate.svg'
 
-    FreeCAD.newDocument("TDTest")
-    FreeCAD.setActiveDocument("TDTest")
-    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDTest")
+    FreeCAD.newDocument("TDDim")
+    FreeCAD.setActiveDocument("TDDim")
+    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDDim")
 
     #make source feature
     box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
@@ -73,7 +73,7 @@ def DVDimensionTest():
     rc = False
     if ("Up-to-date" in dim1.State) and ("Up-to-date" in dim2.State):
         rc = True
-    FreeCAD.closeDocument("TDTest")
+    FreeCAD.closeDocument("TDDim")
     return rc
 
 if __name__ == '__main__':

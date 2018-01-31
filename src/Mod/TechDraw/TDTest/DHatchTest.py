@@ -15,13 +15,13 @@ import os
 
 def DHatchTest():
     path = os.path.dirname(os.path.abspath(__file__))
-#    print ('path: ' + path)
+    print ('TDHatch path: ' + path)
     templateFileSpec = path+'/TestTemplate.svg'
     hatchFileSpec = path + '/TestHatch.svg'
 
-    FreeCAD.newDocument("TDTest")
-    FreeCAD.setActiveDocument("TDTest")
-    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDTest")
+    FreeCAD.newDocument("TDHatch")
+    FreeCAD.setActiveDocument("TDHatch")
+    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDHatch")
 
     #make source feature
     box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
@@ -54,7 +54,7 @@ def DHatchTest():
     rc = False
     if ("Up-to-date" in hatch.State):
         rc = True
-    FreeCAD.closeDocument("TDTest")
+    FreeCAD.closeDocument("TDHatch")
     return rc
     
 if __name__ == '__main__':

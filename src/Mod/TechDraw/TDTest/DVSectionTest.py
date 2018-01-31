@@ -13,12 +13,12 @@ import os
 
 def DVSectionTest():
     path = os.path.dirname(os.path.abspath(__file__))
-#    print ('path: ' + path)
+    print ('TDSection path: ' + path)
     templateFileSpec = path + '/TestTemplate.svg'
 
-    FreeCAD.newDocument("TDTest")
-    FreeCAD.setActiveDocument("TDTest")
-    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDTest")
+    FreeCAD.newDocument("TDSection")
+    FreeCAD.setActiveDocument("TDSection")
+    FreeCAD.ActiveDocument=FreeCAD.getDocument("TDSection")
 
     box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
 
@@ -53,7 +53,7 @@ def DVSectionTest():
     rc = False
     if ("Up-to-date" in view.State) and ("Up-to-date" in section.State):
         rc = True
-    FreeCAD.closeDocument("TDTest")
+    FreeCAD.closeDocument("TDSection")
     return rc
 
 if __name__ == '__main__':
