@@ -26,7 +26,7 @@ def DVAnnoSymImageTest():
     FreeCAD.ActiveDocument.addObject('TechDraw::DrawSVGTemplate','Template')
     FreeCAD.ActiveDocument.Template.Template = templateFileSpec
     FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
-    page.ViewObject.show()
+#    page.ViewObject.show()    # unit tests run in console mode
 
     #annotation
     anno = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewAnnotation','TestAnno')

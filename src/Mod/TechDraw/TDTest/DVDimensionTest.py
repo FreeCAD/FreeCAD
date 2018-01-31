@@ -32,7 +32,7 @@ def DVDimensionTest():
     FreeCAD.ActiveDocument.Template.Template = templateFileSpec
     FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
     page.Scale = 5.0
-    page.ViewObject.show()
+#    page.ViewObject.show()   # unit tests run in console mode 
 
     #make Views
     view1 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart','View')
