@@ -644,7 +644,7 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
-    sWhatsThis    = QT_TR_NOOP("Measures distance between two selected objects");
+    sWhatsThis    = "Std_MeasurementSimple";
     sStatusTip    = QT_TR_NOOP("Measures distance between two selected objects");
     sPixmap       = "view-measurement";
     eType         = 0;
@@ -699,7 +699,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("&Units calculator...");
     sToolTipText  = QT_TR_NOOP("Start the units calculator");
-    sWhatsThis    = QT_TR_NOOP("Start the units calculator");
+    sWhatsThis    = "Std_UnitsCalculator";
     sStatusTip    = QT_TR_NOOP("Start the units calculator");
     sPixmap       = "accessories-calculator";
     eType         = 0;

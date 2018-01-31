@@ -118,7 +118,7 @@ CmdAssemblyConstraint::CmdAssemblyConstraint()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint");
     sToolTipText    = QT_TR_NOOP("Add arbitrary constraints to the assembly");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_Constraint";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintGeneral";
 }
@@ -202,7 +202,7 @@ CmdAssemblyConstraintDistance::CmdAssemblyConstraintDistance()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint Distance...");
     sToolTipText    = QT_TR_NOOP("Set the distance between two selected entities");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_ConstraintDistance";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintDistance";
 }
@@ -269,7 +269,7 @@ CmdAssemblyConstraintFix::CmdAssemblyConstraintFix()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint Fix...");
     sToolTipText    = QT_TR_NOOP("Fix a part in it's rotation and translation");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_ConstraintFix";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintLock";
 }
@@ -334,7 +334,7 @@ CmdAssemblyConstraintAngle::CmdAssemblyConstraintAngle()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint Angle...");
     sToolTipText    = QT_TR_NOOP("Set the angle between two selected entities");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_ConstraintAngle";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintAngle";
 }
@@ -403,7 +403,7 @@ CmdAssemblyConstraintOrientation::CmdAssemblyConstraintOrientation()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint Orientation...");
     sToolTipText    = QT_TR_NOOP("Set the orientation of two selected entities in regard to each other");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_ConstraintOrientation";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintOrientation";
 }
@@ -471,7 +471,7 @@ CmdAssemblyConstraintCoincidence::CmdAssemblyConstraintCoincidence()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint coincidence...");
     sToolTipText    = QT_TR_NOOP("Make the selected entities coincident");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_ConstraintCoincidence";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintCoincidence";
 }
@@ -539,7 +539,7 @@ CmdAssemblyConstraintAlignment::CmdAssemblyConstraintAlignment()
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Constraint alignment...");
     sToolTipText    = QT_TR_NOOP("Align the selected entities");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Assembly_ConstraintAlignment";
     sStatusTip      = sToolTipText;
     sPixmap         = "constraints/Assembly_ConstraintAlignment";
 }
