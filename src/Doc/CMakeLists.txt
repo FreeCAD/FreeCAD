@@ -113,6 +113,10 @@ if(DOXYGEN_FOUND)
                    ${CMAKE_CURRENT_BINARY_DIR}/mainpage.dox @ONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in  
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cpp.cfg.in  
+                   ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cpp.cfg @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.py.cfg.in  
+                   ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.py.cfg @ONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in  
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg @ONLY)
  
@@ -125,6 +129,18 @@ if(DOXYGEN_FOUND)
         COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
+	ADD_CUSTOM_TARGET(DevDocCpp
+		${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
+		COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cpp.cfg
+		COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+	)
+	ADD_CUSTOM_TARGET(DevDocPy
+		${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
+		COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.py.cfg
+		COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+	)
     # lightweight version for the web
     ADD_CUSTOM_TARGET(WebDoc
         ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
