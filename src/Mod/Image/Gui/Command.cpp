@@ -53,7 +53,7 @@ CmdImageOpen::CmdImageOpen()
     sGroup          = QT_TR_NOOP("Image");
     sMenuText       = QT_TR_NOOP("Open...");
     sToolTipText    = QT_TR_NOOP("Open image view");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Image_Open";
     sStatusTip      = sToolTipText;
     sPixmap         = "image-import";
 }
@@ -101,7 +101,7 @@ CmdCreateImagePlane::CmdCreateImagePlane()
     sGroup          = QT_TR_NOOP("Image");
     sMenuText       = QT_TR_NOOP("Create image plane...");
     sToolTipText    = QT_TR_NOOP("Create a planar image in the 3D space");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Image_CreateImagePlane";
     sStatusTip      = sToolTipText;
     sPixmap         = "image-import";
 }
@@ -175,7 +175,7 @@ CmdImageCapturerTest::CmdImageCapturerTest()
     sGroup          = ("Image");
     sMenuText       = ("CapturerTest");
     sToolTipText    = ("test camara capturing");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Image_CapturerTest";
     sStatusTip      = sToolTipText;
     sPixmap         = "camera-photo";
 }

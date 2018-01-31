@@ -319,7 +319,7 @@ StdCmdMergeProjects::StdCmdMergeProjects()
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("Merge project...");
     sToolTipText  = QT_TR_NOOP("Merge project");
-    sWhatsThis    = QT_TR_NOOP("Merge project");
+    sWhatsThis    = "Std_MergeProjects";
     sStatusTip    = QT_TR_NOOP("Merge project");
 }
 
@@ -946,7 +946,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
     sGroup        = QT_TR_NOOP("Edit");
     sMenuText     = QT_TR_NOOP("Duplicate selection");
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
-    sWhatsThis    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sWhatsThis    = "Std_DuplicateSelection";
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
 }
 

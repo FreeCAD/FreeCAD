@@ -64,7 +64,7 @@ CmdPointsImport::CmdPointsImport()
     sGroup        = QT_TR_NOOP("Points");
     sMenuText     = QT_TR_NOOP("Import points...");
     sToolTipText  = QT_TR_NOOP("Imports a point cloud");
-    sWhatsThis    = QT_TR_NOOP("Imports a point cloud");
+    sWhatsThis    = "Points_Import";
     sStatusTip    = QT_TR_NOOP("Imports a point cloud");
     sPixmap       = "Points_Import_Point_cloud";
 }
@@ -113,7 +113,7 @@ CmdPointsExport::CmdPointsExport()
     sGroup        = QT_TR_NOOP("Points");
     sMenuText     = QT_TR_NOOP("Export points...");
     sToolTipText  = QT_TR_NOOP("Exports a point cloud");
-    sWhatsThis    = QT_TR_NOOP("Exports a point cloud");
+    sWhatsThis    = "Points_Export";
     sStatusTip    = QT_TR_NOOP("Exports a point cloud");
     sPixmap       = "Points_Export_Point_cloud";
 }
@@ -154,7 +154,7 @@ CmdPointsTransform::CmdPointsTransform()
     sGroup        = QT_TR_NOOP("Points");
     sMenuText     = QT_TR_NOOP("Transform Points");
     sToolTipText  = QT_TR_NOOP("Test to transform a point cloud");
-    sWhatsThis    = QT_TR_NOOP("Test to transform a point cloud");
+    sWhatsThis    = "Points_Transform";
     sStatusTip    = QT_TR_NOOP("Test to transform a point cloud");
     sPixmap       = "Test1";
 }
@@ -191,7 +191,7 @@ CmdPointsConvert::CmdPointsConvert()
     sGroup        = QT_TR_NOOP("Points");
     sMenuText     = QT_TR_NOOP("Convert to points...");
     sToolTipText  = QT_TR_NOOP("Convert to points");
-    sWhatsThis    = QT_TR_NOOP("Convert to points");
+    sWhatsThis    = "Points_Convert";
     sStatusTip    = QT_TR_NOOP("Convert to points");
 }
 
@@ -272,7 +272,7 @@ CmdPointsPolyCut::CmdPointsPolyCut()
     sGroup        = QT_TR_NOOP("Points");
     sMenuText     = QT_TR_NOOP("Cut point cloud");
     sToolTipText  = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
-    sWhatsThis    = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
+    sWhatsThis    = "Points_PolyCut";
     sStatusTip    = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
     sPixmap       = "PolygonPick";
 }
@@ -317,7 +317,7 @@ CmdPointsMerge::CmdPointsMerge()
     sGroup        = QT_TR_NOOP("Points");
     sMenuText     = QT_TR_NOOP("Merge point clouds");
     sToolTipText  = QT_TR_NOOP("Merge several point clouds into one");
-    sWhatsThis    = QT_TR_NOOP("Merge several point clouds into one");
+    sWhatsThis    = "Points_Merge";
     sStatusTip    = QT_TR_NOOP("Merge several point clouds into one");
 }
 

@@ -6546,7 +6546,7 @@ CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain InternalAlignment");
     sToolTipText    = QT_TR_NOOP("Constrains an element to be aligned with the internal geometry of another element");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_ConstrainInternalAlignment";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_InternalAlignment";
     sAccel          = "Ctrl+A";
