@@ -299,7 +299,7 @@ CmdSandboxPythonLockThread::CmdSandboxPythonLockThread()
     sGroup        = QT_TR_NOOP("Sandbox");
     sMenuText     = QT_TR_NOOP("Locked Python threads");
     sToolTipText  = QT_TR_NOOP("Use Python's thread module where each thread is locked");
-    sWhatsThis    = "Sandbox_PythonLockThread"
+    sWhatsThis    = "Sandbox_PythonLockThread";
     sStatusTip    = QT_TR_NOOP("Use Python's thread module where each thread is locked");
 }
 
@@ -1214,7 +1214,7 @@ CmdTestCryptographicHash::CmdTestCryptographicHash()
     sGroup          = "Standard-Test";
     sMenuText       = "Cryptographic Hash";
     sToolTipText    = "Cryptographic Hash";
-    sWhatsThis      = "Sandbox_CryptographicHash"
+    sWhatsThis      = "Sandbox_CryptographicHash";
     sStatusTip      = sToolTipText;
 }
 
