@@ -973,7 +973,7 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
     sGroup        = QT_TR_NOOP("Fem");
     sMenuText     = QT_TR_NOOP("Create node set by Poly");
     sToolTipText  = QT_TR_NOOP("Create node set by Poly");
-    sWhatsThis    = "Create node set by Poly";
+    sWhatsThis    = "FEM_DefineNodesSet";
     sStatusTip    = QT_TR_NOOP("Create node set by Poly");
     sPixmap       = "fem-femmesh-create-node-by-poly";
 }

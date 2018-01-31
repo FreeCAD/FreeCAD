@@ -388,7 +388,7 @@ StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
     sGroup        = QT_TR_NOOP("Help");
     sMenuText     = QT_TR_NOOP("Download online help");
     sToolTipText  = QT_TR_NOOP("Download %1's online help");
-    sWhatsThis    = QT_TR_NOOP("Download %1's online help");
+    sWhatsThis    = "Std_DownloadOnlineHelp";
     sStatusTip    = QT_TR_NOOP("Download %1's online help");
     sPixmap       = "help";
 
