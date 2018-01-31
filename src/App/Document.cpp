@@ -2867,6 +2867,9 @@ void Document::_removeObject(DocumentObject* pcObject)
 void Document::breakDependency(DocumentObject* pcObject, bool clear)
 {
     // Nullify all dependent objects
+    std::vector<DocumentObject *> docObjs;
+    pcObject->ExpressionEngine.getDocumentObjectDeps(docObjs);
+
     for (std::map<std::string,DocumentObject*>::iterator it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         std::map<std::string,App::Property*> Map;
         it->second->getPropertyMap(Map);
@@ -2927,6 +2930,14 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                         link->setValues(newLinks, newSub);
                     }
                 }
+            }
+        }
+
+        if (std::find(docObjs.begin(), docObjs.end(), it->second) != docObjs.end()) {
+            std::vector<App::ObjectIdentifier> paths;
+            pcObject->ExpressionEngine.getPathsToDocumentObject(it->second, paths);
+            for (std::vector<App::ObjectIdentifier>::iterator jt = paths.begin(); jt != paths.end(); ++jt) {
+                pcObject->ExpressionEngine.setValue(*jt, nullptr);
             }
         }
     }

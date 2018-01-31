@@ -472,6 +472,10 @@ def get_beam_normal(beam_direction, defined_angle):
     Dot_product_check = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
     # print(Dot_product_check)
     # print(normal_n)
+
+    # dummy usage of the axis Dot_product_check to get flake8 quiet
+    del Dot_product_check_x, Dot_product_check_y, Dot_product_check_z, Dot_product_check, Dot_product_check_nt
+
     return normal_n
 
 
