@@ -45,7 +45,7 @@ TYPESYSTEM_SOURCE(Path::Tool , Base::Persistence);
 Tool::Tool(const char* name,
            ToolType type,
            ToolMaterial /*material*/,
-           double diameter, 
+           double diameter,
            double lengthoffset,
            double flatradius,
            double cornerradius,
@@ -108,6 +108,49 @@ void Tool::Restore(XMLReader &reader)
     std::string type  = reader.hasAttribute("type")     ? reader.getAttribute("type") : "";
     std::string mat   = reader.hasAttribute("mat")      ? reader.getAttribute("mat")  : "";
 
+    Type = getToolType(type);
+    Material = getToolMaterial(mat);
+
+
+}
+
+const std::vector<std::string> Tool::ToolTypes(void)
+{
+    std::vector<std::string> toolTypes(13);
+    toolTypes[0] ="EndMill";
+    toolTypes[1] ="Drill";
+    toolTypes[2] ="CenterDrill";
+    toolTypes[3] ="CounterSink";
+    toolTypes[4] ="CounterBore";
+    toolTypes[5] ="FlyCutter";
+    toolTypes[6] ="Reamer";
+    toolTypes[7] ="Tap";
+    toolTypes[8] ="SlotCutter";
+    toolTypes[9] ="BallEndMill";
+    toolTypes[10] ="ChamferMill";
+    toolTypes[11] ="CornerRound";
+    toolTypes[12] ="Engraver";
+    return toolTypes;
+
+}
+
+const std::vector<std::string> Tool::ToolMaterials(void)
+{
+    std::vector<std::string> toolMat(7);
+    toolMat[0] ="Carbide";
+    toolMat[1] ="HighSpeedSteel";
+    toolMat[2] ="HighCarbonToolSteel";
+    toolMat[3] ="CastAlloy";
+    toolMat[4] ="Ceramics";
+    toolMat[5] ="Diamond";
+    toolMat[6] ="Sialon";
+    return toolMat;
+
+}
+
+Tool::ToolType Tool::getToolType(std::string type)
+{
+    Tool::ToolType Type;
     if(type=="EndMill")
         Type = Tool::ENDMILL;
     else if(type=="Drill")
@@ -118,6 +161,8 @@ void Tool::Restore(XMLReader &reader)
         Type = Tool::COUNTERSINK;
     else if(type=="CounterBore")
         Type = Tool::COUNTERBORE;
+    else if(type=="FlyCutter")
+        Type = Tool::FLYCUTTER;
     else if(type=="Reamer")
         Type = Tool::REAMER;
     else if(type=="Tap")
@@ -132,9 +177,15 @@ void Tool::Restore(XMLReader &reader)
         Type = Tool::CORNERROUND;
     else if(type=="Engraver")
         Type = Tool::ENGRAVER;
-    else 
+    else
         Type = Tool::UNDEFINED;
-        
+
+    return Type;
+}
+
+Tool::ToolMaterial Tool::getToolMaterial(std::string mat)
+{
+    Tool::ToolMaterial Material;
     if(mat=="Carbide")
         Material = Tool::CARBIDE;
     else if(mat=="HighSpeedSteel")
@@ -151,6 +202,8 @@ void Tool::Restore(XMLReader &reader)
         Material = Tool::SIALON;
     else
         Material = Tool::MATUNDEFINED;
+
+    return Material;
 }
 
 const char* Tool::TypeName(Tool::ToolType typ) {
@@ -163,6 +216,8 @@ const char* Tool::TypeName(Tool::ToolType typ) {
         return "CounterSink";
       case Tool::COUNTERBORE:
         return "CounterBore";
+      case Tool::FLYCUTTER:
+        return "FlyCutter";
       case Tool::REAMER:
         return "Reamer";
       case Tool::TAP:
@@ -292,7 +347,3 @@ void Tooltable::Restore (XMLReader &reader)
         Tools[id] = tmp;
     }
 }
-
-
-
-

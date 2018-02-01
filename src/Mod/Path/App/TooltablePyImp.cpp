@@ -51,7 +51,7 @@ std::string ToolPy::representation(void) const
 
 PyObject *ToolPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ToolPy and the Twin object 
+    // create a new instance of ToolPy and the Twin object
     return new ToolPy(new Tool);
 }
 
@@ -93,51 +93,12 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
     }
 
     getToolPtr()->Name = name;
+
     std::string typeStr(type);
-    if(typeStr=="Drill")
-        getToolPtr()->Type = Tool::DRILL;
-    else if(typeStr=="CenterDrill")
-        getToolPtr()->Type = Tool::CENTERDRILL;
-    if(typeStr=="CounterSink")
-        getToolPtr()->Type = Tool::COUNTERSINK;
-    if(typeStr=="CounterBore")
-        getToolPtr()->Type = Tool::COUNTERBORE;
-    if(typeStr=="Reamer")
-        getToolPtr()->Type = Tool::REAMER;
-    if(typeStr=="Tap")
-        getToolPtr()->Type = Tool::TAP;
-    else if(typeStr=="EndMill")
-        getToolPtr()->Type = Tool::ENDMILL;
-    else if(typeStr=="SlotCutter")
-        getToolPtr()->Type = Tool::SLOTCUTTER;
-    else if(typeStr=="BallEndMill")
-        getToolPtr()->Type = Tool::BALLENDMILL;
-    else if(typeStr=="ChamferMill")
-        getToolPtr()->Type = Tool::CHAMFERMILL;
-    else if(typeStr=="CornerRound")
-        getToolPtr()->Type = Tool::CORNERROUND;
-    else if(typeStr=="Engraver")
-        getToolPtr()->Type = Tool::ENGRAVER;
-    else 
-        getToolPtr()->Type = Tool::UNDEFINED;
-        
+    getToolPtr()->Type = Tool::getToolType(typeStr);
+
     std::string matStr(mat);
-    if(matStr=="HighSpeedSteel")
-        getToolPtr()->Material = Tool::HIGHSPEEDSTEEL;
-    else if(matStr=="Carbide")
-        getToolPtr()->Material = Tool::CARBIDE;
-    else if(matStr=="HighCarbonToolSteel")
-        getToolPtr()->Material = Tool::HIGHCARBONTOOLSTEEL;
-    else if(matStr=="CastAlloy")
-        getToolPtr()->Material = Tool::CASTALLOY;
-    else if(matStr=="Ceramics")
-        getToolPtr()->Material = Tool::CERAMICS;
-    else if(matStr=="Diamond")
-        getToolPtr()->Material = Tool::DIAMOND;
-    else if(matStr=="Sialon")
-        getToolPtr()->Material = Tool::SIALON;
-    else 
-        getToolPtr()->Material = Tool::MATUNDEFINED;
+    getToolPtr()->Material = Tool::getToolMaterial(matStr);
 
     getToolPtr()->Diameter          = dia ? PyFloat_AsDouble(dia) : 0.0;
     getToolPtr()->LengthOffset      = len ? PyFloat_AsDouble(len) : 0.0;
@@ -170,33 +131,8 @@ Py::String ToolPy::getToolType(void) const
 void ToolPy::setToolType(Py::String arg)
 {
     std::string typeStr(arg.as_std_string());
-    if(typeStr=="Drill")
-        getToolPtr()->Type = Tool::DRILL;
-    else if(typeStr=="CenterDrill")
-        getToolPtr()->Type = Tool::CENTERDRILL;
-    else if(typeStr=="CounterSink")
-        getToolPtr()->Type = Tool::COUNTERSINK;
-    else if(typeStr=="CounterBore")
-        getToolPtr()->Type = Tool::COUNTERBORE;
-    else if(typeStr=="Reamer")
-        getToolPtr()->Type = Tool::REAMER;
-    else if(typeStr=="Tap")
-        getToolPtr()->Type = Tool::TAP;
-    else if(typeStr=="EndMill")
-        getToolPtr()->Type = Tool::ENDMILL;
-    else if(typeStr=="SlotCutter")
-        getToolPtr()->Type = Tool::SLOTCUTTER;
-    else if(typeStr=="BallEndMill")
-        getToolPtr()->Type = Tool::BALLENDMILL;
-    else if(typeStr=="ChamferMill")
-        getToolPtr()->Type = Tool::CHAMFERMILL;
-    else if(typeStr=="CornerRound")
-        getToolPtr()->Type = Tool::CORNERROUND;
+    getToolPtr()->Type = Tool::getToolType(typeStr);
 
-    else if(typeStr=="Engraver")
-        getToolPtr()->Type = Tool::ENGRAVER;
-    else 
-        getToolPtr()->Type = Tool::UNDEFINED;
 }
 
 Py::String ToolPy::getMaterial(void) const
@@ -207,22 +143,7 @@ Py::String ToolPy::getMaterial(void) const
 void ToolPy::setMaterial(Py::String arg)
 {
     std::string matStr(arg.as_std_string());
-    if(matStr=="HighSpeedSteel")
-        getToolPtr()->Material = Tool::HIGHSPEEDSTEEL;
-    else if(matStr=="Carbide")
-        getToolPtr()->Material = Tool::CARBIDE;
-    else if(matStr=="HighCarbonToolSteel")
-        getToolPtr()->Material = Tool::HIGHCARBONTOOLSTEEL;
-    else if(matStr=="CastAlloy")
-        getToolPtr()->Material = Tool::CASTALLOY;
-    else if(matStr=="Ceramics")
-        getToolPtr()->Material = Tool::CERAMICS;
-    else if(matStr=="Diamond")
-        getToolPtr()->Material = Tool::DIAMOND;
-    else if(matStr=="Sialon")
-        getToolPtr()->Material = Tool::SIALON;
-    else 
-        getToolPtr()->Material = Tool::MATUNDEFINED;
+    getToolPtr()->Material = Tool::getToolMaterial(matStr);
 }
 
 Py::Float ToolPy::getDiameter(void) const
@@ -294,7 +215,7 @@ PyObject *ToolPy::getCustomAttributes(const char* /*attr*/) const
 
 int ToolPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 PyObject* ToolPy::copy(PyObject * args)
@@ -304,7 +225,6 @@ PyObject* ToolPy::copy(PyObject * args)
     }
     throw Py::Exception("This method accepts no argument");
 }
-
 
 PyObject* ToolPy::setFromTemplate(PyObject * args)
 {
@@ -358,6 +278,35 @@ PyObject* ToolPy::templateAttrs(PyObject * args)
     }
     throw Py::Exception("This method accepts no argument");
 }
+
+PyObject* ToolPy::getToolTypes(PyObject * args)
+{
+    if (PyArg_ParseTuple(args, "")) {
+        std::vector<std::string> toolTypes = Tool::ToolTypes();
+        PyObject *list = PyList_New(0);
+        for(unsigned i = 0; i != toolTypes.size(); i++) {
+
+            PyList_Append(list, PYSTRING_FROMSTRING(toolTypes[i].c_str()));
+        }
+        return list;
+    }
+    throw Py::Exception("This method accepts no argument");
+}
+
+PyObject* ToolPy::getToolMaterials(PyObject * args)
+{
+    if (PyArg_ParseTuple(args, "")) {
+        std::vector<std::string> toolMaterials = Tool::ToolMaterials();
+        PyObject *list = PyList_New(0);
+        for(unsigned i = 0; i != toolMaterials.size(); i++) {
+
+            PyList_Append(list, PYSTRING_FROMSTRING(toolMaterials[i].c_str()));
+        }
+        return list;
+    }
+    throw Py::Exception("This method accepts no argument");
+}
+
 
 // TooltablePy
 
@@ -544,7 +493,7 @@ PyObject *TooltablePy::getCustomAttributes(const char* /*attr*/) const
 
 int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 
