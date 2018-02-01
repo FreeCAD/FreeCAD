@@ -7443,7 +7443,7 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create regular polygon");
     sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketch");
-    sWhatsThis      = ""Sketcher_CreateRegularPolygon"";
+    sWhatsThis      = "Sketcher_CreateRegularPolygon";
     sStatusTip      = sToolTipText;
     sPixmap         = "CreateRegularPolygon";
     sAccel          = "";
