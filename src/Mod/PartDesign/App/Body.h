@@ -84,6 +84,8 @@ public:
      */
     void insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
 
+    void setBaseProperty(App::DocumentObject* feature);
+
     /// Remove the feature from the body
     virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj) override;
 
@@ -108,7 +110,7 @@ public:
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
     static bool isAllowed(const App::DocumentObject* f);
-    virtual bool allowObject(DocumentObject* f) override {return isAllowed(f);};
+    virtual bool allowObject(DocumentObject* f) override {return isAllowed(f);}
 
     /**
      * Return the body which this feature belongs too, or NULL

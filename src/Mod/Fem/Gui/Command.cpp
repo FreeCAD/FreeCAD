@@ -973,7 +973,7 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
     sGroup        = QT_TR_NOOP("Fem");
     sMenuText     = QT_TR_NOOP("Create node set by Poly");
     sToolTipText  = QT_TR_NOOP("Create node set by Poly");
-    sWhatsThis    = "Create node set by Poly";
+    sWhatsThis    = "FEM_DefineNodesSet";
     sStatusTip    = QT_TR_NOOP("Create node set by Poly");
     sPixmap       = "fem-femmesh-create-node-by-poly";
 }
@@ -1200,6 +1200,32 @@ void CmdFemPostCreateDataAlongLineFilter::activated(int)
 }
 
 bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemPostCreateDataAtPointFilter);
+
+CmdFemPostCreateDataAtPointFilter::CmdFemPostCreateDataAtPointFilter()
+  : Command("FEM_PostCreateDataAtPointFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-DataAtPoint";
+}
+
+void CmdFemPostCreateDataAtPointFilter::activated(int)
+{
+
+   setupFilter(this, "DataAtPoint");
+
+}
+
+bool CmdFemPostCreateDataAtPointFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1534,6 +1560,18 @@ void CmdFemPostPipelineFromResult::activated(int)
         Base::Console().Message("Debug: FemResultObject pointer = %p", result );
 
     */
+
+    // go through active document change some Visibility
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    App::Document* app = doc->getDocument();
+    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType
+        (App::DocumentObject::getClassTypeId());
+
+    for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
+        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
+                     , app->getName(), (*it)->getNameInDocument());
+    }
+
     std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
     if (results.size() == 1) {
         std::string FeatName = getUniqueObjectName("Pipeline");
@@ -1588,6 +1626,7 @@ void CreateFemCommands(void)
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCreateDataAtPointFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);

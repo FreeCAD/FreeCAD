@@ -1229,10 +1229,32 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
 
 void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QImage& img) const
 {
+    // Save picture methods:
+    // FramebufferObject -- viewer renders into FBO (no offscreen)
+    // CoinOffscreenRenderer -- Coin's offscreen rendering method
+    // PixelBuffer -- Qt's pixel buffer used for offscreen rendering (only Qt4)
+    // Otherwise (Default) -- Qt's FBO used for offscreen rendering
+    std::string saveMethod = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetASCII("SavePicture");
+
+    bool useFramebufferObject = false;
+    bool usePixelBuffer = false;
     bool useCoinOffscreenRenderer = false;
-    useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->
-        GetBool("CoinOffscreenRenderer", useCoinOffscreenRenderer);
+    if (saveMethod == "FramebufferObject") {
+        useFramebufferObject = true;
+    }
+    else if (saveMethod == "PixelBuffer") {
+        usePixelBuffer = true;
+    }
+    else if (saveMethod == "CoinOffscreenRenderer") {
+        useCoinOffscreenRenderer = true;
+    }
+
+    if (useFramebufferObject) {
+        View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
+        self->imageFromFramebuffer(w, h, s, bg, img);
+        return;
+    }
 
     // if no valid color use the current background
     bool useBackground = false;
@@ -1310,6 +1332,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         if (!useCoinOffscreenRenderer) {
             SoQtOffscreenRenderer renderer(vp);
             renderer.setNumPasses(s);
+            renderer.setPbufferEnable(usePixelBuffer);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
             if (!renderer.render(root))
@@ -1722,8 +1745,11 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     QtGLFramebufferObjectFormat fboFormat;
     fboFormat.setSamples(samples);
     fboFormat.setAttachment(QtGLFramebufferObject::Depth);
-    //With enabled alpha a transparent background is supported but
-    //at the same time breaks semi-transparent models
+    // With enabled alpha a transparent background is supported but
+    // at the same time breaks semi-transparent models. A workaround
+    // is to use a certain background color using GL_RGB as texture
+    // format and in the output image search for the above color and
+    // replaces it with the color requested by the user.
 #if defined(HAVE_QT5_OPENGL)
     //fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
     fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
@@ -1736,8 +1762,14 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     const QColor col = backgroundColor();
     bool on = hasGradientBackground();
 
-    if (bgcolor.isValid()) {
-        setBackgroundColor(bgcolor);
+    int alpha = 255;
+    QColor bgopaque = bgcolor;
+    if (bgopaque.isValid()) {
+        // force an opaque background color
+        alpha = bgopaque.alpha();
+        if (alpha < 255)
+            bgopaque.setRgb(255,255,255);
+        setBackgroundColor(bgopaque);
         setGradientBackground(false);
     }
 
@@ -1745,6 +1777,22 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     setBackgroundColor(col);
     setGradientBackground(on);
     img = fbo.toImage();
+
+    // if background color isn't opaque manipulate the image
+    if (alpha < 255) {
+        QImage image(img.constBits(), img.width(), img.height(), QImage::Format_ARGB32);
+        img = image.copy();
+        QRgb rgba = bgcolor.rgba();
+        QRgb rgb = bgopaque.rgb();
+        QRgb * bits = (QRgb*) img.bits();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (*bits == rgb)
+                    *bits = rgba;
+                bits++;
+            }
+        }
+    }
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)

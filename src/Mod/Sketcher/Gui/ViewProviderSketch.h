@@ -225,6 +225,10 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    /// updates the visibility of the virtual space
+    void updateVirtualSpace(void);
+    void setIsShownVirtualSpace(bool isshownvirtualspace);
+    bool getIsShownVirtualSpace(void) const;
     
     friend class DrawSketchHandler;
     friend struct ::EditData;
@@ -414,6 +418,9 @@ protected:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
+    
+    // Virtual space variables
+    bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
 };
 
 } // namespace PartGui

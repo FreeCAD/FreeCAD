@@ -53,6 +53,7 @@ public:
     // Part::PropertyPartShape Shape;
     App::PropertyLinkList Sources;
     App::PropertyVector StartPoint;
+    App::PropertyBool UseStartPoint;
     PARAM_PROP_DECLARE(AREA_PARAMS_PATH)
 
     //@{

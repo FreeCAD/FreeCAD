@@ -1334,7 +1334,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     ElementsMap elementsMapFac;  // empty faces map used for elemParam = 1  and elementsMapVol is not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty())) {
         // for ememParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
-        // we gone fill the elementsMapFac with all faces
+        // we're going to fill the elementsMapFac with all faces
         SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
         while (aFaceIter->more()) {
             const SMDS_MeshFace* aFace = aFaceIter->next();
@@ -1351,7 +1351,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         }
     }
     if (elemParam == 2) {
-        // we gone fill the elementsMapFac with the facesOnly
+        // we're going to fill the elementsMapFac with the facesOnly
         std::set<int> facesOnly = getFacesOnly();
         for (std::set<int>::iterator itfa = facesOnly.begin(); itfa != facesOnly.end(); ++itfa) {
             std::pair<int, std::vector<int> > apair;
@@ -1372,7 +1372,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     ElementsMap elementsMapEdg;  // empty edges map used for elemParam == 1 and either elementMapVol or elementsMapFac are not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty() && elementsMapFac.empty())) {
         // for ememParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
-        // we gone fill the elementsMapEdg with all edges
+        // we're going to fill the elementsMapEdg with all edges
         SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
         while (aEdgeIter->more()) {
             const SMDS_MeshEdge* aEdge = aEdgeIter->next();
@@ -1389,7 +1389,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         }
     }
     if (elemParam == 2) {
-        // we gone fill the elementsMapEdg with the edgesOnly
+        // we're going to fill the elementsMapEdg with the edgesOnly
         std::set<int> edgesOnly = getEdgesOnly();
         for (std::set<int>::iterator ited = edgesOnly.begin(); ited != edgesOnly.end(); ++ited) {
             std::pair<int, std::vector<int> > apair;

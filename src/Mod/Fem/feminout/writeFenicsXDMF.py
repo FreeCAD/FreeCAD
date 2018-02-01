@@ -101,7 +101,7 @@ def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, effective_dim), Format="XML")
         nodes = []
-        for (ind, (key, node)) in enumerate(fem_mesh_obj.FemMesh.Nodes.iteritems()):
+        for (ind, (key, node)) in enumerate(list(fem_mesh_obj.FemMesh.Nodes.items())):
             nodes.append(node)
             recalc_nodes_ind_dict[key] = ind
 
@@ -282,7 +282,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
 
         elem_dict = {}
-        (elem_mark_group, elem_mark_default) = group_values_dict.get(g, (g, -1))
+        (elem_mark_group, elem_mark_default) = group_values_dict.get(g, (1, 0))
 
         # TODO: is it better to save all groups each at once or collect all codim equal
         # groups to put them into one function?
@@ -299,8 +299,8 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
 
     # TODO: improve cell functions support
 
-    fp = open(outputfile, "w")
-    fp.write('''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
+    fp = open(outputfile, "wb")
+    fp.write(b'''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
     fp.write(ET.tostring(root))
     # xml core functionality does not support pretty printing
     # so the output file looks quite ugly

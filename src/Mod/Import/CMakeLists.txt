@@ -24,6 +24,8 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        gzip_utf8.py
+        stepZ.py
         ${Import_QRC_SRCS}
     DESTINATION
         Mod/Import

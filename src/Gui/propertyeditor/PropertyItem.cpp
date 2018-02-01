@@ -3551,7 +3551,7 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         list << QString::fromLatin1(obj->getNameInDocument());
     }
     else 
-        list << QString::fromLatin1("");
+        list << QString::fromLatin1("Null");
 
     if(xlink) {
         list << QString::fromUtf8(xlink->getSubName());
@@ -3716,7 +3716,8 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
         objName = QString::fromLatin1("Null");
     }
 
-    // each item is a list of four elements: [document name, internal name, label, internal name of container]
+    // each item is a list of five elements:
+    //[document name, internal name, label, internal name of container, property name]
     // the variant list contains at least one item
     std::vector<App::DocumentObject*> obj = prop_link->getValues();
     QVariantList varList;
@@ -3727,6 +3728,7 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
             list << QString::fromLatin1((*it)->getNameInDocument());
             list << QString::fromUtf8((*it)->Label.getValue());
             list << objName;
+            list << QString::fromLatin1(prop->getName());
             varList << list;
         }
     }
@@ -3747,6 +3749,7 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
         // the object label
         list << QString::fromLatin1("");
         list << objName;
+        list << QString::fromLatin1(prop->getName());
         varList << list;
     }
 

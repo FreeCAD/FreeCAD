@@ -55,6 +55,7 @@ enum ConstraintType {
     Symmetric = 14,
     InternalAlignment = 15,
     SnellsLaw = 16,
+    Block = 17,
     NumConstraintTypes // must be the last item!
 };
 
@@ -121,6 +122,7 @@ public:
     float LabelPosition;
     bool isDriving;
     int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!! 
+    bool isInVirtualSpace;
 
 protected:
     boost::uuids::uuid tag;

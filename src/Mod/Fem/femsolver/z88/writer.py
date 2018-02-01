@@ -28,9 +28,10 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+import time
 import femmesh.meshtools as FemMeshTools
 import feminout.importZ88Mesh as importZ88Mesh
-import FemInputWriter
+from .. import writerbase as FemInputWriter
 
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
@@ -41,7 +42,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, shellthickness_obj, fluidsection_obj,
+                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
                  analysis_type=None, dir_name=None
                  ):
 
@@ -53,7 +54,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             contact_obj, planerotation_obj, transform_obj,
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
-            beamsection_obj, shellthickness_obj, fluidsection_obj,
+            beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
             analysis_type, dir_name)
         # self.dir_name does have a slash at the end
         self.file_name = self.dir_name + 'z88'
@@ -61,6 +62,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         print('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name)
 
     def write_z88_input(self):
+        timestart = time.clock()
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -75,6 +77,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
+        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
         return self.dir_name
 
     def set_z88_elparam(self):

@@ -114,7 +114,17 @@ Returns:
 </UserDocu>
 		  </Documentation>
 	  </Methode>
-		<Methode Name="parameterAt" Const="true">
+      <Methode Name="parameters" Const="true">
+          <Documentation>
+              <UserDocu>
+parameters([face]) --&gt; list
+Get the list of parameters of the tessellation of an edge. If the edge is part of
+a face then this face is required as argument.
+An exception is raised if the edge has no polygon.
+</UserDocu>
+          </Documentation>
+      </Methode>
+        <Methode Name="parameterAt" Const="true">
 			<Documentation>
 				<UserDocu>Float = parameterAt(Vertex) - Get the parameter at the given vertex if lying on the edge</UserDocu>
 			</Documentation>

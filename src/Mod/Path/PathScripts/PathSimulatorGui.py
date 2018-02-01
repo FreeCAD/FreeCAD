@@ -6,6 +6,7 @@ import Mesh
 import PathSimulator
 import math
 from FreeCAD import Vector, Base
+import PathScripts.PathLog as PathLog
 from PathScripts.PathGeom import PathGeom
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
@@ -186,10 +187,10 @@ class PathSimulation:
                 (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
         if cmd.Name in ['G81', 'G82', 'G83']:
             if self.firstDrill:
-                extendcommand = Path.Command('G1', {"X": 0.0, "Y": 0.0, "Z": cmd.r})
+                extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": cmd.r})
                 self.curpos = self.RapidMove(extendcommand, self.curpos)
                 self.firstDrill = False
-            extendcommand = Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
+            extendcommand = Path.Command('G0', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
             self.curpos = self.RapidMove(extendcommand, self.curpos)
             extendcommand = Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.z})
             self.curpos = self.RapidMove(extendcommand, self.curpos)
@@ -242,9 +243,9 @@ class PathSimulation:
         if cmd.Name in ['G81', 'G82', 'G83']:
             extendcommands = []
             if self.firstDrill:
-                extendcommands.append(Path.Command('G1', {"X": 0.0, "Y": 0.0, "Z": cmd.r}))
+                extendcommands.append(Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": cmd.r}))
                 self.firstDrill = False
-            extendcommands.append(Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
+            extendcommands.append(Path.Command('G0', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
             extendcommands.append(Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.z}))
             extendcommands.append(Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
             for ecmd in extendcommands:
@@ -382,6 +383,9 @@ class PathSimulation:
         yp = pos[1]
         zp = pos[2]
         h = tool.CuttingEdgeHeight
+        if h <= 0.0: #set default if user fails to avoid freeze
+            h = 1.0
+            PathLog.error("SET Tool Length")
         # common to all tools
         vTR = Vector(xp + yf, yp - xf, zp + h)
         vTC = Vector(xp, yp, zp + h)

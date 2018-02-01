@@ -78,6 +78,13 @@ public:
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
+    /// add unspecified geometry, where each element's "fixed" status is given by the blockedGeometry array
+    int addGeometry(const std::vector<Part::Geometry *> &geo,
+                    const std::vector<bool> &blockedGeometry);
+    /// get boolean list indicating whether the geometry is to be blocked or not
+    void getBlockedGeometry(std::vector<bool> & blockedGeometry,
+                            std::vector<bool> & unenforceableConstraints,
+                            const std::vector<Constraint *> &ConstraintList) const;
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
@@ -145,6 +152,9 @@ public:
     //@{
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
+    /// add all constraints in the list, provided that are enforceable
+    int addConstraints(const std::vector<Constraint *> &ConstraintList,
+                       const std::vector<bool> & unenforceableConstraints);
     /// add one constraint to the sketch
     int addConstraint(const Constraint *constraint);
 

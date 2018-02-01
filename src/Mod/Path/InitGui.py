@@ -48,12 +48,12 @@ class PathWorkbench (Workbench):
         # load python modules
         from PathScripts import PathArray
         from PathScripts import PathComment
-        # from PathScripts import PathCompoundExtended
         from PathScripts import PathCustom
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
+        from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
         from PathScripts import PathFixture
@@ -86,7 +86,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_Tag", "PathDressup_RampEntry"]
+        dressupcmdlist = ["Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -113,7 +113,7 @@ class PathWorkbench (Workbench):
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             threedopcmdlist.append("Path_Surface")
-            extracmdlist.extend(["Path_Shape", "Path_Area", "Path_Area_Workplane"])
+            extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             FreeCADGui.addCommand('Path_3dTools', ThreeDCommandGroup())
             threedcmdgroup = ['Path_3dTools']
         else:
@@ -121,27 +121,18 @@ class PathWorkbench (Workbench):
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
-        #self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Partial Commands"), prepcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+threedcmdgroup)
         self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist)
         if extracmdlist:
             self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "Tools")], toolcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Partial Commands")], prepcmdlist)
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "New Operations")], opcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
-        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #    "Path", "Path Modification")], modcmdmore)
-        # self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
-        #     "Path", "Remote Operations")], remotecmdlist)
         if extracmdlist:
             self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 

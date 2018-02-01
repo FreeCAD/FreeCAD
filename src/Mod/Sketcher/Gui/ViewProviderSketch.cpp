@@ -56,6 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
 # include <QAction>
@@ -251,7 +252,7 @@ struct EditData {
     SoText2       *textX;
     SoTranslation *textPos;
 
-    SoGroup       *constrGroup;
+    SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
 };
@@ -278,7 +279,8 @@ ViewProviderSketch::ViewProviderSketch()
   : edit(0),
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
-    combrepscalehyst(0)
+    combrepscalehyst(0),
+    isShownVirtualSpace(false)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -2597,7 +2599,7 @@ void ViewProviderSketch::updateColor(void)
             color[i] = FullyConstrainedColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zLowLines);
+                verts[j] = SbVec3f(x,y,zNormLine);
             }
         }
         else {
@@ -2751,6 +2753,8 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
         return QString::fromLatin1("small/Constraint_Symmetric_sm");
     case SnellsLaw:
         return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
+    case Block:
+        return QString::fromLatin1("small/Constraint_Block_sm");
     default:
         return QString();
     }
@@ -4040,6 +4044,8 @@ Restart:
         rebuildConstraintsVisual();
     assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
+    // update the virtual space
+    updateVirtualSpace();
     // go through the constraints and update the position
     i = 0;
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
@@ -4058,26 +4064,127 @@ Restart:
 
             // distinquish different constraint types to build up
             switch (Constr->Type) {
+                case Block:
                 case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
                 case Vertical: // write the new position of the Vertical constraint
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-                        bool alignment = Constr->Second != Constraint::GeoUndef;
+                        bool alignment = Constr->Type!=Block && Constr->Second != Constraint::GeoUndef;
 
                         // get the geometry
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
                         if (!alignment) {
-                            // Vertical can only be a GeomLineSegment
-                            assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
-                            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
+                            // Vertical & Horiz can only be a GeomLineSegment, but Blocked can be anything.
+                            Base::Vector3d midpos;
+                            Base::Vector3d dir;
+                            Base::Vector3d norm;
 
-                            // calculate the half distance between the start and endpoint
-                            Base::Vector3d midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
 
-                            //Get a set of vectors perpendicular and tangential to these
-                            Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
-                            Base::Vector3d norm(-dir.y,dir.x,0);
+                                // calculate the half distance between the start and endpoint
+                                midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
+
+                                //Get a set of vectors perpendicular and tangential to these
+                                dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
+
+                                norm = Base::Vector3d(-dir.y,dir.x,0);
+                            }
+                            else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                                const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+                                midpos = Base::Vector3d(0,0,0);
+
+                                std::vector<Base::Vector3d> poles = bsp->getPoles();
+
+                                // Move center of gravity towards start not to collide with bspline degree information.
+                                double ws = 1.0 / poles.size();
+                                double w = 1.0;
+
+                                for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
+                                    midpos += w*(*it);
+                                    w -= ws;
+                                }
+
+                                midpos /= poles.size();
+
+                                dir = (bsp->getEndPoint() - bsp->getStartPoint()).Normalize();
+                                norm = Base::Vector3d(-dir.y,dir.x,0);
+                            }
+                            else {
+                                double ra=0,rb=0;
+                                double angle,angleplus=0.;//angle = rotation of object as a whole; angleplus = arc angle (t parameter for ellipses).
+                                if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                                    const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
+                                    ra = circle->getRadius();
+                                    angle = M_PI/4;
+                                    midpos = circle->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                                    const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
+                                    ra = arc->getRadius();
+                                    double startangle, endangle;
+                                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    angle = (startangle + endangle)/2;
+                                    midpos = arc->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                                    const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo);
+                                    ra = ellipse->getMajorRadius();
+                                    rb = ellipse->getMinorRadius();
+                                    Base::Vector3d majdir = ellipse->getMajorAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = M_PI/4;
+                                    midpos = ellipse->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+                                    const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo);
+                                    ra = aoe->getMajorRadius();
+                                    rb = aoe->getMinorRadius();
+                                    double startangle, endangle;
+                                    aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = aoe->getMajorAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = (startangle + endangle)/2;
+                                    midpos = aoe->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                                    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo);
+                                    ra = aoh->getMajorRadius();
+                                    rb = aoh->getMinorRadius();
+                                    double startangle, endangle;
+                                    aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = aoh->getMajorAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = (startangle + endangle)/2;
+                                    midpos = aoh->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                                    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo);
+                                    ra = aop->getFocal();
+                                    double startangle, endangle;
+                                    aop->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = - aop->getXAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = (startangle + endangle)/2;
+                                    midpos = aop->getFocus();    
+                                } else
+                                    break;
+
+                                if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                                    geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                                    geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
+
+                                    Base::Vector3d majDir, minDir, rvec;
+                                    majDir = Base::Vector3d(cos(angle),sin(angle),0);//direction of major axis of ellipse
+                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);//direction of minor axis of ellipse
+                                    rvec = (ra*cos(angleplus)) * majDir   +   (rb*sin(angleplus)) * minDir;
+                                    midpos += rvec;
+                                    rvec.Normalize();
+                                    norm = rvec;
+                                    dir = Base::Vector3d(-rvec.y,rvec.x,0);//DeepSOIC: I'm not sure what dir is supposed to mean.
+                                }
+                                else {
+                                    norm = Base::Vector3d(cos(angle),sin(angle),0);
+                                    dir = Base::Vector3d(-norm.y,norm.x,0);
+                                    midpos += ra*norm;
+                                }
+                            }
 
                             Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
@@ -4203,7 +4310,6 @@ Restart:
                             } else
                                 break;
                             twoIcons = true;
-
                         }
 
                         Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
@@ -4926,6 +5032,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             break;
             case Horizontal:
             case Vertical:
+            case Block:
             {
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
@@ -5036,6 +5143,39 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         mat->unref();
     }
 }
+
+void ViewProviderSketch::updateVirtualSpace(void)
+{
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
+
+    if(constrlist.size() == edit->vConstrType.size()) {
+
+        edit->constrGroup->enable.setNum(constrlist.size());
+
+        SbBool *sws = edit->constrGroup->enable.startEditing();
+
+        for (size_t i = 0; i < constrlist.size(); i++)
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isShownVirtualSpace); // XOR of constraint mode and VP mode
+
+
+        edit->constrGroup->enable.finishEditing();
+    }
+}
+
+void ViewProviderSketch::setIsShownVirtualSpace(bool isshownvirtualspace)
+{
+    this->isShownVirtualSpace = isshownvirtualspace;
+
+    updateVirtualSpace();
+    
+    signalConstraintsChanged();
+}
+
+bool ViewProviderSketch::getIsShownVirtualSpace() const
+{
+    return this->isShownVirtualSpace;
+}
+
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 {
@@ -5538,7 +5678,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(DrawStyle);
 
     // add the group where all the constraints has its SoSeparator
-    edit->constrGroup = new SoGroup();
+    edit->constrGroup = new SmSwitchboard();
     edit->constrGroup->setName("ConstraintGroup");
     edit->EditRoot->addChild(edit->constrGroup);
     
@@ -5880,7 +6020,11 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
+        // We stored the vertices, but is there really a coincident constraint? Check
+        const std::vector< Sketcher::Constraint * > &vals = getSketchObject()->Constraints.getValues();
+        
         std::set<int>::const_reverse_iterator rit;
+
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
                 FCMD_OBJ_CMD2("delConstraint(%i)" ,getObject(), *rit);
@@ -5891,11 +6035,29 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         }
 
         for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); ++rit) {
-            try {
-                FCMD_OBJ_CMD2("delConstraintOnPoint(%i)" ,getObject(), *rit);
+            int GeoId;
+            PointPos PosId;
+
+            if (*rit == GeoEnum::RtPnt) { // RootPoint
+                GeoId = Sketcher::GeoEnum::RtPnt;
+                PosId = start;
+            } else {
+                getSketchObject()->getGeoVertexIndex(*rit, GeoId, PosId);
             }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+
+            if (GeoId != Constraint::GeoUndef) {
+                for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+                    if (((*it)->Type == Sketcher::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
+                        ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) ) {
+                        try {
+                            FCMD_OBJ_CMD2("delConstraintOnPoint(%i,%i)" ,getObject(), GeoId, (int)PosId);
+                        }
+                        catch (const Base::Exception& e) {
+                            Base::Console().Error("%s\n", e.what());
+                        }
+                        break;
+                    }
+                }
             }
         }
 

@@ -54,6 +54,8 @@ public:
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
 
+    App::PropertyBool Refine;
+
     short mustExecute() const;
 
     /** calculates and updates the Placement property based on the features

@@ -43,13 +43,8 @@ class _CommandFemAnalysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
-        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
-        if use_old_solver_frame_work and not use_new_solver_frame_work:
-            FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
-        else:
-            FreeCADGui.doCommand("ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument)")
+        # create a CalculiX ccx tools solver for any new analysis, to be on the save side fo rnew users
+        FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
 
 
@@ -81,7 +76,7 @@ class _CommandFemConstraintElectrostaticPotential(CommandManager):
             'Pixmap': 'fem-constraint-electrostatic-potential',
             'MenuText': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
-                "Constraint Potenial"),
+                "Constraint Potential"),
             'ToolTip': QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
                 "Creates a FEM constraint electrostatic potential")}
@@ -195,6 +190,22 @@ class _CommandFemElementGeometry2D(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry2D")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry2D(FreeCAD.ActiveDocument))")
+
+
+class _CommandFemElementRotation1D(CommandManager):
+    "The Fem_ElementRotation1D command definition"
+    def __init__(self):
+        super(_CommandFemElementRotation1D, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-rotation',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Beam rotation"),
+                          'Accel': "C, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Creates a FEM beam rotation")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemElementRotation1D")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementRotation1D(FreeCAD.ActiveDocument))")
 
 
 class _CommandFemEquationElectrostatic(CommandManager):
@@ -420,7 +431,8 @@ class _CommandFemMeshGmshFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
+        # a mesh could be made with and without an analysis,
+        # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
         mesh_obj_name = 'FEMMeshGmsh'
         # mesh_obj_name = self.selobj.Name + "_Mesh"  # if requested by some people add Preference for this
@@ -462,7 +474,8 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        # a mesh could be made with and without an analysis, we gone check not for an analysis in command manager module
+        # a mesh could be made with and without an analysis,
+        # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         mesh_obj_name = 'FEMMeshNetgen'
         # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
@@ -542,39 +555,49 @@ class _CommandFemResultsPurge(CommandManager):
         resulttools.purge_results(self.active_analysis)
 
 
-class _CommandFemSolverCalculix(CommandManager):
-    "The FEM_SolverCalculix command definition"
+class _CommandFemSolverCalculixCxxtools(CommandManager):
+    "The FEM_SolverCalculix ccx tools command definition"
     def __init__(self):
-        super(_CommandFemSolverCalculix, self).__init__()
+        super(_CommandFemSolverCalculixCxxtools, self).__init__()
         self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a FEM solver CalculiX")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX Standard"),
+                          'Accel': "S, X",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a standard FEM solver CalculiX with ccx tools")}
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        use_old_solver_frame_work = ccx_prefs.GetBool("useOldSolverFrameWork", False)
-        use_new_solver_frame_work = ccx_prefs.GetBool("useNewSolverFrameWork", True)
-        if use_old_solver_frame_work and not use_new_solver_frame_work:
-            has_nonlinear_material_obj = False
-            for m in self.active_analysis.Group:
-                if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
-                    has_nonlinear_material_obj = True
-            FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
-            FreeCADGui.addModule("ObjectsFem")
-            FreeCADGui.addModule("FemGui")
-            if has_nonlinear_material_obj:
-                FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
-                FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
-                FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(solver)")
-            else:
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))")
+        has_nonlinear_material_obj = False
+        for m in self.active_analysis.Group:
+            if hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
+                has_nonlinear_material_obj = True
+        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
+        if has_nonlinear_material_obj:
+            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
+            FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
+            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(solver)")
         else:
-            FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
-            FreeCADGui.addModule("ObjectsFem")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument))")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
+
+class _CommandFemSolverCalculiX(CommandManager):
+    "The FEM_SolverCalculix command definition"
+    def __init__(self):
+        super(_CommandFemSolverCalculiX, self).__init__()
+        self.resources = {'Pixmap': 'fem-solver',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Solver CalculiX (experimental)"),
+                          'Accel': "S, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Creates a FEM solver CalculiX (experimental)")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument))")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -632,9 +655,10 @@ class _CommandFemSolverRun(CommandManager):
                 print("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.solver = self.selobj
-        if hasattr(self.solver, "SolverType") and self.solver.SolverType == "FemSolverCalculix":
-            import FemToolsCcx
-            self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
+        if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
+            print('CalxuliX ccx tools solver!')
+            from femtools import ccxtools
+            self.fea = ccxtools.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:
@@ -643,6 +667,7 @@ class _CommandFemSolverRun(CommandManager):
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
+            print('Frame work solver!')
             try:
                 machine = femsolver.run.getMachine(self.solver)
             except femsolver.run.MustSaveError:
@@ -683,6 +708,7 @@ class _CommandFemSolverZ88(CommandManager):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument))")
 
 
+# the sting in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand('FEM_Analysis', _CommandFemAnalysis())
 FreeCADGui.addCommand('FEM_ConstraintBodyHeatSource', _CommandFemConstraintBodyHeatSource())
 FreeCADGui.addCommand('FEM_ConstraintElectrostaticPotential', _CommandFemConstraintElectrostaticPotential())
@@ -692,6 +718,7 @@ FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeigh
 FreeCADGui.addCommand('FEM_ElementFluid1D', _CommandFemElementFluid1D())
 FreeCADGui.addCommand('FEM_ElementGeometry1D', _CommandFemElementGeometry1D())
 FreeCADGui.addCommand('FEM_ElementGeometry2D', _CommandFemElementGeometry2D())
+FreeCADGui.addCommand('FEM_ElementRotation1D', _CommandFemElementRotation1D())
 FreeCADGui.addCommand('FEM_EquationElectrostatic', _CommandFemEquationElectrostatic())
 FreeCADGui.addCommand('FEM_EquationElasticity', _CommandFemEquationElasticity())
 FreeCADGui.addCommand('FEM_EquationFlow', _CommandFemEquationFlow())
@@ -710,7 +737,8 @@ FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandFemMeshPrintInfo())
 FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())
 FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())
 FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())
-FreeCADGui.addCommand('FEM_SolverCalculix', _CommandFemSolverCalculix())
+FreeCADGui.addCommand('FEM_SolverCalculixCxxtools', _CommandFemSolverCalculixCxxtools())
+FreeCADGui.addCommand('FEM_SolverCalculiX', _CommandFemSolverCalculiX())
 FreeCADGui.addCommand('FEM_SolverControl', _CommandFemSolverControl())
 FreeCADGui.addCommand('FEM_SolverElmer', _CommandFemSolverElmer())
 FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())

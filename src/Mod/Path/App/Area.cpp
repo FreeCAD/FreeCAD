@@ -337,28 +337,37 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
             }
             break;
         } case GeomAbs_Circle:{
-            if(!to_edges) {
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Dir dir = circle.Axis().Direction();
-                gp_Pnt center = circle.Location();
-                int type = dir.Z()<0?-1:1;
-                if(reversed) type = -type;
-                if(fabs(first-last)>M_PI) {
-                    // Split arc(circle) larger than half circle. Because gcode
-                    // can't handle full circle?
-                    gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                    ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
-                                Point(center.X(),center.Y())));
-                }
-                ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+            double first = curve.FirstParameter();
+            double last = curve.LastParameter();
+            gp_Circ circle = curve.Circle();
+            gp_Dir dir = circle.Axis().Direction();
+            gp_Pnt center = circle.Location();
+            int type = dir.Z()<0?-1:1;
+            if(reversed) type = -type;
+            if(fabs(first-last)>M_PI) {
+                // Split arc(circle) larger than half circle. Because gcode
+                // can't handle full circle?
+                gp_Pnt mid = curve.Value((last-first)*0.5+first);
+                ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
                             Point(center.X(),center.Y())));
-                break;
             }
-        }
-            /* FALLTHRU */
-        default: {
+            ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+                        Point(center.X(),center.Y())));
+            if(to_edges) {
+                ccurve.UnFitArcs();
+                CCurve c;
+                c.append(ccurve.m_vertices.front());
+                auto it = ccurve.m_vertices.begin();
+                for(++it;it!=ccurve.m_vertices.end();++it) {
+                    c.append(*it);
+                    area.append(c);
+                    c.m_vertices.pop_front();
+                }
+                ccurve.m_vertices.clear();
+                ccurve.append(c.m_vertices.front());
+            }
+            break;
+        } default: {
             // Discretize all other type of curves
             GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
                     curve.FirstParameter(), curve.LastParameter());
@@ -789,7 +798,7 @@ struct WireJoiner {
         throw Base::RuntimeError("Module must be built with boost version >= 1.55");
 #else
         // It seems OCC projector sometimes mess up the tolerance of edges
-        // which are supposed to be connected. So use a lesser preceision
+        // which are supposed to be connected. So use a lesser precision
         // below, and call makeCleanWire to fix the tolerance
         const double tol = 1e-10;
 
@@ -1224,7 +1233,7 @@ int Area::project(TopoDS_Shape &shape_out,
     FC_TIME_LOG(t,"project total");
 
     if(shape.IsNull()) {
-        AREA_ERR("poject failed");
+        AREA_ERR("project failed");
         return -1;
     }
     shape_out = shape;
@@ -1879,7 +1888,7 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
         case Area::AlgoClipperOffset:
 #endif
             area.OffsetWithClipper(offset,JoinType,EndType,
-                    myParams.MiterLimit,myParams.RoundPreceision);
+                    myParams.MiterLimit,myParams.RoundPrecision);
 #ifdef AREA_OFFSET_ALGO
             break;
         }
@@ -2003,7 +2012,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
         auto area = *myArea;
         area.OffsetWithClipper(-tool_radius,JoinType,EndType,
-                myParams.MiterLimit,myParams.RoundPreceision);
+                myParams.MiterLimit,myParams.RoundPrecision);
         out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;
         break;
@@ -2721,7 +2730,8 @@ typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
 typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
-    gp_Pnt *_pstart, gp_Pnt *_pend, double *stepdown_hint, short *_parc_plane,
+    bool has_start, gp_Pnt *_pstart, gp_Pnt *_pend, 
+    double *stepdown_hint, short *_parc_plane,
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {
     std::list<TopoDS_Shape> wires;
@@ -2814,9 +2824,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pnt pstart,pend;
     if(_pstart)
         pstart = *_pstart;
-    bool use_bound = fabs(pstart.X())<Precision::Confusion() &&
-                     fabs(pstart.Y())<Precision::Confusion() &&
-                     fabs(pstart.Z())<Precision::Confusion();
+    bool use_bound = !has_start || _pstart==NULL;
 
     if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
         //Second stage, group shape by its plane, and find overall boundary
@@ -3079,7 +3087,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     if(_pstart) pstart = *_pstart;
 
     double stepdown_hint = 1.0;
-    wires = sortWires(shapes,&pstart,pend,&stepdown_hint,
+    wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 

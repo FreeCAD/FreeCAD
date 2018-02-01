@@ -72,6 +72,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             this->getConstraintPtr()->First = FirstIndex;
             return 0;
         }
+        else if (strcmp("Block",ConstraintType) == 0) {
+            this->getConstraintPtr()->Type = Block;
+            this->getConstraintPtr()->First = FirstIndex;
+            return 0;
+        }
     }
     PyErr_Clear();
 
@@ -484,6 +489,7 @@ std::string ConstraintPy::representation(void) const
         case Coincident         : result << "'Coincident'>";break;
         case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
+        case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
@@ -536,6 +542,11 @@ void  ConstraintPy::setFirst(Py::Long arg)
 #endif
 }
 
+Py::Long ConstraintPy::getFirstPos(void) const
+{
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos));
+}
+
 Py::Long ConstraintPy::getSecond(void) const
 {
     return Py::Long(this->getConstraintPtr()->Second);
@@ -548,6 +559,30 @@ void  ConstraintPy::setSecond(Py::Long arg)
 #else
     this->getConstraintPtr()->Second = arg;
 #endif
+}
+
+Py::Long ConstraintPy::getSecondPos(void) const
+{
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos));
+}
+
+Py::Long ConstraintPy::getThird(void) const
+{
+    return Py::Long(this->getConstraintPtr()->Third);
+}
+
+void  ConstraintPy::setThird(Py::Long arg)
+{
+#if PY_MAJOR_VERSION < 3
+    this->getConstraintPtr()->Third = Py::Int(arg);
+#else
+    this->getConstraintPtr()->Third = arg;
+#endif
+}
+
+Py::Long ConstraintPy::getThirdPos(void) const
+{
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos));
 }
 
 Py::String ConstraintPy::getName(void) const
@@ -563,6 +598,16 @@ void  ConstraintPy::setName(Py::String arg)
 Py::Float ConstraintPy::getValue(void) const
 {
     return Py::Float(this->getConstraintPtr()->getValue());
+}
+
+Py::Boolean ConstraintPy::getDriving(void) const
+{
+    return Py::Boolean(this->getConstraintPtr()->isDriving);
+}
+
+Py::Boolean ConstraintPy::getInVirtualSpace(void) const
+{
+    return Py::Boolean(this->getConstraintPtr()->isInVirtualSpace);
 }
 
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const

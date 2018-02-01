@@ -317,14 +317,14 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     char temp[40];
     int i = 0;
     for(char* c=yytext;*c!='\0';c++){ 
-        // skipp group delimiter
+        // skip group delimiter
         if(*c==grp_delim) continue;
-        // check for a dez delimiter othere then dot
+        // check for a dez delimiter other then dot
         if(*c==dez_delim && dez_delim !='.')
              temp[i++] = '.';
         else
             temp[i++] = *c; 
-        // check buffor overflow
+        // check buffer overflow
         if (i>39) return 0.0;
     }
     temp[i] = '\0';
@@ -349,7 +349,7 @@ void Quantity_yyerror(char *errorinfo)
 namespace QuantityParser {
 
 #define YYINITDEPTH 20
-// show the parser the lexer method
+// show parser the lexer method
 #define yylex QuantityLexer
 int QuantityLexer(void);
 

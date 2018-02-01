@@ -33,7 +33,7 @@ from . import run
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from PyGui import _TaskPanelFemSolverControl
+    from femguiobjects import _TaskPanelFemSolverControl
 
 
 class Proxy(object):

@@ -45,7 +45,7 @@ StdCmdDescription::StdCmdDescription()
   sGroup        = QT_TR_NOOP("Help");
   sMenuText     = QT_TR_NOOP("Des&cription");
   sToolTipText  = QT_TR_NOOP("Long description of commands");
-  sWhatsThis    = QT_TR_NOOP("Long description of commands");
+  sWhatsThis    = "Std_DescriptionMode";
   sStatusTip    = QT_TR_NOOP("Long description of commands");
   sAccel        = "F1";
 }

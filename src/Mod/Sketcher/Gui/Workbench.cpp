@@ -83,12 +83,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* bsplines = new Gui::MenuItem();
     bsplines->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bsplines);
+    
+    Gui::MenuItem* virtualspace = new Gui::MenuItem();
+    virtualspace->setCommand("Sketcher Virtual Space");
+    addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     addSketcherWorkbenchSketchActions( *sketch );
     *sketch << geom
             << cons
             << consaccel
-            << bsplines;
+            << bsplines
+            << virtualspace;
 
     return root;
 }
@@ -116,6 +121,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines( *bspline );
+    
+    Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root);
+    bspline->setCommand("Sketcher Virtual Space tools");
+    addSketcherWorkbenchVirtualSpace( *virtualspace );
 
      return root;
 }
@@ -212,6 +221,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons){
             << "Sketcher_ConstrainTangent"
             << "Sketcher_ConstrainEqual"
             << "Sketcher_ConstrainSymmetric"
+            << "Sketcher_ConstrainBlock"
             << "Separator"
             << "Sketcher_ConstrainLock"
             << "Sketcher_ConstrainDistanceX"
@@ -236,6 +246,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainTangent"
             << "Sketcher_ConstrainEqual"
             << "Sketcher_ConstrainSymmetric"
+            << "Sketcher_ConstrainBlock"
             << "Separator"
             << "Sketcher_ConstrainLock"
             << "Sketcher_ConstrainDistanceX"
@@ -305,6 +316,19 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
 }
 
 template <typename T>
+inline void SketcherAddWorkbenchVirtualSpace(T& virtualspace);
+
+template <>
+inline void SketcherAddWorkbenchVirtualSpace<Gui::MenuItem>(Gui::MenuItem& virtualspace){
+    virtualspace << "Sketcher_SwitchVirtualSpace";
+}
+
+template <>
+inline void SketcherAddWorkbenchVirtualSpace<Gui::ToolBarItem>(Gui::ToolBarItem& virtualspace){
+    virtualspace << "Sketcher_SwitchVirtualSpace";
+}
+
+template <typename T>
 inline void SketcherAddWorkspaceSketchExtra(T& /*sketch*/){
 }
 
@@ -340,6 +364,10 @@ void addSketcherWorkbenchBSplines( Gui::MenuItem& bspline ){
     SketcherAddWorkbenchBSplines( bspline );
 }
 
+void addSketcherWorkbenchVirtualSpace( Gui::MenuItem& virtualspace ){
+    SketcherAddWorkbenchVirtualSpace( virtualspace );
+}
+
 void addSketcherWorkbenchSketchActions( Gui::MenuItem& sketch ){
     Sketcher_addWorkbenchSketchActions( sketch );
 }
@@ -359,6 +387,11 @@ void addSketcherWorkbenchTools( Gui::ToolBarItem& consaccel )
 void addSketcherWorkbenchBSplines( Gui::ToolBarItem& bspline )
 {
     SketcherAddWorkbenchBSplines( bspline );
+}
+
+void addSketcherWorkbenchVirtualSpace( Gui::ToolBarItem& virtualspace )
+{
+    SketcherAddWorkbenchVirtualSpace( virtualspace );
 }
 
 void addSketcherWorkbenchSketchActions( Gui::ToolBarItem& sketch ){

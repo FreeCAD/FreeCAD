@@ -176,6 +176,7 @@ void View3DInventorPy::init_type()
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
     add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
+    add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
 
 }
@@ -718,13 +719,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers", false)) {
-        _view->getViewer()->imageFromFramebuffer(w, h, 8, bg, img);
-    }
-    else {
-        _view->getViewer()->savePicture(w, h, 8, bg, img);
-    }
+    _view->getViewer()->savePicture(w, h, 8, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
@@ -2200,6 +2195,21 @@ Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
             Py::Object(obj->getPyObject()), 
             Py::Object(parent->getPyObject()), 
             Py::String(subname.c_str()));
+}
+
+Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
+        throw Py::Exception();
+
+    std::vector<ViewProvider*> vps = _view->getViewer()->getViewProvidersOfType(Base::Type::fromName(name));
+    Py::List list;
+    for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
+        list.append(Py::asObject((*it)->getPyObject()));
+    }
+
+    return list;
 }
 
 Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
