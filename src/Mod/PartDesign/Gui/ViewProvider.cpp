@@ -217,10 +217,10 @@ QIcon ViewProvider::mergeTip(QIcon orig) const
     if(isSetTipIcon) {
         QPixmap px;
         
-        static const char * const feature_error_xpm[]={
+        static const char * const feature_tip_xpm[]={
             "9 9 3 1",
             ". c None",
-            "# c #00ff00",
+            "# c #00cc00",
             "a c #ffffff",
             "...###...",
             ".##aaa##.",
@@ -231,7 +231,7 @@ QIcon ViewProvider::mergeTip(QIcon orig) const
             ".##aaa##.",
             ".##aaa##.",
             "...###..."};
-        px = QPixmap(feature_error_xpm);
+        px = QPixmap(feature_tip_xpm);
 
         QIcon icon_mod;
 
