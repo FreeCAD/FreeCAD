@@ -70,7 +70,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(
     info.obj = 0;
     if(!obj || !obj->getNameInDocument())
         return info;
-    if(subname || obj->getDocument()==_Doc->getDocument()) {
+    if(subname) {
         info.obj = obj;
         if(subname) info.subname = subname;
     }else{
@@ -96,6 +96,8 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(
             }
             if(info.obj) break;
         }
+        if(!info.obj && obj->getDocument()==_Doc->getDocument())
+            info.obj = obj;
     }
     return info;
 }
