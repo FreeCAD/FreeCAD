@@ -1267,25 +1267,30 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 {
     FOREACH_ITEM(item,obj)
         QFont f = item->font(0);
-        switch (high) {
-        case Gui::Bold: f.setBold(set);             break;
-        case Gui::Italic: f.setItalic(set);         break;
-        case Gui::Underlined: f.setUnderline(set);  break;
-        case Gui::Overlined: f.setOverline(set);    break;
-        case Gui::Blue:
-            if (set)
-                item->setBackgroundColor(0,QColor(200,200,255));
-            else
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
-            break;
-        case Gui::LightBlue:
-            if (set)
-                item->setBackgroundColor(0,QColor(230,230,255));
-            else
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
-            break;
-        default:
-            break;
+        
+        for (int bit = 1; high >= bit; bit *= 2) {
+            if (high & bit) {
+                switch (bit) {
+                    case Gui::Bold: f.setBold(set);             break;
+                    case Gui::Italic: f.setItalic(set);         break;
+                    case Gui::Underlined: f.setUnderline(set);  break;
+                    case Gui::Overlined: f.setOverline(set);    break;
+                    case Gui::Blue:
+                        if (set)
+                            item->setBackgroundColor(0,QColor(200,200,255));
+                        else
+                            item->setData(0, Qt::BackgroundColorRole,QVariant());
+                        break;
+                    case Gui::LightBlue:
+                        if (set)
+                            item->setBackgroundColor(0,QColor(230,230,255));
+                        else
+                            item->setData(0, Qt::BackgroundColorRole,QVariant());
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         item->setFont(0,f);
