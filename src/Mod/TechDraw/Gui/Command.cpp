@@ -33,8 +33,10 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyGeo.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -253,11 +255,16 @@ void CmdTechDrawNewView::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (shapes.empty()) {
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    std::vector<App::DocumentObject*> groups = getSelection().getObjectsOfType(App::DocumentObjectGroup::getClassTypeId());
+    if ((shapes.empty()) &&
+        (groups.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Can not make a View from this selection"));
         return;
+    }
+    if (!groups.empty()) {
+        shapes.insert(shapes.end(),groups.begin(),groups.end());
     }
     
     std::string PageName = page->getNameInDocument();
@@ -446,11 +453,16 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.empty())  {
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    std::vector<App::DocumentObject*> groups = getSelection().getObjectsOfType(App::DocumentObjectGroup::getClassTypeId());
+    if ((shapes.empty()) &&
+        (groups.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Can not make a ProjectionGroup from this selection."));
+            QObject::tr("Can not make a ProjectionGroup from this selection"));
         return;
+    }
+    if (!groups.empty()) {
+        shapes.insert(shapes.end(),groups.begin(),groups.end());
     }
 
     std::string PageName = page->getNameInDocument();
