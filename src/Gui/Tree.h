@@ -42,12 +42,13 @@ typedef std::shared_ptr<DocumentObjectItems> DocumentObjectItemsPtr;
 class DocumentItem;
 
 /// highlight modes for the tree items
-enum HighlightMode {    Underlined,
-                        Italic    ,
-                        Overlined ,
-                        Bold      ,
-                        Blue      ,
-                        LightBlue
+enum HighlightMode {    Underlined              = 0x1,
+                        Italic                  = 0x2,
+                        Overlined               = 0x4,
+                        Bold                    = 0x8,
+                        Blue                    = 0x10,
+                        LightBlue               = 0x20,
+                        UnderlinedBoldLightBlue = LightBlue | Bold | Underlined
 };
 
 /// highlight modes for the tree items
