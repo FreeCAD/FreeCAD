@@ -246,6 +246,9 @@ double DrawProjGroup::calculateAutomaticScale() const
     arrangeViewPointers(viewPtrs);
     double width, height;
     minimumBbViews(viewPtrs, width, height);                               //get 1:1 bbxs
+                                            // if Page.keepUpdated is false, and DrawViews have never been executed,
+                                            // bb's will be 0x0 and this routine will return 0!!!
+                                            // if we return 1.0, AutoScale will sort itself out once bb's are non-zero.
     double bbFudge = 1.2;
     width *= bbFudge;
     height *= bbFudge;
@@ -269,6 +272,10 @@ double DrawProjGroup::calculateAutomaticScale() const
     double scaleFudge = 0.80;
     float working_scale = scaleFudge * std::min(scale_x, scale_y);
     double result = DrawUtil::sensibleScale(working_scale);
+    if (!(result > 0.0)) {
+        Base::Console().Log("DPG - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),result);
+        result = 1.0;
+    }
     return result;
 }
 

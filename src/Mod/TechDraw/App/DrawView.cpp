@@ -249,6 +249,10 @@ void DrawView::setPosition(double x, double y)
 double DrawView::getScale(void) const
 {
     auto result = Scale.getValue();
+    if (!(result > 0.0)) {
+        result = 1.0;
+        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+    }
     return result;
 }
 
