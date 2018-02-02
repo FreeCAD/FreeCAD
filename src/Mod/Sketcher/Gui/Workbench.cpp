@@ -38,6 +38,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
     qApp->translate("Workbench", "Sketcher tools");
+    qApp->translate("Workbench", "Sketcher virtual space");
 #endif
 
 /// @namespace SketcherGui @class Workbench
@@ -85,7 +86,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     addSketcherWorkbenchBSplines(*bsplines);
     
     Gui::MenuItem* virtualspace = new Gui::MenuItem();
-    virtualspace->setCommand("Sketcher Virtual Space");
+    virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     addSketcherWorkbenchSketchActions( *sketch );
@@ -123,7 +124,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     addSketcherWorkbenchBSplines( *bspline );
     
     Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root);
-    bspline->setCommand("Sketcher Virtual Space tools");
+    virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace( *virtualspace );
 
      return root;
