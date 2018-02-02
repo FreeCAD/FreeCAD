@@ -415,9 +415,7 @@ class EditorPanel():
 
     def getType(self, tooltype):
         "gets a combobox index number for a given type or viceversa"
-        toolslist = ["Drill", "CenterDrill", "CounterSink", "CounterBore",
-                     "Reamer", "Tap", "EndMill", "SlotCutter", "BallEndMill",
-                     "ChamferMill", "CornerRound", "Engraver"]
+        toolslist = Path.Tool.getToolTypes(Path.Tool())
         if isinstance(tooltype, str):
             if tooltype in toolslist:
                 return toolslist.index(tooltype)
@@ -428,8 +426,7 @@ class EditorPanel():
 
     def getMaterial(self, material):
         "gets a combobox index number for a given material or viceversa"
-        matslist = ["HighSpeedSteel", "HighCarbonToolSteel", "CastAlloy",
-                    "Carbide", "Ceramics", "Diamond", "Sialon"]
+        matslist = Path.Tool.getToolMaterials(Path.Tool())
         if isinstance(material, str):
             if material in matslist:
                 return matslist.index(material)
@@ -441,6 +438,13 @@ class EditorPanel():
     def addTool(self):
         t = Path.Tool()
         editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+        editform.TypeField.clear()
+        for tooltype in Path.Tool.getToolTypes(t):
+            editform.TypeField.addItem(tooltype)
+
+        editform.MaterialField.clear()
+        for material in Path.Tool.getToolMaterials(t):
+            editform.MaterialField.addItem(material)
 
         r = editform.exec_()
         if r:
@@ -512,6 +516,14 @@ class EditorPanel():
         toolnum = int(value)
         tool = self.TLM.getTool(listname, toolnum)
         editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+
+        editform.TypeField.clear()
+        for tooltype in Path.Tool.getToolTypes(tool):
+            editform.TypeField.addItem(tooltype)
+
+        editform.MaterialField.clear()
+        for material in Path.Tool.getToolMaterials(tool):
+            editform.MaterialField.addItem(material)
 
         editform.NameField.setText(tool.Name)
         editform.TypeField.setCurrentIndex(self.getType(tool.ToolType))
@@ -661,4 +673,3 @@ class CommandToolLibraryEdit():
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_ToolLibraryEdit',CommandToolLibraryEdit())
-

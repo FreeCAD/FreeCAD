@@ -49,6 +49,10 @@ public:
     virtual bool doubleClicked(void);
     void updateData(const App::Property*);
     void onChanged(const App::Property* prop);
+    
+    virtual QIcon getIcon(void) const;
+    
+    void setTipIcon(bool onoff);
 
     //body mode means that the object is part of a body and that the body is used to set the 
     //visual properties, not the features. Hence setting body mode to true will hide most 
@@ -71,6 +75,8 @@ protected:
     virtual void unsetEdit(int ModNum);
 
     virtual bool onDelete(const std::vector<std::string> &);
+    
+    virtual QIcon mergeTip(QIcon orig) const;
 
     /**
      * Returns a newly create dialog for the part to be placed in the task view
@@ -80,6 +86,7 @@ protected:
 
     std::string oldWb;
     App::DocumentObject* oldTip;
+    bool isSetTipIcon;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
