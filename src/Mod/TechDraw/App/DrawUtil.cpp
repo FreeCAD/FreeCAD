@@ -400,6 +400,9 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
 double DrawUtil::sensibleScale(double working_scale)
 {
     double result = 1.0;
+    if (!(working_scale > 0.0)) {
+        return result;
+    }
     //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
     //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
 

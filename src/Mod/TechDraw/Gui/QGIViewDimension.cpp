@@ -290,6 +290,7 @@ void QGIViewDimension::draw()
         return;
     }
     
+    datumLabel->show();
     show();
 
     TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
