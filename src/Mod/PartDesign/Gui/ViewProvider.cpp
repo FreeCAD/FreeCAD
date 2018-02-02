@@ -149,9 +149,8 @@ void ViewProvider::unsetEdit(int ModNum)
         PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
         Gui::Control().closeDialog();
         if ((activeBody != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            activeBody->Tip.setValue(oldTip);
+            Gui::Application::Instance->activeDocument()->setShow(oldTip->getNameInDocument());
         }
         oldTip = NULL;
     }
