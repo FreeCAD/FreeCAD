@@ -124,6 +124,8 @@ void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
     setPreviewDisplayMode(false);
+    
+    ViewProvider::unsetEdit(ModNum);
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {
