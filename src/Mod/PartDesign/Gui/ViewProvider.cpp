@@ -58,20 +58,6 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
-	if (body != NULL) {
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = body->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
-    }
-
     try {
         std::string Msg("Edit ");
         Msg += this->pcObject->Label.getValue();
@@ -88,6 +74,7 @@ bool ViewProvider::doubleClicked(void)
 bool ViewProvider::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        saveOldTip();
         // When double-clicking on the item for this feature the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -132,6 +119,37 @@ bool ViewProvider::setEdit(int ModNum)
     }
 }
 
+void ViewProvider::saveOldTip(void)
+{
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+
+    if (body != NULL) {
+        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
+        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
+        oldTip = body->Tip.getValue();
+        if (oldTip != this->pcObject) {
+            body->Tip.setValue(this->pcObject);
+            Gui::Application::Instance->activeDocument()->setShow(this->pcObject->getNameInDocument());
+        }
+        else
+            oldTip = NULL;
+    } else {
+        oldTip = NULL;
+    }
+}
+
+void ViewProvider::restoreOldTip(void)
+{
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    Gui::Control().closeDialog();
+    if ((activeBody != NULL) && (oldTip != NULL)) {
+        
+        activeBody->Tip.setValue(oldTip);
+        Gui::Application::Instance->activeDocument()->setShow(oldTip->getNameInDocument());
+    }
+    oldTip = NULL;
+}
+
 
 TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
     throw Base::Exception("getEditDialog() not implemented");
@@ -146,14 +164,8 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
         Gui::Control().closeDialog();
-        if ((activeBody != NULL) && (oldTip != NULL)) {
-            
-            activeBody->Tip.setValue(oldTip);
-            Gui::Application::Instance->activeDocument()->setShow(oldTip->getNameInDocument());
-        }
-        oldTip = NULL;
+        restoreOldTip();
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);

@@ -80,6 +80,7 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        saveOldTip();
         setPreviewDisplayMode(true);
         
         // When double-clicking on the item for this fillet the

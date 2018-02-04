@@ -69,6 +69,7 @@ void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 bool ViewProviderHole::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        saveOldTip();
         // When double-clicking on the item for this hole the
         // object unsets and sets its edit mode without closing
         // the task panel
