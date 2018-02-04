@@ -114,7 +114,27 @@ def retranslateUi():
     <b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
     global t3
-    t3 = "<p align='center'><b>Blender</b> " + text06 + """</p>
+    t3 = "<p align='center'><b>Revit</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationRevit_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationRevit_Pan.svg'></td>
+      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+     </tr>
+    </table>
+    <b>""" + text08 + ":</b> " + text10 + "</small></p>"
+
+    global t4
+    t4 = "<p align='center'><b>Blender</b> " + text06 + """</p>
     <table>
      <tr>
       <th><small>""" + text01 + """</small></th>
@@ -133,8 +153,8 @@ def retranslateUi():
     </table>
     <b>""" + text08 + ":</b> " + text10 + "</small></p>"
 
-    global t4
-    t4 = "<p align='center'><b>MayaGesture</b> " + text06 + """</p>
+    global t5
+    t5 = "<p align='center'><b>MayaGesture</b> " + text06 + """</p>
     <table>
      <tr>
       <th><small>""" + text01 + """</small></th>
@@ -172,8 +192,8 @@ def retranslateUi():
     <p><small><b>""" + text02 + ":</b> " + text07 + """<br>
     <b>""" + text08 + ":</b> " + text09 + "</small></p>"
 
-    global t5
-    t5 = "<p align='center'><b>Touchpad</b> " + text06 + """</p>
+    global t6
+    t6 = "<p align='center'><b>Touchpad</b> " + text06 + """</p>
     <table>
      <tr>
       <th><small>""" + text01 + """</small></th>
@@ -208,8 +228,8 @@ def retranslateUi():
     </table>
     <p><small><b>""" + text02 + ":</b> " + text07 + "</p>"
 
-    global t6
-    t6 = "<p align='center'><b>Gesture</b> " + text06 + """</p>
+    global t7
+    t7 = "<p align='center'><b>Gesture</b> " + text06 + """</p>
     <table>
      <tr>
       <th><small>""" + text01 + """</small></th>
@@ -247,8 +267,8 @@ def retranslateUi():
     <p><small><b>""" + text02 + ":</b> " + text07 + """<br>
     <b>""" + text08 + ":</b> " + text09 + "</small></p>"
 
-    global t7
-    t7 = "<p align='center'><b>OpenCascade</b> " + text06 + """</p>
+    global t8
+    t8 = "<p align='center'><b>OpenCascade</b> " + text06 + """</p>
     <table>
      <tr>
       <th><small>""" + text01 + """</small></th>
@@ -329,34 +349,40 @@ a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
 a3 = QtGui.QAction(gStyle)
-a3.setIcon(QtGui.QIcon(":/icons/NavigationBlender.svg"))
-a3.setText("Blender")
-a3.setData("Gui::BlenderNavigationStyle")
-a3.setObjectName("Indicator_NavigationBlender")
+a3.setIcon(QtGui.QIcon(":/icons/NavigationRevit.svg"))
+a3.setText("Revit")
+a3.setData("Gui::RevitNavigationStyle")
+a3.setObjectName("Indicator_NavigationRevit")
 
 a4 = QtGui.QAction(gStyle)
-a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture.svg"))
-a4.setText("MayaGesture")
-a4.setData("Gui::MayaGestureNavigationStyle")
-a4.setObjectName("Indicator_NavigationMayaGesture")
+a4.setIcon(QtGui.QIcon(":/icons/NavigationBlender.svg"))
+a4.setText("Blender")
+a4.setData("Gui::BlenderNavigationStyle")
+a4.setObjectName("Indicator_NavigationBlender")
 
 a5 = QtGui.QAction(gStyle)
-a5.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad.svg"))
-a5.setText("Touchpad")
-a5.setData("Gui::TouchpadNavigationStyle")
-a5.setObjectName("Indicator_NavigationTouchpad")
+a5.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture.svg"))
+a5.setText("MayaGesture")
+a5.setData("Gui::MayaGestureNavigationStyle")
+a5.setObjectName("Indicator_NavigationMayaGesture")
 
 a6 = QtGui.QAction(gStyle)
-a6.setIcon(QtGui.QIcon(":/icons/NavigationGesture.svg"))
-a6.setText("Gesture")
-a6.setData("Gui::GestureNavigationStyle")
-a6.setObjectName("Indicator_NavigationGesture")
+a6.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad.svg"))
+a6.setText("Touchpad")
+a6.setData("Gui::TouchpadNavigationStyle")
+a6.setObjectName("Indicator_NavigationTouchpad")
 
 a7 = QtGui.QAction(gStyle)
-a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade.svg"))
-a7.setText("OpenCascade")
-a7.setData("Gui::OpenCascadeNavigationStyle")
-a7.setObjectName("Indicator_NavigationOpenCascade")
+a7.setIcon(QtGui.QIcon(":/icons/NavigationGesture.svg"))
+a7.setText("Gesture")
+a7.setData("Gui::GestureNavigationStyle")
+a7.setObjectName("Indicator_NavigationGesture")
+
+a8 = QtGui.QAction(gStyle)
+a8.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade.svg"))
+a8.setText("OpenCascade")
+a8.setData("Gui::OpenCascadeNavigationStyle")
+a8.setObjectName("Indicator_NavigationOpenCascade")
 
 menu.addMenu(menuSettings)
 menu.addSeparator()
@@ -368,6 +394,7 @@ menu.addAction(a4)
 menu.addAction(a5)
 menu.addAction(a6)
 menu.addAction(a7)
+menu.addAction(a8)
 
 
 def onCompact():
@@ -402,6 +429,7 @@ def onTooltip():
         a5.setToolTip(t5)
         a6.setToolTip(t6)
         a7.setToolTip(t7)
+        a8.setToolTip(t8)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():
