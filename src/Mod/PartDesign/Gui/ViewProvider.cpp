@@ -129,6 +129,22 @@ void ViewProvider::saveOldTip(void)
         oldTip = body->Tip.getValue();
         if (oldTip != this->pcObject) {
             body->Tip.setValue(this->pcObject);
+            // Visualization is performed:
+            // At tempVis level for planes and axis
+            // At attacher Visualization automation when there is an attacher involved
+            // At ViewProvider level, here and at derived classes where it applies, and in the
+            // specific code of OnChange function for property Visibility.
+            // Example 1: ViewProviderPrimitive uses an attacher.
+            // Example 2: ViewProviderPad does not use an attacher and handles visualization on its own.
+            // So:
+            // We must set the visualization here for those who rely on it being here. But if an attacher is used, which will
+            // store the visualization, we need to do this tip change AFTER the attacher stores the visualization, because when
+            // switching the visualization back, we do not want to comprise THIS change, as this is showing as tip the current
+            // feature, which is not necessarily the Tip before enter edit mode (well if you are here, it is not the tip, see 
+            // the if above).
+            // 
+            // When this function is called from a doCommand (setEdit), as it should be, if the command is 
+            // aborted, any change will be undone by the undo mechanism (because it is a property).
             Gui::Application::Instance->activeDocument()->setShow(this->pcObject->getNameInDocument());
         }
         else
@@ -141,9 +157,9 @@ void ViewProvider::saveOldTip(void)
 void ViewProvider::restoreOldTip(void)
 {
     PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    Gui::Control().closeDialog();
-    if ((activeBody != NULL) && (oldTip != NULL)) {
-        
+
+    if ((activeBody != NULL) && (oldTip != NULL) && (activeBody->Tip.getValue() != oldTip)) {
+        // See visualization comment in saveOldTip
         activeBody->Tip.setValue(oldTip);
         Gui::Application::Instance->activeDocument()->setShow(oldTip->getNameInDocument());
     }
