@@ -52,7 +52,6 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-
        </widget>
       </item>
       <item row="4" column="0">
@@ -63,9 +62,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="MaterialField">
-        
-       </widget>
+       <widget class="QComboBox" name="MaterialField"/>
       </item>
       <item row="6" column="0">
        <widget class="QLabel" name="label_4">
@@ -98,7 +95,7 @@
       <item row="16" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Cutting Edge Angle</string>
+         <string>Point/Tip Angle</string>
         </property>
        </widget>
       </item>
@@ -194,8 +191,11 @@
       </item>
       <item row="16" column="1">
        <widget class="Gui::InputField" name="CuttingEdgeAngleField">
+        <property name="text">
+         <string>180 °</string>
+        </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>180.000000000000000</double>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
