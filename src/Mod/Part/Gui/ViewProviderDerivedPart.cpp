@@ -74,13 +74,13 @@ void ViewProviderDerivedPart::updateViewColorAndTransparency () {
 	std::vector<App::Color> colPart;
 	
 	if (hist.size() != sources.size()) {
-		// there is no history that should be calcultated while executing the feaure
+		// there is no history that should be calculated while executing the feature
 		// objPart->execute();
 		// objPart->recompute();
-		objPart->touch();
+		objPart->touch(); // Temporary before a solution is found. The object will be recomputed by F5
 		return;
 	} else {
-		// get the color of the first face of the first shape for the new faces created by the opération
+		// get the color of the first face of the first shape for the new faces created by the operation
 		shapeColor=static_cast<PartGui::ViewProviderPart*>(
 						Gui::Application::Instance->getViewProvider(dynamic_cast<Part::Feature*>(*sources.begin())) 
 					) ->DiffuseColor.getValues()[0];
@@ -100,12 +100,10 @@ void ViewProviderDerivedPart::updateViewColorAndTransparency () {
 			if (vpBase) {
 				std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
 				if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-					// PartGui::ViewProviderPart::applyColorAndTransparency(hist[index], colBase, curTrans, colPart);
 					PartGui::ViewProviderPart::applyColor(hist[index], colBase, colPart);
 				}
 				else if (!colBase.empty() && colBase[0] != shapeColor) {
 					colBase.resize(baseMap.Extent(), colBase[0]);
-					// PartGui::ViewProviderPart::applyColorAndTransparency(hist[index], colBase, curTrans, colPart);
 					PartGui::ViewProviderPart::applyColor(hist[index], colBase, colPart);
 				}
 			}

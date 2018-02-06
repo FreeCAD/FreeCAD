@@ -425,7 +425,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Primitive             ::init();
     Part::Box                   ::init();
     Part::Spline                ::init();
-	Part::FeatureDerivedPart    ::init();
+    Part::FeatureDerivedPart    ::init();
     Part::Boolean               ::init();
     Part::Common                ::init();
     Part::MultiCommon           ::init();

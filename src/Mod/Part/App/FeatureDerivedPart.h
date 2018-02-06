@@ -31,7 +31,8 @@
 namespace Part
 {
 
-// "derived part" is an abstract part witch derive any part such as boolean or fusions result of operations between one of many children objects
+// "derived part" is an abstract part witch derive any part such as 
+// boolean or fusions result of operations between one of many children objects
 class FeatureDerivedPart : public Part::Feature
 {
 	PROPERTY_HEADER(Part::FeatureDerivedPart);
