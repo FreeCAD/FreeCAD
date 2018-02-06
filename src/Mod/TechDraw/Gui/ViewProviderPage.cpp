@@ -156,6 +156,12 @@ void ViewProviderPage::updateData(const App::Property* prop)
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
+    //if the Label changes, rename the tab
+    } else if (prop == &(getDrawPage()->Label)) {
+        if(m_mdiView) {
+            QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
+            m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
+        }
     }
 
     Gui::ViewProviderDocumentObject::updateData(prop);
@@ -212,7 +218,8 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::Document* doc = Gui::Application::Instance->getDocument
             (pcObject->getDocument());
         m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
-        m_mdiView->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromLatin1("[*]"));
+        QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
+        m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
         m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
         m_mdiView->updateDrawing(true);
         Gui::getMainWindow()->addWindow(m_mdiView);
