@@ -112,7 +112,7 @@ def getIfcOpenShell():
         try:
             import ifc_wrapper as IfcImport
         except ImportError:
-            FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell\n"))
+            FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell")+"\n")
             return False
         else:
             IFCOPENSHELL5 = True
