@@ -32,6 +32,7 @@ namespace TechDraw{
 
 namespace TechDrawGui {
 class QGITemplate;
+class MDIViewPage;
 
 class TechDrawGuiExport ViewProviderTemplate : public Gui::ViewProviderDocumentObject
 {
@@ -55,6 +56,8 @@ public:
     virtual bool isShow(void) const;
     QGITemplate* getQTemplate(void);
     TechDraw::DrawTemplate* getTemplate() const;
+    MDIViewPage* getMDIViewPage(void);
+
 };
 
 } // namespace TechDrawGui
