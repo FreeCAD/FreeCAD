@@ -101,12 +101,12 @@ class TestPathUtil(PathTestBase):
         # an empty part is not a valid base object
         self.assertFalse(PathUtil.isValidBaseObject(part))
 
-        # a none empty part where none of the objects has a shape is no good neither
+        # a non-empty part where none of the objects have a shape, is no good either
         fp = self.doc.addObject('App::FeaturePython', 'Feature')
         part.addObject(fp)
         self.assertFalse(PathUtil.isValidBaseObject(part))
 
-        # create an valid base object
+        # create a valid base object
         box = self.doc.addObject("Part::Box","Box")
         self.assertTrue(PathUtil.isValidBaseObject(box))
 

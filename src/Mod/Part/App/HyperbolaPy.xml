@@ -14,7 +14,7 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>Describes an hyperbola in 3D space
-				To create an hyperbola there are several ways:
+				To create a hyperbola there are several ways:
 				Part.Hyperbola()
 					Creates an hyperbola with major radius 2 and minor radius 1 with the
 					center in (0,0,0)
