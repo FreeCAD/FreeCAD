@@ -248,7 +248,7 @@ class TaskPanel:
 
         Keyword arguments:
         value -- Edited value. This parameter is required in order to use this
-        method as a callback function, but it is unuseful.
+        method as a callback function, but it is not useful.
         """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")

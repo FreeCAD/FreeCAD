@@ -494,7 +494,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
 }
 
 
-// This function create an Assembly node into an XCAF document with it's relative placement information
+// This function creates an Assembly node in an XCAF document with its relative placement information
 
 void ExportOCAF::createNode(App::Part* part, int& root_id,
                             std::vector <TDF_Label>& hierarchical_label,
