@@ -37,16 +37,14 @@
 
 using namespace Part;
 
-PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
+PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::FeatureDerivedPart)
+// PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 
 Boolean::Boolean(void)
 {
     ADD_PROPERTY(Base,(0));
     ADD_PROPERTY(Tool,(0));
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
-    History.setSize(0);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
@@ -66,7 +64,13 @@ short Boolean::mustExecute() const
     }
     return 0;
 }
+std::vector<App::DocumentObject*> Boolean::getChildren(void) const {
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(Base.getValue());
+    temp.push_back(Tool.getValue());
 
+    return temp;
+}
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
     try {
@@ -123,8 +127,8 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             }
         }
 
-        this->Shape.setValue(resShape);
         this->History.setValues(history);
+        this->Shape.setValue(resShape);
         return App::DocumentObject::StdReturn;
     }
     catch (...) {

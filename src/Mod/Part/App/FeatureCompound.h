@@ -26,11 +26,12 @@
 
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
+#include "FeatureDerivedPart.h"
 
 namespace Part
 {
 
-class Compound : public Part::Feature
+class Compound : public Part::FeatureDerivedPart
 {
     PROPERTY_HEADER(Part::Compound);
 
@@ -49,6 +50,7 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderCompound";
     }
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
     //@}
 };
 

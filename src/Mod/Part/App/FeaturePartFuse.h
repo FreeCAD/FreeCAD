@@ -46,7 +46,7 @@ protected:
     //@}
 };
 
-class MultiFuse : public Part::Feature
+class MultiFuse : public Part::FeatureDerivedPart
 {
     PROPERTY_HEADER(Part::MultiFuse);
 
@@ -54,7 +54,6 @@ public:
     MultiFuse();
 
     App::PropertyLinkList Shapes;
-    PropertyShapeHistory History;
     App::PropertyBool Refine;
 
     /** @name methods override feature */
@@ -67,7 +66,7 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderMultiFuse";
     }
-
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
 };
 
 }

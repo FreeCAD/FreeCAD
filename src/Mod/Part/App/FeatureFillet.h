@@ -26,9 +26,23 @@
 
 #include <App/PropertyStandard.h>
 #include "PartFeature.h"
-
+#include "FeatureDerivedPart.h"
 namespace Part
 {
+class FilletBase : public Part::FeatureDerivedPart
+{
+    PROPERTY_HEADER(Part::FilletBase);
+
+public:
+    FilletBase();
+
+    App::PropertyLink   Base;
+    PropertyFilletEdges Edges;
+	
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
+	
+    short mustExecute() const;
+};
 
 class Fillet : public Part::FilletBase
 {

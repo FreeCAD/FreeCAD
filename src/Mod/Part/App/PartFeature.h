@@ -85,18 +85,6 @@ protected:
     ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
 };
 
-class FilletBase : public Part::Feature
-{
-    PROPERTY_HEADER(Part::FilletBase);
-
-public:
-    FilletBase();
-
-    App::PropertyLink   Base;
-    PropertyFilletEdges Edges;
-
-    short mustExecute() const;
-};
 
 typedef App::FeaturePythonT<Feature> FeaturePython;
 

@@ -64,9 +64,26 @@ bool ViewProviderPart::doubleClicked(void)
     }
 }
 
-void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
+void ViewProviderPart::applyColorAndTransparency(const Part::ShapeHistory& hist,
                                   const std::vector<App::Color>& colBase,
+								  const float& transparency,
                                   std::vector<App::Color>& colBool)
+{
+	float tr = transparency/100; // transparency comes in percent
+    std::map<int, std::vector<int> >::const_iterator jt;
+    // apply color from modified faces
+    for (jt = hist.shapeMap.begin(); jt != hist.shapeMap.end(); ++jt) {
+        std::vector<int>::const_iterator kt;
+        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+            colBool[*kt] = colBase[jt->first];
+			if (tr > 0.0) colBool[*kt].a = tr;
+        }
+    }
+}
+
+void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
+                                 const std::vector<App::Color>& colBase,
+                                 std::vector<App::Color>& colBool)
 {
     std::map<int, std::vector<int> >::const_iterator jt;
     // apply color from modified faces
@@ -79,15 +96,14 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
 }
 
 void ViewProviderPart::applyTransparency(const float& transparency,
-                                  std::vector<App::Color>& colors)
+                                 std::vector<App::Color>& colors)
 {
+	float tr = transparency/100; // transparency comes in percent
     if (transparency != 0.0) {
         // transparency has been set object-wide
         std::vector<App::Color>::iterator j;
         for (j = colors.begin(); j != colors.end(); ++j) {
-            // transparency hasn't been set for this face
-            if (j->a == 0.0)
-                j->a = transparency/100.0; // transparency comes in percent
+           j->a = tr; 
         }
     }
 }

@@ -55,16 +55,14 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
 
 // ----------------------------------------------------
 
-PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
+PROPERTY_SOURCE(Part::MultiFuse, Part::FeatureDerivedPart)
+// PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
 
 
 MultiFuse::MultiFuse(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
-    History.setSize(0);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
@@ -227,3 +225,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
     return App::DocumentObject::StdReturn;
 }
+std::vector<App::DocumentObject*> MultiFuse::getChildren(void) const {
+	return Shapes.getValues();
+}
+
