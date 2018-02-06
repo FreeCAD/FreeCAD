@@ -337,7 +337,7 @@ ViewProviderPartExt::~ViewProviderPartExt()
 
 void ViewProviderPartExt::updateViewColorAndTransparency() {
 	App::Color nColor = ShapeColor.getValue();
-	nColor.a=Transparency.getValue()/100;
+	nColor.a=Transparency.getValue()/100.0;
 	DiffuseColor.setValue(nColor);
 }
 
