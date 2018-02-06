@@ -335,6 +335,12 @@ ViewProviderPartExt::~ViewProviderPartExt()
     nodeset->unref();
 }
 
+void ViewProviderPartExt::updateViewColorAndTransparency() {
+	App::Color nColor = ShapeColor.getValue();
+	nColor.a=Transparency.getValue()/100;
+	DiffuseColor.setValue(nColor);
+}
+
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
     // The lower limit of the deviation has been increased to avoid
@@ -407,7 +413,9 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &ShapeMaterial || prop == &ShapeColor) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         ViewProviderGeometryObject::onChanged(prop);
-        DiffuseColor.setValue(ShapeColor.getValue());
+		updateViewColorAndTransparency();
+        // DiffuseColor.setValue(ShapeColor.getValue());
+		return;
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeMaterial.getValue();
@@ -430,6 +438,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             ShapeMaterial.setContainer(0);
             ShapeMaterial.setTransparency(trans);
             ShapeMaterial.setContainer(parent);
+			updateViewColorAndTransparency();
         }
     }
     else if (prop == &Lighting) {

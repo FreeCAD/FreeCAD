@@ -107,6 +107,8 @@ generate_from_xml(Geom2d/OffsetCurve2dPy)
 generate_from_xml(Geom2d/Parabola2dPy)
 
 SET(Features_SRCS
+    FeatureDerivedPart.cpp
+    FeatureDerivedPart.h
     FeaturePartBoolean.cpp
     FeaturePartBoolean.h
     FeaturePartBox.cpp
