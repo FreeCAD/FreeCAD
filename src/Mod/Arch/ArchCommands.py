@@ -378,14 +378,14 @@ def getCutVolume(cutplane,shapes):
         else:
             p = cutplane.copy().Faces[0]
     except Part.OCCError:
-        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane\n"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane")+"\n")
         return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
-        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
+        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane)+"\n")
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
