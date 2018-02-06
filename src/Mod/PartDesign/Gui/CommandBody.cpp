@@ -337,7 +337,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Migrate");
-    sToolTipText  = QT_TR_NOOP("Migrate document to the modern partdesign workflow");
+    sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
 }
