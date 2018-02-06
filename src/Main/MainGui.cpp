@@ -357,7 +357,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     stMDEI.ThreadId = GetCurrentThreadId(); 
     stMDEI.ExceptionPointers = pEx; 
     stMDEI.ClientPointers = true; 
-    // try to create an miniDump: 
+    // try to create a miniDump: 
     if (s_pMDWD( 
       GetCurrentProcess(), 
       GetCurrentProcessId(), 
