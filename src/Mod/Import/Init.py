@@ -40,9 +40,3 @@ FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTEP")
 if  paramGetV.GetBool("ReadShapeCompoundMode", False) != paramGetV.GetBool("ReadShapeCompoundMode", True):
     paramGetV.SetBool("ReadShapeCompoundMode", True)
-
-if  paramGetV.GetBool("Scheme_203", False) != paramGetV.GetBool("Scheme_203", True):
-    paramGetV.SetBool("Scheme_203", False)
-
-if  paramGetV.GetBool("Scheme_214", False) != paramGetV.GetBool("Scheme_214", True):
-    paramGetV.SetBool("Scheme_214", True)
