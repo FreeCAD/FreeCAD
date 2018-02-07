@@ -171,7 +171,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
     def test_freq_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
-        box = self.active_doc.addObject("Part::Box", "Box")
+        self.active_doc.addObject("Part::Box", "Box")
         fcc_print('Checking FEM new analysis...')
         analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
         self.assertTrue(analysis, "FemTest of new analysis failed")
@@ -185,7 +185,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         solver_object.IterationsControlParameterTimeUse = False
         solver_object.EigenmodesCount = 10
         solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.0
+        solver_object.EigenmodeLowLimit = 0.01
         self.assertTrue(solver_object, "FemTest of new solver failed")
         analysis.addObject(solver_object)
 
@@ -199,31 +199,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         material_object.Material = mat
         self.assertTrue(material_object, "FemTest of new material failed")
         analysis.addObject(material_object)
-
-        fcc_print('Checking FEM new fixed constraint...')
-        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
-        fixed_constraint.References = [(box, "Face1")]
-        self.assertTrue(fixed_constraint, "FemTest of new fixed constraint failed")
-        analysis.addObject(fixed_constraint)
-
-        fcc_print('Checking FEM new force constraint...')
-        force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
-        force_constraint.References = [(box, "Face6")]
-        force_constraint.Force = 40000.0
-        force_constraint.Direction = (box, ["Edge5"])
-        self.active_doc.recompute()
-        force_constraint.Reversed = True
-        self.active_doc.recompute()
-        self.assertTrue(force_constraint, "FemTest of new force constraint failed")
-        analysis.addObject(force_constraint)
-
-        fcc_print('Checking FEM new pressure constraint...')
-        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
-        pressure_constraint.References = [(box, "Face2")]
-        pressure_constraint.Pressure = 1000.0
-        pressure_constraint.Reversed = False
-        self.assertTrue(pressure_constraint, "FemTest of new pressure constraint failed")
-        analysis.addObject(pressure_constraint)
 
         fcc_print('Checking FEM new mesh...')
         from .testfiles.ccx.cube_mesh import create_nodes_cube
@@ -730,7 +705,6 @@ def create_test_results():
 
     print("create frequency result files")
     fea.reset_all()
-    FreeCAD.ActiveDocument.CalculiX.AnalysisType = 'frequency'
     fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
     fea.load_results()
