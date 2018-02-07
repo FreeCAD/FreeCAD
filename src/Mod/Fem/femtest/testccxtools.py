@@ -610,14 +610,28 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
 
 def create_test_results():
-    print("run FEM unit tests")
-    runTestFem()
 
     import shutil
+    import os
     import FemGui
+    import femresult.resulttools as resulttools
+    from femtools import ccxtools
+
+    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+    temp_dir = testtools.get_fem_test_tmp_dir()
+    static_analysis_dir = temp_dir + 'FEM_ccx_static/'
+    frequency_analysis_dir = temp_dir + 'FEM_ccx_frequency/'
+    thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
+    Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
+
+    # run unit test from tests classes from this module
+    import Test
+    import sys
+    current_module = sys.modules[__name__]
+    Test.runTestsFromModule(current_module)
 
     # static and frequency cube
-    FreeCAD.open(static_save_fc_file)
+    FreeCAD.open(static_analysis_dir + 'cube_static.fcstd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
 
@@ -661,8 +675,9 @@ def create_test_results():
     shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
     shutil.copyfile(dat_result_file, dat_frequency_test_result_file)
 
+    # thermomech
     print("create thermomech result files")
-    FreeCAD.open(thermomech_save_fc_file)
+    FreeCAD.open(thermomech_analysis_dir + 'spine_thermomech.fcstd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
     fea.reset_all()
@@ -685,8 +700,9 @@ def create_test_results():
     shutil.copyfile(dat_result_file, dat_thermomech_test_result_file)
     print('Results copied to the appropriate FEM test dirs in: ' + temp_dir)
 
+    # Flow1D
     print("create Flow1D result files")
-    FreeCAD.open(Flow1D_thermomech_save_fc_file)
+    FreeCAD.open(Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.fcstd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
     fea.reset_all()
@@ -711,10 +727,10 @@ def create_test_results():
 
 
 '''
-update the results of FEM unit tests:
+update the results of FEM ccxtools unit tests:
 
-import femtest.testfemcommon
-femtest.testfemcommon.create_test_results()
+from femtest.testccxtools import create_test_results
+create_test_results()
 
 copy result files from your_temp_directory/FEM_unittests/   test directories into the src directory
 compare the results with git difftool
