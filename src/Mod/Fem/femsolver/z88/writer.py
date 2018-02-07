@@ -43,7 +43,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-                 analysis_type=None, dir_name=None
+                 dir_name=None
                  ):
 
         FemInputWriter.FemInputWriter.__init__(
@@ -55,7 +55,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-            analysis_type, dir_name)
+            dir_name)
         # self.dir_name does have a slash at the end
         self.file_name = self.dir_name + 'z88'
         print('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name)

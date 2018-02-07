@@ -681,6 +681,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('Checking FEM new solver...')
         solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
+        solver_object.AnalysisType = 'static'
         solver_object.GeometricalNonlinearity = 'linear'
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = 'default'
@@ -753,11 +754,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
-
-        fcc_print('Setting analysis type to \'static\"')
-        fea.set_analysis_type("static")
-        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting analysis type to \'static\' failed")
-
         fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
@@ -796,8 +792,8 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('Reset Statik analysis')
         fea.reset_all()
         fcc_print('Setting analysis type to \'frequency\"')
-        fea.set_analysis_type("frequency")
-        self.assertTrue(True if fea.analysis_type == 'frequency' else False, "Setting analysis type to \'frequency\' failed")
+        solver_object.AnalysisType = 'frequency'
+
 
         fcc_print('Setting up working directory to {} in order to write frequency calculations'.format(frequency_analysis_dir))
         fea.setup_working_dir(frequency_analysis_dir)
@@ -925,10 +921,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fea.setup_working_dir(thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
                         "Setting working directory {} failed".format(thermomech_analysis_dir))
-
-        fcc_print('Setting analysis type to \'thermomech\"')
-        fea.set_analysis_type("thermomech")
-        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting analysis type to \'thermomech\' failed")
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
@@ -1173,10 +1165,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fea.setup_working_dir(Flow1D_thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == Flow1D_thermomech_analysis_dir else False,
                         "Setting working directory {} failed".format(Flow1D_thermomech_analysis_dir))
-
-        fcc_print('Setting analysis type to \'thermomech\"')
-        fea.set_analysis_type("thermomech")
-        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting analysis type to \'thermomech\' failed")
 
         fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
         error = fea.check_prerequisites()
@@ -1536,7 +1524,7 @@ def create_test_results():
 
     print("create frequency result files")
     fea.reset_all()
-    fea.set_analysis_type('frequency')
+    FreeCAD.ActiveDocument.CalculiX.AnalysisType = 'frequency'
     fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
     fea.load_results()

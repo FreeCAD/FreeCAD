@@ -41,10 +41,11 @@ class FemInputWriter():
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-                 analysis_type, dir_name
+                 dir_name
                  ):
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
+        self.analysis_type = self.solver_obj.AnalysisType
         self.mesh_object = mesh_obj
         self.material_objects = matlin_obj
         self.material_nonlinear_objects = matnonlin_obj
@@ -63,7 +64,6 @@ class FemInputWriter():
         self.beamrotation_objects = beamrotation_obj
         self.fluidsection_objects = fluidsection_obj
         self.shellthickness_objects = shellthickness_obj
-        self.analysis_type = analysis_type
         self.dir_name = dir_name
         if not dir_name:
             print('Error: FemInputWriter has no working_dir --> we are going to make a temporary one!')
