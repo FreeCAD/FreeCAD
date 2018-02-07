@@ -21,13 +21,13 @@ SET(PathScripts_SRCS
     PathCommands.py
     PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
-    PathScripts/AxisMapDressup.py
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
+    PathScripts/PathDressupAxisMap.py
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py

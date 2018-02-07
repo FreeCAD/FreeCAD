@@ -50,7 +50,7 @@ class ObjectDressup:
         maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
         obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
         obj.addProperty("App::PropertyEnumeration", "axisMap", "Path", "The input mapping axis")
-        obj.addProperty("App::PropertyValue", "radius", "Path", "The radius of the wrapped axis")
+        obj.addProperty("App::PropertyDistance", "radius", "Path", "The radius of the wrapped axis")
         obj.axisMap = maplist
         obj.Proxy = self
 
@@ -68,7 +68,7 @@ class ObjectDressup:
     def execute(self, obj):
 
         inAxis = obj.axisMap[0]
-        outAxis = obj.axisMap[2]
+        outAxis = obj.axisMap[3]
 
         if obj.Base:
             if obj.Base.isDerivedFrom("Path::Feature"):
@@ -77,15 +77,18 @@ class ObjectDressup:
                         newcommandlist = []
                         for c in obj.Base.Path.Commands:
                             newparams = dict(c.Parameters)
-                            remapvar = newparams.pop(obj.inAxis, None)
+                            remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
-                                newparams[obj.outAxis] = remapvar
+                                newparams[outAxis] = self._linear2angular(obj.radius, remapvar)
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                             else:
                                 newcommandlist.append(c)
-                        obj.Base.Path.Commands = newcommandlist
 
+                        path = Path.Path(newcommandlist)
+                        obj.Path = path
+
+#                        obj.Path.Commands = newcommandlist
 
 class ViewProviderDressup:
 
@@ -123,9 +126,9 @@ class CommandPathDressup:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("AxisMap_Dressup", "Axis Map Dress-up"),
-                'Accel': "P, S",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("AxisMap_Dressup", "Remap one axis to another.")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map Dress-up"),
+                'Accel': "",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Remap one axis to another.")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -150,12 +153,13 @@ class CommandPathDressup:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Dressup", "Create Dress-up"))
-        FreeCADGui.addModule("PathScripts.AxisMapDressup")
+        FreeCADGui.addModule("PathScripts.PathDressupAxisMap")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")')
-        FreeCADGui.doCommand('PathScripts.AxisMapDressup.ObjectDressup(obj)')
+        FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.AxisMapDressup.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.radius = 45')
+        FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
         FreeCAD.ActiveDocument.commitTransaction()
@@ -164,6 +168,6 @@ class CommandPathDressup:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('AxisMap_Dressup', CommandPathDressup())
+    FreeCADGui.addCommand('Path_DressupAxisMap', CommandPathDressup())
 
 FreeCAD.Console.PrintLog("Loading PathDressup... done\n")
