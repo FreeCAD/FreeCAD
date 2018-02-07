@@ -30,3 +30,49 @@
 from femtest.testcommon import FemTest
 from femtest.testccxtools import FemCcxAnalysisTest
 from femtest.testsolverframework import SolverFrameWorkTest
+
+
+'''
+for more information on how to run a specific test class or a test def see
+file src/Mod/Test/__init__
+https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
+
+
+
+examples from within FreeCAD:
+
+import Test, TestFem
+Test.runTestsFromModule(TestFem)
+
+import Test, femtest.testcommon
+Test.runTestsFromModule(femtest.testcommon)
+
+import Test, TestFem
+Test.runTestsFromClass(TestFem.FemTest)
+
+import Test, femtest.testcommon
+Test.runTestsFromClass(femtest.testcommon.FemTest)
+
+
+import unittest
+mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_pyimport_all_FEM_modules")
+unittest.TextTestRunner().run(mytest)
+
+
+
+
+examples from shell in build dir:
+
+./bin/FreeCAD --run-test "TestFem"
+
+./bin/FreeCAD --run-test "TestFem.FemTest"
+
+./bin/FreeCAD --run-test "TestFem.FemTest.test_pyimport_all_FEM_modules"
+
+
+
+
+to run all FreeCAD tests from shell:
+
+./bin/FreeCAD --run-test 0
+'''
