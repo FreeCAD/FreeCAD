@@ -71,7 +71,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
             if self.solver:
-                self.set_analysis_type()
                 self.setup_working_dir()
             else:
                 raise Exception('FEM: No solver found!')
@@ -274,8 +273,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # analysis
         if not self.analysis:
             message += "No active Analysis\n"
-        if self.analysis_type not in self.known_analysis_types:
-            message += "Unknown analysis type: {}\n".format(self.analysis_type)
         if not self.working_dir:
             message += "Working directory not set\n"
         import os
@@ -285,7 +282,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if not self.solver:
             message += "No solver object defined in the analysis\n"
         else:
-            if self.analysis_type == "frequency":
+            if self.solver.AnalysisType not in self.known_analysis_types:
+                message += "Unknown analysis type: {}\n".format(self.solver.AnalysisType)
+            if self.solver.AnalysisType == "frequency":
                 if not hasattr(self.solver, "EigenmodeHighLimit"):
                     message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
                 elif not hasattr(self.solver, "EigenmodeLowLimit"):
@@ -336,10 +335,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "No YoungsModulus defined for at least one material.\n"
                 if 'PoissonRatio' not in mat_map:
                     message += "No PoissonRatio defined for at least one material.\n"  # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
-            if self.analysis_type == "frequency" or self.selfweight_constraints:
+            if self.solver.AnalysisType == "frequency" or self.selfweight_constraints:
                 if 'Density' not in mat_map:
                     message += "No Density defined for at least one material.\n"
-            if self.analysis_type == "thermomech":
+            if self.solver.AnalysisType == "thermomech":
                 if 'ThermalConductivity' in mat_map:
                     if not Units.Quantity(mat_map['ThermalConductivity']).Value:
                         message += "Value of ThermalConductivity is set to 0.0.\n"
@@ -359,10 +358,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed.\n"
         # which analysis needs which constraints
         # no check in the regard of loads existence (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
-        if self.analysis_type == "static":
+        if self.solver.AnalysisType == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
-        if self.analysis_type == "thermomech":
+        if self.solver.AnalysisType == "thermomech":
             if not self.initialtemperature_constraints:
                 if not self.fluid_sections:
                     message += "Thermomechanical analysis: No initial temperature defined.\n"
@@ -455,7 +454,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.fluid_sections:
             if not self.selfweight_constraints:
                 message += "A fluid network analysis requires self weight constraint to be applied"
-            if self.analysis_type != "thermomech":
+            if self.solver.AnalysisType != "thermomech":
                 message += "A fluid network analysis can only be done in a thermomech analysis"
             has_no_references = False
             for f in self.fluid_sections:
@@ -492,19 +491,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         else:
             # self.working_dir does have a slash at the end
             self.inp_file_name = self.working_dir + self.base_name + '.inp'
-
-    ## Sets analysis type.
-    #  @param self The python object self
-    #  @param analysis_type type of the analysis.
-    def set_analysis_type(self, analysis_type=None):
-        if analysis_type is not None:
-            self.analysis_type = analysis_type
-        else:
-            try:
-                self.analysis_type = self.solver.AnalysisType
-            except:
-                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
-                self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
     ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
@@ -557,7 +543,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
                 self.beam_sections, self.beam_rotations, self.shell_thicknesses, self.fluid_sections,
-                self.analysis_type, self.working_dir)
+                self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
