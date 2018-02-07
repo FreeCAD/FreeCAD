@@ -33,6 +33,14 @@ import femsolver.run
 import tempfile
 import unittest
 import os
+from .testtools import fcc_print
+from .testtools import get_defmake_count
+from .testtools import compare_inp_files
+from .testtools import compare_files
+from .testtools import compare_stats
+from .testtools import force_unix_line_ends
+from .testtools import collect_python_modules
+
 
 mesh_name = 'Mesh'
 stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
@@ -1361,135 +1369,6 @@ class SolverFrameWorkTest(unittest.TestCase):
         pass
 
 
-# helpers
-def fcc_print(message):
-    FreeCAD.Console.PrintMessage('{} \n'.format(message))
-
-
-def get_defmake_count():
-    '''
-    count the def make in module ObjectsFem
-    could also be done in bash with
-    grep -c  "def make" src/Mod/Fem/ObjectsFem.py
-    '''
-    name_modfile = home_path + 'Mod/Fem/ObjectsFem.py'
-    modfile = open(name_modfile, 'r')
-    lines_modefile = modfile.readlines()
-    modfile.close()
-    lines_defmake = [l for l in lines_modefile if l.startswith('def make')]
-    return len(lines_defmake)
-
-
-def compare_inp_files(file_name1, file_name2):
-    file1 = open(file_name1, 'r')
-    f1 = file1.readlines()
-    file1.close()
-    # l.startswith('17671.0,1') is a temporary workaround for python3 problem with 1DFlow input
-    # TODO as soon as the 1DFlow result reading is fixed, this should be triggered in the 1DFlow unit test
-    lf1 = [l for l in f1 if not (l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1'))]
-    lf1 = force_unix_line_ends(lf1)
-    file2 = open(file_name2, 'r')
-    f2 = file2.readlines()
-    file2.close()
-    # TODO see comment on file1
-    lf2 = [l for l in f2 if not (l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1'))]
-    lf2 = force_unix_line_ends(lf2)
-    import difflib
-    diff = difflib.unified_diff(lf1, lf2, n=0)
-    result = ''
-    for l in diff:
-        result += l
-    if result:
-        result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
-    return result
-
-
-def compare_files(file_name1, file_name2):
-    file1 = open(file_name1, 'r')
-    f1 = file1.readlines()
-    file1.close()
-    # workaraound for compare geos of elmer test and temporary file path (not only names change, path changes with operating system)
-    lf1 = [l for l in f1 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
-    lf1 = force_unix_line_ends(lf1)
-    file2 = open(file_name2, 'r')
-    f2 = file2.readlines()
-    file2.close()
-    lf2 = [l for l in f2 if not (l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// '))]
-    lf2 = force_unix_line_ends(lf2)
-    import difflib
-    diff = difflib.unified_diff(lf1, lf2, n=0)
-    result = ''
-    for l in diff:
-        result += l
-    if result:
-        result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
-    return result
-
-
-def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
-    if not loc_stat_types:
-        loc_stat_types = stat_types
-    if stat_file:
-        sf = open(stat_file, 'r')
-        sf_content = []
-        for l in sf.readlines():
-            for st in loc_stat_types:
-                if l.startswith(st):
-                    sf_content.append(l)
-        sf.close()
-        sf_content = force_unix_line_ends(sf_content)
-    stats = []
-    for s in loc_stat_types:
-        if res_obj_name:
-            statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject(res_obj_name), s)
-        else:
-            print('No result object name given')
-            return False
-        stats.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
-    if sf_content != stats:
-        fcc_print("Expected stats from {}".format(stat_file))
-        fcc_print(sf_content)
-        fcc_print("Stats read from {}.frd file".format(fea.base_name))
-        fcc_print(stats)
-        return True
-    return False
-
-
-def force_unix_line_ends(line_list):
-    new_line_list = []
-    for l in line_list:
-        if l.endswith("\r\n"):
-            l = l[:-2] + '\n'
-        new_line_list.append(l)
-    return new_line_list
-
-
-def collect_python_modules(femsubdir=None):
-    if not femsubdir:
-        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/'
-    else:
-        pydir = FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/' + femsubdir + '/'
-    collected_modules = []
-    fcc_print(pydir)
-    for pyfile in sorted(os.listdir(pydir)):
-        if pyfile.endswith(".py") and not pyfile.startswith('Init'):
-            if not femsubdir:
-                collected_modules.append(os.path.splitext(os.path.basename(pyfile))[0])
-            else:
-                collected_modules.append(femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
-    return collected_modules
-
-
-def runTestFem():
-    '''run FEM unit test
-    for more information on how to run a specific test class or a test def see comment at file end
-    '''
-    import Test
-    import sys
-    current_module = sys.modules[__name__]
-    Test.runTestsFromModule(current_module)
-
-
 def create_test_results():
     print("run FEM unit tests")
     runTestFem()
@@ -1605,14 +1484,4 @@ if FEM unit test is fine --> commit new FEM unit test results
 
 TODO compare the inp file of the helper with the inp file of FEM unit tests
 TODO the better way: move the result creation inside the TestFem and add some preference to deactivate this because it needs ccx
-
-
-for more information on how to run a specific test class or a test def see
-file src/Mod/Test/__init__
-https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
-
-import unittest
-mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_pyimport_all_FEM_modules")
-unittest.TextTestRunner().run(mytest)
-
 '''
