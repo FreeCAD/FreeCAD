@@ -46,8 +46,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.temp_dir = testtools.get_fem_test_tmp_dir()
         self.test_file_dir = testtools.get_fem_test_home_dir() + 'ccx/'
 
-    def test_static_freq_analysis(self):
-        # static
+    def test_static_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
         box = self.active_doc.addObject("Part::Box", "Box")
         fcc_print('Checking FEM new analysis...')
@@ -168,15 +167,83 @@ class FemCcxAnalysisTest(unittest.TestCase):
         static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
+        fcc_print('--------------- End of FEM tests static and analysis ---------------')
 
-        # frequency
-        frequency_analysis_dir = self.temp_dir + 'FEM_ccx_frequency/'
-        fcc_print('Reset Statik analysis')
-        fea.reset_all()
-        fcc_print('Setting analysis type to \'frequency\"')
+    def test_freq_analysis(self):
+        fcc_print('--------------- Start of FEM tests ---------------')
+        box = self.active_doc.addObject("Part::Box", "Box")
+        fcc_print('Checking FEM new analysis...')
+        analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
+        self.assertTrue(analysis, "FemTest of new analysis failed")
+
+        fcc_print('Checking FEM new solver...')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiX')
         solver_object.AnalysisType = 'frequency'
+        solver_object.GeometricalNonlinearity = 'linear'
+        solver_object.ThermoMechSteadyState = False
+        solver_object.MatrixSolverType = 'default'
+        solver_object.IterationsControlParameterTimeUse = False
+        solver_object.EigenmodesCount = 10
+        solver_object.EigenmodeHighLimit = 1000000.0
+        solver_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_object, "FemTest of new solver failed")
+        analysis.addObject(solver_object)
 
-        fcc_print('Setting up working directory to {} in order to write frequency calculations'.format(frequency_analysis_dir))
+        fcc_print('Checking FEM new material...')
+        material_object = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterial')
+        mat = material_object.Material
+        mat['Name'] = "Steel-Generic"
+        mat['YoungsModulus'] = "200000 MPa"
+        mat['PoissonRatio'] = "0.30"
+        mat['Density'] = "7900 kg/m^3"
+        material_object.Material = mat
+        self.assertTrue(material_object, "FemTest of new material failed")
+        analysis.addObject(material_object)
+
+        fcc_print('Checking FEM new fixed constraint...')
+        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        fixed_constraint.References = [(box, "Face1")]
+        self.assertTrue(fixed_constraint, "FemTest of new fixed constraint failed")
+        analysis.addObject(fixed_constraint)
+
+        fcc_print('Checking FEM new force constraint...')
+        force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
+        force_constraint.References = [(box, "Face6")]
+        force_constraint.Force = 40000.0
+        force_constraint.Direction = (box, ["Edge5"])
+        self.active_doc.recompute()
+        force_constraint.Reversed = True
+        self.active_doc.recompute()
+        self.assertTrue(force_constraint, "FemTest of new force constraint failed")
+        analysis.addObject(force_constraint)
+
+        fcc_print('Checking FEM new pressure constraint...')
+        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
+        pressure_constraint.References = [(box, "Face2")]
+        pressure_constraint.Pressure = 1000.0
+        pressure_constraint.Reversed = False
+        self.assertTrue(pressure_constraint, "FemTest of new pressure constraint failed")
+        analysis.addObject(pressure_constraint)
+
+        fcc_print('Checking FEM new mesh...')
+        from .testfiles.ccx.cube_mesh import create_nodes_cube
+        from .testfiles.ccx.cube_mesh import create_elements_cube
+        mesh = Fem.FemMesh()
+        ret = create_nodes_cube(mesh)
+        self.assertTrue(ret, "Import of mesh nodes failed")
+        ret = create_elements_cube(mesh)
+        self.assertTrue(ret, "Import of mesh volumes failed")
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', self.mesh_name)
+        mesh_object.FemMesh = mesh
+        self.assertTrue(mesh, "FemTest of new mesh failed")
+        analysis.addObject(mesh_object)
+
+        self.active_doc.recompute()
+
+        frequency_analysis_dir = self.temp_dir + 'FEM_ccx_frequency/'
+        fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
+
+        fcc_print('Setting up working directory {}'.format(frequency_analysis_dir))
         fea.setup_working_dir(frequency_analysis_dir)
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
@@ -185,6 +252,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         error = fea.check_prerequisites()
         self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
+        fcc_print('Checking FEM inp file write...')
         fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, self.mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
@@ -222,7 +290,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
-        fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
+        fcc_print('--------------- End of FEM tests frequency analysis ---------------')
 
     def test_thermomech_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
@@ -630,7 +698,7 @@ def create_test_results():
     current_module = sys.modules[__name__]
     Test.runTestsFromModule(current_module)
 
-    # static and frequency cube
+    # static cube
     FreeCAD.open(static_analysis_dir + 'cube_static.fcstd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
@@ -654,6 +722,11 @@ def create_test_results():
     dat_static_test_result_file = static_analysis_dir + 'cube_static.dat'
     shutil.copyfile(frd_result_file, frd_static_test_result_file)
     shutil.copyfile(dat_result_file, dat_static_test_result_file)
+
+    # frequency cube
+    FreeCAD.open(frequency_analysis_dir + 'cube_frequency.fcstd')
+    FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
+    fea = ccxtools.FemToolsCcx()
 
     print("create frequency result files")
     fea.reset_all()
