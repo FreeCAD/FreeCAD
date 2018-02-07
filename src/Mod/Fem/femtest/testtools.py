@@ -168,18 +168,3 @@ def collect_python_modules(femsubdir=None):
             else:
                 collected_modules.append(femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
     return collected_modules
-
-
-'''
-for more information on how to run a specific test class or a test def see
-file src/Mod/Test/__init__
-https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
-
-import unittest
-mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_pyimport_all_FEM_modules")
-unittest.TextTestRunner().run(mytest)
-
-import Test, TestFem
-Test.runTestsFromModule(TestFem)
-
-'''
