@@ -26,20 +26,14 @@
 
 import Fem
 from femtools import ccxtools
-import femresult.resulttools as resulttools
 import FreeCAD
 import ObjectsFem
-import femsolver.run
 import tempfile
 import unittest
 import os
 from .testtools import fcc_print
-from .testtools import get_defmake_count
 from .testtools import compare_inp_files
-from .testtools import compare_files
 from .testtools import compare_stats
-from .testtools import force_unix_line_ends
-from .testtools import collect_python_modules
 
 
 mesh_name = 'Mesh'
