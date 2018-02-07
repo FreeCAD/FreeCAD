@@ -1,8 +1,7 @@
-# Unit test for the FEM module
-
 # ***************************************************************************
 # *   Copyright (c) 2015 - FreeCAD Developers                               *
 # *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -28,52 +27,9 @@ import Fem
 from femtools import ccxtools
 import FreeCAD
 import ObjectsFem
-import tempfile
 import unittest
-import os
+from . import testtools
 from .testtools import fcc_print
-from .testtools import compare_inp_files
-from .testtools import compare_stats
-
-
-mesh_name = 'Mesh'
-stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
-
-home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
-if not os.path.exists(temp_dir):
-    os.makedirs(temp_dir)
-test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
-test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
-
-# define some locations fot the analysis tests
-# since they are also used in the helper def which create results they should stay global for the module
-static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + 'FEM_ccx_static/'
-static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
-static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
-static_expected_values = test_file_dir + "cube_static_expected_values"
-
-frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + 'FEM_ccx_frequency/'
-frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
-frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
-
-thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
-thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
-thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
-thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
-
-Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
-Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
-Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
-Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
-
-solverframework_analysis_dir = temp_dir + 'FEM_solverframework/'
-solverframework_save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
 
 
 class FemCcxAnalysisTest(unittest.TestCase):
@@ -86,6 +42,9 @@ class FemCcxAnalysisTest(unittest.TestCase):
         finally:
             FreeCAD.setActiveDocument("FemTest")
         self.active_doc = FreeCAD.ActiveDocument
+        self.mesh_name = 'Mesh'
+        self.temp_dir = testtools.get_fem_test_tmp_dir()
+        self.test_file_dir = testtools.get_fem_test_home_dir() + 'ccx/'
 
     def test_static_freq_analysis(self):
         # static
@@ -152,14 +111,17 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(ret, "Import of mesh nodes failed")
         ret = create_elements_cube(mesh)
         self.assertTrue(ret, "Import of mesh volumes failed")
-        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', self.mesh_name)
         mesh_object.FemMesh = mesh
         self.assertTrue(mesh, "FemTest of new mesh failed")
         analysis.addObject(mesh_object)
 
         self.active_doc.recompute()
 
+        static_base_name = 'cube_static'
+        static_analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, 'FEM_ccx_static/')
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
+
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
@@ -170,19 +132,19 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
-
-        fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, mesh_name))
+        fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, self.mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
-        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, mesh_name))
-        ret = compare_inp_files(static_analysis_inp_file, static_analysis_dir + mesh_name + '.inp')
+        static_analysis_inp_file = self.test_file_dir + static_base_name + '.inp'
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, self.mesh_name))
+        ret = testtools.compare_inp_files(static_analysis_inp_file, static_analysis_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
-        fea.setup_working_dir(test_file_dir)
-        self.assertTrue(True if fea.working_dir == test_file_dir else False,
-                        "Setting working directory {} failed".format(test_file_dir))
+        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
+        fea.setup_working_dir(self.test_file_dir)
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
+                        "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format('cube_static'))
         fea.set_base_name(static_base_name)
@@ -199,13 +161,17 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
-        ret = compare_stats(fea, static_expected_values, 'CalculiX_static_results')
+        static_expected_values = self.test_file_dir + "cube_static_expected_values"
+        ret = testtools.compare_stats(fea, static_expected_values, 'CalculiX_static_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
+        static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
 
         # frequency
+        frequency_base_name = 'cube_frequency'
+        frequency_analysis_dir = self.temp_dir + 'FEM_ccx_frequency/'
         fcc_print('Reset Statik analysis')
         fea.reset_all()
         fcc_print('Setting analysis type to \'frequency\"')
@@ -220,18 +186,19 @@ class FemCcxAnalysisTest(unittest.TestCase):
         error = fea.check_prerequisites()
         self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
-        fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, mesh_name))
+        fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, self.mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
-        fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, mesh_name))
-        ret = compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + mesh_name + '.inp')
+        frequency_analysis_inp_file = self.test_file_dir + frequency_base_name + '.inp'
+        fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, self.mesh_name))
+        ret = testtools.compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
-        fea.setup_working_dir(test_file_dir)
-        self.assertTrue(True if fea.working_dir == test_file_dir else False,
-                        "Setting working directory {} failed".format(test_file_dir))
+        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
+        fea.setup_working_dir(self.test_file_dir)
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
+                        "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format(frequency_base_name))
         fea.set_base_name(frequency_base_name)
@@ -248,9 +215,11 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
-        ret = compare_stats(fea, frequency_expected_values, 'CalculiX_frequency_mode_1_results')
+        frequency_expected_values = self.test_file_dir + "cube_frequency_expected_values"
+        ret = testtools.compare_stats(fea, frequency_expected_values, 'CalculiX_frequency_mode_1_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
+        frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
         fcc_print('--------------- End of FEM tests static and frequency analysis ---------------')
@@ -325,14 +294,17 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(ret, "Import of mesh nodes failed")
         ret = create_elements_spine(mesh)
         self.assertTrue(ret, "Import of mesh volumes failed")
-        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', self.mesh_name)
         mesh_object.FemMesh = mesh
         self.assertTrue(mesh, "FemTest of new mesh failed")
         analysis.addObject(mesh_object)
 
         self.active_doc.recompute()
 
+        thermomech_base_name = 'spine_thermomech'
+        thermomech_analysis_dir = self.temp_dir + 'FEM_ccx_thermomech/'
         fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
+
         fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
         fea.setup_working_dir(thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
@@ -343,19 +315,19 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
-
-        fcc_print('Writing {}/{}.inp for thermomech analysis'.format(thermomech_analysis_dir, mesh_name))
+        fcc_print('Writing {}/{}.inp for thermomech analysis'.format(thermomech_analysis_dir, self.mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
-        fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, mesh_name))
-        ret = compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + mesh_name + '.inp')
+        thermomech_analysis_inp_file = self.test_file_dir + thermomech_base_name + '.inp'
+        fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, self.mesh_name))
+        ret = testtools.compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
-        fea.setup_working_dir(test_file_dir)
-        self.assertTrue(True if fea.working_dir == test_file_dir else False,
-                        "Setting working directory {} failed".format(test_file_dir))
+        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
+        fea.setup_working_dir(self.test_file_dir)
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
+                        "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format('spine_thermomech'))
         fea.set_base_name(thermomech_base_name)
@@ -372,9 +344,11 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for thermomech analysis...')
-        ret = compare_stats(fea, thermomech_expected_values, 'CalculiX_thermomech_results')
+        thermomech_expected_values = self.test_file_dir + "spine_thermomech_expected_values"
+        ret = testtools.compare_stats(fea, thermomech_expected_values, 'CalculiX_thermomech_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
+        thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(thermomech_save_fc_file))
         self.active_doc.saveAs(thermomech_save_fc_file)
 
@@ -569,14 +543,17 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(ret, "Import of mesh nodes failed")
         ret = create_elements_Flow1D(mesh)
         self.assertTrue(ret, "Import of mesh volumes failed")
-        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', self.mesh_name)
         mesh_object.FemMesh = mesh
         self.assertTrue(mesh, "FemTest of new mesh failed")
         analysis.addObject(mesh_object)
 
         self.active_doc.recompute()
 
+        Flow1D_thermomech_base_name = 'Flow1D_thermomech'
+        Flow1D_thermomech_analysis_dir = self.temp_dir + 'FEM_ccx_Flow1D_thermomech/'
         fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
+
         fcc_print('Setting up working directory {}'.format(Flow1D_thermomech_analysis_dir))
         fea.setup_working_dir(Flow1D_thermomech_analysis_dir)
         self.assertTrue(True if fea.working_dir == Flow1D_thermomech_analysis_dir else False,
@@ -587,19 +564,19 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
-
-        fcc_print('Writing {}/{}.inp for thermomech analysis'.format(Flow1D_thermomech_analysis_dir, mesh_name))
+        fcc_print('Writing {}/{}.inp for thermomech analysis'.format(Flow1D_thermomech_analysis_dir, self.mesh_name))
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
-        fcc_print('Comparing {} to {}/{}.inp'.format(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir, mesh_name))
-        ret = compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + mesh_name + '.inp')
+        Flow1D_thermomech_analysis_inp_file = self.test_file_dir + Flow1D_thermomech_base_name + '.inp'
+        fcc_print('Comparing {} to {}/{}.inp'.format(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir, self.mesh_name))
+        ret = testtools.compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
-        fea.setup_working_dir(test_file_dir)
-        self.assertTrue(True if fea.working_dir == test_file_dir else False,
-                        "Setting working directory {} failed".format(test_file_dir))
+        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(self.test_file_dir))
+        fea.setup_working_dir(self.test_file_dir)
+        self.assertTrue(True if fea.working_dir == self.test_file_dir else False,
+                        "Setting working directory {} failed".format(self.test_file_dir))
 
         fcc_print('Setting base name to read test {}.frd file...'.format('Flow1D_thermomech'))
         fea.set_base_name(Flow1D_thermomech_base_name)
@@ -616,9 +593,12 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for Flow1D thermomech analysis...')
-        ret = compare_stats(fea, Flow1D_thermomech_expected_values, stat_types, 'CalculiX_thermomech_time_1_0_results')
+        Flow1D_thermomech_expected_values = self.test_file_dir + "Flow1D_thermomech_expected_values"
+        stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+        ret = testtools.compare_stats(fea, Flow1D_thermomech_expected_values, stat_types, 'CalculiX_thermomech_time_1_0_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
+        Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(Flow1D_thermomech_save_fc_file))
         self.active_doc.saveAs(Flow1D_thermomech_save_fc_file)
 

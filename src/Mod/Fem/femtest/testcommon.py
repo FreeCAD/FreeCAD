@@ -1,8 +1,6 @@
-# Unit test for the FEM module
-
 # ***************************************************************************
 # *   Copyright (c) 2015 - FreeCAD Developers                               *
-# *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -27,55 +25,13 @@
 import Fem
 import FreeCAD
 import ObjectsFem
-import tempfile
 import unittest
-import os
+from . import testtools
 from .testtools import fcc_print
-from .testtools import get_defmake_count
-from .testtools import collect_python_modules
-
-
-mesh_name = 'Mesh'
-stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
-
-home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
-if not os.path.exists(temp_dir):
-    os.makedirs(temp_dir)
-test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
-test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
-
-# define some locations fot the analysis tests
-# since they are also used in the helper def which create results they should stay global for the module
-static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + 'FEM_ccx_static/'
-static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
-static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
-static_expected_values = test_file_dir + "cube_static_expected_values"
-
-frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + 'FEM_ccx_frequency/'
-frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
-frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
-
-thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
-thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
-thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
-thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
-
-Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
-Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
-Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
-Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
-
-solverframework_analysis_dir = temp_dir + 'FEM_solverframework/'
-solverframework_save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
 
 
 class FemTest(unittest.TestCase):
+
     def setUp(self):
         try:
             FreeCAD.setActiveDocument("FemTest")
@@ -133,7 +89,7 @@ class FemTest(unittest.TestCase):
         tetra10.addNode(9, 3, 9, 10)
         tetra10.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-        unv_file = temp_dir + '/tetra10_mesh.unv'
+        unv_file = testtools.get_fem_test_tmp_dir() + '/tetra10_mesh.unv'
         tetra10.write(unv_file)
         newmesh = Fem.read(unv_file)
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
@@ -149,7 +105,7 @@ class FemTest(unittest.TestCase):
         seg2.addNode(-5000000000000000000.1, -1.123456789123456e-14, -0.1234567890123456789e-101, 2)
         seg2.addEdge([1, 2])
 
-        inp_file = temp_dir + '/seg2_mesh.inp'
+        inp_file = testtools.get_fem_test_tmp_dir() + '/seg2_mesh.inp'
         seg2.writeABAQUS(inp_file, 1, False)
 
         read_file = open(inp_file, 'r')
@@ -169,7 +125,7 @@ class FemTest(unittest.TestCase):
 
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
-        frd_file = test_file_dir + 'Flow1D_thermomech.frd'
+        frd_file = testtools.get_fem_test_home_dir() + 'ccx/Flow1D_thermomech.frd'
         import feminout.importCcxFrdResults as importCcxFrdResults
         frd_content = importCcxFrdResults.readResult(frd_file)
 
@@ -402,7 +358,7 @@ class FemTest(unittest.TestCase):
         # TODO the equations show up twice on Tree (on solver and on analysis), if they are added to the analysis group
 
         doc.recompute()
-        self.assertEqual(len(analysis.Group), get_defmake_count() - 1)  # because of the analysis itself count -1
+        self.assertEqual(len(analysis.Group), testtools.get_defmake_count() - 1)  # because of the analysis itself count -1
 
     def test_femobjects_type(self):
         doc = self.active_doc
@@ -629,20 +585,20 @@ class FemTest(unittest.TestCase):
         pymodules = []
 
         # collect all Python modules in Fem
-        pymodules += collect_python_modules('')  # Fem main dir
-        pymodules += collect_python_modules('feminout')
-        pymodules += collect_python_modules('femmesh')
-        pymodules += collect_python_modules('femresult')
-        pymodules += collect_python_modules('femtest')
-        pymodules += collect_python_modules('femobjects')
+        pymodules += testtools.collect_python_modules('')  # Fem main dir
+        pymodules += testtools.collect_python_modules('feminout')
+        pymodules += testtools.collect_python_modules('femmesh')
+        pymodules += testtools.collect_python_modules('femresult')
+        pymodules += testtools.collect_python_modules('femtest')
+        pymodules += testtools.collect_python_modules('femobjects')
         if FreeCAD.GuiUp:
-            pymodules += collect_python_modules('femcommands')
-            pymodules += collect_python_modules('femguiobjects')
-        pymodules += collect_python_modules('femsolver')
-        pymodules += collect_python_modules('femsolver/elmer')
-        pymodules += collect_python_modules('femsolver/elmer/equations')
-        pymodules += collect_python_modules('femsolver/z88')
-        pymodules += collect_python_modules('femsolver/calculix')
+            pymodules += testtools.collect_python_modules('femcommands')
+            pymodules += testtools.collect_python_modules('femguiobjects')
+        pymodules += testtools.collect_python_modules('femsolver')
+        pymodules += testtools.collect_python_modules('femsolver/elmer')
+        pymodules += testtools.collect_python_modules('femsolver/elmer/equations')
+        pymodules += testtools.collect_python_modules('femsolver/z88')
+        pymodules += testtools.collect_python_modules('femsolver/calculix')
 
         # import all collected modules
         # fcc_print(pymodules)
