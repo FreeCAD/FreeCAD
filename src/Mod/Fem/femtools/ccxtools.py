@@ -681,17 +681,20 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             ret_code = self.start_ccx()
             self.finished.emit(ret_code)
             progress_bar.stop()
+            if ret_code or self.ccx_stderr:
+                print("CalculiX failed with exit code {}".format(ret_code))
+                print("--------start of stderr-------")
+                print(self.ccx_stderr)
+                print("--------end of stderr---------")
+                print("--------start of stdout-------")
+                print(self.ccx_stdout)
+                self.has_for_nonpositive_jacobians()
+                print("--------end of stdout---------")
+            else:
+                print("CalculiX finished without error")
         else:
-            print("Running analysis failed! {}".format(message))
-        if ret_code or self.ccx_stderr:
-            print("Analysis failed with exit code {}".format(ret_code))
-            print("--------start of stderr-------")
-            print(self.ccx_stderr)
-            print("--------end of stderr---------")
-            print("--------start of stdout-------")
-            print(self.ccx_stdout)
-            self.has_for_nonpositive_jacobians()
-            print("--------end of stdout---------")
+            print("CalculiX was not started due to missing prerequisites:\n{}".format(message))
+            # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
 
     def has_for_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
