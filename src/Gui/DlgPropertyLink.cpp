@@ -141,7 +141,6 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
 
                 // get the direct base class of App::DocumentObject which 'obj' is derived from
                 while (!objType.isBad()) {
-                    std::string name = objType.getName();
                     Base::Type parType = objType.getParent();
                     if (parType == baseType) {
                         baseType = objType;
@@ -152,15 +151,19 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
             }
         }
 
-        std::vector<App::DocumentObject*> outList;
+        std::vector<App::DocumentObject*> ignoreList;
         App::DocumentObject* par = doc->getObject((const char*)parName.toLatin1());
         if (par) {
             // for multi-selection we need all objects
             if (isSingleSelection) {
                 App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
-                outList = par->getOutListOfProperty(prop);
+                ignoreList = par->getOutListOfProperty(prop);
             }
-            outList.push_back(par);
+
+            // add the inlist to the ignore list to avoid dependency loops
+            std::vector<App::DocumentObject*> inList = par->getInListRecursive();
+            ignoreList.insert(ignoreList.end(), inList.begin(), inList.end());
+            ignoreList.push_back(par);
         }
 
         // Add a "None" entry on top
@@ -180,7 +183,7 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
             }
             if (vp && nameOk) {
                 // filter out the objects
-                if (std::find(outList.begin(), outList.end(), *it) == outList.end()) {
+                if (std::find(ignoreList.begin(), ignoreList.end(), *it) == ignoreList.end()) {
                     QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
                     item->setIcon(vp->getIcon());
                     item->setText(QString::fromUtf8((*it)->Label.getValue()));
