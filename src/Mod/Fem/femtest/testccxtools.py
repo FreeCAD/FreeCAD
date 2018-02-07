@@ -118,7 +118,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        static_base_name = 'cube_static'
         static_analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, 'FEM_ccx_static/')
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
 
@@ -136,6 +135,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
+        static_base_name = 'cube_static'
         static_analysis_inp_file = self.test_file_dir + static_base_name + '.inp'
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, self.mesh_name))
         ret = testtools.compare_inp_files(static_analysis_inp_file, static_analysis_dir + self.mesh_name + '.inp')
@@ -170,7 +170,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.saveAs(static_save_fc_file)
 
         # frequency
-        frequency_base_name = 'cube_frequency'
         frequency_analysis_dir = self.temp_dir + 'FEM_ccx_frequency/'
         fcc_print('Reset Statik analysis')
         fea.reset_all()
@@ -190,6 +189,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
+        frequency_base_name = 'cube_frequency'
         frequency_analysis_inp_file = self.test_file_dir + frequency_base_name + '.inp'
         fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, self.mesh_name))
         ret = testtools.compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + self.mesh_name + '.inp')
@@ -301,7 +301,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        thermomech_base_name = 'spine_thermomech'
         thermomech_analysis_dir = self.temp_dir + 'FEM_ccx_thermomech/'
         fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
 
@@ -319,6 +318,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
+        thermomech_base_name = 'spine_thermomech'
         thermomech_analysis_inp_file = self.test_file_dir + thermomech_base_name + '.inp'
         fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, self.mesh_name))
         ret = testtools.compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + self.mesh_name + '.inp')
@@ -550,7 +550,6 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        Flow1D_thermomech_base_name = 'Flow1D_thermomech'
         Flow1D_thermomech_analysis_dir = self.temp_dir + 'FEM_ccx_Flow1D_thermomech/'
         fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
 
@@ -568,6 +567,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
+        Flow1D_thermomech_base_name = 'Flow1D_thermomech'
         Flow1D_thermomech_analysis_inp_file = self.test_file_dir + Flow1D_thermomech_base_name + '.inp'
         fcc_print('Comparing {} to {}/{}.inp'.format(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir, self.mesh_name))
         ret = testtools.compare_inp_files(Flow1D_thermomech_analysis_inp_file, Flow1D_thermomech_analysis_dir + self.mesh_name + '.inp')
