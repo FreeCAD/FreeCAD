@@ -40,7 +40,9 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
     : QGraphicsRectItem(parent),
       tmplte(myTmplte),
       fieldNameStr(myFieldName)
-{ }
+{
+    setToolTip(QObject::tr("Click to update text"));
+ }
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
