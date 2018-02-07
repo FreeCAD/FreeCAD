@@ -528,6 +528,29 @@ std::string ConstraintPy::representation(void) const
     return result.str();
 }
 
+Py::String ConstraintPy::getType(void) const
+{
+    switch(this->getConstraintPtr()->Type) {
+        case None               : return Py::String("None");break;
+        case DistanceX          : return Py::String("DistanceX");break;
+        case DistanceY          : return Py::String("DistanceY");break;
+        case Coincident         : return Py::String("Coincident");break;
+        case Horizontal         : return Py::String("Horizontal");break;
+        case Vertical           : return Py::String("Vertical");break;
+        case Block              : return Py::String("Block");break;
+        case Radius             : return Py::String("Radius");break;
+        case Parallel           : return Py::String("Parallel");break;
+        case Tangent            : return Py::String("Tangent");break;
+        case Perpendicular      : return Py::String("Perpendicular");break;
+        case Distance           : return Py::String("Distance");break;
+        case Angle              : return Py::String("Angle");break;
+        case Symmetric          : return Py::String("Symmetric"); break;
+        case SnellsLaw          : return Py::String("SnellsLaw"); break;
+        case InternalAlignment  : return Py::String("InternalAlignment"); break;
+        default                 : return Py::String("Undefined");break;
+    }
+}
+
 Py::Long ConstraintPy::getFirst(void) const
 {
     return Py::Long(this->getConstraintPtr()->First);
