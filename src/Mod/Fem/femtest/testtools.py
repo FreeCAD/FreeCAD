@@ -27,8 +27,6 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-from femtools import ccxtools
-import femresult.resulttools as resulttools
 import FreeCAD
 import tempfile
 import os
@@ -117,6 +115,8 @@ def compare_files(file_name1, file_name2):
 
 
 def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
+    import femresult.resulttools as resulttools
+    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
     if not loc_stat_types:
         loc_stat_types = stat_types
     if stat_file:
@@ -168,16 +168,6 @@ def collect_python_modules(femsubdir=None):
             else:
                 collected_modules.append(femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
     return collected_modules
-
-
-def runTestFem():
-    '''run FEM unit test
-    for more information on how to run a specific test class or a test def see comment at file end
-    '''
-    import Test
-    import sys
-    current_module = sys.modules[__name__]
-    Test.runTestsFromModule(current_module)
 
 
 '''
