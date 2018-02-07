@@ -67,9 +67,6 @@
               <property name="prefEntry" stdset="0">
                <cstring>WorkingDir</cstring>
               </property>
-              <property name="mode">
-               <enum>Gui::FileChooser::Directory</enum>
-              </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
               </property>
@@ -273,7 +270,7 @@
             <item>
              <widget class="Gui::PrefFileChooser" name="le_wd_custom" native="true">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="maximumSize">
                <size>
@@ -418,9 +415,6 @@
               </property>
               <property name="prefEntry" stdset="0">
                <cstring>CustomMaterialsDir</cstring>
-              </property>
-              <property name="mode">
-               <enum>Gui::FileChooser::Directory</enum>
               </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
@@ -625,6 +619,70 @@
     <hint type="destinationlabel">
      <x>380</x>
      <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_wd_custom</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_wd_custom</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>66</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_wd_custom</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>l_wd_custom_path</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>40</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_wd_custom</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_wd_custom</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>66</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_wd_custom</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>l_wd_custom_path</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>40</x>
+     <y>276</y>
     </hint>
    </hints>
   </connection>
