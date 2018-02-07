@@ -108,6 +108,11 @@ SET(FemSolverZ88_SRCS
     femsolver/z88/writer.py
 )
 
+SET(FemSolverFenics_SRCS
+    femsolver/fenics/__init__.py
+    femsolver/fenics/fenics_tools.py
+)
+
 SET(FemTests_SRCS
     femtest/__init__.py
     femtest/testfemcommon.py
@@ -191,6 +196,7 @@ SET(FemAllScripts
     ${FemSolverElmer_SRCS}
     ${FemSolverElmerEquations_SRCS}
     ${FemSolverZ88_SRCS}
+    ${FemSolverFenics_SRCS}
     ${FemTests_SRCS}
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
@@ -218,6 +224,7 @@ INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
 INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
 INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
+INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/testfiles)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/testfiles/ccx)
