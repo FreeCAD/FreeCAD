@@ -1530,7 +1530,7 @@ def create_test_results():
     fea.load_results()
     stats_frequency = []
     for s in stat_types:
-        statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_static_mode_1_results'), s)  # FIXME for some reason result obj name has static
+        statval = resulttools.get_stats(FreeCAD.ActiveDocument.getObject('CalculiX_frequency_mode_1_results'), s)
         stats_frequency.append("{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n".format(s, statval[0], statval[1], statval[2]))
     frequency_expected_values_file = frequency_analysis_dir + 'cube_frequency_expected_values'
     f = open(frequency_expected_values_file, 'w')
@@ -1594,8 +1594,8 @@ def create_test_results():
 '''
 update the results of FEM unit tests:
 
-import TestFem
-TestFem.create_test_results()
+import femtest.testfemcommon
+femtest.testfemcommon.create_test_results()
 
 copy result files from your_temp_directory/FEM_unittests/   test directories into the src directory
 compare the results with git difftool
