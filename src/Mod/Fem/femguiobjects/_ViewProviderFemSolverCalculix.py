@@ -259,7 +259,6 @@ class _TaskPanelFemSolverCalculix:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
             fea = ccxtools.FemToolsCcx(None, self.solver_object)
-            fea.set_analysis_type(self.solver_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
             if fea.inp_file_name != "":
