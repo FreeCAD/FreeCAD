@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2018 - FreeCAD Developers                               *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -34,41 +34,22 @@ import tempfile
 import os
 
 
-mesh_name = 'Mesh'
-stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+def get_fem_test_home_dir():
+    return FreeCAD.getHomePath() + 'Mod/Fem/femtest/testfiles/'  # getHomePath() returns path with backslash
 
-home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
-if not os.path.exists(temp_dir):
-    os.makedirs(temp_dir)
-test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
-test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
 
-# define some locations fot the analysis tests
-# since they are also used in the helper def which create results they should stay global for the module
-static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + 'FEM_ccx_static/'
-static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
-static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
-static_expected_values = test_file_dir + "cube_static_expected_values"
+def get_fem_test_tmp_dir():
+    temp_dir = tempfile.gettempdir() + '/FEM_unittests/'  # gettempdir() returns path without backslash
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    return(temp_dir)
 
-frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + 'FEM_ccx_frequency/'
-frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
-frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
 
-thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
-thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
-thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
-thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
-
-Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
-Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
-Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
-Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
+def get_unit_test_tmp_dir(temp_dir, unittestdir):
+    testdir = temp_dir + unittestdir
+    if not os.path.exists(testdir):
+        os.makedirs(testdir)
+    return testdir
 
 
 def fcc_print(message):
@@ -81,7 +62,7 @@ def get_defmake_count():
     could also be done in bash with
     grep -c  "def make" src/Mod/Fem/ObjectsFem.py
     '''
-    name_modfile = home_path + 'Mod/Fem/ObjectsFem.py'
+    name_modfile = FreeCAD.getHomePath() + 'Mod/Fem/ObjectsFem.py'
     modfile = open(name_modfile, 'r')
     lines_modefile = modfile.readlines()
     modfile.close()

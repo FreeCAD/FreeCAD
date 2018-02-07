@@ -1,8 +1,6 @@
-# Unit test for the FEM module
-
 # ***************************************************************************
 # *   Copyright (c) 2015 - FreeCAD Developers                               *
-# *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -28,51 +26,9 @@ import Fem
 import FreeCAD
 import ObjectsFem
 import femsolver.run
-import tempfile
 import unittest
-import os
+from . import testtools
 from .testtools import fcc_print
-from .testtools import compare_inp_files
-
-
-mesh_name = 'Mesh'
-stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
-
-home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir() + '/FEM_unittests/'
-if not os.path.exists(temp_dir):
-    os.makedirs(temp_dir)
-test_file_dir = home_path + 'Mod/Fem/femtest/testfiles/ccx/'
-test_file_dir_elmer = home_path + 'Mod/Fem/femtest/testfiles/elmer/'
-
-# define some locations fot the analysis tests
-# since they are also used in the helper def which create results they should stay global for the module
-static_base_name = 'cube_static'
-static_analysis_dir = temp_dir + 'FEM_ccx_static/'
-static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
-static_analysis_inp_file = test_file_dir + static_base_name + '.inp'
-static_expected_values = test_file_dir + "cube_static_expected_values"
-
-frequency_base_name = 'cube_frequency'
-frequency_analysis_dir = temp_dir + 'FEM_ccx_frequency/'
-frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
-frequency_analysis_inp_file = test_file_dir + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "cube_frequency_expected_values"
-
-thermomech_base_name = 'spine_thermomech'
-thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
-thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
-thermomech_analysis_inp_file = test_file_dir + thermomech_base_name + '.inp'
-thermomech_expected_values = test_file_dir + "spine_thermomech_expected_values"
-
-Flow1D_thermomech_base_name = 'Flow1D_thermomech'
-Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
-Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
-Flow1D_thermomech_analysis_inp_file = test_file_dir + Flow1D_thermomech_base_name + '.inp'
-Flow1D_thermomech_expected_values = test_file_dir + "Flow1D_thermomech_expected_values"
-
-solverframework_analysis_dir = temp_dir + 'FEM_solverframework/'
-solverframework_save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
 
 
 class SolverFrameWorkTest(unittest.TestCase):
@@ -85,6 +41,9 @@ class SolverFrameWorkTest(unittest.TestCase):
         finally:
             FreeCAD.setActiveDocument("FemTest")
         self.active_doc = FreeCAD.ActiveDocument
+        self.mesh_name = 'Mesh'
+        self.temp_dir = testtools.get_fem_test_tmp_dir()
+        self.test_file_dir = testtools.get_fem_test_home_dir() + 'ccx/'
 
     def test_solver_framework(self):
         fcc_print('--------------- Start of FEM tests  solver frame work ---------------')
@@ -137,7 +96,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         self.assertTrue(ret, "Import of mesh nodes failed")
         ret = create_elements_cube(mesh)
         self.assertTrue(ret, "Import of mesh volumes failed")
-        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', self.mesh_name)
         mesh_object.FemMesh = mesh
         self.assertTrue(mesh, "FemTest of new mesh failed")
         analysis.addObject(mesh_object)
@@ -145,7 +104,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         self.active_doc.recompute()
 
         # solver frame work ccx solver
-        fcc_print('Checking FEM solver for solver frame work...')
+        fcc_print('Checking FEM CalculiX solver for solver frame work...')
         solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
         solver_ccx2_object.AnalysisType = 'static'
         solver_ccx2_object.GeometricalNonlinearity = 'linear'
@@ -158,18 +117,18 @@ class SolverFrameWorkTest(unittest.TestCase):
         self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
         analysis.addObject(solver_ccx2_object)
 
-        fcc_print('Checking inpfile writing for solverframework_save_fc_file frame work...')
-        if not os.path.exists(solverframework_analysis_dir):  # solver frameworkd does explicit not create a non existing directory
-            os.makedirs(solverframework_analysis_dir)
-
+        static_base_name = 'cube_static'
+        solverframework_analysis_dir = testtools.get_unit_test_tmp_dir(testtools.get_fem_test_tmp_dir(), 'FEM_solverframework/')
+        fcc_print('Checking FEM Elmer solver for solver frame work......')
         fcc_print('machine_ccx')
         machine_ccx = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, solverframework_analysis_dir)
         fcc_print('Machine testmode: ' + str(machine_ccx.testmode))
         machine_ccx.target = femsolver.run.PREPARE
         machine_ccx.start()
         machine_ccx.join()  # wait for the machine to finish.
-        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, solverframework_analysis_dir, mesh_name))
-        ret = compare_inp_files(static_analysis_inp_file, solverframework_analysis_dir + mesh_name + '.inp')
+        static_analysis_inp_file = testtools.get_fem_test_home_dir() + 'ccx/' + static_base_name + '.inp'
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, solverframework_analysis_dir, self.mesh_name))
+        ret = testtools.compare_inp_files(static_analysis_inp_file, solverframework_analysis_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
         # use solver frame work elmer solver
@@ -199,24 +158,26 @@ class SolverFrameWorkTest(unittest.TestCase):
         machine_elmer.join()  # wait for the machine to finish.
 
         '''
+        test_file_dir_elmer = testtools.get_fem_test_home_dir() + 'elmer/'
         fcc_print('Test writing STARTINFO file')
         fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO'))
-        ret = compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO')
+        ret = testtools.compare_files(test_file_dir_elmer + 'ELMERSOLVER_STARTINFO', solverframework_analysis_dir + 'ELMERSOLVER_STARTINFO')
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print('Test writing case file')
         fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif'))
-        ret = compare_files(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif')
+        ret = testtools.compare_files(test_file_dir_elmer + 'case.sif', solverframework_analysis_dir + 'case.sif')
         self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
 
         fcc_print('Test writing GMSH geo file')
         fcc_print('Comparing {} to {}'.format(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo'))
-        ret = compare_files(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo')
+        ret = testtools.compare_files(test_file_dir_elmer + 'group_mesh.geo', solverframework_analysis_dir + 'group_mesh.geo')
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
         '''
 
-        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(solverframework_save_fc_file))
-        self.active_doc.saveAs(solverframework_save_fc_file)
+        save_fc_file = solverframework_analysis_dir + static_base_name + '.fcstd'
+        fcc_print('Save FreeCAD file for static2 analysis to {}...'.format(save_fc_file))
+        self.active_doc.saveAs(save_fc_file)
         fcc_print('--------------- End of FEM tests solver frame work ---------------')
 
     def tearDown(self):
