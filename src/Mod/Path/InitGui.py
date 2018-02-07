@@ -46,10 +46,10 @@ class PathWorkbench (Workbench):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
         # load python modules
-	from PathScripts import AxisMapDressup.py
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathCustom
+        from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
@@ -85,7 +85,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
+        dressupcmdlist = ["Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag", "Path_DressupAxisMap"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
