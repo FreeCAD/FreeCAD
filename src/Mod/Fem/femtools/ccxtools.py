@@ -191,7 +191,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.solver = None
                     # another solver was found --> We have more than one solver
                     # we do not know which one to use, so we use none !
-                    # print('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!')
+                    # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!\n')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
@@ -506,14 +506,14 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 try:
                     self.working_dir = self.fem_prefs.GetString("WorkingDir")
                 except:
-                    print('Could not set working directory to FEM Preferences working directory.')
+                    FreeCAD.Console.PrintError('Could not set working directory to FEM Preferences working directory.\n')
             else:
-                print('FEM preferences working dir is not set, the solver working directory is used.')
+                FreeCAD.Console.PrintMessage('FEM preferences working dir is not set, the solver working directory is used.\n')
                 if self.solver.WorkingDir:
                     try:
                         self.working_dir = self.solver.WorkingDir
                     except:
-                        print('Could not set working directory to solver working directory.')
+                        FreeCAD.Console.PrintError('Could not set working directory to solver working directory.\n')
 
         # check working_dir has a slash at the end, if not add one
         self.working_dir = os.path.join(self.working_dir, '')
@@ -522,11 +522,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             try:
                 os.makedirs(self.working_dir)
             except:
-                print("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
+                FreeCAD.Console.PrintError("Dir \'{}\' doesn't exist and cannot be created.\n".format(self.working_dir))
                 import tempfile
                 self.working_dir = tempfile.gettempdir()
-                print("Dir \'{}\' will be used instead.".format(self.working_dir))
-        print('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir)
+                FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
+        FreeCAD.Console.PrintMessage('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir + '\n')
         # Update inp file name
         self.set_inp_file_name()
 
@@ -546,7 +546,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
-            print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
+            FreeCAD.Console.PrintError("Unexpected error when writing CalculiX input file: {}\n".format(sys.exc_info()[0]))
             raise
 
     ## Sets CalculiX ccx binary path and validates if the binary can be executed
@@ -682,23 +682,23 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
             if ret_code or self.ccx_stderr:
-                print("CalculiX failed with exit code {}".format(ret_code))
-                print("--------start of stderr-------")
-                print(self.ccx_stderr)
-                print("--------end of stderr---------")
-                print("--------start of stdout-------")
-                print(self.ccx_stdout)
+                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stdout)
                 self.has_for_nonpositive_jacobians()
-                print("--------end of stdout---------")
+                FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
             else:
-                print("CalculiX finished without error")
+                FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
         else:
-            print("CalculiX was not started due to missing prerequisites:\n{}".format(message))
+            FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
             # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
 
     def has_for_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
-            print('CalculiX returned an error due to nonpositive jacobian elements.')
+            FreeCAD.Console.PrintError('CalculiX returned an error due to nonpositive jacobian elements.\n')
             nonpositive_jacobian_elements = []
             nonpositive_jacobian_elenodes = []
             for line in self.ccx_stdout.splitlines():
@@ -716,10 +716,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
             command_for_nonposjacnodes = 'nonpositive_jacobian_elenodes = ' + str(nonpositive_jacobian_elenodes)
             command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = nonpositive_jacobian_elenodes"
-            print('nonpositive_jacobian_elements = ' + str(nonpositive_jacobian_elements))
-            print(command_for_nonposjacnodes)
-            print(command_to_highlight)
-            print('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n')  # command to reset the Highlighted Nodes
+            FreeCAD.Console.PrintMessage('nonpositive_jacobian_elements = {}\n'.format(nonpositive_jacobian_elements))
+            FreeCAD.Console.PrintMessage(command_for_nonposjacnodes + '\n')
+            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
+            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
             if FreeCAD.GuiUp:
                 import FreeCADGui
                 FreeCADGui.doCommand(command_for_nonposjacnodes)
@@ -784,10 +784,10 @@ def get_refshape_type(fem_doc_object):
         first_ref_obj = fem_doc_object.References[0]
         first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
-        print(fem_doc_object.Name + ' has ' + st + ' reference shapes.')
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
         return st
     else:
-        print(fem_doc_object.Name + ' has empty References.')
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
         return ''
 
 ##  @}
