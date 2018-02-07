@@ -67,6 +67,9 @@
               <property name="prefEntry" stdset="0">
                <cstring>WorkingDir</cstring>
               </property>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
+              </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
               </property>
@@ -284,6 +287,9 @@
               <property name="prefEntry" stdset="0">
                <cstring>CustomDirectoryPath</cstring>
               </property>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
+              </property>
              </widget>
             </item>
             <item>
@@ -415,6 +421,9 @@
               </property>
               <property name="prefEntry" stdset="0">
                <cstring>CustomMaterialsDir</cstring>
+              </property>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
               </property>
               <property name="prefPath" stdset="0">
                <cstring>Mod/Fem/General</cstring>
