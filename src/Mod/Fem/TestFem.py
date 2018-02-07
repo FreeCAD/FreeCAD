@@ -27,6 +27,6 @@
 
 # the order should be as follows:
 # common-, object-, mesh-, inout-, ccxtools-, solverframworktests
-from femtest.testfemcommon import FemTest
+from femtest.testcommon import FemTest
 from femtest.testccxtools import FemCcxAnalysisTest
 from femtest.testsolverframework import SolverFrameWorkTest
