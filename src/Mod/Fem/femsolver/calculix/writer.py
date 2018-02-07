@@ -64,9 +64,9 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.file_name = self.dir_name + self.main_file_name
         self.FluidInletoutlet_ele = []
         self.fluid_inout_nodes_file = self.dir_name + self.mesh_object.Name + '_inout_nodes.txt'
-        print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
-        print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)
-        print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
+        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name + '\n')
+        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name + '\n')
+        FreeCAD.Console.PrintMessage('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name + '\n')
 
     def write_calculix_input_file(self):
         timestart = time.clock()
@@ -74,7 +74,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
-        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
+        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
         return self.file_name
 
     def write_calculix_one_input_file(self):
@@ -700,7 +700,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.analysis_type == 'static' or self.analysis_type == 'thermomech':
                 step += ', NLGEOM'   # https://www.comsol.com/blogs/what-is-geometric-nonlinearity/
             elif self.analysis_type == 'frequency':
-                print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
+                FreeCAD.Console.PrintMessage('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!\n')
         if self.solver_obj.IterationsThermoMechMaximum:
             if self.analysis_type == 'thermomech':
                 step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
@@ -738,7 +738,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             elif self.analysis_type == 'thermomech':
                 analysis_type += ', DIRECT'
             elif self.analysis_type == 'frequency':
-                print('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored')
+                FreeCAD.Console.PrintMessage('Analysis type frequency and IterationsUserDefinedIncrementations are not allowed together, it is ignored\n')
         # analysis line --> steadystate --> thermomech only
         if self.solver_obj.ThermoMechSteadyState:
             if self.analysis_type == 'thermomech':  # bernd: I do not know if STEADY STATE is allowed with DIRECT but since time steps are 1.0 it makes no sense IMHO
@@ -983,7 +983,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             lines = inout_nodes_file.readlines()
             inout_nodes_file.close()
         else:
-            print("1DFlow inout nodes file not found: " + self.fluid_inout_nodes_file)
+            FreeCAD.Console.PrintError("1DFlow inout nodes file not found: " + self.fluid_inout_nodes_file + '\n')
         # get nodes
         self.get_constraints_fluidsection_nodes()
         for femobj in self.fluidsection_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
