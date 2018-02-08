@@ -105,23 +105,23 @@ class SolverFrameWorkTest(unittest.TestCase):
 
         # solver frame work ccx solver
         fcc_print('\nChecking FEM CalculiX solver for solver frame work...')
-        solver_ccx2_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
-        solver_ccx2_object.AnalysisType = 'static'
-        solver_ccx2_object.GeometricalNonlinearity = 'linear'
-        solver_ccx2_object.ThermoMechSteadyState = False
-        solver_ccx2_object.MatrixSolverType = 'default'
-        solver_ccx2_object.IterationsControlParameterTimeUse = False
-        solver_ccx2_object.EigenmodesCount = 10
-        solver_ccx2_object.EigenmodeHighLimit = 1000000.0
-        solver_ccx2_object.EigenmodeLowLimit = 0.0
-        self.assertTrue(solver_ccx2_object, "FemTest of new ccx solver failed")
-        analysis.addObject(solver_ccx2_object)
+        solver_ccx_object = ObjectsFem.makeSolverCalculix(self.active_doc, 'SolverCalculiX')
+        solver_ccx_object.AnalysisType = 'static'
+        solver_ccx_object.GeometricalNonlinearity = 'linear'
+        solver_ccx_object.ThermoMechSteadyState = False
+        solver_ccx_object.MatrixSolverType = 'default'
+        solver_ccx_object.IterationsControlParameterTimeUse = False
+        solver_ccx_object.EigenmodesCount = 10
+        solver_ccx_object.EigenmodeHighLimit = 1000000.0
+        solver_ccx_object.EigenmodeLowLimit = 0.0
+        self.assertTrue(solver_ccx_object, "FemTest of new ccx solver failed")
+        analysis.addObject(solver_ccx_object)
 
         static_base_name = 'cube_static'
         solverframework_analysis_dir = testtools.get_unit_test_tmp_dir(testtools.get_fem_test_tmp_dir(), 'FEM_solverframework/')
         fcc_print('Checking FEM Elmer solver for solver frame work......')
         fcc_print('machine_ccx')
-        machine_ccx = solver_ccx2_object.Proxy.createMachine(solver_ccx2_object, solverframework_analysis_dir)
+        machine_ccx = solver_ccx_object.Proxy.createMachine(solver_ccx_object, solverframework_analysis_dir)
         fcc_print('Machine testmode: ' + str(machine_ccx.testmode))
         machine_ccx.target = femsolver.run.PREPARE
         machine_ccx.start()
@@ -150,6 +150,7 @@ class SolverFrameWorkTest(unittest.TestCase):
         analysis.addObject(mesh_gmsh)
         self.active_doc.removeObject(mesh_object.Name)
 
+        # solver frame work Elmer solver
         fcc_print('\nChecking FEM Elmer solver for solver frame work...')
         machine_elmer = solver_elmer_object.Proxy.createMachine(solver_elmer_object, solverframework_analysis_dir, True)
         fcc_print('Machine testmode: ' + str(machine_elmer.testmode))
