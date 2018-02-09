@@ -638,10 +638,9 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
         }
 
         // Execute the Python block
-        QString prim = tr("Create primitive");
-        Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
+        // No need to open a transaction because this is already done in the command
+        // class or when starting to edit a primitve.
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
-        Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {
