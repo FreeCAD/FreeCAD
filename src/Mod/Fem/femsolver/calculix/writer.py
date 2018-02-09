@@ -433,9 +433,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             fix_obj = femobj['Object']
             f.write('** ' + fix_obj.Label + '\n')
-            f.write('*NSET,NSET=' + fix_obj.Name + '\n')
-            for n in femobj['Nodes']:
-                f.write(str(n) + ',\n')
+            if self.femmesh.Volumes and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+                if len(femobj['NodesSolid']) > 0:
+                    f.write('*NSET,NSET=' + fix_obj.Name + 'Solid\n')
+                    for n in femobj['NodesSolid']:
+                        f.write(str(n) + ',\n')
+                if len(femobj['NodesFaceEdge']) > 0:
+                    f.write('*NSET,NSET=' + fix_obj.Name + 'FaceEdge\n')
+                    for n in femobj['NodesFaceEdge']:
+                        f.write(str(n) + ',\n')
+            else:
+                f.write('*NSET,NSET=' + fix_obj.Name + '\n')
+                for n in femobj['Nodes']:
+                    f.write(str(n) + ',\n')
 
     def write_node_sets_constraints_displacement(self, f):
         # get nodes
@@ -770,15 +780,32 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('** ' + femobj['Object'].Label + '\n')
             fix_obj_name = femobj['Object'].Name
-            f.write('*BOUNDARY\n')
-            f.write(fix_obj_name + ',1\n')
-            f.write(fix_obj_name + ',2\n')
-            f.write(fix_obj_name + ',3\n')
-            if self.beamsection_objects or self.shellthickness_objects:
-                f.write(fix_obj_name + ',4\n')
-                f.write(fix_obj_name + ',5\n')
-                f.write(fix_obj_name + ',6\n')
-            f.write('\n')
+            if self.femmesh.Volumes and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+                if len(femobj['NodesSolid']) > 0:
+                    f.write('*BOUNDARY\n')
+                    f.write(fix_obj_name + 'Solid' + ',1\n')
+                    f.write(fix_obj_name + 'Solid' + ',2\n')
+                    f.write(fix_obj_name + 'Solid' + ',3\n')
+                    f.write('\n')
+                if len(femobj['NodesFaceEdge']) > 0:
+                    f.write('*BOUNDARY\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',1\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',2\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',3\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',4\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',5\n')
+                    f.write(fix_obj_name + 'FaceEdge' + ',6\n')
+                    f.write('\n')
+            else:
+                f.write('*BOUNDARY\n')
+                f.write(fix_obj_name + ',1\n')
+                f.write(fix_obj_name + ',2\n')
+                f.write(fix_obj_name + ',3\n')
+                if self.beamsection_objects or self.shellthickness_objects:
+                    f.write(fix_obj_name + ',4\n')
+                    f.write(fix_obj_name + ',5\n')
+                    f.write(fix_obj_name + ',6\n')
+                f.write('\n')
 
     def write_constraints_displacement(self, f):
         f.write('\n***********************************************************\n')
