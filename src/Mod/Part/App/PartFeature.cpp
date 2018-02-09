@@ -60,6 +60,7 @@
 
 using namespace Part;
 
+FC_LOG_LEVEL_INIT("Part",true,true);
 
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 
@@ -115,7 +116,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 {
     // having '.' inside subname means it is referencing some children object,
     // instead of any sub-element from ourself
-    if(subname && strrchr(subname,'.')) 
+    if(subname && strchr(subname,'.')) 
         return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
     if(pmat && transform)
@@ -141,7 +142,9 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         str += " ";
         if (msg) {str += msg;}
         else     {str += "No OCCT Exception Message";}
-        throw Base::Exception(str.c_str());
+        // throw Base::Exception(str.c_str());
+        FC_ERR(str);
+        return 0;
     }
 }
 
