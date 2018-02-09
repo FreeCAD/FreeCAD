@@ -108,6 +108,34 @@ def get_femelement_table(femmesh):
     return femelement_table
 
 
+def get_femelement_volumes_table(femmesh):
+    """ get_femelement_volumes_table(femmesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    table = {}
+    for i in femmesh.Volumes:
+        table[i] = femmesh.getElementNodes(i)
+    return table
+
+
+def get_femelement_faces_table(femmesh, faces_only=None):
+    """ get_femelement_faces_table(femmesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    table = {}
+    if not faces_only:
+        faces_only = femmesh.FacesOnly
+    for i in faces_only:
+        table[i] = femmesh.getElementNodes(i)
+    return table
+
+
+def get_femelement_edges_table(femmesh, edges_only=None):
+    """ get_femelement_edges_table(femmesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    table = {}
+    if not edges_only:
+        edges_only = femmesh.EdgesOnly
+    for i in edges_only:
+        table[i] = femmesh.getElementNodes(i)
+    return table
+
+
 def get_femnodes_ele_table(femnodes_mesh, femelement_table):
     '''the femnodes_ele_table contains for each node its membership in elements
     {nodeID : [[eleID, NodePosition], [], ...], nodeID : [[], [], ...], ...}
