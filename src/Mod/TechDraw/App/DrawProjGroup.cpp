@@ -174,6 +174,11 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         updateChildren();
     }
 
+    for (auto& item: getViewsAsDPGI()) {
+        item->autoPosition();
+        item->purgeTouched();
+    }
+
     if (page != nullptr) {
         page->requestPaint();
     }
@@ -697,7 +702,9 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
         }
 }
 
-//! tell children DPGIs that parent DPG has changed ?Scale?
+/*! 
+ * tell children DPGIs that parent DPG has changed ?Scale?
+ */
 void DrawProjGroup::updateChildren(void)
 {
     for( const auto it : Views.getValues() ) {
@@ -709,7 +716,9 @@ void DrawProjGroup::updateChildren(void)
     }
 }
 
-//!check if ProjectionGroup fits on Page
+/*!
+ * check if ProjectionGroup fits on Page
+ */
 bool DrawProjGroup::checkFit(TechDraw::DrawPage* p) const
 {
     bool result = true;
@@ -915,7 +924,20 @@ void DrawProjGroup::spinCCW()
 }
 
 
-//dumps the current iso DPGI's 
+std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
+{
+    std::vector<DrawProjGroupItem*> result;
+    auto views = Views.getValues();
+    for (auto& v:views) {
+        DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(v);
+        result.push_back(item);
+    }
+    return result;
+}
+
+/*!
+ *dumps the current iso DPGI's 
+ */
 void DrawProjGroup::dumpISO(char * title)
 {
     Base::Console().Message("DPG ISO: %s\n", title); 
