@@ -351,11 +351,11 @@
 
 #define __FC_PRINT(_instance,_l,_func,_msg,_file,_line) do{\
     if(_instance.isEnabled(_l)) {\
-        std::stringstream str;\
-        _instance.prefix(str,_file,_line) << _msg;\
+        std::stringstream _str;\
+        _instance.prefix(_str,_file,_line) << _msg;\
         if(_instance.add_eol) \
-            str<<std::endl;\
-        Base::Console()._func(str.str().c_str());\
+            _str<<std::endl;\
+        Base::Console()._func(_str.str().c_str());\
         if(_instance.refresh) Base::Console().Refresh();\
     }\
 }while(0)
