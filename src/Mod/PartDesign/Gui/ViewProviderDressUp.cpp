@@ -59,6 +59,7 @@ const std::string & ViewProviderDressUp::featureName() const {
 
 bool ViewProviderDressUp::setEdit(int ModNum) {
     if (ModNum == ViewProvider::Default ) {
+        saveOldTip();
         // Here we should prevent edit of a Feature with missing base
         // Otherwise it could call unhandled exception.
         PartDesign::DressUp* dressUp = static_cast<PartDesign::DressUp*>(getObject());

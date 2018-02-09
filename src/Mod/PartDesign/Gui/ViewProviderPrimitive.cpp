@@ -99,10 +99,7 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
             else
                 return false;
         }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
+        
         // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
@@ -112,6 +109,11 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
             Gui::Control().showDialog(primitiveDlg);
         else
             Gui::Control().showDialog(new TaskPrimitiveParameters(this));
+        
+        saveOldTip();
+        
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
 
         return true;
     }
@@ -124,6 +126,8 @@ void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
     setPreviewDisplayMode(false);
+    
+    ViewProvider::unsetEdit(ModNum);
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {

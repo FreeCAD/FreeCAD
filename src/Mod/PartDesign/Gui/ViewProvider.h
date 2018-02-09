@@ -78,6 +78,9 @@ protected:
     
     virtual QIcon mergeTip(QIcon orig) const;
 
+    void saveOldTip(void);
+    void restoreOldTip(void);
+
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.

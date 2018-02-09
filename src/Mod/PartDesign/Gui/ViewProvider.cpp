@@ -60,20 +60,6 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
-	if (body != NULL) {
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = body->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
-    }
-
     try {
         std::string Msg("Edit ");
         Msg += this->pcObject->Label.getValue();
@@ -90,6 +76,7 @@ bool ViewProvider::doubleClicked(void)
 bool ViewProvider::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        saveOldTip();
         // When double-clicking on the item for this feature the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -134,6 +121,53 @@ bool ViewProvider::setEdit(int ModNum)
     }
 }
 
+void ViewProvider::saveOldTip(void)
+{
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+
+    if (body != NULL) {
+        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
+        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
+        oldTip = body->Tip.getValue();
+        if (oldTip != this->pcObject) {
+            body->Tip.setValue(this->pcObject);
+            // Visualization is performed:
+            // At tempVis level for planes and axis
+            // At attacher Visualization automation when there is an attacher involved
+            // At ViewProvider level, here and at derived classes where it applies, and in the
+            // specific code of OnChange function for property Visibility.
+            // Example 1: ViewProviderPrimitive uses an attacher.
+            // Example 2: ViewProviderPad does not use an attacher and handles visualization on its own.
+            // So:
+            // We must set the visualization here for those who rely on it being here. But if an attacher is used, which will
+            // store the visualization, we need to do this tip change AFTER the attacher stores the visualization, because when
+            // switching the visualization back, we do not want to comprise THIS change, as this is showing as tip the current
+            // feature, which is not necessarily the Tip before enter edit mode (well if you are here, it is not the tip, see 
+            // the if above).
+            // 
+            // When this function is called from a doCommand (setEdit), as it should be, if the command is 
+            // aborted, any change will be undone by the undo mechanism (because it is a property).
+            Gui::Application::Instance->activeDocument()->setShow(this->pcObject->getNameInDocument());
+        }
+        else
+            oldTip = NULL;
+    } else {
+        oldTip = NULL;
+    }
+}
+
+void ViewProvider::restoreOldTip(void)
+{
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+
+    if ((activeBody != NULL) && (oldTip != NULL) && (activeBody->Tip.getValue() != oldTip)) {
+        // See visualization comment in saveOldTip
+        activeBody->Tip.setValue(oldTip);
+        Gui::Application::Instance->activeDocument()->setShow(oldTip->getNameInDocument());
+    }
+    oldTip = NULL;
+}
+
 
 TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
     throw Base::Exception("getEditDialog() not implemented");
@@ -148,14 +182,8 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
         Gui::Control().closeDialog();
-        if ((activeBody != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        }
-        oldTip = NULL;
+        restoreOldTip();
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
