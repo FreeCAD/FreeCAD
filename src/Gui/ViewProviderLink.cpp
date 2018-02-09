@@ -417,6 +417,11 @@ public:
 
         if(path) {
             appendPath(path,pcSnapshots[type]);
+            if(pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
+                // this is possible in case of editing, where the switch node
+                // of the linked view object is temparaly removed from its root
+                return true;
+            }
             appendPath(path,pcSwitches[type]);
         }
         if(*subname == 0) return true;
