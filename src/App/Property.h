@@ -275,6 +275,14 @@ public:
 
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
 
+    virtual void setPyObject(PyObject *value) override {
+        try {
+            setValue(getPyValue(value));
+            return;
+        }catch(...){}
+        PropertyLists::setPyObject(value);
+    }
+
 protected:
 
     /** Helper function to set one value
