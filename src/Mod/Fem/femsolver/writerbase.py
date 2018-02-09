@@ -101,6 +101,25 @@ class FemInputWriter():
             # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
             for node in femobj['Nodes']:
                 self.constraint_conflict_nodes.append(node)
+        # if mixed mesh with solids the node set needs to be split because solid nodes do not have rotational degree of freedom
+        if self.femmesh.Volumes and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
+            print('We need to find the solid nodes.')
+            if not self.femelement_volumes_table:
+                self.femelement_volumes_table = FemMeshTools.get_femelement_volumes_table(self.femmesh)
+            for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+                nds_solid = []
+                nds_faceedge = []
+                for n in femobj['Nodes']:
+                    solid_node = False
+                    for ve in self.femelement_volumes_table:
+                        if n in self.femelement_volumes_table[ve]:
+                            solid_node = True
+                            nds_solid.append(n)
+                            break
+                    if not solid_node:
+                        nds_faceedge.append(n)
+                femobj['NodesSolid'] = set(nds_solid)
+                femobj['NodesFaceEdge'] = set(nds_faceedge)
 
     def get_constraints_displacement_nodes(self):
         # get nodes
