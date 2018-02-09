@@ -772,6 +772,20 @@ void TreeWidget::dropEvent(QDropEvent *event)
             }
         }
 
+        std::ostringstream selSubname;
+        App::DocumentObject *selObj = 0;
+        targetItemObj->getSubName(selSubname,selObj);
+        Selection().clearCompleteSelection();
+        if(selObj) {
+            selSubname << vp->getObject()->getNameInDocument() << '.';
+            Selection().addSelection(selObj->getDocument()->getName(),
+                    selObj->getNameInDocument(), selSubname.str().c_str());
+        } else {
+            selObj = targetItemObj->object()->getObject();
+            Selection().addSelection(selObj->getDocument()->getName(),
+                    selObj->getNameInDocument());
+        }
+
         // Open command
         Gui::Document* gui = vp->getDocument();
         gui->openCommand("Drag object");
@@ -864,11 +878,11 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return;
         }
         gui->commitCommand();
-    }
 
-    // Because the existence of subname, we must de-select the drag the
-    // object manually. Just do a complete clear here for simplicity
-    Selection().clearCompleteSelection();
+        // Because the existence of subname, we must de-select the drag the
+        // object manually. Just do a complete clear here for simplicity
+        Selection().clearCompleteSelection();
+    }
 }
 
 void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const
