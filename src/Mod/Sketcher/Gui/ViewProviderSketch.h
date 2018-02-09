@@ -418,6 +418,7 @@ protected:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
+    std::string editPrefix;
     
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)

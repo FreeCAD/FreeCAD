@@ -368,7 +368,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     bool nurbsized = false;
@@ -446,7 +446,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     openCommand("Increase degree");
@@ -514,7 +514,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     }
     
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     
     if(SubNames.size()>1) {
         // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
@@ -672,7 +672,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     }
     
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     
     if(SubNames.size()>1) {
         // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change

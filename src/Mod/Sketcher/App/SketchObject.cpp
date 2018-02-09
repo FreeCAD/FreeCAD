@@ -49,6 +49,7 @@
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <BRepProj_Projection.hxx>
 # include <GeomConvert_BSplineCurveKnotSplitting.hxx>
@@ -61,6 +62,7 @@
 #endif
 
 #include <boost/bind.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>
@@ -77,6 +79,10 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
 
+namespace Part {
+    PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
+
 #include "SketchObject.h"
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
@@ -89,6 +95,33 @@ const int GeoEnum::HAxis  = -1;
 const int GeoEnum::VAxis  = -2;
 const int GeoEnum::RefExt = -3;
 
+namespace Sketcher {
+const std::string &editPrefix() {
+    static std::string prefix("_");
+    return prefix;
+}
+
+std::vector<std::string> checkSubNames(const std::vector<std::string> &subnames) {
+    const auto &prefix = editPrefix();
+    std::vector<std::string> ret;
+    ret.reserve(subnames.size());
+    for(const auto &subname : subnames) {
+        if(boost::starts_with(subname,prefix))
+            ret.push_back(subname.substr(prefix.size()));
+        else
+            ret.push_back(subname);
+    }
+    return ret;
+}
+
+const char *checkSubName(const char *subname) {
+    if(!subname) return 0;
+    const auto &prefix = editPrefix();
+    if(boost::starts_with(subname,prefix))
+        return subname + prefix.size();
+    return subname;
+}
+}
 
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
@@ -6063,6 +6096,67 @@ void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::share
     
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
         solve();
+}
+
+App::DocumentObject *SketchObject::getSubObject(
+        const char *subname, PyObject **pyObj, 
+        Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    const auto &prefix = editPrefix();
+    if(!subname || !boost::starts_with(subname,prefix))
+        return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+
+    const char *shapetype = subname+prefix.size();
+    const Part::Geometry *geo = 0;
+    Base::Vector3d point;
+    if (boost::starts_with(shapetype,"Edge")) {
+        geo = getGeometry(std::atoi(&shapetype[4]) - 1);
+        if (!geo) return 0;
+    } else if (boost::starts_with(shapetype,"ExternalEdge")) {
+        int GeoId = std::atoi(&shapetype[12]) - 1;
+        GeoId = -GeoId - 3;
+        geo = getGeometry(GeoId);
+        if(!geo) return 0;
+    } else if (boost::starts_with(shapetype,"Vertex")) {
+        int VtId = std::atoi(&shapetype[6]) - 1;
+        int GeoId;
+        PointPos PosId;
+        getGeoVertexIndex(VtId,GeoId,PosId);
+        if (PosId==none) return 0;
+        point = getPoint(GeoId,PosId);
+    }
+    else if (strcmp(shapetype,"RootPoint")==0) 
+        point = getPoint(Sketcher::GeoEnum::RtPnt,start);
+    else if (strcmp(shapetype,"H_Axis")==0)
+        geo = getGeometry(Sketcher::GeoEnum::HAxis);
+    else if (strcmp(shapetype,"V_Axis")==0)
+        geo = getGeometry(Sketcher::GeoEnum::VAxis);
+    else if (boost::starts_with(shapetype,"Constraint")) {
+        int ConstrId = PropertyConstraintList::getIndexFromConstraintName(shapetype);
+        const std::vector< Constraint * > &vals = this->Constraints.getValues();
+        if (ConstrId < 0 || ConstrId >= int(vals.size()))
+            return 0;
+        return const_cast<SketchObject*>(this);
+    }else if(*shapetype)
+        return 0;
+
+    if (pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+
+    if (pyObj) {
+        Part::TopoShape shape;
+        if (geo) 
+            shape = geo->toShape();
+        else if (*shapetype)
+            shape = BRepBuilderAPI_MakeVertex(gp_Pnt(point.x,point.y,point.z)).Vertex();
+        else
+            shape = Shape.getShape();
+        if(pmat && !shape.isNull()) 
+            shape.transformShape(*pmat,false,true);
+        *pyObj = Py::new_reference_to(Part::shape2pyshape(shape.getShape()));
+    }
+
+    return const_cast<SketchObject*>(this);
 }
 
 

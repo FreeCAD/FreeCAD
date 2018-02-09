@@ -751,7 +751,7 @@ int SketchSelection::setUp(void)
         }
 
         SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-        SketchSubNames = selection[0].getSubNames();
+        SketchSubNames = checkSubNames(selection[0].getSubNames());
     } else if(selection.size() == 2) {
         if(selection[0].getObject()->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())){
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
@@ -762,8 +762,8 @@ int SketchSelection::setUp(void)
             }
             // assume always a Part::Feature derived object as support
             assert(selection[1].getObject()->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()));
-            SketchSubNames  = selection[0].getSubNames();
-            SupportSubNames = selection[1].getSubNames();
+            SketchSubNames  = checkSubNames(selection[0].getSubNames());
+            SupportSubNames = checkSubNames(selection[1].getSubNames());
 
         } else if (selection[1].getObject()->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
@@ -774,8 +774,8 @@ int SketchSelection::setUp(void)
             }
             // assume always a Part::Feature derived object as support
             assert(selection[0].getObject()->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()));
-            SketchSubNames  = selection[1].getSubNames();
-            SupportSubNames = selection[0].getSubNames();
+            SketchSubNames  = checkSubNames(selection[1].getSubNames());
+            SupportSubNames = checkSubNames(selection[0].getSubNames());
 
         } else {
             ErrorMsg = QObject::tr("One of the selected has to be on the sketch");
@@ -1197,7 +1197,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
@@ -1444,7 +1444,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
@@ -1690,7 +1690,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     std::vector<int> GeoId;
@@ -1952,7 +1952,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     // Check that the solver does not report redundant/conflicting constraints
@@ -2262,7 +2262,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 2) {
@@ -2455,7 +2455,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
@@ -2828,7 +2828,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     //count curves and points
@@ -3011,7 +3011,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
@@ -3257,7 +3257,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
@@ -3539,7 +3539,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
@@ -3747,7 +3747,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (!Obj || (SubNames.size() != 2 && SubNames.size() != 3)) {
@@ -4352,7 +4352,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 2 && SubNames.size() != 3){
@@ -4932,7 +4932,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
@@ -5414,7 +5414,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 3) {
@@ -5902,7 +5902,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
@@ -6089,7 +6089,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 3 && SubNames.size() != 2) {
@@ -6345,7 +6345,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         }
 
         // get the needed lists and objects
-        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
 
         if (SubNames.size() != 3) {
             strError = QObject::tr("Number of selected objects is not 3 (is %1).", dmbg).arg(SubNames.size());
@@ -6485,7 +6485,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
@@ -6918,7 +6918,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         }
 
         // get the needed lists and objects
-        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
         if (SubNames.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select constraint(s) from the sketch."));
@@ -6948,7 +6948,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
     else // toggle the selected constraint(s)
     {
         // get the needed lists and objects
-        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
         if (SubNames.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select constraint(s) from the sketch."));

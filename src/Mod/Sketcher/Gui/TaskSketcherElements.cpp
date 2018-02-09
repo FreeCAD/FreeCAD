@@ -209,7 +209,7 @@ void ElementView::deleteSelectedItems()
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());
         if (vp) {
-            vp->onDelete(ft->getSubNames());
+            vp->onDelete(Sketcher::checkSubNames(ft->getSubNames()));
         }
     }
     doc->commitTransaction();
@@ -333,8 +333,8 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (strcmp(msg.pDocName,sketchView->getSketchObject()->getDocument()->getName())==0 &&
             strcmp(msg.pObjectName,sketchView->getSketchObject()->getNameInDocument())== 0) {
             if (msg.pSubName) {
-                QString expr = QString::fromLatin1(msg.pSubName);
-                std::string shapetype(msg.pSubName);
+                QString expr = QString::fromLatin1(Sketcher::checkSubName(msg.pSubName));
+                std::string shapetype(Sketcher::checkSubName(msg.pSubName));
                 // if-else edge vertex
                 if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
                     QRegExp rx(QString::fromLatin1("^Edge(\\d+)$"));

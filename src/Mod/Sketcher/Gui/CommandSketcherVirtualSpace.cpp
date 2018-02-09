@@ -125,7 +125,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         }
         
         // get the needed lists and objects
-        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
         if (SubNames.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select constraint(s) from the sketch."));
@@ -149,7 +149,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
     else // toggle the selected constraint(s)
     {
         // get the needed lists and objects
-        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        const std::vector<std::string> &SubNames = Sketcher::checkSubNames(selection[0].getSubNames());
         if (SubNames.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select constraint(s) from the sketch."));
