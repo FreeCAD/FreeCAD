@@ -30,8 +30,8 @@
 cStock::cStock(float px, float py, float pz, float lx, float ly, float lz, float res)
 	: m_px(px), m_py(py), m_pz(pz), m_lx(lx), m_ly(ly), m_lz(lz), m_res(res)
 {
-	m_x = (int)(lx / res) + 1;
-	m_y = (int)(ly / res) + 1;
+	m_x = (int)(m_lx / res) + 1;
+	m_y = (int)(m_ly / res) + 1;
 	m_stock.Init(m_x, m_y);
 	m_attr.Init(m_x, m_y);
 	m_plane = pz + lz;
