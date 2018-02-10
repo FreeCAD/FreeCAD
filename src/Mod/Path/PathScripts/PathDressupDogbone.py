@@ -1048,11 +1048,11 @@ class CommandDressupDogbone:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "Please select one path object")+"\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "The selected object is not a path")+"\n")
             return
 
         # everything ok!
