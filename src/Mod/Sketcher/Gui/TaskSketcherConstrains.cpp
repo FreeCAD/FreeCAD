@@ -806,7 +806,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     /* Update the states */
     ui->listWidgetConstraints->blockSignals(true);
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
-        ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
         it->updateVirtualSpaceStatus();
     }
     ui->listWidgetConstraints->blockSignals(false);

@@ -164,6 +164,7 @@ void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_
 
 CDxfRead::CDxfRead(const char* filepath)
 {
+	m_aci = 0;
 	// start the file
 	memset( m_unused_line, '\0', sizeof(m_unused_line) );
 	m_fail = false;
@@ -177,7 +178,6 @@ CDxfRead::CDxfRead(const char* filepath)
 		return;
 	}
 	m_ifs->imbue(std::locale("C"));
-
 }
 
 CDxfRead::~CDxfRead()
@@ -392,7 +392,7 @@ bool CDxfRead::ReadArc()
 	double start_angle = 0.0;// in degrees
 	double end_angle = 0.0;
 	double radius = 0.0;
-	double c[3]; // centre
+	double c[3] = {0,0,0}; // centre
 
 	while(!((*m_ifs).eof()))
 	{
@@ -657,7 +657,7 @@ bool CDxfRead::ReadSpline()
 bool CDxfRead::ReadCircle()
 {
 	double radius = 0.0;
-	double c[3]; // centre
+	double c[3] = {0,0,0}; // centre
 
 	while(!((*m_ifs).eof()))
 	{
@@ -807,8 +807,8 @@ bool CDxfRead::ReadText()
 
 bool CDxfRead::ReadEllipse()
 {
-	double c[3]; // centre
-	double m[3]; //major axis point
+	double c[3]={0,0,0}; // centre
+	double m[3]={1,0,0}; //major axis point
 	double ratio=0; //ratio of major to minor axis
 	double start=0; //start of arc
 	double end=0;  // end of arc
