@@ -394,12 +394,14 @@ class _Writer(object):
             return _TYPE_REAL
         if issubclass(dataType, str):
             return _TYPE_STRING
+        if issubclass(dataType, unicode):
+            return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, str):
+        if issubclass(dataType, str) or issubclass(dataType, unicode):
             return '"%s"' % data
         return str(data)
 
