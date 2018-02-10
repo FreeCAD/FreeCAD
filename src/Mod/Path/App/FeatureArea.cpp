@@ -202,7 +202,7 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
         count = all_shapes.size();
     for(int i=index;i<count;++i)
         shapes.push_back(all_shapes[i]);
-    return std::move(shapes);
+    return shapes;
 }
 
 App::DocumentObjectExecReturn *FeatureAreaView::execute(void)
