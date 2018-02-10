@@ -676,8 +676,8 @@ void cLineSegment::SetPoints(Point3D & p1, Point3D & p2)
 void cLineSegment::PointAt(float dist, Point3D & retp)
 {
 	retp.x = pStart.x + pDir.x * dist;
-	retp.x = pStart.y + pDir.y * dist;
-	retp.x = pStart.z + pDir.z * dist;
+	retp.y = pStart.y + pDir.y * dist;
+	retp.z = pStart.z + pDir.z * dist;
 }
 
 //************************************************************************************************************
@@ -746,7 +746,7 @@ void cSimTool::InitTool()  // pos is 0..1 location along the radius of the tool
 	}
 }
 
-cVolSim::cVolSim()
+cVolSim::cVolSim() : stock(nullptr)
 {
 }
 

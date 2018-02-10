@@ -81,6 +81,9 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 		}
 	}
 
+	if (mid_vt == NULL)
+		return false;
+
 	// create a circle to test
 	Point p0(prev_vt.m_p);
 	Point p1(mid_vt->m_p);
