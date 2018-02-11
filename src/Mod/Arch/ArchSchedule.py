@@ -97,7 +97,7 @@ class _ArchSchedule:
             # silently fail on old schedule objects
             return
         if not obj.Result:
-            FreeCAD.Console.PrintError(translate("Arch","No spreadsheet attached to this schedule\n"))
+            FreeCAD.Console.PrintError(translate("Arch","No spreadsheet attached to this schedule")+"\n")
             return
         obj.Result.clearAll()
         obj.Result.set("A1","Description")
