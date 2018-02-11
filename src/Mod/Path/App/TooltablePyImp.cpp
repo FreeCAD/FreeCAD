@@ -515,9 +515,13 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
     (void)args;
     PyObject *dict = PyDict_New();
     for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
-        Path::ToolPy tool(new Path::Tool(*i->second));
-        PyObject *attrs = tool.templateAttrs(0);
+        // The 'tool' object must be created on the heap otherwise Python
+        // will fail to properly track the reference counts and aborts
+        // in debug mode.
+        Path::ToolPy* tool = new Path::ToolPy(new Path::Tool(*i->second));
+        PyObject *attrs = tool->templateAttrs(0);
         PyDict_SetItem(dict, PYINT_FROMLONG(i->first), attrs);
+        Py_DECREF(tool);
     }
     return dict;
 }
