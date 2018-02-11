@@ -35,6 +35,7 @@
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
+# include <Inventor/misc/SoChildList.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -383,18 +384,23 @@ Base::BoundBox3d ViewProviderDocumentObject::getBoundingBox() const {
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    auto childRoot = getChildRoot();
-    if(!childRoot)
-        return ViewProvider::getElementPicked(pp,subname);
-
     if(!isSelectable()) return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         if(ext->extensionGetElementPicked(pp,subname))
             return true;
 
+    auto childRoot = getChildRoot();
+    int idx;
+    if(!childRoot || 
+       (idx=pcModeSwitch->whichChild.getValue())<0 ||
+       pcModeSwitch->getChild(idx)!=childRoot)
+    {
+        return ViewProvider::getElementPicked(pp,subname);
+    }
+
     SoPath* path = pp->getPath();
-    auto idx = path->findNode(childRoot);
+    idx = path->findNode(childRoot);
     if(idx<0 || idx+1>=path->getLength())
         return false;
     auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
@@ -412,21 +418,35 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
 
 SoDetail *ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append) const
 {
+    auto len = path->getLength();
+    if(!append && len>=2)
+        len -= 2;
     auto det = ViewProvider::getDetailPath(subname,path,append);
-    if(det) return det;
+    if(det || !subname || !*subname) return det;
+
+    const char *dot = strchr(subname,'.');
+    if(!dot) return 0;
+    auto obj = getObject();
+    if(!obj || !obj->getNameInDocument()) return 0;
+    auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
+    if(!sobj) return 0;
+    auto vp = Application::Instance->getViewProvider(sobj);
+    if(!vp) return 0;
 
     auto childRoot = getChildRoot();
-    if(childRoot && subname) {
-        const char *dot = strchr(subname,'.');
-        if(!dot) return 0;
-        auto obj = getObject();
-        if(!obj || !obj->getNameInDocument()) return 0;
-        auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-        if(!sobj) return 0;
-        auto vp = Application::Instance->getViewProvider(sobj);
-        if(!vp) return 0;
+    if(!childRoot) 
+        path->truncate(len);
+    else {
+        auto idx = pcModeSwitch->whichChild.getValue();
+        if(idx < 0 || pcModeSwitch->getChild(idx)!=childRoot)
+            return 0;
         path->append(childRoot);
-        det = vp->getDetailPath(dot+1,path,true);
+    }
+    if(path->getLength()) {
+        SoNode * tail = path->getTail();
+        const SoChildList * children = tail->getChildren();
+        if(children && children->find(vp->getRoot())>=0)
+            det = vp->getDetailPath(dot+1,path,true);
     }
     return det;
 }

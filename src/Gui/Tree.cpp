@@ -2566,7 +2566,8 @@ const char *DocumentObjectItem::getName() const {
     return name?name:"";
 }
 
-int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const {
+int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const
+{
     auto parent = getParentItem();
     if(!parent)
         return NotGroup;
@@ -2575,17 +2576,27 @@ int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject 
         int group = parent->isGroup();
         if(group == NotGroup) {
             if(ret!=PartGroup) {
+                // Handle this situation,
+                //
+                // LinkGroup
+                //    |--PartExtrude
+                //           |--Sketch
+                //
+                // This function traverse from top down, so, when seeing a
+                // non-group object 'PartExtrude', its following children should
+                // not be grouped, so must reset any previous parents here.
                 topParent = 0;
                 str.str(""); //reset the current subname
                 return NotGroup;
             }
-            return PartGroup;
+            group = PartGroup;
         }
         ret = group;
     }
 
     auto obj = parent->object()->getObject();
     if(!obj || !obj->getNameInDocument()) {
+        topParent = 0;
         str.str("");
         return NotGroup;
     }
@@ -2611,47 +2622,45 @@ App::DocumentObject *DocumentObjectItem::getFullSubName(
 App::DocumentObject *DocumentObjectItem::getRelativeParent(
         std::ostringstream &str, DocumentObjectItem *cousin) const
 {
-    std::vector<DocumentObjectItem*> parents,parents2;
-    auto pi = parent();
-    for(; pi ; pi = pi->parent()) {
-        if(pi->type()!=TreeWidget::ObjectType)
-            break;
-        auto pitem = static_cast<DocumentObjectItem*>(pi);
-        if(!pitem->isGroup())
-            break;
-        parents.push_back(pitem);
-    }
-    if(parents.empty())
+    std::ostringstream str2;
+    App::DocumentObject *top=0,*top2=0;
+    getSubName(str,top);
+    if(!top)
         return 0;
-
-    auto pi2 = cousin->parent();
-    for(; pi2 ; pi2 = pi2->parent()) {
-        if(pi2->type()!=TreeWidget::ObjectType)
-            break;
-        auto pitem = static_cast<DocumentObjectItem*>(pi2);
-        if(!pitem->isGroup())
-            break;
-        parents2.push_back(pitem);
+    cousin->getSubName(str2,top2);
+    if(top!=top2) {
+        str << getName() << '.';
+        return top;
     }
 
-    if(pi->type()==TreeWidget::ObjectType || pi==pi2) {
-        while(parents.size() && parents2.size()) {
-            if(parents.back() != parents2.back())
-                break;
-            parents.pop_back();
-            parents2.pop_back();
+    auto subname = str.str();
+    auto subname2 = str2.str();
+    const char *sub = subname.c_str();
+    const char *sub2 = subname2.c_str();
+    while(1) {
+        const char *dot = strchr(sub,'.');
+        if(!dot) {
+            str.str("");
+            return 0;
         }
+        const char *dot2 = strchr(sub2,'.');
+        if(!dot2 || dot-sub!=dot2-sub2 || strncmp(sub,sub2,dot-sub)!=0) {
+            auto substr = subname.substr(0,dot-subname.c_str()+1);
+            auto ret = top->getSubObject(substr.c_str());
+            if(!top) {
+                FC_ERR("invalid subname " << top->getNameInDocument() << '.' << substr);
+                str.str("");
+                return 0;
+            }
+            str.str("");
+            str << dot+1 << getName() << '.';
+            return ret;
+        }
+        sub = dot+1;
+        sub2 = dot2+1;
     }
-    if(parents.empty())
-        return 0;
-    auto ret = parents.back();
-    parents.pop_back();
-    while(parents.size()) {
-        str << parents.back()->getName() << '.';
-        parents.pop_back();
-    }
-    str << getName() << '.';
-    return ret->object()->getObject();
+    str.str("");
+    return 0;
 }
 
 DocumentItem *DocumentObjectItem::getParentDocument() const {

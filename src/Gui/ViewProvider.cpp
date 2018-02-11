@@ -766,6 +766,13 @@ bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subnam
 }
 
 SoDetail *ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool append) const {
+    if(pcRoot->findChild(pcModeSwitch) < 0) {
+        // this is possible in case of editing, where the switch node
+        // of the linked view object is temparaly removed from its root
+        if(append) 
+            pPath->append(pcRoot);
+        return 0;
+    }
     if(append) {
         pPath->append(pcRoot);
         pPath->append(pcModeSwitch);

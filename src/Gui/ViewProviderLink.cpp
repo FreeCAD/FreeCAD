@@ -415,13 +415,17 @@ public:
             if(!subname) return false;
         }
 
+        if(pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
+            if(path) 
+                appendPath(path,pcSnapshots[type]);
+            // this is possible in case of editing, where the switch node
+            // of the linked view object is temparaly removed from its root
+            return true;
+        }
+        int len = 0;
         if(path) {
+            len = path->getLength();
             appendPath(path,pcSnapshots[type]);
-            if(pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
-                // this is possible in case of editing, where the switch node
-                // of the linked view object is temparaly removed from its root
-                return true;
-            }
             appendPath(path,pcSwitches[type]);
         }
         if(*subname == 0) return true;
@@ -440,10 +444,67 @@ public:
             else
                 type = LinkView::SnapshotVisible;
         }
+
+        // Special handling of nodes with childRoot, especially geo feature
+        // group. It's object hierarchy in the tree view (i.e. in subname) is
+        // difference from its coin hierarchy. All objects under a geo feature
+        // group is visually grouped directly under the group's childRoot,
+        // even though some object has secondary hierarchy in subname. E.g.
+        //
+        // Body
+        //   |--Pad
+        //       |--Sketch
+        //
+        //  Both Sketch and Pad's coin nodes are grouped directly under Body as,
+        //
+        // Body
+        //   |--Pad
+        //   |--Sketch
+
+        const char *dot = strchr(subname,'.');
+        const char *nextsub = subname;
+        if(!dot) return false;
+        auto geoGroup = pcLinked->getObject();
+        auto sobj = geoGroup;
+        while(1) {
+            std::string objname = std::string(nextsub,dot-nextsub+1);
+            if(!geoGroup->getSubObject(objname.c_str())) {
+                // this object is not found under the geo group, abort.
+                break;
+            }
+            // Object found under geo group, remember this subname
+            subname = nextsub;
+
+            sobj = sobj->getSubObject(objname.c_str());
+            if(!sobj) {
+                FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getNameInDocument());
+                return false;
+            }
+            auto vp = Application::Instance->getViewProvider(sobj);
+            if(!vp) {
+                FC_ERR("cannot find view provider of " << sobj->getNameInDocument());
+                return false;
+            }
+            if(vp->getChildRoot()) {
+                // In case the children is also a geo group, it will visually
+                // hold all of its own children, so stop going futher down.
+                break;
+            }
+            auto next = strchr(dot+1,'.');
+            if(!next) {
+                // no dot any more, the following must be a sub-element
+                break;
+            }
+            nextsub = dot+1;
+            dot = next;
+        }
+
         for(auto v : nodeMap) {
             if(v.second->getDetail(true,type,subname,det,path))
                 return true;
         }
+        if(path)
+            path->truncate(len);
         return false;
     }
 
