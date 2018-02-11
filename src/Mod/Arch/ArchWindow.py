@@ -1440,7 +1440,7 @@ class _ArchWindowTaskPanel:
                 self.obj.WindowParts = parts
                 self.update()
         else:
-            FreeCAD.Console.PrintWarning(translate("Arch", "Unable to create component\n"))
+            FreeCAD.Console.PrintWarning(translate("Arch", "Unable to create component")+"\n")
 
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)

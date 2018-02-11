@@ -152,12 +152,12 @@ class _CommandPipeConnector:
         import Draft
         s = FreeCADGui.Selection.getSelection()
         if not (len(s) in [2,3]):
-            FreeCAD.Console.PrintError(translate("Arch","Please select exactly 2 or 3 Pipe objects\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Please select exactly 2 or 3 Pipe objects")+"\n")
             return
         o = "["
         for obj in s:
             if Draft.getType(obj) != "Pipe":
-                FreeCAD.Console.PrintError(translate("Arch","Please select only Pipe objects\n"))
+                FreeCAD.Console.PrintError(translate("Arch","Please select only Pipe objects")+"\n")
                 return
             o += "FreeCAD.ActiveDocument."+obj.Name+","
         o += "]"
@@ -192,7 +192,7 @@ class _ArchPipe(ArchComponent.Component):
         pl = obj.Placement
         w = self.getWire(obj)
         if not w:
-            FreeCAD.Console.PrintError(translate("Arch","Unable to build the base path\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Unable to build the base path")+"\n")
             return
         if obj.OffsetStart.Value:
             e = w.Edges[0]
@@ -208,7 +208,7 @@ class _ArchPipe(ArchComponent.Component):
             w = Part.Wire(w.Edges[:-1]+[e])
         p = self.getProfile(obj)
         if not p:
-            FreeCAD.Console.PrintError(translate("Arch","Unable to build the profile\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Unable to build the profile")+"\n")
             return
         # move and rotate the profile to the first point
         delta = w.Vertexes[0].Point-p.CenterOfMass
@@ -220,7 +220,7 @@ class _ArchPipe(ArchComponent.Component):
         try:
             sh = w.makePipeShell([p],True,False,2)
         except:
-            FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe")+"\n")
         else:
             obj.Shape = sh
             if obj.Base:
@@ -233,13 +233,13 @@ class _ArchPipe(ArchComponent.Component):
         import Part
         if obj.Base:
             if not obj.Base.isDerivedFrom("Part::Feature"):
-                FreeCAD.Console.PrintError(translate("Arch","The base object is not a Part\n"))
+                FreeCAD.Console.PrintError(translate("Arch","The base object is not a Part")+"\n")
                 return
             if len(obj.Base.Shape.Wires) != 1:
-                FreeCAD.Console.PrintError(translate("Arch","Too many wires in the base shape\n"))
+                FreeCAD.Console.PrintError(translate("Arch","Too many wires in the base shape")+"\n")
                 return
             if obj.Base.Shape.Wires[0].isClosed():
-                FreeCAD.Console.PrintError(translate("Arch","The base wire is closed\n"))
+                FreeCAD.Console.PrintError(translate("Arch","The base wire is closed")+"\n")
                 return
             w = obj.Base.Shape.Wires[0]
         else:
@@ -253,13 +253,13 @@ class _ArchPipe(ArchComponent.Component):
         import Part
         if obj.Profile:
             if not obj.Profile.isDerivedFrom("Part::Part2DObject"):
-                FreeCAD.Console.PrintError(translate("Arch","The profile is not a 2D Part\n"))
+                FreeCAD.Console.PrintError(translate("Arch","The profile is not a 2D Part")+"\n")
                 return
             if len(obj.Profile.Shape.Wires) != 1:
-                FreeCAD.Console.PrintError(translate("Arch","Too many wires in the profile\n"))
+                FreeCAD.Console.PrintError(translate("Arch","Too many wires in the profile")+"\n")
                 return
             if not obj.Profile.Shape.Wires[0].isClosed():
-                FreeCAD.Console.PrintError(translate("Arch","The profile is not closed\n"))
+                FreeCAD.Console.PrintError(translate("Arch","The profile is not closed")+"\n")
                 return
             p = obj.Profile.Shape.Wires[0]
         else:
@@ -309,7 +309,7 @@ class _ArchPipeConnector(ArchComponent.Component):
         if len(obj.Pipes) < 2:
             return
         if len(obj.Pipes) > 3:
-            FreeCAD.Console.PrintWarning(translate("Arch","Only the 3 first wires will be connected\n"))
+            FreeCAD.Console.PrintWarning(translate("Arch","Only the 3 first wires will be connected")+"\n")
         if obj.Radius.Value == 0:
             return
         wires = []
@@ -329,7 +329,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             order = ["end","start"]
             point = wires[0].Vertexes[-1].Point
         else:
-            FreeCAD.Console.PrintError(translate("Arch","Common vertex not found\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Common vertex not found")+"\n")
             return
         if order[0] == "start":
             v1 = wires[0].Vertexes[1].Point.sub(wires[0].Vertexes[0].Point).normalize()
@@ -345,7 +345,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             if obj.ConnectorType != "Corner":
                 obj.ConnectorType = "Corner"
             if round(v1.getAngle(v2),tol) in [0,round(math.pi,tol)]:
-                FreeCAD.Console.PrintError(translate("Arch","Pipes are already aligned\n"))
+                FreeCAD.Console.PrintError(translate("Arch","Pipes are already aligned")+"\n")
                 return
             normal = v2.cross(v1)
             offset = math.tan(math.pi/2-v1.getAngle(v2)/2)*obj.Radius.Value
@@ -373,7 +373,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             elif wires[0].Vertexes[-1].Point == point:
                 order.append("end")
             else:
-                FreeCAD.Console.PrintError(translate("Arch","Common vertex not found\n"))
+                FreeCAD.Console.PrintError(translate("Arch","Common vertex not found")+"\n")
             if order[2] == "start":
                 v3 = wires[2].Vertexes[1].Point.sub(wires[2].Vertexes[0].Point).normalize()
             else:
@@ -385,7 +385,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             elif round(v2.getAngle(v3),tol) in [0,round(math.pi,tol)]:
                 pair = [v2,v3,v1]
             else:
-                FreeCAD.Console.PrintError(translate("Arch","At least 2 pipes must aligned\n"))
+                FreeCAD.Console.PrintError(translate("Arch","At least 2 pipes must aligned")+"\n")
                 return
             offset = obj.Radius.Value
             v1.multiply(offset)
