@@ -389,13 +389,13 @@ def read(filename,skip=None):
     else:
         # use only the internal python parser
         
-        FreeCAD.Console.PrintWarning(translate("Arch","IfcOpenShell not found or disabled, falling back on internal parser.\n"))
+        FreeCAD.Console.PrintWarning(translate("Arch","IfcOpenShell not found or disabled, falling back on internal parser.")+"\n")
         schema=getSchema()
         if schema:
             if DEBUG: print("opening",filename,"...")
             ifc = IfcDocument(filename,schema=schema)
         else:
-            FreeCAD.Console.PrintWarning(translate("Arch","IFC Schema not found, IFC import disabled.\n"))
+            FreeCAD.Console.PrintWarning(translate("Arch","IFC Schema not found, IFC import disabled.")+"\n")
             return None
         t2 = time.time()
         if DEBUG: print("Successfully loaded",ifc,"in %s s" % ((t2-t1)))
@@ -820,7 +820,7 @@ def decode(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch", "Error: Couldn't determine character encoding\n"))
+            FreeCAD.Console.PrintError(translate("Arch", "Error: Couldn't determine character encoding")+"\n")
             decodedName = name
     return decodedName
 
@@ -942,14 +942,14 @@ def export(exportList,filename):
         try:
             import ifc_wrapper as ifcw
         except ImportError:
-            FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed")+"\n")
             print("""importIFC: ifcOpenShell is not installed. IFC export is unavailable.
                     Note: IFC export currently requires an experimental version of IfcOpenShell
                     available from https://github.com/aothms/IfcOpenShell""")
             return
 
     if (not hasattr(ifcw,"IfcFile")) and (not hasattr(ifcw,"file")):
-        FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old\n"))
+        FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old")+"\n")
         print("""importIFC: The version of ifcOpenShell installed on this system doesn't
                  have IFC export capabilities. IFC export currently requires an experimental 
                  version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell""")
