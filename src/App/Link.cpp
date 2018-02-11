@@ -560,22 +560,26 @@ void LinkBaseExtension::parseSubName() const {
         dot = subname;
     else
         ++dot;
-    if(!dot[0]) {
+    auto obj = xlink->getValue();
+    if(!dot[0] || !obj || !obj->getNameInDocument()) {
         mySubName = subname;
         return;
     }
 
     // not ending with dot, check for sub element
-    if(strncmp(dot,"Face",4)==0 ||
-        strncmp(dot,"Edge",4)==0 ||
-        strncmp(dot,"Vertex",5)==0)
-    {
-        mySubName = std::string(subname,dot-subname);
-        mySubElement = dot;
-    }else {
-        mySubName = subname;
-        mySubName += '.';
+    auto sobj = obj->getSubObject(subname);
+    if(!sobj) {
+        std::string sub(subname);
+        sub += '.';
+        if(obj->getSubObject(sub.c_str())) {
+            mySubName = sub;
+            return;
+        }else
+            FC_WARN("failed to find sub-element in '" << subname 
+                    <<"' of object '" << obj->getNameInDocument() << "'");
     }
+    mySubName = std::string(subname,dot-subname);
+    mySubElement = dot;
 }
 
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
