@@ -26,6 +26,7 @@ import FreeCADGui
 import Path
 import math
 import PathScripts.PathUtils as P
+import PathScripts.PathGeom
 from PySide import QtCore, QtGui
 
 """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
@@ -42,6 +43,10 @@ except AttributeError:
 
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
+movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
+rapidcommands = ['G0', 'G00']
+arccommands = ['G2', 'G3', 'G02', 'G03']
+
 
 
 class ObjectDressup:
@@ -65,30 +70,67 @@ class ObjectDressup:
         circum = 2 * math.pi * float(radius)
         return 360 * (float(length) / circum)
 
+    def _stripArcs(self, path, d):
+        '''converts all G2/G3 commands into G1 commands'''
+        newcommandlist = []
+        currLocation = {}
+
+        for p in path:
+            if p.Name in arccommands:
+                curVec = FreeCAD.Vector(currLocation['X'], currLocation['Y'], currLocation['Z'])
+                arcwire = PathScripts.PathGeom.PathGeom.edgeForCmd(p, curVec)
+                pointlist =  arcwire.discretize(Deflection=d)
+                for point in pointlist:
+                    newcommand = Path.Command("G1", {'X':point.x, 'Y':point.y, 'Z':point.z})
+                    newcommandlist.append(newcommand)
+                    currLocation.update(newcommand.Parameters)
+            else:
+                newcommandlist.append(p)
+                currLocation.update(p.Parameters)
+
+        return newcommandlist
+
+
     def execute(self, obj):
 
         inAxis = obj.axisMap[0]
         outAxis = obj.axisMap[3]
+        d = 0.1
 
         if obj.Base:
             if obj.Base.isDerivedFrom("Path::Feature"):
                 if obj.Base.Path:
                     if obj.Base.Path.Commands:
+                        pp = obj.Base.Path.Commands
+                        if len([i for i in pp if i.Name in arccommands]) == 0:
+                            pathlist = pp
+                        else:
+                            pathlist = self._stripArcs(pp, d)
+
                         newcommandlist = []
-                        for c in obj.Base.Path.Commands:
+                        currLocation = {}
+
+                        for c in pathlist: #obj.Base.Path.Commands:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
                                 newparams[outAxis] = self._linear2angular(obj.radius, remapvar)
+                                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
+                                if len(locdiff) == 1 and outAxis in locdiff:  #pure rotation.  Calculate rotational feed rate
+                                    if 'F' in c.Parameters:
+                                        feed = c.Parameters['F']
+                                    else:
+                                        feed = currLocation['F']
+                                    newparams.update({"F":self._linear2angular(obj.radius, feed)})
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
+                                currLocation.update(newparams)
                             else:
                                 newcommandlist.append(c)
+                                currLocation.update(c.Parameters)
 
                         path = Path.Path(newcommandlist)
                         obj.Path = path
-
-#                        obj.Path.Commands = newcommandlist
 
 class ViewProviderDressup:
 
