@@ -183,38 +183,51 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : 0;
 }
 
-std::vector<DocumentObject*> DocumentObject::getOutList(void) const
+std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression) const
 {
-    std::vector<Property*> List;
     std::vector<DocumentObject*> ret;
-    getPropertyList(List);
-    for (std::vector<Property*>::const_iterator It = List.begin();It != List.end(); ++It) {
-        if ((*It)->isDerivedFrom(PropertyLinkList::getClassTypeId())) {
-            const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkList*>(*It)->getValues();
-            for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-                if (*It2)
-                    ret.push_back(*It2);
+    if(_outListCached)
+        ret = _outList;
+    else {
+        std::vector<Property*> props;
+        getPropertyList(props);
+        for(auto prop : props) {
+            auto links = dynamic_cast<PropertyLinkList*>(prop);
+            if(links) {
+                for(auto obj : links->getValues())
+                    if(obj and obj->getNameInDocument())
+                        ret.push_back(obj);
+                continue;
+            }
+            auto link = dynamic_cast<PropertyLink*>(prop);
+            if(link) {
+                auto obj = link->getValue();
+                if(obj && obj->getNameInDocument())
+                    ret.push_back(obj);
+                continue;
+            }
+            auto linksub = dynamic_cast<PropertyLinkSub*>(prop);
+            if(linksub) {
+                auto obj = linksub->getValue();
+                if(obj && obj->getNameInDocument())
+                    ret.push_back(obj);
+                continue;
+            }
+            auto linksubs = dynamic_cast<PropertyLinkSubList*>(prop);
+            if(linksubs) {
+                for(auto obj : linksubs->getValues())
+                    if(obj and obj->getNameInDocument())
+                        ret.push_back(obj);
+                continue;
             }
         }
-        else if ((*It)->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
-            const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkSubList*>(*It)->getValues();
-            for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-                if (*It2)
-                    ret.push_back(*It2);
-            }
-        }
-        else if ((*It)->isDerivedFrom(PropertyLink::getClassTypeId())) {
-            if (static_cast<PropertyLink*>(*It)->getValue())
-                ret.push_back(static_cast<PropertyLink*>(*It)->getValue());
-        }
-        else if ((*It)->isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
-            if (static_cast<PropertyLinkSub*>(*It)->getValue())
-                ret.push_back(static_cast<PropertyLinkSub*>(*It)->getValue());
-        }
+        _outList = ret;
+        _outListCached = true;
     }
 
     // Get document objects that this document object relies on
-    ExpressionEngine.getDocumentObjectDeps(ret);
+    if(!noExpression)
+        ExpressionEngine.getDocumentObjectDeps(ret);
 
     return ret;
 }
@@ -521,8 +534,12 @@ void DocumentObject::setDocument(App::Document* doc)
 
 void DocumentObject::onAboutToRemoveProperty(const char* prop)
 {
-    if (_pDoc)
+    if (_pDoc) {
         _pDoc->removePropertyOfObject(this, prop);
+        _outListCached = false;
+        _outList.clear();
+        _outListMap.clear();
+    }
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)
@@ -544,7 +561,15 @@ void DocumentObject::onChanged(const Property* prop)
     // if (_pDoc)
     //     _pDoc->onChangedProperty(this,prop);
 
-    if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
+    if(prop->isDerivedFrom(PropertyLink::getClassTypeId()) ||
+       prop->isDerivedFrom(PropertyLinkSub::getClassTypeId()) ||
+       prop->isDerivedFrom(PropertyLinkList::getClassTypeId()) ||
+       prop->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) 
+    {
+        _outList.clear();
+        _outListMap.clear();
+        _outListCached = false;
+    }else if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
     // set object touched if it is an input property
@@ -578,75 +603,44 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
             return ret;
     }
 
-    if(!mat) 
-        transform = false;
-
-    bool findLabel = false;
     std::string name;
     const char *dot=0;
     if(!subname || !(dot=strchr(subname,'.'))) {
         ret = const_cast<DocumentObject*>(this);
-        if(!transform)
-            return ret;
-    } else if(subname[0]=='$') {
+    }else if(subname[0]=='$') {
         name = std::string(subname+1,dot);
-        findLabel = true;
-    }else
-        name = std::string(subname,dot);
-
-    PropertyPlacement *pla = 0;
-    std::vector<Property*> props;
-    getPropertyList(props);
-    for(auto prop : props) {
-        if(transform && !pla) {
-            if((pla = dynamic_cast<PropertyPlacement*>(prop))) {
-                // Do we have to demand the property name to be named 'Placement'?
-                // Getting property name is kind of inefficient. Why can't we have
-                // something similar as getNameInDocument()?
-                if(ret) break;
-                continue;
-            }
-        }
-        if(ret) 
-            continue;
-        auto links = dynamic_cast<PropertyLinkList*>(prop);
-        if(links) {
-            if(!findLabel)
-                ret = links->find(name.c_str());
-            else{
-                for(auto link : links->getValues()) {
-                    if(name == link->Label.getStrValue()) {
-                        ret = link;
-                        break;
-                    }
-                }
-            }
-            if(ret && (!transform || pla)) 
-                break;
-            continue;
-        }
-        auto link = dynamic_cast<PropertyLink*>(prop);
-        if(link) {
-            auto obj = link->getValue();
-            if(!obj || !obj->getNameInDocument())
-                continue;
-            if((findLabel && name==obj->getNameInDocument()) ||
-               (!findLabel && name==obj->Label.getStrValue()))
-            {
+        for(auto obj : getOutList(true)) {
+            if(name == obj->Label.getValue()) {
                 ret = obj;
-                if(!transform ||pla) 
-                    break;
+                break;
             }
-            continue;
         }
-        // Shall we support other type of property link?
+    }else{
+        name = std::string(subname,dot);
+        if(!_outListCached)
+            getOutList(true);
+        if(_outList.size()!=_outListMap.size()) {
+            _outListMap.clear();
+            for(auto obj : _outList)
+                _outListMap[obj->getNameInDocument()] = obj;
+        }
+        auto it = _outListMap.find(name.c_str());
+        if(it != _outListMap.end())
+            ret = it->second;
     }
-    if(ret) {
-        if(transform && pla) 
-            *mat *= pla->getValue().toMatrix();
-        if(dot) 
-            return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
-    }
+
+    // Normal object's placement does not transform its sub objects (think
+    // of the claimed children of a Fusion). But I do think we should change
+    // that.
+    //
+    // if(transform) {
+    //     auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+    //     if(pla)
+    //         *mat *= pla->getValue().toMatrix();
+    // }
+
+    if(ret && dot)
+        return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
     return ret;
 }
 
@@ -657,31 +651,8 @@ std::vector<std::string> DocumentObject::getSubObjects() const {
         if(ext->extensionGetSubObjects(ret))
             return ret;
     }
-
-    std::vector<Property*> props;
-    getPropertyList(props);
-    for(auto prop : props) {
-        auto links = dynamic_cast<PropertyLinkList*>(prop);
-        if(links) {
-            for(auto obj : links->getValues()) {
-                if(obj && obj->getNameInDocument()) {
-                    std::string name(obj->getNameInDocument());
-                    ret.push_back(name+'.');
-                }
-            }
-            continue;
-        }
-        auto link = dynamic_cast<PropertyLink*>(prop);
-        if(link) {
-            auto obj = link->getValue();
-            if(obj && obj->getNameInDocument()) {
-                std::string name(obj->getNameInDocument());
-                ret.push_back(name+'.');
-            }
-            continue;
-        }
-        // Shall we support other type of property link?
-    }
+    for(auto obj : getOutList(true))
+        ret.push_back(obj->getNameInDocument());
     return ret;
 }
 

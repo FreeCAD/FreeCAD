@@ -172,7 +172,7 @@ public:
     */
     //@{
     /// returns a list of objects this object is pointing to by Links
-    std::vector<App::DocumentObject*> getOutList(void) const;
+    std::vector<App::DocumentObject*> getOutList(bool noExpression=false) const;
     /// returns a list of objects linked by the property
     std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
     /// returns a list of objects this object is pointing to by Links and all further descended
@@ -424,6 +424,10 @@ private:
     bool _isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
     // helper for isInOutListRecursive()
     bool _isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
+
+    mutable std::vector<App::DocumentObject *> _outList;
+    mutable std::map<std::string, App::DocumentObject*> _outListMap;
+    mutable bool _outListCached = false;
 };
 
 } //namespace App
