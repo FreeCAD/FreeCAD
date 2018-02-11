@@ -99,17 +99,23 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
     App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
     delete ret;
 
+    autoPosition();
+    requestPaint();
+
+    return App::DocumentObject::StdReturn;
+}
+
+void DrawProjGroupItem::autoPosition()
+{
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
     if ((pgroup != nullptr) && 
-        (pgroup->AutoDistribute.getValue())) {
-         newPos = pgroup->getXYPosition(Type.getValueAsString());
-         X.setValue(newPos.x);
-         Y.setValue(newPos.y);
-         requestPaint();
+        (pgroup->AutoDistribute.getValue()) &&
+        (!LockPosition.getValue())) {
+        newPos = pgroup->getXYPosition(Type.getValueAsString());
+        X.setValue(newPos.x);
+        Y.setValue(newPos.y);
     }
-
-    return App::DocumentObject::StdReturn;
 }
 
 void DrawProjGroupItem::onDocumentRestored()
