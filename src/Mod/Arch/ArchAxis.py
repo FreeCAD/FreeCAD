@@ -128,7 +128,7 @@ class _CommandAxisSystem:
             s = "["
             for o in FreeCADGui.Selection.getSelection():
                 if Draft.getType(o) != "Axis":
-                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected\n"))
+                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected")+"\n")
                     return
                 s += "FreeCAD.ActiveDocument."+o.Name+","
             s += "]"
@@ -137,7 +137,7 @@ class _CommandAxisSystem:
             FreeCADGui.doCommand("Arch.makeAxisSystem("+s+")")
             FreeCAD.ActiveDocument.commitTransaction()
         else:
-            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis")+"\n")
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
