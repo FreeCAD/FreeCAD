@@ -615,8 +615,6 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
        msg.Type == SelectionChanges::UpdateSelection)
         return;
     
-    SelectionChanges msg2(msg);
-
     if(msg.pDocName && 
        msg.pObjectName && msg.pObjectName[0] &&
        msg.pSubName && msg.pSubName[0])
@@ -629,11 +627,13 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
         if (!pObject) return;
         std::string docName(pObject->getDocument()->getName());
         std::string objName(pObject->getNameInDocument());
+        SelectionChanges msg2(msg);
         msg2.pDocName = docName.c_str();
         msg2.pObjectName = objName.c_str();
         msg2.pSubName = subname;
-    }
-    signalSelectionChanged2(msg2);
+        signalSelectionChanged2(msg2);
+    }else
+        signalSelectionChanged2(msg);
 }
 
 bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, bool signal)
