@@ -171,7 +171,9 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
     if (!m_mdiView.isNull()) {
         Gui::getMainWindow()->removeWindow(m_mdiView);
-        Gui::getMainWindow()->activatePreviousWindow();
+//        Gui::getMainWindow()->activatePreviousWindow();   //changed for consistency. see comment in hide() above. 
+                                                            //note: doesn't fix problem here.
+                                                            //3d view is still not maximized after page is deleted.
         m_mdiView->deleteLater(); // Delete the drawing m_mdiView;
     } else {
         // MDIViewPage is not displayed yet so don't try to delete it!
