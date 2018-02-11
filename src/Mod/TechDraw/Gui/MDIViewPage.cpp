@@ -198,7 +198,6 @@ void MDIViewPage::matchSceneRectToTemplate(void)
         double width  =  Rez::guiX(pageTemplate->Width.getValue());
         double height =  Rez::guiX(pageTemplate->Height.getValue());
         m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
-        viewAll();
     }
 }
 
