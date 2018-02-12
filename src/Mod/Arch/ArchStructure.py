@@ -779,15 +779,15 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         if not other:
             self.observer = StructSelectionObserver(self.extendNodes)
             FreeCADGui.Selection.addObserver(self.observer)
-            FreeCAD.Console.PrintMessage(translate("Arch","Pick another Structure object: "))
+            FreeCAD.Console.PrintMessage(translate("Arch","Choose another Structure object:"))
         else:
             FreeCADGui.Selection.removeObserver(self.observer)
             self.observer = None
             if Draft.getType(other) != "Structure":
-                FreeCAD.Console.PrintError(translate("Arch","The picked object is not a Structure")+"\n")
+                FreeCAD.Console.PrintError(translate("Arch","The chosen object is not a Structure")+"\n")
             else:
                 if not other.Nodes:
-                    FreeCAD.Console.PrintError(translate("Arch","The picked object has no structural nodes")+"\n")
+                    FreeCAD.Console.PrintError(translate("Arch","The chosen object has no structural nodes")+"\n")
                 else:
                     if (len(self.Object.Nodes) != 2) or (len(other.Nodes) != 2):
                         FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes")+"\n")
@@ -810,15 +810,15 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         if not other:
             self.observer = StructSelectionObserver(self.connectNodes)
             FreeCADGui.Selection.addObserver(self.observer)
-            FreeCAD.Console.PrintMessage(translate("Arch","Pick another Structure object: "))
+            FreeCAD.Console.PrintMessage(translate("Arch","Choose another Structure object:"))
         else:
             FreeCADGui.Selection.removeObserver(self.observer)
             self.observer = None
             if Draft.getType(other) != "Structure":
-                FreeCAD.Console.PrintError(translate("Arch","The picked object is not a Structure")+"\n")
+                FreeCAD.Console.PrintError(translate("Arch","The chosen object is not a Structure")+"\n")
             else:
                 if not other.Nodes:
-                    FreeCAD.Console.PrintError(translate("Arch","The picked object has no structural nodes")+"\n")
+                    FreeCAD.Console.PrintError(translate("Arch","The chosen object has no structural nodes")+"\n")
                 else:
                     if (len(self.Object.Nodes) != 2) or (len(other.Nodes) != 2):
                         FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes")+"\n")
