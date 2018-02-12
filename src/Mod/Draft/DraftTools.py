@@ -410,7 +410,7 @@ class SelectPlane(DraftTool):
                     self.finish()
                     return
             self.ui.selectPlaneUi()
-            msg(translate("draft", "Pick a face to define the drawing plane\n"))
+            msg(translate("draft", "Pick a face to define the drawing plane")+"\n")
             if plane.alignToSelection(self.offset):
                 FreeCADGui.Selection.clearSelection()
                 self.display(plane.axis)
@@ -547,7 +547,7 @@ class Line(Creator):
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            msg(translate("draft", "Pick first point:\n"))
+            msg(translate("draft", "Pick first point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
@@ -624,7 +624,7 @@ class Line(Creator):
                             if ((self.point-self.node[0]).Length < Draft.tolerance()):
                                 self.undolast()
                                 self.finish(True,cont=True)
-                                msg(translate("draft", "DWire has been closed\n"))
+                                msg(translate("draft", "DWire has been closed")+"\n")
 
     def undolast(self):
         "undoes last line segment"
@@ -639,21 +639,21 @@ class Line(Creator):
                 else:
                     self.obj.ViewObject.hide()
                 # DNC: report on removal
-                msg(translate("draft", "Last point has been removed\n"))
+                msg(translate("draft", "Last point has been removed")+"\n")
 
     def drawSegment(self,point):
         "draws a new segment"
         if self.planetrack and self.node:
             self.planetrack.set(self.node[-1])
         if (len(self.node) == 1):
-            msg(translate("draft", "Pick next point:\n"))
+            msg(translate("draft", "Pick next point:")+"\n")
         elif (len(self.node) == 2):
             last = self.node[len(self.node)-2]
             newseg = Part.LineSegment(last,point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
             if self.isWire:
-                msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
+                msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):")+"\n")
         else:
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
@@ -728,7 +728,7 @@ class Wire(Line):
                     import Part
                     w = Part.Wire(edges)
                 except:
-                    msg(translate("draft", "Unable to create a Wire from selected objects\n"),mode="error")
+                    msg(translate("draft", "Unable to create a Wire from selected objects")+"\n",mode="error")
                 else:
                     pts = ",".join([str(v.Point) for v in w.Vertexes])
                     pts = pts.replace("Vector","FreeCAD.Vector")
@@ -790,7 +790,7 @@ class BSpline(Line):
                             if ((self.point-self.node[0]).Length < Draft.tolerance()):
                                 self.undolast()
                                 self.finish(True,cont=True)
-                                msg(translate("draft", "Spline has been closed\n"))
+                                msg(translate("draft", "Spline has been closed")+"\n")
 
     def undolast(self):
         "undoes last line segment"
@@ -800,7 +800,7 @@ class BSpline(Line):
             spline = Part.BSplineCurve()
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
-            msg(translate("draft", "Last point has been removed\n"))
+            msg(translate("draft", "Last point has been removed")+"\n")
 
     def drawUpdate(self,point):
         if (len(self.node) == 1):
@@ -812,7 +812,7 @@ class BSpline(Line):
             spline = Part.BSplineCurve()
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
-            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
+            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):")+"\n")
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
@@ -890,7 +890,7 @@ class BezCurve(Line):
                             if ((self.point-self.node[0]).Length < Draft.tolerance()):
                                 self.undolast()
                                 self.finish(True,cont=True)
-                                msg(translate("draft", "Bezier curve has been closed\n"))
+                                msg(translate("draft", "Bezier curve has been closed")+"\n")
 
     def undolast(self):
         "undoes last line segment"
@@ -898,7 +898,7 @@ class BezCurve(Line):
             self.node.pop()
             self.bezcurvetrack.update(self.node)
             self.obj.Shape = self.updateShape(self.node)
-            msg(translate("draft", "Last point has been removed\n"))
+            msg(translate("draft", "Last point has been removed")+"\n")
 
     def drawUpdate(self,point):
         if (len(self.node) == 1):
@@ -908,7 +908,7 @@ class BezCurve(Line):
             msg(translate("draft", "Pick next point:\n"))
         else:
             self.obj.Shape = self.updateShape(self.node)
-            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
+            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):")+"\n")
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
@@ -1112,7 +1112,7 @@ class Rectangle(Creator):
             self.rect.update(point)
             self.createObject()
         else:
-            msg(translate("draft", "Pick opposite point:\n"))
+            msg(translate("draft", "Pick opposite point:")+"\n")
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()
@@ -1149,7 +1149,7 @@ class Arc(Creator):
             self.linetrack = lineTracker(dotted=True)
             self.arctrack = arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            msg(translate("draft", "Pick center point:\n"))
+            msg(translate("draft", "Pick center point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
@@ -1278,7 +1278,7 @@ class Arc(Creator):
                                     self.ui.radiusUi()
                                     self.step = 1
                                     self.linetrack.on()
-                                    msg(translate("draft", "Pick radius:\n"))
+                                    msg(translate("draft", "Pick radius:")+"\n")
                         else:
                             if len(self.tangents) == 1:
                                 self.tanpoints.append(self.point)
@@ -1292,7 +1292,7 @@ class Arc(Creator):
                             self.ui.radiusUi()
                             self.step = 1
                             self.linetrack.on()
-                            msg(translate("draft", "Pick radius:\n"))
+                            msg(translate("draft", "Pick radius:")+"\n")
                             if self.planetrack:
                                 self.planetrack.set(self.point)
                     elif (self.step == 1): # choose radius
@@ -1304,14 +1304,14 @@ class Arc(Creator):
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
-                            msg(translate("draft", "Pick start angle:\n"))
+                            msg(translate("draft", "Pick start angle:")+"\n")
                     elif (self.step == 2): # choose first angle
                         self.ui.labelRadius.setText("Aperture")
                         self.step = 3
                         # scale center->point vector for proper display
                         # u = DraftVecUtils.scaleTo(self.point.sub(self.center), self.rad) obsolete?
                         self.arctrack.setStartAngle(self.firstangle)
-                        msg(translate("draft", "Pick aperture:\n"))
+                        msg(translate("draft", "Pick aperture:")+"\n")
                     else: # choose second angle
                         self.step = 4
                         self.drawArc()
@@ -1388,7 +1388,7 @@ class Arc(Creator):
         self.ui.radiusUi()
         self.step = 1
         self.ui.setNextFocus()
-        msg(translate("draft", "Pick radius:\n"))
+        msg(translate("draft", "Pick radius:")+"\n")
 
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
@@ -1416,7 +1416,7 @@ class Arc(Creator):
                 self.linetrack.on()
                 self.ui.radiusValue.setText("")
                 self.ui.radiusValue.setFocus()
-                msg(translate("draft", "Pick start angle:\n"))
+                msg(translate("draft", "Pick start angle:")+"\n")
         elif (self.step == 2):
             self.ui.labelRadius.setText(translate("draft", "Aperture"))
             self.firstangle = math.radians(rad)
@@ -1427,7 +1427,7 @@ class Arc(Creator):
             self.step = 3
             self.ui.radiusValue.setText("")
             self.ui.radiusValue.setFocus()
-            msg(translate("draft", "Aperture angle:\n"))
+            msg(translate("draft", "Aperture angle:")+"\n")
         else:
             self.updateAngle(rad)
             self.angle = math.radians(rad)
@@ -1475,7 +1475,7 @@ class Polygon(Creator):
             self.ui.sourceCmd = self
             self.arctrack = arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            msg(translate("draft", "Pick center point:\n"))
+            msg(translate("draft", "Pick center point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
@@ -1561,7 +1561,7 @@ class Polygon(Creator):
                                     self.arctrack.on()
                                     self.ui.radiusUi()
                                     self.step = 1
-                                    msg(translate("draft", "Pick radius:\n"))
+                                    msg(translate("draft", "Pick radius:")+"\n")
                         else:
                             if len(self.tangents) == 1:
                                 self.tanpoints.append(self.point)
@@ -1572,7 +1572,7 @@ class Polygon(Creator):
                             self.arctrack.on()
                             self.ui.radiusUi()
                             self.step = 1
-                            msg(translate("draft", "Pick radius:\n"))
+                            msg(translate("draft", "Pick radius:")+"\n")
                             if self.planetrack:
                                 self.planetrack.set(self.point)
                     elif (self.step == 1): # choose radius
@@ -1614,7 +1614,7 @@ class Polygon(Creator):
         self.ui.radiusUi()
         self.step = 1
         self.ui.radiusValue.setFocus()
-        msg(translate("draft", "Pick radius:\n"))
+        msg(translate("draft", "Pick radius:")"\n")
 
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
@@ -1652,7 +1652,7 @@ class Ellipse(Creator):
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.rect = rectangleTracker()
-            msg(translate("draft", "Pick first point:\n"))
+            msg(translate("draft", "Pick first point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
@@ -1743,7 +1743,7 @@ class Ellipse(Creator):
             self.rect.update(point)
             self.createObject()
         else:
-            msg(translate("draft", "Pick opposite point:\n"))
+            msg(translate("draft", "Pick opposite point:")+"\n")
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()
@@ -1772,7 +1772,7 @@ class Text(Creator):
             self.active = True
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
-            msg(translate("draft", "Pick location point:\n"))
+            msg(translate("draft", "Pick location point:")+"\n")
             FreeCADGui.draftToolBar.show()
 
     def finish(self,closed=False,cont=False):
@@ -1873,7 +1873,7 @@ class Dimension(Creator):
                 self.info = None
                 self.selectmode = False
                 self.setFromSelection()
-                msg(translate("draft", "Pick first point:\n"))
+                msg(translate("draft", "Pick first point:")+"\n")
                 FreeCADGui.draftToolBar.show()
                 
     def setFromSelection(self):
@@ -2126,7 +2126,7 @@ class Dimension(Creator):
                                                     self.pts.append(self.arctrack.getAngle(v.Point))
                                             self.link = [self.link[0],ob]
                                         else:
-                                            msg(translate("draft", "Edges don't intersect!\n"))
+                                            msg(translate("draft", "Edges don't intersect!")+"\n")
                                             self.finish()
                                             return
                                 self.dimtrack.on()
@@ -2196,7 +2196,7 @@ class ShapeString(Creator):
             self.ssBase = None
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
-            msg(translate("draft", "Pick ShapeString location point:\n"))
+            msg(translate("draft", "Pick ShapeString location point:")+"\n")
             FreeCADGui.draftToolBar.show()
 
     def createObject(self):
@@ -2311,7 +2311,7 @@ class Move(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to move\n"))
+                msg(translate("draft", "Select an object to move")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -2333,7 +2333,7 @@ class Move(Modifier):
         self.ui.xValue.selectAll()
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        msg(translate("draft", "Pick start point:\n"))
+        msg(translate("draft", "Pick start point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         if self.ghost:
@@ -2388,7 +2388,7 @@ class Move(Modifier):
                         self.ui.isRelative.show()
                         if self.ghost:
                             self.ghost.on()
-                        msg(translate("draft", "Pick end point:\n"))
+                        msg(translate("draft", "Pick end point:")+"\n")
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     else:
@@ -2410,7 +2410,7 @@ class Move(Modifier):
             self.ui.isRelative.show()
             self.ui.isCopy.show()
             self.ghost.on()
-            msg(translate("draft", "Pick end point:\n"))
+            msg(translate("draft", "Pick end point:")+"\n")
         else:
             last = self.node[-1]
             if self.ui.isCopy.isChecked():
@@ -2473,7 +2473,7 @@ class Rotate(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to rotate\n"))
+                msg(translate("draft", "Select an object to rotate")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -2490,7 +2490,7 @@ class Rotate(Modifier):
         self.arctrack = arcTracker()
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        msg(translate("draft", "Pick rotation center:\n"))
+        msg(translate("draft", "Pick rotation center:")+"\n")
 
     def finish(self,closed=False,cont=False):
         "finishes the arc"
@@ -2582,7 +2582,7 @@ class Rotate(Modifier):
                         if self.ghost:
                             self.ghost.center(self.center)
                         self.step = 1
-                        msg(translate("draft", "Pick base angle:\n"))
+                        msg(translate("draft", "Pick base angle:")+"\n")
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     elif (self.step == 1):
@@ -2593,7 +2593,7 @@ class Rotate(Modifier):
                         if self.ghost:
                             self.ghost.on()
                         self.step = 2
-                        msg(translate("draft", "Pick rotation angle:\n"))
+                        msg(translate("draft", "Pick rotation angle:")+"\n")
                     else:
                         currentrad = DraftVecUtils.dist(self.point,self.center)
                         angle = self.point.sub(self.center).getAngle(plane.u)
@@ -2623,7 +2623,7 @@ class Rotate(Modifier):
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText("Base angle")
         self.step = 1
-        msg(translate("draft", "Pick base angle:\n"))
+        msg(translate("draft", "Pick base angle:")+"\n")
 
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
@@ -2635,7 +2635,7 @@ class Rotate(Modifier):
             if self.ghost:
                 self.ghost.on()
             self.step = 2
-            msg(translate("draft", "Pick rotation angle:\n"))
+            msg(translate("draft", "Pick rotation angle:")+"\n")
         else:
             self.rot(math.radians(rad),self.ui.isCopy.isChecked())
             self.finish(cont=True)
@@ -2659,7 +2659,7 @@ class Offset(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to offset\n"))
+                msg(translate("draft", "Select an object to offset")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             elif len(FreeCADGui.Selection.getSelection()) > 1:
                 msg(translate("draft", "Offset only works on one object at a time\n"),"warning")
@@ -2711,7 +2711,7 @@ class Offset(Modifier):
                     self.ghost = wireTracker(self.shape)
                     self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            msg(translate("draft", "Pick distance:\n"))
+            msg(translate("draft", "Pick distance:")+"\n")
             if self.planetrack:
                 self.planetrack.set(self.shape.Vertexes[0].Point)
             self.running = True
@@ -2846,7 +2846,7 @@ class Stretch(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to stretch\n"))
+                msg(translate("draft", "Select an object to stretch")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -2864,7 +2864,7 @@ class Stretch(Modifier):
             self.rectracker = rectangleTracker(dotted=True,scolor=(0.0,0.0,1.0),swidth=2)
             self.nodetracker = []
             self.displacement = None
-            msg(translate("draft", "Pick first point of selection rectangle:\n"))
+            msg(translate("draft", "Pick first point of selection rectangle:")+"\n")
 
     def action(self,arg):
         "scene event handler"
@@ -2888,7 +2888,7 @@ class Stretch(Modifier):
     def addPoint(self,point):
         if self.step == 1:
             # first rctangle point
-            msg(translate("draft", "Pick opposite point of selection rectangle:\n"))
+            msg(translate("draft", "Pick opposite point of selection rectangle:")+"\n")
             self.ui.setRelative()
             self.rectracker.setorigin(point)
             self.rectracker.on()
@@ -2897,7 +2897,7 @@ class Stretch(Modifier):
             self.step = 2
         elif self.step == 2:
             # second rectangle point
-            msg(translate("draft", "Pick start point of displacement:\n"))
+            msg(translate("draft", "Pick start point of displacement:")+"\n")
             self.rectracker.off()
             nodes = []
             self.ops = []
@@ -2942,7 +2942,7 @@ class Stretch(Modifier):
             self.step = 3
         elif self.step == 3:
             # first point of displacement line
-            msg(translate("draft", "Pick end point of displacement:\n"))
+            msg(translate("draft", "Pick end point of displacement:")+"\n")
             self.displacement = point
             #print "first point:",point
             self.node = [point]
@@ -3074,7 +3074,7 @@ class Stretch(Modifier):
                                     done = True
                         if not done:
                             # otherwise create a wire copy and stretch it instead
-                            FreeCAD.Console.PrintMessage(translate("draft","Turning one Rectangle into a Wire \n"))
+                            FreeCAD.Console.PrintMessage(translate("draft","Turning one Rectangle into a Wire")+"\n")
                             pts = []
                             opts = [p1,p2,p3,p4]
                             for i in range(4):
@@ -3109,7 +3109,7 @@ class Upgrade(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to upgrade\n"))
+                msg(translate("draft", "Select an object to upgrade")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -3139,7 +3139,7 @@ class Downgrade(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to upgrade\n"))
+                msg(translate("draft", "Select an object to upgrade")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -3178,7 +3178,7 @@ class Trimex(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select object(s) to trim/extend\n"))
+                msg(translate("draft", "Select object(s) to trim/extend")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -3249,7 +3249,7 @@ class Trimex(Modifier):
         self.force = None
         self.cv = None
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        msg(translate("draft", "Pick distance:\n"))
+        msg(translate("draft", "Pick distance:")+"\n")
 
     def action(self,arg):
         "scene event handler"
@@ -3592,7 +3592,7 @@ class Scale(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to scale\n"))
+                msg(translate("draft", "Select an object to scale")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -3607,7 +3607,7 @@ class Scale(Modifier):
         self.ui.xValue.selectAll()
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        msg(translate("draft", "Pick base point:\n"))
+        msg(translate("draft", "Pick base point:")+"\n")
 
     def finish(self,closed=False,cont=False):
         Modifier.finish(self)
@@ -3720,7 +3720,7 @@ class Drawing(Modifier):
         if not FreeCADGui.Selection.getSelection():
             self.ghost = None
             self.ui.selectUi()
-            msg(translate("draft", "Select an object to project\n"))
+            msg(translate("draft", "Select an object to project")+"\n")
             self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -3852,7 +3852,7 @@ class Edit(Modifier):
                     return
             self.ghost = None
             self.ui.selectUi()
-            msg(translate("draft", "Select a Draft object to edit\n"))
+            msg(translate("draft", "Select a Draft object to edit")+"\n")
             if self.call:
                 self.view.removeEventCallback("SoEvent",self.call)
             self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -4599,7 +4599,7 @@ class Shape2DView(Modifier):
         if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to project\n"))
+                msg(translate("draft", "Select an object to project")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -4639,7 +4639,7 @@ class Draft2Sketch(Modifier):
         if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to convert\n"))
+                msg(translate("draft", "Select an object to convert")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -4697,7 +4697,7 @@ class Array(Modifier):
         if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to array\n"))
+                msg(translate("draft", "Select an object to array")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -4727,7 +4727,7 @@ class PathArray(Modifier):
         if not FreeCADGui.Selection.getSelectionEx():
             if self.ui:
                 self.ui.selectUi()
-                msg(translate("draft", "Please select base and path objects\n"))
+                msg(translate("draft", "Please select base and path objects")+"\n")
 #                print("Please select base and path objects")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
@@ -4854,7 +4854,7 @@ class Draft_Clone(Modifier):
         if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to clone\n"))
+                msg(translate("draft", "Select an object to clone")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -4931,7 +4931,7 @@ class Draft_Facebinder(Creator):
         if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
-                msg(translate("draft", "Select face(s) on existing object(s)\n"))
+                msg(translate("draft", "Select face(s) on existing object(s)")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -5003,7 +5003,7 @@ class Mirror(Modifier):
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to mirror\n"))
+                msg(translate("draft", "Select an object to mirror")+"\n")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
@@ -5017,7 +5017,7 @@ class Mirror(Modifier):
         self.ui.xValue.selectAll()
         #self.ghost = ghostTracker(self.sel) TODO: solve this (see below)
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        msg(translate("draft", "Pick start point of mirror line:\n"))
+        msg(translate("draft", "Pick start point of mirror line:")+"\n")
         self.ui.isCopy.hide()
 
     def finish(self,closed=False,cont=False):
@@ -5080,7 +5080,7 @@ class Mirror(Modifier):
                         self.ui.isRelative.show()
                         if self.ghost:
                             self.ghost.on()
-                        msg(translate("draft", "Pick end point of mirror line:\n"))
+                        msg(translate("draft", "Pick end point of mirror line:")+"\n")
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     else:
@@ -5101,7 +5101,7 @@ class Mirror(Modifier):
             self.node.append(self.point)
             if self.ghost:
                 self.ghost.on()
-            msg(translate("draft", "Pick end point of mirror line:\n"))
+            msg(translate("draft", "Pick end point of mirror line:")+"\n")
         else:
             last = self.node[-1]
             if self.ui.isCopy.isChecked():
@@ -5123,7 +5123,7 @@ class Draft_Slope():
             return
         for obj in FreeCADGui.Selection.getSelection():
             if Draft.getType(obj) != "Wire":
-                msg(translate("draft", "This tool only works with Wires and Lines\n"))
+                msg(translate("draft", "This tool only works with Wires and Lines")+"\n")
                 return
         w = QtGui.QWidget()
         w.setWindowTitle(translate("Draft","Slope"))
@@ -5254,7 +5254,7 @@ class Draft_Label(Creator):
         self.ui.xValue.selectAll()
         self.ghost = DraftTrackers.lineTracker()
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        msg(translate("draft", "Pick target point:\n"))
+        msg(translate("draft", "Pick target point:")+"\n")
         self.ui.isCopy.hide()
         
     def setmode(self,i):
@@ -5326,7 +5326,7 @@ class Draft_Label(Creator):
                         # first click
                         self.node.append(self.point)
                         self.ui.isRelative.show()
-                        msg(translate("draft", "Pick endpoint of leader line:\n"))
+                        msg(translate("draft", "Pick endpoint of leader line:")+"\n")
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     elif len(self.node) == 1:
@@ -5336,7 +5336,7 @@ class Draft_Label(Creator):
                             self.ghost.p1(self.node[0])
                             self.ghost.p2(self.node[1])
                             self.ghost.on()
-                        msg(translate("draft", "Pick text position:\n"))
+                        msg(translate("draft", "Pick text position:")+"\n")
                     else:
                         # third click
                         self.node.append(self.point)
@@ -5349,7 +5349,7 @@ class Draft_Label(Creator):
             # first click
             self.node.append(self.point)
             self.ui.isRelative.show()
-            msg(translate("draft", "Pick endpoint of leader line:\n"))
+            msg(translate("draft", "Pick endpoint of leader line:")+"\n")
             if self.planetrack:
                 self.planetrack.set(self.point)
         elif len(self.node) == 1:
@@ -5359,7 +5359,7 @@ class Draft_Label(Creator):
                 self.ghost.p1(self.node[0])
                 self.ghost.p2(self.node[1])
                 self.ghost.on()
-            msg(translate("draft", "Pick text position:\n"))
+            msg(translate("draft", "Pick text position:")+"\n")
         else:
             # third click
             self.node.append(self.point)
