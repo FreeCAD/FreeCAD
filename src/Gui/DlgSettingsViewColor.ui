@@ -180,7 +180,7 @@
         <item row="2" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
           <property name="toolTip">
-           <string>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</string>
+           <string>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</string>
           </property>
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
