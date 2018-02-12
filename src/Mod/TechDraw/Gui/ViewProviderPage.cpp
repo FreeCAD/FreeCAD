@@ -119,6 +119,8 @@ void ViewProviderPage::show(void)
     showMDIViewPage();
 }
 
+//this "hide" is only used for Visibility property toggle
+//not when Page tab is closed.
 void ViewProviderPage::hide(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
@@ -169,18 +171,11 @@ void ViewProviderPage::updateData(const App::Property* prop)
 
 bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
+    bool rc = ViewProviderDocumentObject::onDelete(items);
     if (!m_mdiView.isNull()) {
-        Gui::getMainWindow()->removeWindow(m_mdiView);
-//        Gui::getMainWindow()->activatePreviousWindow();   //changed for consistency. see comment in hide() above. 
-                                                            //note: doesn't fix problem here.
-                                                            //3d view is still not maximized after page is deleted.
-        m_mdiView->deleteLater(); // Delete the drawing m_mdiView;
-    } else {
-        // MDIViewPage is not displayed yet so don't try to delete it!
-        Base::Console().Log("INFO - ViewProviderPage::onDelete - Page object deleted when viewer not displayed\n");
+        m_mdiView->deleteSelf();
     }
-    Gui::Selection().clearSelection();
-    return ViewProviderDocumentObject::onDelete(items);
+    return rc;
 }
 
 void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
