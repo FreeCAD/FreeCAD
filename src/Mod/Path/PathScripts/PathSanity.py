@@ -70,7 +70,7 @@ class CommandPathSanity:
         clean = True
 
         # if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
-        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+        #     FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.")+"\n")
 
         if obj.PostProcessor == '':
             FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Postprocessor has not been selected.")+"\n")

@@ -494,7 +494,7 @@ class CheckWBWorker(QtCore.QThread):
                                 cw.set('core', 'bare', False)
                         except AttributeError:
                             if not gitpython_warning:
-                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.")+"\n")
                                 gitpython_warning = True
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
@@ -607,7 +607,7 @@ class ShowWorker(QtCore.QThread):
                                 with bare_repo.config_writer() as cw:
                                     cw.set('core', 'bare', False)
                             except AttributeError:
-                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.")+"\n")
                                 cw = bare_repo.config_writer()
                                 cw.set('core', 'bare', False)
                                 del cw
@@ -715,12 +715,12 @@ class InstallWorker(QtCore.QThread):
             import git
         except:
             self.info_label.emit("GitPython not found.")
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.\n"))
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.")+"\n")
             try:
                 import zipfile
             except:
                 self.info_label.emit("no zip support.")
-                FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.\n"))
+                FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.")+"\n")
                 return
             try:
                 import StringIO as io
@@ -751,7 +751,7 @@ class InstallWorker(QtCore.QThread):
                             with bare_repo.config_writer() as cw:
                                 cw.set('core', 'bare', False)
                         except AttributeError:
-                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.")+"\n")
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
                             del cw
