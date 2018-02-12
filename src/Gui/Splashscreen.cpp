@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
 # include <QDesktopServices>
@@ -720,7 +721,12 @@ void AboutDialog::on_copyButton_clicked()
         str << "Word size of OS: " << wordSize << "-bit" << endl;
     }
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit" << endl;
-    str << "Version: " << major << "." << minor << "." << build << endl;
+    str << "Version: " << major << "." << minor << "." << build;
+    char *appimage = getenv("APPIMAGE");
+    if (appimage)
+        str << " AppImage";
+    str << endl;
+
 #if defined(_DEBUG) || defined(DEBUG)
     str << "Build type: Debug" << endl;
 #elif defined(NDEBUG)
