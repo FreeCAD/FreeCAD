@@ -436,7 +436,7 @@ class _CommandMergeWalls:
                     FreeCAD.ActiveDocument.commitTransaction()
                     return
                 else:
-                    FreeCAD.Console.PrintWarning(str(translate("Arch","The selected wall contain no subwall to merge")))
+                    FreeCAD.Console.PrintWarning(str(translate("Arch","The selected wall contains no subwall to merge")))
                     return
             else:
                 FreeCAD.Console.PrintWarning(str(translate("Arch","Please select only wall objects")))

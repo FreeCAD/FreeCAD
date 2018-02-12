@@ -458,7 +458,7 @@ class _CommandWindow:
         self.tracker.width(self.Thickness)
         self.tracker.height(self.Height)
         self.tracker.on()
-        FreeCAD.Console.PrintMessage(translate("Arch","Pick a face on an existing object or select a preset")+"\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Choose a face on an existing object or select a preset")+"\n")
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         #FreeCADGui.Snapper.setSelectMode(True)
 
