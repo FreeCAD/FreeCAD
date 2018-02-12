@@ -55,7 +55,7 @@ void PointsAlgos::Load(PointKernel &points, const char *FileName)
     if (!File.isReadable())
         throw Base::FileException("File to load not existing or not readable", FileName);
 
-    if (File.extension() == "asc" ||File.extension() == "ASC")
+    if (File.hasExtension("asc"))
         LoadAscii(points,FileName);
     else
         throw Base::RuntimeError("Unknown ending");
