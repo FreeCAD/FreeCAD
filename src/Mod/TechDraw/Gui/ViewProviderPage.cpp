@@ -67,6 +67,9 @@
 
 using namespace TechDrawGui;
 
+#define _SHOWDRAWING 10
+#define _TOGGLEUPDATE 11
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 
@@ -158,12 +161,6 @@ void ViewProviderPage::updateData(const App::Property* prop)
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
-    //if the Label changes, rename the tab
-    } else if (prop == &(getDrawPage()->Label)) {
-        if(m_mdiView) {
-            QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
-            m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
-        }
     }
 
     Gui::ViewProviderDocumentObject::updateData(prop);
@@ -182,20 +179,29 @@ void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
     QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
-//    act->setData(QVariant(1));  // Removed to resolve compile after cb16fec6bb67cec15be3fc2aeb251ab524134073   //this is edit ModNum
-    act->setData(QVariant((int) ViewProvider::Default));
+    act->setData(QVariant((int) _SHOWDRAWING));
+    QAction* act2 = menu->addAction(QObject::tr("Toggle KeepUpdated"), receiver, member);
+    act2->setData(QVariant((int) _TOGGLEUPDATE));
 }
 
 bool ViewProviderPage::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    bool rc = true;
+    if (ModNum == _SHOWDRAWING) {
         showMDIViewPage();   // show the drawing
         Gui::getMainWindow()->setActiveWindow(m_mdiView);
-        return false;
+        rc = false;  //finished editing
+    } else if (ModNum == _TOGGLEUPDATE) {
+         auto page = getDrawPage();
+         if (page != nullptr) {
+             page->KeepUpdated.setValue(!page->KeepUpdated.getValue());
+             page->recomputeFeature();
+         }
+         rc = false;
     } else {
-        Gui::ViewProviderDocumentObject::setEdit(ModNum);
+        rc = Gui::ViewProviderDocumentObject::setEdit(ModNum);
     }
-    return true;
+    return rc;
 }
 
 bool ViewProviderPage::doubleClicked(void)
