@@ -261,6 +261,11 @@ such as &quot;Arial:Bold&quot;</string>
             <string>Arrow</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Tick</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
