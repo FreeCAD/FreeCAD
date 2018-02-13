@@ -658,10 +658,12 @@ class _Window(ArchComponent.Component):
         if not "Restore" in obj.State:
             if prop in ["Base","WindowParts"]:
                 self.execute(obj)
+                self.onChanged(obj,"Hosts")
             elif prop in ["HoleDepth"]:
                 for o in obj.InList:
                     if Draft.getType(o) in AllowedHosts:
                         o.Proxy.execute(o)
+                self.onChanged(obj,"Hosts")
             if prop in ["Width","Height"]:
                 if obj.Preset != 0:
                     if obj.Base:
@@ -682,6 +684,7 @@ class _Window(ArchComponent.Component):
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
                             pass
+                self.onChanged(obj,"Hosts")
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
