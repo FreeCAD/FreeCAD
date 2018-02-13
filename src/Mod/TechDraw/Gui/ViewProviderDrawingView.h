@@ -49,6 +49,7 @@ public:
     /// destructor
     virtual ~ViewProviderDrawingView();
 
+    App::PropertyBool  KeepLabel;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
