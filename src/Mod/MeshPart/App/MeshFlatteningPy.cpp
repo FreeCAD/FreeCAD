@@ -50,7 +50,6 @@
 #include <ShapeFix_Edge.hxx>
 
 
-
 namespace py = pybind11;
 
 const TopoDS_Face& getTopoDSFace(py::object* face)
@@ -101,29 +100,30 @@ ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object* fac
 }
 
 
+
 PYBIND11_MODULE(flatmesh, m)
 {
     m.doc() = "functions to unwrapp faces/ meshes";
     
-    py::class_<LscmRelax>(m, "LscmRelax")
+    py::class_<lscmrelax::LscmRelax>(m, "LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
-        .def("lscm", &LscmRelax::lscm)
-        .def("relax", &LscmRelax::relax)
-        .def("rotate_by_min_bound_area", &LscmRelax::rotate_by_min_bound_area)
-        .def("transform", &LscmRelax::transform)
-        .def_readonly("rhs", &LscmRelax::rhs)
-        .def_readonly("MATRIX", &LscmRelax::MATRIX)
-        .def_property_readonly("area", &LscmRelax::get_area)
-        .def_property_readonly("flat_area", &LscmRelax::get_flat_area)
-        .def_property_readonly("flat_vertices", [](LscmRelax& L){return L.flat_vertices.transpose();}, py::return_value_policy::copy)
-        .def_property_readonly("flat_vertices_3D", &LscmRelax::get_flat_vertices_3D);
+        .def("lscm", &lscmrelax::LscmRelax::lscm)
+        .def("relax", &lscmrelax::LscmRelax::relax)
+        .def("rotate_by_min_bound_area", &lscmrelax::LscmRelax::rotate_by_min_bound_area)
+        .def("transform", &lscmrelax::LscmRelax::transform)
+        .def_readonly("rhs", &lscmrelax::LscmRelax::rhs)
+        .def_readonly("MATRIX", &lscmrelax::LscmRelax::MATRIX)
+        .def_property_readonly("area", &lscmrelax::LscmRelax::get_area)
+        .def_property_readonly("flat_area", &lscmrelax::LscmRelax::get_flat_area)
+        .def_property_readonly("flat_vertices", [](lscmrelax::LscmRelax& L){return L.flat_vertices.transpose();}, py::return_value_policy::copy)
+        .def_property_readonly("flat_vertices_3D", &lscmrelax::LscmRelax::get_flat_vertices_3D);
 
     py::class_<nurbs::NurbsBase2D>(m, "NurbsBase2D")
         .def(py::init<Eigen::VectorXd, Eigen::VectorXd, Eigen::VectorXd, int, int>())
         .def_readonly("u_knots", &nurbs::NurbsBase2D::u_knots)
         .def_readonly("weights", &nurbs::NurbsBase2D::weights)
         .def_readonly("degree_u", &nurbs::NurbsBase2D::degree_u)
-        .def_readonly("v_knots", &nurbs::NurbsBase2D::u_knots)
+//         .def_readonly("v_knots", &nurbs::NurbsBase2D::u_knots)
         .def_readonly("degree_v", &nurbs::NurbsBase2D::degree_u)
         .def("getUVMesh", &nurbs::NurbsBase2D::getUVMesh)
         .def("computeFirstDerivatives", &nurbs::NurbsBase2D::computeFirstDerivatives)

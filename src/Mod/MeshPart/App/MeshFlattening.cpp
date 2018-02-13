@@ -33,6 +33,7 @@
 #include <vector>
 #include <exception>
 
+
 std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris)
 {
     // get a hashtable for all edges
@@ -172,7 +173,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
 void FaceUnwrapper::findFlatNodes(int steps, double val)
 {
     std::vector<long> fixed_pins;  //TODO: INPUT
-    LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
+    lscmrelax::LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
     mesh_flattener.lscm();
     for (int j=0; j<steps; j++)
         mesh_flattener.relax(0.95);
