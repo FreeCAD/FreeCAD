@@ -84,9 +84,7 @@ DrawView::DrawView(void)
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false),fgroup,App::Prop_None,"Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(Caption ,(""),fgroup,App::Prop_None,"Short text about the view");
-
 }
 
 DrawView::~DrawView()
