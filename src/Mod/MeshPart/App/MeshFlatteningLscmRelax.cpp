@@ -23,7 +23,7 @@
 
 #include "MeshFlatteningLscmRelax.h"
 #include <Eigen/IterativeLinearSolvers>
-#include<Eigen/SparseCholesky>
+#include <Eigen/SparseCholesky>
 #include <Eigen/SVD>
 #include <iostream>
 #include <algorithm>
@@ -39,6 +39,8 @@
 // area constrained (scale the final unwrapped mesh to the original area)
 // FEM approach
 
+namespace lscmrelax
+{
 
 typedef Eigen::Triplet<double> trip;
 typedef Eigen::SparseMatrix<double> spMat;
@@ -564,4 +566,6 @@ std::vector<long> LscmRelax::get_fem_fixed_pins()
         }
     }
     return std::vector<long>{min_x_index * 2, min_x_index * 2 + 1, max_x_index * 2 + 1};
+}
+
 }
