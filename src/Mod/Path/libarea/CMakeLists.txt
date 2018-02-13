@@ -14,7 +14,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 OPTION(USE_BOOST_PYTHON "use BOOST_PYTHON, otherwise use PYBIND11" ON)
 
-if(USE_BOOST_PYTHON)
+if(NOT FREECAD_USE_PYBIND11)
     if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         # boost-python >= 1.67 on some platforms has suffix
         set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
@@ -40,7 +40,7 @@ if(USE_BOOST_PYTHON)
     else()
         include_directories(${Boost_INCLUDE_DIRS})
     endif()
-endif(USE_BOOST_PYTHON)
+endif(NOT FREECAD_USE_PYBIND11)
 
 
 # this defines the source-files for library
@@ -66,15 +66,15 @@ set(AREA_SRC_CLIPPER
 )
 
 # this defines the additional source-files for python module (wrapper to libarea)
-if (USE_BOOST_PYTHON)
+if (NOT FREECAD_USE_PYBIND11)
     set(PYAREA_SRC
         PythonStuff.cpp
     )
-else(USE_BOOST_PYTHON)
+else (NOT FREECAD_USE_PYBIND11)
     set(PYAREA_SRC
         pyarea.cpp
     )
-endif(USE_BOOST_PYTHON)
+endif (NOT FREECAD_USE_PYBIND11)
 
 # this defines the headers
 if(DEFINED INCLUDE_INSTALL_DIR)
