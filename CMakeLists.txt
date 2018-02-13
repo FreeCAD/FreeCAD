@@ -589,19 +589,10 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_PCL)
     
 # -------------------------------- PyBind11 -----------------------------
-EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
-  "import pybind11; print(bool(pybind11))"
-  OUTPUT_VARIABLE PYBIND11_FOUND OUTPUT_STRIP_TRAILING_WHITESPACE )
-  
-EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
-  "import pybind11; print(pybind11.get_include())"
-  OUTPUT_VARIABLE PYBIND11_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE )
-
-if (PYBIND11_FOUND)
-    message(STATUS "successfully found pybind11")
-    message(STATUS "pybind11 include dir is: " ${PYBIND11_INCLUDE_DIR})
+OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
+if (FREECAD_USE_PYBIND11)
+    find_package(pybind11 REQUIRED)
 endif()
-
 # -------------------------------- Boost --------------------------------
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})

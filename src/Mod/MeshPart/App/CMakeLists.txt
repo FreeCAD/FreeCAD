@@ -81,18 +81,21 @@ SET_PYTHON_PREFIX_SUFFIX(MeshPart)
 INSTALL(TARGETS MeshPart DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 
-if (PYBIND11_FOUND)
-    ################################ flat mesh ###############################
+################################ flat mesh ###############################
+if (FREECAD_USE_PYBIND11)
     SET(FLATMESH_SRCS
-        MeshFlatteningPy.cpp
-        MeshFlattening.cpp
-        MeshFlattening.h
-        MeshFlatteningNurbs.h
-        MeshFlatteningNurbs.cpp
-        MeshFlatteningLscmRelax.h
-        MeshFlatteningLscmRelax.cpp
+	MeshFlattening.cpp
+	MeshFlattening.h
+	MeshFlatteningNurbs.h
+	MeshFlatteningNurbs.cpp
+	MeshFlatteningLscmRelax.h
+	MeshFlatteningLscmRelax.cpp
     )
 
+    SET(FLATMESH_SRCS
+	${FLATMESH_SRCS}
+	MeshFlatteningPy.cpp
+    )
 
 
     add_library(flatmesh SHARED ${FLATMESH_SRCS})
@@ -101,5 +104,5 @@ if (PYBIND11_FOUND)
 
     SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
     install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
-    ############################################################################
 endif()
+############################################################################
