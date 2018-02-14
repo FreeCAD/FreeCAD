@@ -265,7 +265,8 @@ inline void SketcherAddWorkbenchTools(T& consaccel);
 
 template <>
 inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
-    consaccel   << "Sketcher_CloseShape"
+    consaccel   << "Sketcher_SelectFullyConstraintElements"
+                << "Sketcher_CloseShape"
                 << "Sketcher_ConnectLines"
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectOrigin"
@@ -283,14 +284,15 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
 }
 template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){
-    consaccel << "Sketcher_CloseShape"
-        << "Sketcher_ConnectLines"
-        << "Sketcher_SelectConstraints"
-        << "Sketcher_SelectElementsAssociatedWithConstraints"
-        << "Sketcher_RestoreInternalAlignmentGeometry"
-        << "Sketcher_Symmetry"
-        << "Sketcher_CompCopy"
-        << "Sketcher_RectangularArray";
+    consaccel   << "Sketcher_SelectFullyConstraintElements"
+                << "Sketcher_CloseShape"
+                << "Sketcher_ConnectLines"
+                << "Sketcher_SelectConstraints"
+                << "Sketcher_SelectElementsAssociatedWithConstraints"
+                << "Sketcher_RestoreInternalAlignmentGeometry"
+                << "Sketcher_Symmetry"
+                << "Sketcher_CompCopy"
+                << "Sketcher_RectangularArray";
 }
 
 template <typename T>
