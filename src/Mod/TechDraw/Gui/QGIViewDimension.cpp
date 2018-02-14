@@ -58,6 +58,7 @@
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIViewDimension.h"
+#include "ViewProviderDimension.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -155,6 +156,12 @@ QGIViewDimension::QGIViewDimension() :
     addToGroup(aHead1);
     aHead2 = new QGIArrow();
     addToGroup(aHead2);
+
+    datumLabel->setZValue(ZVALUE::DIMENSION);
+    dimLines->setZValue(ZVALUE::DIMENSION);
+    aHead1->setZValue(ZVALUE::DIMENSION);
+    aHead2->setZValue(ZVALUE::DIMENSION);
+
     //centerMark = new QGICMark();
     //addToGroup(centerMark);
 
@@ -179,6 +186,9 @@ QGIViewDimension::QGIViewDimension() :
     dimLines->setStyle(Qt::SolidLine);
 
     toggleBorder(false);
+    setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
+                                                     //above this Dimension's parent view.   need Layers?
+
 }
 
 
@@ -194,8 +204,6 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
     float y = Rez::guiX(obj->Y.getValue());
 
     datumLabel->setPosFromCenter(x, y);
-
-    m_lineWidth = Rez::guiX(obj->LineWidth.getValue());
 
     updateDim();
     draw();
@@ -220,12 +228,17 @@ void QGIViewDimension::updateView(bool update)
     if( dim == nullptr )
         return;
 
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
     // Identify what changed to prevent complete redraw
-    if(dim->Fontsize.isTouched() ||
-       dim->Font.isTouched()) {
+    if(vp->Fontsize.isTouched() ||
+       vp->Font.isTouched()) {
         QFont font = datumLabel->font();
-        font.setPointSizeF(Rez::guiX(dim->Fontsize.getValue()));
-        font.setFamily(QString::fromLatin1(dim->Font.getValue()));
+        font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+        font.setFamily(QString::fromLatin1(vp->Font.getValue()));
 
         datumLabel->setFont(font);
         //datumLabel->setLabelCenter();
@@ -234,8 +247,8 @@ void QGIViewDimension::updateView(bool update)
               dim->Y.isTouched()) {
         datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
         updateDim();
-    } else if (dim->LineWidth.isTouched()) {           //never happens!!
-        m_lineWidth = dim->LineWidth.getValue();
+    } else if (vp->LineWidth.isTouched()) {           //never happens!!
+        m_lineWidth = vp->LineWidth.getValue();
         updateDim();
     } else {
         updateDim();
@@ -250,11 +263,15 @@ void QGIViewDimension::updateDim()
     if( dim == nullptr ) {
         return;
     }
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
 
     QString labelText = QString::fromUtf8(dim->getFormatedValue().data(),dim->getFormatedValue().size());
     QFont font = datumLabel->font();
-    font.setPointSizeF(Rez::guiX(dim->Fontsize.getValue()));
-    font.setFamily(QString::fromUtf8(dim->Font.getValue()));
+    font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+    font.setFamily(QString::fromUtf8(vp->Font.getValue()));
 
     datumLabel->setFont(font);
     prepareGeometryChange();
@@ -309,7 +326,12 @@ void QGIViewDimension::draw()
         return;
     }
 
-    m_lineWidth = Rez::guiX(dim->LineWidth.getValue());
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
+    m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
     float margin = Rez::guiX(5.f);
 
     QString labelText = datumLabel->toPlainText();
@@ -469,7 +491,7 @@ void QGIViewDimension::draw()
         // text to left of vertical dims
         // text above horizontal dims
         double offsetFudge = 2.0;
-        double textOffset = 0.75 * Rez::guiX(dim->Fontsize.getValue()) + offsetFudge;
+        double textOffset = 0.75 * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
         Base::Vector3d dir, norm;               //direction/normal vectors of distance line (not dimension Line)
         if (strcmp(dimType, "Distance") == 0 ) {
             dir = (distEnd-distStart);
@@ -1399,6 +1421,18 @@ QColor QGIViewDimension::getNormalColor()
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     m_colNormal = fcColor.asValue<QColor>();
+
+    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
+    if( dim == nullptr )
+        return m_colNormal;
+
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return m_colNormal;
+    }
+
+    // Identify what changed to prevent complete redraw
+    m_colNormal = vp->Color.getValue().asValue<QColor>();
     return m_colNormal;
 }
 

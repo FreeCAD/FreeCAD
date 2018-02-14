@@ -42,6 +42,11 @@ public:
     /// destructor
     virtual ~ViewProviderDimension();
 
+    App::PropertyFont    Font;
+    App::PropertyFloat   Fontsize;
+    App::PropertyFloat   LineWidth;
+    App::PropertyColor   Color;
+
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -49,6 +54,7 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property* p);
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 };
