@@ -57,6 +57,7 @@
 #include "DrawViewPartPy.h"
 #include "GeometryObject.h"
 #include "EdgeWalker.h"
+#include "DrawUtil.h"
 
 
 namespace TechDraw {
@@ -380,7 +381,8 @@ private:
                 TechDrawGeometry::GeometryObject* go = dvp->getGeometryObject();
                 //visible group begin "<g ... >"
                 ss << grpHead1;
-                double thick = dvp->LineWidth.getValue();
+//                double thick = dvp->LineWidth.getValue();
+                double thick = DrawUtil::getDefaultLineWeight("Thick");
                 ss << thick;
                 ss << grpHead2;
                 TopoDS_Shape s = go->getVisHard();
@@ -403,7 +405,8 @@ private:
                      dvp->SeamHidden.getValue() ) {
                     //hidden group begin
                     ss << grpHead1;
-                    thick = dvp->HiddenWidth.getValue();
+//                    thick = dvp->HiddenWidth.getValue();
+                    thick = DrawUtil::getDefaultLineWeight("Thin");
                     ss << thick;
                     ss << grpHead2;
                     if (dvp->HardHidden.getValue()) {
