@@ -21,6 +21,11 @@
  ***************************************************************************/
 
 
+
+#ifdef _MSC_VER
+    #define strdup _strdup
+#endif
+
 #include "PreCompiled.h"
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
@@ -48,6 +53,7 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS.hxx>
 #include <ShapeFix_Edge.hxx>
+
 
 
 namespace py = pybind11;
