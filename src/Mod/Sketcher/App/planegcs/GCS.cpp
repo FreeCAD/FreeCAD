@@ -24,6 +24,26 @@
 #pragma warning(disable : 4244)
 #endif
 
+//#define _GCS_DEBUG
+//#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#undef _GCS_DEBUG
+#undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+
+// This has to be included BEFORE any EIGEN include
+#ifdef _GCS_DEBUG
+#define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(StreamPrecision,0,",",",\n","[","]","[","]")
+/* Parameters:
+ * 
+ * StreamPrecision,
+ * int _flags = 0,
+ * const std::string &     _coeffSeparator = " ",
+ * const std::string &     _rowSeparator = "\n",
+ * const std::string &     _rowPrefix = "",
+ * const std::string &     _rowSuffix = "",
+ * const std::string &     _matPrefix = "",
+ * const std::string &     _matSuffix = "" )*/
+#endif
+
 #include <iostream>
 #include <algorithm>
 #include <cfloat>
@@ -61,9 +81,6 @@
 #include <Eigen/OrderingMethods>
 #endif
 
-#undef _GCS_DEBUG
-#undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // this is to be enabled in Constraints.h when needed.
 #include <fstream>
 
@@ -76,10 +93,44 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
+typedef Eigen::Matrix<long int, 1, -1, 1, 1, -1> MatrixIndexType;
+typedef Eigen::PermutationMatrix<Eigen::Dynamic,Eigen::Dynamic> PermutationType;
+
+#ifdef _GCS_DEBUG
+void LogMatrix(std::string str, Eigen::MatrixXd matrix )
+{
+    // Debug code starts
+    std::stringstream stream;
+    stream << '\n' << " " << str << " =" << '\n';
+    stream << "[" << '\n';
+    stream << matrix << '\n' ;
+    stream << "]" << '\n';
+
+    const std::string tmp = stream.str();
+
+    Base::Console().Log(tmp.c_str());
+}
+
+void LogMatrix(std::string str, MatrixIndexType matrix )
+{
+    // Debug code starts
+    std::stringstream stream;
+    stream << '\n' << " " << str << " =" << '\n';
+    stream << "[" << '\n';
+    stream << matrix << '\n' ;
+    stream << "]" << '\n';
+    
+    const std::string tmp = stream.str();
+    
+    Base::Console().Log(tmp.c_str());
+}
+#endif
+
 #ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
 namespace Eigen {
 
 typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
+
 template<>
 FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
 {
@@ -188,6 +239,7 @@ typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Gra
 // System
 System::System()
   : plist(0)
+  , pdependentparameters(0)
   , clist(0)
   , c2p()
   , p2c()
@@ -309,6 +361,7 @@ void System::clear()
 {
     plist.clear();
     pIndex.clear();
+    pdependentparameters.clear();
     hasUnknowns = false;
     hasDiagnosis = false;
 
@@ -3562,10 +3615,11 @@ int System::diagnose(Algorithm alg)
 #ifdef _GCS_DEBUG
     // Debug code starts
     std::stringstream stream;
-
+    
+    stream << '\n' << "J=" << '\n';
     stream << "[";
     stream << J ;
-    stream << "]";
+    stream << "]" << '\n';
 
     const std::string tmp = stream.str();
 
@@ -3574,6 +3628,7 @@ int System::diagnose(Algorithm alg)
 #endif
 
     Eigen::MatrixXd R;
+    // Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     int paramsNum = 0;
     int constrNum = 0;
     int rank = 0;
@@ -3583,7 +3638,7 @@ int System::diagnose(Algorithm alg)
         if (J.rows() > 0) {
             qrJT.compute(J.topRows(count).transpose());
             //Eigen::MatrixXd Q = qrJT.matrixQ ();
-            
+
             paramsNum = qrJT.rows();
             constrNum = qrJT.cols();
             qrJT.setThreshold(qrpivotThreshold);
@@ -3594,6 +3649,8 @@ int System::diagnose(Algorithm alg)
             else
                 R = qrJT.matrixQR().topRows(constrNum)
                                 .triangularView<Eigen::Upper>();
+
+            //Q = qrJT.matrixQ();
         }
     }
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
@@ -3616,6 +3673,7 @@ int System::diagnose(Algorithm alg)
             else
                 R = SqrJT.matrixR().topRows(constrNum)
                                     .triangularView<Eigen::Upper>();
+
         }
     }
 #endif
@@ -3654,19 +3712,100 @@ int System::diagnose(Algorithm alg)
 
     if (J.rows() > 0) {
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        // Debug code starts
-        std::stringstream stream;
+        LogMatrix("R", R);
 
-        stream << "[";
-        stream << R ;
-        stream << "]";
+        //LogMatrix("Q", Q);
 
-        const std::string tmp = stream.str();
-
-        Base::Console().Log(tmp.c_str());
-        // Debug code ends
+        LogMatrix("RowTransp", qrJT.rowsTranspositions());
 #endif
 
+        // Detecting constraint solver parameters
+        // R (original version, not R here which is trimmed to not have empty rows)
+        // has paramsNum rows, the first "rank" rows correspond to parameters that are constraint
+
+        // Calculate the Permutation matrix from the Transposition matrix
+        Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> rowPermutations;
+
+        rowPermutations.setIdentity(paramsNum);
+
+        const MatrixIndexType rowTranspositions = qrJT.rowsTranspositions();
+
+/*        if(qrAlgorithm==EigenDenseQR){
+            rowTranspositions = qrJT.rowsTranspositions();
+        }
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+        else if(qrAlgorithm==EigenSparseQR){
+            //rowTranspositions = SqrJT.rowsTranspositions();
+        }
+
+#endif*/
+        for(int k = 0; k < rank; ++k)
+            rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
+
+        // params (in the order of J) shown as independent from QR
+        std::set<int> indepParamCols;
+        std::set<int> depParamCols;
+
+        for (int j=0; j < rank; j++) {
+
+             int origRow = rowPermutations.indices()[j];
+
+             indepParamCols.insert(origRow);
+
+             // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
+             // The cols of J are the parameters, the rows are the constraints.
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+             Base::Console().Log("R row %d = J col %d\n",j,origRow);
+#endif
+        }
+
+        // If not independent, must be dependent
+        for(int j=0; j < paramsNum; j++) {
+            auto result = std::find(indepParamCols.begin(), indepParamCols.end(), j);
+            if(result == indepParamCols.end()) {
+                depParamCols.insert(j);
+            }
+        }
+
+        // Last (NumParams-rank) rows of Q construct the dependent part of J
+        // in conjuntion with the R matrix
+        // Last (NumParams-rank) cols of Q never contribute as R is zero after the rank
+        /*std::set<int> associatedParamCols;
+        for(int i = rank; i < paramsNum; i++) {
+            for(int j = 0; j < rank; j++) {
+                if(fabs(Q(i,j))>1e-10) {
+                    for(int k = j; k < constrNum; k++) {
+                        if(fabs(R(j,k))>1e-10) {
+                            associatedParamCols.insert(k);
+                        }
+                    }
+                }
+            }
+        }
+
+        for( auto param : associatedParamCols) {
+            auto pos = indepParamCols.find(rowPermutations.indices()[param]);
+
+            if(pos!=indepParamCols.end()) {
+                indepParamCols.erase(pos);
+            }
+        }*/
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+        Base::Console().Log("Indep params: [");
+        for(auto indep :indepParamCols)
+            Base::Console().Log("%d,",indep);
+        Base::Console().Log("]\n");
+
+        Base::Console().Log("Dep params: [");
+        for(auto dep :depParamCols)
+            Base::Console().Log("%d,",dep);
+        Base::Console().Log("]\n");
+#endif
+        for( auto param : depParamCols) {
+            pdependentparameters.push_back(plist[param]);
+        }
+
+        // Detecting conflicting or redundant constraints
         if (constrNum > rank) { // conflicting or redundant constraints
             for (int i=1; i < rank; i++) {
                 // eliminate non zeros above pivot
