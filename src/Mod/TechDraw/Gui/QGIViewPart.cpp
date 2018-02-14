@@ -70,6 +70,7 @@
 #include "QGIMatting.h"
 #include "QGIViewPart.h"
 #include "ViewProviderGeomHatch.h"
+#include "ViewProviderHatch.h"
 
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
@@ -412,8 +413,12 @@ void QGIViewPart::drawViewPart()
                     newFace->isHatched(true);
                     newFace->setFillMode(QGIFace::FromFile);
                     newFace->setHatchFile(fHatch->HatchPattern.getValue());
-                    newFace->setHatchScale(fHatch->HatchScale.getValue());
-                    newFace->setHatchColor(fHatch->HatchColor.getValue());
+                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                    if (hatchVp != nullptr) {
+                        newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                    }
                 }
             } 
             bool drawEdges = getFaceEdgesPref();
