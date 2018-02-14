@@ -76,6 +76,8 @@ namespace GCS
     private:
         VEC_pD plist; // list of the unknown parameters
         MAP_pD_I pIndex;
+        
+        VEC_pD pdependentparameters; // list of dependent parameters by the system
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -270,6 +272,8 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
+        void getDependentParams(VEC_pD &pconstraintplistOut) const
+          { pconstraintplistOut = pdependentparameters;}
     };
 
 
