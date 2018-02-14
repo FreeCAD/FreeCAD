@@ -24,6 +24,10 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
+
 #include "ViewProviderDrawingView.h"
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -39,6 +43,16 @@ public:
     ViewProviderViewPart();
     /// destructor
     virtual ~ViewProviderViewPart();
+
+    App::PropertyFloat  LineWidth;
+    App::PropertyFloat  HiddenWidth;
+    App::PropertyFloat  IsoWidth;
+    App::PropertyFloat  ExtraWidth;
+    App::PropertyBool   ArcCenterMarks;
+    App::PropertyFloat  CenterScale;
+    App::PropertyBool   HorizCenterLine;
+    App::PropertyBool   VertCenterLine;
+    App::PropertyBool   ShowSectionLine;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
