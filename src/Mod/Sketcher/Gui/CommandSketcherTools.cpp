@@ -703,6 +703,99 @@ bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
+DEF_STD_CMD_A(CmdSketcherSelectFullyConstraintElements);
+
+CmdSketcherSelectFullyConstraintElements::CmdSketcherSelectFullyConstraintElements()
+:Command("Sketcher_SelectFullyConstraintElements")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Select fully constraint elements");
+    sToolTipText    = QT_TR_NOOP("Select elements that are already fully constraint");
+    sWhatsThis      = "Sketcher_SelectFullyConstraintElements";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SelectFullyConstraintElements";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSelectFullyConstraintElements::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    getSelection().clearSelection();
+
+    Gui::Document * doc= getActiveGuiDocument();
+
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+
+    Sketcher::SketchObject* Obj= vp->getSketchObject();
+
+    std::string doc_name = Obj->getDocument()->getName();
+    std::string obj_name = Obj->getNameInDocument();
+
+    std::stringstream ss;
+
+    auto geos = Obj->getInternalGeometry();
+
+    auto testselectvertex = [&Obj,&ss,&doc_name,&obj_name](int geoId, PointPos pos){
+        ss.str(std::string());
+
+        if(Obj->getSolvedSketch().hasDependentParameters(geoId, pos)) {
+            int vertex = Obj->getVertexIndexGeoPos(geoId, pos);
+            if(vertex>-1) {
+                ss << "Vertex" <<  vertex + 1;
+
+                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+            }
+        }
+    };
+
+    auto testselectedge = [&Obj,&ss,&doc_name,&obj_name](int geoId){
+        ss.str(std::string());
+
+        if(Obj->getSolvedSketch().hasDependentParameters(geoId, Sketcher::none)) {
+            ss << "Edge" <<  geoId + 1;
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+        }
+    };
+
+    int geoid = 0;
+
+    for(auto geo : geos) {
+        if(geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            testselectvertex(geoid, Sketcher::start);
+        }
+        else if(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            testselectvertex(geoid, Sketcher::start);
+            testselectvertex(geoid, Sketcher::end);
+            testselectedge(geoid);
+        }
+        else if(geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ) {
+            testselectvertex(geoid, Sketcher::mid);
+            testselectedge(geoid);
+        }
+        else if(geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+            testselectvertex(geoid, Sketcher::start);
+            testselectvertex(geoid, Sketcher::end);
+            testselectvertex(geoid, Sketcher::mid);
+            testselectedge(geoid);
+        }
+
+        geoid++;
+    }
+
+}
+
+bool CmdSketcherSelectFullyConstraintElements::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
+}
+
 DEF_STD_CMD_A(CmdSketcherRestoreInternalAlignmentGeometry);
 
 CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignmentGeometry()
@@ -1816,6 +1909,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherSelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectConflictingConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
+    rcCmdMgr.addCommand(new CmdSketcherSelectFullyConstraintElements());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
