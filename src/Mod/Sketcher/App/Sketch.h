@@ -95,6 +95,9 @@ public:
     int getPointId(int geoId, PointPos pos) const;
     /// retrieves a point
     Base::Vector3d getPoint(int geoId, PointPos pos);
+    
+    /// retrieves whether a geometry has dependent parameters or not
+    bool hasDependentParameters(int geoId, PointPos pos);
 
     // Inline methods
     inline bool hasConflicts(void) const { return !Conflicting.empty(); }
@@ -395,6 +398,8 @@ protected:
     int ConstraintsCounter;
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    
+    std::vector<double *> pconstraintplistOut;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
@@ -445,11 +450,12 @@ public:
 protected:
     GCS::DebugMode debugMode;
 
-
 private:
 
     bool updateGeometry(void);
     bool updateNonDrivingConstraints(void);
+    
+    void calculateDependentParametersElements(void);
 
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId);

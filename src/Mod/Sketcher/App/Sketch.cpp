@@ -155,6 +155,9 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getDependentParams(pconstraintplistOut);
+
+    calculateDependentParametersElements();
 
     if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
         Base::TimeInfo end_time;
@@ -165,6 +168,108 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     return GCSsys.dofsNumber();
 }
 
+void Sketch::calculateDependentParametersElements(void)
+{
+    for(auto geo : Geoms) {
+        std::vector<double *> ownparams;
+        GCS::Curve * pCurve;
+
+        switch(geo.type) {
+            case Point:
+            {
+                GCS::Point & point = Points[geo.startPointId];
+                for(auto param : pconstraintplistOut) {
+                    if (param == point.x || param == point.y) {
+                        point.hasDependentParameters = true;
+                        break;
+                    }
+                }
+            }
+            break;
+            case Line:
+            {
+                GCS::Line & line = Lines[geo.index];
+                line.PushOwnParams(ownparams);
+                pCurve = &line;
+
+            }
+            break;
+            case Arc:
+            {
+                GCS::Arc & arc = Arcs[geo.index];
+                arc.PushOwnParams(ownparams);
+                pCurve = &arc;
+            }
+            break;
+            case Circle:
+            {
+                GCS::Circle & c = Circles[geo.index];
+                c.PushOwnParams(ownparams);
+                pCurve = &c;
+            }
+            break;
+            case Ellipse:
+            {
+                GCS::Ellipse & e = Ellipses[geo.index];
+                e.PushOwnParams(ownparams);
+                pCurve = &e;
+            }
+            break;
+            case ArcOfEllipse:
+            {
+                GCS::ArcOfEllipse & aoe = ArcsOfEllipse[geo.index];
+                aoe.PushOwnParams(ownparams);
+                pCurve = &aoe;
+            }
+            break;
+            case ArcOfHyperbola:
+            {
+                GCS::ArcOfHyperbola & aoh = ArcsOfHyperbola[geo.index];
+                aoh.PushOwnParams(ownparams);
+                pCurve = &aoh;
+            }
+            break;
+            case ArcOfParabola:
+            {
+                GCS::ArcOfParabola & aop = ArcsOfParabola[geo.index];
+                aop.PushOwnParams(ownparams);
+                pCurve = &aop;
+            }
+            break;
+            case BSpline:
+            {
+                GCS::BSpline & bsp = BSplines[geo.index];
+                bsp.PushOwnParams(ownparams);
+                pCurve = &bsp;
+            }
+            break;
+            case None:
+            break;
+        }
+        // Points (this is single point elements, not vertices of other elements) are not derived from Curve
+        if(geo.type != Point && geo.type != None) { 
+            for(auto param : pconstraintplistOut) {
+                for(auto ownparam : ownparams) {
+                    if (param == ownparam) {
+                        pCurve->hasDependentParameters = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    // Points are the only element that defines other elements, so these points (as opposed to those points
+    // above which are just GeomPoints), have to be handled separately.
+    for(auto & point : Points) {
+        for(auto param : pconstraintplistOut) {
+            if (param == point.x || param == point.y) {
+                point.hasDependentParameters = true;
+                break;
+            }
+        }
+    }
+}
+
 int Sketch::resetSolver()
 {
     GCSsys.clearByTag(-1);
@@ -172,7 +277,10 @@ int Sketch::resetSolver()
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
-
+    GCSsys.getDependentParams(pconstraintplistOut);
+    
+    calculateDependentParametersElements();
+    
     return GCSsys.dofsNumber();
 }
 
@@ -3468,6 +3576,108 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
         return Base::Vector3d(*Points[pointId].x, *Points[pointId].y, 0);
 
     return Base::Vector3d();
+}
+
+bool Sketch::hasDependentParameters(int geoId, PointPos pos)
+{
+    try {
+        geoId = checkGeoId(geoId);
+    }
+    catch (Base::Exception e) {
+        return false;
+    }
+
+    if(Geoms[geoId].external)
+        return true;
+
+    switch(Geoms[geoId].type) {
+        case Point: 
+        {
+            switch(pos) { // NOTE: points are added to all the cases, see addition.
+                case none: return Points[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case Line:
+        {
+            switch(pos) {
+                case none: return Lines[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return false;break;
+            }
+        }
+        case Arc:
+        {
+            switch(pos) {
+                case none: return Arcs[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case Circle:
+        {
+            switch(pos) { // NOTE: points are added to all the cases, see addition.
+                case none: return Circles[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return false;break;
+                case end: return false;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+
+        case Ellipse:
+        {
+            switch(pos) { // NOTE: points are added to all the cases, see addition.
+                case none: return Ellipses[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return false;break;
+                case end: return false;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case ArcOfEllipse:
+        {
+            switch(pos) {
+                case none: return ArcsOfEllipse[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case ArcOfHyperbola:
+        {
+            switch(pos) {
+                case none: return ArcsOfHyperbola[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case ArcOfParabola:
+        {
+            switch(pos) {
+                case none: return ArcsOfParabola[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case BSpline:
+        {
+            switch(pos) {
+                case none: return BSplines[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return false;break;
+            }
+        }
+        case None:
+            return false; break;
+    }
+    
+    return false;
 }
 
 TopoShape Sketch::toShape(void) const
