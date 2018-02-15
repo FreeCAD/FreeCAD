@@ -43,10 +43,6 @@ public:
     App::PropertyVector      DirProjection;                            //Source is only valid for original projection?
     App::PropertyLinkSub     Source;                                   //the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
-    App::PropertyColor       HatchColor;
-    App::PropertyFloatConstraint HatchScale;
-
-    //short mustExecute() const;
 
     virtual App::DocumentObjectExecReturn *execute(void);
 
@@ -62,7 +58,6 @@ protected:
     void onChanged(const App::Property* prop);
 
 private:
-    static App::PropertyFloatConstraint::Constraints scaleRange;
 
 };
 

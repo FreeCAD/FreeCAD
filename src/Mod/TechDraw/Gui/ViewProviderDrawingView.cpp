@@ -61,11 +61,13 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
     sPixmap = "TechDraw_Tree_View";
+    static const char *group = "Base";
+
+    ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");
 
     // Do not show in property editor   why? wf
     DisplayMode.setStatus(App::Property::ReadOnly,true);
     m_docReady = true;
-    
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
@@ -110,7 +112,13 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
         } else {
             hide();
         }
+    } else if (prop == &KeepLabel) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
     }
+
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
