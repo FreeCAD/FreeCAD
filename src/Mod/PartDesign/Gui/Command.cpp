@@ -301,6 +301,76 @@ bool CmdPartDesignShapeBinder::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_SubShapeBinder
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignSubShapeBinder);
+
+CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
+  :Command("PartDesign_SubShapeBinder")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a sub-object(s) shape binder");
+    sToolTipText    = QT_TR_NOOP("Create a sub-object(s) shape binder");
+    sWhatsThis      = "PartDesign_SubShapeBinder";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_SubShapeBinder";
+}
+
+void CmdPartDesignSubShapeBinder::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    PartDesign::SubShapeBinder *obj = 0;
+    std::vector<std::pair<App::DocumentObject*,std::string> > subs;
+    for(auto &sel : Gui::Selection().getSelection("",false)) {
+        if(!sel.pObject) continue;
+        if(!obj) {
+            const char *dot = sel.SubName?strrchr(sel.SubName,'.'):0;
+            if(!dot || dot[1]==0) {
+                auto sobj = sel.pObject->getSubObject(sel.SubName);
+                if(!sobj) continue;
+                obj = dynamic_cast<PartDesign::SubShapeBinder*>(sobj->getLinkedObject(true));
+                if(obj) continue;
+            }
+        }
+        subs.push_back(std::make_pair(sel.pObject,std::string(sel.SubName?sel.SubName:"")));
+    }
+    
+    try {
+        if (obj) 
+            openCommand("Change SubShapeBinder");
+        else {
+            PartDesign::Body *pcActiveBody = PartDesignGui::getBody(false);
+            std::string FeatName = getUniqueObjectName("Binder",pcActiveBody);
+
+            openCommand("Create SubShapeBinder");
+            if(pcActiveBody) {
+                FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+            }else
+                doCommand(Command::Doc,"App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
+            if(pcActiveBody)
+                obj = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
+            else
+                obj = dynamic_cast<PartDesign::SubShapeBinder*>(
+                        App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
+            if(!obj) return;
+        }
+        obj->setLinks(subs,true);
+        updateActive();
+        commitCommand();
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        abortCommand();
+    }
+}
+
+bool CmdPartDesignSubShapeBinder::isActive(void)
+{
+    return hasActiveDocument();
+}
+//===========================================================================
 // PartDesign_Clone
 //===========================================================================
 
@@ -2213,6 +2283,7 @@ void CreatePartDesignCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdPartDesignShapeBinder());
+    rcCmdMgr.addCommand(new CmdPartDesignSubShapeBinder());
     rcCmdMgr.addCommand(new CmdPartDesignClone());
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());

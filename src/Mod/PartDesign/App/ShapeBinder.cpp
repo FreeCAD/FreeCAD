@@ -24,11 +24,19 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-#include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <Precision.hxx>
 #endif
 
+#include <App/Document.h>
 #include "ShapeBinder.h"
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/FaceMakerBullseye.h>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -158,4 +166,156 @@ void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char 
     if (prop == &Support && strcmp(TypeName, "App::PropertyLinkSubList") == 0) {
         Support.Restore(reader);
     }
+}
+
+// ============================================================================
+
+namespace Part {
+PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
+}
+
+// ============================================================================
+
+PROPERTY_SOURCE(PartDesign::SubShapeBinder, PartDesign::ShapeBinder)
+
+SubShapeBinder::SubShapeBinder()
+{
+    ADD_PROPERTY_TYPE(Fuse, (true), "Base",App::Prop_None,"Fused linked solid shapes");
+    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
+    ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
+    ADD_PROPERTY_TYPE(Relative, (false), "Base",App::Prop_None,"Enable relative sub-object linking");
+    Placement.setStatus(App::Property::Hidden, true);
+}
+
+App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
+    if(this->isRestoring())
+        return Part::Feature::execute();
+
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+
+    int count = 0;
+    auto subset = Support.getSubListValues();
+    for(auto &info : subset) {
+        auto obj = info.first;
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        static std::string none("");
+        std::set<std::string> subs(info.second.begin(),info.second.end());
+        if(subs.empty())
+            subs.insert(none);
+        else if(subs.size()>1)
+            subs.erase(none);
+        for(const auto &sub : subs) {
+            auto shape = Part::Feature::getShape(obj,sub.c_str(),true);
+            if(!shape.IsNull()){
+                builder.Add(comp,shape);
+                ++count;
+            }
+        }
+    }
+    if(!count)
+        return new App::DocumentObjectExecReturn("No shapes");
+
+    if(Fuse.getValue()) {
+        // If the compound has solid, fuse them together, and ignore other type of
+        // shapes
+        count = 0;
+        Part::TopoShape base;
+        std::vector<TopoDS_Shape> operators;
+        for(TopExp_Explorer it(comp, TopAbs_SOLID); it.More(); it.Next(),++count) {
+            if(!count) 
+                base = it.Current();
+            else
+                operators.push_back(it.Current());
+        }
+        if(count) {
+            if(operators.empty())
+                Shape.setValue(base.getShape());
+            else
+                Shape.setValue(base.fuse(operators));
+            return Part::Feature::execute();
+        }
+    }
+
+    if(MakeFace.getValue() && !TopExp_Explorer(comp, TopAbs_FACE).More()) {
+        if(!TopExp_Explorer(comp, TopAbs_SHELL).More()) {
+            std::list<TopoDS_Edge> edges;
+            for(TopExp_Explorer it(comp,TopAbs_EDGE);it.More();it.Next())
+                edges.push_back(TopoDS::Edge(it.Current()));
+            if(edges.size()) {
+                Part::FaceMakerBullseye mkFace;
+                do {
+                    BRepBuilderAPI_MakeWire mkWire;
+                    for(auto &edge : Part::sort_Edges(Precision::Confusion(),edges))
+                        mkWire.Add(edge);
+                    mkFace.addWire(mkWire.Wire());
+                }while(edges.size());
+                try {
+                    mkFace.Build();
+                    const TopoDS_Shape &shape = mkFace.Shape();
+                    if(!shape.IsNull()) {
+                        Shape.setValue(shape);
+                        return Part::Feature::execute();
+                    }
+                }catch (Base::Exception &){}
+            }
+        }
+    }
+    Shape.setValue(comp);
+    return Part::Feature::execute();
+}
+
+void SubShapeBinder::setLinks(
+        const std::vector<std::pair<App::DocumentObject*,std::string> > &subs,
+        bool reset)
+{
+    std::map<App::DocumentObject*, std::set<std::string> > values;
+    if(!reset) {
+        const auto &objs = Support.getValues();
+        const auto &subs = Support.getSubValues();
+        for(size_t i=0;i<objs.size();++i) {
+            auto obj = objs[i];
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            values[obj].insert(subs[i]);
+        }
+    }
+    for(auto &info : subs) {
+        auto obj = info.first;
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        if(obj->getDocument()!=getDocument()) 
+            throw Base::RuntimeError("Direct external linking is not allowed");
+        if(Relative.getValue()) 
+            values[obj].insert(info.second);
+        else {
+            auto &sub = info.second;
+            auto idx = sub.rfind('.');
+            if(idx == std::string::npos) {
+                values[obj].insert(sub);
+                continue;
+            }
+            auto sobj = obj->getSubObject(sub.c_str());
+            if(!sobj) 
+                throw Base::RuntimeError("Cannot find sub object");
+            if(sobj->getDocument()!=getDocument())
+                values[obj].insert(info.second);
+            else
+                values[sobj].insert(sub.c_str()+idx+1);
+        }
+    }
+    auto inSet = getInListEx(true);
+    inSet.insert(this);
+    std::vector<App::PropertyLinkSubList::SubSet> newValues;
+    for(auto &value : values) {
+        newValues.emplace_back();
+        auto &newSub = newValues.back();
+        newSub.first = value.first;
+        if(inSet.find(value.first)!=inSet.end())
+            throw Base::RuntimeError("Cyclic dependency");
+        newSub.second.insert(newSub.second.end(),value.second.begin(),value.second.end());
+    }
+    Support.setSubListValues(newValues);
 }

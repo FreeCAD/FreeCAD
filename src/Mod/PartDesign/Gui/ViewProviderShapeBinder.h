@@ -39,7 +39,7 @@ public:
     virtual ~ViewProviderShapeBinder();
 
     void setupContextMenu(QMenu*, QObject*, const char*);
-    void highlightReferences(const bool on, bool auxiliary);
+    virtual void highlightReferences(const bool on, bool auxiliary);
     
 protected:
     virtual bool setEdit(int ModNum);
@@ -49,6 +49,26 @@ private:
     std::vector<App::Color> originalLineColors;
     std::vector<App::Color> originalFaceColors;
 
+};
+
+class PartDesignGuiExport ViewProviderSubShapeBinder : public ViewProviderShapeBinder
+{
+    PROPERTY_HEADER(PartDesignGui::ViewProviderShapeBinder);
+
+public:
+
+    /// Constructor
+    ViewProviderSubShapeBinder();
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+    bool canDropObjects() const override {return true;}
+    bool canDragAndDropObject(App::DocumentObject*) const override {return false;}
+    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *subname) const override;
+    void dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *) override;
+    std::vector<App::DocumentObject*> claimChildren(void) const override;
+
+protected:
+    virtual bool setEdit(int ModNum);
 };
 
 } // namespace PartDesignGui

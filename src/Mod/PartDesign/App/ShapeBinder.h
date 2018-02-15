@@ -62,6 +62,26 @@ protected:
     virtual App::DocumentObjectExecReturn* execute(void);
 };
 
+class PartDesignExport SubShapeBinder : public ShapeBinder {
+    PROPERTY_HEADER(PartDesign::SubShapeBinder);
+public:
+    SubShapeBinder();
+    const char* getViewProviderName(void) const {
+        return "PartDesignGui::ViewProviderSubShapeBinder";
+    }
+
+    void setLinks(const std::vector<std::pair<App::DocumentObject*,std::string> > &subs,
+                  bool reset=false);
+
+    App::PropertyBool ClaimChildren;
+    App::PropertyBool Relative;
+    App::PropertyBool Fuse;
+    App::PropertyBool MakeFace;
+
+protected:
+    virtual App::DocumentObjectExecReturn* execute(void);
+};
+
 } //namespace PartDesign
 
 

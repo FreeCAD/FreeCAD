@@ -458,6 +458,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Line"
           << "PartDesign_Plane"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
           << "PartDesign_Pad"
@@ -523,6 +524,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Line"
           << "PartDesign_Plane"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone";
 
     part = new Gui::ToolBarItem(root);

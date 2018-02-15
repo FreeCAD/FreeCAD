@@ -24,8 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
 # include <Inventor/nodes/SoSeparator.h>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -34,6 +35,7 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
@@ -184,3 +186,63 @@ void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, c
     act = menu->addAction(QObject::tr("Edit shape binder"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
+
+//=====================================================================================
+
+PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartDesignGui::ViewProviderShapeBinder)
+
+ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
+    sPixmap = "PartDesign_SubShapeBinder.svg";
+}
+
+bool ViewProviderSubShapeBinder::canDropObjectEx(
+        App::DocumentObject *obj, App::DocumentObject *owner, const char *) const
+{
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(!self) return false;
+    auto doc = getDocument()->getDocument();
+    if(self->Relative.getValue()) {
+        if(!owner)
+            owner = obj;
+        return owner->getDocument()==doc;
+    }else
+        return obj->getDocument()==doc;
+}
+
+void ViewProviderSubShapeBinder::dropObjectEx(
+        App::DocumentObject *obj, App::DocumentObject *owner, const char *subname)
+{
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(self) {
+        std::vector<std::pair<App::DocumentObject*,std::string> > subs;
+        subs.push_back(std::make_pair(owner?owner:obj,std::string(subname?subname:"")));
+
+        static int last_tid;
+        int tid = 0;
+        bool reset = false;
+        if(App::GetApplication().getActiveTransaction(&tid) && tid!=last_tid) {
+            last_tid = tid;
+            reset = QApplication::keyboardModifiers()==Qt::ControlModifier;
+        }
+        self->setLinks(subs,reset);
+    }
+}
+
+
+void ViewProviderSubShapeBinder::setupContextMenu(QMenu *, QObject*, const char*){
+}
+
+bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
+    return ViewProviderPart::setEdit(ModNum);
+}
+
+std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
+    std::vector<App::DocumentObject *> ret;
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(self && self->ClaimChildren.getValue()) {
+        for(auto &info : self->Support.getSubListValues())
+            ret.push_back(info.first);
+    }
+    return ret;
+}
+

@@ -53,6 +53,8 @@ public:
     App::PropertyBool    Midplane;
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
+    /// Force claim linked profile as children
+    App::PropertyBool    ClaimChildren;
 
     App::PropertyBool Refine;
 
