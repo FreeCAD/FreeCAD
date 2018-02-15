@@ -590,7 +590,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         }
     }
 
-#if 0 // geo feature group now implements getElementPicked
+#if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
 
     // If no next hierarchy is found, do another try on view provider hierarchies, 
     // which is used by geo feature group.
