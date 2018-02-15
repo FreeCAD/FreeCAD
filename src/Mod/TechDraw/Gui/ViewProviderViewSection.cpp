@@ -48,8 +48,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewSection, TechDrawGui::ViewProviderV
 
 ViewProviderViewSection::ViewProviderViewSection()
 {
-    static const char *sgroup = "Surface";
-    static const char *hgroup = "Hatch";
+    static const char *sgroup = "Cut Surface";
+    static const char *hgroup = "Surface Hatch";
     sPixmap = "TechDraw_Tree_Section";
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_None,"Show/hide the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),sgroup,App::Prop_None,"The color to shade the cut surface");

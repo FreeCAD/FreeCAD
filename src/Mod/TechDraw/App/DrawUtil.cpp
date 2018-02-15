@@ -425,6 +425,17 @@ double DrawUtil::sensibleScale(double working_scale)
     return result;
 }
 
+double DrawUtil::getDefaultLineWeight(std::string lineType)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = LineGroup::lineGroupFactory(lgName);
+    
+    double weight = lg->getWeight(lineType);
+    return weight;
+}
+
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)
