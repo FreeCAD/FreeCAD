@@ -478,6 +478,10 @@ def get_beam_normal(beam_direction, defined_angle):
     else:
         temp_valz = 0
 
+    Dot_product_check_x = None
+    Dot_product_check_y = None
+    Dot_product_check_z = None
+    Dot_product_check_nt = None
     if vector_a[0] != 0 and vector_a[1] == 0 and vector_a[2] == 0:
         normal_n = [temp_valx, nx, ny]
         Dot_product_check_x = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
