@@ -22,6 +22,7 @@
 
 
 import collections
+import six
 
 
 SIMULATION = "Simulation"
@@ -401,7 +402,7 @@ class _Writer(object):
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, str) or issubclass(dataType, unicode):
+        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
             return '"%s"' % data
         return str(data)
 
