@@ -425,13 +425,12 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         ret = const_cast<DocumentObject*>(obj);
         if(!hasElements() && !getElementCountValue() && pyObj) {
             Base::Matrix4D matNext;
-            if(mat) {
-                matNext = *mat;
-                mat = &matNext;
-            }
-            auto linked = getTrueLinkedObject(true,mat,depth);
-            if(linked) 
+            if(mat) matNext = *mat;
+            auto linked = getTrueLinkedObject(true,mat?&matNext:0,depth);
+            if(linked) {
+                if(mat) *mat = matNext;
                 linked->getSubObject(mySubElement.c_str(),pyObj,mat,false,depth+1);
+            }
         }
         return true;
     }
@@ -475,6 +474,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         return true;
 
     Base::Matrix4D matNext;
+    if(mat) matNext = *mat;
     if(!subname || !subname[0])
         subname = mySubElement.c_str();
     ret = linked->getSubObject(subname,pyObj,mat?&matNext:0,false,depth+1);
@@ -482,13 +482,13 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         // do not resolve the link if we are the last referenced object
         if(subname && strchr(subname,'.')) {
             if(mat)
-                *mat *= matNext;
+                *mat = matNext;
         }else if(element)
             ret = element;
         else if(!isElement)
             ret = const_cast<DocumentObject*>(obj);
         else if(mat)
-            *mat *= matNext;
+            *mat = matNext;
     }
     return true;
 }
