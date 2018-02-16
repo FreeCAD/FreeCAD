@@ -708,7 +708,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         return;
     }
 
-    // Collect dependenies of the selected features
+    // Collect dependencies of the selected features
     std::vector<App::DocumentObject*> dependencies = PartDesignGui::collectMovableDependencies(features);
     if (!dependencies.empty())
         features.insert(std::end(features), std::begin(dependencies), std::end(dependencies));

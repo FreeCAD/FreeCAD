@@ -4316,7 +4316,7 @@ class Edit(Modifier):
                     changep = point +2
                 elif point == len(pts)-1 and self.obj.Closed: #last pole
                     # if the curve is closed the last pole has the last
-                    # index in the poits lists
+                    # index in the points lists
                     knot = 0
                     keepp = point
                     changep = 1
