@@ -470,7 +470,7 @@ class Snapper:
                         return tsnap[2],eline
                 
         for o in [self.lastObj[1],self.lastObj[0]]:
-            if o:
+            if o and (self.isEnabled('extension') or self.isEnabled('parallel')):
                 ob = FreeCAD.ActiveDocument.getObject(o)
                 if ob:
                     if ob.isDerivedFrom("Part::Feature"):
