@@ -613,8 +613,8 @@ void CmdSketcherViewSketch::activated(int iMsg)
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     if (vp) {
-        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(%s.Placement.Rotation.Q)"
-                     ,getObjectCmd(vp->getObject()).c_str());
+        runCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation("
+                "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
     }
 }
 

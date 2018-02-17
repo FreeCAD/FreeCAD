@@ -203,6 +203,9 @@ inline void SketcherAddWorkbenchGeometries(T& geom){
             << "Sketcher_External"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"
+            << "Separator"
+            << "Sketcher_ExportGeometry"
+            << "Sketcher_ExportCompound"
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }

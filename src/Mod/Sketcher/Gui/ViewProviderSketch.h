@@ -242,6 +242,9 @@ public:
     /// signals if the elements list has changed
     boost::signal<void ()> signalElementsChanged;
         
+    virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
+    void selectElement(const char *element) const;
+
 protected:
     Base::Placement getEditingPlacement() const;
 
@@ -418,10 +421,22 @@ protected:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
-    std::string editPrefix;
     
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
+};
+
+// ---------------------------------------------------------
+
+class SketcherGuiExport ViewProviderSketchExport: public PartGui::ViewProvider2DObject
+{
+    PROPERTY_HEADER(SketcherGui::ViewProviderSketchSketch);
+
+public:
+    typedef PartGui::ViewProvider2DObject inherited;
+
+    ViewProviderSketchExport();
+    virtual bool doubleClicked(void) override;
 };
 
 } // namespace PartGui

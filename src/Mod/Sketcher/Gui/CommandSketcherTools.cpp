@@ -33,6 +33,7 @@
 
 #include <Base/Console.h>
 #include <App/Application.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -119,14 +120,13 @@ void CmdSketcherCloseShape::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select at least two edges from the sketch."));
         return;
     }
-    
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     int GeoIdFirst=-1;
     int GeoIdLast=-1;
@@ -224,13 +224,13 @@ void CmdSketcherConnect::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select at least two edges from the sketch."));
         return;
     }
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // undo command open
     openCommand("add coincident constraint");
@@ -306,8 +306,8 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     
     std::string doc_name = Obj->getDocument()->getName();
@@ -605,7 +605,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -730,8 +730,8 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -822,14 +822,13 @@ void CmdSketcherSymmetry::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select elements from a single sketch."));
         return;
     }
-
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     getSelection().clearSelection();
 
@@ -1156,8 +1155,8 @@ void SketcherCopy::activate(bool clone)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
 
     getSelection().clearSelection();
 
@@ -1611,15 +1610,14 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
     
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = checkSubNames(selection[0].getSubNames());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select elements from a single sketch."));
         return;
     }
 
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    
     getSelection().clearSelection();
 
     int LastGeoId = 0;
@@ -1773,13 +1771,162 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
         // do nothing
         return;
     }
-
 }
 
 bool CmdSketcherDeleteAllGeometry::isActive(void)
 {
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
+
+// Export geometry
+DEF_STD_CMD_A(CmdSketcherExportGeometry);
+
+CmdSketcherExportGeometry::CmdSketcherExportGeometry()
+:Command("Sketcher_ExportGeometry")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Export Single Geometry");
+    sToolTipText    = QT_TR_NOOP("Export selected geometries as separate child objects");
+    sWhatsThis      = "Sketcher_ExportGeometry";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SketchExport";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+static void exportSketch(Gui::Command &cmd, bool compound)
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(
+            0, App::DocumentObject::getClassTypeId(), 2);
+
+    auto title = QObject::tr("Wrong selection");
+    auto msg = QObject::tr("Select any geometry element(s) from the sketch to export.\n"
+            "You can select an existing export to modify.");
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.empty() || selection.size() > 2) {
+        QMessageBox::warning(Gui::getMainWindow(), title,msg);
+        return;
+    }
+
+    // get the needed lists and objects
+    int idx = 0;
+    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[idx].getObject());
+    Sketcher::SketchExport* Export = 0;
+    if(selection.size()>1) {
+        if(!Obj) {
+            idx = 1;
+            Obj = dynamic_cast<Sketcher::SketchObject*>(selection[idx].getObject());
+        }
+        Export = dynamic_cast<Sketcher::SketchExport*>(selection[idx^1].getObject());
+        if(!Export || Obj->Exports.find(Export->getNameInDocument())!=Export) {
+            QMessageBox::warning(Gui::getMainWindow(), title,msg);
+            return;
+        }
+        compound = true;
+    }
+    if(!Obj) {
+        QMessageBox::warning(Gui::getMainWindow(), title,msg);
+        return;
+    }
+    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(Obj);
+
+    try {
+        cmd.openCommand("Sketch export");
+        if(compound) {
+            if(!Export) {
+                std::string FeatName = cmd.getUniqueObjectName("Export",Obj);
+                FCMD_OBJ_DOC_CMD(Obj,"addObject('Sketcher::SketchExport','"<<FeatName<<"')");
+                Export = dynamic_cast<Sketcher::SketchExport*>(Obj->getDocument()->getObject(FeatName.c_str()));
+                if(!Export) return;
+                FCMD_OBJ_CMD(Export,"Base = '"<<Obj->getNameInDocument()<<"'");
+                FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
+                FCMD_VOBJ_CMD(Obj,"TempoVis.hide("<<cmd.getObjectCmd(Export)<<")");
+                if(grp)
+                    FCMD_OBJ_CMD(grp,"addObject("<<cmd.getObjectCmd(Export)<<")");
+                cmd.copyVisual(Export,"LineColor",Obj);
+                cmd.copyVisual(Export,"PointColor",Obj);
+                cmd.copyVisual(Export,"PointSize",Obj);
+            }
+            std::ostringstream ss;
+            ss << '[';
+            for(const auto &sub : selection[idx].getSubNames()) {
+                ss << "'";
+                auto pos = sub.rfind('.');
+                if(pos!=std::string::npos)
+                    ss << sub.substr(0,pos);
+                else
+                    ss << sub;
+                ss << "',";
+            }
+            ss << ']';
+            FCMD_OBJ_CMD(Export,"Refs = " << ss.str());
+        }else{
+            for(const auto &sub : selection[idx].getSubNames()) {
+                auto shape = Part::Feature::getShape(Obj,sub.c_str(),true);
+                if(shape.IsNull()) continue;
+                std::string FeatName = cmd.getUniqueObjectName("Export",Obj);
+                FCMD_OBJ_DOC_CMD(Obj,"addObject('Sketcher::SketchExport','" << FeatName << "')");
+                Export = dynamic_cast<Sketcher::SketchExport*>(Obj->getDocument()->getObject(FeatName.c_str()));
+                if(!Export) continue;
+                FCMD_OBJ_CMD(Export,"Base = '"<<Obj->getNameInDocument()<<"'");
+                FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
+                if(grp)
+                    FCMD_OBJ_CMD(grp,"addObject("<<cmd.getObjectCmd(Export)<<")");
+                auto pos = sub.rfind('.');
+                FCMD_OBJ_CMD(Export,"Refs = '"<<(pos==string::npos?sub:sub.substr(0,pos))<<"'");
+                FCMD_VOBJ_CMD(Obj,"TempoVis.hide("<<cmd.getObjectCmd(Export)<<")");
+                cmd.copyVisual(Export,"LineColor",Obj);
+                cmd.copyVisual(Export,"PointColor",Obj);
+                cmd.copyVisual(Export,"PointSize",Obj);
+            }
+        }
+        cmd.commitCommand();
+    }catch (const Base::Exception& e) {
+        cmd.abortCommand();
+        e.ReportException();
+    }
+}
+
+void CmdSketcherExportGeometry::activated(int iMsg) {
+    Q_UNUSED(iMsg);
+    exportSketch(*this,false);
+}
+
+bool CmdSketcherExportGeometry::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
+}
+
+// Export geometry compound
+DEF_STD_CMD_A(CmdSketcherExportCompound);
+
+CmdSketcherExportCompound::CmdSketcherExportCompound()
+:Command("Sketcher_ExportCompound")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Export Multiple Geometries");
+    sToolTipText    = QT_TR_NOOP("Export selected geometries as one single child objects");
+    sWhatsThis      = "Sketcher_ExportCompound";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SketchExportCompound";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherExportCompound::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    exportSketch(*this,true);
+}
+
+bool CmdSketcherExportCompound::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
+}
+
 
 void CreateSketcherCommandsConstraintAccel(void)
 {
@@ -1801,4 +1948,6 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherCompCopy());
     rcCmdMgr.addCommand(new CmdSketcherRectangularArray());
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherExportGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherExportCompound());
 }
