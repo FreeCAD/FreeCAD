@@ -40,6 +40,8 @@
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <TopoDS.hxx>
 #endif
 
 
@@ -52,6 +54,7 @@
 #include <Base/Stream.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
+#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 
 #include "PartFeature.h"
@@ -131,19 +134,42 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     try {
         TopoDS_Shape shape = Shape.getValue().Located(TopLoc_Location());
         TopoShape ts = (subname==0||*subname==0)?shape:TopoShape(shape).getSubShape(subname);
-        if(pmat && !ts.isNull()) 
-            ts.transformShape(*pmat,false,true);
+        if(pmat && !ts.isNull()) {
+            static int sCopy = -1; 
+            if(sCopy<0) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Mod/Part/General");
+                sCopy = hGrp->GetBool("CopySubShape",false)?1:0;
+            }
+            bool copy = sCopy?true:false;
+            if(!copy) {
+                // Work around OCC bug on transforming circular edge with an
+                // offseted surface. The bug probably affect other shape type,
+                // too.
+                TopExp_Explorer exp(ts.getShape(),TopAbs_EDGE);
+                if(exp.More()) {
+                    auto edge = TopoDS::Edge(exp.Current());
+                    exp.Next();
+                    if(!exp.More()) {
+                        BRepAdaptor_Curve curve(edge);
+                        copy = curve.GetType() == GeomAbs_Circle;
+                    }
+                }
+            }
+            ts.transformShape(*pmat,copy,true);
+        }
         *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));
         return const_cast<Feature*>(this);
     }catch(Standard_Failure &e) {
-        std::string str;
+        std::ostringstream str;
         Standard_CString msg = e.GetMessageString();
-        str += typeid(e).name();
-        str += " ";
-        if (msg) {str += msg;}
-        else     {str += "No OCCT Exception Message";}
-        // throw Base::Exception(str.c_str());
-        FC_ERR(str);
+        str << typeid(e).name() << " ";
+        if (msg) {str << msg;}
+        else     {str << "No OCCT Exception Message";}
+        str << ": " << getNameInDocument();
+        if (subname) 
+            str << '.' << subname;
+        FC_ERR(str.str());
         return 0;
     }
 }
