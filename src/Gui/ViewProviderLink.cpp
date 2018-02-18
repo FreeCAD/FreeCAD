@@ -2315,7 +2315,7 @@ void ViewProviderLink::dragMotionCallback(void *data, SoDragger *) {
 
 void ViewProviderLink::updateLinks(ViewProvider *vp) {
     auto ext = vp->getExtensionByType<ViewProviderLinkObserver>(true);
-    if(ext)
+    if(ext && ext->linkInfo)
         ext->linkInfo->update();
 }
 
