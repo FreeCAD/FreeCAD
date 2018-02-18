@@ -1273,6 +1273,10 @@ void SelectionSingleton::clearSelection(const char* pDocName)
             docName = pDocName;
         else
             docName = pDoc->getName(); // active document
+
+        if(DocName == docName)
+            rmvPreselect();
+
         std::list<_SelObj> selList;
         for (std::list<_SelObj>::iterator it = _SelList.begin(); it != _SelList.end(); ++it) {
             if (it->DocName != docName)
@@ -1307,6 +1311,8 @@ void SelectionSingleton::clearCompleteSelection()
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
+
+    rmvPreselect();
 
     _SelList.clear();
 
