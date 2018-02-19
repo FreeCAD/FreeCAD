@@ -41,10 +41,8 @@ class GmshTools():
         self.mesh_obj = gmsh_mesh_obj
         if analysis:
             self.analysis = analysis
-            # group meshing turned on
         else:
             self.analysis = None
-            # group meshing turned off
 
         # part to mesh
         self.part_obj = self.mesh_obj.Part
