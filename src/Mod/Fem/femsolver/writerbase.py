@@ -241,6 +241,7 @@ class FemInputWriter():
     def get_material_elements(self):
         # it only works if either Volumes or Shellthicknesses or Beamsections are in the material objects
         # it means it does not work for mixed meshes and multiple materials, this is checked in check_prerequisites
+        # the femelement_table is only calculated for the hightest dimension in get_femelement_table
         FreeCAD.Console.PrintMessage('Materials\n')
         if self.femmesh.Volumes:
             # we only could do this for volumes, if a mesh contains volumes we're going to use them in the analysis
@@ -252,8 +253,8 @@ class FemInputWriter():
                 FreeCAD.Console.PrintMessage(all_found)
                 FreeCAD.Console.PrintMessage('\n')
             if all_found is False:
-                if not self.femelement_volumes_table:
-                    self.femelement_volumes_table = FemMeshTools.get_femelement_volumes_table(self.femmesh)
+                if not self.femelement_table:
+                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
                 # we're going to use the binary search for get_femelements_by_femnodes()
                 # thus we need the parameter values self.femnodes_ele_table
                 if not self.femnodes_mesh:
