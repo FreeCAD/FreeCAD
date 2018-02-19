@@ -157,7 +157,7 @@ def get_femnodes_ele_table(femnodes_mesh, femelement_table):
         for ele_node in ele_list:
             femnodes_ele_table[ele_node].append([ele, pos])
             pos = pos << 1
-    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len femnodes_ele_table: ' + str(len(femnodes_ele_table)))
     # print('femnodes_ele_table: ', femnodes_ele_table)
     return femnodes_ele_table
 
@@ -182,7 +182,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
     '''
-    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len femnodes_ele_table: ' + str(len(femnodes_ele_table)))
     print('len node_set: ' + str(len(node_set)))
     # print('node_set: ', node_set)
     bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
@@ -193,7 +193,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     for node in node_set:
         for nList in femnodes_ele_table[node]:
             bit_pattern_dict[nList[0]][1] += nList[1]
-    print('len bit_pattern_dict:' + str(len(bit_pattern_dict)))
+    print('len bit_pattern_dict: ' + str(len(bit_pattern_dict)))
     # print('bit_pattern_dict: ', bit_pattern_dict)
     return bit_pattern_dict
 
@@ -270,7 +270,7 @@ def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_l
         15: 32767,
         20: 1048575}
     # Now we are looking for nodes inside of the Volumes = filling the bit_pattern_dict
-    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len femnodes_ele_table: ' + str(len(femnodes_ele_table)))
     bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_list)
     # search
     ele_list = []  # The ele_list contains the result of the search.
@@ -610,7 +610,7 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             ratio_refedge_lengths = sum_node_lengths / ref_edge.Length
             if ratio_refedge_lengths < 0.99 or ratio_refedge_lengths > 1.01:
                 FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-                print('  sum_node_lengths:', sum_node_lengths)
+                print('  sum_node_lengths: ', sum_node_lengths)
                 print('  refedge_length:  ', ref_edge.Length)
                 bad_refedge = ref_edge
             sum_ref_edge_node_length += sum_node_lengths
@@ -745,7 +745,7 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             ratio_refface_areas = sum_node_areas / ref_face.Area
             if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
                 FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-                print('  sum_node_areas:', sum_node_areas)
+                print('  sum_node_areas: ', sum_node_areas)
                 print('  ref_face_area:  ', ref_face.Area)
             sum_ref_face_node_area += sum_node_areas
 
@@ -916,7 +916,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             index = femelement_table[veID].index(n)
             # print(index)
             face_nodenumber_table[veID].append(index + 1)  # local node number = index + 1
-        # print('VolElement:', veID)
+        # print('VolElement: ', veID)
         # print('  --> ', femelement_table[veID])
         # print('  --> ', face_table[veID])
         # print('  --> ', face_nodenumber_table[veID])

@@ -41,10 +41,8 @@ class GmshTools():
         self.mesh_obj = gmsh_mesh_obj
         if analysis:
             self.analysis = analysis
-            # group meshing turned on
         else:
             self.analysis = None
-            # group meshing turned off
 
         # part to mesh
         self.part_obj = self.mesh_obj.Part
@@ -563,7 +561,7 @@ class GmshTools():
         geo.write("//\n")
         geo.write("// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:\n")
         geo.write("// " + self.gmsh_bin + " " + self.temp_file_geo + "\n")
-        geo.close
+        geo.close()
 
     def run_gmsh_with_geo(self):
         comandlist = [self.gmsh_bin, '-', self.temp_file_geo]
