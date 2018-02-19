@@ -563,7 +563,7 @@ class GmshTools():
         geo.write("//\n")
         geo.write("// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:\n")
         geo.write("// " + self.gmsh_bin + " " + self.temp_file_geo + "\n")
-        geo.close
+        geo.close()
 
     def run_gmsh_with_geo(self):
         comandlist = [self.gmsh_bin, '-', self.temp_file_geo]
