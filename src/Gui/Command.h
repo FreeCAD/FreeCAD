@@ -51,18 +51,18 @@
 
 #define FCMD_OBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(App,_obj,_cmd)
 
-#define _FCMD_OBJ_CMD(_type,_obj,_cmd) do{\
+#define _FCMD_OBJ_CMD(_type,_cmd_type,_obj,_cmd) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         std::ostringstream _str;\
         _str << #_type ".getDocument('" << __obj->getDocument()->getName() \
              << "').getObject('" <<  __obj->getNameInDocument() << "')." << _cmd;\
-        Gui::Command::runCommand(Gui::Command::_type,_str.str().c_str());\
+        Gui::Command::runCommand(Gui::Command::_cmd_type,_str.str().c_str());\
     }\
 }while(0)
 
-#define FCMD_OBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(App,_obj,_cmd)
-#define FCMD_VOBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(Gui,_obj,_cmd)
+#define FCMD_OBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(App,Doc,_obj,_cmd)
+#define FCMD_VOBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(Gui,Gui,_obj,_cmd)
 
 #define FCMD_OBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
