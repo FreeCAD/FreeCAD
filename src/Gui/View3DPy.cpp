@@ -1153,32 +1153,31 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("y", Py::Float(pt[1]));
             dict.setItem("z", Py::Float(pt[2]));
 
-            ViewProvider *vp = _view->getViewer()->getViewProviderByPath(Point->getPath());
-            if (vp && vp->useNewSelectionModel() && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            Gui::Document* doc = _view->getViewer()->getDocument();
+            ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(Point->getPath())
+                    : _view->getViewer()->getViewProviderByPathFromTail(Point->getPath());
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                 dict.setItem("Document",
                     Py::String(vpd->getObject()->getDocument()->getName()));
                 dict.setItem("Object",
                     Py::String(vpd->getObject()->getNameInDocument()));
-                dict.setItem("Component",
-                    Py::String(vpd->getElement(Point->getDetail())));
+                if (vp->useNewSelectionModel()) {
+                    dict.setItem("Component",
+                        Py::String(vpd->getElement(Point->getDetail())));
+                }
+                else {
+                    // search for a SoFCSelection node
+                    SoFCDocumentObjectAction objaction;
+                    objaction.apply(Point->getPath());
+                    if (objaction.isHandled()) {
+                        dict.setItem("Component",
+                            Py::String(objaction.componentName.getString()));
+                    }
+                }
+
                 // ok, found the node of interest
                 ret = dict;
-            }
-            else {
-                // search for a SoFCSelection node
-                SoFCDocumentObjectAction objaction;
-                objaction.apply(Point->getPath());
-                if (objaction.isHandled()) {
-                    dict.setItem("Document",
-                        Py::String(objaction.documentName.getString()));
-                    dict.setItem("Object",
-                        Py::String(objaction.objectName.getString()));
-                    dict.setItem("Component",
-                        Py::String(objaction.componentName.getString()));
-                    // ok, found the node of interest
-                    ret = dict;
-                }
             }
         }
 
@@ -1217,6 +1216,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
 
+        Gui::Document* doc = _view->getViewer()->getDocument();
         Py::Object ret = Py::None();
         if (pp.getLength() > 0) {
             Py::List list;
@@ -1228,32 +1228,29 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = _view->getViewer()->getViewProviderByPath(point->getPath());
-                if (vp && vp->useNewSelectionModel() && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(point->getPath())
+                        : _view->getViewer()->getViewProviderByPathFromTail(point->getPath());
+                if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                     dict.setItem("Document",
                         Py::String(vpd->getObject()->getDocument()->getName()));
                     dict.setItem("Object",
                         Py::String(vpd->getObject()->getNameInDocument()));
-                    dict.setItem("Component",
-                        Py::String(vpd->getElement(point->getDetail())));
+                    if (vp->useNewSelectionModel()) {
+                        dict.setItem("Component",
+                            Py::String(vpd->getElement(point->getDetail())));
+                    }
+                    else {
+                        // search for a SoFCSelection node
+                        SoFCDocumentObjectAction objaction;
+                        objaction.apply(point->getPath());
+                        if (objaction.isHandled()) {
+                            dict.setItem("Component",
+                                Py::String(objaction.componentName.getString()));
+                        }
+                    }
                     // ok, found the node of interest
                     list.append(dict);
-                }
-                else {
-                    // search for a SoFCSelection node
-                    SoFCDocumentObjectAction objaction;
-                    objaction.apply(point->getPath());
-                    if (objaction.isHandled()) {
-                        dict.setItem("Document",
-                            Py::String(objaction.documentName.getString()));
-                        dict.setItem("Object",
-                            Py::String(objaction.objectName.getString()));
-                        dict.setItem("Component",
-                            Py::String(objaction.componentName.getString()));
-                        // ok, found the node of interest
-                        list.append(dict);
-                    }
                 }
             }
 
