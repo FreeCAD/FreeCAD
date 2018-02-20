@@ -155,7 +155,8 @@ struct EdgePoints {
     TopoDS_Edge edge;
 };
 
-PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
+PartExport std::list<TopoDS_Edge> sort_Edges2(
+        double tol3d, std::list<TopoDS_Edge>& edges, std::deque<int> *hashes)
 {
     tol3d = tol3d * tol3d;
     std::list<EdgePoints>  edge_points;
@@ -180,6 +181,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
     last  = edge_points.front().v2;
 
     sorted.push_back(edge_points.front().edge);
+    if(hashes) hashes->push_back(sorted.back().HashCode(INT_MAX));
     edges.erase(edge_points.front().it);
     edge_points.erase(edge_points.begin());
 
@@ -187,9 +189,11 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
         // search for adjacent edge
         std::list<EdgePoints>::iterator pEI;
         for (pEI = edge_points.begin(); pEI != edge_points.end(); ++pEI) {
+            int hash = pEI->edge.HashCode(INT_MAX);
             if (pEI->v1.SquareDistance(last) <= tol3d) {
                 last = pEI->v2;
                 sorted.push_back(pEI->edge);
+                if(hashes) hashes->push_back(hash);
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -198,6 +202,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
             else if (pEI->v2.SquareDistance(first) <= tol3d) {
                 first = pEI->v1;
                 sorted.push_front(pEI->edge);
+                if(hashes) hashes->push_front(hash);
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -211,6 +216,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
                 last = curve->ReversedParameter(last);
                 TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
                 sorted.push_back(edgeReversed);
+                if(hashes) hashes->push_back(hash);
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -224,6 +230,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
                 last = curve->ReversedParameter(last);
                 TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
                 sorted.push_front(edgeReversed);
+                if(hashes) hashes->push_front(hash);
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -238,6 +245,10 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
     }
 
     return sorted;
+}
+
+PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges) {
+    return sort_Edges2(tol3d,edges,0);
 }
 }
 
