@@ -611,15 +611,15 @@ bool Document::isModified() const
 
 ViewProvider* Document::getViewProviderByPathFromTail(SoPath * path) const
 {
-    // Make sure I'm the lowest LocHL in the pick path!
+    // Get the lowest root node in the pick path!
     for (int i = 0; i < path->getLength(); i++) {
         SoNode *node = path->getNodeFromTail(i);
         if (node->isOfType(SoSeparator::getClassTypeId())) {
-            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it = d->_ViewProviderMap.begin();
-            for(;it!= d->_ViewProviderMap.end();++it)
+            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
+            for(it = d->_ViewProviderMap.begin();it!= d->_ViewProviderMap.end();++it) {
                 if (node == it->second->getRoot())
                     return it->second;
-            
+            }
          }
     }
 
