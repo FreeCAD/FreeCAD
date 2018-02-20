@@ -202,7 +202,7 @@ class Snapper:
         self.setCursor('passive')
         if self.tracker:
             self.tracker.off()
-        if self.extLine:
+        if self.extLine2:
             self.extLine2.off()
         if self.extLine:
             self.extLine.off()
@@ -914,7 +914,7 @@ class Snapper:
             if not self.dim1:
                 self.dim1 = DraftTrackers.archDimTracker(mode=2)
             if not self.dim2:
-                self.dim1 = DraftTrackers.archDimTracker(mode=3)
+                self.dim2 = DraftTrackers.archDimTracker(mode=3)
             self.dim1.p1(p1)
             self.dim2.p1(p1)
             self.dim1.p2(p2)
