@@ -393,9 +393,7 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        if issubclass(dataType, str):
-            return _TYPE_STRING
-        if issubclass(dataType, unicode):
+        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
