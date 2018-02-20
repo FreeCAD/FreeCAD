@@ -229,6 +229,17 @@ Py::String GeometryPy::getTag(void) const
     return Py::String(tmp);
 }
 
+Py::Int GeometryPy::getID() const {
+    return Py::Int(getGeometryPtr()->Id);
+}
+
+void GeometryPy::setID(Py::Int pyId) {
+    auto id = (long)pyId;
+    if(id<=0)
+        throw Py::ValueError("geometry id must be positive");
+    getGeometryPtr()->Id = id;
+}
+
 PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

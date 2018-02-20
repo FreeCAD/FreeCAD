@@ -156,7 +156,8 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<Geometry  type=\"" 
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
+                        << _lValueList[i]->getTypeId().getName() 
+                        << "\" id=\"" << _lValueList[i]->Id << "\">" << endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
@@ -179,6 +180,8 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
+        if(reader.hasAttribute("id"))
+            newG->Id = reader.getAttributeAsInteger("id");
         newG->Restore(reader);
         values.push_back(newG);
         reader.readEndElement("Geometry");

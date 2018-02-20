@@ -61,5 +61,11 @@ means that it is not part of a later built shape.</UserDocu>
       </Documentation>
       <Parameter Name="Tag" Type="String"/>
     </Attribute>
+    <Attribute Name="ID">
+      <Documentation>
+        <UserDocu>Gives the internal integer ID of this geometry.</UserDocu>
+      </Documentation>
+      <Parameter Name="ID" Type="Int"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

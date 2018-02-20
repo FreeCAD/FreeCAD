@@ -99,6 +99,7 @@
 # include <ShapeConstruct_Curve.hxx>
 #endif
 
+#include <atomic>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
@@ -181,8 +182,10 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 
+static std::atomic<long> _GeometryID;
+
 Geometry::Geometry()
-  : Construction(false)
+  : Construction(false), Id(++_GeometryID)
 {
     createNewTag();
 }
@@ -243,6 +246,7 @@ Geometry *Geometry::clone(void) const
 {
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
+    cpy->Id = this->Id;
     return cpy;
 }
 
