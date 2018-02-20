@@ -91,7 +91,7 @@ void StdCmdLinkMakeGroup::activated(int) {
             objs.push_back(sel.pObject);
     }
 
-    doc->openTransaction("Make link group");
+    App::GetApplication().setActiveTransaction("Make link group");
     try {
         std::string groupName = doc->getUniqueObjectName("LinkGroup");
         Command::doCommand(Command::Doc,
@@ -117,13 +117,13 @@ void StdCmdLinkMakeGroup::activated(int) {
                     doc->getName(),groupName.c_str());
             Command::doCommand(Command::Doc,"del __objs__");
         }
+        App::GetApplication().closeActiveTransaction();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link group failed"),
             QString::fromLatin1(e.what()));
-        doc->abortTransaction();
+        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
-    doc->commitTransaction();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ void StdCmdLinkMake::activated(int) {
            objs.insert(sel.pObject);
     }
 
-    doc->openTransaction("Make link");
+    App::GetApplication().setActiveTransaction("Make link");
     try {
         if(objs.empty()) {
             std::string name = doc->getUniqueObjectName("Link");
@@ -170,11 +170,11 @@ void StdCmdLinkMake::activated(int) {
                 setLinkLabel(obj,doc->getName(),name.c_str());
             }
         }
-        doc->commitTransaction();
+        App::GetApplication().closeActiveTransaction();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link failed"),
             QString::fromLatin1(e.what()));
-        doc->abortTransaction();
+        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
 }
@@ -242,18 +242,18 @@ void StdCmdLinkMakeRelative::activated(int) {
     }
 
     std::string name = doc->getUniqueObjectName("Link");
-    doc->openTransaction("Make link sub");
+    App::GetApplication().setActiveTransaction("Make link sub");
     try {
         Command::doCommand(Command::Doc, 
             "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s,'%s')", 
             doc->getName(),name.c_str(),
             owner->getDocument()->getName(),owner->getNameInDocument(), subname.c_str());
         setLinkLabel(obj,doc->getName(),name.c_str());
-        doc->commitTransaction();
+        App::GetApplication().closeActiveTransaction();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link sub failed"),
             QString::fromLatin1(e.what()));
-        doc->abortTransaction();
+        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
     return;
@@ -372,11 +372,11 @@ static void linkConvert(bool unlink) {
     }
 
     std::map<App::DocumentObject*,std::string> replacedObjs;
-    std::map<App::Document*,std::vector<std::string> > changeCmds;
+    std::vector<std::string> changeCmds;
 
     // now, do actual operation
     const char *transactionName = unlink?"Unlink":"Replace with link";
-    doc->openTransaction(transactionName);
+    App::GetApplication().setActiveTransaction(transactionName);
     try {
         for(auto &v : replaceCmds) {
             auto parent = v.first.first;
@@ -425,7 +425,6 @@ static void linkConvert(bool unlink) {
             subName += objName;
             for(auto &v : links) {
                 auto pDoc = v.first;
-                auto &ccmds = changeCmds[pDoc];
                 for(auto &vv : v.second) {
                     auto &propName = vv.first;
                     auto link = vv.second;
@@ -442,7 +441,7 @@ static void linkConvert(bool unlink) {
                                 << "=(App.ActiveDocument.getObject('"
                                 << parent->getNameInDocument() << "'),'" 
                                 << name << '.' << (sub+objName.size()) << "')";
-                            ccmds.push_back(str.str());
+                            changeCmds.push_back(str.str());
                         }
                         continue;
                     }
@@ -465,43 +464,23 @@ static void linkConvert(bool unlink) {
                         << pObj->getNameInDocument() << "')." << propName
                         << "=(App.ActiveDocument.getObject('"<< linked->getNameInDocument() 
                         << "'),'" << tmpSub << '.' << name << '.' << (pos+offset) << "')";
-                    ccmds.push_back(str.str());
+                    changeCmds.push_back(str.str());
                 }
             }
         }
 
-        // run the command for realtive link correction of the current document
-        auto it = changeCmds.find(doc);
-        if(it!=changeCmds.end()) {
-            for(auto &cmd : it->second)
-                Command::runCommand(Gui::Command::Doc, cmd.c_str());
-            changeCmds.erase(it);
-        }
+        // run the command for realtive link correction
+        for(auto &cmd : changeCmds)
+            Command::runCommand(Gui::Command::Doc, cmd.c_str());
 
-        // commit any changes to the current active document
-        doc->commitTransaction();
+        App::GetApplication().closeActiveTransaction(true);
 
     } catch (const Base::Exception& e) {
         auto title = unlink?QObject::tr("Unlink failed"):QObject::tr("Replace link failed");
         QMessageBox::critical(getMainWindow(), title, QString::fromLatin1(e.what()));
-        doc->abortTransaction();
+        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
         return;
-    }
-
-    // In case the replaced object affect realtive links in other documents, we
-    // do the correction here. Note, twe don't roll back if there is any error.
-    for(auto &v : changeCmds) {
-        auto doc = v.first;
-        doc->openTransaction(transactionName);
-        for(auto &cmd : v.second) {
-            try {
-                Command::runCommand(Gui::Command::Doc, cmd.c_str());
-            }catch(const Base::Exception &e) {
-                e.ReportException();
-            }
-        }
-        doc->commitTransaction();
     }
 }
 
@@ -641,21 +620,20 @@ bool StdCmdLinkImport::isActive() {
 }
 
 void StdCmdLinkImport::activated(int) {
-    for(auto &v : getLinkImportSelections(false)) {
-        auto doc = v.first;
-        doc->openTransaction("Import links");
-        try {
+    App::GetApplication().setActiveTransaction("Import links");
+    try {
+        for(auto &v : getLinkImportSelections(false)) {
+            auto doc = v.first;
             // TODO: Is it possible to do this using interpreter?
             for(auto obj : doc->importLinks(v.second))
                 obj->Visibility.setValue(false);
-            doc->commitTransaction();
-        } catch (const Base::Exception& e) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import links"),
-                QString::fromLatin1(e.what()));
-            doc->abortTransaction();
-            e.ReportException();
-            break;
         }
+        App::GetApplication().closeActiveTransaction();
+    }catch (const Base::Exception& e) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import links"),
+            QString::fromLatin1(e.what()));
+        App::GetApplication().closeActiveTransaction(true);
+        e.ReportException();
     }
 }
 
@@ -681,19 +659,18 @@ bool StdCmdLinkImportAll::isActive() {
 }
 
 void StdCmdLinkImportAll::activated(int) {
-    auto doc = App::GetApplication().getActiveDocument();
-    doc->openTransaction("Import all links");
+    App::GetApplication().setActiveTransaction("Import all links");
     try {
         std::ostringstream str;
         str << "for _o in App.ActiveDocument.importLinks():" << std::endl
                 << "  _o.ViewObject.Visibility=False" << std::endl
             << "_o = None";
         Command::runCommand(Command::Doc,str.str().c_str());
-        doc->commitTransaction();
+        App::GetApplication().closeActiveTransaction();
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import all links"),
             QString::fromLatin1(e.what()));
-        doc->abortTransaction();
+        App::GetApplication().closeActiveTransaction(true);
         e.ReportException();
     }
 }
