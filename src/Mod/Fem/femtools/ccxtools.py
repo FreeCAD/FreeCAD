@@ -196,7 +196,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 if not self.mesh:
                     self.mesh = m
                 else:
-                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
+                    message = 'FEM: Multiple mesh in analysis not yet supported!'
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+                    raise Exception(message + '\n')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_linear_dict = {}
                 material_linear_dict['Object'] = m
