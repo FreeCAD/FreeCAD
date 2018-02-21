@@ -609,6 +609,11 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>Returns a SubElement</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getElementName" Const="true">
+      <Documentation>
+        <UserDocu>getElementName(element,reverse=False) -> String, Returns a mapped element name</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getTolerance" Const="true">
       <Documentation>
         <UserDocu>

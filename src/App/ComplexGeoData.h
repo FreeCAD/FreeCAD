@@ -156,6 +156,22 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
+    /** @name Element name mapping */
+    //@{
+    /// Sepecial prefix to mark the begining of a mapped sub-element name
+    static const std::string &elementMapPrefix();
+    /** Check if the name starts with elementMapPrefix()
+     *
+     * @param name: input name
+     * @return Returns the name stripped with elementMapPrefix(), or 0 if not
+     * start with the prefix
+     */
+    static const char *isMappedElement(const char *name);
+
+    /// Strip out the trailing element name if there is mapped element name preceeds it.
+    static std::string newElementName(const char *name);
+    //@}
+
 protected:
 
     /// from local to outside

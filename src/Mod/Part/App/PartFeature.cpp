@@ -45,6 +45,7 @@
 #endif
 
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <sstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -57,6 +58,7 @@
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 
+#include "PartPyCXX.h"
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
 #include "TopoShapePy.h"
@@ -110,30 +112,33 @@ PyObject *Feature::getPyObject(void)
     return Py::new_reference_to(PythonObject); 
 }
 
-namespace Part {
-Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
-
 App::DocumentObject *Feature::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     // having '.' inside subname means it is referencing some children object,
     // instead of any sub-element from ourself
-    if(subname && strchr(subname,'.')) 
+    if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) 
         return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
     if(pmat && transform)
         *pmat *= Placement.getValue().toMatrix();
 
     if(!pyObj) {
+#if 0
         if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
             return const_cast<Feature*>(this);
         return nullptr;
+#else
+        // TopoShape::hasSubShape is kind of slow, let's cut outself some slack here.
+        return const_cast<Feature*>(this);
+#endif
     }
 
     try {
-        TopoDS_Shape shape = Shape.getValue().Located(TopLoc_Location());
-        TopoShape ts = (subname==0||*subname==0)?shape:TopoShape(shape).getSubShape(subname);
+        TopoShape ts(Shape.getShape());
+        ts.setTransform(Base::Matrix4D());
+        if(subname && *subname)
+            ts = ts.getSubTopoShape(subname);
         if(pmat && !ts.isNull()) {
             static int sCopy = -1; 
             if(sCopy<0) {

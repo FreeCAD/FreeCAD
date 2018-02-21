@@ -24,7 +24,9 @@
 #ifndef PART_TOPOSHAPE_H
 #define PART_TOPOSHAPE_H
 
+#include <memory>
 #include <iostream>
+#include <boost/bimap.hpp>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
@@ -65,6 +67,12 @@ public:
 
     inline void setShape(const TopoDS_Shape& shape) {
         this->_Shape = shape;
+        this->_ElementMap.reset();
+    }
+
+    inline void setShape(const TopoShape& shape) {
+        this->_Shape = shape.getShape();
+        this->_ElementMap = shape._ElementMap;
     }
 
     inline const TopoDS_Shape& getShape() const {
@@ -72,6 +80,7 @@ public:
     }
 
     void operator = (const TopoShape&);
+    TopoShape copy() const;
 
     /** @name Placement control */
     //@{
@@ -114,6 +123,7 @@ public:
     //@}
     /// get the Topo"sub"Shape with the given name
     TopoDS_Shape getSubShape(const char* Type) const;
+    TopoShape getSubTopoShape(const char *Type, bool buildMap=true) const;
     unsigned long countSubShapes(const char* Type) const;
     bool hasSubShape(const char *Type) const;
     /// get the Topo"sub"Shape with the given name
@@ -253,8 +263,55 @@ public:
     void getDomains(std::vector<Domain>&) const;
     //@}
 
+    /** @name Sub-element name mapping functions */
+    //@{
+
+    /** Map element name
+     *
+     * @param name: the input name
+     * @param reverse: if false (default), \c name must start with
+     * App::ComplexGeoData::elementMapPrefix(). The function shall map the name
+     * to the original \c Type + \c Index. If true, then the function map the
+     * other way round.
+     *
+     * @return Returns the found mapping, or else return the original input. The
+     * return pointer maybe invalidated when the shape is modified.
+     */
+    const char *getElementName(const char *name, bool reverse=false) const;
+
+    /** Add a sub-element name mapping.
+     *
+     * @param element: the original \c Type + \c Index element name
+     * @param name: the renamed sub-element name. May or may not start with
+     * App::ComplexGeoData::elementMapPrefix().
+     * @param overwrite: if true, it will overwrite existing names, or else it
+     * will be an error to have duplicate enames
+     */
+    void setElementName(const char *element, const char *name, bool overwrite=false) const;
+
+    /// The internal storage of element map type
+    typedef boost::bimap<std::string,std::string> ElementMapType;
+
+    /** Reset/swap the element map
+     *
+     * @param elementMap: optional new element map
+     *
+     * @return Returns the existing element map.
+     */
+    std::shared_ptr<ElementMapType> resetElementMap(
+            std::shared_ptr<ElementMapType> elementMap = std::shared_ptr<ElementMapType>()) const
+    {
+        _ElementMap.swap(elementMap);
+        return elementMap;
+    }
+    //@}
+
+private:
+    void mapSubElement(TopoShape &ret, TopAbs_ShapeEnum type) const;
+
 private:
     TopoDS_Shape _Shape;
+    mutable std::shared_ptr<ElementMapType> _ElementMap;
 };
 
 } //namespace Part

@@ -27,7 +27,7 @@
 # include <cstdlib>
 #endif
 
-
+#include <boost/algorithm/string/predicate.hpp>
 #include "ComplexGeoData.h"
 
 using namespace Data;
@@ -152,4 +152,31 @@ void ComplexGeoData::getFaces(std::vector<Base::Vector3d> &Points,
 bool ComplexGeoData::getCenterOfGravity(Base::Vector3d&) const
 {
     return false;
+}
+
+const std::string &ComplexGeoData::elementMapPrefix() {
+    static std::string prefix(";");
+    return prefix;
+}
+
+const char *ComplexGeoData::isMappedElement(const char *name) {
+    if(boost::starts_with(name,elementMapPrefix()))
+        return name+elementMapPrefix().size();
+    return 0;
+}
+
+std::string ComplexGeoData::newElementName(const char *name) {
+    if(!name) return std::string();
+    const char *dot = strrchr(name,'.');
+    if(!dot || dot==name) return name;
+    const char *c = dot-1;
+    for(;c!=name;--c) {
+        if(*c == '.') {
+            ++c;
+            break;
+        }
+    }
+    if(isMappedElement(c))
+        return std::string(name,dot);
+    return name;
 }

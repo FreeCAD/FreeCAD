@@ -206,14 +206,25 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         //See SaveDocFile(), RestoreDocFile()
         if (writer.getMode("BinaryBrep")) {
             writer.Stream() << writer.ind() << "<Part file=\"" 
-                            << writer.addFile("PartShape.bin", this)
-                            << "\"/>" << std::endl;
+                            << writer.addFile("PartShape.bin", this);
         }
         else {
             writer.Stream() << writer.ind() << "<Part file=\"" 
-                            << writer.addFile("PartShape.brp", this)
-                            << "\"/>" << std::endl;
+                            << writer.addFile("PartShape.brp", this);
         }
+        auto elementMap = _Shape.resetElementMap();
+        if(!elementMap || elementMap->empty())
+            writer.Stream() << "\"/>" << std::endl;
+        else {
+            writer.Stream() << "\" map=\"" << elementMap->left.size() << "\">" << std::endl;
+            writer.incInd();
+            for(auto &v : elementMap->left) 
+                writer.Stream() << writer.ind() << "<Element key=\"" <<  
+                    v.first <<"\" value=\"" << v.second <<"\"/>" << std::endl;
+            writer.decInd();
+            writer.Stream() << writer.ind() << "</Part>" << endl ;
+        }
+        _Shape.resetElementMap(elementMap);
     }
 }
 
@@ -221,6 +232,15 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
     std::string file (reader.getAttribute("file") );
+
+    if(reader.hasAttribute("map")) {
+        size_t count = reader.getAttributeAsUnsigned("map");
+        for(size_t i=0;i<count;++i) {
+            reader.readElement("Element");
+            _Shape.setElementName(reader.getAttribute("value"),reader.getAttribute("key"));
+        }
+        reader.readEndElement("Part");
+    }
 
     if (!file.empty()) {
         // initate a file read
@@ -304,6 +324,9 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
 void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 {
+    // save the element map
+    auto elementMap = _Shape.resetElementMap();
+
     Base::FileInfo brep(reader.getFileName());
     if (brep.hasExtension("bin")) {
         TopoShape shape;

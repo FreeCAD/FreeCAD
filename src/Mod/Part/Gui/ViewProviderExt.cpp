@@ -572,13 +572,22 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
             str << "Vertex" << vertex;
         }
     }
+    std::string name(str.str());
 
-    return str.str();
+    const Part::TopoShape& shape = static_cast<Part::Feature*>(getObject())->Shape.getShape();
+    const char *ret = shape.getElementName(name.c_str(),true);
+    if(ret != name.c_str()) {
+        str.str("");
+        str << Part::TopoShape::elementMapPrefix() << ret << '.' << name;
+        name = str.str();
+    }
+    return name;
 }
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
-    std::string element = subelement;
+    const Part::TopoShape& shape = static_cast<Part::Feature*>(getObject())->Shape.getShape();
+    std::string element = shape.getElementName(subelement);
     std::string::size_type pos = element.find_first_of("0123456789");
     int index = -1;
     if (pos != std::string::npos) {

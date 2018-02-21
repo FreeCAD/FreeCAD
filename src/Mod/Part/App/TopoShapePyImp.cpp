@@ -56,6 +56,7 @@
 # include <Precision.hxx>
 #endif
 
+#include <boost/algorithm/string.hpp>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
@@ -96,10 +97,6 @@ using namespace Part;
 #ifndef M_PI_2
     #define M_PI_2  1.57079632679489661923 /* pi/2 */
 #endif
-
-namespace Part {
-extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapePy::representation(void) const
@@ -158,7 +155,6 @@ PyObject* TopoShapePy::copy(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
     PyTypeObject* type = this->GetType();
     PyObject* cpy = 0;
     // let the type object decide
@@ -169,10 +165,7 @@ PyObject* TopoShapePy::copy(PyObject *args)
         return 0;
     }
 
-    if (!shape.IsNull()) {
-        BRepBuilderAPI_Copy c(shape);
-        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(c.Shape());
-    }
+    static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(this->getTopoShapePtr()->copy());
     return cpy;
 }
 
@@ -2054,27 +2047,8 @@ PyObject* TopoShapePy::getElement(PyObject *args)
     char* input;
     if (!PyArg_ParseTuple(args, "s", &input))
         return NULL;
-    std::string name(input);
-
     try {
-        if (name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeFacePy(new TopoShape(Shape));
-        }
-        else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeEdgePy(new TopoShape(Shape));
-        }
-        else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeVertexPy(new TopoShape(Shape));
-        }
+        return getTopoShapePtr()->getPySubShape(input);
     }
     catch (Standard_Failure& e) {
 
@@ -2082,6 +2056,16 @@ PyObject* TopoShapePy::getElement(PyObject *args)
         return 0;
     }
     return 0;
+}
+
+PyObject* TopoShapePy::getElementName(PyObject *args)
+{
+    char* input;
+    PyObject *reverse = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input,&reverse))
+        return NULL;
+    const char *ret = getTopoShapePtr()->getElementName(input,PyObject_IsTrue(reverse));
+    return Py::new_reference_to(Py::String(ret));
 }
 
 PyObject* TopoShapePy::getTolerance(PyObject *args)
@@ -2955,32 +2939,13 @@ Py::Float TopoShapePy::getVolume(void) const
 PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
 {
     if (!attr) return 0;
-    std::string name(attr);
-    try {
-        if (name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(attr)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeFacePy(new TopoShape(Shape));
-        }
-        else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(attr)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeEdgePy(new TopoShape(Shape));
-        }
-        else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(attr)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeVertexPy(new TopoShape(Shape));
-        }
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
+    std::string _name(attr);
+    boost::replace_all(_name,"_",Data::ComplexGeoData::elementMapPrefix());
+    std::string name = getTopoShapePtr()->getElementName(_name.c_str());
+    if ((name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) ||
+        (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) ||
+        (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57))
+        return getTopoShapePtr()->getPySubShape(_name.c_str());
     return 0;
 }
 
