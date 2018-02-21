@@ -116,17 +116,17 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>Le chemin d'accès de l'exécutable de OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Angle minimal d'un fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Taille minimale d'un fragment</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>supprimer la fusion, appliquer le placement des enfants et des couleurs au hasard</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Supprimer la fusion, appliquer le placement aux enfants et donner une couleur aléatoire</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Exporter les objets sous forme de maillage et utiliser OpenSCAD pour effectuer une opération booléenne.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Exporter les objets sous forme de maillage et utiliser OpenSCAD pour effectuer une opération booléenne</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Remplacer un objet dans l'arborescence. Veuillez sélectionnez l'ancien objet, le nouveau et l'objet parent</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>Remplacer un objet dans l'arborescence. Veuillez sélectionner l'ancien objet, le nouveau et l'objet parent</translation>
     </message>
   </context>
   <context>

@@ -288,11 +288,18 @@
       <translation>Exportar PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>La impresora usa una orientación diferente al dibujo.
+¿Desea continuar?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>Archivo PDF (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>Archivo PDF</translation>
     </message>
@@ -337,14 +344,13 @@
       <translation>Orientación diferente de la hoja</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La impresora utiliza una orientación de papel distinta a la del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Distinto tamaño de papel</translation>
@@ -397,19 +403,31 @@ Do you want to continue?</source>
       <translation>Arriba izquierda x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Espaciado dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> sentido de axis a derecha</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Inclinación vertical</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Espaciado dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Eje hacia fuera y a la derecha</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Inclinación vertical</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -841,13 +859,13 @@ Do you want to continue?</source>
     <message>
       <location line="-362"/>
       <source>Select exactly one Part object.</source>
-      <translation>Seleccione un único objeto parte.</translation>
+      <translation>Seleccione un único objeto pieza.</translation>
     </message>
     <message>
       <location line="+50"/>
       <location line="+187"/>
       <source>Select one Page object.</source>
-      <translation>Seleccionar una página de objetos.</translation>
+      <translation>Seleccionar un objeto Página.</translation>
     </message>
     <message>
       <location line="+6"/>

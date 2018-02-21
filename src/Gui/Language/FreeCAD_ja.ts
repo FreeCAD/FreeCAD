@@ -127,10 +127,6 @@
       <translation>SpaceNavigatorの動作</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>全体の感度:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>ドミナントモード（一軸優先）</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>反転</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>グローバル感度：</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>彼らの貢献なしにはFreeCADは存在し得なかったでしょう:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>ライセンス</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>ライブラリー</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>このソフトウェアはオープンソースのコンポーネントを使用しており、それらコンポーネントの著作権及びその他の所有権はそれぞれの所有者に帰属します:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1384,27 +1399,25 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>マクロファイルの名前を変更</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>新しい名前を入力:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' は既に存在します</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>名前の変更に失敗</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>名前を '%1' に変更できませんでした。ファイルのアクセス許可でのエラーの可能性があります。</translation>
     </message>
   </context>
   <context>
@@ -2136,8 +2149,8 @@ Specify another directory, please.</source>
       <translation>ドキュメントを保存するときにサムネールをプロジェクトファイルに保存</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>ドキュメントの再セーブ時にバックアップファイルを作成</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>ドキュメントを再保存する時に保持するバックアップファイルの最大数</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2249,7 +2262,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>この URL でユーザーはライセンスについての詳細を確認できます。</translation>
     </message>
   </context>
   <context>
@@ -2659,7 +2672,7 @@ Specify another directory, please.</source>
       <translation>ピック半径（px）:</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>3Dビューでの要素ピックの判定領域を設定します。大きな値を設定するとピックしやすくなりますが、小さなフィーチャーの一部は選択できなくなる可能性があります。</translation>
     </message>
   </context>
@@ -3349,10 +3362,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>コンビビュー</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>プロジェクト</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>タスク</translation>
     </message>
@@ -4025,7 +4034,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>リンクされたオブジェクトを変更</translation>
     </message>
   </context>
   <context>
@@ -5044,6 +5053,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1は空ではありません。コンテンツごと削除しますか？</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation>エクスポート失敗</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5601,11 +5614,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>グループの作成</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>並べられたオブジェクトに対して新しいグループを作成</translation>
     </message>
   </context>
   <context>
@@ -6476,7 +6489,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>底面ビューにする</translation>
+      <translation>底面ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6490,8 +6503,8 @@ Be aware the point where you click matters.</source>
       <translation>ビューを作成</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>作業中のドキュメントに、新しいビューウィンドウを作成</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>作業中のドキュメントのための新しいビューウインドウを作成</translation>
     </message>
   </context>
   <context>
@@ -6581,7 +6594,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>正面図ビューにする</translation>
+      <translation>前面ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6686,7 +6699,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>左面図ビューにする</translation>
+      <translation>左面ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6701,7 +6714,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>背面図ビューにする</translation>
+      <translation>背面ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6716,7 +6729,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>右面図ビューにする</translation>
+      <translation>右面ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6761,7 +6774,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>上面図ビューにする</translation>
+      <translation>上面ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6847,7 +6860,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>メインウィンドウをフルスクリーンモードで表示</translation>
     </message>
   </context>
   <context>

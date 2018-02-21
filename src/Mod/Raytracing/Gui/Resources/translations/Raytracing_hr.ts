@@ -362,7 +362,7 @@ Do you want to continue?</translation>
       <location line="+62"/>
       <location line="+272"/>
       <source>POV-Ray</source>
-      <translation type="unfinished">POV-Ray</translation>
+      <translation>POV-Ray</translation>
     </message>
     <message>
       <location line="-384"/>
@@ -371,7 +371,7 @@ Do you want to continue?</translation>
       <location line="+276"/>
       <location line="+109"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
     <message>
       <location line="-29"/>

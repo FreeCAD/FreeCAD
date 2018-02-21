@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>FreeCAD Start Center</source>
-      <translation>FreeCAD 开始中心</translation>
+      <translation>FreeCAD启动中心</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -26,12 +26,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>FreeCAD Homepage</source>
-      <translation>FreeCAD 主页</translation>
+      <translation>FreeCAD主页</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Example projects</source>
-      <translation>项目示例</translation>
+      <translation>项目范例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -41,22 +41,22 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Load a PartDesign example</source>
-      <translation>加载零件设计示例</translation>
+      <translation>加载零件设计范例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Load a Drawing extraction</source>
-      <translation>加载图纸生成示例</translation>
+      <translation>加载图纸生成范例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Load a Robot simulation example</source>
-      <translation>加载机器人模拟示例</translation>
+      <translation>加载机器人模拟范例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>Projects from the Web</source>
-      <translation>Web网上项目</translation>
+      <translation>来自网络的项目</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Designing architectural elements</source>
-      <translation>设计建筑元素</translation>
+      <translation>设计建筑物件</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
       <source>last modified:</source>
-      <translation>修改时间:</translation>
+      <translation>最后修改时间:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>On the web</source>
-      <translation>在web上</translation>
+      <translation>在网络上</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
       <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>自 &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
+      <translation>来自 &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
       <source>The FreeCAD-tutorial blog</source>
-      <translation>FreeCAD教学博客</translation>
+      <translation>FreeCAD教程博客</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
@@ -342,6 +342,11 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>加载有限元3D新求解实例分析</translation>
     </message>
   </context>
 </TS>

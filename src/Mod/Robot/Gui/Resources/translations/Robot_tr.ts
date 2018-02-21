@@ -377,7 +377,7 @@
       <location line="+17"/>
       <location line="+229"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Yanlış seçim</translation>
     </message>
     <message>
       <location line="-177"/>
@@ -421,7 +421,7 @@
       <location line="-61"/>
       <location line="+62"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Tüm Dosyalar</translation>
     </message>
     <message>
       <location line="-61"/>

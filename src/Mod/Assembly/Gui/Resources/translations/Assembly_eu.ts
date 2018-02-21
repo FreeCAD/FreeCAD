@@ -6,7 +6,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.cpp" line="+53"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Murrizketak</translation>
     </message>
   </context>
   <context>
@@ -14,7 +14,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+94"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
   </context>
   <context>
@@ -22,7 +22,7 @@
     <message>
       <location filename="../../Command.cpp" line="+154"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -40,7 +40,7 @@
     <message>
       <location line="-48"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -58,7 +58,7 @@
     <message>
       <location line="-58"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="+118"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -94,12 +94,12 @@
     <message>
       <location line="+419"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constraint alignment...</source>
-      <translation type="unfinished">Constraint alignment...</translation>
+      <translation>Murrizketaren lerrokatzea...</translation>
     </message>
     <message>
       <source>Constraint allignment...</source>
@@ -108,7 +108,7 @@
     <message>
       <location line="+1"/>
       <source>Align the selected entities</source>
-      <translation type="unfinished">Align the selected entities</translation>
+      <translation>Lerrokatu hautatutako entitateak</translation>
     </message>
     <message>
       <source>Align the selected entitys</source>
@@ -120,7 +120,7 @@
     <message>
       <location line="-207"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -130,7 +130,7 @@
     <message>
       <location line="+1"/>
       <source>Set the angle between two selected entities</source>
-      <translation type="unfinished">Set the angle between two selected entities</translation>
+      <translation>Ezarri angelua hautatutako bi entitateren artean</translation>
     </message>
     <message>
       <source>Set the angle between two selected entitys</source>
@@ -141,15 +141,15 @@
     <name>CmdAssemblyConstraintAxle</name>
     <message>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation type="unfinished">Constraint Axle...</translation>
+      <translation>Ardatz-murrizketa...</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation type="unfinished">set a axle constraint between two objects</translation>
+      <translation>ezarri ardatz-murrizketa bat bi objekturen artean</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
     <message>
       <location line="+135"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -167,7 +167,7 @@
     <message>
       <location line="+1"/>
       <source>Make the selected entities coincident</source>
-      <translation type="unfinished">Make the selected entities coincident</translation>
+      <translation>Egin hautatutako entitateak bat etor daitezen</translation>
     </message>
     <message>
       <source>Make the selected entitys coincident</source>
@@ -179,7 +179,7 @@
     <message>
       <location line="-271"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -189,7 +189,7 @@
     <message>
       <location line="+1"/>
       <source>Set the distance between two selected entities</source>
-      <translation type="unfinished">Set the distance between two selected entities</translation>
+      <translation>Ezarri distantzia hautatutako bi entitateren artean</translation>
     </message>
     <message>
       <source>Set the distance between two selected entitys</source>
@@ -201,7 +201,7 @@
     <message>
       <location line="+65"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -219,7 +219,7 @@
     <message>
       <location line="+132"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -229,7 +229,7 @@
     <message>
       <location line="+1"/>
       <source>Set the orientation of two selected entities in regard to each other</source>
-      <translation type="unfinished">Set the orientation of two selected entities in regard to each other</translation>
+      <translation>Ezarri hautatutako bi entitateren elkarrekiko orientazioa</translation>
     </message>
     <message>
       <source>Set the orientation of two selected entitys in regard to each other</source>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../Command.cpp" line="+163"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -314,7 +314,7 @@
     <message>
       <location line="-456"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The second geometry to which the constraint relates. Note that first and second geometry can be swapt. If you want to clear it, use the button to the right. If it is empty, just select any geometry in the 3D view and it will be added here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Murrizketarekin erlazioa duen bigarren geometria. Kontuan izan lehen eta bigarren geometriak trukatu egin daitezkeela. Hura garbitu nahi baduzu, erabili eskuineko botoia. Hutsik badago, hautatu 3D bistako edozein geometria eta honi gehituko zaio.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mugarekin erlazioa duen bigarren geometria. Kontuan izan lehen eta bigarren geometriak trukatu egin daitezkeela. Hura garbitu nahi baduzu, erabili eskuineko botoia. Hutsik badago, hautatu 3D bistako edozein geometria eta honi gehituko zaio.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -348,7 +348,7 @@
     <message>
       <location line="+38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lehen geometriaren biraketa eta translazioa finkatzen ditu. Kontuan izan muntaketa guraso zuzenean soilik funtzionatzen duela. Muntaketak pilatzen badituzu, muntaketa gurasoa ez da finko egongo besteen barruan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -362,12 +362,12 @@
     <message>
       <location line="+38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the distance between first and second geometry. Note that in many cases the shortest distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the distance between first and second geometry. Note that in many cases the shortest distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ezarri lehen eta bigarren geometrien arteko distantzia. Kontuan izan kasu askotan distantziarik laburrena erabiltzen dela (adib. lerroa - lerroa)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Distantzia</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -387,7 +387,7 @@
     <message>
       <location line="+3"/>
       <source>Align</source>
-      <translation type="unfinished">Align</translation>
+      <translation>Lerrokatu</translation>
     </message>
     <message>
       <location line="+92"/>
@@ -432,12 +432,12 @@
     <message>
       <location line="+38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals  point in the opposite direction. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals  point in the opposite direction. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geometrien normalak aurrez aurreko norabidean zuzentzen ditu. Kontuan izan zilindroen kasuan oinarri-zirkuluen normala erabiliko dela.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals perpendicular. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals perpendicular. Note that for cylinders the base circles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geometrien normalak perpendikular bihurtzen ditu. Kontuan izan zilindroen kasuan oinarri-zirkuluen normala erabiliko dela.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes the geometries normals  point in the opposite direction. Note that for cylinders the base cirles normal is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -462,7 +462,7 @@
     <name>Workbench</name>
     <message>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntaketa</translation>
     </message>
   </context>
 </TS>

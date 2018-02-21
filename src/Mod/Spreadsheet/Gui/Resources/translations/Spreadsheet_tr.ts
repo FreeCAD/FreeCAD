@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Ortala</translation>
     </message>
     <message>
       <source>Right</source>
@@ -337,6 +337,22 @@
     <message>
       <source>Show spreadsheet</source>
       <translation>İşlem tablosunu göster</translation>
+    </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Hücre (ler) ön plan rengini ayarla</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Elektronik tablo hücre(ler) in ön plan rengini ayarlar</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Hücre (ler) arka plan rengini ayarla</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Elektronik tablo hücre(lerinin) arka plan rengini ayarlar</translation>
     </message>
   </context>
   <context>
@@ -429,7 +445,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Adsız</translation>
     </message>
   </context>
   <context>

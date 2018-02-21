@@ -99,5 +99,9 @@
         <file>translations/Tux_gl.qm</file>
         <file>translations/Tux_kab.qm</file>
         <file>translations/Tux_ko.qm</file>
+        <file>translations/Tux_fil.qm</file>
+        <file>translations/Tux_id.qm</file>
+        <file>translations/Tux_lt.qm</file>
+        <file>translations/Tux_val-ES.qm</file>
     </qresource>
 </RCC>

@@ -168,52 +168,52 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>형식</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation type="unfinished">OBJ + MTL (Arch exporter)</translation>
+      <translation>OBJ + MTL (Arch exporter)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
       <source>OBJ (standard Mesh exporter)</source>
-      <translation type="unfinished">OBJ (standard Mesh exporter)</translation>
+      <translation>OBJ (standard Mesh exporter)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
       <source>DAE (Collada)</source>
-      <translation type="unfinished">DAE (Collada)</translation>
+      <translation>DAE (Collada)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
       <source>STL</source>
-      <translation type="unfinished">STL</translation>
+      <translation>STL</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
       <source>IGES (shapes only)</source>
-      <translation type="unfinished">IGES (shapes only)</translation>
+      <translation>IGES（셰이프 만）</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
       <source>IV</source>
-      <translation type="unfinished">IV</translation>
+      <translation>IV</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
       <source>Sketchfab API token</source>
-      <translation type="unfinished">Sketchfab API token</translation>
+      <translation>Sketchfab API 토큰</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
       <source>Obtain</source>
-      <translation type="unfinished">Obtain</translation>
+      <translation>검색</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
@@ -223,12 +223,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
       <source>uploading</source>
-      <translation type="unfinished">uploading</translation>
+      <translation>업로드 중</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation type="unfinished">Success! View uploaded online</translation>
+      <translation>완료 온라인 업로드 보기</translation>
     </message>
   </context>
   <context>

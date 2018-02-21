@@ -234,5 +234,9 @@
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_fil.qm</file>
+        <file>translations/Sketcher_id.qm</file>
+        <file>translations/Sketcher_lt.qm</file>
+        <file>translations/Sketcher_val-ES.qm</file>
     </qresource>
 </RCC> 

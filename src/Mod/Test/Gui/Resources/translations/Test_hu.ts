@@ -9,7 +9,7 @@
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Sikertelen és hibás</translation>
+      <translation>Hibák és sikertelenségek</translation>
     </message>
     <message>
       <source>Description</source>
@@ -17,7 +17,7 @@
     </message>
     <message>
       <source>&amp;Start</source>
-      <translation>Kezdé&amp;s</translation>
+      <translation>Indítás</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -25,7 +25,7 @@
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Súgó</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>F1</source>
@@ -33,7 +33,7 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>Névjegy &amp;A</translation>
+      <translation>Névjegy</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -41,7 +41,7 @@
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Bezár</translation>
+      <translation>Bezár</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
       <source>Failures:</source>
-      <translation>Sikertelen:</translation>
+      <translation>Hibák:</translation>
     </message>
     <message>
       <source>Run:</source>
@@ -88,7 +88,7 @@
     <name>TestGui::UnitTestDialog</name>
     <message>
       <source>Help</source>
-      <translation>Segítség</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
@@ -98,13 +98,13 @@
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Copyright (c) Werner Mayer FreeCAD UnitTest része a FreeCAD programnak és támogatja írásban Unit tesztek saját moduljait.</translation>
+      <translation>Copyright (c) Werner Mayer FreeCAD UnitTest része a FreeCAD programnak és támogatja a saját modulokra a Unit tesztek írását.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Írja be a nevét a hívható objektumnak, amely hívásakor, visszatér egy Tesztre. Nyomjon 'start', és az így készült vizsgálat futni fog.  Dupla kattintással, a fa nézeten további információkat kap, beleértve a verem-nyomkövetést.</translation>
+      <translation>Írja be a nevét a hívható objektumnak, amely hívásakor, visszatér egy Tesztre. Nyomjon 'Indítás'-t, és az így készült vizsgálat futni fog. Dupla kattintással, a fa nézeten további információkat kap, beleértve a verem-nyomkövetést.</translation>
     </message>
   </context>
 </TS>

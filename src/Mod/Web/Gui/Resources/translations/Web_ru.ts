@@ -168,7 +168,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -223,12 +223,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
       <source>uploading</source>
-      <translation type="unfinished">uploading</translation>
+      <translation>загрузка</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation type="unfinished">Success! View uploaded online</translation>
+      <translation>Успех! Просмотр загруженных онлайн</translation>
     </message>
   </context>
   <context>

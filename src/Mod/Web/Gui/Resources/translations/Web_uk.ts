@@ -133,7 +133,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
       <source>What to upload?</source>
-      <translation type="unfinished">What to upload?</translation>
+      <translation>Що завантажити?</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
@@ -143,17 +143,17 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Всі видимі об'єкти</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
       <source>Model name</source>
-      <translation type="unfinished">Model name</translation>
+      <translation>Назва моделі</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
       <source>Private</source>
-      <translation type="unfinished">Private</translation>
+      <translation>Приватний</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Формат</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
@@ -188,12 +188,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
       <source>DAE (Collada)</source>
-      <translation type="unfinished">DAE (Collada)</translation>
+      <translation>DAE (Collada)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
       <source>STL</source>
-      <translation type="unfinished">STL</translation>
+      <translation>STL</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
       <source>IV</source>
-      <translation type="unfinished">IV</translation>
+      <translation>IV</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
@@ -213,7 +213,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
       <source>Obtain</source>
-      <translation type="unfinished">Obtain</translation>
+      <translation>Отримати</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
       <source>uploading</source>
-      <translation type="unfinished">uploading</translation>
+      <translation>завантаження</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
