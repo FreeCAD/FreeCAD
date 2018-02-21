@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
+#include <App/PropertyUnits.h>
+
 #include "ViewProviderDrawingView.h"
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
@@ -42,10 +44,10 @@ public:
     /// destructor
     virtual ~ViewProviderDimension();
 
-    App::PropertyFont    Font;
-    App::PropertyFloat   Fontsize;
-    App::PropertyFloat   LineWidth;
-    App::PropertyColor   Color;
+    App::PropertyFont     Font;
+    App::PropertyLength   Fontsize;
+    App::PropertyFloat    LineWidth;
+    App::PropertyColor    Color;
 
 
     virtual void attach(App::DocumentObject *);
