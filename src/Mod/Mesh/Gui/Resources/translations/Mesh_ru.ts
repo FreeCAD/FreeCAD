@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Оценить и отремонтировать сетку...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation type="unfinished">Evaluate and repair mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Увеличение...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Увеличение выбранных сеток</translation>
     </message>
   </context>
   <context>
@@ -435,11 +439,11 @@
     </message>
     <message>
       <source>Create mesh segments...</source>
-      <translation>Создание сегментов сети...</translation>
+      <translation>Создать сегменты сети...</translation>
     </message>
     <message>
       <source>Create mesh segments</source>
-      <translation>Создать сегмент сети</translation>
+      <translation>Создать сегменты сети</translation>
     </message>
   </context>
   <context>
@@ -786,7 +790,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Включить проверку для складок на поверхности</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
@@ -1461,11 +1465,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Масштабирование</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Введите коэффициент масштабирования:</translation>
     </message>
   </context>
   <context>

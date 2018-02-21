@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>将转换为点</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>导出点云</translation>
     </message>
@@ -51,12 +49,11 @@
     <message>
       <location line="+1"/>
       <source>Import points...</source>
-      <translation>输入点...</translation>
+      <translation>导入点群...</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>导入点云</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation>将几个点云合并为一个</translation>
     </message>
@@ -95,8 +91,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>剪切多边形选择框中的点云</translation>
     </message>
@@ -104,19 +99,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Transform Points</source>
-      <translation>变换点</translation>
+      <translation>变换点群</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>变换点云测试</translation>
     </message>
@@ -126,7 +120,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="+14"/>
       <source>ASCII points import</source>
-      <translation>ASCII点导入</translation>
+      <translation>导入ASCII点</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -141,7 +135,7 @@
     <message>
       <location line="+42"/>
       <source>First line:</source>
-      <translation>首行:</translation>
+      <translation>第一行</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -305,7 +299,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Points</source>
-      <translation>点(&amp;P)</translation>
+      <translation>&amp;点</translation>
     </message>
   </context>
 </TS>

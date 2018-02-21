@@ -103,5 +103,9 @@
         <file>translations/Fem_gl.qm</file>
         <file>translations/Fem_kab.qm</file>
         <file>translations/Fem_ko.qm</file>
+        <file>translations/Fem_fil.qm</file>
+        <file>translations/Fem_id.qm</file>
+        <file>translations/Fem_lt.qm</file>
+        <file>translations/Fem_val-ES.qm</file>
     </qresource>
 </RCC>

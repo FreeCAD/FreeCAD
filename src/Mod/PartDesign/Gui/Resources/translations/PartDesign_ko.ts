@@ -142,7 +142,7 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>단품설계</translation>
     </message>
@@ -265,6 +265,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
       <translation type="unfinished">Migrate document to the modern partdesign workflow</translation>
     </message>
@@ -680,10 +684,14 @@
       <translation>단품설계</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
       <translation type="unfinished">Create an subtractive primitive</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
+      <translation type="unfinished">Create a subtractive primitive</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -1157,7 +1165,6 @@ Please check one or more edge entities first.</translation>
       <translation>공통(교집합)</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>단면</translation>
     </message>
@@ -1180,8 +1187,7 @@ Please check one or more edge entities first.</translation>
       <translation>기본 형상 매개 변수</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>생성: 기본 형상</translation>
     </message>
@@ -1276,7 +1282,7 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
       <source>Boolean: Accept: Input error</source>
       <translation>불리언: 수락: 입력 오류</translation>
     </message>
@@ -1311,7 +1317,7 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
@@ -1999,8 +2005,8 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>면 선택</translation>
     </message>
@@ -2015,8 +2021,8 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation type="unfinished">Dimension</translation>
     </message>
@@ -2058,40 +2064,37 @@ Please check one or more edge entities first.</translation>
       <translation type="unfinished">TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>돌출(Pad) 매개 변수</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>선택된 면 없음</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation type="unfinished">To last</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>첫 번째 만나는 면까지</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>곡면까지</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>2개의 치수 이용</translation>
     </message>
@@ -2332,8 +2335,8 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation type="unfinished">Dimension</translation>
     </message>
@@ -2354,8 +2357,13 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>두 번째 방향 돌출 길이</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>면 선택</translation>
     </message>
@@ -2365,12 +2373,12 @@ Please check one or more edge entities first.</translation>
       <translation>보기 재생성</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>돌출 컷(Pocket) 길이</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>돌출 컷(Pocket) 매개 변수</translation>
     </message>
@@ -2379,29 +2387,32 @@ Please check one or more edge entities first.</translation>
       <translation type="unfinished">To last</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>첫 번째 만나는 면까지</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>관통</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>곡면까지</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>2개의 치수 이용</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>선택된 면 없음</translation>
     </message>
@@ -2658,12 +2669,11 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>면 선택</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>선택된 면 없음</translation>
     </message>
@@ -2874,7 +2884,6 @@ Please check one or more edge entities first.</translation>
       <translation>너비, 높이 및 길이를 이용하여 생성된 육면체(Cube)를 기존 피처에서 제거합니다.</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
       <translation>반지름, 높이 및 각도를 이용하여 생성된 원기둥(Cylinder)을 기존 피처에서 제거합니다.</translation>
     </message>
@@ -2883,39 +2892,72 @@ Please check one or more edge entities first.</translation>
       <translation>반지름과 3개의 각도을 이용하여 생성된 구(Sphere)를 기존 피처에서 제거합니다.</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
       <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
       <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation>2개의 반지름, 높이 및 각도를 이용하여 생성된 원뿔(Cone)을 기존 피처에서 제거합니다.</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation>3개의 반지름과 3개의 각도를 이용하여 생성된 3차원 타원체(Ellipsolid)를 기존 피처에서 제거합니다.</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation>2개의 반지름과 3개의 각도를 이용하여 생성된 원환체(Torus)를 기존 피처에서 제거합니다.</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation>다각형의 면의 수, 중심에서 면까지의 거리 및 높이를 이용하여 생성된 각기둥(Prism)을 기존 피처에서 제거합니다.</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
       <translation>밑변, 윗변, 높이를 이용하여 생성된 3차원 쐐기(Wedge)를 기존 피처에서 제거합니다.</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation type="unfinished">Create a subtractive cone</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation type="unfinished">Create a subtractive torus</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation type="unfinished">Create a subtractive prism</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
+      <translation type="unfinished">Create a subtractive wedge</translation>
     </message>
   </context>
   <context>
@@ -3147,7 +3189,7 @@ Create the sketch on a face.</translation>
       <location line="+13"/>
       <location line="+279"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3290,7 +3332,7 @@ Create the sketch on a face.</translation>
       <translation type="unfinished">Edit revolve</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
       <translation>파트 생성 실패</translation>
     </message>
@@ -3300,7 +3342,7 @@ Create the sketch on a face.</translation>
       <translation>파트 객체를 생성하는데 실패하였습니다.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
@@ -3487,7 +3529,7 @@ This may lead to unexpected results.</translation>
       <translation type="unfinished">Construction line %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>면 선택</translation>
     </message>
@@ -3520,7 +3562,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <translation>새로운 부품설계(PartDesign) 객체를 생성하기 위해서, 문서에 활성화된 바디(Body)가 있어야 합니다. 하나의 바디(Body)를 더블 클릭하여 활성화하거나 새로운 바디(Body)를 생성하세요.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
       <translation>바디(Body)에 피처가 없습니다.</translation>
     </message>
@@ -3628,7 +3670,7 @@ This feature is broken and can't be edited.</translation>
       <translation>이전 버전에서 생성된 피처를 최신 부품설계(PartDesign)의 피처로 사용하기 위해 변환하시겠습니까?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>문서 "%1" 는 이전 버전의 부품설계(PartDesign)로부터 변환 중이거나 약간 손상된 것 같습니다.</translation>
     </message>

@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation type="unfinished">remove fusion, apply placement to children and color randomly</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Експортувати об'єкт у вигляді сітки та задіяти OpenSCAD для виконання логічних операцій.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>Minkowski</source>
-      <translation type="unfinished">Minkowski</translation>
+      <translation>метрика Мінковського</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="447"/>
       <source>Perform Minkowski</source>
-      <translation type="unfinished">Perform Minkowski</translation>
+      <translation>Задіяти метрику Мінковського</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Замінити об'єкт у дереві властивостей. Оберіть, будь ласка, старий, новий та породжуючий об'єкт</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
     </message>
   </context>
   <context>

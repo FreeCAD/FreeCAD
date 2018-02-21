@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Go to the next page</source>
-      <translation>Aller à la page suivante</translation>
+      <translation>Ddu ar usebter d-iteddun</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>Actualiser la page web</translation>
+      <translation>Smiren asebter</translation>
     </message>
   </context>
   <context>
@@ -61,12 +61,12 @@
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <source>Stop loading</source>
-      <translation>Arrêter le chargement</translation>
+      <translation type="unfinished">Stop loading</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Stop the current loading</source>
-      <translation>Arrêter le chargement actuel</translation>
+      <translation type="unfinished">Stop the current loading</translation>
     </message>
   </context>
   <context>
@@ -79,12 +79,12 @@
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Zoom in</source>
-      <translation>Zoom +</translation>
+      <translation>Semɣer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Zoom into the page</source>
-      <translation>Zoomer dans la page</translation>
+      <translation type="unfinished">Zoom into the page</translation>
     </message>
   </context>
   <context>
@@ -97,12 +97,12 @@
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Zoom out</source>
-      <translation>Zoom -</translation>
+      <translation>Semẓi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out of the page</source>
-      <translation>Zoom arrière sur la page</translation>
+      <translation type="unfinished">Zoom out of the page</translation>
     </message>
   </context>
   <context>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Open website...</source>
-      <translation>Ouvrir le site Web...</translation>
+      <translation type="unfinished">Open website...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Ouvre un site Web dans FreeCAD</translation>
+      <translation type="unfinished">Opens a website in FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -138,7 +138,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
       <source>Selection</source>
-      <translation>Sélection</translation>
+      <translation>Afran</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
@@ -148,12 +148,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
       <source>Model name</source>
-      <translation type="unfinished">Model name</translation>
+      <translation>Isem n tneɣruft</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
       <source>Private</source>
-      <translation type="unfinished">Private</translation>
+      <translation>Uslig</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Amasal</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
@@ -193,7 +193,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
       <source>STL</source>
-      <translation type="unfinished">STL</translation>
+      <translation>STL</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Sider</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
@@ -237,12 +237,12 @@
       <location filename="../../AppWebGui.cpp" line="80"/>
       <location filename="../../BrowserView.cpp" line="412"/>
       <source>Browser</source>
-      <translation>Navigateur</translation>
+      <translation>Iminig</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="309"/>
       <source>File does not exist!</source>
-      <translation>Le fichier n'existe pas!</translation>
+      <translation type="unfinished">File does not exist!</translation>
     </message>
   </context>
   <context>
@@ -250,12 +250,12 @@
     <message>
       <location filename="../../BrowserView.cpp" line="304"/>
       <source>Error</source>
-      <translation>Erreur</translation>
+      <translation>Tuccḍa</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="383"/>
       <source>Loading %1...</source>
-      <translation>Chargement %1...</translation>
+      <translation type="unfinished">Loading %1...</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../BrowserView.cpp" line="181"/>
       <source>Open in External Browser</source>
-      <translation>Ouvrir dans un navigateur externe</translation>
+      <translation type="unfinished">Open in External Browser</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in new window</source>
-      <translation>Ouvrir dans une nouvelle fenêtre</translation>
+      <translation type="unfinished">Open in new window</translation>
     </message>
   </context>
   <context>

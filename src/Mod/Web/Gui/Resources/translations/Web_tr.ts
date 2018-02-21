@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="78"/>
       <source>Go back to the previous page</source>
-      <translation>Önceki sayfasına dön</translation>
+      <translation>Önceki sayfaya dön</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Stop the current loading</source>
-      <translation>Geçerli yükleme durdur</translation>
+      <translation>Geçerli yüklemeyi durdur</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Zoom into the page</source>
-      <translation>Sayfaya yakınlaş</translation>
+      <translation>Sayfaya yakınlaştır</translation>
     </message>
   </context>
   <context>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out of the page</source>
-      <translation>Sayfadan uzaklaş</translation>
+      <translation>Sayfadan uzaklaştır</translation>
     </message>
   </context>
   <context>
@@ -110,12 +110,12 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>İnternet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Open website...</source>
-      <translation>Web sayfası aç...</translation>
+      <translation>Web sayfasını aç...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
@@ -128,13 +128,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
       <source>Sketchfab exporter</source>
-      <translation>Sketchfab çıkarıcısı
-</translation>
+      <translation>Sketchfab çıkarıcısı</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
       <source>What to upload?</source>
-      <translation>Ne yüklenecek?</translation>
+      <translation>Karşıya ne yüklensin?</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
@@ -144,7 +143,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
       <source>All visible objects</source>
-      <translation>Tüm görünür nesneler</translation>
+      <translation>Görüntülenebilir tüm nesneler</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
@@ -154,7 +153,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
       <source>Private</source>
-      <translation>Özel</translation>
+      <translation>Kişisel</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
@@ -169,7 +168,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -179,8 +178,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (Yay çıkarıcısı)
-</translation>
+      <translation>OBJ + MTL (Tepeden görünüm dışarıya aktarıcısı)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
@@ -220,7 +218,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Yükle</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
@@ -230,7 +228,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation>Başarılı! Görüntü çevrim içi gönderildi</translation>
+      <translation>Başarılı! Karşıya yüklenen görüntüyü aç</translation>
     </message>
   </context>
   <context>

@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>Autodesk álnév beállítása</translation>
+      <translation>Álnév beállítása</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>A kijelölt cellákra Autodesk álnév beállítása</translation>
+      <translation>A kijelölt cellákra álnév beállítása</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>Ig&amp;azítás</translation>
+      <translation>Igazítás</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -261,7 +261,7 @@
     </message>
     <message>
       <source>Left</source>
-      <translation>Bal nézet</translation>
+      <translation>Balra</translation>
     </message>
     <message>
       <source>Center</source>
@@ -269,7 +269,7 @@
     </message>
     <message>
       <source>Right</source>
-      <translation>Jobb</translation>
+      <translation>Jobbra</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <source>Top</source>
-      <translation>Felülnézet</translation>
+      <translation>Felső</translation>
     </message>
     <message>
       <source>Bottom</source>
@@ -285,7 +285,7 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation>&amp;Stílus</translation>
+      <translation>Stílus</translation>
     </message>
     <message>
       <source>Bold</source>
@@ -309,7 +309,7 @@
     </message>
     <message>
       <source>A&amp;lias</source>
-      <translation>Á&amp;lnév</translation>
+      <translation>Álnév</translation>
     </message>
     <message>
       <source>Alias for this cell</source>
@@ -337,6 +337,22 @@
     <message>
       <source>Show spreadsheet</source>
       <translation>Számolótábla mutatása</translation>
+    </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Cella(k) előtér színének beállítása</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Beállítja a számolótábla cella(k) előtér színét</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Cella(k) háttér színének beállítása</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Beállítja a számolótábla cella(k) háttér színét</translation>
     </message>
   </context>
   <context>

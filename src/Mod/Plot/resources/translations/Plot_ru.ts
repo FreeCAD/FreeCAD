@@ -261,7 +261,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="141"/>
       <source>Title</source>
-      <translation>Название</translation>
+      <translation>Заголовок</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="145"/>

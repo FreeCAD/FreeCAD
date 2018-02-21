@@ -49,13 +49,13 @@
     <message>
       <location line="+1"/>
       <source>&amp;Draft View</source>
-      <translation>ドラフト・ビュー (&amp;D)</translation>
+      <translation>ドラフト・ビュー(&amp;D)</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>アクティブな図面に選択オブジェクトのドラフト・ビューを挿入</translation>
+      <translation>アクティブな図面に選択したオブジェクトのドラフト・ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Export a page to an SVG file</source>
-      <translation>SVGファイルにエクスポート</translation>
+      <translation>ページをSVGファイルにエクスポート</translation>
     </message>
   </context>
   <context>
@@ -138,7 +138,7 @@
     <message>
       <location line="+1"/>
       <source>Open a scalable vector graphic</source>
-      <translation>スケーラブル・ベクター・グラフィックを開きます。</translation>
+      <translation>スケーラブル・ベクター・グラフィックを開く</translation>
     </message>
   </context>
   <context>
@@ -151,7 +151,7 @@
     <message>
       <location line="+1"/>
       <source>Open &amp;browser view</source>
-      <translation>ブラウザ表示を開く（&amp;b）</translation>
+      <translation>ブラウザ表示を開く(&amp;b)</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -175,7 +175,7 @@
     <message>
       <location line="+1"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>アクティブな図面にパーツの正投影図を挿入</translation>
+      <translation>アクティブな図面に部品の正投影図を挿入</translation>
     </message>
   </context>
   <context>
@@ -213,7 +213,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation>アクティブな図面に選択されているスプレッドシートのビューを挿入</translation>
+      <translation>アクティブな図面に選択したスプレッドシートのビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -226,7 +226,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Symbol</source>
-      <translation>シンボル (&amp;S)</translation>
+      <translation>シンボル(&amp;S)</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -240,27 +240,27 @@
     <message>
       <location filename="../../DrawingView.cpp" line="+211"/>
       <source>&amp;Background</source>
-      <translation>背景（&amp;B）</translation>
+      <translation>背景(&amp;B)</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>&amp;Outline</source>
-      <translation>アウトライン（&amp;O）</translation>
+      <translation>アウトライン(&amp;O)</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>&amp;Native</source>
-      <translation>ネィティブ（&amp;N）</translation>
+      <translation>ネィティブ(&amp;N)</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>&amp;OpenGL</source>
-      <translation>OpenGL (&amp;O)</translation>
+      <translation>OpenGL(&amp;O)</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>&amp;Image</source>
-      <translation>画像（&amp;I）</translation>
+      <translation>画像(&amp;I)</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -280,7 +280,7 @@
     <message>
       <location line="+87"/>
       <source>&amp;Renderer</source>
-      <translation>レンダラー（&amp;R）</translation>
+      <translation>レンダラー(&amp;R)</translation>
     </message>
     <message>
       <location line="+105"/>
@@ -288,11 +288,17 @@
       <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF ファイル (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDFファイル</translation>
     </message>
@@ -337,13 +343,12 @@
       <translation>異なる向き</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>別の用紙サイズ</translation>
@@ -395,18 +400,30 @@ Do you want to continue?</source>
       <translation>左上のx / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>間隔 dx/dy</translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> 座標軸を外側右部へ</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
+      <translation>垂直方向の傾き</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>間隔 dx/dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>座標軸を外側右部へ</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
       <translation>垂直方向の傾き</translation>
     </message>
     <message>

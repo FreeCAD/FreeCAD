@@ -128,12 +128,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
       <source>Sketchfab exporter</source>
-      <translation type="unfinished">Sketchfab exporter</translation>
+      <translation>Exportador Sketchfab</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
       <source>What to upload?</source>
-      <translation type="unfinished">What to upload?</translation>
+      <translation>Que queres subir?</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
@@ -143,17 +143,17 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Tódolos obxectos visibles</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
       <source>Model name</source>
-      <translation type="unfinished">Model name</translation>
+      <translation>Nome do modelo</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
       <source>Private</source>
-      <translation type="unfinished">Private</translation>
+      <translation>Privado</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
@@ -163,57 +163,57 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
       <source>Tags (separated by commas)</source>
-      <translation type="unfinished">Tags (separated by commas)</translation>
+      <translation>Etiquetas (separadas por comas)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Formato</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation type="unfinished">OBJ + MTL (Arch exporter)</translation>
+      <translation>OBJ + MTL (exportador Arch)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
       <source>OBJ (standard Mesh exporter)</source>
-      <translation type="unfinished">OBJ (standard Mesh exporter)</translation>
+      <translation>OBJ (exportador estándar de Malla)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
       <source>DAE (Collada)</source>
-      <translation type="unfinished">DAE (Collada)</translation>
+      <translation>DAE (Collada)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
       <source>STL</source>
-      <translation type="unfinished">STL</translation>
+      <translation>STL</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
       <source>IGES (shapes only)</source>
-      <translation type="unfinished">IGES (shapes only)</translation>
+      <translation>IGES (só formas)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
       <source>IV</source>
-      <translation type="unfinished">IV</translation>
+      <translation>IV</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
       <source>Sketchfab API token</source>
-      <translation type="unfinished">Sketchfab API token</translation>
+      <translation>Sketchfab API token</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
       <source>Obtain</source>
-      <translation type="unfinished">Obtain</translation>
+      <translation>Obter</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
@@ -223,12 +223,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
       <source>uploading</source>
-      <translation type="unfinished">uploading</translation>
+      <translation>subindo</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation type="unfinished">Success! View uploaded online</translation>
+      <translation>Vaites! Vista subida</translation>
     </message>
   </context>
   <context>

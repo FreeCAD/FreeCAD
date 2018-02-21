@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Minimalny kąt dla fragmentu</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Minimalny rozmiar dla fragmentu</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>usuń połączenie, zastosuj umiejscowienie obiektów-dzieci i kolory losowo</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Usuń połączenie, zastosuj umiejscowienie obiektów-dzieci i kolory losowo</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Eksportuje obiekty jako siatki i używa OpenSCAD aby wykonać operację boolean.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Eksportuje obiekty jako siatki i używa OpenSCAD aby wykonać operację boolean</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Zamień obiekt w drzewie funkcji. Wybierz obiekt - stary, nowy i nadrzędny</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>Zmień obiekt w drzewie elementów. Wybierz stary, nowy i nadrzędny obiekt</translation>
     </message>
   </context>
   <context>

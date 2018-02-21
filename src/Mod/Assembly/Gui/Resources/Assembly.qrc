@@ -52,5 +52,9 @@
         <file>translations/Assembly_gl.qm</file>
         <file>translations/Assembly_kab.qm</file>
         <file>translations/Assembly_ko.qm</file>
+        <file>translations/Assembly_fil.qm</file>
+        <file>translations/Assembly_id.qm</file>
+        <file>translations/Assembly_lt.qm</file>
+        <file>translations/Assembly_val-ES.qm</file>
   </qresource>
 </RCC>

@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation type="unfinished">Align bottom</translation>
+      <translation>Poravnaj dolje</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation type="unfinished">Align center</translation>
+      <translation>Potavnaj po serdini</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
@@ -54,7 +54,7 @@
     </message>
     <message>
       <source>Align left</source>
-      <translation type="unfinished">Align left</translation>
+      <translation>Poravnaj lijevo</translation>
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
       <source>Align right</source>
-      <translation type="unfinished">Align right</translation>
+      <translation>Poravnaj desno</translation>
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Align top</source>
-      <translation type="unfinished">Align top</translation>
+      <translation>Poravnaj gore</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation type="unfinished">Bold text</translation>
+      <translation>Podebljani tekst</translation>
     </message>
     <message>
       <source>Set bold text in selected cells</source>
@@ -204,7 +204,7 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation type="unfinished">Italic text</translation>
+      <translation>Ukošeni tekst</translation>
     </message>
     <message>
       <source>Set italic text in selected cells</source>
@@ -230,7 +230,7 @@
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Prilagođeno</translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     </message>
     <message>
       <source>&amp;Color</source>
-      <translation type="unfinished">&amp;Color</translation>
+      <translation>&amp;Boja</translation>
     </message>
     <message>
       <source>Text</source>
@@ -249,11 +249,11 @@
     </message>
     <message>
       <source>Background</source>
-      <translation type="unfinished">Background</translation>
+      <translation>Pozadina</translation>
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation type="unfinished">&amp;Alignment</translation>
+      <translation>&amp;Poravnanje</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -285,19 +285,19 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation type="unfinished">&amp;Style</translation>
+      <translation>&amp;Stil</translation>
     </message>
     <message>
       <source>Bold</source>
-      <translation type="unfinished">Bold</translation>
+      <translation>Podebljano</translation>
     </message>
     <message>
       <source>Italic</source>
-      <translation type="unfinished">Italic</translation>
+      <translation>Nakošeno</translation>
     </message>
     <message>
       <source>Underline</source>
-      <translation type="unfinished">Underline</translation>
+      <translation>Podcrtano</translation>
     </message>
     <message>
       <source>&amp;Display unit</source>
@@ -337,6 +337,22 @@
     <message>
       <source>Show spreadsheet</source>
       <translation type="unfinished">Show spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation type="unfinished">Set cell(s) foreground color</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation type="unfinished">Set cell(s) background color</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
     </message>
   </context>
   <context>
@@ -399,19 +415,19 @@
     </message>
     <message>
       <source>Gray</source>
-      <translation type="unfinished">Gray</translation>
+      <translation>Siva</translation>
     </message>
     <message>
       <source>Dark gray</source>
-      <translation type="unfinished">Dark gray</translation>
+      <translation>Tamno siva</translation>
     </message>
     <message>
       <source>Light gray</source>
-      <translation type="unfinished">Light gray</translation>
+      <translation>Svjetlo siva</translation>
     </message>
     <message>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Prilagođeno</translation>
     </message>
   </context>
   <context>
@@ -422,7 +438,7 @@
     </message>
     <message>
       <source>&amp;Contents</source>
-      <translation type="unfinished">&amp;Contents</translation>
+      <translation>&amp;Sadržaj</translation>
     </message>
   </context>
   <context>
@@ -436,23 +452,23 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <source>Insert rows</source>
-      <translation type="unfinished">Insert rows</translation>
+      <translation>Umetni redove</translation>
     </message>
     <message>
       <source>Remove rows</source>
-      <translation type="unfinished">Remove rows</translation>
+      <translation>Ukloni redove</translation>
     </message>
     <message>
       <source>Insert columns</source>
-      <translation type="unfinished">Insert columns</translation>
+      <translation>Umetni stupce</translation>
     </message>
     <message>
       <source>Remove columns</source>
-      <translation type="unfinished">Remove columns</translation>
+      <translation>Ukloni stupce</translation>
     </message>
     <message>
       <source>Properties...</source>
-      <translation type="unfinished">Properties...</translation>
+      <translation>Svojstva...</translation>
     </message>
   </context>
   <context>

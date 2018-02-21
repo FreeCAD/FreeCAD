@@ -11,12 +11,12 @@
     <message>
       <location line="+1"/>
       <source>Curve on mesh...</source>
-      <translation type="unfinished">Curve on mesh...</translation>
+      <translation>Örgü eğrisi...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Örgü eğrisi</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location line="+1"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Örgü ve düzlemden kesit oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -65,13 +65,13 @@
     <message>
       <location line="+1"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Bir düzlem ile örgü bölme</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Bir düzlemle örgü kesme</translation>
     </message>
   </context>
   <context>
@@ -84,7 +84,7 @@
     <message>
       <location line="+2"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>Telin Yakını</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -99,7 +99,7 @@
     <message>
       <location line="+208"/>
       <source>Wrong mesh picked</source>
-      <translation type="unfinished">Wrong mesh picked</translation>
+      <translation>Yanlış örgü seçildi</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -112,37 +112,37 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Örgü eğrisi</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Wire</source>
-      <translation type="unfinished">Wire</translation>
+      <translation>Yay</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation type="unfinished">Snap tolerance to vertexes</translation>
+      <translation>Noktalara yapışma toleransı</translation>
     </message>
     <message>
       <location line="+7"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation> piksel</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>Bölme eşiği</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>Spline Yaklaşımı</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>Örgü toleransı</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -152,12 +152,12 @@
     <message>
       <location line="+7"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Maksimum eğri derecesi</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Başla</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location line="+8"/>
       <source>Meshing options</source>
-      <translation type="unfinished">Meshing options</translation>
+      <translation>Örgü seçenekleri</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -185,32 +185,32 @@
     <message>
       <location line="+7"/>
       <source>Mefisto</source>
-      <translation type="unfinished">Mefisto</translation>
+      <translation>Mefisto</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Netgen</source>
-      <translation type="unfinished">Netgen</translation>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location line="+81"/>
       <source>Define segments by face colors</source>
-      <translation type="unfinished">Define segments by face colors</translation>
+      <translation>Kesimleri yüz renkleriyle tanımlama</translation>
     </message>
     <message>
       <location line="-7"/>
       <source>Apply face colors to mesh</source>
-      <translation type="unfinished">Apply face colors to mesh</translation>
+      <translation>Örgü için yüz renkleri uygula</translation>
     </message>
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Açısal sapma:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Göreceli yüzey sapması</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -225,7 +225,7 @@
     <message>
       <location line="+17"/>
       <source>Very coarse</source>
-      <translation type="unfinished">Very coarse</translation>
+      <translation>Çok kaba</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -245,42 +245,42 @@
     <message>
       <location line="+5"/>
       <source>Very fine</source>
-      <translation type="unfinished">Very fine</translation>
+      <translation>Çok iyi</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>User defined</source>
-      <translation type="unfinished">User defined</translation>
+      <translation>Kullanıcı tanımlı</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Mesh size grading:</source>
-      <translation type="unfinished">Mesh size grading:</translation>
+      <translation>Mesh ebadı derecelendirmesi:</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Elements per edge:</source>
-      <translation type="unfinished">Elements per edge:</translation>
+      <translation>Kenar başına öğeler:</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Elements per curvature radius:</source>
-      <translation type="unfinished">Elements per curvature radius:</translation>
+      <translation>Eğrilik yarıçapındaki elemanlar:</translation>
     </message>
     <message>
       <location line="+31"/>
       <source>Optimize surface</source>
-      <translation type="unfinished">Optimize surface</translation>
+      <translation>Yüzeyi en iyileştir</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Second order elements</source>
-      <translation type="unfinished">Second order elements</translation>
+      <translation>İkinci mertebeden elemanlar</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Quad dominated</source>
-      <translation type="unfinished">Quad dominated</translation>
+      <translation>Dörtlü hakimdi</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -311,12 +311,12 @@
     <message>
       <location filename="../../Command.cpp" line="+93"/>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Uçak seç</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
+      <translation>Lütfen kafesin kesildiği bir düzlem seçin.</translation>
     </message>
   </context>
   <context>
@@ -324,12 +324,12 @@
     <message>
       <location line="-85"/>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Uçak seç</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+      <translation>Lütfen örgünün düzeltileceği bir düzlem seçin.</translation>
     </message>
   </context>
   <context>

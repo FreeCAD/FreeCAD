@@ -441,7 +441,7 @@
     <message>
       <location filename="../../ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>Výpočet křivky GZ</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Jsou vybrány neznámé objekty tvarů</translation>
     </message>
   </context>
 </TS>

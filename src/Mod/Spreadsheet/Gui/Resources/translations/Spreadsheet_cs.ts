@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Zobrazit tabulku</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Nastavit barvu popředí buňky</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Nastaví barvu popředí buněk v tabulce</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Nastavit barvu pozadí buňky</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Nastaví barvu pozadí buněk v tabulce</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

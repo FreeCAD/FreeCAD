@@ -11,12 +11,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="26"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Configuració general OpenSCAD</translation>
+      <translation>Configuració General de OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
-      <translation>Executable OpenSCAD</translation>
+      <translation>Executable d'OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="65"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Angle mínim per un fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Mida mínima d'un fragment</translation>
     </message>
   </context>
   <context>
@@ -248,8 +248,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="109"/>
-      <source>remove fusion, apply placement to children and color randomly</source>
-      <translation>eliminar una fusió, aplicar un posicionament als fills i donar un color aleatori</translation>
+      <source>Remove fusion, apply placement to children, and color randomly</source>
+      <translation>Eliminar una fusió, aplicar un posicionament als fills i donar un color aleatori</translation>
     </message>
   </context>
   <context>
@@ -287,8 +287,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation>Exportar objectes com malles i utilitzar OpenSCAD per dur a terme una operació booleana.</translation>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
+      <translation>Exportar objectes com a malles i utilitzar OpenSCAD per dur a terme una operació booleana</translation>
     </message>
   </context>
   <context>
@@ -339,8 +339,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Reemplaçar un objecte en l'Arbre de Funcions. Si us plau selecciona antic, nou i objecte primari</translation>
+      <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
+      <translation>Reemplaçar un objecte en l'Arbre de Funcions. Seleccioneu l'antic, el nou i l'objecte pare</translation>
     </message>
   </context>
   <context>

@@ -11,12 +11,12 @@
     <message>
       <location line="+1"/>
       <source>Curve on mesh...</source>
-      <translation type="unfinished">Curve on mesh...</translation>
+      <translation>Curva en malla...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Curva en malla</translation>
     </message>
   </context>
   <context>
@@ -84,7 +84,7 @@
     <message>
       <location line="+2"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>Pechar arame</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -99,7 +99,7 @@
     <message>
       <location line="+208"/>
       <source>Wrong mesh picked</source>
-      <translation type="unfinished">Wrong mesh picked</translation>
+      <translation>Selección de malla errada</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Curva en malla</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -122,27 +122,27 @@
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation type="unfinished">Snap tolerance to vertexes</translation>
+      <translation>Axuste a tolerancia nos vértices</translation>
     </message>
     <message>
       <location line="+7"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation> px</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>Limiar de pivote</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>Aproximación Spline</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>Tolerancia de grella</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -152,12 +152,12 @@
     <message>
       <location line="+7"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Grao máximo da curva</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Inicio</translation>
     </message>
   </context>
   <context>
@@ -205,12 +205,12 @@
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Desvio angular:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Desvío relativo de superficie</translation>
     </message>
     <message>
       <location line="+40"/>

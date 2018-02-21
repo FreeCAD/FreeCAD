@@ -4,7 +4,7 @@
   <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="+97"/>
+      <location filename="../../Command.cpp" line="+101"/>
       <source>Image</source>
       <translation>Изображение</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location line="-46"/>
+      <location line="-50"/>
       <source>Image</source>
       <translation>Изображение</translation>
     </message>
@@ -38,13 +38,13 @@
     <message>
       <location line="+1"/>
       <source>Open image view</source>
-      <translation>Открыть изображение</translation>
+      <translation>Просмотр открытых изображений</translation>
     </message>
   </context>
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+331"/>
+      <location filename="../../GLImageBox.cpp" line="+333"/>
       <location filename="../../OpenGLImageBox.cpp" line="+385"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Неопределенный тип цвета пространства для просмотра изображений</translation>
@@ -99,7 +99,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="+107"/>
       <source>&amp;Fit image</source>
-      <translation>&amp; Растянуть изображения</translation>
+      <translation>&amp;Растянуть изображение</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -109,7 +109,7 @@
     <message>
       <location line="+4"/>
       <source>&amp;1:1 scale</source>
-      <translation>&amp; масштаб 1:1</translation>
+      <translation>&amp;Масштаб 1:1</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -183,19 +183,19 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="+20"/>
-      <location line="+43"/>
+      <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Выберите файл изображения, чтобы открыть</translation>
     </message>
     <message>
-      <location line="-50"/>
-      <location line="+43"/>
+      <location line="-54"/>
+      <location line="+47"/>
       <source>Images</source>
       <translation>Изображения</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+43"/>
+      <location line="-42"/>
+      <location line="+47"/>
       <source>All files</source>
       <translation>Все файлы</translation>
     </message>

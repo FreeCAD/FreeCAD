@@ -84,7 +84,7 @@
     <message>
       <location filename="../../PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation>保存绘图</translation>
+      <translation>保存制图</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="48"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation>配置绘图样式和标签</translation>
+      <translation>配置工程图样式和标签</translation>
     </message>
   </context>
   <context>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="179"/>
       <source>Active axes</source>
-      <translation>活动坐标轴</translation>
+      <translation>选中的坐标轴</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="211"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="227"/>
       <source>Index of the active axes</source>
-      <translation>活动坐标轴索引</translation>
+      <translation>选中坐标轴索引</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="231"/>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="241"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation>选中以对所有坐标轴应用转换</translation>
+      <translation>选中以对所有坐标轴应用变换</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="246"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="137"/>
       <source>Active axes</source>
-      <translation>活动坐标轴</translation>
+      <translation>选中的坐标轴</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="141"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="153"/>
       <source>Index of the active axes</source>
-      <translation>活动坐标轴索引</translation>
+      <translation>选中坐标轴索引</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="157"/>
@@ -362,7 +362,7 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="136"/>
       <source>Dots per Inch</source>
-      <translation>每英寸点数</translation>
+      <translation>每英寸点数(DPI)</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="141"/>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation>删除这个系列</translation>
+      <translation>删除此系列</translation>
     </message>
   </context>
 </TS>

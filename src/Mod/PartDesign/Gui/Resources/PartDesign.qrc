@@ -82,5 +82,9 @@
         <file>translations/PartDesign_gl.qm</file>
         <file>translations/PartDesign_kab.qm</file>
         <file>translations/PartDesign_ko.qm</file>
+        <file>translations/PartDesign_fil.qm</file>
+        <file>translations/PartDesign_id.qm</file>
+        <file>translations/PartDesign_lt.qm</file>
+        <file>translations/PartDesign_val-ES.qm</file>
     </qresource>
 </RCC>

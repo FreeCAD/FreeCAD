@@ -114,6 +114,10 @@
         <file>translations/Draft_gl.qm</file>
         <file>translations/Draft_kab.qm</file>
         <file>translations/Draft_ko.qm</file>
+        <file>translations/Draft_fil.qm</file>
+        <file>translations/Draft_id.qm</file>
+        <file>translations/Draft_lt.qm</file>
+        <file>translations/Draft_val-ES.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>

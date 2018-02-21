@@ -127,10 +127,6 @@
       <translation>Рух 3D-миші Spaceball</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Загальна чутливість:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Домінуючий режим</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Навпаки</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Загальна чутливість:</translation>
     </message>
   </context>
   <context>
@@ -391,7 +391,22 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+      <translation>FreeCAD не склався б без їх внеску:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Ліцензія</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Бібліотеки</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1384,27 +1399,26 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Перейменування файлу макросу</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Введіть нове ім'я:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' вже існує.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Не вдалося перейменувати</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Не вдалося перейменувати '%1'.
+Можливо, помилка дозволу на файл?</translation>
     </message>
   </context>
   <context>
@@ -1767,11 +1781,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation type="unfinished">A search pattern to filter the results above</translation>
+      <translation>Шаблон пошуку для фільтрації результатів вище</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <translation>Немає (видалити посилання)</translation>
     </message>
   </context>
   <context>
@@ -1980,7 +1994,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <translation>Використовувати об'єкт OpenGL Vertex Buffer (експериментально)</translation>
     </message>
   </context>
   <context>
@@ -2137,8 +2151,8 @@ Specify another directory, please.</source>
       <translation>Зберегти мініатюру у файл проекту при збереженні документа</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Створення резервної копії файлів під час повторного збереження документу</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Максимальна кількість файлів резервних копій, що зберігаються при збереженні документа</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2246,11 +2260,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Додати логотип програми до згенерованої мініатюри</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Посилання, де користувач зможе знайти більш детальну інформацію про ліцензію</translation>
     </message>
   </context>
   <context>
@@ -2508,7 +2522,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Transparent</source>
-      <translation type="unfinished">Transparent</translation>
+      <translation>Прозорий</translation>
     </message>
     <message>
       <source>Add watermark</source>
@@ -2660,8 +2674,8 @@ Specify another directory, please.</source>
       <translation>Вибрати радіус (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -2839,19 +2853,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+      <translation>Ви дійсно бажаєте видалити вибрані тимчасові каталоги?</translation>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>При видаленні вибраних тимчасових каталогів, ви не зможете відновити після цього будь-які файли.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>Ви дійсно бажаєте видалити всі тимчасові каталоги?</translation>
     </message>
     <message>
       <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>При видаленні всіх тимчасових каталогів, ви не зможете відновити після цього будь-які файли.</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -2859,15 +2873,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Transient directories deleted.</source>
-      <translation type="unfinished">Transient directories deleted.</translation>
+      <translation>Тимчасові каталоги видалені.</translation>
     </message>
     <message>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>Натисніть 'Почати відновлення' щоб почати процес відновлення документів, що перелічені нижче.
 
-The 'Status' column shows whether the document could be recovered.</translation>
+Колонка 'Статус' показує чи можливе відновлення документів.</translation>
     </message>
   </context>
   <context>
@@ -2886,7 +2900,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Помилка при відкритті збереженого файлу: %1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
@@ -3234,7 +3248,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Використовувати центр мас</translation>
     </message>
   </context>
   <context>
@@ -3348,10 +3362,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>КомбінованийВигляд</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Проект</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -4027,7 +4037,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Змінити зв'язані об'єкти</translation>
     </message>
   </context>
   <context>
@@ -4292,11 +4302,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation type="unfinished">Translation Increment: </translation>
+      <translation>Приріст переміщення: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation type="unfinished">Rotation Increment: </translation>
+      <translation>Приріст обертання: </translation>
     </message>
   </context>
   <context>
@@ -4363,7 +4373,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>Текст основного об'єкта змінився. Відхилити зміни та перезавантажити текст з об'єкта?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -4375,7 +4385,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Бажаєте зберегти ваші зміни перед закриттям?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -4456,11 +4466,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation type="unfinished">Skip recomputes</translation>
+      <translation>Пропустити перерахунки</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation type="unfinished">Enable or disable recomputations of document</translation>
+      <translation>Увімкнути або вимкнути перерахунки документа</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -4472,7 +4482,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, внутрішнє ім'я: %2</translation>
     </message>
   </context>
   <context>
@@ -4669,7 +4679,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>DAG View</source>
-      <translation type="unfinished">DAG View</translation>
+      <translation>DAG View</translation>
     </message>
   </context>
   <context>
@@ -5030,34 +5040,38 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source> %1.%2.%3 </source>
-      <translation type="unfinished"> %1.%2.%3 </translation>
+      <translation> %1.%2.%3 </translation>
     </message>
     <message>
       <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
+      <translation>Переміщення: </translation>
     </message>
     <message>
       <source>Rotation: </source>
-      <translation type="unfinished">Rotation: </translation>
+      <translation>Обертання: </translation>
     </message>
     <message>
       <source>Delete group content?</source>
-      <translation type="unfinished">Delete group content?</translation>
+      <translation>Видалити вміст групи?</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>%1 не порожній, також видалити його вміст?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Експорт не вдався</translation>
     </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
       <source>Not allowed:</source>
-      <translation type="unfinished">Not allowed:</translation>
+      <translation>Не допускається:</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation type="unfinished">Selection not allowed by filter</translation>
+      <translation>Вибір не дозволено фільтром</translation>
     </message>
   </context>
   <context>
@@ -5605,11 +5619,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Створити групу</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Створити нову групу для впорядкування об'єктів</translation>
     </message>
   </context>
   <context>
@@ -6165,11 +6179,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select visible objects</source>
-      <translation type="unfinished">Select visible objects</translation>
+      <translation>Виділити видимі об'єкти</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation type="unfinished">Select visible objects in the active document</translation>
+      <translation>Виберіть видимі об'єкти в активному документі</translation>
     </message>
   </context>
   <context>
@@ -6494,8 +6508,8 @@ Be aware the point where you click matters.</source>
       <translation>Створити новий вигляд</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Створення нового вікна перегляду для активного документа</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Створює нове вікно перегляду для активного документа</translation>
     </message>
   </context>
   <context>
@@ -6851,7 +6865,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Відобразити головне вікно в повноекранному режимі</translation>
     </message>
   </context>
   <context>
@@ -7004,9 +7018,9 @@ Be aware the point where you click matters.</source>
 Are you sure you want to continue?
 
 </source>
-      <translation type="unfinished">The following, referencing objects might break.
+      <translation>Наступні, посилання на об'єкти можуть зламатися.
 
-Are you sure you want to continue?
+Ви впевнені, що хочете продовжити?
 
 </translation>
     </message>

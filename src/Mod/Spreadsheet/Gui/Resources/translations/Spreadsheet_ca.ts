@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Mostra el full de càlcul</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Estableix el color de primer pla de les cel·la(es)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Estableix el color de primer pla de la(es) cel·la(es) del full de càlcul</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Estableix el color de fons de la(es) cel·la(es)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Estableix el color de fons de la(es) cel·la(es) del full de càlcul</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

@@ -127,10 +127,6 @@
       <translation>Spaceball beweging</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Globale gevoeligheid:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Dominante modus</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Omdraaien</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD zou nergens zonder de inspanning van:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licentie</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1386,7 +1401,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Nieuwe naam invoeren:</translation>
     </message>
     <message>
       <source>'%1'
@@ -2134,8 +2149,8 @@ Kies een andere map, alstublieft.</translation>
       <translation>Miniatuur opslaat in projectbestand bij het opslaan van document</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Maximaal aantal backup bestanden bij opslag</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2657,8 +2672,8 @@ Kies een andere map, alstublieft.</translation>
       <translation>Kies straal (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Stel het gebied in voor de selectie van elementen in de 3D-weergave. Een grotere waarde maakt selectie makkelijker, maar zal kleine objecten elementen niet selecteerbaar maken.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -3343,10 +3358,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>CombiView</source>
       <translation>Combi-Weergave</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Project</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -5040,6 +5051,10 @@ Let op, het maakt uit waar je klikt.</translation>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>De %1 is niet leeg. Mag de inhoud worden verwijderd?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6486,8 +6501,8 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation>Nieuwe weergave aanmaken</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Maakt een nieuw weergavevenster voor het actieve document</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>
