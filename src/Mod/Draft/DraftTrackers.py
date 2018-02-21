@@ -162,14 +162,16 @@ class lineTracker(Tracker):
     def p1(self,point=None):
         "sets or gets the first point of the line"
         if point:
-            self.coords.point.set1Value(0,point.x,point.y,point.z)
+            if self.coords.point.getValues()[0].getValue() != tuple(point):
+                self.coords.point.set1Value(0,point.x,point.y,point.z)
         else:
             return Vector(self.coords.point.getValues()[0].getValue())
 
     def p2(self,point=None):
         "sets or gets the second point of the line"
         if point:
-            self.coords.point.set1Value(1,point.x,point.y,point.z)
+            if self.coords.point.getValues()[-1].getValue() != tuple(point):
+                self.coords.point.set1Value(1,point.x,point.y,point.z)
         else:
             return Vector(self.coords.point.getValues()[-1].getValue())
                         
@@ -796,6 +798,7 @@ class gridTracker(Tracker):
         mat3.diffuseColor.setValue(col)
         self.coords3 = coin.SoCoordinate3()
         self.lines3 = coin.SoLineSet()
+        self.pts = []
         s = coin.SoSeparator()
         s.addChild(pick)
         s.addChild(self.trans)
@@ -832,24 +835,26 @@ class gridTracker(Tracker):
             else:
                 pts.extend([[-bound,curr,z],[bound,curr,z]])
                 pts.extend([[curr,-bound,z],[curr,bound,z]])
-        idx = []
-        midx = []
-        aidx = []
-        for p in range(0,len(pts),2):
-            idx.append(2)
-        for mp in range(0,len(mpts),2):
-            midx.append(2)
-        for ap in range(0,len(apts),2):
-            aidx.append(2)
-        self.lines1.numVertices.deleteValues(0)
-        self.lines2.numVertices.deleteValues(0)
-        self.lines3.numVertices.deleteValues(0)
-        self.coords1.point.setValues(pts)
-        self.lines1.numVertices.setValues(idx)
-        self.coords2.point.setValues(mpts)
-        self.lines2.numVertices.setValues(midx)
-        self.coords3.point.setValues(apts)
-        self.lines3.numVertices.setValues(aidx)
+        if pts != self.pts:
+            idx = []
+            midx = []
+            aidx = []
+            for p in range(0,len(pts),2):
+                idx.append(2)
+            for mp in range(0,len(mpts),2):
+                midx.append(2)
+            for ap in range(0,len(apts),2):
+                aidx.append(2)
+            self.lines1.numVertices.deleteValues(0)
+            self.lines2.numVertices.deleteValues(0)
+            self.lines3.numVertices.deleteValues(0)
+            self.coords1.point.setValues(pts)
+            self.lines1.numVertices.setValues(idx)
+            self.coords2.point.setValues(mpts)
+            self.lines2.numVertices.setValues(midx)
+            self.coords3.point.setValues(apts)
+            self.lines3.numVertices.setValues(aidx)
+            self.pts = pts
         
     def setSize(self,size):
         self.numlines = size
