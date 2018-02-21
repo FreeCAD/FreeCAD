@@ -2041,11 +2041,13 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     }
 
     std::string name(subname,nextsub-subname);
-    auto subObj = item->object()->getObject()->getSubObject(name.c_str());
-    if(!subObj) {
-        TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
+    auto obj = item->object()->getObject();
+    auto subObj = obj->getSubObject(name.c_str());
+    if(!subObj || subObj==obj) {
+        if(!subObj)
+            TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
         item->selected += 2;
-        item->mySubs.insert(name);
+        item->mySubs.insert(subname);
         return;
     }
 
