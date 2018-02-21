@@ -158,6 +158,12 @@ SET(TechDraw_Templates
     Templates/A4_LandscapeTD.svg
     Templates/A4_Landscape_ISO7200TD.svg
     Templates/A4_Portrait_ISO7200TD.svg
+    Templates/A0_Landscape_blank.svg
+    Templates/A1_Landscape_blank.svg
+    Templates/A2_Landscape_blank.svg
+    Templates/A3_Landscape_blank.svg
+    Templates/A4_Landscape_blank.svg
+    Templates/A4_Portrait_blank.svg
 )
 
 SET(TechDraw_PATFile
