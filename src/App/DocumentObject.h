@@ -52,7 +52,8 @@ enum ObjectStatus {
     Remove = 5,
     PythonCall = 6,
     Destroy = 7,
-    Expand = 16
+    Recompute2 = 8,
+    Expand = 16,
 };
 
 /** Return object for feature execution

@@ -2491,15 +2491,13 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
 
 #else //ifdef USE_OLD_DAG
 
-int Document::recompute(const std::vector<App::DocumentObject*> &objs)
-{
+int Document::recompute(const std::vector<App::DocumentObject*> &objs) {
+    int objectCount = 0;
+
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
         throw Base::RuntimeError("Nested recomputes of a document are not allowed");
     }
-
-    int objectCount = 0;
-
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
     bool skip = testStatus(Document::SkipRecompute);
@@ -2534,7 +2532,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
         cerr << "App::Document::recompute(): cyclic dependency detected" << endl;
         topoSortedObjects = d->partialTopologicalSort(depObjs);
     }
-    for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
+    std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
 #else
     vector<DocumentObject*> topoSortedObjects;
     try {
@@ -2544,28 +2542,44 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs)
         topoSortedObjects = d->partialTopologicalSort(getDependencyList(objs.empty()?d->objectArray:objs,false));
         std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
     }
-    for (auto objIt = topoSortedObjects.begin(); objIt != topoSortedObjects.end(); ++objIt){
 #endif
-        // ask the object if it should be recomputed
-        if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
-            objectCount++;
-            if (_recomputeFeature(*objIt)) {
-                // if something happened break execution of recompute
-                return -1;
-            }
-            else{
-                (*objIt)->purgeTouched();
-                // set all dependent object touched to force recompute
-                for (auto inObjIt : (*objIt)->getInList())
-                    inObjIt->touch();
+    size_t idx = 0;
+    // maximum two passes to allow some form of dependency inversion
+    for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
+        FC_LOG("Recompute pass " << passes);
+        for (;idx<topoSortedObjects.size();++idx) {
+            auto obj = topoSortedObjects[idx];
+            // ask the object if it should be recomputed
+            if (obj->isTouched() || obj->mustExecute() == 1) {
+                objectCount++;
+                if (_recomputeFeature(obj)) {
+                    // if something happened break execution of recompute
+                    return -1;
+                }
+                else{
+                    obj->purgeTouched();
+                    // set all dependent object touched to force recompute
+                    for (auto inObjIt : obj->getInList())
+                        inObjIt->touch();
+                }
             }
         }
-    }
-    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         // check if all objects are recalculated which were thouched 
-        for (auto obj : topoSortedObjects) {
-            if (obj->isTouched())
-                FC_ERR(obj->getNameInDocument() << " still touched after recompute");
+        for (size_t i=0;i<topoSortedObjects.size();++i) {
+            auto obj = topoSortedObjects[i];
+            obj->setStatus(ObjectStatus::Recompute2,false);
+            if(obj->isTouched()) {
+                if(passes>0) 
+                    FC_ERR(obj->getNameInDocument() << " still touched after recompute");
+                else{
+                    FC_LOG(obj->getNameInDocument() << " still touched after recompute");
+                    if(idx>=topoSortedObjects.size()) {
+                        // let's start the next pass on the first touched object
+                        idx = i;
+                    }
+                    obj->setStatus(ObjectStatus::Recompute2,true);
+                }
+            }
         }
     }
 
