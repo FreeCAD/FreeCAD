@@ -522,7 +522,9 @@ std::string ConstraintPy::representation(void) const
                 case EllipseFocus2          : result << "'InternalAlignment:EllipseFocus2'>";break;
                 default                     : result << "'InternalAlignment:?'>";break;
             }
-        break;   
+        break;
+        case Equal              : result << "'Equal' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second << ")>";break;
+        case PointOnObject      : result << "'PointOnObject' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second << ")>";break;
         default                 : result << "'?'>";break;
     }
     return result.str();
@@ -547,6 +549,8 @@ Py::String ConstraintPy::getType(void) const
         case Symmetric          : return Py::String("Symmetric"); break;
         case SnellsLaw          : return Py::String("SnellsLaw"); break;
         case InternalAlignment  : return Py::String("InternalAlignment"); break;
+        case Equal              : return Py::String("Equal"); break;
+        case PointOnObject      : return Py::String("PointOnObject"); break;
         default                 : return Py::String("Undefined");break;
     }
 }
