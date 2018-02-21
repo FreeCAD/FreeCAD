@@ -127,11 +127,12 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
 
+    point = None
     if hasattr(FreeCADGui,"Snapper"):
         point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
         info = FreeCADGui.Snapper.snapInfo
         mask = FreeCADGui.Snapper.affinity
-    else:
+    if not point:
         p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
         point = FreeCADGui.ActiveDocument.ActiveView.getPoint(p)
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
