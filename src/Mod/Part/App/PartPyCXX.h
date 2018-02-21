@@ -32,4 +32,9 @@ namespace Py {
     bool TopoShape::accepts (PyObject *pyob) const;
 }
 
+namespace Part {
+    Py::Object shape2pyshape(const TopoShape &shape);
+    Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
+
 #endif //PART_PYCXX_H

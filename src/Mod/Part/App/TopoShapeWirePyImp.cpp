@@ -51,6 +51,7 @@
 #include <Base/GeometryPyCXX.h>
 
 #include "TopoShape.h"
+#include "PartPyCXX.h"
 #include <Mod/Part/App/BSplineCurvePy.h>
 #include <Mod/Part/App/TopoShapeShellPy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
@@ -62,10 +63,6 @@
 #include "Tools.h"
 
 using namespace Part;
-
-namespace Part {
-    extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
 
 
 // returns a string which represents the object e.g. when printed in python

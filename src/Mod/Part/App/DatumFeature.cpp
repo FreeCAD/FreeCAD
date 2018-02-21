@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include "PartPyCXX.h"
 #include "DatumFeature.h"
 
 
@@ -56,10 +57,6 @@ TopoDS_Shape Datum::getShape() const
     Part::TopoShape sh = Shape.getShape();
     sh.setPlacement(Placement.getValue());
     return sh.getShape();
-}
-
-namespace Part {
-Py::Object shape2pyshape(const TopoDS_Shape &shape);
 }
 
 App::DocumentObject *Datum::getSubObject(const char *subname, 
