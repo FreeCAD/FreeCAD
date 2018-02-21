@@ -46,7 +46,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.temp_dir = testtools.get_fem_test_tmp_dir()
         self.test_file_dir = testtools.get_fem_test_home_dir() + 'ccx/'
 
-    def test_static_analysis(self):
+    def test_1_static_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
         box = self.active_doc.addObject("Part::Box", "Box")
         fcc_print('Checking FEM new analysis...')
@@ -169,7 +169,129 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.saveAs(static_save_fc_file)
         fcc_print('--------------- End of FEM tests static and analysis ---------------')
 
-    def test_freq_analysis(self):
+    def test_2_static_multiple_material(self):
+        fcc_print('--------------- Start of FEM ccxtools multiple material test ---------------')
+
+        # create a CompSolid of two Boxes extract the CompSolid (we are able to remesh if needed)
+        boxlow = self.active_doc.addObject("Part::Box", "BoxLower")
+        boxupp = self.active_doc.addObject("Part::Box", "BoxUpper")
+        boxupp.Placement.Base = (0, 0, 10)
+
+        # for BooleanFragments Occt >=6.9 is needed
+        '''
+        import BOPTools.SplitFeatures
+        bf = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+        bf.Objects = [boxlow, boxupp]
+        bf.Mode = "CompSolid"
+        self.active_doc.recompute()
+        bf.Proxy.execute(bf)
+        bf.purgeTouched()
+        for obj in bf.ViewObject.Proxy.claimChildren():
+            obj.ViewObject.hide()
+        self.active_doc.recompute()
+        import CompoundTools.CompoundFilter
+        cf = CompoundTools.CompoundFilter.makeCompoundFilter(name='MultiMatCompSolid')
+        cf.Base = bf
+        cf.FilterType = 'window-volume'
+        cf.Proxy.execute(cf)
+        cf.purgeTouched()
+        cf.Base.ViewObject.hide()
+        '''
+        self.active_doc.recompute()
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+            FreeCADGui.SendMsgToActiveView("ViewFit")
+
+        analysis = ObjectsFem.makeAnalysis(self.active_doc, 'Analysis')
+        solver_object = ObjectsFem.makeSolverCalculixCcxTools(self.active_doc, 'CalculiXccxTools')
+        solver_object.AnalysisType = 'static'
+        solver_object.GeometricalNonlinearity = 'linear'
+        solver_object.ThermoMechSteadyState = False
+        solver_object.MatrixSolverType = 'default'
+        solver_object.IterationsControlParameterTimeUse = False
+        analysis.addObject(solver_object)
+
+        material_object_low = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterialLow')
+        mat = material_object_low.Material
+        mat['Name'] = "Aluminium-Generic"
+        mat['YoungsModulus'] = "70000 MPa"
+        mat['PoissonRatio'] = "0.35"
+        mat['Density'] = "2700  kg/m^3"
+        material_object_low.Material = mat
+        material_object_low.References = [(boxlow, 'Solid1')]
+        analysis.addObject(material_object_low)
+
+        material_object_upp = ObjectsFem.makeMaterialSolid(self.active_doc, 'MechanicalMaterialUpp')
+        mat = material_object_upp.Material
+        mat['Name'] = "Steel-Generic"
+        mat['YoungsModulus'] = "200000 MPa"
+        mat['PoissonRatio'] = "0.30"
+        mat['Density'] = "7980 kg/m^3"
+        material_object_upp.Material = mat
+        material_object_upp.References = [(boxupp, 'Solid1')]
+        analysis.addObject(material_object_upp)
+
+        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "ConstraintFixed")
+        # fixed_constraint.References = [(cf, "Face3")]
+        fixed_constraint.References = [(boxlow, "Face5")]
+        analysis.addObject(fixed_constraint)
+
+        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "ConstraintPressure")
+        # pressure_constraint.References = [(cf, "Face9")]
+        pressure_constraint.References = [(boxupp, "Face6")]
+        pressure_constraint.Pressure = 1000.0
+        pressure_constraint.Reversed = False
+        analysis.addObject(pressure_constraint)
+
+        mesh = Fem.FemMesh()
+        import femtest.testfiles.ccx.multimat_mesh as multimatmesh
+        multimatmesh.create_nodes(mesh)
+        multimatmesh.create_elements(mesh)
+        mesh_object = self.active_doc.addObject('Fem::FemMeshObject', self.mesh_name)
+        mesh_object.FemMesh = mesh
+        analysis.addObject(mesh_object)
+
+        self.active_doc.recompute()
+        static_multiplemat_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, 'FEM_ccx_multimat/')
+        fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
+        fea.setup_working_dir(static_multiplemat_dir)
+
+        fcc_print('Checking FEM inp file prerequisites for ccxtools multimat analysis...')
+        error = fea.check_prerequisites()
+        self.assertFalse(error, "ccxtools check_prerequisites returned error message: {}".format(error))
+
+        fcc_print('Checking FEM inp file write...')
+        fcc_print('Writing {}/{}.inp for static multiple material'.format(static_multiplemat_dir, self.mesh_name))
+        error = fea.write_inp_file()
+        self.assertFalse(error, "Writing failed")
+        static_base_name = 'multimat'
+        static_analysis_inp_file = self.test_file_dir + static_base_name + '.inp'
+        fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_multiplemat_dir, self.mesh_name))
+        ret = testtools.compare_inp_files(static_analysis_inp_file, static_multiplemat_dir + self.mesh_name + '.inp')
+        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
+
+        '''
+        # read results and compare them
+        # do we really need to check result reading on any example
+        # mhh not for any static but for sure once of each for static, freq, thermo, Flow
+        fea.setup_working_dir(self.test_file_dir)
+        fea.set_base_name(static_base_name)
+        fea.set_inp_file_name()
+        fea.load_results()
+        static_expected_values = self.test_file_dir + "cube_multiplemat_expected_values"
+        ret = testtools.compare_stats(fea, static_expected_values, 'CalculiX_static_results')
+        self.assertFalse(ret, "Invalid results read from .frd file")
+        '''
+
+        static_save_fc_file = static_multiplemat_dir + static_base_name + '.fcstd'
+        fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
+        self.active_doc.saveAs(static_save_fc_file)
+        fcc_print('--------------- End of FEM ccxtools multiple material test ---------------')
+
+        # warum heisst das inp file Mesh.inp ? Besser wuerde doch der base name sein ? dann auch ein self weniger ...
+
+    def test_3_freq_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
         self.active_doc.addObject("Part::Box", "Box")
         fcc_print('Checking FEM new analysis...')
@@ -267,7 +389,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         self.active_doc.saveAs(frequency_save_fc_file)
         fcc_print('--------------- End of FEM tests frequency analysis ---------------')
 
-    def test_thermomech_analysis(self):
+    def test_4_thermomech_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
         box = self.active_doc.addObject("Part::Box", "Box")
         box.Height = 25.4
@@ -397,7 +519,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
 
         fcc_print('--------------- End of FEM tests thermomech analysis ---------------')
 
-    def test_Flow1D_thermomech_analysis(self):
+    def test_5_Flow1D_thermomech_analysis(self):
         fcc_print('--------------- Start of 1D Flow FEM tests ---------------')
         import Draft
         p1 = FreeCAD.Vector(0, 0, 50)

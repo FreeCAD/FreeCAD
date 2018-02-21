@@ -137,6 +137,8 @@ SET(FemTestsCcx_SRCS
     femtest/testfiles/ccx/cube_static.frd
     femtest/testfiles/ccx/cube_static_expected_values
     femtest/testfiles/ccx/cube.fcstd
+    femtest/testfiles/ccx/multimat.inp
+    femtest/testfiles/ccx/multimat_mesh.py
     femtest/testfiles/ccx/spine_mesh.py
     femtest/testfiles/ccx/spine_thermomech.inp
     femtest/testfiles/ccx/spine_thermomech.dat
