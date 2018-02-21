@@ -62,7 +62,7 @@ ViewProviderDimension::ViewProviderDimension()
     double fontSize = hGrp->GetFloat("FontSize", 3.5);
 
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
+    ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
