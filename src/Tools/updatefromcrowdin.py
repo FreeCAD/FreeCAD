@@ -136,8 +136,10 @@ def updateqrc(qrcpath,lncode):
     if ".qm" in line:
         line = re.sub("_.*\.qm","_"+lncode+".qm",line)
     else:
-        print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
-        sys.exit()
+        modname = os.path.splitext(os.path.basename(qrcpath))[0]
+        line = "        <file>translations/"+modname+"_"+lncode+".qm</file>\n"
+        #print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
+        #sys.exit()
     print "inserting line: ",line
     resources.insert(pos+1,line)
 
