@@ -4046,7 +4046,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
                         proj = None
                     else:
                         base = Part.LineSegment(self.p2,self.p3).toShape()
-                        proj = DraftGeomUtils.findDistance(self.p1,base).negative()
+                        proj = DraftGeomUtils.findDistance(self.p1,base)
+                        if proj:
+                            proj = proj.negative()
             if not base:
                 if DraftVecUtils.equals(self.p1,self.p4):
                     base = None
