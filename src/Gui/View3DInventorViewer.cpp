@@ -828,21 +828,27 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     _ViewProviderSet.erase(pcProvider);
 }
 
+void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {
+    if(pcEditingTransform) {
+        double dMtrx[16];
+        mat.getGLMatrix(dMtrx);
+        pcEditingTransform->setMatrix(SbMatrix(
+                    dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
+                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
+                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
+                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
+    }
+}
+
 void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *mat) {
     if(!editViewProvider) 
         return;
     resetEditingRoot(false);
     pcEditingRoot->addChild(pcEditingTransform);
-    double dMtrx[16];
     if(mat)
-        mat->getGLMatrix(dMtrx);
-    else 
-        getDocument()->getEditingTransform().getGLMatrix(dMtrx);
-    pcEditingTransform->setMatrix(SbMatrix(
-                dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
-                dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
-                dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
-                dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
+        setEditingTransform(*mat);
+    else
+        setEditingTransform(getDocument()->getEditingTransform());
     if(node) {
         restoreEditingRoot = false;
         pcEditingRoot->addChild(node);

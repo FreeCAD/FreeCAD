@@ -384,12 +384,15 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     return true;
 }
 
-Base::Matrix4D Document::getEditingTransform() const {
+const Base::Matrix4D &Document::getEditingTransform() const {
     return d->_editingTransform;
 }
 
 void Document::setEditingTransform(const Base::Matrix4D &mat) {
     d->_editingTransform = mat;
+    View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
+    if (activeView) 
+        activeView->getViewer()->setEditingTransform(mat);
 }
 
 void Document::resetEdit(void) {

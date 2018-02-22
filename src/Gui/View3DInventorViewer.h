@@ -194,6 +194,7 @@ public:
     void resetEditingViewProvider();
     void setupEditingRoot(SoNode *node=0, const Base::Matrix4D *mat=0);
     void resetEditingRoot(bool updateLinks=true);
+    void setEditingTransform(const Base::Matrix4D &mat);
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */

@@ -228,7 +228,7 @@ public:
     ViewProvider *getViewProviderByName(const char* name) const;
     /// set the ViewProvider in special edit mode
     bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=0);
-    Base::Matrix4D getEditingTransform() const;
+    const Base::Matrix4D &getEditingTransform() const;
     void setEditingTransform(const Base::Matrix4D &mat);
     /// reset from edit mode, this cause all document to reset edit
     void resetEdit(void);
