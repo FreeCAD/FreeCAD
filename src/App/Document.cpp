@@ -75,6 +75,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <unordered_set>
 #include <unordered_map>
 
+#include <QMap>
 #include <QCoreApplication>
 #include <QCryptographicHash>
 
@@ -157,6 +158,8 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
+    std::map<QByteArray,Document::StringID> stringHashes;
+    long stringHashID;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
@@ -175,6 +178,7 @@ struct DocumentP
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
+        stringHashID = 0;
     }
 
     static
@@ -189,6 +193,19 @@ struct DocumentP
 } // namespace App
 
 PROPERTY_SOURCE(App::Document, App::PropertyContainer)
+
+Document::StringID Document::mapStringToID(const char *text) {
+    return mapStringToID(QByteArray(text));
+}
+
+Document::StringID Document::mapStringToID(const QByteArray &data) {
+    QCryptographicHash hash(QCryptographicHash::Sha1);
+    hash.addData(data);
+    auto &id = d->stringHashes[hash.result()];
+    if(!id) 
+        id = std::make_shared<const long>(++d->stringHashID);
+    return id;
+}
 
 bool Document::testStatus(Status pos) const
 {
@@ -1384,6 +1401,8 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
     ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None), 
                         "Whether to show hidden object items in the tree view");
+    ADD_PROPERTY_TYPE(SaveAllStringIDs,(false), 0,PropertyType(Prop_None), 
+                        "Whether to preserve unreferenced string IDs");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
@@ -1459,12 +1478,33 @@ void Document::Save (Base::Writer &writer) const
     << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
     << "-->" << endl;
 
+    size_t count = 0;
+    if(SaveAllStringIDs.getValue())
+        count = d->stringHashes.size();
+    for(auto &v : d->stringHashes)
+        if(v.second.use_count()>1)
+            ++count;
+
     writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
-                    << "\" FileVersion=\"" << writer.getFileVersion() << "\">" << endl;
+                    << "\" FileVersion=\"" << writer.getFileVersion() 
+                    << "\" StringHashCount=\"" << count << "\">" << endl;
+    
+    writer.incInd();
+    count = 0;
+    for(auto &v : d->stringHashes) {
+        if(SaveAllStringIDs.getValue() || v.second.use_count()>1)
+            writer.Stream() << "<Hash value=\""<< v.first.toBase64().constData()
+                            << "\" id=\""<<*v.second<<"\"/>" << endl;
+        else
+            ++count;
+    }
+    writer.decInd();
 
+    FC_LOG("string hash size " << d->stringHashes.size() << ", unused " << count);
+    
     PropertyContainer::Save(writer);
 
     // writing the features types
@@ -1488,6 +1528,20 @@ void Document::Restore(Base::XMLReader &reader)
         reader.FileVersion = reader.getAttributeAsUnsigned("FileVersion");
     } else {
         reader.FileVersion = 0;
+    }
+
+    d->stringHashes.clear();
+    d->stringHashID = 0;
+    if (reader.hasAttribute("StringHashCount")) {
+        int count = reader.getAttributeAsInteger("StringHashCount");
+        for(i=0;i<count;++i) {
+            reader.readElement("Hash");
+            QByteArray value(reader.getAttribute("value"));
+            long id = reader.getAttributeAsInteger("id");
+            if(d->stringHashID < id)
+                d->stringHashID = id;
+            d->stringHashes[QByteArray::fromBase64(value)] = std::make_shared<const long>(id);
+        }
     }
 
     // When this document was created the FileName and Label properties

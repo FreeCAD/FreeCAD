@@ -849,6 +849,31 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* DocumentPy::mapStringToID(PyObject *args)
+{
+    PyObject *value;
+    if (!PyArg_ParseTuple(args, "O",&value))
+        return NULL;    // NULL triggers exception
+    std::string txt;
+#if PY_MAJOR_VERSION >= 3
+    if (PyUnicode_Check(value)) {
+        txt = PyUnicode_AsUTF8(value);
+    }
+#else
+    if (PyUnicode_Check(value)) {
+        PyObject* unicode = PyUnicode_AsLatin1String(value);
+        txt = PyString_AsString(unicode);
+        Py_DECREF(unicode);
+    }
+    else if (PyString_Check(value)) {
+        txt = PyString_AsString(value);
+    }
+#endif
+    else 
+        throw Py::TypeError("expect argument of type string");
+    return Py::new_reference_to(Py::Int(Document::stringID(getDocumentPtr()->mapStringToID(txt.c_str()))));
+}
+
 Py::List DocumentPy::getInList(void) const
 {
     Py::List ret;

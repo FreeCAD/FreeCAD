@@ -32,12 +32,15 @@
 #include "PropertyStandard.h"
 #include "PropertyLinks.h"
 
+#include <memory>
 #include <map>
 #include <vector>
 #include <stack>
 #include <functional>
 
 #include <boost/signals.hpp>
+
+class QByteArray;
 
 namespace Base {
     class Writer;
@@ -111,6 +114,8 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
+    /// Whether to preserve unreferences string ID
+    PropertyBool SaveAllStringIDs;
     //@}
 
     /** @name Signals of the document */
@@ -442,6 +447,25 @@ public:
 
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
+
+    /** @name Maps an arbitary string to an integer
+     *
+     * These function internally hashes the string, and stroes the hash in a
+     * map to integer. The hashes of the strings passed to this function are
+     * persisted, which means the returned ID is an unique identifier of the
+     * string. The function return the interger as a shared pointer to
+     * reference count the ID so that it is possible to prune any unused hash,
+     * depending on the value of Document.SaveAllStringIDs
+     *
+     * The purpose of function is to provide a short form of a stable string
+     * hash.
+     */
+    //@{
+    typedef std::shared_ptr<const long> StringID;
+    StringID mapStringToID(const char *text);
+    StringID mapStringToID(const QByteArray &data);
+    static inline long stringID(StringID id) {return id?*id:-1;}
+    //@}
 
     virtual PyObject *getPyObject(void);
 

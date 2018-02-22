@@ -203,6 +203,17 @@ sort: whether to topologically sort the return list
               </UserDocu>
 		  </Documentation>
 	  </Methode>
+	  <Methode Name="mapStringToID">
+		  <Documentation>
+              <UserDocu>
+mapStringToID(txt) -> Int. Map a string to a unique integer ID.
+
+Any mapping obtained through this function will be persisted to document file. The returned ID
+string mapping is persisted to document file. However, current implementation does not reference
+count this ID in python. So it may be lost if Document.SaveAllStringID is False. 
+              </UserDocu>
+		  </Documentation>
+	  </Methode>
 	  <Attribute Name="DependencyGraph" ReadOnly="true">
 		<Documentation>
 			<UserDocu>The dependency graph as GraphViz text</UserDocu>
