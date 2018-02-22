@@ -349,30 +349,32 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
-                if(selaction->SelChange.pSubName && selaction->SelChange.pSubName[0])
-                    detail = vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true);
-                SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-                if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
-                    if (detail)
-                        type = SoSelectionElementAction::Append;
-                    else
-                        type = SoSelectionElementAction::All;
-                }
-                else {
-                    if (detail)
-                        type = SoSelectionElementAction::Remove;
-                    else
-                        type = SoSelectionElementAction::None;
-                }
+                if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
+                    vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,detail))
+                {
+                    SoSelectionElementAction::Type type = SoSelectionElementAction::None;
+                    if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
+                        if (detail)
+                            type = SoSelectionElementAction::Append;
+                        else
+                            type = SoSelectionElementAction::All;
+                    }
+                    else {
+                        if (detail)
+                            type = SoSelectionElementAction::Remove;
+                        else
+                            type = SoSelectionElementAction::None;
+                    }
 
-                if(checkSelectionStyle(type,vp)) {
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.setElement(detail);
-                    if(detailPath->getLength())
-                        action.apply(detailPath);
-                    else
-                        action.apply(vp->getRoot());
+                    if(checkSelectionStyle(type,vp)) {
+                        SoSelectionElementAction action(type);
+                        action.setColor(this->colorSelection.getValue());
+                        action.setElement(detail);
+                        if(detailPath->getLength())
+                            action.apply(detailPath);
+                        else
+                            action.apply(vp->getRoot());
+                    }
                 }
                 detailPath->truncate(0);
                 delete detail;
@@ -407,13 +409,15 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 vp->useNewSelectionModel() && vp->isSelectable()) 
             {
                 detailPath->truncate(0);
-                SoDetail* detail = vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true);
-                setHighlight(detailPath,detail,static_cast<ViewProviderDocumentObject*>(vp),
-                        selaction->SelChange.pSubName, 
-                        selaction->SelChange.x,
-                        selaction->SelChange.y,
-                        selaction->SelChange.z);
-                delete detail;
+                SoDetail *det = 0;
+                if(vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,det)) {
+                    setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
+                            selaction->SelChange.pSubName, 
+                            selaction->SelChange.x,
+                            selaction->SelChange.y,
+                            selaction->SelChange.z);
+                }
+                delete det;
             }
         }
     }
@@ -581,8 +585,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             hasNext = true;
             subName = nextsub;
             detailPath->truncate(0);
-            detNext = vpd->getDetailPath(subName.c_str(),detailPath,true);
-            if(detailPath->getLength()) {
+            if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) && 
+               detailPath->getLength()) 
+            {
                 pPath = detailPath;
                 det = detNext;
                 FC_TRACE("select next " << objectName << ", " << subName);

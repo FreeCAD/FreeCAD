@@ -420,7 +420,7 @@ public:
                 appendPath(path,pcSnapshots[type]);
             // this is possible in case of editing, where the switch node
             // of the linked view object is temparaly removed from its root
-            return true;
+            return false;
         }
         int len = 0;
         if(path) {
@@ -434,8 +434,7 @@ public:
         if(!pcChildGroup || !pcSwitch || pcSwitch->whichChild.getValue()<0 ||
             pcSwitch->getChild(pcSwitch->whichChild.getValue())!=pcChildGroup)
         {
-            det = pcLinked->getDetailPath(subname,path,false);
-            return true;
+            return pcLinked->getDetailPath(subname,path,false,det);
         }
         if(path){
             appendPath(path,pcChildGroup);
@@ -1963,18 +1962,17 @@ bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &su
     return ret;
 }
 
-SoDetail* ViewProviderLink::getDetailPath(
-        const char *subname, SoFullPath *pPath, bool append) const 
+bool ViewProviderLink::getDetailPath(
+        const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const 
 {
     auto ext = getLinkExtension();
-    if(!ext) return 0;
+    if(!ext) return false;
 
     auto len = pPath->getLength();
     if(append) {
         appendPath(pPath,pcRoot);
         appendPath(pPath,pcModeSwitch);
     }
-    SoDetail *det = 0;
     std::string _subname;
     if(subname && subname[0] && (isGroup(ext) || hasElements(ext))) {
         int index = ext->getElementIndex(subname,&subname);
@@ -1987,9 +1985,9 @@ SoDetail* ViewProviderLink::getDetailPath(
         }
     }
     if(linkView->linkGetDetailPath(subname,pPath,det))
-        return det;
+        return true;
     pPath->truncate(len);
-    return 0;
+    return false;
 }
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {

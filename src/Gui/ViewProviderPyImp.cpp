@@ -33,6 +33,7 @@
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/details/SoDetail.h>
 
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
@@ -436,10 +437,15 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
     if(!pPath) 
         throw Base::TypeError("type must be of coin.SoPath");
-    SoDetail *det = getViewProviderPtr()->getDetailPath(
-            sub,static_cast<SoFullPath*>(pPath),PyObject_IsTrue(append));
-    if(!det)
+    SoDetail *det = 0;
+    if(!getViewProviderPtr()->getDetailPath(
+            sub,static_cast<SoFullPath*>(pPath),PyObject_IsTrue(append),det))
+    {
+        if(det) delete det;
         Py_Return;
+    }
+    if(!det)
+        return Py::new_reference_to(Py::True());
     return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
 }
 

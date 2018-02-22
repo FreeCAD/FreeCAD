@@ -706,8 +706,8 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
         path->append(grpVp->getChildRoot());
     }
 
-    auto det = vp->getDetailPath(subname, static_cast<SoFullPath*>(path),true);
-    if(path->getLength()) {
+    SoDetail *det = 0;
+    if(vp->getDetailPath(subname, static_cast<SoFullPath*>(path),true,det) && path->getLength()) {
         auto node = new SoFCPathAnnotation;
         node->setPath(path);
         pcGroupOnTop->addChild(node);

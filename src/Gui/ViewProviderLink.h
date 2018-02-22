@@ -219,7 +219,7 @@ public:
     void onChanged(const App::Property* prop) override;
     std::vector<App::DocumentObject*> claimChildren(void) const override;
     bool getElementPicked(const SoPickedPoint *, std::string &) const override;
-    SoDetail* getDetailPath(const char *, SoFullPath *, bool) const override;
+    bool getDetailPath(const char *, SoFullPath *, bool, SoDetail *&) const override;
 
     void finishRestoring() override;
 

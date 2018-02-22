@@ -578,7 +578,7 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
     const char *ret = shape.getElementName(name.c_str(),true);
     if(ret != name.c_str()) {
         str.str("");
-        str << Part::TopoShape::elementMapPrefix() << ret << '.' << name;
+        str << Data::ComplexGeoData::elementMapPrefix() << ret << '.' << name;
         name = str.str();
     }
     return name;

@@ -36,6 +36,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
 # include <Inventor/misc/SoChildList.h>
+# include <Inventor/details/SoDetail.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -416,22 +417,29 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     return true;
 }
 
-SoDetail *ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append) const
+bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
 {
     auto len = path->getLength();
     if(!append && len>=2)
         len -= 2;
-    auto det = ViewProvider::getDetailPath(subname,path,append);
-    if(det || !subname || !*subname) return det;
+    if(ViewProvider::getDetailPath(subname,path,append,det)) {
+        if(det || !subname || !*subname)
+            return true;
+    }
+
+    if(det) {
+        delete det;
+        det = 0;
+    }
 
     const char *dot = strchr(subname,'.');
-    if(!dot) return 0;
+    if(!dot) return false;
     auto obj = getObject();
-    if(!obj || !obj->getNameInDocument()) return 0;
+    if(!obj || !obj->getNameInDocument()) return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj) return 0;
+    if(!sobj) return false;
     auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp) return 0;
+    if(!vp) return false;
 
     auto childRoot = getChildRoot();
     if(!childRoot) 
@@ -439,15 +447,16 @@ SoDetail *ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullP
     else {
         auto idx = pcModeSwitch->whichChild.getValue();
         if(idx < 0 || pcModeSwitch->getChild(idx)!=childRoot)
-            return 0;
+            return false;
         path->append(childRoot);
     }
+    bool ret = false;
     if(path->getLength()) {
         SoNode * tail = path->getTail();
         const SoChildList * children = tail->getChildren();
         if(children && children->find(vp->getRoot())>=0)
-            det = vp->getDetailPath(dot+1,path,true);
+            ret = vp->getDetailPath(dot+1,path,true,det);
     }
-    return det;
+    return ret;
 }
 

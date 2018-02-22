@@ -765,24 +765,24 @@ bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subnam
     return true;
 }
 
-SoDetail *ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool append) const {
+bool ViewProvider::getDetailPath(const char *subelement, SoFullPath *pPath, bool append, SoDetail *&det) const {
     if(pcRoot->findChild(pcModeSwitch) < 0) {
         // this is possible in case of editing, where the switch node
         // of the linked view object is temparaly removed from its root
-        if(append) 
-            pPath->append(pcRoot);
-        return 0;
+        // if(append)
+        //     pPath->append(pcRoot);
+        return false;
     }
     if(append) {
         pPath->append(pcRoot);
         pPath->append(pcModeSwitch);
     }
-    SoDetail *det = 0;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         if(ext->extensionGetDetailPath(subelement,pPath,det))
-            return det;
-    return getDetail(subelement);
+            return true;
+    det = getDetail(subelement);
+    return true;
 }
 
 int ViewProvider::partialRender(const std::vector<std::string> &elements, bool clear) {
@@ -801,16 +801,18 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
         SoSelectionElementAction::Append,true);
     for(const auto &element : elements) {
         path->truncate(0);
-        SoDetail *det = getDetailPath(element.c_str(),path,false);
-        if(!det) {
-            FC_LOG("partial render element not found: " << element);
-            continue;
+        SoDetail *det = 0;
+        if(getDetailPath(element.c_str(),path,false,det)) {
+            if(!det) {
+                FC_LOG("partial render element not found: " << element);
+                continue;
+            }
+            FC_LOG("partial render (" << path->getLength() << "): " << element);
+            action.setElement(det);
+            action.apply(path);
+            ++count;
         }
-        FC_LOG("partial render (" << path->getLength() << "): " << element);
-        action.setElement(det);
-        action.apply(path);
         delete det;
-        ++count;
     }
     path->unref();
     return count;

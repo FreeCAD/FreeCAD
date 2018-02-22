@@ -148,7 +148,7 @@ public:
      * nodes starting just after the mode switch node up till the mode switch of
      * the linked view provider.
      */
-    virtual SoDetail* getDetailPath(const char *subelement, SoFullPath *pPath, bool append) const;
+    virtual bool getDetailPath(const char *subelement, SoFullPath *pPath, bool append, SoDetail *&det) const;
 
     /** partial rendering setup
      *

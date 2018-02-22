@@ -181,11 +181,11 @@ public:
         if (det) return det;
         return ViewProviderT::getDetail(name);
     }
-    virtual SoDetail* getDetailPath(const char *name, SoFullPath *path, bool append) const {
-        SoDetail *det = 0;
-        if(imp->getDetailPath(name,path,append,det) != ViewProviderPythonFeatureImp::NotImplemented)
-            return det;
-        return ViewProviderT::getDetailPath(name,path,append);
+    virtual bool getDetailPath(const char *name, SoFullPath *path, bool append,SoDetail *&det) const {
+        auto ret = imp->getDetailPath(name,path,append,det);
+        if(ret == ViewProviderPythonFeatureImp::NotImplemented)
+            return ViewProviderT::getDetailPath(name,path,append,det);
+        return ret == ViewProviderPythonFeatureImp::Accepted;
     }
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
         return ViewProviderT::getSelectionShape(Element);
