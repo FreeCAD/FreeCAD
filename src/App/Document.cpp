@@ -43,7 +43,7 @@ an adjacence list. This gives the opportunity to calculate the shortest
 recompute path. Also enables more complicated dependencies beyond trees.
 
 
-@see App::Application
+@see App::Application 
 @see App::DocumentObject
 */
 
@@ -1690,11 +1690,11 @@ bool Document::save (void)
 		std::string bn;
 		std::string pbn;
 		if (ext.length() >0) {
-			bn=fi.filePath().substr(0,fi.filePath().length()-ext.length()-1);
-			pbn=fi.fileName().substr(0,fi.fileName().length()-ext.length()-1);
+			bn=fi.filePath().substr(0,fi.filePath().length()-ext.length());
+			pbn=fi.fileName().substr(0,fi.fileName().length()-ext.length());
 		} else {
-			bn=fi.filePath();
-			pbn=fi.fileName();
+			bn=fi.filePath()+".";
+			pbn=fi.fileName()+".";
 		}
 		
 		bool backup = true;
@@ -1719,7 +1719,12 @@ bool Document::save (void)
                     std::string file = it->fileName();
 					std::string fext =it->extension(); 
 					
-					if ((startswith(file, fn) && (fext !="FCBak")) || ((fext =="FCBak") && startswith(file, pbn))){
+					if ((startswith(file, fn) && (fext !="FCBak")) || 
+						( (fext =="FCBak") && 
+						  // reenforcing identification of the backup file 
+						  //the right length what avoid confusing the backup of two projects starting with the same pattern
+						  (file.length() == (pbn.length()+21)) &&
+						   startswith(file, pbn))){
                         // starts with the same file name
 						std::string suf(file.substr(fn.length()));
 
@@ -1762,7 +1767,7 @@ bool Document::save (void)
 				struct tm * timeinfo = localtime(& s);
 				char buffer[20];
 				strftime(buffer,sizeof(buffer),"%Y%m%d-%H%M%S",timeinfo);
-				str << bn << "." << buffer << ".FCBak";
+				str << bn << buffer << ".FCBak";
 				//milliseconds (removed as always 0)
 				// sprintf(buffer, "%03d", ti.getMiliseconds());
 				// str<< "-"<<buffer;
