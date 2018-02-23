@@ -87,7 +87,10 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
         number_of_increments = len(m['Results'])
         for result_set in m['Results']:
-            eigenmode_number = result_set['number']
+            if 'number' in result_set:
+                eigenmode_number = result_set['number']
+            else:
+                eigenmode_number = 0
             step_time = result_set['time']
             step_time = round(step_time, 2)
             if eigenmode_number > 0:
@@ -162,8 +165,14 @@ def readResult(frd_input):
     mode_temp_found = False
     mode_massflow_found = False
     mode_networkpressure_found = False
+    end_of_section_found = False
+    end_of_frd_data_found = False
     input_continues = False
+    mode_eigen_changed = False
+    mode_time_changed = False
+
     eigenmode = 0
+    eigentemp = 0
     elem = -1
     elemType = 0
     timestep = 0
@@ -366,8 +375,10 @@ def readResult(frd_input):
 
         # Check if we found new eigenmode line
         if line[5:10] == "PMODE":
-            # we found a new eigenmode
-            eigenmode = int(line[30:36])
+            eigentemp = int(line[30:36])
+            if eigentemp > eigenmode:
+                eigenmode = eigentemp
+                mode_eigen_changed = True
 
         # Check if we found new time step
         if line[4:10] == "1PSTEP":
@@ -377,6 +388,7 @@ def readResult(frd_input):
             timetemp = float(line[13:25])
             if timetemp > timestep:
                 timestep = timetemp
+                mode_time_changed = True
 
         # Check if we found displacement section
         if line[5:9] == "DISP":
@@ -466,80 +478,117 @@ def readResult(frd_input):
 
         # Check if we found the end of a section
         if line[1:3] == "-3":
+            end_of_section_found = True
+
+            if nodes_found:
+                nodes_found = False
+                node_element_section = True
+
+            if elements_found:
+                elements_found = False
+                node_element_section = True
+
             if mode_disp_found:
+                mode_results['disp'] = mode_disp
+                mode_disp = {}
                 mode_disp_found = False
+                node_element_section = False
 
             if mode_stress_found:
+                mode_results['stress'] = mode_stress
+                mode_results['stressv'] = mode_stressv
+                mode_stress = {}
+                mode_stressv = {}
                 mode_stress_found = False
+                node_element_section = False
 
             if mode_strain_found:
+                mode_results['strainv'] = mode_strain
+                mode_strain = {}
                 mode_strain_found = False
+                node_element_section = False
 
             if mode_peeq_found:
+                mode_results['peeq'] = mode_peeq
+                mode_peeq = {}
                 mode_peeq_found = False
+                node_element_section = False
 
             if mode_temp_found:
+                mode_results['temp'] = mode_temp
+                mode_temp = {}
                 mode_temp_found = False
-
-            if mode_time_found:
-                mode_time_found = False
+                node_element_section = False
 
             if mode_massflow_found:
+                mode_results['mflow'] = mode_massflow
+                mode_massflow = {}
                 mode_massflow_found = False
+                node_element_section = False
 
             if mode_networkpressure_found:
-                mode_networkpressure_found = False
-
-            if mode_disp and mode_stress and mode_strain and mode_temp:
-                mode_results = {}
-                mode_results['number'] = eigenmode
-                mode_results['disp'] = mode_disp
-                mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
-                mode_results['strainv'] = mode_strain
-                mode_results['peeq'] = mode_peeq
-                mode_results['temp'] = mode_temp
-                mode_results['time'] = timestep
-                results.append(mode_results)
-                mode_disp = {}
-                mode_stress = {}
-                mode_stressv = {}
-                mode_strain = {}
-                mode_peeq = {}
-                mode_temp = {}
-                eigenmode = 0
-
-            if mode_disp and mode_stress and mode_strain:
-                mode_results = {}
-                mode_results['number'] = eigenmode
-                mode_results['disp'] = mode_disp
-                mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
-                mode_results['strainv'] = mode_strain
-                mode_results['peeq'] = mode_peeq
-                mode_results['time'] = 0  # Don't return time if static
-                results.append(mode_results)
-                mode_disp = {}
-                mode_stress = {}
-                mode_stressv = {}
-                mode_strain = {}
-                mode_peeq = {}
-                eigenmode = 0
-
-            if mode_massflow and mode_networkpressure:
-                mode_results = {}
-                mode_results['number'] = eigenmode
-                mode_results['mflow'] = mode_massflow
                 mode_results['npressure'] = mode_networkpressure
-                mode_results['time'] = timestep
-                results.append(mode_results)
-                mode_massflow = {}
+                mode_networkpressure_found = False
                 mode_networkpressure = {}
-                eigenmode = 0
-            nodes_found = False
-            elements_found = False
+                node_element_section = False
 
+            '''
+            print('---- End of Section --> Mode_Results may be changed ----')
+            for key in sorted(mode_results.keys()):
+                if key is 'number' or key is 'time':
+                    print(key + ' --> ' + str(mode_results[key]))
+                else:
+                    print(key + ' --> ' + str(len(mode_results[key])))
+            print('----Mode_Results----\n')
+            '''
+
+        # Check if we found the end of frd data
+        if line[1:5] == "9999":
+            end_of_frd_data_found = True
+
+        if (mode_eigen_changed or mode_time_changed or end_of_frd_data_found) and end_of_section_found and not node_element_section:
+
+            '''
+            print('\n\n----Append mode_results to results')
+            print(line)
+            for key in sorted(mode_results.keys()):
+                if key is 'number' or key is 'time':
+                    print(key + ' --> ' + str(mode_results[key]))
+                else:
+                    print(key + ' --> ' + str(len(mode_results[key])))
+            print('----Append Mode_Results----\n')
+            '''
+
+            # append mode_results to results and reset mode_result
+            results.append(mode_results)
+            mode_results = {}
+            end_of_section_found = False
+
+        # on changed --> write changed values in mode_result --> will be the first to do on an empty mode_result
+        if mode_eigen_changed:
+            mode_results['number'] = eigenmode
+            mode_eigen_changed = False
+
+        if mode_time_changed:
+            mode_results['time'] = timestep
+            # mode_results['time'] = 0  # Don't return time if static  # WARUM?
+            mode_time_found = False
+            mode_time_changed = False
+
+        # here we are in the indent of loop for every line in frd file, do not add a print here :-)
+
+    # close frd file if loop over all lines is finished
     frd_file.close()
+
+    '''
+    # debug prints and checks with the read data
+    print('\n\n----RESULTS values begin----')
+    print(len(results))
+    # print('\n')
+    # print(results)
+    print('----RESULTS values end----\n\n')
+    '''
+
     if not inout_nodes:
         if results:
             if 'mflow' in results[0] or 'npressure' in results[0]:
