@@ -152,16 +152,16 @@ def readResult(frd_input):
     mode_massflow = {}
     mode_networkpressure = {}
 
-    mode_disp_found = False
     nodes_found = False
+    elements_found = False
+    mode_time_found = False
+    mode_disp_found = False
     mode_stress_found = False
     mode_strain_found = False
     mode_peeq_found = False
     mode_temp_found = False
     mode_massflow_found = False
     mode_networkpressure_found = False
-    mode_time_found = False
-    elements_found = False
     input_continues = False
     eigenmode = 0
     elem = -1
@@ -170,25 +170,27 @@ def readResult(frd_input):
     timetemp = 0
 
     for line in frd_file:
+
         # Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True
-        # first lets extract the node and coordinate information from the results file
         if nodes_found and (line[1:3] == "-1"):
+            # we found a nodes line, lets extract the node and coordinate data
             elem = int(line[4:13])
             nodes_x = float(line[13:25])
             nodes_y = float(line[25:37])
             nodes_z = float(line[37:49])
             nodes[elem] = FreeCAD.Vector(nodes_x, nodes_y, nodes_z)
-        # Check if we found nodes section
+
+        # Check if we found elements section
         if line[4:6] == "3C":
             elements_found = True
-        # first lets extract element number
         if elements_found and (line[1:3] == "-1"):
+            # we found a first element line, lets extract element number
             elem = int(line[4:13])
             elemType = int(line[14:18])
-        # then import elements
         if elements_found and (line[1:3] == "-2"):
+            # we found a second element line, lets extract the elements
             # node order fits with node order in writeAbaqus() in FemMesh.cpp
             if elemType == 1:
                 # C3D8 CalculiX --> hexa8 FreeCAD
@@ -362,23 +364,36 @@ def readResult(frd_input):
                 else:
                     elements_seg3[elem] = (nd1, nd2, nd3)  # normal node numbering for D, B32 elements
 
-        # Check if we found new eigenmode
+        # Check if we found new eigenmode line
         if line[5:10] == "PMODE":
+            # we found a new eigenmode
             eigenmode = int(line[30:36])
+
+        # Check if we found new time step
+        if line[4:10] == "1PSTEP":
+            mode_time_found = True
+        if mode_time_found and (line[2:7] == "100CL"):
+            # we found the new time step line
+            timetemp = float(line[13:25])
+            if timetemp > timestep:
+                timestep = timetemp
+
         # Check if we found displacement section
         if line[5:9] == "DISP":
             mode_disp_found = True
-        # we found a displacement line in the frd file
         if mode_disp_found and (line[1:3] == "-1"):
+            # we found a displacement line
             elem = int(line[4:13])
             mode_disp_x = float(line[13:25])
             mode_disp_y = float(line[25:37])
             mode_disp_z = float(line[37:49])
             mode_disp[elem] = FreeCAD.Vector(mode_disp_x, mode_disp_y, mode_disp_z)
+
+        # Check if we found stress section
         if line[5:11] == "STRESS":
             mode_stress_found = True
-        # we found a stress line in the frd file
         if mode_stress_found and (line[1:3] == "-1"):
+            # we found a stress line
             elem = int(line[4:13])
             stress_1 = float(line[13:25])
             stress_2 = float(line[25:37])
@@ -388,44 +403,44 @@ def readResult(frd_input):
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
             mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
+
+        # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
             mode_strain_found = True
-        # we found a strain line in the frd file
         if mode_strain_found and (line[1:3] == "-1"):
+            # we found a strain line in the frd file
             elem = int(line[4:13])
             strain_1 = float(line[13:25])
             strain_2 = float(line[25:37])
             strain_3 = float(line[37:49])
-#            strain_4 = float(line[49:61])  #Not used in vector
-#            strain_5 = float(line[61:73])
-#            strain_6 = float(line[73:85])
+            # strain_4 = float(line[49:61])  # Not used in vector
+            # strain_5 = float(line[61:73])
+            # strain_6 = float(line[73:85])
             mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
 
+        # Check if we found an equivalent plastic strain section
         if line[5:7] == "PE":
             mode_peeq_found = True
-        # we found an equivalent plastic strain line in the frd file
         if mode_peeq_found and (line[1:3] == "-1"):
+            # we found an equivalent plastic strain line
             elem = int(line[4:13])
             peeq = float(line[13:25])
             mode_peeq[elem] = (peeq)
-        # Check if we found a time step
-        if line[4:10] == "1PSTEP":
-            mode_time_found = True
-        if mode_time_found and (line[2:7] == "100CL"):
-            timetemp = float(line[13:25])
-            if timetemp > timestep:
-                timestep = timetemp
+
+        # Check if we found a temperature section
         if line[5:11] == "NDTEMP":
             mode_temp_found = True
-        # we found a temperatures line in the frd file
         if mode_temp_found and (line[1:3] == "-1"):
+            # we found a temperature line
             elem = int(line[4:13])
             temperature = float(line[13:25])
             mode_temp[elem] = (temperature)
+
+        # Check if we found a mass flow section
         if line[5:11] == "MAFLOW":
             mode_massflow_found = True
-        # we found a mass flow line in the frd file
         if mode_massflow_found and (line[1:3] == "-1"):
+            # we found a mass flow line
             elem = int(line[4:13])
             massflow = float(line[13:25])
             mode_massflow[elem] = (massflow * 1000)  # convert units to kg/s from t/s
@@ -434,10 +449,12 @@ def readResult(frd_input):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
                         mode_massflow[node] = (massflow * 1000)  # convert units to kg/s from t/s
+
+        # Check if we found a network pressure section
         if line[5:11] == "STPRES":
             mode_networkpressure_found = True
-        # we found a network pressure line in the frd file
         if mode_networkpressure_found and (line[1:3] == "-1"):
+            # we found a network pressure line
             elem = int(line[4:13])
             networkpressure = float(line[13:25])
             mode_networkpressure[elem] = (networkpressure)
@@ -446,7 +463,8 @@ def readResult(frd_input):
                     if elem == int(inout_nodes[i][1]):
                         node = int(inout_nodes[i][2])
                         mode_networkpressure[node] = (networkpressure)
-        # Check for the end of a section
+
+        # Check if we found the end of a section
         if line[1:3] == "-3":
             if mode_disp_found:
                 mode_disp_found = False
