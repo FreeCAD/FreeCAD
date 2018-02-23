@@ -123,7 +123,28 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_3_freq_analysis(
+    def test_3_static_material_nonlinar(
+        self
+    ):
+        # set up
+        from femexamples.material_nl_platewithhole import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "nonlinear material test"
+        base_name = "mat_nonlinear"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_matnonlinear"
+        )
+
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+        )
+
+    # ********************************************************************************************
+    def test_4_freq_analysis(
         self
     ):
         # set up
@@ -156,7 +177,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_4_thermomech_analysis(
+    def test_5_thermomech_analysis(
         self
     ):
         # set up
@@ -189,7 +210,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_5_Flow1D_thermomech_analysis(
+    def test_6_Flow1D_thermomech_analysis(
         self
     ):
         # set up
@@ -222,7 +243,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_6_contact_shell_shell(
+    def test_7_contact_shell_shell(
         self
     ):
         # set up
