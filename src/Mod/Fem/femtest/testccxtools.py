@@ -271,25 +271,10 @@ class FemCcxAnalysisTest(unittest.TestCase):
         ret = testtools.compare_inp_files(static_analysis_inp_file, static_multiplemat_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        '''
-        # read results and compare them
-        # do we really need to check result reading on any example
-        # mhh not for any static but for sure once of each for static, freq, thermo, Flow
-        fea.setup_working_dir(self.test_file_dir)
-        fea.set_base_name(static_base_name)
-        fea.set_inp_file_name()
-        fea.load_results()
-        static_expected_values = self.test_file_dir + "cube_multiplemat_expected_values"
-        ret = testtools.compare_stats(fea, static_expected_values, 'CalculiX_static_results')
-        self.assertFalse(ret, "Invalid results read from .frd file")
-        '''
-
         static_save_fc_file = static_multiplemat_dir + static_base_name + '.fcstd'
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
         fcc_print('--------------- End of FEM ccxtools multiple material test ---------------')
-
-        # warum heisst das inp file Mesh.inp ? Besser wuerde doch der base name sein ? dann auch ein self weniger ...
 
     def test_3_freq_analysis(self):
         fcc_print('--------------- Start of FEM tests ---------------')
