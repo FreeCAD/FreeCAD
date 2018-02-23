@@ -1490,7 +1490,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
         }
     }
     FC_TIME_LOG(t,"makeSection count: " << sections.size()<<", total");
-    return sections;
+    return std::move(sections);
 }
 
 TopoDS_Shape Area::getPlane(gp_Trsf *trsf) {
@@ -2073,29 +2073,47 @@ TopoDS_Wire Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
         if(pnext.SquareDistance(pt)<Precision::SquareConfusion())
             continue;
         if(v.m_type == 0) {
-            mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pnext).Edge());
+            auto edge = BRepBuilderAPI_MakeEdge(pt,pnext).Edge();
+            mkWire.Add(edge);
         } else {
             gp_Pnt center(v.m_c.x,v.m_c.y,0);
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
-            if(fabs(r-r2) > Precision::Confusion()) {
-                double d = pt.Distance(pnext);
-                double q = sqrt(r*r - d*d*0.25);
-                double x = (pt.X()+pnext.X())*0.5;
-                double y = (pt.Y()+pnext.Y())*0.5;
-                double dx = q*(pt.Y()-pnext.Y())/d;
-                double dy = q*(pnext.X()-pt.X())/d;
-                gp_Pnt newCenter(x + dx, y + dy,0);
-                if(IsLeft(pt,pnext,center) != IsLeft(pt,pnext,newCenter)) {
-                    newCenter.SetX(x - dx);
-                    newCenter.SetY(y - dy);
+            bool fix_arc = fabs(r-r2) > Precision::Confusion();
+            while(1) {
+                if(fix_arc) {
+                    double d = pt.Distance(pnext);
+                    double rr = r*r;
+                    double dd = d*d*0.25;
+                    double q = rr<=dd?0:sqrt(rr-dd);
+                    double x = (pt.X()+pnext.X())*0.5;
+                    double y = (pt.Y()+pnext.Y())*0.5;
+                    double dx = q*(pt.Y()-pnext.Y())/d;
+                    double dy = q*(pnext.X()-pt.X())/d;
+                    gp_Pnt newCenter(x + dx, y + dy,0);
+                    if(IsLeft(pt,pnext,center) != IsLeft(pt,pnext,newCenter)) {
+                        newCenter.SetX(x - dx);
+                        newCenter.SetY(y - dy);
+                    }
+                    AREA_WARN("Arc correction: "<<r<<", "<<r2<<", center"<<
+                            AREA_XYZ(center)<<"->"<<AREA_XYZ(newCenter));
+                    center = newCenter;
                 }
-                AREA_WARN("Arc correction: "<<r<<", "<<r2<<", center"<<
-                        AREA_XYZ(center)<<"->"<<AREA_XYZ(newCenter));
-                center = newCenter;
+                gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
+                try {
+                    auto edge = BRepBuilderAPI_MakeEdge(gp_Circ(axis,r),pt,pnext).Edge();
+                    mkWire.Add(edge);
+                    break;
+                } catch(Standard_Failure &e) {
+                    if(!fix_arc) {
+                        fix_arc = true;
+                        AREA_WARN("OCC exception on making arc: " << e.GetMessageString());
+                    }else {
+                        AREA_ERR("OCC exception on making arc: " << e.GetMessageString());
+                        throw;
+                    }
+                }
             }
-            gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
-            mkWire.Add(BRepBuilderAPI_MakeEdge(gp_Circ(axis,r),pt,pnext).Edge());
         }
         pt = pnext;
     }
@@ -2582,7 +2600,7 @@ struct ShapeInfo{
             if(max_dist>0 && d>max_dist)
                 break;
         }
-        return wires;
+        return std::move(wires);
     }
 };
 
@@ -2783,7 +2801,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                 foreachSubshape(shape,
                     WireOrienter(wires,dir,orientation,direction), TopAbs_WIRE);
         }
-        return wires;
+        return std::move(wires);
     }
 
     ShapeParams rparams(abscissa,nearest_k>0?nearest_k:1,orientation,direction);
@@ -2965,7 +2983,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     FC_DURATION_LOG(rparams.rd,"rtree clean");
     FC_DURATION_LOG(rparams.xd,"BRepExtrema");
     FC_TIME_LOG(t,"sortWires total");
-    return wires;
+    return std::move(wires);
 }
 
 static inline void addParameter(bool verbose, Command &cmd, const char *name,
