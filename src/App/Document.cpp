@@ -1623,7 +1623,9 @@ bool Document::saveCopy(const char* file)
 }
 
 bool fileComparisonByDate (Base::FileInfo i,Base::FileInfo j) { return (i.lastModified()>j.lastModified()); }
-
+bool startswith(std::string st1, std::string st2) {
+	return st1.substr(0,st2.length()) == st2;
+}
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
@@ -1683,6 +1685,18 @@ bool Document::save (void)
         }
         // if saving the project data succeeded rename to the actual file name
         Base::FileInfo fi(FileName.getValue());
+		
+		std::string ext = fi.extension();
+		std::string bn;
+		std::string pbn;
+		if (ext.length() >0) {
+			bn=fi.filePath().substr(0,fi.filePath().length()-ext.length()-1);
+			pbn=fi.fileName().substr(0,fi.fileName().length()-ext.length()-1);
+		} else {
+			bn=fi.filePath();
+			pbn=fi.fileName();
+		}
+		
 		bool backup = true;
 		bool backupManagementError = false;
 		if (fi.exists()) {
@@ -1697,17 +1711,19 @@ bool Document::save (void)
 		
             // if (backup) 
 			{ // remove the extra backups
-                //int nSuff = 0;
                 std::string fn = fi.fileName();
                 Base::FileInfo di(fi.dirPath());
                 std::vector<Base::FileInfo> backup;
                 std::vector<Base::FileInfo> files = di.getDirectoryContent();
                 for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
                     std::string file = it->fileName();
-                    if (file.substr(0,fn.length()) == fn) {
+					std::string fext =it->extension(); 
+					
+					if ((startswith(file, fn) && (fext !="FCBak")) || ((fext =="FCBak") && startswith(file, pbn))){
                         // starts with the same file name
 						std::string suf(file.substr(fn.length()));
-                        if (suf.size() > 0 && suf != uuid && suf != ".fcstd") {
+
+                        if (suf.size() > 0 && suf != uuid && fext != "fcstd") {
                             backup.push_back(*it);
                         }
                     }
@@ -1746,7 +1762,7 @@ bool Document::save (void)
 				struct tm * timeinfo = localtime(& s);
 				char buffer[20];
 				strftime(buffer,sizeof(buffer),"%Y%m%d-%H%M%S",timeinfo);
-				str << fi.filePath() << "." << buffer ;
+				str << bn << "." << buffer << ".FCBak";
 				//milliseconds (removed as always 0)
 				// sprintf(buffer, "%03d", ti.getMiliseconds());
 				// str<< "-"<<buffer;
@@ -1775,7 +1791,7 @@ bool Document::save (void)
 				fi.deleteFile();
 			}
 			catch (...) {
-				Base::Console().Warning("Cannot remove backup file: %s\n", fi.fileName()); 
+				Base::Console().Warning("Cannot remove backup file: %s\n", fi.fileName().c_str()); 
 				backupManagementError= true;
 			}
 		}
