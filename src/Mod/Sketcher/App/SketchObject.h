@@ -182,6 +182,7 @@ public:
     int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeoBeforeMoving=false);
     /// retrieves the coordinates of a point
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
+    static Base::Vector3d getPoint(const Part::Geometry *geo, PointPos PosId);
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
@@ -364,7 +365,12 @@ public:
         { return convertSubName(subname.c_str()); }
     std::vector<std::pair<Base::Vector3d,std::string> > getPointRefs(const char *subname);
 
+    void setGeoHistoryLevel(int level);
+    int getGeoHistoryLevel() const {return geoHistoryLevel;}
+
 protected:
+
+    void generateExternalId(const char *);
 
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
@@ -382,6 +388,9 @@ protected:
      \retval list - the supported geometry list
      */
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
+
+    void updateGeoHistory();
+    void generateId(Part::Geometry *geo);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
@@ -416,10 +425,16 @@ private:
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 
-    mutable std::vector<App::Document::StringID> externalGeoKeys;
-    mutable std::map<long,std::pair<long,long> > externalGeoMap;
-    mutable std::map<long,long> geoMap;
-    mutable bool geoCached;
+    std::vector<App::Document::StringID> externalGeoKeys;
+    std::map<long,std::pair<long,long> > externalGeoMap;
+    std::map<long,long> geoMap;
+
+    int geoHistoryLevel;
+    std::vector<long> geoIdHistory;
+    long geoLastId;
+
+    class GeoHistory;
+    std::unique_ptr<GeoHistory> geoHistory;
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;

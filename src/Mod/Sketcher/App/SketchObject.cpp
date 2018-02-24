@@ -64,10 +64,22 @@
 //# include <QtGlobal>
 #endif
 
+#include <boost/version.hpp>
+#include <boost/config.hpp>
+#if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
+// for fixing issue https://svn.boost.org/trac/boost/ticket/9332
+#   include "boost_fix/intrusive/detail/memory_util.hpp"
+#   include "boost_fix/container/detail/memory_util.hpp"
+#endif
+#include <boost/geometry.hpp>
+#include <boost/geometry/index/rtree.hpp>
+#include <boost/geometry/geometries/geometries.hpp>
+#include <boost/geometry/geometries/register/point.hpp>
+
 #include <boost/bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/Part.h>
@@ -114,7 +126,11 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Exports,         (0)  ,"Sketch",(App::PropertyType)(App::Prop_Hidden),"Sketch export geometry");
     ADD_PROPERTY_TYPE(LastGeoID,      (0)  ,"Sketch",(App::PropertyType)(App::Prop_Output|App::Prop_Hidden|App::Prop_ReadOnly),"For generating geometry ID");
 
-    geoCached = false;
+    geoLastId = 0;
+
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    geoHistoryLevel = hGrpp->GetInt("GeometryHistoryLevel",1);
+
     allowOtherBody = true;
     allowUnaligned = true;
 
@@ -295,6 +311,218 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     }
 
     return err;
+}
+
+namespace bg = boost::geometry;
+namespace bgi = boost::geometry::index;
+
+BOOST_GEOMETRY_REGISTER_POINT_3D(
+        Base::Vector3d,double,bg::cs::cartesian,x,y,z)
+
+class SketchObject::GeoHistory {
+public:
+    typedef bgi::linear<16> Parameters;
+
+    typedef std::set<long> IdSet;
+    typedef std::pair<IdSet,IdSet> IdSets;
+    typedef std::list<IdSet> AdjList;
+
+    //associate a geo with connected ones on both points
+    typedef std::map<long, IdSets> AdjMap; 
+
+    // maps start/end points to all existing geo to query and update adjacencies
+    typedef std::pair<Base::Vector3d,AdjList::iterator> Value; 
+
+    AdjList adjlist;
+    AdjMap adjmap;
+    bgi::rtree<Value,Parameters> rtree;
+
+    AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
+        std::vector<Value> ret;
+        rtree.query(bgi::nearest(pt,1),std::back_inserter(ret));
+        if(ret.size()) {
+            // NOTE: we are using square distance here, the 1e-6 threshold is
+            // very forgiving. You should have used Precision::SquareConfisuion(), 
+            // which is 1e-14. However, there is a problem with current
+            // commandGeoCreate. They create new geometry with initial point of
+            // the exact mouse position, instead of the pre-selected point
+            // position, and rely on auto constraint to snap in the new
+            // geometry. So, we cannot use a very strict threshold here.
+            double tol = strict?Precision::SquareConfusion()*10:1e-6;
+            double d = Base::DistanceP2(ret[0].first,pt);
+            if(d<tol) {
+                if(!strict) FC_TRACE("hit " << FC_xyz(pt));
+                return ret[0].second;
+            }
+            if(!strict)
+                FC_TRACE("miss " << FC_xyz(pt) << ", " << FC_xyz(ret[0].first) << ", " << d);
+        }else if(!strict)
+            FC_TRACE("miss " << FC_xyz(pt));
+        return adjlist.end();
+    }
+
+    void clear() {
+        rtree.clear();
+        adjlist.clear();
+    }
+
+    void update(const Base::Vector3d &pt, long id) {
+        FC_TRACE("update " << id << ", " << FC_xyz(pt));
+        auto it = find(pt);
+        if(it==adjlist.end()) {
+            adjlist.emplace_back();
+            it = adjlist.end();
+            --it;
+            rtree.insert(std::make_pair(pt,it));
+        }
+        it->insert(id);
+    }
+
+    void finishUpdate(const std::map<long,long> &geomap) {
+        IdSet oldset;
+        for(auto &idset : adjlist) {
+            oldset.clear();
+            for(long _id : idset) {
+                long id = abs(_id);
+                auto &v = adjmap[id];
+                auto &adj = _id>0?v.first:v.second;
+                for(auto it=adj.begin(),itNext=it;it!=adj.end();it=itNext) {
+                    ++itNext;
+                    long other = *it;
+                    if(geomap.find(other) == geomap.end()) {
+                        // remember those deleted id's
+                        oldset.insert(other);
+                        FC_TRACE("insert old " << id << ", " << other);
+                    } else if(idset.find(other)==idset.end()) {
+                        // delete any existing id's that are no longer in the adj list
+                        FC_TRACE("erase " << id << ", " << other);
+                        adj.erase(it);
+                    }
+                }
+                // now merge the current ones
+                for(long _id2 : idset) {
+                    long id2 = abs(_id2);
+                    if(id!=id2) {
+                        adj.insert(id2);
+                        FC_TRACE("insert new " << id << ", " << id2);
+                    }
+                }
+            }
+            // now reset the adjacency list with only those deleted id's,
+            // because the whole purpose of this history is to try to reuse
+            // deleted id.
+            idset.swap(oldset);
+        }
+    }
+
+    AdjList::iterator end() {
+        return adjlist.end();
+    }
+
+    size_t size() {
+        return rtree.size();
+    }
+}; 
+
+void SketchObject::updateGeoHistory() {
+    if(!geoHistoryLevel) return;
+
+    if(!geoHistory)
+        geoHistory.reset(new GeoHistory);
+
+    FC_TIME_INIT(t);
+    const auto &geos = getInternalGeometry();
+    geoHistory->clear();
+    for(int i=0;i<(int)geos.size();++i) {
+        auto geo = geos[i];
+        auto pstart = getPoint(geo,start);
+        auto pend = getPoint(geo,end);
+        geoHistory->update(pstart,geo->Id);
+        if(pstart!=pend)
+            geoHistory->update(pend,-geo->Id);
+    }
+    geoHistory->finishUpdate(geoMap);
+    FC_TIME_LOG(t,"update geometry history (" << geoHistory->size() << ", " << geoMap.size()<<')');
+}
+
+#define GEN_ID(geo) do {\
+        generateId(geo); \
+        FC_LOG("generate id " << geo->Id << ", " << geoLastId);\
+    }while(0);
+
+void SketchObject::generateId(Part::Geometry *geo) {
+    if(!geoHistoryLevel) {
+        geo->Id = ++geoLastId;
+        geoMap[geo->Id] = (long)Geometry.getSize();
+        return;
+    }
+
+    if(!geoHistory)
+        updateGeoHistory();
+
+    // Search geo histroy to see if the start point and end point belongs to
+    // some deleted geometries. Prefer matching both start and end point. If
+    // can't then try start and then end. Generate new id if none is found.
+    auto pstart = getPoint(geo,start);
+    auto it = geoHistory->find(pstart,false);
+    auto pend = getPoint(geo,end);
+    auto it2 = it;
+    if(pstart!=pend) {
+        it2 = geoHistory->find(pend,false);
+        if(it2 == geoHistory->end())
+            it2 = it;
+    }
+    long newId = -1;
+    std::vector<long> found;
+
+    if(geoHistoryLevel<=1 && (it==geoHistory->end() || it2==it)) {
+        // level<=1 means we only reuse id if both start and end matches
+        newId = ++geoLastId;
+        goto END;
+    }
+
+    if(it!=geoHistory->end()) {
+        for(long id  : *it) {
+            if(geoMap.find(id)==geoMap.end()) {
+                if(it2 == it) {
+                    newId = id;
+                    goto END;
+                }
+                found.push_back(id);
+            }else
+                FC_TRACE("ignore " << id);
+        }
+    }
+    if(it2!=it) {
+        if(found.empty()) {
+            // no candidate exists
+            for(long id : *it2) {
+                if(geoMap.find(id)==geoMap.end()) {
+                    newId = id;
+                    goto END;
+                }
+                FC_TRACE("ignore " << id);
+            }
+        }else{
+            // already some candidate exists, search for matching of both
+            // points
+            for(long id : found) {
+                if(it2->find(id)!=it2->end()) {
+                    newId = id;
+                    goto END;
+                }
+                FC_TRACE("ignore " << id);
+            }
+        }
+    }
+    if(found.size()) {
+        FC_TRACE("found " << found.front());
+        newId = found.front();
+    }else 
+        newId = ++geoLastId;
+END:
+    geo->Id = newId;
+    geoMap[newId] = (long)Geometry.getSize();
 }
 
 int SketchObject::setDatum(int ConstrId, double Datum)
@@ -556,12 +784,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
     return lastSolverStatus;
 }
 
-Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
-{
-    if(!(GeoId == H_Axis || GeoId == V_Axis
-         || (GeoId <= getHighestCurveIndex() && GeoId >= -getExternalGeometryCount()) ))
-        throw Base::Exception("SketchObject::getPoint. Invalid GeoId was supplied.");
-    const Part::Geometry *geo = getGeometry(GeoId);
+Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId) {
     if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
         const Part::GeomPoint *p = static_cast<const Part::GeomPoint*>(geo);
         if (PosId == start || PosId == mid || PosId == end)
@@ -574,12 +797,14 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
             return lineSeg->getEndPoint();
     } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
         const Part::GeomCircle *circle = static_cast<const Part::GeomCircle*>(geo);
-        if (PosId == mid)
-            return circle->getCenter();
+        auto pt = circle->getCenter();
+        if(PosId == end)
+             pt.x += circle->getRadius();
     } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
         const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse*>(geo);
-        if (PosId == mid)
-            return ellipse->getCenter();
+        auto pt = ellipse->getCenter();
+        if(PosId == end) 
+            pt = ellipse->getMajorAxisDir()*ellipse->getMajorRadius();
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
         if (PosId == start)
@@ -619,8 +844,16 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
         else if (PosId == end)
             return bsp->getEndPoint();
     }
-
     return Base::Vector3d();
+}
+
+Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
+{
+    if(!(GeoId == H_Axis || GeoId == V_Axis
+         || (GeoId <= getHighestCurveIndex() && GeoId >= -getExternalGeometryCount()) ))
+        throw Base::Exception("SketchObject::getPoint. Invalid GeoId was supplied.");
+    const Part::Geometry *geo = getGeometry(GeoId);
+    return getPoint(geo,PosId);
 }
 
 int SketchObject::getAxisCount(void) const
@@ -707,14 +940,13 @@ std::vector<Part::Geometry *> SketchObject::supportedGeometry(const std::vector<
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction/*=false*/)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-    auto id = LastGeoID.getValue();
 
     std::vector< Part::Geometry * > newVals(vals);
     std::vector< Part::Geometry * > copies;
     copies.reserve(geoList.size());
     for (std::vector<Part::Geometry *>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
         Part::Geometry* copy = (*it)->copy();
-        copy->Id = ++id;
+        GEN_ID(copy);
         if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
             copy->Construction = construction;
         }
@@ -724,7 +956,6 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
 
     newVals.insert(newVals.end(), copies.begin(), copies.end());
     Geometry.setValues(newVals);
-    LastGeoID.setValue(id);
     for (std::vector<Part::Geometry *>::iterator it = copies.begin(); it != copies.end(); ++it)
         delete *it;
     Constraints.acceptGeometry(getCompleteGeometry());
@@ -739,13 +970,12 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
 
     std::vector< Part::Geometry * > newVals(vals);
     Part::Geometry *geoNew = geo->copy();
-    geoNew->Id = LastGeoID.getValue()+1;
+    GEN_ID(geoNew);
     
     if(geoNew->getTypeId() != Part::GeomPoint::getClassTypeId())
         geoNew->Construction = construction;
     
     newVals.push_back(geoNew);
-    LastGeoID.setValue(geoNew->Id);
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     delete geoNew;
@@ -2327,7 +2557,6 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
 
 int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId/*=Sketcher::none*/)
 {
-    auto id = LastGeoID.getValue();
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
     std::vector< Part::Geometry * > newgeoVals(geovals);
 
@@ -2355,7 +2584,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
         for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
             const Part::Geometry *geo = getGeometry(*it);
             Part::Geometry *geosym = geo->copy();
-            geosym->Id = ++id;
+            GEN_ID(geosym);
 
             // Handle Geometry
             if(geosym->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -2616,7 +2845,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
         for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
             const Part::Geometry *geo = getGeometry(*it);
             Part::Geometry *geosym = geo->copy();
-            geosym->Id = ++id;
+            GEN_ID(geosym);
 
             // Handle Geometry
             if(geosym->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -2755,7 +2984,6 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
     // add the geometry
     Geometry.setValues(newgeoVals);
-    LastGeoID.setValue(id);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
 
@@ -2863,7 +3091,6 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 {
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
     std::vector< Part::Geometry * > newgeoVals(geovals);
-    auto id = LastGeoID.getValue();
 
     const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
     std::vector< Constraint * > newconstrVals(constrvals);
@@ -2919,7 +3146,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
             for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
                 const Part::Geometry *geo = getGeometry(*it);
                 Part::Geometry *geocopy = geo->copy();
-                geocopy->Id = ++id;
+                GEN_ID(geocopy);
 
                 // Handle Geometry
                 if(geocopy->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -3115,7 +3342,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 constrline->setPoints(sp,ep);
                 constrline->Construction=true;
 
-                constrline->Id = ++id;
+                GEN_ID(constrline);
                 newgeoVals.push_back(constrline);
 
                 Constraint *constNew;
@@ -3256,7 +3483,6 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     }
 
     Geometry.setValues(newgeoVals);
-    LastGeoID.setValue(id);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
 
@@ -4195,11 +4421,10 @@ bool SketchObject::convertToNURBS(int GeoId)
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);    
-    auto id = LastGeoID.getValue();
 
     if (GeoId < 0) { // external geometry
         newVals.push_back(bspline);
-        bspline->Id = ++id;
+        GEN_ID(bspline);
     }
     else { // normal geometry
 
@@ -4223,7 +4448,6 @@ bool SketchObject::convertToNURBS(int GeoId)
     }
 
     Geometry.setValues(newVals);
-    LastGeoID.setValue(id);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     
@@ -4456,8 +4680,6 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     if (!isCarbonCopyAllowed(pObj->getDocument(), pObj, xinv, yinv))
         return -1;
     
-    auto id = LastGeoID.getValue();
-
     SketchObject * psObj = static_cast<SketchObject *>(pObj);
     
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
@@ -4478,7 +4700,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
         Part::Geometry *geoNew = (*it)->copy();
-        geoNew->Id = ++id;
+        GEN_ID(geoNew);
         if(construction) {
             geoNew->Construction = true;
         }
@@ -4497,7 +4719,6 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         newcVals.push_back(newConstr);
     }
     
-    LastGeoID.setValue(id);
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
@@ -5858,8 +6079,28 @@ void SketchObject::Restore(XMLReader &reader)
 
 void SketchObject::onChanged(const App::Property* prop)
 {
-    if (prop == &Geometry)
-        geoCached = false;
+    if (prop == &Geometry) {
+        geoMap.clear();
+        const auto &vals = getInternalGeometry();
+        for(long i=0;i<(long)vals.size();++i) {
+            auto geo = vals[i];
+            if(!geo->Id) 
+                geo->Id = ++geoLastId;
+            else if(geo->Id > geoLastId)
+                geoLastId = geo->Id;
+            bool warned = false;
+            while(!geoMap.insert(std::make_pair(geo->Id,i)).second) {
+                if(!warned) {
+                    warned = true;
+                    FC_WARN("duplicate geometry id " << geo->Id);
+                }
+                geo->Id = ++geoLastId;
+            }
+        }
+        if(LastGeoID.getValue()!=geoLastId)
+            LastGeoID.setValue(geoLastId);
+        updateGeoHistory();
+    }
 
     if (isRestoring() && prop == &Geometry) {
         std::vector<Part::Geometry*> geom = Geometry.getValues();
@@ -5902,13 +6143,6 @@ void SketchObject::onChanged(const App::Property* prop)
 void SketchObject::onDocumentRestored()
 {
     try {
-        if(!LastGeoID.getValue()) {
-            const auto &vals = getInternalGeometry();
-            int i = 0;
-            for(;i<(int)vals.size();++i)
-                vals[i]->Id = i+1;
-            LastGeoID.setValue(i);
-        }
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
@@ -6285,61 +6519,43 @@ std::string SketchObject::checkSubName(const char *sub) const{
 
     int geoId;
     const Part::Geometry *geo = 0;
-    
-    while(1) {
-        switch(subname[0]) {
-        case 'g': {
-            auto it = geoMap.find(id);
-            if(it!=geoMap.end()) {
-                std::ostringstream ss;
-                geoId = it->second;
-                geo = getGeometry(geoId);
-            }
-            break;
-        } case 'e': {
-            auto it = externalGeoMap.find(id);
-            if(it!=externalGeoMap.end()) {
-                geoId = -it->second.first;
-                id = it->second.second;
-                geo  = getGeometry(geoId);
-            }
-            break;
-        }}
-        if(geo && geo->Id == id) {
-            char sep;
-            int posId = none;
+    switch(subname[0]) {
+    case 'g': {
+        auto it = geoMap.find(id);
+        if(it!=geoMap.end()) {
             std::ostringstream ss;
-            if((iss >> sep >> std::hex >> posId) && sep=='v') {
-                int idx = getVertexIndexGeoPos(geoId,static_cast<PointPos>(posId));
-                if(idx < 0) {
-                    FC_ERR("invalid subname " << sub);
-                    return sub;
-                }
-                ss << "Vertex" << idx+1;
-            }else if(geoId>=0)
-                ss << "Edge" << geoId+1;
-            else
-                ss << "ExternalEdge" << (-geoId-3)+1;
-            return ss.str();
+            geoId = it->second;
+            geo = getGeometry(geoId);
         }
-        switch(subname[0]) {
-        case 'g': {
-            if(geoCached) {
-                FC_ERR("cannot find subname " << sub);
+        break;
+    } case 'e': {
+        auto it = externalGeoMap.find(id);
+        if(it!=externalGeoMap.end()) {
+            geoId = -it->second.first;
+            id = it->second.second;
+            geo  = getGeometry(geoId);
+        }
+        break;
+    }}
+    if(geo && geo->Id == id) {
+        char sep;
+        int posId = none;
+        std::ostringstream ss;
+        if((iss >> sep >> std::hex >> posId) && sep=='v') {
+            int idx = getVertexIndexGeoPos(geoId,static_cast<PointPos>(posId));
+            if(idx < 0) {
+                FC_ERR("invalid subname " << sub);
                 return sub;
             }
-            geoCached = true;
-            geoMap.clear();
-            int i=0;
-            for(auto v : getInternalGeometry())
-                geoMap[v->Id] = i++;
-            break;
-        } case 'e':
-            // external geo map is generated in rebuildExternalGeometry()
-            FC_ERR("cannot find subname " << sub);
-            return sub;
-        }
+            ss << "Vertex" << idx+1;
+        }else if(geoId>=0)
+            ss << "Edge" << geoId+1;
+        else
+            ss << "ExternalEdge" << (-geoId-3)+1;
+        return ss.str();
     }
+    FC_ERR("cannot find subname " << sub);
+    return sub;
 }
 
 bool SketchObject::geoIdFromShapeType(const char *shapetype, int &geoId, PointPos &posId) const {
