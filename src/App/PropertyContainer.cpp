@@ -196,11 +196,34 @@ void PropertyContainer::Save (Base::Writer &writer) const
 {
     std::map<std::string,Property*> Map;
     getPropertyMap(Map);
-  
+
+    std::vector<std::pair<std::string,Property*> > transients;
+    for(auto it=Map.begin();it!=Map.end();++it) {
+        if (it->second->testStatus(Property::Transient) ||
+            (getPropertyType(it->second) & Prop_Transient)) 
+        {
+            transients.push_back(*it);
+            Map.erase(it);
+        }
+    }
+
     writer.incInd(); // indentation for 'Properties Count'
-    writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size() << "\">" << endl;
-    std::map<std::string,Property*>::iterator it;
-    for (it = Map.begin(); it != Map.end(); ++it)
+    writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size() 
+                    << "\" TransientCount=\"" << transients.size() << "\">" << endl;
+
+    // First store transient properties to persisit their status value. We use
+    // a new element named "_Property" so that the save file can be opened by
+    // older version FC.
+    writer.incInd();
+    for(auto it=transients.begin();it!=transients.end();++it) {
+        writer.Stream() << writer.ind() << "<_Property name=\"" << it->first 
+            << "\" type=\"" << it->second->getTypeId().getName() 
+            << "\" status=\"" << it->second->getStatus() << "\"/>" << std::endl;
+    }
+    writer.decInd();
+
+    // Now store normal properties
+    for (auto it = Map.begin(); it != Map.end(); ++it)
     {
         writer.incInd(); // indentation for 'Property name'
         writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
@@ -212,31 +235,26 @@ void PropertyContainer::Save (Base::Writer &writer) const
 
         writer.incInd(); // indentation for the actual property
 
-        // Don't write transient properties 
-        if (!it->second->testStatus(Property::Transient) &&
-            !(getPropertyType(it->second) & Prop_Transient))
-        {
-            try {
-                // We must make sure to handle all exceptions accordingly so that
-                // the project file doesn't get invalidated. In the error case this
-                // means to proceed instead of aborting the write operation.
-                it->second->Save(writer);
-            }
-            catch (const Base::Exception &e) {
-                Base::Console().Error("%s\n", e.what());
-            }
-            catch (const std::exception &e) {
-                Base::Console().Error("%s\n", e.what());
-            }
-            catch (const char* e) {
-                Base::Console().Error("%s\n", e);
-            }
-#ifndef FC_DEBUG
-            catch (...) {
-                Base::Console().Error("PropertyContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
-            }
-#endif
+        try {
+            // We must make sure to handle all exceptions accordingly so that
+            // the project file doesn't get invalidated. In the error case this
+            // means to proceed instead of aborting the write operation.
+            it->second->Save(writer);
         }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("PropertyContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
+        }
+#endif
         writer.decInd(); // indentation for the actual property
         writer.Stream() << writer.ind() << "</Property>" << endl;    
         writer.decInd(); // indentation for 'Property name'
@@ -249,9 +267,12 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
-
+    int transientCount = 0;
+    if(reader.hasAttribute("TransientCount"))
+        transientCount = reader.getAttributeAsUnsigned("TransientCount");
+    Cnt += transientCount;
     for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
+        reader.readElement(i<transientCount?"_Property":"Property");
         const char* PropName = reader.getAttribute("name");
         const char* TypeName = reader.getAttribute("type");
         Property* prop = getPropertyByName(PropName);
@@ -296,7 +317,8 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         }
 #endif
 
-        reader.readEndElement("Property");
+        if(i>=transientCount)
+            reader.readEndElement("Property");
     }
     reader.readEndElement("Properties");
 }

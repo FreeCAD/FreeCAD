@@ -427,6 +427,15 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
         //PropertyContainer might change the type of a property but not its name. In this
         //case we would force to read-in a wrong property type and the behaviour would be
         //undefined.
+        
+        //NOTE2: we are not preserving property status bits, which can
+        //dynamically mark a property as transient. This may cause assertion
+        //failure whensome files saved in new version of FC failed is opened in
+        //old version FC (thrown by getAttribute() because of missing
+        //attributes). However, this should be rare, because dynamic property
+        //are only used by python scripts, and none of the existing script is
+        //using status bit the mark transient. Newer script using this feature
+        //shall expect to work in new version FC only.
 
         // Don't read transient properties
         if (!prop->testStatus(Property::Transient) && 
