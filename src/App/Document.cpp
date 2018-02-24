@@ -1716,22 +1716,24 @@ bool Document::save (void)
                 std::vector<Base::FileInfo> backup;
                 std::vector<Base::FileInfo> files = di.getDirectoryContent();
                 for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                    std::string file = it->fileName();
-					std::string fext =it->extension(); 
-					
-					if ((startswith(file, fn) && (fext !="FCBak")) || 
-						( (fext =="FCBak") && 
-						  // reenforcing identification of the backup file 
-						  //the right length what avoid confusing the backup of two projects starting with the same pattern
-						  (file.length() == (pbn.length()+21)) &&
-						   startswith(file, pbn))){
-                        // starts with the same file name
-						std::string suf(file.substr(fn.length()));
+					if (it->isFile()) {
+						std::string file = it->fileName();
+						std::string fext =it->extension(); 
+						
+						if ((startswith(file, fn) && (fext !="FCBak")) || 
+							( (fext =="FCBak") && 
+							  // reenforcing identification of the backup file 
+							  //the right length what avoid confusing the backup of two projects starting with the same pattern
+							  (file.length() == (pbn.length()+21)) &&
+							   startswith(file, pbn))){
+							// starts with the same file name
+							std::string suf(file.substr(fn.length()));
 
-                        if (suf.size() > 0 && suf != uuid && fext != "fcstd") {
-                            backup.push_back(*it);
-                        }
-                    }
+							if (suf.size() > 0 && suf != uuid && fext != "fcstd") {
+								backup.push_back(*it);
+							}
+						}
+					}
                 }
 				 
 
