@@ -375,7 +375,8 @@
 #define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg,_file,_line)
 
 #define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
-#define FC_XY(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+#define FC_xy(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+#define FC_xyz(_pt) '('<<(_pt).x<<", " << (_pt).y<<", " << (_pt).z<<')'
 
 #ifndef FC_LOG_NO_TIMING
 #   define FC_TIME_CLOCK high_resolution_clock
