@@ -1738,8 +1738,8 @@ std::string PropertyStringList::getPyValue(PyObject *item) const {
         ret = PyString_AsString(item);
 #endif
 #if PY_MAJOR_VERSION >= 3
-    } else if (PyBytes_Check(value)) {
-        ret = PyBytes_AsString(value);
+    } else if (PyBytes_Check(item)) {
+        ret = PyBytes_AsString(item);
 #endif
     } else {
         std::string error = std::string("type in list must be str or unicode, not ");
