@@ -71,7 +71,8 @@ public:
         RmvPreselect,
         SetPreselectSignal, // to request 3D view to change preselect
         PickedListChanged,
-        UpdateSelection, // to update a selection (e.g. in case of visibile change)
+        ShowSelection, // to show a selection
+        HideSelection, // to hide a selection
     };
     SelectionChanges()
     : Type(ClrSelection)
@@ -239,7 +240,7 @@ public:
     /// Add to selection with several sub-elements
     bool addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
     /// Update a selection 
-    bool updateSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
+    bool updateSelection(bool show, const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
     /// Remove from selection (for internal use)
     void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             const std::vector<SelObj> *pickedList = 0);

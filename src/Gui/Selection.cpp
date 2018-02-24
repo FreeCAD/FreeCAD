@@ -629,7 +629,8 @@ unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const 
 
 void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
     if(msg.Type == SelectionChanges::SetPreselectSignal ||
-       msg.Type == SelectionChanges::UpdateSelection)
+       msg.Type == SelectionChanges::ShowSelection ||
+       msg.Type == SelectionChanges::HideSelection)
         return;
     
     if(msg.pDocName && 
@@ -997,7 +998,8 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     }
 }
 
-bool SelectionSingleton::updateSelection(const char* pDocName, const char* pObjectName, const char* pSubName)
+bool SelectionSingleton::updateSelection(bool show, const char* pDocName, 
+                            const char* pObjectName, const char* pSubName)
 {
     if(!pDocName || !pObjectName)
         return false;
@@ -1016,7 +1018,7 @@ bool SelectionSingleton::updateSelection(const char* pDocName, const char* pObje
     Chng.x         = 0;
     Chng.y         = 0;
     Chng.z         = 0;
-    Chng.Type      = SelectionChanges::UpdateSelection;
+    Chng.Type      = show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection;
 
     FC_LOG("Update Selection "<<pDocName << '.' << pObjectName << '.' 
             << (pSubName?pSubName:"(null)"));
@@ -1195,9 +1197,11 @@ void SelectionSingleton::setVisible(int visible) {
                 }else
                     vis = !vis;
 
+                if(!vis)
+                    updateSelection(false,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 parent->setElementVisible(elementName.c_str(),vis?true:false);
-                if(vis) 
-                    updateSelection(sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                if(vis)
+                    updateSelection(true,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 continue;
             }
 
@@ -1217,9 +1221,11 @@ void SelectionSingleton::setVisible(int visible) {
 
             if(vis) {
                 vp->show();
-                updateSelection(sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
-            }else
+                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+            } else {
+                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 vp->hide();
+            }
         }
     }
 }
@@ -1509,7 +1515,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "addSelection(object,[string,float,float,float]) -- Add an object to the selection\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"updateSelection",      (PyCFunction) SelectionSingleton::sUpdateSelection, METH_VARARGS,
-     "updateSelection(object,[string]) -- update an object in the selection\n"
+     "updateSelection(show,object,[string]) -- update an object in the selection\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, METH_VARARGS,
      "removeSelection(object) -- Remove an object from the selection"},
@@ -1643,9 +1649,10 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
 
 PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
+    PyObject *show;
     PyObject *object;
     char* subname=0;
-    if (PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type),&object,&subname)) {
+    if (PyArg_ParseTuple(args, "OO!|s", &show,&(App::DocumentObjectPy::Type),&object,&subname)) {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
@@ -1653,7 +1660,8 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
             return NULL;
         }
 
-        Selection().updateSelection(docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
+        Selection().updateSelection(PyObject_IsTrue(show),
+                docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
         Py_Return;
     }
 

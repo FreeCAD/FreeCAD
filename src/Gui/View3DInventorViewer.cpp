@@ -737,8 +737,12 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         return;
 
     switch(Reason.Type) {
-    case SelectionChanges::UpdateSelection:
-        Reason.Type = SelectionChanges::AddSelection;
+    case SelectionChanges::ShowSelection:
+    case SelectionChanges::HideSelection:
+        if(Reason.Type == SelectionChanges::ShowSelection)
+            Reason.Type = SelectionChanges::AddSelection;
+        else
+            Reason.Type = SelectionChanges::RmvSelection;
         // fall through
     case SelectionChanges::SetSelection:
     case SelectionChanges::AddSelection:     
