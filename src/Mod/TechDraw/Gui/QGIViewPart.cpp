@@ -654,6 +654,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double sectionSpan;
         double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
+        double fontSize = getPrefFontSize();
         if (horiz)  {
             sectionSpan = m_border->rect().width() + sectionFudge;
             xVal = sectionSpan / 2.0;
@@ -664,8 +665,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             yVal = sectionSpan / 2.0;
         }
         sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
-        sectionLine->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
-        sectionLine->setFont(m_font,Rez::guiX(6.0));
+        sectionLine->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+        sectionLine->setFont(m_font, fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(viewPart->Rotation.getValue());
         sectionLine->draw();
@@ -690,7 +691,7 @@ void QGIViewPart::drawCenterLines(bool b)
 
         QGICenterLine* centerLine;
         double sectionSpan;
-        double sectionFudge = 10.0;
+        double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
         if (horiz)  {
             centerLine = new QGICenterLine();
@@ -699,8 +700,9 @@ void QGIViewPart::drawCenterLines(bool b)
             sectionSpan = m_border->rect().width() + sectionFudge;
             xVal = sectionSpan / 2.0;
             yVal = 0.0;
+            centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
-            centerLine->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
+            centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
@@ -712,8 +714,9 @@ void QGIViewPart::drawCenterLines(bool b)
             sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
+            centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
-            centerLine->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
+            centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
@@ -1000,4 +1003,12 @@ bool QGIViewPart::getFaceEdgesPref(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     result = hGrp->GetBool("DrawFaceEdges", 0l);
     return result;
+}
+
+double QGIViewPart::getPrefFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    double fontSize = hGrp->GetFloat("LabelSize", 5.0);
+    return Rez::guiX(fontSize);
 }
