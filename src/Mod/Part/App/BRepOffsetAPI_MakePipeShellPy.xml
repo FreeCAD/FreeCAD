@@ -201,5 +201,13 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="simulate">
+			<Documentation>
+				<UserDocu>
+					simulate(int nbsec)
+					Simulates the resulting shape by calculating the given number of cross-sections.
+				</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>
