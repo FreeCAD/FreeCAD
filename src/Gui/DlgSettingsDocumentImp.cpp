@@ -71,6 +71,9 @@ void DlgSettingsDocumentImp::saveSettings()
     prefSaveThumbnail->onSave();
     prefAddLogo->onSave();
     prefSaveBackupFiles->onSave();
+    prefSaveBackupExtension->onSave();
+    prefSaveBackupDateFormat->onSave();
+	
     prefCountBackupFiles->onSave();
     prefDuplicateLabel->onSave();
     prefLicenseType->onSave();
@@ -100,6 +103,9 @@ void DlgSettingsDocumentImp::loadSettings()
     prefSaveThumbnail->onRestore();
     prefAddLogo->onRestore();
     prefSaveBackupFiles->onRestore();
+    prefSaveBackupExtension->onRestore();
+    prefSaveBackupDateFormat->onRestore();
+	
     prefCountBackupFiles->onRestore();
     prefDuplicateLabel->onRestore();
     prefLicenseType->onRestore();

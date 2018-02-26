@@ -96,6 +96,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 
+
+
 #ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
 #endif
@@ -1626,6 +1628,16 @@ bool fileComparisonByDate (Base::FileInfo i,Base::FileInfo j) { return (i.lastMo
 bool startswith(std::string st1, std::string st2) {
 	return st1.substr(0,st2.length()) == st2;
 }
+#include <regex>
+bool checkValidComplement(std::string file, std::string pbn, std::string ext) {
+	std::string cmpl = file.substr(pbn.length(),file.length()- pbn.length() - ext.length()-1);
+
+	std::regex e (R"(^[:0-9\.\-]*$)");
+	std::smatch what;
+	//bool res = boost::regex_search (cmpl.c_str(),what,e);
+	bool res = std::regex_search (cmpl,what,e);
+	return res;
+}
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
@@ -1699,12 +1711,30 @@ bool Document::save (void)
 		
 		bool backup = true;
 		bool backupManagementError = false;
+		bool useFCBackExtension = true;		
 		if (fi.exists()) {
             backup = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
             int count_bak = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
-		
+			useFCBackExtension = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBackExtension",false);
+			std::string	saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
+			int dateLength = 0;
+			{
+				time_t rawtime;
+				time( &rawtime );
+				struct tm * timeinfo = localtime(& rawtime);
+				char buffer1[100];
+				dateLength = strftime(buffer1,sizeof(buffer1),saveBackupDateFormat.c_str(),timeinfo);
+				if (dateLength == 0) {
+					dateLength=15;
+					saveBackupDateFormat = "%Y%m%d-%H%M%S";
+				} else {
+					dateLength--; // includes the trailing \0
+				}
+			}
             if (!backup) {
 				count_bak=1; // for cleaning eventual backups
 			}		
@@ -1718,25 +1748,23 @@ bool Document::save (void)
                 for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
 					if (it->isFile()) {
 						std::string file = it->fileName();
-						std::string fext =it->extension(); 
+						std::string fext = it->extension(); 
 						
-						if ((startswith(file, fn) && (fext !="FCBak")) || 
-							( (fext =="FCBak") && 
-							  // reenforcing identification of the backup file 
-							  //the right length what avoid confusing the backup of two projects starting with the same pattern
-							  (file.length() == (pbn.length()+21)) &&
-							   startswith(file, pbn))){
-							// starts with the same file name
-							std::string suf(file.substr(fn.length()));
-
-							if (suf.size() > 0 && suf != uuid && fext != "fcstd") {
-								backup.push_back(*it);
-							}
+					    // re-enforcing identification of the backup file 
+					    //the right length what avoid confusing the backup of two projects starting with the same pattern
+						if (
+							// old case
+							(startswith(file, fn) && (file.length()<fn.length()+3) && (file.length()>fn.length())) || 
+							// .FCBak case
+							( (fext =="FCBak") && startswith(file, pbn) &&
+							  (file.length() >= (pbn.length()+dateLength+6)) &&
+							  (file.length() <= (pbn.length()+dateLength+8)) &&
+							  (checkValidComplement(file, pbn, fext) ))){
+							backup.push_back(*it);
 						}
 					}
                 }
 				 
-
                 if (!backup.empty() && (int)backup.size() >= count_bak) {
 					std::sort (backup.begin(), backup.end(), fileComparisonByDate);
                    // delete the oldest backup file we found
@@ -1762,29 +1790,38 @@ bool Document::save (void)
 			}
 			{
 				// create a new backup file
-				std::stringstream str;
-				//str << fi.filePath() << (nSuff + 1);
-				Base::TimeInfo ti = fi.lastModified();
-				time_t s =ti.getSeconds();
-				struct tm * timeinfo = localtime(& s);
-				char buffer[20];
-				strftime(buffer,sizeof(buffer),"%Y%m%d-%H%M%S",timeinfo);
-				str << bn << buffer << ".FCBak";
-				//milliseconds (removed as always 0)
-				// sprintf(buffer, "%03d", ti.getMiliseconds());
-				// str<< "-"<<buffer;
-				fn = str.str();
 
-                if (fi.renameFile(fn.c_str()) == false) {
-					int ext = 0; 
-					while (ext < 99) {
+				int ext = 1;				
+				if (useFCBackExtension) {
+					std::stringstream str;
+					Base::TimeInfo ti = fi.lastModified();
+					time_t s =ti.getSeconds();
+					struct tm * timeinfo = localtime(& s);
+					char buffer[100];
+					strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),timeinfo);
+					str << bn << buffer << ".FCBak";
+					fn = str.str();
+
+					if (fi.renameFile(fn.c_str()) == false) {
+						while (ext < 100) {
+							if (fi.renameFile((fn+"-"+std::to_string(ext)).c_str()) == true) break;
+							ext++;
+						}
+					}
+				} else {
+					while (ext < 100) { // changed but simpler and solves also the delay sometimes introduced by google drive
+						std::string nname = fi.filePath()+std::to_string(ext);
+						Base::FileInfo nf(nname);
+						if (!nf.exists()) {
+							if (fi.renameFile(nname.c_str())) 
+								break;
+						}
 						ext++;
-						if (fi.renameFile((fn+"-"+std::to_string(ext)).c_str()) == true) break;
 					}
-					if (ext >99) {
-						Base::Console().Error("File not saved: Cannot rename project file to backup file\n");
-						throw Base::FileException("File not saved: Cannot rename project file to backup file", fi);
-					}
+				}
+				if (ext >=100) {
+					Base::Console().Error("File not saved: Cannot rename project file to backup file\n");
+					throw Base::FileException("File not saved: Cannot rename project file to backup file", fi);
 				}
             }
         } 
@@ -3202,7 +3239,6 @@ std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Typ
     }
     return Objects;
 }
-
 
 std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
 {
