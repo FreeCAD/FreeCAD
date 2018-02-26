@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-// idea:
-// - unwrap any meshed shells and output a 2d face (meshing is done externally)
-// - unwrap faces which are nurbs and return nurbs (no cuts, meshing internally)
-
 
 #ifndef MESHFLATTENING
 #define MESHFLATTENING
+
+// idea:
+// - unwrap any meshed shells and output a 2d face (meshing is done externally)
+// - unwrap faces which are nurbs and return nurbs (no cuts, meshing internally)
+// 	- TODO: map any curves from origin to flattened faces
 
 #include "MeshFlatteningNurbs.h"
 #include <BRepTools.hxx>
@@ -77,8 +78,6 @@ public:
 	// nurbs
 	ColMat<double, 2> ze_poles;   // compute
 	spMat A; // mapping between nurbs(poles) and mesh(vertices) computed with nurbs-basis-functions and uv_mesh
-
-	//
 
 };
 
