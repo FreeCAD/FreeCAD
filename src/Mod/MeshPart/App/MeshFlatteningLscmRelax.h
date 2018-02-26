@@ -89,6 +89,8 @@ public:
 
     void lscm();
     void relax(double);
+    void area_relax(double);
+    void edge_relax(double);
 
     ColMat<double, 3> get_flat_vertices_3D();
 

@@ -29,13 +29,16 @@
 #include <algorithm>
 #include <cmath>
 
+#include <set>
+#include <map>
+#include <vector>
+#include <tuple>
+
 #ifndef M_PI
 #define M_PI    3.14159265358979323846f
 #endif
 
 // TODO:
-// vertices, flat vertices = EIgen::MatrixXd (better python conversation, parallell)
-// make it a own library
 // area constrained (scale the final unwrapped mesh to the original area)
 // FEM approach
 
@@ -286,6 +289,92 @@ void LscmRelax::relax(double weight)
     this->sol = solver.solve(-rhs);
     this->set_shift(this->sol.head(this->vertices.cols() * 2) * weight);
     this->set_q_l_m();
+}
+
+
+void LscmRelax::area_relax(double weight)
+{
+//   1. create system of equation
+//   2. minimize lsq error
+    
+}
+
+void LscmRelax::edge_relax(double weight)
+{
+//  1. get all edges
+    std::set<std::array<long, 2>> edges;
+    std::array<long, 2> edge;
+    for(long i=0; i<this->triangles.cols(); i++)
+    {
+	for(int j=0; j<3; j++)
+	{
+	    long k = j+1;
+	    if (k==3)
+		k = 0;
+	    if (this->triangles(j, i) < this->triangles(k, i))
+		edge = std::array<long, 2>{this->triangles(j, i), this->triangles(k, i)};
+	    else
+		edge = std::array<long, 2>{this->triangles(k, i), this->triangles(j, i)};
+	    edges.insert(edge);
+	}
+    }
+//  2. create system
+    
+    std::vector<trip> K_g_triplets;
+    spMat K_g(this->vertices.cols() * 2 + 3, this->vertices.cols() * 2 + 3);
+    Eigen::VectorXd rhs(this->vertices.cols() * 2 + 3);
+    rhs.setZero();
+    for(auto edge : edges)
+    {
+// 	this goes to the right side
+	Vector3 v1_g = this->vertices.col(edge[0]);
+	Vector3 v2_g = this->vertices.col(edge[1]);
+	Vector2 v1_l = this->flat_vertices.col(edge[0]);
+	Vector2 v2_l = this->flat_vertices.col(edge[1]);
+	std::vector<int> range_4 {0, 1, 2, 3};
+	std::vector<long> indices {edge[0] * 2, edge[0] * 2 + 1, edge[1] * 2, edge[1] * 2 + 1};
+	double l_g = (v2_g - v1_g).norm();
+	double l_l = (v2_l - v1_l).norm();
+	Vector2 t = (v2_l - v1_l);  // direction
+	t.normalize();
+	
+	Eigen::Matrix<double, 1, 4> B;
+	Eigen::Matrix<double, 4, 4> K;
+	Eigen::Matrix<double, 4, 1> rhs_m;
+	
+	B << -t.x(), -t.y(), t.x(), t.y();
+	K = 1. / l_g * B.transpose() * B;
+	rhs_m = - B.transpose() * (l_g - l_l);
+	
+	
+	for(auto row: range_4)
+	{
+	    for (auto col: range_4)
+	    {
+		K_g_triplets.push_back(trip(indices[row], indices[col], (double) K(row, col)));
+	    }
+	    rhs(indices[row]) += rhs_m[row];
+	}
+    }
+    for (long i=0; i < this->flat_vertices.cols() ; i++)
+    {
+        // fixing total ux
+        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2, 1));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2, i * 2, 1));
+        // fixing total uy
+        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 1, 1));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 1, i * 2 + 1, 1));
+        // fixing ux*y-uy*x
+        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2 + 2, - this->flat_vertices(1, i)));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2, - this->flat_vertices(1, i)));
+        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 2, this->flat_vertices(0, i)));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
+    }
+    K_g.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
+    Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
+    solver.compute(K_g);
+    this->sol = solver.solve(-rhs);
+    this->set_shift(this->sol.head(this->vertices.cols() * 2) * weight);
 }
 
 
