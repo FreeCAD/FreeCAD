@@ -1119,7 +1119,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if colors:
             if colors != obj.ViewObject.DiffuseColor:
                 if obj.Material and (len(colors) > 1):
-                    print obj.Label,colors
                     obj.ViewObject.DiffuseColor = colors
 
 class _ArchWindowTaskPanel:
