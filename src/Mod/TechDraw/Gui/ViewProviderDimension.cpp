@@ -67,7 +67,7 @@ ViewProviderDimension::ViewProviderDimension()
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
-    double weight = lg->getWeight("Graphic");
+    double weight = lg->getWeight("Thin");
     ADD_PROPERTY_TYPE(LineWidth,(weight)    ,group,(App::PropertyType)(App::Prop_None),"Dimension line weight");
 
     hGrp = App::GetApplication().GetUserParameter()
