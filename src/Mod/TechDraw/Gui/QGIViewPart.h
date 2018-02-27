@@ -100,7 +100,6 @@ protected:
     void removePrimitives(void);
     void removeDecorations(void);
     bool getFaceEdgesPref(void);
-    double getPrefFontSize(void);
 
 private:
     QList<QGraphicsItem*> deleteItems;
