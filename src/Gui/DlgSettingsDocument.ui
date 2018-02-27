@@ -611,6 +611,9 @@
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format of the date to use.&lt;/p&gt;&lt;p&gt;Default : %Y%m%d-%H%M%S&lt;/p&gt;&lt;p&gt;Format : &lt;a href=&quot;http://www.cplusplus.com/reference/ctime/strftime/&quot;&gt;C++ strftime&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
+            <property name="text">
+             <string>%Y%m%d-%H%M%S</string>
+            </property>
             <property name="prefEntry" stdset="0">
              <cstring>SaveBackupDateFormat</cstring>
             </property>

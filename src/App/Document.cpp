@@ -1638,6 +1638,16 @@ bool checkValidComplement(std::string file, std::string pbn, std::string ext) {
 	bool res = std::regex_search (cmpl,what,e);
 	return res;
 }
+
+
+bool renameFileNoErase (Base::FileInfo fi, std::string newName) {
+	// linux just replace the file if exists, and then the existence is to be tested before rename
+	Base::FileInfo nf(newName);
+	if (!nf.exists()) {
+		return fi.renameFile(newName.c_str());
+	}
+	return false;
+}
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
@@ -1799,23 +1809,19 @@ bool Document::save (void)
 					struct tm * timeinfo = localtime(& s);
 					char buffer[100];
 					strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),timeinfo);
-					str << bn << buffer << ".FCBak";
+					str << bn << buffer ;
+					//<< ".FCBak";
 					fn = str.str();
-
-					if (fi.renameFile(fn.c_str()) == false) {
+					if (renameFileNoErase(fi, fn+".FCBak") == false) {
 						while (ext < 100) {
-							if (fi.renameFile((fn+"-"+std::to_string(ext)).c_str()) == true) break;
+							if (renameFileNoErase(fi, fn+"-"+std::to_string(ext)+".FCBak") ) break;
 							ext++;
 						}
 					}
 				} else {
 					while (ext < 100) { // changed but simpler and solves also the delay sometimes introduced by google drive
-						std::string nname = fi.filePath()+std::to_string(ext);
-						Base::FileInfo nf(nname);
-						if (!nf.exists()) {
-							if (fi.renameFile(nname.c_str())) 
-								break;
-						}
+						// linux just replace the file if exists, and then the existence is to be tested before rename
+						if (renameFileNoErase(fi, fi.filePath()+std::to_string(ext)) ) break;
 						ext++;
 					}
 				}
