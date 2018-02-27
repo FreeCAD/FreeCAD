@@ -770,6 +770,7 @@ CmdPartCompound::CmdPartCompound()
     sToolTipText  = QT_TR_NOOP("Make a compound of several shapes");
     sWhatsThis    = "Part_Compound";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Compound";
 }
 
 void CmdPartCompound::activated(int iMsg)
