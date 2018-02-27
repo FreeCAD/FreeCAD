@@ -32,8 +32,9 @@ class CreateFlatMesh(BaseCommand):
         flattener = flatmesh.FaceUnwrapper(points, faces)
         flattener.findFlatNodes(5, 0.99)
         boundaries = flattener.getFlatBoundaryNodes()
-        print(flattener.ze_nodes)
-        print(boundaries)
+        print('number of nodes: {}'.format(len(flattener.ze_nodes)))
+        print('number of faces: {}'.format(len(flattener.tris)))
+	   
         wires = []
         for edge in boundaries:
             pi = Part.makePolygon([App.Vector(*node) for node in edge])
