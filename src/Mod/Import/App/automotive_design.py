@@ -39615,7 +39615,7 @@ class draughting_model_item_association(item_identified_representation_usage):
 			return eval_wr5_wr
 
 	def wr6(self):
-		eval_wr6_wr = (( not (('AUTOMOTIVE_DESIGN.'  +  'LINEAR_DIMENSION')  ==  TYPEOF(self.self.item_identified_representation_usage.self.identified_item)))  or  ((('AUTOMOTIVE_DESIGN.'  +  'DIMENSIONAL_SIZE')  ==  TYPEOF(self.self.item_identified_representation_usage.self.definition))  and  (((self.self.item_identified_representation_usage.self.definition.self.name  ==  'heigth')  or  (self.self.item_identified_representation_usage.self.definition.self.name  ==  'length'))  or  (self.self.item_identified_representation_usage.self.definition.self.name  ==  'width'))))
+		eval_wr6_wr = (( not (('AUTOMOTIVE_DESIGN.'  +  'LINEAR_DIMENSION')  ==  TYPEOF(self.self.item_identified_representation_usage.self.identified_item)))  or  ((('AUTOMOTIVE_DESIGN.'  +  'DIMENSIONAL_SIZE')  ==  TYPEOF(self.self.item_identified_representation_usage.self.definition))  and  (((self.self.item_identified_representation_usage.self.definition.self.name  ==  'height')  or  (self.self.item_identified_representation_usage.self.definition.self.name  ==  'length'))  or  (self.self.item_identified_representation_usage.self.definition.self.name  ==  'width'))))
 		if not eval_wr6_wr:
 			raise AssertionError('Rule wr6 violated')
 		else:
