@@ -1019,11 +1019,28 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Window_Tree.svg"
 
     def updateData(self,obj,prop):
+        if prop == "Shape":
+            if obj.Base:
+                if obj.Base.isDerivedFrom("Part::Compound"):
+                    if obj.ViewObject.DiffuseColor != obj.Base.ViewObject.DiffuseColor:
+                        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+                            obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
+                            obj.ViewObject.update()
+        elif prop == "CloneOf":
+            if obj.CloneOf:
+                mat = None
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        mat = obj.Material
+                if not mat: 
+                    if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
+                        if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
+                            obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+                            obj.ViewObject.update()
         if (prop in ["WindowParts","Shape"]):
             if obj.Shape:
                 if not obj.Shape.isNull():
                     self.colorize(obj)
-        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def onDelete(self,vobj,subelements):
         for o in vobj.Object.Hosts:
@@ -1073,19 +1090,24 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             ccol = None
             if len(obj.WindowParts) > i*5:
                 name = obj.WindowParts[(i*5)]
-                typeidx = (i*5)+1
+                mtype = obj.WindowParts[(i*5)+1]
                 if hasattr(obj,"Material"):
                     if obj.Material:
                         if hasattr(obj.Material,"Materials"):
                             if obj.Material.Names:
+                                mat = None
                                 if name in obj.Material.Names:
                                     mat = obj.Material.Materials[obj.Material.Names.index(name)]
+                                elif mtype in obj.Material.Names:
+                                    mat = obj.Material.Materials[obj.Material.Names.index(mtype)]
+                                if mat:
                                     if 'DiffuseColor' in mat.Material:
                                         if "(" in mat.Material['DiffuseColor']:
                                             ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                     if 'Transparency' in mat.Material:
                                         ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
             if not ccol:
+                typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
                     if typ == WindowPartTypes[2]: # transparent parts
@@ -1095,7 +1117,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             colors.extend([ccol for f in solids[i].Faces])
         #print("colors: ",colors)
         if colors:
-            obj.ViewObject.DiffuseColor = colors
+            if colors != obj.ViewObject.DiffuseColor:
+                if obj.Material and (len(colors) > 1):
+                    print obj.Label,colors
+                    obj.ViewObject.DiffuseColor = colors
 
 class _ArchWindowTaskPanel:
     '''The TaskPanel for Arch Windows'''
