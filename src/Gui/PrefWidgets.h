@@ -27,6 +27,8 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QRadioButton>
+#include <QFontComboBox>
+#include <QFont>
 #include <Base/Parameter.h>
 #include "Widgets.h"
 #include "Window.h"
@@ -320,6 +322,26 @@ private:
     QScopedPointer<PrefQuantitySpinBoxPrivate> d_ptr;
     Q_DISABLE_COPY(PrefQuantitySpinBox)
     Q_DECLARE_PRIVATE(PrefQuantitySpinBox)
+};
+
+/** The PrefFontBox class.
+ * \author wandererfan
+ */
+class GuiExport PrefFontBox : public QFontComboBox, public PrefWidget
+{
+  Q_OBJECT
+
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+
+public:
+  PrefFontBox ( QWidget * parent = 0 );
+  virtual ~PrefFontBox();
+
+protected:
+  // restore from/save to parameters
+  void restorePreferences();
+  void savePreferences();
 };
 
 } // namespace Gui
