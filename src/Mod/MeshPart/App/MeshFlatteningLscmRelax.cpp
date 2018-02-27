@@ -294,8 +294,72 @@ void LscmRelax::relax(double weight)
 
 void LscmRelax::area_relax(double weight)
 {
-//   1. create system of equation
-//   2. minimize lsq error
+//     TODO: doesn't work so far
+    std::vector<trip> K_g_triplets;
+    spMat K_g(this->vertices.cols() * 2 + 3, this->vertices.cols() * 2 + 3);
+    spMat K_g_lsq(this->triangles.cols(), this->vertices.cols() * 2 + 3);
+    Eigen::VectorXd rhs_lsq(this->triangles.cols());
+    Eigen::VectorXd rhs(this->vertices.cols() * 2 + 3);
+    rhs.setZero();
+
+    Eigen::Matrix<double, 1, 6> B;
+    double delta_a;
+    Vector2 v1, v2, v3, v12, v23, v31;
+    
+
+    for (long i=0; i<this->triangles.cols(); i++)
+    {
+//         1: construct B-mat in m-system
+        v1 = this->flat_vertices.col(this->triangles(0, i));
+        v2 = this->flat_vertices.col(this->triangles(1, i));
+        v3 = this->flat_vertices.col(this->triangles(2, i));
+        v12 = v2 - v1;
+        v23 = v3 - v2;
+        v31 = v1 - v3;
+        B << -v23.y(), v23.x(), -v31.y(), v31.x(), -v12.y(), v12.x();
+	delta_a = fabs(this->q_l_g(i, 0) * this->q_l_g(i, 2)) - 
+		  fabs(this->q_l_m(i, 0) * this->q_l_m(i, 2));
+	rhs_lsq[i] = delta_a * 0.1;
+	
+	std::array<int, 6> range_6 {0, 1, 2, 3, 4, 5};
+	std::array<long, 6> indices;
+	for (int index=0; index<3; index++)
+	{
+	    indices[index * 2] = this->triangles(index, i) * 2;
+	    indices[index * 2 + 1] = this->triangles(index, i) * 2 + 1;
+	}
+	
+	for(auto col: range_6)
+	{
+	    K_g_triplets.push_back(trip(i, indices[col], (double) B[col]));
+	}
+    }
+    K_g_lsq.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
+    K_g_triplets.clear();
+    
+	
+    for (long i=0; i < this->flat_vertices.cols() ; i++)
+    {
+        // fixing total ux
+        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2, 1));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2, i * 2, 1));
+        // fixing total uy
+        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 1, 1));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 1, i * 2 + 1, 1));
+        // fixing ux*y-uy*x
+        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2 + 2, - this->flat_vertices(1, i)));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2, - this->flat_vertices(1, i)));
+        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 2, this->flat_vertices(0, i)));
+        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
+    }
+    K_g.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
+    K_g += K_g_lsq.transpose() * K_g_lsq;
+    rhs = K_g_lsq.transpose() * rhs_lsq;
+    Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
+    solver.compute(K_g);
+    this->sol = solver.solve(-rhs);
+    this->set_shift(this->sol.head(this->vertices.cols() * 2) * weight);
+    this->set_q_l_m();
     
 }
 
