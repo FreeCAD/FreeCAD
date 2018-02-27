@@ -38,6 +38,7 @@
 #include <QGroupBox>
 #include <QGridLayout>
 #include <QTreeWidget>
+#include <QFontComboBox>
 
 namespace Base {
     class Quantity{};
@@ -581,6 +582,28 @@ private:
     QByteArray m_sPrefGrp;
 };
 
+// ------------------------------------------------------------------------------
+
+class PrefFontBox : public QFontComboBox
+{
+    Q_OBJECT
+
+    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+
+public:
+    PrefFontBox ( QWidget * parent = 0 );
+    virtual ~PrefFontBox();
+
+    QByteArray entryName    () const;
+    QByteArray paramGrpPath () const;
+    void  setEntryName     ( const QByteArray& name );
+    void  setParamGrpPath  ( const QByteArray& name );
+
+private:
+    QByteArray m_sPrefName;
+    QByteArray m_sPrefGrp;
+};
 } // namespace Gui
 
 #endif // GUI_CUSTOMWIDGETS_H
