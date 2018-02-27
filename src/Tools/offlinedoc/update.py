@@ -27,7 +27,7 @@ __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "http://www.freecadweb.org"
 
 """
-This script needs to be ran after the wiki has been fully downloaded. It has three usages:
+This script needs to be run after the wiki has been fully downloaded. It has three usages:
 
 1) If no revisions.txt file is found, it parses the contents of the wikifiles.txt file
    and, for each entry, it retrieves a corresponding revision ID, and creates a revisions.txt file
