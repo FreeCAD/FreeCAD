@@ -58,7 +58,7 @@ void DlgPrefsTechDrawImp::saveSettings()
     pcb_Background->onSave();
     pcb_Hatch->onSave();
 
-    le_LabelFont->onSave();
+    pfb_LabelFont->onSave();
     dsb_LabelSize->onSave();
 
     pfc_DefTemp->onSave();
@@ -85,7 +85,7 @@ void DlgPrefsTechDrawImp::loadSettings()
     pcb_Background->onRestore();
     pcb_Hatch->onRestore();
 
-    le_LabelFont->onRestore();
+    pfb_LabelFont->onRestore();
     dsb_LabelSize->onRestore();
 
     pfc_DefTemp->onRestore();

@@ -1224,3 +1224,35 @@ void PrefSlider::setParamGrpPath ( const QByteArray& name )
 {
     m_sPrefGrp = name;
 }
+
+// --------------------------------------------------------------------
+
+PrefFontBox::PrefFontBox ( QWidget * parent )
+  : QFontComboBox(parent)
+{
+}
+
+PrefFontBox::~PrefFontBox()
+{
+}
+
+QByteArray PrefFontBox::entryName () const
+{
+    return m_sPrefName;
+}
+
+QByteArray PrefFontBox::paramGrpPath () const
+{
+    return m_sPrefGrp;
+}
+
+void PrefFontBox::setEntryName ( const QByteArray& name )
+{
+    m_sPrefName = name;
+}
+
+void PrefFontBox::setParamGrpPath ( const QByteArray& name )
+{
+    m_sPrefGrp = name;
+}
+
