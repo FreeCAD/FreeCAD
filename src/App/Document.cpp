@@ -62,6 +62,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
+#include <boost/bimap.hpp>
 
 #ifdef USE_OLD_DAG
 #include <boost/graph/topological_sort.hpp>
@@ -143,6 +144,8 @@ typedef std::vector <size_t> Path;
 
 namespace App {
 
+typedef boost::bimap<StringHasherRef,int> HasherMap;
+
 // Pimpl class
 struct DocumentP
 {
@@ -158,8 +161,7 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
-    std::map<QByteArray,Document::StringID> stringHashes;
-    long stringHashID;
+    mutable HasherMap hashers;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
@@ -178,7 +180,6 @@ struct DocumentP
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
-        stringHashID = 0;
     }
 
     static
@@ -193,19 +194,6 @@ struct DocumentP
 } // namespace App
 
 PROPERTY_SOURCE(App::Document, App::PropertyContainer)
-
-Document::StringID Document::mapStringToID(const char *text) {
-    return mapStringToID(QByteArray(text));
-}
-
-Document::StringID Document::mapStringToID(const QByteArray &data) {
-    QCryptographicHash hash(QCryptographicHash::Sha1);
-    hash.addData(data);
-    auto &id = d->stringHashes[hash.result()];
-    if(!id) 
-        id = std::make_shared<const long>(++d->stringHashID);
-    return id;
-}
 
 bool Document::testStatus(Status pos) const
 {
@@ -1310,6 +1298,7 @@ void Document::setTransactionMode(int iMode)
 // constructor
 //--------------------------------------------------------------------------
 Document::Document(void)
+    :Hasher(new StringHasher)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -1401,8 +1390,6 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
     ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None), 
                         "Whether to show hidden object items in the tree view");
-    ADD_PROPERTY_TYPE(SaveAllStringIDs,(false), 0,PropertyType(Prop_None), 
-                        "Whether to preserve unreferenced string IDs");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
@@ -1473,48 +1460,37 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
+    d->hashers.clear();
+    addStringHasher(Hasher);
+
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
     << "<!--" << endl
     << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
     << "-->" << endl;
-
-    size_t count = 0;
-    if(SaveAllStringIDs.getValue())
-        count = d->stringHashes.size();
-    for(auto &v : d->stringHashes)
-        if(v.second.use_count()>1)
-            ++count;
 
     writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
                     << "\" FileVersion=\"" << writer.getFileVersion() 
-                    << "\" StringHashCount=\"" << count << "\">" << endl;
+                    << "\" StringHasher=\"1\">" << endl;
     
-    writer.incInd();
-    count = 0;
-    for(auto &v : d->stringHashes) {
-        if(SaveAllStringIDs.getValue() || v.second.use_count()>1)
-            writer.Stream() << "<Hash value=\""<< v.first.toBase64().constData()
-                            << "\" id=\""<<*v.second<<"\"/>" << endl;
-        else
-            ++count;
-    }
-    writer.decInd();
+    Hasher->Save(writer);
 
-    FC_LOG("string hash size " << d->stringHashes.size() << ", unused " << count);
-    
     PropertyContainer::Save(writer);
 
     // writing the features types
     writeObjects(d->objectArray, writer);
     writer.Stream() << "</Document>" << endl;
+
+    d->hashers.clear();
 }
 
 void Document::Restore(Base::XMLReader &reader)
 {
     int i,Cnt;
+    d->hashers.clear();
+    addStringHasher(Hasher);
 
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
@@ -1530,19 +1506,10 @@ void Document::Restore(Base::XMLReader &reader)
         reader.FileVersion = 0;
     }
 
-    d->stringHashes.clear();
-    d->stringHashID = 0;
-    if (reader.hasAttribute("StringHashCount")) {
-        int count = reader.getAttributeAsInteger("StringHashCount");
-        for(i=0;i<count;++i) {
-            reader.readElement("Hash");
-            QByteArray value(reader.getAttribute("value"));
-            long id = reader.getAttributeAsInteger("id");
-            if(d->stringHashID < id)
-                d->stringHashID = id;
-            d->stringHashes[QByteArray::fromBase64(value)] = std::make_shared<const long>(id);
-        }
-    }
+    if (reader.hasAttribute("StringHasher"))
+        Hasher->Restore(reader);
+    else
+        Hasher->clear();
 
     // When this document was created the FileName and Label properties
     // were set to the absolute path or file name, respectively. To save
@@ -1571,7 +1538,6 @@ void Document::Restore(Base::XMLReader &reader)
             reader.readElement("Feature");
             string type = reader.getAttribute("type");
             string name = reader.getAttribute("name");
-
             try {
                 addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
@@ -1607,6 +1573,23 @@ void Document::Restore(Base::XMLReader &reader)
     }
 
     reader.readEndElement("Document");
+    d->hashers.clear();
+}
+
+std::pair<bool,int> Document::addStringHasher(StringHasherRef hasher) const {
+    auto ret = d->hashers.left.insert(HasherMap::left_map::value_type(hasher,(int)d->hashers.size()));
+    return std::make_pair(ret.second,ret.first->second);
+}
+
+StringHasherRef Document::getStringHasher(int idx) const {
+    auto it = d->hashers.right.find(idx);
+    StringHasherRef hasher;
+    if(it == d->hashers.right.end()) {
+        hasher = new StringHasher;
+        d->hashers.right.insert(HasherMap::right_map::value_type(idx,hasher));
+    }else
+        hasher = it->second;
+    return hasher;
 }
 
 static Document::ExportStatus _DocExporting;
@@ -1636,6 +1619,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
                              std::ostream& out, bool keepExternal)
 {
     DocumentExporting exporting(keepExternal);
+    d->hashers.clear();
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         for(auto o : obj) {
@@ -1666,6 +1650,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
 
     // write additional files
     writer.writeFiles();
+    d->hashers.clear();
 }
 
 void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
@@ -1794,6 +1779,7 @@ Document::readObjects(Base::XMLReader& reader)
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
+    d->hashers.clear();
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     reader.readElement("Document");
@@ -1824,6 +1810,7 @@ Document::importObjects(Base::XMLReader& reader)
 
     afterRestore(objs);
     signalFinishImportObjects(objs);
+    d->hashers.clear();
     return objs;
 }
 
@@ -1835,6 +1822,8 @@ unsigned int Document::getMemSize (void) const
     std::vector<DocumentObject*>::const_iterator it;
     for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
         size += (*it)->getMemSize();
+
+    size += Hasher->getMemSize();
 
     // size of the document properties...
     size += PropertyContainer::getMemSize();

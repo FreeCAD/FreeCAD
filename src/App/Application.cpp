@@ -81,6 +81,7 @@
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
 
+#include "StringHasherPy.h"
 #include "GeoFeature.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
@@ -231,6 +232,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::PlacementPy::Type, pAppModule, "Placement");
     Base::Interpreter().addType(&Base::RotationPy::Type, pAppModule, "Rotation");
     Base::Interpreter().addType(&Base::AxisPy::Type, pAppModule, "Axis");
+    Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -1311,6 +1313,9 @@ void Application::initTypes(void)
     // Complex data classes
     Data::ComplexGeoData            ::init();
     Data::Segment                   ::init();
+
+    App::StringID                   ::init();
+    App::StringHasher               ::init();
 
     // Properties
     App ::Property                  ::init();

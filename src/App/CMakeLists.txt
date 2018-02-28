@@ -71,6 +71,8 @@ else()
     )
 endif()
 
+generate_from_xml(StringIDPy)
+generate_from_xml(StringHasherPy)
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
 generate_from_xml(ExtensionPy)
@@ -92,6 +94,8 @@ generate_from_py(FreeCADInit InitScript.h)
 generate_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_XML_SRCS
+    StringIDPy.xml
+    StringHasherPy.xml
     ExtensionPy.xml
     ExtensionContainerPy.xml
     DocumentObjectExtensionPy.xml
@@ -113,6 +117,9 @@ SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 # The document stuff
 SET(Document_CPP_SRCS
     Annotation.cpp
+    StringHasher.cpp
+    StringHasherPyImp.cpp
+    StringIDPyImp.cpp
     Document.cpp
     DocumentObject.cpp
     Extension.cpp
@@ -160,6 +167,7 @@ SET(Document_CPP_SRCS
 
 SET(Document_HPP_SRCS
     Annotation.h
+    StringHasher.h
     Document.h
     DocumentObject.h
     Extension.h

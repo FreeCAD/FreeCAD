@@ -28,6 +28,7 @@
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 
+#include "StringHasher.h"
 #include "PropertyContainer.h"
 #include "PropertyStandard.h"
 #include "PropertyLinks.h"
@@ -114,9 +115,9 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
-    /// Whether to preserve unreferences string ID
-    PropertyBool SaveAllStringIDs;
     //@}
+
+    StringHasherRef Hasher;
 
     /** @name Signals of the document */
     //@{
@@ -430,6 +431,34 @@ public:
     (const App::DocumentObject* from, const App::DocumentObject* to) const;
     //@}
 
+    /** Called by property during properly save its continaing StringHasher
+     *
+     * @param hasher: the input hasher
+     * @return Returns a pair<bool,int>. Boolean member indicate if the
+     * StringHasher has been saved before. The Integer is the hasher index.
+     *
+     * The StringHasher object is designed to be shared among multiple objects.
+     * So, we must not save duplicate copies of the same hasher. And must be
+     * able to restore with the same sharing relationship. This function returns
+     * whether the hasher has been saved before by other objects, and the index
+     * of the hasher. If the hasher has not been saved before, the object must
+     * save the hasher by calling StringHasher::Save
+     */
+    std::pair<bool,int> addStringHasher(StringHasherRef hasher) const;
+
+    /** Called by property to restore its containing StringHasher
+     *
+     * @param index: the index previously returned by calling
+     * addStringHasher() during save.
+     *
+     * @return Return the resulting string hasher.
+     *
+     * The caller is responsible to restore the hasher itself if it is the first
+     * owner of the hasher, i.e. return addStringHasher() returns true during
+     * save
+     */
+    StringHasherRef getStringHasher(int index) const;
+
     /** Return the object linked to this object
      *
      * @param links: holds the links found
@@ -445,27 +474,10 @@ public:
         return !links.empty();
     }
 
+    void addRemapProperty(Property *prop);
+
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
-
-    /** @name Maps an arbitary string to an integer
-     *
-     * These function internally hashes the string, and stroes the hash in a
-     * map to integer. The hashes of the strings passed to this function are
-     * persisted, which means the returned ID is an unique identifier of the
-     * string. The function return the interger as a shared pointer to
-     * reference count the ID so that it is possible to prune any unused hash,
-     * depending on the value of Document.SaveAllStringIDs
-     *
-     * The purpose of function is to provide a short form of a stable string
-     * hash.
-     */
-    //@{
-    typedef std::shared_ptr<const long> StringID;
-    StringID mapStringToID(const char *text);
-    StringID mapStringToID(const QByteArray &data);
-    static inline long stringID(StringID id) {return id?*id:-1;}
-    //@}
 
     virtual PyObject *getPyObject(void);
 
@@ -506,7 +518,6 @@ protected:
         const std::vector<App::DocumentObject*> &objs = std::vector<App::DocumentObject*>());
 
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;
-
 
 private:
     // # Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
