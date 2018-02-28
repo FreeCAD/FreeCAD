@@ -335,6 +335,7 @@ class SelectPlane(DraftTool):
                     return
                 elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    plane.weak = False
                     if hasattr(sel.Object.ViewObject,"RestoreView"):
                         if sel.Object.ViewObject.RestoreView:
                             if hasattr(sel.Object.ViewObject,"ViewData"):
