@@ -82,6 +82,10 @@ def symlink(source, link_name):
             csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
             csl.restype = ctypes.c_ubyte
             flags = 1 if os.path.isdir(source) else 0
+            # set the SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE flag
+            # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#joC5tFKhdXs2gGml.97)
+            flags += 2
+
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
 
