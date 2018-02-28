@@ -250,7 +250,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
     for(auto &sel : array) {
         if(!sel.pObject) continue;
         App::DocumentObject *parent = 0;
-        App::DocumentObject *ob = Gui::Selection().resolveObject(sel.pObject,sel.SubName,&parent);
+        App::DocumentObject *ob = sel.pObject->resolve(sel.SubName,&parent);
         if(!ob) continue;
         if(parent) {
             auto parentVp = Application::Instance->getViewProvider(parent);

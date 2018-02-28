@@ -856,3 +856,68 @@ bool DocumentObject::hasChildElement() const {
     }
     return false;
 }
+
+DocumentObject *DocumentObject::resolve(const char *subname, 
+        App::DocumentObject **parent, std::string *childName, const char **subElement) const
+{
+    auto self = const_cast<DocumentObject*>(this);
+    if(parent) *parent = 0;
+    if(subElement) *subElement = 0;
+    if(!subname || *subname==0)
+        return self;
+
+    auto obj = getSubObject(subname);
+    if(!obj)
+        return self;
+
+    if(!parent && !subElement)
+        return obj;
+
+    // NOTE, the convension of '.' separated SubName demands a mandatory ending
+    // '.' for each object name in SubName, even if there is no subelement
+    // following it. So finding the last dot will give us the end of the last
+    // object name.
+    const char *dot = strrchr(subname,'.');
+    if(!dot || dot == subname) {
+        if(subElement)
+            *subElement = dot?dot+1:subname;
+        return obj; // this means no parent object reference in SubName
+    }
+
+    if(parent)
+        *parent = self;
+
+    bool elementMapChecked = false;
+    const char *lastDot = dot;
+    for(--dot;;--dot) {
+        // check for the second last dot, which is the end of the last parent object
+        if(*dot == '.' || dot == subname) {
+            // We can't get parent object by its name, because the object may be
+            // externally linked (i.e. in a different document). So go through
+            // getSubObject again.
+            if(!elementMapChecked) {
+                elementMapChecked = true;
+                const char *sub = dot==subname?dot:dot+1;
+                if(Data::ComplexGeoData::isMappedElement(sub))
+                    lastDot = dot;
+            }
+            if(dot==subname)
+                break;
+            auto sobj = getSubObject(std::string(subname,dot-subname+1).c_str());
+            if(parent) *parent = sobj;
+            if(sobj!=this)
+                break;
+        }
+    }
+    if(childName && lastDot!=dot) {
+        if(*dot == '.')
+            ++dot;
+        const char *nextDot = strchr(dot,'.');
+        assert(nextDot);
+        *childName = std::string(dot,nextDot-dot);
+    }
+    if(subElement)
+        *subElement = *lastDot=='.'?lastDot+1:lastDot;
+    return obj;
+}
+

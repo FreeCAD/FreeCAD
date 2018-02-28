@@ -310,24 +310,6 @@ public:
     template<typename T> inline std::vector<T*> getObjectsOfType(
             const char* pDocName=0, int resolve=1) const;
 
-    /** Resolve the last document object referenced in the subname
-     * 
-     * @param pObject: the top parent object
-     * @param subname: dot separated subname
-     * @param parent: return the direct parent of the object
-     * @param elementName: return element name to be passed to
-     * DocumentObject::is//setElementVisible() 
-     * @param subElement: return non-object sub-element name if found. The
-     * pointer is guaranteed to be within the buffer pointed to by 'subname'
-     *
-     * @return Returns the last referenced document object in the subname. If no
-     * such object in subname, return pObject.
-     * @
-     */
-    static App::DocumentObject *resolveObject(App::DocumentObject *pObject, 
-        const char *subname, App::DocumentObject **parent=0, 
-        std::string *elementName=0, const char **subElement=0);
-
     /** Set selection object visibility
      *
      * @param visible: 1: make visible, 0: make invisible, -1: toggle visibility
@@ -420,7 +402,6 @@ protected:
     static PyObject *sEnablePickedList    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sPreselect           (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sSetVisible          (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sResolveObject       (PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction
@@ -446,16 +427,21 @@ protected:
         App::Document* pDoc;
         App::DocumentObject* pObject;
         float x,y,z;
-    };
-    std::list<_SelObj> _SelList;
 
-    std::list<_SelObj> _PickedList;
+        std::string newElementName;
+        std::string oldElementName;
+        App::DocumentObject* pResolvedObject = 0;
+        bool resolved = false;
+    };
+    mutable std::list<_SelObj> _SelList;
+
+    mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
 
-    std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, const std::list<_SelObj> &objs, int resolve, bool single=false) const;
+    std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, std::list<_SelObj> &objs, int resolve, bool single=false) const;
 
-    static App::DocumentObject *getObjectOfType(App::DocumentObject *pObject,
-            const char *subname, Base::Type type, int resolve, const char **subelement=0);
+    static App::DocumentObject *getObjectOfType(_SelObj &sel, Base::Type type, 
+            int resolve, const char **subelement=0);
 
     static SelectionSingleton* _pcSingleton;
 

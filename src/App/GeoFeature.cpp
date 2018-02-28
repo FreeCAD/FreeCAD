@@ -26,9 +26,13 @@
 #ifndef _PreComp_
 #endif
 
+#include <Base/Console.h>
+#include "Document.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/GeoFeaturePy.h>
+
+FC_LOG_LEVEL_INIT("GeoFeature",true,true);
 
 using namespace App;
 
@@ -78,4 +82,107 @@ PyObject* GeoFeature::getPyObject(void)
         PythonObject = Py::Object(new GeoFeaturePy(this),true);
     }
     return Py::new_reference_to(PythonObject);
+}
+
+
+std::pair<std::string,std::string> GeoFeature::getElementName(
+        const char *name, ElementNameType type) const
+{
+    (void)type;
+
+    std::pair<std::string,std::string> ret;
+    if(!name) return ret;
+
+    auto prop = getPropertyOfGeometry();
+    if(!prop) return ret;
+
+    auto geo = prop->getComplexData();
+    if(!geo) return ret;
+
+    if(Data::ComplexGeoData::isMappedElement(name)) {
+        const char *oldName = geo->getElementName(name);
+        const char *dot = strrchr(name,'.');
+        if(oldName != name) {
+            if(!dot) {
+                ret.first = name;
+                ret.first += '.';
+            }else
+                ret.first.assign(name,dot-name+1);
+            ret.first += oldName;
+            ret.second = oldName;
+        }else{
+            if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("element mapped name not found " << name);
+            ret.first = name;
+            if(dot)
+                ret.second = dot+1;
+        }
+        return ret;
+    }
+    const char *newName = geo->getElementName(name,true);
+    if(newName != name) {
+        std::ostringstream ss;
+        ss << Data::ComplexGeoData::elementMapPrefix() << newName << '.' << name;
+        ret.first = ss.str();
+        ret.second = name;
+    }else
+        ret.second = name;
+    return ret;
+}
+
+DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
+        std::pair<std::string,std::string> &elementName, bool append, 
+        ElementNameType type, const DocumentObject *filter)
+{
+    const char *element = 0;
+    if(!obj || !obj->getNameInDocument())
+        return 0;
+    obj = obj->resolve(subname,0,0,&element);
+    if(!obj)
+        return 0;
+    obj = obj->getLinkedObject(true);
+    if(!obj || (filter && obj!=filter))
+        return 0;
+    if(!element || !element[0])
+        return obj;
+
+    auto geo = dynamic_cast<GeoFeature*>(obj);
+    if(!geo)
+        return obj;
+    if(!append) 
+        elementName = geo->getElementName(element,type);
+    else{
+        const auto &names = geo->getElementName(element,type);
+        if(names.first.size() && names.second.size()) {
+            std::string prefix(subname,element-subname);
+            elementName.first = prefix + names.first;
+            elementName.second = prefix + names.second;
+        }
+    }
+    return obj;
+}
+
+void GeoFeature::updateElementReference() {
+    auto prop = getPropertyOfGeometry();
+    if(!prop) return;
+    auto geo = prop->getComplexData();
+    if(!geo || !geo->getElementMapSize()) return;
+    auto elementMap = geo->getElementMap();
+    if(_elementMapCache != elementMap) {
+        _elementMapCache.swap(elementMap);
+        for(auto obj : getInListEx(true))
+            PropertyLinkSub::updateElementReferences(this,obj);
+    }
+}
+
+void GeoFeature::onChanged(const Property *prop) {
+    if(!isRestoring() && prop==getPropertyOfGeometry())
+        updateElementReference();
+    DocumentObject::onChanged(prop);
+}
+
+void GeoFeature::onDocumentRestored() {
+    if(!getDocument()->testStatus(Document::Status::Importing))
+        updateElementReference();
+    DocumentObject::onDocumentRestored();
 }

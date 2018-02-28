@@ -66,7 +66,56 @@ public:
      * @return the Python binding object
      */
     virtual PyObject* getPyObject(void);
+
+    /// Specify the type of element name to return when calling getElementName() 
+    enum ElementNameType {
+        /// Normal usage
+        Normal=0,
+        /// For importing
+        Import=1,
+        /// For exporting
+        Export=2,
+    };
+    /** Return the new and old style sub-element name
+     *
+     * @param name: input name
+     * @param type: desired element name type to return
+     *
+     * @return a pair(newName,oldName). New element name may be empty.
+     *
+     * NOTE: Unlike ComplexGeoData::getElementName(), this function
+     * relies on ComplexGeoData::elementMapPrefix() to decide whether
+     * it is a forward query, i.e. mapped -> original, or reverse query.
+     * The reason being that, unlike ComplexGeoData who deals with the
+     * actual element map data, GeoFeature here sits at a higher level.
+     * GeoFeature should be dealing with whatever various PropertyLinkSub(s)
+     * is assigned.
+     *
+     * This function is made virtual, so that inherited class can do something
+     * unusual, such as Sketcher::SketcherObject, which uses this to expose its
+     * private geometries without a correpsonding TopoShape, and yet being
+     * source code compatible.
+     */
+    virtual std::pair<std::string,std::string> getElementName(
+            const char *name, ElementNameType type=Normal) const;
        
+    /** Resolve both the new and old style element name
+     *
+     * @param obj: top parent object
+     * @param subname: subname reference 
+     * @param elementName: output of a pair(newElementName,oldElementName)
+     * @param append: Whether to include subname prefix into the returned
+     *                element name
+     * @param type: the type of element name to request
+     * @param filter: If none zero, then only perform lookup when the element
+     *                owner object is the same as this filter
+     *
+     * @return Return the owner object of the element
+     */
+    static DocumentObject *resolveElement(App::DocumentObject *obj, 
+            const char *subname, std::pair<std::string,std::string> &elementName, 
+            bool append=false, ElementNameType type=Normal,const DocumentObject *filter=0);
+
     /**
      * @brief Calculates the placement in the global reference coordinate system
      * 
@@ -80,6 +129,14 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+
+protected:
+    virtual void onChanged(const Property* prop);
+    virtual void onDocumentRestored();
+    void updateElementReference();
+
+private:
+    std::map<std::string,std::string> _elementMapCache;
 };
 
 } //namespace App

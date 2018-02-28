@@ -46,7 +46,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-#include <App/ComplexGeoData.h>
+#include <App/GeoFeature.h>
 #include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
@@ -332,12 +332,11 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
 
     std::map<App::DocumentObject*,std::set<std::string> > objMap;
 
-    for(std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if(!It->pDoc) continue;
+    for(auto &sel : _SelList) {
+        if(!sel.pDoc) continue;
         const char *subelement = 0;
-        auto obj = getObjectOfType(It->pObject,It->SubName.c_str(),
-                App::DocumentObject::getClassTypeId(),resolve,&subelement);
-        if(!obj || (pcDoc && It->pObject->getDocument()!=pcDoc))
+        auto obj = getObjectOfType(sel,App::DocumentObject::getClassTypeId(),resolve,&subelement);
+        if(!obj || (pcDoc && sel.pObject->getDocument()!=pcDoc))
             continue;
 
         // In case we are resolving objects, make sure no duplicates
@@ -351,13 +350,13 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
 
         tempSelObj.DocName  = obj->getDocument()->getName();
         tempSelObj.FeatName = obj->getNameInDocument();
-        tempSelObj.SubName  = subelement;
+        tempSelObj.SubName = subelement;
         tempSelObj.TypeName = obj->getTypeId().getName();
         tempSelObj.pObject  = obj;
         tempSelObj.pDoc     = obj->getDocument();
-        tempSelObj.x        = It->x;
-        tempSelObj.y        = It->y;
-        tempSelObj.z        = It->z;
+        tempSelObj.x        = sel.x;
+        tempSelObj.y        = sel.y;
+        tempSelObj.z        = sel.z;
 
         temp.push_back(tempSelObj);
     }
@@ -373,11 +372,10 @@ bool SelectionSingleton::hasSelection(const char* doc, bool resolve) const
         if (!pcDoc)
             return false;
     }
-    for(std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if(!It->pDoc) continue;
-        auto obj = getObjectOfType(It->pObject, It->SubName.c_str(),
-                App::DocumentObject::getClassTypeId(),resolve);
-        if(obj && (!pcDoc || It->pObject->getDocument()==pcDoc)) {
+    for(auto &sel : _SelList) {
+        if(!sel.pDoc) continue;
+        auto obj = getObjectOfType(sel,App::DocumentObject::getClassTypeId(),resolve);
+        if(obj && (!pcDoc || sel.pObject->getDocument()==pcDoc)) {
             return true;
         }
     }
@@ -425,7 +423,7 @@ std::vector<SelectionObject> SelectionSingleton::getPickedListEx(const char* pDo
 }
 
 std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocName, Base::Type typeId,
-        const std::list<_SelObj> &objList, int resolve, bool single) const
+        std::list<_SelObj> &objList, int resolve, bool single) const
 {
     std::vector<SelectionObject> temp;
     if(single) temp.reserve(1);
@@ -442,10 +440,10 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
             return temp;
     }
 
-    for (const auto &sel : objList) {
+    for (auto &sel : objList) {
         if(!sel.pDoc) continue;
         const char *subelement = 0;
-        auto obj = getObjectOfType(sel.pObject,sel.SubName.c_str(),typeId,resolve,&subelement);
+        auto obj = getObjectOfType(sel,typeId,resolve,&subelement);
         if(!obj || (pcDoc && sel.pObject->getDocument()!=pcDoc))
             continue;
         auto it = SortMap.find(obj);
@@ -521,50 +519,33 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
     return objs.size();
 }
 
-App::DocumentObject *SelectionSingleton::getObjectOfType(App::DocumentObject *pObject,
-        const char *subname, Base::Type type, int resolve,const char **subelement) {
-    if(!pObject || !pObject->getNameInDocument())
+App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel, 
+        Base::Type typeId, int resolve, const char **subelement)
+{
+    auto obj = sel.pObject;
+    if(!obj || !obj->getNameInDocument())
         return 0;
-    auto ret = pObject;
-    if(subelement)
-        *subelement = subname;
+    const char *subname = sel.SubName.c_str();
     if(resolve) {
-        if(subname && *subname) {
-            const char *dot = strrchr(subname,'.');
-            if(dot && dot!=subname && resolve>1) {
-                const char *prev = dot-1;
-                for(;prev!=subname;--prev) {
-                    if(*prev == '.') {
-                        ++prev;
-                        break;
-                    }
-                }
-                if(Data::ComplexGeoData::isMappedElement(prev)) {
-                    if(prev!=subname)
-                        dot = prev-1;
-                    else
-                        dot = 0;
-                }
-            }
-            if(subelement) {
-                if(!dot)
-                    *subelement = subname;
-                else
-                    *subelement = dot+1;
-            }
-            if(dot) {
-                ret = ret->getSubObject(subname);
-                if(!ret || !ret->getNameInDocument()) 
-                    return 0;
-            }
+        if(!sel.resolved) {
+            sel.resolved = true;
+            std::pair<std::string,std::string> elementName;
+            sel.pResolvedObject = App::GeoFeature::resolveElement(obj,subname,elementName);
+            sel.newElementName = elementName.first;
+            sel.oldElementName = elementName.second;
+            if(sel.newElementName.empty())
+                sel.newElementName = sel.oldElementName;
         }
-        auto linked = ret->getLinkedObject(true);
-        if(linked && linked->isDerivedFrom(type))
-            return ret;
+        obj = sel.pResolvedObject;
+        if(resolve>1)
+            subname = sel.newElementName.c_str();
+        else
+            subname = sel.oldElementName.c_str();
     }
-    if(ret->isDerivedFrom(type))
-        return ret;
-    return 0;
+    if(!obj || !obj->isDerivedFrom(typeId))
+        return 0;
+    if(subelement) *subelement = subname;
+    return obj;
 }
 
 vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Type& typeId, const char* pDocName, int resolve) const
@@ -579,9 +560,9 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Ty
     }
 
     std::set<App::DocumentObject*> objs;
-    for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if(pcDoc && pcDoc!=It->pDoc) continue;
-        App::DocumentObject *pObject = getObjectOfType(It->pObject,It->SubName.c_str(),typeId,resolve);
+    for(auto &sel : _SelList) {
+        if(pcDoc && pcDoc!=sel.pDoc) continue;
+        App::DocumentObject *pObject = getObjectOfType(sel,typeId,resolve);
         if (pObject) {
             auto ret = objs.insert(pObject);
             if(ret.second)
@@ -610,8 +591,8 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
             return 0;
     }
 
-    for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if((!pcDoc||pcDoc==It->pDoc) && getObjectOfType(It->pObject,It->SubName.c_str(),typeId,resolve))
+    for (auto &sel : _SelList) {
+        if((!pcDoc||pcDoc==sel.pDoc) && getObjectOfType(sel,typeId,resolve))
             iNbr++;
     }
 
@@ -639,23 +620,23 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
     {
         App::Document* pDoc = getDocument(msg.pDocName);
         if(!pDoc) return;
-        const char *subname = 0;
-        App::DocumentObject* pObject = getObjectOfType(pDoc->getObject(msg.pObjectName),
-                msg.pSubName, App::DocumentObject::getClassTypeId(),2,&subname);
+        std::pair<std::string,std::string> elementName;
+        auto &newElementName = elementName.first;
+        auto &oldElementName = elementName.second;
+        auto pObject = App::GeoFeature::resolveElement(
+                pDoc->getObject(msg.pObjectName),msg.pSubName,elementName);
         if (!pObject) return;
         std::string docName(pObject->getDocument()->getName());
         std::string objName(pObject->getNameInDocument());
         SelectionChanges msg2(msg);
         msg2.pDocName = docName.c_str();
         msg2.pObjectName = objName.c_str();
-        msg2.pSubName = subname;
+        msg2.pSubName = newElementName.size()?newElementName.c_str():oldElementName.c_str();
         signalSelectionChanged3(msg2);
-        if(Data::ComplexGeoData::isMappedElement(subname)) {
-            const char *dot = strchr(subname,'.');
-            if(dot) 
-                msg2.pSubName = dot+1;
-        }
+
+        msg2.pSubName = oldElementName.c_str();
         signalSelectionChanged2(msg2);
+
     }else {
         signalSelectionChanged3(msg);
         signalSelectionChanged2(msg);
@@ -671,13 +652,20 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
         App::Document* pDoc = getDocument(pDocName);
         if (!pDoc || !pObjectName) 
             return false;
-        const char *SubName = pSubName;
-        App::DocumentObject* pObject = getObjectOfType(pDoc->getObject(pObjectName),
-                pSubName, App::DocumentObject::getClassTypeId(),gateResolve,&SubName);
+        std::pair<std::string,std::string> elementName;
+        auto &newElementName = elementName.first;
+        auto &oldElementName = elementName.second;
+        auto pObject = App::GeoFeature::resolveElement(
+                pDoc->getObject(pObjectName),pSubName,elementName);
         if (!pObject)
             return false;
 
-        if (!ActiveGate->allow(pObject->getDocument(),pObject,SubName)) {
+        const char *subelement = pSubName;
+        if(gateResolve > 1)
+            subelement = newElementName.size()?newElementName.c_str():oldElementName.c_str();
+        else if(gateResolve)
+            subelement = oldElementName.c_str();
+        if (!ActiveGate->allow(pObject->getDocument(),pObject,subelement)) {
             QString msg;
             if (ActiveGate->notAllowedReason.length() > 0){
                 msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
@@ -863,12 +851,21 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         else
             temp.pObject = 0;
 
+        temp.DocName  = pDocName;
+        temp.FeatName = pObjectName ? pObjectName : "";
+        temp.SubName  = pSubName ? pSubName : "";
+        temp.x        = x;
+        temp.y        = y;
+        temp.z        = z;
+
+        if (temp.pObject)
+            temp.TypeName = temp.pObject->getTypeId().getName();
+
         // check for a Selection Gate
         if (ActiveGate) {
-            const char *SubName = pSubName;
-            auto pObject = getObjectOfType(temp.pObject, pSubName,
-                App::DocumentObject::getClassTypeId(),gateResolve,&SubName);
-            if (!ActiveGate->allow(pObject?pObject->getDocument():temp.pDoc,pObject,SubName)) {
+            const char *subelement = 0;
+            auto pObject = getObjectOfType(temp,App::DocumentObject::getClassTypeId(),gateResolve,&subelement);
+            if (!ActiveGate->allow(pObject?pObject->getDocument():temp.pDoc,pObject,subelement)) {
                 if (getMainWindow()) {
                     QString msg;
                     if (ActiveGate->notAllowedReason.length() > 0) {
@@ -886,16 +883,6 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             }
         }
 
-        temp.DocName  = pDocName;
-        temp.FeatName = pObjectName ? pObjectName : "";
-        temp.SubName  = pSubName ? pSubName : "";
-        temp.x        = x;
-        temp.y        = y;
-        temp.z        = z;
-
-        if (temp.pObject)
-            temp.TypeName = temp.pObject->getTypeId().getName();
-
         _SelList.push_back(temp);
 
         SelectionChanges Chng;
@@ -908,7 +895,6 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Chng.y         = y;
         Chng.z         = z;
         Chng.Type      = SelectionChanges::AddSelection;
-
 
         FC_LOG("Add Selection "<<
                 (pDocName?pDocName:"(null)")<<'.'<<
@@ -1104,68 +1090,6 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     }
 }
 
-App::DocumentObject *SelectionSingleton::resolveObject(
-        App::DocumentObject *pObject, const char *subname, 
-        App::DocumentObject **parent, std::string *elementName, 
-        const char **subElement)
-{
-    if(parent) *parent = 0;
-    if(subElement) *subElement = 0;
-    if(!pObject || !subname || *subname==0)
-        return pObject;
-
-    auto obj = pObject->getSubObject(subname);
-    if(!obj)
-        return pObject;
-
-    if(!parent && !subElement)
-        return obj;
-
-    // NOTE, the convension of '.' separated SubName demands a mandatory ending
-    // '.' for each object name in SubName, even if there is no subelement
-    // following it. So finding the last dot will give us the end of the last
-    // object name.
-    const char *dot = strrchr(subname,'.');
-    if(!dot || dot == subname) {
-        if(subElement && dot)
-            *subElement = dot+1;
-        return obj; // this means no parent object reference in SubName
-    }
-
-    if(parent)
-        *parent = pObject;
-
-    bool elementMapChecked = false;
-    const char *lastDot = dot;
-    for(--dot;dot!=subname;--dot) {
-        // check for the second last dot, which is the end of the last parent object
-        if(*dot == '.') {
-            // We can't get parent object by its name, because the object may be
-            // externally linked (i.e. in a different document). So go through
-            // getSubObject again.
-            auto sobj = pObject->getSubObject(std::string(subname,dot-subname+1).c_str());
-            if(parent) *parent = sobj;
-            if(sobj!=pObject)
-                break;
-            if(!elementMapChecked) {
-                elementMapChecked = true;
-                if(Data::ComplexGeoData::isMappedElement(dot+1))
-                    lastDot = dot;
-            }
-        }
-    }
-    if(elementName && lastDot!=dot) {
-        if(*dot == '.')
-            ++dot;
-        const char *nextDot = strchr(dot,'.');
-        assert(nextDot);
-        *elementName = std::string(dot,nextDot-dot);
-    }
-    if(subElement)
-        *subElement = lastDot+1;
-    return obj;
-}
-
 void SelectionSingleton::setVisible(int visible) {
     std::set<std::pair<App::DocumentObject*,App::DocumentObject*> > filter;
     if(visible<0) 
@@ -1178,7 +1102,7 @@ void SelectionSingleton::setVisible(int visible) {
         // get parent object
         App::DocumentObject *parent = 0;
         std::string elementName;
-        auto obj = Selection().resolveObject(sel.pObject,sel.SubName.c_str(),&parent,&elementName);
+        auto obj = sel.pObject->resolve(sel.SubName.c_str(),&parent,&elementName);
         if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisibility
@@ -1583,13 +1507,6 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "Gui.Selection.addSelectionGate(Gate())"},
     {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sRemoveSelectionGate, METH_VARARGS,
      "removeSelectionGate() -- remove the active selection gate\n"},
-    {"resolveObject",            (PyCFunction) SelectionSingleton::sResolveObject, 1, 
-     "resolveObject(object, subname) -- resolve the sub object\n"
-     "Returns a tuple (subobj,parent,elementName,subElement), where 'subobj' is the last\n"
-     "object referenced in 'subname', and 'parent' is the direct parent of 'subobj', and\n"
-     "'elementName' is the child name of the subobj, which can be used to call\n"
-     "parent.isElementVisible/setElementVisible(). 'subElement' is the non-object\n"
-     "sub-element name if any."},
     {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, 1, 
      "setVisible(visible=None) -- set visibility of all selection items\n"
      "If 'visible' is None, then toggle visibility"},
@@ -2014,28 +1931,3 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args, P
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sResolveObject(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
-{
-    PyObject *pyobj;
-    const char *subname;
-    if (!PyArg_ParseTuple(args, "O!s",&App::DocumentObjectPy::Type,&pyobj,&subname))
-        return NULL;                             // NULL triggers exception 
-
-    PY_TRY {
-        std::string elementName;
-        const char *subElement = 0;
-        App::DocumentObject *parent = 0;
-        auto obj = Selection().resolveObject(
-            static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr(),
-            subname,&parent,&elementName,&subElement);
-
-        Py::Tuple ret(4);
-        ret.setItem(0,Py::Object(obj->getPyObject(),true));
-        ret.setItem(1,parent?Py::Object(parent->getPyObject(),true):Py::None());
-        ret.setItem(2,Py::String(elementName.c_str()));
-        ret.setItem(3,Py::String(subElement?subElement:""));
-        return Py::new_reference_to(ret);
-    } PY_CATCH;
-
-    Py_Return;
-}

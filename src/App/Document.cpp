@@ -159,6 +159,7 @@ struct DocumentP
     int iTransactionMode;
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
+    std::vector<DocumentObject *> pendingRecomputes;
     std::bitset<32> StatusBits;
     int iUndoMode;
     unsigned int UndoMemSize;
@@ -1792,12 +1793,18 @@ Document::readObjects(Base::XMLReader& reader)
     return objs;
 }
 
+void Document::addRecomputeObject(DocumentObject *obj) {
+    if(testStatus(Status::Importing) && obj)
+        d->pendingRecomputes.push_back(obj);
+}
+
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
     d->hashers.clear();
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
+    d->pendingRecomputes.clear();
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1822,9 +1829,21 @@ Document::importObjects(Base::XMLReader& reader)
     }
 
     reader.readEndElement("Document");
-    signalImportObjects(objs, reader);
 
+    signalImportObjects(objs, reader);
     afterRestore(objs);
+
+    if(d->pendingRecomputes.size()) {
+        for(auto obj : d->pendingRecomputes) {
+            if(obj) {
+                FC_LOG("recompute '" << obj->getNameInDocument() << "' after restore");
+                obj->touch();
+            }
+        }
+        recompute(objs);
+    }
+    d->pendingRecomputes.clear();
+
     signalFinishImportObjects(objs);
     d->hashers.clear();
     return objs;

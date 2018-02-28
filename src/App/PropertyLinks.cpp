@@ -40,11 +40,13 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "Application.h"
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
 #include "Document.h"
+#include "GeoFeature.h"
 
 #include "PropertyLinks.h"
 
@@ -498,6 +500,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
 #endif
     _pcLinkSub=lValue;
     _cSubList = SubList;
+    updateElementReference(0);
     hasSetValue();
 }
 
@@ -588,6 +591,80 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
 }
 
+void PropertyLinkSub::updateElementReferences(DocumentObject *feature, DocumentObject *obj) {
+    std::vector<Property*> props;
+    obj->getPropertyList(props);
+    for(auto prop : props) {
+        auto linksub = dynamic_cast<PropertyLinkSub*>(prop);
+        if(linksub) {
+            linksub->updateElementReference(feature);
+            continue;
+        }
+        auto linksubs = dynamic_cast<PropertyLinkSubList*>(prop);
+        if(linksubs) {
+            linksubs->updateElementReference(feature);
+            continue;
+        }
+        auto xlink = dynamic_cast<PropertyXLink*>(prop);
+        if(xlink) {
+            linksubs->updateElementReference(feature);
+            continue;
+        }
+    }
+}
+
+bool PropertyLinkSub::updateElementReference(DocumentObject *feature,
+        App::DocumentObject *obj, std::string &sub,
+        std::pair<std::string,std::string> &shadow)
+{
+    if(!obj || !obj->getNameInDocument()) return false;
+    std::pair<std::string,std::string> elementName;
+    if(!GeoFeature::resolveElement(obj,shadow.first.size()?shadow.first.c_str():sub.c_str(),
+                elementName,true,GeoFeature::ElementNameType::Export,feature))
+        return false;
+    if(elementName.first.empty())
+        return false;
+    FC_TRACE("element reference cache " << shadow.first << " -> " << elementName.first);
+    shadow.swap(elementName);
+    auto pos2 = shadow.first.rfind('.');
+    if(pos2 == std::string::npos)
+        return false;
+    ++pos2;
+    auto pos = sub.rfind('.');
+    if(pos == std::string::npos)
+        pos = 0;
+    else
+        ++pos;
+    if(sub.compare(pos,sub.size()-pos,&shadow.first[pos2])!=0) {
+        FC_LOG("element reference update " << sub << " -> " << shadow.first);
+        sub.replace(pos,sub.size()-pos,&shadow.first[pos2]);
+        return true;
+    }
+    return false;
+}
+
+void PropertyLinkSub::updateElementReference(DocumentObject *feature) {
+    if(!feature) _ShadowSubList.clear();
+    _ShadowSubList.resize(_cSubList.size());
+    if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
+        return;
+    int i=0;
+    bool touched = false;
+    for(auto &sub : _cSubList) {
+        if(updateElementReference(feature,_pcLinkSub,sub,_ShadowSubList[i++]))
+            touched = true;
+    }
+    for(int idx : _mapped) {
+        if(idx<(int)_cSubList.size() && _ShadowSubList[idx].first.size()) {
+            _cSubList[idx] = _ShadowSubList[idx].first;
+            touched = true;
+        }
+    }
+    _mapped.clear();
+    if(touched)
+        touch();
+}
+
 static std::string importSubName(Base::XMLReader &reader, const char *sub) {
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) 
@@ -598,9 +675,6 @@ static std::string importSubName(Base::XMLReader &reader, const char *sub) {
 
 static std::string exportSubName(const App::DocumentObject *obj, const char *sub) 
 {
-    if(!obj || !obj->getNameInDocument() || !obj->getDocument()->isExporting()) 
-        return std::string(sub);
-
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
         // name with trailing '.'
@@ -653,8 +727,13 @@ static std::string tryImportSubName(const std::map<std::string,std::string> &nam
     return std::string();
 }
 
+#define ATTR_SHADOW "shadowed"
+#define ATTR_MAPPED "mapped"
+
 void PropertyLinkSub::Save (Base::Writer &writer) const
 {
+    assert(_cSubList.size() == _ShadowSubList.size());
+
     std::string internal_name;
     // it can happen that the object is still alive but is not part of the document anymore and thus
     // returns 0
@@ -662,9 +741,28 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         internal_name = _pcLinkSub->getExportName();
     writer.Stream() << writer.ind() << "<LinkSub value=\"" <<  internal_name <<"\" count=\"" <<  _cSubList.size() <<"\">" << std::endl;
     writer.incInd();
-    for(unsigned int i = 0;i<_cSubList.size(); i++)
-        writer.Stream() << writer.ind() << "<Sub value=\"" << 
-           exportSubName(_pcLinkSub,_cSubList[i].c_str()) <<"\"/>" << endl;
+    bool exporting = _pcLinkSub&&_pcLinkSub->getNameInDocument()&&_pcLinkSub->getDocument()->isExporting();
+    for(unsigned int i = 0;i<_cSubList.size(); i++) {
+        const auto &shadow = _ShadowSubList[i];
+        // shadow.second stores the old style element name. For backward
+        // compatibility reason, we shall store the old name into attribute
+        // 'value' whenver possible.
+        const auto &sub = shadow.second.empty()?_cSubList[i]:shadow.second;
+        writer.Stream() << writer.ind() << "<Sub value=\"";
+        if(exporting) {
+            writer.Stream() << exportSubName(_pcLinkSub,sub.c_str());
+            if(shadow.second.size() && shadow.first == _cSubList[i])
+                writer.Stream() << "\" " ATTR_MAPPED "=\"1";
+        } else {
+            writer.Stream() << sub;
+            if(shadow.second.size()) {
+                // Stores the actual value that is shadowed. For new version FC,
+                // we will restore this shadowed value instead.
+                writer.Stream() << "\" " ATTR_SHADOW "=\"" << _cSubList[i];
+            }
+        }
+        writer.Stream()<<"\"/>" << endl;
+    }
     writer.decInd();
     writer.Stream() << writer.ind() << "</LinkSub>" << endl ;
 }
@@ -679,19 +777,23 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 
     // Property not in a DocumentObject!
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
+    App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
 
+    std::vector<int> mapped;
     std::vector<std::string> values(count);
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
-        values[i] = importSubName(reader,reader.getAttribute("value"));
+        values[i] = importSubName(reader,reader.getAttribute(
+                    reader.hasAttribute(ATTR_SHADOW)?ATTR_SHADOW:"value"));
+        if(reader.hasAttribute(ATTR_MAPPED))
+            mapped.push_back(i);
     }
 
     reader.readEndElement("LinkSub");
 
     DocumentObject *pcObject;
     if (!name.empty()) {
-        App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
         pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject) {
             if (reader.isVerbose()) {
@@ -700,6 +802,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
             }
         }
         setValue(pcObject,values);
+        _mapped.swap(mapped);
     }
     else {
        setValue(0);
@@ -782,6 +885,7 @@ void PropertyLinkSubList::setSize(int newSize)
 {
     _lValueList.resize(newSize);
     _lSubList  .resize(newSize);
+    _ShadowSubList.resize(newSize);
 }
 
 int PropertyLinkSubList::getSize(void) const
@@ -812,14 +916,14 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         _lValueList[0]=lValue;
         _lSubList.resize(1);
         _lSubList[0]=SubName;
-        hasSetValue();
     }
     else {
         aboutToSetValue();
         _lValueList.clear();
         _lSubList.clear();
-        hasSetValue();
     }
+    updateElementReference(0);
+    hasSetValue();
 }
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<const char*>& lSubNames)
@@ -853,6 +957,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     int i = 0;
     for (std::vector<const char*>::const_iterator it = lSubNames.begin();it!=lSubNames.end();++it)
         _lSubList[i]  = *it;
+    updateElementReference(0);
     hasSetValue();
 }
 
@@ -884,6 +989,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     aboutToSetValue();
     _lValueList = lValue;
     _lSubList   = lSubNames;
+    updateElementReference(0);
     hasSetValue();
 }
 
@@ -923,6 +1029,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
         this->_lSubList = SubList;
         this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
     }
+    updateElementReference(0);
     hasSetValue();
 }
 
@@ -1143,15 +1250,63 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
     }
 }
 
+void PropertyLinkSubList::updateElementReference(DocumentObject *feature) {
+    if(!feature) _ShadowSubList.clear();
+    _ShadowSubList.resize(_lSubList.size());
+    int i=0;
+    bool touched = false;
+    for(auto &sub : _lSubList) {
+        auto obj = _lValueList[i];
+        if(PropertyLinkSub::updateElementReference(feature,obj,sub,_ShadowSubList[i++]))
+            touched = true;
+    }
+    for(int idx : _mapped) {
+        if(idx<(int)_lSubList.size() && _ShadowSubList[idx].first.size()) {
+            _lSubList[idx] = _ShadowSubList[idx].first;
+            touched = true;
+        }
+    }
+    _mapped.clear();
+    if(touched)
+        touch();
+}
+
 void PropertyLinkSubList::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<LinkSubList count=\"" <<  getSize() <<"\">" << endl;
+    assert(_lSubList.size() == _ShadowSubList.size());
+
+    int count = 0;
+    for(auto obj : _lValueList) {
+        if(obj && obj->getNameInDocument())
+            ++count;
+    }
+    writer.Stream() << writer.ind() << "<LinkSubList count=\"" << count <<"\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() <<
-            "<Link " <<
-            "obj=\"" << _lValueList[i]->getExportName() << "\" " <<
-            "sub=\"" << exportSubName(_lValueList[i],_lSubList[i].c_str()) << "\"/>" << endl;
+        auto obj = _lValueList[i];
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        bool exporting = obj->getDocument()->isExporting();
+        const auto &shadow = _ShadowSubList[i];
+        // shadow.second stores the old style element name. For backward
+        // compatibility reason, we shall store the old name into attribute
+        // 'value' whenver possible.
+        const auto &sub = shadow.second.empty()?_lSubList[i]:shadow.second;
+
+        writer.Stream() << writer.ind() << "<Link obj=\"" << obj->getExportName() << "\" sub=\"";
+        if(exporting) {
+            writer.Stream() << exportSubName(obj,sub.c_str());
+            if(shadow.second.size() && _lSubList[i]==shadow.first)
+                writer.Stream() << "\" " ATTR_MAPPED "=\"1";
+        } else {
+            writer.Stream() << sub;
+            if(shadow.second.size()) {
+                // Stores the actual value that is shadowed. For new version FC,
+                // we will restore this shadowed value instead.
+                writer.Stream() << "\" " ATTR_SHADOW "=\"" << _lSubList[i];
+            }
+        }
+        writer.Stream() << "\"/>" << endl;
     }
 
     writer.decInd();
@@ -1169,6 +1324,9 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     values.reserve(count);
     std::vector<std::string> SubNames;
     SubNames.reserve(count);
+    DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
+    App::Document* document = father ? father->getDocument() : 0;
+    std::vector<int> mapped;
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
         std::string name = reader.getName(reader.getAttribute("obj"));
@@ -1176,12 +1334,13 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
         // Property not in an object!
-        DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
-        App::Document* document = father ? father->getDocument() : 0;
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child) {
             values.push_back(child);
-            SubNames.push_back(importSubName(reader,reader.getAttribute("sub")));
+            SubNames.push_back(importSubName(reader,reader.getAttribute(
+                            reader.hasAttribute(ATTR_SHADOW)?ATTR_SHADOW:"sub")));
+            if(reader.hasAttribute(ATTR_MAPPED))
+                mapped.push_back(i);
         } else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
@@ -1191,6 +1350,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
 
     // assignment
     setValues(values,SubNames);
+    _mapped.swap(mapped);
 }
 
 Property *PropertyLinkSubList::CopyOnImportExternal(
@@ -1617,6 +1777,7 @@ void PropertyXLink::detach() {
     if(docInfo) {
         aboutToSetValue();
         resetLink();
+        updateElementReference(0);
         hasSetValue();
     }
 }
@@ -1629,6 +1790,7 @@ void PropertyXLink::setSubName(const char *subname, bool transaction) {
     else
         subName.clear();
     registerXLinkLabel(this);
+    updateElementReference(0);
     if(transaction)
         hasSetValue();
 }
@@ -1753,18 +1915,42 @@ bool PropertyXLink::isRestored() const {
         stamp==docInfo->pcDoc->LastModifiedDate.getValue();
 }
 
+void PropertyXLink::updateElementReference(DocumentObject *feature) {
+    if(!feature) {
+        shadowSub.first.clear();
+        shadowSub.second.clear();
+    }
+    bool touched = PropertyLinkSub::updateElementReference(feature,_pcLink,subName,shadowSub);
+    if(_mapped && shadowSub.first.size()) {
+        touched = true;
+        subName = shadowSub.first;
+    }
+    _mapped = false;
+    if(touched)
+        touch();
+}
+
 void PropertyXLink::Save (Base::Writer &writer) const {
     auto owner = dynamic_cast<const DocumentObject *>(getContainer());
     if(!owner || !owner->getDocument())
         return;
+
+    // shadowSub stores the old style element name. For backward
+    // compatibility reason, we shall store the old name into attribute
+    // 'value' whenver possible.
+    const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
+
     auto exporting = owner->getDocument()->isExporting();
     if(_pcLink && exporting==Document::Exporting) {
         // this means, we are exporting with all dependency included. So, store as
         // local object
-        writer.Stream() << writer.ind() << "<XLink name=\"" << 
-            _pcLink->getExportName() << "\" sub=\"" << 
-            exportSubName(_pcLink,subName.c_str()) << 
-            "\"/>" << std::endl;
+
+        writer.Stream() << writer.ind() << "<XLink name=\"" 
+            << _pcLink->getExportName() << "\" sub=\"" 
+            << exportSubName(_pcLink,sub.c_str());
+        if(shadowSub.second.size() && shadowSub.first==subName)
+            writer.Stream() << "\"" ATTR_MAPPED "=\"1";
+        writer.Stream() << "\"/>" << std::endl;
         return;
     }
     const char *path = filePath.c_str();
@@ -1790,8 +1976,14 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         "<XLink file=\"" << path << 
         "\" stamp=\"" << (docInfo&&docInfo->pcDoc?docInfo->pcDoc->LastModifiedDate.getValue():"") <<
         "\" name=\"" << objectName <<
-        "\" sub=\"" << subName <<
-        "\" relative=\"" << (relativePath?"true":"false") << "\"/>" << std::endl;
+        "\" sub=\"" << sub <<
+        "\" relative=\"" << (relativePath?"true":"false");
+    if(shadowSub.second.size()) {
+        // Stores the actual value that is shadowed. For new version FC,
+        // we will restore this shadowed value instead.
+        writer.Stream() << "\" " ATTR_SHADOW "=\"" << subName;
+    }
+    writer.Stream() << "\"/>" << std::endl;
 }
 
 void PropertyXLink::Restore(Base::XMLReader &reader)
@@ -1811,13 +2003,18 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         name = reader.getName(reader.getAttribute("name"));
     else
         name = reader.getAttribute("name");
-    std::string subname;
-    if(reader.getAttribute("sub"))
-        subname = importSubName(reader,reader.getAttribute("sub"));
-
 
     // Property not in a DocumentObject!
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
+    DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+    Document *document = parent->getDocument();
+
+    std::string subname;
+    if(reader.getAttribute("sub")) {
+        subname = importSubName(reader,reader.getAttribute(
+                    reader.hasAttribute(ATTR_SHADOW)?ATTR_SHADOW:"sub"));
+    }
+    bool mapped = reader.hasAttribute(ATTR_MAPPED);
 
     if (name.empty()) {
         setValue(0);
@@ -1827,11 +2024,10 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     if(file.size()) {
         this->stamp = stamp;
         setValue(file.c_str(),name.c_str(),subname.c_str(),relativePath);
+        _mapped = mapped;
         return;
     }
 
-    DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-    Document *document = parent->getDocument();
     DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
     if(!object) {
         if(reader.isVerbose()) {
@@ -1840,6 +2036,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         }
     }
     setValue(object,subname.c_str(),relativePath);
+    _mapped = mapped;
 }
 
 Property *PropertyXLink::CopyOnImportExternal(

@@ -303,9 +303,17 @@ public:
         return sizeof(App::DocumentObject *);
     }
 
+    static void updateElementReferences(DocumentObject *feature, DocumentObject *obj);
+    static bool updateElementReference(DocumentObject *feature,
+        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow);
+
+    void updateElementReference(DocumentObject *feature);
+
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
+    std::vector<std::pair<std::string,std::string> > _ShadowSubList;
+    std::vector<int> _mapped;
 };
 
 /** The general Link Property with Child scope
@@ -401,10 +409,14 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
+    void updateElementReference(DocumentObject *feature);
+
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
+    std::vector<std::pair<std::string,std::string> > _ShadowSubList;
+    std::vector<int> _mapped;
 };
 
 /** The general Link Property with Child scope
@@ -471,6 +483,8 @@ public:
     static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
 
+    void updateElementReference(DocumentObject *feature);
+
 protected:
     void unlink();
     void detach();
@@ -479,8 +493,10 @@ protected:
     std::string filePath;
     std::string objectName;
     std::string subName;
+    std::pair<std::string,std::string> shadowSub;
     std::string stamp;
     bool relativePath;
+    bool _mapped;
 
     DocInfoPtr docInfo;
 };

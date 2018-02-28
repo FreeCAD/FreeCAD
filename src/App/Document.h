@@ -476,7 +476,8 @@ public:
         return !links.empty();
     }
 
-    void addRemapProperty(Property *prop);
+    /// Called by objects during restore to ask for recompute
+    void addRecomputeObject(DocumentObject *obj);
 
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });

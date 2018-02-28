@@ -351,6 +351,20 @@ public:
         return _pcViewProviderName.c_str();
     }
 
+    /** Resolve the last document object referenced in the subname
+     * 
+     * @param subname: dot separated subname
+     * @param parent: return the direct parent of the object
+     * @param childName: return child name to be passed to is/setElementVisible() 
+     * @param subElement: return non-object sub-element name if found. The
+     * pointer is guaranteed to be within the buffer pointed to by 'subname'
+     *
+     * @return Returns the last referenced document object in the subname. If no
+     * such object in subname, return pObject.
+     */
+    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0, 
+        std::string *childName=0, const char **subElement=0) const;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);

@@ -601,7 +601,7 @@ static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImpor
     std::map<App::Document*, std::vector<App::DocumentObject*> > objMap;
     for(auto &sel : Selection().getCompleteSelection(false)) {
         App::DocumentObject *parent = 0;
-        auto obj = Selection().resolveObject(sel.pObject,sel.SubName,&parent);
+        auto obj = sel.pObject->resolve(sel.SubName,&parent);
         if(!parent || parent->getDocument()==obj->getDocument()) {
             if(!checking) 
                 FC_WARN("skip invalid parent of " << 

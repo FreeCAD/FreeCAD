@@ -26,6 +26,7 @@
 #include "DocumentObject.h"
 #include "Document.h"
 #include "Expression.h"
+#include "GeoFeature.h"
 #include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"
 
@@ -689,4 +690,49 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 
 Py::Int DocumentObjectPy::getID() const {
     return Py::Int(getDocumentObjectPtr()->getID());
+}
+
+PyObject *DocumentObjectPy::resolve(PyObject *args)
+{
+    const char *subname;
+    if (!PyArg_ParseTuple(args, "s",&subname))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        std::string elementName;
+        const char *subElement = 0;
+        App::DocumentObject *parent = 0;
+        auto obj = getDocumentObjectPtr()->resolve(subname,&parent,&elementName,&subElement);
+
+        Py::Tuple ret(4);
+        ret.setItem(0,Py::Object(obj->getPyObject(),true));
+        ret.setItem(1,parent?Py::Object(parent->getPyObject(),true):Py::None());
+        ret.setItem(2,Py::String(elementName.c_str()));
+        ret.setItem(3,Py::String(subElement?subElement:""));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
+{
+    const char *subname;
+    PyObject *append = Py_False;
+    int type = 0;
+    if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        std::pair<std::string,std::string> elementName;
+        auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
+                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type);
+        Py::Tuple ret(3);
+        ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
+        ret.setItem(1,Py::String(elementName.first));
+        ret.setItem(2,Py::String(elementName.second));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
+
+    Py_Return;
 }
