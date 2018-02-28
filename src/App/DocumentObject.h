@@ -106,6 +106,8 @@ public:
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
+    ///
+    long getID() const {return _Id;}
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
     virtual bool isAttachedToDocument() const;
@@ -416,6 +418,9 @@ protected: // attributes
 private:
     // accessed by App::Document to record and restore the correct view provider type
     std::string _pcViewProviderName;
+
+    // unique identifier (ammong a document) of this object.
+    long _Id;
     
 private:
     // Back pointer to all the fathers in a DAG of the document

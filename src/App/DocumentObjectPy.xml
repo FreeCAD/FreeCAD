@@ -215,5 +215,11 @@ or None if the GUI is not up</UserDocu>
 			</Documentation>
 			<Parameter Name="MustExecute" Type="Boolean"/>
 		</Attribute>
+		<Attribute Name="ID" ReadOnly="true">
+			<Documentation>
+                <UserDocu>The unique identifier (among its document) of this object</UserDocu>
+			</Documentation>
+			<Parameter Name="ID" Type="Int"/>
+		</Attribute>
 	</PythonExport>
 </GenerateModel>

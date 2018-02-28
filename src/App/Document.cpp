@@ -152,6 +152,8 @@ struct DocumentP
     // Array to preserve the creation order of created objects
     std::vector<DocumentObject*> objectArray;
     std::map<std::string,DocumentObject*> objectMap;
+    std::map<long,DocumentObject*> objectIdMap;
+    long lastObjectId;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
     int iTransactionMode;
@@ -169,6 +171,7 @@ struct DocumentP
 #endif //USE_OLD_DAG
 
     DocumentP() {
+        lastObjectId = 0;
         activeObject = 0;
         activeUndoTransaction = 0;
         iTransactionMode = 0;
@@ -1666,6 +1669,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName()     << "\" "
         << "name=\"" << (*it)->getExportName()       << "\" "
+        << "id=\"" << (*it)->getID()       << "\" "
         << "ViewType=\"" << (*it)->getViewProviderNameStored() << "\" ";
 
         // See DocumentObjectPy::getState
@@ -1705,14 +1709,22 @@ Document::readObjects(Base::XMLReader& reader)
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
 
+
     // read the object types
     reader.readElement("Objects");
     int Cnt = reader.getAttributeAsInteger("Count");
+    long lastId = 0;
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
         const char *viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):0;
+
+        if(!testStatus(Status::Importing) && reader.hasAttribute("id")) {
+            // if not importing, then temporary reset lastObjectId and make the
+            // following addObject() generate the correct id for this object.
+            d->lastObjectId = reader.getAttributeAsInteger("id")-1;
+        }
 
         // To prevent duplicate name when export/import of objects from
         // external documents, we append those external object name with
@@ -1737,6 +1749,8 @@ Document::readObjects(Base::XMLReader& reader)
             // digits we make an object 'Cut' referencing itself.
             App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType);
             if (obj) {
+                if(lastId < obj->_Id)
+                    lastId = obj->_Id;
                 objs.push_back(obj);
                 // use this name for the later access because an object with
                 // the given name may already exist
@@ -1753,6 +1767,8 @@ Document::readObjects(Base::XMLReader& reader)
             Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
         }
     }
+    if(!testStatus(Status::Importing))
+        d->lastObjectId = lastId;
 
     reader.readEndElement("Objects");
     setStatus(Document::KeepTrailingDigits, keepDigits);
@@ -2001,6 +2017,8 @@ void Document::restore (bool delaySignal)
     }
     d->objectArray.clear();
     d->objectMap.clear();
+    d->objectIdMap.clear();
+    d->lastObjectId = 0;
     d->activeObject = 0;
 
     Base::FileInfo fi(FileName.getValue());
@@ -2930,6 +2948,9 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
+    // generate object id and add to id map;
+    pcObject->_Id = ++d->lastObjectId;
+    d->objectIdMap[pcObject->_Id] = pcObject;
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
@@ -3026,6 +3047,9 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
 
         // insert in the name map
         d->objectMap[ObjectName] = pcObject;
+        // generate object id and add to id map;
+        pcObject->_Id = ++d->lastObjectId;
+        d->objectIdMap[pcObject->_Id] = pcObject;
         // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
         pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
         // insert in the vector
@@ -3087,6 +3111,9 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
+    // generate object id and add to id map;
+    if(!pcObject->_Id) pcObject->_Id = ++d->lastObjectId;
+    d->objectIdMap[pcObject->_Id] = pcObject;
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
@@ -3114,6 +3141,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
     std::string ObjectName = getUniqueObjectName(pObjectName);
     d->objectMap[ObjectName] = pcObject;
+    // generate object id and add to id map;
+    if(!pcObject->_Id) pcObject->_Id = ++d->lastObjectId;
+    d->objectIdMap[pcObject->_Id] = pcObject;
     d->objectArray.push_back(pcObject);
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
@@ -3218,6 +3248,7 @@ void Document::removeObject(const char* sName)
     }
 
     pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
+    d->objectIdMap.erase(pos->second->_Id);
     d->objectMap.erase(pos);
 }
 
@@ -3261,6 +3292,7 @@ void Document::_removeObject(DocumentObject* pcObject)
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
+    d->objectIdMap.erase(pcObject->_Id);
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
@@ -3527,6 +3559,15 @@ DocumentObject * Document::getObject(const char *Name) const
     else
         return 0;
 }
+
+DocumentObject * Document::getObjectByID(long id) const
+{
+    auto it = d->objectIdMap.find(id);
+    if(it!=d->objectIdMap.end())
+        return it->second;
+    return 0;
+}
+
 
 // Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
 bool Document::isIn(const DocumentObject *pFeat) const

@@ -550,11 +550,14 @@ PyObject*  DocumentPy::recompute(PyObject * args)
 
 PyObject*  DocumentPy::getObject(PyObject *args)
 {
-    char *sName;
-    if (!PyArg_ParseTuple(args, "s",&sName))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception 
+    long id = -1;
+    char *sName = 0;
+    if (!PyArg_ParseTuple(args, "s",&sName))  {   // convert args: Python->C 
+        if(!PyArg_ParseTuple(args, "i", &id))
+            return NULL;                             // NULL triggers exception 
+    }
 
-    DocumentObject *pcFtr = getDocumentPtr()->getObject(sName);
+    DocumentObject *pcFtr = sName?getDocumentPtr()->getObject(sName):getDocumentPtr()->getObjectByID(id);
     if (pcFtr)
         return pcFtr->getPyObject();
     else
