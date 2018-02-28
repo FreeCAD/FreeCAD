@@ -33,6 +33,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <App/StringHasherPy.h>
 
 using namespace Data;
 using namespace Base;
@@ -82,6 +83,75 @@ PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
+{
+    char* input;
+    PyObject *reverse = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input,&reverse))
+        return NULL;
+    const char *ret = getComplexGeoDataPtr()->getElementName(input,PyObject_IsTrue(reverse));
+    return Py::new_reference_to(Py::String(ret));
+}
+
+PyObject *ComplexGeoDataPy::setElementName(PyObject *args) {
+    char *element;
+    char *name;
+    PyObject *overwrite = Py_False;
+    if (!PyArg_ParseTuple(args, "ss|O", &element,&name,&overwrite))
+        return NULL;
+    PY_TRY {
+        const char *ret = getComplexGeoDataPtr()->setElementName(element,name,
+                PyObject_IsTrue(overwrite));
+        return Py::new_reference_to(Py::String(ret));
+    }PY_CATCH
+}
+
+Py::Object ComplexGeoDataPy::getHasher() const {
+    auto self = getComplexGeoDataPtr();
+    if(!self->Hasher)
+        return Py::None();
+    return Py::Object(self->Hasher->getPyObject(),true);
+}
+
+Py::Dict ComplexGeoDataPy::getElementMap() const {
+    Py::Dict ret;
+    for(auto &v : getComplexGeoDataPtr()->getElementMap())
+        ret.setItem(v.first,Py::String(v.second));
+    return ret;
+}
+
+void ComplexGeoDataPy::setElementMap(Py::Dict dict) {
+    std::map<std::string, std::string> map;
+    for(auto it=dict.begin();it!=dict.end();++it) {
+        const auto &value = *it;
+        if(!value.first.isString() || !value.second.isString())
+            throw Py::TypeError("expect only strings in the dict");
+        map.emplace_hint(map.cend(),value.first.as_string(),Py::Object(value.second).as_string());
+    }
+    getComplexGeoDataPtr()->setElementMap(map);
+}
+
+Py::Int ComplexGeoDataPy::getElementMapSize() const {
+    return Py::Int((long)getComplexGeoDataPtr()->getElementMapSize());
+}
+
+void ComplexGeoDataPy::setHasher(Py::Object obj) {
+    auto self = getComplexGeoDataPtr();
+    if(obj.isNone()) {
+        if(self->Hasher) {
+            self->Hasher = App::StringHasherRef();
+            self->resetElementMap();
+        }
+    }else if(PyObject_TypeCheck(obj.ptr(),&App::StringHasherPy::Type)) {
+        App::StringHasherRef ref(static_cast<App::StringHasherPy*>(obj.ptr())->getStringHasherPtr());
+        if(self->Hasher != ref) {
+            self->Hasher = ref;
+            self->resetElementMap();
+        }
+    }else
+        throw Py::TypeError("invalid type");
+}
+
 Py::Object ComplexGeoDataPy::getBoundBox(void) const
 {
     return Py::BoundingBox(getComplexGeoDataPtr()->getBoundBox());
@@ -125,6 +195,15 @@ void  ComplexGeoDataPy::setMatrix(Py::Object arg)
         throw Py::TypeError(error);
     }
 }
+
+Py::Tuple ComplexGeoDataPy::getElementTypes() const {
+    const auto &types = getComplexGeoDataPtr()->getElementTypes();
+    Py::Tuple ret(types.size());
+    int i=0;
+    for(auto const &type : types)
+        ret.setItem(i++,Py::String(type));
+    return ret;
+} 
 
 PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const
 {

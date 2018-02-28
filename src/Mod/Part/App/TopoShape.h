@@ -26,10 +26,10 @@
 
 #include <memory>
 #include <iostream>
-#include <boost/bimap.hpp>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <App/ComplexGeoData.h>
 
 class gp_Ax1;
@@ -61,18 +61,21 @@ class PartExport TopoShape : public Data::ComplexGeoData
 
 public:
     TopoShape();
+    TopoShape(long Tag):Tag(Tag) {}
     TopoShape(const TopoDS_Shape&);
     TopoShape(const TopoShape&);
     ~TopoShape();
 
-    inline void setShape(const TopoDS_Shape& shape) {
-        this->_Shape = shape;
-        this->_ElementMap.reset();
+    inline void setShape(const TopoDS_Shape& shape, bool resetElementMap=true) {
+        _Shape = shape;
+        if(resetElementMap) {
+            Hasher = App::StringHasherRef();
+            this->resetElementMap();
+        }
     }
 
     inline void setShape(const TopoShape& shape) {
-        this->_Shape = shape.getShape();
-        this->_ElementMap = shape._ElementMap;
+        *this = shape;
     }
 
     inline const TopoDS_Shape& getShape() const {
@@ -123,7 +126,7 @@ public:
     //@}
     /// get the Topo"sub"Shape with the given name
     TopoDS_Shape getSubShape(const char* Type) const;
-    TopoShape getSubTopoShape(const char *Type, bool buildMap=true) const;
+    TopoShape getSubTopoShape(const char *Type) const;
     unsigned long countSubShapes(const char* Type) const;
     bool hasSubShape(const char *Type) const;
     /// get the Topo"sub"Shape with the given name
@@ -263,55 +266,55 @@ public:
     void getDomains(std::vector<Domain>&) const;
     //@}
 
-    /** @name Sub-element name mapping functions */
+    /** @name Element name mapping aware shape maker */
     //@{
-
-    /** Map element name
-     *
-     * @param name: the input name
-     * @param reverse: if false (default), \c name must start with
-     * App::ComplexGeoData::elementMapPrefix(). The function shall map the name
-     * to the original \c Type + \c Index. If true, then the function map the
-     * other way round.
-     *
-     * @return Returns the found mapping, or else return the original input. The
-     * return pointer maybe invalidated when the shape is modified.
-     */
-    const char *getElementName(const char *name, bool reverse=false) const;
-
-    /** Add a sub-element name mapping.
-     *
-     * @param element: the original \c Type + \c Index element name
-     * @param name: the renamed sub-element name. May or may not start with
-     * App::ComplexGeoData::elementMapPrefix().
-     * @param overwrite: if true, it will overwrite existing names, or else it
-     * will be an error to have duplicate enames
-     */
-    void setElementName(const char *element, const char *name, bool overwrite=false) const;
-
-    /// The internal storage of element map type
-    typedef boost::bimap<std::string,std::string> ElementMapType;
-
-    /** Reset/swap the element map
-     *
-     * @param elementMap: optional new element map
-     *
-     * @return Returns the existing element map.
-     */
-    std::shared_ptr<ElementMapType> resetElementMap(
-            std::shared_ptr<ElementMapType> elementMap = std::shared_ptr<ElementMapType>()) const
-    {
-        _ElementMap.swap(elementMap);
-        return elementMap;
-    }
+    TopoShape &makECompound(const std::vector<TopoShape> &shapes, bool appendTag=true, const char *op=0);
+    TopoShape &makEWires(const TopoShape &shape, const char *op=0);
     //@}
 
-private:
-    void mapSubElement(TopoShape &ret, TopAbs_ShapeEnum type) const;
+    void mapSubElement(TopAbs_ShapeEnum type,
+            const TopoShape &other,const char *op=0,bool mapAll=true);
+    void mapSubElement(TopAbs_ShapeEnum type, const TopTools_IndexedMapOfShape &shapeMap, 
+            const TopoShape &other,const char *op=0,bool mapAll=true);
+    void mapSubElement(TopAbs_ShapeEnum type, const TopoShape &other,
+            const TopTools_IndexedMapOfShape &otherMap,const char *op=0,bool mapAll=true);
+    void mapSubElement(TopAbs_ShapeEnum type, const TopTools_IndexedMapOfShape &shapeMap, const TopoShape &other,
+            const TopTools_IndexedMapOfShape &otherMap,const char *op=0,bool mapAll=true);
+
+public:
+    /** Shape tag 
+     *
+     * A very loosely controlled tag, which is why it is made public.  Its main
+     * purpose is not for unique identification, but as a way for the user to
+     * disambiguate input shape and generate mappable topological names. It is
+     * the user's job to assign sensible tags before generating element maps.
+     * The default value is 0, and will disable auto element mapping.
+     *
+     * A very simple example, for a compound C created by shape A and B.
+     * TopoShape will map A's Edge1 and B's Edge1 to C as 
+     *
+     *      <A.Tag>_Edge1
+     *      <B.Tag>_Edge1
+     *
+     * If C is a fusion, then for elements that are unmodified, it will be same
+     * as compound. For modified of generated elements, it will be some thing
+     * like
+     *
+     *      <A.Tag>_Face1_<B.Tag>_Face2
+     *
+     * If A and/or B has its own element mapping, then the trailing _EdgeX or
+     * _FaceX will be replaced by those mappings.
+     *
+     * Now, you may be thinking that if this process continues, the mapped
+     * element name will grow without control. The caller can pass a
+     * App::StringHasher when calling Data::ComplexGeoData::setElementName(),
+     * which can hash on the mapped name and shorten it to a integer index.
+     * App::Document provides a persistent StringHasher.
+     */
+    mutable long Tag;
 
 private:
     TopoDS_Shape _Shape;
-    mutable std::shared_ptr<ElementMapType> _ElementMap;
 };
 
 } //namespace Part

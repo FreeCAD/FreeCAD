@@ -104,6 +104,7 @@ short Primitive::mustExecute(void) const
 }
 
 App::DocumentObjectExecReturn* Primitive::execute(void) {
+    Shape.getShape().Tag = getID();
     return Part::Feature::execute();
 }
 
@@ -227,7 +228,7 @@ App::DocumentObjectExecReturn *Vertex::execute(void)
     
     BRepBuilderAPI_MakeVertex MakeVertex(point);
     const TopoDS_Vertex& vertex = MakeVertex.Vertex();
-    this->Shape.setValue(vertex);
+    this->Shape.setValue(vertex,false);
 
     return Primitive::execute();
 }
@@ -292,7 +293,7 @@ App::DocumentObjectExecReturn *Line::execute(void)
     if (!mkEdge.IsDone())
         return new App::DocumentObjectExecReturn("Failed to create edge");
     const TopoDS_Edge& edge = mkEdge.Edge();
-    this->Shape.setValue(edge);
+    this->Shape.setValue(edge,false);
 
     return Primitive::execute();
 }
@@ -378,7 +379,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     }
 
     TopoDS_Shape ResultShape = mkFace.Shape();
-    this->Shape.setValue(ResultShape);
+    this->Shape.setValue(ResultShape,false);
 
     return Primitive::execute();
 }
@@ -421,7 +422,7 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
                                         Angle2.getValue()/180.0f*M_PI,
                                         Angle3.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkSphere.Shape();
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape,false);
     }
     catch (Standard_Failure& e) {
 
@@ -503,7 +504,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         mat.SetValue(3,3,scaleZ);
         BRepBuilderAPI_GTransform mkTrsf(mkSphere.Shape(), mat);
         TopoDS_Shape ResultShape = mkTrsf.Shape();
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape,false);
     }
     catch (Standard_Failure& e) {
 
@@ -546,7 +547,7 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
                                         Height.getValue(),
                                         Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCylr.Shape();
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape,false);
     }
     catch (Standard_Failure& e) {
 
@@ -604,7 +605,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
         BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
-        this->Shape.setValue(mkPrism.Shape());
+        this->Shape.setValue(mkPrism.Shape(),false);
     }
     catch (Standard_Failure& e) {
 
@@ -656,7 +657,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
             v = mat * v;
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
-        this->Shape.setValue(mkPoly.Shape());
+        this->Shape.setValue(mkPoly.Shape(),false);
     }
     catch (Standard_Failure& e) {
 
@@ -706,7 +707,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
                                     Height.getValue(),
                                     Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCone.Shape();
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape,false);
     }
     catch (Standard_Failure& e) {
 
@@ -778,7 +779,7 @@ App::DocumentObjectExecReturn *Torus::execute(void)
                                       Angle3.getValue()/180.0f*Standard_PI);
         const TopoDS_Solid& ResultShape = mkTorus.Solid();
 #endif
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape,false);
     }
     catch (Standard_Failure& e) {
 
@@ -855,7 +856,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         // work around for OCC bug #23314 (FC #0954)
         // the exact conditions for failure are unknown.  building the helix 1 turn at a time
         // seems to always work. 
-        this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+        this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS),false);
 //        if (myHeight / myPitch > 50.0)
 //            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
 //        else
@@ -955,7 +956,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
 #endif
         );
         BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
-        this->Shape.setValue(proj.Shape());
+        this->Shape.setValue(proj.Shape(),false);
 
         return Primitive::execute();
     }
@@ -1039,7 +1040,7 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
             xmax, ymax, zmax, z2max, x2max);
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(mkWedge.Shell());
-        this->Shape.setValue(mkSolid.Solid());
+        this->Shape.setValue(mkSolid.Solid(),false);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -1105,7 +1106,7 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
     BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle0.getValue()),
                                                 Base::toRadians<double>(this->Angle1.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();
-    this->Shape.setValue(edge);
+    this->Shape.setValue(edge,false);
 
     return Primitive::execute();
 }

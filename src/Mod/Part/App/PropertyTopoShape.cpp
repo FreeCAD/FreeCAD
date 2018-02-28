@@ -53,6 +53,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
 
@@ -87,10 +88,10 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     hasSetValue();
 }
 
-void PropertyPartShape::setValue(const TopoDS_Shape& sh)
+void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
 {
     aboutToSetValue();
-    _Shape.setShape(sh);
+    _Shape.setShape(sh,resetElementMap);
     hasSetValue();
 }
 
@@ -212,19 +213,31 @@ void PropertyPartShape::Save (Base::Writer &writer) const
             writer.Stream() << writer.ind() << "<Part file=\"" 
                             << writer.addFile("PartShape.brp", this);
         }
-        auto elementMap = _Shape.resetElementMap();
-        if(!elementMap || elementMap->empty())
-            writer.Stream() << "\"/>" << std::endl;
-        else {
-            writer.Stream() << "\" map=\"" << elementMap->left.size() << "\">" << std::endl;
-            writer.incInd();
-            for(auto &v : elementMap->left) 
-                writer.Stream() << writer.ind() << "<Element key=\"" <<  
-                    v.first <<"\" value=\"" << v.second <<"\"/>" << std::endl;
-            writer.decInd();
-            writer.Stream() << writer.ind() << "</Part>" << endl ;
+        bool saveHasher=false, saveMap=false;
+        auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+        if(owner && !_Shape.Hasher.isNull()) {
+            auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
+            writer.Stream() << "\" HasherIndex=\"" << ret.second;
+            if(ret.first) {
+                saveHasher = true;
+                writer.Stream() << "\" SaveHasher=\"1";
+            }
         }
-        _Shape.resetElementMap(elementMap);
+        if(_Shape.getElementMapSize()) {
+            if(owner && owner->getDocument()->isExporting())
+                // when exporting, do not export mapped element name, but still make a mark
+                writer.Stream() << "\" ElementMap=\"1";
+            else {
+                writer.Stream() << "\" ElementMap=\"2";
+                saveMap = true;
+            }
+        }
+        writer.Stream() << "\"/>" << std::endl;
+
+        if(saveHasher)
+            _Shape.Hasher->Save(writer);
+        if(saveMap)
+            _Shape.Save(writer);
     }
 }
 
@@ -233,18 +246,25 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     reader.readElement("Part");
     std::string file (reader.getAttribute("file") );
 
-    if(reader.hasAttribute("map")) {
-        size_t count = reader.getAttributeAsUnsigned("map");
-        for(size_t i=0;i<count;++i) {
-            reader.readElement("Element");
-            _Shape.setElementName(reader.getAttribute("value"),reader.getAttribute("key"));
-        }
-        reader.readEndElement("Part");
-    }
-
     if (!file.empty()) {
         // initate a file read
         reader.addFile(file.c_str(),this);
+    }
+
+    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    int hasher_idx = reader.hasAttribute("HasherIndex")?reader.getAttributeAsInteger("HasherIndex"):-1;
+    int map = reader.hasAttribute("ElementMap")?reader.getAttributeAsInteger("ElementMap"):0;
+    if(owner && hasher_idx>=0) {
+        _Shape.Hasher = owner->getDocument()->getStringHasher(hasher_idx);
+        if(reader.hasAttribute("SaveHasher"))
+            _Shape.Hasher->Restore(reader);
+    }
+    if(map) {
+        if(map == 1) {
+            // type 1 marks the need for recompute after import
+            if(owner) owner->getDocument()->addRecomputeObject(owner);
+        }else if(map==2)
+            _Shape.Restore(reader);
     }
 }
 
@@ -326,6 +346,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 {
     // save the element map
     auto elementMap = _Shape.resetElementMap();
+    auto hasher = _Shape.Hasher;
 
     Base::FileInfo brep(reader.getFileName());
     if (brep.hasExtension("bin")) {
@@ -387,6 +408,10 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
     // restore the element map
     _Shape.resetElementMap(elementMap);
+    _Shape.Hasher = hasher;
+    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(owner)
+        _Shape.Tag = owner->getID();
 }
 
 // -------------------------------------------------------------------------

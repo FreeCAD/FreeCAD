@@ -74,7 +74,7 @@ App::DocumentObjectExecReturn *Box::execute(void)
         // Build a box using the dimension attributes
         BRepPrimAPI_MakeBox mkBox(L, W, H);
         TopoDS_Shape ResultShape = mkBox.Shape();
-        this->Shape.setValue(ResultShape);
+        this->Shape.setValue(ResultShape,false);
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {

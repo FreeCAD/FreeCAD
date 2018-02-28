@@ -24,12 +24,14 @@
 #ifndef _AppComplexGeoData_h_
 #define _AppComplexGeoData_h_
 
+#include <memory>
 #include <Base/Placement.h>
 #include <Base/Persistence.h>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/BoundBox.h>
 #include <Base/Rotation.h>
+#include "StringHasher.h"
 
 #ifdef __GNUC__
 # include <stdint.h>
@@ -38,6 +40,9 @@
 
 namespace Data
 {
+
+class ElementMap;
+typedef std::shared_ptr<ElementMap> ElementMapPtr;
 
 /** Segments
  *  Subelement type of the ComplexGeoData type
@@ -170,7 +175,79 @@ public:
 
     /// Strip out the trailing element name if there is mapped element name preceeds it.
     static std::string newElementName(const char *name);
+
+    /** Get element name
+     *
+     * @param name: the input name
+     * @param reverse: if false (default), the function try to map the name
+     * to the original \c Type + \c Index. If true, then the function map the
+     * other way round.
+     *
+     * @return Returns the found mapping, or else return the original input. The
+     * return pointer maybe invalidated when new element mapping is added.
+     */
+    const char *getElementName(const char *name, bool reverse=false) const;
+
+    /** Get mapped element names
+     *
+     * @param element: original element name with \c Type + \c Index
+     *
+     * @return a list of mapped names of the give element
+     */
+    std::vector<const char *> getElementMappedNames(const char *element) const;
+
+    /** Add a sub-element name mapping.
+     *
+     * @param element: the original \c Type + \c Index element name
+     * @param name: the renamed sub-element name. May or may not start with
+     * elementMapPrefix().
+     * @param hasher: in case the raw 'name' is too long. The caller can opt to
+     * use this hasher to hash the string and shorten it to an integer, which
+     * is reference counted and persistent.
+     * @param overwrite: if true, it will overwrite existing names
+     * @param sid: in case you use a hasher to hash the element name, pass in
+     * the string id reference using this parameter
+     *
+     * @return Returns the stored mapped element name. Note that if hasher is
+     * provided the stored name will be different from the input name.
+     *
+     * An element can have multiple mapped names. However, a name can only be
+     * mapped to one element
+     */
+    const char *setElementName(const char *element, const char *name, 
+            bool overwrite=false, App::StringIDRef sid=App::StringIDRef());
+
+    /** Reset/swap the element map
+     *
+     * @param elementMap: optional new element map
+     *
+     * @return Returns the existing element map.
+     */
+    ElementMapPtr resetElementMap(ElementMapPtr elementMap=ElementMapPtr()) {
+        _ElementMap.swap(elementMap);
+        return elementMap;
+    }
+
+    /// Get the entire element map
+    std::map<std::string, std::string> getElementMap() const;
+
+    /// Set the entire element map
+    void setElementMap(const std::map<std::string, std::string> &map);
+    
+    /// Get the current element map size
+    size_t getElementMapSize() const;
     //@}
+
+    /** @name Save/restore */
+    //@{
+    void Save (Base::Writer &writer) const;
+    void Restore(Base::XMLReader &reader);
+    unsigned int getMemSize (void) const;
+    //@}
+
+public:
+    /// String hasher for element name shortening
+    App::StringHasherRef Hasher;
 
 protected:
 
@@ -187,6 +264,9 @@ protected:
         Base::Vector3d tmp = tmpM * vec;
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
     }
+
+protected:
+    ElementMapPtr _ElementMap;
 };
 
 } //namespace App

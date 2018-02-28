@@ -19,6 +19,25 @@
         <UserDocu>Return vertexes and faces from a sub-element</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setElementName">
+      <Documentation>
+          <UserDocu>
+setElementName(element,name,overwrite=False), Set an element name
+
+element  : the original element name, e.g. Edge1, Vertex2
+name     : the new name for the element
+overwrite: if true, it will overwrite exiting name
+
+An element can have multiple mapped names. However, a name can only be mapped
+to one element
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getElementName" Const="true">
+      <Documentation>
+          <UserDocu>getElementName(name,reverse=False) - Return a mapped element name or reverse</UserDocu>
+      </Documentation>
+    </Methode>
       <Attribute Name="BoundBox" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Get the BoundBox of the object</UserDocu>
@@ -36,6 +55,30 @@
 			  <UserDocu>Get the current transformation of the object as matrix</UserDocu>
 		  </Documentation>
 		  <Parameter Name="Matrix" Type="Object" />
+	  </Attribute>
+      <Attribute Name="Hasher">
+		  <Documentation>
+              <UserDocu>Get/Set the string hasher of this object</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Hasher" Type="Object" />
+	  </Attribute>
+      <Attribute Name="ElementMapSize" ReadOnly="true">
+		  <Documentation>
+              <UserDocu>Get the current element map size</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ElementMapSize" Type="Int" />
+	  </Attribute>
+      <Attribute Name="ElementMap">
+		  <Documentation>
+              <UserDocu>Get/Set a dict of element mapping</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ElementMap" Type="Dict" />
+	  </Attribute>
+      <Attribute Name="ElementTypes" ReadOnly="true">
+		  <Documentation>
+              <UserDocu>A list of support element types</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ElementTypes" Type="Tuple" />
 	  </Attribute>
   </PythonExport>
 </GenerateModel>

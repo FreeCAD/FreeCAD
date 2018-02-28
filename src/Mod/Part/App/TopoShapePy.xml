@@ -427,6 +427,42 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makECompound">
+      <Documentation>
+        <UserDocu>
+makECompound([shape],appendTag=True,op=None): make compound of a list of input shapes
+
+appendTag: if true, element mapping will append shape's Tag into mapped name
+
+This function is element mapping aware. It will map the sub-element name of any
+shape that has a non-zero Tag into itself.
+
+appendTag : whether append input shape's Tag into auto generated element mapping
+op        : an optional string to be appended when auto generates element mapping.
+
+The function return itself.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makEWires">
+      <Documentation>
+        <UserDocu>
+makEWires(shape,op=None): make compound of a list of input shapes
+
+The function will sort any edges inside the input shape, and connect them into
+wire. If more than one wire is found, then it will make a compound out of all
+found wires.
+
+This function is element mapping aware. If the input shape has non-zero Tag,
+it will map any edge and vertex element name inside the input shape into the
+itself.
+
+op: an optional string to be appended when auto generates element mapping.
+
+The function return itself.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="reverse">
       <Documentation>
         <UserDocu>Reverses the orientation of this shape.</UserDocu>
@@ -609,9 +645,16 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>Returns a SubElement</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getElementName" Const="true">
+    <Methode Name="mapSubElement">
       <Documentation>
-        <UserDocu>getElementName(element,reverse=False) -> String, Returns a mapped element name</UserDocu>
+        <UserDocu>
+mapSubElement(type, shape, op=None,mapAll=True) - maps the sub element of other shape
+
+type:   sub element type (defined in attribute ElementTypes)
+shape:  other shape to map the sub-elements
+op:     optional string prefix to append before the mapped sub element names
+mapAll: whether to map all lower level sub-element types
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getTolerance" Const="true">
@@ -785,6 +828,12 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>Total volume of the solids of the shape.</UserDocu>
       </Documentation>
       <Parameter Name="Volume" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Tag">
+      <Documentation>
+        <UserDocu>Shape Tag</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="Int"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

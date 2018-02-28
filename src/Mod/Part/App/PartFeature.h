@@ -93,6 +93,11 @@ public:
             const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
             App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true);
 
+    static TopoShape getTopoShape(const App::DocumentObject *obj,
+            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
+            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
+            bool noElementMap=false);
+
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
 
     static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {
@@ -108,6 +113,7 @@ protected:
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onChanged(const App::Property* prop);
+    virtual void onDocumentRestored() override;
 };
 
 class FilletBase : public Part::Feature

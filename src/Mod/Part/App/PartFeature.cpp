@@ -163,7 +163,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
             }
             ts.transformShape(*pmat,copy,true);
         }
-        *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));
+        *pyObj =  Py::new_reference_to(shape2pyshape(ts));
         return const_cast<Feature*>(this);
     }catch(Standard_Failure &e) {
         std::ostringstream str;
@@ -181,9 +181,16 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 
 TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subname, 
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
-        bool resolveLink, bool transform)
+        bool resolveLink, bool transform) 
 {
-    if(!obj) return TopoDS_Shape();
+    return getTopoShape(obj,subname,needSubElement,pmat,powner,resolveLink,transform,true).getShape();
+}
+
+TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subname, 
+        bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
+        bool resolveLink, bool transform, bool noElementMap)
+{
+    if(!obj) return TopoShape();
 
     PyObject *pyobj = 0;
     Base::Matrix4D mat;
@@ -215,26 +222,27 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
         *pmat = mat;
 
     if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
-        auto shape = static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr()->getShape();
+        auto shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
         Py_DECREF(pyobj);
+        // TODO: owner tag is not a reliable identifier because the object
+        // hierarchy may cross document boundary. Need to find a way to
+        // accumulate sub-object ID along the hierarchy
+        shape.Tag = owner?owner->getID():obj->getID();
         return shape;
     }
 
     Py_XDECREF(pyobj);
 
     if(!owner)
-        return TopoDS_Shape();
+        return TopoShape();
 
     const char *subelement = subname?strrchr(subname,'.'):0;
     // nothing can be done if there is sub-element references
     if(subelement && subelement[1])
-        return TopoDS_Shape();
+        return TopoShape();
 
     // If no subelement reference, then try to create compound of sub objects
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    int count = 0;
+    std::vector<TopoShape> shapes;
     for(auto name : owner->getSubObjects()) {
         if(name.empty()) continue;
         int visible;
@@ -245,22 +253,23 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
         if(visible==0)
             continue;
         DocumentObject *subObj = 0;
-        auto shape = getShape(owner,name.c_str(),needSubElement,0,&subObj,false,false);
+        auto shape = getTopoShape(owner,name.c_str(),needSubElement,0,&subObj,false,false,noElementMap);
         if(visible<0 && subObj && !subObj->Visibility.getValue())
             continue;
-        if(!shape.IsNull()) {
-            ++count;
-            builder.Add(comp,shape);
-        }
+        if(!shape.isNull())
+            shapes.push_back(shape);
     }
-    if(!count) 
-        return TopoDS_Shape();
-    TopoShape ts(comp);
+    if(shapes.empty()) 
+        return TopoShape();
+    TopoShape ts;
+    if(!noElementMap)
+        ts.Tag = owner->getID();
+    ts.makECompound(shapes);
     ts.transformShape(mat,false,true);
-    return ts.getShape();
+    return ts;
 }
 
-App::DocumentObject *Part::Feature::getShapeOwner(const App::DocumentObject *obj, const char *subname)
+App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, const char *subname)
 {
     if(!obj) return 0;
     auto owner = obj->getSubObject(subname);
@@ -270,6 +279,10 @@ App::DocumentObject *Part::Feature::getShapeOwner(const App::DocumentObject *obj
             owner = linked;
     }
     return owner;
+}
+
+void Feature::onDocumentRestored() {
+    Shape.getShape().Tag = getID();
 }
 
 void Feature::onChanged(const App::Property* prop)

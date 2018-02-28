@@ -28,9 +28,23 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/bimap.hpp>
+#include <boost/bimap/multiset_of.hpp>
+#include <boost/bimap/unordered_set_of.hpp>
+#include <Base/Writer.h>
+#include <Base/Reader.h>
+#include <Base/Exception.h>
 #include "ComplexGeoData.h"
 
 using namespace Data;
+
+namespace Data {
+typedef boost::bimap<
+            boost::bimaps::multiset_of<std::string>,
+            boost::bimaps::unordered_set_of<std::string>,
+            boost::bimaps::with_info<App::StringIDRef> > ElementMapBase;
+class ElementMap: public ElementMapBase {};
+}
 
 TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass);
 
@@ -160,7 +174,7 @@ const std::string &ComplexGeoData::elementMapPrefix() {
 }
 
 const char *ComplexGeoData::isMappedElement(const char *name) {
-    if(boost::starts_with(name,elementMapPrefix()))
+    if(name && boost::starts_with(name,elementMapPrefix()))
         return name+elementMapPrefix().size();
     return 0;
 }
@@ -179,4 +193,127 @@ std::string ComplexGeoData::newElementName(const char *name) {
     if(isMappedElement(c))
         return std::string(name,dot);
     return name;
+}
+
+size_t ComplexGeoData::getElementMapSize() const {
+    return _ElementMap?_ElementMap->size():0;
+}
+
+const char *ComplexGeoData::getElementName(const char *name, bool reverse) const {
+    if(!name || !_ElementMap) 
+        return name;
+
+    if(reverse) {
+        auto it = _ElementMap->right.find(name);
+        if(it == _ElementMap->right.end())
+            return name;
+        return it->second.c_str();
+    }
+    const char *txt = isMappedElement(name);
+    if(!txt) 
+        return name;
+    std::string _txt;
+    // Strip out the trailing '.XXXX' if any
+    const char *dot = strchr(txt,'.');
+    if(dot) {
+        _txt = std::string(txt,dot-txt);
+        txt = _txt.c_str();
+    }
+    auto it = _ElementMap->left.find(txt);
+    if(it == _ElementMap->left.end())
+        return name;
+    return it->second.c_str();
+}
+
+std::vector<const char *> ComplexGeoData::getElementMappedNames(const char *element) const {
+    std::vector<const char *> names;
+    auto ret = _ElementMap->left.equal_range(element);
+    for(auto it=ret.first;it!=ret.second;++it)
+        names.push_back(it->second.c_str());
+    return names;
+}
+
+std::map<std::string, std::string> ComplexGeoData::getElementMap() const {
+    std::map<std::string, std::string> ret;
+    if(!_ElementMap) return ret;
+    for(auto &v : _ElementMap->left)
+        ret.emplace_hint(ret.cend(),v.first,v.second);
+    return ret;
+}
+
+void ComplexGeoData::setElementMap(const std::map<std::string, std::string> &map) {
+    if(!_ElementMap)
+        _ElementMap = std::make_shared<ElementMap>();
+    else
+        _ElementMap->clear();
+    for(auto &v : map)
+        setElementName(v.first.c_str(),v.second.c_str());
+}
+
+const char *ComplexGeoData::setElementName(const char *element, const char *name, 
+        bool overwrite, App::StringIDRef sid)
+{
+    if(!element || !element[0] || !name || !name[0])
+        throw Base::ValueError("Invalid input");
+    const char *mapped = isMappedElement(name);
+    if(mapped)
+        name = mapped;
+    if(!_ElementMap) _ElementMap = std::make_shared<ElementMap>();
+    if(overwrite)
+        _ElementMap->left.erase(name);
+    std::string _name;
+    if(!sid && !Hasher.isNull()) {
+        sid = Hasher->getID(name);
+        _name = sid->toString();
+        name = _name.c_str();
+        if(overwrite)
+            _ElementMap->left.erase(name);
+    }
+    auto ret = _ElementMap->left.insert(ElementMap::left_map::value_type(name,element,sid));
+    if(!ret.second && ret.first->second!=element) {
+        std::ostringstream ss;
+        ss << "duplicate element mapping '" << name << "->" << element << '/' << ret.first->second;
+        throw Base::ValueError(ss.str().c_str());
+    }
+    return ret.first->first.c_str();
+}
+
+void ComplexGeoData::Save(Base::Writer &writer) const {
+    writer.Stream() << writer.ind() << "<ElementMap";
+    if(!_ElementMap || _ElementMap->empty())
+        writer.Stream() << "/>" << std::endl;
+    else {
+        writer.Stream() << " count=\"" << _ElementMap->left.size() << "\">" << std::endl;
+        for(auto &v : _ElementMap->left) {
+            // We are omitting indentation here to save some space in case of long list of elements
+            writer.Stream() << "<Element key=\"" <<  
+                v.first <<"\" value=\"" << v.second;
+            if(v.info)
+                writer.Stream() << "\" sid=\"" << v.info->value();
+            writer.Stream() << "\"/>" << std::endl;
+        }
+        writer.Stream() << writer.ind() << "</ElementMap>" << std::endl ;
+    }
+}
+
+void ComplexGeoData::Restore(Base::XMLReader &reader) {
+    resetElementMap();
+    reader.readElement("ElementMap");
+    if(reader.hasAttribute("count")) {
+        size_t count = reader.getAttributeAsUnsigned("count");
+        for(size_t i=0;i<count;++i) {
+            reader.readElement("Element");
+            auto sid = App::StringIDRef();
+            if(!Hasher.isNull() && reader.hasAttribute("sid"))
+                sid = Hasher->getID(reader.getAttributeAsInteger("sid"));
+            setElementName(reader.getAttribute("value"),reader.getAttribute("key"),false,sid);
+        }
+        reader.readEndElement("ElementMap");
+    }
+}
+
+unsigned int ComplexGeoData::getMemSize(void) const {
+    if(_ElementMap)
+        return _ElementMap->size()*10;
+    return 0;
 }
