@@ -6505,8 +6505,7 @@ public:
                 try {
                     Gui::Command::openCommand("Add external geometry");
                     FCMD_OBJ_CMD2("addExternal(\"%s\",\"%s\")",
-                              sketchgui->getObject(),
-                              sel.FeatName, Data::ComplexGeoData::newElementName(sel.SubName).c_str());
+                              sketchgui->getObject(), sel.FeatName, sel.SubName);
                     Gui::Command::commitCommand();
                     
                     // adding external geometry does not require a solve() per se (the DoF is the same),

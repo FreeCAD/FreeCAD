@@ -77,6 +77,7 @@
 
 #include <Inventor/SbTime.h>
 #include <boost/scoped_ptr.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Tools.h>

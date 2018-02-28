@@ -217,9 +217,34 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of 
     // the objects that depend on this sketch (like pads)
-    Shape.setValue(solvedSketch.toShape()); 
-
+    buildShape();
+    
     return App::DocumentObject::StdReturn;
+}
+
+#define WIRE_OP "S"
+
+void SketchObject::buildShape() {
+
+    // Shape.setValue(solvedSketch.toShape()); 
+    // We use the following instead to map element names
+
+    std::vector<Part::TopoShape> shapes;
+    const auto &geos = getInternalGeometry();
+    std::string name("Edge");
+    for(size_t i=0;i<geos.size();++i) {
+        auto geo = geos[i];
+        if(geo->Construction) continue;
+        shapes.push_back(getEdge(geo,convertSubName(
+                        name+std::to_string(i+1),false).c_str()));
+    }
+    Part::TopoShape wires;
+    wires.Tag = getID();
+    if(shapes.size()==1)
+        wires.makEWires(shapes[0],WIRE_OP);
+    else if(shapes.size())
+        wires.makEWires(Part::TopoShape(getID()).makECompound(shapes,false),WIRE_OP);
+    Shape.setValue(wires);
 }
 
 int SketchObject::hasConflicts(void) const
@@ -298,9 +323,9 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 
         for(auto obj : Exports.getValues()) {
             auto exp = dynamic_cast<SketchExport*>(obj);
-            if(exp->testStatus(App::ObjectStatus::Recompute2))
+            if(!exp || exp->testStatus(App::ObjectStatus::Recompute2))
                 continue;
-            if(exp && exp->update() && !exp->positionBySupport())
+            if(exp->update() && exp->SyncPlacement.getValue() && !exp->positionBySupport())
                 exp->Placement.setValue(Placement.getValue());
         }
     }
@@ -342,7 +367,7 @@ public:
         rtree.query(bgi::nearest(pt,1),std::back_inserter(ret));
         if(ret.size()) {
             // NOTE: we are using square distance here, the 1e-6 threshold is
-            // very forgiving. You should have used Precision::SquareConfisuion(), 
+            // very forgiving. We should have used Precision::SquareConfisuion(), 
             // which is 1e-14. However, there is a problem with current
             // commandGeoCreate. They create new geometry with initial point of
             // the exact mouse position, instead of the pre-selected point
@@ -564,8 +589,8 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 }
 
 void SketchObject::generateExternalId(const char *key) {
-    auto extId = getDocument()->mapStringToID(key);
-    externalGeoMap.insert(std::make_pair(*extId,
+    auto extId = getDocument()->Hasher->getID(key);
+    externalGeoMap.insert(std::make_pair(extId->value(),
                 std::make_pair((int)ExternalGeo.size(),ExternalGeo.back()->Id)));
     externalGeoKeys.push_back(extId);
     assert(externalGeoKeys.size()==ExternalGeo.size());
@@ -5154,8 +5179,8 @@ void SketchObject::rebuildExternalGeometry(void)
     externalGeoMap.clear();
     if(externalGeoKeys.size()<2) {
         externalGeoKeys.clear();
-        externalGeoKeys.push_back(App::Document::StringID());
-        externalGeoKeys.push_back(App::Document::StringID());
+        externalGeoKeys.push_back(App::StringIDRef());
+        externalGeoKeys.push_back(App::StringIDRef());
     }else
         externalGeoKeys.resize(2);
 
@@ -6150,7 +6175,7 @@ void SketchObject::onDocumentRestored()
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
             if (this->solve(true) == 0)
-                Shape.setValue(solvedSketch.toShape());
+                buildShape();
         }
 
         Part::Part2DObject::onDocumentRestored();
@@ -6396,38 +6421,24 @@ void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::share
         solve();
 }
 
-std::vector<std::pair<Base::Vector3d,std::string> > SketchObject::getPointRefs(const char *subname) {
-    std::vector<std::pair<Base::Vector3d,std::string> > ret;
-    auto shapetype = checkSubName(subname);
-    int geoId;
-    PointPos posId;
-    if(!geoIdFromShapeType(shapetype.c_str(),geoId,posId) || posId!=none)
-        return ret;
-    auto geo = getGeometry(geoId);
-    if(geo) {
-        int pos[] = {start,mid,end};
-        for(size_t i=0;i<sizeof(pos)/sizeof(pos[0]);++i) {
-            std::ostringstream ss;
-            ss << subname << 'v' << pos[i];
-            ret.push_back(std::make_pair(
-                getPoint(geoId,static_cast<PointPos>(pos[i])),ss.str()));
-        }
-    }
-    return ret;
-}
-
 App::DocumentObject *SketchObject::getSubObject(
         const char *subname, PyObject **pyObj, 
         Base::Matrix4D *pmat, bool transform, int depth) const
 {
-    if(!subname || !Data::ComplexGeoData::isMappedElement(subname))
+    const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
+    if(!subname || 
+       (mapped && boost::starts_with(mapped,WIRE_OP)) ||
+       (!mapped && (boost::starts_with(subname,"Vertex") || boost::starts_with(subname,"Edge"))))
+    {
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    }
 
     std::string sub = checkSubName(subname);
     const char *shapetype = sub.c_str();
     const Part::Geometry *geo = 0;
     Base::Vector3d point;
-    if (boost::starts_with(shapetype,"Edge")) {
+    if (boost::starts_with(shapetype,"Edge") ||
+        boost::starts_with(shapetype,"edge")) {
         geo = getGeometry(std::atoi(&shapetype[4]) - 1);
         if (!geo) return 0;
     } else if (boost::starts_with(shapetype,"ExternalEdge")) {
@@ -6435,7 +6446,8 @@ App::DocumentObject *SketchObject::getSubObject(
         GeoId = -GeoId - 3;
         geo = getGeometry(GeoId);
         if(!geo) return 0;
-    } else if (boost::starts_with(shapetype,"Vertex")) {
+    } else if (boost::starts_with(shapetype,"Vertex") ||
+               boost::starts_with(shapetype,"vertex")) {
         int VtId = std::atoi(&shapetype[6]) - 1;
         int GeoId;
         PointPos PosId;
@@ -6465,18 +6477,79 @@ App::DocumentObject *SketchObject::getSubObject(
 
     if (pyObj) {
         Part::TopoShape shape;
-        if (geo) 
-            shape = geo->toShape();
-        else if (*shapetype)
+        shape.Tag = getID();
+        if (geo) {
+            std::string name = convertSubName(shapetype,false);
+            shape = getEdge(geo,name.c_str());
+        }else if (*shapetype){
             shape = BRepBuilderAPI_MakeVertex(gp_Pnt(point.x,point.y,point.z)).Vertex();
-        else
+            shape.setElementName("Vertex1",convertSubName(shapetype,false).c_str());
+        }else
             shape = Shape.getShape();
         if(pmat && !shape.isNull()) 
             shape.transformShape(*pmat,false,true);
-        *pyObj = Py::new_reference_to(Part::shape2pyshape(shape.getShape()));
+        *pyObj = Py::new_reference_to(Part::shape2pyshape(shape));
     }
 
     return const_cast<SketchObject*>(this);
+}
+
+std::pair<std::string,std::string> SketchObject::getElementName(
+        const char *name, ElementNameType type) const
+{
+    std::pair<std::string,std::string> ret;
+    if(!name) return ret;
+    const char *mapped = Data::ComplexGeoData::isMappedElement(name);
+    if(!mapped) {
+        if(boost::starts_with(name,"Vertex") || 
+           boost::starts_with(name,"Edge"))
+            return Part2DObject::getElementName(name,type);
+
+        ret.first = convertSubName(name,true);
+        if(!Data::ComplexGeoData::isMappedElement(ret.first.c_str()))
+            ret.first.clear();
+        ret.second = name;
+        return ret;
+    }
+
+    if(boost::starts_with(mapped,WIRE_OP))
+        return Part2DObject::getElementName(name,type);
+
+    ret.second = checkSubName(name);
+    if(ret.second.size()) {
+        ret.first = convertSubName(ret.second.c_str(),true);
+        if(type==ElementNameType::Export) {
+            if(boost::starts_with(ret.second,"Vertex"))
+                ret.second[0] = 'v';
+            else if(boost::starts_with(ret.second,"Edge"))
+                ret.second[0] = 'e';
+        }
+    }
+    return ret;
+}
+
+Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const {
+    Part::TopoShape shape(geo->toShape());
+    shape.Tag = getID();
+    shape.setElementName("Edge1",name);
+    TopTools_IndexedMapOfShape vmap;
+    TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
+    for(int i=1;i<=vmap.Extent();++i) {
+        auto gpt = BRep_Tool::Pnt(TopoDS::Vertex(vmap(i)));
+        Base::Vector3d pt(gpt.X(),gpt.Y(),gpt.Z());
+        PointPos pos[] = {start,end};
+        for(size_t j=0;j<sizeof(pos)/sizeof(pos[0]);++j) {
+            if(getPoint(geo,pos[j]) == pt) {
+                std::ostringstream ss;
+                ss << name << 'v' << pos[j];
+                std::string element("Vertex");
+                element += std::to_string(i);
+                shape.setElementName(element.c_str(),ss.str().c_str());
+                break;
+            }
+        }
+    }
+    return shape;
 }
 
 std::vector<std::string> SketchObject::checkSubNames(const std::vector<std::string> &subnames) const{
@@ -6502,7 +6575,7 @@ std::string SketchObject::checkSubName(const char *sub) const{
     switch(subname[0]) {
     case 'g':
     case 'e': 
-        if(iss>>std::hex>>id) 
+        if(iss>>id) 
             valid = true;
         break;
     default: {
@@ -6541,7 +6614,7 @@ std::string SketchObject::checkSubName(const char *sub) const{
         char sep;
         int posId = none;
         std::ostringstream ss;
-        if((iss >> sep >> std::hex >> posId) && sep=='v') {
+        if((iss >> sep >> posId) && sep=='v') {
             int idx = getVertexIndexGeoPos(geoId,static_cast<PointPos>(posId));
             if(idx < 0) {
                 FC_ERR("invalid subname " << sub);
@@ -6560,12 +6633,14 @@ std::string SketchObject::checkSubName(const char *sub) const{
 
 bool SketchObject::geoIdFromShapeType(const char *shapetype, int &geoId, PointPos &posId) const {
     posId = none;
-    if (boost::starts_with(shapetype,"Edge")) {
+    if (boost::starts_with(shapetype,"Edge") ||
+        boost::starts_with(shapetype,"edge")) {
         geoId = std::atoi(&shapetype[4]) - 1;
     } else if (boost::starts_with(shapetype,"ExternalEdge")) {
         geoId = std::atoi(&shapetype[12]) - 1;
         geoId = -geoId - 3;
-    } else if (boost::starts_with(shapetype,"Vertex")) {
+    } else if (boost::starts_with(shapetype,"Vertex") ||
+               boost::starts_with(shapetype,"vertex")) {
         int VtId = std::atoi(&shapetype[6]) - 1;
         getGeoVertexIndex(VtId,geoId,posId);
         if (posId==none) return false;
@@ -6581,7 +6656,7 @@ bool SketchObject::geoIdFromShapeType(const char *shapetype, int &geoId, PointPo
     return true;
 }
 
-std::string SketchObject::convertSubName(const char *shapetype) const{
+std::string SketchObject::convertSubName(const char *shapetype, bool postfix) const{
     std::ostringstream ss;
     int geoId;
     PointPos posId;
@@ -6590,7 +6665,9 @@ std::string SketchObject::convertSubName(const char *shapetype) const{
     if(geoId == Sketcher::GeoEnum::HAxis ||
        geoId == Sketcher::GeoEnum::VAxis ||
        geoId == Sketcher::GeoEnum::RtPnt) {
-        ss << Data::ComplexGeoData::elementMapPrefix() << shapetype << '.' << shapetype;
+        ss << Data::ComplexGeoData::elementMapPrefix() << shapetype;
+        if(postfix)
+           ss  << '.' << shapetype;
         return ss.str();
     }
 
@@ -6598,14 +6675,37 @@ std::string SketchObject::convertSubName(const char *shapetype) const{
     if(!geo)
         return shapetype;
     ss << Data::ComplexGeoData::elementMapPrefix();
-    if(geoId>=0) 
-        ss << 'g' << std::hex << geo->Id;
-    else
-        ss << 'e' << std::hex << App::Document::stringID(externalGeoKeys[-geoId-1]);
+    if(geoId>=0)
+        ss << 'g' << geo->Id;
+    else {
+        auto sid = externalGeoKeys[-geoId-1];
+        ss << 'e' << (sid?sid->value():-1);
+    }
     if(posId!=none)
-        ss << 'v' << std::hex << posId;
-    ss << '.' << shapetype;
+        ss << 'v' << posId;
+    if(postfix) {
+        // rename Edge to edge, and Vertex to vertex to avoid ambiguous of
+        // element mapping of the public shape and internal geometry.
+        if(boost::starts_with(shapetype,"Edge"))
+            ss << ".e" << shapetype+1;
+        else if(boost::starts_with(shapetype,"Vertex"))
+            ss << ".v" << shapetype+1;
+        else
+            ss << '.' << shapetype;
+    }
     return ss.str();
+}
+
+const char *SketchObject::isExternalReference(const char *ref) {
+    if(!ref) return ref;
+    const char *dot = strrchr(ref,'.');
+    if(!dot) 
+        dot = ref;
+    else
+        ++dot;
+    if(boost::starts_with(dot,"ExternalEdge"))
+        return dot;
+    return 0;
 }
 
 // Python Sketcher feature ---------------------------------------------------------
@@ -6636,6 +6736,7 @@ PROPERTY_SOURCE(Sketcher::SketchExport, Part::Part2DObject)
 SketchExport::SketchExport() {
     ADD_PROPERTY_TYPE(Base,(""),"",App::Prop_Hidden,"Base sketch object name");
     ADD_PROPERTY_TYPE(Refs,(),"",App::Prop_None,"Sketch geometry references");
+    ADD_PROPERTY_TYPE(SyncPlacement,(true),"",App::Prop_None,"Synchronize placement with parent sketch if not attached");
 }
 
 SketchExport::~SketchExport()
@@ -6670,7 +6771,10 @@ App::DocumentObjectExecReturn *SketchExport::execute(void) {
 }
 
 void SketchExport::onChanged(const App::Property* prop) {
-    if(prop == &Shape) {
+    if(prop == &Refs) {
+        if(!isRestoring() && !Refs.testStatus(App::Property::User3))
+            update();
+    } else if(prop == &Shape) {
         // bypass Part::Feature logic, 'cause we don't want to transform the
         // shape and mess up the element map.
         DocumentObject::onChanged(prop);
@@ -6688,88 +6792,61 @@ std::set<std::string> SketchExport::getRefs() const {
     return refSet;
 }
 
+#define EXPORT_OP "SE"
+
 bool SketchExport::update() {
     auto base = getBase();
     if(!base) return false;
     auto sketch = dynamic_cast<SketchObject*>(base);
-    int count = 0;
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    std::list<TopoDS_Edge> edgeList;
-    std::map<int,std::string> refMap;
-    for(const auto &ref : getRefs()) {
-        // Obtain the shape without feature's placement transformation, because
-        // we may have our own support.
-        auto shape = Part::Feature::getShape(base,ref.c_str(),true,0,0,false,false);
-        if(shape.IsNull()) continue;
-        TopExp_Explorer exp(shape,TopAbs_EDGE);
-        if(exp.More()) {
-            refMap[exp.Current().HashCode(INT_MAX)] = ref;
-            edgeList.push_back(TopoDS::Edge(exp.Current()));
+    if(sketch) {
+        auto refs = Refs.getValues();
+        bool updated = false;
+        if(getDocument()->testStatus(App::Document::Status::Importing)) {
+            // We are importing, regenerate new style external reference
+            for(auto &ref : refs) {
+                const char *r = SketchObject::isExternalReference(ref.c_str());
+                if(r) {
+                    updated = true;
+                    ref = sketch->convertSubName(r);
+                }
+            }
         }else{
-            ++count;
-            refMap[shape.HashCode(INT_MAX)] = ref;
-            builder.Add(comp,shape);
-        }
-    }
-    while(edgeList.size()) {
-        ++count;
-        BRepBuilderAPI_MakeWire mkWire;
-        std::deque<int> hashes;
-        auto edges = Part::sort_Edges2(Precision::Confusion(),edgeList,&hashes);
-        auto hit = hashes.begin();
-        for(auto &edge : edges){
-            mkWire.Add(edge);
-            auto hash = *hit++;
-            auto ref = refMap[hash];
-            assert(ref.size());
-            auto e = mkWire.Edge();
-            auto ehash = e.HashCode(INT_MAX);
-            if(ehash!=hash)
-                refMap[ehash] = ref;
-            if(sketch) {
-                auto names = sketch->getPointRefs(ref.c_str());
-                if(names.size()) {
-                    for(TopExp_Explorer it(e,TopAbs_VERTEX);it.More();it.Next()) {
-                        auto pt = BRep_Tool::Pnt(TopoDS::Vertex(it.Current()));
-                        Base::Vector3d point(pt.X(),pt.Y(),pt.Z());
-                        for(auto &name : names) {
-                            if(point == name.first) {
-                                refMap[it.Current().HashCode(INT_MAX)] = name.second;
-                                break;
-                            }
-                        }
+            // we are not importing, but we still need to make sure the old
+            // style external references are in sync
+            for(auto &ref : refs) {
+                const char *r = SketchObject::isExternalReference(ref.c_str());
+                if(r) {
+                    auto element = sketch->checkSubName(ref.c_str());
+                    if(element!=r) {
+                        updated = true;
+                        ref = sketch->convertSubName(element.c_str());
                     }
                 }
             }
         }
-        builder.Add(comp,mkWire.Wire());
-    }
-    if(!count) return false;
-
-    Part::TopoShape shape(comp);
-    TopTools_IndexedMapOfShape edgeMap;
-    TopExp::MapShapes(comp,TopAbs_EDGE,edgeMap);
-    for(int i=1;i<=edgeMap.Extent();i++) {
-        auto it = refMap.find(edgeMap(i).HashCode(INT_MAX));
-        if(it!=refMap.end()) {
-            std::ostringstream str;
-            str << "Edge" << i;
-            shape.setElementName(str.str().c_str(),it->second.c_str());
+        if(updated) {
+            Refs.setStatus(App::Property::User3,true);
+            Refs.setValues(refs);
+            Refs.setStatus(App::Property::User3,false);
         }
     }
-    TopTools_IndexedMapOfShape vertexMap;
-    TopExp::MapShapes(comp,TopAbs_VERTEX,vertexMap);
-    for(int i=1;i<=vertexMap.Extent();i++) {
-        auto it = refMap.find(vertexMap(i).HashCode(INT_MAX));
-        if(it!=refMap.end()) {
-            std::ostringstream str;
-            str << "Vertex" << i;
-            shape.setElementName(str.str().c_str(),it->second.c_str());
-        }
+    std::vector<Part::TopoShape> shapes;
+    for(const auto &ref : getRefs()) {
+        // Obtain the shape without feature's placement transformation, because
+        // we may have our own support.
+        auto shape = Part::Feature::getTopoShape(base,ref.c_str(),true,0,0,false,false);
+        if(shape.isNull()) continue;
+        shape.Tag = getID();
+        shapes.push_back(shape);
     }
-    Shape.setValue(shape);
+    if(shapes.empty()) return false;
+    Part::TopoShape wires;
+    wires.Tag = getID();
+    if(shapes.size()==1)
+        wires.makEWires(shapes[0],EXPORT_OP);
+    else if(shapes.size())
+        wires.makEWires(Part::TopoShape(getID()).makECompound(shapes,false),EXPORT_OP);
+    Shape.setValue(wires);
     return true;
 }
 
@@ -6779,4 +6856,32 @@ short SketchExport::mustExecute(void) const {
     auto base = getBase();
     if(base) return base->mustExecute();
     return 0;
+}
+
+void SketchExport::onDocumentRestored() {
+    auto sketch = dynamic_cast<SketchObject*>(getBase());
+    if(sketch && getDocument()->testStatus(App::Document::Status::Importing)) {
+        // When importing the hashed external reference may change, we first
+        // convert the reference back to old style, and later in update() to
+        // convert it back to new style.
+        bool touched = isTouched();
+        std::vector<std::string> refs = Refs.getValue();
+        bool updated = false;
+        for(auto &ref : refs) {
+            const char *r = SketchObject::isExternalReference(ref.c_str());
+            if(r) {
+                ref = r;
+                updated = true;
+            }
+        }
+        if(updated) {
+            getDocument()->addRecomputeObject(this);
+            Refs.setStatus(App::Property::User3,true);
+            Refs.setValue(refs);
+            Refs.setStatus(App::Property::User3,false);
+            if(!touched)
+                purgeTouched();
+        }
+    }
+    Part2DObject::onDocumentRestored();
 }

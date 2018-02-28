@@ -1851,15 +1851,8 @@ static void exportSketch(Gui::Command &cmd, bool compound)
             }
             std::ostringstream ss;
             ss << '[';
-            for(const auto &sub : selection[idx].getSubNames()) {
-                ss << "'";
-                auto pos = sub.rfind('.');
-                if(pos!=std::string::npos)
-                    ss << sub.substr(0,pos);
-                else
-                    ss << sub;
-                ss << "',";
-            }
+            for(const auto &sub : selection[idx].getSubNames())
+                ss << "'" << sub << "',";
             ss << ']';
             FCMD_OBJ_CMD(Export,"Refs = " << ss.str());
         }else{
@@ -1874,8 +1867,7 @@ static void exportSketch(Gui::Command &cmd, bool compound)
                 FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
                 if(grp)
                     FCMD_OBJ_CMD(grp,"addObject("<<cmd.getObjectCmd(Export)<<")");
-                auto pos = sub.rfind('.');
-                FCMD_OBJ_CMD(Export,"Refs = '"<<(pos==string::npos?sub:sub.substr(0,pos))<<"'");
+                FCMD_OBJ_CMD(Export,"Refs = '"<<sub<<"'");
                 FCMD_VOBJ_CMD(Obj,"TempoVis.hide("<<cmd.getObjectCmd(Export)<<")");
                 cmd.copyVisual(Export,"LineColor",Obj);
                 cmd.copyVisual(Export,"PointColor",Obj);
