@@ -292,6 +292,22 @@
     </widget>
    </item>
    <item>
+    <item row="0" column="2">
+       <widget class="Gui::PrefCheckBox" name="checkRandomColor">
+        <property name="text">
+         <string>random shapecolor</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>randomColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+        </item>
+       </layout>
+      </item>
+    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -322,13 +338,26 @@
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>DefaultShapeColor</tabstop>
+  <tabstop>checkRandomColor</tabstop>
   <tabstop>DefaultShapeLineWidth</tabstop>
   <tabstop>DefaultShapeLineColor</tabstop>
   <tabstop>BoundingBoxColor</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+  <connections>
+  <connection>
+   <sender>checkRandomColor</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>DefaultShapeColor</receiver>
+   <slot>setDisabled(bool)</slot>
+  </connection>
+</connections>
 </ui>
