@@ -129,6 +129,9 @@ void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
 {
     Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+	// do not drag if less than 3 objects
+	if (pShapes.size() < 3) return;
+	
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it == obj) {
             pShapes.erase(it);
@@ -145,13 +148,29 @@ bool ViewProviderMultiFuse::canDropObjects() const
 
 bool ViewProviderMultiFuse::canDropObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+	if (! obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) return false;
+	// checks if the part is not already in
+    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it == obj) {
+            return false;
+        }
+    }
+	
+    return true;
 }
 
 void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
 {
     Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+	// checks if the part is not already in
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it == obj) {
+            return ;
+        }
+    }
     pShapes.push_back(obj);
     pBool->Shapes.setValues(pShapes);
 }
@@ -223,6 +242,8 @@ void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)
 {
     Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+	
+	
     pShapes.push_back(obj);
     pBool->Shapes.setValues(pShapes);
 }
