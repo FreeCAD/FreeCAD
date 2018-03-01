@@ -30,7 +30,7 @@ class CreateFlatMesh(BaseCommand):
         points = np.array([[i.x, i.y, i.z] for i in obj.Mesh.Points])
         faces = np.array([list(i) for i in  obj.Mesh.Topology[1]])
         flattener = flatmesh.FaceUnwrapper(points, faces)
-        flattener.findFlatNodes(5, 0.99)
+        flattener.findFlatNodes(5, 0.95)
         boundaries = flattener.getFlatBoundaryNodes()
         print('number of nodes: {}'.format(len(flattener.ze_nodes)))
         print('number of faces: {}'.format(len(flattener.tris)))

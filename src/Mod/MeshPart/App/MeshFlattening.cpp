@@ -176,7 +176,7 @@ void FaceUnwrapper::findFlatNodes(int steps, double val)
     lscmrelax::LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
     mesh_flattener.lscm();
     for (int j=0; j<steps; j++)
-        mesh_flattener.relax(0.95);
+        mesh_flattener.relax(val);
     this->ze_nodes = mesh_flattener.flat_vertices.transpose();
 }
 
