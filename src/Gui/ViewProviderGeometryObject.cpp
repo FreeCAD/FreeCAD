@@ -77,9 +77,10 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0),pcBoundColor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool randomColor = hGrp->GetBool("randomColor", true);
+    bool randomColor = hGrp->GetBool("RandomColor", true);
     float r,g,b;
-    if(randomColor){ // random box checked
+
+    if(randomColor){
         float fMax = (float)RAND_MAX;
         r = (float)rand()/fMax;
         g = (float)rand()/fMax;
