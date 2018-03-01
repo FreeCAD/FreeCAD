@@ -56,6 +56,8 @@
 
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
+// #include <Gui/Application.h>
+// #include <Mod/Part/Gui/ViewProvider.h>
 
 using namespace Part;
 
@@ -268,6 +270,21 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
 }
 
 
+void Feature::tellChangesToParentParts(ObjectChanges what) {
+#ifndef  USE_OLD_DAG
+    for (auto obj : getInList()){
+		if (obj->isDerivedFrom(Feature::getClassTypeId())) {
+			((Feature *)obj)->childrenPartChanged(this,what);
+		}	
+    }
+//#else
+	// TODO
+#endif
+
+
+}
+
+
 // ---------------------------------------------------------
 
 PROPERTY_SOURCE(Part::FeatureExt, Part::Feature)
@@ -425,4 +442,27 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
     
 }
 
+// -------------------------------------
+
+void Feature::childrenPartChanged(const Feature * child, ObjectChanges what) {
+	// report the change to the parents
+	// does not report if a calculation is already planned (ie they are already told)
+	// TODO
+	ObjectChanges w = what;
+	if (what == PositionChange) w = GeometryChange; 
+	// in general change the position of one component changes the geometry.
+	// TODO sets the attributes for rebuilding
+	
+	/* TODO
+	if (isDerivedPart()) {
+		// do not tell if the color does not change even if changed due to a children
+		Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
+		if (activeGui) {
+			Gui::ViewProviderPart* vp = (Gui::ViewProviderPart*)activeGui->getViewProvider(&this));
+		}
+		if (what == ColorChange && vp->usePartColors()) return;
+	}
+	*/
+	tellChangesToParentParts(w);
+}
 

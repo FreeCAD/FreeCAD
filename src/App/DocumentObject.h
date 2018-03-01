@@ -51,6 +51,8 @@ enum ObjectStatus {
     Remove = 5,
     PythonCall = 6,
     Destroy = 7,
+	RecomputeShape = 10,
+	RecomputeColors = 11,
     Expand = 16
 };
 

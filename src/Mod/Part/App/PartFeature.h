@@ -39,6 +39,12 @@ namespace Part
 {
 class PartFeaturePy;
 
+enum ObjectChanges {
+    ColorChange = 0,
+    GeometryChange = 1,
+    PositionChange = 2
+};
+
 /** Base class of all shape feature classes in FreeCAD
  */
 class PartExport Feature : public App::GeoFeature
@@ -71,6 +77,11 @@ public:
 
     TopLoc_Location getLocation() const;
 	
+	virtual void tellChangesToParentParts(ObjectChanges what); //
+	
+	virtual void childrenPartChanged(const Feature * child, ObjectChanges what);
+
+    
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
