@@ -60,7 +60,6 @@ public:
     ViewProviderFace();
     virtual ~ViewProviderFace();
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     virtual bool canDragObjects() const;
     virtual bool canDragObject(App::DocumentObject*) const;
     virtual void dragObject(App::DocumentObject*);

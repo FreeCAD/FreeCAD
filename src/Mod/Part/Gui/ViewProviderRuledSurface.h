@@ -43,7 +43,6 @@ public:
     virtual ~ViewProviderRuledSurface();
 
     std::vector<std::string> getDisplayModes(void) const;
-    std::vector<App::DocumentObject*> claimChildren() const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
     

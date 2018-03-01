@@ -80,6 +80,7 @@ public:
         return "PartGui::ViewProviderExtrusion";
     }
     //@}
+	virtual std::vector<App::DocumentObject*> getChildren(void);
 
     /**
      * @brief extrudeShape powers the extrusion feature.

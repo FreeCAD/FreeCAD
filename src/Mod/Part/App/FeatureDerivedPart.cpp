@@ -50,5 +50,8 @@ FeatureDerivedPart::FeatureDerivedPart ()
     History.setSize(0);
 
 }
+bool FeatureDerivedPart::isDerivedPart(void) { 
+	return true; 
+}
 
 

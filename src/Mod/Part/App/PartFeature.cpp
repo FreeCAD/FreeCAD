@@ -66,11 +66,28 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature(void) 
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
+	ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Feature", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 Feature::~Feature()
 {
 }
+
+bool Feature::isDerivedPart(void) { 
+	return false; 
+}
+
+// extern void printBacktrace(size_t skip=0);
+
+
+std::vector<App::DocumentObject*> Feature::getChildren(void) const{
+	// returns an empty list for most parts
+    std::vector<App::DocumentObject*> temp;
+    return temp;
+}
+
 
 short Feature::mustExecute(void) const
 {
@@ -161,6 +178,7 @@ TopLoc_Location Feature::getLocation() const
     trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
     return TopLoc_Location(trf);
 }
+
 
 ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
                                    const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
@@ -406,3 +424,5 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
     }
     
 }
+
+

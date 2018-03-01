@@ -119,3 +119,10 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
+
+std::vector<App::DocumentObject*> Mirroring::getChildren(void) {
+	// Make the input object a child (see also #0001482)
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(Source.getValue());
+    return temp;
+}

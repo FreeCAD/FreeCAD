@@ -52,11 +52,13 @@ public:
         return "PartGui::ViewProviderMirror";
     }
     //@}
+	virtual std::vector<App::DocumentObject*> getChildren(void);
 
 protected:
     void onChanged (const App::Property* prop);
 
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+
 
 };
 

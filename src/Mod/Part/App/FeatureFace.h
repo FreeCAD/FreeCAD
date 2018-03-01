@@ -50,6 +50,9 @@ public:
     }
     void setupObject() override;
     //@}
+	
+	virtual std::vector<App::DocumentObject*> getChildren(void);
+	
 };
 
 } //namespace Part

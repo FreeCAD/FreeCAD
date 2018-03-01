@@ -174,14 +174,6 @@ void ViewProviderMirror::unsetEdit(int ModNum)
     }
 }
 
-std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
-{
-    // Make the input object a child (see also #0001482)
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
-    return temp;
-}
-
 bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
@@ -345,13 +337,6 @@ ViewProviderRevolution::~ViewProviderRevolution()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
-{
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Revolution*>(getObject())->Source.getValue());
-    return temp;
-}
-
 bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
@@ -376,11 +361,6 @@ ViewProviderLoft::~ViewProviderLoft()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
-{
-    return static_cast<Part::Loft*>(getObject())->Sections.getValues();
-}
-
 bool ViewProviderLoft::onDelete(const std::vector<std::string> &)
 {
     return true;
@@ -397,11 +377,6 @@ ViewProviderSweep::ViewProviderSweep()
 
 ViewProviderSweep::~ViewProviderSweep()
 {
-}
-
-std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
-{
-    return static_cast<Part::Sweep*>(getObject())->Sections.getValues();
 }
 
 bool ViewProviderSweep::onDelete(const std::vector<std::string> &)
@@ -469,13 +444,6 @@ void ViewProviderOffset::unsetEdit(int ModNum)
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
     }
-}
-
-std::vector<App::DocumentObject*> ViewProviderOffset::claimChildren() const
-{
-    std::vector<App::DocumentObject*> child;
-    child.push_back(static_cast<Part::Offset*>(getObject())->Source.getValue());
-    return child;
 }
 
 bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
@@ -555,13 +523,6 @@ void ViewProviderThickness::unsetEdit(int ModNum)
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
     }
-}
-
-std::vector<App::DocumentObject*> ViewProviderThickness::claimChildren() const
-{
-    std::vector<App::DocumentObject*> child;
-    child.push_back(static_cast<Part::Thickness*>(getObject())->Faces.getValue());
-    return child;
 }
 
 bool ViewProviderThickness::onDelete(const std::vector<std::string> &)

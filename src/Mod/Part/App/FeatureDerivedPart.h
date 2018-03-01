@@ -39,10 +39,9 @@ class FeatureDerivedPart : public Part::Feature
 public:
     FeatureDerivedPart();
 
-    PropertyShapeHistory History;
-	
 	virtual std::vector<App::DocumentObject*> getChildren(void) const = 0;
 	virtual App::DocumentObjectExecReturn *execute(void) =0;
+	virtual bool isDerivedPart(void);
 
 };
 

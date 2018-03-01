@@ -77,6 +77,7 @@ public:
                               Base::Vector3d &center,
                               Base::Vector3d &dir,
                               double &angle);
+	virtual std::vector<App::DocumentObject*> getChildren(void);
 
 private:
     static App::PropertyFloatConstraint::Constraints angleRangeU;

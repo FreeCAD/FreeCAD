@@ -41,11 +41,8 @@ public:
     /// destructor
     virtual ~ViewProviderDerivedPart();
 	
-    void updateData(const App::Property*);
+    // void updateData(const App::Property*);
 	
-	virtual std::vector<App::DocumentObject*> claimChildren(void) const ;
-	
-	virtual void updateViewColorAndTransparency();
 };
 	
 	

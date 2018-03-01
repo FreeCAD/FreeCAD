@@ -40,7 +40,6 @@ public:
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
-    std::vector<App::DocumentObject*> claimChildren() const;
     bool onDelete(const std::vector<std::string> &);
     
 protected:
@@ -106,7 +105,6 @@ public:
     virtual ~ViewProviderRevolution();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
 };
 
@@ -121,7 +119,6 @@ public:
     virtual ~ViewProviderLoft();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
 };
 
@@ -136,7 +133,6 @@ public:
     virtual ~ViewProviderSweep();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
 };
 
@@ -151,7 +147,6 @@ public:
     virtual ~ViewProviderOffset();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
     bool onDelete(const std::vector<std::string> &);
 
@@ -181,7 +176,6 @@ public:
     virtual ~ViewProviderThickness();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
     bool onDelete(const std::vector<std::string> &);
 

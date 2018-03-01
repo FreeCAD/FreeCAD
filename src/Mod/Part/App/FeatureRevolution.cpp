@@ -212,3 +212,11 @@ void Part::Revolution::setupObject()
     Part::Feature::setupObject();
     this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
 }
+
+std::vector<App::DocumentObject*> Part::Revolution::getChildren(void){
+	std::vector<App::DocumentObject*> temp;
+    temp.push_back(Source.getValue());
+    return temp;
+
+}
+

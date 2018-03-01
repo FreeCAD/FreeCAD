@@ -51,6 +51,7 @@ public:
         return "PartGui::ViewProviderRuledSurface";
     }
     //@}
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
 
 protected:
     void onChanged (const App::Property* prop);
@@ -84,6 +85,7 @@ public:
         return "PartGui::ViewProviderLoft";
     }
     //@}
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
 
 protected:
     void onChanged (const App::Property* prop);
@@ -114,6 +116,7 @@ public:
         return "PartGui::ViewProviderSweep";
     }
     //@}
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
 
 protected:
     void onChanged (const App::Property* prop);
@@ -145,6 +148,7 @@ public:
         return "PartGui::ViewProviderThickness";
     }
     //@}
+	virtual std::vector<App::DocumentObject*> getChildren(void) const;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop);
