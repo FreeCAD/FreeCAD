@@ -201,7 +201,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 
     // Set the QGIGroup Properties based on the DrawView
     float x = Rez::guiX(obj->X.getValue());
-    float y = Rez::guiX(obj->Y.getValue());
+    float y = Rez::guiX(-obj->Y.getValue());
 
     datumLabel->setPosFromCenter(x, y);
 
@@ -234,19 +234,21 @@ void QGIViewDimension::updateView(bool update)
     }
 
     // Identify what changed to prevent complete redraw
-    if(vp->Fontsize.isTouched() ||
-       vp->Font.isTouched()) {
-        QFont font = datumLabel->font();
-        font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-        font.setFamily(QString::fromLatin1(vp->Font.getValue()));
-
-        datumLabel->setFont(font);
-        //datumLabel->setLabelCenter();
+    if (update||
+        dim->X.isTouched() ||
+        dim->Y.isTouched()) {
+        float x = Rez::guiX(dim->X.getValue());
+        float y = Rez::guiX(dim->Y.getValue());
+        datumLabel->setPosFromCenter(x,-y);
         updateDim();
-    } else if(dim->X.isTouched() ||
-              dim->Y.isTouched()) {
-        datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
-        updateDim();
+     }
+     else if(vp->Fontsize.isTouched() ||
+               vp->Font.isTouched()) {
+         QFont font = datumLabel->font();
+         font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+         font.setFamily(QString::fromLatin1(vp->Font.getValue()));
+         datumLabel->setFont(font);
+         updateDim();
     } else if (vp->LineWidth.isTouched()) {           //never happens!!
         m_lineWidth = vp->LineWidth.getValue();
         updateDim();
@@ -296,7 +298,7 @@ void QGIViewDimension::datumLabelDragFinished()
            y = Rez::appX(datumLabel->Y());
     Gui::Command::openCommand("Drag Dimension");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), y);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
     Gui::Command::commitCommand();
 }
 
@@ -491,7 +493,7 @@ void QGIViewDimension::draw()
         // text to left of vertical dims
         // text above horizontal dims
         double offsetFudge = 2.0;
-        double textOffset = 0.75 * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
+        double textOffset = 1.0 * Rez::guiX(vp->Fontsize.getValue()) + offsetFudge;
         Base::Vector3d dir, norm;               //direction/normal vectors of distance line (not dimension Line)
         if (strcmp(dimType, "Distance") == 0 ) {
             dir = (distEnd-distStart);
