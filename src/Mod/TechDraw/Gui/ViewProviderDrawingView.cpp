@@ -201,7 +201,9 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->Rotation)  ) {
+    if (prop == &(getViewObject()->Rotation) ||
+        prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
