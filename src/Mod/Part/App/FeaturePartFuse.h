@@ -67,6 +67,7 @@ public:
         return "PartGui::ViewProviderMultiFuse";
     }
 	virtual std::vector<App::DocumentObject*> getChildren(void) const;
+	virtual App::DocumentObjectExecReturn *build (TopoDS_Shape &resShape, std::vector<ShapeHistory> &history );
 };
 
 }
