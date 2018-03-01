@@ -295,11 +295,13 @@ void LscmRelax::relax(double weight)
 void LscmRelax::area_relax(double weight)
 {
 //     TODO: doesn't work so far
+    if (this->sol.size() == 0)
+        this->sol.Zero(this->vertices.cols());
     std::vector<trip> K_g_triplets;
-    spMat K_g(this->vertices.cols() * 2 + 3, this->vertices.cols() * 2 + 3);
-    spMat K_g_lsq(this->triangles.cols(), this->vertices.cols() * 2 + 3);
+    spMat K_g(this->vertices.cols() * 2, this->vertices.cols() * 2);
+    spMat K_g_lsq(this->triangles.cols(), this->vertices.cols() * 2);
     Eigen::VectorXd rhs_lsq(this->triangles.cols());
-    Eigen::VectorXd rhs(this->vertices.cols() * 2 + 3);
+    Eigen::VectorXd rhs(this->vertices.cols() * 2);
     rhs.setZero();
 
     Eigen::Matrix<double, 1, 6> B;
@@ -337,29 +339,11 @@ void LscmRelax::area_relax(double weight)
     K_g_lsq.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
     K_g_triplets.clear();
     
-	
-    for (long i=0; i < this->flat_vertices.cols() ; i++)
-    {
-        // fixing total ux
-        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2, 1));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2, i * 2, 1));
-        // fixing total uy
-        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 1, 1));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 1, i * 2 + 1, 1));
-        // fixing ux*y-uy*x
-        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2 + 2, - this->flat_vertices(1, i)));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2, - this->flat_vertices(1, i)));
-        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 2, this->flat_vertices(0, i)));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
-    }
     K_g.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
-    K_g += K_g_lsq.transpose() * K_g_lsq;
-    rhs = K_g_lsq.transpose() * rhs_lsq;
-    Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
+    Eigen::ConjugateGradient<spMat> solver;
     solver.compute(K_g);
     this->sol = solver.solve(-rhs);
-    this->set_shift(this->sol.head(this->vertices.cols() * 2) * weight);
-    this->set_q_l_m();
+    this->set_shift(this->sol * weight);
     
 }
 
@@ -383,10 +367,13 @@ void LscmRelax::edge_relax(double weight)
 	}
     }
 //  2. create system
-    
+
+    if (this->sol.size() == 0)
+        this->sol.Zero(this->vertices.cols());
+
     std::vector<trip> K_g_triplets;
-    spMat K_g(this->vertices.cols() * 2 + 3, this->vertices.cols() * 2 + 3);
-    Eigen::VectorXd rhs(this->vertices.cols() * 2 + 3);
+    spMat K_g(this->vertices.cols() * 2, this->vertices.cols() * 2);
+    Eigen::VectorXd rhs(this->vertices.cols() * 2);
     rhs.setZero();
     for(auto edge : edges)
     {
@@ -420,25 +407,13 @@ void LscmRelax::edge_relax(double weight)
 	    rhs(indices[row]) += rhs_m[row];
 	}
     }
-    for (long i=0; i < this->flat_vertices.cols() ; i++)
-    {
-        // fixing total ux
-        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2, 1));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2, i * 2, 1));
-        // fixing total uy
-        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 1, 1));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 1, i * 2 + 1, 1));
-        // fixing ux*y-uy*x
-        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2 + 2, - this->flat_vertices(1, i)));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2, - this->flat_vertices(1, i)));
-        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 2, this->flat_vertices(0, i)));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
-    }
+
     K_g.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
-    Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
+    Eigen::ConjugateGradient<spMat,Eigen::Lower, NullSpaceProjector> solver;
+    solver.preconditioner().setNullSpace(this->get_nullspace());
     solver.compute(K_g);
     this->sol = solver.solve(-rhs);
-    this->set_shift(this->sol.head(this->vertices.cols() * 2) * weight);
+    this->set_shift(this->sol * weight);
 }
 
 
@@ -720,5 +695,22 @@ std::vector<long> LscmRelax::get_fem_fixed_pins()
     }
     return std::vector<long>{min_x_index * 2, min_x_index * 2 + 1, max_x_index * 2 + 1};
 }
+
+Eigen::MatrixXd LscmRelax::get_nullspace()
+{
+    Eigen::MatrixXd null_space;
+    null_space.setZero(this->flat_vertices.size() * 2, 3);
+
+    for (int i=0; i<this->flat_vertices.cols(); i++)
+    {
+        null_space(i * 2, 0) =  1;  // x-translation
+        null_space(i * 2 + 1, 1) =  1;  // y-translation
+        null_space(i * 2, 2) =  -  this->flat_vertices(1, i);  // z-rotation
+        null_space(i * 2 + 1, 2) = this->flat_vertices(0, i);  // z-rotation
+
+    }
+    return null_space;
+}
+
 
 }

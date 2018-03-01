@@ -48,6 +48,24 @@ typedef Eigen::SparseMatrix<double> spMat;
 
 namespace lscmrelax
 {
+
+class NullSpaceProjector: public Eigen::IdentityPreconditioner
+{
+  public:
+    Eigen::MatrixXd null_space_1;
+    Eigen::MatrixXd null_space_2;
+    
+    template<typename Rhs>
+    inline Rhs solve(Rhs& b) const { 
+	return b - this->null_space_1 * (this->null_space_2 * b);
+    }
+
+    void setNullSpace(Eigen::MatrixXd null_space) {
+	// normalize + orthogonalize the nullspace
+	this->null_space_1 = null_space * ((null_space.transpose() * null_space).inverse());
+	this->null_space_2 = null_space.transpose();
+    }
+};
     
 typedef Eigen::Vector3d Vector3;
 typedef Eigen::Vector2d Vector2;
@@ -70,6 +88,7 @@ private:
     Eigen::VectorXd sol;
 
     std::vector<long> get_fem_fixed_pins();
+    Eigen::MatrixXd get_nullspace();
 
 public:
     LscmRelax(
