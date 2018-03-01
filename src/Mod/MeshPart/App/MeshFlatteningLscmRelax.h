@@ -70,6 +70,7 @@ private:
     Eigen::VectorXd sol;
 
     std::vector<long> get_fem_fixed_pins();
+    Eigen::VectorXd get_projected_nullspace(Eigen::MatrixXd null_space, Eigen::VectorXd vec);
 
 public:
     LscmRelax(

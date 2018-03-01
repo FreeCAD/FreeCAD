@@ -721,4 +721,21 @@ std::vector<long> LscmRelax::get_fem_fixed_pins()
     return std::vector<long>{min_x_index * 2, min_x_index * 2 + 1, max_x_index * 2 + 1};
 }
 
+Eigen::VectorXd LscmRelax::get_projected_nullspace(Eigen::VectorXd vec)
+{
+    Eigen::MatrixXd null_space (vec.size(), 3);
+    null_space.setZero();
+
+    for (int i=0; i<vec.size(); i++)
+    {
+        null_space(i, 0) =  (i + 1) % 2;  // x-translation
+        null_space(i, 1) =  (i + 2) % 2;  // y-translation
+        null_space(i, 2) += ((i + 2) % 2) * this->flat_vertices(0, i);  // z-rotation
+        null_space(i, 2) -= ((i + 1) % 2) * this->flat_vertices(1, i);
+
+    }
+    return (null_space * (null_space.transpose() * null_space).inv()) * null_space.transpose() * vec;
+}
+
+
 }
