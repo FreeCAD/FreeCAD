@@ -1628,10 +1628,10 @@ bool fileComparisonByDate (Base::FileInfo i,Base::FileInfo j) { return (i.lastMo
 bool startswith(std::string st1, std::string st2) {
 	return st1.substr(0,st2.length()) == st2;
 }
-#include <regex>
-bool checkValidString (const std::string cmpl, const std::regex e) {
-	std::smatch what;
-	bool res = std::regex_search (cmpl,what,e);
+// #include <regex>
+bool checkValidString (const std::string cmpl, const boost::regex e) {
+	boost::smatch what;
+	bool res = boost::regex_search (cmpl,what,e);
 	return res;
 	
 }
@@ -1639,12 +1639,12 @@ bool checkValidString (const std::string cmpl, const std::regex e) {
 bool checkValidComplement(const std::string file, const std::string pbn, const std::string ext) {
 	std::string cmpl = file.substr(pbn.length(),file.length()- pbn.length() - ext.length()-1);
 
-	std::regex e (R"(^[^.]*$)");
+	boost::regex e (R"(^[^.]*$)");
 	return checkValidString(cmpl,e);
 }
 
 bool checkDigits (const std::string cmpl) {
-	std::regex e (R"(^[0-9]*$)");
+	boost::regex e (R"(^[0-9]*$)");
 	return checkValidString(cmpl,e);
 	
 }
