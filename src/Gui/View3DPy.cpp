@@ -1179,6 +1179,21 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                 // ok, found the node of interest
                 ret = dict;
             }
+            else {
+                // custom nodes not in a VP: search for a SoFCSelection node
+                SoFCDocumentObjectAction objaction;
+                objaction.apply(Point->getPath());
+                if (objaction.isHandled()) {
+                    dict.setItem("Document",
+                        Py::String(objaction.documentName.getString()));
+                    dict.setItem("Object",
+                        Py::String(objaction.objectName.getString()));
+                    dict.setItem("Component",
+                        Py::String(objaction.componentName.getString()));
+                    // ok, found the node of interest
+                    ret = dict;
+                }
+            }
         }
 
         return ret;
