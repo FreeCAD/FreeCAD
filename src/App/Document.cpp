@@ -1762,6 +1762,8 @@ bool Document::save (void)
 					if (it->isFile()) {
 						std::string file = it->fileName();
 						std::string fext = it->extension(); 
+						std::string fextUp = fext;
+						transform(fextUp.begin(), fextUp.end(), fextUp.begin(),(int (*)(int))toupper);
 						
 					    // re-enforcing identification of the backup file 
 					    
@@ -1773,7 +1775,7 @@ bool Document::save (void)
 							) ||
 							// .FCBak case : The bame starts with the base name of the project + "."
 							// + complement with no "." + ".FCBak"
-							( (fext =="FCBak") && 
+							( (fextUp =="FCBAK") && 
 							  startswith(file, pbn) &&
 							  (checkValidComplement(file, pbn, fext) ))
 							){
