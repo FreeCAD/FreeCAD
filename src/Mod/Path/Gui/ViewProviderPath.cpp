@@ -394,7 +394,7 @@ void ViewProviderPath::updateShowConstraints() {
         blockPropertyChange = false;
         StartIndex.purgeTouched();
     }
-    StartIndexConstraints.StepSize = ShowCount.getValue()>0?ShowCount.getValue():1;
+    StartIndexConstraints.StepSize = ShowCount.getValue()>2?ShowCount.getValue()-2:1;
 }
 
 void ViewProviderPath::updateData(const App::Property* prop)
