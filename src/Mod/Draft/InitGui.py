@@ -109,14 +109,14 @@ class DraftWorkbench (Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
-        Msg("Draft workbench activated\n")
+        Log("Draft workbench activated\n")
         
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.hide()
-        Msg("Draft workbench deactivated\n")
+        Log("Draft workbench deactivated\n")
 
     def ContextMenu(self, recipient):
         if (recipient == "View"):
