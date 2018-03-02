@@ -1629,16 +1629,25 @@ bool startswith(std::string st1, std::string st2) {
 	return st1.substr(0,st2.length()) == st2;
 }
 #include <regex>
-bool checkValidComplement(std::string file, std::string pbn, std::string ext) {
-	std::string cmpl = file.substr(pbn.length(),file.length()- pbn.length() - ext.length()-1);
-
-	std::regex e (R"(^[:0-9\.\-]*$)");
+bool checkValidString (const std::string cmpl, const std::regex e) {
 	std::smatch what;
-	//bool res = boost::regex_search (cmpl.c_str(),what,e);
 	bool res = std::regex_search (cmpl,what,e);
 	return res;
+	
 }
 
+bool checkValidComplement(const std::string file, const std::string pbn, const std::string ext) {
+	std::string cmpl = file.substr(pbn.length(),file.length()- pbn.length() - ext.length()-1);
+
+	std::regex e (R"(^[^.]*$)");
+	return checkValidString(cmpl,e);
+}
+
+bool checkDigits (const std::string cmpl) {
+	std::regex e (R"(^[0-9]*$)");
+	return checkValidString(cmpl,e);
+	
+}
 
 bool renameFileNoErase (Base::FileInfo fi, std::string newName) {
 	// linux just replace the file if exists, and then the existence is to be tested before rename
@@ -1709,8 +1718,8 @@ bool Document::save (void)
         Base::FileInfo fi(FileName.getValue());
 		
 		std::string ext = fi.extension();
-		std::string bn;
-		std::string pbn;
+		std::string bn; // full path with no extension but with "."
+		std::string pbn; // base name of the project + "."
 		if (ext.length() >0) {
 			bn=fi.filePath().substr(0,fi.filePath().length()-ext.length());
 			pbn=fi.fileName().substr(0,fi.fileName().length()-ext.length());
@@ -1720,7 +1729,7 @@ bool Document::save (void)
 		}
 		
 		bool backup = true;
-		bool backupManagementError = false;
+		bool backupManagementError = false; // Note error and report at the end
 		bool useFCBackExtension = true;		
 		if (fi.exists()) {
             backup = App::GetApplication().GetParameterGroupByPath
@@ -1731,26 +1740,20 @@ bool Document::save (void)
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBackExtension",false);
 			std::string	saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
-			int dateLength = 0;
-			{
-				time_t rawtime;
-				time( &rawtime );
-				struct tm * timeinfo = localtime(& rawtime);
-				char buffer1[100];
-				dateLength = strftime(buffer1,sizeof(buffer1),saveBackupDateFormat.c_str(),timeinfo);
-				if (dateLength == 0) {
-					dateLength=15;
-					saveBackupDateFormat = "%Y%m%d-%H%M%S";
-				} else {
-					dateLength--; // includes the trailing \0
-				}
+			if (saveBackupDateFormat == "") {
+				// this is to cover the case when the value is reset during the session
+				saveBackupDateFormat = "%Y%m%d-%H%M%S";
 			}
+				
+			// replace . by - in format to avoid . between base name and extension
+			boost::replace_all(saveBackupDateFormat, ".", "-");
+			
             if (!backup) {
 				count_bak=1; // for cleaning eventual backups
 			}		
 		
-            // if (backup) 
-			{ // remove the extra backups
+            
+			{ // Remove all extra backups
                 std::string fn = fi.fileName();
                 Base::FileInfo di(fi.dirPath());
                 std::vector<Base::FileInfo> backup;
@@ -1761,15 +1764,19 @@ bool Document::save (void)
 						std::string fext = it->extension(); 
 						
 					    // re-enforcing identification of the backup file 
-					    //the right length what avoid confusing the backup of two projects starting with the same pattern
+					    
 						if (
-							// old case
-							(startswith(file, fn) && (file.length()<fn.length()+3) && (file.length()>fn.length())) || 
-							// .FCBak case
-							( (fext =="FCBak") && startswith(file, pbn) &&
-							  (file.length() >= (pbn.length()+dateLength+6)) &&
-							  (file.length() <= (pbn.length()+dateLength+8)) &&
-							  (checkValidComplement(file, pbn, fext) ))){
+							// old case : the name starts with the full name of the project and follows with numbers
+							(	startswith(file, fn) && 
+								(file.length()>fn.length()) && 
+								checkDigits(file.substr(fn.length()))
+							) ||
+							// .FCBak case : The bame starts with the base name of the project + "."
+							// + complement with no "." + ".FCBak"
+							( (fext =="FCBak") && 
+							  startswith(file, pbn) &&
+							  (checkValidComplement(file, pbn, fext) ))
+							){
 							backup.push_back(*it);
 						}
 					}
@@ -1797,7 +1804,7 @@ bool Document::save (void)
                     }
 
                 }
-			}
+			}  //end remove backup
 			{
 				// create a new backup file
 
@@ -1808,24 +1815,37 @@ bool Document::save (void)
 					time_t s =ti.getSeconds();
 					struct tm * timeinfo = localtime(& s);
 					char buffer[100];
+
 					strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),timeinfo);
 					str << bn << buffer ;
-					//<< ".FCBak";
+
 					fn = str.str();
-					if (renameFileNoErase(fi, fn+".FCBak") == false) {
-						while (ext < 100) {
-							if (renameFileNoErase(fi, fn+"-"+std::to_string(ext)+".FCBak") ) break;
+					bool done = false;
+					if ((fn == "") || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
+						if (fn[fn.length()-1] == ' ') {
+							fn = fn.substr(0,fn.length()-1);
+						}
+					} else {
+						if (renameFileNoErase(fi, fn+".FCBak") == false) {
+							fn = fn + "-";
+						} else {
+							done= true;
+						}
+					}
+					if (!done) {
+						while (ext < count_bak + 10) {
+							if (renameFileNoErase(fi, fn+std::to_string(ext)+".FCBak") ) break;
 							ext++;
 						}
 					}
 				} else {
-					while (ext < 100) { // changed but simpler and solves also the delay sometimes introduced by google drive
+					while (ext < count_bak + 10) { // changed but simpler and solves also the delay sometimes introduced by google drive
 						// linux just replace the file if exists, and then the existence is to be tested before rename
 						if (renameFileNoErase(fi, fi.filePath()+std::to_string(ext)) ) break;
 						ext++;
 					}
 				}
-				if (ext >=100) {
+				if (ext >=count_bak+10) {
 					Base::Console().Error("File not saved: Cannot rename project file to backup file\n");
 					throw Base::FileException("File not saved: Cannot rename project file to backup file", fi);
 				}

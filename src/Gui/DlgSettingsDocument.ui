@@ -587,7 +587,7 @@
            <bool>true</bool>
           </property>
           <property name="text">
-           <string>Use date and FCBack extension</string>
+           <string>Use date and FCBak extension</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>UseFCBackExtension</cstring>
