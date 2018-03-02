@@ -329,7 +329,7 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Wire toShape(const CCurve &curve, const gp_Trsf *trsf=NULL, int reorient=0);
+    static TopoDS_Shape toShape(const CCurve &curve, const gp_Trsf *trsf=NULL, int reorient=0);
 
     /** Check if two OCC shape is coplanar */
     static bool isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2);
