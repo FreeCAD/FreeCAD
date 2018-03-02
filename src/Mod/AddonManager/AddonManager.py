@@ -795,8 +795,8 @@ class InstallWorker(QtCore.QThread):
                             FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
                             answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
                             answer += f + "</b>"
+                    self.progressbar_show.emit(False)
             self.info_label.emit(answer)
-        self.progressbar_show.emit(False)
         self.stop = True
 
     def checkDependencies(self,baseurl):
