@@ -742,6 +742,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     }
 
     if (b) {
+        double fontSize = getPrefFontSize();
         QGIHighlight* highlight = new QGIHighlight();
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
@@ -750,7 +751,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
-        highlight->setFont(m_font,Rez::guiX(6.0));
+        highlight->setFont(m_font, fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
         highlight->draw();
     }
@@ -1003,12 +1004,4 @@ bool QGIViewPart::getFaceEdgesPref(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     result = hGrp->GetBool("DrawFaceEdges", 0l);
     return result;
-}
-
-double QGIViewPart::getPrefFontSize()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    double fontSize = hGrp->GetFloat("LabelSize", 5.0);
-    return Rez::guiX(fontSize);
 }
