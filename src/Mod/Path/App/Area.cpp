@@ -82,6 +82,7 @@
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -1491,7 +1492,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
         }
     }
     FC_TIME_LOG(t,"makeSection count: " << sections.size()<<", total");
-    return std::move(sections);
+    return sections;
 }
 
 TopoDS_Shape Area::getPlane(gp_Trsf *trsf) {
@@ -2616,7 +2617,7 @@ struct ShapeInfo{
             if(max_dist>0 && d>max_dist)
                 break;
         }
-        return std::move(wires);
+        return wires;
     }
 };
 
@@ -2817,7 +2818,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                 foreachSubshape(shape,
                     WireOrienter(wires,dir,orientation,direction), TopAbs_WIRE);
         }
-        return std::move(wires);
+        return wires;
     }
 
     ShapeParams rparams(abscissa,nearest_k>0?nearest_k:1,orientation,direction);
@@ -2999,7 +3000,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     FC_DURATION_LOG(rparams.rd,"rtree clean");
     FC_DURATION_LOG(rparams.xd,"BRepExtrema");
     FC_TIME_LOG(t,"sortWires total");
-    return std::move(wires);
+    return wires;
 }
 
 static inline void addParameter(bool verbose, Command &cmd, const char *name,
