@@ -104,10 +104,10 @@ public:
     /// gets the document in which this Object is handled
     App::Document *getDocument(void) const;
 
-    /** Set the property touched -> changed, cause recomputation in Update()
+    /** Set the property touched -> changed, cause re-computation in Update()
      */
     //@{
-    /// set this feature touched (cause recomputation on depndend features)
+    /// set this feature touched (cause re-computation on dependent features)
     void touch(void);
     /// test if this feature is touched
     bool isTouched(void) const;
