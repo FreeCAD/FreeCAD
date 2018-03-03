@@ -604,6 +604,32 @@ private:
     QByteArray m_sPrefName;
     QByteArray m_sPrefGrp;
 };
+
+
+// ------------------------------------------------------------------------------
+
+
+class PrefLengthSpinBox : public QuantitySpinBox
+{
+    Q_OBJECT
+
+    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+
+public:
+    PrefLengthSpinBox ( QWidget * parent = 0 );
+    virtual ~PrefLengthSpinBox();
+
+    QByteArray entryName    () const;
+    QByteArray paramGrpPath () const;
+    void  setEntryName     ( const QByteArray& name );
+    void  setParamGrpPath  ( const QByteArray& name );
+
+private:
+    QByteArray m_sPrefName;
+    QByteArray m_sPrefGrp;
+};
+
 } // namespace Gui
 
 #endif // GUI_CUSTOMWIDGETS_H
