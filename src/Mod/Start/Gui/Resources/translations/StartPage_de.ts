@@ -346,7 +346,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
       <source>Load an FEM 3D new solver example analysis</source>
-      <translation>FEM 3D Analyse-Beispiel laden, Neuer Solver</translation>
+      <translation>FEM-3D-Neue-Solver-Beispiel-Analyse laden</translation>
     </message>
   </context>
 </TS>

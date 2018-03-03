@@ -420,7 +420,7 @@ Do you want to continue?</source>
     <message>
       <location line="+71"/>
       <source>Axis out and right</source>
-      <translation>Achse ausserhalb und rechts</translation>
+      <translation>Achse außerhalb und rechts</translation>
     </message>
     <message>
       <location line="+7"/>

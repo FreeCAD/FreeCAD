@@ -49,7 +49,7 @@
       <location line="+1"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>konisch</translation>
+      <translation>Konisch</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -402,7 +402,7 @@
       <location line="+1"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linie senkrecht zur Oberfläche an einem Punkt der durch einen Vertex bestimmt ist.</translation>
+      <translation>Linie senkrecht zur Oberfläche an einem Punkt, der durch einen Vertex bestimmt ist.</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -536,7 +536,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Anhängen ist deaktiviert. Objekt kann durch Bearbeiten der Plazierungseigenschaft verschoben werden.</translation>
+      <translation>Anhängen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -743,7 +743,7 @@
       <location line="+1"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Anhängen ist deaktiviert. Objekt kann durch Bearbeiten der Plazierungseigenschaft verschoben werden.</translation>
+      <translation>Anhängen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -937,7 +937,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z' und X' Achse in Richtung Vertex/entlang einer Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z'- und X'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -949,7 +949,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z' und Y' Achse in Richtung Vertex/entlang einer Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z'- und Y'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -962,7 +962,7 @@
       <location line="-74"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X' und Y' Achse in Richtung Vertex/entlang einer Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X'- und Y'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -974,7 +974,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X' und Z' Achse in Richtung Vertex/entlang einer Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X'- und Z'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -986,7 +986,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y' und Z' Achse in Richtung Vertex/entlang einer Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y'- und Z'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -999,7 +999,7 @@
       <location line="-74"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y' und X' Achse in Richtung Vertex/entlang einer Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y'- und X'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
       <location line="+59"/>
@@ -1011,7 +1011,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Normale und der Achse der horizontalen Ebene in Richtung Vertex/entlang der Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Normalen und der Achse der horizontalen Ebene in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -1023,7 +1023,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Normale und der Achse der vertikalen Ebene in Richtung Vertex/entlang der Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Normalen und der Achse der vertikalen Ebene in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -1041,7 +1041,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der horizontalen Achse der Ebene zur Normale in Richtung Vertex/entlang der Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der horizontalen Achse der Ebene zur Normalen in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -1053,7 +1053,7 @@
       <location line="+1"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Achse von vertikaler Ebene und der Normale in Richtung Vertex/entlang der Linie.</translation>
+      <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Achse von vertikaler Ebene und der Normalen in Richtung Vertex/entlang der Linie.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -1496,7 +1496,7 @@
     <message>
       <location line="+1"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Formteilungs-Werkzeug. Zusammengesetzte Festkörper Werkzeuge. OCC 6.9.0 oder neuer wird benötigt.</translation>
+      <translation>Formteilungs-Werkzeug. Zusammengesetzte Festkörper-Werkzeuge. OCC 6.9.0 oder neuer wird benötigt.</translation>
     </message>
   </context>
   <context>
@@ -2178,12 +2178,12 @@
     <message>
       <location line="+20"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>Befestigungs Versatz Eigenschaft. Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
+      <translation>Befestigungsversatz-Eigenschaft. Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Attachment Offset:</source>
-      <translation>Befestigungs Versatz:</translation>
+      <translation>Befestigungsversatz:</translation>
     </message>
     <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
@@ -4339,13 +4339,13 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+20"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>Befestigungs Versatz Eigenschaft. Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
+      <translation>Befestigungsversatz-Eigenschaft. Positionierung wird im lokalen Raum des angehängten Objektes angegeben.</translation>
     </message>
     <message>
       <location line="+3"/>
       <location filename="../../TaskAttacher.cpp" line="+302"/>
       <source>Attachment Offset:</source>
-      <translation>Befestigungs Versatz:</translation>
+      <translation>Befestigungsversatz:</translation>
     </message>
     <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
@@ -4418,12 +4418,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+4"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Befestigungs Versatz (Inaktiv - nicht gebunden):</translation>
+      <translation>Befestigungsversatz (Inaktiv - nicht gebunden):</translation>
     </message>
     <message>
       <location line="+392"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
-      <translation>Nicht editierbar, da der Rotationsteil des Befestigung Versatzes durch Ausdrücke gebunden ist.</translation>
+      <translation>Nicht editierbar, da der Rotationsteil des Befestigungsversatzes durch Ausdrücke gebunden ist.</translation>
     </message>
     <message>
       <source>Extra placement (inactive - not attached):</source>

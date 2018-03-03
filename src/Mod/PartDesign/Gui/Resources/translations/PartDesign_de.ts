@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Loft eines ausgewähltes Profil durch andere Profilabschnitte</translation>
+      <translation>Loft eines ausgewählten Profils durch andere Profilabschnitte</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -579,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Loft eines ausgewähltes Profil durch andere Profilabschnitte und entfernt Sie es aus dem Körper</translation>
+      <translation>Loft eines ausgewählten Profils durch andere Profilabschnitte und entfernt Sie es aus dem Körper</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -685,13 +685,13 @@
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation>Erzeuge einen abzuziehenden Gundkörper</translation>
+      <translation>Erzeuge einen abzuziehenden Grundkörper</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation>Erzeuge einen abzuziehenden Gundkörper</translation>
+      <translation>Erzeuge einen abzuziehenden Grundkörper</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -3270,7 +3270,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation>Bitte wähle nur ein additives oder subtraktives Element in einem aktiven Körper.</translation>
+      <translation>Bitte wählen Sie nur ein additives oder subtraktives Element in einem aktiven Körper.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>

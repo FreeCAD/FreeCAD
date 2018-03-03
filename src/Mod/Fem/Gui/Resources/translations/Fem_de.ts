@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Wähle Flächen/Kanten/Scheitelpunkte</translation>
+      <translation>Wähle Flächen/Kanten/Punkte</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
       <source>Solver Control</source>
-      <translation>Solver Steuerung</translation>
+      <translation>Solver-Steuerung</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
@@ -49,12 +49,12 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
       <source>Re-write</source>
-      <translation>Erneut Schreiben</translation>
+      <translation>Erneut schreiben</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
       <source>Re-run</source>
-      <translation>Erneut Ausführen</translation>
+      <translation>Erneut ausführen</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Erstellt einen Analysecontainer mit Standardlöser CalculiX</translation>
+      <translation>Erstellt einen Analysecontainer mit Standardsolver CalculiX</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="37"/>
@@ -111,12 +111,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="97"/>
       <source>Constraint Flow Velocity</source>
-      <translation>Randbedingung Fluss Geschwindigkeit</translation>
+      <translation>Randbedingung Fluss-Geschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="100"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation>FEM-Randbedingung der Fluss Geschwindigkeit</translation>
+      <translation>FEM-Randbedingung der Fluss-Geschwindigkeit</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="117"/>
       <source>Constraint Initial Flow Velocity</source>
-      <translation>Randbedingung Anfangs Fluss Geschwindigkeit</translation>
+      <translation>Randbedingung Anfangs Fluss-Geschwindigkeit</translation>
     </message>
   </context>
   <context>
@@ -158,12 +158,12 @@
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
-      <translation>Träger Querschnitt</translation>
+      <translation>Träger-Querschnitt</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation>Erzeugt einen FEM-Träger Querschnitt</translation>
+      <translation>Erzeugt einen FEM-Träger-Querschnitt</translation>
     </message>
   </context>
   <context>
@@ -176,7 +176,7 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Erstellt eine FEM-Shell Plattendicke</translation>
+      <translation>Erstellt eine FEM-Blechplattenstärke</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="184"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="186"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Erstellt eine FEM-Shell Plattendicke</translation>
+      <translation>Erstellt eine FEM-Blechplattenstärke</translation>
     </message>
   </context>
   <context>
@@ -194,12 +194,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="200"/>
       <source>Beam rotation</source>
-      <translation>Träger rotation</translation>
+      <translation>Trägerrotation</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Creates a FEM beam rotation</source>
-      <translation>Erstellt eine FEM Träger rotation</translation>
+      <translation>Erstellt eine FEM-Trägerrotation</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="264"/>
       <source>Fluxsolver equation</source>
-      <translation>Gleichung Strömungs Solver</translation>
+      <translation>Gleichung Strömungs-Solver</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="265"/>
@@ -259,22 +259,22 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>FEM Mesh zum Mesh</translation>
+      <translation>FEM-Netz zu Netz</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Wandelt die Oberfläche eines FEM Mesh in ein Netz um</translation>
+      <translation>Wandelt die Oberfläche eines FEM-Netzes in ein Netz um</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="366"/>
       <source>FEM mesh to mesh</source>
-      <translation>FEM Mesh zum Mesh</translation>
+      <translation>FEM-Netz zu Netz</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="367"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Wandelt die Oberfläche eines FEM Mesh in ein Netz um</translation>
+      <translation>Wandelt die Oberfläche eines FEM-Netzes in ein Netz um</translation>
     </message>
   </context>
   <context>
@@ -308,12 +308,12 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation>FEM Netz Begrenzungslayer</translation>
+      <translation>FEM-Netz-Begrenzungsschicht</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation>Erstelle ein FEM Netz Begrenzungslayer</translation>
+      <translation>Erstelle eine FEM-Netz-Begrenzungsschicht</translation>
     </message>
   </context>
   <context>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Lösche FEM Mesh</translation>
+      <translation>Lösche FEM-Netz</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
@@ -334,7 +334,7 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM Mesh von Form von Netgen</translation>
+      <translation>FEM-Netz von Form von Netgen</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="472"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM Mesh von Form von Netgen</translation>
+      <translation>FEM-Netz von Form von Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="473"/>
@@ -357,12 +357,12 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation>FEM Mesh Gruppe</translation>
+      <translation>FEM-Netz-Gruppe</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation>Erstellt eine FEM-Mesh-Gruppe</translation>
+      <translation>Erstellt eine FEM-Netz-Gruppe</translation>
     </message>
   </context>
   <context>
@@ -370,7 +370,7 @@
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
-      <translation>Drucke FEM Mesh Info</translation>
+      <translation>Drucke FEM-Netz-Info</translation>
     </message>
   </context>
   <context>
@@ -378,12 +378,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation>FEM Mesh Region</translation>
+      <translation>FEM-Netz-Bereich</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>Erstellt eine FEM Mesh Region</translation>
+      <translation>Erstellt ein FEM-Netz-Bereich</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="594"/>
       <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation>Erzeugt ein FEM Solver CalculiX (experimentell)</translation>
+      <translation>Erzeugt ein FEM-Solver CalculiX (experimentell)</translation>
     </message>
   </context>
   <context>
@@ -440,7 +440,7 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation>Solver Auftragssteuerung</translation>
+      <translation>Solver-Auftragssteuerung</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="610"/>
       <source>Solver job control</source>
-      <translation>Solver Auftragssteuerung</translation>
+      <translation>Solver-Auftragssteuerung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="612"/>
@@ -551,12 +551,12 @@
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation>FEM Mesh von Form von GMSH</translation>
+      <translation>FEM-Netz von Form von GMSH</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Erstellen von FEM Mesh aus einer Form von GMSH mesher</translation>
+      <translation>Erstellen von FEM-Netz aus einer Form von GMSH-Mesher</translation>
     </message>
   </context>
   <context>
@@ -569,7 +569,7 @@
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation>Erstellt einen FEM-Löser CalculiX</translation>
+      <translation>Erstellt einen FEM-Solver CalculiX</translation>
     </message>
   </context>
   <context>
@@ -577,12 +577,12 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation>Träger Querschnitt</translation>
+      <translation>Träger-Querschnitt</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation>Erzeugt einen FEM-Träger Querschnitt</translation>
+      <translation>Erzeugt einen FEM-Träger-Querschnitt</translation>
     </message>
   </context>
   <context>
@@ -608,7 +608,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Erstellt eine FEM-Shell Plattendicke</translation>
+      <translation>Erstellt eine FEM-Blechplattenstärke</translation>
     </message>
   </context>
   <context>
@@ -621,7 +621,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Erstellt einen Analysecontainer mit Standardlöser CalculiX</translation>
+      <translation>Erstellt einen Analysecontainer mit Standardsolver CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -639,12 +639,12 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation>Träger Querschnitt</translation>
+      <translation>Träger-Querschnitt</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation>Erzeugt einen FEM-Träger Querschnitt</translation>
+      <translation>Erzeugt einen FEM-Träger-Querschnitt</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -662,7 +662,7 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Lösche FEM Mesh</translation>
+      <translation>Lösche FEM-Netz</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
@@ -688,7 +688,7 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation>Solver Auftragssteuerung</translation>
+      <translation>Solver-Auftragssteuerung</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
@@ -701,12 +701,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>FEM Mesh zum Mesh</translation>
+      <translation>FEM-Netz zu Netz</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Wandelt die Oberfläche eines FEM Mesh in ein Netz um</translation>
+      <translation>Wandelt die Oberfläche eines FEM-Netzes in ein Netz um</translation>
     </message>
   </context>
   <context>
@@ -750,7 +750,7 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM Mesh von Form von Netgen</translation>
+      <translation>FEM-Netz von Form von Netgen</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
@@ -763,12 +763,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation>FEM Mesh von Form von GMSH</translation>
+      <translation>FEM-Netz von Form von GMSH</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Erstellen von FEM Mesh aus einer Form von GMSH mesher</translation>
+      <translation>Erstellen von FEM-Netz aus einer Form von GMSH-Mesher</translation>
     </message>
   </context>
   <context>
@@ -776,12 +776,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation>FEM Mesh Region</translation>
+      <translation>FEM-Netz-Bereich</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>Erstellt eine FEM Mesh Region</translation>
+      <translation>Erstellt eine FEM-Netz-Bereich</translation>
     </message>
   </context>
   <context>
@@ -789,7 +789,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation>Drucke FEM Mesh Info</translation>
+      <translation>Drucke FEM-Netz-Info</translation>
     </message>
   </context>
   <context>
@@ -833,17 +833,17 @@
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Erstellt eine FEM-Shell Plattendicke</translation>
+      <translation>Erstellt eine FEM-Blechplattenstärke</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation>FEM Schalen-Platte Dicken-Definition...</translation>
+      <translation>Definition FEM-Blechplattenstärke...</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation>Erstellt eine FEM Schalen-Dicke</translation>
+      <translation>Erstellt eine FEM-Blechplattenstärke</translation>
     </message>
   </context>
   <context>
@@ -874,7 +874,7 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation>Erstellt einen FEM-Löser CalculiX</translation>
+      <translation>Erstellt einen FEM-Solver CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
@@ -897,7 +897,7 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>Erstellt einen FEM-Löser Z88</translation>
+      <translation>Erstellt einen FEM-Solver Z88</translation>
     </message>
   </context>
   <context>
@@ -2401,7 +2401,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation>Rotationen sind nur zulässig für Beam- und Shell-Elemente.</translation>
+      <translation>Rotationen sind nur zulässig für Träger- und Blech-Elemente.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>

@@ -288,7 +288,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="405"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Exportiert Objekte als Netze und verwenden OpenSCAD, um eine boolesche Operation auszuführen</translation>
+      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Operation auszuführen</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="233"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Ersetzt ein Objekt in der Feature-Baum. Bitte wähle ein altes, neues und übergeordnetes Objekt</translation>
+      <translation>Ersetzt ein Objekt im Feature-Baum. Bitte wählen Sie altes, neues und übergeordnetes Objekt</translation>
     </message>
   </context>
   <context>

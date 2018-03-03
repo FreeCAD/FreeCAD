@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Annäherung mittels B-Spline-Oberfläche...</translation>
+      <translation>Annäherung mittels B-Spline-Fläche...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Annäherung mittels B-Spline-Oberfläche</translation>
+      <translation>Annäherung mittels B-Spline-Fläche</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
