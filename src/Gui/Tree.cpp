@@ -803,30 +803,96 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     selObj->getNameInDocument());
         }
 
+        struct ItemInfo {
+            App::Document *doc=0;
+            std::string obj;
+            App::Document *parentDoc=0;
+            std::string parent;
+            App::Document *ownerDoc=0;
+            std::string owner;
+            std::string subname;
+            std::vector<std::string> subs;
+        };
+        std::vector<ItemInfo> infos;
+        // Only keep text names here, because you never when doing drag and
+        // drop some object may delete other objects.
+        infos.reserve(items.size());
+        for(auto &v : items) {
+            infos.emplace_back();
+            auto &info = infos.back();
+            auto item = v.first;
+            Gui::ViewProviderDocumentObject* vpc = item->object();
+            App::DocumentObject* obj = vpc->getObject();
+            std::ostringstream str;
+            auto owner = item->getRelativeParent(str,targetItemObj);
+            info.subname = str.str();
+            info.doc = obj->getDocument();
+            info.obj = obj->getNameInDocument();
+            if(owner) {
+                info.ownerDoc = owner->getDocument();
+                info.owner = owner->getNameInDocument();
+            }
+            QTreeWidgetItem* parent = item->parent();
+            if (parent && parent->type() == TreeWidget::ObjectType) {
+                auto vpp = static_cast<DocumentObjectItem *>(parent)->object();
+                info.parent = vpp->getObject()->getNameInDocument();
+                info.parentDoc = vpp->getObject()->getDocument();
+            }
+            info.subs.swap(v.second);
+        }
+
         // Open command
         Gui::Document* gui = vp->getDocument();
         gui->openCommand("Drag object");
         try {
-            for (auto &v : items) {
-                auto item = v.first;
-                Gui::ViewProviderDocumentObject* vpc = item->object();
-                App::DocumentObject* obj = vpc->getObject();
-                std::ostringstream str;
-                auto owner = item->getRelativeParent(str,targetItemObj);
-                auto subname = str.str();
-                if(!dropOnly && vp->canDragAndDropObject(obj)) {
-                    // does this have a parent object
-                    QTreeWidgetItem* parent = item->parent();
-                    if (parent && parent->type() == TreeWidget::ObjectType) {
-                        Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
-                        vpp->dragObject(obj);
-                        owner = 0;
-                        subname.clear();
+            auto targetObj = targetItemObj->object()->getObject();
+            std::string target = targetObj->getNameInDocument();
+            auto targetDoc = targetObj->getDocument();
+            for (auto &info : infos) {
+                auto &subname = info.subname;
+                targetObj = targetDoc->getObject(target.c_str());
+                vp = dynamic_cast<ViewProviderDocumentObject*>(
+                        Application::Instance->getViewProvider(targetObj));
+                if(!vp) {
+                    FC_ERR("Cannot find drop traget object " << target);
+                    break;
+                }
+
+                auto obj = info.doc->getObject(info.obj.c_str());
+                auto vpc = dynamic_cast<ViewProviderDocumentObject*>(
+                        Application::Instance->getViewProvider(obj));
+                if(!vpc) {
+                    FC_WARN("Cannot find dragging object " << info.obj);
+                    continue;
+                }
+
+                ViewProviderDocumentObject *vpp = 0;
+                if(info.parentDoc) {
+                    auto parent = info.parentDoc->getObject(info.parent.c_str());
+                    vpp = dynamic_cast<ViewProviderDocumentObject*>(
+                            Application::Instance->getViewProvider(parent));
+                    if(!vpp) {
+                        FC_WARN("Cannot find dragging object's parent " << info.parent);
+                        continue;
                     }
                 }
-                if(v.second.empty())
-                    v.second.push_back("");
-                for(auto &sub : v.second) {
+
+                App::DocumentObject *owner = 0;
+                if(info.ownerDoc) {
+                    owner = info.ownerDoc->getObject(info.owner.c_str());
+                    if(!owner) {
+                        FC_WARN("Cannot find dragging object's top parent " << info.owner);
+                        continue;
+                    }
+                }
+                if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
+                    vpp->dragObject(obj);
+                    owner = 0;
+                    subname.clear();
+                }
+                if(info.subs.empty())
+                    info.subs.push_back("");
+                for(auto &sub : info.subs) {
                     auto sobj = obj;
                     if(sub.find('.')!=std::string::npos) {
                         sobj = obj->getSubObject(sub.c_str());
@@ -846,6 +912,15 @@ void TreeWidget::dropEvent(QDropEvent *event)
         gui->commitCommand();
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
+        struct ItemInfo {
+            App::Document *doc;
+            std::string obj;
+            App::Document *parentDoc;
+            std::string parent;
+        };
+        std::vector<ItemInfo> infos;
+        infos.reserve(items.size());
+
         // check if items can be dragged
         for(auto &v : items) {
             auto item = v.first;
@@ -860,22 +935,42 @@ void TreeWidget::dropEvent(QDropEvent *event)
                        parentItem->object()->getObject()->getNameInDocument() << "'");
                 return;
             }
+            infos.emplace_back();
+            auto &info = infos.back();
+            auto obj = item->object()->getObject();
+            info.doc = obj->getDocument();
+            info.obj = obj->getNameInDocument();
+            auto parent = parentItem->object()->getObject();
+            info.parentDoc = parent->getDocument();
+            info.parent = parent->getNameInDocument();
         }
+        // Because the existence of subname, we must de-select the drag the
+        // object manually. Just do a complete clear here for simplicity
+        Selection().clearCompleteSelection();
+
         // Open command
         App::Document* doc = static_cast<DocumentItem*>(targetitem)->document()->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Move object");
         try {
-            for (auto &v : items) {
-                Gui::ViewProviderDocumentObject* vpc = v.first->object();
-                App::DocumentObject* obj = vpc->getObject();
-
-                // does this have a parent object
-                QTreeWidgetItem* parent = v.first->parent();
-                if (parent && parent->type() == TreeWidget::ObjectType) {
-                    Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
-                    vpp->dragObject(obj);
+            for (auto &info : infos) {
+                auto obj = info.doc->getObject(info.obj.c_str());
+                auto vpc = dynamic_cast<ViewProviderDocumentObject*>(
+                        Application::Instance->getViewProvider(obj));
+                if(!vpc) {
+                    FC_WARN("Cannot find dragging object " << info.obj);
+                    continue;
                 }
+
+                auto parent = info.parentDoc->getObject(info.parent.c_str());
+                auto vpp = dynamic_cast<ViewProviderDocumentObject*>(
+                        Application::Instance->getViewProvider(parent));
+                if(!vpp) {
+                    FC_WARN("Cannot find dragging object's parent " << info.parent);
+                    continue;
+                }
+
+                vpp->dragObject(obj);
 
                 //make sure it is not part of a geofeaturegroup anymore. When this has happen we need to handle 
                 //all removed objects
@@ -894,10 +989,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return;
         }
         gui->commitCommand();
-
-        // Because the existence of subname, we must de-select the drag the
-        // object manually. Just do a complete clear here for simplicity
-        Selection().clearCompleteSelection();
     }
 }
 
