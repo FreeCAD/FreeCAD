@@ -154,7 +154,7 @@
       <location filename="../../CommandDecorate.cpp" line="214"/>
       <location filename="../../CommandDecorate.cpp" line="216"/>
       <source>Inserts a bitmap from a file in the active drawing</source>
-      <translation>Fügt ein Bitmap Bild aus einer Datei in die aktive Zeichnung ein</translation>
+      <translation>Fügt ein Bitmap-Bild aus einer Datei in die aktive Zeichnung ein</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="233"/>
@@ -178,7 +178,7 @@
       <location filename="../../CommandCreateDims.cpp" line="823"/>
       <location filename="../../CommandCreateDims.cpp" line="824"/>
       <source>Link a dimension to 3D geometry</source>
-      <translation>Eine Abmessung mit einer 3D Geometrie verlinken</translation>
+      <translation>Eine Abmessung mit einer 3D-Geometrie verlinken</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="324"/>
       <source>Insert a new diameter dimension into the drawing</source>
-      <translation>Eine neu Winkelbemaßung in die Zeichnung einfügen</translation>
+      <translation>Eine neue Winkelbemaßung in die Zeichnung einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="325"/>
       <source>Insert a new diameter dimension feature for the selected view</source>
-      <translation>Eine neue Winkelbemaßung in die gewählten Ansicht einfügen</translation>
+      <translation>Eine neue Winkelbemaßung in die gewählte Ansicht einfügen</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="520"/>
       <source>Insert a new horizontal-distance dimension</source>
-      <translation>Eine horizontale Abstands- Bemaßung einfügen</translation>
+      <translation>Eine horizontale Abstands-Bemaßung einfügen</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="628"/>
       <source>Insert a new vertical distance dimension</source>
-      <translation>Eine vertikale Abstans- Bemaßung einfügen</translation>
+      <translation>Eine vertikale Abstans-Bemaßung einfügen</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
       <location filename="../../CommandDecorate.cpp" line="81"/>
       <location filename="../../CommandDecorate.cpp" line="82"/>
       <source>Hatch a Face using image file</source>
-      <translation>Oberfläch mit Muster aus einer Bilddatei schraffieren</translation>
+      <translation>Fläche mit Muster aus einer Bilddatei schraffieren</translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
       <source>Insert a new length dimension into the drawing</source>
-      <translation>Eine neue Längenbemaßung on die Zeichnung einfügen</translation>
+      <translation>Eine neue Längenbemaßung in die Zeichnung einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="412"/>
@@ -328,7 +328,7 @@
       <location filename="../../Command.cpp" line="163"/>
       <location filename="../../Command.cpp" line="164"/>
       <source>Insert new drawing page from template</source>
-      <translation>Ein neues Zeichenblatt aus einer einer Vorlage einfügen</translation>
+      <translation>Ein neues Zeichenblatt aus einer Vorlage einfügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="179"/>
@@ -419,12 +419,12 @@
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Insert section view in drawing</source>
-      <translation>Eine Schnitt- Ansicht in die Zeichnung einfügen</translation>
+      <translation>Eine Schnitt-Ansicht in die Zeichnung einfügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="304"/>
       <source>Insert a new Section View of a Part in the active drawing</source>
-      <translation>Eine Schnitt- Ansicht eines Teils in die aktive Zeichnung einfügen</translation>
+      <translation>Eine Schnitt-Ansicht eines Teils in die aktive Zeichnung einfügen</translation>
     </message>
   </context>
   <context>
@@ -540,7 +540,7 @@
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="390"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
-      <translation>Wähle mindestens 1 DrawViewPart Objekt als Basis aus</translation>
+      <translation>Wähle mindestens 1 DrawViewPart-Objekt als Basis aus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
@@ -556,7 +556,7 @@
       <location filename="../../Command.cpp" line="672"/>
       <location filename="../../Command.cpp" line="745"/>
       <source>Select exactly one Drawing View object.</source>
-      <translation>Genau ein Ansichts Objekt auswählen</translation>
+      <translation>Genau ein Ansichts-Objekt auswählen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="677"/>
@@ -591,12 +591,12 @@
     <message>
       <location filename="../../Command.cpp" line="927"/>
       <source>Select exactly one Arch Section Plane object.</source>
-      <translation>Wählen Sie genau einen Schnitt einer "Arch" Zeichnung</translation>
+      <translation>Wählen Sie genau eine Arch-Schnittebene aus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="934"/>
       <source>The selected object is not an Arch Section Plane.</source>
-      <translation>Das ausgewählte Objekt ist kein "Arch" Schnitt.</translation>
+      <translation>Das ausgewählte Objekt ist keine Arch-Schnittebene.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="979"/>
@@ -641,12 +641,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="863"/>
       <source>There is no 3D object in your selection</source>
-      <translation>Sie haben kein 3D Objekt ausgewählt</translation>
+      <translation>Sie haben kein 3D-Objekt ausgewählt</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="869"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
-      <translation>Es gibt keine 3D Kanten oder Ecken in Ihrer Auswahl</translation>
+      <translation>Es gibt keine 3D-Kanten oder Ecken in Ihrer Auswahl</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="914"/>
@@ -663,7 +663,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="915"/>
       <source>Select an object first</source>
-      <translation>Zu erst ein Objekt auswählen</translation>
+      <translation>Zuerst ein Objekt auswählen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="922"/>
@@ -691,7 +691,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="289"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation>Benötige eine TechDraw Page für diesen Befehl</translation>
+      <translation>Benötige eine TechDraw-Seite für diesen Befehl</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="361"/>
@@ -827,7 +827,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
       <source>Diameter Symbol</source>
-      <translation>Durchmesser- Symbol</translation>
+      <translation>Durchmesser-Symbol</translation>
     </message>
     <message utf8="true">
       <location filename="../../DlgPrefsTechDraw2.ui" line="139"/>
@@ -842,7 +842,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="162"/>
       <source>Use Global Decimals</source>
-      <translation>Globale Nachkommastellen- Einstellungen verwenden</translation>
+      <translation>Globale Nachkommastellen-Einstellungen verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="178"/>
@@ -941,13 +941,13 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="384"/>
       <location filename="../../DlgPrefsTechDraw2.ui" line="427"/>
       <source>DashDot</source>
-      <translation>Strich Punkt </translation>
+      <translation>Strich-Punkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="389"/>
       <location filename="../../DlgPrefsTechDraw2.ui" line="432"/>
       <source>DashDotDot</source>
-      <translation>Strich Punkt Punkt</translation>
+      <translation>Strich-Punkt-Punkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="369"/>
@@ -973,7 +973,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="487"/>
       <source>Hatch Weight</source>
-      <translation>Einstellung für Schnitte </translation>
+      <translation>Einstellung für Schnitte</translation>
     </message>
   </context>
   <context>
@@ -1037,12 +1037,12 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="98"/>
       <source>DashDot</source>
-      <translation>Strich Punkt </translation>
+      <translation>Strich-Punkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="103"/>
       <source>DashDotDot</source>
-      <translation>Strich Punkt Punkt</translation>
+      <translation>Strich-Punkt-Punkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
@@ -1122,7 +1122,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="414"/>
       <source>Geom Hatch</source>
-      <translation>Geometrie- Schraffur</translation>
+      <translation>Geometrie-Schraffur</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="456"/>
@@ -1147,7 +1147,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="508"/>
       <source>Location of default svg/png fill file</source>
-      <translation>Pfad zur standard Svg/PNG Datei für Füllungen</translation>
+      <translation>Pfad zur standard Svg/PNG-Datei für Füllungen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="521"/>
@@ -1157,7 +1157,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="528"/>
       <source>Default location for PAT file</source>
-      <translation>Standard Speicherort für PAT-Datei</translation>
+      <translation>Standard-Speicherort für PAT-Datei</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="545"/>

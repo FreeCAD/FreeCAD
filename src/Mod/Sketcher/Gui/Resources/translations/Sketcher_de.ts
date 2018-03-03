@@ -315,7 +315,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>Erstelle ein regelmässiges Polygon in der Skizze</translation>
+      <translation>Erstelle ein regelmäßiges Polygon in der Skizze</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -350,7 +350,7 @@
     <message>
       <location line="+4"/>
       <source>Regular Polygon</source>
-      <translation>Regelmässiges Polygon</translation>
+      <translation>Regelmäßiges Polygon</translation>
     </message>
   </context>
   <context>
@@ -1184,7 +1184,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Regelmässiges Polygon in der Skizze erstellen</translation>
+      <translation>Regelmäßiges Polygon in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
@@ -3033,7 +3033,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="+3"/>
       <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
-      <translation>Dieses Objekt gehört zu einem anderen Körper. Ctrl/Strg gedrückt halten um Querverweise zu erzeugen.</translation>
+      <translation>Dieses Objekt gehört zu einem anderen Körper. Ctrl/Strg gedrückt halten, um Querverweise zu erzeugen.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3764,7 +3764,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
     <message>
       <location line="+54"/>
       <source>Expression dependent constraint color</source>
-      <translation>Ausdruck abhängige Farbe der Einschränkungen</translation>
+      <translation>Farbe von ausdrucksabhängigen Beschränkungen</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4708,7 +4708,7 @@ Use the sketch validation tool.</source>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation>Regelmässiges Polygon aus Mittelpunkt und einer Ecke erzeugen</translation>
+      <translation>Regelmäßiges Polygon aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
   </context>
   <context>

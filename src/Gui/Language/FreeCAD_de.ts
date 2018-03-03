@@ -2152,7 +2152,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Maximale Anzahl an Sicherungsdateien die behalten werden, wenn das Dokument gespeichert wird</translation>
+      <translation>Maximale Anzahl an Sicherungsdateien, die behalten werden, wenn das Dokument gespeichert wird</translation>
     </message>
     <message>
       <source>Document objects</source>
