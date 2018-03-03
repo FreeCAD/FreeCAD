@@ -65,7 +65,7 @@ else:
 def translate(ctx,txt):
     return txt
 
-arrowtypes = ["Dot","Circle","Arrow","Tick"]
+arrowtypes = ["Dot","Circle","Arrow","Tick","Tick-2"]
 
 #---------------------------------------------------------------------------
 # General functions
@@ -302,6 +302,15 @@ def dimSymbol(symbol=None,invert=False):
         f = coin.SoFaceSet()
         marker.addChild(c)
         marker.addChild(f)
+        return marker
+    elif symbol == 4:
+        marker = coin.SoSeparator()
+        v = coin.SoVertexProperty()
+        v.vertex.set1Value(0, -1.5,-1.5,0)
+        v.vertex.set1Value(1, 1.5,1.5,0)
+        l = coin.SoLineSet()
+        l.vertexProperty = v
+        marker.addChild(l)
         return marker
     else:
         print("Draft.dimsymbol: Not implemented")
@@ -2146,6 +2155,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'fill="'+ color +'" stroke="none" '
             svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
             svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
+        elif obj.ViewObject.ArrowType == "Tick-2":
+            svg += '<line transform="rotate('+str(math.degrees(angle)+45)
+            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+            svg += '" freecad:skip="1" '
+            svg += 'fill="none" stroke="'+ color +'" '
+            svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
+            svg += 'stroke-width:'+ str(linewidth) +'" '
+            svg += 'x1="-'+ str(arrowsize*2) +'" y1="0" '
+            svg += 'x2="' + str(arrowsize*2) +'" y2="0" />\n'
         else:
             print("getSVG: arrow type not implemented")
         return svg
