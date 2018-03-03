@@ -34,6 +34,8 @@ DlgPrefsTechDrawImp::DlgPrefsTechDrawImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
+    plsb_LabelSize->setUnit(Base::Unit::Length);
+    plsb_TemplateDot->setUnit(Base::Unit::Length);
 }
 
 DlgPrefsTechDrawImp::~DlgPrefsTechDrawImp()
@@ -48,7 +50,6 @@ void DlgPrefsTechDrawImp::saveSettings()
     cb_Faces->onSave();
     cb_SectionEdges->onSave();
     cb_PageUpdate->onSave();
-    dsb_TemplateDot->onSave();
 
     pcb_Normal->onSave();
     pcb_Select->onSave();
@@ -59,7 +60,8 @@ void DlgPrefsTechDrawImp::saveSettings()
     pcb_Hatch->onSave();
 
     pfb_LabelFont->onSave();
-    dsb_LabelSize->onSave();
+    plsb_LabelSize->onSave();
+    plsb_TemplateDot->onSave();
 
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
@@ -75,7 +77,6 @@ void DlgPrefsTechDrawImp::loadSettings()
     cb_Faces->onRestore();
     cb_SectionEdges->onRestore();
     cb_PageUpdate->onRestore();
-    dsb_TemplateDot->onRestore();
 
     pcb_Normal->onRestore();
     pcb_Select->onRestore();
@@ -86,7 +87,8 @@ void DlgPrefsTechDrawImp::loadSettings()
     pcb_Hatch->onRestore();
 
     pfb_LabelFont->onRestore();
-    dsb_LabelSize->onRestore();
+    plsb_LabelSize->onRestore();
+    plsb_TemplateDot->onRestore();
 
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();
