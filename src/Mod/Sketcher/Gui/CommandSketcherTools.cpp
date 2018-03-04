@@ -703,23 +703,23 @@ bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectFullyConstraintElements);
+DEF_STD_CMD_A(CmdSketcherSelectElementsWithDoFs);
 
-CmdSketcherSelectFullyConstraintElements::CmdSketcherSelectFullyConstraintElements()
-:Command("Sketcher_SelectFullyConstraintElements")
+CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
+:Command("Sketcher_SelectElementsWithDoFs")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Select fully constraint elements");
-    sToolTipText    = QT_TR_NOOP("Select elements that are already fully constraint");
-    sWhatsThis      = "Sketcher_SelectFullyConstraintElements";
+    sMenuText       = QT_TR_NOOP("Select solver DoFs");
+    sToolTipText    = QT_TR_NOOP("Select elements where the solver still detects unconstrained degrees of freedom.");
+    sWhatsThis      = "Sketcher_SelectElementsWithDoFs";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_SelectFullyConstraintElements";
+    sPixmap         = "Sketcher_SelectElementsWithDoFs";
     sAccel          = "";
     eType           = ForEdit;
 }
 
-void CmdSketcherSelectFullyConstraintElements::activated(int iMsg)
+void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     getSelection().clearSelection();
@@ -736,6 +736,16 @@ void CmdSketcherSelectFullyConstraintElements::activated(int iMsg)
     std::stringstream ss;
 
     auto geos = Obj->getInternalGeometry();
+
+    // Solver parameter detection algorithm only works for Dense QR with full pivoting. If we are using Sparse QR, we
+    // have to re-solve using Dense QR.
+    GCS::QRAlgorithm curQRAlg = Obj->getSolvedSketch().getQRAlgorithm();
+
+    if(curQRAlg == GCS::EigenSparseQR) {
+        Obj->getSolvedSketch().setQRAlgorithm(GCS::EigenDenseQR);
+        Obj->solve(false);
+    }
+
 
     auto testselectvertex = [&Obj,&ss,&doc_name,&obj_name](int geoId, PointPos pos){
         ss.str(std::string());
@@ -788,10 +798,14 @@ void CmdSketcherSelectFullyConstraintElements::activated(int iMsg)
 
         geoid++;
     }
+    
+    if(curQRAlg == GCS::EigenSparseQR) {
+        Obj->getSolvedSketch().setQRAlgorithm(GCS::EigenSparseQR);
+    }
 
 }
 
-bool CmdSketcherSelectFullyConstraintElements::isActive(void)
+bool CmdSketcherSelectElementsWithDoFs::isActive(void)
 {
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
@@ -1909,7 +1923,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherSelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectConflictingConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
-    rcCmdMgr.addCommand(new CmdSketcherSelectFullyConstraintElements());
+    rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
