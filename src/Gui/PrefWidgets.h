@@ -348,7 +348,7 @@ protected:
  * \author wandererfan
  * a simple Length aware spin box.  
  */
-class PrefLengthSpinBox : public QuantitySpinBox, public PrefWidget
+class GuiExport PrefLengthSpinBox : public QuantitySpinBox, public PrefWidget
 {
     Q_OBJECT
 
