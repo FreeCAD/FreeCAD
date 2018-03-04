@@ -5502,9 +5502,9 @@ void ViewProviderSketch::UpdateSolverInformation()
             }
             else if (!hasRedundancies) {
                 if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with 1 degree of freedom"));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff;\">1 degree</span></a> of freedom"));
                 else
-                    signalSetUp(tr("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff;\">%2 degrees</span></a> of freedom").arg(dofs));
             }
             
             signalSolved(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
