@@ -80,7 +80,7 @@ CmdTechDrawNewHatch::CmdTechDrawNewHatch()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Hatch a Face using image file");
     sToolTipText    = QT_TR_NOOP("Hatch a Face using image file");
-    sWhatsThis      = "TechDraw_NewHatch";
+    sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
 }
@@ -142,7 +142,7 @@ CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
     sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sWhatsThis      = "TechDraw_NewGeomHatch";
+    sWhatsThis      = "TechDraw_GeomHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-geomhatch";
 }
@@ -264,7 +264,7 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Turn View Frames on or off");
     sToolTipText    = QT_TR_NOOP("Turn View Frames on or off");
-    sWhatsThis      = "TechDraw_ToggleFrame";
+    sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-toggleframe";
 }
@@ -311,7 +311,7 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Redraw a page");
     sToolTipText    = QT_TR_NOOP("Redraw a page");
-    sWhatsThis      = "TechDraw_RedrawPage";
+    sWhatsThis      = "TechDraw_Redraw";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Tree_Page_Sync";
 }
