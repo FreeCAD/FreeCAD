@@ -92,7 +92,7 @@ void CArc::GetSegments(void(*callbackfunc)(const double *p), double pixels_per_m
 
     double theta = d_angle / (double)segments;
 	while(theta>1.0){segments*=2;theta = d_angle / (double)segments;}
-    double tangetial_factor = tan(theta);
+    double tangential_factor = tan(theta);
     double radial_factor = 1 - cos(theta);
 
     double x = radius * cos(start_angle);
@@ -110,8 +110,8 @@ void CArc::GetSegments(void(*callbackfunc)(const double *p), double pixels_per_m
         double tx = -y;
         double ty = x;
 
-        x += tx * tangetial_factor;
-        y += ty * tangetial_factor;
+        x += tx * tangential_factor;
+        y += ty * tangential_factor;
 
         double rx = - x;
         double ry = - y;
