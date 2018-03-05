@@ -55,7 +55,6 @@ public:
 
     App::PropertyEnumeration ScaleType;
     App::PropertyFloat Rotation;
-    App::PropertyBool  KeepLabel;
     App::PropertyString Caption;
 
     /** @name methods override Feature */

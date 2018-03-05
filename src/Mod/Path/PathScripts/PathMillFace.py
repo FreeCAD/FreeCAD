@@ -56,7 +56,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
-        obj.BoundaryShape = ['Perimeter', 'Boundbox']
+        obj.BoundaryShape = ['Perimeter', 'Boundbox', 'Stock']
 
     def pocketInvertExtraOffset(self):
         return True
@@ -73,7 +73,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
 
             if len(obj.Base) >= 1:
-                print ('processing')
+                print('processing')
                 sublist = []
                 for i in obj.Base:
                     o = i[0]
@@ -110,12 +110,15 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             planeshape = self.baseobject.Shape
             PathLog.debug("Working on a shape {}".format(self.baseobject.Name))
 
-        # if user wants the boundbox, calculate that
+        # Find the correct shape depending on Boundary shape.
         PathLog.debug("Boundary Shape: {}".format(obj.BoundaryShape))
         bb = planeshape.BoundBox
         if obj.BoundaryShape == 'Boundbox':
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Vector(0, 0, 1))
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
+        elif obj.BoundaryShape == 'Stock':
+            stock = PathUtils.findParentJob(obj).Stock.Shape
+            env = stock
         else:
             env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
 

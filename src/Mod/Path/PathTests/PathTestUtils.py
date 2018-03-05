@@ -130,5 +130,8 @@ class PathTestBase(unittest.TestCase):
 
     def assertEqualLocale(self,s1,s2):
         """Verify that the 2 strings are equivalent, but converts eventual , into . for the first string that may be affected by locale."""
-        self.assertEqual(s1.replace(",","."), s2)
-		
+        #self.assertEqual(s1.replace(",","."), s2)
+        q1=FreeCAD.Units.Quantity(s1)
+        q2=FreeCAD.Units.Quantity(s2)
+        self.assertEqual(q1.UserString, q2.UserString)
+

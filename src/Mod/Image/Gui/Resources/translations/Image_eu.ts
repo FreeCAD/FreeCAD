@@ -4,7 +4,7 @@
   <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="+97"/>
+      <location filename="../../Command.cpp" line="+101"/>
       <source>Image</source>
       <translation>Irudia</translation>
     </message>
@@ -20,13 +20,13 @@
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
-      <translation type="unfinished">create a planar image in the 3D space</translation>
+      <translation>sortu irudi planarra 3D espazioan</translation>
     </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location line="-46"/>
+      <location line="-50"/>
       <source>Image</source>
       <translation>Irudia</translation>
     </message>
@@ -44,7 +44,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+331"/>
+      <location filename="../../GLImageBox.cpp" line="+333"/>
       <location filename="../../OpenGLImageBox.cpp" line="+385"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Kolore-espazioaren definitu gabeko mota irudia bistaratzeko</translation>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
-      <translation type="unfinished">Choose orientation</translation>
+      <translation>Aukeratu orientazioa</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -71,27 +71,27 @@
     <message>
       <location line="+6"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>XY planoa</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>XZ planoa</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>YZ planoa</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Alderantzikatu norabidea</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Desplazamendua:</translation>
     </message>
   </context>
   <context>
@@ -118,19 +118,19 @@
     </message>
     <message>
       <source>&amp;Original color</source>
-      <translation type="unfinished">&amp;Original color</translation>
+      <translation>&amp;Jatorrizko kolorea</translation>
     </message>
     <message>
       <source>Display the image with its original color(s)</source>
-      <translation type="unfinished">Display the image with its original color(s)</translation>
+      <translation>Bistaratu irudia jatorrizko kolore(et)an</translation>
     </message>
     <message>
       <source>&amp;Brightened color</source>
-      <translation type="unfinished">&amp;Brightened color</translation>
+      <translation>Kolore &amp;biziagoa</translation>
     </message>
     <message>
       <source>Display the image with brightened color(s)</source>
-      <translation type="unfinished">Display the image with brightened color(s)</translation>
+      <translation>Bistaratu irudia kolore biziagoekin</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -175,27 +175,27 @@
     <name>QObject</name>
     <message>
       <source>Image viewer</source>
-      <translation type="unfinished">Image viewer</translation>
+      <translation>Irudi-ikustailea</translation>
     </message>
     <message>
       <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation type="unfinished">Images (*.png *.xpm *.jpg *.bmp)</translation>
+      <translation>Irudiak (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="+20"/>
-      <location line="+43"/>
+      <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Aukeratu irekiko den irudi-fitxategia</translation>
     </message>
     <message>
-      <location line="-50"/>
-      <location line="+43"/>
+      <location line="-54"/>
+      <location line="+47"/>
       <source>Images</source>
       <translation>Irudiak</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+43"/>
+      <location line="-42"/>
+      <location line="+47"/>
       <source>All files</source>
       <translation>Fitxategi guztiak</translation>
     </message>

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QApplication>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
@@ -33,6 +34,7 @@
 #include <Gui/Control.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
 #include <Base/Exception.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -49,7 +51,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-    :oldWb(""), oldTip(NULL)
+:oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
 }
 
@@ -59,7 +61,7 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+#if 0
     // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
 	if (body != NULL) {
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
@@ -72,8 +74,10 @@ bool ViewProvider::doubleClicked(void)
     } else {
         oldTip = NULL;
     }
+#endif
 
     try {
+	    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         std::string Msg("Edit ");
         Msg += this->pcObject->Label.getValue();
         Gui::Command::openCommand(Msg.c_str());
@@ -146,13 +150,17 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
+#if 0
         PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+#endif
         Gui::Control().closeDialog();
+#if 0
         if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         }
+#endif
         oldTip = NULL;
     }
     else {
@@ -196,6 +204,51 @@ void ViewProvider::onChanged(const App::Property* prop) {
     PartGui::ViewProviderPartExt::onChanged(prop);
 }
 
+void ViewProvider::setTipIcon(bool onoff) {
+    isSetTipIcon = onoff;
+    
+    signalChangeIcon();
+}
+
+QIcon ViewProvider::getIcon(void) const
+{
+    return mergeTip(Gui::BitmapFactory().pixmap(sPixmap));
+}
+
+QIcon ViewProvider::mergeTip(QIcon orig) const
+{
+    if(isSetTipIcon) {
+        QPixmap px;
+        
+        static const char * const feature_tip_xpm[]={
+            "9 9 3 1",
+            ". c None",
+            "# c #00cc00",
+            "a c #ffffff",
+            "...###...",
+            ".##aaa##.",
+            ".##aaa##.",
+            "###aaa###",
+            "##aaaaa##",
+            "##aaaaa##",
+            ".##aaa##.",
+            ".##aaa##.",
+            "...###..."};
+        px = QPixmap(feature_tip_xpm);
+
+        QIcon icon_mod;
+
+        int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::Off),
+                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::On ),
+                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+        return icon_mod;
+    }
+    else
+        return orig;
+}
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {

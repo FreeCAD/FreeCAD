@@ -127,10 +127,6 @@
       <translation>Romball bevegelse</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Global følsomhet:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Dominerende modus</translation>
     </message>
@@ -162,6 +158,10 @@
       <source>Reverse</source>
       <translation>Omvendt</translation>
     </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
+    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
@@ -175,7 +175,7 @@
     </message>
     <message>
       <source>&amp;Discard</source>
-      <translation type="unfinished">&amp;Discard</translation>
+      <translation>Forkast</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -250,7 +250,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation type="unfinished">%1 help files not found (%2). You might need to install the %1 documentation package.</translation>
+      <translation>%1 hjelpefiler ikke funnet (%2). Du må kanskje installere %1 dokumentasjon pakken.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -393,6 +393,21 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD ville være ingenting uten deres innsats:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Lisens</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1392,8 +1407,7 @@ Denne filen finnes allerede.</translation>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' finnes allerede.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
@@ -2136,8 +2150,8 @@ Vennligst angi en annen mappe.</translation>
       <translation>Lagre miniatyrbilde til prosjektfil når du lagrer dokument</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Lag opp til sikkerhetskopifiler når dokumentet lagres på nytt</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2511,7 +2525,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
       <source>Add watermark</source>
-      <translation type="unfinished">Add watermark</translation>
+      <translation>Lag Vannmerke</translation>
     </message>
   </context>
   <context>
@@ -2659,8 +2673,8 @@ Vennligst angi en annen mappe.</translation>
       <translation type="unfinished">Pick radius (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -2756,7 +2770,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
       <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Sorter aktiverte Arbeidsbenker&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -2772,7 +2786,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation type="unfinished">Add all to enabled workbenches</translation>
+      <translation>Legg alle til aktiverte arbeidsbenker</translation>
     </message>
   </context>
   <context>
@@ -2905,7 +2919,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>- %4 %5 remaining</source>
-      <translation type="unfinished">- %4 %5 remaining</translation>
+      <translation>-%4 %5 gjenværende</translation>
     </message>
     <message>
       <source>%1 of %2 (%3/sec) %4</source>
@@ -2917,7 +2931,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>%1 of %2 - Stopped</source>
-      <translation type="unfinished">%1 of %2 - Stopped</translation>
+      <translation>%1 av %2 - stoppet</translation>
     </message>
     <message>
       <source>bytes</source>
@@ -2944,7 +2958,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>0 Items</source>
-      <translation type="unfinished">0 Items</translation>
+      <translation>0 enheter</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -2952,11 +2966,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>1 Download</source>
-      <translation type="unfinished">1 Download</translation>
+      <translation>1 Last ned</translation>
     </message>
     <message>
       <source>%1 Downloads</source>
-      <translation type="unfinished">%1 Downloads</translation>
+      <translation>%1 nedlastinger</translation>
     </message>
   </context>
   <context>
@@ -3347,10 +3361,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>Kombivisning</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Prosjekt</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -4473,7 +4483,7 @@ Vil du angi en annen mappe?</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, interne navnet: %2</translation>
     </message>
   </context>
   <context>
@@ -5046,6 +5056,10 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
     </message>
   </context>
   <context>
@@ -5849,7 +5863,7 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>
       <source>Cannot open file</source>
-      <translation type="unfinished">Cannot open file</translation>
+      <translation>Kan ikke åpne filen "%s"</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
@@ -5939,7 +5953,7 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation type="unfinished">&amp;Print preview...</translation>
+      <translation>Skriv ut forhåndsvisning...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -6430,7 +6444,7 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>
       <source>&amp;Units calculator...</source>
-      <translation type="unfinished">&amp;Units calculator...</translation>
+      <translation>&amp; Enhets kalkulator...</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
@@ -6493,8 +6507,8 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
       <translation>Lag ny visning</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Lager et nytt visningsvindu for det aktive dokumentet</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>

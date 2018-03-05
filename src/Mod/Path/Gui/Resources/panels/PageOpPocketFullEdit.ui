@@ -65,6 +65,11 @@
           <string>Boundbox</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Stock</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>

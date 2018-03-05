@@ -93,7 +93,7 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["TechDraw","../Mod/TechDraw/Gui/Resources/translations","../Mod/TechDraw/Gui/Resources/TechDraw.qrc"],
              ]
              
-default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko"
+default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr sl eu ca gl kab ko fil id lt val-ES"
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
@@ -136,8 +136,10 @@ def updateqrc(qrcpath,lncode):
     if ".qm" in line:
         line = re.sub("_.*\.qm","_"+lncode+".qm",line)
     else:
-        print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
-        sys.exit()
+        modname = os.path.splitext(os.path.basename(qrcpath))[0]
+        line = "        <file>translations/"+modname+"_"+lncode+".qm</file>\n"
+        #print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
+        #sys.exit()
     print "inserting line: ",line
     resources.insert(pos+1,line)
 

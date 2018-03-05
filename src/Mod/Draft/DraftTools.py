@@ -127,11 +127,12 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
 
+    point = None
     if hasattr(FreeCADGui,"Snapper"):
         point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
         info = FreeCADGui.Snapper.snapInfo
         mask = FreeCADGui.Snapper.affinity
-    else:
+    if not point:
         p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
         point = FreeCADGui.ActiveDocument.ActiveView.getPoint(p)
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
@@ -334,6 +335,7 @@ class SelectPlane(DraftTool):
                     return
                 elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    plane.weak = False
                     if hasattr(sel.Object.ViewObject,"RestoreView"):
                         if sel.Object.ViewObject.RestoreView:
                             if hasattr(sel.Object.ViewObject,"ViewData"):
@@ -4316,7 +4318,7 @@ class Edit(Modifier):
                     changep = point +2
                 elif point == len(pts)-1 and self.obj.Closed: #last pole
                     # if the curve is closed the last pole has the last
-                    # index in the poits lists
+                    # index in the points lists
                     knot = 0
                     keepp = point
                     changep = 1

@@ -134,7 +134,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation>Területek görbéi tervező eszköz kiválasztva [m]</translation>
+      <translation>Területek görbéinek tervező eszköze kiválasztva [m]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
@@ -144,12 +144,12 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation>Területek görbe vágó eszköz kiválasztva [fok]</translation>
+      <translation>Területek görbe vágó eszközének kiválasztva [fok]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
       <source>Trim angle</source>
-      <translation>Vágás szöge</translation>
+      <translation>Szög vágása</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="234"/>
@@ -200,7 +200,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
       <source>Computing hydrostatics</source>
-      <translation>Vízszilárdság / hydrostatika kiszámítása</translation>
+      <translation>Vízszilárdság / hidrosztatika kiszámítása</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="486"/>

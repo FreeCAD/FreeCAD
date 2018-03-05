@@ -829,7 +829,7 @@ bool Document::isModified() const
 
 ViewProviderDocumentObject* Document::getViewProviderByPathFromTail(SoPath * path) const
 {
-    // Make sure I'm the lowest LocHL in the pick path!
+    // Get the lowest root node in the pick path!
     for (int i = 0; i < path->getLength(); i++) {
         SoNode *node = path->getNodeFromTail(i);
         if (node->isOfType(SoSeparator::getClassTypeId())) {

@@ -30,13 +30,13 @@
     <message>
       <location line="+1"/>
       <source>&amp;Clip</source>
-      <translation>&amp;Klipa</translation>
+      <translation>&amp;Ebaki</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Txertatu klip talde bat marrazki aktiboan</translation>
+      <translation>Txertatu ebaketa talde bat marrazki aktiboan</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Insert new A3 landscape drawing</source>
-      <translation type="unfinished">Insert new A3 landscape drawing</translation>
+      <translation>Txertatu A3 tamainako marrazki horizontala</translation>
     </message>
   </context>
   <context>
@@ -288,11 +288,18 @@
       <translation>Esportatu PDFa</translation>
     </message>
     <message>
-      <source>PDF file (*.pdf)</source>
-      <translation type="unfinished">PDF file (*.pdf)</translation>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Inprimagailuak eta marrazkiak orientazio desberdina dute.
+Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>PDF file (*.pdf)</source>
+      <translation>PDF fitxategia (*.pdf)</translation>
+    </message>
+    <message>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF fitxategia</translation>
     </message>
@@ -337,14 +344,13 @@
       <translation>Orientazio desberdina</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak orientazio desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Paper-tamaina desberdina</translation>
@@ -397,19 +403,31 @@ Jarraitu nahi duzu?</translation>
       <translation>Goiko ezkerreko x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Dx / dy tartea   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Ardatza kanpora eta eskuinera</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Inklinazio bertikala</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>dx / dy tartea</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Ardatza kanpora eta eskuinera</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Inklinazio bertikala</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -519,7 +537,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>Primary View</source>
-      <translation type="unfinished">Primary View</translation>
+      <translation>Ikuspegi nagusia</translation>
     </message>
     <message>
       <source>Front</source>
@@ -531,7 +549,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>Back</source>
-      <translation type="unfinished">Back</translation>
+      <translation>Atzera</translation>
     </message>
     <message>
       <source>Left</source>
@@ -547,19 +565,19 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>- Rotate</source>
-      <translation type="unfinished">- Rotate</translation>
+      <translation>- Biratu</translation>
     </message>
     <message>
       <source>90</source>
-      <translation type="unfinished">90</translation>
+      <translation>90</translation>
     </message>
     <message>
       <source>180</source>
-      <translation type="unfinished">180</translation>
+      <translation>180</translation>
     </message>
     <message>
       <source>270</source>
-      <translation type="unfinished">270</translation>
+      <translation>270</translation>
     </message>
     <message>
       <location line="-514"/>
@@ -588,11 +606,11 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>Primary x / y</source>
-      <translation type="unfinished">Primary x / y</translation>
+      <translation>x / y nagusia</translation>
     </message>
     <message>
       <source>Secondary dx / dy</source>
-      <translation type="unfinished">Secondary dx / dy</translation>
+      <translation>Bigarren mailako dx / dy</translation>
     </message>
     <message>
       <location line="+125"/>
@@ -692,51 +710,51 @@ Jarraitu nahi duzu?</translation>
     <name>Drawing_NewPage</name>
     <message>
       <source>A0 landscape</source>
-      <translation type="unfinished">A0 landscape</translation>
+      <translation>A0 horizontala</translation>
     </message>
     <message>
       <source>Insert new A0 landscape drawing</source>
-      <translation type="unfinished">Insert new A0 landscape drawing</translation>
+      <translation>Txertatu A0 tamainako marrazki horizontala</translation>
     </message>
     <message>
       <source>A1 landscape</source>
-      <translation type="unfinished">A1 landscape</translation>
+      <translation>A1 horizontala</translation>
     </message>
     <message>
       <source>Insert new A1 landscape drawing</source>
-      <translation type="unfinished">Insert new A1 landscape drawing</translation>
+      <translation>Txertatu A1 tamainako marrazki horizontala</translation>
     </message>
     <message>
       <source>A2 landscape</source>
-      <translation type="unfinished">A2 landscape</translation>
+      <translation>A2 horizontala</translation>
     </message>
     <message>
       <source>Insert new A2 landscape drawing</source>
-      <translation type="unfinished">Insert new A2 landscape drawing</translation>
+      <translation>Txertatu A2 tamainako marrazki horizontala</translation>
     </message>
     <message>
       <source>A3 landscape</source>
-      <translation type="unfinished">A3 landscape</translation>
+      <translation>A3 horizontala</translation>
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation type="unfinished">Insert new A3 landscape drawing</translation>
+      <translation>Txertatu A3 tamainako marrazki horizontala</translation>
     </message>
     <message>
       <source>A4 landscape</source>
-      <translation type="unfinished">A4 landscape</translation>
+      <translation>A4 horizontala</translation>
     </message>
     <message>
       <source>Insert new A4 landscape drawing</source>
-      <translation type="unfinished">Insert new A4 landscape drawing</translation>
+      <translation>Txertatu A4 tamainako marrazki horizontala</translation>
     </message>
     <message>
       <source>Insert new A%1 landscape drawing</source>
-      <translation type="unfinished">Insert new A%1 landscape drawing</translation>
+      <translation>Txertatu A%1 tamainako marrazki horizontala</translation>
     </message>
     <message>
       <source>A%1 landscape</source>
-      <translation type="unfinished">A%1 landscape</translation>
+      <translation>A%1 horizontala</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-355"/>
@@ -779,11 +797,11 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>Drawing viewer</source>
-      <translation type="unfinished">Drawing viewer</translation>
+      <translation>Marrazki-bisorea</translation>
     </message>
     <message>
       <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-      <translation type="unfinished">Scalable Vector Graphics (*.svg *.svgz)</translation>
+      <translation>Scalable Vector Graphics (*.svg *.svgz)</translation>
     </message>
     <message>
       <location line="-268"/>
@@ -801,15 +819,15 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>No page to insert</source>
-      <translation type="unfinished">No page to insert</translation>
+      <translation>Ez dago txertaketak egiteko orrialderik</translation>
     </message>
     <message>
       <source>Create a page to insert.</source>
-      <translation type="unfinished">Create a page to insert.</translation>
+      <translation>Sortu orrialde bat bertan bistak txertatzeko.</translation>
     </message>
     <message>
       <source>Create a page to insert views into.</source>
-      <translation type="unfinished">Create a page to insert views into.</translation>
+      <translation>Sortu orrialde bat bertan bistak txertatzeko.</translation>
     </message>
     <message>
       <location line="-249"/>
@@ -861,15 +879,15 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>SVG (*.svg)</source>
-      <translation type="unfinished">SVG (*.svg)</translation>
+      <translation>SVG (*.svg)</translation>
     </message>
     <message>
       <source>SVG(*.svg)</source>
-      <translation type="unfinished">SVG(*.svg)</translation>
+      <translation>SVG (*.svg)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location line="-111"/>
@@ -887,7 +905,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>Back</source>
-      <translation type="unfinished">Back</translation>
+      <translation>Atzera</translation>
     </message>
     <message>
       <source>Right</source>

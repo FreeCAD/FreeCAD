@@ -1063,7 +1063,7 @@ void CmdPartDesignPad::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* profile, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* profile, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1114,7 +1114,7 @@ void CmdPartDesignPocket::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this,cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1161,7 +1161,7 @@ void CmdPartDesignHole::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if(!Feat) return;
 
@@ -1207,7 +1207,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1265,7 +1265,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1331,7 +1331,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1381,7 +1381,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1431,7 +1431,7 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1481,7 +1481,7 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
 
@@ -1897,7 +1897,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
             return;
@@ -1959,7 +1959,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         if (!Feat || features.empty())
             return;
@@ -2023,7 +2023,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         if (!Feat || features.empty())
             return;
@@ -2087,7 +2087,7 @@ void CmdPartDesignScaled::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [this, cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
+    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         if (!Feat || features.empty())
             return;
@@ -2193,7 +2193,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     } else {
 
         Gui::Command* cmd = this;
-        auto worker = [this, cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
+        auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
             if (!Feat || features.empty())
                 return;

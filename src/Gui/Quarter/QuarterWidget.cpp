@@ -1172,8 +1172,8 @@ QuarterWidget::renderModeActions(void) const
 /*!
   \property QuarterWidget::navigationModeFile
 
-  An url to a navigation mode file which is a scxml file which defines
-  the possible states for the Coin navigation system
+  A url pointing to a navigation mode file which is a scxml file
+  that defines the possible states for the Coin navigation system
 
   Supports:
   \li \b coin for internal coinresources

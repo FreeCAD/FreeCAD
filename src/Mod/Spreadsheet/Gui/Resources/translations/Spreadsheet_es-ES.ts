@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Mostrar la hoja de cálculo</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Ajustar color de primer plano para la(s) celda(s)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Ajuste del color de primer plano de la hoja de cálculo</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Ajuste de primer plano del color de celda(s)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Ajuste de color de fondo de celda(s) de la hoja de cálculo</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

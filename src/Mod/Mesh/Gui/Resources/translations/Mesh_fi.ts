@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Arvioi &amp;&amp; korjaa verkkopinta...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation type="unfinished">Evaluate and repair mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -1430,7 +1434,7 @@ Suurin=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Kaikki tiedostot</translation>
     </message>
     <message>
       <source>X3D Extensible 3D</source>

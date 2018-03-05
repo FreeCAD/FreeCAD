@@ -640,4 +640,45 @@ void PrefQuantitySpinBox::setHistorySize(int i)
     d->historySize = i;
 }
 
+// --------------------------------------------------------------------
+
+PrefFontBox::PrefFontBox ( QWidget * parent )
+  : QFontComboBox(parent), PrefWidget()
+{
+}
+
+PrefFontBox::~PrefFontBox()
+{
+}
+
+void PrefFontBox::restorePreferences()
+{
+  if ( getWindowParameter().isNull() )
+  {
+    Console().Warning("Cannot restore!\n");
+    return;
+  }
+
+  QFont currFont = currentFont();                         //QFont from selector widget
+  QString currName = currFont.family();
+  
+  std::string prefName = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  //font name from cfg file
+
+  currFont.setFamily(QString::fromStdString(prefName));
+  setCurrentFont(currFont);                               //set selector widget to name from cfg file
+}
+
+void PrefFontBox::savePreferences()
+{
+  if (getWindowParameter().isNull())
+  {
+    Console().Warning("Cannot save!\n");
+    return;
+  }
+
+  QFont currFont = currentFont();
+  QString currName = currFont.family();
+  getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
+}
+
 #include "moc_PrefWidgets.cpp"

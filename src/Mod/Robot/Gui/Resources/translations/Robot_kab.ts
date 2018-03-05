@@ -381,7 +381,7 @@
     <message>
       <location line="-177"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>Fren aṛubu akken a stefkeḍ adig ines amezwaru</translation>
     </message>
     <message>
       <location line="+149"/>
@@ -510,7 +510,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TrajectorySimulate.ui" line="+20"/>
       <source>Simulation</source>
-      <translation type="unfinished">Simulation</translation>
+      <translation>Aserwes</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -555,7 +555,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location line="+5"/>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -735,7 +735,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location line="+5"/>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -890,7 +890,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location line="+5"/>
       <source>Base 0</source>
-      <translation type="unfinished">Base 0</translation>
+      <translation>Taffa 0</translation>
     </message>
     <message>
       <location line="+5"/>

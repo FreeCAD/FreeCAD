@@ -2,6 +2,7 @@
 #include "PreCompiled.h"
 
 #include <App/DocumentObject.h>
+#include <Base/Vector3D.h>
 
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
@@ -10,6 +11,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupPy.h>
 #include <Mod/TechDraw/App/DrawProjGroupPy.cpp>
 #include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
+#include <Base/VectorPy.h>
 
 using namespace TechDraw;
 
@@ -87,26 +89,19 @@ PyObject* DrawProjGroupPy::getItemByLabel(PyObject* args)
     return new DrawProjGroupItemPy(newProj);
 }
 
-//TODO: this is no longer required?
-PyObject* DrawProjGroupPy::setViewOrientation(PyObject* args)
+PyObject* DrawProjGroupPy::getXYPosition(PyObject* args)
 {
     char* projType;
-    PyObject* pcObj;
-    if (!PyArg_ParseTuple(args, "Os", &pcObj,&projType))
+
+    if (!PyArg_ParseTuple(args, "s", &projType)) {
         throw Py::Exception();
+    }
 
-//    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
-//    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-//        TechDraw::DrawProjGroupItem* view = static_cast<TechDraw::DrawProjGroupItem*>(obj);
-//        TechDraw::DrawProjGroup* projGroup = getDrawProjGroupPtr();
-//        projGroup->setViewOrientation( view, projType );
-
-//    } else {
-//        Base::Console().Message("'%s' is not a DrawProjGroup Item, it will be ignored.\n", obj->Label.getValue());
-//    }
-
-    return Py_None;
+    DrawProjGroup* projGroup = getDrawProjGroupPtr();
+    Base::Vector3d v = projGroup->getXYPosition(projType);
+    return new Base::VectorPy(v);
 }
+
 
 
 PyObject *DrawProjGroupPy::getCustomAttributes(const char* /*attr*/) const

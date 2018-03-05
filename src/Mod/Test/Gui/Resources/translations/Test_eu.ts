@@ -57,7 +57,7 @@
     </message>
     <message>
       <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</translation>
+      <translation>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
       <source>Remaining:</source>

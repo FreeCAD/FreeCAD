@@ -190,7 +190,10 @@ class _ViewProviderFloor:
         return
 
     def claimChildren(self):
-        return self.Object.Group
+        if hasattr(self,"Object"):
+            if self.Object:
+                return self.Object.Group
+        return []
 
     def __getstate__(self):
         return None

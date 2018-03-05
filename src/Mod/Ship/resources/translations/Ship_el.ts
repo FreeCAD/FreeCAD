@@ -77,7 +77,7 @@
     <message>
       <location filename="../../ShipGui.py" line="63"/>
       <source>Create a new ship instance on top of the hull geometry</source>
-      <translation type="unfinished">Create a new ship instance on top of the hull geometry</translation>
+      <translation>Δημιουργήστε ένα νέο πλοίο πάνω από τη γεωμετρία του σώματος</translation>
     </message>
   </context>
   <context>
@@ -190,12 +190,12 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="157"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation type="unfinished">Please create or load a ship hull geometry before using this tool</translation>
+      <translation>Δημιουργήστε ή φορτώστε γεωμετρία σώματος πλοίου πριν χρησιμοποιήσετε αυτό το εργαλείο</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="151"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no solid found at selected objects)</translation>
+      <translation>Τα αντικείμενα πλοίων μπορούν να δημιουργηθούν μόνο πάνω από τη γεωμετρία του σώματος (δεν μπορούν να έχουν στερεά σε επιλεγμένα αντικείμενα)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
@@ -220,22 +220,22 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="132"/>
       <source>Ship objects can only be created on top of hull geometry (no objects selected)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no objects selected)</translation>
+      <translation>Τα αντικείμενα πλοίων μπορούν να δημιουργηθούν μόνο πάνω από τη γεωμετρία του σώματος (δεν έχει επιλεγεί κανένα αντικείμενο)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="197"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Για να μπορέσετε να χρησιμοποιήσετε αυτό το εργαλείο, πρέπει να επιλέξετε μια παράσταση πλοίου (αντικείμενα που δεν έχουν επιλεγεί)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
+      <translation>Επιλεγμένα περισσότερα από ένα πλοία (το επιπλέον πλοίο θα αγνοηθεί)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
+      <translation>Πρέπει να επιλέξετε ένα δείγμα του σκάφους πριν χρησιμοποιήσετε αυτό το όχημα (δεν υπάρχει έγκυρο σκάφος για τα επιλεγμένα αντικείμενα)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/PlotAux.py" line="57"/>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="192"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (no objects selected)</translation>
+      <translation>Για να μπορέσετε να χρησιμοποιήσετε αυτό το εργαλείο, πρέπει να επιλέξετε μια παράσταση πλοίου (αντικείμενα που δεν έχουν επιλεγεί)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="210"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation type="unfinished">More than one ship has been selected (just the first one will be used)</translation>
+      <translation>Επιλέγονται πολλά πλοία (θα χρησιμοποιηθεί μόνο το πρώτο)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="220"/>
@@ -265,52 +265,52 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="85"/>
       <source>Failure detecting external faces from the ship object</source>
-      <translation type="unfinished">Failure detecting external faces from the ship object</translation>
+      <translation>Αδυναμία ανίχνευσης εξωτερικών επιφανειών του αντικειμένου του πλοίου</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="118"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Πρέπει να επιλεγεί μια εμφάνιση δεξαμενής πριν από τη χρήση αυτού του εργαλείου (αντικείμενα που δεν έχουν επιλεγεί)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="134"/>
       <source>More than one tank have been selected (the extra tanks will be ignored)</source>
-      <translation type="unfinished">More than one tank have been selected (the extra tanks will be ignored)</translation>
+      <translation>Πολλές αποθήκες που έχουν επιλεγεί (επιπλέον αποθήκη θα αγνοηθεί)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="143"/>
       <source>A tank instance must be selected before using this tool (no valid tank found at the selected objects)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no valid tank found at the selected objects)</translation>
+      <translation>Πρέπει να επιλεγεί μια εμφάνιση δεξαμενής πριν χρησιμοποιήσετε αυτό το εργαλείο (δεν υπάρχουν έγκυρες δεξαμενές στα επιλεγμένα αντικείμενα)</translation>
     </message>
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Η λειτουργία όγκου δεξαμενής απέτυχε. Το όχημα προσπαθεί να μετακινήσει ελαφρά τη θέση της ελεύθερης επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Πρέπει να επιλεγεί μια κατάσταση μιας κατάστασης φόρτωσης πριν από τη χρήση αυτού του εργαλείου (αντικείμενα που δεν έχουν επιλεγεί)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Λάθος ετικέτα πλοίου! (Δεν βρέθηκαν εμφανίσεις με ετικέτα '{}')</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Αόριστη ετικέτα πλοίου! (βρέθηκαν παραδείγματα με ετικέτα {} '{}')</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Έχουν επιλεγεί περισσότερες από μία καταστάσεις αποστολής (οι επιπλέον συνθήκες μεταφόρτωσης θα αγνοηθούν)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Ένα παράδειγμα μιας κατάστασης φόρτωσης πρέπει να επιλεγεί πριν από τη χρήση αυτού του εργαλείου (τα επιλεγμένα αντικείμενα δεν έχουν έγκυρη κατάσταση φόρτωσης)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
@@ -355,37 +355,37 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Η λειτουργία Boolean απέτυχε κατά την προσπάθεια να βρεθεί η υποβρύχια πλευρά. Το εργαλείο επαναλαμβάνει αυτή τη λειτουργία μετακινώντας ελαφρά τη θέση της ελεύθερης επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: Ο υπολογισμός της εγκάρσιας περιοχής απέτυχε</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: Άδειος χώρος που βρέθηκε κατά τον υπολογισμό του χώρου!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Η κυμαινόμενη περιοχή δεν μπορεί να υπολογιστεί</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>ZeroDivisionError: Ελεύθερος χώρος βρέθηκε κατά τον υπολογισμό του ελεύθερου χώρου!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Δεν είναι δυνατός ο υπολογισμός του περιοχή κύριου πλαισίου</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: Ελεύθερος χώρος βρέθηκε κατά τον υπολογισμό του συντελεστή πεδίου κύριου πλαισίου!</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Το πλοίο θα επιστρέψει σε γωνία ισορροπίας για κάθε γωνία κύλισης. Αυξάνει σημαντικά τον απαιτούμενο χρόνο υπολογισμού</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../TankInstance.py" line="50"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid tank instance, False otherwise</translation>
+      <translation>Αληθές εάν η τρέχουσα παράθεση αποθετηρίου είναι αληθής, αλλιώς ψευδής</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="160"/>
@@ -626,7 +626,7 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="109"/>
       <source>Tanks objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Tanks objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Τα αντικείμενα δεξαμενών μπορούν να δημιουργηθούν μόνο πάνω από τη γεωμετρία (αντικείμενα που δεν έχουν επιλεγεί)</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="122"/>
@@ -674,12 +674,12 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="113"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Τα αντικείμενα βάρους μπορούν να δημιουργηθούν μόνο πάνω από τη γεωμετρία (αντικείμενα που δεν έχουν επιλεγεί)</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="126"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
+      <translation>Δεν βρέθηκαν γεωμετρικά σχήματα στα επιλεγμένα αντικείμενα</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="179"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Άγνωστο σχήμα αντικειμένου επιλεγμένο</translation>
     </message>
   </context>
 </TS>

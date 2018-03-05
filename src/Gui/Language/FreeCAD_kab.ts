@@ -76,7 +76,7 @@
     </message>
     <message>
       <source>Axis</source>
-      <translation>Axe</translation>
+      <translation>Agellus</translation>
     </message>
     <message>
       <source>Position</source>
@@ -127,10 +127,6 @@
       <translation>Mouvement de la SpaceBall</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensitivité globale:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Mode dominant</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Inverser</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -216,7 +216,7 @@
     </message>
     <message>
       <source>Add</source>
-      <translation>Ajouter</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -399,6 +399,21 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation type="unfinished">License</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -425,7 +440,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -544,7 +559,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Password:</source>
-      <translation>Mot de passe :</translation>
+      <translation type="unfinished">Password:</translation>
     </message>
     <message>
       <source/>
@@ -567,7 +582,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCheckableMessageBox</name>
     <message>
       <source>Dialog</source>
-      <translation>Fenêtre de dialogue</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -633,7 +648,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Add</source>
-      <translation>Ajouter</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -757,7 +772,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+A</translation>
+      <translation type="unfinished">Alt+A</translation>
     </message>
     <message>
       <source>&amp;Reset</source>
@@ -773,7 +788,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Alt+S</source>
-      <translation>Alt+M</translation>
+      <translation type="unfinished">Alt+S</translation>
     </message>
     <message>
       <source/>
@@ -781,7 +796,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
   </context>
   <context>
@@ -929,11 +944,11 @@ Veuillez définir un autre raccourci.</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Aide</translation>
+      <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Fermer</translation>
+      <translation type="unfinished">&amp;Close</translation>
     </message>
   </context>
   <context>
@@ -959,7 +974,7 @@ Veuillez définir un autre raccourci.</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <source>Print Reference</source>
@@ -994,7 +1009,7 @@ Veuillez définir un autre raccourci.</translation>
     </message>
     <message>
       <source>Material</source>
-      <translation>Matériau</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <source>...</source>
@@ -1476,7 +1491,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>Material</source>
-      <translation>Matériau</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <source>Diffuse color:</source>
@@ -1553,11 +1568,11 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+F</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Fermer</translation>
+      <translation type="unfinished">&amp;Close</translation>
     </message>
   </context>
   <context>
@@ -1568,7 +1583,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <source>Type</source>
@@ -1576,7 +1591,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Value</source>
-      <translation>Valeur</translation>
+      <translation type="unfinished">Value</translation>
     </message>
     <message>
       <source>User parameter</source>
@@ -1685,7 +1700,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Open in browser</source>
-      <translation>Ouvrir dans le navigateur</translation>
+      <translation type="unfinished">Open in browser</translation>
     </message>
   </context>
   <context>
@@ -1814,7 +1829,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Errors:</source>
-      <translation>Erreurs :</translation>
+      <translation type="unfinished">Errors:</translation>
     </message>
     <message>
       <source/>
@@ -1865,7 +1880,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Select a file</source>
@@ -2137,8 +2152,8 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
       <translation>Enregistrer la vignette dans le fichier projet lors de la sauvegarde du document</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Nombre maximal de sauvegardes crées lors du ré-enregistrement du document</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2178,7 +2193,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Company</source>
-      <translation>Société</translation>
+      <translation type="unfinished">Company</translation>
     </message>
     <message>
       <source>Default license</source>
@@ -2273,7 +2288,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Comment</source>
-      <translation>Commentaire</translation>
+      <translation type="unfinished">Comment</translation>
     </message>
     <message>
       <source>Block comment</source>
@@ -2468,7 +2483,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Alt+S</source>
-      <translation>Alt+M</translation>
+      <translation type="unfinished">Alt+S</translation>
     </message>
     <message>
       <source>&amp;4:3</source>
@@ -2590,7 +2605,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Unit</source>
-      <translation>Unité</translation>
+      <translation type="unfinished">Unit</translation>
     </message>
     <message>
       <source>User system:</source>
@@ -2629,7 +2644,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Selection</source>
-      <translation>Sélection</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <source>Enable selection highlighting</source>
@@ -2660,8 +2675,8 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
       <translation type="unfinished">Pick radius (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -2695,7 +2710,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Copy</source>
@@ -2799,7 +2814,7 @@ Ma ulac aɣilif, mudd akaram nniḍen.</translation>
     </message>
     <message>
       <source>Status</source>
-      <translation>État</translation>
+      <translation type="unfinished">Status</translation>
     </message>
     <message>
       <source>Start Recovery</source>
@@ -3252,7 +3267,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::Dialog::SceneInspector</name>
     <message>
       <source>Dialog</source>
-      <translation>Fenêtre de dialogue</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <source>Close</source>
@@ -3260,7 +3275,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
   </context>
   <context>
@@ -3275,7 +3290,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
   </context>
   <context>
@@ -3332,7 +3347,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::DlgTreeWidget</name>
     <message>
       <source>Dialog</source>
-      <translation>Fenêtre de dialogue</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <source>Items</source>
@@ -3348,10 +3363,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>Vue combinée</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projet</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3381,7 +3392,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error</source>
-      <translation>Erreur</translation>
+      <translation type="unfinished">Error</translation>
     </message>
     <message>
       <source>Options</source>
@@ -3389,7 +3400,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <source>Save As...</source>
@@ -3810,7 +3821,7 @@ Voulez enregistrer les modifications ?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <source>Dimension</source>
-      <translation>Cote</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <source>Ready</source>
@@ -4038,7 +4049,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Value</source>
-      <translation>Valeur</translation>
+      <translation type="unfinished">Value</translation>
     </message>
   </context>
   <context>
@@ -4141,7 +4152,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <name>Gui::PythonEditor</name>
     <message>
       <source>Comment</source>
-      <translation>Commentaire</translation>
+      <translation type="unfinished">Comment</translation>
     </message>
     <message>
       <source>Uncomment</source>
@@ -4156,7 +4167,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     </message>
     <message>
       <source>File not found</source>
-      <translation>Fichier introuvable</translation>
+      <translation type="unfinished">File not found</translation>
     </message>
     <message>
       <source>The file '%1' cannot be opened.</source>
@@ -4201,7 +4212,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <name>Gui::StdCmdDescription</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Des&amp;cription</source>
@@ -4216,7 +4227,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Download online help</source>
@@ -4859,7 +4870,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -4943,7 +4954,7 @@ Veuillez ouvrir une fenêtre de navigateur et saisir : http://localhost:%1.</tra
     </message>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Unable to load documentation.
@@ -5045,6 +5056,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5072,7 +5087,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>&amp;About %1</source>
@@ -5087,7 +5102,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdAboutQt</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>About &amp;Qt</source>
@@ -5102,7 +5117,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdActivateNextWindow</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
@@ -5117,7 +5132,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdActivatePrevWindow</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
@@ -5147,7 +5162,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
@@ -5173,7 +5188,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdCascadeWindows</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
@@ -5188,7 +5203,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdCloseActiveWindow</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
@@ -5203,7 +5218,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdCloseAllWindows</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
@@ -5387,7 +5402,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Panels</source>
-      <translation>Panneaux</translation>
+      <translation>Igalisen</translation>
     </message>
     <message>
       <source>List of available dock panels</source>
@@ -5496,7 +5511,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdFreeCADFAQ</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>FreeCAD FAQ</source>
@@ -5515,7 +5530,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdFreeCADForum</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>FreeCAD Forum</source>
@@ -5534,7 +5549,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdFreeCADPowerUserHub</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Python scripting documentation</source>
@@ -5553,7 +5568,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdFreeCADUserHub</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Users documentation</source>
@@ -5568,7 +5583,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdFreeCADWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>FreeCAD Website</source>
@@ -5801,7 +5816,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Show help to the application</source>
@@ -5812,7 +5827,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Help Website</source>
@@ -5982,7 +5997,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdPythonWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>Python Website</source>
@@ -6151,7 +6166,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Tout sélectionner</translation>
+      <translation type="unfinished">Select all</translation>
     </message>
   </context>
   <context>
@@ -6248,7 +6263,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdTileWindows</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>&amp;Tile</source>
@@ -6491,8 +6506,8 @@ Be aware the point where you click matters.</source>
       <translation>Créer une nouvelle vue</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Créez une nouvelle fenêtre de vue pour le document actif</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>
@@ -6784,7 +6799,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdWhatsThis</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>&amp;What's This?</source>
@@ -6799,7 +6814,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdWindows</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>&amp;Windows...</source>
@@ -6814,7 +6829,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdWindowsMenu</name>
     <message>
       <source>Window</source>
-      <translation>Fenêtre</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <source>Activates this window</source>
@@ -7156,7 +7171,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Aide</translation>
+      <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
       <source>File</source>

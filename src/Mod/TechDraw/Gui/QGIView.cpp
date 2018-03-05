@@ -59,6 +59,7 @@
 #include "QGICaption.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
+#include "ViewProviderDrawingView.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -354,7 +355,8 @@ void QGIView::drawCaption()
     QPointF displayCenter = displayArea.center();
     m_caption->setX(displayCenter.x() - captionArea.width()/2.);
     double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
-    if (borderVisible || viewObj->KeepLabel.getValue()) {            //place below label if label visible
+    auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (borderVisible || vp->KeepLabel.getValue()) {            //place below label if label visible
         m_caption->setY(displayArea.bottom() + labelHeight);
     } else {
         m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
@@ -366,7 +368,8 @@ void QGIView::drawBorder()
 {
     drawCaption();
     //show neither
-    if (!borderVisible && !viewObj->KeepLabel.getValue()) {
+    auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (!borderVisible && !vp->KeepLabel.getValue()) {
          m_label->hide();
          m_border->hide();
         return;

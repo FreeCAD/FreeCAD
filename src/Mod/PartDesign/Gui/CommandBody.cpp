@@ -335,7 +335,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Migrate");
-    sToolTipText  = QT_TR_NOOP("Migrate document to the modern partdesign workflow");
+    sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
 }
@@ -704,7 +704,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         return;
     }
 
-    // Collect dependenies of the selected features
+    // Collect dependencies of the selected features
     std::vector<App::DocumentObject*> dependencies = PartDesignGui::collectMovableDependencies(features);
     if (!dependencies.empty())
         features.insert(std::end(features), std::begin(dependencies), std::end(dependencies));

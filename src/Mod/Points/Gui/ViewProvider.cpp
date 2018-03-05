@@ -288,13 +288,17 @@ QIcon ViewProviderPoints::getIcon() const
     return px;
 }
 
-bool ViewProviderPoints::setEdit(int)
+bool ViewProviderPoints::setEdit(int ModNum)
 {
-    return true;
+    if (ModNum == ViewProvider::Transform)
+        return ViewProviderGeometryObject::setEdit(ModNum);
+    return false;
 }
 
-void ViewProviderPoints::unsetEdit(int)
+void ViewProviderPoints::unsetEdit(int ModNum)
 {
+    if (ModNum == ViewProvider::Transform)
+        ViewProviderGeometryObject::unsetEdit(ModNum);
 }
 
 void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)

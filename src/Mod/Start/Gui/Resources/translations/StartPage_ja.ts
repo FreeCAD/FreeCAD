@@ -344,5 +344,10 @@
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>https://www.freecadweb.org/wiki/Getting_started/jp</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>新しいFEMの3次元解析例を読み込み</translation>
+    </message>
   </context>
 </TS>

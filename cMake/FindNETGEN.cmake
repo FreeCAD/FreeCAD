@@ -107,13 +107,19 @@ ELSE()
     file(STRINGS ${NETGEN_DIR_include}/mydefs.hpp NETGEN_VERSION
         REGEX "#define PACKAGE_VERSION.*"
     )
-    string(REGEX MATCHALL "[0-9]+" NETGEN_VERSION ${NETGEN_VERSION})
-    list(LENGTH NETGEN_VERSION NETGEN_VERSION_COUNT)
-    list(GET NETGEN_VERSION 0 NETGEN_VERSION_MAJOR)
-    if(NETGEN_VERSION_COUNT GREATER 1)
-        list(GET NETGEN_VERSION 1 NETGEN_VERSION_MINOR)
-    else()
-        set(NETGEN_VERSION_MINOR 0)
+    if (NETGEN_VERSION)
+	string(REGEX MATCHALL "[0-9]+" NETGEN_VERSION ${NETGEN_VERSION})
+	list(LENGTH NETGEN_VERSION NETGEN_VERSION_COUNT)
+	list(GET NETGEN_VERSION 0 NETGEN_VERSION_MAJOR)
+	if(NETGEN_VERSION_COUNT GREATER 1)
+	    list(GET NETGEN_VERSION 1 NETGEN_VERSION_MINOR)
+	else()
+	    set(NETGEN_VERSION_MINOR 0)
+	endif()
+    else()  # workaround for netgen 6.2 and newer. currently there is no easy way to detect the version
+	    # better use "find_package(netgen CONFIG REQUIRED)"
+	set(NETGEN_VERSION_MAJOR 6)
+	set(NETGEN_VERSION_MINOR 2)
     endif()
 ENDIF()
 

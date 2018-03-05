@@ -336,11 +336,11 @@
     </message>
     <message>
       <source>Dress up trajectory...</source>
-      <translation type="unfinished">Dress up trajectory...</translation>
+      <translation>Jantzi ibilbidea...</translation>
     </message>
     <message>
       <source>Create a dress up object which overide som aspects of a trajectory</source>
-      <translation type="unfinished">Create a dress up object which overide som aspects of a trajectory</translation>
+      <translation>Sortu jantzi-objektu bat ibilbide baten zenbait ezaugarri gainidazteko</translation>
     </message>
   </context>
   <context>
@@ -404,11 +404,11 @@
     </message>
     <message>
       <source>KRL file(*.src)</source>
-      <translation type="unfinished">KRL file(*.src)</translation>
+      <translation>KRL fitxategia (*.src)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="-40"/>
@@ -754,7 +754,7 @@
     <message>
       <location filename="../../TaskTrajectory.cpp" line="+44"/>
       <source>Trajectory</source>
-      <translation type="unfinished">Trajectory</translation>
+      <translation>Ibilbidea</translation>
     </message>
   </context>
   <context>
@@ -762,7 +762,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
       <source>Dress Up Parameter</source>
-      <translation type="unfinished">Dress Up Parameter</translation>
+      <translation>Jantzi-parametroa</translation>
     </message>
   </context>
   <context>
@@ -952,7 +952,7 @@
     <name>TaskTrajectory</name>
     <message>
       <source>Trajectory</source>
-      <translation type="unfinished">Trajectory</translation>
+      <translation>Ibilbidea</translation>
     </message>
   </context>
   <context>
@@ -1035,7 +1035,7 @@
     </message>
     <message>
       <source>Dress Up Parameter</source>
-      <translation type="unfinished">Dress Up Parameter</translation>
+      <translation>Jantzi-parametroa</translation>
     </message>
   </context>
   <context>

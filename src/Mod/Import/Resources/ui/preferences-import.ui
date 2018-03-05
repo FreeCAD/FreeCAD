@@ -49,7 +49,7 @@
         <cstring>Scheme_203</cstring>
        </property>
        <property name="prefPath" stdset="0">
-        <cstring>Mod/Part/hSTEP</cstring>
+        <cstring>Mod/Import/hSTEP</cstring>
        </property>
       </widget>
      </item>

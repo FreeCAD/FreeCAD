@@ -1372,6 +1372,87 @@ public:
     }
 };
 
+
+/* XPM */
+static const char *fontbox_pixmap[]={
+"22 22 6 1",
+"a c #000000",
+"# c #000080",
+"b c #008080",
+"c c #808080",
+"d c #c0c0c0",
+". c #ffffff",
+"...#aaaaaaaaaaaaaa#...",
+".baccccccccccccccccab.",
+".acccddddddddddddddca.",
+"#ccd.................a",
+"acc..................a",
+"acd..................a",
+"acd..................a",
+"acd. ................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"acd..................a",
+"#cd..................#",
+".ac................da.",
+".badd............dda#.",
+"...#aaaaaaaaaaaaaa#..."};
+
+class PrefFontBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    PrefFontBoxPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::PrefFontBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Preference Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( fontbox_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/PrefWidgets.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Font Box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Font box widget (spin button).");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefFontBox\" name=\"fontBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::PrefFontBox");
+    }
+};
+
 /* XPM */
 /*
 static char *listbox_pixmap[]={
@@ -1432,6 +1513,7 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new PrefComboBoxPlugin);
     cw.append(new PrefLineEditPlugin);
     cw.append(new PrefDoubleSpinBoxPlugin);
+    cw.append(new PrefFontBoxPlugin);
     return cw;
 }
 

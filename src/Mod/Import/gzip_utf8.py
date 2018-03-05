@@ -134,7 +134,7 @@ class GzipFile(io.BufferedIOBase):
                                              zlib.DEF_MEM_LEVEL,
                                              0)
         else:
-            raise IOError, "Mode " + mode + " not supported"
+            raise IOError( "Mode " + mode + " not supported" )
 
         self.fileobj = fileobj
         self.offset = 0
@@ -164,7 +164,7 @@ class GzipFile(io.BufferedIOBase):
 
     def _init_write(self, filename):
         self.name = filename
-        self.crc = zlib.crc32("") & 0xffffffffL
+        self.crc = zlib.crc32(b"") & 0xffffffff
         self.size = 0
         self.writebuf = []
         self.bufsize = 0
@@ -189,16 +189,16 @@ class GzipFile(io.BufferedIOBase):
             self.fileobj.write(fname.encode('utf-8') + '\000')
 
     def _init_read(self):
-        self.crc = zlib.crc32("") & 0xffffffffL
+        self.crc = zlib.crc32(b"") & 0xffffffff
         self.size = 0
 
     def _read_gzip_header(self):
         magic = self.fileobj.read(2)
         if magic != '\037\213':
-            raise IOError, 'Not a gzipped file'
+            raise IOError('Not a gzipped file')
         method = ord( self.fileobj.read(1) )
         if method != 8:
-            raise IOError, 'Unknown compression method'
+            raise IOError('Unknown compression method')
         flag = ord( self.fileobj.read(1) )
         self.mtime = read32(self.fileobj)
         # extraflag = self.fileobj.read(1)
@@ -232,7 +232,7 @@ class GzipFile(io.BufferedIOBase):
             raise IOError(errno.EBADF, "write() on read-only GzipFile object")
 
         if self.fileobj is None:
-            raise ValueError, "write() on closed GzipFile object"
+            raise ValueError("write() on closed GzipFile object")
 
         # Convert data type if called by io.BufferedWriter.
         if isinstance(data, memoryview):
@@ -240,7 +240,7 @@ class GzipFile(io.BufferedIOBase):
 
         if len(data) > 0:
             self.size = self.size + len(data)
-            self.crc = zlib.crc32(data, self.crc) & 0xffffffffL
+            self.crc = zlib.crc32(data, self.crc) & 0xffffffff
             self.fileobj.write( self.compress.compress(data) )
             self.offset += len(data)
 
@@ -285,7 +285,7 @@ class GzipFile(io.BufferedIOBase):
 
     def _read(self, size=1024):
         if self.fileobj is None:
-            raise EOFError, "Reached EOF"
+            raise EOFError("Reached EOF")
 
         if self._new_member:
             # If the _new_member flag is set, we have to
@@ -296,7 +296,7 @@ class GzipFile(io.BufferedIOBase):
             pos = self.fileobj.tell()   # Save current position
             self.fileobj.seek(0, 2)     # Seek to end of file
             if pos == self.fileobj.tell():
-                raise EOFError, "Reached EOF"
+                raise EOFError("Reached EOF")
             else:
                 self.fileobj.seek( pos ) # Return to original position
 
@@ -315,7 +315,7 @@ class GzipFile(io.BufferedIOBase):
             uncompress = self.decompress.flush()
             self._read_eof()
             self._add_read_data( uncompress )
-            raise EOFError, 'Reached EOF'
+            raise EOFError('Reached EOF')
 
         uncompress = self.decompress.decompress(buf)
         self._add_read_data( uncompress )
@@ -334,7 +334,7 @@ class GzipFile(io.BufferedIOBase):
             self._new_member = True
 
     def _add_read_data(self, data):
-        self.crc = zlib.crc32(data, self.crc) & 0xffffffffL
+        self.crc = zlib.crc32(data, self.crc) & 0xffffffff
         offset = self.offset - self.extrastart
         self.extrabuf = self.extrabuf[offset:] + data
         self.extrasize = self.extrasize + len(data)
@@ -353,8 +353,8 @@ class GzipFile(io.BufferedIOBase):
         if crc32 != self.crc:
             raise IOError("CRC check failed %s != %s" % (hex(crc32),
                                                          hex(self.crc)))
-        elif isize != (self.size & 0xffffffffL):
-            raise IOError, "Incorrect length of data produced"
+        elif isize != (self.size & 0xffffffff):
+            raise IOError("Incorrect length of data produced")
 
         # Gzip files can be padded with zeroes and still have archives.
         # Consume all zero bytes and set the file position to the first
@@ -376,7 +376,7 @@ class GzipFile(io.BufferedIOBase):
             self.fileobj.write(self.compress.flush())
             write32u(self.fileobj, self.crc)
             # self.size may exceed 2GB, or even 4GB
-            write32u(self.fileobj, self.size & 0xffffffffL)
+            write32u(self.fileobj, self.size & 0xffffffff)
             self.fileobj = None
         elif self.mode == READ:
             self.fileobj = None
@@ -501,7 +501,7 @@ def _test():
                 g = sys.stdout
             else:
                 if arg[-3:] != ".gz":
-                    print "filename doesn't end in .gz:", repr(arg)
+                    print("filename doesn't end in .gz:", repr(arg))
                     continue
                 f = open(arg, "rb")
                 g = __builtin__.open(arg[:-3], "wb")

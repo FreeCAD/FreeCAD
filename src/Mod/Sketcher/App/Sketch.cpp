@@ -67,8 +67,13 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-: SolveTime(0), RecalculateInitialSolutionWhileMovingPoint(false), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
-defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
+  : SolveTime(0)
+  , RecalculateInitialSolutionWhileMovingPoint(false)
+  , GCSsys(), ConstraintsCounter(0)
+  , isInitMove(false), isFine(true), moveStep(0)
+  , defaultSolver(GCS::DogLeg)
+  , defaultSolverRedundant(GCS::DogLeg)
+  , debugMode(GCS::Minimal)
 {
 }
 

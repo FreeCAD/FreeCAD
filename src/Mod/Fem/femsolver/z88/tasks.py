@@ -65,7 +65,7 @@ class Prepare(run.Prepare):
             c.pressure_constraints, c.temperature_constraints,
             c.heatflux_constraints, c.initialtemperature_constraints,
             c.beam_sections, c.beam_rotations, c.shell_thicknesses, c.fluid_sections,
-            self.solver.AnalysisType, self.directory)
+            self.directory)
         path = w.write_z88_input()
         # report to user if task succeeded
         if path is not None:

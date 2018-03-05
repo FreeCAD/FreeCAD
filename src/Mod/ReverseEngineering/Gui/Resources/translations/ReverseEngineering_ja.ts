@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>B-スプライン曲面に近似...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>B-スプライン曲面に近似</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>B-スプライン曲面に近似</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>おおよその表面...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>B-スプライン曲面を近似</translation>
     </message>
@@ -85,8 +93,12 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
+      <translation>B-スプライン曲面にフィット</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
       <translation>B-スプライン曲面にフィット</translation>
     </message>
     <message>

@@ -82,6 +82,10 @@ def symlink(source, link_name):
             csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
             csl.restype = ctypes.c_ubyte
             flags = 1 if os.path.isdir(source) else 0
+            # set the SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE flag
+            # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#joC5tFKhdXs2gGml.97)
+            flags += 2
+
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
 
@@ -494,7 +498,7 @@ class CheckWBWorker(QtCore.QThread):
                                 cw.set('core', 'bare', False)
                         except AttributeError:
                             if not gitpython_warning:
-                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.")+"\n")
                                 gitpython_warning = True
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
@@ -607,7 +611,7 @@ class ShowWorker(QtCore.QThread):
                                 with bare_repo.config_writer() as cw:
                                     cw.set('core', 'bare', False)
                             except AttributeError:
-                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.")+"\n")
                                 cw = bare_repo.config_writer()
                                 cw.set('core', 'bare', False)
                                 del cw
@@ -715,12 +719,12 @@ class InstallWorker(QtCore.QThread):
             import git
         except:
             self.info_label.emit("GitPython not found.")
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.\n"))
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.")+"\n")
             try:
                 import zipfile
             except:
                 self.info_label.emit("no zip support.")
-                FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.\n"))
+                FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.")+"\n")
                 return
             try:
                 import StringIO as io
@@ -751,7 +755,7 @@ class InstallWorker(QtCore.QThread):
                             with bare_repo.config_writer() as cw:
                                 cw.set('core', 'bare', False)
                         except AttributeError:
-                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.\n"))
+                            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated GitPython detected, consider upgrading with pip.")+"\n")
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
                             del cw
@@ -791,8 +795,8 @@ class InstallWorker(QtCore.QThread):
                             FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
                             answer += translate("AddonsInstaller", "A macro has been installed and is available the Macros menu") + ": <b>"
                             answer += f + "</b>"
+                    self.progressbar_show.emit(False)
             self.info_label.emit(answer)
-        self.progressbar_show.emit(False)
         self.stop = True
 
     def checkDependencies(self,baseurl):

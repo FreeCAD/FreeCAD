@@ -67,6 +67,9 @@
 
 using namespace TechDrawGui;
 
+#define _SHOWDRAWING 10
+#define _TOGGLEUPDATE 11
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 
@@ -119,6 +122,8 @@ void ViewProviderPage::show(void)
     showMDIViewPage();
 }
 
+//this "hide" is only used for Visibility property toggle
+//not when Page tab is closed.
 void ViewProviderPage::hide(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
@@ -163,36 +168,40 @@ void ViewProviderPage::updateData(const App::Property* prop)
 
 bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
+    bool rc = ViewProviderDocumentObject::onDelete(items);
     if (!m_mdiView.isNull()) {
-        Gui::getMainWindow()->removeWindow(m_mdiView);
-        Gui::getMainWindow()->activatePreviousWindow();
-        m_mdiView->deleteLater(); // Delete the drawing m_mdiView;
-    } else {
-        // MDIViewPage is not displayed yet so don't try to delete it!
-        Base::Console().Log("INFO - ViewProviderPage::onDelete - Page object deleted when viewer not displayed\n");
+        m_mdiView->deleteSelf();
     }
-    Gui::Selection().clearSelection();
-    return ViewProviderDocumentObject::onDelete(items);
+    return rc;
 }
 
 void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
     QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
-//    act->setData(QVariant(1));  // Removed to resolve compile after cb16fec6bb67cec15be3fc2aeb251ab524134073   //this is edit ModNum
-    act->setData(QVariant((int) ViewProvider::Default));
+    act->setData(QVariant((int) _SHOWDRAWING));
+    QAction* act2 = menu->addAction(QObject::tr("Toggle KeepUpdated"), receiver, member);
+    act2->setData(QVariant((int) _TOGGLEUPDATE));
 }
 
 bool ViewProviderPage::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    bool rc = true;
+    if (ModNum == _SHOWDRAWING) {
         showMDIViewPage();   // show the drawing
         Gui::getMainWindow()->setActiveWindow(m_mdiView);
-        return false;
+        rc = false;  //finished editing
+    } else if (ModNum == _TOGGLEUPDATE) {
+         auto page = getDrawPage();
+         if (page != nullptr) {
+             page->KeepUpdated.setValue(!page->KeepUpdated.getValue());
+             page->recomputeFeature();
+         }
+         rc = false;
     } else {
-        Gui::ViewProviderDocumentObject::setEdit(ModNum);
+        rc = Gui::ViewProviderDocumentObject::setEdit(ModNum);
     }
-    return true;
+    return rc;
 }
 
 bool ViewProviderPage::doubleClicked(void)
@@ -212,7 +221,8 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::Document* doc = Gui::Application::Instance->getDocument
             (pcObject->getDocument());
         m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
-        m_mdiView->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromLatin1("[*]"));
+        QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
+        m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
         m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
         m_mdiView->updateDrawing(true);
         Gui::getMainWindow()->addWindow(m_mdiView);

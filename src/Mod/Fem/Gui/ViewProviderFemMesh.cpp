@@ -507,12 +507,11 @@ PyObject * ViewProviderFemMesh::getPyObject()
 
 void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &NodeColorMap)
 {
-    long startId = NodeColorMap.begin()->first;
     long endId = (--NodeColorMap.end())->first;
 
-    std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
+    std::vector<App::Color> colorVec(endId+1,App::Color(0,1,0));
     for(std::map<long,App::Color>::const_iterator it=NodeColorMap.begin();it!=NodeColorMap.end();++it)
-        colorVec[it->first-startId] = it->second;
+        colorVec[it->first] = it->second;
 
     setColorByNodeIdHelper(colorVec);
 
@@ -520,14 +519,12 @@ void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &Node
 void ViewProviderFemMesh::setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color> &NodeColors)
 {
 
-    long startId = *(std::min_element(NodeIds.begin(), NodeIds.end()));
-    long endId   = *(std::max_element(NodeIds.begin(), NodeIds.end()));
+    long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
 
-    std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
+    std::vector<App::Color> colorVec(endId+1,App::Color(0,1,0));
     long i=0;
     for(std::vector<long>::const_iterator it=NodeIds.begin();it!=NodeIds.end();++it,i++)
-        colorVec[*it-startId] = NodeColors[i];
-
+        colorVec[*it] = NodeColors[i];
 
     setColorByNodeIdHelper(colorVec);
 
@@ -545,8 +542,7 @@ void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color> &
     for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
             ;it!=vNodeElementIdx.end()
             ;++it,i++)
-       colors[i] = SbColor(colorVec[*it-1].r,colorVec[*it-1].g,colorVec[*it-1].b);
-
+       colors[i] = SbColor(colorVec[*it].r,colorVec[*it].g,colorVec[*it].b);
 
     pcShapeMaterial->diffuseColor.finishEditing();
 }

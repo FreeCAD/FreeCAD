@@ -115,14 +115,14 @@ class ArchWorkbench(Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
-        Msg("Arch workbench activated\n")
+        Log("Arch workbench activated\n")
                 
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.hide()
-        Msg("Arch workbench deactivated\n")
+        Log("Arch workbench deactivated\n")
 
     def ContextMenu(self, recipient):
         self.appendContextMenu("Utilities",self.draftcontexttools)

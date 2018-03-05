@@ -99,17 +99,23 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
     App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
     delete ret;
 
+    autoPosition();
+    requestPaint();
+
+    return App::DocumentObject::StdReturn;
+}
+
+void DrawProjGroupItem::autoPosition()
+{
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
     if ((pgroup != nullptr) && 
-        (pgroup->AutoDistribute.getValue())) {
-         newPos = pgroup->getXYPosition(Type.getValueAsString());
-         X.setValue(newPos.x);
-         Y.setValue(newPos.y);
-         requestPaint();
+        (pgroup->AutoDistribute.getValue()) &&
+        (!LockPosition.getValue())) {
+        newPos = pgroup->getXYPosition(Type.getValueAsString());
+        X.setValue(newPos.x);
+        Y.setValue(newPos.y);
     }
-
-    return App::DocumentObject::StdReturn;
 }
 
 void DrawProjGroupItem::onDocumentRestored()
@@ -183,6 +189,10 @@ double DrawProjGroupItem::getScale(void) const
     auto pgroup = getPGroup();
     if (pgroup != nullptr) {
         result = pgroup->Scale.getValue();
+        if (!(result > 0.0)) {
+            Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+            result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
+        }
     }
     return result;
 }

@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
 #include "DrawView.h"
@@ -50,7 +51,7 @@ public:
     App::PropertyStringList   Text;
     App::PropertyFont         Font;
     App::PropertyColor        TextColor;
-    App::PropertyInteger      TextSize;
+    App::PropertyLength       TextSize;
     App::PropertyInteger      LineSpace;
     App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
     App::PropertyFloat        MaxWidth;

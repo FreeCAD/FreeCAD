@@ -118,7 +118,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Skapa en ny klon</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -203,12 +203,12 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Hål</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Skapa ett hål med den valda ritningen</translation>
     </message>
   </context>
   <context>
@@ -265,6 +265,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation>Migrera dokumentet till det nya design flödet för PartDesign</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
       <translation>Migrera dokumentet till det moderna arbetsflödet för föremålsdesign</translation>
     </message>
@@ -284,7 +288,7 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Skapa ett speglat föremål</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
@@ -669,7 +673,7 @@
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation>Additiv kil</translation>
+      <translation>Additativ Kil</translation>
     </message>
   </context>
   <context>
@@ -680,9 +684,13 @@
       <translation>Del design</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
+      <translation>Skapa en subtraktiv primitiv</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
       <translation>Skapa en subtraktiv primitiv</translation>
     </message>
     <message>
@@ -1157,7 +1165,6 @@ Välj en eller fler kanter först.</translation>
       <translation>Vanligt</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>Sektionering</translation>
     </message>
@@ -1180,8 +1187,7 @@ Välj en eller fler kanter först.</translation>
       <translation>Primitivparametrar</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>Skapa primitiv</translation>
     </message>
@@ -1276,7 +1282,7 @@ Välj en eller fler kanter först.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Acceptera: Felinmatning</translation>
     </message>
@@ -1311,7 +1317,7 @@ Välj en eller fler kanter först.</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -1521,7 +1527,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="+1"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Tillhör inte någon kropp</translation>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
@@ -1647,7 +1653,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>Hål parametrar</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -1657,27 +1663,27 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="+1"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>ISO metrisk grov profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>ISO metriska fin profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>UTS grov profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>UTS fin profil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>UTS extra fin profil</translation>
     </message>
   </context>
   <context>
@@ -1999,8 +2005,8 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -2015,8 +2021,8 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>Dimension</translation>
     </message>
@@ -2058,40 +2064,37 @@ Välj en eller fler kanter först.</translation>
       <translation>Parametrar för uppgiften Solidifiera</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>Pad parametrar</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>Inget yta vald</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>Till sista</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>Till första</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>Upp till yta</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>Två dimensioner</translation>
     </message>
@@ -2175,7 +2178,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="+25"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>Kurvlinjär ekvivalens</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2332,8 +2335,8 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>Dimension</translation>
     </message>
@@ -2354,8 +2357,13 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>2:a längd</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -2365,12 +2373,12 @@ Välj en eller fler kanter först.</translation>
       <translation>Uppdatera vy</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>Fickparametrar</translation>
     </message>
@@ -2379,29 +2387,32 @@ Välj en eller fler kanter först.</translation>
       <translation>Till sista</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>Till första</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>Genom alla</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>Upp till yta</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>Två dimensioner</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>Inget yta vald</translation>
     </message>
@@ -2658,12 +2669,11 @@ Välj en eller fler kanter först.</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>Inget yta vald</translation>
     </message>
@@ -2834,12 +2844,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Skapa en additiv låda av dess vidd, höjd och längd</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Skapa en additiv sfär av dess radie och olika vinklar</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2874,7 +2884,6 @@ Välj en eller fler kanter först.</translation>
       <translation>Skapa en subtraktiv låda av dess vidd, höjd och längd</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
       <translation>Skapa en subtraktiv cylinder av dess radie, höjd och vinkel</translation>
     </message>
@@ -2883,38 +2892,71 @@ Välj en eller fler kanter först.</translation>
       <translation>Skapa en subtraktiv sfär av dess radie och olika vinklar</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Skapa en subtraktiv låda av dess vidd, höjd och längd</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
       <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation>Skapa en subtraktiv kon</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation>Skapa en subtraktiv ellipsoid</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation>Skapa en subtraktiv torus</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation>Skapa ett subtraktivt prisma</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
+      <translation>Skapa en subtraktiv kil</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation>Skapa en subtraktiv kon</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation>Skapa en subtraktiv ellipsoid</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation>Skapa en subtraktiv torus</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation>Skapa ett subtraktivt prisma</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
       <translation>Skapa en subtraktiv kil</translation>
     </message>
   </context>
@@ -3088,7 +3130,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Det finns inget sammankopplingslägen som passar de valda objekten. Välj något annat.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3146,7 +3188,7 @@ Create the sketch on a face.</source>
       <location line="+13"/>
       <location line="+279"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3192,7 +3234,7 @@ Create the sketch on a face.</source>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Markeringen är inte i den aktiva kroppen</translation>
     </message>
     <message>
       <location line="-332"/>
@@ -3289,7 +3331,7 @@ Create the sketch on a face.</source>
       <translation type="unfinished">Edit revolve</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
       <translation>Delen gick inte att skapa</translation>
     </message>
@@ -3299,7 +3341,7 @@ Create the sketch on a face.</source>
       <translation>Det gick inte att skapa en delobjekt.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
@@ -3324,7 +3366,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="+7"/>
       <source>Body can't be based on another body.</source>
-      <translation type="unfinished">Body can't be based on another body.</translation>
+      <translation>Kroppen kan inte baseras på en annan kropp.</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -3339,39 +3381,35 @@ Create the sketch on a face.</source>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Den markerade formen består av flera solider. Detta kan leda till oväntade resultat.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Den markerade formen består av flera skal. Detta kan leda till oväntade resultat.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Den markerade formen består av ett skal. Detta kan leda till oväntade resultat.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Den markerade formen består av flera solider eller skal. Detta kan leda till oväntade resultat.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Basdetalj</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Kroppen kan inte baseras på mer än en detalj.</translation>
     </message>
     <message>
       <location line="+176"/>
@@ -3410,7 +3448,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+4"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>Kunde inte hitta en kropp för den valda detaljen '%s'.</translation>
     </message>
     <message>
       <source>Couldn't determin a body for the selected feature '%s'.</source>
@@ -3436,7 +3474,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Bara detaljer baserad på en kropp kan flyttas</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3486,7 +3524,7 @@ This may lead to unexpected results.</translation>
       <translation>Konstruktionslinje %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -3504,14 +3542,12 @@ This may lead to unexpected results.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
-
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>För att kunna använda PartDesign behöver du en aktivt kropp i dokumentet. Gör en kropp aktiv genom att dubbel klicka på den eller skapa en ny. Om du har ett äldre PartDesign dokument med objekt utan kropp, använd funktionen för migrering i PartDesign för att placera dina solider i kroppar.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Det krävs en aktiv kropp</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3519,7 +3555,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
       <translation>Detaljen är inte i en kropp</translation>
     </message>
@@ -3564,7 +3600,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="-82"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Koordinatsystem</translation>
     </message>
     <message>
       <location line="+99"/>
@@ -3626,7 +3662,7 @@ This feature is broken and can't be edited.</source>
       <translation>Vill du migrera för att kunna använda moderna PartDesign detaljer?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>Dokumentet "%1" verkar vara antingen mitt i migreringsprocessen från äldre PartDesign eller ha en något skadad struktur.</translation>
     </message>
@@ -3843,17 +3879,17 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Passa</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Platt</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>Vinklad</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3863,12 +3899,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+25"/>
       <source>Right hand</source>
-      <translation type="unfinished">Right hand</translation>
+      <translation>Höger hand</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>Vänster hand</translation>
     </message>
     <message>
       <location line="+13"/>

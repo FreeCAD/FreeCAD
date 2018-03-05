@@ -22,6 +22,7 @@
 
 
 import collections
+import six
 
 
 SIMULATION = "Simulation"
@@ -392,14 +393,14 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        if issubclass(dataType, str):
+        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, str):
+        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
             return '"%s"' % data
         return str(data)
 

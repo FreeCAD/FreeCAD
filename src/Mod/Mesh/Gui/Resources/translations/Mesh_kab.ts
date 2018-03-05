@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Évaluer et réparer un maillage...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation type="unfinished">Evaluate and repair mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -547,7 +551,7 @@
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Aide</translation>
+      <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
       <source>F1</source>
@@ -555,11 +559,11 @@
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Fermer</translation>
+      <translation type="unfinished">&amp;Close</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+F</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <source>Mesh information</source>
@@ -579,7 +583,7 @@
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <source>Analyze</source>
@@ -805,7 +809,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+F</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
@@ -1040,7 +1044,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <source>Finish</source>
@@ -1164,15 +1168,15 @@ Please run the command to repair folds first</source>
     <name>MeshGui::Selection</name>
     <message>
       <source>Selection</source>
-      <translation>Sélection</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <source>Add</source>
-      <translation>Ajouter</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <source>Respect only visible triangles</source>

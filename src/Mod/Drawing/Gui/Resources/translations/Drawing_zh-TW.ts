@@ -288,11 +288,18 @@
       <translation>匯出 PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation type="unfinished">The printer uses a different orientation than the drawing.
+Do you want to continue?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF file (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF 檔</translation>
     </message>
@@ -337,13 +344,12 @@
       <translation>不同方向</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>印表機與圖面使用之方向不同，您要繼續嗎？</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>紙張尺寸不同</translation>
@@ -395,19 +401,31 @@ Do you want to continue?</source>
       <translation>左上 x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>間距 dx / dy</translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation>軸外側靠右</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation>垂直傾斜</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation type="unfinished">Spacing dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation type="unfinished">Axis out and right</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation type="unfinished">Vertical tilt</translation>
     </message>
     <message>
       <location line="+11"/>

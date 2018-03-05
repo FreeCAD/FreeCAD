@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>A kiválasztott profilt görbék közti létrehozott tárggyá alakít más profil beállításcsoporton keresztül</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -118,7 +118,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Létrehoz egy új klónt</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -265,6 +265,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation>A modern PartDesign munkafolyamat dokumentum áttelepítése</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
       <translation>Egy dokumentum áttelepítése a modern alkatrésztervezés munkafolyamatba</translation>
     </message>
@@ -284,7 +288,7 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Hozzon létre egy tükrözés funkciót</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
@@ -490,7 +494,7 @@
     <message>
       <location line="+1"/>
       <source>PolarPattern</source>
-      <translation>SarkiMinta</translation>
+      <translation>Poláris kiosztás</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -575,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Kiválasztott tárgy testté alakítása más kiválasztott profil szakaszokon keresztül és annak eltávolítása a testből</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -680,10 +684,14 @@
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
       <translation>Hozzon létre egy kivonás primitívet</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
+      <translation>Hozzon létre egy kivonandó primitívet</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -784,7 +792,7 @@
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation>Alapja sík</translation>
+      <translation>Alapsík</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -815,7 +823,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
       <source>Involute parameter</source>
-      <translation>Befelé görbítés paramétere</translation>
+      <translation>Fogaskerék paraméterei</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -1156,7 +1164,6 @@ Please check one or more edge entities first.</source>
       <translation>Közös</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>Szakasz</translation>
     </message>
@@ -1179,8 +1186,7 @@ Please check one or more edge entities first.</source>
       <translation>Primitív paraméterek</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>Primitív létrehozása</translation>
     </message>
@@ -1275,9 +1281,9 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Boolean: Fogadja el: beviteli hiba</translation>
+      <translation>Logikai: Fogadja el: beviteli hiba</translation>
     </message>
   </context>
   <context>
@@ -1310,7 +1316,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1529,7 +1535,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation>Alapja sík</translation>
+      <translation>Alapsík</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1676,7 +1682,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation>UTS extra finom ment</translation>
+      <translation>UTS extra finom menet</translation>
     </message>
   </context>
   <context>
@@ -1776,7 +1782,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+7"/>
       <source>Closed</source>
-      <translation>Zárva</translation>
+      <translation>Zárt</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -1998,8 +2004,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
@@ -2014,8 +2020,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
@@ -2057,40 +2063,37 @@ Please check one or more edge entities first.</source>
       <translation>FeladatBlokkParaméter</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>Pad paraméterek</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>Nincs kijelölve felület</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation>Az utolsóhoz</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>Az elsőig</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>Felületig</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>Két dimenziós</translation>
     </message>
@@ -2169,12 +2172,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-5"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Kiegészítő</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>Görbevonalú egyenértékűség</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2331,8 +2334,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
@@ -2353,8 +2356,13 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>2. hossza</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
@@ -2364,12 +2372,12 @@ Please check one or more edge entities first.</source>
       <translation>Nézetek frissítése</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>Zseb paraméterek</translation>
     </message>
@@ -2378,29 +2386,32 @@ Please check one or more edge entities first.</source>
       <translation>Az utolsóhoz</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>Az elsőig</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>Mindenen keresztül</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>Felületig</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>Két dimenziós</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>Nincs kijelölve felület</translation>
     </message>
@@ -2657,12 +2668,11 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>Nincs kijelölve felület</translation>
     </message>
@@ -2833,12 +2843,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Hozzon létre egy kiegészítő téglatestet a szélessége, magassága és hossza meghatározásával</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Hozzon létre egy kiegészítő gömböt a sugár és különböző szögek megadásával</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2873,7 +2883,6 @@ Please check one or more edge entities first.</source>
       <translation>Hozzon létre egy kivonandó téglatestet a szélessége, magassága és hossza meghatározásával</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
       <translation>Hozzon létre egy kivonandó hengert a rádiusz, magasság és szög megadásával</translation>
     </message>
@@ -2882,38 +2891,71 @@ Please check one or more edge entities first.</source>
       <translation>Hozzon létre egy kivonandó gömböt a sugár és különböző szögek megadásával</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Hozzon létre egy kivonandó téglatestet a szélessége, magassága és hossza meghatározásával</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Hozzon létre egy kivonandó gömböt a sugár és különböző szögek megadásával</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation>Hozzon létre egy kivonandó kúpot</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation>Hozzon létre egy kivonandó ellipszoidot</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation>Hozzon létre egy kivonandó tóruszt</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation>Hozzon létre egy kivonandó prizmát</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
+      <translation>Hozzon létre egy kivonandó éket</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation>Hozzon létre egy szubtraktív doboz szélessége, magassága és hossza alapján</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation>Hozzon létre egy kiegészítő hengert a rádiusz, magasság és szög megadásával</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation>Hozzon létre egy kivonandó gömböt a sugár és különböző szögek megadásával</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation>Hozzon létre egy kivonandó kúpot</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation>Hozzon létre egy kivonandó ellipszoidot</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation>Hozzon létre egy kivonandó tóruszt</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation>Hozzon létre egy kivonandó prizmát</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
       <translation>Hozzon létre egy kivonandó éket</translation>
     </message>
   </context>
@@ -3099,7 +3141,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Nincs aktív test. Kérjük, tegyen egy testet aktívvá a dátum tételek megadása előtt.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3145,7 +3187,7 @@ Create the sketch on a face.</source>
       <location line="+13"/>
       <location line="+279"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3288,7 +3330,7 @@ Create the sketch on a face.</source>
       <translation>Esztergálás szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
       <translation>Alkatrész nézet létrehozása sikertelen</translation>
     </message>
@@ -3298,7 +3340,7 @@ Create the sketch on a face.</source>
       <translation>Rész objektum létrehozása sikertelen.</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
@@ -3338,39 +3380,39 @@ Create the sketch on a face.</source>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>A kijelölt alakzat több szilárd testből áll. 
+Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>A kijelölt alakzat több kéregből áll. 
+Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>A kijelölt alakzat egy kéregből áll. 
+Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>A kijelölt alakzat több szilárd testből vagy kéregből áll. 
+Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Alap tulajdonság</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Test nem több, mint egy funkción alapulhat.</translation>
     </message>
     <message>
       <location line="+176"/>
@@ -3435,7 +3477,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Egyetlen forrás testen alapuló tulajdonságokat lehet mozgatni</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3485,7 +3527,7 @@ This may lead to unexpected results.</translation>
       <translation>Építési egyenes %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
@@ -3503,9 +3545,8 @@ This may lead to unexpected results.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
-
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>AlkatrészTervezés használatához szüksége van egy aktív Test tárgyra a dokumentumban. Kérjük tegyen aktívvá egyet (dupla kattintással) vagy hozzon létre egyet. 
+Ha van egy örökölt dokumentum AlkatrészTervezés objektummal Test nélkül, használja az áttelepítés funkciót az AlkatrészTervezésben ahhoz, hogy a Testbe helyezze azokat.</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3518,7 +3559,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <translation>Egy új AlkatrészTervezés objektum létrehozásához ott kell lennie egy aktív Test objektumnak a dokumentumban. Kérjük aktiváljon egyet (dupla kattintással), vagy hozzon létre egy új Testet.</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
       <translation>Tulajdonság nem a testen van</translation>
     </message>
@@ -3582,7 +3623,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>%1 szerkesztése</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3626,7 +3667,7 @@ Ez a funkció sérült, és nem szerkeszthető.</translation>
       <translation>Kíván áttérni a modern AlkatrészTervező funkciók használatához?</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>A dokumentum "%1" úgy tűnik, hogy az áttelepítési folyamat közepén van a régi AlkatrészTervezőből vagy kissé megtört szerkezetű.</translation>
     </message>
@@ -3665,7 +3706,7 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Primitív szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -3716,17 +3757,17 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location line="-331"/>
       <source>Threaded</source>
-      <translation>Menetelt</translation>
+      <translation>Menetes</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation>Ellen furat</translation>
+      <translation>Kúpos süllyesztés</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation>Süllyesztő</translation>
+      <translation>Hengeres süllyesztés</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -3802,7 +3843,7 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Feladat furat paraméterek</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3825,7 +3866,7 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location line="-259"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Belső kivágás</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3845,7 +3886,7 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Illesztés</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -3860,7 +3901,7 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location line="+18"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Emelkedés</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -3875,12 +3916,12 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Modell tényleges menete</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Threaded</source>
-      <translation>Menetelt</translation>
+      <translation>Menetes</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3925,7 +3966,7 @@ Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Átte
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Külső kivágás</translation>
     </message>
     <message>
       <location line="+41"/>

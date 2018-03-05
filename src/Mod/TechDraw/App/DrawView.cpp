@@ -71,8 +71,7 @@ DrawView::DrawView(void)
   : autoPos(true),
     mouseMove(false)
 {
-    static const char *group = "BaseView";
-    static const char *fgroup = "Format";
+    static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
@@ -84,9 +83,7 @@ DrawView::DrawView(void)
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false),fgroup,App::Prop_None,"Keep Label on Page even if toggled off");
-    ADD_PROPERTY_TYPE(Caption ,(""),fgroup,App::Prop_None,"Short text about the view");
-
+    ADD_PROPERTY_TYPE(Caption ,(""),group,App::Prop_None,"Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -249,6 +246,10 @@ void DrawView::setPosition(double x, double y)
 double DrawView::getScale(void) const
 {
     auto result = Scale.getValue();
+    if (!(result > 0.0)) {
+        result = 1.0;
+        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+    }
     return result;
 }
 

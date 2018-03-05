@@ -1036,7 +1036,7 @@ return;
 			temp.Add(sp.dir, sp.p1, sp.pc, true);
 			if(spanno == endSpanno)break;
 
-			spanno++;
+			//spanno++;
 		}
 
 		*this = temp;

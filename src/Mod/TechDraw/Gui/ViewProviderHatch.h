@@ -25,7 +25,7 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERHATCH_H
 
-#include <Gui/ViewProviderFeature.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 namespace TechDraw{
     class DrawHatch;
@@ -44,15 +44,22 @@ public:
     /// destructor
     virtual ~ViewProviderHatch();
 
+    App::PropertyColor       HatchColor;
+    App::PropertyFloatConstraint HatchScale;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual void onChanged(const App::Property* prop);
     virtual void updateData(const App::Property*);
 
     TechDraw::DrawHatch* getViewObject() const;
+    
+private:
+    static App::PropertyFloatConstraint::Constraints scaleRange;
+
 };
 
 } // namespace TechDrawGui

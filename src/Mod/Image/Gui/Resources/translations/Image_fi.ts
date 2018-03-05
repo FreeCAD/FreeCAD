@@ -4,7 +4,7 @@
   <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="+97"/>
+      <location filename="../../Command.cpp" line="+101"/>
       <source>Image</source>
       <translation>Kuva</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location line="-46"/>
+      <location line="-50"/>
       <source>Image</source>
       <translation>Kuva</translation>
     </message>
@@ -44,7 +44,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+331"/>
+      <location filename="../../GLImageBox.cpp" line="+333"/>
       <location filename="../../OpenGLImageBox.cpp" line="+385"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Määrittämätön tyyppi väriavaruudesta kuvien katseluun</translation>
@@ -183,31 +183,31 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="+20"/>
-      <location line="+43"/>
+      <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Valitse avattava kuvatiedosto</translation>
     </message>
     <message>
-      <location line="-50"/>
-      <location line="+43"/>
+      <location line="-54"/>
+      <location line="+47"/>
       <source>Images</source>
       <translation>Kuvat</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+43"/>
+      <location line="-42"/>
+      <location line="+47"/>
       <source>All files</source>
       <translation>Kaikki tiedostot</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Error opening image</source>
-      <translation type="unfinished">Error opening image</translation>
+      <translation>Tiedoston avaaminen ei onnistu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Could not load the chosen image</source>
-      <translation type="unfinished">Could not load the chosen image</translation>
+      <translation>Valittua tiedostoa ei voi avata</translation>
     </message>
     <message>
       <source>Error open image</source>

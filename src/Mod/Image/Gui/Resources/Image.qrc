@@ -33,5 +33,9 @@
         <file>translations/Image_gl.qm</file>
         <file>translations/Image_kab.qm</file>
         <file>translations/Image_ko.qm</file>
+        <file>translations/Image_fil.qm</file>
+        <file>translations/Image_id.qm</file>
+        <file>translations/Image_lt.qm</file>
+        <file>translations/Image_val-ES.qm</file>
     </qresource>
 </RCC> 

@@ -128,6 +128,7 @@ public:
     void spinCCW(void);
     
     void dumpISO(char * title);
+    std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 
 protected:
     void onChanged(const App::Property* prop) override;

@@ -34,7 +34,7 @@
     <message>
       <location line="+1"/>
       <source>Tessellate shape</source>
-      <translation>Forma della tassellazione</translation>
+      <translation>Forma della tessellazione</translation>
     </message>
   </context>
   <context>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Tassellazione</translation>
+      <translation>Tessellazione</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -205,12 +205,12 @@
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Deviazione angolare:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Deviazione relativa delle superfici</translation>
     </message>
     <message>
       <location line="+40"/>

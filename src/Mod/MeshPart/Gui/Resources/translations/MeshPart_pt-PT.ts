@@ -147,7 +147,7 @@
     <message>
       <location line="+26"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Continuidade</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -205,12 +205,12 @@
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Desvio angular:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Desvio relativo de superfície</translation>
     </message>
     <message>
       <location line="+40"/>

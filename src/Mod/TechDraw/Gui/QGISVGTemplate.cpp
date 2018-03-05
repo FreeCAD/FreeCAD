@@ -61,6 +61,10 @@ QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene)
     m_svgItem->setCacheMode(QGraphicsItem::NoCache);
 
     addToGroup(m_svgItem);
+
+    m_svgItem->setZValue(ZVALUE::SVGTEMPLATE);
+    setZValue(ZVALUE::SVGTEMPLATE);
+
 }
 
 QGISVGTemplate::~QGISVGTemplate()
@@ -197,6 +201,7 @@ void QGISVGTemplate::createClickHandles(void)
 
             double editClickBoxSize = Rez::guiX(dotSize);
             QColor editClickBoxColor = Qt::green;
+            editClickBoxColor.setAlpha(128);              //semi-transparent
 
             double width = editClickBoxSize;
             double height = editClickBoxSize;
@@ -206,7 +211,6 @@ void QGISVGTemplate::createClickHandles(void)
 
             item->setRect(x - pad, Rez::guiX(-tmplte->getHeight()) + y - height - pad,
                           width + 2 * pad, height + 2 * pad);
-
             QPen myPen;
             QBrush myBrush(editClickBoxColor,Qt::SolidPattern);
             myPen.setStyle(Qt::SolidLine);
@@ -215,14 +219,13 @@ void QGISVGTemplate::createClickHandles(void)
             item->setPen(myPen);
             item->setBrush(myBrush);
 
-            item->setZValue(ZVALUE::SVGTEMPLATE);
+            item->setZValue(ZVALUE::SVGTEMPLATE + 1);
             addToGroup(item);
             textFields.push_back(item);
         }
 
         begin = tagMatch[0].second;
     }
-
 }
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

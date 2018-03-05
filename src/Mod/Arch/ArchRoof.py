@@ -158,7 +158,7 @@ class _CommandRoof:
             else:
                 FreeCAD.Console.PrintMessage(translate("Arch","Unable to create a roof"))
         else:
-            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object\n"))
+            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object")+"\n")
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
             FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Roof")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)

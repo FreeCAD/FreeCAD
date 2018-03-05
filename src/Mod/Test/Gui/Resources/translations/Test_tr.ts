@@ -5,11 +5,11 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD Birimsel denetim</translation>
+      <translation>FreeCAD Birim Denemesi</translation>
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Başarısızlıklar ve hatalar</translation>
+      <translation>Kusular ve hatalar</translation>
     </message>
     <message>
       <source>Description</source>
@@ -49,11 +49,11 @@
     </message>
     <message>
       <source>Idle</source>
-      <translation>Başıboş</translation>
+      <translation>Beklemede</translation>
     </message>
     <message>
       <source>Progress</source>
-      <translation>İlerleme</translation>
+      <translation>İlerleyiş</translation>
     </message>
     <message>
       <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
       <source>Failures:</source>
-      <translation>Başarısızlıklar:</translation>
+      <translation>Arızalar:</translation>
     </message>
     <message>
       <source>Run:</source>
@@ -92,21 +92,23 @@
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>FreeCAD Birimsel Denetim hakkında</translation>
+      <translation>FreeCAD Birim Denemesi hakkında</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Telif hakkı (c) Werner Mayer</translation>
+      <translation>Telif hakkı (c) Werner Mayer'a aittir.
+
+FreeCAD Birim Denetimi bir FreeCAD ürünüdür. Modülleriniz için Birim Denetimi yapmaya olanak tanır.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Nesne çağrıldığında, çağrılabilir nesnenin adını girin, bu bir deneme süreci sonucu dönecektir. 'başlat' seçeneğine basın, ve böylelikle deneme süreci başlayacaktır.
+      <translation>Çalıştırılabilir bir nesne ismi girerek, DenetimBirimini başlatabilirsiniz. Lütfen önce 'Başlat', a basın, bu şekilde sınama süreci başlatılacaktır.
 
-Ağaç görünümü üzerindeki hataya çift tıklayarak hata hakkında bellek ağacını içerecek şekilde daha fazla bilgiye ulaşabilirsiniz.</translation>
+Lütfen hata ağacı bölümünden varolan bir hata üzerine tıklayarak bu hataya neden olan sorunları da içerecek şekilde bilgi sahibi olun.</translation>
     </message>
   </context>
 </TS>

@@ -127,10 +127,6 @@
       <translation>Movemento da Spaceball</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Sensibilidade Global:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Modo Dominante</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Inverter</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilidade global:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation>FreeCAD non sería nada sen os seus esforzos:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licenza</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation>Librarías</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Este software utiliza compoñentes de código aberto con copyright e outros dereitos proprietarios que pertencen a seus respectivos proprietarios:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1382,27 +1397,27 @@ Este ficheiro xa existe.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Renomear Arquivo Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Inserir novo nome:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1'
+ xa existe.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Non vai</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Fallo ao renomear o '%1'.
+Pode ser un erro do permiso do arquivo?</translation>
     </message>
   </context>
   <context>
@@ -1770,7 +1785,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <translation>Non (Borrar ligazón)</translation>
     </message>
   </context>
   <context>
@@ -2136,8 +2151,8 @@ Por favor, especifique outro directorio.</translation>
       <translation>Gardar a miniatura no do ficheiro do proxecto cando se garda un documento</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Crear ficheiros de respaldo cando se volva a gardar o documento</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Máximo número de arquivos de seguridade mantidos cando volves gardar o documento</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2245,11 +2260,11 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Engadir o logo do programa á miniatura xerada</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>A URL onde pode atopar máis información sobre a licenza</translation>
     </message>
   </context>
   <context>
@@ -2617,7 +2632,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Pezas métricas pequenas &amp; CNC(mm, mm/min)</translation>
     </message>
   </context>
   <context>
@@ -2659,8 +2674,8 @@ Por favor, especifique outro directorio.</translation>
       <translation>Raio de escolma (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Impón a distancia de confusión para a escolma de elementos na vista 3D. Un valor longo fai máis sinxela a tarefa de escolmar, mais pode facer imposible a escolma de entidades pequenas.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>Axusta a área de confusión para a escolma de elementos na vista 3D. Un valor longo fai máis sinxela a tarefa de escolmar, mais pode facer imposible a escolma de entidades pequenas.</translation>
     </message>
   </context>
   <context>
@@ -2864,9 +2879,9 @@ Por favor, especifique outro directorio.</translation>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>Preme 'Iniciar Recuperación' para iniciar o proceso de recuperación do documento indicado agora.
 
-The 'Status' column shows whether the document could be recovered.</translation>
+A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
   </context>
   <context>
@@ -2885,7 +2900,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Erro ao abrir arquivo gardado: %1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
@@ -3349,10 +3364,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <translation>Vista combinada</translation>
     </message>
     <message>
-      <source>Project</source>
-      <translation>Proxecto</translation>
-    </message>
-    <message>
       <source>Tasks</source>
       <translation>Tarefas</translation>
     </message>
@@ -3490,19 +3501,19 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Vista de selección</translation>
     </message>
     <message>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Número de elementos seleccionados</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
-      <translation type="unfinished">Duplicate subshape</translation>
+      <translation>Subforma duplicada</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>Crea unha copia independente desta subforma no documento</translation>
     </message>
   </context>
   <context>
@@ -3684,15 +3695,15 @@ Quere gardar os cambios?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Graphviz non puido atoparse no teu sistema.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Ler máis sobre esto aquí.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Queres especificar a ruta de instalación se xa está instalado?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -4025,14 +4036,14 @@ No lado dereito escolléronse %2.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>Trocar obxecto ligado</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Trocar obxectos ligados</translation>
     </message>
   </context>
   <context>
@@ -4364,15 +4375,15 @@ Quere especificar outro directorio?</translation>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Texto actualizado</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>O texto do obxecto subxacente trocou. Descartar trocos e volver cargar o texto do obxecto?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>Si, recarga.</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4380,7 +4391,7 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Queres gardalos trocos antes de pechar?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -5052,6 +5063,10 @@ Be aware the point where you click matters.</source>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>A %1 non está baleira, eliminar o seu contido, así a todo?</translation>
     </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Erro ao exportar</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5609,11 +5624,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Crear grupo</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Crear un novo grupo para ordear obxectos</translation>
     </message>
   </context>
   <context>
@@ -6498,8 +6513,8 @@ Be aware the point where you click matters.</source>
       <translation>Crear unha vista nova</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Crea unha fiestra de vista nova para o documento activo</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation>Crea unha nova vista para o documento activo</translation>
     </message>
   </context>
   <context>
@@ -6855,7 +6870,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Amosar a fiestra principal en modo pantalla completa</translation>
     </message>
   </context>
   <context>
