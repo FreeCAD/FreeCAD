@@ -369,7 +369,7 @@ void PovTools::transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec
     //BRepMesh_IncrementalMesh MESH(aFace,fDeflection);
     Handle(Poly_Triangulation) aPoly = BRep_Tool::Triangulation(aFace,aLoc);
     if (aPoly.IsNull()) {
-        Base::Console().Log("Empty face trianglutaion\n");
+        Base::Console().Log("Empty face triangulation\n");
         nbNodesInFace =0;
         nbTriInFace = 0;
         vertices = 0l;
