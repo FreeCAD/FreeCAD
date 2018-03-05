@@ -1242,11 +1242,11 @@ class _CommandAdd:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Add space boundary")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Add space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
         else:
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Grouping"))
             if not mergeCells(sel):
                 host = sel.pop()
                 ss = "["
@@ -1274,11 +1274,11 @@ class _CommandRemove:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Remove space boundary")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Remove space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Ungrouping"))
             if (Draft.getType(sel[-1]) in ["Wall","Structure","Stairs","Roof","Window","Panel"]) and (len(sel) > 1):
                 host = sel.pop()
                 ss = "["
@@ -1309,7 +1309,7 @@ class _CommandSplitMesh:
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
             sel = FreeCADGui.Selection.getSelection()
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Split Mesh")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Split Mesh"))
             for obj in sel:
                 n = obj.Name
                 nobjs = splitMesh(obj)
@@ -1349,7 +1349,7 @@ class _CommandMeshToShape:
             tol = p.GetFloat("ConversionTolerance",0.001)
             flat = p.GetBool("ConversionFlat",False)
             cut = p.GetBool("ConversionCut",False)
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Mesh to Shape")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Mesh to Shape"))
             for obj in FreeCADGui.Selection.getSelection():
                 newobj = meshToShape(obj,True,fast,tol,flat,cut)
                 if g and newobj:
