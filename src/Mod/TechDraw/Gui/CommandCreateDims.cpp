@@ -101,6 +101,8 @@ char* _edgeTypeToText(int e);
 // TechDraw_NewDimension
 //===========================================================================
 
+// this is deprecated. use individual add dimension commands.
+
 DEF_STD_CMD_A(CmdTechDrawNewDimension);
 
 CmdTechDrawNewDimension::CmdTechDrawNewDimension()
@@ -108,7 +110,7 @@ CmdTechDrawNewDimension::CmdTechDrawNewDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a dimension into a drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new dimension");
     sWhatsThis      = "TechDraw_NewDimension";
     sStatusTip      = sToolTipText;
@@ -234,8 +236,8 @@ CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new radius dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension feature for the selected view");
+    sMenuText       = QT_TR_NOOP("Insert a new radius dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension");
     sWhatsThis      = "TechDraw_NewRadiusDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Radius";
@@ -321,8 +323,8 @@ CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature for the selected view");
+    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature");
     sWhatsThis      = "TechDraw_NewDiameterDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Diameter";
@@ -408,7 +410,7 @@ CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new length dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new length dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
     sWhatsThis      = "TechDraw_NewLengthDimension";
     sStatusTip      = sToolTipText;
@@ -516,8 +518,8 @@ CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension into the drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new horizontal-distance dimension");
+    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new horizontal distance dimension");
     sWhatsThis      = "TechDraw_NewDistanceXDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Horizontal";
@@ -624,7 +626,7 @@ CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
     sWhatsThis      = "TechDraw_NewDistanceYDimension";
     sStatusTip      = sToolTipText;
@@ -731,7 +733,7 @@ CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new angle dimension into the drawing");
+    sMenuText       = QT_TR_NOOP("Insert a new angle dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
     sWhatsThis      = "TechDraw_NewAngleDimension";
     sStatusTip      = sToolTipText;
