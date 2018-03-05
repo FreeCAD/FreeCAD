@@ -451,7 +451,7 @@ protected:
     float hx,hy,hz;
 
     Gui::SelectionGate *ActiveGate;
-    bool gateResolve;
+    int gateResolve;
 };
 
 /**

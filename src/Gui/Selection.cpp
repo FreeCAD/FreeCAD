@@ -1393,7 +1393,7 @@ SelectionSingleton::SelectionSingleton():_needPickedList(false)
     hy = 0;
     hz = 0;
     ActiveGate = 0;
-    gateResolve = true;
+    gateResolve = 1;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
     CurrentPreselection.Type = SelectionChanges::ClrSelection;
     CurrentPreselection.pDocName = 0;

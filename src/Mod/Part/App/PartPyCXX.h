@@ -33,8 +33,8 @@ namespace Py {
 }
 
 namespace Part {
-    Py::Object shape2pyshape(const TopoShape &shape);
-    Py::Object shape2pyshape(const TopoDS_Shape &shape);
+    PartExport Py::Object shape2pyshape(const TopoShape &shape);
+    PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
 }
 
 #endif //PART_PYCXX_H

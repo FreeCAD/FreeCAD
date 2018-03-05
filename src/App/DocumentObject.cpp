@@ -195,7 +195,7 @@ std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression) const
             auto links = dynamic_cast<PropertyLinkList*>(prop);
             if(links) {
                 for(auto obj : links->getValues())
-                    if(obj and obj->getNameInDocument())
+                    if(obj && obj->getNameInDocument())
                         ret.push_back(obj);
                 continue;
             }
@@ -216,7 +216,7 @@ std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression) const
             auto linksubs = dynamic_cast<PropertyLinkSubList*>(prop);
             if(linksubs) {
                 for(auto obj : linksubs->getValues())
-                    if(obj and obj->getNameInDocument())
+                    if(obj && obj->getNameInDocument())
                         ret.push_back(obj);
                 continue;
             }

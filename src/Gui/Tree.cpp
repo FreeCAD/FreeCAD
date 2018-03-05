@@ -725,6 +725,23 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     }
 }
 
+struct ItemInfo {
+    App::Document *doc=0;
+    std::string obj;
+    App::Document *parentDoc=0;
+    std::string parent;
+    App::Document *ownerDoc=0;
+    std::string owner;
+    std::string subname;
+    std::vector<std::string> subs;
+};
+struct ItemInfo2 {
+    App::Document *doc;
+    std::string obj;
+    App::Document *parentDoc;
+    std::string parent;
+};
+
 void TreeWidget::dropEvent(QDropEvent *event)
 {
     //FIXME: This should actually be done inside dropMimeData
@@ -802,17 +819,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             Selection().addSelection(selObj->getDocument()->getName(),
                     selObj->getNameInDocument());
         }
-
-        struct ItemInfo {
-            App::Document *doc=0;
-            std::string obj;
-            App::Document *parentDoc=0;
-            std::string parent;
-            App::Document *ownerDoc=0;
-            std::string owner;
-            std::string subname;
-            std::vector<std::string> subs;
-        };
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never when doing drag and
         // drop some object may delete other objects.
@@ -912,13 +918,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         gui->commitCommand();
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
-        struct ItemInfo {
-            App::Document *doc;
-            std::string obj;
-            App::Document *parentDoc;
-            std::string parent;
-        };
-        std::vector<ItemInfo> infos;
+        std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
 
         // check if items can be dragged
