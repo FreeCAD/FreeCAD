@@ -238,7 +238,7 @@ CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new radius dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new radius dimension");
-    sWhatsThis      = "TechDraw_NewRadiusDimension";
+    sWhatsThis      = "TechDraw_Dimension_Radius";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Radius";
 }
@@ -325,7 +325,7 @@ CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new diameter dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature");
-    sWhatsThis      = "TechDraw_NewDiameterDimension";
+    sWhatsThis      = "TechDraw_Dimension_Diameter";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Diameter";
 }
@@ -412,7 +412,7 @@ CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new length dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
-    sWhatsThis      = "TechDraw_NewLengthDimension";
+    sWhatsThis      = "TechDraw_Dimension_Length";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Length";
 }
@@ -520,7 +520,7 @@ CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new horizontal distance dimension");
-    sWhatsThis      = "TechDraw_NewDistanceXDimension";
+    sWhatsThis      = "TechDraw_Dimension_Horizontal";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Horizontal";
 }
@@ -628,7 +628,7 @@ CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new vertical dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
-    sWhatsThis      = "TechDraw_NewDistanceYDimension";
+    sWhatsThis      = "TechDraw_Dimension_Vertical";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Vertical";
 }
@@ -735,7 +735,7 @@ CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new angle dimension");
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
-    sWhatsThis      = "TechDraw_NewAngleDimension";
+    sWhatsThis      = "TechDraw_Dimension_Angle";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Angle";
 }
@@ -824,7 +824,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Link a dimension to 3D geometry");
     sToolTipText    = QT_TR_NOOP("Link a dimension to 3D geometry");
-    sWhatsThis      = "TechDraw_LinkDimension";
+    sWhatsThis      = "TechDraw_Dimension_Link";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Link";
 }
