@@ -6426,11 +6426,19 @@ App::DocumentObject *SketchObject::getSubObject(
         Base::Matrix4D *pmat, bool transform, int depth) const
 {
     const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
-    if(!subname || 
-       (mapped && boost::starts_with(mapped,WIRE_OP)) ||
-       (!mapped && (boost::starts_with(subname,"Vertex") || boost::starts_with(subname,"Edge"))))
-    {
+    if(!subname || (mapped && boost::starts_with(mapped,WIRE_OP))) {
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    }
+    if(!mapped) {
+        const char *dot = strchr(subname,'.');
+        if(dot) {
+            std::string name(subname,dot-subname);
+            auto child = Exports.find(name.c_str());
+            if(!child)
+                return 0;
+            return child->getSubObject(dot+1,pyObj,pmat,true,depth+1);
+        }else if(boost::starts_with(subname,"Vertex") || boost::starts_with(subname,"Edge"))
+            return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     }
 
     std::string sub = checkSubName(subname);
