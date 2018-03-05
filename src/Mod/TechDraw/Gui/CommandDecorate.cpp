@@ -211,9 +211,9 @@ CmdTechDrawImage::CmdTechDrawImage()
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert bitmap image");
-    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file in the active drawing");
+    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
     sWhatsThis    = "TechDraw_Image";
-    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file in the active drawing");
+    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
     sPixmap       = "actions/techdraw-image";
 }
 
