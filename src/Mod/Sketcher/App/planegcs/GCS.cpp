@@ -170,7 +170,7 @@ void LogString(std::string str)
     std::stringstream stream;
     #endif
 
-    stream << str << " =" << std::endl;
+    stream << str << std::endl;
 
     #ifdef _DEBUG_TO_FILE
     stream.flush();
@@ -3809,7 +3809,7 @@ int System::diagnose(Algorithm alg)
                     << ", Pivot Threshold: " << qrpivotThreshold
                     << ", Params: " << paramsNum
                     << ", Constr: " << constrNum
-                    << ", Rank: "   << rank         << "\n";
+                    << ", Rank: "   << rank;
         }
         else {
             stream
@@ -3819,7 +3819,7 @@ int System::diagnose(Algorithm alg)
 #ifdef EIGEN_VECTORIZE
                     << ", Vectorization: On"
 #endif
-                    << ", Empty Sketch, nothing to solve" << "\n";
+                    << ", Empty Sketch, nothing to solve";
         }
 
         const std::string tmp = stream.str();
