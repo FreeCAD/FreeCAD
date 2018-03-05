@@ -201,7 +201,7 @@ void ViewProviderMeshTransformDemolding::valueChangedCallback(void)
                      rot,               // rotation from the dragger
                      SbVec3f(1,1,1),    // no scaling
                      SbRotation() ,     // no scaling oriantation
-                     SbVec3f(center.x,center.y,center.z)); // center of rotaion
+                     SbVec3f(center.x,center.y,center.z)); // center of rotation
   pcTransformDrag->setMatrix( temp );
 }
 

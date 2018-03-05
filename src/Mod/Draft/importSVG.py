@@ -1117,7 +1117,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         cx = argsplit[1]
                                         cy = argsplit[2]
                                         m.move(Vector(cx,-cy,0))
-                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotaion
+                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotation
                                 if len(argsplit) >= 3:
                                         m.move(Vector(-cx,cy,0))
                         elif transformation == 'skewX':
