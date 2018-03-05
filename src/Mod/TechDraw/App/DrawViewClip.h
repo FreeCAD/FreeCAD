@@ -29,6 +29,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
 #include "DrawView.h"
@@ -45,8 +46,8 @@ public:
     DrawViewClip(void);
     virtual ~DrawViewClip();
 
-    App::PropertyFloat Width;
-    App::PropertyFloat Height;
+    App::PropertyLength Width;
+    App::PropertyLength Height;
     App::PropertyBool ShowFrame;
     App::PropertyBool ShowLabels;
     App::PropertyLinkList Views;
