@@ -1048,13 +1048,12 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def onChanged(self,vobj,prop):
-        if (prop == "DiffuseColor") and vobj.Object:
+        if (prop in ["DiffuseColor","ShapeColor","Transparency"]) and vobj.Object:
             if vobj.Object.Base:
-                if not vobj.Object.Base.Shape.Solids:
-                    if len(vobj.DiffuseColor) < 2:
-                        if vobj.Object.Shape:
-                            if not vobj.Object.Shape.isNull():
-                                self.colorize(vobj.Object)
+                if len(vobj.DiffuseColor) < 2:
+                    if vobj.Object.Shape:
+                        if not vobj.Object.Shape.isNull():
+                            self.colorize(vobj.Object)
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
@@ -1080,6 +1079,9 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def colorize(self,obj):
         "setting different part colors"
+        if obj.CloneOf:
+            obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+            return
         if not obj.WindowParts:
             return
         solids = obj.Shape.copy().Solids
@@ -1116,10 +1118,9 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 ccol = base
             colors.extend([ccol for f in solids[i].Faces])
         #print("colors: ",colors)
-        if colors:
+        if len(colors) > 1:
             if colors != obj.ViewObject.DiffuseColor:
-                if obj.Material and (len(colors) > 1):
-                    obj.ViewObject.DiffuseColor = colors
+                obj.ViewObject.DiffuseColor = colors
 
 class _ArchWindowTaskPanel:
     '''The TaskPanel for Arch Windows'''
