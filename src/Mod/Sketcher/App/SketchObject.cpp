@@ -521,6 +521,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         }
     }
 
+    solvedSketch.resetInitMove(); // reset solver point moving mechanism
+
     return lastSolverStatus;
 }
 
