@@ -1256,3 +1256,34 @@ void PrefFontBox::setParamGrpPath ( const QByteArray& name )
     m_sPrefGrp = name;
 }
 
+// --------------------------------------------------------------------
+
+PrefLengthSpinBox::PrefLengthSpinBox ( QWidget * parent )
+  : QuantitySpinBox(parent)
+{
+}
+
+PrefLengthSpinBox::~PrefLengthSpinBox()
+{
+}
+
+QByteArray PrefLengthSpinBox::entryName () const
+{
+    return m_sPrefName;
+}
+
+QByteArray PrefLengthSpinBox::paramGrpPath () const
+{
+    return m_sPrefGrp;
+}
+
+void PrefLengthSpinBox::setEntryName ( const QByteArray& name )
+{
+    m_sPrefName = name;
+}
+
+void PrefLengthSpinBox::setParamGrpPath ( const QByteArray& name )
+{
+    m_sPrefGrp = name;
+}
+

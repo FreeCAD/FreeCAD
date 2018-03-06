@@ -344,6 +344,27 @@ protected:
   void savePreferences();
 };
 
+/** The PrefLengthSpinBox class.
+ * \author wandererfan
+ * a simple Length aware spin box.  
+ */
+class GuiExport PrefLengthSpinBox : public QuantitySpinBox, public PrefWidget
+{
+    Q_OBJECT
+
+    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+
+public:
+    PrefLengthSpinBox ( QWidget * parent = 0 );
+    virtual ~PrefLengthSpinBox();
+
+protected:
+  // restore from/save to parameters
+  void restorePreferences();
+  void savePreferences();
+};
+
 } // namespace Gui
 
 #endif // GUI_PREFWIDGETS_H

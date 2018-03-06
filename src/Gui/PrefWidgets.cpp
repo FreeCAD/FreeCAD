@@ -681,4 +681,41 @@ void PrefFontBox::savePreferences()
   getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
 }
 
+// --------------------------------------------------------------------
+
+PrefLengthSpinBox::PrefLengthSpinBox ( QWidget * parent )
+  : QuantitySpinBox(parent), PrefWidget()
+{
+}
+
+PrefLengthSpinBox::~PrefLengthSpinBox()
+{
+}
+
+void PrefLengthSpinBox::restorePreferences()
+{
+  if ( getWindowParameter().isNull() )
+  {
+    Console().Warning("Cannot restore!\n");
+    return;
+  }
+  setUnit(Base::Unit::Length);
+  double fVal = (double)getWindowParameter()->GetFloat( entryName() ,rawValue() );
+  //Base::Quantity q(fVal,unit());
+  setValue(fVal);
+}
+
+void PrefLengthSpinBox::savePreferences()
+{
+  if (getWindowParameter().isNull())
+  {
+    Console().Warning("Cannot save!\n");
+    return;
+  }
+
+  double q = rawValue();
+  getWindowParameter()->SetFloat( entryName(), q );
+}
+
+
 #include "moc_PrefWidgets.cpp"
