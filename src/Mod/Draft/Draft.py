@@ -2978,6 +2978,8 @@ def clone(obj,delta=None,forcedraft=False):
             cl.Tag = base.Tag
         except:
             pass
+        if gui:
+            cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
         select(cl)
         return cl
     else:
