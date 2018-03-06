@@ -430,22 +430,22 @@ class _CommandMergeWalls:
                         ostr += ",FreeCAD.ActiveDocument." + o.Name
                         ok = True
                 if ok:
-                    FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Wall")))
+                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Merge Wall"))
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.joinWalls(["+ostr+"],delete=True)")
                     FreeCAD.ActiveDocument.commitTransaction()
                     return
                 else:
-                    FreeCAD.Console.PrintWarning(str(translate("Arch","The selected wall contains no subwall to merge")))
+                    FreeCAD.Console.PrintWarning(translate("Arch","The selected wall contains no subwall to merge"))
                     return
             else:
-                FreeCAD.Console.PrintWarning(str(translate("Arch","Please select only wall objects")))
+                FreeCAD.Console.PrintWarning(translate("Arch","Please select only wall objects"))
                 return
         for w in walls:
             if Draft.getType(w) != "Wall":
-                FreeCAD.Console.PrintMessage(str(translate("Arch","Please select only wall objects")))
+                FreeCAD.Console.PrintMessage(translate("Arch","Please select only wall objects"))
                 return
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Walls")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Merge Walls"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
