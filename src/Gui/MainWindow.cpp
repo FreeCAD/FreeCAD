@@ -1649,7 +1649,7 @@ void MainWindow::showMessage(const QString& message, int timeout) {
         QApplication::postEvent(this, new CustomMessageEvent(CustomMessageEvent::Tmp,message,timeout));
         return;
     }
-    d->actionLabel->setText(message);
+    d->actionLabel->setText(message.simplified());
     if(timeout) {
         d->actionTimer->setSingleShot(true);
         d->actionTimer->start(timeout);
@@ -1690,7 +1690,7 @@ void MainWindow::showStatus(int type, const QString& message)
         break;
     }
     d->currentStatusType = -type;
-    statusBar()->showMessage(msg, timeout);
+    statusBar()->showMessage(msg.simplified(), timeout);
 }
 
 
