@@ -619,6 +619,54 @@ public:
     }
 };
 
+class PrefUnitSpinBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    PrefUnitSpinBoxPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::PrefUnitSpinBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Preference Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( quantityspinbox_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/PrefWidgets.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Quantity Spin Box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Quantity Spin box widget.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefUnitSpinBox\" name=\"unitSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::PrefUnitSpinBox");
+    }
+};
+
 /* XPM */
 static const char *iconview_pixmap[]={
 "22 22 10 1",
@@ -1514,6 +1562,7 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new PrefLineEditPlugin);
     cw.append(new PrefDoubleSpinBoxPlugin);
     cw.append(new PrefFontBoxPlugin);
+    cw.append(new PrefUnitSpinBoxPlugin);
     return cw;
 }
 
