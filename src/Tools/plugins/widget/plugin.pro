@@ -1,6 +1,7 @@
 
 TEMPLATE = lib
-CONFIG += designer plugin
+CONFIG += plugin
+QT += designer
 TARGET = FreeCAD_widgets
 DEPENDPATH += .
 INCLUDEPATH += .

@@ -55,7 +55,7 @@ class UrlLabel : public QLabel
     Q_PROPERTY( QString  url    READ url   WRITE setUrl)
 
 public:
-    UrlLabel ( QWidget * parent = 0, Qt::WFlags f = 0 );
+    UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = 0 );
     virtual ~UrlLabel();
 
     QString url() const;
@@ -298,6 +298,29 @@ private:
     double Maximum;
     double Minimum;
     double StepSize;
+};
+
+// ------------------------------------------------------------------------------
+
+class PrefUnitSpinBox : public QuantitySpinBox
+{
+    Q_OBJECT
+
+    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+
+public:
+    PrefUnitSpinBox ( QWidget * parent = 0 );
+    virtual ~PrefUnitSpinBox();
+
+    QByteArray entryName    () const;
+    QByteArray paramGrpPath () const;
+    void  setEntryName     ( const QByteArray& name );
+    void  setParamGrpPath  ( const QByteArray& name );
+
+private:
+    QByteArray m_sPrefName;
+    QByteArray m_sPrefGrp;
 };
 
 // ------------------------------------------------------------------------------
