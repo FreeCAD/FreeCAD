@@ -95,9 +95,9 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
 
 PyObject *ComplexGeoDataPy::setElementName(PyObject *args) {
     char *element;
-    char *name;
+    char *name = 0;
     PyObject *overwrite = Py_False;
-    if (!PyArg_ParseTuple(args, "ss|O", &element,&name,&overwrite))
+    if (!PyArg_ParseTuple(args, "s|sO", &element,&name,&overwrite))
         return NULL;
     PY_TRY {
         const char *ret = getComplexGeoDataPtr()->setElementName(element,name,

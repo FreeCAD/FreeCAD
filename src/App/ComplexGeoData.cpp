@@ -253,8 +253,12 @@ void ComplexGeoData::setElementMap(const std::map<std::string, std::string> &map
 const char *ComplexGeoData::setElementName(const char *element, const char *name, 
         bool overwrite, App::StringIDRef sid)
 {
-    if(!element || !element[0] || !name || !name[0])
+    if(!element || !element[0])
         throw Base::ValueError("Invalid input");
+    if(!name || !name[0])  {
+        _ElementMap->right.erase(element);
+        return element;
+    }
     const char *mapped = isMappedElement(name);
     if(mapped)
         name = mapped;

@@ -22,10 +22,10 @@
     <Methode Name="setElementName">
       <Documentation>
           <UserDocu>
-setElementName(element,name,overwrite=False), Set an element name
+setElementName(element,name=None,overwrite=False), Set an element name
 
 element  : the original element name, e.g. Edge1, Vertex2
-name     : the new name for the element
+name     : the new name for the element, None to remove the mapping
 overwrite: if true, it will overwrite exiting name
 
 An element can have multiple mapped names. However, a name can only be mapped
