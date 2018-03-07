@@ -42,6 +42,16 @@ INSTALL(
         PATTERN "*.csv*"
 )
 
+INSTALL(
+    DIRECTORY
+        Patterns
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    FILES_MATCHING
+        PATTERN "*.svg*"
+)
+
+
 #unit test files
 SET(TDTest_SRCS
     TDTest/__init__.py
