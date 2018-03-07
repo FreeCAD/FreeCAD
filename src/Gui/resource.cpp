@@ -96,6 +96,8 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::PrefSlider>;
     new WidgetProducer<Gui::PrefFileChooser>;
     new WidgetProducer<Gui::PrefColorButton>;
+    new WidgetProducer<Gui::PrefUnitSpinBox>;
+    new WidgetProducer<Gui::PrefQuantitySpinBox>;
     new WidgetProducer<Gui::CommandIconView>;
     new WidgetProducer<Gui::AccelLineEdit>;
     new WidgetProducer<Gui::ActionSelector>;
