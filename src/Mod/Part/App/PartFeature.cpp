@@ -281,10 +281,6 @@ App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, cons
     return owner;
 }
 
-void Feature::onDocumentRestored() {
-    Shape.getShape().Tag = getID();
-}
-
 void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well

@@ -113,7 +113,6 @@ protected:
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored() override;
 };
 
 class FilletBase : public Part::Feature
