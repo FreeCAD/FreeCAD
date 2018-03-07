@@ -507,6 +507,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         return -1;
 
     // move the point and solve
+    solvedSketch.resetInitMove();
     lastSolverStatus = solvedSketch.movePoint(GeoId, PosId, toPoint, relative);
     
     // moving the point can not result in a conflict that we did not have
