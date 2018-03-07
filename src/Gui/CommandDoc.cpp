@@ -976,7 +976,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
             if (ret == QMessageBox::Yes) 
                 sel.swap(internal);
             else
-                keepExternal = true;
+                keepExternal = internal.size()!=all.size();
         }
         if(!keepExternal && all.size() > sel.size()) {
             int ret = QMessageBox::question(getMainWindow(),
