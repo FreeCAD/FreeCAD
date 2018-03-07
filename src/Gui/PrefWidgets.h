@@ -275,6 +275,28 @@ protected:
   void savePreferences();
 };
 
+/** The PrefUnitSpinBox class.
+ * \author wandererfan
+ * a simple Unit aware spin box.
+ * See also \ref PrefQuantitySpinBox
+ */
+class GuiExport PrefUnitSpinBox : public QuantitySpinBox, public PrefWidget
+{
+    Q_OBJECT
+
+    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+
+public:
+    PrefUnitSpinBox ( QWidget * parent = 0 );
+    virtual ~PrefUnitSpinBox();
+
+protected:
+    // restore from/save to parameters
+    void restorePreferences();
+    void savePreferences();
+};
+
 class PrefQuantitySpinBoxPrivate;
 
 /**
