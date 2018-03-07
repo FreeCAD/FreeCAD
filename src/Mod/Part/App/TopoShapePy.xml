@@ -648,10 +648,10 @@ infos contains additional info on the solutions. It is a list of tuples:
     <Methode Name="mapSubElement">
       <Documentation>
         <UserDocu>
-mapSubElement(type, shape, op=None,mapAll=True) - maps the sub element of other shape
+mapSubElement(type, shape|[shape], op=None,mapAll=True) - maps the sub element of other shape
 
 type:   sub element type (defined in attribute ElementTypes)
-shape:  other shape to map the sub-elements
+shape:  other shape or sequence of shapes to map the sub-elements
 op:     optional string prefix to append before the mapped sub element names
 mapAll: whether to map all lower level sub-element types
         </UserDocu>
@@ -810,6 +810,12 @@ mapAll: whether to map all lower level sub-element types
         <UserDocu>List of compounds in this shape.</UserDocu>
       </Documentation>
       <Parameter Name="Compounds" Type="List"/>
+    </Attribute>
+    <Attribute Name="SubShapes" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of sub-shapes in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="SubShapes" Type="List"/>
     </Attribute>
     <Attribute Name="Length" ReadOnly="true">
       <Documentation>

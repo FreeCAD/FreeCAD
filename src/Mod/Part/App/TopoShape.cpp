@@ -153,6 +153,7 @@
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
+# include <ShapeFix_Wire.hxx>
 #endif
 # include <BinTools.hxx>
 # include <BinTools_ShapeSet.hxx>
@@ -368,6 +369,43 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
     }
 }
 
+void TopoShape::mapSubElementsTo(TopAbs_ShapeEnum type, 
+        std::vector<TopoShape> &shapes, const char *op, bool mapAll) const
+{
+    TopTools_IndexedMapOfShape myMap;
+    TopExp::MapShapes(_Shape, type, myMap);
+    for(auto &shape : shapes)
+        shape.mapSubElement(type,*this,myMap,op,false);
+    if(mapAll) {
+        if(type == TopAbs_FACE)
+            mapSubElementsTo(TopAbs_EDGE,shapes,op,true);
+        else if(type == TopAbs_EDGE)
+            mapSubElementsTo(TopAbs_VERTEX,shapes,op,true);
+    }
+}
+
+std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
+    std::vector<TopoShape> ret;
+    if(type == TopAbs_SHAPE) {
+        for(TopoDS_Iterator it(_Shape);it.More();it.Next()) {
+            ret.emplace_back(it.Value());
+            ret.back().Tag = Tag;
+        }
+    }else{
+        TopTools_IndexedMapOfShape M;
+        for(TopExp_Explorer it(_Shape,type);it.More();it.Next())
+            M.Add(it.Current());
+
+        ret.reserve(M.Extent());
+        for(int i=1;i<=M.Extent();++i) {
+            ret.emplace_back(M(i));
+            ret.back().Tag = Tag;
+        }
+    }
+    mapSubElementsTo(TopAbs_FACE,ret,0,true);
+    return ret;
+}
+
 TopoShape TopoShape::getSubTopoShape(const char *Type) const {
     if (!Type)
         Standard_Failure::Raise("No sub-shape type given");
@@ -416,6 +454,30 @@ TopoShape TopoShape::getSubTopoShape(const char *Type) const {
     return ret;
 }
 
+void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
+        const char *op, bool mapAll, bool appendTag) 
+{
+    TopTools_IndexedMapOfShape shapeMap;
+    TopExp::MapShapes(_Shape, type, shapeMap);
+    if(!Tag) return;
+    if(shapeMap.Extent()) {
+        for(auto s : shapes) {
+            if(s.isNull()) continue;
+            if(!appendTag)
+                s.Tag = Tag;
+            else if(!s.Tag)
+                continue;
+            mapSubElement(type,shapeMap,s,op,false);
+        }
+    }
+    if(mapAll) {
+        if(type == TopAbs_FACE)
+            mapSubElement(TopAbs_EDGE,shapes,op,mapAll);
+        else if(type == TopAbs_EDGE)
+            mapSubElement(TopAbs_VERTEX,shapes,op,mapAll);
+    }
+}
+
 TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, bool appendTag, const char *op) {
     _Shape.Nullify();
     resetElementMap();
@@ -434,22 +496,9 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, bool ap
     _Shape = comp;
     if(!Tag) return *this;
 
-    TopTools_IndexedMapOfShape fmap,emap,vmap;
-    TopExp::MapShapes(_Shape, TopAbs_FACE, fmap);
-    TopExp::MapShapes(_Shape, TopAbs_EDGE, emap);
-    TopExp::MapShapes(_Shape, TopAbs_VERTEX, vmap);
     if(appendTag && op==0)
         op = "C";
-    for(auto s : shapes) {
-        if(s.isNull()) continue;
-        if(!appendTag)
-            s.Tag = Tag;
-        else if(!s.Tag)
-            continue;
-        mapSubElement(TopAbs_FACE,fmap,s,op,false);
-        mapSubElement(TopAbs_EDGE,emap,s,op,false);
-        mapSubElement(TopAbs_VERTEX,vmap,s,op,false);
-    }
+    mapSubElement(TopAbs_FACE,shapes,op,true,appendTag);
     return *this;
 }
 
@@ -502,17 +551,18 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op) {
             it->second._Shape = e;
             sourceEdges.push_back(it->second);
         }
-        wires.push_back(TopoShape(mkWire.Wire()));
+        // Fix any topological issues of the wire
+        ShapeFix_Wire aFix;
+        aFix.SetPrecision(Precision::Confusion());
+        aFix.Load(mkWire.Wire());
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        wires.push_back(TopoShape(aFix.Wire()));
         auto &wire = wires.back();
         if(!Tag || !shape.Tag) continue;
         wire.Tag = Tag;
-        TopTools_IndexedMapOfShape emap,vmap;
-        TopExp::MapShapes(wire._Shape, TopAbs_EDGE, emap);
-        TopExp::MapShapes(wire._Shape, TopAbs_VERTEX, vmap);
-        for(auto &e : sourceEdges) {
-            wire.mapSubElement(TopAbs_EDGE,emap,e,op,false);
-            wire.mapSubElement(TopAbs_VERTEX,vmap,e,op,false);
-        }
+        wire.mapSubElement(TopAbs_EDGE,sourceEdges,op,true,false);
     }
     if(wires.size() == 1) {
         resetElementMap(wires[0]._ElementMap);
@@ -3066,9 +3116,8 @@ bool TopoShape::fix(double precision, double mintol, double maxtol)
     }
     else {
         this->_Shape = fix.Shape();
+        return isValid();
     }
-    _ElementMap.reset();
-
     return isValid();
 }
 

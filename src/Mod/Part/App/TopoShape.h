@@ -127,6 +127,7 @@ public:
     /// get the Topo"sub"Shape with the given name
     TopoDS_Shape getSubShape(const char* Type) const;
     TopoShape getSubTopoShape(const char *Type) const;
+    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
     unsigned long countSubShapes(const char* Type) const;
     bool hasSubShape(const char *Type) const;
     /// get the Topo"sub"Shape with the given name
@@ -280,6 +281,10 @@ public:
             const TopTools_IndexedMapOfShape &otherMap,const char *op=0,bool mapAll=true);
     void mapSubElement(TopAbs_ShapeEnum type, const TopTools_IndexedMapOfShape &shapeMap, const TopoShape &other,
             const TopTools_IndexedMapOfShape &otherMap,const char *op=0,bool mapAll=true);
+    void mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
+            const char *op=0, bool mapAll=true,bool appendTag=true);
+    void mapSubElementsTo(TopAbs_ShapeEnum type, std::vector<TopoShape> &shapes, 
+            const char *op=0, bool mapAll=true) const;
 
 public:
     /** Shape tag 

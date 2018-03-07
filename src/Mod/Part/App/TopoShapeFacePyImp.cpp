@@ -333,21 +333,21 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                     PyObject* item = (*it).ptr();
                     if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                        const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
-                        fm->addShape(sh);
+                        auto& sh = *static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr();
+                        fm->addTopoShape(sh);
                     } else {
                         PyErr_SetString(PyExc_TypeError, "Object is not a shape.");
                         return -1;
                     }
                 }
             } else if (PyObject_TypeCheck(pcPyShapeOrList, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcPyShapeOrList)->getTopoShapePtr()->getShape();
-                if (sh.IsNull())
+                auto& sh = *static_cast<Part::TopoShapePy*>(pcPyShapeOrList)->getTopoShapePtr();
+                if (sh.isNull())
                     throw Base::Exception("Shape is null!");
-                if (sh.ShapeType() == TopAbs_COMPOUND)
-                    fm->useCompound(TopoDS::Compound(sh));
+                if (sh.getShape().ShapeType() == TopAbs_COMPOUND)
+                    fm->useTopoCompound(sh);
                 else
-                    fm->addShape(sh);
+                    fm->addTopoShape(sh);
             } else {
                 PyErr_SetString(PyExc_TypeError, "First argument is neither a shape nor list of shapes.");
                 return -1;
@@ -355,7 +355,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             fm->Build();
 
-            getTopoShapePtr()->setShape(fm->Face());
+            getTopoShapePtr()->setShape(fm->TopoFace());
             return 0;
         } catch (Base::Exception &e){
             PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
