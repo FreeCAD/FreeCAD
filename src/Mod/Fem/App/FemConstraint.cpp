@@ -242,27 +242,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
 
             Adaptor3d_IsoCurve isoc(hsurf);
             try {
-                isoc.Load(GeomAbs_IsoU, vfp);
-                l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
-            }
-            catch (const Standard_Failure&) {
-                gp_Pnt p1 = hsurf->Value(ufp, vfp);
-                gp_Pnt p2 = hsurf->Value(ulp, vfp);
-                l = p1.Distance(p2);
-            }
-
-            try {
-                isoc.Load(GeomAbs_IsoU, vlp);
-                lv = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
-            }
-            catch (const Standard_Failure&) {
-                gp_Pnt p1 = hsurf->Value(ufp, vlp);
-                gp_Pnt p2 = hsurf->Value(ulp, vlp);
-                lv = (l + p1.Distance(p2))/2.0;
-            }
-
-            try {
-                isoc.Load(GeomAbs_IsoV, ufp);
+                isoc.Load(GeomAbs_IsoU, ufp);
                 l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
             }
             catch (const Standard_Failure&) {
@@ -272,11 +252,31 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             }
 
             try {
-                isoc.Load(GeomAbs_IsoV, ulp);
-                lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+                isoc.Load(GeomAbs_IsoU, ulp);
+                lv = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
             }
             catch (const Standard_Failure&) {
                 gp_Pnt p1 = hsurf->Value(ulp, vfp);
+                gp_Pnt p2 = hsurf->Value(ulp, vlp);
+                lv = (l + p1.Distance(p2))/2.0;
+            }
+
+            try {
+                isoc.Load(GeomAbs_IsoV, vfp);
+                l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
+            }
+            catch (const Standard_Failure&) {
+                gp_Pnt p1 = hsurf->Value(ufp, vfp);
+                gp_Pnt p2 = hsurf->Value(ulp, vfp);
+                l = p1.Distance(p2);
+            }
+
+            try {
+                isoc.Load(GeomAbs_IsoV, vlp);
+                lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+            }
+            catch (const Standard_Failure&) {
+                gp_Pnt p1 = hsurf->Value(ufp, vlp);
                 gp_Pnt p2 = hsurf->Value(ulp, vlp);
                 lu = (l + p1.Distance(p2))/2.0;
             }
