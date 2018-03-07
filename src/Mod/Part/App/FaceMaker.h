@@ -31,6 +31,9 @@
 
 #include <memory>
 
+#include <App/StringHasher.h>
+#include "TopoShape.h"
+
 namespace Part
 {
 
@@ -49,6 +52,11 @@ class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseCl
 public:
     FaceMaker() {}
     virtual ~FaceMaker() {}
+
+    void addTopoShape(const TopoShape &s);
+    void useTopoCompound(const TopoShape &comp);
+    const TopoShape &getTopoShape() const {return myTopoShape;}
+    const TopoShape &TopoFace() const;
 
     virtual void addWire(const TopoDS_Wire& w);
     /**
@@ -83,11 +91,15 @@ public:
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
+    const char *MyOp = 0;
+    App::StringHasherRef MyHasher;
+
 protected:
-    std::vector<TopoDS_Shape> mySourceShapes; //wire or compound
+    std::vector<TopoShape> mySourceShapes; //wire or compound
     std::vector<TopoDS_Wire> myWires; //wires from mySourceShapes
     std::vector<TopoDS_Compound> myCompounds; //compounds, for recursive processing
     std::vector<TopoDS_Shape> myShapesToReturn;
+    TopoShape myTopoShape;
 
     /**
      * @brief Build_Essence: build routine that can assume there is no nesting.

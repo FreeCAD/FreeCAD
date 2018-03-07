@@ -28,8 +28,10 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRep_Tool.hxx>
+# include <ShapeAnalysis.hxx>
 #endif
 
+#include "TopoShapeOpCode.h"
 #include "FaceMaker.h"
 
 #include <Base/Exception.h>
@@ -47,6 +49,11 @@ void Part::FaceMaker::addWire(const TopoDS_Wire& w)
 
 void Part::FaceMaker::addShape(const TopoDS_Shape& sh)
 {
+    addTopoShape(sh);
+}
+
+void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
+    const TopoDS_Shape &sh = shape.getShape();
     if(sh.IsNull())
         throw Base::ValueError("Input shape is null.");
     switch(sh.ShapeType()){
@@ -63,7 +70,7 @@ void Part::FaceMaker::addShape(const TopoDS_Shape& sh)
             throw Base::TypeError("Shape must be a wire, edge or compound. Something else was supplied.");
         break;
     }
-    this->mySourceShapes.push_back(sh);
+    this->mySourceShapes.push_back(shape);
 }
 
 void Part::FaceMaker::useCompound(const TopoDS_Compound& comp)
@@ -74,14 +81,23 @@ void Part::FaceMaker::useCompound(const TopoDS_Compound& comp)
     }
 }
 
+void Part::FaceMaker::useTopoCompound(const TopoShape& comp)
+{
+    for(auto &s : comp.getSubTopoShapes())
+        this->addTopoShape(s);
+}
+
 const TopoDS_Face& Part::FaceMaker::Face()
 {
-    const TopoDS_Shape &sh = this->Shape();
-    if(sh.IsNull())
+    return TopoDS::Face(TopoFace().getShape());
+}
+
+const Part::TopoShape &Part::FaceMaker::TopoFace() const{
+    if(this->myTopoShape.isNull())
         throw Base::Exception("Part::FaceMaker: result shape is null.");
-    if (sh.ShapeType() != TopAbs_FACE)
+    if (this->myTopoShape.getShape().ShapeType() != TopAbs_FACE)
         throw Base::TypeError("Part::FaceMaker: return shape is not a single face.");
-    return TopoDS::Face(sh);
+    return this->myTopoShape;
 }
 
 void Part::FaceMaker::Build()
@@ -115,6 +131,7 @@ void Part::FaceMaker::Build()
 
     if(this->myShapesToReturn.empty()){
         //nothing to do, null shape will be returned.
+        this->myShape = TopoDS_Shape();
     } else if (this->myShapesToReturn.size() == 1){
         this->myShape = this->myShapesToReturn[0];
     } else {
@@ -125,6 +142,68 @@ void Part::FaceMaker::Build()
             builder.Add(cmp_res,sh);
         }
         this->myShape = cmp_res;
+    }
+
+    int tagCount = 0;
+    long tag = 0;
+    for(auto &sh : mySourceShapes) {
+        if(sh.Tag > tag) {
+            tag = sh.Tag;
+            ++tagCount;
+        }
+    }
+    const char *op = this->MyOp;
+    if(tagCount==1)
+        this->myTopoShape.Tag = tag;
+    else if(!op) 
+        op = TOPOP_FACE;
+    this->myTopoShape.setShape(this->myShape);
+    this->myTopoShape.Hasher = App::StringHasherRef();
+    this->myTopoShape.mapSubElement(TopAbs_EDGE,this->mySourceShapes,op,true,true);
+    int i = 0;
+    std::ostringstream ss;
+    if(!this->myTopoShape.Hasher)
+        this->myTopoShape.Hasher = this->MyHasher;
+    if(!op) op = TOPOP_FACE;
+    std::string prefix(op);
+    const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
+    if(faces.size()>1) {
+        // name the face using the edges of its outer wire, but only name them
+        // if there are more than one face
+        for(auto &face : faces) {
+            ++i;
+            TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
+            wire.mapSubElement(TopAbs_EDGE,face,0,false,false);
+            std::set<std::string> edgeNames;
+            int count = wire.countSubShapes(TopAbs_EDGE);
+            for(int i=1;i<=count;++i) {
+                std::string element("Edge");
+                element += std::to_string(i);
+                const char *name = face.getElementName(element.c_str(),true);
+                if(name == element) {
+                    // only name the face if all edges are named
+                    edgeNames.clear();
+                    break;
+                }
+                edgeNames.insert(name);
+            }
+            if(edgeNames.empty()) continue;
+            ss.str("");
+            ss << '(';
+            bool first=true;
+            for(auto &name : edgeNames) {
+                if(first)
+                    first=false;
+                else
+                    ss << ',';
+                ss << name;
+            }
+            ss << ')';
+            std::string faceName = ss.str();        
+            ss.str("");
+            ss << "Face" << i;
+            this->myTopoShape.setElementName(ss.str().c_str(),faceName.c_str(),prefix.c_str());
+        }
     }
     this->Done();
 }

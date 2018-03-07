@@ -509,13 +509,13 @@ void FaceMakerExtrusion::Build()
     if (mySourceShapes.empty())
         throw Base::Exception("No input shapes!");
     if (mySourceShapes.size() == 1){
-        inputShape = mySourceShapes[0];
+        inputShape = mySourceShapes[0].getShape();
     } else {
         TopoDS_Builder builder;
         TopoDS_Compound cmp;
         builder.MakeCompound(cmp);
-        for (const TopoDS_Shape& sh: mySourceShapes){
-            builder.Add(cmp, sh);
+        for (auto& sh: mySourceShapes){
+            builder.Add(cmp, sh.getShape());
         }
         inputShape = cmp;
     }
