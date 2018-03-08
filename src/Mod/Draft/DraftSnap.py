@@ -94,6 +94,7 @@ class Snapper:
         self.selectMode = False
         self.holdTracker = None
         self.holdPoints = []
+        self.running = False
         
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -145,6 +146,12 @@ class Snapper:
         Screenpos can be a list, a tuple or a coin.SbVec2s object. If noTracker is True,
         the tracking line is not displayed."""
 
+        if self.running:
+            # do not allow concurrent runs
+            return None
+            
+        self.running = True
+
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.spoint = None
@@ -180,6 +187,7 @@ class Snapper:
             screenpos = tuple(screenpos.getValue())
         elif  not isinstance(screenpos,tuple):
             print("snap needs valid screen position (list, tuple or sbvec2s)")
+            self.running = False
             return None
 
         # setup trackers if needed
@@ -247,6 +255,7 @@ class Snapper:
             if self.lastArchPoint:
                 self.setArchDims(self.lastArchPoint,fp)
             self.spoint = fp
+            self.running = False
             return fp
 
         else:
@@ -256,6 +265,7 @@ class Snapper:
             obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
             if not obj:
                 self.spoint = cstr(point)
+                self.running = False
                 return self.spoint
 
             self.lastSnappedObject = obj
@@ -263,6 +273,7 @@ class Snapper:
             if hasattr(obj.ViewObject,"Selectable"):
                 if not obj.ViewObject.Selectable:
                     self.spoint = cstr(point)
+                    self.running = False
                     return self.spoint
                 
             if not active:
@@ -355,6 +366,7 @@ class Snapper:
 
             if not snaps:
                 self.spoint = cstr(point)
+                self.running = False
                 return self.spoint
 
             # calculating the nearest snap point
@@ -403,6 +415,7 @@ class Snapper:
                 
             # return the final point
             self.spoint = fp
+            self.running = False
             return self.spoint
 
     def toWP(self,point):
@@ -992,6 +1005,7 @@ class Snapper:
         self.mask = None
         self.lastArchPoint = None
         self.selectMode = False
+        self.running = False
         
     def setSelectMode(self,mode):
         "sets the snapper into select mode (hides snapping temporarily)"
