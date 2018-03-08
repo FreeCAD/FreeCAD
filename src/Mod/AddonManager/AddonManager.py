@@ -38,7 +38,7 @@ installed.
 '''
 
 from PySide import QtCore, QtGui
-import sys, os, re, shutil
+import sys, os, re, shutil, stat
 import FreeCAD
 if sys.version_info.major < 3:
     import urllib2
@@ -330,6 +330,11 @@ class AddonsInstaller(QtGui.QDialog):
             else:
                 self.listMacros.setFocus()
 
+    def remove_readonly(self, func, path, _):
+        "Remove read only file."
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+
     def remove(self):
         if self.tabWidget.currentIndex() == 0:
             idx = self.listWorkbenches.currentRow()
@@ -337,7 +342,7 @@ class AddonsInstaller(QtGui.QDialog):
             moddir = basedir + os.sep + "Mod"
             clonedir = basedir + os.sep + "Mod" + os.sep + self.repos[idx][0]
             if os.path.exists(clonedir):
-                shutil.rmtree(clonedir)
+                shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.labelDescription.setText(translate("AddonsInstaller", "Addon successfully removed. Please restart FreeCAD"))
             else:
                 self.labelDescription.setText(translate("AddonsInstaller", "Unable to remove this addon"))
@@ -503,16 +508,13 @@ class CheckWBWorker(QtCore.QThread):
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
                             del cw
-                        bare_repo.git.clear_cache()
                         repo = git.Repo(clonedir)
                         repo.head.reset('--hard')
-                        repo.git.clear_cache()
                     gitrepo = git.Git(clonedir)
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
                         self.mark.emit(repo[0])
                         upds.append(repo[0])
-                    gitrepo.clear_cache()
         self.progressbar_show.emit(False)
         if upds:
             self.info_label.emit(str(len(upds))+" "+translate("AddonsInstaller", "update(s) available")+": "+",".join(upds)+". "+translate("AddonsInstaller","Press the update button again to update them all at once."))
@@ -618,15 +620,12 @@ class ShowWorker(QtCore.QThread):
                                 cw = bare_repo.config_writer()
                                 cw.set('core', 'bare', False)
                                 del cw
-                            bare_repo.git.clear_cache()
                             repo = git.Repo(clonedir)
                             repo.head.reset('--hard')
-                            repo.git.clear_cache()
                         gitrepo = git.Git(clonedir)
                         gitrepo.fetch()
                         if "git pull" in gitrepo.status():
                             upd = True
-                        gitrepo.clear_cache()
             if upd:
                 message = "<strong>" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + ' - <a href="' + self.repos[self.idx][1] + '"><span style="word-wrap: break-word;width:15em;text-decoration: underline; color:#0000ff;">' + self.repos[self.idx][1] + '</span></a>'
             else:
@@ -765,19 +764,15 @@ class InstallWorker(QtCore.QThread):
                             cw = bare_repo.config_writer()
                             cw.set('core', 'bare', False)
                             del cw
-                        bare_repo.git.clear_cache()
                         repo = git.Repo(clonedir)
                         repo.head.reset('--hard')
-                        repo.git.clear_cache()
                     repo = git.Git(clonedir)
                     answer = repo.pull()
-                    repo.clear_cache()
 
                     # Update the submodules for this repository
                     repo_sms = git.Repo(clonedir)
                     for submodule in repo_sms.submodules:
                         submodule.update(init=True, recursive=True)
-                    repo_sms.git.clear_cache()
                 else:
                     answer = self.download(self.repos[idx][1],clonedir)
             else:
@@ -791,7 +786,6 @@ class InstallWorker(QtCore.QThread):
                         # Make sure to clone all the submodules as well
                         if repo.submodules:
                             repo.submodule_update(recursive=True)
-                        repo.git.clear_cache()
                     else:
                         self.info_label.emit("Downloading module...")
                         self.download(self.repos[idx][1],clonedir)
