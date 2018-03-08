@@ -168,9 +168,9 @@ class PathSimulation:
         self.resetSimulation = True
         FreeCAD.ActiveDocument.recompute()
 
-    def SkipStep(self):
-        self.skipStep = True
-        self.PerformCut()
+    # def SkipStep(self):
+    #     self.skipStep = True
+    #     self.PerformCut()
 
     def PerformCutBoolean(self):
         if self.resetSimulation:
@@ -285,51 +285,51 @@ class PathSimulation:
             return curpos
         return path.valueAt(path.LastParameter)
 
-    def GetPathSolidOld(self, tool, cmd, curpos):
-        e1 = PathGeom.edgeForCmd(cmd, curpos)
-        # curpos = e1.valueAt(e1.LastParameter)
-        n1 = e1.tangentAt(0)
-        n1[2] = 0.0
-        try:
-            n1.normalize()
-        except:
-            return (None, e1.valueAt(e1.LastParameter))
-        height = self.height
-        rad = tool.Diameter / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
-        if type(e1.Curve) is Part.Circle and e1.Curve.Radius <= rad:  # hack to overcome occ bug
-            rad = e1.Curve.Radius - 0.001
-            # return (None, e1.valueAt(e1.LastParameter))
-        xf = n1[0] * rad
-        yf = n1[1] * rad
-        xp = curpos[0]
-        yp = curpos[1]
-        zp = curpos[2]
-        v1 = Vector(yf + xp, -xf + yp, zp)
-        v2 = Vector(yf + xp, -xf + yp, zp + height)
-        v3 = Vector(-yf + xp, xf + yp, zp + height)
-        v4 = Vector(-yf + xp, xf + yp, zp)
-        # vc1 = Vector(xf + xp, yf + yp, zp)
-        # vc2 = Vector(xf + xp, yf + yp, zp + height)
-        l1 = Part.makeLine(v1, v2)
-        l2 = Part.makeLine(v2, v3)
-        # l2 = Part.Edge(Part.Arc(v2, vc2, v3))
-        l3 = Part.makeLine(v3, v4)
-        l4 = Part.makeLine(v4, v1)
-        # l4 = Part.Edge(Part.Arc(v4, vc1, v1))
-        w1 = Part.Wire([l1, l2, l3, l4])
-        w2 = Part.Wire(e1)
-        try:
-            ex1 = w2.makePipeShell([w1], True, True)
-        except:
-            # Part.show(w1)
-            # Part.show(w2)
-            return (None, e1.valueAt(e1.LastParameter))
-        cyl1 = Part.makeCylinder(rad, height, curpos)
-        curpos = e1.valueAt(e1.LastParameter)
-        cyl2 = Part.makeCylinder(rad, height, curpos)
-        ex1s = Part.Solid(ex1)
-        f1 = ex1s.fuse([cyl1, cyl2]).removeSplitter()
-        return (f1, curpos)
+    # def GetPathSolidOld(self, tool, cmd, curpos):
+    #     e1 = PathGeom.edgeForCmd(cmd, curpos)
+    #     # curpos = e1.valueAt(e1.LastParameter)
+    #     n1 = e1.tangentAt(0)
+    #     n1[2] = 0.0
+    #     try:
+    #         n1.normalize()
+    #     except:
+    #         return (None, e1.valueAt(e1.LastParameter))
+    #     height = self.height
+    #     rad = tool.Diameter / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
+    #     if type(e1.Curve) is Part.Circle and e1.Curve.Radius <= rad:  # hack to overcome occ bug
+    #         rad = e1.Curve.Radius - 0.001
+    #         # return (None, e1.valueAt(e1.LastParameter))
+    #     xf = n1[0] * rad
+    #     yf = n1[1] * rad
+    #     xp = curpos[0]
+    #     yp = curpos[1]
+    #     zp = curpos[2]
+    #     v1 = Vector(yf + xp, -xf + yp, zp)
+    #     v2 = Vector(yf + xp, -xf + yp, zp + height)
+    #     v3 = Vector(-yf + xp, xf + yp, zp + height)
+    #     v4 = Vector(-yf + xp, xf + yp, zp)
+    #     # vc1 = Vector(xf + xp, yf + yp, zp)
+    #     # vc2 = Vector(xf + xp, yf + yp, zp + height)
+    #     l1 = Part.makeLine(v1, v2)
+    #     l2 = Part.makeLine(v2, v3)
+    #     # l2 = Part.Edge(Part.Arc(v2, vc2, v3))
+    #     l3 = Part.makeLine(v3, v4)
+    #     l4 = Part.makeLine(v4, v1)
+    #     # l4 = Part.Edge(Part.Arc(v4, vc1, v1))
+    #     w1 = Part.Wire([l1, l2, l3, l4])
+    #     w2 = Part.Wire(e1)
+    #     try:
+    #         ex1 = w2.makePipeShell([w1], True, True)
+    #     except:
+    #         # Part.show(w1)
+    #         # Part.show(w2)
+    #         return (None, e1.valueAt(e1.LastParameter))
+    #     cyl1 = Part.makeCylinder(rad, height, curpos)
+    #     curpos = e1.valueAt(e1.LastParameter)
+    #     cyl2 = Part.makeCylinder(rad, height, curpos)
+    #     ex1s = Part.Solid(ex1)
+    #     f1 = ex1s.fuse([cyl1, cyl2]).removeSplitter()
+    #     return (f1, curpos)
 
     # get a solid representation of a tool going along path
     def GetPathSolid(self, tool, cmd, pos):
@@ -390,7 +390,7 @@ class PathSimulation:
         yp = pos[1]
         zp = pos[2]
         h = tool.CuttingEdgeHeight
-        if h <= 0.0: #set default if user fails to avoid freeze
+        if h <= 0.0:  # set default if user fails to avoid freeze
             h = 1.0
             PathLog.error("SET Tool Length")
         # common to all tools
@@ -436,6 +436,8 @@ class PathSimulation:
     def onJobChange(self):
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
+        self.job = j
+        self.SetupSimulation()
         form.listOperations.clear()
         self.operations = []
         for op in j.Operations.OutList:
