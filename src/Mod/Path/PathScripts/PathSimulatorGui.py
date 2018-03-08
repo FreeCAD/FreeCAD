@@ -8,6 +8,7 @@ import math
 from FreeCAD import Vector, Base
 import PathScripts.PathLog as PathLog
 from PathScripts.PathGeom import PathGeom
+import PathScripts.PathDressup as PathDressup
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,6 +48,7 @@ class PathSimulation:
         self.numCommands = 0
         self.simperiod = 20
         self.accuracy = 0.1
+        self.resetSimulation = False
 
     def Connect(self, but, sig):
         QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
@@ -113,8 +115,13 @@ class PathSimulation:
 
     def SetupOperation(self, itool):
         self.operation = self.activeOps[itool]
-        if hasattr(self.operation, "ToolController"):
-            self.tool = self.operation.ToolController.Tool
+        try:
+            self.tool = PathDressup.toolController(self.operation).Tool
+        except:
+            self.tool = None
+
+        # if hasattr(self.operation, "ToolController"):
+        #     self.tool = self.operation.ToolController.Tool
         if (self.tool is not None):
             toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), self.tool.Diameter / 2.0)
             self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1)))
