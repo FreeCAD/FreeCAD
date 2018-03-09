@@ -32,6 +32,7 @@ SET(PathScripts_SRCS
     PathScripts/PathDressupHoldingTags.py
     PathScripts/PathDressupLeadInOut.py
     PathScripts/PathDressupRampEntry.py
+    PathScripts/PathDressupTrochoidal.py
     PathScripts/PathDressupTag.py
     PathScripts/PathDressupTagGui.py
     PathScripts/PathDressupTagPreferences.py
