@@ -6,7 +6,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 } else {
   CONFIG += designer
 }
-TARGET = FreeCAD_widgets
+TARGET = $$qtLibraryTarget(FreeCAD_widgets)
 DEPENDPATH += .
 INCLUDEPATH += .
 
