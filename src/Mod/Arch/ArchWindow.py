@@ -650,20 +650,19 @@ class _Window(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop == "Hosts":
-            if hasattr(obj,"Hosts"):
-                for host in obj.Hosts:
-                    # mark host to recompute so it can detect this object
-                    host.touch()
         if not "Restore" in obj.State:
-            if prop in ["Base","WindowParts"]:
-                self.execute(obj)
-                self.onChanged(obj,"Hosts")
-            elif prop in ["HoleDepth"]:
-                for o in obj.InList:
-                    if Draft.getType(o) in AllowedHosts:
-                        o.Proxy.execute(o)
-                self.onChanged(obj,"Hosts")
+            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width"]:
+                # anti-recursive loops, bc the base sketch will touch the Placement all the time
+                ok = True
+                if prop == "Placement":
+                    if hasattr(self,"Placement"):
+                        if self.Placement == obj.Placement:
+                            ok = False
+                    self.Placement = FreeCAD.Placement(obj.Placement)
+                if ok and hasattr(obj,"Hosts"):
+                    for host in obj.Hosts:
+                        # mark host to recompute so it can detect this object
+                        host.touch()
             if prop in ["Width","Height"]:
                 if obj.Preset != 0:
                     if obj.Base:
@@ -684,7 +683,6 @@ class _Window(ArchComponent.Component):
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
                             pass
-                self.onChanged(obj,"Hosts")
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
