@@ -522,8 +522,9 @@ void TaskPipeOrientation::updateUI(int idx) {
     //make sure we resize to the size of the current page
     for(int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    
-    ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (idx < ui->stackedWidget->count())
+        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
@@ -680,8 +681,9 @@ void TaskPipeScaling::updateUI(int idx) {
     //make sure we resize to the size of the current page
     for(int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    
-    ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (idx < ui->stackedWidget->count())
+        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
