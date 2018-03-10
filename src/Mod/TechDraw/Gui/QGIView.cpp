@@ -311,7 +311,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
 
     viewObj = obj;
     viewName = obj->getNameInDocument();
-    
+
     //mark the actual QGraphicsItem so we can check what's in the scene later
     setData(0,QString::fromUtf8("QGIV"));
     setData(1,QString::fromUtf8(obj->getNameInDocument()));
@@ -528,7 +528,7 @@ double QGIView::getPrefFontSize()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    double fontSize = hGrp->GetFloat("LabelSize", 5.0);
+    double fontSize = hGrp->GetFloat("LabelSize", 3.5);
     return Rez::guiX(fontSize);
 }
 
