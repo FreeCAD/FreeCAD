@@ -43,7 +43,7 @@ QGISectionLine::QGISectionLine()
 {
     m_symbol = "";
     m_symSize = 0.0;
-    
+
     m_extLen = Rez::guiX(8.0);
     m_arrowSize = 0.0;
 
@@ -181,7 +181,7 @@ Qt::PenStyle QGISectionLine::getSectionStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine", 4));
+    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine", 2));
     return sectStyle;
 }
 

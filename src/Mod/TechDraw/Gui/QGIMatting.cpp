@@ -106,7 +106,7 @@ int QGIMatting::getHoleStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("MattingStyle", 1l);
+    int style = hGrp->GetInt("MattingStyle", 0l);
     return style;
 }
 
