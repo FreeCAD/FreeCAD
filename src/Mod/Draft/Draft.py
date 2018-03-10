@@ -1972,7 +1972,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         drawing_plane_normal = FreeCAD.Vector(0,0,1)
                     if plane: drawing_plane_normal = plane.axis
                     c = e.Curve
-                    if round(c.Axis.getAngle(drawing_plane_normal),2) == 0:
+                    if round(c.Axis.getAngle(drawing_plane_normal),2) in [0,3.14]:
                         occversion = Part.OCC_VERSION.split(".")
                         done = False
                         if (occversion[0] >= 7) and (occversion[1] >= 1):
