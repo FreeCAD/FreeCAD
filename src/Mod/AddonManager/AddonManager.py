@@ -38,7 +38,7 @@ installed.
 '''
 
 from PySide import QtCore, QtGui
-import sys, os, re, shutil
+import sys, os, re, shutil, stat
 import FreeCAD
 if sys.version_info.major < 3:
     import urllib2
@@ -330,6 +330,11 @@ class AddonsInstaller(QtGui.QDialog):
             else:
                 self.listMacros.setFocus()
 
+    def remove_readonly(self, func, path, _):
+        "Remove read only file."
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+
     def remove(self):
         if self.tabWidget.currentIndex() == 0:
             idx = self.listWorkbenches.currentRow()
@@ -337,7 +342,7 @@ class AddonsInstaller(QtGui.QDialog):
             moddir = basedir + os.sep + "Mod"
             clonedir = basedir + os.sep + "Mod" + os.sep + self.repos[idx][0]
             if os.path.exists(clonedir):
-                shutil.rmtree(clonedir)
+                shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.labelDescription.setText(translate("AddonsInstaller", "Addon successfully removed. Please restart FreeCAD"))
             else:
                 self.labelDescription.setText(translate("AddonsInstaller", "Unable to remove this addon"))
