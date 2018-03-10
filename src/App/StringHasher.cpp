@@ -51,7 +51,7 @@ PyObject *StringID::getPyObject() {
 
 std::string StringID::toString() const {
     std::ostringstream ss;
-    ss << 'H' << value();
+    ss << '#' << value();
     return ss.str();
 }
 
