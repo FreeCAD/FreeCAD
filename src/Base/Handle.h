@@ -74,6 +74,18 @@ public:
             _toHandle->unref();
     }
 
+    void reset(const Reference<T> &p=Reference<T>()) {
+        *this = p;
+    }
+
+    void swap(Reference<T> &p) {
+        if(*this != p) {
+            auto tmp = p;
+            p = *this;
+            *this = tmp;
+        }
+    }
+
     //**************************************************************************
     // operator implementation
 
