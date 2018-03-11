@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>587</height>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -472,7 +472,7 @@
         <item row="0" column="2">
          <widget class="Gui::PrefLineEdit" name="leLineGroup">
           <property name="text">
-           <string>FC 0.70mm</string>
+           <string notr="true">FC 0.70mm</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroup</cstring>
