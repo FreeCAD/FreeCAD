@@ -447,7 +447,7 @@ void DlgExtrusion::apply()
             Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
             Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 
-            FCMD_OBJ_HIDE(newObj);
+            FCMD_OBJ_HIDE(sourceObj);
         }
 
         activeDoc->commitTransaction();
