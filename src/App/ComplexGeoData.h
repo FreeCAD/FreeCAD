@@ -186,7 +186,11 @@ public:
      * @return Returns the found mapping, or else return the original input. The
      * return pointer maybe invalidated when new element mapping is added.
      */
-    const char *getElementName(const char *name, bool reverse=false) const;
+    const char *getElementName(const char *name, bool reverse=false, 
+            std::vector<App::StringIDRef> *sid=0) const;
+
+    /** Get mapped element names with a given prefix */
+    std::vector<std::pair<std::string,std::string> > getElementNamesWithPrefix(const char *prefix) const;
 
     /** Get mapped element names
      *
@@ -194,7 +198,7 @@ public:
      *
      * @return a list of mapped names of the give element
      */
-    std::vector<const char *> getElementMappedNames(const char *element) const;
+    std::vector<std::string> getElementMappedNames(const char *element) const;
 
     /** Add a sub-element name mapping.
      *
@@ -204,9 +208,10 @@ public:
      * @param hasher: in case the raw 'name' is too long. The caller can opt to
      * use this hasher to hash the string and shorten it to an integer, which
      * is reference counted and persistent.
-     * @param overwrite: if true, it will overwrite existing names
      * @param sid: in case you use a hasher to hash the element name, pass in
-     * the string id reference using this parameter
+     * the string id reference using this parameter. You can have more than one
+     * string id associated with the same name.
+     * @param overwrite: if true, it will overwrite existing names
      *
      * @return Returns the stored mapped element name. Note that if hasher is
      * provided the stored name will be different from the input name.
@@ -215,7 +220,14 @@ public:
      * mapped to one element
      */
     const char *setElementName(const char *element, const char *name, 
-            bool overwrite=false, App::StringIDRef sid=App::StringIDRef());
+            const std::vector<App::StringIDRef> *sid=0, bool overwrite=false);
+
+    /** Add a sub element name mapping with unhashed prefix and/or postfix */
+    const char *setElementName(const char *element, const char *name, const char *prefix,
+            const char *postfix=0, const std::vector<App::StringIDRef> *sid=0, bool overwrite=false);
+
+    /** Copy the element map from another geometry data with optional unhashed prefix and/or postfix */
+    void copyElementMap(const ComplexGeoData &data, const char *prefix=0, const char *postfix=0);
 
     /** Reset/swap the element map
      *

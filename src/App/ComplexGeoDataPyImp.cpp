@@ -34,6 +34,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 #include <App/StringHasherPy.h>
+#include <App/StringIDPy.h>
 
 using namespace Data;
 using namespace Base;
@@ -93,15 +94,37 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
     return Py::new_reference_to(Py::String(ret));
 }
 
-PyObject *ComplexGeoDataPy::setElementName(PyObject *args) {
-    char *element;
-    char *name = 0;
+PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {
+    const char *element;
+    const char *name = 0;
+    const char *prefix = 0;
+    const char *postfix = 0;
+    PyObject *pySid = Py_None;
     PyObject *overwrite = Py_False;
-    if (!PyArg_ParseTuple(args, "s|sO", &element,&name,&overwrite))
+
+    static char *kwlist[] = {"element", "name", "prefix", "postfix", "overwrite", "sid", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|sssOO", kwlist, 
+                &element,&name,&prefix,&postfix,&overwrite,&pySid))
         return NULL;
+    std::vector<App::StringIDRef> sids;
+    if(pySid != Py_None) {
+        if(PyObject_TypeCheck(pySid,&App::StringIDPy::Type))
+            sids.push_back(static_cast<App::StringIDPy*>(pySid)->getStringIDPtr());
+        else if(PySequence_Check(pySid)) {
+            Py::Sequence seq(pySid);
+            for(auto it=seq.begin();it!=seq.end();++it) {
+                auto ptr = (*it).ptr();
+                if(PyObject_TypeCheck(ptr,&App::StringIDPy::Type))
+                    sids.push_back(static_cast<App::StringIDPy*>(ptr)->getStringIDPtr());
+                else
+                    throw Py::TypeError("expect StringID in sid sequence");
+            }
+        } else
+            throw Py::TypeError("expect sid to contain either StringID or sequence of StringID");
+    }
     PY_TRY {
-        const char *ret = getComplexGeoDataPtr()->setElementName(element,name,
-                PyObject_IsTrue(overwrite));
+        const char *ret = getComplexGeoDataPtr()->setElementName(element,name, 
+                prefix,postfix,&sids,PyObject_IsTrue(overwrite));
         return Py::new_reference_to(Py::String(ret));
     }PY_CATCH
 }
