@@ -111,6 +111,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "GeoFeatureGroupExtension.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
+#include "GeoFeature.h"
 
 FC_LOG_LEVEL_INIT("App::Document", true, true);
 
@@ -1276,6 +1277,12 @@ void Document::onChanged(const Property* prop)
             // recursive call of onChanged()
             this->Uid.setValue(id);
         }
+    } else if(prop == &UseHasher) {
+        for(auto obj : d->objectArray) {
+            auto geofeature = dynamic_cast<GeoFeature*>(obj);
+            if(geofeature && geofeature->getPropertyOfGeometry())
+                geofeature->touch();
+        }
     }
 }
 
@@ -1394,6 +1401,11 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
     ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None), 
                         "Whether to show hidden object items in the tree view");
+    ADD_PROPERTY_TYPE(UseHasher,(true), 0,PropertyType(Prop_None), 
+                        "Whether to use hasher on topological naming");
+    if(!App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("UseHasher",true))
+        UseHasher.setValue(false);
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
@@ -1586,8 +1598,14 @@ std::pair<bool,int> Document::addStringHasher(StringHasherRef hasher) const {
 }
 
 StringHasherRef Document::getStringHasher(int idx) const {
-    auto it = d->hashers.right.find(idx);
     StringHasherRef hasher;
+    if(idx<0) {
+        if(UseHasher.getValue())
+            return Hasher;
+        return hasher;
+    }
+
+    auto it = d->hashers.right.find(idx);
     if(it == d->hashers.right.end()) {
         hasher = new StringHasher;
         d->hashers.right.insert(HasherMap::right_map::value_type(idx,hasher));
@@ -1706,6 +1724,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
+    d->pendingRecomputes.clear();
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
@@ -1794,7 +1813,7 @@ Document::readObjects(Base::XMLReader& reader)
 }
 
 void Document::addRecomputeObject(DocumentObject *obj) {
-    if(testStatus(Status::Importing) && obj)
+    if(testStatus(Status::Restoring) && obj)
         d->pendingRecomputes.push_back(obj);
 }
 
@@ -1804,7 +1823,6 @@ Document::importObjects(Base::XMLReader& reader)
     d->hashers.clear();
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
-    d->pendingRecomputes.clear();
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -1832,17 +1850,6 @@ Document::importObjects(Base::XMLReader& reader)
 
     signalImportObjects(objs, reader);
     afterRestore(objs);
-
-    if(d->pendingRecomputes.size()) {
-        for(auto obj : d->pendingRecomputes) {
-            if(obj) {
-                FC_LOG("recompute '" << obj->getNameInDocument() << "' after restore");
-                obj->touch();
-            }
-        }
-        recompute(objs);
-    }
-    d->pendingRecomputes.clear();
 
     signalFinishImportObjects(objs);
     d->hashers.clear();
@@ -2124,6 +2131,17 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
 
         signalFinishRestoreObject(*obj);
     }
+
+    if(d->pendingRecomputes.size()) {
+        for(auto obj : d->pendingRecomputes) {
+            if(obj) {
+                FC_LOG("recompute '" << obj->getNameInDocument() << "' after restore");
+                obj->touch();
+            }
+        }
+        // recompute(objs);
+    }
+    d->pendingRecomputes.clear();
 }
 
 bool Document::isSaved() const

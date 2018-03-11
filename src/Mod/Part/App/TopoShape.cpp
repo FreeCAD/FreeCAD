@@ -454,6 +454,12 @@ TopoShape TopoShape::getSubTopoShape(const char *Type) const {
     return ret;
 }
 
+std::string TopoShape::getElementMapVersion() const{
+    std::ostringstream ss;
+    ss << TOPOP_VERSION << '.' << Data::ComplexGeoData::getElementMapVersion();
+    return ss.str();
+}
+
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
         const char *op, bool mapAll, bool appendTag) 
 {

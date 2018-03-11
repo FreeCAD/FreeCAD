@@ -132,12 +132,13 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
 
 DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
         std::pair<std::string,std::string> &elementName, bool append, 
-        ElementNameType type, const DocumentObject *filter)
+        ElementNameType type, const DocumentObject *filter, const char **_element)
 {
     const char *element = 0;
     if(!obj || !obj->getNameInDocument())
         return 0;
     obj = obj->resolve(subname,0,0,&element);
+    if(_element) *_element = element;
     if(!obj)
         return 0;
     obj = obj->getLinkedObject(true);
@@ -162,16 +163,36 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return obj;
 }
 
+std::string GeoFeature::getElementMapVersion() const {
+    auto prop = getPropertyOfGeometry();
+    if(!prop || !prop->getComplexData()) return std::string();
+    std::ostringstream ss;
+    if(getDocument() && getDocument()->Hasher==prop->getComplexData()->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << prop->getComplexData()->getElementMapVersion();
+    return ss.str();
+}
+
 void GeoFeature::updateElementReference() {
     auto prop = getPropertyOfGeometry();
     if(!prop) return;
     auto geo = prop->getComplexData();
     if(!geo || !geo->getElementMapSize()) return;
     auto elementMap = geo->getElementMap();
-    if(_elementMapCache != elementMap) {
+    bool reset = false;
+    auto version = getElementMapVersion();
+    if(_elementMapVersion.empty()) 
+        _elementMapVersion.swap(version);
+    else if(_elementMapVersion!=version) {
+        reset = true;
+        _elementMapVersion.swap(version);
+    }
+    if(reset || _elementMapCache!=elementMap) {
         _elementMapCache.swap(elementMap);
         for(auto obj : getInListEx(true))
-            PropertyLinkSub::updateElementReferences(this,obj);
+            PropertyLinkSub::updateElementReferences(this,obj,reset);
     }
 }
 
@@ -182,6 +203,7 @@ void GeoFeature::onChanged(const Property *prop) {
 }
 
 void GeoFeature::onDocumentRestored() {
+    _elementMapVersion = getElementMapVersion();
     if(!getDocument()->testStatus(Document::Status::Importing))
         updateElementReference();
     DocumentObject::onDocumentRestored();

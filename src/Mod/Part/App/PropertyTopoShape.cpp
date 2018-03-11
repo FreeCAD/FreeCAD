@@ -56,6 +56,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
+#include <App/GeoFeature.h>
 
 #include "PartPyCXX.h"
 #include "PropertyTopoShape.h"
@@ -68,6 +69,8 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeCompoundPy.h"
+
+FC_LOG_LEVEL_INIT("PropShape",true,true);
 
 using namespace Part;
 
@@ -85,6 +88,9 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 {
     aboutToSetValue();
     _Shape = sh;
+    auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(obj)
+        _Shape.Tag = obj->getID();
     hasSetValue();
 }
 
@@ -224,13 +230,17 @@ void PropertyPartShape::Save (Base::Writer &writer) const
             }
         }
         if(_Shape.getElementMapSize()) {
-            if(owner && owner->getDocument()->isExporting())
-                // when exporting, do not export mapped element name, but still make a mark
-                writer.Stream() << "\" ElementMap=\"1";
-            else {
-                writer.Stream() << "\" ElementMap=\"2";
-                saveMap = true;
+            std::string version;
+            // If exporting, do not export mapped element name, but still make a mark
+            if(owner && !owner->getDocument()->isExporting()) {
+                auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
+                if(geofeature)
+                    version = geofeature->getElementMapVersion();
+                else
+                    version = _Shape.getElementMapVersion();
             }
+            writer.Stream() << "\" ElementMap=\"" << version;
+            saveMap = !version.empty();
         }
         writer.Stream() << "\"/>" << std::endl;
 
@@ -253,18 +263,29 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
 
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     int hasher_idx = reader.hasAttribute("HasherIndex")?reader.getAttributeAsInteger("HasherIndex"):-1;
-    int map = reader.hasAttribute("ElementMap")?reader.getAttributeAsInteger("ElementMap"):0;
+    const char *map_ver = reader.hasAttribute("ElementMap")?reader.getAttribute("ElementMap"):0;
     if(owner && hasher_idx>=0) {
         _Shape.Hasher = owner->getDocument()->getStringHasher(hasher_idx);
         if(reader.hasAttribute("SaveHasher"))
             _Shape.Hasher->Restore(reader);
     }
-    if(map) {
-        if(map == 1) {
-            // type 1 marks the need for recompute after import
+    if(map_ver) {
+        if(map_ver[0] == 0) {
+            // empty string marks the need for recompute after import
             if(owner) owner->getDocument()->addRecomputeObject(owner);
-        }else if(map==2)
-            _Shape.Restore(reader);
+        }else {
+            // type > 2 marks a version number obtained from geo feature.
+            auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
+            auto ver = geofeature?geofeature->getElementMapVersion():_Shape.getElementMapVersion();
+            if(ver!=map_ver) {
+                // version mismatch, signal for regenerating.
+                if(owner && owner->getNameInDocument()) {
+                    FC_WARN("geo element map version changed: " << owner->getNameInDocument());
+                    owner->getDocument()->addRecomputeObject(owner);
+                }
+            }else
+                _Shape.Restore(reader);
+        }
     }
 }
 

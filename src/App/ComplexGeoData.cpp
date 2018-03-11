@@ -179,6 +179,14 @@ const char *ComplexGeoData::isMappedElement(const char *name) {
     return 0;
 }
 
+std::string ComplexGeoData::getElementMapVersion() const {
+    std::ostringstream ss;
+    ss << 1;
+    if(Hasher) 
+        ss << '.' << (Hasher->getThreshold()>0?Hasher->getThreshold():0);
+    return ss.str();
+}
+
 std::string ComplexGeoData::newElementName(const char *name) {
     if(!name) return std::string();
     const char *dot = strrchr(name,'.');

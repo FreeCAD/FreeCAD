@@ -72,6 +72,10 @@ PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
     return Py::new_reference_to(Py::None());
 }
 
+Py::String GeoFeaturePy::getElementMapVersion() const {
+    return Py::String(getGeoFeaturePtr()->getElementMapVersion());
+}
+
 PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

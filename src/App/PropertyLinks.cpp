@@ -591,23 +591,23 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
 }
 
-void PropertyLinkSub::updateElementReferences(DocumentObject *feature, DocumentObject *obj) {
+void PropertyLinkSub::updateElementReferences(DocumentObject *feature, DocumentObject *obj, bool reverse) {
     std::vector<Property*> props;
     obj->getPropertyList(props);
     for(auto prop : props) {
         auto linksub = dynamic_cast<PropertyLinkSub*>(prop);
         if(linksub) {
-            linksub->updateElementReference(feature);
+            linksub->updateElementReference(feature,reverse);
             continue;
         }
         auto linksubs = dynamic_cast<PropertyLinkSubList*>(prop);
         if(linksubs) {
-            linksubs->updateElementReference(feature);
+            linksubs->updateElementReference(feature,reverse);
             continue;
         }
         auto xlink = dynamic_cast<PropertyXLink*>(prop);
         if(xlink) {
-            linksubs->updateElementReference(feature);
+            xlink->updateElementReference(feature,reverse);
             continue;
         }
     }
@@ -615,12 +615,15 @@ void PropertyLinkSub::updateElementReferences(DocumentObject *feature, DocumentO
 
 bool PropertyLinkSub::updateElementReference(DocumentObject *feature,
         App::DocumentObject *obj, std::string &sub,
-        std::pair<std::string,std::string> &shadow)
+        std::pair<std::string,std::string> &shadow, bool reverse)
 {
     if(!obj || !obj->getNameInDocument()) return false;
     std::pair<std::string,std::string> elementName;
-    if(!GeoFeature::resolveElement(obj,shadow.first.size()?shadow.first.c_str():sub.c_str(),
-                elementName,true,GeoFeature::ElementNameType::Export,feature))
+    const char *subname = reverse?shadow.second.c_str():shadow.first.c_str();
+    if(!subname[0])
+        subname = sub.c_str();
+    if(!GeoFeature::resolveElement(obj,subname, elementName,true,
+                GeoFeature::ElementNameType::Export,feature))
         return false;
     if(elementName.first.empty())
         return false;
@@ -643,7 +646,7 @@ bool PropertyLinkSub::updateElementReference(DocumentObject *feature,
     return false;
 }
 
-void PropertyLinkSub::updateElementReference(DocumentObject *feature) {
+void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse) {
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_cSubList.size());
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
@@ -651,7 +654,7 @@ void PropertyLinkSub::updateElementReference(DocumentObject *feature) {
     int i=0;
     bool touched = false;
     for(auto &sub : _cSubList) {
-        if(updateElementReference(feature,_pcLinkSub,sub,_ShadowSubList[i++]))
+        if(updateElementReference(feature,_pcLinkSub,sub,_ShadowSubList[i++],reverse))
             touched = true;
     }
     for(int idx : _mapped) {
@@ -663,6 +666,10 @@ void PropertyLinkSub::updateElementReference(DocumentObject *feature) {
     _mapped.clear();
     if(touched)
         touch();
+}
+
+bool PropertyLinkSub::referenceChanged() const {
+    return !_mapped.empty();
 }
 
 static std::string importSubName(Base::XMLReader &reader, const char *sub) {
@@ -729,6 +736,7 @@ static std::string tryImportSubName(const std::map<std::string,std::string> &nam
 
 #define ATTR_SHADOW "shadowed"
 #define ATTR_MAPPED "mapped"
+#define ATTR_VERSION "version"
 
 void PropertyLinkSub::Save (Base::Writer &writer) const
 {
@@ -739,7 +747,12 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
     // returns 0
     if (_pcLinkSub && _pcLinkSub->getNameInDocument())
         internal_name = _pcLinkSub->getExportName();
-    writer.Stream() << writer.ind() << "<LinkSub value=\"" <<  internal_name <<"\" count=\"" <<  _cSubList.size() <<"\">" << std::endl;
+    writer.Stream() << writer.ind() << "<LinkSub value=\"" 
+        <<  internal_name <<"\" count=\"" <<  _cSubList.size();
+    auto geofeature = dynamic_cast<GeoFeature*>(_pcLinkSub);
+    if(geofeature)
+        writer.Stream() << "\" " ATTR_VERSION "=\"" << geofeature->getElementMapVersion();
+    writer.Stream() << "\">" << std::endl;
     writer.incInd();
     bool exporting = _pcLinkSub&&_pcLinkSub->getNameInDocument()&&_pcLinkSub->getDocument()->isExporting();
     for(unsigned int i = 0;i<_cSubList.size(); i++) {
@@ -779,20 +792,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
     App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
 
-    std::vector<int> mapped;
-    std::vector<std::string> values(count);
-    // Sub may store '.' separated object names, so be aware of the possible mapping when import
-    for (int i = 0; i < count; i++) {
-        reader.readElement("Sub");
-        values[i] = importSubName(reader,reader.getAttribute(
-                    reader.hasAttribute(ATTR_SHADOW)?ATTR_SHADOW:"value"));
-        if(reader.hasAttribute(ATTR_MAPPED))
-            mapped.push_back(i);
-    }
-
-    reader.readEndElement("LinkSub");
-
-    DocumentObject *pcObject;
+    DocumentObject *pcObject = 0;
     if (!name.empty()) {
         pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject) {
@@ -801,6 +801,31 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
                                         "an object was not loaded correctly\n",name.c_str());
             }
         }
+    }
+
+    bool map_attr = false;
+    if(reader.hasAttribute(ATTR_VERSION)) {
+        auto geofeature = dynamic_cast<GeoFeature*>(pcObject);
+        if(geofeature && geofeature->getElementMapVersion()!=reader.getAttribute(ATTR_VERSION))
+            map_attr = true;
+    }
+
+    std::vector<int> mapped;
+    std::vector<std::string> values(count);
+    // Sub may store '.' separated object names, so be aware of the possible mapping when import
+    for (int i = 0; i < count; i++) {
+        reader.readElement("Sub");
+        const char *attr = "value";
+        if(!map_attr && reader.hasAttribute(ATTR_SHADOW))
+            attr = ATTR_SHADOW;
+        values[i] = importSubName(reader,reader.getAttribute(attr));
+        if(map_attr || reader.hasAttribute(ATTR_MAPPED))
+            mapped.push_back(i);
+    }
+
+    reader.readEndElement("LinkSub");
+
+    if(pcObject) {
         setValue(pcObject,values);
         _mapped.swap(mapped);
     }
@@ -1250,14 +1275,14 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
     }
 }
 
-void PropertyLinkSubList::updateElementReference(DocumentObject *feature) {
+void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool reverse) {
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_lSubList.size());
     int i=0;
     bool touched = false;
     for(auto &sub : _lSubList) {
         auto obj = _lValueList[i];
-        if(PropertyLinkSub::updateElementReference(feature,obj,sub,_ShadowSubList[i++]))
+        if(PropertyLinkSub::updateElementReference(feature,obj,sub,_ShadowSubList[i++],reverse))
             touched = true;
     }
     for(int idx : _mapped) {
@@ -1269,6 +1294,10 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature) {
     _mapped.clear();
     if(touched)
         touch();
+}
+
+bool PropertyLinkSubList::referenceChanged() const{
+    return !_mapped.empty();
 }
 
 void PropertyLinkSubList::Save (Base::Writer &writer) const
@@ -1305,6 +1334,9 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
                 // we will restore this shadowed value instead.
                 writer.Stream() << "\" " ATTR_SHADOW "=\"" << _lSubList[i];
             }
+            auto geofeature = dynamic_cast<GeoFeature*>(obj);
+            if(geofeature)
+                writer.Stream() << "\" " ATTR_VERSION << "=\"" << geofeature->getElementMapVersion();
         }
         writer.Stream() << "\"/>" << endl;
     }
@@ -1337,9 +1369,18 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child) {
             values.push_back(child);
-            SubNames.push_back(importSubName(reader,reader.getAttribute(
-                            reader.hasAttribute(ATTR_SHADOW)?ATTR_SHADOW:"sub")));
-            if(reader.hasAttribute(ATTR_MAPPED))
+            const char *attr = "sub";
+            bool map_attr = reader.hasAttribute(ATTR_MAPPED);
+            if(reader.hasAttribute(ATTR_SHADOW)) {
+                auto geofeature = dynamic_cast<GeoFeature*>(child);
+                if(geofeature && reader.hasAttribute(ATTR_VERSION) &&
+                   reader.getAttribute(ATTR_VERSION) != geofeature->getElementMapVersion())
+                    map_attr = true;
+                else
+                    attr = ATTR_SHADOW;
+            }
+            SubNames.push_back(importSubName(reader,reader.getAttribute(attr)));
+            if(map_attr)
                 mapped.push_back(i);
         } else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
@@ -1915,12 +1956,12 @@ bool PropertyXLink::isRestored() const {
         stamp==docInfo->pcDoc->LastModifiedDate.getValue();
 }
 
-void PropertyXLink::updateElementReference(DocumentObject *feature) {
+void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse) {
     if(!feature) {
         shadowSub.first.clear();
         shadowSub.second.clear();
     }
-    bool touched = PropertyLinkSub::updateElementReference(feature,_pcLink,subName,shadowSub);
+    bool touched = PropertyLinkSub::updateElementReference(feature,_pcLink,subName,shadowSub,reverse);
     if(_mapped && shadowSub.first.size()) {
         touched = true;
         subName = shadowSub.first;
@@ -1928,6 +1969,10 @@ void PropertyXLink::updateElementReference(DocumentObject *feature) {
     _mapped = false;
     if(touched)
         touch();
+}
+
+bool PropertyXLink::referenceChanged() const{
+    return !_mapped;
 }
 
 void PropertyXLink::Save (Base::Writer &writer) const {
@@ -1982,6 +2027,9 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         // Stores the actual value that is shadowed. For new version FC,
         // we will restore this shadowed value instead.
         writer.Stream() << "\" " ATTR_SHADOW "=\"" << subName;
+        auto geofeature = dynamic_cast<GeoFeature*>(_pcLink);
+        if(geofeature)
+            writer.Stream() << "\" " ATTR_VERSION "=\"" << geofeature->getElementMapVersion();
     }
     writer.Stream() << "\"/>" << std::endl;
 }
@@ -2008,13 +2056,28 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
     DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
     Document *document = parent->getDocument();
+    DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
+    if(!object) {
+        if(reader.isVerbose()) {
+            FC_WARN("Lost link to '" << name << "' while loading, maybe "
+                    "an object was not loaded correctly");
+        }
+    }
 
     std::string subname;
-    if(reader.getAttribute("sub")) {
-        subname = importSubName(reader,reader.getAttribute(
-                    reader.hasAttribute(ATTR_SHADOW)?ATTR_SHADOW:"sub"));
-    }
     bool mapped = reader.hasAttribute(ATTR_MAPPED);
+    if(reader.hasAttribute("sub")) {
+        const char *attr = "sub";
+        if(reader.hasAttribute(ATTR_SHADOW)) {
+            auto geofeature = dynamic_cast<GeoFeature*>(object);
+            if(geofeature && reader.hasAttribute(ATTR_VERSION) &&
+               geofeature->getElementMapVersion() != reader.getAttribute(ATTR_VERSION))
+                mapped = true;
+            else
+                attr = ATTR_SHADOW;
+        }
+        subname = importSubName(reader,reader.getAttribute(attr));
+    }
 
     if (name.empty()) {
         setValue(0);
@@ -2028,13 +2091,6 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         return;
     }
 
-    DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
-    if(!object) {
-        if(reader.isVerbose()) {
-            FC_WARN("Lost link to '" << name << "' while loading, maybe "
-                    "an object was not loaded correctly");
-        }
-    }
     setValue(object,subname.c_str(),relativePath);
     _mapped = mapped;
 }

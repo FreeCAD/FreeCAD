@@ -33,6 +33,12 @@ for a mesh the value Mesh and so on.
 If an object has no such property then None is returned.</UserDocu>
       </Documentation>
     </Methode>
+    <Attribute Name="ElementMapVersion" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Element map version</UserDocu>
+        </Documentation>
+        <Parameter Name="ElementMapVersion" Type="String" />
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

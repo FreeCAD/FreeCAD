@@ -80,5 +80,11 @@ to one element
 		  </Documentation>
 		  <Parameter Name="ElementTypes" Type="Tuple" />
 	  </Attribute>
+      <Attribute Name="ElementMapVersion" ReadOnly="true">
+		  <Documentation>
+              <UserDocu>Element map version</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ElementMapVersion" Type="String" />
+	  </Attribute>
   </PythonExport>
 </GenerateModel>

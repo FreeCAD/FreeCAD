@@ -98,6 +98,15 @@ public:
      */
     virtual std::pair<std::string,std::string> getElementName(
             const char *name, ElementNameType type=Normal) const;
+
+    /** Return the current element map version of this feature
+     *
+     * The naming version should be saved by both this feature, i.e. the owner
+     * of the geometry data, and links to any geometry element of this feature.
+     * In case the version mismatch during restore, we can signal regeneration
+     * of all element names and update their references.
+     */
+    virtual std::string getElementMapVersion() const;
        
     /** Resolve both the new and old style element name
      *
@@ -109,12 +118,14 @@ public:
      * @param type: the type of element name to request
      * @param filter: If none zero, then only perform lookup when the element
      *                owner object is the same as this filter
+     * @param element: return the start of element name in subname
      *
      * @return Return the owner object of the element
      */
     static DocumentObject *resolveElement(App::DocumentObject *obj, 
             const char *subname, std::pair<std::string,std::string> &elementName, 
-            bool append=false, ElementNameType type=Normal,const DocumentObject *filter=0);
+            bool append=false, ElementNameType type=Normal,
+            const DocumentObject *filter=0,const char **element=0);
 
     /**
      * @brief Calculates the placement in the global reference coordinate system
@@ -137,6 +148,7 @@ protected:
 
 private:
     std::map<std::string,std::string> _elementMapCache;
+    std::string _elementMapVersion;
 };
 
 } //namespace App

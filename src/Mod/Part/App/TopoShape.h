@@ -284,7 +284,18 @@ public:
     void mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
             const char *op=0, bool mapAll=true,bool appendTag=true);
     void mapSubElementsTo(TopAbs_ShapeEnum type, std::vector<TopoShape> &shapes, 
-            const char *op=0, bool mapAll=true) const;
+            const char *op=0, bool mapAll=true,bool appendTag=false) const;
+
+    bool canMapElement() const{
+        return !isNull() && (Tag!=0 || getElementMapSize()!=0);
+    }
+
+    bool canMapElement(const TopoShape &other) const{
+        return !isNull() && other.canMapElement();
+    }
+
+    virtual std::string getElementMapVersion() const override;
+    //@}
 
 public:
     /** Shape tag 

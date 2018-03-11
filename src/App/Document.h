@@ -115,6 +115,8 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
+    /// Whether to use hasher on topological naming
+    PropertyBool UseHasher;
     //@}
 
     StringHasherRef Hasher;
@@ -450,8 +452,9 @@ public:
 
     /** Called by property to restore its containing StringHasher
      *
-     * @param index: the index previously returned by calling
-     * addStringHasher() during save.
+     * @param index: the index previously returned by calling addStringHasher()
+     * during save. Or if is negative, then return document's own string hasher
+     * if UseHasher is True
      *
      * @return Return the resulting string hasher.
      *
@@ -459,7 +462,7 @@ public:
      * owner of the hasher, i.e. return addStringHasher() returns true during
      * save
      */
-    StringHasherRef getStringHasher(int index) const;
+    StringHasherRef getStringHasher(int index=-1) const;
 
     /** Return the object linked to this object
      *

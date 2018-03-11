@@ -236,6 +236,8 @@ public:
     
     /// Get the current element map size
     size_t getElementMapSize() const;
+
+    virtual std::string getElementMapVersion() const;
     //@}
 
     /** @name Save/restore */

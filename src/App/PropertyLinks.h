@@ -303,11 +303,12 @@ public:
         return sizeof(App::DocumentObject *);
     }
 
-    static void updateElementReferences(DocumentObject *feature, DocumentObject *obj);
+    static void updateElementReferences(DocumentObject *feature, DocumentObject *obj, bool reverse=false);
     static bool updateElementReference(DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow);
+        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
 
-    void updateElementReference(DocumentObject *feature);
+    void updateElementReference(DocumentObject *feature,bool reverse=false);
+    bool referenceChanged() const;
 
 protected:
     App::DocumentObject*     _pcLinkSub;
@@ -409,7 +410,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-    void updateElementReference(DocumentObject *feature);
+    void updateElementReference(DocumentObject *feature,bool reverse=false);
+    bool referenceChanged() const;
 
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
@@ -483,7 +485,8 @@ public:
     static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
 
-    void updateElementReference(DocumentObject *feature);
+    void updateElementReference(DocumentObject *feature,bool reverse=false);
+    bool referenceChanged() const;
 
 protected:
     void unlink();

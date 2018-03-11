@@ -205,6 +205,10 @@ Py::Tuple ComplexGeoDataPy::getElementTypes() const {
     return ret;
 } 
 
+Py::String ComplexGeoDataPy::getElementMapVersion() const {
+    return Py::String(getComplexGeoDataPtr()->getElementMapVersion());
+}
+
 PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

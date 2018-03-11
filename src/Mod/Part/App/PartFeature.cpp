@@ -57,6 +57,7 @@
 #include <Base/Rotation.h>
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/Document.h>
 
 #include "PartPyCXX.h"
 #include "PartFeature.h"
