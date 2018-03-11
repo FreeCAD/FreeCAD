@@ -45,9 +45,11 @@
 #endif
 
 
+#include "TopoShapeOpCode.h"
 #include "FeatureExtrusion.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <App/Document.h>
 #include "Part2DObject.h"
 
 
@@ -234,9 +236,11 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
 }
 
-TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionParameters params)
+TopoShape Extrusion::extrudeShape(const TopoShape &source, Extrusion::ExtrusionParameters params,
+        App::StringHasherRef hasher, const char *op)
 {
-    TopoDS_Shape result;
+    if(!op) op = TOPOP_EXTRUDE;
+    TopoShape result;
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd+params.lengthRev);//total vector of extrusion
 
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
@@ -245,73 +249,53 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        TopoDS_Shape myShape = source.getShape();
-        if (myShape.IsNull())
+        if (source.isNull())
             Standard_Failure::Raise("Cannot extrude empty shape");
         // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        myShape = BRepBuilderAPI_Copy(myShape).Shape();
+        TopoShape myShape(source.makECopy());
 
-        std::list<TopoDS_Shape> drafts;
-        makeDraft(params, myShape, drafts);
+        std::vector<TopoShape> drafts;
+        makeDraft(params, myShape, drafts,op);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
-        }
-        else if (drafts.size() == 1) {
-            result = drafts.front();
-        }
-        else {
-            TopoDS_Compound comp;
-            BRep_Builder builder;
-            builder.MakeCompound(comp);
-            for (std::list<TopoDS_Shape>::iterator it = drafts.begin(); it != drafts.end(); ++it)
-                builder.Add(comp, *it);
-            result = comp;
-        }
+        }else
+            result = TopoShape(source.Tag).makECompound(drafts,true,op,false);
     }
     else {
         //Regular (non-tapered) extrusion!
-        TopoDS_Shape myShape = source.getShape();
-        if (myShape.IsNull())
+        if (source.isNull())
             Standard_Failure::Raise("Cannot extrude empty shape");
 
         // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        myShape = BRepBuilderAPI_Copy(myShape).Shape();
+        TopoShape myShape(source.makECopy());
 
         //apply reverse part of extrusion by shifting the source shape
         if (fabs(params.lengthRev)>Precision::Confusion() ){
             gp_Trsf mov;
             mov.SetTranslation(gp_Vec(params.dir)*(-params.lengthRev));
             TopLoc_Location loc(mov);
-            myShape.Move(loc);
+            myShape.setShape(myShape.getShape().Moved(loc),false);
         }
 
         //make faces from wires
         if (params.solid) {
             //test if we need to make faces from wires. If there are faces - we don't.
-            TopExp_Explorer xp(myShape, TopAbs_FACE);
+            TopExp_Explorer xp(myShape.getShape(), TopAbs_FACE);
             if (xp.More()){
                 //source shape has faces. Just extrude as-is.
             } else {
-                std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
-
-                if (myShape.ShapeType() == TopAbs_COMPOUND)
-                    mkFace->useCompound(TopoDS::Compound(myShape));
-                else
-                    mkFace->addShape(myShape);
-                mkFace->Build();
-                myShape = mkFace->Shape();
+                myShape = myShape.makEFace(0,params.faceMakerClass.c_str());
             }
         }
 
         //extrude!
-        BRepPrimAPI_MakePrism mkPrism(myShape, vec);
-        result = mkPrism.Shape();
+        BRepPrimAPI_MakePrism mkPrism(myShape.getShape(), vec);
+        result = TopoShape(source.Tag,hasher).makEShape(mkPrism,myShape,op,false);
     }
 
-    if (result.IsNull())
+    if (result.isNull())
         throw Base::Exception("Result of extrusion is null shape.");
-    return TopoShape(result);
-
+    return result;
 }
 
 App::DocumentObjectExecReturn *Extrusion::execute(void)
@@ -322,7 +306,8 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
     try {
         Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(Feature::getShape(link),params);
+        TopoShape result = extrudeShape(Feature::getTopoShape(link),params,
+                getDocument()->getStringHasher());
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
@@ -331,7 +316,8 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     }
 }
 
-void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape, std::list<TopoDS_Shape>& drafts)
+void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape, 
+        std::vector<TopoShape>& drafts, const char *op)
 {
     double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;
     double distanceRev = tan(params.taperAngleRev)*params.lengthRev;
@@ -343,33 +329,36 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
     bool bRev = fabs(params.lengthRev) > Precision::Confusion();
     bool bMid = !bFwd || !bRev || params.lengthFwd*params.lengthRev > 0.0; //include the source shape as loft section?
 
-    TopoDS_Wire sourceWire;
+    const auto &shape = _shape.getShape();
+    TopoShape sourceWire;
     if (shape.IsNull())
         Standard_Failure::Raise("Not a valid shape");
     if (shape.ShapeType() == TopAbs_WIRE) {
+        sourceWire = _shape;
         ShapeFix_Wire aFix;
         aFix.Load(TopoDS::Wire(shape));
         aFix.FixReorder();
         aFix.FixConnected();
         aFix.FixClosed();
-        sourceWire = aFix.Wire();
+        sourceWire.setShape(aFix.Wire(),false);
     }
     else if (shape.ShapeType() == TopAbs_FACE) {
         TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
-        sourceWire = outerWire;
+        sourceWire.setShape(outerWire);
+        sourceWire.Tag = _shape.Tag;
+        sourceWire.mapSubElement(TopAbs_EDGE,_shape,0,false);
     }
     else if (shape.ShapeType() == TopAbs_COMPOUND) {
-        TopoDS_Iterator it(shape);
-        for (; it.More(); it.Next()) {
-            makeDraft(params, it.Value(), drafts);
+        for(auto &s : _shape.getSubTopoShapes()) {
+            makeDraft(params, s, drafts,op);
         }
     }
     else {
         Standard_Failure::Raise("Only a wire or a face is supported");
     }
 
-    if (!sourceWire.IsNull()) {
-        std::list<TopoDS_Wire> list_of_sections;
+    if (!sourceWire.isNull()) {
+        std::vector<TopoShape> list_of_sections;
 
         //first. add wire for reversed part of extrusion
         if (bRev){
@@ -385,29 +374,23 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 #endif
             gp_Trsf mat;
             mat.SetTranslation(translation);
-            TopLoc_Location loc(mat);
-            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
+            TopoShape offsetShape(sourceWire.makETransform(mat,"RV"));
 
-            TopoDS_Shape offsetShape;
             if (fabs(offset)>Precision::Confusion()){
-                mkOffset.AddWire(movedSourceWire);
+                mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
                 mkOffset.Perform(offset);
 
-                offsetShape = mkOffset.Shape();
-            } else {
-                //stupid OCC doesn't understand, what to do when offset value is zero =/
-                offsetShape = movedSourceWire;
+                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET,false);
             }
 
-            if (offsetShape.IsNull())
+            if (offsetShape.isNull())
                 Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = offsetShape.ShapeType();
+            TopAbs_ShapeEnum type = offsetShape.getShape().ShapeType();
             if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(offsetShape));
+                list_of_sections.push_back(offsetShape);
             }
             else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
-                list_of_sections.push_back(mkWire.Wire());
+                list_of_sections.push_back(offsetShape.makEWires());
             }
             else {
                 Standard_Failure::Raise("Tapered shape type is not supported");
@@ -433,29 +416,23 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 #endif
             gp_Trsf mat;
             mat.SetTranslation(translation);
-            TopLoc_Location loc(mat);
-            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
+            TopoShape offsetShape(sourceWire.makETransform(mat,"FW"));
 
-            TopoDS_Shape offsetShape;
             if (fabs(offset)>Precision::Confusion()){
-                mkOffset.AddWire(movedSourceWire);
+                mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
                 mkOffset.Perform(offset);
 
-                offsetShape = mkOffset.Shape();
-            } else {
-                //stupid OCC doesn't understand, what to do when offset value is zero =/
-                offsetShape = movedSourceWire;
+                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET,false);
             }
 
-            if (offsetShape.IsNull())
+            if (offsetShape.isNull())
                 Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = offsetShape.ShapeType();
+            TopAbs_ShapeEnum type = offsetShape.getShape().ShapeType();
             if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(offsetShape));
+                list_of_sections.push_back(offsetShape);
             }
             else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
-                list_of_sections.push_back(mkWire.Wire());
+                list_of_sections.push_back(offsetShape.makEWires());
             }
             else {
                 Standard_Failure::Raise("Tapered shape type is not supported");
@@ -464,17 +441,15 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 
         //make loft
         BRepOffsetAPI_ThruSections mkGenerator(params.solid ? Standard_True : Standard_False, /*ruled=*/Standard_True);
-        for (std::list<TopoDS_Wire>::const_iterator it = list_of_sections.begin(); it != list_of_sections.end(); ++it) {
-            const TopoDS_Wire &wire = *it;
-            mkGenerator.AddWire(wire);
-        }
+        for(auto &shape : list_of_sections)
+            mkGenerator.AddWire(TopoDS::Wire(shape.getShape()));
 
         try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
             Base::SignalException se;
 #endif
             mkGenerator.Build();
-            drafts.push_back(mkGenerator.Shape());
+            drafts.push_back(TopoShape().makEShape(mkGenerator,list_of_sections,op,false));
         }
         catch (Standard_Failure &){
             throw;

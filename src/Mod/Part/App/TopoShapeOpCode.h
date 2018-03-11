@@ -47,7 +47,6 @@
 #define TOPOP_SECTION   "SEC"
 #define TOPOP_SLICE     "SLC"
 #define TOPOP_MAKER     "MAK"
-#define TOPOP_MLTI      "MMK"
 #define TOPOP_FILLET    "FLT"
 #define TOPOP_CHAMFER   "CHF"
 #define TOPOP_THICKEN   "THK"

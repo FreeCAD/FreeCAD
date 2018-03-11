@@ -26,6 +26,7 @@
 # include <BRepAlgoAPI_Section.hxx>
 #endif
 
+#include "TopoShapeOpCode.h"
 #include "FeaturePartSection.h"
 
 #include <Base/Exception.h>
@@ -37,6 +38,10 @@ PROPERTY_SOURCE(Part::Section, Part::Boolean)
 
 Section::Section(void)
 {
+}
+
+const char *Section::opCode() const {
+    return TOPOP_SECTION;
 }
 
 BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const

@@ -49,6 +49,7 @@
 # include <Inventor/details/SoLineDetail.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "DlgFilletEdges.h"
 #include "ui_DlgFilletEdges.h"
 #include "SoBrepFaceSet.h"
@@ -60,6 +61,7 @@
 #include "../App/FeatureFillet.h"
 #include "../App/FeatureChamfer.h"
 #include <Base/UnitsApi.h>
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -73,6 +75,8 @@
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
+
+FC_LOG_LEVEL_INIT("Fillet",true,true);
 
 using namespace PartGui;
 
@@ -568,6 +572,11 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 {
     App::DocumentObject* base = d->fillet->Base.getValue();
     const std::vector<Part::FilletElement>& e = d->fillet->Edges.getValues();
+    const auto &subs = d->fillet->EdgeLinks.getShadowSubs();
+    if(subs.size()!=e.size()) {
+        FC_ERR("edge link size mismatch");
+        return;
+    }
     std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
     if (it != objs.end()) {
         // toggle visibility
@@ -589,7 +598,42 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
-        for (std::vector<Part::FilletElement>::const_iterator et = e.begin(); et != e.end(); ++et) {
+        auto baseShape = Part::Feature::getTopoShape(base);
+        std::set<Part::FilletElement> elements;
+        for(size_t i=0;i<e.size();++i) {
+            auto &sub = subs[i];
+            if(sub.first.empty()) {
+                elements.insert(e[i]);
+                continue;
+            }
+            auto ref = baseShape.newElementName(sub.first.c_str());
+            Part::TopoShape edge;
+            try {
+                edge = baseShape.getSubShape(ref.c_str());
+            }catch(...) {}
+            if(!edge.isNull())  {
+                elements.insert(e[i]);
+                continue;
+            }
+            FC_LOG("missing edge link: " << base->getNameInDocument() << "." << ref);
+            
+            auto names = baseShape.getElementNamesWithPrefix((ref+edge.modPostfix()).c_str());
+            if(names.empty()) {
+                auto pos = ref.rfind(edge.modPostfix());
+                if(pos!=std::string::npos)
+                    names = baseShape.getElementNamesWithPrefix(ref.substr(0,pos+1).c_str());
+            }
+            for(auto &name : names) {
+                int idx=0;
+                sscanf(name.second.c_str(),"Edge%d",&idx);
+                if(idx>0) {
+                    FC_LOG("guess edge link: " << ref << " -> " << (name.first.size()?name.first:name.second));
+                    elements.emplace(idx,e[i].radius1,e[i].radius2);
+                }
+            }
+        }
+
+        for (auto et=elements.begin();et!=elements.end();++et) {
             std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et->edgeid);
             if (it != d->edge_ids.end()) {
                 int index = it - d->edge_ids.begin();

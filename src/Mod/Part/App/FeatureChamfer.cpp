@@ -34,6 +34,8 @@
 #endif
 
 
+#include <App/Document.h>
+#include "TopoShapeOpCode.h"
 #include "FeatureChamfer.h"
 
 
@@ -53,11 +55,15 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         return new App::DocumentObjectExecReturn("No object linked");
 
     try {
-        TopoDS_Shape baseShape = Feature::getShape(link);
+        TopoShape baseTopoShape = Feature::getTopoShape(link);
+        auto baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeChamfer mkChamfer(baseShape);
-        TopTools_IndexedMapOfShape mapOfEdges;
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
         TopExp::MapShapesAndAncestors(baseShape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+
+
+#ifdef FC_NO_ELEMENT_MAP
+        TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
 
         std::vector<FilletElement> values = Edges.getValues();
@@ -73,7 +79,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
-        ShapeHistory history(mkChamfer, TopAbs_FACE, shape, baseShape);
+        ShapeHistory history(mkFillet, TopAbs_FACE, shape, baseTopoShape);
         this->Shape.setValue(shape);
 
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
@@ -81,6 +87,36 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         prop.setValue(history);
         prop.setContainer(this);
         prop.touch();
+
+#else
+        const auto &vals = EdgeLinks.getSubValues();
+        const auto &subs = EdgeLinks.getShadowSubs();
+        if(subs.size()!=(size_t)Edges.getSize())
+            return new App::DocumentObjectExecReturn("Edge link size mismatch");
+        size_t i=0;
+        for(const auto &info : Edges.getValues()) {
+            auto &sub = subs[i];
+            auto &ref = sub.first.size()?sub.first:vals[i];
+            ++i;
+            TopoDS_Shape edge;
+            try {
+                edge = baseTopoShape.getSubShape(ref.c_str());
+            }catch(...){}
+            if(edge.IsNull())
+                return new App::DocumentObjectExecReturn("Invalid edge link");
+            double radius1 = info.radius1;
+            double radius2 = info.radius2;
+            const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+            mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
+        }
+
+        TopoDS_Shape shape = mkChamfer.Shape();
+        if (shape.IsNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+        TopoShape res(getID(),getDocument()->getStringHasher());
+        this->Shape.setValue(res.makEShape(mkChamfer,baseTopoShape,TOPOP_CHAMFER));
+#endif
 
         return App::DocumentObject::StdReturn;
     }

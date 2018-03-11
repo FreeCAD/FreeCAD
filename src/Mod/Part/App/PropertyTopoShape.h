@@ -175,6 +175,13 @@ private:
 struct PartExport FilletElement {
     int edgeid;
     double radius1, radius2;
+
+    FilletElement(int id=0,double r1=1.0,double r2=1.0)
+        :edgeid(id),radius1(r1),radius2(r2)
+    {}
+    bool operator<(const FilletElement &other) const {
+        return edgeid < other.edgeid;
+    }
 };
 
 class PartExport PropertyFilletEdges : public App::PropertyLists

@@ -32,7 +32,9 @@
 #include "FeaturePartBoolean.h"
 #include "modelRefine.h"
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Parameter.h>
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
@@ -67,17 +69,25 @@ short Boolean::mustExecute() const
     return 0;
 }
 
+const char *Boolean::opCode() const {
+    return TOPOP_BOOLEAN;
+}
+
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
     try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
+        std::vector<TopoShape> shapes;
+        shapes.reserve(2);
         // Now, let's get the TopoDS_Shape
-        TopoDS_Shape BaseShape = Feature::getShape(Base.getValue());
+        shapes.push_back(Feature::getTopoShape(Base.getValue()));
+        auto BaseShape = shapes[0].getShape();
         if (BaseShape.IsNull())
             throw Base::Exception("Base shape is null");
-        TopoDS_Shape ToolShape = Feature::getShape(Tool.getValue());
+        shapes.push_back(Feature::getTopoShape(Tool.getValue()));
+        auto ToolShape = shapes[1].getShape();
         if (ToolShape.IsNull())
             throw Base::Exception("Tool shape is null");
 
@@ -99,6 +109,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             }
         }
 
+#ifdef FC_NO_ELEMENT_MAP
         std::vector<ShapeHistory> history;
         history.emplace_back(*mkBool.get(), TopAbs_FACE, resShape, BaseShape);
         history.emplace_back(*mkBool.get(), TopAbs_FACE, resShape, ToolShape);
@@ -119,6 +130,13 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 
         this->Shape.setValue(resShape);
         this->History.setValues(history);
+#else
+        TopoShape res(getID(),getDocument()->getStringHasher());
+        res.makEShape(*mkBool,shapes,opCode());
+        if (this->Refine.getValue()) 
+            res = res.makERefine();
+        this->Shape.setValue(res);
+#endif
         return App::DocumentObject::StdReturn;
     }
     catch (...) {

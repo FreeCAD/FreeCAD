@@ -26,6 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+#include <App/StringHasher.h>
 #include "PartFeature.h"
 #include "FaceMakerCheese.h"
 #include <TopoDS_Face.hxx>
@@ -87,7 +88,8 @@ public:
      * @param params: extrusion parameters
      * @return result of extrusion
      */
-    static TopoShape extrudeShape(TopoShape source, ExtrusionParameters params);
+    static TopoShape extrudeShape(const TopoShape &source, ExtrusionParameters params,
+            App::StringHasherRef hasher = App::StringHasherRef(), const char *op=0);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
@@ -121,7 +123,7 @@ public: //mode enumerations
     static const char* eDirModeStrings[];
 
 protected:
-    static void makeDraft(ExtrusionParameters params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
+    static void makeDraft(ExtrusionParameters params, const TopoShape&, std::vector<TopoShape>&, const char *);
 
 
 protected:

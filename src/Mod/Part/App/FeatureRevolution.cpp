@@ -36,6 +36,7 @@
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include "FaceMaker.h"
 
 using namespace Part;
@@ -150,15 +151,16 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             angle = angle_edge;
 
         //apply "midplane" symmetry
-        TopoShape sourceShape = Feature::getShape(link);
+        TopoShape sourceShape = Feature::getTopoShape(link);
         if (Symmetric.getValue()) {
             //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
             gp_Trsf mov;
             mov.SetRotation(revAx, angle * (-0.5));
             TopLoc_Location loc(mov);
-            sourceShape.setShape(sourceShape.getShape().Moved(loc));
+            sourceShape.setShape(sourceShape.getShape().Moved(loc),false);
         }
 
+#ifdef FC_NO_ELEMENT_MAP
         //"make solid" processing: make faces from wires.
         Standard_Boolean makeSolid = Solid.getValue() ? Standard_True : Standard_False;
         if (makeSolid){
@@ -190,6 +192,14 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (revolve.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(revolve);
+#else
+        TopoShape revolve(getID(),getDocument()->getStringHasher());
+        revolve.makERevolve(sourceShape,revAx,angle,Solid.getValue()?FaceMakerClass.getValue():0);
+        if (revolve.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+        this->Shape.setValue(revolve);
+
+#endif
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

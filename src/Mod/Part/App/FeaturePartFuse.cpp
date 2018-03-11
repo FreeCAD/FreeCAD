@@ -32,9 +32,11 @@
 #endif
 
 
+#include "TopoShapeOpCode.h"
 #include "FeaturePartFuse.h"
 #include "modelRefine.h"
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 
@@ -84,6 +86,7 @@ short MultiFuse::mustExecute() const
 
 App::DocumentObjectExecReturn *MultiFuse::execute(void)
 {
+#ifdef FC_NO_ELEMENT_MAP
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
 
@@ -221,5 +224,33 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         throw Base::Exception("Not enough shape objects linked");
     }
 
+#else
+
+    std::vector<TopoShape> shapes;
+    for(auto obj : Shapes.getValues()) {
+        TopoShape sh = Feature::getTopoShape(obj);
+        if(sh.isNull())
+            return new App::DocumentObjectExecReturn("Input shape is null");
+        shapes.push_back(sh);
+    }
+
+    TopoShape res(getID(),getDocument()->getStringHasher());
+    res.makEShape(TOPOP_FUSE,shapes);
+    if (res.isNull())
+        throw Base::RuntimeError("Resulting shape is null");
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    if (hGrp->GetBool("CheckModel", false)) {
+        BRepCheck_Analyzer aChecker(res.getShape());
+        if (! aChecker.IsValid() ) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+    }
+
+    if (this->Refine.getValue())
+        res = res.makERefine();
+    this->Shape.setValue(res);
+#endif
     return App::DocumentObject::StdReturn;
 }
