@@ -17,13 +17,13 @@ std::string UnitPy::representation(void) const
     std::stringstream ret;
     ret << "Unit: "; 
     ret << getUnitPtr()->getString().toUtf8().constData() << " (";
-    ret << Sig.Length << ",";                 
-    ret << Sig.Mass  << ",";                    
-    ret << Sig.Time  << ",";                   
-    ret << Sig.ElectricCurrent  << ",";        
+    ret << Sig.Length << ",";
+    ret << Sig.Mass  << ",";
+    ret << Sig.Time  << ",";
+    ret << Sig.ElectricCurrent  << ",";
     ret << Sig.ThermodynamicTemperature << ",";
-    ret << Sig.AmountOfSubstance  << ",";      
-    ret << Sig.LuminoseIntensity  << ",";      
+    ret << Sig.AmountOfSubstance  << ",";
+    ret << Sig.LuminousIntensity  << ",";
     ret << Sig.Angle  << ")"; 
     std::string type = getUnitPtr()->getTypeString().toUtf8().constData();
     if(! type.empty())
