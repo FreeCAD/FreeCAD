@@ -314,7 +314,7 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         void setGraphAttributes(const DocumentObject * obj) {
-            assert(GraphList[obj] != 0);
+            assert(GraphList.find(obj) != GraphList.end());
             get_property(*GraphList[obj], graph_name) = getClusterName(obj);
 
             get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
@@ -384,14 +384,16 @@ void Document::exportGraphviz(std::ostream& out) const
                             if (CSsubgraphs) {
                                 auto group = GeoFeatureGroupExtension::getGroupOfObject(o);
                                 auto graph2 = group ? GraphList[group] : &DepList;
-                                if (graph2)
+                                if (graph2) {
                                     GraphList[o] = &graph2->create_subgraph();
+                                    setGraphAttributes(o);
+                                }
                             }
                             else if (graph) {
                                 GraphList[o] = &graph->create_subgraph();
+                                setGraphAttributes(o);
                             }
 
-                            setGraphAttributes(o);
                         }
                         ++j;
                     }
@@ -567,6 +569,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     }
                 }
             }
+
         }
 
         // Filling up the adjacency List
