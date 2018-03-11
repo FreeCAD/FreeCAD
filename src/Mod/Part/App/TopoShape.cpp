@@ -175,6 +175,7 @@
 #include <BOPAlgo_ListOfCheckResult.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
@@ -194,12 +195,9 @@
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
 
-using namespace Part;
+FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
-namespace Part {
-    PartExport std::list<TopoDS_Edge> sort_Edges2(double tol3d, std::list<TopoDS_Edge>& edges,
-            std::deque<int> *hashes);
-}
+using namespace Part;
 
 const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError et)
 {
@@ -237,9 +235,10 @@ std::string ShapeSegment::getName() const
 
 TYPESYSTEM_SOURCE(Part::TopoShape , Data::ComplexGeoData);
 
-TopoShape::TopoShape()
-    :Tag(0)
+TopoShape::TopoShape(long tag,App::StringHasherRef hasher, const TopoDS_Shape &shape)
+    :Tag(tag), _Shape(shape)
 {
+    Hasher = hasher;
 }
 
 TopoShape::~TopoShape()
@@ -287,336 +286,88 @@ TopoDS_Shape TopoShape::getSubShape(const char* Type) const {
     return s.getSubTopoShape(Type).getShape();
 }
 
-void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
-        const TopoShape &other, const char *op, bool mapAll) {
-    if(!other.Tag || !Tag || isNull() || other.isNull()) 
-        return;
-    TopTools_IndexedMapOfShape shapeMap;
-    TopExp::MapShapes(_Shape, type, shapeMap);
-    mapSubElement(type,shapeMap,other,op,mapAll);
+TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int idx) const {
+    TopoShape s(*this);
+    s.Tag = 0;
+    return s.getSubTopoShape(type,idx).getShape();
 }
 
-void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const TopoShape &other,
-        const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll)
-{
-    if(!otherMap.Extent() || !other.Tag || !Tag || isNull() || other.isNull()) 
-        return;
-    TopTools_IndexedMapOfShape shapeMap;
-    TopExp::MapShapes(_Shape, type, shapeMap);
-    mapSubElement(type,shapeMap,other,otherMap,op,mapAll);
-}
+typedef std::map<TopAbs_ShapeEnum,std::string> ShapeNameMap;
+static  ShapeNameMap _ShapeNameMap;
 
-void TopoShape::mapSubElement(TopAbs_ShapeEnum type, 
-        const TopTools_IndexedMapOfShape &shapeMap, 
-        const TopoShape &other, const char *op, bool mapAll)
-{
-    if(!shapeMap.Extent() || !other.Tag || !Tag || isNull() || other.isNull()) 
-        return;
-    TopTools_IndexedMapOfShape otherMap;
-    TopExp::MapShapes(other._Shape, type, otherMap);
-    mapSubElement(type,shapeMap,other,otherMap,op,mapAll);
-}
-
-void TopoShape::mapSubElement(TopAbs_ShapeEnum type, 
-        const TopTools_IndexedMapOfShape &shapeMap, const TopoShape &other, 
-        const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll)
-{
-    if(!shapeMap.Extent() || !otherMap.Extent() || !other.Tag || !Tag || isNull() || other.isNull()) 
-        return;
-
-    const char *shapetype;
-    switch(type) {
-    case TopAbs_EDGE:
-        shapetype = "Edge";
-        break;
-    case TopAbs_VERTEX:
-        shapetype = "Vertex";
-        break;
-    case TopAbs_FACE:
-        shapetype = "Face";
-        break;
-    default:
-        Standard_Failure::Raise("invlaid shape type");
-        return;
-    }
-    std::ostringstream str;
-    for(int i=1;i<=otherMap.Extent();++i) {
-        auto shape = otherMap.FindKey(i);
-        int idx = shapeMap.FindIndex(shape);
-        if(!idx) continue;
-        str.str("");
-        str << shapetype << i;
-        std::string name = other.getElementName(str.str().c_str(),true);
-        if(other.Tag!=Tag) {
-            str.str("");
-            str << (op?op:"T") << other.Tag << '_' << name;
-            name = str.str();
-        }else if(op) {
-            str.str("");
-            str << op << '_' << name;
-            name = str.str();
-        }
-        str.str("");
-        str << shapetype << idx;
-
-        setElementName(str.str().c_str(),name.c_str());
-    }
-    if(mapAll) {
-        if(type == TopAbs_FACE)
-            mapSubElement(TopAbs_EDGE,other,op,true);
-        else if(type == TopAbs_EDGE)
-            mapSubElement(TopAbs_VERTEX,other,op,false);
+static void initShapeNameMap() {
+    if(_ShapeNameMap.empty()) {
+        _ShapeNameMap[TopAbs_VERTEX] = "Vertex";
+        _ShapeNameMap[TopAbs_EDGE] = "Edge";
+        _ShapeNameMap[TopAbs_FACE] = "Face";
+        _ShapeNameMap[TopAbs_WIRE] = "Wire";
+        _ShapeNameMap[TopAbs_SHELL] = "Shell";
+        _ShapeNameMap[TopAbs_SOLID] = "Solid";
+        _ShapeNameMap[TopAbs_COMPOUND] = "Compound";
+        _ShapeNameMap[TopAbs_COMPSOLID] = "CompSolid";
     }
 }
 
-void TopoShape::mapSubElementsTo(TopAbs_ShapeEnum type, 
-        std::vector<TopoShape> &shapes, const char *op, bool mapAll) const
-{
-    TopTools_IndexedMapOfShape myMap;
-    TopExp::MapShapes(_Shape, type, myMap);
-    for(auto &shape : shapes)
-        shape.mapSubElement(type,*this,myMap,op,false);
-    if(mapAll) {
-        if(type == TopAbs_FACE)
-            mapSubElementsTo(TopAbs_EDGE,shapes,op,true);
-        else if(type == TopAbs_EDGE)
-            mapSubElementsTo(TopAbs_VERTEX,shapes,op,true);
-    }
-}
-
-std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
-    std::vector<TopoShape> ret;
-    if(type == TopAbs_SHAPE) {
-        for(TopoDS_Iterator it(_Shape);it.More();it.Next()) {
-            ret.emplace_back(it.Value());
-            ret.back().Tag = Tag;
-        }
-    }else{
-        TopTools_IndexedMapOfShape M;
-        for(TopExp_Explorer it(_Shape,type);it.More();it.Next())
-            M.Add(it.Current());
-
-        ret.reserve(M.Extent());
-        for(int i=1;i<=M.Extent();++i) {
-            ret.emplace_back(M(i));
-            ret.back().Tag = Tag;
+TopAbs_ShapeEnum TopoShape::shapeEnum(const char *type) {
+    if(type) {
+        initShapeNameMap();
+        for(auto &v : _ShapeNameMap) {
+            if(boost::starts_with(type,v.second))
+                return v.first;
         }
     }
-    mapSubElementsTo(TopAbs_FACE,ret,0,true);
+    Standard_Failure::Raise("invalid shape type");
+    return TopAbs_SHAPE;
+}
+
+const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type) {
+    initShapeNameMap();
+    auto it = _ShapeNameMap.find(type);
+    if(it != _ShapeNameMap.end())
+        return it->second;
+    Standard_Failure::Raise("invalid shape type");
+    static std::string ret("");
     return ret;
 }
 
-TopoShape TopoShape::getSubTopoShape(const char *Type) const {
-    if (!Type)
-        Standard_Failure::Raise("No sub-shape type given");
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Cannot get sub-shape from empty shape");
-
-    TopoShape ret;
-    ret.Tag = Tag;
-    std::string shapetype(getElementName(Type));
-    if (shapetype.size() > 4 && shapetype.substr(0,4) == "Face") {
-        int index=std::atoi(&shapetype[4]);
+unsigned long TopoShape::countSubShapes(TopAbs_ShapeEnum type) const {
+    if(isNull()) return 0;
+    try {
         TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, TopAbs_FACE, anIndices);
-        // To avoid a segmentation fault we have to check if container is empty
-        if(index>=1 && index<=anIndices.Extent()) {
-            ret.setShape(anIndices.FindKey(index));
-            ret.mapSubElement(TopAbs_FACE,*this,anIndices);
-            return ret;
-        }
-    }
-    else if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
-        int index=std::atoi(&shapetype[4]);
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, TopAbs_EDGE, anIndices);
-        // To avoid a segmentation fault we have to check if container is empty
-        if(index>=1 && index<=anIndices.Extent()) {
-            ret.setShape(anIndices.FindKey(index));
-            ret.mapSubElement(TopAbs_EDGE,*this,anIndices);
-            return ret;
-        }
-    }
-    else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
-        int index=std::atoi(&shapetype[6]);
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, TopAbs_VERTEX, anIndices);
-        if(index>=1 && index<=anIndices.Extent()) {
-            ret.setShape(anIndices.FindKey(index));
-            ret.mapSubElement(TopAbs_VERTEX,*this,anIndices);
-            return ret;
-        }
-    }
-
-    std::ostringstream ss;
-    ss << "Cannot find sub-shape '" << Type << "'";
-    Standard_Failure::Raise(ss.str().c_str());
-    return ret;
-}
-
-std::string TopoShape::getElementMapVersion() const{
-    std::ostringstream ss;
-    ss << TOPOP_VERSION << '.' << Data::ComplexGeoData::getElementMapVersion();
-    return ss.str();
-}
-
-void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
-        const char *op, bool mapAll, bool appendTag) 
-{
-    TopTools_IndexedMapOfShape shapeMap;
-    TopExp::MapShapes(_Shape, type, shapeMap);
-    if(!Tag) return;
-    if(shapeMap.Extent()) {
-        for(auto s : shapes) {
-            if(s.isNull()) continue;
-            if(!appendTag)
-                s.Tag = Tag;
-            else if(!s.Tag)
-                continue;
-            mapSubElement(type,shapeMap,s,op,false);
-        }
-    }
-    if(mapAll) {
-        if(type == TopAbs_FACE)
-            mapSubElement(TopAbs_EDGE,shapes,op,mapAll);
-        else if(type == TopAbs_EDGE)
-            mapSubElement(TopAbs_VERTEX,shapes,op,mapAll);
-    }
-}
-
-TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, bool appendTag, const char *op) {
-    _Shape.Nullify();
-    resetElementMap();
-
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    int count = 0;
-    for(auto &s : shapes) {
-        if(!s.isNull()){
-            builder.Add(comp,s.getShape());
-            ++count; 
-        }
-    }
-    if(!count) return *this;
-    _Shape = comp;
-    if(!Tag) return *this;
-
-    if(appendTag && op==0)
-        op = "C";
-    mapSubElement(TopAbs_FACE,shapes,op,true,appendTag);
-    return *this;
-}
-
-TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op) {
-    _Shape.Nullify();
-    resetElementMap();
-
-    if(!op) op = "W";
-
-    std::list<TopoDS_Edge> edgeList;
-    std::map<int,std::string> refMap;
-
-    std::map<int,TopoShape> edgeMap;
-    TopTools_IndexedMapOfShape emap,vmap;
-    TopExp::MapShapes(shape._Shape, TopAbs_EDGE, emap);
-    TopExp::MapShapes(shape._Shape, TopAbs_VERTEX, vmap);
-
-    for(TopExp_Explorer exp(shape._Shape,TopAbs_EDGE);exp.More();exp.Next()) {
-        auto edge = TopoDS::Edge(exp.Current());
-        edgeList.push_back(edge);
-        if(!Tag || !shape.Tag) continue;
-        TopoShape s(edge);
-        s.Tag = shape.Tag;
-        s.mapSubElement(TopAbs_EDGE,shape,emap,0,false);
-        s.mapSubElement(TopAbs_VERTEX,shape,vmap,0,false);
-        s.Tag = Tag;
-        edgeMap[edge.HashCode(INT_MAX)] = s;
-    }
-
-    std::vector<TopoShape> wires;
-    std::vector<TopoShape> sourceEdges;
-    std::deque<int> hashes;
-    while(edgeList.size()) {
-        BRepBuilderAPI_MakeWire mkWire;
-        hashes.clear();
-        auto edges = Part::sort_Edges2(Precision::Confusion(),edgeList,&hashes);
-        auto hit = hashes.begin();
-        sourceEdges.clear();
-        sourceEdges.reserve(edges.size());
-        for(auto &edge : edges){
-            mkWire.Add(edge);
-            if(!Tag || !shape.Tag) continue;
-
-            auto e = mkWire.Edge();
-            auto hash = *hit++;
-            auto it = edgeMap.find(hash);
-            assert(it!=edgeMap.end());
-            // sort_Edge2 may rebuild the edge to reverse the orientation, we
-            // swap the edge to save the need for name remapping
-            it->second._Shape = e;
-            sourceEdges.push_back(it->second);
-        }
-        // Fix any topological issues of the wire
-        ShapeFix_Wire aFix;
-        aFix.SetPrecision(Precision::Confusion());
-        aFix.Load(mkWire.Wire());
-        aFix.FixReorder();
-        aFix.FixConnected();
-        aFix.FixClosed();
-        wires.push_back(TopoShape(aFix.Wire()));
-        auto &wire = wires.back();
-        if(!Tag || !shape.Tag) continue;
-        wire.Tag = Tag;
-        wire.mapSubElement(TopAbs_EDGE,sourceEdges,op,true,false);
-    }
-    if(wires.size() == 1) {
-        resetElementMap(wires[0]._ElementMap);
-        _Shape = wires[0]._Shape;
-    }else if(wires.size()) 
-        makECompound(wires,false);
-    return *this;
-}
-
-unsigned long TopoShape::countSubShapes(const char* Type) const
-{
-    std::string shapetype(Type);
-    if (shapetype == "Face") {
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, TopAbs_FACE, anIndices);
+        TopExp::MapShapes(this->_Shape, type, anIndices);
         return anIndices.Extent();
-    }
-    else if (shapetype == "Edge") {
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, TopAbs_EDGE, anIndices);
-        return anIndices.Extent();
-    }
-    else if (shapetype == "Vertex") {
-        TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, TopAbs_VERTEX, anIndices);
-        return anIndices.Extent();
-    }
-
+    }catch(...){}
     return 0;
+}
+
+unsigned long TopoShape::countSubShapes(const char* Type) const {
+    return countSubShapes(shapeEnum(getElementName(Type)));
+}
+
+bool TopoShape::hasSubShape(TopAbs_ShapeEnum type) const {
+    if(isNull()) return false;
+    TopExp_Explorer xp(_Shape,type);
+    return xp.More();
 }
 
 bool TopoShape::hasSubShape(const char *Type) const
 {
-    if(!Type) return false;
-    Type = getElementName(Type);
-    std::string shapetype(Type);
-    if (shapetype.size() > 4 && shapetype.substr(0,4) == "Face") {
-        int index=std::atoi(&shapetype[4]);
-        return index>0 && index<=(int)countSubShapes("Face");
-    }
-    else if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
-        int index=std::atoi(&shapetype[4]);
-        return index>0 && index<=(int)countSubShapes("Edge");
-    }
-    else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
-        int index=std::atoi(&shapetype[6]);
-        return index>0 && index<=(int)countSubShapes("Vertex");
-    }
+    if(isNull()) return false;
+    try {
+        Type = getElementName(Type);
+        auto type = shapeEnum(Type);
+        const auto &typeName = shapeName(type);
+        if(Type[typeName.size()] == 0) {
+            TopExp_Explorer xp(_Shape,type);
+            return xp.More();
+        }
+        int index=std::atoi(Type+typeName.size());
+        if(index<=0) 
+            return false;
+        TopTools_IndexedMapOfShape anIndices;
+        TopExp::MapShapes(this->_Shape, shapeEnum(Type), anIndices);
+        return index<=anIndices.Extent();
+    }catch(...){}
     return false;
 }
 
@@ -628,19 +379,11 @@ PyObject * TopoShape::getPySubShape(const char* Type) const
 void TopoShape::operator = (const TopoShape& sh)
 {
     if (this != &sh) {
-        this->Tag = sh.Tag;
+        if(sh.Tag) this->Tag = sh.Tag;
         this->_Shape = sh._Shape;
         this->_ElementMap = sh._ElementMap;
         this->Hasher = sh.Hasher;
     }
-}
-
-TopoShape TopoShape::copy() const{
-    TopoShape ret(*this);
-    if(isNull()) return ret;
-    ret._Shape = BRepBuilderAPI_Copy(_Shape).Shape();
-    ret.Hasher = Hasher;
-    return ret;
 }
 
 void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
@@ -702,6 +445,18 @@ void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
     mtrx[2][3] = p._CSFDB_Getgp_XYZz();
 #endif
+}
+
+Base::Matrix4D TopoShape::convert(const gp_Trsf& trsf) {
+    Base::Matrix4D mat;
+    convertToMatrix(trsf,mat);
+    return mat;
+}
+
+gp_Trsf TopoShape::convert(const Base::Matrix4D& mtrx) {
+    gp_Trsf trsf;
+    convertTogpTrsf(mtrx,trsf);
+    return trsf;
 }
 
 void TopoShape::setTransform(const Base::Matrix4D& rclTrf)
@@ -1243,7 +998,9 @@ Base::BoundBox3d TopoShape::getBoundBox(void) const
         box.MinZ = zMin;
         box.MaxZ = zMax;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure &e) {
+        Standard_CString msg = e.GetMessageString();
+        FC_ERR("failed to get bounding box: " << (msg?msg:typeid(e).name()));
     }
 
     return box;
@@ -2972,8 +2729,10 @@ TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
 
 void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)
 {
-    this->_Shape = transformGShape(rclMat);
-    // TODO: check the element map here
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Cannot transform null shape");
+
+    *this = makEGTransform(rclMat);
 }
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
@@ -3005,41 +2764,12 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool che
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
 
-    if(checkScale) {
-        bool gtrsf = false;
-        // check for uniform scaling
-        //
-        // scaling factors are the colum vector length. We use square distance and
-        // ignore the actual scaling signess
-        //
-        double dx = Base::Vector3d(rclTrf[0][0],rclTrf[1][0],rclTrf[2][0]).Sqr();
-        double dy = Base::Vector3d(rclTrf[0][1],rclTrf[1][1],rclTrf[2][1]).Sqr();
-        if(fabs(dx-dy)>Precision::SquareConfusion())
-            gtrsf = true;
-        else {
-            double dz = Base::Vector3d(rclTrf[0][2],rclTrf[1][2],rclTrf[2][2]).Sqr();
-            if(fabs(dy-dz)>Precision::SquareConfusion())
-                gtrsf = true;
-        }
-        if(gtrsf){
-            transformGeometry(rclTrf);
-            return;
-        }
-    }
-
-    gp_Trsf mat;
-    mat.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
-                  rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-                  rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001,0.00001
-#endif
-                ); //precision was removed in OCCT CR0025194
-
-    // location transformation
-    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat, copy ? Standard_True : Standard_False);
-    this->_Shape = mkTrf.Shape();
-    // TODO: check the element map here
+    TopoShape shape;
+    if(copy)
+        shape = makECopy();
+    else
+        shape = *this;
+    *this = shape.makETransform(rclTrf,0,false,checkScale);
 }
 
 TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
@@ -3079,8 +2809,7 @@ void TopoShape::sewShape()
     sew.Load(this->_Shape);
     sew.Perform();
 
-    this->_Shape = sew.SewedShape();
-    _ElementMap.reset();
+    *this = makEShape(sew);
 }
 
 bool TopoShape::fix(double precision, double mintol, double maxtol)
@@ -3129,11 +2858,13 @@ bool TopoShape::fix(double precision, double mintol, double maxtol)
 
 bool TopoShape::removeInternalWires(double minArea)
 {
+    TopoShape copy(*this);
     ShapeUpgrade_RemoveInternalWires fix(this->_Shape);
     fix.MinArea() = minArea;
     bool ok = fix.Perform() ? true : false;
     this->_Shape = fix.GetResult();
-    _ElementMap.reset();
+    resetElementMap();
+    mapSubElement(TopAbs_FACE,copy);
     return ok;
 }
 

@@ -152,7 +152,9 @@ int TopoShapePy::PyInit(PyObject* args, PyObject*)
 
 PyObject* TopoShapePy::copy(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    const char *op = 0;
+    PyObject *appendTag = Py_False;
+    if (!PyArg_ParseTuple(args, "|sO", &op,&appendTag))
         return NULL;
 
     PyTypeObject* type = this->GetType();
@@ -165,7 +167,8 @@ PyObject* TopoShapePy::copy(PyObject *args)
         return 0;
     }
 
-    static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(this->getTopoShapePtr()->copy());
+    auto &copy = *static_cast<TopoShapePy*>(cpy)->getTopoShapePtr();
+    copy = TopoShape(copy.Tag).makECopy(*getTopoShapePtr(),op,PyObject_IsTrue(appendTag));
     return cpy;
 }
 

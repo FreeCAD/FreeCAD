@@ -172,20 +172,13 @@ void PropertyPartShape::setPyObject(PyObject *value)
 App::Property *PropertyPartShape::Copy(void) const
 {
     PropertyPartShape *prop = new PropertyPartShape();
-    prop->_Shape = this->_Shape;
-    if (!_Shape.getShape().IsNull()) {
-        BRepBuilderAPI_Copy copy(_Shape.getShape());
-        prop->_Shape.setShape(copy.Shape());
-    }
-
+    prop->_Shape = this->_Shape.makECopy();
     return prop;
 }
 
 void PropertyPartShape::Paste(const App::Property &from)
 {
-    aboutToSetValue();
-    _Shape = dynamic_cast<const PropertyPartShape&>(from)._Shape;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyPartShape&>(from)._Shape);
 }
 
 unsigned int PropertyPartShape::getMemSize (void) const
@@ -219,7 +212,7 @@ void PropertyPartShape::Save (Base::Writer &writer) const
             writer.Stream() << writer.ind() << "<Part file=\"" 
                             << writer.addFile("PartShape.brp", this);
         }
-        bool saveHasher=false, saveMap=false;
+        bool saveHasher=false;
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
         if(owner && !_Shape.Hasher.isNull()) {
             auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
@@ -229,24 +222,21 @@ void PropertyPartShape::Save (Base::Writer &writer) const
                 writer.Stream() << "\" SaveHasher=\"1";
             }
         }
-        if(_Shape.getElementMapSize()) {
-            std::string version;
-            // If exporting, do not export mapped element name, but still make a mark
-            if(owner && !owner->getDocument()->isExporting()) {
-                auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
-                if(geofeature)
-                    version = geofeature->getElementMapVersion();
-                else
-                    version = _Shape.getElementMapVersion();
-            }
-            writer.Stream() << "\" ElementMap=\"" << version;
-            saveMap = !version.empty();
+        std::string version;
+        // If exporting, do not export mapped element name, but still make a mark
+        if(owner && !owner->getDocument()->isExporting()) {
+            auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
+            if(geofeature)
+                version = geofeature->getElementMapVersion();
+            else
+                version = _Shape.getElementMapVersion();
         }
+        writer.Stream() << "\" ElementMap=\"" << version;
         writer.Stream() << "\"/>" << std::endl;
 
         if(saveHasher)
             _Shape.Hasher->Save(writer);
-        if(saveMap)
+        if(version.size())
             _Shape.Save(writer);
     }
 }
@@ -273,8 +263,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         if(map_ver[0] == 0) {
             // empty string marks the need for recompute after import
             if(owner) owner->getDocument()->addRecomputeObject(owner);
-        }else {
-            // type > 2 marks a version number obtained from geo feature.
+        }else{
             auto geofeature = dynamic_cast<App::GeoFeature*>(owner);
             auto ver = geofeature?geofeature->getElementMapVersion():_Shape.getElementMapVersion();
             if(ver!=map_ver) {
@@ -285,6 +274,17 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
                 }
             }else
                 _Shape.Restore(reader);
+        }
+    } else if(owner) {
+        static int buildElementMap = -1;
+        if(buildElementMap<0) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Part/General");
+            buildElementMap = hGrp->GetBool("AutoElementMap",true)?1:0;
+        }
+        if(buildElementMap) {
+            FC_WARN("auto generate element map: " << owner->getNameInDocument());
+            owner->getDocument()->addRecomputeObject(owner);
         }
     }
 }
@@ -370,12 +370,12 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     auto hasher = _Shape.Hasher;
 
     Base::FileInfo brep(reader.getFileName());
+    TopoShape shape;
     if (brep.hasExtension("bin")) {
-        TopoShape shape;
         shape.importBinary(reader);
-        setValue(shape);
     }
     else {
+        TopoDS_Shape sh;
         bool direct = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
@@ -396,9 +396,8 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
             // Read the shape from the temp file, if the file is empty the stored shape was already empty.
             // If it's still empty after reading the (non-empty) file there must occurred an error.
-            TopoDS_Shape shape;
             if (ulSize > 0) {
-                if (!BRepTools::Read(shape, (const Standard_CString)fi.filePath().c_str(), builder)) {
+                if (!BRepTools::Read(sh, (const Standard_CString)fi.filePath().c_str(), builder)) {
                     // Note: Do NOT throw an exception here because if the tmp. created file could
                     // not be read it's NOT an indication for an invalid input stream 'reader'.
                     // We only print an error message but continue reading the next files from the
@@ -417,22 +416,19 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
             // delete the temp file
             fi.deleteFile();
-            setValue(shape);
+            shape.setShape(sh);
         }
         else {
             BRep_Builder builder;
-            TopoDS_Shape shape;
-            BRepTools::Read(shape, reader, builder);
-            setValue(shape);
+            BRepTools::Read(sh, reader, builder);
+            shape.setShape(sh);
         }
     }
 
     // restore the element map
-    _Shape.resetElementMap(elementMap);
-    _Shape.Hasher = hasher;
-    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(owner)
-        _Shape.Tag = owner->getID();
+    shape.Hasher = hasher;
+    shape.resetElementMap(elementMap);
+    setValue(shape);
 }
 
 // -------------------------------------------------------------------------
