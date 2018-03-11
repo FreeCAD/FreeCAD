@@ -77,9 +77,13 @@ public:
     App::PropertyBool Relative;
     App::PropertyBool Fuse;
     App::PropertyBool MakeFace;
+    App::PropertyEnumeration BindMode;
+
+    void update();
 
 protected:
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute(void) override;
+    virtual void onChanged(const App::Property *prop) override;
 };
 
 } //namespace PartDesign

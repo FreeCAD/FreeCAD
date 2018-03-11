@@ -36,6 +36,7 @@
 #include <App/Document.h>
 #include "ShapeBinder.h"
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 
 #ifndef M_PI
@@ -183,20 +184,19 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(Fuse, (true), "Base",App::Prop_None,"Fused linked solid shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
-    ADD_PROPERTY_TYPE(Relative, (false), "Base",App::Prop_None,"Enable relative sub-object linking");
-    Placement.setStatus(App::Property::Hidden, true);
+    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
+    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
+    static const char *BindModeEnum[] = {"Syncrhonized", "Frozen", "Detached", 0};
+    BindMode.setEnums(BindModeEnum);
+    Placement.setStatus(App::Property::Hidden, false);
 }
 
-App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
-    if(this->isRestoring())
-        return Part::Feature::execute();
+void SubShapeBinder::update() {
+    Part::TopoShape result;
+    result.Tag = getID();
 
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-
-    int count = 0;
     auto subset = Support.getSubListValues();
+    std::vector<Part::TopoShape> shapes;
     for(auto &info : subset) {
         auto obj = info.first;
         if(!obj || !obj->getNameInDocument())
@@ -208,63 +208,74 @@ App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
         else if(subs.size()>1)
             subs.erase(none);
         for(const auto &sub : subs) {
-            auto shape = Part::Feature::getShape(obj,sub.c_str(),true);
-            if(!shape.IsNull()){
-                builder.Add(comp,shape);
-                ++count;
-            }
+            const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
+            if(!shape.isNull())
+                shapes.push_back(shape);
         }
     }
-    if(!count)
-        return new App::DocumentObjectExecReturn("No shapes");
+    if(shapes.empty())
+        return;
 
+    result.makECompound(shapes,true,TOPOP_SHAPEBINDER);
+
+    bool fused = false;
     if(Fuse.getValue()) {
         // If the compound has solid, fuse them together, and ignore other type of
         // shapes
-        count = 0;
-        Part::TopoShape base;
-        std::vector<TopoDS_Shape> operators;
-        for(TopExp_Explorer it(comp, TopAbs_SOLID); it.More(); it.Next(),++count) {
-            if(!count) 
-                base = it.Current();
-            else
-                operators.push_back(it.Current());
+        auto solids = result.getSubTopoShapes(TopAbs_SOLID);
+        if(solids.size()) {
+            result = Part::TopoShape(getID(),getDocument()->Hasher).makEShape(
+                    TOPOP_FUSE,solids,TOPOP_SHAPEBINDER "_U");
+            fused = true;
         }
-        if(count) {
-            if(operators.empty())
-                Shape.setValue(base.getShape());
-            else
-                Shape.setValue(base.fuse(operators));
-            return Part::Feature::execute();
-        }
+    } 
+    
+    if(!fused && MakeFace.getValue() && 
+       !TopExp_Explorer(result.getShape(), TopAbs_FACE).More() &&
+       TopExp_Explorer(result.getShape(), TopAbs_EDGE).More())
+    {
+        result = Part::TopoShape(getID()).makEWires(result);
+        Part::TopoShape face(getID());
+        try {
+            face.makEFace(result,TOPOP_SHAPEBINDER "_F");
+            if(!face.isNull()) 
+                result = face;
+        }catch(...){}
     }
 
-    if(MakeFace.getValue() && !TopExp_Explorer(comp, TopAbs_FACE).More()) {
-        if(!TopExp_Explorer(comp, TopAbs_SHELL).More()) {
-            std::list<TopoDS_Edge> edges;
-            for(TopExp_Explorer it(comp,TopAbs_EDGE);it.More();it.Next())
-                edges.push_back(TopoDS::Edge(it.Current()));
-            if(edges.size()) {
-                Part::FaceMakerBullseye mkFace;
-                do {
-                    BRepBuilderAPI_MakeWire mkWire;
-                    for(auto &edge : Part::sort_Edges(Precision::Confusion(),edges))
-                        mkWire.Add(edge);
-                    mkFace.addWire(mkWire.Wire());
-                }while(edges.size());
-                try {
-                    mkFace.Build();
-                    const TopoDS_Shape &shape = mkFace.Shape();
-                    if(!shape.IsNull()) {
-                        Shape.setValue(shape);
-                        return Part::Feature::execute();
-                    }
-                }catch (Base::Exception &){}
-            }
+    // Remove single element naming, so that other user of SubShapeBinder can
+    // identify the element using SubShapeBinder's object id.
+
+    auto count = result.countSubShapes("Face");
+    if(count == 1)
+        result.setElementName("Face1",0);
+    else if(count==0 && (count=result.countSubShapes("Edge"))==1)
+        result.setElementName("Edge1",0);
+    else if(count==0 && (count=result.countSubShapes("Vertex"))==1)
+        result.setElementName("Vertex1",0);
+    Shape.setValue(result);
+}
+
+App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
+    if(BindMode.getValue()==0)
+        update();
+    return Part::Feature::execute();
+}
+
+void SubShapeBinder::onChanged(const App::Property *prop) {
+    if(!isRestoring()) {
+        if(prop == &Support) {
+           update(); 
+           if(BindMode.getValue() == 2)
+               Support.setValue(0,0);
+        }else if(prop == &BindMode) {
+           if(BindMode.getValue() == 2)
+               Support.setValue(0,0);
+           else if(BindMode.getValue() == 0)
+               update();
         }
     }
-    Shape.setValue(comp);
-    return Part::Feature::execute();
+    ShapeBinder::onChanged(prop);
 }
 
 void SubShapeBinder::setLinks(
