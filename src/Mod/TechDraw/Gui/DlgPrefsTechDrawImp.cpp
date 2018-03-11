@@ -105,7 +105,9 @@ void DlgPrefsTechDrawImp::loadSettings()
 void DlgPrefsTechDrawImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        saveSettings();
         retranslateUi(this);
+        loadSettings();
     }
     else {
         QWidget::changeEvent(e);
