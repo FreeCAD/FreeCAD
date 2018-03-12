@@ -237,13 +237,7 @@ void SketchObject::buildShape() {
         shapes.push_back(getEdge(geo,convertSubName(
                         name+std::to_string(i+1),false).c_str()));
     }
-    Part::TopoShape wires;
-    wires.Tag = getID();
-    if(shapes.size()==1)
-        wires.makEWires(shapes[0],TOPOP_SKETCH);
-    else if(shapes.size())
-        wires.makEWires(Part::TopoShape(getID()).makECompound(shapes,false),TOPOP_SKETCH);
-    Shape.setValue(wires);
+    Shape.setValue(Part::TopoShape().makEWires(shapes,TOPOP_SKETCH));
 }
 
 int SketchObject::hasConflicts(void) const
@@ -822,13 +816,15 @@ Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
     } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
         const Part::GeomCircle *circle = static_cast<const Part::GeomCircle*>(geo);
         auto pt = circle->getCenter();
-        if(PosId == end)
+        if(PosId != mid)
              pt.x += circle->getRadius();
+        return pt;
     } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
         const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse*>(geo);
         auto pt = ellipse->getCenter();
-        if(PosId == end) 
+        if(PosId != mid) 
             pt = ellipse->getMajorAxisDir()*ellipse->getMajorRadius();
+        return pt;
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
         if (PosId == start)
@@ -6425,7 +6421,7 @@ App::DocumentObject *SketchObject::getSubObject(
         Base::Matrix4D *pmat, bool transform, int depth) const
 {
     const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
-    if(!subname || (mapped && boost::starts_with(mapped,TOPOP_SKETCH))) {
+    if(!subname || !subname[0] || (mapped && boost::starts_with(mapped,TOPOP_SKETCH))) {
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     }
     if(!mapped) {
@@ -6476,7 +6472,7 @@ App::DocumentObject *SketchObject::getSubObject(
         if(pyObj) 
             *pyObj = vals[ConstrId]->getPyObject();
         return const_cast<SketchObject*>(this);
-    }else if(*shapetype)
+    }else
         return 0;
 
     if (pmat && transform)
@@ -6484,17 +6480,18 @@ App::DocumentObject *SketchObject::getSubObject(
 
     if (pyObj) {
         Part::TopoShape shape;
-        shape.Tag = getID();
         if (geo) {
             std::string name = convertSubName(shapetype,false);
             shape = getEdge(geo,name.c_str());
-        }else if (*shapetype){
+            if(pmat && !shape.isNull()) 
+                shape.transformShape(*pmat,false,true);
+        }else {
+            if(pmat)
+                point = (*pmat)*point;
             shape = BRepBuilderAPI_MakeVertex(gp_Pnt(point.x,point.y,point.z)).Vertex();
             shape.setElementName("Vertex1",convertSubName(shapetype,false).c_str());
-        }else
-            shape = Shape.getShape();
-        if(pmat && !shape.isNull()) 
-            shape.transformShape(*pmat,false,true);
+        }
+        shape.Tag = getID();
         *pyObj = Py::new_reference_to(Part::shape2pyshape(shape));
     }
 
@@ -6835,6 +6832,7 @@ bool SketchExport::update() {
             Refs.setStatus(App::Property::User3,false);
         }
     }
+    std::vector<Part::TopoShape> points;
     std::vector<Part::TopoShape> shapes;
     for(const auto &ref : getRefs()) {
         // Obtain the shape without feature's placement transformation, because
@@ -6842,16 +6840,23 @@ bool SketchExport::update() {
         auto shape = Part::Feature::getTopoShape(base,ref.c_str(),true,0,0,false,false);
         if(shape.isNull()) continue;
         shape.Tag = getID();
-        shapes.push_back(shape);
+        if(!shape.countSubShapes("Edge"))
+            points.push_back(shape);
+        else
+            shapes.push_back(shape);
     }
-    if(shapes.empty()) return false;
-    Part::TopoShape wires;
-    wires.Tag = getID();
-    if(shapes.size()==1)
-        wires.makEWires(shapes[0],TOPOP_SKETCH_EXPORT);
-    else if(shapes.size())
-        wires.makEWires(Part::TopoShape(getID()).makECompound(shapes,false),TOPOP_SKETCH_EXPORT);
-    Shape.setValue(wires);
+    Part::TopoShape res(getID());
+    if(shapes.size()) {
+        res.makEWires(shapes,TOPOP_SKETCH_EXPORT);
+        if(points.size()) {
+            points.push_back(res);
+            res.makECompound(points,false);
+        }
+    }else if(points.empty())
+        return false;
+    else
+        res.makECompound(points,false,0,false);
+    Shape.setValue(res);
     return true;
 }
 
