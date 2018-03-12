@@ -577,7 +577,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         res = pcDoc->getActiveObject(); //type checking is done by caller
     }
     if(!res) {
-        Base::Console().Error("Result object pointer is invalid and it is not active oject");
+        Base::Console().Error("Result object pointer is invalid and it is not active object");
         return;
     }
 
