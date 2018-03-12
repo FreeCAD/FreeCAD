@@ -546,6 +546,13 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 }
 
 bool ViewProviderFemPostObject::doubleClicked(void) {
+    // work around for a problme in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
+    // check if backlight is enabled
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
+    if (isBackLightEnabled == false)
+        Base::Console().Error("Back light is not enabled. Due to a VTK implemataion problem you really should consider to enable back light in FreeCAD display preferences if you work with VTK post processing.\n");
+    // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
 }
