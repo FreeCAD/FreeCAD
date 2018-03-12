@@ -408,7 +408,7 @@ void QGIViewDimension::draw()
                 distStart = Base::Vector3d(p1.x,p1.y,0.0);
                 distStart = Rez::guiX(distStart);
                 distEnd   = Base::Vector3d(p2.x,p2.y,0.0);
-                distEnd   = Rez::guiX(distStart);
+                distEnd   = Rez::guiX(distEnd);
             } else if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
                  (geom1->geomType == TechDrawGeometry::GENERIC) ){
                 TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
