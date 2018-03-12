@@ -74,14 +74,61 @@ public:
         ShowSelection, // to show a selection
         HideSelection, // to hide a selection
     };
-    SelectionChanges()
-    : Type(ClrSelection)
-    , pDocName(0)
-    , pObjectName(0)
-    , pSubName(0)
-    , pTypeName(0)
-    , x(0),y(0),z(0)
+
+    SelectionChanges(MsgType type = ClrSelection, 
+            const char *docName=0, const char *objName=0,
+            const char *subName=0, const char *typeName=0,
+            float x=0, float y=0, float z=0)
+        : Type(type)
+        , x(x),y(y),z(z)
     {
+        if(docName) DocName=docName;
+        pDocName = DocName.c_str();
+        if(objName) ObjName = objName;
+        pObjectName = ObjName.c_str();
+        if(subName) SubName = subName;
+        pSubName = SubName.c_str();
+        if(typeName) TypeName = typeName;
+        pTypeName = TypeName.c_str();
+    }
+
+    SelectionChanges(MsgType type,
+                     const std::string &docName, 
+                     const std::string &objName, 
+                     const std::string &subName,
+                     const std::string &typeName = std::string(),
+                     float x=0,float y=0,float z=0)
+        : Type(type)
+        , x(x),y(y),z(z)
+        , DocName(docName)
+        , ObjName(objName)
+        , SubName(subName)
+        , TypeName(typeName)
+    {
+        pDocName = DocName.c_str();
+        pObjectName = ObjName.c_str();
+        pSubName = SubName.c_str();
+        pTypeName = TypeName.c_str();
+    }
+
+    SelectionChanges(const SelectionChanges &other) {
+        *this = other;
+    }
+
+    SelectionChanges &operator=(const SelectionChanges &other) {
+        Type = other.Type;
+        x = other.x;
+        y = other.y;
+        z = other.z;
+        DocName = other.DocName;
+        ObjName = other.ObjName;
+        SubName = other.SubName;
+        TypeName = other.TypeName;
+        pDocName = DocName.c_str();
+        pObjectName = ObjName.c_str();
+        pSubName = SubName.c_str();
+        pTypeName = TypeName.c_str();
+        return *this;
     }
 
     MsgType Type;
@@ -93,6 +140,14 @@ public:
     float x;
     float y;
     float z;
+
+    // For more robust selection notification (e.g. in case user make selection
+    // change inside selection notification handler), the notification message
+    // shall make a copy of all the strings here.
+    std::string DocName;
+    std::string ObjName;
+    std::string SubName;
+    std::string TypeName;
 };
 
 } //namespace Gui
@@ -251,9 +306,10 @@ public:
     /// Clear the selection of all documents
     void clearCompleteSelection();
     /// Check if selected
-    bool isSelected(const char* pDocName, const char* pObjectName=0, const char* pSubName=0) const;
+    bool isSelected(const char* pDocName, const char* pObjectName=0, 
+            const char* pSubName=0, bool resolve=true) const;
     /// Check if selected
-    bool isSelected(App::DocumentObject*, const char* pSubName=0) const;
+    bool isSelected(App::DocumentObject*, const char* pSubName=0, bool resolve=true) const;
 
     const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
@@ -428,10 +484,8 @@ protected:
         App::DocumentObject* pObject;
         float x,y,z;
 
-        std::string newElementName;
-        std::string oldElementName;
+        std::pair<std::string,std::string> elementName;
         App::DocumentObject* pResolvedObject = 0;
-        bool resolved = false;
     };
     mutable std::list<_SelObj> _SelList;
 

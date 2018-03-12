@@ -484,8 +484,7 @@ void SelectionSingleton::enablePickedList(bool enable) {
     if(enable != _needPickedList) {
         _needPickedList = enable;
         _PickedList.clear();
-        SelectionChanges Chng;
-        Chng.Type      = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
@@ -527,20 +526,11 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel,
         return 0;
     const char *subname = sel.SubName.c_str();
     if(resolve) {
-        if(!sel.resolved) {
-            sel.resolved = true;
-            std::pair<std::string,std::string> elementName;
-            sel.pResolvedObject = App::GeoFeature::resolveElement(obj,subname,elementName);
-            sel.newElementName = elementName.first;
-            sel.oldElementName = elementName.second;
-            if(sel.newElementName.empty())
-                sel.newElementName = sel.oldElementName;
-        }
         obj = sel.pResolvedObject;
         if(resolve>1)
-            subname = sel.newElementName.c_str();
+            subname = sel.elementName.first.c_str();
         else
-            subname = sel.oldElementName.c_str();
+            subname = sel.elementName.second.c_str();
     }
     if(!obj || !obj->isDerivedFrom(typeId))
         return 0;
@@ -614,10 +604,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
        msg.Type == SelectionChanges::HideSelection)
         return;
     
-    if(msg.pDocName && 
-       msg.pObjectName && msg.pObjectName[0] &&
-       msg.pSubName && msg.pSubName[0])
-    {
+    if(msg.DocName.size() && msg.ObjName.size() && msg.SubName.size()) {
         App::Document* pDoc = getDocument(msg.pDocName);
         if(!pDoc) return;
         std::pair<std::string,std::string> elementName;
@@ -626,15 +613,13 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
         auto pObject = App::GeoFeature::resolveElement(
                 pDoc->getObject(msg.pObjectName),msg.pSubName,elementName);
         if (!pObject) return;
-        std::string docName(pObject->getDocument()->getName());
-        std::string objName(pObject->getNameInDocument());
-        SelectionChanges msg2(msg);
-        msg2.pDocName = docName.c_str();
-        msg2.pObjectName = objName.c_str();
-        msg2.pSubName = newElementName.size()?newElementName.c_str():oldElementName.c_str();
+        SelectionChanges msg2(msg.Type,pObject->getDocument()->getName(),
+                pObject->getNameInDocument(),
+                newElementName.size()?newElementName.c_str():oldElementName.c_str());
         signalSelectionChanged3(msg2);
 
-        msg2.pSubName = oldElementName.c_str();
+        msg2.SubName = oldElementName;
+        msg2.pSubName = msg2.SubName.c_str();
         signalSelectionChanged2(msg2);
 
     }else {
@@ -697,19 +682,8 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     hz = z;
 
     // set up the change object
-    SelectionChanges Chng;
-    Chng.pDocName  = DocName.c_str();
-    Chng.pObjectName = FeatName.c_str();
-    Chng.pSubName  = SubName.c_str();
-    Chng.pTypeName = "";
-    Chng.x = x;
-    Chng.y = y;
-    Chng.z = z;
-
-    if(!signal)
-        Chng.Type = SelectionChanges::SetPreselect;
-    else
-        Chng.Type = SelectionChanges::SetPreselectSignal; // signal 3D view to do the highlight
+    SelectionChanges Chng(signal?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
+            DocName,FeatName,SubName,std::string(),x,y,z);
 
     Notify(Chng);
     signalSelectionChanged(Chng);
@@ -723,7 +697,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     static char buf[513];
 
     // if nothing is in preselect ignore
-    if(!CurrentPreselection.pObjectName) return;
+    if(!CurrentPreselection.pObjectName || CurrentPreselection.ObjName.empty()) return;
 
     CurrentPreselection.x = x;
     CurrentPreselection.y = y;
@@ -743,19 +717,11 @@ void SelectionSingleton::rmvPreselect()
     if (DocName == "")
         return;
 
-    SelectionChanges Chng;
-    Chng.pDocName  = DocName.c_str();
-    Chng.pObjectName = FeatName.c_str();
-    Chng.pSubName  = SubName.c_str();
-    Chng.Type = SelectionChanges::RmvPreselect;
+    SelectionChanges Chng(SelectionChanges::RmvPreselect,
+            DocName,FeatName,SubName);
 
     // reset the current preselection
-    CurrentPreselection.pDocName =0;
-    CurrentPreselection.pObjectName = 0;
-    CurrentPreselection.pSubName = 0;
-    CurrentPreselection.x = 0.0;
-    CurrentPreselection.y = 0.0;
-    CurrentPreselection.z = 0.0;
+    CurrentPreselection = SelectionChanges();
 
     // notify observing objects
     Notify(Chng);
@@ -831,101 +797,97 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             s.y = sel.y;
             s.z = sel.z;
         }
-        SelectionChanges Chng;
-        Chng.Type      = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
-
-    // already in ?
-    if (isSelected(pDocName, pObjectName, pSubName))
-        return true;
 
     _SelObj temp;
 
     temp.pDoc = getDocument(pDocName);
-
-    if (temp.pDoc) {
-        if(pObjectName)
-            temp.pObject = temp.pDoc->getObject(pObjectName);
-        else
-            temp.pObject = 0;
-
-        temp.DocName  = pDocName;
-        temp.FeatName = pObjectName ? pObjectName : "";
-        temp.SubName  = pSubName ? pSubName : "";
-        temp.x        = x;
-        temp.y        = y;
-        temp.z        = z;
-
-        if (temp.pObject)
-            temp.TypeName = temp.pObject->getTypeId().getName();
-
-        // check for a Selection Gate
-        if (ActiveGate) {
-            const char *subelement = 0;
-            auto pObject = getObjectOfType(temp,App::DocumentObject::getClassTypeId(),gateResolve,&subelement);
-            if (!ActiveGate->allow(pObject?pObject->getDocument():temp.pDoc,pObject,subelement)) {
-                if (getMainWindow()) {
-                    QString msg;
-                    if (ActiveGate->notAllowedReason.length() > 0) {
-                        msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
-                    } else {
-                        msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
-                    }
-                    getMainWindow()->showMessage(msg);
-                    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                    mdi->setOverrideCursor(Qt::ForbiddenCursor);
-                }
-                ActiveGate->notAllowedReason.clear();
-                QApplication::beep();
-                return false;
-            }
-        }
-
-        _SelList.push_back(temp);
-
-        SelectionChanges Chng;
-
-        Chng.pDocName  = pDocName;
-        Chng.pObjectName = pObjectName ? pObjectName : "";
-        Chng.pSubName  = pSubName ? pSubName : "";
-        Chng.pTypeName = temp.TypeName.c_str();
-        Chng.x         = x;
-        Chng.y         = y;
-        Chng.z         = z;
-        Chng.Type      = SelectionChanges::AddSelection;
-
-        FC_LOG("Add Selection "<<
-                (pDocName?pDocName:"(null)")<<'.'<<
-                (pObjectName?pObjectName:"(null)")<<'.' <<
-                (pSubName?pSubName:"(null)") <<
-                " ("<<x<<", "<<y<<", "<<z<<')');
-
-        Notify(Chng);
-        FC_TRACE("signaling add selection");
-        signalSelectionChanged(Chng);
-        FC_TRACE("done signaling add selection");
-
-        getMainWindow()->updateActions();
-
-        // allow selection
-        return true;
-    }
-    else {
+    if(!temp.pDoc) {
         // neither an existing nor active document available
         // this can often happen when importing .iv files
-        Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
+        FC_ERR("Cannot add to selection: no document found");
         return false;
     }
+
+    if(pObjectName)
+        temp.pObject = temp.pDoc->getObject(pObjectName);
+    else
+        temp.pObject = 0;
+
+    if (!temp.pObject) {
+        FC_ERR("Cannot add to selection: object not found");
+        return false;
+    }
+    // already in ?
+    if (isSelected(pDocName, pObjectName, pSubName))
+        return true;
+
+
+    temp.DocName  = pDocName;
+    temp.FeatName = pObjectName ? pObjectName : "";
+    temp.SubName  = pSubName ? pSubName : "";
+    temp.x        = x;
+    temp.y        = y;
+    temp.z        = z;
+
+    temp.TypeName = temp.pObject->getTypeId().getName();
+
+    const char *element = 0;
+    temp.pResolvedObject = App::GeoFeature::resolveElement(temp.pObject,
+            pSubName,temp.elementName,false,App::GeoFeature::Normal,0,&element);
+    if(temp.elementName.first.size()) {
+        // make sure the selected sub name is a new style if available
+        temp.SubName = std::string(pSubName,element-pSubName) + temp.elementName.first;
+    }
+    // check for a Selection Gate
+    if (ActiveGate) {
+        const char *subelement = 0;
+        auto pObject = getObjectOfType(temp,App::DocumentObject::getClassTypeId(),gateResolve,&subelement);
+        if (!ActiveGate->allow(pObject?pObject->getDocument():temp.pDoc,pObject,subelement)) {
+            if (getMainWindow()) {
+                QString msg;
+                if (ActiveGate->notAllowedReason.length() > 0) {
+                    msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+                } else {
+                    msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
+                }
+                getMainWindow()->showMessage(msg);
+                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+                mdi->setOverrideCursor(Qt::ForbiddenCursor);
+            }
+            ActiveGate->notAllowedReason.clear();
+            QApplication::beep();
+            return false;
+        }
+    }
+
+    _SelList.push_back(temp);
+
+    SelectionChanges Chng(SelectionChanges::AddSelection,
+            pDocName,pObjectName,pSubName,temp.TypeName.c_str(), x,y,z);
+
+    FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName
+            << " (" << x << ", " << y << ", " << z << ')');
+
+    Notify(Chng);
+    FC_TRACE("signaling add selection");
+    signalSelectionChanged(Chng);
+    FC_TRACE("done signaling add selection");
+
+    getMainWindow()->updateActions();
+
+    // allow selection
+    return true;
 }
 
 bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
 {
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng;
-        Chng.Type = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
@@ -954,16 +916,8 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             _SelList.push_back(temp);
         }
 
-        SelectionChanges Chng;
-
-        Chng.pDocName  = pDocName;
-        Chng.pObjectName = pObjectName ? pObjectName : "";
-        Chng.pSubName  = "";
-        Chng.pTypeName = temp.TypeName.c_str();
-        Chng.x         = 0;
-        Chng.y         = 0;
-        Chng.z         = 0;
-        Chng.Type      = SelectionChanges::AddSelection;
+        SelectionChanges Chng(SelectionChanges::AddSelection,
+                pDocName,pObjectName,0,temp.TypeName.c_str());
 
         FC_TRACE("notifying add selection");
         Notify(Chng);
@@ -996,18 +950,10 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     auto pObject = pDoc->getObject(pObjectName);
     if(!pObject) return false;
 
-    SelectionChanges Chng;
-    Chng.pDocName  = pDocName;
-    Chng.pObjectName = pObjectName;
-    Chng.pSubName  = pSubName ? pSubName : "";
-    Chng.pTypeName = pObject->getTypeId().getName();
-    Chng.x         = 0;
-    Chng.y         = 0;
-    Chng.z         = 0;
-    Chng.Type      = show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection;
+    SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
+            pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
 
-    FC_LOG("Update Selection "<<pDocName << '.' << pObjectName << '.' 
-            << (pSubName?pSubName:"(null)"));
+    FC_LOG("Update Selection "<<Chng.DocName << '.' << Chng.ObjName << '.' <<Chng.SubName);
 
     FC_TRACE("signaling update selection");
     Notify(Chng);
@@ -1035,18 +981,16 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             s.y = sel.y;
             s.z = sel.z;
         }
-        SelectionChanges Chng;
-        Chng.Type      = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
-
-    std::vector<SelectionChanges> rmvList;
 
     if(!pDocName) return;
 
     size_t len = pSubName?std::strlen(pSubName):0;
 
+    std::vector<SelectionChanges> changes;
     for(auto It=_SelList.begin(),ItNext=It;It!=_SelList.end();It=ItNext) {
         ++ItNext;
         if(It->DocName != pDocName) continue;
@@ -1060,32 +1004,19 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
                 continue;
         }
 
-        // save in tmp. string vars
-        std::string tmpDocName = It->DocName;
-        std::string tmpFeaName = It->FeatName;
-        std::string tmpSubName = It->SubName;
-        std::string tmpTypName = It->TypeName;
+        changes.emplace_back(SelectionChanges::RmvSelection,
+                It->DocName,It->FeatName,It->SubName,It->TypeName);
 
         // destroy the _SelObj item
-        It = _SelList.erase(It);
+        _SelList.erase(It);
+    }
 
-        SelectionChanges Chng;
-        Chng.pDocName  = tmpDocName.c_str();
-        Chng.pObjectName = tmpFeaName.c_str();
-        Chng.pSubName  = tmpSubName.c_str();
-        Chng.pTypeName = tmpTypName.c_str();
-        Chng.Type      = SelectionChanges::RmvSelection;
-
-        FC_LOG("Rmv Selection "<<
-            (pDocName?pDocName:"(null)")<<'.'<<
-            (pObjectName?pObjectName:"(null)")<<'.' <<
-            (pSubName?pSubName:"(null)"));
-
-        Notify(Chng);
-        signalSelectionChanged(Chng);
-    
-        rmvList.push_back(Chng);
-
+    if(changes.size()) {
+        for(auto &Chng : changes) {
+            FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
+            Notify(Chng);
+            signalSelectionChanged(Chng);
+        }
         getMainWindow()->updateActions();
     }
 }
@@ -1158,8 +1089,7 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 {
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng;
-        Chng.Type      = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
@@ -1208,13 +1138,7 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 
     _SelList = temp;
 
-    SelectionChanges Chng;
-    Chng.Type = SelectionChanges::SetSelection;
-    Chng.pDocName = pDocName;
-    Chng.pObjectName = "";
-    Chng.pSubName = "";
-    Chng.pTypeName = "";
-
+    SelectionChanges Chng(SelectionChanges::SetSelection,pDocName);
     Notify(Chng);
     signalSelectionChanged(Chng);
     getMainWindow()->updateActions();
@@ -1232,8 +1156,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
 
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng;
-        Chng.Type      = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
@@ -1258,12 +1181,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
 
         _SelList = selList;
 
-        SelectionChanges Chng;
-        Chng.Type = SelectionChanges::ClrSelection;
-        Chng.pDocName = docName.c_str();
-        Chng.pObjectName = "";
-        Chng.pSubName = "";
-        Chng.pTypeName = "";
+        SelectionChanges Chng(SelectionChanges::ClrSelection,docName.c_str());
 
         FC_TRACE("notifying clear selection");
         Notify(Chng);
@@ -1279,8 +1197,7 @@ void SelectionSingleton::clearCompleteSelection()
 {
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng;
-        Chng.Type      = SelectionChanges::PickedListChanged;
+        SelectionChanges Chng(SelectionChanges::PickedListChanged);
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
@@ -1289,12 +1206,7 @@ void SelectionSingleton::clearCompleteSelection()
 
     _SelList.clear();
 
-    SelectionChanges Chng;
-    Chng.Type = SelectionChanges::ClrSelection;
-    Chng.pDocName = "";
-    Chng.pObjectName = "";
-    Chng.pSubName = "";
-    Chng.pTypeName = "";
+    SelectionChanges Chng(SelectionChanges::ClrSelection);
 
     FC_LOG("Clear selection");
 
@@ -1303,33 +1215,56 @@ void SelectionSingleton::clearCompleteSelection()
     getMainWindow()->updateActions();
 }
 
-bool SelectionSingleton::isSelected(const char* pDocName, const char* pObjectName, const char* pSubName) const
+bool SelectionSingleton::isSelected(const char* pDocName, 
+        const char* pObjectName, const char* pSubName, bool resolve) const
 {
-    const char* tmpDocName = pDocName ? pDocName : "";
-    const char* tmpFeaName = pObjectName ? pObjectName : "";
-    const char* tmpSubName = pSubName ? pSubName : "";
-    for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It)
-        if (It->DocName == tmpDocName && It->FeatName == tmpFeaName && It->SubName == tmpSubName)
-            return true;
-    return false;
+    if(!pObjectName) return false;
+    auto pDoc = getDocument(pDocName);
+    if(!pDoc) 
+        return false;
+    if(!pSubName) pSubName = "";
+    return isSelected(pDoc->getObject(pObjectName),pSubName,resolve);
 }
 
-bool SelectionSingleton::isSelected(App::DocumentObject* obj, const char* pSubName) const
+bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, bool resolve) const
 {
-    if (!obj) return false;
-
-    for(list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
-        if (It->pObject == obj) {
-            if (pSubName) {
-                if (It->SubName == pSubName)
-                    return true;
-            }
-            else {
-                return true;
-            }
+    if(!pObject || !pObject->getNameInDocument() || !pObject->getDocument()) 
+        return false;
+    const char *pDocName = pObject->getDocument()->getName();
+    const char *pObjectName = pObject->getNameInDocument();
+    const char *element = 0;
+    std::pair<std::string,std::string> elementName;
+    auto pResolvedObject = App::GeoFeature::resolveElement(pObject,
+            pSubName,elementName,false,App::GeoFeature::Normal,0,&element);
+    if(!pResolvedObject) 
+        return false;
+    std::string subname;
+    if(pSubName) {
+        if(element && elementName.first.size()) {
+            // make sure the selected sub name is a new style if available
+            subname = std::string(pSubName,element-pSubName) + elementName.first;
+            pSubName = subname.c_str();
         }
     }
-
+    for (auto &sel : _SelList) {
+        if (sel.DocName==pDocName && sel.FeatName==pObjectName) {
+            if(!pSubName || sel.SubName==pSubName)
+                return true;
+        }
+    }
+    if(resolve) {
+        for(auto &sel : _SelList) {
+            if(sel.pResolvedObject != pResolvedObject)
+                continue;
+            if(!pSubName) 
+                return true;
+            if(elementName.first.size()) {
+                if(sel.SubName == elementName.first)
+                    return true;
+            }else if(sel.SubName == elementName.second)
+                return true;
+        }
+    }
     return false;
 }
 
@@ -1371,8 +1306,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
             }
         }
         if(changed) {
-            SelectionChanges Chng;
-            Chng.Type      = SelectionChanges::PickedListChanged;
+            SelectionChanges Chng(SelectionChanges::PickedListChanged);
             Notify(Chng);
             signalSelectionChanged(Chng);
         }
@@ -1387,7 +1321,9 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
  * A constructor.
  * A more elaborate description of the constructor.
  */
-SelectionSingleton::SelectionSingleton():_needPickedList(false)
+SelectionSingleton::SelectionSingleton()
+    :CurrentPreselection(SelectionChanges::ClrSelection)
+    ,_needPickedList(false)
 {
     hx = 0;
     hy = 0;
@@ -1395,14 +1331,6 @@ SelectionSingleton::SelectionSingleton():_needPickedList(false)
     ActiveGate = 0;
     gateResolve = 1;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
-    CurrentPreselection.Type = SelectionChanges::ClrSelection;
-    CurrentPreselection.pDocName = 0;
-    CurrentPreselection.pObjectName = 0;
-    CurrentPreselection.pSubName = 0;
-    CurrentPreselection.pTypeName = 0;
-    CurrentPreselection.x = 0.0;
-    CurrentPreselection.y = 0.0;
-    CurrentPreselection.z = 0.0;
     signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, _1));
 }
 
@@ -1448,7 +1376,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "Clear the selection to the given document name. If no document is\n"
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
-     "isSelected(object) -- Check if a given object is selected"},
+     "isSelected(object,resolve=True) -- Check if a given object is selected"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
      "getPreselection() -- Get preselected object"},
     {"clearPreselection",   (PyCFunction) SelectionSingleton::sRemPreselection, METH_VARARGS,
@@ -1667,11 +1595,12 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, P
 {
     PyObject *object;
     char* subname=0;
-    if (!PyArg_ParseTuple(args, "O!|s", &(App::DocumentObjectPy::Type), &object, &subname))
+    PyObject *resolve = Py_True;
+    if (!PyArg_ParseTuple(args, "O!|sO", &(App::DocumentObjectPy::Type), &object, &subname,&resolve))
         return NULL;
 
     App::DocumentObjectPy* docObj = static_cast<App::DocumentObjectPy*>(object);
-    bool ok = Selection().isSelected(docObj->getDocumentObjectPtr(), subname);
+    bool ok = Selection().isSelected(docObj->getDocumentObjectPtr(), subname,PyObject_IsTrue(resolve));
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
