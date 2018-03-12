@@ -48,5 +48,5 @@ if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
     FreeCAD.addImportType("FEM mesh VTK Unstructure format (*.vtk *.vtu)", "Fem")
     FreeCAD.addExportType("FEM mesh VTK Unstructure format (*.vtk *.vtu)", "Fem")
 
-    FreeCAD.addImportType("FEM result VTK Unstructure format (*.vtk *.vtu)", "importVTKResults")
-    FreeCAD.addExportType("FEM result VTK Unstructure format (*.vtk *.vtu)", "importVTKResults")
+    FreeCAD.addImportType("FEM result VTK Unstructure format (*.vtk *.vtu)", "feminout.importVTKResults")
+    FreeCAD.addExportType("FEM result VTK Unstructure format (*.vtk *.vtu)", "feminout.importVTKResults")
