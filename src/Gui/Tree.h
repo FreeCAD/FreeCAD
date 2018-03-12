@@ -231,6 +231,7 @@ protected:
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
+    void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
@@ -259,6 +260,7 @@ private:
     Connection connectHltObject;
     Connection connectExpObject;
     Connection connectScrObject;
+    Connection connectRecomputed;
 
     friend class TreeWidget;
 };

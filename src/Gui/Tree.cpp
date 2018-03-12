@@ -1460,6 +1460,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
     connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
     connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
+    connectRecomputed = doc->getDocument()->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 
@@ -1478,6 +1479,7 @@ DocumentItem::~DocumentItem()
     connectHltObject.disconnect();
     connectExpObject.disconnect();
     connectScrObject.disconnect();
+    connectRecomputed.disconnect();
 }
 
 TreeWidget *DocumentItem::getTree() const{
@@ -1956,10 +1958,36 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
 
 void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    FOREACH_ITEM(item,obj)
-        QTreeWidget* tree = item->treeWidget();
-        tree->scrollToItem(item, QAbstractItemView::PositionAtTop);
-    END_FOREACH_ITEM
+    if(!obj.getObject() || !obj.getObject()->getNameInDocument())
+        return;
+    auto it = ObjectMap.find(obj.getObject());
+    if(it == ObjectMap.end() || it->second->items.empty()) 
+        return;
+    auto item = it->second->rootItem;
+    if(!item)
+        item = *it->second->items.begin();
+    getTree()->scrollToItem(item);
+}
+
+void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::DocumentObject*> &objs) {
+    auto tree = getTree();
+    if(!tree->isVisible()) return;
+    bool scrolled = false;
+    for(auto obj : objs) {
+        if(obj->isValid()) continue;
+        auto it = ObjectMap.find(obj);
+        if(it == ObjectMap.end() || it->second->items.empty()) 
+            continue;
+        auto item = it->second->rootItem;
+        if(!item) {
+            item = *it->second->items.begin();
+            showItem(item,false);
+        }
+        if(!scrolled) {
+            scrolled = true;
+            tree->scrollToItem(item);
+        }
+    }
 }
 
 const Gui::Document* DocumentItem::document() const

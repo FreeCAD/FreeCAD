@@ -160,7 +160,7 @@ public:
     boost::signal<void (const std::vector<App::DocumentObject*>&)> signalFinishImportObjects;
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
-    boost::signal<void (const App::Document&)> signalRecomputed;
+    boost::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalRecomputed;
     boost::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     //@}
 

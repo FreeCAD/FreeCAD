@@ -2681,7 +2681,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs) {
         }
     }
 
-    signalRecomputed(*this);
+    signalRecomputed(*this,topoSortedObjects);
 
     return objectCount;
 }
