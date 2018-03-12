@@ -90,8 +90,11 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
         from . import importToolsFem
         result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
 
-    if analysis:
-        analysis_object.addObject(result_obj)
+    # workaround for wrong stats calculation fix in App/VTKtools.cpp
+    while len(result_obj.Stats) < 39:
+        tmpstats = result_obj.Stats
+        tmpstats.append(0.0)
+        result_obj.Stats = tmpstats
 
     ''' seems unused at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
@@ -102,3 +105,8 @@ def importVTK(filename, analysis=None, result_name_prefix=None):
         time_step = 0.0
     # Stats has been setup in C++ function FemVTKTools importCfdResult()
     '''
+
+    if analysis:
+        analysis_object.addObject(result_obj)
+    result_obj.touch()
+    FreeCAD.ActiveDocument.recompute()

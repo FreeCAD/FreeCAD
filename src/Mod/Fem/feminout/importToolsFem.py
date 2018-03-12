@@ -396,9 +396,14 @@ def fill_femresult_mechanical(results, result_set, span):
                      temp_min, temp_avg, temp_max,
                      mflow_min, mflow_avg, mflow_max,
                      npress_min, npress_avg, npress_max]
-    # do not forget to adapt the def get_stats in FemResultTools module as well as the TestFem module
     # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
-    # TODO: a dictionary would be far robust than a list, but needs adapten in VTK too because of VTK result import
+    # len(stat_types) == 13*3 == 39
+    # do not forget to adapt the def get_stats in the following code:
+    # - module femresult/resulttools.py
+    # - module femtest/testccxtools.py
+    # - C++ App/FemVTKTools.cpp
+    # - module feminout/importVTKResults.py  (workaround fix in importVtkFCResult for broken function in App/FemVTKTools.cpp)
+    # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
     return results
 
