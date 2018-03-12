@@ -57,7 +57,7 @@ def insert(filename, docname):
     except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
-    importVTK(filename)
+    importVtk(filename)
 
 
 def export(objectslist, filename):
@@ -73,7 +73,41 @@ def export(objectslist, filename):
 
 
 ########## module specific methods ##########
-def importVTK(filename, analysis=None, result_name_prefix=None):
+def importVtk(filename, object_name=None, object_type=None):
+    if not object_type:
+        vtkinout_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk")
+        object_type = vtkinout_prefs.GetInt("ImportObject", 0)
+    if not object_name:
+        object_name = os.path.splitext(os.path.basename(filename))[0]
+    if object_type == 0:
+        # vtk result object
+        importVtkVtkResult(filename, object_name)
+    elif object_type == 1:
+        # FEM mesh object
+        importVtkFemMesh(filename, object_name)
+    elif object_type == 2:
+        # FreeCAD result object
+        importVtkFCResult(filename, object_name)
+    else:
+        FreeCAD.Console.PrintError('Error, wrong parameter in VTK import pref: {}\n'.format(object_type))
+
+
+def importVtkVtkResult(filename, resultname):
+    vtk_result_obj = FreeCAD.ActiveDocument.addObject("Fem::FemPostPipeline", resultname)
+    vtk_result_obj.read(filename)
+    vtk_result_obj.touch()
+    FreeCAD.ActiveDocument.recompute()
+
+
+def importVtkFemMesh(filename, meshname):
+    meshobj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", meshname)
+    meshobj.FemMesh = Fem.read(filename)
+    meshobj.touch()
+    FreeCAD.ActiveDocument.recompute()
+
+
+def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=None):
+    # for import restrictions see https://forum.freecadweb.org/viewtopic.php?f=18&t=22576&start=20#p179862
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
