@@ -28,6 +28,7 @@ if(BUILD_GUI)
         StartPage.css
         StartPage.js
         StartPage.html
+        EnableDownload.py
         images/Background.jpg
         images/FreeCAD.png
         images/PartDesign.png
