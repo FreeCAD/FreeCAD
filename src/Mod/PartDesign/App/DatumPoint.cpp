@@ -92,6 +92,14 @@ Point::~Point()
 {
 }
 
+TopoDS_Shape Point::getShape() const
+{
+    BRepBuilderAPI_MakeVertex builder(gp_Pnt(0,0,0));
+    Part::TopoShape sh = builder.Shape();
+    sh.setPlacement(Placement.getValue());
+    return sh.getShape();
+}
+
 void Point::onChanged(const App::Property* prop)
 {
     Part::Datum::onChanged(prop);

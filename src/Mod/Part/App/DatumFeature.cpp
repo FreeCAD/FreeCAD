@@ -75,7 +75,7 @@ App::DocumentObject *Datum::getSubObject(const char *subname,
         return const_cast<Datum*>(this);
 
     try {
-        TopoShape ts(Shape.getValue().Located(TopLoc_Location()));
+        TopoShape ts(getShape().Located(TopLoc_Location()));
         if(pmat && !ts.isNull()) 
             ts.transformShape(*pmat,false,true);
         *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));

@@ -46,6 +46,7 @@ public:
 
     Base::Vector3d getPoint();
 
+    virtual TopoDS_Shape getShape() const override;
 protected:
     virtual void onChanged(const App::Property* prop);
 };

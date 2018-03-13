@@ -49,7 +49,7 @@ public:
     virtual const char* getViewProviderName(void) const = 0;
 
     /// Return a shape including Placement representing the datum feature
-    TopoDS_Shape getShape() const;
+    virtual TopoDS_Shape getShape() const;
 
     /// Returns a point of the feature it counts as it's base
     virtual Base::Vector3d getBasePoint () const;
