@@ -651,7 +651,7 @@ class _Window(ArchComponent.Component):
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         if not "Restore" in obj.State:
-            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width"]:
+            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 ok = True
                 if prop == "Placement":
@@ -659,6 +659,11 @@ class _Window(ArchComponent.Component):
                         if self.Placement == obj.Placement:
                             ok = False
                     self.Placement = FreeCAD.Placement(obj.Placement)
+                elif prop == "Hosts":
+                    if hasattr(self,"Hosts"):
+                        if self.Hosts == obj.Hosts:
+                            ok = False
+                    self.Hosts = obj.Hosts
                 if ok and hasattr(obj,"Hosts"):
                     for host in obj.Hosts:
                         # mark host to recompute so it can detect this object
