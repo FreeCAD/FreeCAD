@@ -323,6 +323,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             pyramidArray->InsertNextCell(cell);
         }
+        /* // penta6 and hexa8 as well has hexa20 make FreeCAD crash
         else if (aVol->NbNodes() == 6) {
             vtkSmartPointer<vtkWedge> cell = vtkSmartPointer<vtkWedge>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
@@ -347,6 +348,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             hexaArray->InsertNextCell(cell);
         }
+        */
         else if ( aVol->NbNodes() == 10) { // quadratic tetrahedra
 
             vtkSmartPointer<vtkQuadraticTetra> tetra = vtkSmartPointer<vtkQuadraticTetra>::New();
@@ -356,13 +358,15 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             quadTetraArray->InsertNextCell(tetra);
         }
-        else if (aVol->NbNodes() == 20) { // not tested, no sure about vertex sequence
+        /*
+         else if (aVol->NbNodes() == 20) { // not tested, no sure about vertex sequence
             vtkSmartPointer<vtkHexahedron> cell= vtkSmartPointer<vtkHexahedron>::New();
             for(int i=0; i<20; i++){
                 cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID()-1);
             }
             quadHexaArray->InsertNextCell(cell);
         }
+        */
         else {
             throw std::runtime_error("Volume not yet supported by FreeCADs VTK mesh builder\n");
         }
