@@ -361,7 +361,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
             for(int i=0; i<20; i++){
                 cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID()-1);
             }
-            hexaArray->InsertNextCell(cell);
+            quadHexaArray->InsertNextCell(cell);
         }
         else {
             throw std::runtime_error("Volume not yet supported by FreeCADs VTK mesh builder\n");
