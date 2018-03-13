@@ -270,6 +270,10 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Fa
 
             quadQuadArray->InsertNextCell(quad);
         }
+        else
+        {
+            throw std::runtime_error("Face not yet supported by FreeCADs VTK mesh builder\n");
+        }
      }
      if(triangleArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_TRIANGLE, triangleArray);
@@ -300,8 +304,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
     {
         const SMDS_MeshVolume* aVol = aVolIter->next();
 
-        //tetrahedra
-        if(aVol->NbNodes() == 4) {
+        if (aVol->NbNodes() == 4) { // tetrahedra
             vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();
             tetra->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
             tetra->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
@@ -310,8 +313,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             tetraArray->InsertNextCell(tetra);
         }
-        // common cell types for CFD
-        if(aVol->NbNodes() == 5) {
+        else if (aVol->NbNodes() == 5) { // common cell types for CFD
             vtkSmartPointer<vtkPyramid> cell= vtkSmartPointer<vtkPyramid>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
             cell->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
@@ -321,7 +323,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             pyramidArray->InsertNextCell(cell);
         }
-        if(aVol->NbNodes() == 6) {
+        else if (aVol->NbNodes() == 6) {
             vtkSmartPointer<vtkWedge> cell = vtkSmartPointer<vtkWedge>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
             cell->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
@@ -332,7 +334,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             wedgeArray->InsertNextCell(cell);
         }
-        if(aVol->NbNodes() == 8) {
+        else if (aVol->NbNodes() == 8) {
             vtkSmartPointer<vtkHexahedron> cell= vtkSmartPointer<vtkHexahedron>::New();
             cell->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
             cell->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
@@ -345,8 +347,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             hexaArray->InsertNextCell(cell);
         }
-        //quadratic tetrahedra
-        else if( aVol->NbNodes() == 10) {
+        else if ( aVol->NbNodes() == 10) { // quadratic tetrahedra
 
             vtkSmartPointer<vtkQuadraticTetra> tetra = vtkSmartPointer<vtkQuadraticTetra>::New();
             for(int i=0; i<10; i++){
@@ -355,12 +356,15 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
             quadTetraArray->InsertNextCell(tetra);
         }
-        if(aVol->NbNodes() == 20) { // not tested, no sure about vertex sequence
+        else if (aVol->NbNodes() == 20) { // not tested, no sure about vertex sequence
             vtkSmartPointer<vtkHexahedron> cell= vtkSmartPointer<vtkHexahedron>::New();
             for(int i=0; i<20; i++){
                 cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID()-1);
             }
             hexaArray->InsertNextCell(cell);
+        }
+        else {
+            throw std::runtime_error("Volume not yet supported by FreeCADs VTK mesh builder\n");
         }
     }
 
