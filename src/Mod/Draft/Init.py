@@ -21,12 +21,12 @@
 #***************************************************************************
 
 # add Import/Export types
-App.addImportType("Autodesk DXF (*.dxf)","importDXF") 
+App.addImportType("Autodesk DXF 2D (*.dxf)","importDXF") 
 App.addImportType("SVG as geometry (*.svg)","importSVG")
 App.addImportType("Open CAD Format (*.oca *.gcad)","importOCA")
 App.addImportType("Common airfoil data (*.dat)","importAirfoilDAT")
-App.addExportType("Autodesk DXF (*.dxf)","importDXF")
+App.addExportType("Autodesk DXF 2D (*.dxf)","importDXF")
 App.addExportType("Flattened SVG (*.svg)","importSVG")
 App.addExportType("Open CAD Format (*.oca)","importOCA")
-App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
-App.addExportType("Autodesk DWG (*.dwg)","importDWG")
+App.addImportType("Autodesk DWG 2D (*.dwg)","importDWG") 
+App.addExportType("Autodesk DWG 2D (*.dwg)","importDWG")
