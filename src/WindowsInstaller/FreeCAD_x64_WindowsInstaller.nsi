@@ -81,7 +81,7 @@ ${EndIf}
 function .onInit
 	setShellVarContext all
 	!insertmacro VerifyUserIsAdmin
-	Call unSelectPythonPath
+	Call unSelectInstallOptions
 functionEnd
 
 section "FreeCAD (Required)"
@@ -97,12 +97,9 @@ section "FreeCAD (Required)"
 	setOutPath $INSTDIR\doc
 	file /r "..\..\doc\"
 	setOutPath $INSTDIR\data
-    file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
+	file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
 	setOutPath $INSTDIR
-    file  "vcredist_x64.exe"
-
-	# Install the Visual Studio redistributable 
-    ExecWait '"$INSTDIR\vcredist_x64.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'
+	file  "vcredist_x64.exe"
 
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -140,16 +137,24 @@ section "Add to PYTHONPATH" PythonPathSection
 	WriteRegStr HKLM "Software\Python\PythonCore\2.7\PythonPath\${FULLNAME}" "" "$INSTDIR\bin"
 sectionEnd
 
+section "Install redistributable" VCRedistSection
+	# Install the Visual Studio redistributable
+	ExecWait '"$INSTDIR\vcredist_x64.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'
+sectionEnd
+
 # http://forums.winamp.com/showthread.php?t=255747
-function unSelectPythonPath
+function unSelectInstallOptions
 	# Deselect the PYTHONPATH option
 	!insertmacro UnselectSection ${PythonPathSection}
+	!insertmacro UnselectSection ${VCRedistSection}
 functionEnd
 
 LangString DESC_PythonPathSection ${LANG_ENGLISH} "Add the FreeCAD installation directory to PYTHONPATH in the registry."
+LangString DESC_VCRedistSection ${LANG_ENGLISH} "Install the Visual Studio redistributable."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${PythonPathSection} $(DESC_PythonPathSection)
+	!insertmacro MUI_DESCRIPTION_TEXT ${VCRedistSection} $(DESC_VCRedistSection)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
