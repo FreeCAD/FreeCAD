@@ -260,7 +260,7 @@ def readResult(frd_input):
                 nd20 = int(line[93:103])
                 input_continues = False
                 # CalculiX uses a different node order in input file *.inp and result file *.frd for hexa20 (C3D20)
-                # according to Guido (the developer of ccx)
+                # according to Guido (the developer of ccx), see note in in first line of cgx manuel part element types
                 # ccx (and thus the *.inp) follows the ABAQUS convention (documented in the ccx-documentation)
                 # cgx (and thus the *.frd) follows the FAM2 convention (documented in the cgx-documentation)
                 # FAM32 is from the company FEGS limited, maybe this company does not exist any more)
@@ -295,7 +295,7 @@ def readResult(frd_input):
                 nd14 = int(line[33:43])
                 nd15 = int(line[43:53])
                 input_continues = False
-                # CalculiX uses a different node order in input file *.inp and result file *.frd for penta15 (C3D15)
+                # CalculiX uses a different node order in input file *.inp and result file *.frd for penta15 (C3D15), see notes at hexa20
                 # elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
                 #                           nd9, nd7, nd14, nd15, nd13)  # order of the *.inp file
                 elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd14, nd15, nd13, nd8,
@@ -360,10 +360,11 @@ def readResult(frd_input):
             elif elemType == 12:
                 # B32 CalculiX --> seg3 FreeCAD
                 # Also D element element number
-                # N1, N3 ,N2 Order in outpufile is 1,3,2
+                # CalculiX uses a different node order in input file *.inp and result file *.frd for seg3 (B32), see notes at hexa20
+                # N1, N2 ,N3
                 nd1 = int(line[3:13])
-                nd3 = int(line[13:23])
-                nd2 = int(line[23:33])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
                 if inout_nodes:
                     for i in range(len(inout_nodes)):
                         if nd1 == int(inout_nodes[i][1]):
