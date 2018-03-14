@@ -272,7 +272,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Fa
         }
         else
         {
-            throw std::runtime_error("Face not yet supported by FreeCADs VTK mesh builder\n");
+            throw std::runtime_error("Face not yet supported by FreeCAD's VTK mesh builder\n");
         }
      }
      if(triangleArray->GetNumberOfCells()>0)
@@ -349,7 +349,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
             hexaArray->InsertNextCell(cell);
         }
         */
-        else if ( aVol->NbNodes() == 10) { // quadratic tetrahedra
+        else if (aVol->NbNodes() == 10) { // quadratic tetrahedra
 
             vtkSmartPointer<vtkQuadraticTetra> tetra = vtkSmartPointer<vtkQuadraticTetra>::New();
             for(int i=0; i<10; i++){
@@ -368,7 +368,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
         }
         */
         else {
-            throw std::runtime_error("Volume not yet supported by FreeCADs VTK mesh builder\n");
+            throw std::runtime_error("Volume not yet supported by FreeCAD's VTK mesh builder\n");
         }
     }
 

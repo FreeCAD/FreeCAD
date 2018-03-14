@@ -61,8 +61,8 @@ def insert(filename, docname):
 
 
 def export(objectslist, filename):
-    "called when freecad exports a object to vtk"
-    if len(objectslist) > 1:  # the case of no selected obj is catched by FreeCAD already
+    "called when freecad exports an object to vtk"
+    if len(objectslist) > 1:  # the case of no selected obj is caught by FreeCAD already
         FreeCAD.Console.PrintError("This exporter can only export one object at once\n")
         return
 
@@ -76,7 +76,7 @@ def export(objectslist, filename):
     elif obj.isDerivedFrom("Fem::FemResultObject"):
         Fem.writeResult(filename, obj)
     else:
-        FreeCAD.Console.PrintError('Object selcted is not supported by to export to VTK.\n')
+        FreeCAD.Console.PrintError('Selected object is not supported by export to VTK.\n')
         return
 
 
