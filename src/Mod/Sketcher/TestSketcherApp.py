@@ -210,6 +210,7 @@ class SketcherSolverTestCases(unittest.TestCase):
 		values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
 		self.Doc2.recompute()
 		self.failUnless(len(values) == 0)
+		FreeCAD.closeDocument("Issue3245")
 	
 	def tearDown(self):
 		#closing doc
