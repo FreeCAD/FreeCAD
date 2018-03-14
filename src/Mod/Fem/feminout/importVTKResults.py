@@ -61,15 +61,23 @@ def insert(filename, docname):
 
 
 def export(objectslist, filename):
-    "called when freecad exports a fem result object"
-    if len(objectslist) != 1:
+    "called when freecad exports a object to vtk"
+    if len(objectslist) > 1:  # the case of no selected obj is catched by FreeCAD already
         FreeCAD.Console.PrintError("This exporter can only export one object at once\n")
         return
+
     obj = objectslist[0]
-    if not obj.isDerivedFrom("Fem::FemResultObject"):
-        FreeCAD.Console.PrintError("object selcted is not FemResultObject.\n")
+    if obj.isDerivedFrom("Fem::FemPostPipeline"):
+        FreeCAD.Console.PrintError('Export of a VTK post object to vtk is not yet implemented !\n')
         return
-    Fem.writeResult(filename, obj)
+    elif obj.isDerivedFrom("Fem::FemMeshObject"):
+        FreeCAD.Console.PrintError('Use export to FEM mesh formats to export a FEM mesh object to vtk!\n')
+        return
+    elif obj.isDerivedFrom("Fem::FemResultObject"):
+        Fem.writeResult(filename, obj)
+    else:
+        FreeCAD.Console.PrintError('Object selcted is not supported by to export to VTK.\n')
+        return
 
 
 ########## module specific methods ##########
