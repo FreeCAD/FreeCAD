@@ -365,6 +365,8 @@ public:
     App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0, 
         std::string *childName=0, const char **subElement=0) const;
 
+    virtual void onUpdateElementReference(const Property *) {}
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);

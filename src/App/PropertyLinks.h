@@ -273,6 +273,11 @@ public:
     /// return the list of sub elements 
     const std::vector<std::string>& getSubValues(void) const;
 
+    /// return the list of sub elements with mapped names
+    const std::vector<std::pair<std::string,std::string> > &getShadowSubs() const {
+        return _ShadowSubList;
+    }
+
     /// return the list of sub elements starts with a special string 
     std::vector<std::string> getSubValuesStartsWith(const char*) const;
 
@@ -387,6 +392,10 @@ public:
         return _lSubList;
     }
 
+    const std::vector<std::pair<std::string,std::string> > &getShadowSubs() const {
+        return _ShadowSubList;
+    }
+
     /**
      * @brief Removes all occurrences of \a lValue in the property
      * together with its sub-elements and returns the number of entries removed.
@@ -457,6 +466,7 @@ public:
     void setValue(App::DocumentObject *, const char *subname, bool relative);
     void setValue(const char *filePath, const char *objectName, const char *subname, bool relative);
     const char *getSubName() const {return subName.c_str();}
+    const std::pair<std::string,std::string> &getShadowSubName() const {return shadowSub;}
     void setSubName(const char *subname, bool transaction=true);
     bool hasSubName() const {return !subName.empty();}
 

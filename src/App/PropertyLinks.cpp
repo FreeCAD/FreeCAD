@@ -664,8 +664,11 @@ void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool rever
         }
     }
     _mapped.clear();
-    if(touched)
+    if(touched) {
         touch();
+        auto owner = dynamic_cast<DocumentObject*>(getContainer());
+        if(owner) owner->onUpdateElementReference(this);
+    }
 }
 
 bool PropertyLinkSub::referenceChanged() const {
@@ -1292,8 +1295,11 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
         }
     }
     _mapped.clear();
-    if(touched)
+    if(touched) {
         touch();
+        auto owner = dynamic_cast<DocumentObject*>(getContainer());
+        if(owner) owner->onUpdateElementReference(this);
+    }
 }
 
 bool PropertyLinkSubList::referenceChanged() const{
@@ -1967,8 +1973,11 @@ void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse)
         subName = shadowSub.first;
     }
     _mapped = false;
-    if(touched)
+    if(touched) {
         touch();
+        auto owner = dynamic_cast<DocumentObject*>(getContainer());
+        if(owner) owner->onUpdateElementReference(this);
+    }
 }
 
 bool PropertyXLink::referenceChanged() const{
