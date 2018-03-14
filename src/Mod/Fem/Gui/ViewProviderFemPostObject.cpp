@@ -551,7 +551,7 @@ bool ViewProviderFemPostObject::doubleClicked(void) {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
     if (isBackLightEnabled == false)
-        Base::Console().Error("Back light is not enabled. Due to a VTK implemataion problem you really should consider to enable back light in FreeCAD display preferences if you work with VTK post processing.\n");
+        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you really should consider to enable backlight in FreeCAD display preferences if you work with VTK post processing.\n");
     // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
