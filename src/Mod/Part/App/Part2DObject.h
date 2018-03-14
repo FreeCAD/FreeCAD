@@ -94,6 +94,10 @@ public:
     //@}
 
     void Restore(Base::XMLReader &reader);
+
+protected:
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
 };
 
 typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;
