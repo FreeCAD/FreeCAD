@@ -2185,7 +2185,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
     openCommand("Create Boolean");
     std::string FeatName = getUniqueObjectName("Boolean");
     doCommand(Doc,"App.activeDocument().%s.newObject('PartDesign::Boolean','%s')", pcActiveBody->getNameInDocument(), FeatName.c_str());
-    
+
     if (BodyFilter.match() && !BodyFilter.Result.empty()) {
         std::vector<App::DocumentObject*> bodies;
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
@@ -2195,8 +2195,11 @@ void CmdPartDesignBoolean::activated(int iMsg)
                     bodies.push_back(j->getObject());
             }
         }
-        std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
-        doCommand(Doc,"App.activeDocument().%s.addObjects(%s)",FeatName.c_str(),bodyString.c_str());
+
+        if (!bodies.empty()) {
+            std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
+            doCommand(Doc,"App.activeDocument().%s.addObjects(%s)",FeatName.c_str(),bodyString.c_str());
+        }
     }
 
     finishFeature(this, FeatName, nullptr, false);
