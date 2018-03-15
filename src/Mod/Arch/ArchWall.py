@@ -851,6 +851,8 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         if hasattr(self,"Object"):
+            if self.Object.CloneOf:
+                return ":/icons/Arch_Wall_Clone.svg"
             for o in self.Object.OutList:
                 if Draft.getType(o) == "Wall":
                     return ":/icons/Arch_Wall_Tree_Assembly.svg"
