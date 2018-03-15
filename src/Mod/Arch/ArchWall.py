@@ -462,6 +462,18 @@ class _Wall(ArchComponent.Component):
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.addProperty("App::PropertyInteger","Face","Arch",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
         obj.addProperty("App::PropertyDistance","Offset","Arch",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
+        
+        obj.addProperty("App::PropertyBool","MakeBlocks","Wall",QT_TRANSLATE_NOOP("App::Property","Enable this to make the wall generate blocks"))
+        obj.addProperty("App::PropertyLength","BlockLength","Wall",QT_TRANSLATE_NOOP("App::Property","The length of each block"))
+        obj.addProperty("App::PropertyLength","BlockHeight","Wall",QT_TRANSLATE_NOOP("App::Property","The height of each block"))
+        obj.addProperty("App::PropertyLength","OffsetFirst","Wall",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the first line of blocks"))
+        obj.addProperty("App::PropertyLength","OffsetSecond","Wall",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the second line of blocks"))
+        obj.addProperty("App::PropertyLength","Joint","Wall",QT_TRANSLATE_NOOP("App::Property","The size of the joints between each block"))
+        obj.addProperty("App::PropertyInteger","CountEntire","Wall",QT_TRANSLATE_NOOP("App::Property","The number of entire blocks"))
+        obj.addProperty("App::PropertyInteger","CountBroken","Wall",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
+        obj.setEditorMode("CountEntire",1)
+        obj.setEditorMode("CountBroken",1)
+
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"
@@ -478,18 +490,18 @@ class _Wall(ArchComponent.Component):
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
         if extdata:
-            base = extdata[0]
+            bplates = extdata[0]
             extv = extdata[2].Rotation.multVec(extdata[1])
-            if isinstance(base,list):
+            if isinstance(bplates,list):
                 shps = []
-                for b in base:
+                for b in bplates:
                     b.Placement = extdata[2].multiply(b.Placement)
                     b = b.extrude(extv)
                     shps.append(b)
                 base = Part.makeCompound(shps)
             else:
-                base.Placement = extdata[2].multiply(base.Placement)
-                base = base.extrude(extv)
+                bplates.Placement = extdata[2].multiply(bplates.Placement)
+                base = bplates.extrude(extv)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
@@ -500,6 +512,85 @@ class _Wall(ArchComponent.Component):
                         return
                 elif obj.Base.Shape.Solids:
                     base = obj.Base.Shape.copy()
+
+                # blocks calculation
+                elif hasattr(obj,"MakeBlocks") and hasattr(self,"basewires"):
+                    if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.BlockLength.Value and obj.BlockHeight.Value:
+                        if len(self.basewires) == 1:
+                            blocks = []
+                            n = FreeCAD.Vector(extv)
+                            n.normalize()
+                            cuts1 = []
+                            cuts2 = []
+                            for i in range(2):
+                                if i == 0:
+                                    offset = obj.OffsetFirst.Value
+                                else:
+                                    offset = obj.OffsetSecond.Value
+                                for edge in self.basewires[0].Edges:
+                                    while offset < (edge.Length-obj.Joint.Value):
+                                        #print i," Edge ",edge," : ",edge.Length," - ",offset
+                                        if offset:
+                                            t = edge.tangentAt(offset)
+                                            p = t.cross(n)
+                                            p.multiply(1.1*obj.Width.Value)
+                                            p1 = edge.valueAt(offset).add(p)
+                                            p2 = edge.valueAt(offset).add(p.negative())
+                                            sh = Part.LineSegment(p1,p2).toShape()
+                                            if obj.Joint.Value:
+                                                sh = sh.extrude(t.multiply(obj.Joint.Value))
+                                            sh = sh.extrude(n)
+                                            if i == 0:
+                                                cuts1.append(sh)
+                                            else:
+                                                cuts2.append(sh)
+                                        offset += (obj.BlockLength.Value+obj.Joint.Value)
+                                    else:
+                                        offset -= (edge.Length-obj.Joint.Value)
+                            if cuts1 and cuts2:
+                                if isinstance(bplates,list):
+                                    bplates = bplates[0]
+                                fsize = obj.BlockHeight.Value+obj.Joint.Value
+                                bvec = FreeCAD.Vector(n)
+                                bvec.multiply(obj.BlockHeight.Value)
+                                svec = FreeCAD.Vector(n)
+                                svec.multiply(fsize)
+                                plate1 = bplates.cut(cuts1).Faces
+                                blocks1 = Part.makeCompound([f.extrude(bvec) for f in plate1])
+                                plate2 = bplates.cut(cuts2).Faces
+                                blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
+                                interval = extv.Length/(fsize)
+                                entires = int(interval)
+                                rest = (interval - entires)
+                                for i in range(entires):
+                                    if i % 2: # odd
+                                        b = blocks2.copy()
+                                    else:
+                                        b = blocks1.copy()
+                                    if i:
+                                        t = FreeCAD.Vector(svec)
+                                        t.multiply(i)
+                                        b.translate(t)
+                                    blocks.append(b)
+                                if rest:
+                                    rest = extv.Length-(entires*fsize)
+                                    rvec = FreeCAD.Vector(n)
+                                    rvec.multiply(rest)
+                                    if entires % 2:
+                                        b = Part.makeCompound([f.extrude(rvec) for f in plate2])
+                                    else:
+                                        b = Part.makeCompound([f.extrude(rvec) for f in plate1])
+                                    t = FreeCAD.Vector(svec)
+                                    t.multiply(entires)
+                                    b.translate(t)
+                                    blocks.append(b)
+                                if blocks:
+                                    base = Part.makeCompound(blocks)
+                            else:
+                                FreeCAD.Console.PrintWarning(translate("Arch","Error computing block cuts for wall")+obj.Label+"\n")
+                        else:
+                            FreeCAD.Console.PrintWarning(translate("Arch","Cannot compute blocks for wall")+obj.Label+"\n")
+
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
@@ -515,6 +606,20 @@ class _Wall(ArchComponent.Component):
 
         base = self.processSubShapes(obj,base,pl)
         self.applyShape(obj,base,pl)
+        
+        # count blocks
+        if hasattr(obj,"MakeBlocks"):
+            fvol = obj.BlockLength.Value * obj.BlockHeight.Value * obj.Width.Value
+            if fvol:
+                print "base volume:",fvol
+                for s in base.Solids:
+                    print abs(s.Volume - fvol)
+                ents = [s for s in base.Solids if abs(s.Volume - fvol) < 1]
+                obj.CountEntire = len(ents)
+                obj.CountBroken = len(base.Solids) - len(ents)
+            else:
+                obj.CountEntire = 0
+                obj.CountBroken = 0
 
         # set the length property
         if obj.Base:
@@ -581,7 +686,7 @@ class _Wall(ArchComponent.Component):
             normal = Vector(obj.Normal)
         base = None
         placement = None
-        basewires = None
+        self.basewires = None
         # build wall layers
         layers = []
         if hasattr(obj,"Material"):
@@ -626,16 +731,16 @@ class _Wall(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
                     elif len(obj.Base.Shape.Edges) == 1:
-                        basewires = [Part.Wire(obj.Base.Shape.Edges)]
+                        self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
                     else:
-                        # basewires = obj.Base.Shape.Wires
-                        basewires = [Part.Wire(cluster) for cluster in Part.getSortedClusters(obj.Base.Shape.Edges)]
-                    if basewires and width:
-                        if (len(basewires) == 1) and layers:
-                            basewires = [basewires[0] for l in layers]
+                        # self.basewires = obj.Base.Shape.Wires
+                        self.basewires = [Part.Wire(cluster) for cluster in Part.getSortedClusters(obj.Base.Shape.Edges)]
+                    if self.basewires and width:
+                        if (len(self.basewires) == 1) and layers:
+                            self.basewires = [self.basewires[0] for l in layers]
                         layeroffset = 0
                         baseface = None
-                        for i,wire in enumerate(basewires):
+                        for i,wire in enumerate(self.basewires):
                             e = wire.Edges[0]
                             if isinstance(e.Curve,Part.Circle):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
