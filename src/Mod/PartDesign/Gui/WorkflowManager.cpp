@@ -154,7 +154,7 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
                     QObject::tr( "Do you want to make the migration automatically?" ) );
         }
         msgBox.setDetailedText( QObject::tr( "Note: If you choose to migrate you won't be able to edit"
-                    " the file with an old FreeCAD versions.\n"
+                    " the file with an older FreeCAD version.\n"
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"
