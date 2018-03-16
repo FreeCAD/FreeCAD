@@ -4448,7 +4448,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             int i=0;
             for (auto & obj : Objects){
                 if (obj == sobj && SubElements[i] == sSubElements[si]){
-                    Base::Console().Error("Link to %s already exists in this sketch. Delete the link and try again\n",sSubElements[si]);
+                    Base::Console().Error("Link to %s already exists in this sketch. Delete the link and try again\n",sSubElements[si].c_str());
                     return -1;
                 }
 
