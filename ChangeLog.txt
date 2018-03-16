@@ -608,7 +608,7 @@ Version: V0.1B109 Date: Mon Jan 24 11:13:15 2005 +++++++++++++++++++++++++++++++
     - SetStatus and GetStatus switch on or off the observer
 
 Version: V0.1B108 Date: Sat Jan 15 14:24:52 2005 +++++++++++++++++++++++++++++++
-  * Moved HtmlView to HelpView   * Reimplementaion
+  * Moved HtmlView to HelpView   * Reimplementation
   * Added class FileChooser ( line edit with button on its right side to browse)
   * Merged pref. page "Help viewer" and "Online Help" to one page
   * TextEdit class with completion

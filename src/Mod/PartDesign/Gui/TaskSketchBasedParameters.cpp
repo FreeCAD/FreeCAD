@@ -255,13 +255,13 @@ bool TaskDlgSketchBasedParameters::reject()
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
     bool rv;
 
-    // rv should be true anyway but to be on the safe side dur to thurver changes better respect it.
+    // rv should be true anyway but to be on the safe side due to further changes better respect it.
     rv = TaskDlgFeatureParameters::reject();
 
     // if abort command deleted the object the sketch is visible again.
-    // The the previous one feature already should be made visiable
+    // The previous one feature already should be made visible
     if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
-        // Make the sketch visiable
+        // Make the sketch visible
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
     }

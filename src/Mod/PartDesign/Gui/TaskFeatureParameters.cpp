@@ -164,7 +164,7 @@ bool TaskDlgFeatureParameters::reject()
 
     // if abort command deleted the object make the previous feature visible again
     if (!Gui::Application::Instance->getViewProvider(feature)) {
-        // Make the tip or the previous feature visiable again with preference to the previous one
+        // Make the tip or the previous feature visible again with preference to the previous one
         // TODO: ViewProvider::onDelete has the same code. May be this one is excess?
         if (previous && Gui::Application::Instance->getViewProvider(previous)) {
             Gui::Application::Instance->getViewProvider(previous)->show();
