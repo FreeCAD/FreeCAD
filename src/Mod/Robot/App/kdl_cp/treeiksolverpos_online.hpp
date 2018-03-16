@@ -78,14 +78,14 @@ public:
 private:
   /**
    * Scales the class member KDL::JntArray q_dot_, if one (or more) joint velocity exceeds the maximum value.
-   * Scaling is done propotional to the biggest overshoot among all joint velocities.
+   * Scaling is done proportional to the biggest overshoot among all joint velocities.
    */
   void enforceJointVelLimits();
 
   /**
    * Scales translational and rotational velocity vectors of the class member KDL::Twist twist_,
    * if at least one of both exceeds the maximum value/length.
-   * Scaling is done propotional to the biggest overshoot among both velocities.
+   * Scaling is done proportional to the biggest overshoot among both velocities.
    */
   void enforceCartVelLimits();
 
