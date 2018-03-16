@@ -66,7 +66,7 @@ int DrawViewCollection::addView(DrawView *view)
 
 int DrawViewCollection::removeView(DrawView *view)
 {
-    // Remove the view from the the collection
+    // Remove the view from the collection
     const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
     std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();

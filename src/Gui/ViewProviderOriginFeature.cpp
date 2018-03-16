@@ -116,7 +116,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     highlight->documentName  = getObject()->getDocument()->getName();
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 
-    // Style for normal (visiable) lines
+    // Style for normal (visible) lines
     SoDrawStyle* style = new SoDrawStyle ();
     style->lineWidth = 2.0f;
     highlight->addChild ( style );

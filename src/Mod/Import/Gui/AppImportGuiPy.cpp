@@ -520,7 +520,7 @@ private:
             keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
-            // That stuff is exporting a list of selected oject into FreeCAD Tree
+            // That stuff is exporting a list of selected objects into FreeCAD Tree
             std::vector <TDF_Label> hierarchical_label;
             std::vector <TopLoc_Location> hierarchical_loc;
             std::vector <App::DocumentObject*> hierarchical_part;
@@ -533,7 +533,6 @@ private:
                 }
             }
 
-            // Free Shapes must have absolute placement and not explicit
             // Free Shapes must have absolute placement and not explicit
             std::vector <TDF_Label> FreeLabels;
             std::vector <int> part_id;

@@ -546,7 +546,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 }
 
 bool ViewProviderFemPostObject::doubleClicked(void) {
-    // work around for a problme in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
+    // work around for a problem in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
     // check if backlight is enabled
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
