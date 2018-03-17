@@ -26,9 +26,7 @@
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
 #include <QPointer>
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
-#include <Gui/Selection.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 namespace TechDraw{
     class DrawPage;
@@ -38,8 +36,7 @@ namespace TechDrawGui {
 
 class MDIViewPage;
 
-class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject,
-                                                 public Gui::SelectionObserver
+class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(TechDrawGui::ViewProviderPage);
 
@@ -48,10 +45,6 @@ public:
     ViewProviderPage();
     /// destructor
     virtual ~ViewProviderPage();
-
-    //App::PropertyFloat         HintScale;
-    //App::PropertyFloat         HintOffsetX;
-    //App::PropertyFloat         HintOffsetY;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -63,8 +56,6 @@ public:
     /// Shows the view provider
     virtual void show(void);
     virtual bool isShow(void) const;
-
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
 
     /// Claim all the views for the page
     std::vector<App::DocumentObject*> claimChildren(void) const;

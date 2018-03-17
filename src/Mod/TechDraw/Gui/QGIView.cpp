@@ -60,6 +60,7 @@
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
 #include "ViewProviderDrawingView.h"
+#include "MDIViewPage.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -296,6 +297,11 @@ const char * QGIView::getViewName() const
 {
     return viewName.c_str();
 }
+const std::string QGIView::getViewNameAsString() const
+{
+    return viewName;
+}
+
 
 TechDraw::DrawView * QGIView::getViewObject() const
 {
@@ -481,6 +487,22 @@ Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
     return result;
 }
 
+MDIViewPage* QGIView::getMDIViewPage(void) const
+{
+    MDIViewPage* result = nullptr;
+    QGraphicsScene* s = scene();
+    QObject* parent = nullptr;
+    if (s != nullptr) {
+        parent = s->parent();
+    }
+    if (parent != nullptr) {
+        MDIViewPage* mdi = dynamic_cast<MDIViewPage*>(parent);
+        if (mdi != nullptr) {
+            result = mdi;
+        }
+    }
+    return result;
+}
 
 QColor QGIView::getNormalColor()
 {

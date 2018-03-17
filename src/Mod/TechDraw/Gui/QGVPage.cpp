@@ -38,10 +38,12 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Gui/FileDialog.h>
+#include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
