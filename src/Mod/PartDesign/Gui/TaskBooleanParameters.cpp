@@ -322,6 +322,11 @@ bool TaskDlgBooleanParameters::accept()
 
     try {
         std::vector<std::string> bodies = parameter->getBodies();
+        if (bodies.empty()) {
+            QMessageBox::warning(parameter, tr("Empty body list"),
+                                 tr("The body list cannot be empty"));
+            return false;
+        }
         std::stringstream str;
         str << "App.ActiveDocument." << name.c_str() << ".setObjects( [";
         for (std::vector<std::string>::const_iterator it = bodies.begin(); it != bodies.end(); ++it)

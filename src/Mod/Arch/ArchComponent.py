@@ -338,7 +338,10 @@ class Component:
         if self.clone(obj):
             return
         if obj.Base:
-            obj.Shape = self.spread(obj,obj.Base.Shape)
+            shape = self.spread(obj,obj.Base.Shape)
+            if obj.Additions or obj.Subtractions:
+                shape = self.processSubShapes(obj,shape)
+            obj.Shape = shape
 
     def __getstate__(self):
         return self.Type

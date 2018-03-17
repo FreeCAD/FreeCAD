@@ -159,22 +159,22 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
           double y = geom->center.y - geom->radius;
 
           path.addEllipse(Rez::guiX(x),
-                          Rez::guiX(y), 
-                          Rez::guiX(geom->radius * 2), 
+                          Rez::guiX(y),
+                          Rez::guiX(geom->radius * 2),
                           Rez::guiX(geom->radius * 2));            //topleft@(x,y) radx,rady
         } break;
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
 
-          pathArc(path, 
-                  Rez::guiX(geom->radius), 
-                  Rez::guiX(geom->radius), 
-                  0., 
-                  geom->largeArc, 
+          pathArc(path,
+                  Rez::guiX(geom->radius),
+                  Rez::guiX(geom->radius),
+                  0.,
+                  geom->largeArc,
                   geom->cw,
-                  Rez::guiX(geom->endPnt.x), 
+                  Rez::guiX(geom->endPnt.x),
                   Rez::guiX(geom->endPnt.y),
-                  Rez::guiX(geom->startPnt.x), 
+                  Rez::guiX(geom->startPnt.x),
                   Rez::guiX(geom->startPnt.y));
         } break;
         case TechDrawGeometry::ELLIPSE: {
@@ -186,41 +186,41 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom
                  endX = geom->center.x - geom->major * cos(geom->angle),
                  endY = geom->center.y - geom->major * sin(geom->angle);
 
-          pathArc(path, 
-                  Rez::guiX(geom->major), 
-                  Rez::guiX(geom->minor), 
-                  geom->angle, 
-                  false, 
+          pathArc(path,
+                  Rez::guiX(geom->major),
+                  Rez::guiX(geom->minor),
+                  geom->angle,
                   false,
-                  Rez::guiX(endX), 
-                  Rez::guiX(endY), 
-                  Rez::guiX(startX), 
+                  false,
+                  Rez::guiX(endX),
+                  Rez::guiX(endY),
+                  Rez::guiX(startX),
                   Rez::guiX(startY));
 
-          pathArc(path, 
-                  Rez::guiX(geom->major), 
-                  Rez::guiX(geom->minor), 
-                  geom->angle, 
-                  false, 
+          pathArc(path,
+                  Rez::guiX(geom->major),
+                  Rez::guiX(geom->minor),
+                  geom->angle,
                   false,
-                  Rez::guiX(startX), 
-                  Rez::guiX(startY), 
-                  Rez::guiX(endX), 
+                  false,
+                  Rez::guiX(startX),
+                  Rez::guiX(startY),
+                  Rez::guiX(endX),
                   Rez::guiX(endY));
 
         } break;
         case TechDrawGeometry::ARCOFELLIPSE: {
           TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
 
-          pathArc(path, 
-                  Rez::guiX(geom->major), 
-                  Rez::guiX(geom->minor), 
-                  geom->angle, 
-                  geom->largeArc, 
+          pathArc(path,
+                  Rez::guiX(geom->major),
+                  Rez::guiX(geom->minor),
+                  geom->angle,
+                  geom->largeArc,
                   geom->cw,
-                  Rez::guiX(geom->endPnt.x), 
+                  Rez::guiX(geom->endPnt.x),
                   Rez::guiX(geom->endPnt.y),
-                  Rez::guiX(geom->startPnt.x), 
+                  Rez::guiX(geom->startPnt.x),
                   Rez::guiX(geom->startPnt.y));
 
         } break;
@@ -353,6 +353,9 @@ void QGIViewPart::draw() {
     drawViewPart();
     drawMatting();
     QGIView::draw();
+    drawCenterLines(true);   //have to draw centerlines after border to get size correct.
+    drawAllSectionLines();   //same for section lines
+
 }
 
 void QGIViewPart::drawViewPart()
@@ -364,7 +367,7 @@ void QGIViewPart::drawViewPart()
     if (!viewPart->hasGeometry()) {
         return;
     }
-    
+
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
@@ -427,7 +430,7 @@ void QGIViewPart::drawViewPart()
                         newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
-            } 
+            }
             bool drawEdges = getFaceEdgesPref();
             newFace->setDrawEdges(drawEdges);                                        //pref. for debugging only
             newFace->setZValue(ZVALUE::FACE);
@@ -512,22 +515,12 @@ void QGIViewPart::drawViewPart()
             item->setZValue(ZVALUE::VERTEX);
         }
     }
-    //draw section line
-    if (vp->ShowSectionLine.getValue()) {
-        auto refs = viewPart->getSectionRefs();
-        for (auto& r:refs) {
-            drawSectionLine(r, true);
-        }
-    }
 
     //draw detail highlights
     auto drefs = viewPart->getDetailRefs();
     for (auto& r:drefs) {
         drawHighlight(r, true);
     }
-
-    //draw center lines
-    drawCenterLines(true);
 }
 
 QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
@@ -597,14 +590,32 @@ void QGIViewPart::removeDecorations()
      }
 }
 
+void QGIViewPart::drawAllSectionLines(void)
+{
+    TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
+    if (!viewPart)  {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+    if (vp->ShowSectionLine.getValue()) {
+        auto refs = viewPart->getSectionRefs();
+        for (auto& r:refs) {
+            drawSectionLine(r, true);
+        }
+    }
+}
+
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
-    if (!viewPart ||
-        !viewSection)  {
+    if (!viewPart)  {
         return;
     }
-    
+
     if (!viewSection->hasGeometry()) {
         return;
     }
@@ -613,6 +624,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     if ( vp == nullptr ) {
         return;
     }
+
 
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
@@ -679,7 +691,7 @@ void QGIViewPart::drawCenterLines(bool b)
     if (!viewPart)  {
         return;
     }
-    
+
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
@@ -731,7 +743,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         !viewDetail)  {
         return;
     }
-    
+
     if (!viewDetail->hasGeometry()) {
         return;
     }
@@ -785,7 +797,7 @@ void QGIViewPart::drawMatting()
 void QGIViewPart::pathArc(QPainterPath &path, double rx, double ry, double x_axis_rotation,
                                     bool large_arc_flag, bool sweep_flag,
                                     double x, double y,
-                                    double curx, double cury) 
+                                    double curx, double cury)
 {
     double sin_th, cos_th;
     double a00, a01, a10, a11;

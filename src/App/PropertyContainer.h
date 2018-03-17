@@ -36,6 +36,7 @@ namespace App
 {
 class Property;
 class PropertyContainer;
+class DynamicProperty;
 class DocumentObject;
 class Extension;
 
@@ -184,6 +185,7 @@ public:
 
 
   friend class Property;
+  friend class DynamicProperty;
 
 
 protected: 

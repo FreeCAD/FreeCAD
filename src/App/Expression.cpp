@@ -988,7 +988,7 @@ Expression * FunctionExpression::eval() const
               ((s.ElectricCurrent % 2) == 0) &&
               ((s.ThermodynamicTemperature % 2) == 0) &&
               ((s.AmountOfSubstance % 2) == 0) &&
-              ((s.LuminoseIntensity % 2) == 0) &&
+              ((s.LuminousIntensity % 2) == 0) &&
               ((s.Angle % 2) == 0))
             throw ExpressionError("All dimensions must be even to compute the square root.");
 
@@ -998,7 +998,7 @@ Expression * FunctionExpression::eval() const
                     s.ElectricCurrent / 2,
                     s.ThermodynamicTemperature / 2,
                     s.AmountOfSubstance / 2,
-                    s.LuminoseIntensity / 2,
+                    s.LuminousIntensity / 2,
                     s.Angle);
         break;
     }
