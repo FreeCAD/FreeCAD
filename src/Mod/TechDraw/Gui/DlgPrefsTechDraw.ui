@@ -127,7 +127,7 @@
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
           <property name="toolTip">
-           <string>deugging option</string>
+           <string>Debugging option</string>
           </property>
           <property name="text">
            <string>Show Section Edges</string>
