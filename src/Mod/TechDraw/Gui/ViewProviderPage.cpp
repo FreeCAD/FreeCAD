@@ -37,8 +37,6 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -46,15 +44,9 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
-
 
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
@@ -291,50 +283,6 @@ MDIViewPage* ViewProviderPage::getMDIViewPage()
     }
 }
 
-void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if(!m_mdiView.isNull()) {
-        if(msg.Type == Gui::SelectionChanges::SetSelection) {
-            m_mdiView->clearSelection();
-            std::vector<Gui::SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(msg.pDocName);
-
-            for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
-                Gui::SelectionSingleton::SelObj selObj = *it;
-                if(selObj.pObject == getDrawPage())
-                    continue;
-
-                std::string str = msg.pSubName;
-                // If it's a subfeature, don't select feature
-                if (!str.empty()) {
-                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Face" ||
-                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
-                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
-                        // TODO implement me   wf: don't think this is ever executed
-                    }
-                } else {
-                        m_mdiView->selectFeature(selObj.pObject, true);
-                }
-            }
-        } else {
-            bool selectState = (msg.Type == Gui::SelectionChanges::AddSelection) ? true : false;
-            Gui::Document* doc = Gui::Application::Instance->getDocument(pcObject->getDocument());
-            App::DocumentObject *obj = doc->getDocument()->getObject(msg.pObjectName);
-            if(obj) {
-                std::string str = msg.pSubName;
-                // If it's a subfeature, don't select feature
-                if (!str.empty()) {
-                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Face" ||
-                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
-                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
-                        // TODO implement me
-                    } else {
-                        m_mdiView->selectFeature(obj, selectState);
-                    }
-                }
-            }
-        }  //else (Gui::SelectionChanges::SetPreselect)
-    }
-}
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {

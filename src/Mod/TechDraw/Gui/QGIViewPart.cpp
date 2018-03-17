@@ -72,6 +72,7 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderHatch.h"
 #include "ViewProviderViewPart.h"
+#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
@@ -99,20 +100,7 @@ QGIViewPart::~QGIViewPart()
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            //Highlight the children if this is highlighted!?  seems to mess up Face selection?
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-            QGIFace *face = dynamic_cast<QGIFace *>(*it);
-            if(edge) {
-                //edge->setHighlighted(isSelected());
-            } else if(vert){
-                //vert->setHighlighted(isSelected());
-            } else if(face){
-                //face->setHighlighted(isSelected());
-            }
-        }
+        //There's nothing special for QGIVP to do when selection changes!
     } else if(change == ItemSceneChange && scene()) {
            tidy();
     }
@@ -334,15 +322,6 @@ void QGIViewPart::updateView(bool update)
     } else if (update ||
               vp->LineWidth.isTouched() ||
               vp->HiddenWidth.isTouched()) {
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            if(edge && edge->getHiddenEdge()) {
-                edge->setWidth(vp->HiddenWidth.getValue() * lineScaleFactor);
-            } else if (edge){
-                edge->setWidth(vp->LineWidth.getValue() * lineScaleFactor);
-            }
-        }
         draw();
     } else {
         QGIView::draw();
@@ -557,9 +536,14 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
 }
 
 //! Remove all existing QGIPrimPath items(Vertex,Edge,Face)
+//note this triggers scene selectionChanged signal if vertex/edge/face is selected
 void QGIViewPart::removePrimitives()
 {
     QList<QGraphicsItem*> children = childItems();
+    MDIViewPage* mdi = getMDIViewPage();
+    if (mdi != nullptr) {
+        getMDIViewPage()->blockSelection(true);
+    }
     for (auto& c:children) {
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
          if (prim) {
@@ -568,6 +552,9 @@ void QGIViewPart::removePrimitives()
             delete prim;
          }
      }
+    if (mdi != nullptr) {
+        getMDIViewPage()->blockSelection(false);
+    }
 }
 
 //! Remove all existing QGIDecoration items(SectionLine,SectionMark,...)
