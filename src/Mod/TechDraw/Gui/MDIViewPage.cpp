@@ -147,7 +147,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     // Connect Signals and Slots
     QObject::connect(
         m_view->scene(), SIGNAL(selectionChanged()),
-        this           , SLOT  (selectionChanged())
+        this           , SLOT  (sceneSelectionChanged())
        );
        
     //get informed by App side about deleted DocumentObjects
@@ -833,6 +833,7 @@ void MDIViewPage::saveSVG(std::string file)
 /////////////// Selection Routines ///////////////////
 // wf: this is never executed???
 // needs a signal from Scene? hoverEvent?  Scene does not emit signal for "preselect"
+// there is no "preSelect" signal from Gui either. 
 void MDIViewPage::preSelectionChanged(const QPoint &pos)
 {
     QObject *obj = QObject::sender();
@@ -892,13 +893,15 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
     }
 }
 
+//flag to prevent selection activity within mdivp
 void MDIViewPage::blockSelection(const bool state)
 {
   isSelectionBlocked = state;
 }
 
 
-void MDIViewPage::clearSelection()
+//Set all QGIViews to unselected state
+void MDIViewPage::clearSceneSelection()
 {
   blockSelection(true);
   std::vector<QGIView *> views = m_view->getViews();
@@ -913,9 +916,8 @@ void MDIViewPage::clearSelection()
   blockSelection(false);
 }
 
-//!Update QGVPage's selection based on Selection made outside Drawing Interface
-//invoked from VPP
-void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
+//!Update QGIView's selection state based on Selection made outside Drawing Interface
+void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
     App::DocumentObject* objCopy = obj;
     TechDraw::DrawHatch* hatchObj = dynamic_cast<TechDraw::DrawHatch*>(objCopy);
@@ -932,39 +934,61 @@ void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
     blockSelection(false);
 }
 
-//! invoked by selection change made in Tree?
-// wf: seems redundant? executed, but no real logic.
+//! invoked by selection change made in Tree via father MDIView
+//really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    std::vector<Gui::SelectionSingleton::SelObj> selObjs = Gui::Selection().getSelection(msg.pDocName);
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-
-    }
-    else if (msg.Type == Gui::SelectionChanges::AddSelection ||
-             msg.Type == Gui::SelectionChanges::RmvSelection) {
-        //bool add = (msg.Type == Gui::SelectionChanges::AddSelection);
-        // Check if it is a view object
-        std::string feat = msg.pObjectName;
-        std::string sub  = msg.pSubName;
-    }
-    else if (msg.Type == Gui::SelectionChanges::SetSelection) {
-        // do nothing here  wf: handled by VPP::onSelectionChanged?
+        clearSceneSelection();
+    } else if(msg.Type == Gui::SelectionChanges::SetSelection) {                     //replace entire selection set
+        clearSceneSelection();
+        blockSelection(true);
+        for (auto& so: selObjs){
+            if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                selectQGIView(so.pObject, true);
+            }
+        }
+        blockSelection(false);
+    } else {
+        bool selectState = (msg.Type == Gui::SelectionChanges::AddSelection) ? true : false;
+        blockSelection(true);
+        for (auto& so: selObjs){
+            if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                selectQGIView(so.pObject, selectState);
+            }
+        }
+        blockSelection(false);
     }
 }
 
-//! update FC Selection from QGraphicsScene selection
+//! update Tree Selection from QGraphicsScene selection
 //trigged by m_view->scene() signal
-void MDIViewPage::selectionChanged()
+void MDIViewPage::sceneSelectionChanged()
 {
     if(isSelectionBlocked)  {
-      return;
+        return;
     }
 
-    QList<QGraphicsItem*> selection = m_view->scene()->selectedItems();
-    bool saveBlock = blockConnection(true); // avoid to be notified by itself
-    blockSelection(true);
+    std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
+    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
 
+    //check if really need to change selection
+    bool sameSel = compareSelections(treeSel,sceneSel);
+    if (sameSel) {
+        return;
+    }
+
+    setTreeToSceneSelect();
+}
+
+void MDIViewPage::setTreeToSceneSelect(void)
+{
+    bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
+    blockSelection(true);
     Gui::Selection().clearSelection();
-    for (QList<QGraphicsItem*>::iterator it = selection.begin(); it != selection.end(); ++it) {
+    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
+    for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView == 0) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
@@ -1056,7 +1080,7 @@ void MDIViewPage::selectionChanged()
                 }
                 const char* name = dimObj->getNameInDocument();
                 if (!name) {                                   //can happen during undo/redo if Dim is selected???
-                    //Base::Console().Log("INFO - MDIVP::selectionChanged - dimObj name is null!\n");
+                    //Base::Console().Log("INFO - MDIVP::sceneSelectionChanged - dimObj name is null!\n");
                     continue;
                 }
 
@@ -1077,9 +1101,78 @@ void MDIViewPage::selectionChanged()
         }
     }
 
-    blockConnection(saveBlock);
     blockSelection(false);
-} // end MDIViewPage::selectionChanged()
+    blockConnection(saveBlock);
+}
+
+bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject>& treeSel,QList<QGraphicsItem*>& sceneSel)
+{
+    bool result = true;
+
+    if (treeSel.empty() && sceneSel.empty()) {
+        return true;
+    } else if (treeSel.empty() && !sceneSel.empty()) {
+        return false;
+    } else if (!treeSel.empty() && sceneSel.empty()) {
+        return false;
+    }
+
+    int treeCount = 0;
+    int sceneCount = 0;
+    int subCount = 0;  
+    int ppCount = 0;
+    std::vector<std::string> treeNames;
+    std::vector<std::string> sceneNames;
+
+    for (auto& tn: treeSel) {
+        if (tn.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            int treeSubs = tn.getSubNames().size();
+            subCount += treeSubs;
+            std::string s = tn.getObject()->getNameInDocument();
+            treeNames.push_back(s);
+        }
+    }
+    std::sort(treeNames.begin(),treeNames.end());
+    treeCount = treeNames.size();
+    
+    for (auto& sn:sceneSel){
+        QGIView *itemView = dynamic_cast<QGIView *>(sn);
+        if(itemView == 0) {
+            QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);   //count Vertex/Edge/Face
+            if (pp != nullptr) {
+                ppCount++;
+            }
+        } else { 
+            std::string s = itemView->getViewNameAsString();
+            sceneNames.push_back(s);
+        }
+    }
+    std::sort(sceneNames.begin(),sceneNames.end());
+    sceneCount = sceneNames.size();
+     
+    //different # of DrawView* vs QGIV* 
+    if (sceneCount != treeCount) {
+        return false;
+    }
+    
+// even of counts match, have to check that names in scene == names in tree    
+    auto treePtr = treeNames.begin();
+    for (auto& s: sceneNames){
+        if (s == (*treePtr)) {
+            treePtr++;
+            continue;
+        } else {
+            return false;
+        }
+    }
+    
+    //Objects all match, check subs
+    if (treeCount != ppCount) {
+        return false;
+    }    
+
+    return result;
+}
 
 ///////////////////end Selection Routines //////////////////////
 
