@@ -1507,7 +1507,6 @@ void CmdPartOffset::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
     updateActive();
-    doCommand(Gui,"Gui.ActiveDocument.%s.DisplayMode = 'Wireframe'", shape->getNameInDocument());
     //if (isActiveObjectValid())
     //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
