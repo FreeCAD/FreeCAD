@@ -1056,8 +1056,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>deugging option</source>
-      <translation>pinagpipilian sa pag-debug</translation>
+      <source>Debugging option</source>
+      <translation>Pinagpipilian sa pag-debug</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1681,8 +1681,8 @@ Gusto mong magpatuloy?</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
-      <source>Text Name: </source>
-      <translation>Pangalan ng teksto: </translation>
+      <source>Text Name:</source>
+      <translation>Pangalan ng teksto:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>
