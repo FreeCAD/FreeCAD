@@ -1056,8 +1056,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>deugging option</source>
-      <translation>hibakeresési lehetőség</translation>
+      <source>Debugging option</source>
+      <translation>Hibakeresési lehetőség</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1680,8 +1680,8 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
-      <source>Text Name: </source>
-      <translation>Szöveg név: </translation>
+      <source>Text Name:</source>
+      <translation>Szöveg név:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>

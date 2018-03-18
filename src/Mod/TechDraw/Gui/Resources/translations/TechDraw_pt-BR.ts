@@ -1056,7 +1056,7 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>deugging option</source>
+      <source>Debugging option</source>
       <translation>opção de depuração</translation>
     </message>
     <message>
@@ -1680,8 +1680,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
-      <source>Text Name: </source>
-      <translation>Nome do texto: </translation>
+      <source>Text Name:</source>
+      <translation>Nome do texto:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>

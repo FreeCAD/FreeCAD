@@ -1056,8 +1056,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>deugging option</source>
-      <translation>opción depurado</translation>
+      <source>Debugging option</source>
+      <translation>Opción depurado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1681,8 +1681,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
-      <source>Text Name: </source>
-      <translation>Nombre del texto: </translation>
+      <source>Text Name:</source>
+      <translation>Nombre del texto:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>
