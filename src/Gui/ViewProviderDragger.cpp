@@ -169,16 +169,21 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
     {
       SoPickStyle *rootPickStyle = new SoPickStyle();
       rootPickStyle->style = SoPickStyle::UNPICKABLE;
-      static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
+      SoFCUnifiedSelection* selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
+      selection->insertChild(rootPickStyle, 0);
+      selection->selectionRole.setValue(false);
       csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
     }
 }
 
 void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-  SoNode *child = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->getChild(0);
-  if (child && child->isOfType(SoPickStyle::getClassTypeId()))
-    static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
+  SoFCUnifiedSelection* selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
+  SoNode *child = selection->getChild(0);
+  if (child && child->isOfType(SoPickStyle::getClassTypeId())) {
+    selection->removeChild(child);
+    selection->selectionRole.setValue(true);
+  }
 }
 
 void ViewProviderDragger::dragStartCallback(void *, SoDragger *)
