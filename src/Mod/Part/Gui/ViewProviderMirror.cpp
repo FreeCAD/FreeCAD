@@ -494,7 +494,11 @@ ViewProviderSweep::~ViewProviderSweep()
 
 std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
 {
-    return static_cast<Part::Sweep*>(getObject())->Sections.getValues();
+    auto obj = static_cast<Part::Sweep*>(getObject());
+    auto children = obj->Sections.getValues();
+    if(obj->Spine.getValue())
+        children.push_back(obj->Spine.getValue());
+    return children;
 }
 
 bool ViewProviderSweep::onDelete(const std::vector<std::string> &)
