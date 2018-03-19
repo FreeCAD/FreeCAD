@@ -869,7 +869,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
                 }
             }
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("Info: PropertyVectorList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
+            Base::Console().Log("    Info: PropertyVectorList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
         }
         else
             Base::Console().Error("field = static_cast<App::PropertyVectorList*> failed or empty for field: %s", kv.first.c_str());
@@ -889,7 +889,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
                 data->SetValue(i, vec[i]);
 
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("Info: PropertyFloatList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
+            Base::Console().Log("    Info: PropertyFloatList %s exported as vtk array name '%s'\n", kv.first.c_str(), kv.second.c_str());
         }
     }
 
@@ -992,6 +992,7 @@ void FemVTKTools::importMechanicalResult(vtkSmartPointer<vtkDataSet> dataset, Ap
 
 
 void FemVTKTools::exportMechanicalResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid) {
+    Base::Console().Message("Start: Create VTK result data from FreeCAD mechanical result data ======================\n");
     if(!res->getPropertyByName("DisplacementVectors")){
         Base::Console().Error("essential field like `DisplacementVectors` is not found in this Result object\n");
         return;
@@ -1016,6 +1017,7 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* res, vtkSmar
     std::string essential_property = std::string("DisplacementVectors");
     _exportResult(res, grid, vectors, scalers, essential_property);
 
+    Base::Console().Message("End: Create VTK result data from FreeCAD mechanical result data ======================\n");
 }
 
 } // namespace
