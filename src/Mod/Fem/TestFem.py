@@ -1,8 +1,7 @@
-# Unit test for the FEM module
-
 # ***************************************************************************
-# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Copyright (c) 2018 - FreeCAD Developers                               *
 # *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,9 +24,11 @@
 # ***************************************************************************/
 
 
+# Unit test for the FEM module
 # the order should be as follows:
 # common-, object-, mesh-, inout-, ccxtools-, solverframworktests
 from femtest.testcommon import FemTest
+from femtest.testmesh import FemMeshTest
 from femtest.testccxtools import FemCcxAnalysisTest
 from femtest.testsolverframework import SolverFrameWorkTest
 
