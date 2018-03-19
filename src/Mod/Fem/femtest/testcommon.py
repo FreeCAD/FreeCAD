@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import Fem
+
 import FreeCAD
 import ObjectsFem
 import unittest
