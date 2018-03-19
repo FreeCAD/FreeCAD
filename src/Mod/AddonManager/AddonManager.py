@@ -455,7 +455,7 @@ class InfoWorker(QtCore.QThread):
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
             u.close()
-            desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
+            desc = re.findall("<meta property=\"og:description\" content=\"(.*?)\"",p)
             if desc:
                 desc = desc[0]
             else:
@@ -590,7 +590,7 @@ class ShowWorker(QtCore.QThread):
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
             u.close()
-            desc = re.findall("<meta name=\"description\" content=\"(.*?)\">",p)
+            desc = re.findall("<meta property=\"og:description\" content=\"(.*?)\"",p)
             if desc:
                 desc = desc[0]
             else:
