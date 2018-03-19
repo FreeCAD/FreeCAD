@@ -120,6 +120,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
     const vtkIdType nCells = dataset->GetNumberOfCells();
     Base::Console().Log("%d nodes/points and %d cells/elements found!\n", nPoints, nCells);
+    Base::Console().Log("Build SMESH mesh out of the vtk mesh data.\n", nPoints, nCells);
 
     //vtkSmartPointer<vtkCellArray> cells = dataset->GetCells();  // works only for vtkUnstructuredGrid
     vtkSmartPointer<vtkIdList> idlist= vtkSmartPointer<vtkIdList>::New();
@@ -140,46 +141,60 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
         idlist->Reset();
         idlist = dataset->GetCell(iCell)->GetPointIds();
         vtkIdType *ids = idlist->GetPointer(0);
-        // 3D cells first
         switch(dataset->GetCellType(iCell))
         {
-            case VTK_TETRA:
+            // 2D faces
+            case VTK_TRIANGLE:  // tria3
+                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, iCell+1);
+                break;
+            case VTK_QUADRATIC_TRIANGLE:  // tria6
+                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, iCell+1);
+                break;
+            case VTK_QUAD:  // quad4
+                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, iCell+1);
+                break;
+            case VTK_QUADRATIC_QUAD:  // quad8
+                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, iCell+1);
+                break;
+
+            // 3D volumes
+            case VTK_TETRA:  // tetra4
                 meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, iCell+1);
                 break;
-            case VTK_HEXAHEDRON:
-                meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, iCell+1);
-                break;
-            case VTK_QUADRATIC_TETRA:
+            case VTK_QUADRATIC_TETRA:  // tetra10
                 meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, ids[8]+1, ids[9]+1, iCell+1);
                 break;
-            case VTK_QUADRATIC_HEXAHEDRON:
+            case VTK_HEXAHEDRON:  // hexa8
+                meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, iCell+1);
+                break;
+            case VTK_QUADRATIC_HEXAHEDRON:  // hexa20
                 meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, ids[8]+1, ids[9]+1,\
                                         ids[10]+1, ids[11]+1, ids[12]+1, ids[13]+1, ids[14]+1, ids[15]+1, ids[16]+1, ids[17]+1, ids[18]+1, ids[19]+1,\
                                         iCell+1);
                 break;
-            case VTK_WEDGE:
+            case VTK_WEDGE:  // penta6
                 meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, iCell+1);
                 break;
-            case VTK_PYRAMID:
+            case VTK_QUADRATIC_WEDGE:  // penta15
+                meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, ids[8]+1, ids[9]+1,\
+                                        ids[10]+1, ids[11]+1, ids[12]+1, ids[13]+1, ids[14]+1,\
+                                        iCell+1);
+                break;
+            case VTK_PYRAMID:  // pyra5
                 meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, iCell+1);
                 break;
-            // 2D elements
-            case VTK_TRIANGLE:
-                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, iCell+1);
+            case VTK_QUADRATIC_PYRAMID:  // pyra13
+                meshds->AddVolumeWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, ids[8]+1, ids[9]+1,\
+                                        ids[10]+1, ids[11]+1, ids[12]+1,\
+                                        iCell+1);
                 break;
-            case VTK_QUADRATIC_TRIANGLE:
-                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, iCell+1);
-                break;
-            case VTK_QUAD:
-                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, iCell+1);
-                break;
-            case VTK_QUADRATIC_QUAD:
-                meshds->AddFaceWithID(ids[0]+1, ids[1]+1, ids[2]+1, ids[3]+1, ids[4]+1, ids[5]+1, ids[6]+1, ids[7]+1, iCell+1);
-                break;
+
+            // not handled cases
             default:
             {
                 Base::Console().Error("Only common 2D and 3D Cells are supported in VTK mesh import\n");
                 break;
+
             }
         }
     }
