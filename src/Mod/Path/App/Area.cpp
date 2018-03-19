@@ -308,6 +308,67 @@ int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
     return skipped;
 }
 
+static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection) {
+    std::vector<gp_Pnt> ret;
+    BRepAdaptor_Curve curve(edge);
+    Standard_Real efirst,elast,first,last;
+    efirst = curve.FirstParameter();
+    elast = curve.LastParameter();
+    bool reversed = (edge.Orientation()==TopAbs_REVERSED);
+
+    // push the first point
+    ret.push_back(curve.Value(reversed?elast:efirst));
+
+    Handle(Geom_Curve) c = BRep_Tool::Curve(edge, first, last);
+    first = c->FirstParameter();
+    last = c->LastParameter();
+    if(efirst>elast) {
+        if(first<last)
+            std::swap(first,last);
+    }else if(first>last)
+        std::swap(first,last);
+
+    // NOTE: OCCT QuasiUniformDeflection has a bug cause it to return only
+    // partial points for some (BSpline) curve if we pass in the edge trimmed
+    // first and last parameters. Passing the original curve first and last
+    // paramaters works fine. The following algorithm uses the original curve
+    // parameters, and skip those out of range. The algorithm shall work the
+    // same for any other discetization algorithm, althgouth it seems only 
+    // QuasiUniformDeflection has this bug.
+
+    GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
+    if (!discretizer.IsDone ())
+        Standard_Failure::Raise("Curve discretization failed");
+    if(discretizer.NbPoints () > 1) {
+        int nbPoints = discretizer.NbPoints ();
+        //strangly OCC discretizer points are one-based, not zero-based, why?
+        if(reversed) {
+            for (int i=nbPoints-1; i>=1; --i) {
+                auto param = discretizer.Parameter(i);
+                if(first<last) {
+                    if(param<efirst || param>elast)
+                        continue;
+                }else if(param>efirst || param<elast)
+                    continue;
+                ret.push_back(discretizer.Value(i));
+            }
+        }else{
+            for (int i=2; i<=nbPoints; i++) {
+                auto param = discretizer.Parameter(i);
+                if(first<last) {
+                    if(param<efirst || param>elast)
+                        continue;
+                }else if(param>efirst || param<elast)
+                    continue;
+                ret.push_back(discretizer.Value(i));
+            }
+        }
+    }
+    // push the last point
+    ret.push_back(curve.Value(reversed?efirst:elast));
+    return ret;
+}
+
 void Area::addWire(CArea &area, const TopoDS_Wire& wire,
         const gp_Trsf *trsf, double deflection, bool to_edges)
 {
@@ -371,33 +432,15 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
             break;
         } default: {
             // Discretize all other type of curves
-            GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
-                    curve.FirstParameter(), curve.LastParameter());
-            if (discretizer.IsDone () && discretizer.NbPoints () > 1) {
-                int nbPoints = discretizer.NbPoints ();
-                //strangly OCC discretizer points are one-based, not zero-based, why?
-                if(reversed) {
-                    for (int i=nbPoints-1; i>=1; --i) {
-                        gp_Pnt pt = discretizer.Value (i);
-                        ccurve.append(CVertex(Point(pt.X(),pt.Y())));
-                        if(to_edges) {
-                            area.append(ccurve);
-                            ccurve.m_vertices.pop_front();
-                        }
-                    }
-                }else{
-                    for (int i=2; i<=nbPoints; i++) {
-                        gp_Pnt pt = discretizer.Value (i);
-                        ccurve.append(CVertex(Point(pt.X(),pt.Y())));
-                        if(to_edges) {
-                            area.append(ccurve);
-                            ccurve.m_vertices.pop_front();
-                        }
-                    }
+            const auto &pts = discretize(edge,deflection);
+            for(size_t i=1;i<pts.size();++i) {
+                auto &pt = pts[i];
+                ccurve.append(CVertex(Point(pt.X(),pt.Y())));
+                if(to_edges) {
+                    area.append(ccurve);
+                    ccurve.m_vertices.pop_front();
                 }
-
-            }else
-                Standard_Failure::Raise("Curve discretization failed");
+            }
         }}
     }
     if(!to_edges) {
@@ -3316,26 +3359,12 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             }
                 /* FALLTHRU */
             default: {
-                // Discretize all other type of curves
-                GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
-                        curve.FirstParameter(), curve.LastParameter());
-                if (discretizer.IsDone () && discretizer.NbPoints () > 1) {
-                    int nbPoints = discretizer.NbPoints ();
-                    if(reversed) {
-                        for (int i=nbPoints-1; i>=1; --i) {
-                            gp_Pnt pt = discretizer.Value (i);
-                            addG1(verbose,path,plast,pt,nf,cur_f);
-                            plast = pt;
-                        }
-                    }else{
-                        for (int i=2; i<=nbPoints; i++) {
-                            gp_Pnt pt = discretizer.Value (i);
-                            addG1(verbose,path,plast,pt,nf,cur_f);
-                            plast = pt;
-                        }
-                    }
-                }else
-                    Standard_Failure::Raise("Curve discretization failed");
+                const auto &pts = discretize(edge,deflection);
+                for(size_t i=1;i<pts.size();++i) {
+                    auto &pt = pts[i];
+                    addG1(verbose,path,plast,pt,nf,cur_f);
+                    plast = pt;
+                }
             }}
         }
     }
