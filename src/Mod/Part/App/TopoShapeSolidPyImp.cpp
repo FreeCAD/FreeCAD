@@ -56,6 +56,7 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeSolidPy.cpp"
+#include "PartPyCXX.h"
 
 using namespace Part;
 
@@ -81,6 +82,11 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &obj))
         return -1;
 
+#ifndef FC_NO_ELEMENT_MAP
+    PY_TRY {
+        getTopoShapePtr()->makESolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
+    }PY_CATCH_OCC
+#else
     try {
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
             ->getTopoShapePtr()->getShape();
@@ -125,6 +131,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         PyErr_SetString(PartExceptionOCCError, errmsg.str().c_str());
         return -1;
     }
+#endif
 
     return 0;
 }
@@ -215,7 +222,14 @@ Py::Object TopoShapeSolidPy::getOuterShell(void) const
 #else
         shell = BRepTools::OuterShell(TopoDS::Solid(shape));
 #endif
+#ifndef FC_NO_ELEMENT_MAP
+    TopoShape res;
+    res.setShape(shell);
+    res.mapSubElement(TopAbs_FACE,*getTopoShapePtr());
+    return shape2pyshape(res);
+#else
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
+#endif
 }
 
 PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
@@ -315,7 +329,14 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     try {
         builder.MakeOffsetShape();
         const TopoDS_Shape& offsetshape = builder.Shape();
+#ifndef FC_NO_ELEMENT_MAP
+        TopoShape res;
+        res.setShape(offsetshape);
+        res.copyElementMap(*getTopoShapePtr());
+        return Py::new_reference_to(shape2pyshape(res));
+#else
         return new TopoShapeSolidPy(new TopoShape(offsetshape));
+#endif
     }
     catch (Standard_Failure& e) {
 

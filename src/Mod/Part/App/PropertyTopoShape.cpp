@@ -159,8 +159,19 @@ PyObject *PropertyPartShape::getPyObject(void)
 void PropertyPartShape::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
-        TopoShapePy *pcObject = static_cast<TopoShapePy*>(value);
-        setValue(*pcObject->getTopoShapePtr());
+        auto shape = *static_cast<TopoShapePy*>(value)->getTopoShapePtr();
+        auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+        if(owner && owner->getDocument() && !shape.Hasher) {
+            auto hasher = owner->getDocument()->getStringHasher();
+            if(hasher) {
+                TopoShape tmp(shape);
+                shape.Hasher = hasher;
+                // copy element map with newly set hasher to hash every mapped
+                // element names
+                shape.copyElementMap(tmp);
+            }
+        }
+        setValue(shape);
     }
     else {
         std::string error = std::string("type must be 'Shape', not ");

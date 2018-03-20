@@ -31,7 +31,8 @@
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
-
+#include "TopoShapeOpCode.h"
+#include "PartPyCXX.h"
 #include "OCCError.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompoundPy.xml)
@@ -60,6 +61,12 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;
 
+#ifndef FC_NO_ELEMENT_MAP
+    PY_TRY {
+        getTopoShapePtr()->makECompound(getPyShapes(pcObj));
+    }PY_CATCH_OCC
+    return 0;
+#else
     BRep_Builder builder;
     TopoDS_Compound Comp;
     builder.MakeCompound(Comp);
@@ -83,31 +90,41 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     getTopoShapePtr()->setShape(Comp);
     return 0;
+#endif
 }
 
 PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return NULL;
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
+    auto shapes = getPyShapes(obj);
     
     try {
-        const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
-            getTopoShapePtr()->getShape();
-        if (!sh.IsNull())
-            builder.Add(comp, sh);
+        for(auto &s : shapes) {
+            if(!s.isNull())
+                builder.Add(comp,s.getShape());
+        }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
+#ifndef FC_NO_ELEMENT_MAP
+    PY_TRY {
+        auto &self = *getTopoShapePtr();
+        shapes.push_back(self);
+        TopoShape tmp(self.Tag,self.Hasher,comp);
+        tmp.mapSubElement(TopAbs_FACE,shapes);
+        self = tmp;
+    }PY_CATCH_OCC
+#else
     getTopoShapePtr()->setShape(comp);
-
+#endif
     Py_Return;
 }
 

@@ -427,39 +427,20 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makECompound">
+    <Methode Name="makeWires">
       <Documentation>
         <UserDocu>
-makECompound([shape],appendTag=True,op=None): make compound of a list of input shapes
+makeWires(op=None): make wire(s) using the edges of this shape
 
-appendTag: if true, element mapping will append shape's Tag into mapped name
-
-This function is element mapping aware. It will map the sub-element name of any
-shape that has a non-zero Tag into itself.
-
-appendTag : whether append input shape's Tag into auto generated element mapping
-op        : an optional string to be appended when auto generates element mapping.
-
-The function return itself.
-        </UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="makEWires">
-      <Documentation>
-        <UserDocu>
-makEWires(shape,op=None): make compound of a list of input shapes
-
-The function will sort any edges inside the input shape, and connect them into
-wire. If more than one wire is found, then it will make a compound out of all
-found wires.
+The function will sort any edges inside the current shape, and connect them
+into wire. If more than one wire is found, then it will make a compound out of
+all found wires.
 
 This function is element mapping aware. If the input shape has non-zero Tag,
 it will map any edge and vertex element name inside the input shape into the
 itself.
 
 op: an optional string to be appended when auto generates element mapping.
-
-The function return itself.
         </UserDocu>
       </Documentation>
     </Methode>
