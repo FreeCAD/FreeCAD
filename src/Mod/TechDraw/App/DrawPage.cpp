@@ -318,26 +318,42 @@ void DrawPage::onDocumentRestored()
     bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
     KeepUpdated.setValue(autoUpdate);
 
-    std::vector<App::DocumentObject*> featViews = Views.getValues();
+    std::vector<App::DocumentObject*> featViews = getAllViews();
     std::vector<App::DocumentObject*>::const_iterator it = featViews.begin();
     //first, make sure all the Parts have been executed so GeometryObjects exist
     for(; it != featViews.end(); ++it) {
         TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
         if (part != nullptr &&
             !part->hasGeometry()) {
-            part->touch();
+            part->recomputeFeature();
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
     for(it = featViews.begin(); it != featViews.end(); ++it) {
         TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-        if (dim != nullptr &&
-            !dim->has2DReferences()) {
-            dim->touch();
+        if (dim != nullptr) {
+            dim->recomputeFeature();
         }
     }
-    recompute();
     App::DocumentObject::onDocumentRestored();
+}
+
+std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 
+{
+    auto views = Views.getValues();   //list of docObjects
+    std::vector<App::DocumentObject*> allViews;
+    for (auto& v: views) {
+        if (v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
+            TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
+            if (dpg != nullptr) {                                              //can't really happen!
+              std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
+              allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
+            }
+        } else {
+            allViews.push_back(v);
+        }
+    }
+    return allViews;
 }
 
 void DrawPage::unsetupObject()

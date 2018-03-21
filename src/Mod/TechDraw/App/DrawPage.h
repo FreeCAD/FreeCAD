@@ -88,6 +88,7 @@ public:
     const char* getPageOrientation() const;
     bool isUnsetting(void) { return nowUnsetting; }
     void requestPaint(void);
+    std::vector<App::DocumentObject*> getAllViews(void) ;
 
 
 protected:
