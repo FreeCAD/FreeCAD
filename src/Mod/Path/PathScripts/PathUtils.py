@@ -399,22 +399,6 @@ def reverseEdge(e):
     return newedge
 
 
-def changeTool(obj, job):
-    tlnum = 0
-    for p in job.Group:
-        if not hasattr(p, "Group"):
-            if isinstance(p.Proxy, PathScripts.PathToolController.ToolController) and p.ToolNumber > 0:
-                tlnum = p.ToolNumber
-            if p == obj:
-                return tlnum
-        elif hasattr(p, "Group"):
-            for g in p.Group:
-                if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
-                    tlnum = g.ToolNumber
-                if g == obj:
-                    return tlnum
-
-
 def getToolControllers(obj):
     '''returns all the tool controllers'''
     try:
