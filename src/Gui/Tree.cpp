@@ -2172,14 +2172,19 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         auto parentItem = item->getParentItem();
         assert(parentItem);
         if(selected && parentItem->selected) {
-            TREE_TRACE("force unselect parent");
             // When a group item is selected, all its children objects are
             // highlighted in the 3D view. So, when an item of some group is
             // newly selected, we must force unselect its parent in order to
             // show the selection highlight. Besides, select both the parent
             // group and its children doesn't make much sense.
-            parentItem->setSelected(false);
-            updateItemSelection(parentItem);
+            //
+            // UPDATE: There are legit use case of both parent and child
+            // selection, for example, to disambiguate under which group to
+            // operate on the child.
+            //
+            // TREE_TRACE("force unselect parent");
+            // parentItem->setSelected(false);
+            // updateItemSelection(parentItem);
         }
     }
 
@@ -2187,8 +2192,11 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         // Same reasoning as above. When a group item is newly selected, We
         // choose to force unselect all its children to void messing up the
         // selection highlight 
-        TREE_TRACE("force unselect all children");
-        updateSelection(item,true);
+        //
+        // UPDATE: same as above, child and parent selection is now re-enabled.
+        //
+        // TREE_TRACE("force unselect all children");
+        // updateSelection(item,true);
     }
 
     if(!selected)
@@ -2287,7 +2295,7 @@ void DocumentItem::selectItems(bool sync) {
             // If the parent is a group, then we have full quanlified
             // selection, which means this item can never be selected directly
             // in the 3D view,  only as element of the parent object
-            if(item->isParentGroup() == 1)
+            if(item->isParentGroup())
                 continue;
 
             findSelection(sync,item,sel.SubName);
