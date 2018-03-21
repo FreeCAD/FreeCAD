@@ -5610,7 +5610,8 @@ class _DraftLink(_DraftObject):
                     vis = getattr(obj,'VisibilityList',[])
                     if len(vis)>i and not vis[i]:
                         continue;
-                    s = shape.copy()
+                    # 'I' is a prefix for disambiguation when mapping element names
+                    s = shape.copy('I{}'.format(i))
                     s.Placement = pla
                     base.append(s)
                 if getattr(obj,'Fuse',False) and len(base) > 1:
