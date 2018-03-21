@@ -129,7 +129,7 @@ class PathWorkbench (Workbench):
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
-            "Path", "Partial Commands")], prepcmdlist)
+            "Path", "Supplemental Commands")], prepcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
         if extracmdlist:
