@@ -1570,26 +1570,26 @@ void FemMesh::write(const char *FileName) const
     Base::FileInfo File(FileName);
 
     if (File.hasExtension("unv") ) {
-        Base::Console().Message("The selected FEM mesh object will be exported to unv format.\n");
+        Base::Console().Log("FEM mesh object will be exported to unv format.\n");
         // write UNV file
         myMesh->ExportUNV(File.filePath().c_str());
     }
     else if (File.hasExtension("med") ) {
-        Base::Console().Message("The selected FEM mesh object will be exported to med format.\n");
+        Base::Console().Log("FEM mesh object will be exported to med format.\n");
         myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
     }
     else if (File.hasExtension("stl") ) {
-        Base::Console().Message("The selected FEM mesh object will be exported to stl format.\n");
+        Base::Console().Log("FEM mesh object will be exported to stl format.\n");
         // export to stl file
         myMesh->ExportSTL(File.filePath().c_str(),false);
     }
     else if (File.hasExtension("dat") ) {
-        Base::Console().Message("The selected FEM mesh object will be exported to dat format.\n");
+        Base::Console().Log("FEM mesh object will be exported to dat format.\n");
         // export to dat file
         myMesh->ExportDAT(File.filePath().c_str());
     }
     else if (File.hasExtension("inp") ) {
-        Base::Console().Message("The selected FEM mesh object will be exported to inp format.\n");
+        Base::Console().Log("FEM mesh object will be exported to inp format.\n");
         // get Abaqus inp prefs
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
         int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
@@ -1599,7 +1599,7 @@ void FemMesh::write(const char *FileName) const
     }
 #ifdef FC_USE_VTK
     else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
-        Base::Console().Message("The selected FEM mesh object will be exported to either vtk or vtu format.\n");
+        Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
     }
