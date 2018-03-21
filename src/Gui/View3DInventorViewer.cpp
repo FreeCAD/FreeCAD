@@ -75,6 +75,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoTransparencyType.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -472,11 +473,25 @@ void View3DInventorViewer::init()
     pcGroupOnTop->ref();
     pcViewProviderRoot->addChild(pcGroupOnTop);
 
-    pcGroupOnTopPickStyle = new SoPickStyle;
-    pcGroupOnTopPickStyle->ref();
+    auto pcGroupOnTopPickStyle = new SoPickStyle;
     pcGroupOnTopPickStyle->style = SoPickStyle::UNPICKABLE;
     // pcGroupOnTopPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
     pcGroupOnTopPickStyle->setOverride(true);
+    pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
+
+    coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
+    auto pcOnTopMaterial = new SoMaterial;
+    pcOnTopMaterial->transparency = 0.5;
+    pcOnTopMaterial->diffuseColor.setIgnored(true);
+    pcOnTopMaterial->setOverride(true);
+    pcGroupOnTop->addChild(pcOnTopMaterial);
+
+    pcGroupOnTopSel = new SoGroup;
+    pcGroupOnTopSel->ref();
+    pcGroupOnTop->addChild(pcGroupOnTopSel);
+    pcGroupOnTopPreSel = new SoGroup;
+    pcGroupOnTopPreSel->ref();
+    pcGroupOnTop->addChild(pcGroupOnTopPreSel);
 
     pcEditingRoot = new SoSeparator;
     pcEditingRoot->ref();
@@ -578,6 +593,8 @@ View3DInventorViewer::~View3DInventorViewer()
     this->backlight = 0;
 
     this->pcGroupOnTop->unref();
+    this->pcGroupOnTopPreSel->unref();
+    this->pcGroupOnTopSel->unref();
 
     this->pcEditingRoot->unref();
     this->pcEditingTransform->unref();
@@ -621,17 +638,54 @@ void View3DInventorViewer::initialize()
 }
 
 void View3DInventorViewer::clearGroupOnTop() {
-    if(!pcGroupOnTop->getNumChildren()) 
-        return;
-
+    objectsOnTop.clear();
+    objectsOnTopPreSel.clear();
     SoSelectionElementAction action(SoSelectionElementAction::None,true);
-    action.apply(pcGroupOnTop);
-    pcGroupOnTop->removeAllChildren();
+    action.apply(pcGroupOnTopSel);
+    action.apply(pcGroupOnTopPreSel);
+    pcGroupOnTopSel->removeAllChildren();
+    pcGroupOnTopPreSel->removeAllChildren();
     FC_LOG("clear annoation");
 }
 
-void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char *subname) {
+void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
+    if(Reason.Type == SelectionChanges::SetSelection || Reason.Type == SelectionChanges::ClrSelection) {
+        clearGroupOnTop();
+        if(Reason.Type == SelectionChanges::ClrSelection)
+            return;
+    }
+
+    if(!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName)
+        return;
+    auto obj = getDocument()->getDocument()->getObject(Reason.pObjectName);
     if(!obj || !obj->getNameInDocument())
+        return;
+    std::string key(obj->getNameInDocument());
+    key += '.';
+    auto subname = Reason.pSubName;
+    if(subname)
+        key += subname;
+    if(Reason.Type == SelectionChanges::RmvSelection || Reason.Type == SelectionChanges::RmvPreselect) {
+        auto &objs = Reason.Type==SelectionChanges::RmvSelection?objectsOnTop:objectsOnTopPreSel;
+        auto pcGroup = Reason.Type==SelectionChanges::RmvSelection?pcGroupOnTopSel:pcGroupOnTopPreSel;
+        auto it = objs.find(key.c_str());
+        if(it == objs.end())
+            return;
+        int index = pcGroup->findChild(it->second);
+        if(index >= 0) {
+            SoSelectionElementAction action(SoSelectionElementAction::None,true);
+            action.apply(it->second);
+            pcGroup->removeChild(index);
+        }
+        FC_LOG("remove annoation " << Reason.Type << " " << key);
+        objs.erase(it);
+        return;
+    }
+
+    auto &objs = Reason.Type==SelectionChanges::SetPreselect?objectsOnTopPreSel:objectsOnTop;
+    auto pcGroup = Reason.Type==SelectionChanges::SetPreselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
+
+    if(objs.find(key.c_str())!=objs.end())
         return;
     auto vp = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));
@@ -649,12 +703,14 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
                 return;
         }
     }
-    int onTop = svp->OnTopWhenSelected.getValue();
-    if(!onTop)
-        return;
+    int onTop;
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
+    if(Reason.Type == SelectionChanges::SetPreselect)
+        onTop = 2;
+    else if(!(onTop=svp->OnTopWhenSelected.getValue()))
+        return;
     if(onTop==2 || onTop==3) {
         if(subname && *subname) {
             size_t len = strlen(subname);
@@ -694,8 +750,6 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
         groups.push_back(grpVp);
     }
 
-    FC_LOG("add annoation " << obj->getNameInDocument() << '.' << (subname?subname:""));
-
     SoPath *path = new SoPath(10);
     path->ref();
 
@@ -710,7 +764,7 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
     if(vp->getDetailPath(subname, static_cast<SoFullPath*>(path),true,det) && path->getLength()) {
         auto node = new SoFCPathAnnotation;
         node->setPath(path);
-        pcGroupOnTop->addChild(node);
+        pcGroup->addChild(node);
         if(det) {
             SoSelectionElementAction action(SoSelectionElementAction::Append,true);
             action.setElement(det);
@@ -722,6 +776,8 @@ void View3DInventorViewer::addToGroupOnTop(App::DocumentObject *obj, const char 
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
         }
+        FC_LOG("add annoation " << Reason.Type << " " << key);
+        objs[key.c_str()] = node;
     }
     delete det;
     path->unref();
@@ -744,31 +800,27 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         else
             Reason.Type = SelectionChanges::RmvSelection;
         // fall through
+    case SelectionChanges::SetPreselect:
+    case SelectionChanges::RmvPreselect:
     case SelectionChanges::SetSelection:
     case SelectionChanges::AddSelection:     
-    case SelectionChanges::RmvSelection: {
-        if(!Reason.pDocName)
-            return;
-        clearGroupOnTop();
-        pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
-        const auto &sels = Selection().getSelection(Reason.pDocName,false);
-        for(auto it = sels.rbegin();it!=sels.rend();++it)
-            addToGroupOnTop(it->pObject,it->SubName);
+    case SelectionChanges::RmvSelection:
+    case SelectionChanges::ClrSelection:
+        checkGroupOnTop(Reason);
         break;
-    } case SelectionChanges::ClrSelection:{
-        clearGroupOnTop();
+    case SelectionChanges::SetPreselectSignal:
         break;
-    } case SelectionChanges::SetPreselectSignal:
-        break;
-    case SelectionChanges::RmvPreselect: {
-        SoFCHighlightAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
-        break;
-    } default:
+    default:
         return;
     }
-    SoFCSelectionAction cAct(Reason);
-    cAct.apply(pcViewProviderRoot);
+
+    if(Reason.Type == SelectionChanges::RmvPreselect) {
+        SoFCHighlightAction cAct(Reason);
+        cAct.apply(pcViewProviderRoot);
+    } else {
+        SoFCSelectionAction cAct(Reason);
+        cAct.apply(pcViewProviderRoot);
+    }
 }
 /// @endcond
 

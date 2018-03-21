@@ -307,9 +307,9 @@ public:
     void clearCompleteSelection();
     /// Check if selected
     bool isSelected(const char* pDocName, const char* pObjectName=0, 
-            const char* pSubName=0, bool resolve=true) const;
+            const char* pSubName=0, int resolve=1) const;
     /// Check if selected
-    bool isSelected(App::DocumentObject*, const char* pSubName=0, bool resolve=true) const;
+    bool isSelected(App::DocumentObject*, const char* pSubName=0, int resolve=1) const;
 
     const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 

@@ -33,6 +33,8 @@
 # include <QStatusBar>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Application.h"
 #include "Document.h"
@@ -630,8 +632,16 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
 
 bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, bool signal)
 {
-    if (DocName != "")
+    if(!pDocName || !pObjectName) {
         rmvPreselect();
+        return false;
+    }
+    if(!pSubName) pSubName = "";
+
+    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName)
+        return true;
+
+    rmvPreselect();
 
     if (ActiveGate && !signal) {
         App::Document* pDoc = getDocument(pDocName);
@@ -688,6 +698,12 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     Notify(Chng);
     signalSelectionChanged(Chng);
 
+    if(signal) {
+        Chng.Type = SelectionChanges::SetPreselect;
+        Notify(Chng);
+        signalSelectionChanged(Chng);
+    }
+
     // allows the preselection
     return true;
 }
@@ -717,8 +733,7 @@ void SelectionSingleton::rmvPreselect()
     if (DocName == "")
         return;
 
-    SelectionChanges Chng(SelectionChanges::RmvPreselect,
-            DocName,FeatName,SubName);
+    SelectionChanges Chng(SelectionChanges::RmvPreselect,DocName,FeatName,SubName);
 
     // reset the current preselection
     CurrentPreselection = SelectionChanges();
@@ -943,6 +958,13 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
 {
     if(!pDocName || !pObjectName)
         return false;
+    if(!pSubName)
+        pSubName = "";
+    if(show && DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
+        SelectionChanges Chng(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName);
+        Notify(Chng);
+        signalSelectionChanged(Chng);
+    }
     if (!isSelected(pDocName, pObjectName, pSubName))
         return false;
     auto pDoc = getDocument(pDocName);
@@ -1216,7 +1238,7 @@ void SelectionSingleton::clearCompleteSelection()
 }
 
 bool SelectionSingleton::isSelected(const char* pDocName, 
-        const char* pObjectName, const char* pSubName, bool resolve) const
+        const char* pObjectName, const char* pSubName, int resolve) const
 {
     if(!pObjectName) return false;
     auto pDoc = getDocument(pDocName);
@@ -1226,7 +1248,7 @@ bool SelectionSingleton::isSelected(const char* pDocName,
     return isSelected(pDoc->getObject(pObjectName),pSubName,resolve);
 }
 
-bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, bool resolve) const
+bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, int resolve) const
 {
     if(!pObject || !pObject->getNameInDocument() || !pObject->getDocument()) 
         return false;
@@ -1239,10 +1261,12 @@ bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pS
     if(!pResolvedObject) 
         return false;
     std::string subname;
-    if(pSubName) {
-        if(element && elementName.first.size()) {
+    std::string prefix;
+    if(pSubName && element) {
+        prefix = std::string(pSubName, element-pSubName);
+        if(elementName.first.size()) {
             // make sure the selected sub name is a new style if available
-            subname = std::string(pSubName,element-pSubName) + elementName.first;
+            subname = prefix + elementName.first;
             pSubName = subname.c_str();
         }
     }
@@ -1250,9 +1274,11 @@ bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pS
         if (sel.DocName==pDocName && sel.FeatName==pObjectName) {
             if(!pSubName || sel.SubName==pSubName)
                 return true;
+            if(resolve>1 && boost::starts_with(sel.SubName,prefix))
+                return true;
         }
     }
-    if(resolve) {
+    if(resolve==1) {
         for(auto &sel : _SelList) {
             if(sel.pResolvedObject != pResolvedObject)
                 continue;
@@ -1497,49 +1523,18 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
     PyObject *show;
     PyObject *object;
     char* subname=0;
-    if (PyArg_ParseTuple(args, "OO!|s", &show,&(App::DocumentObjectPy::Type),&object,&subname)) {
-        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
-        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-        if (!docObj || !docObj->getNameInDocument()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
-            return NULL;
-        }
-
-        Selection().updateSelection(PyObject_IsTrue(show),
-                docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
-        Py_Return;
+    if(!PyArg_ParseTuple(args, "OO!|s", &show,&(App::DocumentObjectPy::Type),&object,&subname))
+        return 0;
+    App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+    App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+    if (!docObj || !docObj->getNameInDocument()) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+        return NULL;
     }
 
-    PyErr_Clear();
-    PyObject *sequence;
-    if (PyArg_ParseTuple(args, "O!O", &(App::DocumentObjectPy::Type),&object,&sequence)) {
-        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
-        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-        if (!docObj || !docObj->getNameInDocument()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
-            return NULL;
-        }
-
-        try {
-            if (PyTuple_Check(sequence) || PyList_Check(sequence)) {
-                Py::Sequence list(sequence);
-                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                    std::string subname = static_cast<std::string>(Py::String(*it));
-                    Selection().updateSelection(docObj->getDocument()->getName(),
-                                                docObj->getNameInDocument(),
-                                                subname.c_str());
-                }
-
-                Py_Return;
-            }
-        }
-        catch (const Py::Exception&) {
-            // do nothing here
-        }
-    }
-
-    PyErr_SetString(PyExc_ValueError, "type must be 'DocumentObject[,subname[,x,y,z]]' or 'DocumentObject, list or tuple of subnames'");
-    return 0;
+    Selection().updateSelection(PyObject_IsTrue(show),
+            docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
+    Py_Return;
 }
 
 

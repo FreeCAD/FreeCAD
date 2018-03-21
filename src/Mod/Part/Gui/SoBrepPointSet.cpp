@@ -113,6 +113,27 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
 
+    if(ctx && ctx->highlightIndex==INT_MAX) {
+        if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+            if(ctx2) {
+                ctx2->selectionColor = ctx->highlightColor;
+                renderSelection(action,ctx2); 
+            } else
+                renderHighlight(action,ctx);
+        }else{
+            if(!action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
+            if(ctx2) {
+                ctx2->selectionColor = ctx->highlightColor;
+                renderSelection(action,ctx2); 
+            } else
+                renderHighlight(action,ctx);
+            if(action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
+        }
+        return;
+    }
+
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
     if(ctx && ctx->selectionIndex.size()) {
@@ -172,8 +193,12 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
-    int32_t id = ctx->highlightIndex;
-    if (id < this->startIndex.getValue() || id >= coords->getNum()) {
+    int id = ctx->highlightIndex;
+    if(id == INT_MAX) {
+        const SbVec3f * coords3d = coords->getArrayPtr3();
+        for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
+            glVertex3fv((const GLfloat*) (coords3d + idx));
+    }else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
         SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
     }
     else {
@@ -242,19 +267,22 @@ void SoBrepPointSet::doAction(SoAction* action)
             return;
         }
         const SoDetail* detail = hlaction->getElement();
-        if (detail) {
-            if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
-                ctx->highlightIndex = -1;
-                touch();
-                return;
-            }
+        if (!detail) {
+            ctx->highlightIndex = INT_MAX;
+            ctx->highlightColor = hlaction->getColor();
+            touch();
+            return;
+        }else if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
+            ctx->highlightIndex = -1;
+            touch();
+            return;
+        }
 
-            int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-            if(index!=ctx->highlightIndex) {
-                ctx->highlightIndex = index;
-                ctx->highlightColor = hlaction->getColor();
-                touch();
-            }
+        int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
+        if(index!=ctx->highlightIndex) {
+            ctx->highlightIndex = index;
+            ctx->highlightColor = hlaction->getColor();
+            touch();
         }
         return;
     }

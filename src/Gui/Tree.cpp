@@ -71,10 +71,15 @@ FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
 using namespace Gui;
 
+#define TREEVIEW_PARAM "User parameter:BaseApp/Preferences/TreeView"
+#define GET_TREEVIEW_PARAM(_name) \
+    ParameterGrp::handle _name = App::GetApplication().GetParameterGroupByPath(TREEVIEW_PARAM)
+
+/////////////////////////////////////////////////////////////////////////////////
+
 QPixmap*  TreeWidget::documentPixmap = 0;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
-
 
 /* TRANSLATOR Gui::TreeWidget */
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
@@ -87,16 +92,18 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setDropIndicatorShown(false);
     this->setRootIsDecorated(false);
 
-#define GET_TREEVIEW_PARAM(_name) \
-    ParameterGrp::handle _name = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView")
-
     GET_TREEVIEW_PARAM(hGrp);
-    bool sync = hGrp->GetBool("SyncSelection",true);
     this->syncSelectionAction = new QAction(this);
     this->syncSelectionAction->setCheckable(true);
-    this->syncSelectionAction->setChecked(sync);
+    this->syncSelectionAction->setChecked(hGrp->GetBool("SyncSelection",true));
     connect(this->syncSelectionAction, SIGNAL(triggered()),
             this, SLOT(onSyncSelection()));
+
+    this->preSelectionAction = new QAction(this);
+    this->preSelectionAction->setCheckable(true);
+    this->preSelectionAction->setChecked(hGrp->GetBool("PreSelection",true));
+    connect(this->preSelectionAction, SIGNAL(triggered()),
+            this, SLOT(onPreSelection()));
 
     this->syncViewAction = new QAction(this);
     this->syncViewAction->setCheckable(true);
@@ -168,6 +175,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setMouseTracking(true); // needed for itemEntered() to work
 #endif
 
+    this->preselectTimer = new QTimer(this);
+    this->preselectTimer->setSingleShot(true);
+
     this->statusTimer = new QTimer(this);
     this->statusTimer->setSingleShot(false);
 
@@ -181,6 +191,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemSelectionChanged()),
             this, SLOT(onItemSelectionChanged()));
+    connect(this->preselectTimer, SIGNAL(timeout()),
+            this, SLOT(onPreSelectTimer()));
+    preselectTime.start();
 
     setupText();
     _updateStatus();
@@ -232,8 +245,12 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         contextMenu.addSeparator();
         topact = actions.front();
     }
-    contextMenu.insertAction(topact,this->syncSelectionAction);
-    contextMenu.insertAction(topact,this->syncViewAction);
+    QMenu optionsMenu;
+    optionsMenu.setTitle(tr("Tree view options"));
+    optionsMenu.addAction(this->preSelectionAction);
+    optionsMenu.addAction(this->syncSelectionAction);
+    optionsMenu.addAction(this->syncViewAction);
+    contextMenu.insertMenu(topact,&optionsMenu);
     contextMenu.insertSeparator(topact);
 
     // get the current item
@@ -1101,9 +1118,49 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     // object item selected
     if (item && item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
-        obj->displayStatusInfo();
+        DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
+        objItem->displayStatusInfo();
+
+        if(preSelectionAction->isChecked()) {
+            if(preselectTime.elapsed() < 700)
+                onPreSelectTimer();
+            else{
+                preselectTimer->start(500);
+                Selection().rmvPreselect();
+            }
+        }
+    } else if(preSelectionAction->isChecked())
+        Selection().rmvPreselect();
+}
+
+void TreeWidget::leaveEvent(QEvent *) {
+    if(preSelectionAction->isChecked()) {
+        preselectTimer->stop();
+        Selection().rmvPreselect();
     }
+}
+
+void TreeWidget::onPreSelectTimer() {
+    if(!preSelectionAction->isChecked())
+        return;
+    auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
+    if(!item || item->type()!=TreeWidget::ObjectType) 
+        return;
+
+    FC_LOG("preselect timer");
+    preselectTime.restart();
+    DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
+    auto vp = objItem->object();
+    auto obj = vp->getObject();
+    std::ostringstream ss;
+    App::DocumentObject *parent = 0;
+    objItem->getSubName(ss,parent);
+    if(parent)
+        ss << obj->getNameInDocument() << '.';
+    else
+        parent = obj;
+    Selection().setPreselect(parent->getDocument()->getName(),parent->getNameInDocument(),
+            ss.str().c_str(),0,0,0,true);
 }
 
 void TreeWidget::onItemCollapsed(QTreeWidgetItem * item)
@@ -1142,6 +1199,9 @@ void TreeWidget::setupText() {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->rootItem->setText(0, tr("Application"));
 
+    this->preSelectionAction->setText(tr("Pre-selection"));
+    this->preSelectionAction->setStatusTip(tr("Preselect the object in 3D view when mouse over the tree item"));
+
     this->syncSelectionAction->setText(tr("Sync selection"));
     this->syncSelectionAction->setStatusTip(tr("Auto expand item when selected in 3D view"));
 
@@ -1174,6 +1234,12 @@ void TreeWidget::onSyncSelection() {
     GET_TREEVIEW_PARAM(hGrp);
     hGrp->SetBool("SyncSelection",syncSelectionAction->isChecked());
 }
+
+void TreeWidget::onPreSelection() {
+    GET_TREEVIEW_PARAM(hGrp);
+    hGrp->SetBool("PreSelection",preSelectionAction->isChecked());
+}
+
 
 void TreeWidget::onSyncView() {
     GET_TREEVIEW_PARAM(hGrp);
@@ -1287,7 +1353,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     setWindowTitle(tr("Tree view"));
     this->treeWidget = new TreeWidget("TreeView",this);
     this->treeWidget->setRootIsDecorated(false);
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    GET_TREEVIEW_PARAM(hGrp);
     this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
 
     QGridLayout* pLayout = new QGridLayout(this);

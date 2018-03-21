@@ -478,6 +478,7 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         if(!highlighted) {
             currenthighlight->unref();
             currenthighlight = 0;
+            Selection().rmvPreselect();
         }
         this->touch();
     }

@@ -112,6 +112,10 @@ public:
     bool isSelectAll() const {
         return selectionIndex.size() && *selectionIndex.begin()<0;
     }
+
+    bool isHighlightAll() const {
+        return highlightIndex==INT_MAX && (selectionIndex.empty() || isSelectAll());
+    }
 };
 
 #define PRIVATE(p) ((p)->pimpl)
@@ -227,16 +231,19 @@ void SoBrepFaceSet::doAction(SoAction* action)
         }
 
         const SoDetail* detail = hlaction->getElement();
-        if (detail) {
+        if (!detail) {
+            ctx->highlightIndex = INT_MAX;
+            ctx->highlightColor = hlaction->getColor();
+        }else {
             if (detail->isOfType(SoFaceDetail::getClassTypeId())) {
                 int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
                 ctx->highlightIndex = index;
                 ctx->highlightColor = hlaction->getColor();
             } else
                 ctx->highlightIndex = -1;
-            touch();
-            return;
         }
+        touch();
+        return;
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
@@ -516,13 +523,52 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     // override material binding to PER_PART_INDEX to achieve
     // preselection/selection with transparency
-    bool pushed = overrideMaterialBinding(state,ctx,ctx2);
+    bool pushed = overrideMaterialBinding(action,ctx,ctx2);
     if(!pushed){
         // for non transparent cases, we still use the old selection rendering
         // code, because it can override emission color, which gives a more
         // distinguishable selection highlight. The above material binding
         // override method can't, because Coin does not support per part
         // emission color
+
+        // There are a few factors affects the rendering order.
+        //
+        // 1) For normal case, the highlight (pre-selection) is the top layer. And since
+        // the depth buffer clipping is on here, we shall draw highlight first, then 
+        // selection, then the rest part.
+        //
+        // 2) If action->isRenderingDelayedPaths() is true, it means we are rendering 
+        // with depth buffer clipping turned off (always on top rendering), so we shall
+        // draw the top layer last, i.e. renderHighlight() last
+        //
+        // 3) If highlightIndex==INT_MAX, it means we are rendering full object highlight
+        // In order to not obscure selection layer, we shall draw highlight after selection
+        // if and only if it is not a full object selection.
+        //
+        // Transparency complicates stuff even more, but not here. It will be handled inside
+        // overrideMaterialBinding()
+        //
+        if(ctx && ctx->highlightIndex==INT_MAX) {
+            if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+                if(ctx2) {
+                    ctx2->selectionColor = ctx->highlightColor;
+                    renderSelection(action,ctx2); 
+                } else
+                    renderHighlight(action,ctx);
+            }else{
+                if(!action->isRenderingDelayedPaths())
+                    renderSelection(action,ctx); 
+                if(ctx2) {
+                    ctx2->selectionColor = ctx->highlightColor;
+                    renderSelection(action,ctx2); 
+                } else
+                    renderHighlight(action,ctx);
+                if(action->isRenderingDelayedPaths())
+                    renderSelection(action,ctx); 
+            }
+            return;
+        }
+
         if(!action->isRenderingDelayedPaths())
             renderHighlight(action,ctx);
         if(ctx && ctx->selectionIndex.size()) {
@@ -559,7 +605,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // correctly.
     if(this->shouldGLRender(action)) {
         SbBool hasVBO = PRIVATE(this)->vboAvailable;
-        SoState * state = action->getState();
         if (hasVBO) {
             // get the VBO status of the viewer
             Gui::SoGLVBOActivatedElement::get(state, hasVBO);
@@ -626,9 +671,10 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 }
 #endif
 
-bool SoBrepFaceSet::overrideMaterialBinding(SoState *state, SelContextPtr ctx, SelContextPtr ctx2) {
+bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2) {
     if(!ctx && !ctx2) return false;
 
+    auto state = action->getState();
     auto mb = SoMaterialBindingElement::get(state);
 
     auto element = SoLazyElement::getInstance(state);
@@ -662,6 +708,15 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoState *state, SelContextPtr ctx, S
     {
         state->push();
 
+        if(action->isRenderingDelayedPaths()) {
+            // rendering delayed paths means we are doing annotation (e.g.
+            // always on top rendering). To render transparency correctly in
+            // this case, we shall use openGL transparency blend. Override
+            // using SoLazyElement::setTransparencyType() doesn't seem to work
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDepthMask(false);
+        }
         packedColors.clear();
 
         if(ctx && Gui::Selection().needPickedList()) {
@@ -669,11 +724,15 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoState *state, SelContextPtr ctx, S
             // trans_size = 1;
         }
 
-        if(!ctx2 && ctx && ctx->highlightIndex<0 && ctx->isSelectAll()) {
-            //optimization for full selection without highlight or partial rendering
+        auto selColor = ctx->highlightIndex==INT_MAX?ctx->highlightColor:ctx->selectionColor;
+
+        if(!ctx2 && ctx && 
+           (ctx->isHighlightAll() || (ctx->highlightIndex<0 && ctx->isSelectAll()))) 
+        {
+            //optimization for full selection/highlight without partial rendering
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
             SoOverrideElement::setMaterialBindingOverride(state, this, true);
-            packedColors.push_back(ctx->selectionColor.getPackedValue(trans0));
+            packedColors.push_back(selColor.getPackedValue(trans0));
             SoLazyElement::setPacked(state, this,1, &packedColors[0],true);
             SoTextureEnabledElement::set(state,this,false);
             return true;
@@ -682,14 +741,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoState *state, SelContextPtr ctx, S
         matIndex.clear();
         matIndex.reserve(partIndex.getNum());
 
-        if(ctx && ctx->isSelectAll()) {
+        if(ctx && (ctx->isSelectAll() || ctx->isHighlightAll())) {
             matIndex.resize(partIndex.getNum(),0);
             if(!ctx2)
-                packedColors.push_back(ctx->selectionColor.getPackedValue(trans0));
+                packedColors.push_back(selColor.getPackedValue(trans0));
             else {
                 // default to full transparent
-                packedColors.push_back(ctx->selectionColor.getPackedValue(1.0));
-                packedColors.push_back(ctx->selectionColor.getPackedValue(trans0));
+                packedColors.push_back(selColor.getPackedValue(1.0));
+                packedColors.push_back(selColor.getPackedValue(trans0));
                 for(auto idx : ctx2->selectionIndex) {
                     if(idx>=0 && idx<partIndex.getNum())
                         matIndex[idx] = packedColors.size()-1; // show only the selected
@@ -700,12 +759,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoState *state, SelContextPtr ctx, S
                 matIndex[ctx->highlightIndex] = packedColors.size()-1;
             }
         }else{
+            auto diffuseColor = ctx->highlightIndex==INT_MAX?ctx->highlightColor:diffuse[0];
+
             if(ctx2) {// for partial rendering
-                packedColors.push_back(diffuse[0].getPackedValue(1.0));
+                packedColors.push_back(diffuseColor.getPackedValue(1.0));
                 matIndex.resize(partIndex.getNum(),0);
 
-                if(mb == SoMaterialBindingElement::OVERALL) {
-                    packedColors.push_back(diffuse[0].getPackedValue(trans0));
+                if(mb == SoMaterialBindingElement::OVERALL || ctx->highlightIndex==INT_MAX) {
+                    packedColors.push_back(diffuseColor.getPackedValue(trans0));
                     for(auto idx : ctx2->selectionIndex) {
                         if(idx>=0 && idx<partIndex.getNum())
                             matIndex[idx] = packedColors.size()-1;
@@ -720,8 +781,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoState *state, SelContextPtr ctx, S
                         }
                     }
                 }
-            }else if(mb == SoMaterialBindingElement::OVERALL) {
-                packedColors.push_back(diffuse[0].getPackedValue(trans0));
+            }else if(mb == SoMaterialBindingElement::OVERALL || ctx->highlightIndex==INT_MAX) {
+                packedColors.push_back(diffuseColor.getPackedValue(trans0));
                 matIndex.resize(partIndex.getNum(),0);
             }else{
                 assert(diffuse_size >= partIndex.getNum());
@@ -1073,8 +1134,8 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 
     mb.sendFirst(); // make sure we have the correct material
 
-    int32_t id = ctx->highlightIndex;
-    if (id >= this->partIndex.getNum()) {
+    int id = ctx->highlightIndex;
+    if (id!=INT_MAX && id >= this->partIndex.getNum()) {
         SoDebugError::postWarning("SoBrepFaceSet::renderHighlight", "highlightIndex out of range");
     }
     else {
@@ -1084,11 +1145,17 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
         pindices = this->partIndex.getValues(0);
 
         // coords
-        int length = (int)pindices[id]*4;
         int start=0;
-        for (int i=0;i<id;i++)
-            start+=(int)pindices[i];
-        start *= 4;
+        int length;
+        if(id==INT_MAX) {
+            length = numindices;
+            id = 0;
+        } else {
+            length = (int)pindices[id]*4;
+            for (int i=0;i<id;i++)
+                start+=(int)pindices[i];
+            start *= 4;
+        }
 
         // normals
         if (nbind == PER_VERTEX_INDEXED)
@@ -1181,8 +1248,8 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         // if < 0 then select everything
         if (id < 0) {
             length = numindices;
-        }
-        else {
+            id = 0;
+        } else {
             length = (int)pindices[id]*4;
             for (int j=0;j<id;j++)
                 start+=(int)pindices[j];

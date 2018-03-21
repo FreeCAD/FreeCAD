@@ -134,7 +134,7 @@ private:
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 
-    bool overrideMaterialBinding(SoState *state, SelContextPtr ctx, SelContextPtr ctx2);
+    bool overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2);
 
 #ifdef RENDER_GLARRAYS
     void renderSimpleArray();

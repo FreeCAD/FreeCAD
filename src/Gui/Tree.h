@@ -25,6 +25,7 @@
 #define GUI_TREE_H
 
 #include <QTreeWidget>
+#include <QTime>
 
 #include <App/Document.h>
 #include <App/Application.h>
@@ -119,6 +120,7 @@ protected:
 protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
+    void leaveEvent(QEvent *) override;
     void _updateStatus(bool delay=false);
 
 protected Q_SLOTS:
@@ -130,6 +132,8 @@ protected Q_SLOTS:
     void onSkipRecompute(bool on);
     void onMarkRecompute();
     void onSyncSelection();
+    void onPreSelection();
+    void onPreSelectTimer();
     void onSyncView();
     void onShowHidden();
     void onHideInTree();
@@ -159,6 +163,7 @@ private:
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;
     QAction* markRecomputeAction;
+    QAction* preSelectionAction;
     QAction* syncSelectionAction;
     QAction* syncViewAction;
     QAction* showHiddenAction;
@@ -168,6 +173,8 @@ private:
     DocumentItem *currentDocItem;
     QTreeWidgetItem* rootItem;
     QTimer* statusTimer;
+    QTimer* preselectTimer;
+    QTime preselectTime;
     static QPixmap* documentPixmap;
     std::map<const Gui::Document*,DocumentItem*> DocumentMap;
     bool fromOutside;

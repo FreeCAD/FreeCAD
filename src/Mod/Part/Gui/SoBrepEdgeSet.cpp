@@ -110,14 +110,35 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
 
+    if(ctx && ctx->highlightIndex==INT_MAX) {
+        if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+            if(ctx2) {
+                ctx2->selectionColor = ctx->highlightColor;
+                renderSelection(action,ctx2); 
+            } else
+                renderHighlight(action,ctx);
+        }else{
+            if(!action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
+            if(ctx2) {
+                ctx2->selectionColor = ctx->highlightColor;
+                renderSelection(action,ctx2); 
+            } else
+                renderHighlight(action,ctx);
+            if(action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
+        }
+        return;
+    }
+
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
     if(ctx && ctx->selectionIndex.size()) {
         if(ctx->isSelectAll()) {
-            if(ctx2 && ctx2->selectionIndex.size()) {
+            if(ctx2) {
                 ctx2->selectionColor = ctx->selectionColor;
                 renderSelection(action,ctx2); 
-            }else
+            }else if(ctx->isSelectAll())
                 renderSelection(action,ctx); 
             if(action->isRenderingDelayedPaths())
                 renderHighlight(action,ctx);
@@ -200,12 +221,17 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 
     int num = (int)ctx->hl.size();
     if (num > 0) {
-        const int32_t* id = &(ctx->hl[0]);
-        if (!validIndexes(coords, ctx->hl)) {
-            SoDebugError::postWarning("SoBrepEdgeSet::renderHighlight", "highlightIndex out of range");
+        if (ctx->hl[0] < 0) {
+            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
         }
         else {
-            renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+            const int32_t* id = &(ctx->hl[0]);
+            if (!validIndexes(coords, ctx->hl)) {
+                SoDebugError::postWarning("SoBrepEdgeSet::renderHighlight", "highlightIndex out of range");
+            }
+            else {
+                renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+            }
         }
     }
     state->pop();
@@ -279,7 +305,13 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             return;
         }
         const SoDetail* detail = hlaction->getElement();
-        if (detail) {
+        if (!detail) {
+            ctx->highlightColor = hlaction->getColor();
+            ctx->highlightIndex = INT_MAX;
+            ctx->hl.clear();
+            ctx->hl.push_back(-1);
+            touch();
+        } else {
             if (!detail->isOfType(SoLineDetail::getClassTypeId())) {
                 ctx->highlightIndex = -1;
                 ctx->hl.clear();

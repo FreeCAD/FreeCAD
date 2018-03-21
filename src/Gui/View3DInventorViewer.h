@@ -131,7 +131,7 @@ public:
 
     /// Observer message from the Selection
     virtual void onSelectionChanged(const SelectionChanges &Reason);
-    void addToGroupOnTop(App::DocumentObject *obj, const char *subname);
+    void checkGroupOnTop(const SelectionChanges &Reason);
     void clearGroupOnTop();
 
     SoDirectionalLight* getBacklight(void) const;
@@ -418,8 +418,13 @@ private:
     SoDirectionalLight* backlight;
 
     SoSeparator * pcViewProviderRoot;
+
     SoSeparator * pcGroupOnTop;
-    SoPickStyle *pcGroupOnTopPickStyle;
+    SoGroup * pcGroupOnTopSel;
+    SoGroup * pcGroupOnTopPreSel;
+    std::map<std::string,SoNode*> objectsOnTop;
+    std::map<std::string,SoNode*> objectsOnTopPreSel;
+
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;
     bool restoreEditingRoot;
