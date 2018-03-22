@@ -62,7 +62,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathInspect
         from PathScripts import PathJobCmd
         from PathScripts import PathMillFaceGui
-        from PathScripts import PathPlane
         from PathScripts import PathPocketGui
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
@@ -81,7 +80,7 @@ class PathWorkbench (Workbench):
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
         toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop"]
-        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom", "Path_Shape"]
+        prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_Engrave", "Path_MillFace", "Path_Helix"]
         threedopcmdlist = ["Path_Pocket_3D"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
@@ -111,6 +110,7 @@ class PathWorkbench (Workbench):
 
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
+            prepcmdlist.append("Path_Shape")
             threedopcmdlist.append("Path_Surface")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             FreeCADGui.addCommand('Path_3dTools', ThreeDCommandGroup())
