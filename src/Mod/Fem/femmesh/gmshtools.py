@@ -93,7 +93,7 @@ class GmshTools():
 
         # Algorithm3D
         # known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
-        algo3D = self.mesh_obj.Algorithm2D
+        algo3D = self.mesh_obj.Algorithm3D
         if algo3D == 'Automatic':
             self.algorithm3D = '1'
         elif algo3D == 'Delaunay':
