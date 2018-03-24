@@ -1589,7 +1589,17 @@ Expression *ConditionalExpression::simplify() const
 
 std::string ConditionalExpression::toString() const
 {
-    return condition->toString() + " ? " + trueExpr->toString() + " : " + falseExpr->toString();
+    std::string cstr = condition->toString();
+    std::string tstr = trueExpr->toString();
+    std::string fstr = falseExpr->toString();
+
+    if (trueExpr->priority() <= priority())
+        tstr = "(" + tstr + ")";
+
+    if (falseExpr->priority() <= priority())
+        fstr = "(" + fstr + ")";
+
+    return cstr + " ? " + tstr + " : " + fstr;
 }
 
 Expression *ConditionalExpression::copy() const
@@ -1599,7 +1609,7 @@ Expression *ConditionalExpression::copy() const
 
 int ConditionalExpression::priority() const
 {
-    return 0;
+    return 2;
 }
 
 void ConditionalExpression::getDeps(std::set<ObjectIdentifier> &props) const
