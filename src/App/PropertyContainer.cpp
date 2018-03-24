@@ -321,6 +321,7 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
     PropertySpec temp;
     temp.Name   = PropName;
     temp.Offset = offsetBase.getOffsetTo(Prop);
+    assert(temp.Offset>=0);
     temp.Group  = PropertyGroup;
     temp.Type   = Type;
     temp.Docu   = PropertyDocu;
@@ -343,6 +344,8 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
 const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const Property* prop) const
 {
   const int diff = offsetBase.getOffsetTo(prop);
+  if(diff<0)
+      return 0;
 
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(diff == It->Offset)
