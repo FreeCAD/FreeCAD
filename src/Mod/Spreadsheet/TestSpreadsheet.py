@@ -832,6 +832,25 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A1, Units.Quantity('1'))
         self.assertEqual(sheet.A2, Units.Quantity('1 kg/mm'))
 
+    def testIssue3363(self):
+        """ Regression test for issue 3363; Nested conditionals statement fails with additional conditional statement in false-branch"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '1')
+        sheet.set('B1', '=A1==1?11:(A1==2?12:13)')
+        sheet.set('C1', '=A1==1?(A1==2?12:13) : 11')
+        self.doc.recompute()
+
+        # Save and close first document
+        self.doc.saveAs(self.TempPath + os.sep + 'conditionals.fcstd')
+        FreeCAD.closeDocument(self.doc.Name)
+
+        # Open documents again
+        self.doc = FreeCAD.openDocument(self.TempPath + os.sep + 'conditionals.fcstd')
+
+        sheet = self.doc.getObject('Spreadsheet')
+        self.assertEqual(sheet.getContents('B1'), '=A1 == 1 ? 11 : (A1 == 2 ? 12 : 13)')
+        self.assertEqual(sheet.getContents('C1'), '=A1 == 1 ? (A1 == 2 ? 12 : 13) : 11')
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
