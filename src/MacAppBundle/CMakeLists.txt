@@ -9,6 +9,15 @@ else()
     set(PYTHON_DIR ${PYTHON_DIR}/${PYTHON_DIR_BASENAME})
 endif()
 
+set(WEBKIT_FRAMEWORK_DIR "")
+if (Qt5WebKitWidgets_FOUND)
+    #qtwebkitwidgets references qtwebkit with a relative path,
+    #so we need to add its location to the search paths
+    get_filename_component(WEBKIT_LIB_DIR ${Qt5WebKitWidgets_DIR} PATH)
+    get_filename_component(WEBKIT_LIB_DIR ${WEBKIT_LIB_DIR} PATH)
+    set(WEBKIT_FRAMEWORK_DIR "${WEBKIT_LIB_DIR}/QtWebKit.framework/Versions/5")
+endif()
+
 install(CODE "execute_process(COMMAND
     ${CMAKE_COMMAND} -E copy_directory ${PYTHON_DIR} ${CMAKE_INSTALL_LIBDIR}/${PYTHON_DIR_BASENAME}
 )")
@@ -79,6 +88,6 @@ install(CODE
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE}
         ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
-        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${XCTEST_PATH}
+        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${XCTEST_PATH} ${WEBKIT_FRAMEWORK_DIR}
     )"
 )
