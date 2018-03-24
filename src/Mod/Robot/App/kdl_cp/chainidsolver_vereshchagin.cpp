@@ -91,7 +91,7 @@ void ChainIdSolver_Vereshchagin::initial_upwards_sweep(const JntArray &q, const 
         //Put Z in the joint root reference frame:
         s.Z = s.F * s.Z;
 
-        //The total velocity of the segment expressed in the the segments reference frame (tip)
+        //The total velocity of the segment expressed in the segments reference frame (tip)
         if (i != 0)
         {
             s.v = s.F.Inverse(results[i].v) + vj; // recursive velocity of each link in segment frame
@@ -436,7 +436,7 @@ void ChainIdSolver_Vereshchagin::getJointNullSpaceAcceleration(JntArray& nullspa
 
 //This is not only a bias force energy but also includes generalized forces
 //change type of parameter G
-//this method should retur array of G's
+//this method should return array of G's
 
 void ChainIdSolver_Vereshchagin::getLinkBiasForceAcceleratoinEnergy(Eigen::VectorXd& G)
 {
@@ -453,7 +453,7 @@ void ChainIdSolver_Vereshchagin::getLinkBiasForceAcceleratoinEnergy(Eigen::Vecto
 
 }
 
-//this method should retur array of R's
+//this method should return array of R's
 
 void ChainIdSolver_Vereshchagin::getLinkBiasForceMatrix(Wrenches& R_tilde)
 {

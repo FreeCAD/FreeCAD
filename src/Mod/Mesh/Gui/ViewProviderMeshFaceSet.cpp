@@ -143,6 +143,7 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
         else {
             ViewProviderMeshBuilder builder;
             builder.createMesh(prop, pcMeshCoord, pcMeshFaces);
+            pcMeshFaces->invalidate();
         }
 
         if (direct != directRendering) {

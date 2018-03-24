@@ -108,7 +108,7 @@ namespace KDL
         /**
          * Set the joint space weighting matrix
          *
-         * weight_js joint space weighting symetric matrix,
+         * weight_js joint space weighting symmetric matrix,
          * default : identity. 
          * @param Mq : This matrix being used as a
          * weight for the norm of the joint space speed it HAS TO BE
@@ -133,7 +133,7 @@ namespace KDL
         /**
          * Set the task space weighting matrix
          *
-         * weight_ts task space weighting symetric matrix,
+         * weight_ts task space weighting symmetric matrix,
          * default: identity 
          * @param Mx : This matrix being used as a weight
          * for the norm of the error (in terms of task space speed) it

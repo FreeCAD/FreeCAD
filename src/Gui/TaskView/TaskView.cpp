@@ -518,10 +518,10 @@ void TaskView::showDialog(TaskDialog *dlg)
     assert(!ActiveDialog);
     assert(!ActiveCtrl);
 
-    // remove the TaskWatcher as long the Dialog is up
+    // remove the TaskWatcher as long as the Dialog is up
     removeTaskWatcher();
 
-    // first creat the control element set it up and wire it:
+    // first create the control element, set it up and wire it:
     ActiveCtrl = new TaskEditControl(this);
     ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
 
@@ -604,7 +604,7 @@ void TaskView::removeDialog(void)
 void TaskView::updateWatcher(void)
 {
     // In case a child of the TaskView has the focus and get hidden we have
-    // to make sure that set the focus on a widget that won't be hidden or
+    // to make sure to set the focus on a widget that won't be hidden or
     // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
     // to the mdi area which may switch to another mdi view which is not an
     // acceptable behaviour.

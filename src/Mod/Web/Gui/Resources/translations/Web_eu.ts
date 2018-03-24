@@ -168,7 +168,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (Arch esportatzailea)</translation>
+      <translation>OBJ + MTL (arkitektura-esportatzailea)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>

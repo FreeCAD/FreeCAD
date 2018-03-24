@@ -35,14 +35,14 @@ namespace TechDraw
 
 class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 {
-    PROPERTY_HEADER(TechDraw::DrawViewArch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewArch);
 
 public:
     /// Constructor
     DrawViewArch(void);
     virtual ~DrawViewArch();
 
-    App::PropertyLinkGlobal   Source;
+    App::PropertyLink         Source;
     App::PropertyBool         AllOn;
     App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
     App::PropertyBool         ShowHidden;
@@ -53,16 +53,18 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderArch";
     }
+    void Restore(Base::XMLReader &reader) override;
+
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
     std::string getSVGHead(void);
     std::string getSVGTail(void);

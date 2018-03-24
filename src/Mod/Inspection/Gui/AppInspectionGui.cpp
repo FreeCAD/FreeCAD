@@ -69,7 +69,7 @@ PyMOD_INIT_FUNC(InspectionGui)
         PyMOD_Return(0);
     }
 
-    // instanciating the commands
+    // instantiating the commands
     CreateInspectionCommands();
     InspectionGui::ViewProviderInspection       ::init();
     InspectionGui::ViewProviderInspectionGroup  ::init();

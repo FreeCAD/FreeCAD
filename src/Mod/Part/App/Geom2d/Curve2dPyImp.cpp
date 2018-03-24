@@ -739,7 +739,7 @@ PyObject* Curve2dPy::toBSpline(PyObject * args)
             ShapeConstruct_Curve scc;
             Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
             if (spline.IsNull())
-                Standard_NullValue::Raise("Conversion to B-Spline failed");
+                Standard_NullValue::Raise("Conversion to B-spline failed");
             return new BSplineCurve2dPy(new Geom2dBSplineCurve(spline));
         }
     }

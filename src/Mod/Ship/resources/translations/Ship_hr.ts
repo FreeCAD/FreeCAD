@@ -21,17 +21,17 @@
     <message>
       <location filename="../../Instance.py" line="53"/>
       <source>Ship length [m]</source>
-      <translation type="unfinished">Ship length [m]</translation>
+      <translation>Dužina broda [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="61"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation>Širina broda [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation type="unfinished">Ship draft [m]</translation>
+      <translation>Brod gaz [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>
@@ -98,12 +98,12 @@
     <message>
       <location filename="../../ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">Load an example ship geometry</translation>
+      <translation>Učitavanje primjera geometrije broda</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation>Učitavanje primjera geometrije trupa broda.</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Crtanje kontura</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="80"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
       <source>Trim angle</source>
-      <translation type="unfinished">Trim angle</translation>
+      <translation>Smanji kut</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="234"/>
@@ -167,7 +167,7 @@
     <message>
       <location filename="../../ShipGui.py" line="162"/>
       <source>Tank capacity curve</source>
-      <translation type="unfinished">Tank capacity curve</translation>
+      <translation>Kapacitet spremnika, krivulja</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="165"/>
@@ -200,17 +200,17 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
       <source>Computing hydrostatics</source>
-      <translation type="unfinished">Computing hydrostatics</translation>
+      <translation>Računanje hidrostatike</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="486"/>
       <source>Computing external faces</source>
-      <translation type="unfinished">Computing external faces</translation>
+      <translation>Računanje vanjskog oblika</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="54"/>
       <source>Computing sections</source>
-      <translation type="unfinished">Computing sections</translation>
+      <translation>Računanje sekcije</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="127"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="233"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Crtanje kontura</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="237"/>

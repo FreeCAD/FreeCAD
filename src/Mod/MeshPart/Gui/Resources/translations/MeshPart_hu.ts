@@ -122,7 +122,7 @@
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation>Tűrés igazítása végpontokhoz</translation>
+      <translation>Tűrés illesztése végpontokhoz</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -205,12 +205,12 @@
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Szögeltérés:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Relatív felületi eltérés</translation>
     </message>
     <message>
       <location line="+40"/>

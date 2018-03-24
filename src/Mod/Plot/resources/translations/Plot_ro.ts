@@ -6,12 +6,12 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>Unelte de printare</translation>
+      <translation>Unelte de reprezentare grafică</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation>Printare</translation>
+      <translation>Reprezentare grafică</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation type="unfinished">List of modifiable items</translation>
+      <translation>Lista obiectelor modificable</translation>
     </message>
   </context>
   <context>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation type="unfinished">Remove series</translation>
+      <translation>Elimină seria</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation type="unfinished">If checked, series will not be considered for legend</translation>
+      <translation>Dacă e bifat, seria nu va fi luată în considerare pentru legendă</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation type="unfinished">Removes this series</translation>
+      <translation>Elimină această serie</translation>
     </message>
   </context>
 </TS>

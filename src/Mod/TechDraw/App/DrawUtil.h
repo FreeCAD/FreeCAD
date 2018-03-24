@@ -40,6 +40,8 @@
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 
+#include "LineGroup.h"
+
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 
 namespace TechDraw
@@ -72,6 +74,7 @@ class TechDrawExport DrawUtil {
                                         Base::Vector3d axis,
                                         Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
         static Base::Vector3d closestBasis(Base::Vector3d v);
+        static double getDefaultLineWeight(std::string s);
 
 
 

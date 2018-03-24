@@ -224,7 +224,7 @@ NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity 
 }
 
 /**
-  * Evalute the expression. For NumberExpressions, it is a simply copy().
+  * Evaluate the expression. For NumberExpressions, it is a simply copy().
   */
 
 Expression * NumberExpression::eval() const
@@ -334,7 +334,7 @@ static bool definitelyLessThan(double a, double b, double epsilon)
 }
 
 /**
-  * Evalutate the expression. Returns a new Expression with the result, or throws
+  * Evaluate the expression. Returns a new Expression with the result, or throws
   * an exception if something is wrong, i.e the expression cannot be evaluated.
   */
 
@@ -988,7 +988,7 @@ Expression * FunctionExpression::eval() const
               ((s.ElectricCurrent % 2) == 0) &&
               ((s.ThermodynamicTemperature % 2) == 0) &&
               ((s.AmountOfSubstance % 2) == 0) &&
-              ((s.LuminoseIntensity % 2) == 0) &&
+              ((s.LuminousIntensity % 2) == 0) &&
               ((s.Angle % 2) == 0))
             throw ExpressionError("All dimensions must be even to compute the square root.");
 
@@ -998,7 +998,7 @@ Expression * FunctionExpression::eval() const
                     s.ElectricCurrent / 2,
                     s.ThermodynamicTemperature / 2,
                     s.AmountOfSubstance / 2,
-                    s.LuminoseIntensity / 2,
+                    s.LuminousIntensity / 2,
                     s.Angle);
         break;
     }
@@ -1035,9 +1035,14 @@ Expression * FunctionExpression::eval() const
     }
     case HYPOT:
     case CATH:
+        if (v2 == 0)
+            throw ExpressionError("Invalid second argument.");
         if (v1->getUnit() != v2->getUnit())
             throw ExpressionError("Units must be equal");
+
         if (args.size() > 2) {
+            if (v3 == 0)
+                throw ExpressionError("Invalid second argument.");
             if (v2->getUnit() != v3->getUnit())
                 throw ExpressionError("Units must be equal");
         }
@@ -1269,7 +1274,7 @@ int FunctionExpression::priority() const
 }
 
 /**
-  * Compute the dependecy set of the expression. The set contains the names
+  * Compute the dependency set of the expression. The set contains the names
   * of all Property objects this expression relies on.
   */
 
@@ -1350,7 +1355,7 @@ const Property * VariableExpression::getProperty() const
 }
 
 /**
-  * Evalute the expression. For a VariableExpression, this means to return the
+  * Evaluate the expression. For a VariableExpression, this means to return the
   * value of the referenced Property. Quantities are converted to NumberExpression with unit,
   * int and floats are converted to a NumberExpression without unit. Strings properties
   * are converted to StringExpression objects.
@@ -1444,7 +1449,7 @@ int VariableExpression::priority() const
 }
 
 /**
-  * Compute the dependecy of the expression. In this case \a props
+  * Compute the dependency of the expression. In this case \a props
   * is a set of strings, i.e the names of the Property objects, and
   * the variable name this expression relies on is inserted into the set.
   * Notice that the variable may be unqualified, i.e without any reference
@@ -1495,7 +1500,7 @@ StringExpression::StringExpression(const DocumentObject *_owner, const std::stri
 }
 
 /**
-  * Evalute the string. For strings, this is a simple copy of the object.
+  * Evaluate the string. For strings, this is a simple copy of the object.
   */
 
 Expression * StringExpression::eval() const
@@ -1727,14 +1732,14 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     char temp[40];
     int i = 0;
     for(char* c=yytext;*c!='\0';c++){
-        // skipp group delimiter
+        // skip group delimiter
         if(*c==grp_delim) continue;
-        // check for a dez delimiter othere then dot
+        // check for a dez delimiter other then dot
         if(*c==dez_delim && dez_delim !='.')
              temp[i++] = '.';
         else
             temp[i++] = *c;
-        // check buffor overflow
+        // check buffer overflow
         if (i>39) return 0.0;
     }
     temp[i] = '\0';
@@ -1754,7 +1759,7 @@ static const App::DocumentObject * DocumentObject = 0; /**< The DocumentObject t
 static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
 static bool valueExpression = false;                   /**< True if the parsed string is a full expression */
 static std::stack<std::string> labels;                /**< Label string primitive */
-static std::map<std::string, FunctionExpression::Function> registered_functions;                /**< Registerd functions */
+static std::map<std::string, FunctionExpression::Function> registered_functions;                /**< Registered functions */
 static int last_column;
 static int column;
 

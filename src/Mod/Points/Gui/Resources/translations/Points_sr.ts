@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>Претвори у тачке</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>Извози облак тачака</translation>
     </message>
@@ -55,8 +53,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>Увози облак тачака</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation type="unfinished">Merge several point clouds into one</translation>
     </message>
@@ -95,8 +91,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Сече облак тачака са изабраним многоуглом</translation>
     </message>
@@ -104,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
@@ -115,8 +110,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>Теcт да cе транcформише облак тачака</translation>
     </message>

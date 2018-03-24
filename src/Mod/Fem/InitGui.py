@@ -44,29 +44,7 @@ class FemWorkbench (Workbench):
         # load the module
         import Fem
         import FemGui
-
-        import PyGui._CommandFemAnalysis
-        import PyGui._CommandFemConstraintSelfWeight
-        import PyGui._CommandFemElementFluid1D
-        import PyGui._CommandFemElementGeometry1D
-        import PyGui._CommandFemElementGeometry2D
-        import PyGui._CommandFemMaterialSolid
-        import PyGui._CommandFemMaterialFluid
-        import PyGui._CommandFemMaterialMechanicalNonlinear
-        import PyGui._CommandFemMesh2Mesh
-        import PyGui._CommandFemMeshBoundaryLayer
-        import PyGui._CommandFemMeshClear
-        import PyGui._CommandFemMeshGmshFromShape
-        import PyGui._CommandFemMeshGroup
-        import PyGui._CommandFemMeshNetgenFromShape
-        import PyGui._CommandFemMeshPrintInfo
-        import PyGui._CommandFemMeshRegion
-        import PyGui._CommandFemResultShow
-        import PyGui._CommandFemResultsPurge
-        import PyGui._CommandFemSolverCalculix
-        import PyGui._CommandFemSolverControl
-        import PyGui._CommandFemSolverRun
-        import PyGui._CommandFemSolverZ88
+        import femcommands.commands
 
     def GetClassName(self):
         return "FemGui::Workbench"

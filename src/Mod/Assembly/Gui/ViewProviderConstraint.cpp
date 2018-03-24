@@ -44,7 +44,7 @@ PROPERTY_SOURCE(AssemblyGui::ViewProviderConstraintInternal, PartGui::ViewProvid
 
 ViewProviderConstraintInternal::ViewProviderConstraintInternal()
 {
-    //constraint entiti color
+    //constraint entity color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL);
     float r, g, b;
@@ -129,7 +129,7 @@ ViewProviderConstraint::ViewProviderConstraint() : m_selected(false)
 {
     Selectable.setValue(false);
 
-    //constraint entiti color
+    //constraint entity color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL);
     float r, g, b;
@@ -294,7 +294,7 @@ void ViewProviderConstraint::draw()
     if(!obj2)
         return;
 
-    //here it's a bit more involved, as the coind tree structure let's the first transform  node
+    //here it's a bit more involved, as the coind tree structure let's the first transform node
     //transform the second part too.
     Assembly::PartRef* part2 = static_cast<Assembly::PartRef*>(obj2);
 

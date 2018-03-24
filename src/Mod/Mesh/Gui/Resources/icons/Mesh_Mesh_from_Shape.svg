@@ -137,7 +137,7 @@
         <dc:title>Mesh_Mesh_from_Shape</dc:title>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
-        <dc:description>Solid cube with arrow pointing towards a tesselated cube mesh</dc:description>
+        <dc:description>Solid cube with arrow pointing towards a tessellated cube mesh</dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>

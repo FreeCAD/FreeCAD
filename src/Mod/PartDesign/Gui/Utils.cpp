@@ -67,7 +67,7 @@ namespace PartDesignGui {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
@@ -75,7 +75,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate)
     if (activeView) {
         bool singleBodyDocument = activeView->getAppDocument()->
             countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
-        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
             if (!activeBody && singleBodyDocument && autoActivate) {
@@ -122,12 +122,13 @@ PartDesign::Body * makeBody(App::Document *doc)
     return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 }
 
-PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot, bool autoActivate)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
+                             bool autoActivate, bool assertModern)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate);
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern);
     if (rv && rv->hasObject(obj))
         return rv;
 
@@ -199,7 +200,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the sketch");
+        throw Base::Exception ("Couldn't find body for the sketch");
     }
 
     // Get the Origin for the body
@@ -258,7 +259,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
                 Datum.c_str(), refStr.toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
                 Datum.c_str(), AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.AttachmentOffset.Base.z = %f",
                 Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s)",
@@ -322,7 +323,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::Exception ("Coudn't find body for the feature");
+        throw Base::Exception ("Couldn't find body for the feature");
     }
 
     std::string bodyName = body->getNameInDocument ();

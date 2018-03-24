@@ -20,7 +20,7 @@
     </message>
     <message>
       <source>Export the Povray project file</source>
-      <translation type="unfinished">Export the Povray project file</translation>
+      <translation>Esportatu Povray proiektu-fitxategia</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation type="unfinished">Insert a new part object into a Povray project</translation>
+      <translation>Txertatu pieza berri bat Povray proiektu batean</translation>
     </message>
   </context>
   <context>
@@ -82,11 +82,11 @@
     </message>
     <message>
       <source>New Povray project</source>
-      <translation type="unfinished">New Povray project</translation>
+      <translation>Povray proiektu berria</translation>
     </message>
     <message>
       <source>Insert new Povray project into the document</source>
-      <translation type="unfinished">Insert new Povray project into the document</translation>
+      <translation>Txertatu Povray proiektu berria dokumentuan</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -168,11 +168,11 @@
     </message>
     <message>
       <source>Export camera to povray...</source>
-      <translation type="unfinished">Export camera to povray...</translation>
+      <translation>Esportatu kamera povray formatura...</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation type="unfinished">Export the camera positon of the active 3D view in PovRay format to a file</translation>
+      <translation>Esportatu 3D bista aktiboko kameraren posizioa Povray formatuko fitxategi batera</translation>
     </message>
   </context>
   <context>
@@ -194,11 +194,11 @@
     </message>
     <message>
       <source>Export part to povray...</source>
-      <translation type="unfinished">Export part to povray...</translation>
+      <translation>Esportatu pieza povray formatura...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
-      <translation type="unfinished">Write the selected Part (object) as a povray file</translation>
+      <translation>Idatzi hautatutako pieza (objektua) Povray fitxategi gisa</translation>
     </message>
   </context>
   <context>
@@ -233,8 +233,8 @@ Jarraitu?</translation>
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
-Do you want to continue?</translation>
+      <translation>Kameraren uneko bista ez da perspektiban eta, beraz, Povray irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
+Jarraitu?</translation>
     </message>
     <message>
       <location line="-2"/>
@@ -243,11 +243,11 @@ Do you want to continue?</translation>
     </message>
     <message>
       <source>Export view to povray...</source>
-      <translation type="unfinished">Export view to povray...</translation>
+      <translation>Esportatu bista povray formatura...</translation>
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation type="unfinished">Write the active 3D view with camera and all its content to a povray file</translation>
+      <translation>Idatzi 3D bista aktiboa eta haren eduki guztiak povray fitxategi batera</translation>
     </message>
     <message>
       <location line="+501"/>
@@ -261,15 +261,15 @@ Jarraitu?</translation>
     <name>QObject</name>
     <message>
       <source>Povray(*.pov)</source>
-      <translation type="unfinished">Povray(*.pov)</translation>
+      <translation>Povray (*.pov)</translation>
     </message>
     <message>
       <source>POV-Ray (*.pov)</source>
-      <translation type="unfinished">POV-Ray (*.pov)</translation>
+      <translation>POV-Ray (*.pov)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location line="-585"/>
@@ -281,7 +281,7 @@ Jarraitu?</translation>
     </message>
     <message>
       <source>POV-Ray(*.pov)</source>
-      <translation type="unfinished">POV-Ray(*.pov)</translation>
+      <translation>POV-Ray (*.pov)</translation>
     </message>
     <message>
       <location line="-103"/>
@@ -395,11 +395,11 @@ Jarraitu?</translation>
     </message>
     <message>
       <source>Rendered image (*.bmp)</source>
-      <translation type="unfinished">Rendered image (*.bmp)</translation>
+      <translation>Errendatutako irudia (*.bmp)</translation>
     </message>
     <message>
       <source>Rendered image (*.png)</source>
-      <translation type="unfinished">Rendered image (*.png)</translation>
+      <translation>Errendatutako irudia (*.png)</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -410,19 +410,19 @@ Jarraitu?</translation>
     </message>
     <message>
       <source>No Povray project to insert</source>
-      <translation type="unfinished">No Povray project to insert</translation>
+      <translation>Ez dago Povray proiekturik txertatzeko</translation>
     </message>
     <message>
       <source>Create a Povray project to insert a view.</source>
-      <translation type="unfinished">Create a Povray project to insert a view.</translation>
+      <translation>Sortu Povray proiektu bat bista bat txertatzeko.</translation>
     </message>
     <message>
       <source>Select a Povray project to insert the view.</source>
-      <translation type="unfinished">Select a Povray project to insert the view.</translation>
+      <translation>Hautatu Povray proiektu bat bista txertatzeko.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>
-      <translation type="unfinished">Select one Povray project object.</translation>
+      <translation>Hautatu Povray proiektu-objektu bat.</translation>
     </message>
   </context>
   <context>
@@ -541,7 +541,7 @@ Jarraitu?</translation>
     </message>
     <message>
       <source>max mesh deviation:</source>
-      <translation type="unfinished">max mesh deviation:</translation>
+      <translation>sarearen desbideratze maximoa:</translation>
     </message>
     <message>
       <location line="+54"/>

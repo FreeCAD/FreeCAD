@@ -1,5 +1,6 @@
 add_subdirectory(App)
 add_subdirectory(libarea)
+add_subdirectory(PathSimulator)
 
 if(BUILD_GUI)
     add_subdirectory(Gui)
@@ -25,9 +26,11 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
+    PathScripts/PathDressup.py
     PathScripts/PathDressupDogbone.py
     PathScripts/PathDressupDragknife.py
     PathScripts/PathDressupHoldingTags.py
+    PathScripts/PathDressupLeadInOut.py
     PathScripts/PathDressupRampEntry.py
     PathScripts/PathDressupTag.py
     PathScripts/PathDressupTagGui.py
@@ -53,7 +56,6 @@ SET(PathScripts_SRCS
     PathScripts/PathMillFaceGui.py
     PathScripts/PathOp.py
     PathScripts/PathOpGui.py
-    PathScripts/PathPlane.py
     PathScripts/PathPocket.py
     PathScripts/PathPocketBase.py
     PathScripts/PathPocketBaseGui.py
@@ -82,10 +84,10 @@ SET(PathScripts_SRCS
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
     PathScripts/PathToolController.py
-    PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
+    PathScripts/PathSimulatorGui.py
     PathScripts/PostUtils.py
     PathScripts/__init__.py
 )
@@ -94,9 +96,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
-    PathScripts/post/dumper_post.py
     PathScripts/post/dynapath_post.py
-    PathScripts/post/example_post.py
     PathScripts/post/example_pre.py
     PathScripts/post/grbl_post.py
     PathScripts/post/linuxcnc_post.py

@@ -36,9 +36,9 @@ from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
 
-URL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
+URL = "https://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','Introduction_to_python'] # pages that won't be fetched (kept online)
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','WikiPages'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -48,35 +48,37 @@ WRITETHROUGH = True # if true, fetched files are constantly written to disk, in 
 
 wikiindex = "/index.php?title="
 
-def crawl(pagename):
+def crawl(pagename=[]):
     "downloads an entire wiki site"    
     todolist = []
     processed = []
     count = 1
-    if os.path.exists("wikifiles.txt"):
-        f = open("wikifiles.txt","r")
-        if VERBOSE: print "Reading existing list..."
-        for l in f.readlines():
-            if l.strip() != "":
-                if VERBOSE: print "Adding ",l
-                processed.append(l.strip())
-        f.close()
-    if os.path.exists("todolist.txt"):
-        f = open("todolist.txt","r")
-        if VERBOSE: print "Reading existing todo list..."
-        for l in f.readlines():
-            if l.strip() != "":
-                todolist.append(l.strip())
-        f.close()
+    if pagename:
+        if not isinstance(pagename,list):
+            pagename = [pagename]
+        todolist = pagename
     else:
-        if pagename:
-            todolist = pagename
+        if os.path.exists("wikifiles.txt"):
+            f = open("wikifiles.txt","r")
+            if VERBOSE: print "Reading existing list..."
+            for l in f.readlines():
+                if l.strip() != "":
+                    if VERBOSE: print "Adding ",l
+                    processed.append(l.strip())
+            f.close()
+        if os.path.exists("todolist.txt"):
+            f = open("todolist.txt","r")
+            if VERBOSE: print "Reading existing todo list..."
+            for l in f.readlines():
+                if l.strip() != "":
+                    todolist.append(l.strip())
+            f.close()
         else:
             indexpages,imgs = get(INDEX)
             todolist.extend(indexpages)
     while todolist:
         targetpage = todolist.pop()
-        if not targetpage in NORETRIEVE:
+        if (not targetpage in NORETRIEVE):
             if VERBOSE: print count, ": Scanning ", targetpage
             pages,images = get(targetpage)
             count += 1
@@ -92,6 +94,8 @@ def crawl(pagename):
     if VERBOSE: print "Fetched ", count, " pages"
     if not WRITETHROUGH:
         writeList(processed)
+    if pagename:
+        return processed
     return 0
 
 def get(page):
@@ -126,11 +130,16 @@ def cleanhtml(html):
     
 def getlinks(html):
     "returns a list of wikipage links in html file"
+    global NORETRIEVE
     links = re.findall('<a[^>]*>.*?</a>',html)
     pages = []
     for l in links:
         # rg = re.findall('php\?title=(.*)\" title',l)
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
+        if not rg:
+            rg = re.findall('href="\/wiki\/(.*?)"',l)
+            if "images" in rg:
+                rg = None
         if rg:
             rg = rg[0]
             if not "Command_Reference" in rg:
@@ -138,21 +147,23 @@ def getlinks(html):
                     rg = rg.split('#')[0]
                 if ":" in rg:
                     NORETRIEVE.append(rg)
-                if ";" in rg:
-                    NORETRIEVE.append(rg)
                 if "&" in rg:
+                    NORETRIEVE.append(rg)
+            if ";" in rg:
                     NORETRIEVE.append(rg)
             if "/" in rg:
                 if not GETTRANSLATIONS:
                     NORETRIEVE.append(rg)
-            pages.append(rg)
             if not rg in NORETRIEVE:
+                pages.append(rg)
                 print "got link: ",rg
     return pages
 
 def getimagelinks(html):
     "returns a list of image links found in an html file"
-    return re.findall('<img.*?src="(.*?)"',html)
+    imlinks = re.findall('<img.*?src="(.*?)"',html)
+    imlinks = [l for l in imlinks if not l.startswith("http")] # remove external images
+    return imlinks
 
 def fetchpage(page):
     "retrieves given page from the wiki"
@@ -165,6 +176,7 @@ def fetchpage(page):
         except HTTPError:
             failcount += 1
     print 'Error: unable to fetch page ' + page
+    sys.exit()
 
 def cleanList(pagelist):
     "cleans the list"

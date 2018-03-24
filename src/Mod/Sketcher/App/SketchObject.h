@@ -97,8 +97,12 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// deletes all the elements/constraints of the sketch except for external geometry
+    int deleteAllGeometry();
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
+    /// Copy the constraints instead of cloning them and copying the expressions if any
+    int addCopyOfConstraints(const SketchObject &orig);
     /// add constraint
     int addConstraint(const Constraint *constraint);
     /// delete constraint
@@ -107,7 +111,7 @@ public:
     int delConstraintOnPoint(int VertexId, bool onlyCoincident=true);
     /// Deletes all constraints referencing an external geometry
     int delConstraintsToExternal();
-    /// transfers all contraints of a point to a new point
+    /// transfers all constraints of a point to a new point
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject * pObj, bool construction = true);
@@ -165,6 +169,12 @@ public:
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
+    /// set the driving status of this constraint and solve
+    int setVirtualSpace(int ConstrId, bool isinvirtualspace);
+    /// get the driving status of this constraint
+    int getVirtualSpace(int ConstrId, bool &isinvirtualspace) const;
+    /// toggle the driving status of this constraint
+    int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
     int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeoBeforeMoving=false);
     /// retrieves the coordinates of a point
@@ -204,7 +214,7 @@ public:
      */
     int deleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
     /*!
-     \brief Approximates the given geometry with a B-Spline
+     \brief Approximates the given geometry with a B-spline
      \param GeoId - the geometry to approximate
      \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
      \retval bool - returns true if the approximation succeeded, or false if it did not succeed.
@@ -261,6 +271,8 @@ public:
     bool isPointOnCurve(int geoIdCurve, double px, double py);
     double calculateConstraintError(int ConstrId);
     int changeConstraintsLocking(bool bLock);
+    /// returns whether a given constraint has an associated expression or not
+    bool constraintHasExpression(int constrid) const;
 
     ///porting functions
     int port_reversedExternalArcs(bool justAnalyze);
@@ -304,6 +316,14 @@ public:
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
+
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool isAllowedOtherBody() const {
+        return allowOtherBody;
+    }
+    void setAllowOtherBody(bool on) {
+        allowOtherBody = on;
+    }
 
     /// Flag to allow carbon copy from misaligned geometry
     bool isAllowedUnaligned() const {
@@ -349,6 +369,9 @@ protected:
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool allowOtherBody;
+
     /// Flag to allow carbon copy from misaligned geometry
     bool allowUnaligned;
 

@@ -663,8 +663,10 @@ TGrilleInfo
     switch(aDim){
     case 3:
       aCoord[2] = myCoord[aDim*theId+2];
+      /* FALLTHRU */
     case 2:
       aCoord[1] = myCoord[aDim*theId+1];
+      /* FALLTHRU */
     case 1:{
       aCoord[0] = myCoord[aDim*theId];
       break;

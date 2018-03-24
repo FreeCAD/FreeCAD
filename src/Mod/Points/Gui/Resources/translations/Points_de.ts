@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>Zu Punkten konvertieren</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>Exportiert eine Punktwolke</translation>
     </message>
@@ -55,8 +53,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>Importiert eine Punktwolke</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation>Zusammenführen von mehreren Punktwolken in eine</translation>
     </message>
@@ -91,32 +87,30 @@
     <message>
       <location line="+1"/>
       <source>Cut point cloud</source>
-      <translation>Schneidet Punktwolke</translation>
+      <translation>Punktwolke schneiden</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Ausschneiden einer Punktwolke aus dem gewählten Polygon</translation>
+      <translation>Schneiden einer Punktwolke mit einem gewählten Polygon</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Transform Points</source>
-      <translation>Transformiere Punkte</translation>
+      <translation>Punkte transformieren</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>Test zur Transformation einer Punktwolke</translation>
     </message>

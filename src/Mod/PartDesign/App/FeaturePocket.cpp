@@ -52,7 +52,7 @@
 
 using namespace PartDesign;
 
-const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace",NULL};
+const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",NULL};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 
@@ -63,6 +63,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
+    ADD_PROPERTY_TYPE(Length2,(100.0),"Pocket",App::Prop_None,"P");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -74,6 +75,7 @@ short Pocket::mustExecute() const
     if (Placement.isTouched() ||
         Type.isTouched() ||
         Length.isTouched() ||
+        Length2.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -92,6 +94,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     double L = Length.getValue();
     if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
+
+    double L2 = Length2.getValue();
+    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
+        return new App::DocumentObjectExecReturn("Pocket: Second length of pocket too small");
 
     Part::Feature* obj = 0;
     TopoDS_Shape profileshape;
@@ -178,8 +184,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             this->Shape.setValue(getSolid(prism));
         } else {
             TopoDS_Shape prism;
-            generatePrism(prism, profileshape, method, dir, L, 0.0,
-                          Midplane.getValue(), Reversed.getValue());
+            generatePrism(prism, profileshape, method, dir, L, L2,
+                        Midplane.getValue(), Reversed.getValue());
+
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
 

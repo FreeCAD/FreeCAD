@@ -131,7 +131,6 @@ namespace
   void checkGridSpacing(std::vector<std::string>& spaceFunctions,
                         std::vector<double>&      internalPoints,
                         const std::string&        axis)
-    throw ( SALOME_Exception )
   {
     if ( spaceFunctions.empty() )
       throw SALOME_Exception(SMESH_Comment("Empty space function for ") << axis );
@@ -168,7 +167,6 @@ namespace
 //=======================================================================
 
 void StdMeshers_CartesianParameters3D::SetGrid(std::vector<double>& coords, int axis)
-  throw ( SALOME_Exception )
 {
   checkAxis( axis );
 
@@ -196,7 +194,6 @@ void StdMeshers_CartesianParameters3D::SetGrid(std::vector<double>& coords, int 
 void StdMeshers_CartesianParameters3D::SetGridSpacing(std::vector<string>& xSpaceFuns,
                                                       std::vector<double>& xInternalPoints,
                                                       const int            axis)
-  throw ( SALOME_Exception )
 {
   checkAxis( axis );
 
@@ -250,7 +247,6 @@ bool StdMeshers_CartesianParameters3D::GetFixedPoint(double p[3]) const
 //=======================================================================
 
 void StdMeshers_CartesianParameters3D::SetSizeThreshold(const double threshold)
-  throw ( SALOME_Exception )
 {
   if ( threshold <= 1.0 )
     throw SALOME_Exception(LOCALIZED("threshold must be > 1.0"));
@@ -270,7 +266,6 @@ void StdMeshers_CartesianParameters3D::SetSizeThreshold(const double threshold)
 void StdMeshers_CartesianParameters3D::GetGridSpacing(std::vector<std::string>& spaceFunctions,
                                                       std::vector<double>&      internalPoints,
                                                       const int                 axis) const
-  throw ( SALOME_Exception )
 {
   if ( !IsGridBySpacing(axis) )
     throw SALOME_Exception(LOCALIZED("The grid is defined by coordinates and not by spacing"));
@@ -284,7 +279,6 @@ void StdMeshers_CartesianParameters3D::GetGridSpacing(std::vector<std::string>& 
 //=======================================================================
 
 bool StdMeshers_CartesianParameters3D::IsGridBySpacing(const int axis) const
-  throw ( SALOME_Exception )
 {
   checkAxis(axis);
   return !_spaceFunctions[axis].empty();
@@ -303,7 +297,6 @@ void StdMeshers_CartesianParameters3D::ComputeCoordinates(const double    x0,
                                                           vector<double>& coords,
                                                           const string&   axis,
                                                           const double*   xForced )
-  throw ( SALOME_Exception )
 {
   checkGridSpacing( theSpaceFuns, thePoints, axis );
 
@@ -402,7 +395,6 @@ void StdMeshers_CartesianParameters3D::GetCoordinates(std::vector<double>& xNode
                                                       std::vector<double>& yNodes,
                                                       std::vector<double>& zNodes,
                                                       const Bnd_Box&       bndBox) const
-  throw ( SALOME_Exception )
 {
   double x0,y0,z0, x1,y1,z1;
   if ( IsGridBySpacing(0) || IsGridBySpacing(1) || IsGridBySpacing(2))
@@ -654,7 +646,6 @@ ComputeOptimalAxesDirs(const TopoDS_Shape& shape,
 //=======================================================================
 
 void StdMeshers_CartesianParameters3D::SetAxisDirs(const double* the9DirComps)
-  throw ( SALOME_Exception )
 {
   gp_Vec x( the9DirComps[0],
             the9DirComps[1],
@@ -696,7 +687,6 @@ void StdMeshers_CartesianParameters3D::SetAxisDirs(const double* the9DirComps)
 //=======================================================================
 
 void StdMeshers_CartesianParameters3D::GetGrid(std::vector<double>& coords, int axis) const
-  throw ( SALOME_Exception )
 {
   if ( IsGridBySpacing(axis) )
     throw SALOME_Exception(LOCALIZED("The grid is defined by spacing and not by coordinates"));

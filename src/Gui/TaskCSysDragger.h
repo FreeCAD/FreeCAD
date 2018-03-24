@@ -31,13 +31,13 @@ class QuantitySpinBox;
 namespace Gui
 {
   class SoFCCSysDragger;
-  class ViewProviderGeometryObject;
+  class ViewProviderDragger;
   
   class TaskCSysDragger : public Gui::TaskView::TaskDialog
   {
       Q_OBJECT
     public:
-      TaskCSysDragger(ViewProviderGeometryObject *vpObjectIn, SoFCCSysDragger *draggerIn);
+      TaskCSysDragger(ViewProviderDragger *vpObjectIn, SoFCCSysDragger *draggerIn);
       virtual ~TaskCSysDragger() override;
       virtual QDialogButtonBox::StandardButtons getStandardButtons() const override
         { return QDialogButtonBox::Ok;}

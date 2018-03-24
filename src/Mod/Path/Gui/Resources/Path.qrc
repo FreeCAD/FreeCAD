@@ -15,6 +15,7 @@
         <file>icons/Path-Dressup.svg</file>
         <file>icons/Path-Drilling.svg</file>
         <file>icons/Path-Engrave.svg</file>
+        <file>icons/Path-ExportTemplate.svg</file>
         <file>icons/Path-FacePocket.svg</file>
         <file>icons/Path-FaceProfile.svg</file>
         <file>icons/Path-Face.svg</file>
@@ -52,6 +53,12 @@
         <file>icons/Path-Area.svg</file>
         <file>icons/Path-Area-View.svg</file>
         <file>icons/Path-Area-Workplane.svg</file>
+        <file>icons/Path-Simulator.svg</file>
+        <file>icons/Path-BFastForward.svg</file>
+        <file>icons/Path-BPause.svg</file>
+        <file>icons/Path-BPlay.svg</file>
+        <file>icons/Path-BStep.svg</file>
+        <file>icons/Path-BStop.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
@@ -78,6 +85,7 @@
         <file>panels/PointEdit.ui</file>
         <file>panels/ToolEdit.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
+        <file>panels/TaskPathSimulator.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>
@@ -111,5 +119,9 @@
         <file>translations/Path_gl.qm</file>
         <file>translations/Path_kab.qm</file>
         <file>translations/Path_ko.qm</file>
+        <file>translations/Path_fil.qm</file>
+        <file>translations/Path_id.qm</file>
+        <file>translations/Path_lt.qm</file>
+        <file>translations/Path_val-ES.qm</file>
     </qresource>
 </RCC>

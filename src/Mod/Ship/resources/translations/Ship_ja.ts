@@ -144,7 +144,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation>領域曲線ツール トリム選択 [度]</translation>
+      <translation>面積曲線ツール トリム選択 [度]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>面積曲線ツール 点数</translation>
     </message>
   </context>
   <context>
@@ -285,107 +285,107 @@
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>タンクの体積操作が失敗しました。ツールは自由表面位置をわずかに移動するよう再試行しています。</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>このツールを使用する前に荷重条件インスタンスを選択する必要があります(選択されているオブジェクトがありません)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>誤った船舶ラベルです！（'{}' のラベルが付けられたインスタンスが見つかりませんでした）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>あいまいな船舶ラベルです！（'{}' のラベルが付けられたインスタンスが{}見つかりました）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>複数の荷重条件が選択されています（余分な荷重条件は無視されます）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>このツールを使用する前に荷重条件インスタンスを選択する必要があります(選択オブジェクトの中に適切な荷重条件が見つかりません)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>重量が大きすぎます！船舶の排水量が不十分です</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="229"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>誤った重量ラベルです！（'{}' のラベルが付けられたインスタンスが見つかりませんでした）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="237"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>あいまいな重量ラベルです！（'{}' のラベルが付けられたインスタンスが{}見つかりました）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="249"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>無効な重量です！（'{}'のラベルを付けられたオブジェクトは重量ではありません）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="274"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>誤ったタンクラベルです！（'{}' のラベルが付けられたインスタンスが見つかりませんでした）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="282"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>あいまいなタンクラベルです！（'{}' のラベルが付けられたインスタンスが{}見つかりました）</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="294"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>無効なタンクです！（'{}'のラベルを付けられたオブジェクトはタンクではありません）</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>容量曲線を計算</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>水面下の面を取得しようとした際にブーリアン演算が失敗しました。ツールは自由表面の位置をわずかに移動して操作を再試行いています。</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: 横断面積の計算に失敗しました</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: 変位の計算中にNull体積が見つかりました！</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: 浮上面積を計算できません</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>ZeroDivisionError: 浮上面積の計算中にNull面積が見つかりました！</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: メインフレーム面積を計算できません</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: メインフレーム面積係数の計算中にNull面積が見つかりました！</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>船舶は各ロール角度に対する釣り合いトリム角度まで回転されます。必要な計算時間が大幅に増加します。</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>不明なオブジェクトのシェイプが選択されています</translation>
     </message>
   </context>
 </TS>

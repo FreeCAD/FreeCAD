@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>Addjon háromszöget kézzel a hálóhoz</translation>
+      <translation>Adjon háromszöget kézzel a hálóhoz</translation>
     </message>
   </context>
   <context>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Megmutatja a kiválasztott háló határvoalait</translation>
+      <translation>Megmutatja a kiválasztott háló határvonalait</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
       <source>Interactive demolding direction</source>
-      <translation>Interaktív formárambontás iránya</translation>
+      <translation>Interaktív formára bontás iránya</translation>
     </message>
     <message>
       <source>Mesh</source>
@@ -106,10 +106,14 @@
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Megnyit egy párbeszédablakot, a háló elemezzéséehez és javításához</translation>
+      <translation>Megnyit egy párbeszédablakot, a háló elemzéséhez és javításához</translation>
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
+      <translation>Háló értékelése &amp; javítása...</translation>
+    </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
       <translation>Háló értékelése &amp; javítása...</translation>
     </message>
   </context>
@@ -364,7 +368,7 @@
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>A háló levágása kiválaszott sokszöggel</translation>
+      <translation>A háló levágása kiválasztott sokszöggel</translation>
     </message>
   </context>
   <context>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Lépték...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Kiválasztott hálók skálázása</translation>
     </message>
   </context>
   <context>
@@ -746,7 +750,7 @@
     </message>
     <message>
       <source>Flipped normals found</source>
-      <translation>Tükrözött normalist talált</translation>
+      <translation>Tükrözött normát talált</translation>
     </message>
     <message>
       <source>Check failed due to folds on the surface.
@@ -764,7 +768,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Folds</source>
-      <translation>Hajlítás</translation>
+      <translation>Ráncok</translation>
     </message>
     <message>
       <source>Settings...</source>
@@ -862,7 +866,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Closed</source>
-      <translation>Zárva</translation>
+      <translation>Zárt</translation>
     </message>
     <message>
       <source>Sampling:</source>
@@ -931,11 +935,11 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
-      <translation>Két oldali renderelés</translation>
+      <translation>Két oldali igaztás</translation>
     </message>
     <message>
       <source>Backface color</source>
-      <translation>Hátsó lap szín</translation>
+      <translation>Hátsó lap színe</translation>
     </message>
     <message>
       <source>Smoothing</source>
@@ -1413,7 +1417,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
-      <translation>Autodesk álnév hálótest</translation>
+      <translation>Ál hálótest</translation>
     </message>
     <message>
       <source>Object File Format</source>
@@ -1461,11 +1465,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Méretezés</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Adja meg a skálafaktort:</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1484,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>Behálóz &amp;M</translation>
+      <translation>Behálóz</translation>
     </message>
     <message>
       <source>Mesh tools</source>

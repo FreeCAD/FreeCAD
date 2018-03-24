@@ -71,7 +71,6 @@ StdMeshers_MaxElementArea::~StdMeshers_MaxElementArea()
 //=============================================================================
 
 void StdMeshers_MaxElementArea::SetMaxArea(double maxArea)
-  throw (SALOME_Exception)
 {
   double oldArea = _maxArea;
   if (maxArea <= 0) 

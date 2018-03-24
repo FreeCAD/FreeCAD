@@ -161,6 +161,8 @@ public:
     RenderType getRenderType() const;
     void renderToFramebuffer(QtGLFramebufferObject*);
     QImage grabFramebuffer();
+    void imageFromFramebuffer(int width, int height, int samples,
+                              const QColor& bgcolor, QImage& img);
 
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
@@ -192,16 +194,16 @@ public:
     /// display override mode
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
-    std::string getOverrideMode() {return overrideMode;}
+    std::string getOverrideMode() const {return overrideMode;}
     //@}
 
     /** @name Making pictures */
     //@{
     /**
      * Creates an image with width \a w and height \a h of the current scene graph
-     * and exports the rendered scenegraph to an image.
+     * using a multi-sampling of \a s and exports the rendered scenegraph to an image.
      */
-    void savePicture(int w, int h, const QColor&, QImage&) const;
+    void savePicture(int w, int h, int s, const QColor&, QImage&) const;
     void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
     //@}
     /**
@@ -340,7 +342,6 @@ public:
     void setAxisCross(bool b);
     bool hasAxisCross(void);
     
-
     void setEnabledFPSCounter(bool b);
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
@@ -393,7 +394,6 @@ private:
     void drawAxisCross(void);
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
-
 
 private:
     std::set<ViewProvider*> _ViewProviderSet;

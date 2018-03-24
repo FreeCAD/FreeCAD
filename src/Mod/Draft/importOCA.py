@@ -30,7 +30,7 @@ __url__ = ["http://www.freecadweb.org"]
 #  \ingroup DRAFT
 #  \brief OCA (Open CAD Format) file import & export
 #
-#  This module provides support for importing and exporting to the OCA format fron GCAD3D.
+#  This module provides support for importing and exporting to the OCA format from GCAD3D.
 #  Warning, this file format is today practically obsolete and this module is not
 #  maintained anymore.
 

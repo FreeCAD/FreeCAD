@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Annäherung mittels B-Spline-Fläche...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Annäherung mittels B-Spline-Fläche</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>B-Spline-Fläche approximieren...</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>Ungefähre Oberfläche ...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Approximiere eine B-Spline-Fläche</translation>
     </message>
@@ -69,13 +77,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation>Strukturierte Punktwolken</translation>
+      <translation>Geordnete Punktwolken</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangulation von strukturierten Punktwolken</translation>
+      <translation>Triangulation von geordneten Punktwolken</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -85,8 +93,12 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
+      <translation>B-Spline-Fläche annähern</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
       <translation>B-Spline-Fläche annähern</translation>
     </message>
     <message>
@@ -185,7 +197,7 @@
     <message>
       <location line="+6"/>
       <source>Parameters</source>
-      <translation>Einstellungen</translation>
+      <translation>Parameter</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -220,7 +232,7 @@
       <location line="-134"/>
       <location line="+135"/>
       <source>Please select a single point cloud.</source>
-      <translation>Bitte eine einzelne Punkte-Wolke auswählen.</translation>
+      <translation>Bitte eine einzelne Punktewolke auswählen.</translation>
     </message>
   </context>
   <context>
@@ -228,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation>Triangulation anzeigen fehlgeschlagen</translation>
+      <translation>Ansichts-Triangulation fehlgeschlagen</translation>
     </message>
   </context>
   <context>

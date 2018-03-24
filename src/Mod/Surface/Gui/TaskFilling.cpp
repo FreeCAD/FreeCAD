@@ -42,6 +42,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
+#include "TaskFillingUnbound.h"
 #include "TaskFillingVertex.h"
 #include "ui_TaskFilling.h"
 
@@ -823,12 +824,20 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     Content.push_back(taskbox1);
 
     // second task box
-    widget2 = new FillingVertexPanel(vp, obj);
+    widget2 = new FillingUnboundPanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox2 = new Gui::TaskView::TaskBox(
         QPixmap(), widget2->windowTitle(), true, 0);
     taskbox2->groupLayout()->addWidget(widget2);
     Content.push_back(taskbox2);
     taskbox2->hideGroupBox();
+
+    // third task box
+    widget3 = new FillingVertexPanel(vp, obj);
+    Gui::TaskView::TaskBox* taskbox3 = new Gui::TaskView::TaskBox(
+        QPixmap(), widget3->windowTitle(), true, 0);
+    taskbox3->groupLayout()->addWidget(widget3);
+    Content.push_back(taskbox3);
+    taskbox3->hideGroupBox();
 }
 
 TaskFilling::~TaskFilling()
@@ -845,6 +854,7 @@ void TaskFilling::open()
 {
     widget1->open();
     widget2->open();
+    widget3->open();
 }
 
 bool TaskFilling::accept()
@@ -852,6 +862,7 @@ bool TaskFilling::accept()
     bool ok = widget1->accept();
     if (ok) {
         widget2->reject();
+        widget3->reject();
         Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
@@ -865,6 +876,7 @@ bool TaskFilling::reject()
     bool ok = widget1->reject();
     if (ok) {
         widget2->reject();
+        widget3->reject();
         Gui::Command::abortCommand();
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();

@@ -127,10 +127,6 @@
       <translation>"Spaceball" tyyppinen liike</translation>
     </message>
     <message>
-      <source>Global Sensitivity:  </source>
-      <translation>Yleinen herkkyys:  </translation>
-    </message>
-    <message>
       <source>Dominant Mode</source>
       <translation>Yleensä voimassa oleva tila</translation>
     </message>
@@ -161,6 +157,10 @@
     <message>
       <source>Reverse</source>
       <translation>Käänteinen</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:</source>
+      <translation type="unfinished">Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -392,6 +392,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
       <translation type="unfinished">FreeCAD would be nowhere without their efforts:</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation type="unfinished">License</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::AboutDialog</name>
+    <message>
+      <source>Libraries</source>
+      <translation type="unfinished">Libraries</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1398,7 +1413,7 @@ Tämä tiedosto on jo olemassa.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Uudelleennimeäminen epäonnistui</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
@@ -1615,7 +1630,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation type="unfinished">Clear user settings</translation>
+      <translation>Poista käyttäjäasetukset</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
@@ -2137,8 +2152,8 @@ Määritä toinen hakemisto, ole hyvä.</translation>
       <translation>Tallenna pikkukuva projektitiedostoon asiakirjaa tallennettaessa</translation>
     </message>
     <message>
-      <source>Create up to backup files when resaving document</source>
-      <translation>Luo varmuuskopion tiedostoista, kun asiakirja tallennetaan uudestaan</translation>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2660,8 +2675,8 @@ Määritä toinen hakemisto, ole hyvä.</translation>
       <translation type="unfinished">Pick radius (px):</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
     </message>
   </context>
   <context>
@@ -2691,7 +2706,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
       <source>Units:</source>
-      <translation type="unfinished">Units:</translation>
+      <translation>Yksiköt:</translation>
     </message>
     <message>
       <source>Help</source>
@@ -2799,7 +2814,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
       <source>Status</source>
-      <translation type="unfinished">Status</translation>
+      <translation>Tila</translation>
     </message>
     <message>
       <source>Start Recovery</source>
@@ -3234,7 +3249,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Käytä massakeskipistettä</translation>
     </message>
   </context>
   <context>
@@ -3348,10 +3363,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>CombiView</source>
       <translation>CombiView</translation>
-    </message>
-    <message>
-      <source>Project</source>
-      <translation>Projekti</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3570,7 +3581,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>PDF-tiedosto</translation>
     </message>
   </context>
   <context>
@@ -3688,7 +3699,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Lue lisää täältä.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
@@ -4135,7 +4146,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Kaikki tiedostot</translation>
     </message>
   </context>
   <context>
@@ -4484,15 +4495,15 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>PDF-tiedosto</translation>
     </message>
     <message>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Tiedoston avaaminen epäonnistui</translation>
     </message>
     <message>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Tiedostoon ”%1” ei voida tallentaa.</translation>
     </message>
   </context>
   <context>
@@ -5035,7 +5046,7 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     </message>
     <message>
       <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
+      <translation>Käännös: </translation>
     </message>
     <message>
       <source>Rotation: </source>
@@ -5048,6 +5059,10 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation type="unfinished">Export failed</translation>
     </message>
   </context>
   <context>
@@ -6495,8 +6510,8 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
       <translation>Luo uusi näkymä</translation>
     </message>
     <message>
-      <source>Creates a new  view window for the active document</source>
-      <translation>Luo uuden näkymäikkunan aktiiviselle dokumentille</translation>
+      <source>Creates a new view window for the active document</source>
+      <translation type="unfinished">Creates a new view window for the active document</translation>
     </message>
   </context>
   <context>
@@ -7110,7 +7125,7 @@ Haluatko luoda niistä myös kaksoiskappaleet?</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
-      <translation type="unfinished">Do you want to continue?</translation>
+      <translation>Haluatko jatkaa?</translation>
     </message>
   </context>
   <context>

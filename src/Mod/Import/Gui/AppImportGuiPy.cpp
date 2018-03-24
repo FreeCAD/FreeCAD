@@ -343,10 +343,10 @@ private:
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
-            bool optionReadShapeCompoundMode_status;
+            bool optionReadShapeCompoundMode = true;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-            optionReadShapeCompoundMode_status = hGrp->GetBool("ReadShapeCompoundMode",false);
+            optionReadShapeCompoundMode = hGrp->GetBool("ReadShapeCompoundMode", optionReadShapeCompoundMode);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -419,7 +419,7 @@ private:
             // way. This is drastically improving STEP rendering time on complex STEP files.
             pcDoc->recompute();
             if (file.hasExtension("stp") || file.hasExtension("step"))
-                ocaf.setMerge(optionReadShapeCompoundMode_status);
+                ocaf.setMerge(optionReadShapeCompoundMode);
             ocaf.loadShapes();
             pcDoc->purgeTouched();
             pcDoc->recompute();
@@ -520,7 +520,7 @@ private:
             keepExplicitPlacement = Standard_True;
             Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
 
-            // That stuff is exporting a list of selected oject into FreeCAD Tree
+            // That stuff is exporting a list of selected objects into FreeCAD Tree
             std::vector <TDF_Label> hierarchical_label;
             std::vector <TopLoc_Location> hierarchical_loc;
             std::vector <App::DocumentObject*> hierarchical_part;
@@ -534,7 +534,6 @@ private:
             }
 
             // Free Shapes must have absolute placement and not explicit
-            // Free Shapes must have absolute placement and not explicit
             std::vector <TDF_Label> FreeLabels;
             std::vector <int> part_id;
             ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
@@ -546,16 +545,12 @@ private:
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
-                //Interface_Static::SetCVal("write.step.schema", "AP214IS");
-                bool optionScheme_214;
-                bool optionScheme_203;
-                ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-                optionScheme_214 = hGrp_stp->GetBool("Scheme_214",true);
-                optionScheme_203 = hGrp_stp->GetBool("Scheme_203",false);
-                if (optionScheme_214)
-                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
-                if (optionScheme_203)
+                ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
+                std::string scheme = hGrp_stp->GetASCII("Scheme", "AP214IS");
+                if (scheme == "AP203")
                     Interface_Static::SetCVal("write.step.schema", "AP203");
+                else if (scheme == "AP214IS")
+                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
 
                 STEPCAFControl_Writer writer;
                 Interface_Static::SetIVal("write.step.assembly",1);

@@ -127,7 +127,7 @@
     <message>
       <location line="+7"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation> пікс.</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -157,7 +157,7 @@
     <message>
       <location line="+24"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Початок</translation>
     </message>
   </context>
   <context>

@@ -77,7 +77,7 @@ StdMeshers_LocalLength::~StdMeshers_LocalLength()
  */
 //=============================================================================
 
-void StdMeshers_LocalLength::SetLength(double length) throw(SALOME_Exception)
+void StdMeshers_LocalLength::SetLength(double length)
 {
   double oldLength = _length;
   if (length <= 0)
@@ -104,7 +104,7 @@ double StdMeshers_LocalLength::GetLength() const
  *  
  */
 //=============================================================================
-void StdMeshers_LocalLength::SetPrecision (double thePrecision) throw(SALOME_Exception)
+void StdMeshers_LocalLength::SetPrecision (double thePrecision)
 {
   double oldPrecision = _precision;
   if (_precision < 0)

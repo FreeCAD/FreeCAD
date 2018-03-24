@@ -386,7 +386,7 @@ void FileDialog::setWorkingDirectory(const QString& dir)
     QString dirName = dir;
     if (!dir.isEmpty()) {
         QFileInfo info(dir);
-        if (info.isFile())
+        if (!info.exists() || info.isFile())
             dirName = info.absolutePath();
         else
             dirName = info.absoluteFilePath();

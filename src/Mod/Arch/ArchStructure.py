@@ -65,7 +65,7 @@ for pre in Presets:
 
 
 def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structure"):
-    '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
+    '''makeStructure([obj],[length],[width],[height],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
@@ -373,7 +373,7 @@ class _CommandStructure:
                 else:
                     self.dents.form.hide()
             else:
-                p=elt[0]
+                p=elt[0]-1 # Presets indexes are 1-based
                 self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
                 self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
                 self.Profile = Presets[p]
@@ -526,9 +526,9 @@ class _Structure(ArchComponent.Component):
                 h2 = height/2 or 0.5
                 w2 = width/2 or 0.5
                 v1 = Vector(0,-w2,-h2)
-                v2 = Vector(0,-w2,h2)
+                v4 = Vector(0,-w2,h2)
                 v3 = Vector(0,w2,h2)
-                v4 = Vector(0,w2,-h2)
+                v2 = Vector(0,w2,-h2)
             else:
                 l2 = length/2 or 0.5
                 w2 = width/2 or 0.5
@@ -779,25 +779,25 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         if not other:
             self.observer = StructSelectionObserver(self.extendNodes)
             FreeCADGui.Selection.addObserver(self.observer)
-            FreeCAD.Console.PrintMessage(translate("Arch","Pick another Structure object: "))
+            FreeCAD.Console.PrintMessage(translate("Arch","Choose another Structure object:"))
         else:
             FreeCADGui.Selection.removeObserver(self.observer)
             self.observer = None
             if Draft.getType(other) != "Structure":
-                FreeCAD.Console.PrintError(translate("Arch","The picked object is not a Structure\n"))
+                FreeCAD.Console.PrintError(translate("Arch","The chosen object is not a Structure")+"\n")
             else:
                 if not other.Nodes:
-                    FreeCAD.Console.PrintError(translate("Arch","The picked object has no structural nodes\n"))
+                    FreeCAD.Console.PrintError(translate("Arch","The chosen object has no structural nodes")+"\n")
                 else:
                     if (len(self.Object.Nodes) != 2) or (len(other.Nodes) != 2):
-                        FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes\n"))
+                        FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes")+"\n")
                     else:
                         import DraftGeomUtils
                         nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
                         nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
                         intersect = DraftGeomUtils.findIntersection(nodes1[0],nodes1[1],nodes2[0],nodes2[1],True,True)
                         if not intersect:
-                            FreeCAD.Console.PrintError(translate("Arch","Unable to find a suitable intersection point\n"))
+                            FreeCAD.Console.PrintError(translate("Arch","Unable to find a suitable intersection point")+"\n")
                         else:
                             intersect = intersect[0]
                             FreeCAD.Console.PrintMessage(translate("Arch","Intersection found.\n"))
@@ -810,28 +810,28 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         if not other:
             self.observer = StructSelectionObserver(self.connectNodes)
             FreeCADGui.Selection.addObserver(self.observer)
-            FreeCAD.Console.PrintMessage(translate("Arch","Pick another Structure object: "))
+            FreeCAD.Console.PrintMessage(translate("Arch","Choose another Structure object:"))
         else:
             FreeCADGui.Selection.removeObserver(self.observer)
             self.observer = None
             if Draft.getType(other) != "Structure":
-                FreeCAD.Console.PrintError(translate("Arch","The picked object is not a Structure\n"))
+                FreeCAD.Console.PrintError(translate("Arch","The chosen object is not a Structure")+"\n")
             else:
                 if not other.Nodes:
-                    FreeCAD.Console.PrintError(translate("Arch","The picked object has no structural nodes\n"))
+                    FreeCAD.Console.PrintError(translate("Arch","The chosen object has no structural nodes")+"\n")
                 else:
                     if (len(self.Object.Nodes) != 2) or (len(other.Nodes) != 2):
-                        FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes\n"))
+                        FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes")+"\n")
                     else:
                         import DraftGeomUtils
                         nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
                         nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
                         intersect = DraftGeomUtils.findIntersection(nodes1[0],nodes1[1],nodes2[0],nodes2[1],True,True)
                         if not intersect:
-                            FreeCAD.Console.PrintError(translate("Arch","Unable to find a suitable intersection point\n"))
+                            FreeCAD.Console.PrintError(translate("Arch","Unable to find a suitable intersection point")+"\n")
                         else:
                             intersect = intersect[0]
-                            FreeCAD.Console.PrintMessage(translate("Arch","Intersection found.\n"))
+                            FreeCAD.Console.PrintMessage(translate("Arch","Intersection found.")+"\n")
                             if DraftGeomUtils.findClosest(intersect,nodes1) == 0:
                                 self.Object.Nodes = [self.Object.Placement.inverse().multVec(intersect),self.Object.Nodes[1]]
                             else:

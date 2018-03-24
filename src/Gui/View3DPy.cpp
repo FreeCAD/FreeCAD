@@ -176,6 +176,7 @@ void View3DInventorPy::init_type()
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
     add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
+    add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
 
 }
@@ -325,7 +326,7 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(-1, 0, 0, 0));
+        _view->getViewer()->setCameraOrientation(SbRotation(0, -1, 0, 0));
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
@@ -695,43 +696,6 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
     return Py::Boolean(ok ? true : false);
 }
 
-void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
-{
-    View3DInventorViewer* viewer = _view->getViewer();
-    static_cast<QtGLWidget*>(viewer->getGLWidget())->makeCurrent();
-
-    const QtGLContext* context = QtGLContext::currentContext();
-    if (!context) {
-        Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
-        return;
-    }
-#if QT_VERSION >= 0x040600
-    QtGLFramebufferObjectFormat format;
-    format.setSamples(8);
-    format.setAttachment(QtGLFramebufferObject::Depth);
-#if defined(HAVE_QT5_OPENGL)
-    format.setInternalTextureFormat(GL_RGB32F_ARB);
-#else
-    format.setInternalTextureFormat(GL_RGB);
-#endif
-    QtGLFramebufferObject fbo(width, height, format);
-#else
-    QtGLFramebufferObject fbo(width, height, QtGLFramebufferObject::Depth);
-#endif
-    const QColor col = viewer->backgroundColor();
-    bool on = viewer->hasGradientBackground();
-
-    if (bgcolor.isValid()) {
-        viewer->setBackgroundColor(bgcolor);
-        viewer->setGradientBackground(false);
-    }
-
-    viewer->renderToFramebuffer(&fbo);
-    viewer->setBackgroundColor(col);
-    viewer->setGradientBackground(on);
-    img = fbo.toImage();
-}
-
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cColor="Current",*cComment="$MIBA";
@@ -755,23 +719,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-#if !defined(HAVE_QT5_OPENGL)
-    bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
-#else
-    bool pbuffer = false;
-#endif
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
-        createImageFromFramebuffer(w, h, bg, img);
-    }
-    else {
-        try {
-            _view->getViewer()->savePicture(w, h, bg, img);
-        }
-        catch (const Base::Exception&) {
-            createImageFromFramebuffer(w, h, bg, img);
-        }
-    }
+    _view->getViewer()->savePicture(w, h, 8, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
@@ -1116,7 +1064,7 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        int mode = (int)(_view->getViewer()->stereoMode()); 
+        int mode = (int)(_view->getViewer()->stereoMode());
         return Py::String(StereoTypeEnums[mode]);
     }
     catch (const Base::Exception& e) {
@@ -1205,20 +1153,34 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("y", Py::Float(pt[1]));
             dict.setItem("z", Py::Float(pt[2]));
 
-            ViewProvider *vp = _view->getViewer()->getViewProviderByPath(Point->getPath());
-            if (vp && vp->useNewSelectionModel() && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            Gui::Document* doc = _view->getViewer()->getDocument();
+            ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(Point->getPath())
+                    : _view->getViewer()->getViewProviderByPathFromTail(Point->getPath());
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                 dict.setItem("Document",
                     Py::String(vpd->getObject()->getDocument()->getName()));
                 dict.setItem("Object",
                     Py::String(vpd->getObject()->getNameInDocument()));
-                dict.setItem("Component",
-                    Py::String(vpd->getElement(Point->getDetail())));
+                if (vp->useNewSelectionModel()) {
+                    dict.setItem("Component",
+                        Py::String(vpd->getElement(Point->getDetail())));
+                }
+                else {
+                    // search for a SoFCSelection node
+                    SoFCDocumentObjectAction objaction;
+                    objaction.apply(Point->getPath());
+                    if (objaction.isHandled()) {
+                        dict.setItem("Component",
+                            Py::String(objaction.componentName.getString()));
+                    }
+                }
+
                 // ok, found the node of interest
                 ret = dict;
             }
             else {
-                // search for a SoFCSelection node
+                // custom nodes not in a VP: search for a SoFCSelection node
                 SoFCDocumentObjectAction objaction;
                 objaction.apply(Point->getPath());
                 if (objaction.isHandled()) {
@@ -1269,6 +1231,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
 
+        Gui::Document* doc = _view->getViewer()->getDocument();
         Py::Object ret = Py::None();
         if (pp.getLength() > 0) {
             Py::List list;
@@ -1280,20 +1243,32 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = _view->getViewer()->getViewProviderByPath(point->getPath());
-                if (vp && vp->useNewSelectionModel() && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(point->getPath())
+                        : _view->getViewer()->getViewProviderByPathFromTail(point->getPath());
+                if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
                     dict.setItem("Document",
                         Py::String(vpd->getObject()->getDocument()->getName()));
                     dict.setItem("Object",
                         Py::String(vpd->getObject()->getNameInDocument()));
-                    dict.setItem("Component",
-                        Py::String(vpd->getElement(point->getDetail())));
+                    if (vp->useNewSelectionModel()) {
+                        dict.setItem("Component",
+                            Py::String(vpd->getElement(point->getDetail())));
+                    }
+                    else {
+                        // search for a SoFCSelection node
+                        SoFCDocumentObjectAction objaction;
+                        objaction.apply(point->getPath());
+                        if (objaction.isHandled()) {
+                            dict.setItem("Component",
+                                Py::String(objaction.componentName.getString()));
+                        }
+                    }
                     // ok, found the node of interest
                     list.append(dict);
                 }
                 else {
-                    // search for a SoFCSelection node
+                    // custom nodes not in a VP: search for a SoFCSelection node
                     SoFCDocumentObjectAction objaction;
                     objaction.apply(point->getPath());
                     if (objaction.isHandled()) {
@@ -1304,7 +1279,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                         dict.setItem("Component",
                             Py::String(objaction.componentName.getString()));
                         // ok, found the node of interest
-                        list.append(dict);
+                        ret = dict;
                     }
                 }
             }
@@ -2163,85 +2138,99 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 {
-	PyObject* dragger;
-	char* type;
-	PyObject* method;
-	if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger, &type, &method))
-		throw Py::Exception();
+    PyObject* dragger;
+    char* type;
+    PyObject* method;
+    if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger, &type, &method))
+        throw Py::Exception();
 
-	//Check if dragger is a SoDragger object and cast
-	void* ptr = 0;
-	try {
-		Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
-	}
-	catch (const Base::Exception&) {
-		throw Py::Exception("The first argument must be of type SoDragger");
-	}
+    //Check if dragger is a SoDragger object and cast
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        throw Py::Exception("The first argument must be of type SoDragger");
+    }
 
-	SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
-	try {
-		if (strcmp(type, "addFinishCallback") == 0) {
-			drag->removeFinishCallback(draggerCallback, method);
-		}
-		else if (strcmp(type, "addStartCallback") == 0) {
-			drag->removeStartCallback(draggerCallback, method);
-		}
-		else if (strcmp(type, "addMotionCallback") == 0) {
-			drag->removeMotionCallback(draggerCallback, method);
-		}
-		else if (strcmp(type, "addValueChangedCallback") == 0) {
-			drag->removeValueChangedCallback(draggerCallback, method);
-		}
-		else {
-			std::string s;
-			std::ostringstream s_out;
-			s_out << type << " is not a valid dragger callback type";
-			throw Py::Exception(s_out.str());
-		}
+    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+    try {
+        if (strcmp(type, "addFinishCallback") == 0) {
+            drag->removeFinishCallback(draggerCallback, method);
+        }
+        else if (strcmp(type, "addStartCallback") == 0) {
+            drag->removeStartCallback(draggerCallback, method);
+        }
+        else if (strcmp(type, "addMotionCallback") == 0) {
+            drag->removeMotionCallback(draggerCallback, method);
+        }
+        else if (strcmp(type, "addValueChangedCallback") == 0) {
+            drag->removeValueChangedCallback(draggerCallback, method);
+        }
+        else {
+            std::string s;
+            std::ostringstream s_out;
+            s_out << type << " is not a valid dragger callback type";
+            throw Py::Exception(s_out.str());
+        }
 
-		callbacks.remove(method);
-		Py_DECREF(method);
-		return Py::Callable(method, false);
-	}
-	catch (const Py::Exception&) {
-		throw;
-	}
+        callbacks.remove(method);
+        Py_DECREF(method);
+        return Py::Callable(method, false);
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
 }
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 {
-	PyObject* docObject = 0;
-	char* name;
-	
-        //allow reset of active object by setting "None"
-        if( args.length() == 2 && args.back() == Py::None() ) {
-            PyArg_Parse(args.front().ptr(), "s", &name);
-            _view->setActiveObject(NULL, name);
-            return Py::None();
-        }
-        
-        if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
-		throw Py::Exception();
-                
+    PyObject* docObject = 0;
+    char* name;
 
-	if (docObject){
-		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
-		_view->setActiveObject(obj, name);
-	}
-	return Py::None();
+    //allow reset of active object by setting "None"
+    if (args.length() == 2 && args.back() == Py::None()) {
+        PyArg_Parse(args.front().ptr(), "s", &name);
+        _view->setActiveObject(NULL, name);
+        return Py::None();
+    }
+
+    if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
+        throw Py::Exception();
+
+    if (docObject){
+        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+        _view->setActiveObject(obj, name);
+    }
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
 {
     char* name;
     if (!PyArg_ParseTuple(args.ptr(), "s", &name))
-                throw Py::Exception();
-    
+        throw Py::Exception();
+
     App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name);
     if(!obj)
         return Py::None();
-    
+
     return Py::Object(obj->getPyObject());
+}
+
+Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
+        throw Py::Exception();
+
+    std::vector<ViewProvider*> vps = _view->getViewer()->getViewProvidersOfType(Base::Type::fromName(name));
+    Py::List list;
+    for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
+        list.append(Py::asObject((*it)->getPyObject()));
+    }
+
+    return list;
 }
 
 Py::Object View3DInventorPy::redraw(const Py::Tuple& args)

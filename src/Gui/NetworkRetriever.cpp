@@ -151,7 +151,7 @@ void NetworkRetriever::setEnableTimestamp(bool ts)
 
 /**
  * If you are behind a proxy server then you have to specify your proxy url with \a proxy.
- * Moreover, if the proxy requires user authentification then you can specify the username
+ * Moreover, if the proxy requires user authentication then you can specify the username
  * with \a user and the password with \a passwd.
  */
 void NetworkRetriever::setProxy( const QString& proxy, const QString& user, const QString& passwd )
@@ -162,8 +162,8 @@ void NetworkRetriever::setProxy( const QString& proxy, const QString& user, cons
 }
 
 /**
- * If \a recursive is true all referenced files are downloaded recursivly.
- * As default recursivion is disabled. \a level specifies the maximum recursion 
+ * If \a recursive is true all referenced files are downloaded recursively.
+ * As default recursion is disabled. \a level specifies the maximum recursion 
  * depth. If \a level is 0 the recursion depth is infinite. As default the level
  * property is 1.
  * \note: Use this with care!
@@ -272,7 +272,7 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         wget->setWorkingDirectory( dir.path() );
     }
 
-    // user authentification
+    // user authentication
     if ( !d->proxy.isEmpty() )
     {
         if ( !d->user.isEmpty() )
@@ -388,7 +388,7 @@ StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
     sGroup        = QT_TR_NOOP("Help");
     sMenuText     = QT_TR_NOOP("Download online help");
     sToolTipText  = QT_TR_NOOP("Download %1's online help");
-    sWhatsThis    = QT_TR_NOOP("Download %1's online help");
+    sWhatsThis    = "Std_DownloadOnlineHelp";
     sStatusTip    = QT_TR_NOOP("Download %1's online help");
     sPixmap       = "help";
 

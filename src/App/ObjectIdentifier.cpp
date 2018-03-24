@@ -322,7 +322,7 @@ std::string ObjectIdentifier::toString() const
 }
 
 /**
- * @brief Escape toString representation so it is suitable for being embeddded in a python command.
+ * @brief Escape toString representation so it is suitable for being embedded in a python command.
  * @return Escaped string.
  */
 
@@ -742,7 +742,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
             }
             else {
 
-                /* Document name set explicitely? */
+                /* Document name set explicitly? */
                 if (documentName.getString().size() > 0) {
                     /* Yes; then document object must follow */
                     results.resolvedDocumentObjectName = String(components[0].name, false, false);

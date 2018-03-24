@@ -84,6 +84,24 @@
     </widget>
    </item>
    <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+               <widget class="QLabel" name="labelLength2">
+                   <property name="text">
+                       <string>2nd length</string>
+                   </property>
+               </widget>
+           </item>
+           <item>
+               <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
+                   <property name="minimum">
+                       <double>0.000000000000000</double>
+                   </property>
+               </widget>
+           </item>
+       </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="buttonFace">

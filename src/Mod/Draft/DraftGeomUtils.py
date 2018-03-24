@@ -47,7 +47,7 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def precision():
     "precision(): returns the Draft precision setting"
-    return params.GetInt("precision")
+    return params.GetInt("precision",6)
 
 def vec(edge):
     "vec(edge) or vec(line): returns a vector from an edge or a Part.LineSegment"
@@ -569,6 +569,9 @@ def orientEdge(edge, normal=None, make_arc=False):
         return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
     elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
         return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
+                                    edge.LastParameter,edge.Curve.Axis.z>0)
+    elif make_arc and isinstance(edge.Curve,Part.Ellipse) and not edge.Closed:
+        return Part.ArcOfEllipse(edge.Curve, edge.FirstParameter,
                                     edge.LastParameter,edge.Curve.Axis.z>0)
     return edge.Curve
 

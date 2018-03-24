@@ -491,7 +491,7 @@ DEF_STD_CMD_A(CmdRaytracingExportProject);
 CmdRaytracingExportProject::CmdRaytracingExportProject()
   : Command("Raytracing_ExportProject")
 {
-    // seting the
+    // setting the
     sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Export project...");
@@ -798,7 +798,7 @@ DEF_STD_CMD_A(CmdRaytracingResetCamera);
 CmdRaytracingResetCamera::CmdRaytracingResetCamera()
   : Command("Raytracing_ResetCamera")
 {
-    // seting the
+    // setting the
     sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("&Reset Camera");

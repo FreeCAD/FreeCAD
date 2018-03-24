@@ -181,7 +181,7 @@ public:
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// helper for selection
     ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views
@@ -236,9 +236,9 @@ public:
     std::vector<std::string> getUndoVector(void) const;
     /// Get an Redo string vector with the Redo names
     std::vector<std::string> getRedoVector(void) const;
-    /// Will UNDO  one or more steps
+    /// Will UNDO one or more steps
     void undo(int iSteps);
-    /// Will REDO  one or more steps
+    /// Will REDO one or more steps
     void redo(int iSteps) ;
     //@}
 

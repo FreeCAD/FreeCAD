@@ -71,6 +71,9 @@ void DrawSketchHandler::quit(void)
     sketchgui->drawEdit(std::vector<Base::Vector2d>());
     resetPositionText();
 
+    Gui::Selection().rmvSelectionGate();
+    Gui::Selection().rmvPreselect();
+
     unsetCursor();
     sketchgui->purgeHandler();
 }

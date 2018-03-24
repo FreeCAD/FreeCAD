@@ -426,7 +426,7 @@ PyNumberMethods @self.export.Name@::Number[] = { {
 -
 
 + if (self.export.Sequence):
-PySequenceMethods VectorPy::Sequence[] = { {
+PySequenceMethods @self.export.Name@::Sequence[] = { {
 + if (self.export.Sequence.sq_length):
     sequence_length,
 = else:
@@ -471,7 +471,7 @@ PySequenceMethods VectorPy::Sequence[] = { {
 -
 } };
 
-PyMappingMethods VectorPy::Mapping[] = { {
+PyMappingMethods @self.export.Name@::Mapping[] = { {
 + if (self.export.Sequence.sq_length):
     sequence_length,
 = else:

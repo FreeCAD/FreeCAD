@@ -127,7 +127,7 @@
     <message>
       <location line="+7"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation> px</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -137,7 +137,7 @@
     <message>
       <location line="+26"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>Kriva aproksimacija</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -157,7 +157,7 @@
     <message>
       <location line="+24"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Počni</translation>
     </message>
   </context>
   <context>
@@ -195,7 +195,7 @@
     <message>
       <location line="+81"/>
       <source>Define segments by face colors</source>
-      <translation type="unfinished">Define segments by face colors</translation>
+      <translation>Odredi segmente po boji naličja</translation>
     </message>
     <message>
       <location line="-7"/>
@@ -210,12 +210,12 @@
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Relativno odstupanje površine</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>Maximum edge length:</source>
-      <translation type="unfinished">Maximum edge length:</translation>
+      <translation>Maksimalna duljina ruba:</translation>
     </message>
     <message>
       <location line="+44"/>
@@ -225,7 +225,7 @@
     <message>
       <location line="+17"/>
       <source>Very coarse</source>
-      <translation type="unfinished">Very coarse</translation>
+      <translation>Jako grubo</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -245,12 +245,12 @@
     <message>
       <location line="+5"/>
       <source>Very fine</source>
-      <translation type="unfinished">Very fine</translation>
+      <translation>Jako fino</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>User defined</source>
-      <translation type="unfinished">User defined</translation>
+      <translation>Korisnički određeno</translation>
     </message>
     <message>
       <location line="+10"/>

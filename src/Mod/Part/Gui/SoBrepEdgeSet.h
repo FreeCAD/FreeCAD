@@ -74,7 +74,7 @@ private:
     SbColor selectionColor;
     SbColor highlightColor;
     //#0000834: Minor preselection color bug
-    //To solve this we need a seprate color packer for highlighting and selection
+    //To solve this we need a separate color packer for highlighting and selection
     SoColorPacker colorpacker1;
     SoColorPacker colorpacker2;
 };

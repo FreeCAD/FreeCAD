@@ -40,7 +40,7 @@ INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
 QHELPCOMPILER = 'qhelpgenerator'
 QCOLLECTIOMGENERATOR = 'qcollectiongenerator'
-RELEASE = '0.16'
+RELEASE = '0.17'
 
 #    END CONFIGURATION      ##############################################
 
@@ -62,6 +62,7 @@ def crawl():
 
     qhp = buildtoc()
     qhcp = createCollProjectFile()
+    shutil.copy("../../Gui/Icons/freecad-icon-64.png","localwiki/freecad-icon-64.png")
     if generate(qhcp) or compile(qhp):
         print "Error at compiling"
         return 1
@@ -100,7 +101,7 @@ def createCollProjectFile():
 <QHelpCollectionProject version="1.0">
     <assistant>
         <title>FreeCAD User Manual</title>
-        <applicationIcon>64px-FreeCAD05.svg.png</applicationIcon>
+        <applicationIcon>freecad-icon-64.png</applicationIcon>
         <cacheDirectory>freecad/freecad</cacheDirectory>
         <startPage>qthelp://org.freecad.usermanual/doc/Online_Help_Startpage.html</startPage>
         <aboutMenuText>
@@ -111,7 +112,7 @@ def createCollProjectFile():
             <!--
             <icon>images/icon.png</icon>
             -->
-            <icon>64px-FreeCAD05.svg.png</icon>
+            <icon>freecad-icon-64.png</icon>
         </aboutDialog>
         <enableDocumentationManager>true</enableDocumentationManager>
         <enableAddressBar>true</enableAddressBar>
@@ -122,8 +123,8 @@ def createCollProjectFile():
             <file>
                 <input>freecad.qhp</input>
                 <output>freecad.qch</output>
-                </file>
-            </generate>
+            </file>
+        </generate>
         <register>
             <file>freecad.qch</file>
         </register>

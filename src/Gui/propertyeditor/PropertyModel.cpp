@@ -208,10 +208,10 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
 
 void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 {
+    beginResetModel();
+
     // fill up the listview with the properties
     rootItem->reset();
-
-    beginResetModel();
 
     // sort the properties into their groups
     std::map<std::string, std::vector<std::vector<App::Property*> > > propGroup;

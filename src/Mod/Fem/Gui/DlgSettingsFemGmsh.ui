@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GMSH</string>
+   <string>Gmsh</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -28,7 +28,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="title">
-        <string>GMSH</string>
+        <string>Gmsh binary</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -42,7 +42,7 @@
           <item row="0" column="2">
            <widget class="Gui::PrefCheckBox" name="cb_gmsh_binary_std">
             <property name="text">
-             <string>Use standard gmsh binary path</string>
+             <string>Search in known binary directories</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -58,7 +58,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="l_gmsh_binary_std">
             <property name="text">
-             <string>GMSH binary</string>
+             <string>gmsh</string>
             </property>
            </widget>
           </item>

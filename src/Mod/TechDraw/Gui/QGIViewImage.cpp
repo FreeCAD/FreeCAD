@@ -61,13 +61,13 @@ QGIViewImage::QGIViewImage()
 
     m_cliparea = new QGCustomClip();
     addToGroup(m_cliparea);
-    m_cliparea->setPos(0.,0.);
     m_cliparea->setRect(0.,0.,5.,5.);
+    m_cliparea->centerAt(0.,0.);
 
     m_imageItem = new QGCustomImage();
     m_imageItem->setTransformationMode(Qt::SmoothTransformation);
     m_cliparea->addToGroup(m_imageItem);
-    m_imageItem->setPos(0.,0.);
+    m_imageItem->centerAt(0.,0.);
 }
 
 QGIViewImage::~QGIViewImage()
@@ -117,11 +117,10 @@ void QGIViewImage::draw()
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage*>(getViewObject()) );
     if (!viewImage)
         return;
-    QRectF newRect(0.0,0.0,Rez::guiX(viewImage->Width.getValue()),Rez::guiX(viewImage->Height.getValue()));
-    double pad = Rez::guiX(1.0);
-    m_cliparea->setRect(newRect.adjusted(-pad,-pad,pad,pad));
-
+    QRectF newRect(0.0,0.0,viewImage->Width.getValue(),viewImage->Height.getValue());
+    m_cliparea->setRect(newRect);
     drawImage();
+    m_cliparea->centerAt(0.0,0.0);
     if (borderVisible) {
         drawBorder();
     }
@@ -144,6 +143,14 @@ void QGIViewImage::drawImage()
         m_imageItem->centerAt(midX,midY);
         m_imageItem->show();
     }
+}
+
+void QGIViewImage::rotateView(void)
+{
+    QRectF r = m_cliparea->boundingRect();
+    m_cliparea->setTransformOriginPoint(r.center());
+    double rot = getViewObject()->Rotation.getValue();
+    m_cliparea->setRotation(-rot);
 }
 
 

@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>Преобразовать в точки</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>Экспорт облака точек</translation>
     </message>
@@ -55,8 +53,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>Импорт облака точек</translation>
     </message>
@@ -64,21 +61,20 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Слияние облаков точек</translation>
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Объединить несколько облаков точек в одно</translation>
     </message>
   </context>
   <context>
@@ -95,16 +91,15 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Вырезать облако точек ограниченное отмеченным полигоном</translation>
+      <translation>Вырезать облако точек, ограниченное отмеченным полигоном</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
@@ -115,8 +110,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>Тест для преобразования облака точек</translation>
     </message>
@@ -222,14 +216,14 @@
       <location line="+29"/>
       <location line="+57"/>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K(нормальный вектор)</translation>
+      <translation>I, J, K (вектор нормали)</translation>
     </message>
     <message>
       <location line="-81"/>
       <location line="+29"/>
       <location line="+57"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K(нормальный вектор 2D)</translation>
+      <translation>I, K (вектор нормали 2D)</translation>
     </message>
     <message>
       <location line="-81"/>

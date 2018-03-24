@@ -47,7 +47,7 @@ class TempoVis(FrozenClass):
         self.document = None
         self.restore_on_delete = False # if true, restore() gets called upon object deletion. It becomes False after explicit call to Restore, and set to true by many methods.
         
-        self.links_are_lost = False # set to true after restore from JSON. Indictes to attempt to use ActiveDocument/ActiveViewer instead.
+        self.links_are_lost = False # set to true after restore from JSON. Indicates to attempt to use ActiveDocument/ActiveViewer instead.
         
         self._freeze()
 

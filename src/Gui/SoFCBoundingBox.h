@@ -79,7 +79,7 @@ private:
 };
 
 /**
- * This is a special group node which be be defined to ignore bounding box actions.
+ * This is a special group node which must be defined to ignore bounding box actions.
  * @author Werner Mayer
  */
 class GuiExport SoSkipBoundingGroup : public SoGroup {

@@ -1,6 +1,7 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -40,6 +41,7 @@ if(BUILD_QT5)
 else()
     qt4_add_resources(Resource_SRCS Resources/Test.qrc)
 endif()
+
 SET(Resource_SRCS
     ${Resource_SRCS}
     Resources/Test.qrc

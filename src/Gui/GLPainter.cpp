@@ -81,6 +81,7 @@ bool GLPainter::begin(QPaintDevice * device)
     glLineWidth(1.0f);
     glColor4f(1.0, 1.0, 1.0, 0.0);
     glViewport(0, 0, this->width, this->height);
+
 #if !defined(HAVE_QT5_OPENGL)
     glDrawBuffer(GL_FRONT);
 #endif

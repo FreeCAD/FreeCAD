@@ -1125,7 +1125,7 @@ void segmentation_fault_handler(int sig)
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
 #if !defined(_DEBUG)
-            throw Base::AbnormalProgramTermination("Break signal occoured");
+            throw Base::AbnormalProgramTermination("Break signal occurred");
 #endif
             break;
         default:
@@ -1417,7 +1417,7 @@ void Application::initConfig(int argc, char ** argv)
     // init python
     mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
 
-    // Parse the options which have impact to the init process
+    // Parse the options that have impact on the init process
     ParseOptions(argc,argv);
 
     // Init console ===========================================================
@@ -1690,7 +1690,7 @@ void Application::runApplication()
         Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
-        // geting out
+        // getting out
         Console().Log("Exiting on purpose\n");
     }
     else {
@@ -2473,7 +2473,8 @@ std::string Application::FindHomePath(const char* sCall)
 #else
     QString str = QString::fromStdWString(homePath);
 #endif
-    return str.toStdString();
+    // convert to utf-8
+    return str.toUtf8().data();
 }
 
 #else

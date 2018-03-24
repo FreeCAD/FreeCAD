@@ -39,15 +39,18 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class ObjectOp(PathOp.ObjectOp):
     '''Base class for proxy objects of all operations on circular holes.'''
@@ -130,8 +133,11 @@ class ObjectOp(PathOp.ObjectOp):
         if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
             return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-        if shape.ShapeType == 'Face' and hasattr(shape.Surface, 'Center'):
-            return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+        if shape.ShapeType == 'Face':
+            if hasattr(shape.Surface, 'Center'):
+                return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+            if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                return shape.Edges[0].Curve.Center
 
         PathLog.error(translate("Path", "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.") % (base.Label, sub))
         return None
@@ -155,24 +161,6 @@ class ObjectOp(PathOp.ObjectOp):
                 return len(obj.Locations) != 0
             return False
 
-        if len(obj.Base) == 0 and not haveLocations(self, obj):
-            features = []
-            if self.baseIsArchPanel(obj, self.baseobject):
-                holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
-                tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
-                for holeNr, hole in enumerate(holeshapes):
-                    PathLog.debug('Entering new HoleShape')
-                    for wireNr, wire in enumerate(hole.Wires):
-                        PathLog.debug('Entering new Wire')
-                        for edgeNr, edge in enumerate(wire.Edges):
-                            if PathUtils.isDrillable(self.baseobject, edge, tooldiameter):
-                                PathLog.debug('Found drillable hole edges: {}'.format(edge))
-                                features.append((self.baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
-            else:
-                features = self.findHoles(obj, self.baseobject)
-            obj.Base = features
-            obj.Disabled = []
-
         holes = []
 
         for base, subs in obj.Base:
@@ -194,6 +182,26 @@ class ObjectOp(PathOp.ObjectOp):
         Note that for Vertexes, non-circular Edges and Locations r=0.
         Must be overwritten by subclasses.'''
         pass
+
+    def findAllHoles(self, obj):
+        if not self.getJob(obj):
+            return
+        features = []
+        if self.baseIsArchPanel(obj, self.baseobject):
+            holeshapes = self.baseobject.Proxy.getHoles(self.baseobject, transform=True)
+            tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+            for holeNr, hole in enumerate(holeshapes):
+                PathLog.debug('Entering new HoleShape')
+                for wireNr, wire in enumerate(hole.Wires):
+                    PathLog.debug('Entering new Wire')
+                    for edgeNr, edge in enumerate(wire.Edges):
+                        if PathUtils.isDrillable(self.baseobject, edge, tooldiameter):
+                            PathLog.debug('Found drillable hole edges: {}'.format(edge))
+                            features.append((self.baseobject, "%d.%d.%d" % (holeNr, wireNr, edgeNr)))
+        else:
+            features = self.findHoles(obj, self.baseobject)
+        obj.Base = features
+        obj.Disabled = []
 
     def findHoles(self, obj, baseobject):
         '''findHoles(obj, baseobject) ... inspect baseobject and identify all features that resemble a straight cricular hole.'''
@@ -224,9 +232,15 @@ class ObjectOp(PathOp.ObjectOp):
                 f = shape.getElement(candidateFaceName)
                 if PathUtils.isDrillable(shape, f, tooldiameter):
                     PathLog.debug('face candidate: {} is drillable '.format(f))
-                    x = f.Surface.Center.x
-                    y = f.Surface.Center.y
-                    diameter = f.BoundBox.XLength
+                    if hasattr(f.Surface, 'Center'):
+                        x = f.Surface.Center.x
+                        y = f.Surface.Center.y
+                        diameter = f.BoundBox.XLength
+                    else:
+                        center = f.Edges[0].Curve.Center
+                        x = center.x
+                        y = center.y
+                        diameter = f.Edges[0].Curve.Radius * 2
                     holelist.append({'featureName': candidateFaceName, 'feature': f, 'x': x, 'y': y, 'd': diameter, 'enabled': True})
                     features.append((baseobject, candidateFaceName))
                     PathLog.debug("Found hole feature %s.%s" % (baseobject.Label, candidateFaceName))

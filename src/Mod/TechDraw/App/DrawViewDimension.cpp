@@ -51,6 +51,7 @@
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 #include "DrawUtil.h"
+#include "LineGroup.h"
 
 
 #include <Mod/TechDraw/App/DrawViewDimensionPy.h>  // generated from DrawViewDimensionPy.xml
@@ -86,21 +87,12 @@ enum RefType{
 
 DrawViewDimension::DrawViewDimension(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
-    hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 4.0);
-
     ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
+    References2D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
-    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Format",App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
+    References3D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
                   "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
-    ADD_PROPERTY_TYPE(LineWidth,(0.5)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
-    //ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -169,6 +161,7 @@ short DrawViewDimension::mustExecute() const
     if (!isRestoring()) {
         result =  (References2D.isTouched() ||
                   Type.isTouched() ||
+                  FormatSpec.isTouched() ||
                   MeasureType.isTouched());
     }
     if (result) {
@@ -209,12 +202,13 @@ std::string  DrawViewDimension::getFormatedValue()
     QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
                                                                       //but won't give more than Global_Decimals precision
                                                                       //really should be able to ask units for value in appropriate UoM!!
-    QRegExp rxUnits(QString::fromUtf8("\\D*$"));                      //any non digits at end of string
+    QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
 
     QString userVal = userStr;
     userVal.remove(rxUnits);                                           //getUserString(defaultDecimals) without units
-    double userValNum = userVal.toDouble();
 
+    QLocale loc;
+    double userValNum = loc.toDouble(userVal);
 
     QString userUnits;
     int pos = 0;
@@ -225,9 +219,9 @@ std::string  DrawViewDimension::getFormatedValue()
     std::string prefixSym = getPrefix();                                  //get Radius/Diameter/... symbol
 
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.[0-9]*[aefgAEFG]"));     //printf double format spec 
+    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
     QString match;
-    QString specVal = Base::Tools::fromStdString("%.2f");                    //sensible default
+    QString specVal = userVal;                                             //sensible default
     pos = 0;
     if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
         match = rxFormat.cap(0);                                          //entire capture of rx
@@ -256,6 +250,11 @@ std::string  DrawViewDimension::getFormatedValue()
 
     repl = Base::Tools::fromStdString(getPrefix()) + repl;
     specStr.replace(match,repl);
+    //this next bit is so inelegant!!!
+    QChar dp = QChar::fromLatin1('.');
+    if (loc.decimalPoint() != dp) {
+        specStr.replace(dp,loc.decimalPoint());
+    }
 
     return specStr.toUtf8().constData();
 }

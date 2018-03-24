@@ -49,7 +49,7 @@ class Snapper:
     3 functions are useful for the scriptwriter: snap(), constrain()
     or getPoint() which is an all-in-one combo.
 
-    The indivudual snapToXXX() functions return a snap definition in
+    The individual snapToXXX() functions return a snap definition in
     the form [real_point,marker_type,visual_point], and are not
     meant to be used directly, they are all called when necessary by
     the general snap() function.
@@ -94,6 +94,7 @@ class Snapper:
         self.selectMode = False
         self.holdTracker = None
         self.holdPoints = []
+        self.running = False
         
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -145,6 +146,12 @@ class Snapper:
         Screenpos can be a list, a tuple or a coin.SbVec2s object. If noTracker is True,
         the tracking line is not displayed."""
 
+        if self.running:
+            # do not allow concurrent runs
+            return None
+            
+        self.running = True
+
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.spoint = None
@@ -180,6 +187,7 @@ class Snapper:
             screenpos = tuple(screenpos.getValue())
         elif  not isinstance(screenpos,tuple):
             print("snap needs valid screen position (list, tuple or sbvec2s)")
+            self.running = False
             return None
 
         # setup trackers if needed
@@ -202,7 +210,7 @@ class Snapper:
         self.setCursor('passive')
         if self.tracker:
             self.tracker.off()
-        if self.extLine:
+        if self.extLine2:
             self.extLine2.off()
         if self.extLine:
             self.extLine.off()
@@ -247,6 +255,7 @@ class Snapper:
             if self.lastArchPoint:
                 self.setArchDims(self.lastArchPoint,fp)
             self.spoint = fp
+            self.running = False
             return fp
 
         else:
@@ -256,6 +265,7 @@ class Snapper:
             obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
             if not obj:
                 self.spoint = cstr(point)
+                self.running = False
                 return self.spoint
 
             self.lastSnappedObject = obj
@@ -263,6 +273,7 @@ class Snapper:
             if hasattr(obj.ViewObject,"Selectable"):
                 if not obj.ViewObject.Selectable:
                     self.spoint = cstr(point)
+                    self.running = False
                     return self.spoint
                 
             if not active:
@@ -355,6 +366,7 @@ class Snapper:
 
             if not snaps:
                 self.spoint = cstr(point)
+                self.running = False
                 return self.spoint
 
             # calculating the nearest snap point
@@ -403,6 +415,7 @@ class Snapper:
                 
             # return the final point
             self.spoint = fp
+            self.running = False
             return self.spoint
 
     def toWP(self,point):
@@ -470,7 +483,7 @@ class Snapper:
                         return tsnap[2],eline
                 
         for o in [self.lastObj[1],self.lastObj[0]]:
-            if o:
+            if o and (self.isEnabled('extension') or self.isEnabled('parallel')):
                 ob = FreeCAD.ActiveDocument.getObject(o)
                 if ob:
                     if ob.isDerivedFrom("Part::Feature"):
@@ -914,7 +927,7 @@ class Snapper:
             if not self.dim1:
                 self.dim1 = DraftTrackers.archDimTracker(mode=2)
             if not self.dim2:
-                self.dim1 = DraftTrackers.archDimTracker(mode=3)
+                self.dim2 = DraftTrackers.archDimTracker(mode=3)
             self.dim1.p1(p1)
             self.dim2.p1(p1)
             self.dim1.p2(p2)
@@ -987,10 +1000,12 @@ class Snapper:
         self.radius = 0
         self.setCursor()
         if hideSnapBar or Draft.getParam("hideSnapBar",False):
-            self.toolbar.hide()
+            if hasattr(self,"toolbar") and self.toolbar:
+                self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
         self.selectMode = False
+        self.running = False
         
     def setSelectMode(self,mode):
         "sets the snapper into select mode (hides snapping temporarily)"
@@ -1176,21 +1191,23 @@ class Snapper:
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"
-        self.toolbar = QtGui.QToolBar(None)
+        mw = FreeCADGui.getMainWindow()
+        self.toolbar = QtGui.QToolBar(mw)
+        mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         # grid button
-        self.gridbutton = QtGui.QAction(None)
+        self.gridbutton = QtGui.QAction(mw)
         self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
         self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
-        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
+        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
         self.gridbutton.setObjectName("GridButton")
         self.gridbutton.setWhatsThis("Draft_ToggleGrid")
         QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
         self.toolbar.addAction(self.gridbutton)
         # master button
-        self.masterbutton = QtGui.QAction(None)
+        self.masterbutton = QtGui.QAction(mw)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
         self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
@@ -1202,7 +1219,7 @@ class Snapper:
         self.toolbar.addAction(self.masterbutton)
         for c,i in self.cursors.items():
             if i:
-                b = QtGui.QAction(None)
+                b = QtGui.QAction(mw)
                 b.setIcon(QtGui.QIcon(i))
                 if c == "passive":
                     b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
@@ -1219,7 +1236,7 @@ class Snapper:
                 QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # adding non-snap button
         for n in ["Dimensions","WorkingPlane"]:
-            b = QtGui.QAction(None)
+            b = QtGui.QAction(mw)
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
             b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
@@ -1230,7 +1247,11 @@ class Snapper:
             self.toolbar.addAction(b)
             QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
             self.toolbarButtons.append(b)
-        # restoring states 
+        # set status tip where needed
+        for b in self.toolbar.actions():
+            if len(b.statusTip()) == 0:
+                b.setStatusTip(b.toolTip())
+        # restoring states
         t = Draft.getParam("snapModes","111111111101111")
         if t:
             c = 0

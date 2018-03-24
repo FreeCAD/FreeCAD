@@ -331,7 +331,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
       <source>License</source>
-      <translation type="unfinished">License</translation>
+      <translation>Άδεια</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
@@ -342,6 +342,11 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation type="unfinished">Load an FEM 3D new solver example analysis</translation>
     </message>
   </context>
 </TS>

@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>Bihurtu puntuetara</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>Esportatu puntuen hodei bat</translation>
     </message>
@@ -55,8 +53,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>Inportatu puntuen hodei bat</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Puntuak</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation>Fusionatu puntuen hainbat hodei bakarrean</translation>
     </message>
@@ -95,8 +91,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Puntuen hodei bat mozten du hautatutako poligono batekin</translation>
     </message>
@@ -104,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>Puntuak</translation>
     </message>
@@ -115,8 +110,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>Puntuen hodei bat transformatzeko proba</translation>
     </message>
@@ -270,7 +264,7 @@
     <name>QObject</name>
     <message>
       <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation type="unfinished">Ascii Points (*.asc);;All Files (*.*)</translation>
+      <translation>Ascii puntuak (*.asc);;Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-80"/>
@@ -287,7 +281,7 @@
     <message>
       <location line="+74"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Distantzia</translation>
     </message>
     <message>
       <location line="+1"/>

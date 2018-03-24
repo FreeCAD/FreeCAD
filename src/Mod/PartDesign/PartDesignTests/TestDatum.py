@@ -35,7 +35,7 @@ class TestDatumPoint(unittest.TestCase):
         self.DatumPoint.MapMode = 'ObjectOrigin'
         self.Body.addObject(self.DatumPoint)
         self.Doc.recompute()
-        self.assertEqual(self.DatumPoint.superPlacement.Base, App.Vector(0))
+        self.assertEqual(self.DatumPoint.AttachmentOffset.Base, App.Vector(0))
 
     def tearDown(self):
         #closing doc

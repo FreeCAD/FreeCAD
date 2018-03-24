@@ -2,6 +2,67 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ja" sourcelanguage="en">
   <context>
+    <name>BoundarySelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
+      <source>Select Faces/Edges/Vertexes</source>
+      <translation>面または辺または頂点を選択</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
+      <source>To add references select them in the 3D view and then click "Add".</source>
+      <translation>参照を追加するには、3次元ビューでそれらを選択し「追加」をクリック</translation>
+    </message>
+  </context>
+  <context>
+    <name>ControlWidget</name>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
+      <source>Solver Control</source>
+      <translation>ソルバーの制御</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
+      <source>Working Directory</source>
+      <translation>ワーキングディレクトリ</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="302"/>
+      <source>Write</source>
+      <translation>書き込み</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="242"/>
+      <source>Elapsed Time:</source>
+      <translation>経過時間：</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="308"/>
+      <source>Run</source>
+      <translation>実行</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
+      <source>Re-write</source>
+      <translation>上書き</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
+      <source>Re-run</source>
+      <translation>再実行</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
+      <source>Abort</source>
+      <translation>中止</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -12,6 +73,58 @@
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
       <translation>標準ソルバーであるCalculiXを使用して解析コンテナーを作成</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="37"/>
+      <source>Creates an analysis container with standard solver CalculiX</source>
+      <translation>標準ソルバーのCalculiXを使用して解析のコンテナを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintBodyHeatSource</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="57"/>
+      <source>Constraint body heat source</source>
+      <translation>体積発熱拘束</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="60"/>
+      <source>Creates a FEM constraint body heat source</source>
+      <translation>体積発熱のFEM拘束を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectrostaticPotential</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="77"/>
+      <source>Constraint Potential</source>
+      <translation>ポテンシャル拘束</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="80"/>
+      <source>Creates a FEM constraint electrostatic potential</source>
+      <translation>静電ポテンシャルのFEM拘束を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="97"/>
+      <source>Constraint Flow Velocity</source>
+      <translation>流速拘束</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="100"/>
+      <source>Creates a FEM constraint flow velocity</source>
+      <translation>流速のFEM拘束を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="117"/>
+      <source>Constraint Initial Flow Velocity</source>
+      <translation>初期流速拘束</translation>
     </message>
   </context>
   <context>
@@ -65,6 +178,81 @@
       <source>Creates a FEM shell plate thickness</source>
       <translation>FEMシェルの板厚を作成</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="184"/>
+      <source>Shell plate thickness</source>
+      <translation>シェルの板厚</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="186"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>FEMシェルの板厚を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementRotation1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="200"/>
+      <source>Beam rotation</source>
+      <translation>ビーム回転</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="202"/>
+      <source>Creates a FEM beam rotation</source>
+      <translation>FEMビーム回転を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElasticity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="232"/>
+      <source>Elasticity equation</source>
+      <translation>弾性方程式</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="233"/>
+      <source>Creates a FEM equation for elasticity</source>
+      <translation>弾性のためのFEM方程式を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectrostatic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="216"/>
+      <source>Electrostatic equation</source>
+      <translation>静電方程式</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="217"/>
+      <source>Creates a FEM equation for electrostatic</source>
+      <translation>静電のためのFEM方程式を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="248"/>
+      <source>Flow equation</source>
+      <translation>流れ方程式</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="249"/>
+      <source>Creates a FEM equation for flow</source>
+      <translation>流れのためのFEM方程式を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFluxsolver</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="264"/>
+      <source>Fluxsolver equation</source>
+      <translation>Fluxsolver方程式</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="265"/>
+      <source>Creates a FEM equation for fluxsolver</source>
+      <translation>FluxsolverのためのFEM方程式を作成</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -78,18 +266,15 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>FEMメッシュの表面をメッシュに変換</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation>流体のためのFEM材料</translation>
+      <location filename="../../../femcommands/commands.py" line="366"/>
+      <source>FEM mesh to mesh</source>
+      <translation>FEMメッシュからメッシュへ</translation>
     </message>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation>流体のためのFEM材料を作成</translation>
+      <location filename="../../../femcommands/commands.py" line="367"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation>FEMメッシュの表面をメッシュに変換</translation>
     </message>
   </context>
   <context>
@@ -156,18 +341,15 @@
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Netgen内部メッシャーを使用してソリッド、またはフェイス形状からFEM体積メッシュを作成</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation>GMSHによる形状からのFEMメッシュ</translation>
+      <location filename="../../../femcommands/commands.py" line="472"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Netgenによる形状からのFEMメッシュ</translation>
     </message>
     <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>GMSHメッシャーを使用して形状からFEMメッシュを作成</translation>
+      <location filename="../../../femcommands/commands.py" line="473"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Netgen内部メッシャーを使用してソリッド、またはフェイス形状からFEM体積メッシュを作成</translation>
     </message>
   </context>
   <context>
@@ -229,18 +411,28 @@
       <source>Purges all results from active analysis</source>
       <translation>アクティブな解析からすべての結果を削除</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
     <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>ソルバー CalculiX</translation>
+      <location filename="../../../femcommands/commands.py" line="548"/>
+      <source>Purge results</source>
+      <translation>結果を消去</translation>
     </message>
     <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>FEMソルバーCalculiXを作成</translation>
+      <location filename="../../../femcommands/commands.py" line="550"/>
+      <source>Purges all results from active analysis</source>
+      <translation>アクティブな解析からすべての結果を削除</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="592"/>
+      <source>Solver CalculiX (experimental)</source>
+      <translation>ソルバー CalculiX (実験的実装)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="594"/>
+      <source>Creates a FEM solver CalculiX (experimental)</source>
+      <translation>CalculiX FEM ソルバーを作成 (実験的実装)</translation>
     </message>
   </context>
   <context>
@@ -252,6 +444,16 @@
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation>ソルバー属性を変更し、選択したソルバーのための計算を実行</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="610"/>
+      <source>Solver job control</source>
+      <translation>ソルバー ジョブ制御</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="612"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>ソルバー属性を変更し、選択したソルバーのための計算を実行</translation>
     </message>
@@ -295,14 +497,79 @@
       <translation>デフォルト FEM コマンドツールチップ</translation>
     </message>
     <message>
-      <location filename="../../../PyGui/FemCommands.py" line="41"/>
+      <location filename="../../../femcommands/manager.py" line="41"/>
       <source>Default Fem Command MenuText</source>
       <translation>デフォルト FEM コマンドメニューテキスト</translation>
     </message>
     <message>
-      <location filename="../../../PyGui/FemCommands.py" line="43"/>
+      <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
       <translation>デフォルト FEM コマンドツールチップ</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="140"/>
+      <source>Select Solids</source>
+      <translation>ソリッドを選択</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="141"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>リストに追加するソリッドの要素パーツを選択。ソリッドを追加するには"追加"をクリック。</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="42"/>
+      <source>Add</source>
+      <translation>追加</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="43"/>
+      <source>Remove</source>
+      <translation>削除</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>流体のためのFEM材料</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>流体のためのFEM材料を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>GMSHによる形状からのFEMメッシュ</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>GMSHメッシャーを使用して形状からFEMメッシュを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>ソルバー CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>FEMソルバーCalculiXを作成</translation>
     </message>
   </context>
   <context>

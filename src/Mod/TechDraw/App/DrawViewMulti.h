@@ -56,8 +56,8 @@ public:
     /// Constructor
     DrawViewMulti(void);
     virtual ~DrawViewMulti();
-
-    App::PropertyLinkListGlobal Sources;
+  
+    App::PropertyLinkList    Sources;
 
     virtual short mustExecute() const override;
     /** @name methods override Feature */
@@ -66,8 +66,6 @@ public:
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onChanged(const App::Property* prop) override;
     //@}
-
-    virtual TopoDS_Shape getSourceShape(void) const override; 
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const override {

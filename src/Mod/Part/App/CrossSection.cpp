@@ -148,7 +148,7 @@ void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<
 
         TopoDS_Wire new_wire = mkWire.Wire();  // current new wire
 
-        // try to connect each edge to the wire, the wire is complete if no more egdes are connectible
+        // try to connect each edge to the wire, the wire is complete if no more edges are connectible
         bool found = false;
         do {
             found = false;

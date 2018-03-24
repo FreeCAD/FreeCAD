@@ -35,6 +35,7 @@
 #include <map>
 #include <vector>
 #include <stack>
+#include <functional>
 
 #include <boost/signals.hpp>
 
@@ -231,7 +232,7 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
-    /// Returns all object with given extensions. If derived=true also all objects with extenions derived from the given one
+    /// Returns all object with given extensions. If derived=true also all objects with extensions derived from the given one
     std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId, bool derived = true) const;
     std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
@@ -275,7 +276,7 @@ public:
     void setUndoMode(int iMode);
     /// switch the level of Undo/Redo
     int getUndoMode(void) const;
-    /// switch the tranaction mode
+    /// switch the transaction mode
     void setTransactionMode(int iMode);
     /// Open a new command Undo/Redo, an UTF-8 name can be specified
     void openTransaction(const char* name=0);
@@ -338,7 +339,7 @@ public:
     //@}
 
     /// Function called to signal that an object identifier has been renamed
-    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
     virtual PyObject *getPyObject(void);
 

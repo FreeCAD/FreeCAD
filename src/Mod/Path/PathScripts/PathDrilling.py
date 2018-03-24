@@ -40,7 +40,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -124,4 +124,6 @@ def Create(name):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     proxy = ObjectDrilling(obj)
+    if obj.Proxy:
+        proxy.findAllHoles(obj)
     return obj

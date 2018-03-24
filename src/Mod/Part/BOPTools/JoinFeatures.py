@@ -61,7 +61,7 @@ def getParamRefine():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool("RefineModel")
 
 def cmdCreateJoinFeature(name, mode):
-    "cmdCreateJoinFeature(name, mode): generalized implementaion of GUI commands."
+    "cmdCreateJoinFeature(name, mode): generalized implementation of GUI commands."
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create "+mode)
     FreeCADGui.addModule("BOPTools.JoinFeatures")

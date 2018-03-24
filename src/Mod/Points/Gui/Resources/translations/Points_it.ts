@@ -15,8 +15,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Convert to points</source>
       <translation>Converti in punti</translation>
     </message>
@@ -35,8 +34,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Exports a point cloud</source>
       <translation>Esporta una nuvola di punti</translation>
     </message>
@@ -55,8 +53,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Imports a point cloud</source>
       <translation>Importa una nuvola di punti</translation>
     </message>
@@ -64,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+256"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Punti</translation>
     </message>
@@ -75,8 +72,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Merge several point clouds into one</source>
       <translation>Unisce più nuvole di punti in una sola</translation>
     </message>
@@ -95,8 +91,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Taglia una nuvola di punti con un poligono specificato</translation>
     </message>
@@ -104,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-129"/>
+      <location line="-122"/>
       <source>Points</source>
       <translation>Punti</translation>
     </message>
@@ -115,8 +110,7 @@
     </message>
     <message>
       <location line="+1"/>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location line="+2"/>
       <source>Test to transform a point cloud</source>
       <translation>Test della trasformazione di una nuvola di punti</translation>
     </message>

@@ -405,7 +405,21 @@ The argument int is the mode: 0=inner, 1=outer
 		</Methode>
 		<Methode Name="smooth" Const="true">
 			<Documentation>
-				<UserDocu>Smooth the mesh</UserDocu>
+				<UserDocu>Smooth the mesh
+smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="decimate">
+			<Documentation>
+				<UserDocu>
+					Decimate the mesh
+					decimate(tolerance(Float), reduction(Float))
+					tolerance: maximum error
+					reduction: reduction factor must be in the range [0.0,1.0]
+					Example:
+					mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
+					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="optimizeTopology" Const="true">

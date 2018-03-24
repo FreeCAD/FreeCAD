@@ -37,10 +37,10 @@
         <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
         <dc:title>Mesh_Mesh_from_Shape</dc:title>
         <cc:license rdf:resource="https://www.gnu.org/copyleft/lesser.html"/>
-        <dc:description>Solid cube with arrow pointing towards a tesselated cube mesh</dc:description>
+        <dc:description>Solid cube with arrow pointing towards a tessellated cube mesh</dc:description>
         <dc:contributor>
           <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson, [agryson] Alexander Gryson</dc:title>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
         <dc:subject>
@@ -49,6 +49,7 @@
             <rdf:li>mesh</rdf:li>
             <rdf:li>solid</rdf:li>
             <rdf:li>convert</rdf:li>
+            <rdf:li>tessellated</rdf:li>
           </rdf:Bag>
         </dc:subject>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>

@@ -40,6 +40,7 @@ class DrawViewSymbol;
 namespace TechDrawGui
 {
 class QGCustomSvg;
+class QGDisplayArea;
 
 class TechDrawGuiExport QGIViewSymbol : public QGIView
 {
@@ -54,12 +55,15 @@ public:
     void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
 
     virtual void draw() override;
+    virtual void rotateView(void) override;
+
 
 protected:
     virtual void drawSvg();
     void symbolToSvg(QByteArray qba);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
+    QGDisplayArea* m_displayArea;
     QGCustomSvg *m_svgItem;
 };
 

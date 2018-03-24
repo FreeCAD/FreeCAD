@@ -338,6 +338,22 @@
       <source>Show spreadsheet</source>
       <translation>Prikaži preglednico</translation>
     </message>
+    <message>
+      <source>Set cell(s) foreground color</source>
+      <translation>Nastavi barvo pisave celic(e)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) foreground color</source>
+      <translation>Nastavi barvo pisave celic(e) v preglednici</translation>
+    </message>
+    <message>
+      <source>Set cell(s) background color</source>
+      <translation>Nastavi barvo ozadja celic(e)</translation>
+    </message>
+    <message>
+      <source>Sets the Spreadsheet cell(s) background color</source>
+      <translation>Nastavi barvo ozadja celic(e) v preglednici</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

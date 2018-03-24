@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>492</width>
-    <height>648</height>
+    <width>386</width>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>474</width>
-        <height>535</height>
+        <width>368</width>
+        <height>445</height>
        </rect>
       </property>
       <attribute name="label">
@@ -56,11 +56,33 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QFormLayout" name="formLayout">
+         <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
              <string>Horiz. Feed</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="Gui::QuantitySpinBox" name="horizFeed">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>9999999.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -71,10 +93,54 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="1">
+           <widget class="Gui::QuantitySpinBox" name="vertFeed">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>9999999.000000000000000</double>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
              <string>Horiz Rapid</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::QuantitySpinBox" name="horizRapid">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>9999999.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -85,67 +151,25 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="Gui::QuantitySpinBox" name="horizFeed">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="Gui::QuantitySpinBox" name="vertFeed">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="Gui::QuantitySpinBox" name="horizRapid">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="1">
            <widget class="Gui::QuantitySpinBox" name="vertRapid">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm/s</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm/s</string>
             </property>
            </widget>
           </item>
@@ -208,8 +232,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>474</width>
-        <height>535</height>
+        <width>368</width>
+        <height>445</height>
        </rect>
       </property>
       <attribute name="label">
@@ -234,6 +258,12 @@
           </item>
           <item row="0" column="1">
            <widget class="QLineEdit" name="toolName">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="maxLength">
              <number>50</number>
             </property>
@@ -393,7 +423,7 @@
           <item row="16" column="0">
            <widget class="QLabel" name="label_12">
             <property name="text">
-             <string>Cutting Edge Angle</string>
+             <string>Point/Tip Angle</string>
             </property>
            </widget>
           </item>
@@ -406,11 +436,20 @@
           </item>
           <item row="6" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolDiameter">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
@@ -421,75 +460,99 @@
             <property name="singleStep">
              <double>0.125000000000000</double>
             </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
            </widget>
           </item>
           <item row="8" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolLengthOffset">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
           <item row="12" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolFlatRadius">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
           <item row="14" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolCornerRadius">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
              <double>100.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
           <item row="18" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeHeight">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="text" stdset="0">
-             <string>0.00</string>
+             <string>0 mm</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
             <property name="minimum">
              <double>0.000000000000000</double>
@@ -497,18 +560,30 @@
             <property name="maximum">
              <double>100.000000000000000</double>
             </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
            </widget>
           </item>
           <item row="16" column="1">
            <widget class="Gui::QuantitySpinBox" name="toolCuttingEdgeAngle">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">°</string>
+            </property>
+            <property name="text">
+             <string>180 °</string>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>180.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -550,7 +625,7 @@
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>

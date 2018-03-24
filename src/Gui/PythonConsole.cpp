@@ -416,6 +416,7 @@ PythonConsole::PythonConsole(QWidget *parent)
   : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(NULL)
 {
     d = new PythonConsoleP();
+    d->interactive = false;
 
     // create an instance of InteractiveInterpreter
     try { 
@@ -783,8 +784,8 @@ void PythonConsole::appendOutput(const QString& output, int state)
 void PythonConsole::runSource(const QString& line)
 {
     /**
-     * Check if there's a "source drain", which want's to consume the source in another way then just executing it.
-     * If so, put the source to the drain and emit a signal to notify the consumer, whoever this may be.
+     * Check if there's a "source drain", which wants to consume the source in another way then just executing it.
+     * If so, put the source to the drain and emit a signal to notify the consumer, whomever this may be.
      */
     if (this->_sourceDrain)
     {
@@ -1045,7 +1046,7 @@ QTextCursor PythonConsole::inputBegin( void ) const
   // construct cursor at begin of input line ...
   QTextCursor inputLineBegin( this->textCursor() );
   inputLineBegin.movePosition( QTextCursor::End );
-  inputLineBegin.movePosition( QTextCursor::StartOfLine );
+  inputLineBegin.movePosition( QTextCursor::StartOfBlock );
   // ... and move cursor right beyond the prompt.
   inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength( inputLineBegin.block().text() ) );
   return inputLineBegin;

@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Analizza &amp;&amp; Ripara la mesh...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>Analizza e ripara mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -233,7 +237,7 @@
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Forma della tassellazione</translation>
+      <translation>Forma della tessellazione</translation>
     </message>
   </context>
   <context>
@@ -405,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Scala...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Scala le mesh selezionate</translation>
     </message>
   </context>
   <context>
@@ -903,11 +907,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Definisce la deviazione della tassellazione della superficie attuale</translation>
+      <translation>Definisce la deviazione di tessellatura della superficie attuale</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tassellazione&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definisce la massima deviazione della mesh tassellata della superficie. Più piccolo è il valore più lenta sarà la velocità di render e migliore sarà l'estetica.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellazione&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definisce la massima deviazione della mesh di tessellata della superficie. Più piccolo è il valore più lenta sarà la velocità di render e migliore sarà l'estetica.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
@@ -1460,11 +1464,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Scalatura</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Immettere il fattore di scala:</translation>
     </message>
   </context>
   <context>

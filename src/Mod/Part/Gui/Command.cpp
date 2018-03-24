@@ -770,6 +770,7 @@ CmdPartCompound::CmdPartCompound()
     sToolTipText  = QT_TR_NOOP("Make a compound of several shapes");
     sWhatsThis    = "Part_Compound";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Compound";
 }
 
 void CmdPartCompound::activated(int iMsg)
@@ -1210,7 +1211,7 @@ CmdPartMakeFace::CmdPartMakeFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Make face from wires");
-    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g., from a sketch).");
+    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g. from a sketch)");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
 }

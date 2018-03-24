@@ -26,12 +26,6 @@
 # include <memory>
 #endif
 
-// PCL test
-#ifdef HAVE_PCL_IO
-#  include <iostream>
-#  include <pcl/io/ply_io.h>
-#  include <pcl/point_types.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -93,14 +87,12 @@ private:
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
             }
-#ifdef HAVE_PCL_IO
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
             }
             else if (file.hasExtension("pcd")) {
                 reader.reset(new PcdReader);
             }
-#endif
             else {
                 throw Py::RuntimeError("Unsupported file extension");
             }
@@ -207,14 +199,12 @@ private:
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
             }
-#ifdef HAVE_PCL_IO
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
             }
             else if (file.hasExtension("pcd")) {
                 reader.reset(new PcdReader);
             }
-#endif
             else {
                 throw Py::RuntimeError("Unsupported file extension");
             }
@@ -324,14 +314,12 @@ private:
                     if (file.hasExtension("asc")) {
                         writer.reset(new AscWriter(kernel));
                     }
-#ifdef HAVE_PCL_IO
                     else if (file.hasExtension("ply")) {
                         writer.reset(new PlyWriter(kernel));
                     }
                     else if (file.hasExtension("pcd")) {
                         writer.reset(new PcdWriter(kernel));
                     }
-#endif
                     else {
                         throw Py::RuntimeError("Unsupported file extension");
                     }

@@ -593,7 +593,7 @@
             <rdf:li>square</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>An square or diamond shape with a dot at each of its three leftmost corners and a largerdot or circle on the rightmost corner containing a lock symbol</dc:description>
+        <dc:description>A square or diamond shape with a dot at each of its three leftmost corners and a larger dot or circle on the rightmost corner containing a lock symbol</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

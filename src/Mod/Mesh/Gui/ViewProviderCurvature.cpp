@@ -242,7 +242,7 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
 {
-    // creats the standard viewing modes
+    // creates the standard viewing modes
     inherited::attach(pcFeat);
     attachDocument(pcFeat->getDocument());
 

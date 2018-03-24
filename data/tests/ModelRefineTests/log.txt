@@ -28,7 +28,7 @@ ZMoterMountscripted			pass
 
 * I thought this was because of the float to double bug, but it's not....Float to double might have been a factor, but there is another problem. I rebuilt this condition from scratch and refine works with no corruption. If I save this file and re-open it, refine works, but corrupts the model. shell is open. This is true in either fcstd or brep format. weird! This is the second version of this file as to rule out any chance of the float to double bug. This is real flaky and it won't be the last time we deal with this. I keep thinking about romans comment "don't abuse shapefix". http://opencascade.blogspot.com/2009/03/topology-and-geometry-in-open-cascade.html?showComment=1236718620000#c8850560473418361068
 
-Here are some tolerance numbers for cylinder7_V2. new is from the new construction code that uses shapefix to build missing seem edges. The old code does't consider the formation of complete cylnder and failed several tests.
+Here are some tolerance numbers for cylinder7_V2. new is from the new construction code that uses shapefix to build missing seem edges. The old code doesn't consider the formation of complete cylinder and failed several tests.
 
 Draw[11]> tolerance old
 Tolerance MAX=2.0000099999999999e-07 AVG=1.2882835847679566e-07 MIN=9.9999999999999995e-08

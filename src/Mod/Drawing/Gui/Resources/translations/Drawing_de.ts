@@ -288,11 +288,18 @@
       <translation>PDF exportieren</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>Der Drucker verwendet eine andere Ausrichtung als die Zeichnung.
+Möchten Sie fortfahren?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF-Datei (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF-Datei</translation>
     </message>
@@ -337,13 +344,12 @@
       <translation>Andere Ausrichtung</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Der Drucker verwendet eine andere Ausrichtung als die Zeichnung. Möchten Sie fortfahren?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Anderes Papierformat</translation>
@@ -395,59 +401,71 @@ Do you want to continue?</source>
       <translation>Oben links x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Abstand dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Achse außerhalb und rechts</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Vertikale Neigung</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Abstand dx / dy   </translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Achse außerhalb und rechts</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Vertikale Neigung</translation>
     </message>
     <message>
       <location line="+11"/>
       <location line="+200"/>
       <source>X +ve</source>
-      <translation>X +ve</translation>
+      <translation>X +</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+75"/>
       <location line="+125"/>
       <source>Y +ve</source>
-      <translation>Y +ve</translation>
+      <translation>Y +</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+75"/>
       <location line="+125"/>
       <source>Z +ve</source>
-      <translation>Z +ve</translation>
+      <translation>Z +</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+200"/>
       <source>X -ve</source>
-      <translation>X -ve</translation>
+      <translation>X -</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+70"/>
       <location line="+130"/>
       <source>Y -ve</source>
-      <translation>Y -ve</translation>
+      <translation>Y -</translation>
     </message>
     <message>
       <location line="-195"/>
       <location line="+70"/>
       <location line="+130"/>
       <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <translation>Z -</translation>
     </message>
     <message>
       <location line="-188"/>
@@ -663,7 +681,7 @@ Do you want to continue?</source>
     <message>
       <location line="+17"/>
       <source>Project shapes</source>
-      <translation>Projekt Formen</translation>
+      <translation>Flächen projizieren</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -673,7 +691,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>Es gibt derzeit kein aktives Dokument um die Operation abzuschließen</translation>
+      <translation>Es gibt derzeit kein aktives Dokument, um die Operation abzuschließen</translation>
     </message>
     <message>
       <location line="+5"/>

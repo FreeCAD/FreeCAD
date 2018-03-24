@@ -26,12 +26,13 @@
 
 
 #include "ViewProviderOriginGroup.h"
+#include "ViewProviderDragger.h"
 #include "ViewProviderPythonFeature.h"
 
 
 namespace Gui {
 
-class GuiExport ViewProviderPart : public ViewProviderDocumentObject,
+class GuiExport ViewProviderPart : public ViewProviderDragger,
                                    public ViewProviderOriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderPart);

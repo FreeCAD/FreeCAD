@@ -44,6 +44,7 @@ PROPERTY_SOURCE(Surface::Cut, Part::Feature)
 Cut::Cut()
 {
     ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
+    ShapeList.setScope(App::LinkScope::Global);
 }
 
 //Check if any components of the surface have been modified

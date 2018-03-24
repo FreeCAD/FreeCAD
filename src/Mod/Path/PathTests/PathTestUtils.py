@@ -47,7 +47,7 @@ class PathTestBase(unittest.TestCase):
         """Verify that two placements are roughly identical."""
         self.assertCoincide(p1.Base, p2.Base)
         self.assertCoincide(p1.Rotation.Axis, p2.Rotation.Axis)
-        self.assertRoughly(p1.Rotation.Angle, p2.Rotation.Angle)
+        self.assertTrue(p1.Rotation.isSame(p2.Rotation))
 
     def assertLine(self, edge, pt1, pt2):
         """Verify that edge is a line from pt1 to pt2."""
@@ -127,3 +127,11 @@ class PathTestBase(unittest.TestCase):
         self.assertRoughly(c1.Parameters.get('I', 0), c2.Parameters.get('I', 0))
         self.assertRoughly(c1.Parameters.get('J', 0), c2.Parameters.get('J', 0))
         self.assertRoughly(c1.Parameters.get('K', 0), c2.Parameters.get('K', 0))
+
+    def assertEqualLocale(self,s1,s2):
+        """Verify that the 2 strings are equivalent, but converts eventual , into . for the first string that may be affected by locale."""
+        #self.assertEqual(s1.replace(",","."), s2)
+        q1=FreeCAD.Units.Quantity(s1)
+        q2=FreeCAD.Units.Quantity(s2)
+        self.assertEqual(q1.UserString, q2.UserString)
+

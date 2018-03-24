@@ -64,6 +64,7 @@ DrawProjGroup::DrawProjGroup(void)
 
 
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
@@ -96,8 +97,8 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
         if (prop == &Source) {
-            App::DocumentObject* sourceObj = Source.getValue();
-            if (sourceObj != nullptr) {
+            std::vector<App::DocumentObject*> sourceObjs = Source.getValues();
+            if (!sourceObjs.empty()) {
                 if (!hasAnchor()) {
                     // if we have a Source, but no Anchor, make an anchor
                     Anchor.setValue(addProjection("Front"));
@@ -142,12 +143,12 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    App::DocumentObject* docObj = Source.getValue();
-    if (docObj == nullptr) {
+    std::vector<App::DocumentObject*> docObjs = Source.getValues();
+    if (docObjs.empty()) {
         return DrawViewCollection::execute();
     }
 
-    docObj = Anchor.getValue();
+    App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
         return DrawViewCollection::execute();
     }
@@ -171,6 +172,11 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
     } else if (ScaleType.isValue("Custom")) {
         //don't have to do anything special
         updateChildren();
+    }
+
+    for (auto& item: getViewsAsDPGI()) {
+        item->autoPosition();
+        item->purgeTouched();
     }
 
     if (page != nullptr) {
@@ -245,6 +251,9 @@ double DrawProjGroup::calculateAutomaticScale() const
     arrangeViewPointers(viewPtrs);
     double width, height;
     minimumBbViews(viewPtrs, width, height);                               //get 1:1 bbxs
+                                            // if Page.keepUpdated is false, and DrawViews have never been executed,
+                                            // bb's will be 0x0 and this routine will return 0!!!
+                                            // if we return 1.0, AutoScale will sort itself out once bb's are non-zero.
     double bbFudge = 1.2;
     width *= bbFudge;
     height *= bbFudge;
@@ -268,6 +277,10 @@ double DrawProjGroup::calculateAutomaticScale() const
     double scaleFudge = 0.80;
     float working_scale = scaleFudge * std::min(scale_x, scale_y);
     double result = DrawUtil::sensibleScale(working_scale);
+    if (!(result > 0.0)) {
+        Base::Console().Log("DPG - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),result);
+        result = 1.0;
+    }
     return result;
 }
 
@@ -380,7 +393,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
-        view->Source.setValue( Source.getValue() );
+        view->Source.setValues( Source.getValues() );
         if (ScaleType.isValue("Automatic")) {
             view->ScaleType.setValue("Custom");
         } else {
@@ -389,7 +402,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Scale.setValue( getScale() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
-        view->Source.setValue( Source.getValue() );
+        view->Source.setValues( Source.getValues() );
         view->Direction.setValue(m_cube->getViewDir(viewProjType));
         view->RotationVector.setValue(m_cube->getRotationDir(viewProjType));
         addView(view);         //from DrawViewCollection
@@ -689,7 +702,9 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
         }
 }
 
-//! tell children DPGIs that parent DPG has changed ?Scale?
+/*! 
+ * tell children DPGIs that parent DPG has changed ?Scale?
+ */
 void DrawProjGroup::updateChildren(void)
 {
     for( const auto it : Views.getValues() ) {
@@ -701,7 +716,9 @@ void DrawProjGroup::updateChildren(void)
     }
 }
 
-//!check if ProjectionGroup fits on Page
+/*!
+ * check if ProjectionGroup fits on Page
+ */
 bool DrawProjGroup::checkFit(TechDraw::DrawPage* p) const
 {
     bool result = true;
@@ -907,7 +924,20 @@ void DrawProjGroup::spinCCW()
 }
 
 
-//dumps the current iso DPGI's 
+std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
+{
+    std::vector<DrawProjGroupItem*> result;
+    auto views = Views.getValues();
+    for (auto& v:views) {
+        DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(v);
+        result.push_back(item);
+    }
+    return result;
+}
+
+/*!
+ *dumps the current iso DPGI's 
+ */
 void DrawProjGroup::dumpISO(char * title)
 {
     Base::Console().Message("DPG ISO: %s\n", title); 

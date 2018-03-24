@@ -239,7 +239,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                 QString t = item->data(Qt::UserRole).toString();
                 auto obj = App::GetApplication().getDocument(documentName.c_str())->getObject(t.toLatin1().data());
 
-                //build the dependend copy or reference if wanted by the user
+                //build the dependent copy or reference if wanted by the user
                 if (*st == otherBody || *st == otherPart || *st == notInBody) {
                     if (!ui->radioXRef->isChecked()) {
                         auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
@@ -340,7 +340,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             cprop->Paste(*prop);
 
             //we are a independent copy, therefore no external geometry was copied. WE therefore can delete all
-            //contraints
+            //constraints
             if(obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId()))
                 static_cast<Sketcher::SketchObject*>(copy)->delConstraintsToExternal();
         }
@@ -366,7 +366,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
                     obj->getClassTypeId().getName(), name.c_str() );
 
             //we need to reference the individual datums and make again datums. This is important as
-            //datum adjust their size dependend on the part size, hence simply copying the shape is
+            //datum adjust their size dependent on the part size, hence simply copying the shape is
             //not enough
             long int mode = mmDeactivated;
             Part::Datum *datumCopy = static_cast<Part::Datum*>(copy);
@@ -507,7 +507,7 @@ TaskDlgFeaturePick::~TaskDlgFeaturePick()
     //do the work now as before in accept() the dialog is still open, hence the work
     //function could not open another dialog
     if (accepted) {
-        workFunction(pick->buildFeatures());
+        try { workFunction(pick->buildFeatures()); } catch (...) {}
     } else if (abortFunction) {
 
         // Get rid of the TaskFeaturePick before the TaskDialog dtor does. The

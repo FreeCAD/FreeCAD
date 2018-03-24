@@ -67,8 +67,13 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-: SolveTime(0), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
-    defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
+  : SolveTime(0)
+  , RecalculateInitialSolutionWhileMovingPoint(false)
+  , GCSsys(), ConstraintsCounter(0)
+  , isInitMove(false), isFine(true), moveStep(0)
+  , defaultSolver(GCS::DogLeg)
+  , defaultSolverRedundant(GCS::DogLeg)
+  , debugMode(GCS::Minimal)
 {
 }
 
@@ -128,7 +133,13 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
         extGeoList.push_back(GeoList[i]);
 
-    addGeometry(intGeoList);
+    std::vector<bool> blockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
+    std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
+
+    if(!intGeoList.empty())
+        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);
+
+    addGeometry(intGeoList,blockedGeometry);
     int extStart=Geoms.size();
     addGeometry(extGeoList, true);
     int extEnd=Geoms.size()-1;
@@ -137,7 +148,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty()) {
-        addConstraints(ConstraintList);
+        addConstraints(ConstraintList,unenforceableConstraints);
     }
     GCSsys.clearByTag(-1);
     GCSsys.declareUnknowns(Parameters);
@@ -248,6 +259,20 @@ int Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
     int ret = -1;
     for (std::vector<Part::Geometry *>::const_iterator it=geo.begin(); it != geo.end(); ++it)
         ret = addGeometry(*it, fixed);
+    return ret;
+}
+
+int Sketch::addGeometry(const std::vector<Part::Geometry *> &geo,
+                        const std::vector<bool> &blockedGeometry)
+{
+    assert(geo.size() == blockedGeometry.size());
+
+    int ret = -1;
+    std::vector<Part::Geometry *>::const_iterator it;
+    std::vector<bool>::const_iterator bit;
+
+    for (it=geo.begin(),bit=blockedGeometry.begin(); it != geo.end() && bit !=blockedGeometry.end(); ++it,++bit)
+        ret = addGeometry(*it, *bit);
     return ret;
 }
 
@@ -737,7 +762,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     double * p1x = new double(startPnt.x);
     double * p1y = new double(startPnt.y);
 
-    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecesarry DoF of determining where in the curve
+    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecessary DoF of determining where in the curve
     // the start and the stop should be
     if(!periodic) {
         params.push_back(p1x);
@@ -750,7 +775,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     double * p2x = new double(endPnt.x);
     double * p2y = new double(endPnt.y);
     
-    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecesarry DoF of determining where in the curve
+    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecessary DoF of determining where in the curve
     // the start and the stop should be
     if(!periodic) {
         params.push_back(p2x);
@@ -790,10 +815,16 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     // WARNING: This is only valid where the multiplicity of the endpoints conforms with a BSpline
     // only then the startpoint is the first control point and the endpoint is the last control point
     // accordingly, it is never the case for a periodic BSpline.
-    if(!bs.periodic && bs.mult[0] > bs.degree && bs.mult[mult.size()-1] > bs.degree) {
-        GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
-        GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
+    // NOTE: For an external B-spline (i.e. fixed=true) we must not set the coincident constraints
+    // as the points are not movable anyway.
+    // See #issue 0003176: Sketcher: always over-constrained when referencing external B-Spline
+    if (!fixed && !bs.periodic) {
+        if (bs.mult[0] > bs.degree)
+            GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
+        if (bs.mult[mult.size()-1] > bs.degree)
+            GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
     }
+
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -1008,7 +1039,7 @@ int Sketch::addConstraint(const Constraint *constraint)
     switch (constraint->Type) {
     case DistanceX:
         if (constraint->FirstPos == none){ // horizontal length of a line
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1017,7 +1048,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addDistanceXConstraint(constraint->First,c.value);
         }
         else if (constraint->Second == Constraint::GeoUndef) {// point on fixed x-coordinate
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1026,7 +1057,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addCoordinateXConstraint(constraint->First,constraint->FirstPos,c.value);
         }
         else if (constraint->SecondPos != none) {// point to point horizontal distance
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1038,7 +1069,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         break;
     case DistanceY:
         if (constraint->FirstPos == none){ // vertical length of a line
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1047,7 +1078,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addDistanceYConstraint(constraint->First,c.value);
         }
         else if (constraint->Second == Constraint::GeoUndef){ // point on fixed y-coordinate
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1056,7 +1087,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addCoordinateYConstraint(constraint->First,constraint->FirstPos,c.value);
         }
         else if (constraint->SecondPos != none){ // point to point vertical distance
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1097,7 +1128,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addPerpendicularConstraint(constraint->First,constraint->Second);
         } else {
             //any other point-wise perpendicularity
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1118,7 +1149,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addTangentConstraint(constraint->First,constraint->Second);
         } else {
             //any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint, tangent-via-point)
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1133,7 +1164,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         break;
     case Distance:
         if (constraint->SecondPos != none){ // point to point distance
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1144,7 +1175,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         else if (constraint->Second != Constraint::GeoUndef) {
             if (constraint->FirstPos != none) { // point to line distance
-                c.value = new double(constraint->Value);
+                c.value = new double(constraint->getValue());
                 if(c.driving)
                     FixParameters.push_back(c.value);
                 else
@@ -1154,7 +1185,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             }
         }
         else {// line length
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1165,7 +1196,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         break;
     case Angle:
         if (constraint->Third != Constraint::GeoUndef){
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1177,7 +1208,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                         constraint->Third, constraint->ThirdPos,
                         c.value, constraint->Type);
         } else if (constraint->SecondPos != none){ // angle between two lines (with explicit start points)
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1187,7 +1218,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                                      constraint->Second,constraint->SecondPos,c.value);
         }
         else if (constraint->Second != Constraint::GeoUndef){ // angle between two lines
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1195,7 +1226,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addAngleConstraint(constraint->First,constraint->Second,c.value);
         }
         else if (constraint->First != Constraint::GeoUndef) {// orientation angle of a line
-            c.value = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
             else
@@ -1206,7 +1237,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         break;
     case Radius:
     {
-        c.value = new double(constraint->Value);
+        c.value = new double(constraint->getValue());
         if(c.driving)
             FixParameters.push_back(c.value);
         else
@@ -1265,8 +1296,8 @@ int Sketch::addConstraint(const Constraint *constraint)
         break;
     case SnellsLaw:
         {
-            c.value = new double(constraint->Value);
-            c.secondvalue = new double(constraint->Value);
+            c.value = new double(constraint->getValue());
+            c.secondvalue = new double(constraint->getValue());
 
             if(c.driving) {
                 FixParameters.push_back(c.value);
@@ -1285,6 +1316,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case Sketcher::None: // ambiguous enum value
+    case Sketcher::Block: // handled separately while adding geometry
     case NumConstraintTypes:
         break;
     }
@@ -1301,6 +1333,120 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
         rtn = addConstraint (*it);
 
     return rtn;
+}
+
+int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
+                           const std::vector<bool> &unenforceableConstraints)
+{
+    int rtn = -1;
+
+    int cid = 0;
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
+        if (!unenforceableConstraints[cid] && (*it)->Type != Block) {
+            rtn = addConstraint (*it);
+        }
+        else {
+            ++ConstraintsCounter; // For correct solver redundant reporting
+        }
+    }
+
+    return rtn;
+}
+
+void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry,
+                                std::vector<bool> & unenforceableConstraints,
+                                const std::vector<Constraint *> &ConstraintList) const
+{
+    std::vector<int> internalAlignmentConstraintIndex;
+    std::vector<int> internalAlignmentgeo;
+    
+    std::vector<int> geo2blockingconstraintindex(blockedGeometry.size(),-1);
+    
+    // Detect Blocked and internal constraints
+    int i = 0;
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++i) {
+        switch((*it)->Type) {
+            case Block:
+            {
+                int geoid = (*it)->First;
+
+                if(geoid>=0 && geoid<int(blockedGeometry.size())) {
+                    blockedGeometry[geoid]=true;
+                    geo2blockingconstraintindex[geoid]=i;
+                }
+            }
+            break;
+            case InternalAlignment:
+                internalAlignmentConstraintIndex.push_back(i);
+            break;
+            default:
+            break;
+        }
+    }
+    
+    // if a GeoId is blocked and it is linked to Internal Alignment, then GeoIds linked via Internal Alignment are also to be blocked
+    for(std::vector<int>::iterator it = internalAlignmentConstraintIndex.begin(); it != internalAlignmentConstraintIndex.end() ; it++) {
+        if (blockedGeometry[ConstraintList[(*it)]->Second]) {
+            blockedGeometry[ConstraintList[(*it)]->First] = true;
+            // associated geometry gets the same blocking constraint index as the blocked element
+            geo2blockingconstraintindex[ConstraintList[(*it)]->First]= geo2blockingconstraintindex[ConstraintList[(*it)]->Second];
+            internalAlignmentgeo.push_back(ConstraintList[(*it)]->First);
+            unenforceableConstraints[(*it)]= true;
+        }
+    }
+
+    i = 0;
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++i) {
+        if((*it)->isDriving) {
+            // additionally any further constraint on auxiliary elements linked via Internal Alignment are also unenforceable.
+            for(std::vector<int>::iterator itg = internalAlignmentgeo.begin(); itg != internalAlignmentgeo.end() ; itg++) {
+                if( (*it)->First==*itg || (*it)->Second==*itg || (*it)->Third==*itg ) {
+                    unenforceableConstraints[i]= true;
+                }
+            }
+            // IMPORTANT NOTE:
+            // The rest of the ignoring of redundant/conflicting applies to constraints introduced before the blocking constraint only
+            // Constraints introduced after the block will not be ignored and will lead to redundancy/conflicting status as per normal
+            // solver behaviour
+
+            // further, any constraint taking only one element, which is blocked is also unenforceable
+            if((*it)->Second==Constraint::GeoUndef && (*it)->Third==Constraint::GeoUndef) {
+                if (blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) {
+                    unenforceableConstraints[i]= true;
+                }
+            }
+            // further any constraint on only two elements where both elements are blocked or one is blocked and the other is an axis or external
+            // provided that the constraints precede the last block constraint.
+            else if((*it)->Third==Constraint::GeoUndef) {
+                if ( ((*it)->First>=0 && (*it)->Second>=0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] &&
+                    (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second])) ||
+                    ((*it)->First<0 && (*it)->Second>=0 && blockedGeometry[(*it)->Second] && i < geo2blockingconstraintindex[(*it)->Second]) ||
+                    ((*it)->First>=0 && (*it)->Second<0 && blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) ){
+                    unenforceableConstraints[i]= true;
+                }
+            }
+            // further any constraint on three elements where the three of them are blocked, or two are blocked and the other is an axis or external geo
+            // or any constraint on three elements where one is blocked and the other two are axis or external geo, provided that the constraints precede
+            // the last block constraint.
+            else {
+                if( ((*it)->First>=0 && (*it)->Second>=0 && (*it)->Third>=0 &&
+                    blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] && blockedGeometry[(*it)->Third] &&
+                  (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second] || i < geo2blockingconstraintindex[(*it)->Third])) ||
+                  ((*it)->First<0 && (*it)->Second>=0 && (*it)->Third>=0 && blockedGeometry[(*it)->Second] && blockedGeometry[(*it)->Third] &&
+                  (i < geo2blockingconstraintindex[(*it)->Second] || i < geo2blockingconstraintindex[(*it)->Third])) ||
+                  ((*it)->First>=0 && (*it)->Second<0 && (*it)->Third>=0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Third] &&
+                  (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Third])) ||
+                  ((*it)->First>=0 && (*it)->Second>=0 && (*it)->Third<0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] &&
+                  (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second])) ||
+                  ((*it)->First>=0 && (*it)->Second<0 && (*it)->Third<0 && blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) ||
+                  ((*it)->First<0 && (*it)->Second>=0 && (*it)->Third<0 && blockedGeometry[(*it)->Second] && i < geo2blockingconstraintindex[(*it)->Second]) ||
+                  ((*it)->First<0 && (*it)->Second<0 && (*it)->Third>=0 && blockedGeometry[(*it)->Third] && i < geo2blockingconstraintindex[(*it)->Third]) ) {
+
+                    unenforceableConstraints[i]= true;
+                }
+            }
+        }
+    }
 }
 
 int Sketch::addCoordinateXConstraint(int geoId, PointPos pos, double * value)
@@ -2739,14 +2885,14 @@ bool Sketch::updateNonDrivingConstraints()
                 double n1 = *((*it).value);
                 double n2 = *((*it).secondvalue);
                 
-                (*it).constr->Value = n2/n1;
+                (*it).constr->setValue(n2/n1);
             }
             else if((*it).constr->Type==Angle) {
                 
-                (*it).constr->Value = std::fmod(*((*it).value), M_PI);
+                (*it).constr->setValue(std::remainder(*((*it).value), 2.0*M_PI));
             }
             else {
-                (*it).constr->Value=*((*it).value);
+                (*it).constr->setValue(*((*it).value));
             }
         }
      }
@@ -3179,6 +3325,11 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     return 0;
 }
 
+void Sketch::resetInitMove()
+{
+    isInitMove = false;
+}
+
 int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
     geoId = checkGeoId(geoId);
@@ -3187,8 +3338,24 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
     if (hasConflicts())
         return -1;
 
-    if (!isInitMove)
+    if (!isInitMove) {
         initMove(geoId, pos);
+        initToPoint = toPoint;
+        moveStep = 0;
+    }
+    else {
+        if(!relative && RecalculateInitialSolutionWhileMovingPoint) {
+            if (moveStep == 0) {
+                moveStep = (toPoint-initToPoint).Length();
+            }
+            else {
+                if( (toPoint-initToPoint).Length() > 20*moveStep) { // I am getting too far away from the original solution so reinit the solution
+                    initMove(geoId, pos);
+                    initToPoint = toPoint;
+                }
+            }
+        }
+    }
 
     if (relative) {
         for (int i=0; i < int(MoveParameters.size()-1); i+=2) {
@@ -3345,7 +3512,7 @@ TopoShape Sketch::toShape(void) const
 
         TopoDS_Wire new_wire = mkWire.Wire(); // current new wire
 
-        // try to connect each edge to the wire, the wire is complete if no more egdes are connectible
+        // try to connect each edge to the wire, the wire is complete if no more edges are connectible
         bool found = false;
         do {
             found = false;
@@ -3376,8 +3543,8 @@ TopoShape Sketch::toShape(void) const
         result = *wires.begin();
     else if (wires.size() > 1) {
         // FIXME: The right way here would be to determine the outer and inner wires and
-        // generate a face with holes (inner wires have to be taged REVERSE or INNER).
-        // thats the only way to transport a somewhat more complex sketch...
+        // generate a face with holes (inner wires have to be tagged REVERSE or INNER).
+        // that's the only way to transport a somewhat more complex sketch...
         //result = *wires.begin();
 
         // I think a compound can be used as container because it is just a collection of

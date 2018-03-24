@@ -9,7 +9,9 @@
 #include "zipios_defs.h"
 
 #include "backbuffer.h"
+#if defined(_WIN32)
 #include <Base/FileInfo.h>
+#endif
 
 namespace zipios {
 
@@ -34,7 +36,7 @@ ZipFile::ZipFile( const string &name , int s_off, int e_off
 
   _filename = name ;
   
-#if _WIN32
+#if defined(_WIN32)
   std::wstring wsname = Base::FileInfo(name).toStdWString();
   ifstream _zipfile( wsname.c_str(), ios::in | ios::binary ) ;
 #else

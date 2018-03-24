@@ -430,7 +430,7 @@ Version: V0.5B5 Date: Sat Feb 25 2006 +++++++++++++++++++++++++++++++
   * Return the edge list by reference in mesh kernel (to avoid memory leak)
   * PropertyVectorList implemented
   * Use PropertyVectorLists and PropertyFloatLists in Mesh::Curvature feature and its associated view provider
-  * PropertyColor(List) implemeted
+  * PropertyColor(List) implemented
   * PropertyMeshKernel added
   * move all Projects to NODEFAULTLIBS
   * move all Projects to xcopy
@@ -558,8 +558,8 @@ Version: V0.1B117 Date: Sun Mar 20 14:06:55 2005 +++++++++++++++++++++++++++++++
   * Integration of latest Image module source
   * RFE 1159671 implemented (elements in alphabetic order)
   * Finishing drag&drop multiple files
-  * Finishing open from command line and droping on Programm icon
-  * solving load dependand modules
+  * Finishing open from command line and dropping on Program icon
+  * solving load dependent modules
   * more convenient Python console
   * Bug 1149706 fixed (Cannot load CAD curves)
   * RFE 1214187 implemented (Remove views from main window)
@@ -608,7 +608,7 @@ Version: V0.1B109 Date: Mon Jan 24 11:13:15 2005 +++++++++++++++++++++++++++++++
     - SetStatus and GetStatus switch on or off the observer
 
 Version: V0.1B108 Date: Sat Jan 15 14:24:52 2005 +++++++++++++++++++++++++++++++
-  * Moved HtmlView to HelpView   * Reimplementaion
+  * Moved HtmlView to HelpView   * Reimplementation
   * Added class FileChooser ( line edit with button on its right side to browse)
   * Merged pref. page "Help viewer" and "Online Help" to one page
   * TextEdit class with completion
@@ -679,7 +679,7 @@ Version: V0.1B95 Date: Wed Nov 03 17:34:53 2004 +++++++++++++++++++++++++++++++
 
 Version: V0.1B94 Date: Sat Oct 23 18:58:52 2004 +++++++++++++++++++++++++++++++
   * finished implementation of the Tip of the day
-  * splitted several big files in smaller ones
+  * split several big files in smaller ones
   * namespace Gui::Kexi for property editor
   * namespace Gui::Dialog   * documentation for most dialogs
   * use QToolBox provided by Qt instead of StackBar
@@ -834,11 +834,11 @@ Version: V0.1B63 Date: Sun Jun 08 20:21:25 2003 +++++++++++++++++++++++++++++++
   * drop down button completely new reimplemented
 
 Version: V0.1B62 Date: Sat May 31 11:53:56 2003 +++++++++++++++++++++++++++++++
-  * redesign of Document view modell
+  * redesign of Document view model
   * removing ViewContainer
   * adding the OnHasMsg methodes
   * switching some stdCommands to message stile to allow views with own document
-  * moving scintila to a passiv view modell
+  * moving scintila to a passive view model
   * updated to new version of Scintilla (1.53)
 
 Version: V0.1B61 Date: Sat May 24 17:35:52 2003 +++++++++++++++++++++++++++++++
@@ -912,7 +912,7 @@ Version: V0.1B48 Date: Sun Mar 30 15:06:23 2003 +++++++++++++++++++++++++++++++
   * Big patch from Werner about:
     - feeding toolbars and Commandbar and menus from the parameterts
     - customizing works with positions in command bar and toolbar
-    - customizing by draging from menu into toolbar and commandbar
+    - customizing by dragging from menu into toolbar and commandbar
 
 Version: V0.1B47 Date: Fri Mar 28 18:24:36 2003 +++++++++++++++++++++++++++++++
   * Import App Module added

@@ -288,11 +288,17 @@
       <translation>导出PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>打印机和图纸使用了不同的定位位置。你想要继续吗？</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>PDF文件(*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>PDF文件</translation>
     </message>
@@ -337,13 +343,12 @@
       <translation>不同方向</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>打印机和图纸使用了不同的定位位置。你想要继续吗？</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>不同的图纸大小</translation>
@@ -395,19 +400,31 @@ Do you want to continue?</source>
       <translation>左上角 x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>间距 dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> 轴外侧靠右</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> 垂直倾斜</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>间距 dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>轴外侧靠右</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>垂直倾斜</translation>
     </message>
     <message>
       <location line="+11"/>

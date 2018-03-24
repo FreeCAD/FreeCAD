@@ -32,16 +32,11 @@
 #FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
 FreeCAD.addImportType("PLMXML files (*.plmxml)","PlmXmlParser")
+FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)","stepZ") 
+FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ") 
 
 # Add initial parameters value if they are not set
 
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTEP")
-ReadShapeCompoundMode_status=paramGetV.GetBool("ReadShapeCompoundMode")
-if not ReadShapeCompoundMode_status:
-    paramGetV.SetBool("ReadShapeCompoundMode",False)
-Scheme_203_status=paramGetV.GetBool("Scheme_214")
-if not Scheme_203_status:
-    paramGetV.SetBool("Scheme_203",False)
-Scheme_214_status=paramGetV.GetBool("Scheme_214")
-if not Scheme_214_status:
-    paramGetV.SetBool("Scheme_214",True)
+if  paramGetV.GetBool("ReadShapeCompoundMode", False) != paramGetV.GetBool("ReadShapeCompoundMode", True):
+    paramGetV.SetBool("ReadShapeCompoundMode", True)

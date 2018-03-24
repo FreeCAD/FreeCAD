@@ -61,7 +61,10 @@ def makeAxis(num=5,size=1000,name="Axes"):
         dist = []
         angles = []
         for i in range(num):
-            dist.append(float(size))
+            if i == 0:
+                dist.append(0)
+            else:
+                dist.append(float(size))
             angles.append(float(0))
         obj.Distances = dist
         obj.Angles = angles
@@ -101,7 +104,7 @@ class _CommandAxis:
         return {'Pixmap'  : 'Arch_Axis',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
                 'Accel': "A, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
@@ -120,7 +123,7 @@ class _CommandAxisSystem:
         return {'Pixmap'  : 'Arch_Axis_System',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_AxisSystem","Axis System"),
                 'Accel': "X, S",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes")}
 
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
@@ -128,7 +131,7 @@ class _CommandAxisSystem:
             s = "["
             for o in FreeCADGui.Selection.getSelection():
                 if Draft.getType(o) != "Axis":
-                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected\n"))
+                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected")+"\n")
                     return
                 s += "FreeCAD.ActiveDocument."+o.Name+","
             s += "]"
@@ -137,7 +140,7 @@ class _CommandAxisSystem:
             FreeCADGui.doCommand("Arch.makeAxisSystem("+s+")")
             FreeCAD.ActiveDocument.commitTransaction()
         else:
-            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis\n"))
+            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis")+"\n")
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None

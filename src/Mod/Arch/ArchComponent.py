@@ -215,13 +215,13 @@ class ComponentTaskPanel:
 
     def getIcon(self,obj):
         if hasattr(obj.ViewObject,"Proxy"):
-            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
         'fills the treewidget'
@@ -309,22 +309,22 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
-        obj.addProperty("App::PropertyLink","CloneOf","Arch",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
-        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
-        obj.addProperty("App::PropertyString","Tag","Arch",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyLink","Material","Arch",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
-        obj.addProperty("App::PropertyLink","IfcProperties","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
-        obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
-        obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
-        obj.addProperty("App::PropertyLink","HiRes","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
-        obj.addProperty("App::PropertyLink","Axis","Arch",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+        obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+        obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+        obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+        obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyEnumeration","Role","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+        obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+        obj.addProperty("App::PropertyLink","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+        obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+        obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+        obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
+        obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -338,7 +338,10 @@ class Component:
         if self.clone(obj):
             return
         if obj.Base:
-            obj.Shape = obj.Base.Shape
+            shape = self.spread(obj,obj.Base.Shape)
+            if obj.Additions or obj.Subtractions:
+                shape = self.processSubShapes(obj,shape)
+            obj.Shape = shape
 
     def __getstate__(self):
         return self.Type
@@ -354,9 +357,32 @@ class Component:
                 obj.Material = obj.BaseMaterial
                 obj.removeProperty("BaseMaterial")
                 print("Migrated old BaseMaterial property -> Material in ",obj.Label)
-                
+
+    def onBeforeChange(self,obj,prop):
+        if prop == "Placement":
+            self.placementBefore = FreeCAD.Placement(obj.Placement)
+
     def onChanged(self,obj,prop):
-        return
+        if prop == "Placement":
+            if hasattr(self,"placementBefore"):
+                delta = FreeCAD.Placement()
+                delta.Base = obj.Placement.Base.sub(self.placementBefore.Base)
+                delta.Rotation = obj.Placement.multiply(self.placementBefore.inverse()).Rotation
+                for o in self.getIncluded(obj,movable=True):
+                    o.Placement = o.Placement.multiply(delta)
+
+    def getIncluded(self,obj,movable=False):
+        ilist = []
+        for o in obj.InList:
+            if hasattr(o,"Hosts"):
+                if obj in o.Hosts:
+                    if movable:
+                        if hasattr(o,"MoveWithHost"):
+                            if o.MoveWithHost:
+                                ilist.append(o) 
+                    else:
+                        ilist.append(o)
+        return ilist
 
     def clone(self,obj):
         "if this object is a clone, sets the shape. Returns True if this is the case"
@@ -444,6 +470,9 @@ class Component:
         return None
         
     def rebase(self,shape):
+        """returns a shape that is a copy of the original shape
+        but centered on the (0,0) origin, and a placement that is needed to
+        reposition that shape to its original location/orientation"""
         import DraftGeomUtils,math
         if not isinstance(shape,list):
             shape = [shape]
@@ -453,13 +482,13 @@ class Component:
             v = shape[0].BoundBox.Center
         n = DraftGeomUtils.getNormal(shape[0])
         r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
-        if round(r.Angle,8) == round(math.pi,8):
+        if round(abs(r.Angle),8) == round(math.pi,8):
             r = FreeCAD.Rotation()
         shapes = []
         for s in shape:
             s = s.copy()
             s.translate(v.negative())
-            s.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
+            s.rotate(FreeCAD.Vector(0,0,0),r.Axis,math.degrees(-r.Angle))
             shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v
@@ -491,7 +520,7 @@ class Component:
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
-            if placement.isNull():
+            if placement.isIdentity():
                 placement = None
             else:
                 placement = FreeCAD.Placement(placement)
@@ -585,7 +614,7 @@ class Component:
                                         print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
 
-    def spread(self,obj,shape,placement):
+    def spread(self,obj,shape,placement=None):
         "spreads this shape along axis positions"
         points = None
         if hasattr(obj,"Axis"):
@@ -625,19 +654,19 @@ class Component:
                         else:
                             shape = r
                         obj.Shape = self.spread(obj,shape,placement)
-                        if not placement.isNull():
+                        if not placement.isIdentity():
                             obj.Placement = placement
                     else:
                         if allownosolid:
                             obj.Shape = self.spread(obj,shape,placement)
-                            if not placement.isNull():
+                            if not placement.isIdentity():
                                 obj.Placement = placement
                         else:
                             FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                 else:
                     if allowinvalid:
                         obj.Shape = self.spread(obj,shape,placement)
-                        if not placement.isNull():
+                        if not placement.isIdentity():
                             obj.Placement = placement
                     else:
                         FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")

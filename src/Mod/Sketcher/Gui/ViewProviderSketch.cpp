@@ -56,6 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
 # include <QAction>
@@ -141,13 +142,15 @@ SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     //
 SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::ExprBasedConstrDimColor     (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
 SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
-SbVec3f ViewProviderSketch::prvClickPoint;
+SbVec2s ViewProviderSketch::prvClickPos;
 SbVec2s ViewProviderSketch::prvCursorPos;
 SbVec2s ViewProviderSketch::newCursorPos;
 
@@ -247,7 +250,7 @@ struct EditData {
     SoText2       *textX;
     SoTranslation *textPos;
 
-    SoGroup       *constrGroup;
+    SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
 };
@@ -274,7 +277,8 @@ ViewProviderSketch::ViewProviderSketch()
   : edit(0),
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
-    combrepscalehyst(0)
+    combrepscalehyst(0),
+    isShownVirtualSpace(false)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -333,7 +337,6 @@ ViewProviderSketch::ViewProviderSketch()
     
     //rubberband selection
     rubberband = new Gui::Rubberband();
-
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -617,19 +620,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     float dci = (float) QApplication::doubleClickInterval()/1000.0f;
 
                     if (done &&
-                        (point - prvClickPoint).length() <  dblClickRadius &&
+                        SbVec2f(cursorPos - prvClickPos).length() <  dblClickRadius &&
                         (SbTime::getTimeOfDay() - prvClickTime).getValue() < dci) {
 
                         // Double Click Event Occurred
                         editDoubleClicked();
                         // Reset Double Click Static Variables
                         prvClickTime = SbTime();
-                        prvClickPoint = SbVec3f(0.0f, 0.0f, 0.0f);
-                        Mode = STATUS_NONE;
+                        prvClickPos = SbVec2s(-16000,-16000); //certainly far away from any clickable place, to avoid re-trigger of double-click if next click happens fast.
 
+                        Mode = STATUS_NONE;
                     } else {
                         prvClickTime = SbTime::getTimeOfDay();
-                        prvClickPoint = point;
+                        prvClickPos = cursorPos;
                         prvCursorPos = cursorPos;
                         newCursorPos = cursorPos;
                         if (!done)
@@ -766,7 +769,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             try {
                                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                                        ,getObject()->getNameInDocument()
-                                                       ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
+                                                       ,GeoId, PosId, x-xInit, y-yInit, 0
                                                        );
                                 Gui::Command::commitCommand();
 
@@ -1135,9 +1138,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 int GeoId;
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
-                Base::Vector3d vec(x-xInit,y-yInit,0);
+                Base::Vector3d vec(x,y,0);
                 if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                    if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, relative) == 0) {
+                    if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, false) == 0) {
                         setPositionText(Base::Vector2d(x,y));
                         draw(true,false);
                         signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
@@ -1617,58 +1620,64 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
     SoNode *tail = path->getTail();
     SoNode *tailFather = path->getNode(path->getLength()-2);
 
-    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i)
+    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i) {
         if (edit->constrGroup->getChild(i) == tailFather) {
             SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
-            if(sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
+            if (sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
                 SoInfo *constrIds = NULL;
-                if(tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+                if (tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
                     // First icon was hit
                     constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID));
-
-                } else {
+                }
+                else {
                     // Assume second icon was hit
-                    if(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()){
+                    if (CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()) {
                         constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
                     }
                 }
-                if(constrIds) {
+
+                if (constrIds) {
                     QString constrIdsStr = QString::fromLatin1(constrIds->string.getValue().getString());
-                    if(edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
+                    if (edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
                         // If it's a combined constraint icon
 
                         // Screen dimensions of the icon
                         SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
                         // Center of the icon
                         SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
-                        // Coordinates of the mouse cursor on the icon, origin at top-left
+                        // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
+                        // but bottom-left for OIV.
+                        // The coordinates are needed in Qt format, i.e. from top to bottom.
                         int iconX = cursorPos[0] - iconCoords[0] + iconSize[0]/2,
-                            iconY = iconCoords[1] - cursorPos[1] + iconSize[1]/2;
+                            iconY = cursorPos[1] - iconCoords[1] - iconSize[1]/2;
+                        iconY = iconSize[1] - iconY;
 
-                        for(ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
+                        for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
-                            if(b->first.contains(iconX, iconY))
+                            if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
-                                for(std::set<int>::iterator k = b->second.begin();
-                                    k != b->second.end(); ++k)
+                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
                                     constrIndices.insert(*k);
+                            }
                         }
-                    } else {
+                    }
+                    else {
                         // It's a constraint icon, not a combined one
                         QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
-                        while(!constrIdStrings.empty())
+                        while (!constrIdStrings.empty())
                             constrIndices.insert(constrIdStrings.takeAt(0).toInt());
                     }
                 }
             }
-                else {
+            else {
                 // other constraint icons - eg radius...
                 constrIndices.clear();
                 constrIndices.insert(i);
             }
             break;
-
         }
+    }
+
     return constrIndices;
 }
 
@@ -2582,7 +2591,7 @@ void ViewProviderSketch::updateColor(void)
             color[i] = FullyConstrainedColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zLowLines);
+                verts[j] = SbVec3f(x,y,zNormLine);
             }
         }
         else {
@@ -2683,7 +2692,10 @@ void ViewProviderSketch::updateColor(void)
         else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                l->textColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+
+                l->textColor = (getSketchObject()->constraintHasExpression(i) ? ExprBasedConstrDimColor: 
+                                        (constraint->isDriving ? ConstrDimColor : NonDrivingConstrDimColor));
+
             } else if (hasMaterial) {
                 m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
             }
@@ -2733,6 +2745,8 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
         return QString::fromLatin1("small/Constraint_Symmetric_sm");
     case SnellsLaw:
         return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
+    case Block:
+        return QString::fromLatin1("small/Constraint_Block_sm");
     default:
         return QString();
     }
@@ -3138,11 +3152,12 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
             if(bb == boundingBoxesVec.begin()) {
                 // The first bounding box is for the icon at left, so assign
                 // all IDs for that type of constraint to the icon.
-                for(std::vector<int>::iterator j = ids.begin();
-                    j != ids.end(); ++j)
+                for(std::vector<int>::iterator j = ids.begin(); j != ids.end(); ++j)
                     nextIds.insert(*j);
-            } else
+            }
+            else {
                 nextIds.insert(*(id++));
+            }
 
             ConstrIconBB newBB(bb->adjusted(0, oldHeight, 0, oldHeight),
                                nextIds);
@@ -4021,6 +4036,8 @@ Restart:
         rebuildConstraintsVisual();
     assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
+    // update the virtual space
+    updateVirtualSpace();
     // go through the constraints and update the position
     i = 0;
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
@@ -4039,26 +4056,127 @@ Restart:
 
             // distinquish different constraint types to build up
             switch (Constr->Type) {
+                case Block:
                 case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
                 case Vertical: // write the new position of the Vertical constraint
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-                        bool alignment = Constr->Second != Constraint::GeoUndef;
+                        bool alignment = Constr->Type!=Block && Constr->Second != Constraint::GeoUndef;
 
                         // get the geometry
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
                         if (!alignment) {
-                            // Vertical can only be a GeomLineSegment
-                            assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
-                            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
+                            // Vertical & Horiz can only be a GeomLineSegment, but Blocked can be anything.
+                            Base::Vector3d midpos;
+                            Base::Vector3d dir;
+                            Base::Vector3d norm;
 
-                            // calculate the half distance between the start and endpoint
-                            Base::Vector3d midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
 
-                            //Get a set of vectors perpendicular and tangential to these
-                            Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
-                            Base::Vector3d norm(-dir.y,dir.x,0);
+                                // calculate the half distance between the start and endpoint
+                                midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
+
+                                //Get a set of vectors perpendicular and tangential to these
+                                dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
+
+                                norm = Base::Vector3d(-dir.y,dir.x,0);
+                            }
+                            else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                                const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+                                midpos = Base::Vector3d(0,0,0);
+
+                                std::vector<Base::Vector3d> poles = bsp->getPoles();
+
+                                // Move center of gravity towards start not to collide with bspline degree information.
+                                double ws = 1.0 / poles.size();
+                                double w = 1.0;
+
+                                for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
+                                    midpos += w*(*it);
+                                    w -= ws;
+                                }
+
+                                midpos /= poles.size();
+
+                                dir = (bsp->getEndPoint() - bsp->getStartPoint()).Normalize();
+                                norm = Base::Vector3d(-dir.y,dir.x,0);
+                            }
+                            else {
+                                double ra=0,rb=0;
+                                double angle,angleplus=0.;//angle = rotation of object as a whole; angleplus = arc angle (t parameter for ellipses).
+                                if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                                    const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
+                                    ra = circle->getRadius();
+                                    angle = M_PI/4;
+                                    midpos = circle->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                                    const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
+                                    ra = arc->getRadius();
+                                    double startangle, endangle;
+                                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    angle = (startangle + endangle)/2;
+                                    midpos = arc->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                                    const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo);
+                                    ra = ellipse->getMajorRadius();
+                                    rb = ellipse->getMinorRadius();
+                                    Base::Vector3d majdir = ellipse->getMajorAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = M_PI/4;
+                                    midpos = ellipse->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+                                    const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo);
+                                    ra = aoe->getMajorRadius();
+                                    rb = aoe->getMinorRadius();
+                                    double startangle, endangle;
+                                    aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = aoe->getMajorAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = (startangle + endangle)/2;
+                                    midpos = aoe->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                                    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo);
+                                    ra = aoh->getMajorRadius();
+                                    rb = aoh->getMinorRadius();
+                                    double startangle, endangle;
+                                    aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = aoh->getMajorAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = (startangle + endangle)/2;
+                                    midpos = aoh->getCenter();
+                                } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                                    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo);
+                                    ra = aop->getFocal();
+                                    double startangle, endangle;
+                                    aop->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = - aop->getXAxisDir();
+                                    angle = atan2(majdir.y, majdir.x);
+                                    angleplus = (startangle + endangle)/2;
+                                    midpos = aop->getFocus();    
+                                } else
+                                    break;
+
+                                if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                                    geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                                    geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
+
+                                    Base::Vector3d majDir, minDir, rvec;
+                                    majDir = Base::Vector3d(cos(angle),sin(angle),0);//direction of major axis of ellipse
+                                    minDir = Base::Vector3d(-majDir.y,majDir.x,0);//direction of minor axis of ellipse
+                                    rvec = (ra*cos(angleplus)) * majDir   +   (rb*sin(angleplus)) * minDir;
+                                    midpos += rvec;
+                                    rvec.Normalize();
+                                    norm = rvec;
+                                    dir = Base::Vector3d(-rvec.y,rvec.x,0);//DeepSOIC: I'm not sure what dir is supposed to mean.
+                                }
+                                else {
+                                    norm = Base::Vector3d(cos(angle),sin(angle),0);
+                                    dir = Base::Vector3d(-norm.y,norm.x,0);
+                                    midpos += ra*norm;
+                                }
+                            }
 
                             Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
@@ -4184,7 +4302,6 @@ Restart:
                             } else
                                 break;
                             twoIcons = true;
-
                         }
 
                         Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
@@ -4701,18 +4818,23 @@ Restart:
                                         p0 = SbVec3f(x,y,0);
                                     }
                                 }
-                            } else {//angle-via-point
+
+                                range = Constr->getValue(); // WYSIWYG
+                                startangle = atan2(dir1.y,dir1.x);
+                            }
+                            else {//angle-via-point
                                 Base::Vector3d p = getSketchObject()->getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
                                 p0 = SbVec3f(p.x, p.y, 0);
                                 dir1 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x, p.y);
                                 dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
                                 dir2 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
                                 dir2.RotateZ(-M_PI/2);
+
+                                startangle = atan2(dir1.y,dir1.x);
+                                range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
+                                          dir1.x*dir2.x+dir1.y*dir2.y);
                             }
 
-                            startangle = atan2(dir1.y,dir1.x);
-                            range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
-                                          dir1.x*dir2.x+dir1.y*dir2.y);
                             endangle = startangle + range;
 
                         } else if (Constr->First != Constraint::GeoUndef) {
@@ -4902,6 +5024,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             break;
             case Horizontal:
             case Vertical:
+            case Block:
             {
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
@@ -5013,18 +5136,55 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     }
 }
 
+void ViewProviderSketch::updateVirtualSpace(void)
+{
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
+
+    if(constrlist.size() == edit->vConstrType.size()) {
+
+        edit->constrGroup->enable.setNum(constrlist.size());
+
+        SbBool *sws = edit->constrGroup->enable.startEditing();
+
+        for (size_t i = 0; i < constrlist.size(); i++)
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isShownVirtualSpace); // XOR of constraint mode and VP mode
+
+
+        edit->constrGroup->enable.finishEditing();
+    }
+}
+
+void ViewProviderSketch::setIsShownVirtualSpace(bool isshownvirtualspace)
+{
+    this->isShownVirtualSpace = isshownvirtualspace;
+
+    updateVirtualSpace();
+    
+    signalConstraintsChanged();
+}
+
+bool ViewProviderSketch::getIsShownVirtualSpace() const
+{
+    return this->isShownVirtualSpace;
+}
+
+
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 {
     assert(edit);
 
     edit->EditCurveSet->numVertices.setNum(1);
     edit->EditCurvesCoordinate->point.setNum(EditCurve.size());
+    edit->EditCurvesMaterials->diffuseColor.setNum(EditCurve.size());
     SbVec3f *verts = edit->EditCurvesCoordinate->point.startEditing();
     int32_t *index = edit->EditCurveSet->numVertices.startEditing();
+    SbColor *color = edit->EditCurvesMaterials->diffuseColor.startEditing();
 
     int i=0; // setting up the line set
-    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++)
+    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++) {
         verts[i].setValue(it->x,it->y,zEdit);
+        color[i] = CreateCurveColor;
+    }
 
     index[0] = EditCurve.size();
     edit->EditCurvesCoordinate->point.finishEditing();
@@ -5125,6 +5285,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
+    Gui::Selection().rmvPreselect();
 
     // create the container for the additional edit data
     assert(!edit);
@@ -5148,7 +5309,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"Drawing::\"), objs)\n"
                         "  tv.hide(objs)\n"
                         "if ActiveSketch.ViewObject.ShowSupport:\n"
-                        "  tv.show([ref[0] for ref in ActiveSketch.Support])\n"
+                        "  tv.show([ref[0] for ref in ActiveSketch.Support if not ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch)\n"
@@ -5180,6 +5341,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveColor.getPackedValue());
     color = hGrp->GetUnsigned("EditedEdgeColor", color);
     CurveColor.setPackedValue((uint32_t)color, transparency);
+    // set the create line (curve) color
+    color = (unsigned long)(CreateCurveColor.getPackedValue());
+    color = hGrp->GetUnsigned("CreateLineColor", color);
+    CreateCurveColor.setPackedValue((uint32_t)color, transparency);
     // set the construction curve color
     color = (unsigned long)(CurveDraftColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstructionColor", color);
@@ -5202,7 +5367,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // set non-driving constraint color
     color = (unsigned long)(NonDrivingConstrDimColor.getPackedValue());
     color = hGrp->GetUnsigned("NonDrivingConstrDimColor", color);
-    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);    
+    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
+    ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+
     // set the external geometry color
     color = (unsigned long)(CurveExternalColor.getPackedValue());
     color = hGrp->GetUnsigned("ExternalColor", color);
@@ -5240,6 +5410,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
     connectRedoDocument = Gui::Application::Instance->activeDocument()
         ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, _1));
+
+    // Enable solver initial solution update while dragging.
+    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+    getSketchObject()->getSolvedSketch().RecalculateInitialSolutionWhileMovingPoint = hGrp2->GetBool("RecalculateInitialSolutionWhileDragging",true);
 
     return true;
 }
@@ -5495,7 +5670,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(DrawStyle);
 
     // add the group where all the constraints has its SoSeparator
-    edit->constrGroup = new SoGroup();
+    edit->constrGroup = new SmSwitchboard();
     edit->constrGroup->setName("ConstraintGroup");
     edit->EditRoot->addChild(edit->constrGroup);
     
@@ -5821,7 +5996,11 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
+        // We stored the vertices, but is there really a coincident constraint? Check
+        const std::vector< Sketcher::Constraint * > &vals = getSketchObject()->Constraints.getValues();
+        
         std::set<int>::const_reverse_iterator rit;
+
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
@@ -5833,12 +6012,30 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         }
 
         for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); ++rit) {
-            try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i)"
-                                       ,getObject()->getNameInDocument(), *rit);
+            int GeoId;
+            PointPos PosId;
+
+            if (*rit == GeoEnum::RtPnt) { // RootPoint
+                GeoId = Sketcher::GeoEnum::RtPnt;
+                PosId = start;
+            } else {
+                getSketchObject()->getGeoVertexIndex(*rit, GeoId, PosId);
             }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+
+            if (GeoId != Constraint::GeoUndef) {
+                for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+                    if (((*it)->Type == Sketcher::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
+                        ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) ) {
+                        try {
+                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)"
+                                                    ,getObject()->getNameInDocument(), GeoId, (int)PosId);
+                        }
+                        catch (const Base::Exception& e) {
+                            Base::Console().Error("%s\n", e.what());
+                        }
+                        break;
+                    }
+                }
             }
         }
 

@@ -49,6 +49,7 @@ public:
     /// destructor
     virtual ~ViewProviderDrawingView();
 
+    App::PropertyBool  KeepLabel;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -77,7 +78,7 @@ public:
     virtual TechDraw::DrawView* getViewObject() const;
     
     void onGuiRepaint(const TechDraw::DrawView* dv); 
-    typedef boost::signals::connection Connection;
+    typedef boost::signals::scoped_connection Connection;
     Connection connectGuiRepaint;
     
 

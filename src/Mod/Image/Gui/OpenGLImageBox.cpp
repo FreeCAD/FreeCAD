@@ -139,7 +139,7 @@ void GLImageBox::initializeGL()
         connect(logger, &QOpenGLDebugLogger::messageLogged, this, &GLImageBox::handleLoggedMessage);
 
         if (logger->initialize())
-            logger->startLogging();
+            logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
     }
 #endif
 }
@@ -200,7 +200,7 @@ void GLImageBox::drawImage()
     if (_image.hasValidData() == false)
         return;
 
-    // Gets the size of the diplayed image area using the current display settings 
+    // Gets the size of the displayed image area using the current display settings 
     // (in units of image pixels)
     int dx, dy;
     getDisplayedImageAreaSize(dx, dy);
@@ -265,7 +265,7 @@ void GLImageBox::drawImage()
     }
 }
 
-// Gets the size of the diplayed image area using the current display settings 
+// Gets the size of the displayed image area using the current display settings 
 // (in units of image pixels)
 void GLImageBox::getDisplayedImageAreaSize(int &dx, int &dy)
 {
@@ -858,70 +858,60 @@ unsigned int GLImageBox::pixValToMapIndex(double PixVal)
     }
 }
 
+// https://learnopengl.com/?_escaped_fragment_=In-Practice/Text-Rendering#!In-Practice/Text-Rendering
 void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
 {
-    // replacement for QGLWidget::renderText
-    // FIXME: The result looks very poor!
-
     if (str.isEmpty() || !isValid())
         return;
 
-    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    //glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+    //glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-    GLint view[4];
-    bool use_scissor_testing = f->glIsEnabled(GL_SCISSOR_TEST);
-    //if (!use_scissor_testing)
-        f->glGetIntegerv(GL_VIEWPORT, &view[0]);
-
-
-    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glMatrixMode(GL_TEXTURE);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-
-    glShadeModel(GL_FLAT);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_STENCIL_TEST);
-    glDisable(GL_DEPTH_TEST);
+#if 0
     glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-    QRect viewport(view[0], view[1], view[2], view[3]);
-    if (!use_scissor_testing && viewport != rect()) {
-        // if the user hasn't set a scissor box, we set one that
-        // covers the current viewport
-        f->glScissor(view[0], view[1], view[2], view[3]);
-        f->glEnable(GL_SCISSOR_TEST);
-    } else if (use_scissor_testing) {
-        // use the scissor box set by the user
-        f->glEnable(GL_SCISSOR_TEST);
-    }
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     GLfloat color[4];
-    f->glGetFloatv(GL_CURRENT_COLOR, &color[0]);
+    glGetFloatv(GL_CURRENT_COLOR, &color[0]);
     QColor col;
     col.setRgbF(color[0], color[1], color[2],color[3]);
 
-    QPainter painter(this);
+    QFont font(fnt);
+    font.setStyleHint(QFont::Times, QFont::PreferAntialias);
+
+    QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+
+    painter.setFont(font);
     painter.setPen(col);
-    painter.setFont(fnt);
     painter.drawText(x, y, str);
     painter.end();
+#else
+    GLfloat color[4];
+    glGetFloatv(GL_CURRENT_COLOR, &color[0]);
+    QColor col;
+    col.setRgbF(color[0], color[1], color[2],color[3]);
 
-    glMatrixMode(GL_TEXTURE);
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glPopAttrib();
-    glPopClientAttrib();
+    QFont font(fnt);
+    font.setStyleHint(QFont::Times, QFont::PreferAntialias);
+
+    QPainterPath textPath;
+    textPath.addText(x, y, font, str);
+
+    QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+
+    painter.setBrush(col);
+    painter.setPen(Qt::NoPen);
+    painter.drawPath(textPath);
+    painter.end();
+#endif
+    //glPopAttrib();
+    //glPopClientAttrib();
 }
 
 #include "moc_OpenGLImageBox.cpp"

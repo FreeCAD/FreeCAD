@@ -109,7 +109,7 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
 #define RADIUSAXIS (0.8)
 #define ARROWLENGTH (3)
 #define ARROWHEADRADIUS (ARROWLENGTH/3)
-#define LENGHTDISC (0.25)
+#define LENGTHDISC (0.25)
 #define RADIUSDISC (0.8)
 
 void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)

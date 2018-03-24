@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Hozzávetőleges B-görbe felület...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Hozzávetőlegesen egy B-görbe felület</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>Hozzávetőleges B-görbe felület...</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>Hozzávetőleges felület...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Hozzávetőleges B-Spline felület</translation>
     </message>
@@ -85,8 +93,12 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
+      <translation>B-görbe felület ilesztése</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
       <translation>B-görbe felület ilesztése</translation>
     </message>
     <message>

@@ -109,7 +109,6 @@ SMESH_Gen::~SMESH_Gen()
 //=============================================================================
 
 SMESH_Mesh* SMESH_Gen::CreateMesh(int theStudyId, bool theIsEmbeddedMode)
-  throw(SALOME_Exception)
 {
   Unexpect aCatch(SalomeException);
   MESSAGE("SMESH_Gen::CreateMesh");

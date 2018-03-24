@@ -81,6 +81,8 @@
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_Wire.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -208,16 +210,41 @@ void Area::setPlane(const TopoDS_Shape &shape) {
     myTrsf = trsf;
 }
 
+static bool getShapePlane(const TopoDS_Shape &shape, gp_Pln &pln) {
+    if(shape.IsNull())
+        return false;
+    if(shape.ShapeType() == TopAbs_FACE) {
+        BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+        if(adapt.GetType() != GeomAbs_Plane)
+            return false;
+        pln = adapt.Plane();
+        return true;
+    }
+    BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
+    if (!finder.Found())
+        return false;
+
+    // TODO: It seemed that FindSurface disregard shape's
+    // transformation SOMETIME, so we have to transformed the found
+    // plane manually. Need to figure out WHY!
+    //
+    // ADD NOTE: Okay, one thing I find out that for face shape, this
+    // FindSurface may produce plane at the wrong position, so use
+    // adaptor to get the underlaying surface plane directly (see
+    // above).  It remains to be seen that if FindSurface has the same
+    // problem on wires
+    pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+    pln.Transform(shape.Location().Transformation());
+    return true;
+}
+
 bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {
     if(s1.IsNull() || s2.IsNull()) return false;
-    if(s1.IsEqual(s2)) return true;
-    TopoDS_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    builder.Add(comp,s1);
-    builder.Add(comp,s2);
-    BRepLib_FindSurface planeFinder(comp,-1,Standard_True);
-    return planeFinder.Found();
+    if(s1.IsSame(s2)) return true;
+    gp_Pln pln1,pln2;
+    if(!getShapePlane(s1,pln1) || !getShapePlane(s2,pln2))
+        return false;
+    return pln1.Position().IsCoplanar(pln2.Position(),Precision::Confusion(),Precision::Confusion());
 }
 
 int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
@@ -281,6 +308,67 @@ int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
     return skipped;
 }
 
+static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection) {
+    std::vector<gp_Pnt> ret;
+    BRepAdaptor_Curve curve(edge);
+    Standard_Real efirst,elast,first,last;
+    efirst = curve.FirstParameter();
+    elast = curve.LastParameter();
+    bool reversed = (edge.Orientation()==TopAbs_REVERSED);
+
+    // push the first point
+    ret.push_back(curve.Value(reversed?elast:efirst));
+
+    Handle(Geom_Curve) c = BRep_Tool::Curve(edge, first, last);
+    first = c->FirstParameter();
+    last = c->LastParameter();
+    if(efirst>elast) {
+        if(first<last)
+            std::swap(first,last);
+    }else if(first>last)
+        std::swap(first,last);
+
+    // NOTE: OCCT QuasiUniformDeflection has a bug cause it to return only
+    // partial points for some (BSpline) curve if we pass in the edge trimmed
+    // first and last parameters. Passing the original curve first and last
+    // paramaters works fine. The following algorithm uses the original curve
+    // parameters, and skip those out of range. The algorithm shall work the
+    // same for any other discetization algorithm, althgouth it seems only 
+    // QuasiUniformDeflection has this bug.
+
+    GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
+    if (!discretizer.IsDone ())
+        Standard_Failure::Raise("Curve discretization failed");
+    if(discretizer.NbPoints () > 1) {
+        int nbPoints = discretizer.NbPoints ();
+        //strangly OCC discretizer points are one-based, not zero-based, why?
+        if(reversed) {
+            for (int i=nbPoints-1; i>=1; --i) {
+                auto param = discretizer.Parameter(i);
+                if(first<last) {
+                    if(param<efirst || param>elast)
+                        continue;
+                }else if(param>efirst || param<elast)
+                    continue;
+                ret.push_back(discretizer.Value(i));
+            }
+        }else{
+            for (int i=2; i<=nbPoints; i++) {
+                auto param = discretizer.Parameter(i);
+                if(first<last) {
+                    if(param<efirst || param>elast)
+                        continue;
+                }else if(param>efirst || param<elast)
+                    continue;
+                ret.push_back(discretizer.Value(i));
+            }
+        }
+    }
+    // push the last point
+    ret.push_back(curve.Value(reversed?efirst:elast));
+    return ret;
+}
+
 void Area::addWire(CArea &area, const TopoDS_Wire& wire,
         const gp_Trsf *trsf, double deflection, bool to_edges)
 {
@@ -312,55 +400,47 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
             }
             break;
         } case GeomAbs_Circle:{
-            if(!to_edges) {
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Dir dir = circle.Axis().Direction();
-                gp_Pnt center = circle.Location();
-                int type = dir.Z()<0?-1:1;
-                if(reversed) type = -type;
-                if(fabs(first-last)>M_PI) {
-                    // Split arc(circle) larger than half circle. Because gcode
-                    // can't handle full circle?
-                    gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                    ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
-                                Point(center.X(),center.Y())));
-                }
-                ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+            double first = curve.FirstParameter();
+            double last = curve.LastParameter();
+            gp_Circ circle = curve.Circle();
+            gp_Dir dir = circle.Axis().Direction();
+            gp_Pnt center = circle.Location();
+            int type = dir.Z()<0?-1:1;
+            if(reversed) type = -type;
+            if(fabs(first-last)>M_PI) {
+                // Split arc(circle) larger than half circle. Because gcode
+                // can't handle full circle?
+                gp_Pnt mid = curve.Value((last-first)*0.5+first);
+                ccurve.append(CVertex(type,Point(mid.X(),mid.Y()),
                             Point(center.X(),center.Y())));
-                break;
             }
-            //fall through
+            ccurve.append(CVertex(type,Point(p.X(),p.Y()),
+                        Point(center.X(),center.Y())));
+            if(to_edges) {
+                ccurve.UnFitArcs();
+                CCurve c;
+                c.append(ccurve.m_vertices.front());
+                auto it = ccurve.m_vertices.begin();
+                for(++it;it!=ccurve.m_vertices.end();++it) {
+                    c.append(*it);
+                    area.append(c);
+                    c.m_vertices.pop_front();
+                }
+                ccurve.m_vertices.clear();
+                ccurve.append(c.m_vertices.front());
+            }
+            break;
         } default: {
             // Discretize all other type of curves
-            GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
-                    curve.FirstParameter(), curve.LastParameter());
-            if (discretizer.IsDone () && discretizer.NbPoints () > 1) {
-                int nbPoints = discretizer.NbPoints ();
-                //strangly OCC discretizer points are one-based, not zero-based, why?
-                if(reversed) {
-                    for (int i=nbPoints-1; i>=1; --i) {
-                        gp_Pnt pt = discretizer.Value (i);
-                        ccurve.append(CVertex(Point(pt.X(),pt.Y())));
-                        if(to_edges) {
-                            area.append(ccurve);
-                            ccurve.m_vertices.pop_front();
-                        }
-                    }
-                }else{
-                    for (int i=2; i<=nbPoints; i++) {
-                        gp_Pnt pt = discretizer.Value (i);
-                        ccurve.append(CVertex(Point(pt.X(),pt.Y())));
-                        if(to_edges) {
-                            area.append(ccurve);
-                            ccurve.m_vertices.pop_front();
-                        }
-                    }
+            const auto &pts = discretize(edge,deflection);
+            for(size_t i=1;i<pts.size();++i) {
+                auto &pt = pts[i];
+                ccurve.append(CVertex(Point(pt.X(),pt.Y())));
+                if(to_edges) {
+                    area.append(ccurve);
+                    ccurve.m_vertices.pop_front();
                 }
-
-            }else
-                Standard_Failure::Raise("Curve discretization failed");
+            }
         }}
     }
     if(!to_edges) {
@@ -414,11 +494,8 @@ void Area::add(const TopoDS_Shape &shape,short op) {
     if(op!=OperationCompound)
         toClipperOp(op);
 
-    bool haveSolid = false;
-    for(TopExp_Explorer it(shape, TopAbs_SOLID);it.More();) {
-        haveSolid = true;
-        break;
-    }
+    bool haveSolid = TopExp_Explorer(shape, TopAbs_SOLID).More();
+
     //TODO: shall we support Shells?
     if((!haveSolid && myHaveSolid) ||
         (haveSolid && !myHaveSolid && !myShapes.empty()))
@@ -429,7 +506,7 @@ void Area::add(const TopoDS_Shape &shape,short op) {
     clean();
     if(op!=OperationCompound && myShapes.empty())
         op = OperationUnion;
-    myShapes.push_back(Shape(op,shape));
+    myShapes.emplace_back(op,shape);
 }
 
 
@@ -510,33 +587,41 @@ struct WireJoiner {
         gp_Pnt p2;
         Box box;
         int iteration;
+        int iStart[2]; // adjacent list index start for p1 and p2
+        int iEnd[2]; // adjacent list index end
         bool used;
         bool hasBox;
         EdgeInfo(const TopoDS_Edge &e, bool bbox)
-            :edge(e),iteration(0) ,used(false),hasBox(false)
+            :edge(e),hasBox(false)
         {
             getEndPoints(e,p1,p2);
             if(bbox) hasBox= getBBox(e,box);
+            reset();
         }
         EdgeInfo(const TopoDS_Edge &e, const gp_Pnt &pt1,
                 const gp_Pnt &pt2, bool bbox)
-            :edge(e),p1(pt1),p2(pt2),iteration(0)
-            ,used(false),hasBox(false)
+            :edge(e),p1(pt1),p2(pt2),hasBox(false)
         {
             if(bbox) hasBox= getBBox(e,box);
+            reset();
+        }
+        void reset() {
+            iteration = 0;
+            used = false;
+            iStart[0] = iStart[1] = iEnd[0] = iEnd[1] = -1;
         }
     };
 
     typedef std::list<EdgeInfo> Edges;
     Edges edges;
 
-    struct EdgeValue {
+    struct VertexInfo {
         Edges::iterator it;
         bool start;
-        EdgeValue(Edges::iterator _it, bool _start)
-            :it(_it),start(_start)
+        VertexInfo(Edges::iterator it, bool start)
+            :it(it),start(start)
         {}
-        bool operator==(const EdgeValue &other) const {
+        bool operator==(const VertexInfo &other) const {
             return it==other.it && start==other.start;
         }
         const gp_Pnt &pt() const {
@@ -550,12 +635,12 @@ struct WireJoiner {
     struct PntGetter
     {
         typedef const gp_Pnt& result_type;
-        result_type operator()(const EdgeValue &v) const {
+        result_type operator()(const VertexInfo &v) const {
             return v.pt();
         }
     };
 
-    bgi::rtree<EdgeValue,RParameters, PntGetter> vmap;
+    bgi::rtree<VertexInfo,RParameters, PntGetter> vmap;
 
     struct BoxGetter
     {
@@ -576,14 +661,14 @@ struct WireJoiner {
     void remove(Edges::iterator it) {
         if(it->hasBox)
             boxMap.remove(it);
-        vmap.remove(EdgeValue(it,true));
-        vmap.remove(EdgeValue(it,false));
+        vmap.remove(VertexInfo(it,true));
+        vmap.remove(VertexInfo(it,false));
         edges.erase(it);
     }
 
     void add(Edges::iterator it) {
-        vmap.insert(EdgeValue(it,true));
-        vmap.insert(EdgeValue(it,false));
+        vmap.insert(VertexInfo(it,true));
+        vmap.insert(VertexInfo(it,false));
         if(it->hasBox)
             boxMap.insert(it);
     }
@@ -611,11 +696,12 @@ struct WireJoiner {
 
     //This algorithm tries to join connected edges into wires
     //
-    //tol>Precision::SquareConfusion() is used to join points that are close
-    //but do not coincide with a line segment. The close points my the results
-    //of rounding issue.
+    //tol*tol>Precision::SquareConfusion() can be used to join points that are
+    //close but do not coincide with a line segment. The close points may be
+    //the results of rounding issue.
     //
     void join(double tol) {
+        tol = tol*tol;
         while(edges.size()) {
             auto it = edges.begin();
             BRepBuilderAPI_MakeWire mkWire;
@@ -626,9 +712,9 @@ struct WireJoiner {
             bool done = false;
             for(int idx=0;!done&&idx<2;++idx) {
                 while(edges.size()) {
-                    std::vector<EdgeValue> ret;
+                    std::vector<VertexInfo> ret;
                     ret.reserve(1);
-                    const gp_Pnt &pt = idx?pstart:pend;
+                    const gp_Pnt &pt = idx==0?pstart:pend;
                     vmap.query(bgi::nearest(pt,1),std::back_inserter(ret));
                     assert(ret.size()==1);
                     double d = ret[0].pt().SquareDistance(pt);
@@ -749,12 +835,6 @@ struct WireJoiner {
 #endif
     }
 
-    struct StackInfo {
-        std::deque<EdgeValue> ret;
-        int idx;
-        StackInfo():idx(0){}
-    };
-
     // This algorithm tries to find a set of closed wires that includes as many
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
@@ -763,80 +843,126 @@ struct WireJoiner {
         throw Base::RuntimeError("Module must be built with boost version >= 1.55");
 #else
         // It seems OCC projector sometimes mess up the tolerance of edges
-        // which are supposed to be connected. So use a lesser preceision
+        // which are supposed to be connected. So use a lesser precision
         // below, and call makeCleanWire to fix the tolerance
         const double tol = 1e-10;
 
-        std::map<int,TopoDS_Edge> edgesToVisit;
+        std::vector<VertexInfo> adjacentList;
+        std::set<EdgeInfo*> edgesToVisit;
         int count = 0;
-        for(const auto &info : edges) {
+        int skips = 0;
+
+        for(auto &info : edges)
+            info.reset();
+
+        FC_TIME_INIT(t);
+        int rcount = 0;
+
+        for(auto &info : edges) {
 #if OCC_VERSION_HEX >= 0x070000
             if(BRep_Tool::IsClosed(info.edge))
 #else
-            gp_Pnt p1,p2;
-            getEndPoints(info.edge,p1,p2);
-            if(p1.SquareDistance(p2)<tol)
+            if(info.p1.SquareDistance(info.p2)<tol)
 #endif
             {
                 builder.Add(comp,BRepBuilderAPI_MakeWire(info.edge).Wire());
                 ++count;
+                continue;
+            }
+            gp_Pnt pt[2];
+            pt[0] = info.p1;
+            pt[1] = info.p2;
+            for(int i=0;i<2;++i) {
+                if(info.iStart[i]>=0)
+                    continue;
+                info.iEnd[i] = info.iStart[i] = (int)adjacentList.size();
+
+                // populate adjacent list
+                for(auto vit=vmap.qbegin(bgi::nearest(pt[i],INT_MAX));vit!=vmap.qend();++vit) {
+                    ++rcount;
+                    if(vit->pt().SquareDistance(pt[i]) > tol)
+                        break;
+                    auto &vinfo = *vit;
+                    // yse, we push ourself, too, because other edges require
+                    // this info in the adjcent list. We'll do filtering later.
+                    adjacentList.push_back(vinfo);
+                    ++info.iEnd[i];
+                }
+                // copy the adjacent indices to all connected edges
+                for(int j=info.iStart[i];j<info.iEnd[i];++j) {
+                    auto &other = adjacentList[j];
+                    auto &otherInfo = *other.it;
+                    if(&otherInfo != &info) {
+                        int k = other.start?0:1;
+                        otherInfo.iStart[k] = info.iStart[i];
+                        otherInfo.iEnd[k] = info.iEnd[i];
+                    }
+                }
+            }
+            if(info.iStart[0]!=info.iEnd[0] && info.iStart[1]!=info.iEnd[1]) {
+                // add the edge only if it is connected to some other edges on
+                // both ends
+                edgesToVisit.insert(&info);
             }else
-                edgesToVisit[info.edge.HashCode(INT_MAX)] = info.edge;
+                ++skips;
         }
 
-        std::deque<StackInfo> stack;
-        int skips = 0;
+        FC_TIME_LOG(t,"rtree::nearest (" << rcount << ')');
+
+        struct StackInfo {
+            size_t iStart;
+            size_t iEnd;
+            size_t iCurrent;
+            StackInfo(size_t idx):iStart(idx),iEnd(idx),iCurrent(idx){}
+        };
+        std::vector<StackInfo> stack;
+        std::vector<VertexInfo> vertexStack;
 
         for(int iteration=1;edgesToVisit.size();++iteration) {
-            auto it = edgesToVisit.begin();
-            TopoDS_Edge e = it->second;
-            edgesToVisit.erase(it);
-            gp_Pnt pstart,pend;
-            getEndPoints(e,pstart,pend);
-            bool skip_me = true;
+            EdgeInfo *currentInfo = *edgesToVisit.begin();
+            int currentIdx = 1; // used to tell whether search connection from the start(0) or end(1)
+            TopoDS_Edge &e = currentInfo->edge;
+            edgesToVisit.erase(edgesToVisit.begin());
+            gp_Pnt pstart=currentInfo->p1;
+            gp_Pnt pend=currentInfo->p2;
+            currentInfo->used = true;
+            currentInfo->iteration = iteration;
             stack.clear();
+            vertexStack.clear();
 
             // pstart and pend is the start and end vertex of the current wire
             while(true) {
                 // push a new stack entry
-                stack.emplace_back();
+                stack.emplace_back(vertexStack.size());
                 auto &r = stack.back();
 
                 // this loop is to find all edges connected to pend, and save them into stack.back()
-                for(auto vit=vmap.qbegin(bgi::nearest(pend,INT_MAX));
-                    vit!=vmap.qend();++vit)
-                {
-                    if(vit->pt().SquareDistance(pend) > tol)
-                        break;
-
-                    auto &info = *vit->it;
-
-                    // use 'iteration' to make sure we don't visit an edge twice.
-                    if(skip_me && info.edge.IsSame(e)) {
-                        skip_me = false;
-                        info.iteration = iteration;
-                        info.used = true;
-                        continue;
-                    }
+                for(int i=currentInfo->iStart[currentIdx];i<currentInfo->iEnd[currentIdx];++i) {
+                    auto &info = *adjacentList[i].it;
                     if(info.iteration!=iteration) {
                         info.iteration = iteration;
-                        r.ret.push_back(*vit);
+                        vertexStack.push_back(adjacentList[i]);
+                        ++r.iEnd;
                     }
                 }
-                while(stack.size()) {
+                while(true) {
                     auto &r = stack.back();
-                    if(r.idx<(int)r.ret.size()) {
+                    if(r.iCurrent<r.iEnd) {
                         // now pick one edge from stack.back(), connect it to
                         // pend, then extend pend
-                        pend = r.ret[r.idx].ptOther();
+                        auto &vinfo = vertexStack[r.iCurrent];
+                        pend = vinfo.ptOther();
+                        // update current edge info
+                        currentInfo = &(*vinfo.it);
+                        currentIdx = vinfo.start?1:0;
                         break;
                     }
                     // if no edge left in stack.back(), then pop it, and try again
-                    for(auto &v : r.ret)
-                        --v.it->iteration;
+                    vertexStack.erase(vertexStack.begin()+r.iStart,vertexStack.end());
                     stack.pop_back();
-                    if(stack.size())
-                        ++stack.back().idx;
+                    if(stack.empty())
+                        break;
+                    ++stack.back().iCurrent;
                 }
                 if(stack.empty()) {
                     // If stack is empty, it means this wire is open. Try a new
@@ -845,21 +971,16 @@ struct WireJoiner {
                     break;
                 }
                 if(pstart.SquareDistance(pend) > tol) {
-                    // check if the wire is closed
+                    // if the wire is not closed yet, continue search for the
+                    // next connected edge
                     continue;
                 }
 
                 Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
                 wireData->Add(e);
                 for(auto &r : stack) {
-                    const auto &v = r.ret[r.idx];
+                    const auto &v = vertexStack[r.iCurrent];
                     auto &info = *v.it;
-                    if(!info.used) {
-                        info.used = true;
-                        auto it = edgesToVisit.find(info.edge.HashCode(INT_MAX));
-                        if(it!=edgesToVisit.end())
-                            edgesToVisit.erase(it);
-                    }
                     if(v.start)
                         wireData->Add(info.edge);
                     else
@@ -867,14 +988,26 @@ struct WireJoiner {
                 }
                 // TechDraw even uses 0.1 as tolerance. Really? Why?
                 TopoDS_Wire wire = makeCleanWire(wireData,0.01);
-                if(!BRep_Tool::IsClosed(wire))
-                    throw Base::RuntimeError("Area: failed to close projection wire");
-                builder.Add(comp,wire);
-                ++count;
+                if(!BRep_Tool::IsClosed(wire)) {
+                    FC_WARN("failed to close some projection wire");
+                    ++skips;
+                }else{
+                    for(auto &r : stack) {
+                        const auto &v = vertexStack[r.iCurrent];
+                        auto &info = *v.it;
+                        if(!info.used) {
+                            info.used = true;
+                            edgesToVisit.erase(&info);
+                        }
+                    }
+                    Area::showShape(wire,"joined");
+                    builder.Add(comp,wire);
+                    ++count;
+                }
                 break;
             }
         }
-        AREA_TRACE("found " << count << " closed wires, skipped " << skips);
+        FC_TIME_LOG(t,"found " << count << " closed wires, skipped " << skips << "edges. ");
         return skips;
 #endif
     }
@@ -1016,33 +1149,12 @@ struct FindPlane {
     FindPlane(TopoDS_Shape &s, gp_Trsf &t, double &z)
         :myPlaneShape(s),myTrsf(t),myZ(z)
     {}
-    void operator()(const TopoDS_Shape &shape, int type) {
+    void operator()(const TopoDS_Shape &shape, int) {
         gp_Trsf trsf;
 
         gp_Pln pln;
-        if(type == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
-            if(adapt.GetType() != GeomAbs_Plane)
-                return;
-            pln = adapt.Plane();
-        }else{
-            BRepLib_FindSurface finder(shape.Located(TopLoc_Location()),-1,Standard_True);
-            if (!finder.Found())
-                return;
-
-            // TODO: It seemed that FindSurface disregard shape's
-            // transformation SOMETIME, so we have to transformed the found
-            // plane manually. Need to figure out WHY!
-            //
-            // ADD NOTE: Okay, one thing I find out that for face shape, this
-            // FindSurface may produce plane at the wrong position, so use
-            // adaptor to get the underlaying surface plane directly (see
-            // above).  It remains to be seen that if FindSurface has the same
-            // problem on wires
-            gp_Pln pln = GeomAdaptor_Surface(finder.Surface()).Plane();
-            pln.Transform(shape.Location().Transformation());
-        }
-
+        if(!getShapePlane(shape,pln))
+            return;
         gp_Ax3 pos = pln.Position();
         AREA_TRACE("plane pos " << AREA_XYZ(pos.Location()) << ", " << AREA_XYZ(pos.Direction()));
 
@@ -1122,9 +1234,15 @@ int Area::project(TopoDS_Shape &shape_out,
         TopoDS_Shape shape;
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
         ADD_HLR_SHAPE(V)
-        // ADD_HLR_SHAPE(H)
         ADD_HLR_SHAPE(OutLineV);
+        // ADD_HLR_SHAPE(Rg1LineV);
+        // ADD_HLR_SHAPE(RgNLineV);
+        // ADD_HLR_SHAPE(IsoLineV);
+        // ADD_HLR_SHAPE(H)
+        // ADD_HLR_SHAPE(Rg1LineH);
+        // ADD_HLR_SHAPE(RgNLineH);
         // ADD_HLR_SHAPE(OutLineH);
+        // ADD_HLR_SHAPE(IsoLineH);
     }
     catch (...) {
         AREA_ERR("error occurred while extracting edges");
@@ -1160,7 +1278,7 @@ int Area::project(TopoDS_Shape &shape_out,
     FC_TIME_LOG(t,"project total");
 
     if(shape.IsNull()) {
-        AREA_ERR("poject failed");
+        AREA_ERR("project failed");
         return -1;
     }
     shape_out = shape;
@@ -1417,7 +1535,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
         }
     }
     FC_TIME_LOG(t,"makeSection count: " << sections.size()<<", total");
-    return std::move(sections);
+    return sections;
 }
 
 TopoDS_Shape Area::getPlane(gp_Trsf *trsf) {
@@ -1537,7 +1655,7 @@ void Area::build() {
             WireJoiner joiner;
             gp_Trsf trsf(myTrsf.Inverted());
             for(const auto &c : myArea->m_curves) {
-                TopoDS_Wire wire = toShape(c,&trsf);
+                auto wire = toShape(c,&trsf);
                 if(!wire.IsNull())
                     joiner.add(wire);
             }
@@ -1611,7 +1729,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
                 if(s.IsNull()) continue;\
                 builder.Add(compound,s);\
             }\
-            for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)\
+            if(TopExp_Explorer(compound,TopAbs_EDGE).More())\
                 return compound;\
             return TopoDS_Shape();\
         }\
@@ -1667,7 +1785,7 @@ TopoDS_Shape Area::getShape(int index) {
     }
 
     // for pocketing, we discard the outer most offset wire in order to achieve
-    // the effect of offseting shape first than pocket, where the actual offset
+    // the effect of offsetting shape first than pocket, where the actual offset
     // path is not wanted. For extra outline profiling, add extra_offset
     if(front) {
         areaPocket.add(toShape(*areas.front(),myParams.Fill));
@@ -1697,23 +1815,24 @@ TopoDS_Shape Area::getShape(int index) {
         FC_DURATION_LOG(d,"Thicken");
 
     // make sure the compound has at least one edge
-    for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();) {
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More()) {
         builder.Add(compound,areaPocket.makePocket(
                     -1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET)));
         myShape = compound;
-        break;
     }
     myShapeDone = true;
     FC_TIME_LOG(t,"total");
     return myShape;
 }
 
-TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET),int reorient) {
+TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET),
+        int reorient, bool from_center) 
+{
     build();
-    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),reorient);
+    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),reorient,from_center);
 
     std::list<shared_ptr<CArea> > areas;
-    makeOffset(areas,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+    makeOffset(areas,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),from_center);
     if(areas.empty()) {
         if(myParams.Thicken && myParams.ToolRadius>Precision::Confusion()) {
             CArea area(*myArea);
@@ -1748,13 +1867,13 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
     }
     if(thicken)
         FC_DURATION_LOG(d,"Thicken");
-    for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();)
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More())
         return compound;
     return TopoDS_Shape();
 }
 
 void Area::makeOffset(list<shared_ptr<CArea> > &areas,
-                      PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET))
+            PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET), bool from_center)
 {
     if(fabs(offset)<Precision::Confusion())
         return;
@@ -1781,8 +1900,11 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
 #endif
 
     for(int i=0;count<0||i<count;++i,offset+=stepover) {
-        areas.push_back(make_shared<CArea>());
-        CArea &area = *areas.back();
+        if(from_center) 
+            areas.push_front(make_shared<CArea>());
+        else
+            areas.push_back(make_shared<CArea>());
+        CArea &area = from_center?(*areas.front()):(*areas.back());
         CArea areaOpen;
 #ifdef AREA_OFFSET_ALGO
         if(myParams.Algo == Area::Algolibarea) {
@@ -1811,7 +1933,7 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
         case Area::AlgoClipperOffset:
 #endif
             area.OffsetWithClipper(offset,JoinType,EndType,
-                    myParams.MiterLimit,myParams.RoundPreceision);
+                    myParams.MiterLimit,myParams.RoundPrecision);
 #ifdef AREA_OFFSET_ALGO
             break;
         }
@@ -1883,7 +2005,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         ExtraPass = -1;
         Stepover = -stepover;
         // make offset and make sure the loop is CW (i.e. inner wires)
-        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET),-1);
+        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET),-1,from_center);
     }case Area::PocketModeZigZagOffset:
         pm = ZigZagThenSingleOffsetPocketMode;
         break;
@@ -1935,7 +2057,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
         auto area = *myArea;
         area.OffsetWithClipper(-tool_radius,JoinType,EndType,
-                myParams.MiterLimit,myParams.RoundPreceision);
+                myParams.MiterLimit,myParams.RoundPrecision);
         out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;
         break;
@@ -1947,7 +2069,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         CAreaPocketParams params(
                 tool_radius,extra_offset,stepover,from_center,pm,angle);
         CArea in(*myArea);
-        // MakePcoketToolPath internally uses libarea Offset which somehow demands
+        // MakePocketToolPath internally uses libarea Offset which somehow demands
         // reorder before input, otherwise nothing is shown.
         in.Reorder();
         in.MakePocketToolpath(out.m_curves,params);
@@ -1968,8 +2090,9 @@ static inline bool IsLeft(const gp_Pnt &a, const gp_Pnt &b, const gp_Pnt &c) {
     return ((b.X() - a.X())*(c.Y() - a.Y()) - (b.Y() - a.Y())*(c.X() - a.X())) > 0;
 }
 
-TopoDS_Wire Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
-    BRepBuilderAPI_MakeWire mkWire;
+TopoDS_Shape Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
+    Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
 
     CCurve cReversed;
     if(reorient) {
@@ -1984,6 +2107,7 @@ TopoDS_Wire Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
     }
     const CCurve &c = reorient?cReversed:_c;
 
+    TopoDS_Shape shape;
     gp_Pnt pstart,pt;
     bool first = true;
     for(const CVertex &v : c.m_vertices){
@@ -1996,37 +2120,52 @@ TopoDS_Wire Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
         if(pnext.SquareDistance(pt)<Precision::SquareConfusion())
             continue;
         if(v.m_type == 0) {
-            mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pnext).Edge());
+            auto edge = BRepBuilderAPI_MakeEdge(pt,pnext).Edge();
+            hEdges->Append(edge);
         } else {
             gp_Pnt center(v.m_c.x,v.m_c.y,0);
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
-            if(fabs(r-r2) > Precision::Confusion()) {
-                double d = pt.Distance(pnext);
-                double q = sqrt(r*r - d*d*0.25);
-                double x = (pt.X()+pnext.X())*0.5;
-                double y = (pt.Y()+pnext.Y())*0.5;
-                double dx = q*(pt.Y()-pnext.Y())/d;
-                double dy = q*(pnext.X()-pt.X())/d;
-                gp_Pnt newCenter(x + dx, y + dy,0);
-                if(IsLeft(pt,pnext,center) != IsLeft(pt,pnext,newCenter)) {
-                    newCenter.SetX(x - dx);
-                    newCenter.SetY(y - dy);
+            bool fix_arc = fabs(r-r2) > Precision::Confusion();
+            while(1) {
+                if(fix_arc) {
+                    double d = pt.Distance(pnext);
+                    double rr = r*r;
+                    double dd = d*d*0.25;
+                    double q = rr<=dd?0:sqrt(rr-dd);
+                    double x = (pt.X()+pnext.X())*0.5;
+                    double y = (pt.Y()+pnext.Y())*0.5;
+                    double dx = q*(pt.Y()-pnext.Y())/d;
+                    double dy = q*(pnext.X()-pt.X())/d;
+                    gp_Pnt newCenter(x + dx, y + dy,0);
+                    if(IsLeft(pt,pnext,center) != IsLeft(pt,pnext,newCenter)) {
+                        newCenter.SetX(x - dx);
+                        newCenter.SetY(y - dy);
+                    }
+                    AREA_WARN("Arc correction: "<<r<<", "<<r2<<", center"<<
+                            AREA_XYZ(center)<<"->"<<AREA_XYZ(newCenter));
+                    center = newCenter;
                 }
-                AREA_WARN("Arc correction: "<<r<<", "<<r2<<", center"<<
-                        AREA_XYZ(center)<<"->"<<AREA_XYZ(newCenter));
-                center = newCenter;
+                gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
+                try {
+                    auto edge = BRepBuilderAPI_MakeEdge(gp_Circ(axis,r),pt,pnext).Edge();
+                    hEdges->Append(edge);
+                    break;
+                } catch(Standard_Failure &e) {
+                    if(!fix_arc) {
+                        fix_arc = true;
+                        AREA_WARN("OCC exception on making arc: " << e.GetMessageString());
+                    }else {
+                        AREA_ERR("OCC exception on making arc: " << e.GetMessageString());
+                        throw;
+                    }
+                }
             }
-            gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
-            mkWire.Add(BRepBuilderAPI_MakeEdge(gp_Circ(axis,r),pt,pnext).Edge());
         }
         pt = pnext;
     }
-    if(!mkWire.IsDone()) {
-        AREA_WARN("failed to make wire " << mkWire.Error());
-        return TopoDS_Wire();
-    }
 
+#if 0
     if(c.IsClosed() && !BRep_Tool::IsClosed(mkWire.Wire())){
         // This should never happen after changing libarea's
         // Point::tolerance to be the same as Precision::Confusion().
@@ -2039,10 +2178,26 @@ TopoDS_Wire Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) {
             AREA_XYZ(p2)<<endl<<AREA_XYZ(pt)<<endl<<AREA_XYZ(pstart));
         mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pstart).Edge());
     }
+#endif
+
+    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+            hEdges, Precision::Confusion(), Standard_False, hWires);
+    if(!hWires->Length())
+        return shape;
+    if(hWires->Length()==1)
+        shape = hWires->Value(1);
+    else {
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        for(int i=1;i<=hWires->Length();++i)
+            builder.Add(compound,hWires->Value(i));
+        shape = compound;
+    }
+    
     if(trsf)
-        return TopoDS::Wire(mkWire.Wire().Moved(TopLoc_Location(*trsf)));
-    else
-        return mkWire.Wire();
+        shape.Move(TopLoc_Location(*trsf));
+    return shape;
 }
 
 TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, int reorient) {
@@ -2051,7 +2206,7 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
     builder.MakeCompound(compound);
 
     for(const CCurve &c : area.m_curves) {
-        const TopoDS_Wire &wire = toShape(c,trsf,reorient);
+        const auto &wire = toShape(c,trsf,reorient);
         if(!wire.IsNull())
             builder.Add(compound,wire);
     }
@@ -2132,7 +2287,7 @@ struct GetWires {
         :wires(ws),rtree(rt),params(rp)
     {}
     void operator()(const TopoDS_Shape &shape, int type) {
-        wires.push_back(WireInfo());
+        wires.emplace_back();
         WireInfo &info = wires.back();
         if(type == TopAbs_WIRE)
             info.wire = TopoDS::Wire(shape);
@@ -2232,8 +2387,8 @@ struct ShapeInfo{
     bool myRebase;
     bool myStart;
 
-    ShapeInfo(BRepLib_FindSurface &finder, const TopoDS_Shape &shape, ShapeParams &params)
-        : myPln(GeomAdaptor_Surface(finder.Surface()).Plane())
+    ShapeInfo(const gp_Pln &pln, const TopoDS_Shape &shape, ShapeParams &params)
+        : myPln(pln)
         , myShape(shape)
         , myStartPt(1e20,1e20,1e20)
         , myParams(params)
@@ -2470,13 +2625,18 @@ struct ShapeInfo{
     std::list<TopoDS_Shape> sortWires(const gp_Pnt &pstart, gp_Pnt &pend,
             double min_dist, double max_dist, gp_Pnt *pentry) {
 
+        std::list<TopoDS_Shape> wires;
+
         if(myWires.empty() ||
-           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
+           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion()) 
+        {
             nearest(pstart);
+            if(myWires.empty())
+                return wires;
+        }
 
         if(pentry) *pentry = myBestPt;
 
-        std::list<TopoDS_Shape> wires;
         if(min_dist < 0.01)
             min_dist = 0.01;
         while(true) {
@@ -2500,7 +2660,7 @@ struct ShapeInfo{
             if(max_dist>0 && d>max_dist)
                 break;
         }
-        return std::move(wires);
+        return wires;
     }
 };
 
@@ -2518,12 +2678,12 @@ struct ShapeInfoBuilder {
     {}
 
     void operator()(const TopoDS_Shape &shape, int type) {
-        BRepLib_FindSurface finder(shape,-1,Standard_True);
-        if(!finder.Found()) {
-            myList.push_back(ShapeInfo(shape,myParams));
+        gp_Pln pln;
+        if(!getShapePlane(shape,pln)){
+            myList.emplace_back(shape,myParams);
             return;
         }
-        myList.push_back(ShapeInfo(finder,shape,myParams));
+        myList.emplace_back(pln,shape,myParams);
         if(myArcPlaneFound ||
            myArcPlane==Area::ArcPlaneNone ||
            myArcPlane==Area::ArcPlaneVariable)
@@ -2648,7 +2808,8 @@ typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
 typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
-    gp_Pnt *_pstart, gp_Pnt *_pend, double *stepdown_hint, short *_parc_plane,
+    bool has_start, gp_Pnt *_pstart, gp_Pnt *_pend, 
+    double *stepdown_hint, short *_parc_plane,
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {
     std::list<TopoDS_Shape> wires;
@@ -2700,7 +2861,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                 foreachSubshape(shape,
                     WireOrienter(wires,dir,orientation,direction), TopAbs_WIRE);
         }
-        return std::move(wires);
+        return wires;
     }
 
     ShapeParams rparams(abscissa,nearest_k>0?nearest_k:1,orientation,direction);
@@ -2721,7 +2882,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         }
         TopExp_Explorer xp(comp,TopAbs_EDGE);
         if(xp.More())
-            shape_list.push_back(ShapeInfo(comp,rparams));
+            shape_list.emplace_back(comp,rparams);
     }else{
         //first pass, find plane of each shape
         for(auto &shape : shapes) {
@@ -2741,9 +2902,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pnt pstart,pend;
     if(_pstart)
         pstart = *_pstart;
-    bool use_bound = fabs(pstart.X())<Precision::Confusion() &&
-                     fabs(pstart.Y())<Precision::Confusion() &&
-                     fabs(pstart.Z())<Precision::Confusion();
+    bool use_bound = !has_start || _pstart==NULL;
 
     if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
         //Second stage, group shape by its plane, and find overall boundary
@@ -2884,7 +3043,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     FC_DURATION_LOG(rparams.rd,"rtree clean");
     FC_DURATION_LOG(rparams.xd,"BRepExtrema");
     FC_TIME_LOG(t,"sortWires total");
-    return std::move(wires);
+    return wires;
 }
 
 static inline void addParameter(bool verbose, Command &cmd, const char *name,
@@ -3006,7 +3165,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     if(_pstart) pstart = *_pstart;
 
     double stepdown_hint = 1.0;
-    wires = sortWires(shapes,&pstart,pend,&stepdown_hint,
+    wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 
@@ -3197,29 +3356,15 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
                     AREA_WARN("arc plane not aligned, force discretization");
                 }
                 AREA_TRACE("arc discretize " << AREA_XYZ(dir));
-                //fall through
-
-            } default: {
-                // Discretize all other type of curves
-                GCPnts_QuasiUniformDeflection discretizer(curve, deflection,
-                        curve.FirstParameter(), curve.LastParameter());
-                if (discretizer.IsDone () && discretizer.NbPoints () > 1) {
-                    int nbPoints = discretizer.NbPoints ();
-                    if(reversed) {
-                        for (int i=nbPoints-1; i>=1; --i) {
-                            gp_Pnt pt = discretizer.Value (i);
-                            addG1(verbose,path,plast,pt,nf,cur_f);
-                            plast = pt;
-                        }
-                    }else{
-                        for (int i=2; i<=nbPoints; i++) {
-                            gp_Pnt pt = discretizer.Value (i);
-                            addG1(verbose,path,plast,pt,nf,cur_f);
-                            plast = pt;
-                        }
-                    }
-                }else
-                    Standard_Failure::Raise("Curve discretization failed");
+            }
+                /* FALLTHRU */
+            default: {
+                const auto &pts = discretize(edge,deflection);
+                for(size_t i=1;i<pts.size();++i) {
+                    auto &pt = pts[i];
+                    addG1(verbose,path,plast,pt,nf,cur_f);
+                    plast = pt;
+                }
             }}
         }
     }

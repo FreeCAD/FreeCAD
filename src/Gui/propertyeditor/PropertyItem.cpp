@@ -206,6 +206,10 @@ void PropertyItem::appendChild(PropertyItem *item)
     childItems.append(item);
 }
 
+/*!
+ * \brief PropertyItem::removeChildren
+ * Deletes the children in the range of [from, to]
+ */
 void PropertyItem::removeChildren(int from, int to)
 {
     int count = to-from+1;
@@ -213,6 +217,17 @@ void PropertyItem::removeChildren(int from, int to)
         PropertyItem* child = childItems.takeAt(from);
         delete child;
     }
+}
+
+/*!
+ * \brief PropertyItem::takeChild
+ * Removes the child at index row but doesn't delete it
+ */
+PropertyItem *PropertyItem::takeChild(int row)
+{
+    PropertyItem* child = childItems.takeAt(row);
+    child->setParent(nullptr);
+    return child;
 }
 
 PropertyItem *PropertyItem::child(int row)
@@ -439,7 +454,7 @@ QVariant PropertyItem::data(int column, int role) const
 }
 
 bool PropertyItem::setData (const QVariant& value)
-{   
+{
     cleared = false;
     
     // This is the basic mechanism to set the value to
@@ -447,12 +462,10 @@ bool PropertyItem::setData (const QVariant& value)
     // it delegates it to its parent which sets then the
     // property or delegates again to its parent...
     if (propertyItems.empty()) {
-               
         PropertyItem* parent = this->parent();
         if (!parent || !parent->parent())
             return false;
         parent->setProperty(qPrintable(objectName()),value);
-        
         return true;
     }
     else {
@@ -460,7 +473,6 @@ bool PropertyItem::setData (const QVariant& value)
         return true;
     }
 }
-
 
 Qt::ItemFlags PropertyItem::flags(int column) const
 {
@@ -525,6 +537,7 @@ void PropertyStringItem::setValue(const QVariant& value)
     if (!value.canConvert(QVariant::String))
         return;
     QString val = value.toString();
+    val = QString::fromUtf8(Base::Interpreter().strToPython(val.toUtf8()).c_str());
     QString data = QString::fromLatin1("\"%1\"").arg(val);
     setPropertyValue(data);
 }
@@ -1746,7 +1759,7 @@ void PlacementEditor::showValue(const QVariant& d)
     const Base::Placement& p = d.value<Base::Placement>();
     double angle;
     Base::Vector3d dir, pos;
-    p.getRotation().getValue(dir, angle);
+    p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
     QString data = QString::fromUtf8("[(%1 %2 %3);%4 \xc2\xb0;(%5 %6 %7)]")
@@ -1808,7 +1821,7 @@ Base::Quantity PropertyPlacementItem::getAngle() const
     const Base::Placement& val = value.value<Base::Placement>();
     double angle;
     Base::Vector3d dir;
-    val.getRotation().getValue(dir, angle);
+    val.getRotation().getRawValue(dir, angle);
     if (dir * this->rot_axis < 0.0)
         angle = -angle;
     return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
@@ -1878,18 +1891,23 @@ void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
 
 void PropertyPlacementItem::assignProperty(const App::Property* prop)
 {
-    // Choose an adaptive epsilon to avoid chaning the axis when they are considered to
+    // Choose an adaptive epsilon to avoid changing the axis when they are considered to
     // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
     double eps = std::pow(10.0, -2*(decimals()+1));
     if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         double angle;
         Base::Vector3d dir;
-        value.getRotation().getValue(dir, angle);
+        value.getRotation().getRawValue(dir, angle);
         Base::Vector3d cross = this->rot_axis.Cross(dir);
         double len2 = cross.Sqr();
-        if (angle != 0 && len2 > eps) {
-            this->rot_axis = dir;
+        if (angle != 0) {
+            // vectors are not parallel
+            if (len2 > eps)
+                this->rot_axis = dir;
+            // vectors point into opposite directions
+            else if (this->rot_axis.Dot(dir) < 0)
+                this->rot_axis = -this->rot_axis;
         }
         this->rot_angle = Base::toDegrees(angle);
     }
@@ -1902,7 +1920,7 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
     const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
     double angle;
     Base::Vector3d dir;
-    value.getRotation().getValue(dir, angle);
+    value.getRotation().getRawValue(dir, angle);
     if (!init_axis) {
         if (m_a->hasExpression()) {
             QString str = m_a->expressionAsString();
@@ -1940,7 +1958,7 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     const Base::Placement& p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
     double angle;
     Base::Vector3d dir, pos;
-    p.getRotation().getValue(dir, angle);
+    p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
     QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
@@ -1961,7 +1979,7 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
     const Base::Placement& p = prop.value<Base::Placement>();
     double angle;
     Base::Vector3d dir, pos;
-    p.getRotation().getValue(dir, angle);
+    p.getRotation().getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
     QString data = QString::fromUtf8("[(%1 %2 %3); %4; (%5  %6  %7)]")
@@ -2001,7 +2019,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyPlacementItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
-{  
+{
     PlacementEditor *pe = new PlacementEditor(this->propertyName(), parent);
     QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
     pe->setDisabled(isReadOnly());
@@ -2160,6 +2178,7 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
         list.append(QLatin1String("..."));
     }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+    text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
     return QVariant(text);
 }
@@ -2186,7 +2205,9 @@ void PropertyStringListItem::setValue(const QVariant& value)
     QTextStream str(&data);
     str << "[";
     for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        str << "unicode('" << *it << "', 'utf-8'),";
+        QString text(*it);
+        text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
+        str << "unicode('" << text << "', 'utf-8'),";
     }
     str << "]";
     setPropertyValue(data);
@@ -3380,7 +3401,7 @@ void LinkSelection::select()
 // ---------------------------------------------------------------
 
 LinkLabel::LinkLabel (QWidget * parent) : QWidget(parent)
-{   
+{
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(1);
@@ -3475,7 +3496,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::PropertyContainer* c = prop_link->getContainer();
 
-    // the list has four elements: [document name, internal name, label, internal name of container]
+    // the list has five elements:
+    // [document name, internal name, label, internal name of container, property name]
     App::DocumentObject* obj = prop_link->getValue();
     QStringList list;
     if (obj) {
@@ -3508,6 +3530,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     else {
         list << QString::fromLatin1("Null");
     }
+
+    list << QString::fromLatin1(prop->getName());
 
     return QVariant(list);
 }
@@ -3657,7 +3681,8 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
         objName = QString::fromLatin1("Null");
     }
 
-    // each item is a list of four elements: [document name, internal name, label, internal name of container]
+    // each item is a list of five elements:
+    //[document name, internal name, label, internal name of container, property name]
     // the variant list contains at least one item
     std::vector<App::DocumentObject*> obj = prop_link->getValues();
     QVariantList varList;
@@ -3668,6 +3693,7 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
             list << QString::fromLatin1((*it)->getNameInDocument());
             list << QString::fromUtf8((*it)->Label.getValue());
             list << objName;
+            list << QString::fromLatin1(prop->getName());
             varList << list;
         }
     }
@@ -3688,6 +3714,7 @@ QVariant PropertyLinkListItem::value(const App::Property* prop) const
         // the object label
         list << QString::fromLatin1("");
         list << objName;
+        list << QString::fromLatin1(prop->getName());
         varList << list;
     }
 

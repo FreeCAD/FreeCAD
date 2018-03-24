@@ -304,34 +304,9 @@ std::string DynamicProperty::getUniquePropertyName(const char *Name) const
     }
 }
 
-std::string DynamicProperty::encodeAttribute(const std::string& str) const
-{
-    std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
-            tmp += "&lt;";
-        else if (*it == '"')
-            tmp += "&quot;";
-        else if (*it == '\'')
-            tmp += "&apos;";
-        else if (*it == '&')
-            tmp += "&amp;";
-        else if (*it == '>')
-            tmp += "&gt;";
-        else if (*it == '\r')
-            tmp += "&#xD;";
-        else if (*it == '\n')
-            tmp += "&#xA;";
-        else
-            tmp += *it;
-    }
-
-    return tmp;
-}
-
 void DynamicProperty::Save (Base::Writer &writer) const 
 {
-    //extenions must be saved first, as they need to be read and initialised before properties (as 
+    //extensions must be saved first, as they need to be read and initialised before properties (as 
     //they have their own properties which they need to handle on restore)
     if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
         static_cast<App::ExtensionContainer*>(this->pc)->saveExtensions(writer);
@@ -462,12 +437,14 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
 #endif
             }
             else if (prop) {
-                Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
-                    pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
+                //Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
+                //    pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
+                pc->handleChangedPropertyType(reader, TypeName, prop);
             }
             else {
-                Base::Console().Warning("%s: No property found with name %s and type %s\n",
-                    pc->getTypeId().getName(), PropName, TypeName);
+                //Base::Console().Warning("%s: No property found with name %s and type %s\n",
+                //    pc->getTypeId().getName(), PropName, TypeName);
+                pc->handleChangedPropertyName(reader, TypeName, PropName);
             }
         }
         reader.readEndElement("Property");

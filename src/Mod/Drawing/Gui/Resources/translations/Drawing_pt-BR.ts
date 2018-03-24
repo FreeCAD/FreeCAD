@@ -288,11 +288,18 @@
       <translation>Exportar PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>A impressora utiliza uma orientação diferente do que o desenho. 
+Deseja continuar?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation>Arquivo PDF (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>Arquivo PDF</translation>
     </message>
@@ -337,14 +344,13 @@
       <translation>Orientação diferente</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>A impressora utiliza uma orientação diferente do que o desenho. 
 Deseja continuar?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Tamanho de papel diferente</translation>
@@ -396,19 +402,31 @@ Do you want to continue?</source>
       <translation>Superior à esquerda x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Espaçamento dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Fora do eixo à direita</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Inclinação vertical</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Espaçamento dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>Fora do eixo à direita</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Inclinação vertical</translation>
     </message>
     <message>
       <location line="+11"/>

@@ -94,11 +94,8 @@ def addComponents(objectsList,host):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
     if hostType in ["Floor","Building","Site"]:
-        c = host.Group
         for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Group = c
+            host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
         import DraftGeomUtils
         a = host.Additions
@@ -126,11 +123,8 @@ def addComponents(objectsList,host):
                 a.append(o)
         host.Objects = a
     elif host.isDerivedFrom("App::DocumentObjectGroup"):
-        c = host.Group
         for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Group = c
+            host.addObject(o)
 
 def removeComponents(objectsList,host=None):
     '''removeComponents(objectsList,[hostObject]): removes the given component or
@@ -384,14 +378,14 @@ def getCutVolume(cutplane,shapes):
         else:
             p = cutplane.copy().Faces[0]
     except Part.OCCError:
-        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane\n"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane")+"\n")
         return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
-        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
+        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane)+"\n")
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
@@ -694,7 +688,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"CloneOf"):
@@ -1100,7 +1094,7 @@ def toggleIfcBrepFlag(obj):
 
 def makeCompoundFromSelected(objects=None):
     """makeCompoundFromSelected([objects]): Creates a new compound object from the given
-    subobjects (faces, edges) or from the the selection if objects is None"""
+    subobjects (faces, edges) or from the selection if objects is None"""
     import FreeCADGui,Part
     so = []
     if not objects:
@@ -1134,8 +1128,8 @@ def cleanArchSplitter(objects=None):
 
 
 def rebuildArchShape(objects=None):
-    """rebuildArchShape([objects]): takes the faces from the base shape of the given (
-    or selected if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected 
+    if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
     import FreeCAD,FreeCADGui,Part
     if not objects:
         objects = FreeCADGui.Selection.getSelection()
@@ -1248,11 +1242,11 @@ class _CommandAdd:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Add space boundary")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Add space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
         else:
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Grouping"))
             if not mergeCells(sel):
                 host = sel.pop()
                 ss = "["
@@ -1280,11 +1274,11 @@ class _CommandRemove:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Remove space boundary")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Remove space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Ungrouping"))
             if (Draft.getType(sel[-1]) in ["Wall","Structure","Stairs","Roof","Window","Panel"]) and (len(sel) > 1):
                 host = sel.pop()
                 ss = "["
@@ -1315,7 +1309,7 @@ class _CommandSplitMesh:
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
             sel = FreeCADGui.Selection.getSelection()
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Split Mesh")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Split Mesh"))
             for obj in sel:
                 n = obj.Name
                 nobjs = splitMesh(obj)
@@ -1355,7 +1349,7 @@ class _CommandMeshToShape:
             tol = p.GetFloat("ConversionTolerance",0.001)
             flat = p.GetBool("ConversionFlat",False)
             cut = p.GetBool("ConversionCut",False)
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Mesh to Shape")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Mesh to Shape"))
             for obj in FreeCADGui.Selection.getSelection():
                 newobj = meshToShape(obj,True,fast,tol,flat,cut)
                 if g and newobj:
@@ -1436,7 +1430,7 @@ class _CommandCheck:
     def Activated(self):
         result = check(FreeCADGui.Selection.getSelection())
         if not result:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","All good! no problems found")))
+            FreeCAD.Console.PrintMessage(str(translate("Arch","All good! No problems found")))
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:
@@ -1449,7 +1443,7 @@ class _CommandIfcExplorer:
     def GetResources(self):
         return {'Pixmap'  : 'IFC',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcExplorer","Ifc Explorer"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an Ifc file")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an IFC file")}
 
     def Activated(self):
         if hasattr(self,"dialog"):
@@ -1558,7 +1552,7 @@ def makeIfcSpreadsheet(archobj=None):
             archobj.IfcProperties = ifc_spreadsheet
             return ifc_spreadsheet
         else :
-            FreeCAD.Console.PrintWarning(translate("Arch", "The object have not IfcProperties attribute. Cancel spreadsheet creation for object : ") + archobj.Label)
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ ' ' + archobj.Label)
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else :
         return ifc_spreadsheet
@@ -1569,7 +1563,7 @@ class _CommandIfcSpreadsheet:
         return {'Pixmap': 'Arch_Schedule',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
                 'Accel': "I, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store ifc properties of an object.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object.")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None

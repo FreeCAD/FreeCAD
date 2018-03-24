@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - 2D helper fuctions"
+__title__="FreeCAD OpenSCAD Workbench - 2D helper functions"
 __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 

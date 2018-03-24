@@ -164,6 +164,14 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                                     drillable = face.Surface.Radius >= tooldiameter/2
                                 else:
                                     drillable = True
+            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0,0,1)):
+                if len(face.Edges) == 1 and type(face.Edges[0].Curve) == Part.Circle:
+                    center = face.Edges[0].Curve.Center
+                    if obj.isInside(center, 1e-6, False):
+                        if tooldiameter is not None:
+                            drillable = face.Edges[0].Curve.Radius >= tooldiameter/2
+                        else:
+                            drillable = True
         else:
             for edge in candidate.Edges:
                 if isinstance(edge.Curve, Part.Circle) and (includePartials or edge.isClosed()):
@@ -391,22 +399,6 @@ def reverseEdge(e):
     return newedge
 
 
-def changeTool(obj, job):
-    tlnum = 0
-    for p in job.Group:
-        if not hasattr(p, "Group"):
-            if isinstance(p.Proxy, PathScripts.PathToolController.ToolController) and p.ToolNumber > 0:
-                tlnum = p.ToolNumber
-            if p == obj:
-                return tlnum
-        elif hasattr(p, "Group"):
-            for g in p.Group:
-                if isinstance(g.Proxy, PathScripts.PathToolController.ToolController):
-                    tlnum = g.ToolNumber
-                if g == obj:
-                    return tlnum
-
-
 def getToolControllers(obj):
     '''returns all the tool controllers'''
     try:
@@ -456,7 +448,7 @@ def findToolController(obj, name=None):
         mylist = [i.Label for i in controllers]
         form.uiToolController.addItems(mylist)
         r = form.exec_()
-        if r is False:
+        if not r:
             tc = None
         else:
             tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
@@ -478,22 +470,15 @@ def findParentJob(obj):
 
 def GetJobs(jobname=None):
     '''returns all jobs in the current document.  If name is given, returns that job'''
-    PathLog.track()
-    jobs = []
-    for o in FreeCAD.ActiveDocument.Objects:
-        if hasattr(o, 'Proxy') and isinstance(o.Proxy, PathJob.ObjectJob):
-            if jobname is not None:
-                if o.Name == jobname:
-                    jobs.append(o)
-            else:
-                jobs.append(o)
-    return jobs
+    if jobname:
+        return [job for job in PathJob.Instances() if job.Name == jobname]
+    return PathJob.Instances()
 
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
     jobname = None'''
-    PathLog.track()
+    PathLog.track(jobname)
     if jobname is not None:
         jobs = GetJobs(jobname)
         if len(jobs) == 1:
@@ -505,7 +490,6 @@ def addToJob(obj, jobname=None):
         jobs = GetJobs()
         if len(jobs) == 0:
             job = PathJobCmd.CommandJobCreate().Activated()
-
         elif len(jobs) == 1:
             job = jobs[0]
         else:
@@ -520,7 +504,7 @@ def addToJob(obj, jobname=None):
                 print(form.cboProject.currentText())
                 job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
 
-    if obj:
+    if obj and job:
         job.Proxy.addOperation(obj)
     return job
 
@@ -781,14 +765,14 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
         return 0.0
     else:
-        if tool.CuttingEdgeAngle < 0 or tool.CuttingEdgeAngle >= 90:
-            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be <90° and >=0°") % tool.CuttingEdgeAngle)
+        if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
+            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
             return 0.0
         theta = math.radians(tool.CuttingEdgeAngle)
-        length = (tool.Diameter/2) / math.tan(theta) 
+        length = (tool.Diameter/2) / math.tan(theta/2) 
         if length < 0:
             PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
             return 0.0

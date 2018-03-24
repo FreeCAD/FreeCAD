@@ -119,6 +119,7 @@
 #include <Mod/Part/App/ConePy.h>
 #include <Mod/Part/App/CylinderPy.h>
 #include <Mod/Part/App/OffsetSurfacePy.h>
+#include <Mod/Part/App/PointPy.h>
 #include <Mod/Part/App/PlateSurfacePy.h>
 #include <Mod/Part/App/PlanePy.h>
 #include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
@@ -341,7 +342,7 @@ void GeomPoint::Restore(Base::XMLReader &reader)
 
 PyObject *GeomPoint::getPyObject(void)
 {
-    return new Base::VectorPy(getPoint());
+    return new PointPy(new GeomPoint(getPoint()));
 }
 
 // -------------------------------------------------
@@ -369,7 +370,7 @@ GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
     if (spline.IsNull())
-        throw Base::RuntimeError("Conversion to B-Spline failed");
+        throw Base::RuntimeError("Conversion to B-spline failed");
     return new GeomBSplineCurve(spline);
 }
 

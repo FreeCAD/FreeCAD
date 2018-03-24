@@ -76,10 +76,10 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="isNull" Const="true">
+        <Methode Name="isIdentity" Const="true">
 			<Documentation>
 				<UserDocu>
-					isNull() -> Bool
+                    isIdentity() -> Bool
 					returns True if the placement has no displacement and no rotation
 				</UserDocu>
 			</Documentation>

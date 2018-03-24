@@ -30,7 +30,7 @@
 
 #include <stdlib.h>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+/// FreeCAD #includes sorted by Base,App,Gui......
 #include "Builder3D.h"
 #include "Exception.h"
 #include "Vector3D.h"
@@ -69,10 +69,10 @@ Builder3D::~Builder3D()
 
 /**
  * Starts the definition of point set with the given point size and color.
- * If posible make not to much startPoints() and endPoints() calls. Try to put all
- * points in one set. 
+ * If possible don't make too many startPoints() and endPoints() calls. 
+ * Try to put all points in one set. 
  * @see endPoints()
- * @param pointSize the point size in pixel the points are showed.
+ * @param pointSize the point size in pixel that are displayed.
  * @param color_r red part of the point color (0.0 - 1.0).
  * @param color_g green part of the point color (0.0 - 1.0).
  * @param color_b blue part of the point color (0.0 - 1.0).
@@ -90,7 +90,7 @@ void Builder3D::startPoints(short pointSize, float color_r,float color_g,float c
   result <<     "point [ ";
 }
 
-/// insert a point in an point set
+/// insert a point in a point set
 void Builder3D::addPoint(float x, float y, float z)
 {
   result << x << " " << y << " " << z << ",";
@@ -146,7 +146,7 @@ void Builder3D::addSinglePoint(const Base::Vector3f &vec, short pointSize, float
 
 
 /**
- * Add a Text with a given position to the 3D set. The origion is the 
+ * Add a Text with a given position to the 3D set. The origin is the 
  * lower leftmost corner.
  * @param pos_x,pos_y,pos_z origin of the text
  * @param text the text to display.
@@ -311,7 +311,7 @@ void Builder3D::saveToLog(void)
 
 /**
  * Save the resulting inventor 3D representation to a file. Ending should be *.iv.
- * That eneables you to show the result in a Inventor Viewer or in FreeCAD by:
+ * That enables you to show the result in a Inventor Viewer or in FreeCAD by:
  * /code
  * Gui.document().addAnnotation("Debug","MyFile.iv")
  * /endcode
@@ -454,8 +454,8 @@ void InventorBuilder::addPolygonOffset(float factor, float units, const char* st
 
 /**
  * Starts the definition of point set.
- * If posible make not too much beginPoints() and endPoints() calls. Try to put all
- * points in one set. 
+ * If possible don't make too many beginPoints() and endPoints() calls. 
+ * Try to put all points in one set. 
  * @see startPoints()
  * @see endPoints()
  */
@@ -467,7 +467,7 @@ void InventorBuilder::beginPoints()
     indent += 2;
 }
 
-/// insert a point in an point set
+/// insert a point in a point set
 void InventorBuilder::addPoint(float x, float y, float z)
 {
     result << Base::blanks(indent) << x << " " << y << " " << z << "," << std::endl;
@@ -510,7 +510,7 @@ void InventorBuilder::addPointSet()
 }
 
 /**
- * Adds an SoLineSet node after creating an SoCordinate3 node with
+ * Adds a SoLineSet node after creating a SoCordinate3 node with
  * beginPoints() and endPoints().
  * @see startPoints()
  * @see beginPoints()
@@ -526,7 +526,7 @@ void InventorBuilder::addLineSet()
 
 
 /**
- * Add a Text with a given position to the 3D set. The origion is the 
+ * Add a Text with a given position to the 3D set. The origin is the 
  * lower leftmost corner.
  * @param pos_x,pos_y,pos_z origin of the text
  * @param text the text to display.
@@ -618,7 +618,7 @@ void InventorBuilder::addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, s
 }
 
 /** Add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
- * the size of the list must then be even.
+ * The size of the list must then be even.
  */
 void InventorBuilder::addLineSet(const std::vector<Vector3f>& points, short lineSize,
                                  float color_r,float color_g,float color_b, unsigned short linePattern)

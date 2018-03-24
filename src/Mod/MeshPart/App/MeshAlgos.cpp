@@ -337,7 +337,7 @@ GtsSurface* MeshAlgos::createGTSSurface(MeshCore::MeshKernel* Mesh)
   Base::Vector3f Vertex;
 
 
-  // Geting all the points
+  // Getting all the points
   GtsVertex ** aVertex = (GtsVertex **) malloc(Mesh->CountPoints() * sizeof (GtsVertex *));
   for (unsigned int PIter = 0;PIter < Mesh->CountPoints(); PIter++)
   {
@@ -348,7 +348,7 @@ GtsSurface* MeshAlgos::createGTSSurface(MeshCore::MeshKernel* Mesh)
     // cycling through the facets
   for (unsigned int pFIter = 0;pFIter < Mesh->CountFacets(); pFIter++)
   {
-    // geting the three points of the facet
+    // getting the three points of the facet
     Mesh->GetFacetPoints(pFIter,p1,p2,p3);
     
     // creating the edges and add the face to the surface

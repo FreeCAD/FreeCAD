@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>672</height>
+    <height>886</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,47 +35,8 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_ccx_binary_std">
-            <property name="text">
-             <string>CalculiX binary</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
-            <property name="text">
-             <string>Use standard ccx binary path</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>UseStandardCcxLocation</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="l_ccx_binary_path">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>ccx binary path:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
+          <item row="3" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path" native="true">
             <property name="enabled">
              <bool>false</bool>
@@ -115,17 +76,17 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="l_editor">
             <property name="text">
-             <string>Editor</string>
+             <string>Input file Editor</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="4" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_int_editor">
             <property name="text">
-             <string>Use internal editor for .inp files</string>
+             <string>Use internal editor for *.inp files</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -138,7 +99,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="l_ext_editor">
             <property name="enabled">
              <bool>false</bool>
@@ -154,7 +115,39 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="2" column="1">
+           <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
+            <property name="text">
+             <string>Search in known binary directories</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>UseStandardCcxLocation</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="l_ccx_binary_path">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>ccx binary path</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_ext_editor" native="true">
             <property name="enabled">
              <bool>false</bool>
@@ -167,20 +160,20 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="6" column="0">
            <widget class="QLabel" name="l_editor_2">
             <property name="text">
-             <string>Split .inp</string>
+             <string>Input file splitting</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="6" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_split_inp_writer">
             <property name="enabled">
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Split writing of  .inp</string>
+             <string>Split writing of  *.inp</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -190,6 +183,13 @@
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="l_ccx_binary_std">
+            <property name="text">
+             <string>CalculiX binary</string>
             </property>
            </widget>
           </item>
@@ -205,7 +205,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <layout class="QGridLayout" name="gl_analysis">
+         <layout class="QGridLayout" name="gl_analysis" columnstretch="3,2">
           <item row="0" column="0">
            <widget class="QLabel" name="l_type">
             <property name="text">
@@ -271,7 +271,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_1">
         <item>
-         <layout class="QGridLayout" name="gl_solver">
+         <layout class="QGridLayout" name="gl_solver" columnstretch="3,2">
           <item row="4" column="0">
            <widget class="QLabel" name="l_use_iterations_param">
             <property name="text">
@@ -457,7 +457,7 @@
             </property>
            </widget>
           </item>
-           <item row="5" column="1">
+          <item row="7" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
             <property name="text">
              <string>3D Output, unchecked for 2D</string>
@@ -473,7 +473,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="7" column="0">
            <widget class="QLabel" name="l_BeamShellOutput">
             <property name="text">
              <string>Beam, shell element 3D output format </string>
@@ -492,7 +492,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <layout class="QGridLayout" name="gl_thremomech">
+         <layout class="QGridLayout" name="gl_thremomech" columnstretch="3,2">
           <item row="3" column="0">
            <widget class="QLabel" name="l_ccx_max_iterations">
             <property name="text">
@@ -557,7 +557,7 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <layout class="QGridLayout" name="gl_freuq">
+         <layout class="QGridLayout" name="gl_frequ" columnstretch="6,3,1">
           <item row="1" column="1">
            <widget class="Gui::PrefSpinBox" name="sb_eigenmode_number">
             <property name="maximum">

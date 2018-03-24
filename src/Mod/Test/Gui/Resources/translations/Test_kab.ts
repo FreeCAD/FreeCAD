@@ -5,27 +5,27 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>Test unitaire FreeCAD</translation>
+      <translation type="unfinished">FreeCAD UnitTest</translation>
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Échecs et erreurs</translation>
+      <translation type="unfinished">Failures and errors</translation>
     </message>
     <message>
       <source>Description</source>
-      <translation>Aglam</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <source>&amp;Start</source>
-      <translation>&amp;Démarrer</translation>
+      <translation type="unfinished">&amp;Start</translation>
     </message>
     <message>
       <source>Alt+S</source>
-      <translation>Alt+M</translation>
+      <translation type="unfinished">Alt+S</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Aide</translation>
+      <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
       <source>F1</source>
@@ -33,27 +33,27 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>À &amp;propos</translation>
+      <translation>&amp;Ɣef</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+A</translation>
+      <translation type="unfinished">Alt+A</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Fermer</translation>
+      <translation type="unfinished">&amp;Close</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+F</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <source>Idle</source>
-      <translation>Inactif</translation>
+      <translation type="unfinished">Idle</translation>
     </message>
     <message>
       <source>Progress</source>
-      <translation>Progression</translation>
+      <translation type="unfinished">Progress</translation>
     </message>
     <message>
       <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
@@ -61,19 +61,19 @@
     </message>
     <message>
       <source>Remaining:</source>
-      <translation>Restant :</translation>
+      <translation type="unfinished">Remaining:</translation>
     </message>
     <message>
       <source>Errors:</source>
-      <translation>Erreurs :</translation>
+      <translation type="unfinished">Errors:</translation>
     </message>
     <message>
       <source>Failures:</source>
-      <translation>Échecs :</translation>
+      <translation type="unfinished">Failures:</translation>
     </message>
     <message>
       <source>Run:</source>
-      <translation>Lancer :</translation>
+      <translation>Rmed:</translation>
     </message>
     <message>
       <source>Test</source>
@@ -81,34 +81,34 @@
     </message>
     <message>
       <source>Select test name:</source>
-      <translation>Sélectionner le nom du test :</translation>
+      <translation type="unfinished">Select test name:</translation>
     </message>
   </context>
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>À propos des tests unitaires FreeCAD</translation>
+      <translation type="unfinished">About FreeCAD UnitTest</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Tous droits réservés (c) Werner Mayer
+      <translation type="unfinished">Copyright (c) Werner Mayer
 
-FreeCAD UnitTest fait partie de FreeCAD et supporte l'écriture de tests unitaires pour vos propres modules.</translation>
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase. Cliquer sur 'Démarrer' et le test démarrera.
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
-Double cliquer sur une erreur dans la vue arborescente pour voir plus d'informations, y compris l'historique de la pile.</translation>
+Double click on an error in the tree view to see more information about it,including the stack trace.</translation>
     </message>
   </context>
 </TS>

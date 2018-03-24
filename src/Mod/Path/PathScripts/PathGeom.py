@@ -61,7 +61,7 @@ class Side:
         """(ptRef, pt)
         Determine the side of pt in relation to ptRef.
         If both Points are viewed as vectors with their origin in (0,0,0)
-        then the two vectors are either form a straigt line (On) or pt
+        then the two vectors either form a straight line (On) or pt
         lies in the left or right hemishpere in regards to ptRef."""
         d = -ptRef.x*pt.y + ptRef.y*pt.x
         if d < 0:
@@ -98,7 +98,7 @@ class PathGeom:
     def edgesMatch(cls, e0, e1, error=PathGeomTolerance):
         """(e0, e1, [error=%s]
         Return true if the edges start and end at the same point and have the same type of curve.""" % PathGeomTolerance
-        if type(e0.Curve) != type(e1.Curve):
+        if type(e0.Curve) != type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
             return False
         return all(cls.pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point) for i in range(len(e0.Vertexes)))
 
@@ -396,7 +396,7 @@ class PathGeom:
     def splitArcAt(cls, edge, pt):
         """(edge, pt)
         Returns a list of 2 edges which together form the original arc split at the given point.
-        The Vector pt has to represnt a point on the given arc."""
+        The Vector pt has to represent a point on the given arc."""
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = pt
         p3 = edge.valueAt(edge.LastParameter)

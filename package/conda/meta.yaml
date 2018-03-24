@@ -1,0 +1,56 @@
+package:
+    name: freecad_daily
+    version: 0.17
+
+build:
+    number: 0
+
+requirements:
+    build:
+        - nomkl  # [unix]
+        - vc 14  # [win and py>=35]
+        - ninja  # [win and py>=35]
+        - cmake
+        - swig
+        - eigen
+        - boost-cpp 1.66.0
+        - pybind11  # [unix]
+        - boost 1.66.0  # [win]
+        - python
+        - matplotlib
+        - coin3d
+        - pivy
+        - qt 5.*
+        - pyside2  2.0.0.dev0 py36_0  # [unix]
+        - pyside2  2.0.0.dev0 py36_vc14_0  # [win]
+        - occt 7.2.0
+        - netgen
+        - vtk 8.*
+        - libmed
+        - hdf5
+        - xerces-c 3.2.0
+        - zlib 1.2.*
+        - doxygen
+        - git
+    run:
+        - vc 14  # [win and py>=35]
+        - boost-cpp 1.66.0
+        - boost 1.66.0  # [win]
+        - python
+        - numpy
+        - matplotlib
+        - coin3d
+        - pivy
+        - qt 5.*
+        - pyside2
+        - occt
+        - netgen
+        - vtk 8.*
+        - libmed
+        - xerces-c 3.2.0
+        - zlib 1.2*
+        - git
+        - calculix  # [unix]
+about:
+    summary: freecad
+

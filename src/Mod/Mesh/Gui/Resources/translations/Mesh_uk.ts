@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Оцінка та Ремонт сітки...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation type="unfinished">Evaluate and repair mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -767,7 +771,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>Налаштування...</translation>
     </message>
   </context>
   <context>
@@ -1021,7 +1025,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Mu:</source>
-      <translation type="unfinished">Mu:</translation>
+      <translation>Мю:</translation>
     </message>
     <message>
       <source>Only selection</source>
@@ -1404,7 +1408,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>ASCII STL</source>
-      <translation type="unfinished">ASCII STL</translation>
+      <translation>ASCII STL</translation>
     </message>
     <message>
       <source>Binary Mesh</source>
@@ -1436,7 +1440,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML V2.0</translation>
     </message>
     <message>
       <source>Compressed VRML 2.0</source>
@@ -1452,7 +1456,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+      <translation>[Точок: %1, Ребер: %2, Граней: %3]</translation>
     </message>
     <message>
       <source>Import-Export</source>

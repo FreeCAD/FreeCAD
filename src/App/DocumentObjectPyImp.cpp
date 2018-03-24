@@ -253,7 +253,7 @@ Py::List DocumentObjectPy::getOutListRecursive(void) const
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
-        // creat the python list for the output
+        // create the python list for the output
         for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
             ret.append(Py::Object((*It)->getPyObject(), true));
     }

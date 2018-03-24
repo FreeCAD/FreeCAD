@@ -228,7 +228,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     // Parse the document XML
     QDomElement docElem = doc.documentElement();
 
-    // Obtain the size of the SVG document by reading the document attirbutes
+    // Obtain the size of the SVG document by reading the document attributes
     Base::Quantity quantity;
 
     // Obtain the width
@@ -295,7 +295,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         tfile.close();
         //this catches all the tags: <text ... </tspan></text>
         //keep tagRegex in sync with Gui/QGISVGTemplate.cpp
-        boost::regex tagRegex ("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan></text>");
+        boost::regex tagRegex ("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan>");
         boost::regex nameRegex("freecad:editable=\"(.*?)\"");
         boost::regex valueRegex("<tspan.*?>(.*?)</tspan>");
 

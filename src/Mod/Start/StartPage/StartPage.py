@@ -38,7 +38,7 @@ from .TranslationTexts import (text01, text02, text03, text04, text05, text06,
                               text49, text50, text51, text52, text53, text54,
                               text55, text56, text57, text58, text59, text60,
                               text61, text62, text63, text64, text65, text66,
-                              text67, text68)
+                              text67, text68, text69, text70, text71)
 
 try:
     import io as cStringIO
@@ -274,6 +274,7 @@ def replace_html_text(html):
     html = html.replace("text61", text61)
     html = html.replace("text62", text62)
     html = html.replace("text64", text64)
+    html = html.replace("text69", text69)
     return html
 
 def replace_js_text(html):
@@ -283,6 +284,8 @@ def replace_js_text(html):
     html = html.replace("text58", text58)
     html = html.replace("text59", text59)
     html = html.replace("text63", text63)
+    html = html.replace("text70", text70)
+    html = html.replace("text71", text71)
     return html
 
 def handle():
@@ -297,6 +300,10 @@ def handle():
         
     # add custom blocks
     html = html.replace("customblocks",getCustomBlocks())
+    
+    # enable web access if permitted
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("AllowDownload",False):
+        html = html.replace("var allowDownloads = 0;","var allowDownloads = 1;")
 
     html = replace_html_text(html)
     # fetches system colors

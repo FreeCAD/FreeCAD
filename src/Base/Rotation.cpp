@@ -36,11 +36,16 @@ using namespace Base;
 Rotation::Rotation()
 {
     quat[0]=quat[1]=quat[2]=0.0;quat[3]=1.0;
+
+    _axis.Set(0.0, 0.0, 1.0);
+    _angle = 0.0;
 }
 
 /** Construct a rotation by rotation axis and angle */
 Rotation::Rotation(const Vector3d& axis, const double fAngle)
 {
+    // set to (0,0,1) as fallback in case the passed axis is the null vector
+    _axis.Set(0.0, 0.0, 1.0);
     this->setValue(axis, fAngle);
 }
 
@@ -78,6 +83,11 @@ Rotation::Rotation(const Rotation& rot)
     this->quat[1] = rot.quat[1];
     this->quat[2] = rot.quat[2];
     this->quat[3] = rot.quat[3];
+
+    this->_axis[0] = rot._axis[0];
+    this->_axis[1] = rot._axis[1];
+    this->_axis[2] = rot._axis[2];
+    this->_angle   = rot._angle;
 }
 
 const double * Rotation::getValue(void) const
@@ -93,6 +103,29 @@ void Rotation::getValue(double & q0, double & q1, double & q2, double & q3) cons
     q3 = this->quat[3];
 }
 
+void Rotation::evaluateVector()
+{
+    // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
+    //
+    // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3])
+    if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
+        double rfAngle = double(acos(this->quat[3])) * 2.0;
+        double scale = (double)sin(rfAngle / 2.0);
+        // Get a normalized vector 
+        double l = this->_axis.Length();
+        if (l < Base::Vector3d::epsilon()) l = 1;
+        this->_axis.x = this->quat[0] * l / scale;
+        this->_axis.y = this->quat[1] * l / scale;
+        this->_axis.z = this->quat[2] * l / scale;
+
+        _angle = rfAngle;
+    }
+    else {
+        _axis.Set(0.0, 0.0, 1.0);
+        _angle = 0.0;
+    }
+}
+
 void Rotation::setValue(const double q0, const double q1, const double q2, const double q3)
 {
     this->quat[0] = q0;
@@ -100,26 +133,24 @@ void Rotation::setValue(const double q0, const double q1, const double q2, const
     this->quat[2] = q2;
     this->quat[3] = q3;
     this->normalize();
+    this->evaluateVector();
 }
 
 void Rotation::getValue(Vector3d & axis, double & rfAngle) const
 {
-    // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    //
-    // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3]) 
-    if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
-        rfAngle = double(acos(this->quat[3])) * 2.0;
-        double scale = (double)sin(rfAngle / 2.0);
-        // Get a normalized vector 
-        axis.x = this->quat[0] / scale;
-        axis.y = this->quat[1] / scale;
-        axis.z = this->quat[2] / scale;
-    }
-    else {
-        // The quaternion doesn't describe a rotation, so we can setup any value we want 
-        axis.Set(0.0, 0.0, 1.0);
-        rfAngle = 0.0;
-    }
+    rfAngle = _angle;
+    axis.x = _axis.x;
+    axis.y = _axis.y;
+    axis.z = _axis.z;
+    axis.Normalize();
+}
+
+void Rotation::getRawValue(Vector3d & axis, double & rfAngle) const
+{
+    rfAngle = _angle;
+    axis.x = _axis.x;
+    axis.y = _axis.y;
+    axis.z = _axis.z;
 }
 
 /**
@@ -162,6 +193,7 @@ void Rotation::setValue(const double q[4])
     this->quat[2] = q[2];
     this->quat[3] = q[3];
     this->normalize();
+    this->evaluateVector();
 }
 
 void Rotation::setValue(const Matrix4D & m)
@@ -193,16 +225,32 @@ void Rotation::setValue(const Matrix4D & m)
         this->quat[j] = (double)((m[j][i] + m[i][j]) * s);
         this->quat[k] = (double)((m[k][i] + m[i][k]) * s);
     }
+
+    this->evaluateVector();
 }
 
 void Rotation::setValue(const Vector3d & axis, const double fAngle)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
-    this->quat[3] = (double)cos(fAngle/2.0);
+    // normalization of the angle to be in [0, 2pi[
+    _angle = fAngle;
+    double theAngle = fAngle - floor(fAngle / (2.0 * D_PI))*(2.0 * D_PI);
+    this->quat[3] = (double)cos(theAngle/2.0);
+
     Vector3d norm = axis;
     norm.Normalize();
-    double scale = (double)sin(fAngle/2.0);
+    double l = norm.Length();
+    // Keep old axis in case the new axis is the null vector
+    if (l > 0.5) {
+        this->_axis = axis;
+    }
+    else {
+        norm = _axis;
+        norm.Normalize();
+    }
+
+    double scale = (double)sin(theAngle/2.0);
     this->quat[0] = norm.x * scale;
     this->quat[1] = norm.y * scale;
     this->quat[2] = norm.z * scale;
@@ -213,7 +261,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d u(rotateFrom); u.Normalize();
     Vector3d v(rotateTo); v.Normalize();
 
-    // The vector from x to is the roatation axis because it's the normal of the plane defined by (0,u,v) 
+    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v) 
     const double dot = u * v;
     Vector3d w = u % v;
     const double wlen = w.Length();
@@ -258,6 +306,11 @@ Rotation & Rotation::invert(void)
     this->quat[0] = -this->quat[0];
     this->quat[1] = -this->quat[1];
     this->quat[2] = -this->quat[2];
+
+    this->_axis.x = -this->_axis.x;
+    this->_axis.y = -this->_axis.y;
+    this->_axis.z = -this->_axis.z;
+
     return *this;
 }
 
@@ -268,6 +321,10 @@ Rotation Rotation::inverse(void) const
     rot.quat[1] = -this->quat[1];
     rot.quat[2] = -this->quat[2];
     rot.quat[3] =  this->quat[3];
+
+    rot._axis[0] = -this->_axis[0];
+    rot._axis[1] = -this->_axis[1];
+    rot._axis[2] = -this->_axis[2];
     return rot;
 }
 
@@ -295,10 +352,14 @@ Rotation Rotation::operator*(const Rotation & q) const
 
 bool Rotation::operator==(const Rotation & q) const
 {
-    if (this->quat[0] == q.quat[0] &&
-        this->quat[1] == q.quat[1] &&
-        this->quat[2] == q.quat[2] &&
-        this->quat[3] == q.quat[3])
+     if ((this->quat[0] == q.quat[0] &&
+          this->quat[1] == q.quat[1] &&
+          this->quat[2] == q.quat[2] &&
+          this->quat[3] == q.quat[3]) ||
+         (this->quat[0] == -q.quat[0] &&
+          this->quat[1] == -q.quat[1] &&
+          this->quat[2] == -q.quat[2] &&
+          this->quat[3] == -q.quat[3]))
         return true;
     return false;
 }
@@ -310,10 +371,14 @@ bool Rotation::operator!=(const Rotation & q) const
 
 bool Rotation::isSame(const Rotation& q) const
 {
-    if ((this->quat[0] == q.quat[0] || this->quat[0] == -q.quat[0]) &&
-        (this->quat[1] == q.quat[1] || this->quat[1] == -q.quat[1]) &&
-        (this->quat[2] == q.quat[2] || this->quat[2] == -q.quat[2]) &&
-        (this->quat[3] == q.quat[3] || this->quat[3] == -q.quat[3]))
+    if ((this->quat[0] == q.quat[0] &&
+         this->quat[1] == q.quat[1] &&
+         this->quat[2] == q.quat[2] &&
+         this->quat[3] == q.quat[3]) ||
+        (this->quat[0] == -q.quat[0] &&
+         this->quat[1] == -q.quat[1] &&
+         this->quat[2] == -q.quat[2] &&
+         this->quat[3] == -q.quat[3]))
         return true;
     return false;
 }
@@ -546,10 +611,17 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double c3 = cos(r/2.0);
     double s3 = sin(r/2.0);
 
-    quat[0] = c1*c2*s3 - s1*s2*c3;
-    quat[1] = c1*s2*c3 + s1*c2*s3;
-    quat[2] = s1*c2*c3 - c1*s2*s3;
-    quat[3] = c1*c2*c3 + s1*s2*s3;
+    // quat[0] = c1*c2*s3 - s1*s2*c3;
+    // quat[1] = c1*s2*c3 + s1*c2*s3;
+    // quat[2] = s1*c2*c3 - c1*s2*s3;
+    // quat[3] = c1*c2*c3 + s1*s2*s3;
+
+    this->setValue (
+      c1*c2*s3 - s1*s2*c3,
+      c1*s2*c3 + s1*c2*s3,
+      s1*c2*c3 - c1*s2*s3,
+      c1*c2*c3 + s1*s2*s3
+    );
 }
 
 void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
@@ -574,4 +646,21 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     y = (y/D_PI)*180;
     p = (p/D_PI)*180;
     r = (r/D_PI)*180;
+}
+
+bool Rotation::isIdentity() const
+{
+    return ((this->quat[0] == 0  &&
+             this->quat[1] == 0  &&
+             this->quat[2] == 0) &&
+            (this->quat[3] == 1 ||
+             this->quat[3] == -1));
+}
+
+bool Rotation::isNull() const
+{
+    return (this->quat[0] == 0 &&
+            this->quat[1] == 0 &&
+            this->quat[2] == 0 &&
+            this->quat[3] == 0);
 }

@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Procijeni i Pop&amp;ravi MESH...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation type="unfinished">Evaluate and repair mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
@@ -405,7 +409,7 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Skalirajte...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
@@ -1430,7 +1434,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Sve datoteke</translation>
     </message>
     <message>
       <source>X3D Extensible 3D</source>
@@ -1458,7 +1462,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Uvoz / izvoz</translation>
     </message>
     <message>
       <source>Scaling</source>

@@ -245,7 +245,7 @@ GtsSurface* GTSAlgos::createGTSSurface(const Mesh::MeshObject& Mesh)
   Base::Vector3f Vertex;
 
 
-  // Geting all the points
+  // Getting all the points
   GtsVertex ** aVertex = (GtsVertex **) malloc(Mesh.getKernel().CountPoints() * sizeof (GtsVertex *));
   for (unsigned int PIter = 0;PIter < Mesh.getKernel().CountPoints(); PIter++)
   {

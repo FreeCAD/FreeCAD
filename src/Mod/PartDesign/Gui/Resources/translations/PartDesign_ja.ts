@@ -118,7 +118,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>新しいクローンを作成</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="+537"/>
+      <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
       <translation>パートデザイン</translation>
     </message>
@@ -265,6 +265,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Migrate document to the modern PartDesign workflow</source>
+      <translation>新しいパートデザイン・ワークフローへドキュメントを移行</translation>
+    </message>
+    <message>
       <source>Migrate document to the modern partdesign workflow</source>
       <translation>新しいパートデザイン・ワークフローへドキュメントを移行</translation>
     </message>
@@ -680,9 +684,13 @@
       <translation>パートデザイン</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Create an subtractive primitive</source>
+      <translation>減算プリミティブを作成</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <location line="+1"/>
+      <source>Create a subtractive primitive</source>
       <translation>減算プリミティブを作成</translation>
     </message>
     <message>
@@ -1157,7 +1165,6 @@ Please check one or more edge entities first.</translation>
       <translation>共通部分</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Section</source>
       <translation>セクション</translation>
     </message>
@@ -1180,8 +1187,7 @@ Please check one or more edge entities first.</translation>
       <translation>プリミティブパラメーター</translation>
     </message>
     <message>
-      <location line="+573"/>
-      <location line="+7"/>
+      <location line="+593"/>
       <source>Create primitive</source>
       <translation>プリミティブを作成</translation>
     </message>
@@ -1276,7 +1282,7 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+254"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
       <source>Boolean: Accept: Input error</source>
       <translation>ブーリアン: 許可: 入力エラー</translation>
     </message>
@@ -1311,7 +1317,7 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="+134"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="+135"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>
@@ -1999,8 +2005,8 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="+18"/>
-      <location filename="../../TaskPadParameters.cpp" line="+103"/>
-      <location line="+277"/>
+      <location filename="../../TaskPadParameters.cpp" line="+112"/>
+      <location line="+323"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -2015,8 +2021,8 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="-98"/>
-      <location filename="../../TaskPadParameters.cpp" line="-271"/>
-      <location line="+253"/>
+      <location filename="../../TaskPadParameters.cpp" line="-311"/>
+      <location line="+288"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
@@ -2058,40 +2064,37 @@ Please check one or more edge entities first.</translation>
       <translation type="unfinished">TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-306"/>
+      <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
       <translation>押し出しパラメーター</translation>
     </message>
     <message>
-      <location line="+50"/>
-      <location line="+74"/>
-      <location line="+43"/>
-      <location line="+6"/>
-      <location line="+148"/>
+      <location line="+7"/>
+      <location line="+357"/>
       <source>No face selected</source>
       <translation>面が選択されていません</translation>
     </message>
     <message>
-      <location line="-267"/>
-      <location line="+253"/>
+      <location line="-295"/>
+      <location line="+288"/>
       <source>To last</source>
       <translation type="unfinished">To last</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>To first</source>
       <translation>最初まで</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Up to face</source>
       <translation>面まで</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+253"/>
+      <location line="-287"/>
+      <location line="+288"/>
       <source>Two dimensions</source>
       <translation>2方向の寸法</translation>
     </message>
@@ -2332,8 +2335,8 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="+8"/>
-      <location filename="../../TaskPocketParameters.cpp" line="+101"/>
-      <location line="+254"/>
+      <location filename="../../TaskPocketParameters.cpp" line="+119"/>
+      <location line="+320"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
@@ -2354,8 +2357,13 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location line="+9"/>
-      <location filename="../../TaskPocketParameters.cpp" line="-260"/>
-      <location line="+277"/>
+      <source>2nd length</source>
+      <translation>2番目の長さ</translation>
+    </message>
+    <message>
+      <location line="+18"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-332"/>
+      <location line="+355"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -2365,12 +2373,12 @@ Please check one or more edge entities first.</translation>
       <translation>ビューを更新</translation>
     </message>
     <message>
-      <location line="-68"/>
+      <location line="-86"/>
       <source>Length</source>
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="-316"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
       <translation>ポケットパラメーター</translation>
     </message>
@@ -2379,29 +2387,32 @@ Please check one or more edge entities first.</translation>
       <translation type="unfinished">To last</translation>
     </message>
     <message>
-      <location line="+47"/>
-      <location line="+254"/>
+      <location line="+65"/>
+      <location line="+320"/>
       <source>To first</source>
       <translation>最初まで</translation>
     </message>
     <message>
-      <location line="-255"/>
-      <location line="+254"/>
+      <location line="-321"/>
+      <location line="+320"/>
       <source>Through all</source>
       <translation>貫通</translation>
     </message>
     <message>
-      <location line="-252"/>
-      <location line="+254"/>
+      <location line="-318"/>
+      <location line="+320"/>
       <source>Up to face</source>
       <translation>面まで</translation>
     </message>
     <message>
-      <location line="-260"/>
-      <location line="+80"/>
-      <location line="+36"/>
-      <location line="+6"/>
-      <location line="+149"/>
+      <location line="-319"/>
+      <location line="+320"/>
+      <source>Two dimensions</source>
+      <translation>2方向の寸法</translation>
+    </message>
+    <message>
+      <location line="-379"/>
+      <location line="+383"/>
       <source>No face selected</source>
       <translation>面が選択されていません</translation>
     </message>
@@ -2658,12 +2669,11 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="+155"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location line="+23"/>
       <source>No face selected</source>
       <translation>面が選択されていません</translation>
     </message>
@@ -2874,7 +2884,6 @@ Please check one or more edge entities first.</translation>
       <translation>幅、高さ、厚みから減算直方体を作成</translation>
     </message>
     <message>
-      <location line="+133"/>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
       <translation>半径、高さ、角度から減算円柱を作成</translation>
     </message>
@@ -2883,38 +2892,71 @@ Please check one or more edge entities first.</translation>
       <translation>半径と複数の角度から減算球を作成</translation>
     </message>
     <message>
-      <location line="-4"/>
       <source>Create an subtractive box by its width, height and length</source>
       <translation>幅、高さ、厚みから減算直方体を作成</translation>
     </message>
     <message>
-      <location line="+8"/>
       <source>Create an subtractive sphere by its radius and various angles</source>
       <translation>半径と複数の角度から減算球を作成</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive cone</source>
       <translation>減算円錐を作成</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive ellipsoid</source>
       <translation>減算楕円体を作成</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive torus</source>
       <translation>減算トーラスを作成</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive prism</source>
       <translation>減算角柱を作成</translation>
     </message>
     <message>
-      <location line="+4"/>
       <source>Create an subtractive wedge</source>
+      <translation>減算ウェッジを作成</translation>
+    </message>
+    <message>
+      <location line="+129"/>
+      <source>Create a subtractive box by its width, height and length</source>
+      <translation>幅、高さ、厚みから減算直方体を作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cylinder by its radius, height and angle</source>
+      <translation>半径、高さ、角度から減算円柱を作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive sphere by its radius and various angles</source>
+      <translation>半径と複数の角度から減算球を作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive cone</source>
+      <translation>減算円錐を作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive ellipsoid</source>
+      <translation>減算楕円体を作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive torus</source>
+      <translation>減算トーラスを作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive prism</source>
+      <translation>減算角柱を作成</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Create a subtractive wedge</source>
       <translation>減算ウェッジを作成</translation>
     </message>
   </context>
@@ -3146,7 +3188,7 @@ Create the sketch on a face.</source>
       <location line="+13"/>
       <location line="+279"/>
       <location line="+842"/>
-      <location filename="../../ViewProvider.cpp" line="+101"/>
+      <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
       <location filename="../../ViewProviderDatum.cpp" line="+251"/>
       <location filename="../../ViewProviderHole.cpp" line="+81"/>
@@ -3289,7 +3331,7 @@ Create the sketch on a face.</source>
       <translation>回転体を編集</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="-832"/>
+      <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
       <translation>パーツ作成失敗</translation>
     </message>
@@ -3299,7 +3341,7 @@ Create the sketch on a face.</source>
       <translation>パーツオブジェクトの作成に失敗しました。</translation>
     </message>
     <message>
-      <location line="+46"/>
+      <location line="+48"/>
       <location line="+5"/>
       <location line="+7"/>
       <location line="+8"/>
@@ -3339,34 +3381,30 @@ Create the sketch on a face.</source>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>選択されているシェイプは複数のソリッドで構成されています。これは予期しない結果につながる可能性があります。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>選択されているシェイプは複数のシェルで構成されています。これは予期しない結果につながる可能性があります。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>選択されているシェイプはシェルひとつだけで構成されています。これは予期しない結果につながる可能性があります。</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>選択されているシェイプは複数のソリッドまたはシェルで構成されています。これは予期しない結果につながる可能性があります。</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>ベースフィーチャー</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -3486,7 +3524,7 @@ This may lead to unexpected results.</translation>
       <translation>補助線 %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -3517,7 +3555,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <translation>新しいPartDesignオブジェクトを作成するためにはドキュメント内にアクティブなボディーがなければなりません。どれかをアクティブにするか（ダブルクリック）、新しいボディーを作成してください。</translation>
     </message>
     <message>
-      <location line="+35"/>
+      <location line="+36"/>
       <source>Feature is not in a body</source>
       <translation>フィーチャーがボディー内にありません。</translation>
     </message>
@@ -3581,7 +3619,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>%1を編集</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3625,7 +3663,7 @@ This feature is broken and can't be edited.</source>
       <translation>新しい PartDesign 機能を使用するために移行を行いますか？</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>ドキュメント「%1」は過去の PartDesign からの移行処理途中か、またはわずかに壊れた構造を含んでいます。</translation>
     </message>
@@ -3660,7 +3698,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>プリミティブを編集</translation>
     </message>
   </context>
   <context>

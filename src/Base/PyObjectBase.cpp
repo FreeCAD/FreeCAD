@@ -68,7 +68,7 @@ PyObjectBase::~PyObjectBase()
  * the Py_TPFLAGS_BASETYPE flag. For example, the classes App::VectorPy and App::MatrixPy
  * have removed this flag and its Python proxies App.Vector and App.Matrix cannot be subclassed.
  * In case we want to allow to derive from subclasses of PyTypeObject in Python
- * we must either reimplment tp_new, tp_dealloc, tp_getattr, tp_setattr, tp_repr or set them to
+ * we must either reimplement tp_new, tp_dealloc, tp_getattr, tp_setattr, tp_repr or set them to
  * 0 and define tp_base as 0.
  */
 

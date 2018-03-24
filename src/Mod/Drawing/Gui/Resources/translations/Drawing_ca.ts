@@ -288,11 +288,17 @@
       <translation>Exporta a PDF</translation>
     </message>
     <message>
+      <location line="+110"/>
+      <source>The printer uses a different orientation than the drawing.
+Do you want to continue?</source>
+      <translation>La impressora utilitza una mida de paper diferent que la del dibuix. Voleu continuar?</translation>
+    </message>
+    <message>
       <source>PDF file (*.pdf)</source>
       <translation type="unfinished">PDF file (*.pdf)</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-109"/>
       <source>PDF file</source>
       <translation>Arxiu PDF</translation>
     </message>
@@ -337,13 +343,12 @@
       <translation>Orientació diferent</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La impressora utilitza una orientació diferent que la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
       <translation>Mida de paper diferent</translation>
@@ -395,19 +400,31 @@ Do you want to continue?</source>
       <translation>Dalt esquerra x / y</translation>
     </message>
     <message>
-      <location line="+48"/>
       <source>Spacing dx / dy   </source>
       <translation>Espaiat dx / dy   </translation>
     </message>
     <message>
-      <location line="+71"/>
       <source> Axis out and right</source>
       <translation> Eix a la dreta i cap a fora</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> Vertical tilt</source>
       <translation> Inclinació vertical</translation>
+    </message>
+    <message>
+      <location line="+48"/>
+      <source>Spacing dx / dy</source>
+      <translation>Espaiat dx / dy</translation>
+    </message>
+    <message>
+      <location line="+71"/>
+      <source>Axis out and right</source>
+      <translation>L'eix de la dreta dreta i cap a fora</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Vertical tilt</source>
+      <translation>Inclinació vertical</translation>
     </message>
     <message>
       <location line="+11"/>

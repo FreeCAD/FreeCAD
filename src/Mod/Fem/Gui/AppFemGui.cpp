@@ -35,8 +35,11 @@
 #include "PropertyFemMeshItem.h"
 #include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemCcxImp.h"
+#include "DlgSettingsFemExportAbaqusImp.h"
 #include "DlgSettingsFemGmshImp.h"
+#include "DlgSettingsFemInOutVtkImp.h"
 #include "DlgSettingsFemZ88Imp.h"
+#include "DlgSettingsFemElmerImp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -106,62 +109,68 @@ PyMOD_INIT_FUNC(FemGui)
     CreateFemCommands();
 
     // addition objects
-    FemGui::Workbench                             ::init();
-    FemGui::ViewProviderFemAnalysis               ::init();
-    FemGui::ViewProviderFemAnalysisPython         ::init();
-    FemGui::ViewProviderFemMesh                   ::init();
-    FemGui::ViewProviderFemMeshPython                   ::init();
-    FemGui::ViewProviderFemMeshShape              ::init();
-    FemGui::ViewProviderFemMeshShapeNetgen        ::init();
-    FemGui::ViewProviderSolver                    ::init();
-    FemGui::ViewProviderSolverPython              ::init();
-    FemGui::ViewProviderSetNodes                  ::init();
-    FemGui::ViewProviderSetElements               ::init();
-    FemGui::ViewProviderSetFaces                  ::init();
-    FemGui::ViewProviderSetGeometry               ::init();
-    FemGui::ViewProviderFemConstraint             ::init();
-    FemGui::ViewProviderFemConstraintPython       ::init();
-    FemGui::ViewProviderFemConstraintBearing      ::init();
-    FemGui::ViewProviderFemConstraintFixed        ::init();
-    FemGui::ViewProviderFemConstraintForce        ::init();
-    FemGui::ViewProviderFemConstraintFluidBoundary          ::init();
-    FemGui::ViewProviderFemConstraintPressure     ::init();
-    FemGui::ViewProviderFemConstraintGear         ::init();
-    FemGui::ViewProviderFemConstraintPulley       ::init();
-    FemGui::ViewProviderFemConstraintDisplacement ::init();
-    FemGui::ViewProviderFemConstraintHeatflux     ::init();
-    FemGui::ViewProviderFemConstraintTemperature  ::init();
-    FemGui::ViewProviderFemConstraintInitialTemperature  ::init();
-    FemGui::ViewProviderFemConstraintPlaneRotation::init();
-    FemGui::ViewProviderFemConstraintContact      ::init();
-    FemGui::ViewProviderFemConstraintTransform    ::init();
-    FemGui::ViewProviderResult                    ::init();
-    FemGui::ViewProviderResultPython              ::init();
-    FemGui::PropertyFemMeshItem                   ::init();
+    FemGui::Workbench                                           ::init();
+    FemGui::ViewProviderFemAnalysis                             ::init();
+    FemGui::ViewProviderFemAnalysisPython                       ::init();
+    FemGui::ViewProviderFemMesh                                 ::init();
+    FemGui::ViewProviderFemMeshPython                           ::init();
+    FemGui::ViewProviderFemMeshShape                            ::init();
+    FemGui::ViewProviderFemMeshShapeNetgen                      ::init();
+    FemGui::ViewProviderSolver                                  ::init();
+    FemGui::ViewProviderSolverPython                            ::init();
+    FemGui::ViewProviderSetNodes                                ::init();
+    FemGui::ViewProviderSetElements                             ::init();
+    FemGui::ViewProviderSetFaces                                ::init();
+    FemGui::ViewProviderSetGeometry                             ::init();
+    FemGui::ViewProviderFemConstraint                           ::init();
+    FemGui::ViewProviderFemConstraintPython                     ::init();
+    FemGui::ViewProviderFemConstraintBearing                    ::init();
+    FemGui::ViewProviderFemConstraintFixed                      ::init();
+    FemGui::ViewProviderFemConstraintForce                      ::init();
+    FemGui::ViewProviderFemConstraintFluidBoundary              ::init();
+    FemGui::ViewProviderFemConstraintPressure                   ::init();
+    FemGui::ViewProviderFemConstraintGear                       ::init();
+    FemGui::ViewProviderFemConstraintPulley                     ::init();
+    FemGui::ViewProviderFemConstraintDisplacement               ::init();
+    FemGui::ViewProviderFemConstraintHeatflux                   ::init();
+    FemGui::ViewProviderFemConstraintTemperature                ::init();
+    FemGui::ViewProviderFemConstraintInitialTemperature         ::init();
+    FemGui::ViewProviderFemConstraintPlaneRotation              ::init();
+    FemGui::ViewProviderFemConstraintContact                    ::init();
+    FemGui::ViewProviderFemConstraintTransform                  ::init();
+    FemGui::ViewProviderResult                                  ::init();
+    FemGui::ViewProviderResultPython                            ::init();
+    FemGui::PropertyFemMeshItem                                 ::init();
 
 #ifdef FC_USE_VTK
-    FemGui::ViewProviderFemPostObject          ::init();
-    FemGui::ViewProviderFemPostPipeline        ::init();
-    FemGui::ViewProviderFemPostFunction        ::init();
-    FemGui::ViewProviderFemPostFunctionProvider::init();
-    FemGui::ViewProviderFemPostPlaneFunction   ::init();
-    FemGui::ViewProviderFemPostSphereFunction  ::init();
-    FemGui::ViewProviderFemPostClip            ::init();
-    FemGui::ViewProviderFemPostDataAlongLine            ::init();
-    FemGui::ViewProviderFemPostScalarClip      ::init();
-    FemGui::ViewProviderFemPostWarpVector      ::init();
-    FemGui::ViewProviderFemPostCut             ::init();
+    FemGui::ViewProviderFemPostObject                           ::init();
+    FemGui::ViewProviderFemPostPipeline                         ::init();
+    FemGui::ViewProviderFemPostFunction                         ::init();
+    FemGui::ViewProviderFemPostFunctionProvider                 ::init();
+    FemGui::ViewProviderFemPostPlaneFunction                    ::init();
+    FemGui::ViewProviderFemPostSphereFunction                   ::init();
+    FemGui::ViewProviderFemPostClip                             ::init();
+    FemGui::ViewProviderFemPostDataAlongLine                    ::init();
+    FemGui::ViewProviderFemPostDataAtPoint                      ::init();
+    FemGui::ViewProviderFemPostScalarClip                       ::init();
+    FemGui::ViewProviderFemPostWarpVector                       ::init();
+    FemGui::ViewProviderFemPostCut                              ::init();
 #endif
 
 
-    // register preferences pages
+    // register preferences pages on FEM
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+
+    // register preferences pages on Import-Export
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemInOutVtkImp> (QT_TRANSLATE_NOOP("QObject","Import-Export"));
 
      // add resources and reloads the translators
     loadFemResource();
-    
+
     PyMOD_Return(mod);
 }

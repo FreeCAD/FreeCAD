@@ -1,12 +1,8 @@
-
-if(PCL_FOUND)
-    add_definitions(-DHAVE_PCL)
-endif(PCL_FOUND)
-
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}

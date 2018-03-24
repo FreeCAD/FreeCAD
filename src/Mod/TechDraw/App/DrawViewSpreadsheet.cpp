@@ -60,7 +60,7 @@ DrawViewSpreadsheet::DrawViewSpreadsheet(void)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
 
     ADD_PROPERTY_TYPE(Source ,(0),vgroup,App::Prop_None,"Spreadsheet to view");
     ADD_PROPERTY_TYPE(CellStart ,("A1"),vgroup,App::Prop_None,"The top left cell of the range to display");

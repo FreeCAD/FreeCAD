@@ -112,6 +112,10 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Ovrednoti in popravi mrežo …</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation type="unfinished">Evaluate and repair mesh...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>

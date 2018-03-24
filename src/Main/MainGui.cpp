@@ -58,7 +58,7 @@
 
 void PrintInitHelp(void);
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2017\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018\n"\
 "  #####                 ####  ###   ####  \n" \
 "  #                    #      # #   #   # \n" \
 "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -109,7 +109,11 @@ int main( int argc, char ** argv )
     _putenv("PYTHONPATH=");
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
-    _putenv("PYTHONHOME=");
+    const char* fc_py_home = getenv("FC_PYTHONHOME");
+    if (fc_py_home)
+        _putenv_s("PYTHONHOME", fc_py_home);
+    else
+        _putenv("PYTHONHOME=");
 #endif
 
 #if defined (FC_OS_WIN32)
@@ -188,9 +192,15 @@ int main( int argc, char ** argv )
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc,argv);
         QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-        QString msg = QString::fromLatin1(e.what());
+        QString msg = QString::fromUtf8(e.what());
         QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-        QMessageBox::information(0, appName, s);
+
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setWindowTitle(appName);
+        msgBox.setDetailedText(msg);
+        msgBox.setText(s);
+        msgBox.exec();
         exit(0);
     }
     catch (const Base::Exception& e) {
@@ -198,7 +208,7 @@ int main( int argc, char ** argv )
         QApplication app(argc,argv);
         QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg;
-        msg = QObject::tr("While initializing %1 the  following exception occurred: '%2'\n\n"
+        msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n"
                           "Python is searching for its files in the following directories:\n%3\n\n"
                           "Python version information:\n%4\n")
                           .arg(appName).arg(QString::fromUtf8(e.what()))
@@ -321,7 +331,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 #ifdef _M_IX86 
   if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)   
   { 
-    // be sure that we have enought space... 
+    // be sure that we have enough space... 
     static char MyStack[1024*128];   
     // it assumes that DS and SS are the same!!! (this is the case for Win32) 
     // change the stack only if the selectors are the same (this is the case for Win32) 
@@ -347,7 +357,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     stMDEI.ThreadId = GetCurrentThreadId(); 
     stMDEI.ExceptionPointers = pEx; 
     stMDEI.ClientPointers = true; 
-    // try to create an miniDump: 
+    // try to create a miniDump: 
     if (s_pMDWD( 
       GetCurrentProcess(), 
       GetCurrentProcessId(), 

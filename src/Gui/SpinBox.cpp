@@ -38,6 +38,7 @@
 #include <App/Expression.h>
 #include <boost/math/special_functions/round.hpp>
 #include "QuantitySpinBox_p.h"
+#include <App/PropertyUnits.h>
 
 using namespace Gui;
 using namespace App;
@@ -371,7 +372,13 @@ void UIntSpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), Unit(), this);
+    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    Unit unit;
+
+    if (qprop != 0)
+        unit = qprop->getUnit();
+
+    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, this);
     connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
     box->show();
 
@@ -546,7 +553,13 @@ void IntSpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), Unit(), this);
+    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    Unit unit;
+
+    if (qprop != 0)
+        unit = qprop->getUnit();
+
+    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(),unit, this);
     connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
     box->show();
 
@@ -721,7 +734,13 @@ void DoubleSpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), Unit(), this);
+    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    Unit unit;
+
+    if (qprop != 0)
+        unit = qprop->getUnit();
+
+    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, this);
     connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
     box->show();
 

@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Approssima superficie B-Spline...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Approssima una superficie B-spline</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>Approssima superficie B-Spline...</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>Approssima superficie...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Approssima una superficie B-Spline</translation>
     </message>
@@ -85,9 +93,13 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
       <translation>Adatta una superficie B-Spline</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation>Adatta la superficie della curva B-Spline</translation>
     </message>
     <message>
       <location line="+6"/>

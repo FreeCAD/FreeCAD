@@ -63,7 +63,7 @@ void * _class_::create(void){\
    return new _class_ ();\
 }
 
-/// define to implement a  subclass of Base::BaseClass
+/// define to implement a subclass of Base::BaseClass
 #define EXTENSION_TYPESYSTEM_SOURCE_ABSTRACT_P(_class_) \
 Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
@@ -131,7 +131,7 @@ template<> void _class_::init(void){\
  * 
  * Extensions are like every other FreeCAD object and based on properties. All information storage 
  * and persistence should be achieved by use of those. Additional any number of methods can be 
- * added to provide funtionality around the properties. There are 3 samll difference to normal objects:
+ * added to provide functionality around the properties. There are 3 small difference to normal objects:
  * 1. They must be derived from Extension class
  * 2. Properties must be handled with special extension macros
  * 3. Extensions must be initialised
@@ -155,17 +155,17 @@ template<> void _class_::init(void){\
  * The special python extension type created above is important, as only those python extensions 
  * can be added to an object from python. It does not work to add the c++ version directly there. 
  * 
- * Note that every method of the extension becomes part of the extendded object when added from c++. 
+ * Note that every method of the extension becomes part of the extended object when added from c++. 
  * This means one should carefully design the API and make only necessary methods public or protected.
  * Every internal method should be private.
  * 
- * The automatic availibility of methods in the class does not hold for the python interface, only 
+ * The automatic availability of methods in the class does not hold for the python interface, only 
  * for c++ classes. This is like every where else in FreeCAD, there is no automatic creation of python 
  * API from c++ classes. Hence the extension creator must also create a custom python object of its 
  * extension, which works exactly like the normal FreeCAD python object workflow. There is nothing 
  * special at all for extension python objects, the normal xml + imp.cpp approach is used. It must 
  * only be taken care that the objects father is the correct extension base class. Of course also 
- * make sure your extension returns the correct python ojbect in its "getPyObject" call.
+ * make sure your extension returns the correct python object in its "getPyObject" call.
  * Every method you create in the extensions python will be later added to an extended object. This 
  * happens automatically for both, c++ and python extension, if "getPyObject" returns the correct 
  * python object. No extra work needs to be done.
@@ -210,7 +210,7 @@ template<> void _class_::init(void){\
  * };
  * @endcode
  * @Note As seen in the code there are multiple helper macros to ease the repetitive work of querying 
- * and calling methods of the proxy object. See the maco documentation for howto use them.
+ * and calling methods of the proxy object. See the macro documentation for how to use them.
  * 
  * To ensure that your wrapper is used when a extension is created from python the extension type must 
  * be exposed as follows:
@@ -218,8 +218,8 @@ template<> void _class_::init(void){\
  * typedef ExtensionPythonT<MyExtensionPythonT<MyExtension>> MyExtensionPython;
  * @endcode
  * 
- * This boilerplate is absolutely nesseccary to allow overridable methods in python and it is the 
- * exension creators responsibility to ensure full implementation.
+ * This boilerplate is absolutely necessary to allow overridable methods in python and it is the 
+ * extension creator's responsibility to ensure full implementation.
  * 
  */
 class AppExport Extension
@@ -315,8 +315,8 @@ private:
   
 
 /**
- * Generic Python extension class which allows to behave every extension
- * derived class as Python extension -- simply by subclassing.
+ * Generic Python extension class which allows every extension derived
+ * class to behave as a Python extension -- simply by subclassing.
  */
 template <class ExtensionT>
 class ExtensionPythonT : public ExtensionT

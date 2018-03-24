@@ -48,7 +48,7 @@ PyDoc_STRVAR(module_Assembly_doc,
 extern "C" {
 void AssemblyExport initAssembly()
 {
-    // load dependend module
+    // load dependent module
     try {
         Base::Interpreter().runString("import Part");
         //Base::Interpreter().runString("import PartDesign");

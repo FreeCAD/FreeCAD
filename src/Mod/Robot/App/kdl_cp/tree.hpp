@@ -93,7 +93,7 @@ namespace KDL
 
     /**
      * \brief  This class encapsulates a <strong>tree</strong>
-     * kinematic interconnection structure. It is build out of segments.
+     * kinematic interconnection structure. It is built out of segments.
      *
      * @ingroup KinematicFamily
      */

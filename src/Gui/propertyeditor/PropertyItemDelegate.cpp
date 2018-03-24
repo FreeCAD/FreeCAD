@@ -122,6 +122,8 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     if (!childItem)
         return 0;
     QWidget* editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
+    if (editor) // Make sure the editor background is painted so the cell content doesn't show through
+        editor->setAutoFillBackground(true);
     if (editor && childItem->isReadOnly())
         editor->setDisabled(true);
     else if (editor && this->pressed)

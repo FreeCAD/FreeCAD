@@ -339,7 +339,7 @@
 + tritritest.h has no licensing information, but Tomas Moller replied
 + the following, when asked about it:
 + .
-+ The code is is free to use for anyone and any projects, but I give no
++ The code is free to use for anyone and any projects, but I give no
 + warranties.
 +
 +Files: src/Mod/Mesh/App/WildMagic4/*
@@ -485,9 +485,9 @@
 +\fB\-P, \-\-python\-path\fR \fIarg\fR
 +Additional Python path.
 +.SH SEE ALSO
-+To get more information about \fBFreeCAD\fR, please visit \fIhttp://juergen\-riegel.net/FreeCAD/Docu/index.php/Main_Page\fR
++To get more information about \fBFreeCAD\fR, please visit \fIhttps://freecadweb.org/wiki\fR
 +.SH BUGS
-+To report a bug, please visit \fIhttp://free-cad.sf.net/\fR
++To report a bug, please visit \fIhttps://freecadweb.org/tracker/\fR
 +.SH AUTHOR
 +This manual page was written by Werner Mayer.
 --- freecad-0.9.2646.orig/debian/changelog

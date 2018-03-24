@@ -5,7 +5,7 @@
     <name>CmdMeshAddFacet</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Add triangle</source>
@@ -20,7 +20,7 @@
     <name>CmdMeshBoundingBox</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Boundings info...</source>
@@ -35,7 +35,7 @@
     <name>CmdMeshBuildRegularSolid</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Regular solid...</source>
@@ -54,14 +54,14 @@
     </message>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDifference</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Difference</source>
@@ -72,7 +72,7 @@
     <name>CmdMeshEvaluateFacet</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Face info</source>
@@ -87,7 +87,7 @@
     <name>CmdMeshEvaluateSolid</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Check solid mesh</source>
@@ -102,7 +102,7 @@
     <name>CmdMeshEvaluation</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
@@ -112,34 +112,38 @@
       <source>Evaluate &amp;&amp; Repair mesh...</source>
       <translation>Ebaluatu eta konpondu sarea...</translation>
     </message>
+    <message>
+      <source>Evaluate and repair mesh...</source>
+      <translation>Ebaluatu eta konpondu sarea...</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Make a Box</source>
-      <translation type="unfinished">Make a Box</translation>
+      <translation>Egin kutxa bat</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeTool</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Make a Tool</source>
-      <translation type="unfinished">Make a Tool</translation>
+      <translation>Egin tresna bat</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeUnion</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Make Union</source>
@@ -150,7 +154,7 @@
     <name>CmdMeshExport</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Export mesh...</source>
@@ -165,7 +169,7 @@
     <name>CmdMeshFillInteractiveHole</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Close hole</source>
@@ -180,7 +184,7 @@
     <name>CmdMeshFillupHoles</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Fill holes...</source>
@@ -195,7 +199,7 @@
     <name>CmdMeshFlipNormals</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Flip normals</source>
@@ -210,7 +214,7 @@
     <name>CmdMeshFromGeometry</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Create mesh from geometry...</source>
@@ -225,7 +229,7 @@
     <name>CmdMeshFromPartShape</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Create mesh from shape...</source>
@@ -240,7 +244,7 @@
     <name>CmdMeshHarmonizeNormals</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Harmonize normals</source>
@@ -255,7 +259,7 @@
     <name>CmdMeshImport</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Import mesh...</source>
@@ -270,7 +274,7 @@
     <name>CmdMeshIntersection</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Intersection</source>
@@ -281,7 +285,7 @@
     <name>CmdMeshMerge</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Merge</source>
@@ -296,7 +300,7 @@
     <name>CmdMeshPolyCut</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Cut mesh</source>
@@ -311,7 +315,7 @@
     <name>CmdMeshPolySegm</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Make segment</source>
@@ -326,7 +330,7 @@
     <name>CmdMeshPolySelect</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Select mesh</source>
@@ -341,7 +345,7 @@
     <name>CmdMeshPolySplit</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Split mesh</source>
@@ -356,7 +360,7 @@
     <name>CmdMeshPolyTrim</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Trim mesh</source>
@@ -371,7 +375,7 @@
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Remove components by hand...</source>
@@ -386,7 +390,7 @@
     <name>CmdMeshRemoveComponents</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Remove components...</source>
@@ -401,22 +405,22 @@
     <name>CmdMeshScale</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Eskala...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Eskalatu hautatutako sareak</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Create section from mesh and plane</source>
@@ -431,7 +435,7 @@
     <name>CmdMeshSegmentation</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Create mesh segments...</source>
@@ -446,7 +450,7 @@
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Smooth...</source>
@@ -461,7 +465,7 @@
     <name>CmdMeshToolMesh</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>
@@ -476,7 +480,7 @@
     <name>CmdMeshTransform</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Transform mesh</source>
@@ -491,7 +495,7 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Trim mesh with a plane</source>
@@ -506,7 +510,7 @@
     <name>CmdMeshUnion</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Union</source>
@@ -517,7 +521,7 @@
     <name>CmdMeshVertexCurvature</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Calculates the curvature of the vertices of a mesh</source>
@@ -532,7 +536,7 @@
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Sarea</translation>
     </message>
     <message>
       <source>Curvature info</source>
@@ -779,7 +783,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Ezarpenak</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
@@ -814,7 +818,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <source>Solid:</source>
@@ -850,7 +854,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Luzera:</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -900,7 +904,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Esportatu</translation>
     </message>
     <message>
       <source>Defines the deviation of tessellation to the actual surface</source>
@@ -1270,47 +1274,47 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
     </message>
     <message>
       <source>Binary STL (*.stl)</source>
-      <translation type="unfinished">Binary STL (*.stl)</translation>
+      <translation>STL bitarra (*.stl)</translation>
     </message>
     <message>
       <source>ASCII STL (*.ast)</source>
-      <translation type="unfinished">ASCII STL (*.ast)</translation>
+      <translation>ASCII STL (*.ast)</translation>
     </message>
     <message>
       <source>Binary Mesh (*.bms)</source>
-      <translation type="unfinished">Binary Mesh (*.bms)</translation>
+      <translation>Sare bitarra (*.bms)</translation>
     </message>
     <message>
       <source>Alias Mesh (*.obj)</source>
-      <translation type="unfinished">Alias Mesh (*.obj)</translation>
+      <translation>Alias sarea (*.obj)</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii (*.iv)</source>
-      <translation type="unfinished">Inventor V2.1 ascii (*.iv)</translation>
+      <translation>Inventor V2.1 ascii (*.iv)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
       <source>ASCII STL (*.stl)</source>
-      <translation type="unfinished">ASCII STL (*.stl)</translation>
+      <translation>ASCII STL (*.stl)</translation>
     </message>
     <message>
       <source>VRML V2.0 (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML V2.0 (*.wrl *.vrml)</translation>
+      <translation>VRML V2.0 (*.wrl *.vrml)</translation>
     </message>
     <message>
       <source>Compressed VRML 2.0 (*.wrz)</source>
-      <translation type="unfinished">Compressed VRML 2.0 (*.wrz)</translation>
+      <translation>Konprimitutako VRML 2.0 (*.wrz)</translation>
     </message>
     <message>
       <source>Nastran (*.nas *.bdf)</source>
-      <translation type="unfinished">Nastran (*.nas *.bdf)</translation>
+      <translation>Nastran (*.nas *.bdf)</translation>
     </message>
     <message>
       <source>Python module def (*.py)</source>
-      <translation type="unfinished">Python module def (*.py)</translation>
+      <translation>Python moduluaren definizioa (*.py)</translation>
     </message>
     <message>
       <source>Meshing Tolerance</source>
@@ -1338,7 +1342,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2 Faces: %3]</translation>
+      <translation>[Puntuak: %1, ertzak: %2, aurpegiak: %3]</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1358,19 +1362,19 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</translation>
+      <translation>Sare fitxategi guztiak (*.stl *.ast *.bms *.obj *.ply)</translation>
     </message>
     <message>
       <source>Stanford Polygon (*.ply)</source>
-      <translation type="unfinished">Stanford Polygon (*.ply)</translation>
+      <translation>Stanford poligonoa (*.ply)</translation>
     </message>
     <message>
       <source>Object File Format (*.off)</source>
-      <translation type="unfinished">Object File Format (*.off)</translation>
+      <translation>Objektu-fitxategiaren formatua (*.off)</translation>
     </message>
     <message>
       <source>Standford Polygon (*.ply)</source>
-      <translation type="unfinished">Standford Polygon (*.ply)</translation>
+      <translation>Stanford poligonoa (*.ply)</translation>
     </message>
     <message>
       <source>Delete selected faces</source>
@@ -1386,11 +1390,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
+      <translation>Sare fitxategi guztiak (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
       <source>X3D Extensible 3D (*.x3d)</source>
-      <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
+      <translation>X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
       <source>Display components</source>
@@ -1462,11 +1466,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Eskalatzea</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Sartu eskalatze-faktorea:</translation>
     </message>
   </context>
   <context>

@@ -30,6 +30,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <boost/signals.hpp>
 #include <QString>
 
 namespace Base
@@ -144,6 +145,39 @@ public:
 private:
     struct Private;
     Private* d;
+};
+
+// ----------------------------------------------------------------------------
+
+template<typename Status, class Object>
+class ObjectStatusLocker
+{
+public:
+    ObjectStatusLocker(Status s, Object* o, bool st = true) : status(s), obj(o), state(st)
+    { obj->setStatus(status, state); }
+    ~ObjectStatusLocker()
+    { obj->setStatus(status, !state); }
+private:
+    Status status;
+    Object* obj;
+    bool state;
+};
+
+// ----------------------------------------------------------------------------
+
+class ConnectionBlocker {
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    bool b;
+    Connection& c;
+
+public:
+    ConnectionBlocker(Connection& c) : c(c) {
+        b = c.blocked();
+        c.block(true);
+    }
+    ~ConnectionBlocker() {
+        c.block(b);
+    }
 };
 
 // ----------------------------------------------------------------------------

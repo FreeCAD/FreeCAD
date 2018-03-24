@@ -105,7 +105,7 @@ public:
                            const TopoDS_Shape& Shape,
                            float fMeshDeviation=0.1);
 
-    /// write a given shape as points and normal Vectors in a coma separeted format
+    /// write a given shape as points and normal Vectors in a comma separated format
     static void writeShapeCSV(const char *FileName,
                               const TopoDS_Shape& Shape,
                               float fMeshDeviation,

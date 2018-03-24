@@ -171,6 +171,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
         const Part::TopoShape& toposhape = feat->Shape.getShape();
         if (toposhape.isNull())
             return false;
+
         sh = toposhape.getSubShape(SubElements[i].c_str());
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
@@ -183,7 +184,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             BRepGProp::VolumeProperties(toposhape.getShape(), props);
             double lx = props.Mass();
             *scale = this->calcDrawScaleFactor(sqrt(lx)*0.5); //OvG: setup draw scale for constraint
-        } else if (sh.ShapeType() == TopAbs_EDGE) {
+        }
+        else if (sh.ShapeType() == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(sh));
             double fp = curve.FirstParameter();
             double lp = curve.LastParameter();
@@ -208,6 +210,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 steps = 1;
                 *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
+
             steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps; //OvG: Place upper limit on number of steps
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
@@ -215,29 +218,69 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
                 normals.push_back(NormalDirection.getValue());
             }
-        } else if (sh.ShapeType() == TopAbs_FACE) {
+        }
+        else if (sh.ShapeType() == TopAbs_FACE) {
             TopoDS_Face face = TopoDS::Face(sh);
+
             // Surface boundaries
             BRepAdaptor_Surface surface(face);
             double ufp = surface.FirstUParameter();
             double ulp = surface.LastUParameter();
             double vfp = surface.FirstVParameter();
             double vlp = surface.LastVParameter();
+            double l;
+            double lv, lu;
+
             // Surface normals
             BRepGProp_Face props(face);
             gp_Vec normal;
             gp_Pnt center;
+
             // Get an estimate for the number of arrows by finding the average length of curves
             Handle(Adaptor3d_HSurface) hsurf;
             hsurf = new BRepAdaptor_HSurface(surface);
-            Adaptor3d_IsoCurve isoc(hsurf, GeomAbs_IsoU, vfp);
-            double l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
-            isoc.Load(GeomAbs_IsoU, vlp);
-            double lv = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
-            isoc.Load(GeomAbs_IsoV, ufp);
-            l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
-            isoc.Load(GeomAbs_IsoV, ulp);
-            double lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+
+            Adaptor3d_IsoCurve isoc(hsurf);
+            try {
+                isoc.Load(GeomAbs_IsoU, ufp);
+                l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
+            }
+            catch (const Standard_Failure&) {
+                gp_Pnt p1 = hsurf->Value(ufp, vfp);
+                gp_Pnt p2 = hsurf->Value(ufp, vlp);
+                l = p1.Distance(p2);
+            }
+
+            try {
+                isoc.Load(GeomAbs_IsoU, ulp);
+                lv = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+            }
+            catch (const Standard_Failure&) {
+                gp_Pnt p1 = hsurf->Value(ulp, vfp);
+                gp_Pnt p2 = hsurf->Value(ulp, vlp);
+                lv = (l + p1.Distance(p2))/2.0;
+            }
+
+            try {
+                isoc.Load(GeomAbs_IsoV, vfp);
+                l = GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion());
+            }
+            catch (const Standard_Failure&) {
+                gp_Pnt p1 = hsurf->Value(ufp, vfp);
+                gp_Pnt p2 = hsurf->Value(ulp, vfp);
+                l = p1.Distance(p2);
+            }
+
+            try {
+                isoc.Load(GeomAbs_IsoV, vlp);
+                lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+            }
+            catch (const Standard_Failure&) {
+                gp_Pnt p1 = hsurf->Value(ufp, vlp);
+                gp_Pnt p2 = hsurf->Value(ulp, vlp);
+                lu = (l + p1.Distance(p2))/2.0;
+            }
+
             int stepsv;
             if (lv >= 30) //OvG: Increase 10 units distance proportionately to lv for larger objects.
             {
@@ -255,6 +298,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 stepsv = 2; // Minimum of three arrows to ensure (as much as possible) that at least one is displayed
                 *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
+
             stepsv = stepsv>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsv; //OvG: Place upper limit on number of steps
             int stepsu;
             if (lu >= 30) //OvG: Increase 10 units distance proportionately to lu for larger objects.
@@ -273,6 +317,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                 stepsu = 2;
                 *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
+
             stepsu = stepsu>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsu; //OvG: Place upper limit on number of steps
             double stepv = (vlp - vfp) / stepsv;
             double stepu = (ulp - ufp) / stepsu;

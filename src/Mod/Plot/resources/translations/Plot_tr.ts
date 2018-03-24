@@ -24,7 +24,7 @@
     <message>
       <location filename="../../PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation>Eksen parametrelerini yapılandırma</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation type="unfinished">Show/Hide grid on selected plot</translation>
+      <translation>Seçili arsa üzerinde ızgarayı göster / gizle</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <message>
       <location filename="../../PlotGui.py" line="155"/>
       <source>Set title and axes labels</source>
-      <translation type="unfinished">Set title and axes labels</translation>
+      <translation>Başlık ve eksen etiketlerini ayarlama</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="../../PlotGui.py" line="135"/>
       <source>Show/Hide legend</source>
-      <translation type="unfinished">Show/Hide legend</translation>
+      <translation>Efsaneyi Göster / Gizle</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation type="unfinished">Show/Hide legend on selected plot</translation>
+      <translation>Seçili arsa üzerinde gösterge göster / gizle</translation>
     </message>
   </context>
   <context>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../PlotGui.py" line="169"/>
       <source>Set positions and sizes</source>
-      <translation type="unfinished">Set positions and sizes</translation>
+      <translation>Konumları ve boyutlarını ayarlama</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="172"/>
       <source>Set labels and legend positions and sizes</source>
-      <translation type="unfinished">Set labels and legend positions and sizes</translation>
+      <translation>Etiketleri ve açıklama konumlarını ve boyutlarını ayarlama</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation type="unfinished">Save plot</translation>
+      <translation>Komutu kaydet</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation>Arsa dosyasını resim dosyası olarak kaydedin</translation>
     </message>
   </context>
   <context>
@@ -97,12 +97,12 @@
     <message>
       <location filename="../../PlotGui.py" line="81"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation>Diziyi yapılandır</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation type="unfinished">Configure series drawing style and label</translation>
+      <translation>Seri çizim stilini ve etiketini yapılandır</translation>
     </message>
   </context>
   <context>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="179"/>
       <source>Active axes</source>
-      <translation type="unfinished">Active axes</translation>
+      <translation>Aktif eksenler</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="211"/>
       <source>Apply to all axes</source>
-      <translation type="unfinished">Apply to all axes</translation>
+      <translation>Tüm eksenlere uygula</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="215"/>
@@ -145,72 +145,72 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="203"/>
       <source>X auto</source>
-      <translation type="unfinished">X auto</translation>
+      <translation>X Otomatik</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="207"/>
       <source>Y auto</source>
-      <translation type="unfinished">Y auto</translation>
+      <translation>Y Otomatik</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="227"/>
       <source>Index of the active axes</source>
-      <translation type="unfinished">Index of the active axes</translation>
+      <translation>Etkin eksenler indeksi</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="231"/>
       <source>Add new axes to the plot</source>
-      <translation type="unfinished">Add new axes to the plot</translation>
+      <translation>Arsaya yeni eksenler ekleyin</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="236"/>
       <source>Remove selected axes</source>
-      <translation type="unfinished">Remove selected axes</translation>
+      <translation>Seçilen ekseni kaldır</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="241"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation type="unfinished">Check it to apply transformations to all axes</translation>
+      <translation>Tüm eksenlere dönüşümler uygulamak için bunu kontrol edin</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="246"/>
       <source>Left bound of axes</source>
-      <translation type="unfinished">Left bound of axes</translation>
+      <translation>Eksenlerin sol sınırı</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="251"/>
       <source>Right bound of axes</source>
-      <translation type="unfinished">Right bound of axes</translation>
+      <translation>Eksenlerin sağ sınırı</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="256"/>
       <source>Bottom bound of axes</source>
-      <translation type="unfinished">Bottom bound of axes</translation>
+      <translation>Eksenlerin alt sınırı</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="261"/>
       <source>Top bound of axes</source>
-      <translation type="unfinished">Top bound of axes</translation>
+      <translation>Eksenlerin üst sınırı</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="266"/>
       <source>Outward offset of X axis</source>
-      <translation type="unfinished">Outward offset of X axis</translation>
+      <translation>X ekseninin dışa kaydırması</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="271"/>
       <source>Outward offset of Y axis</source>
-      <translation type="unfinished">Outward offset of Y axis</translation>
+      <translation>Y ekseninin dışa kaydırmas</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="276"/>
       <source>X axis scale autoselection</source>
-      <translation type="unfinished">X axis scale autoselection</translation>
+      <translation>X ekseni ölçeği otomatik seçimi</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="281"/>
       <source>Y axis scale autoselection</source>
-      <translation type="unfinished">Y axis scale autoselection</translation>
+      <translation>Y eksen ölçeğinde otomatik seçim</translation>
     </message>
   </context>
   <context>
@@ -218,32 +218,32 @@
     <message>
       <location filename="../../Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
+      <translation>matplotlib bulunamadı, bu nedenle Arsa modülü yüklenemedi</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation type="unfinished">matplotlib not found, Plot module will be disabled</translation>
+      <translation>matplotlib bulunamadı, Arsa modülü devre dışı bırakılacak</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation type="unfinished">Plot document must be selected in order to save it</translation>
+      <translation>Plot belgesi kaydetmek için seçilmelidir</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="340"/>
       <source>Axes 0 can not be deleted</source>
-      <translation type="unfinished">Axes 0 can not be deleted</translation>
+      <translation>Eksen 0 silinemez</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation>Izgara bir arsa belgesinin üstünde etkinleştirilmelidir</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>Efsane, arsa belgesinin üstünde etkinleştirilmelidir</translation>
     </message>
   </context>
   <context>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="137"/>
       <source>Active axes</source>
-      <translation type="unfinished">Active axes</translation>
+      <translation>Aktif eksenler</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="141"/>
@@ -276,27 +276,27 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="153"/>
       <source>Index of the active axes</source>
-      <translation type="unfinished">Index of the active axes</translation>
+      <translation>Etkin eksenler indeksi</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="157"/>
       <source>Title (associated to active axes)</source>
-      <translation type="unfinished">Title (associated to active axes)</translation>
+      <translation>Başlık (etkin eksenlerle ilişkili)</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="162"/>
       <source>Title font size</source>
-      <translation type="unfinished">Title font size</translation>
+      <translation>Başlık yazı tipi boyutu</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="167"/>
       <source>X axis title</source>
-      <translation type="unfinished">X axis title</translation>
+      <translation>X ekseni başlığı</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="172"/>
       <source>X axis title font size</source>
-      <translation type="unfinished">X axis title font size</translation>
+      <translation>X ekseni başlık yazı tipi boyutu</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="177"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="182"/>
       <source>Y axis title font size</source>
-      <translation type="unfinished">Y axis title font size</translation>
+      <translation>Y ekseni başlık yazı tipi boyutu</translation>
     </message>
   </context>
   <context>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="121"/>
       <source>Set positions and sizes</source>
-      <translation type="unfinished">Set positions and sizes</translation>
+      <translation>Konumları ve boyutlarını ayarlama</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="125"/>
@@ -324,27 +324,27 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="130"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Boyut</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="140"/>
       <source>X item position</source>
-      <translation type="unfinished">X item position</translation>
+      <translation>X öğe konumu</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="145"/>
       <source>Y item position</source>
-      <translation type="unfinished">Y item position</translation>
+      <translation>Y öğe konumu</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="150"/>
       <source>Item size</source>
-      <translation type="unfinished">Item size</translation>
+      <translation>Öğe boyutu</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation type="unfinished">List of modifiable items</translation>
+      <translation>Değiştirilebilir öğelerin listesi</translation>
     </message>
   </context>
   <context>
@@ -352,27 +352,27 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="127"/>
       <source>Save figure</source>
-      <translation type="unfinished">Save figure</translation>
+      <translation>Rakam kaydet</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="131"/>
       <source>Inches</source>
-      <translation type="unfinished">Inches</translation>
+      <translation>İnç</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="136"/>
       <source>Dots per Inch</source>
-      <translation type="unfinished">Dots per Inch</translation>
+      <translation>İnç başına Nokta Sayısı</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="141"/>
       <source>Output image file path</source>
-      <translation type="unfinished">Output image file path</translation>
+      <translation>Çıktı görüntü dosyası yolu</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="146"/>
       <source>Show a file selection dialog</source>
-      <translation type="unfinished">Show a file selection dialog</translation>
+      <translation>Dosya seçimi iletişim kutusunu göster</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="151"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="161"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Nokta başına nokta sayısı, boyutu ile çıktı görüntü çözünürlüğünü tanımlar</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="188"/>
       <source>Line style</source>
-      <translation type="unfinished">Line style</translation>
+      <translation>Çizgi stili</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="168"/>
@@ -410,22 +410,22 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="149"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation>Diziyi yapılandır</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="173"/>
       <source>List of available series</source>
-      <translation type="unfinished">List of available series</translation>
+      <translation>Mevcut serilerin listesi</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="178"/>
       <source>Line title</source>
-      <translation type="unfinished">Line title</translation>
+      <translation>Satır başlığı</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="193"/>
       <source>Marker style</source>
-      <translation type="unfinished">Marker style</translation>
+      <translation>İşaretçi stili</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="198"/>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation type="unfinished">Remove series</translation>
+      <translation>Seriyi kaldır</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation type="unfinished">If checked, series will not be considered for legend</translation>
+      <translation>İşaretlenirse, efsane için seri kabul edilmez</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation type="unfinished">Removes this series</translation>
+      <translation>Bu diziyi kaldırır</translation>
     </message>
   </context>
 </TS>

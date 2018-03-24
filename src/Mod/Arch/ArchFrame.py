@@ -191,7 +191,7 @@ class _Frame(ArchComponent.Component):
                     try:
                         basepoint = basepointliste[obj.BasePoint]
                     except IndexError:
-                        FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.\n"))
+                        FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.")+"\n")
                         basepoint = basepointliste[0]
                 else :
                     basepoint = profile.CenterOfMass

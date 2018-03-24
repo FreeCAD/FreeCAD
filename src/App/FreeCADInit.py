@@ -140,7 +140,7 @@ def InitApplications():
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
-					Err('Please look into the log file for further information')
+					Err('Please look into the log file for further information\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
@@ -308,7 +308,7 @@ App.Units.Temperature   = App.Units.Unit(0,0,0,0,1)
 App.Units.ElectricCurrent   = App.Units.Unit(0,0,0,1) 
 App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
-App.Units.LuminoseIntensity = App.Units.Unit(0,0,0,0,0,0,1) 
+App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 
 App.Units.Stress        = App.Units.Unit(-1,1,-2) 
 App.Units.Pressure      = App.Units.Unit(-1,1,-2) 

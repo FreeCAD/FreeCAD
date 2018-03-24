@@ -371,7 +371,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
         // The left mouse button has been released right now but
-        // we want to avoid that the event is procesed elsewhere
+        // we want to avoid that the event is processed elsewhere
         if (this->lockButton1) {
             this->lockButton1 = false;
             processed = true;
@@ -446,7 +446,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // If for dragging the buttons 1 and 3 are pressed
-    // but then button 3 is relaesed we shouldn't switch
+    // but then button 3 is released we shouldn't switch
     // into selection mode.
     if (this->button1down && this->button3down)
         this->lockButton1 = true;

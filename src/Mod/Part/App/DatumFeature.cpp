@@ -61,3 +61,8 @@ TopoDS_Shape Datum::getShape() const
 Base::Vector3d Datum::getBasePoint () const {
     return Placement.getValue().getPosition();
 }
+
+void Datum::handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
+{
+    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
+}

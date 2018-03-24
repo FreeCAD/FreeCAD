@@ -36,7 +36,7 @@ from PySide import QtCore
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-__doc__ = "Base class and properties implemenation for all Path operations."
+__doc__ = "Base class and properties implementation for all Path operations."
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -149,8 +149,8 @@ class ObjectOp(object):
 
         self.initOperation(obj)
 
-        obj.Proxy = self
-        self.setDefaultValues(obj)
+        if self.setDefaultValues(obj):
+            obj.Proxy = self
 
     def onDocumentRestored(self, obj):
         features = self.opFeatures(obj)
@@ -166,18 +166,10 @@ class ObjectOp(object):
         if FeatureTool & features and not hasattr(obj, 'OpToolDiameter'):
             self.addOpValues(obj, ['tooldia'])
 
-        if FeatureStepDown & features and not hasattr(obj, 'OpStartDepth'):
-            if PathGeom.isRoughly(obj.StepDown.Value, 1):
-                obj.setExpression('StepDown', 'OpToolDiameter')
-
         if FeatureDepths & features and not hasattr(obj, 'OpStartDepth'):
             self.addOpValues(obj, ['start', 'final'])
-            if not hasattr(obj, 'StartDepthLock') or not obj.StartDepthLock:
-                obj.setExpression('StartDepth', 'OpStartDepth')
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode('OpFinalDepth', 2)
-            elif not hasattr(obj, 'FinalDepthLock') or not obj.FinalDepthLock:
-                obj.setExpression('FinalDepth', 'OpFinalDepth')
 
     def __getstate__(self):
         '''__getstat__(self) ... called when receiver is saved.
@@ -234,6 +226,13 @@ class ObjectOp(object):
 
         self.opOnChanged(obj, prop)
 
+    def applyExpression(self, obj, prop, expr):
+        '''applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set'''
+        if expr:
+            obj.setExpression(prop, expr)
+            return True
+        return False
+
     def setDefaultValues(self, obj):
         '''setDefaultValues(obj) ... base implementation.
         Do not overwrite, overwrite opSetDefaultValues() instead.'''
@@ -245,28 +244,38 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             obj.ToolController = PathUtils.findToolController(obj)
-            obj.OpToolDiameter  =  1.0
+            if not obj.ToolController:
+                return False
+            obj.OpToolDiameter  =  obj.ToolController.Tool.Diameter
 
         if FeatureDepths & features:
-            obj.setExpression('StartDepth', job.SetupSheet.StartDepthExpression)
-            obj.setExpression('FinalDepth', job.SetupSheet.FinalDepthExpression)
-            obj.OpStartDepth    =  1.0
-            obj.OpFinalDepth    =  0.0
+            if self.applyExpression(obj, 'StartDepth', job.SetupSheet.StartDepthExpression):
+                obj.OpStartDepth =  1.0
+            else:
+                obj.StartDepth   =  1.0
+            if self.applyExpression(obj, 'FinalDepth', job.SetupSheet.FinalDepthExpression):
+                obj.OpFinalDepth =  0.0
+            else:
+                obj.FinalDepth   =  0.0
 
         if FeatureStepDown & features:
-            obj.setExpression('StepDown', job.SetupSheet.StepDownExpression)
+            if not self.applyExpression(obj, 'StepDown', job.SetupSheet.StepDownExpression):
+                obj.StepDown = '1 mm'
 
         if FeatureHeights & features:
             if job.SetupSheet.SafeHeightExpression:
-                obj.setExpression('SafeHeight', job.SetupSheet.SafeHeightExpression)
+                if not self.applyExpression(obj, 'SafeHeight', job.SetupSheet.SafeHeightExpression):
+                    obj.SafeHeight = '3 mm'
             if job.SetupSheet.ClearanceHeightExpression:
-                obj.setExpression('ClearanceHeight', job.SetupSheet.ClearanceHeightExpression)
+                if not self.applyExpression(obj, 'ClearanceHeight', job.SetupSheet.ClearanceHeightExpression):
+                    obj.ClearanceHeight = '5 mm'
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
 
         self.opSetDefaultValues(obj)
         obj.recompute()
+        return True
 
     def _setBaseAndStock(self, obj, ignoreErrors=False):
         job = PathUtils.findParentJob(obj)
@@ -296,7 +305,7 @@ class ObjectOp(object):
 
         def faceZmin(bb, fbb):
             if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                return bb.ZMin
+                return fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax: # vertical face, full cut
                 return fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
@@ -322,7 +331,9 @@ class ObjectOp(object):
                     zmax = max(zmax, fbb.ZMax)
         else:
             # clearing with stock boundaries
-            pass
+            job = PathUtils.findParentJob(obj)
+            zmax = stockBB.ZMax
+            zmin = job.Base.Shape.BoundBox.ZMax
 
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable

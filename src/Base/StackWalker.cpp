@@ -13,7 +13,7 @@
  *                       (should also be enough)
  *                     - Changed to compile correctly with the PSDK of VC7.0
  *                       (GetFileVersionInfoSizeA and GetFileVersionInfoA is wrongly defined:
- *                        it uses LPSTR instead of LPCSTR as first paremeter)
+ *                        it uses LPSTR instead of LPCSTR as first parameter)
  *                     - Added declarations to support VC5/6 without using 'dbghelp.h'
  *                     - Added a 'pUserData' member to the ShowCallstack function and the 
  *                       PReadProcessMemoryRoutine declaration (to pass some user-defined data, 
@@ -1112,7 +1112,7 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
     // if this returns ERROR_INVALID_ADDRESS (487) or ERROR_NOACCESS (998), you can
     // assume that either you are done, or that the stack is so hosed that the next
     // deeper frame could not be found.
-    // CONTEXT need not to be suplied if imageTyp is IMAGE_FILE_MACHINE_I386!
+    // CONTEXT need not to be supplied if imageTyp is IMAGE_FILE_MACHINE_I386!
     if ( ! this->m_sw->pSW(imageType, this->m_hProcess, hThread, &s, &c, myReadProcMem, this->m_sw->pSFTA, this->m_sw->pSGMB, NULL) )
     {
       // INFO: "StackWalk64" does not set "GetLastError"...

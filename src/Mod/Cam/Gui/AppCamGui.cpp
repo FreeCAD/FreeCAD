@@ -55,7 +55,7 @@ extern "C"
             return;
         }
 
-        // load dependend module
+        // load dependent module
         try {
             Base::Interpreter().loadModule("Cam");
         }
@@ -69,7 +69,7 @@ extern "C"
 
         CamGui::Workbench           ::init();
 
-        // instanciating the commands
+        // instantiating the commands
         CreateCamCommands();
 
         return;

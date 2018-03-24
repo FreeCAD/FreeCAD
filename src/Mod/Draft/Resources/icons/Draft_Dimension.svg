@@ -475,7 +475,7 @@
             <rdf:li>number</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A number floating above a line corresponding to the upper three sides of a rectangle with a dot at eacf endpoint and corner</dc:description>
+        <dc:description>A number floating above a line corresponding to the upper three sides of a rectangle with a dot at each endpoint and corner</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

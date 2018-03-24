@@ -127,11 +127,12 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
 
+    point = None
     if hasattr(FreeCADGui,"Snapper"):
         point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
         info = FreeCADGui.Snapper.snapInfo
         mask = FreeCADGui.Snapper.affinity
-    else:
+    if not point:
         p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
         point = FreeCADGui.ActiveDocument.ActiveView.getPoint(p)
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
@@ -277,7 +278,7 @@ class DraftTool:
         self.commitList.append((name,func))
 
     def getStrings(self,addrot=None):
-        "returns a couple of useful strings fro building python commands"
+        "returns a couple of useful strings for building python commands"
 
         # current plane rotation
         p = plane.getRotation()
@@ -334,6 +335,7 @@ class SelectPlane(DraftTool):
                     return
                 elif Draft.getType(sel.Object) == "WorkingPlaneProxy":
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
+                    plane.weak = False
                     if hasattr(sel.Object.ViewObject,"RestoreView"):
                         if sel.Object.ViewObject.RestoreView:
                             if hasattr(sel.Object.ViewObject,"ViewData"):
@@ -538,6 +540,9 @@ class Line(Creator):
                 self.ui.wireUi(name)
             else:
                 self.ui.lineUi(name)
+            if sys.version_info.major < 3:
+                if isinstance(self.featureName,unicode):
+                    self.featureName = self.featureName.encode("utf8")
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
@@ -745,8 +750,8 @@ class BSpline(Line):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_BSpline',
                 'Accel' : "B, S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "B-Spline"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "B-spline"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         Line.Activated(self,name=translate("draft","BSpline"))
@@ -824,7 +829,7 @@ class BSpline(Line):
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
-                self.commit(translate("draft","Create BSpline"),
+                self.commit(translate("draft","Create B-spline"),
                             ['points = '+pts,
                              'spline = Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
                              'Draft.autogroup(spline)'])
@@ -917,7 +922,8 @@ class BezCurve(Line):
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.ui:
-            self.bezcurvetrack.finalize()
+            if hasattr(self,"bezcurvetrack"):
+                self.bezcurvetrack.finalize()
         if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
         if self.obj:
@@ -1783,7 +1789,9 @@ class Text(Creator):
         for l in self.text:
             if len(tx) > 1:
                 tx += ','
-            tx += '"'+str(unicode(l).encode("utf8"))+'"' #Python3 no more unicode
+            if sys.version_info.major < 3:
+                l = unicode(l)
+            tx += '"'+str(l.encode("utf8"))+'"' #Python3 no more unicode
         tx += ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Create Text"),
@@ -3705,7 +3713,7 @@ class Drawing(Modifier):
         return {'Pixmap'  : 'Draft_Drawing',
                 'Accel' : "D, D",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Drawing"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet")}
 
     def Activated(self):
         Modifier.Activated(self,"Drawing")
@@ -4310,7 +4318,7 @@ class Edit(Modifier):
                     changep = point +2
                 elif point == len(pts)-1 and self.obj.Closed: #last pole
                     # if the curve is closed the last pole has the last
-                    # index in the poits lists
+                    # index in the points lists
                     knot = 0
                     keepp = point
                     changep = 1
@@ -4460,7 +4468,7 @@ class AddPoint(Modifier):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_AddPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Add Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing wire/bspline")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing Wire or B-spline")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -4485,7 +4493,7 @@ class DelPoint(Modifier):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_DelPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Remove Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing wire or bspline")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing Wire or B-spline")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -4509,8 +4517,8 @@ class WireToBSpline(Modifier):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_WireToBSpline',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to BSpline"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts between Wire and BSpline")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to B-spline"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts between Wire and B-spline")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -5107,8 +5115,8 @@ class Draft_Slope():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Slope',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Set slope"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of a selected line or wire")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Set Slope"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of a selected Line or Wire")}
 
     def Activated(self):
         if not FreeCADGui.Selection.getSelection():
@@ -5127,7 +5135,7 @@ class Draft_Slope():
         self.spinbox.setMinimum(-9999.99)
         self.spinbox.setMaximum(9999.99)
         self.spinbox.setSingleStep(0.01)
-        self.spinbox.setToolTip(translate("Draft", "Slope to give toselected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down"))
+        self.spinbox.setToolTip(translate("Draft", "Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down"))
         layout.addWidget(self.spinbox)
         taskwidget = QtGui.QWidget()
         taskwidget.form = w
@@ -5206,7 +5214,7 @@ class SetWorkingPlaneProxy():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_SelectPlane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create WP Proxy"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create Working Plane Proxy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Creates a proxy object from the current working plane")}
 
     def IsActive(self):
@@ -5356,6 +5364,37 @@ class Draft_Label(Creator):
             # third click
             self.node.append(self.point)
             self.create()
+
+
+class Draft_AddConstruction():
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Construction',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the Construction group")}
+
+    def Activated(self):
+        import FreeCADGui
+        if hasattr(FreeCADGui,"draftToolBar"):
+            col = FreeCADGui.draftToolBar.getDefaultColor("constr")
+            col = (float(col[0]),float(col[1]),float(col[2]),0.0)
+            gname = Draft.getParam("constructiongroupname","Construction")
+            grp = FreeCAD.ActiveDocument.getObject(gname)
+            if not grp:
+                grp = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",gname)
+            for obj in FreeCADGui.Selection.getSelection():
+                grp.addObject(obj)
+                obrep = obj.ViewObject
+                if "TextColor" in obrep.PropertiesList: 
+                    obrep.TextColor = col
+                if "PointColor" in obrep.PropertiesList: 
+                    obrep.PointColor = col
+                if "LineColor" in obrep.PropertiesList: 
+                    obrep.LineColor = col
+                if "ShapeColor" in obrep.PropertiesList: 
+                    obrep.ShapeColor = col
+                if hasattr(obrep,"Transparency"):
+                    obrep.Transparency = 80
 
 
 #---------------------------------------------------------------------------
@@ -5602,6 +5641,7 @@ FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy',SetWorkingPlaneProxy())
+FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 # snap commands
 FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())

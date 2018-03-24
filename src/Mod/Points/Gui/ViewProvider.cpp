@@ -288,13 +288,17 @@ QIcon ViewProviderPoints::getIcon() const
     return px;
 }
 
-bool ViewProviderPoints::setEdit(int)
+bool ViewProviderPoints::setEdit(int ModNum)
 {
-    return true;
+    if (ModNum == ViewProvider::Transform)
+        return ViewProviderGeometryObject::setEdit(ModNum);
+    return false;
 }
 
-void ViewProviderPoints::unsetEdit(int)
+void ViewProviderPoints::unsetEdit(int ModNum)
 {
+    if (ModNum == ViewProvider::Transform)
+        ViewProviderGeometryObject::unsetEdit(ModNum);
 }
 
 void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
@@ -347,7 +351,7 @@ void ViewProviderScattered::attach(App::DocumentObject* pcObj)
     pcHighlight->documentName = pcObj->getDocument()->getName();
     pcHighlight->subElementName = "Main";
 
-    // Hilight for selection
+    // Highlight for selection
     pcHighlight->addChild(pcPointsCoord);
     pcHighlight->addChild(pcPoints);
 
@@ -508,7 +512,7 @@ void ViewProviderStructured::attach(App::DocumentObject* pcObj)
     pcHighlight->documentName = pcObj->getDocument()->getName();
     pcHighlight->subElementName = "Main";
 
-    // Hilight for selection
+    // Highlight for selection
     pcHighlight->addChild(pcPointsCoord);
     pcHighlight->addChild(pcPoints);
 

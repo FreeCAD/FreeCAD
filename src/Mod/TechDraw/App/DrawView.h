@@ -50,11 +50,11 @@ public:
 
     App::PropertyFloat X;
     App::PropertyFloat Y;
+    App::PropertyBool  LockPosition;
     App::PropertyFloatConstraint Scale;
 
     App::PropertyEnumeration ScaleType;
     App::PropertyFloat Rotation;
-    App::PropertyBool  KeepLabel;
     App::PropertyString Caption;
 
     /** @name methods override Feature */

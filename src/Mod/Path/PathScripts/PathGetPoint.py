@@ -25,6 +25,7 @@
 import Draft
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathLog as PathLog
 
 from PySide import QtCore, QtGui
 from pivy import coin
@@ -32,7 +33,10 @@ from pivy import coin
 __title__ = "Path GetPoint UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-__doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitray points while the task panel is active."
+__doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitrary points while the task panel is active."
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.track(PathLog.thisModule())
 
 class TaskPanel:
     '''Use an instance of this class in another TaskPanel to invoke the snapper.
@@ -41,7 +45,7 @@ class TaskPanel:
     provided in the constructor.
     The (only) public API function other than the constructor is getPoint(whenDone, start).
     '''
-    def __init__(self, form):
+    def __init__(self, form, onPath=False):
         '''__init___(form) ... form will be replaced by PointEdit.ui while the Snapper is active.'''
         self.formOrig = form
         self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
@@ -52,15 +56,21 @@ class TaskPanel:
 
         self.setupUi()
         self.buttonBox = None
+        self.onPath = onPath
+        self.obj = None
 
     def setupUi(self):
         '''setupUi() ... internal function - do not call.'''
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
         self.formPoint.buttonBox.rejected.connect(self.pointReject)
 
-        self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
-        self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
+        self.formPoint.globalX.editingFinished.connect(self.updatePoint)
+        self.formPoint.globalY.editingFinished.connect(self.updatePoint)
+        self.formPoint.globalZ.editingFinished.connect(self.updatePoint)
+
+        self.formPoint.globalX.setProperty('unit', FreeCAD.Units.MilliMetre.getUserPreferred()[2])
+        self.formPoint.globalY.setProperty('unit', FreeCAD.Units.MilliMetre.getUserPreferred()[2])
+        self.formPoint.globalZ.setProperty('unit', FreeCAD.Units.MilliMetre.getUserPreferred()[2])
 
     def addEscapeShortcut(self):
         '''addEscapeShortcut() ... internal function - do not call.'''
@@ -88,26 +98,48 @@ class TaskPanel:
         until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.'''
 
         def displayPoint(p):
-            self.formPoint.ifValueX.setText(FreeCAD.Units.Quantity(p.x, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueY.setText(FreeCAD.Units.Quantity(p.y, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueZ.setText(FreeCAD.Units.Quantity(p.z, FreeCAD.Units.Length).UserString)
-            self.formPoint.ifValueX.setFocus()
-            self.formPoint.ifValueX.selectAll()
+            self.point = p
+            self.formPoint.globalX.setProperty('rawValue', p.x)
+            self.formPoint.globalY.setProperty('rawValue', p.y)
+            self.formPoint.globalZ.setProperty('rawValue', p.z)
+            self.formPoint.globalX.setFocus()
+            self.formPoint.globalX.selectAll()
 
         def mouseMove(cb):
+            p = None
             event = cb.getEvent()
             pos = event.getPosition()
-            cntrl = event.wasCtrlDown()
-            shift = event.wasShiftDown()
-            self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
-            plane = FreeCAD.DraftWorkingPlane
-            p = plane.getLocalCoords(self.pt)
-            displayPoint(p)
+            if self.onPath:
+                # There should not be a dependency from Draft->Path, so handle Path "snapping"
+                # directly, at least for now. Simple enough because there isn't really any
+                # "snapping" going on other than what getObjectInfo() provides.
+                screenpos = tuple(pos.getValue())
+                snapInfo = Draft.get3DView().getObjectInfo(screenpos)
+                if snapInfo:
+                    obj = FreeCAD.ActiveDocument.getObject(snapInfo['Object'])
+                    if hasattr(obj, 'Path'):
+                        self.obj = obj
+                        p = FreeCAD.Vector(snapInfo['x'], snapInfo['y'], snapInfo['z'])
+                        self.pt = p
+                    else:
+                        self.obj = None
+            else:
+                # Snapper handles regular objects just fine
+                cntrl = event.wasCtrlDown()
+                shift = event.wasShiftDown()
+                self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
+                plane = FreeCAD.DraftWorkingPlane
+                p = plane.getLocalCoords(self.pt)
+                self.obj = FreeCADGui.Snapper.lastSnappedObject
+
+            if p:
+                displayPoint(p)
 
         def click(cb):
             event = cb.getEvent()
             if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
-                accept()
+                if self.obj:
+                    accept()
 
         def accept():
             if start:
@@ -137,7 +169,6 @@ class TaskPanel:
 
     def pointFinish(self, ok, cleanup = True):
         '''pointFinish(ok, cleanup=True) ... internal function - do not call.'''
-        obj = FreeCADGui.Snapper.lastSnappedObject
 
         if cleanup:
             self.removeGlobalCallbacks()
@@ -150,7 +181,8 @@ class TaskPanel:
             self.formOrig.setFocus()
 
         if ok:
-            self.pointWhenDone(self.pt, obj)
+            self.updatePoint(False)
+            self.pointWhenDone(self.pt, self.obj)
         else:
             self.pointWhenDone(None, None)
 
@@ -181,10 +213,13 @@ class TaskPanel:
                 self.pointCbMove = None
             self.view = None
 
-    def updatePoint(self):
+    def updatePoint(self, usePoint = True):
         '''updatePoint() ... internal function - do not call.'''
-        x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
-        y = FreeCAD.Units.Quantity(self.formPoint.ifValueY.text()).Value
-        z = FreeCAD.Units.Quantity(self.formPoint.ifValueZ.text()).Value
-        self.pt = FreeCAD.Vector(x, y, z)
+        if usePoint and self.point:
+            self.pt = self.point
+        else:
+            x = FreeCAD.Units.Quantity(self.formPoint.globalX.text()).Value
+            y = FreeCAD.Units.Quantity(self.formPoint.globalY.text()).Value
+            z = FreeCAD.Units.Quantity(self.formPoint.globalZ.text()).Value
+            self.pt = FreeCAD.Vector(x, y, z)
 

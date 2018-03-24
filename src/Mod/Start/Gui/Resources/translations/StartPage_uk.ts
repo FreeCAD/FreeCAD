@@ -343,5 +343,10 @@
       <source>http://www.freecadweb.org/wiki/Getting_started</source>
       <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <source>Load an FEM 3D new solver example analysis</source>
+      <translation>Завантажити аналіз прикладу нового розв'язувача 3D МСЕ</translation>
+    </message>
   </context>
 </TS>

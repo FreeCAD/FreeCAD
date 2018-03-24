@@ -99,6 +99,7 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 
+    allowOtherBody = true;
     allowUnaligned = true;
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
@@ -201,10 +202,13 @@ int SketchObject::hasConflicts(void) const
 
 int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 {
+    // Reset the initial movement in case of a dragging operation was ongoing on the solver.
+    solvedSketch.resetInitMove();
+
     // if updateGeoAfterSolving=false, the solver information is updated, but the Sketch is nothing
     // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
     // the solver needs to be updated.
-    
+
     // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have happened
     // therefore we update our sketch solver geometry with the SketchObject one.
     //
@@ -413,6 +417,62 @@ int SketchObject::toggleDriving(int ConstrId)
     return 0;
 }
 
+int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isInVirtualSpace = isinvirtualspace;
+    newVals[ConstrId] = constNew;
+
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    return 0;
+}
+
+int SketchObject::getVirtualSpace(int ConstrId, bool &isinvirtualspace) const
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    isinvirtualspace=vals[ConstrId]->isInVirtualSpace;
+    return 0;
+}
+
+int SketchObject::toggleVirtualSpace(int ConstrId)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isInVirtualSpace = !constNew->isInVirtualSpace;
+    newVals[ConstrId] = constNew;
+
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    return 0;
+}
+
+
 int SketchObject::setUpSketch()
 {
     return solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
@@ -423,8 +483,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 {
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
     // if we have conflicts we can forget about moving. However, there is the possibility that we
-    // need to do programatically moves of new geometry that has not been solved yet and that because
-    // they were programmetically generated won't generate a conflict. This is the case of Fillet for
+    // need to do programmatically moves of new geometry that has not been solved yet and that because
+    // they were programmatically generated won't generate a conflict. This is the case of Fillet for
     // example. This is why exceptionally, it may be required to update the sketch geometry to that of
     // of SketchObject upon moving. => use updateGeometry parameter = true then
     
@@ -460,6 +520,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
             if (*it) delete *it;
         }
     }
+
+    solvedSketch.resetInitMove(); // reset solver point moving mechanism
 
     return lastSolverStatus;
 }
@@ -721,6 +783,23 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     return 0;
 }
 
+int SketchObject::deleteAllGeometry()
+{
+    std::vector< Part::Geometry * > newVals(0);
+    std::vector< Constraint * > newConstraints(0);
+
+    this->Geometry.setValues(newVals);
+    this->Constraints.setValues(newConstraints);
+
+    this->Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
@@ -787,6 +866,45 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
     //clean up - delete temporary copies of constraints that were made to affect the constraints
     for(std::size_t i=0; i<tbd.size(); i++){
         delete (tbd[i]);
+    }
+
+    return this->Constraints.getSize()-1;
+}
+
+int SketchObject::addCopyOfConstraints(const SketchObject &orig)
+{
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    const std::vector< Constraint * > &origvals = orig.Constraints.getValues();
+
+    std::vector< Constraint * > newVals(vals);
+
+    for(std::size_t j = 0; j<origvals.size(); j++)
+        newVals.push_back(origvals[j]->copy());
+    
+    std::size_t valssize = vals.size();
+    
+    this->Constraints.setValues(newVals);
+    
+    for(std::size_t i = valssize, j = 0; i<newVals.size(); i++,j++){
+        if ( newVals[i]->isDriving && (
+            newVals[i]->Type == Sketcher::Distance ||
+            newVals[i]->Type == Sketcher::DistanceX ||
+            newVals[i]->Type == Sketcher::DistanceY ||
+            newVals[i]->Type == Sketcher::Radius || 
+            newVals[i]->Type == Sketcher::Angle ||
+            newVals[i]->Type == Sketcher::SnellsLaw)) {
+
+            App::ObjectIdentifier spath = orig.Constraints.createPath(j);
+
+            App::PropertyExpressionEngine::ExpressionInfo expr_info = orig.getExpression(spath);
+
+            if (expr_info.expression) { // if there is an expression on the source dimensional
+                App::ObjectIdentifier dpath = this->Constraints.createPath(i);
+                setExpression(dpath, boost::shared_ptr<App::Expression>(expr_info.expression->copy()));
+            }
+
+        }
     }
 
     return this->Constraints.getSize()-1;
@@ -955,18 +1073,32 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId) &&
             !(toGeoId < 0 && vals[i]->Second <0) ) {
+            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
+            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
             Constraint *constNew = newVals[i]->clone();
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
+
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+                constNew->Type = Sketcher::Coincident;
+
             newVals[i] = constNew;
             changed.push_back(constNew);
         }
         else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
                  !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId) &&
                  !(toGeoId < 0 && vals[i]->First< 0)) {
+
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
+            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
+            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+                constNew->Type = Sketcher::Coincident;
+
             newVals[i] = constNew;
             changed.push_back(constNew);
         }
@@ -2090,14 +2222,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this != NULL) {
-            if (body_this != body_obj) {
+            if ((body_this != body_obj) && !this->allowOtherBody) {
                 if (rsn)
                     *rsn = rlOtherBody;
                 return false;
             }
         }
     } else {
-        // cross-part link. Disallow, should be done via shapebinders only
+        // cross-part relation. Disallow, should be done via shapebinders only
         if (rsn)
             *rsn = rlOtherPart;
         return false;
@@ -4287,12 +4419,63 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     
     int nextgeoid = vals.size();
     
+    int nextextgeoid = getExternalGeometryCount();
+    
     int nextcid = cvals.size();
     
     const std::vector< Part::Geometry * > &svals = psObj->getInternalGeometry();
     
     const std::vector< Sketcher::Constraint * > &scvals = psObj->Constraints.getValues();
-    
+
+    if(psObj->ExternalGeometry.getSize()>0) { 
+        std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+        std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+
+        const std::vector<DocumentObject*> originalObjects = Objects;
+        const std::vector<std::string>     originalSubElements = SubElements;
+
+        std::vector<DocumentObject*> sObjects     = psObj->ExternalGeometry.getValues();
+        std::vector<std::string>     sSubElements = psObj->ExternalGeometry.getSubValues();
+
+        if (Objects.size() != SubElements.size() || sObjects.size() != sSubElements.size()) {
+            assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+            Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
+            return -1;
+        }
+
+        int si=0;
+        for (auto & sobj : sObjects) {
+            int i=0;
+            for (auto & obj : Objects){
+                if (obj == sobj && SubElements[i] == sSubElements[si]){
+                    Base::Console().Error("Link to %s already exists in this sketch. Delete the link and try again\n",sSubElements[si].c_str());
+                    return -1;
+                }
+
+                i++;
+            }
+
+            Objects.push_back(sobj);
+            SubElements.push_back(sSubElements[si]);
+
+            si++;
+        }
+
+        ExternalGeometry.setValues(Objects,SubElements);
+
+        try {
+            rebuildExternalGeometry();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            // revert to original values
+            ExternalGeometry.setValues(originalObjects,originalSubElements);
+            return -1;
+        }
+
+        solverNeedsUpdate=true;
+    }
+
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
         Part::Geometry *geoNew = (*it)->copy();
         if(construction) {
@@ -4300,7 +4483,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         }
         newVals.push_back(geoNew);
     }
-    
+
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it) {
         Sketcher::Constraint *newConstr = (*it)->copy();
         if( (*it)->First>=0 )
@@ -4310,9 +4493,16 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         if( (*it)->Third>=0 )
             newConstr->Third += nextgeoid;
 
+        if( (*it)->First<-2 && (*it)->First != Constraint::GeoUndef )
+            newConstr->First -= (nextextgeoid-2);
+        if( (*it)->Second<-2 && (*it)->Second != Constraint::GeoUndef)
+            newConstr->Second -= (nextextgeoid-2);
+        if( (*it)->Third<-2 && (*it)->Third != Constraint::GeoUndef)
+            newConstr->Third -= (nextextgeoid-2);
+
         newcVals.push_back(newConstr);
     }
-    
+
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
@@ -5763,6 +5953,15 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                         cntSuccess, cntToBeAffected);
 
     return cntSuccess;
+}
+
+bool SketchObject::constraintHasExpression(int constrid) const
+{
+    App::ObjectIdentifier spath = this->Constraints.createPath(constrid);
+
+    App::PropertyExpressionEngine::ExpressionInfo expr_info = this->getExpression(spath);
+
+    return (expr_info.expression != 0);
 }
 
 

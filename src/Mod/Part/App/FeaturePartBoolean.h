@@ -42,6 +42,7 @@ public:
     App::PropertyLink Base;
     App::PropertyLink Tool;
     PropertyShapeHistory History;
+    App::PropertyBool Refine;
 
     /** @name methods override Feature */
     //@{

@@ -180,7 +180,7 @@ PyObject* PlateSurfacePy::makeApprox(PyObject *args, PyObject* kwds)
             return new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf));
         }
 
-        PyErr_SetString(PyExc_RuntimeError, "Approximation of B-Spline surface failed");
+        PyErr_SetString(PyExc_RuntimeError, "Approximation of B-spline surface failed");
         return 0;
     } PY_CATCH_OCC;
 }

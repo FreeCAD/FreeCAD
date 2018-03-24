@@ -47,7 +47,7 @@
     <message>
       <location line="+1"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>从网格和平面创建剖面</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -84,7 +84,7 @@
     <message>
       <location line="+2"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>封闭线</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -99,7 +99,7 @@
     <message>
       <location line="+208"/>
       <source>Wrong mesh picked</source>
-      <translation type="unfinished">Wrong mesh picked</translation>
+      <translation>错误的网格选择</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -122,7 +122,7 @@
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation type="unfinished">Snap tolerance to vertexes</translation>
+      <translation>对顶点的对齐公差</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -132,22 +132,22 @@
     <message>
       <location line="+10"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>打印阈值</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>样条逼近</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>网格公差</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>连续性</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -195,22 +195,22 @@
     <message>
       <location line="+81"/>
       <source>Define segments by face colors</source>
-      <translation type="unfinished">Define segments by face colors</translation>
+      <translation>按面颜色来分区段</translation>
     </message>
     <message>
       <location line="-7"/>
       <source>Apply face colors to mesh</source>
-      <translation type="unfinished">Apply face colors to mesh</translation>
+      <translation>将面颜色应用于网布上</translation>
     </message>
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>角偏差:</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>相对表面偏差</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -270,12 +270,12 @@
     <message>
       <location line="+31"/>
       <source>Optimize surface</source>
-      <translation type="unfinished">Optimize surface</translation>
+      <translation>优化曲面</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Second order elements</source>
-      <translation type="unfinished">Second order elements</translation>
+      <translation>二阶元素</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -316,7 +316,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
+      <translation>请选取一个您修剪网格的平面</translation>
     </message>
   </context>
   <context>

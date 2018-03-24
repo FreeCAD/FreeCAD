@@ -28,6 +28,7 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Eigen.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ImplicitSurface.h>
+#include <algorithm>
 #include <list>
 #include <set>
 #include <vector>
@@ -260,7 +261,9 @@ public:
     /**
      * Construction
      */
-    QuadraticFit() : Approximation() {};
+    QuadraticFit() : Approximation() {
+        std::fill(_fCoeff, _fCoeff+10, 0.0);
+    }
     /**
      * Destruction
      */

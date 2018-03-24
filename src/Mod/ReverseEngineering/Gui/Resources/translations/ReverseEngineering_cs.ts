@@ -28,6 +28,15 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Approximate B-spline surface...</source>
+      <translation>Aproximace B-splajn plochy...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Approximate a B-spline surface</source>
+      <translation>Aproximace B-splajn plochy</translation>
+    </message>
+    <message>
       <source>Approximate B-Spline surface...</source>
       <translation>Aproximace B-Spline plochy...</translation>
     </message>
@@ -36,7 +45,6 @@
       <translation>Aproximuj plochu...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-Spline surface</source>
       <translation>Aproximuj B-Spline plochu</translation>
     </message>
@@ -85,9 +93,13 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-Spline surface</source>
       <translation>Přizpůsobit B-spline plochu</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="+14"/>
+      <source>Fit B-spline surface</source>
+      <translation>Přizpůsobit B-splajn plochu</translation>
     </message>
     <message>
       <location line="+6"/>

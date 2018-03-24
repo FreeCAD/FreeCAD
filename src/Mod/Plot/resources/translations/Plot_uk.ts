@@ -344,7 +344,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation type="unfinished">List of modifiable items</translation>
+      <translation>Список елементів, які можливо змінювати</translation>
     </message>
   </context>
   <context>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation type="unfinished">Remove series</translation>
+      <translation>Видалити послідовність</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation type="unfinished">If checked, series will not be considered for legend</translation>
+      <translation>Якщо позначено, то послідовність не буде використовуватися для напису</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation type="unfinished">Removes this series</translation>
+      <translation>Вилучити цю послідовність</translation>
     </message>
   </context>
 </TS>

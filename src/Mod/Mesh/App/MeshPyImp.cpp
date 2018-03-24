@@ -212,6 +212,8 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["AST" ] = MeshCore::MeshIO::ASTL;
     ext["OBJ" ] = MeshCore::MeshIO::OBJ;
     ext["OFF" ] = MeshCore::MeshIO::OFF;
+    ext["IDTF"] = MeshCore::MeshIO::IDTF;
+    ext["MGL" ] = MeshCore::MeshIO::MGL;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
     ext["VRML"] = MeshCore::MeshIO::VRML;
@@ -351,7 +353,7 @@ PyObject*  MeshPy::offset(PyObject *args)
         getMeshObjectPtr()->offsetSpecial2(Float);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::offsetSpecial(PyObject *args)
@@ -364,7 +366,7 @@ PyObject*  MeshPy::offsetSpecial(PyObject *args)
         getMeshObjectPtr()->offsetSpecial(Float,zmax,zmin);  
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::crossSections(PyObject *args)
@@ -1072,7 +1074,7 @@ PyObject*  MeshPy::flipNormals(PyObject *args)
         getMeshObjectPtr()->flipNormals();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::hasNonUniformOrientedFacets(PyObject *args)
@@ -1117,7 +1119,7 @@ PyObject*  MeshPy::harmonizeNormals(PyObject *args)
         getMeshObjectPtr()->harmonizeNormals();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::countComponents(PyObject *args)
@@ -1141,7 +1143,7 @@ PyObject*  MeshPy::removeComponents(PyObject *args)
         }
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::fillupHoles(PyObject *args)
@@ -1182,7 +1184,7 @@ PyObject*  MeshPy::fixIndices(PyObject *args)
         getMeshObjectPtr()->validateIndices();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::fixDeformations(PyObject *args)
@@ -1196,7 +1198,7 @@ PyObject*  MeshPy::fixDeformations(PyObject *args)
         getMeshObjectPtr()->validateDeformations(fMaxAngle, fEpsilon);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::fixDegenerations(PyObject *args)
@@ -1209,7 +1211,7 @@ PyObject*  MeshPy::fixDegenerations(PyObject *args)
         getMeshObjectPtr()->validateDegenerations(fEpsilon);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::removeDuplicatedPoints(PyObject *args)
@@ -1221,7 +1223,7 @@ PyObject*  MeshPy::removeDuplicatedPoints(PyObject *args)
         getMeshObjectPtr()->removeDuplicatedPoints();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::removeDuplicatedFacets(PyObject *args)
@@ -1233,7 +1235,7 @@ PyObject*  MeshPy::removeDuplicatedFacets(PyObject *args)
         getMeshObjectPtr()->removeDuplicatedFacets();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::refine(PyObject *args)
@@ -1245,7 +1247,7 @@ PyObject*  MeshPy::refine(PyObject *args)
         getMeshObjectPtr()->refine();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::optimizeTopology(PyObject *args)
@@ -1259,7 +1261,7 @@ PyObject*  MeshPy::optimizeTopology(PyObject *args)
         getMeshObjectPtr()->optimizeTopology(fMaxAngle);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::optimizeEdges(PyObject *args)
@@ -1272,7 +1274,7 @@ PyObject*  MeshPy::optimizeEdges(PyObject *args)
         getMeshObjectPtr()->optimizeEdges();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::splitEdges(PyObject *args)
@@ -1284,7 +1286,7 @@ PyObject*  MeshPy::splitEdges(PyObject *args)
         getMeshObjectPtr()->splitEdges();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::splitEdge(PyObject *args)
@@ -1319,7 +1321,7 @@ PyObject*  MeshPy::splitEdge(PyObject *args)
         getMeshObjectPtr()->splitEdge(facet, neighbour, v);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::splitFacet(PyObject *args)
@@ -1349,7 +1351,7 @@ PyObject*  MeshPy::splitFacet(PyObject *args)
         getMeshObjectPtr()->splitFacet(facet, v1, v2);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::swapEdge(PyObject *args)
@@ -1379,7 +1381,7 @@ PyObject*  MeshPy::swapEdge(PyObject *args)
         getMeshObjectPtr()->swapEdge(facet, neighbour);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::collapseEdge(PyObject *args)
@@ -1409,7 +1411,7 @@ PyObject*  MeshPy::collapseEdge(PyObject *args)
         getMeshObjectPtr()->collapseEdge(facet, neighbour);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::collapseFacet(PyObject *args)
@@ -1427,7 +1429,7 @@ PyObject*  MeshPy::collapseFacet(PyObject *args)
         getMeshObjectPtr()->collapseFacet(facet);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::insertVertex(PyObject *args)
@@ -1450,7 +1452,7 @@ PyObject*  MeshPy::insertVertex(PyObject *args)
         getMeshObjectPtr()->insertVertex(facet, v);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::snapVertex(PyObject *args)
@@ -1473,7 +1475,7 @@ PyObject*  MeshPy::snapVertex(PyObject *args)
         getMeshObjectPtr()->snapVertex(facet, v);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::printInfo(PyObject *args)
@@ -1511,7 +1513,7 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
         return 0;
     }
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::foraminate(PyObject *args)
@@ -1588,7 +1590,7 @@ PyObject*  MeshPy::cut(PyObject *args)
         polygon2d.Add(Base::Vector2d(it->x, it->y));
     getMeshObjectPtr()->cut(polygon2d, proj, MeshObject::CutType(mode));
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::trim(PyObject *args)
@@ -1622,7 +1624,7 @@ PyObject*  MeshPy::trim(PyObject *args)
         polygon2d.Add(Base::Vector2d(it->x, it->y));
     getMeshObjectPtr()->trim(polygon2d, proj, MeshObject::CutType(mode));
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshPy::smooth(PyObject *args)
@@ -1637,7 +1639,20 @@ PyObject*  MeshPy::smooth(PyObject *args)
         getMeshObjectPtr()->smooth(iter, d_max);
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
+}
+
+PyObject*  MeshPy::decimate(PyObject *args)
+{
+    float fTol, fRed;
+    if (!PyArg_ParseTuple(args, "ff", &fTol,&fRed))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->decimate(fTol, fRed);
+    } PY_CATCH;
+
+    Py_Return;
 }
 
 PyObject* MeshPy::nearestFacetOnRay(PyObject *args)

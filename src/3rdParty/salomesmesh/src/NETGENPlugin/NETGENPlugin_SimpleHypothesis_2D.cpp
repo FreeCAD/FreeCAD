@@ -59,7 +59,7 @@ NETGENPlugin_SimpleHypothesis_2D::NETGENPlugin_SimpleHypothesis_2D (int         
  *  
  */
 //=============================================================================
-void NETGENPlugin_SimpleHypothesis_2D::SetNumberOfSegments(int nb) throw (SALOME_Exception)
+void NETGENPlugin_SimpleHypothesis_2D::SetNumberOfSegments(int nb)
 {
   if ( nb < 1 )
     throw SALOME_Exception("Number of segments must be positive");
@@ -77,7 +77,6 @@ void NETGENPlugin_SimpleHypothesis_2D::SetNumberOfSegments(int nb) throw (SALOME
  */
 //=============================================================================
 void NETGENPlugin_SimpleHypothesis_2D::SetLocalLength(double segmentLength)
-  throw (SALOME_Exception)
 {
   if ( segmentLength < DBL_MIN )
     throw SALOME_Exception("segment length must be more than zero");

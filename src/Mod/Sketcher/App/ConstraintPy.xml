@@ -16,17 +16,47 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>With this object you can handle sketches</UserDocu>
     </Documentation>
+    <Attribute Name="Type" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Get the constraint type</UserDocu>
+        </Documentation>
+        <Parameter Name="Type" Type="String"/>
+    </Attribute>
     <Attribute Name="First" ReadOnly="false">
       <Documentation>
         <UserDocu>First geometry index the Constraint refers to</UserDocu>
       </Documentation>
       <Parameter Name="First" Type="Long"/>
     </Attribute>
+    <Attribute Name="FirstPos" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Position of first geometry index the Constraint refers to</UserDocu>
+      </Documentation>
+      <Parameter Name="FirstPos" Type="Long"/>
+    </Attribute>
     <Attribute Name="Second" ReadOnly="false">
       <Documentation>
         <UserDocu>Second geometry index the Constraint refers to</UserDocu>
       </Documentation>
       <Parameter Name="Second" Type="Long"/>
+    </Attribute>
+    <Attribute Name="SecondPos" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Position of second geometry index the Constraint refers to</UserDocu>
+      </Documentation>
+      <Parameter Name="SeondPos" Type="Long"/>
+    </Attribute>
+    <Attribute Name="Third" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Third geometry index the Constraint refers to</UserDocu>
+      </Documentation>
+      <Parameter Name="Second" Type="Long"/>
+    </Attribute>
+    <Attribute Name="ThirdPos" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Position of third geometry index the Constraint refers to</UserDocu>
+      </Documentation>
+      <Parameter Name="ThirdPos" Type="Long"/>
     </Attribute>
     <Attribute Name="Value" ReadOnly="true">
       <Documentation>
@@ -39,6 +69,18 @@
         <UserDocu>Name of the constraint</UserDocu>
       </Documentation>
       <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <Attribute Name="Driving" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Driving Constraint</UserDocu>
+      </Documentation>
+      <Parameter Name="Driving" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="InVirtualSpace" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Constraint in virtual space</UserDocu>
+      </Documentation>
+      <Parameter Name="InVirtualSpace" Type="Boolean"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

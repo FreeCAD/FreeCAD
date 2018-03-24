@@ -447,7 +447,7 @@ void ImageTriangulation::perform()
 
     // Set parameters
     ofm.setInputCloud (cloud_organized);
-    // This parameter is not yet implmented (pcl 1.7)
+    // This parameter is not yet implemented (pcl 1.7)
     ofm.setMaxEdgeLength (1.5);
     ofm.setTrianglePixelSize (1);
     ofm.setTriangulationType (OrganizedFastMesh<PointXYZ>::TRIANGLE_ADAPTIVE_CUT);

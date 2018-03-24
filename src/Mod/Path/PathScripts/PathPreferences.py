@@ -41,8 +41,12 @@ class PathPreferences:
     PostProcessorOutputFile   = "PostProcessorOutputFile"
     PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
-    # Linear tolerance to use when generating Paths, eg when tesselating geometry
-    GeometryTolerance   = "GeometryTolerance"
+    # Linear tolerance to use when generating Paths, eg when tessellating geometry
+    GeometryTolerance       = "GeometryTolerance"
+    LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
+
+    EnableExperimentalFeatures = "EnableExperimentalFeatures"
+
 
     @classmethod
     def preferences(cls):
@@ -91,6 +95,10 @@ class PathPreferences:
         return cls.preferences().GetFloat(cls.GeometryTolerance, 0.01)
 
     @classmethod
+    def defaultLibAreaCurveAccuracy(cls):
+        return cls.preferences().GetFloat(cls.LibAreaCurveAccuracy, 0.01)
+
+    @classmethod
     def defaultFilePath(cls):
         return cls.preferences().GetString(cls.DefaultFilePath)
 
@@ -104,7 +112,7 @@ class PathPreferences:
     @classmethod
     def macroFilePath(cls):
         grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        return grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
+        return grp.GetString("MacroPath", FreeCAD.getUserMacroDir())
 
     @classmethod
     def searchPaths(cls):
@@ -125,12 +133,13 @@ class PathPreferences:
         return ''
 
     @classmethod
-    def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance):
-        PathLog.track("(%s='%s', %s, %s)" % (cls.DefaultFilePath, filePath, jobTemplate, geometryTolerance))
+    def setJobDefaults(cls, filePath, jobTemplate, geometryTolerance, curveAccuracy):
+        PathLog.track("(%s='%s', %s, %s, %s)" % (cls.DefaultFilePath, filePath, jobTemplate, geometryTolerance, curveAccuracy))
         pref = cls.preferences()
         pref.SetString(cls.DefaultFilePath, filePath)
         pref.SetString(cls.DefaultJobTemplate, jobTemplate)
         pref.SetFloat(cls.GeometryTolerance, geometryTolerance)
+        pref.SetFloat(cls.LibAreaCurveAccuracy, curveAccuracy)
 
     @classmethod
     def postProcessorBlacklist(cls):
@@ -170,4 +179,9 @@ class PathPreferences:
     @classmethod
     def setDefaultStockTemplate(cls, template):
         cls.preferences().SetString(cls.DefaultStockTemplate, template)
+
+
+    @classmethod
+    def experimentalFeaturesEnabled(cls):
+        return cls.preferences().GetBool(cls.EnableExperimentalFeatures, False)
 

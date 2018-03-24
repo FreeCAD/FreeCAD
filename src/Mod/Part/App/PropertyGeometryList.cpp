@@ -117,13 +117,13 @@ void PropertyGeometryList::setPyObject(PyObject *value)
     // check container of this property to notify about changes
     Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
 
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<Geometry*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PyList_GetItem(value, i);
+            PyObject* item = PySequence_GetItem(value, i);
             if (!PyObject_TypeCheck(item, &(GeometryPy::Type))) {
                 std::string error = std::string("types in list must be 'Geometry', not ");
                 error += item->ob_type->tp_name;

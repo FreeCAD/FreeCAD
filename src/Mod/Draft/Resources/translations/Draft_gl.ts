@@ -4,677 +4,682 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../Draft.py" line="3714"/>
+      <location filename="../../Draft.py" line="3731"/>
       <source>Defines a hatch pattern</source>
       <translation>Define un patrón de raiado</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3715"/>
+      <location filename="../../Draft.py" line="3732"/>
       <source>Sets the size of the pattern</source>
       <translation>Estabelece o tamaño do patrón</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3858"/>
+      <location filename="../../Draft.py" line="3875"/>
       <source>Startpoint of dimension</source>
       <translation>Punto inicial do acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3859"/>
+      <location filename="../../Draft.py" line="3876"/>
       <source>Endpoint of dimension</source>
       <translation>Punto final do acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3861"/>
+      <location filename="../../Draft.py" line="3878"/>
       <source>the normal direction of this dimension</source>
       <translation>a dirección normal deste acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4297"/>
+      <location filename="../../Draft.py" line="4314"/>
       <source>Point through which the dimension line passes</source>
       <translation>Punto por onde pasa a liña de acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4300"/>
+      <location filename="../../Draft.py" line="4317"/>
       <source>The object measured by this dimension</source>
       <translation>O obxecto medido por este acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4301"/>
+      <location filename="../../Draft.py" line="4318"/>
       <source>The geometry this dimension is linked to</source>
       <translation>A xeometría á que está ligado este acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4302"/>
+      <location filename="../../Draft.py" line="4319"/>
       <source>The measurement of this dimension</source>
       <translation>A medida deste acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3866"/>
+      <location filename="../../Draft.py" line="3883"/>
       <source>For arc/circle measurements, false = radius, true = diameter</source>
       <translation>Para as medidas de arco ou círculo, false = raio, true = diámetro</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4323"/>
+      <location filename="../../Draft.py" line="4340"/>
       <source>Font size</source>
       <translation>Tamaño da fonte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4324"/>
+      <location filename="../../Draft.py" line="4341"/>
       <source>The number of decimals to show</source>
       <translation>A cantidade de decimais a amosar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4948"/>
+      <location filename="../../Draft.py" line="4970"/>
       <source>Arrow size</source>
       <translation>Tamaño das frechas</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4327"/>
+      <location filename="../../Draft.py" line="4344"/>
       <source>The spacing between the text and the dimension line</source>
       <translation>A separación entre o texto mais a liña de acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4949"/>
+      <location filename="../../Draft.py" line="4971"/>
       <source>Arrow type</source>
       <translation>Tipo de frechas</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4325"/>
+      <location filename="../../Draft.py" line="4342"/>
       <source>Font name</source>
       <translation>Nome da fonte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6574"/>
+      <location filename="../../Draft.py" line="6628"/>
       <source>Line width</source>
       <translation>Largura da liña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6575"/>
+      <location filename="../../Draft.py" line="6629"/>
       <source>Line color</source>
       <translation>Cor de liña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3942"/>
+      <location filename="../../Draft.py" line="3959"/>
       <source>Length of the extension lines</source>
       <translation>Lonxitude das liñas auxiliares</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4331"/>
+      <location filename="../../Draft.py" line="4348"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>Xirar as frechas de acoutamento 180 graos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3944"/>
+      <location filename="../../Draft.py" line="3961"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation>Xirar o texto de acoutamento 180 graos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4332"/>
+      <location filename="../../Draft.py" line="4349"/>
       <source>Show the unit suffix</source>
       <translation>Amosar o sufixo de unidade</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4333"/>
+      <location filename="../../Draft.py" line="4350"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>A situación do texto. Deixar (0,0,0) para posición automática</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3947"/>
+      <location filename="../../Draft.py" line="3964"/>
       <source>Text override. Use $dim to insert the dimension length</source>
       <translation>Substitución de texto. Use $dim para inserir a lonxitude de acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3948"/>
+      <location filename="../../Draft.py" line="3965"/>
       <source>A unit to express the measurement. Leave blank for system default</source>
       <translation>Unha unidade para expresar a medida. Deixar en branco para usar a do sistema por defecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4295"/>
+      <location filename="../../Draft.py" line="4312"/>
       <source>Start angle of the dimension</source>
       <translation>Ángulo de principio do acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4296"/>
+      <location filename="../../Draft.py" line="4313"/>
       <source>End angle of the dimension</source>
       <translation>Ángulo do final do acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4298"/>
+      <location filename="../../Draft.py" line="4315"/>
       <source>The center point of this dimension</source>
       <translation>O centro deste acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4299"/>
+      <location filename="../../Draft.py" line="4316"/>
       <source>The normal direction of this dimension</source>
       <translation>A dirección normal deste acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4334"/>
+      <location filename="../../Draft.py" line="4351"/>
       <source>Text override. Use 'dim' to insert the dimension length</source>
       <translation>Substitución de texto. Use 'dim' para inserir a lonxitude de acoutamento</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4637"/>
+      <location filename="../../Draft.py" line="4654"/>
       <source>Length of the rectangle</source>
       <translation>Lonxitude do rectángulo</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5025"/>
+      <location filename="../../Draft.py" line="5047"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Raio a usar para o chafrán arredondado dos recunchos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5026"/>
+      <location filename="../../Draft.py" line="5048"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Tamaño do chafrán para dar ós cantos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5027"/>
+      <location filename="../../Draft.py" line="5049"/>
       <source>Create a face</source>
       <translation>Crear unha face</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4719"/>
+      <location filename="../../Draft.py" line="4736"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Define unha imaxe como textura (substitúe ós patróns de raiado)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4752"/>
+      <location filename="../../Draft.py" line="4769"/>
       <source>Start angle of the arc</source>
       <translation>Ángulo de principio do arco</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4753"/>
+      <location filename="../../Draft.py" line="4770"/>
       <source>End angle of the arc (for a full circle, give it same value as First Angle)</source>
       <translation>Ángulo do final do arco (para un círculo completo, darlle o mesmo valor ca o Ángulo de principio)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4728"/>
+      <location filename="../../Draft.py" line="4745"/>
       <source>Radius of the circle</source>
       <translation>Raio do círculo</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4754"/>
+      <location filename="../../Draft.py" line="4771"/>
       <source>The minor radius of the ellipse</source>
       <translation>O semieixe menor da elipse</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4755"/>
+      <location filename="../../Draft.py" line="4772"/>
       <source>The major radius of the ellipse</source>
       <translation>O semieixe maior da elipse</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4789"/>
+      <location filename="../../Draft.py" line="4806"/>
       <source>The vertices of the wire</source>
       <translation>Os vértices do arame</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4790"/>
+      <location filename="../../Draft.py" line="4807"/>
       <source>If the wire is closed or not</source>
       <translation>Se o arame está pechado ou non</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4793"/>
+      <location filename="../../Draft.py" line="4810"/>
       <source>The start point of this line</source>
       <translation>O punto de principio desta liña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4794"/>
+      <location filename="../../Draft.py" line="4811"/>
       <source>The end point of this line</source>
       <translation>O punto final desta liña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4795"/>
+      <location filename="../../Draft.py" line="4812"/>
       <source>The length of this line</source>
       <translation>A lonxitude desta liña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4798"/>
+      <location filename="../../Draft.py" line="4815"/>
       <source>Create a face if this object is closed</source>
       <translation>Crear unha cara se este obxecto está pechado</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4799"/>
+      <location filename="../../Draft.py" line="4816"/>
       <source>The number of subdivisions of each edge</source>
       <translation>A cantidade de subdivisións de cada bordo</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4947"/>
+      <location filename="../../Draft.py" line="4969"/>
       <source>Displays a dim symbol at the end of the wire</source>
       <translation>Amosa un símbolo dim no final do arame</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5022"/>
+      <location filename="../../Draft.py" line="5044"/>
       <source>Number of faces</source>
       <translation>Número de faces</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5023"/>
+      <location filename="../../Draft.py" line="5045"/>
       <source>Radius of the control circle</source>
       <translation>Raio do círculo de control</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5024"/>
+      <location filename="../../Draft.py" line="5046"/>
       <source>How the polygon must be drawn from the control circle</source>
       <translation>Como debe ser trazado o polígono respecto do círculo de control</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5072"/>
+      <location filename="../../Draft.py" line="5094"/>
       <source>Projection direction</source>
       <translation>Dirección de proxección</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5073"/>
+      <location filename="../../Draft.py" line="5095"/>
       <source>The width of the lines inside this object</source>
       <translation>A largura das liñas dentro deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5074"/>
+      <location filename="../../Draft.py" line="5096"/>
       <source>The size of the texts inside this object</source>
       <translation>O tamaño dos textos dentro deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5075"/>
+      <location filename="../../Draft.py" line="5097"/>
       <source>The spacing between lines of text</source>
       <translation>O espazado entre liñas de texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5076"/>
+      <location filename="../../Draft.py" line="5098"/>
       <source>The color of the projected objects</source>
       <translation>A cor dos obxectos proxectados</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5077"/>
+      <location filename="../../Draft.py" line="5099"/>
       <source>The linked object</source>
       <translation>O obxecto ligado</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5078"/>
+      <location filename="../../Draft.py" line="5100"/>
       <source>Shape Fill Style</source>
       <translation>Estilo de enchedura da forma</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5079"/>
+      <location filename="../../Draft.py" line="5101"/>
       <source>Line Style</source>
       <translation>Estilo de liña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5080"/>
+      <location filename="../../Draft.py" line="5102"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Se é marcada, os obxectos de orixe amósanse independentemente de seren visibles no modelo 3D</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5137"/>
-      <source>The points of the b-spline</source>
-      <translation>Os puntos da b-spline</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5138"/>
-      <source>If the b-spline is closed or not</source>
-      <translation>Se a b-spline está pechada ou non</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5139"/>
+      <location filename="../../Draft.py" line="5161"/>
       <source>Create a face if this spline is closed</source>
       <translation>Crear unha face se este spline é pechado</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5147"/>
+      <location filename="../../Draft.py" line="5169"/>
       <source>Parameterization factor</source>
       <translation>Factor paramétrico</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5212"/>
+      <location filename="../../Draft.py" line="5234"/>
       <source>The points of the Bezier curve</source>
       <translation>Os puntos da curva de Bézier</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5213"/>
+      <location filename="../../Draft.py" line="5235"/>
       <source>The degree of the Bezier function</source>
       <translation>O grao da función de Bézier</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5214"/>
+      <location filename="../../Draft.py" line="5236"/>
       <source>Continuity</source>
       <translation>Continuidade</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5215"/>
+      <location filename="../../Draft.py" line="5237"/>
       <source>If the Bezier curve should be closed or not</source>
       <translation>Se a curva de Bézier debe ser pechada ou non</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5216"/>
+      <location filename="../../Draft.py" line="5238"/>
       <source>Create a face if this curve is closed</source>
       <translation>Crear unha face, se esta curva está pechada</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5336"/>
+      <location filename="../../Draft.py" line="5358"/>
       <source>The components of this block</source>
       <translation>Os compoñentes deste bloque</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5354"/>
+      <location filename="../../Draft.py" line="5376"/>
       <source>The base object this 2D view must represent</source>
       <translation>O obxecto base que esta visión 2D debe representar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5355"/>
+      <location filename="../../Draft.py" line="5377"/>
       <source>The projection vector of this object</source>
       <translation>A proxección vectorial deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5356"/>
+      <location filename="../../Draft.py" line="5378"/>
       <source>The way the viewed object must be projected</source>
       <translation>O xeito no que a vista do obxecto debe ser proxectada</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5357"/>
+      <location filename="../../Draft.py" line="5379"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
       <translation>Os índices das faces a seren proxectadas no xeito de Faces Individuais</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5358"/>
+      <location filename="../../Draft.py" line="5380"/>
       <source>Show hidden lines</source>
       <translation>Amosar liñas ocultas</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5359"/>
-      <source>Tessellate Ellipses and BSplines into line segments</source>
-      <translation>Tesela elipses e BSplines en segmentos de liña</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5361"/>
-      <source>Length of line segments if tessellating Ellipses or BSplines into line segments</source>
-      <translation>Lonxitude de segmentos de liña se se teselan elipses ou BSplines en segmentos de liña</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5599"/>
+      <location filename="../../Draft.py" line="5628"/>
       <source>The base object that must be duplicated</source>
       <translation>O obxecto de base que debe ser duplicado</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5498"/>
+      <location filename="../../Draft.py" line="5527"/>
       <source>The type of array to create</source>
       <translation>O tipo de matriz para crear</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5499"/>
+      <location filename="../../Draft.py" line="5528"/>
       <source>The axis direction</source>
       <translation>A dirección do eixe</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5500"/>
+      <location filename="../../Draft.py" line="5529"/>
       <source>Number of copies in X direction</source>
       <translation>Cantidade de copias en dirección X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5501"/>
+      <location filename="../../Draft.py" line="5530"/>
       <source>Number of copies in Y direction</source>
       <translation>Cantidade de copias en dirección Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5502"/>
+      <location filename="../../Draft.py" line="5531"/>
       <source>Number of copies in Z direction</source>
       <translation>Cantidade de copias en dirección Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5602"/>
+      <location filename="../../Draft.py" line="5631"/>
       <source>Number of copies</source>
       <translation>Cantidade de copias</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5504"/>
+      <location filename="../../Draft.py" line="5533"/>
       <source>Distance and orientation of intervals in X direction</source>
       <translation>Distancia e orientación dos intervalos na dirección X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5505"/>
+      <location filename="../../Draft.py" line="5534"/>
       <source>Distance and orientation of intervals in Y direction</source>
       <translation>Distancia e orientación dos intervalos na dirección Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5506"/>
+      <location filename="../../Draft.py" line="5535"/>
       <source>Distance and orientation of intervals in Z direction</source>
       <translation>Distancia e orientación dos intervalos na dirección Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5507"/>
+      <location filename="../../Draft.py" line="5536"/>
       <source>Distance and orientation of intervals in Axis direction</source>
       <translation>Distancia e orientación dos intervalos na dirección do eixe</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5508"/>
+      <location filename="../../Draft.py" line="5537"/>
       <source>Center point</source>
       <translation>Centro</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5509"/>
+      <location filename="../../Draft.py" line="5538"/>
       <source>Angle to cover with copies</source>
       <translation>Ángulo que cobren as copias</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5510"/>
+      <location filename="../../Draft.py" line="5539"/>
       <source>Specifies if copies must be fused (slower)</source>
       <translation>Especifica se se deben fundiren as copias (máis lento)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5600"/>
+      <location filename="../../Draft.py" line="5629"/>
       <source>The path object along which to distribute objects</source>
       <translation>O obxecto de camiño ao longo do cal se han distribuír os obxectos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5601"/>
+      <location filename="../../Draft.py" line="5630"/>
       <source>Selected subobjects (edges) of PathObj</source>
       <translation>Subobxectos seleccionados (bordos) de PathObj</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5603"/>
+      <location filename="../../Draft.py" line="5632"/>
       <source>Optional translation vector</source>
       <translation>Vector opcional de translación</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5604"/>
+      <location filename="../../Draft.py" line="5633"/>
       <source>Orientation of Base along path</source>
       <translation>Orientación da Base o longo do camiño</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5763"/>
+      <location filename="../../Draft.py" line="5792"/>
       <source>X Location</source>
       <translation>Posición X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5764"/>
+      <location filename="../../Draft.py" line="5793"/>
       <source>Y Location</source>
       <translation>Posición Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5765"/>
+      <location filename="../../Draft.py" line="5794"/>
       <source>Z Location</source>
       <translation>Posición Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5801"/>
-      <source>The objects included in this scale object</source>
-      <translation>Os obxectos incluídos neste obxecto escala</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5802"/>
-      <source>The scale vector of this object</source>
-      <translation>O vector de escala deste obxecto</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5948"/>
+      <location filename="../../Draft.py" line="5993"/>
       <source>Text string</source>
       <translation>Cadea de texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5949"/>
+      <location filename="../../Draft.py" line="5994"/>
       <source>Font file name</source>
       <translation>Nome do ficheiro de fontes</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5950"/>
+      <location filename="../../Draft.py" line="5995"/>
       <source>Height of text</source>
       <translation>Altura do texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5951"/>
+      <location filename="../../Draft.py" line="5996"/>
       <source>Inter-character spacing</source>
       <translation>Espazado entre caracteres</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6080"/>
+      <location filename="../../Draft.py" line="6134"/>
       <source>Linked faces</source>
       <translation>Faces ligadas</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6081"/>
+      <location filename="../../Draft.py" line="6135"/>
       <source>Specifies if splitter lines must be removed</source>
       <translation>Especifica se as liñas de división deben de ser rexeitadas</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6082"/>
+      <location filename="../../Draft.py" line="6136"/>
       <source>An optional extrusion value to be applied to all faces</source>
       <translation>Un valor de extrusión opcional para ser aplicado a tódalas faces</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4638"/>
+      <location filename="../../Draft.py" line="4655"/>
       <source>Height of the rectangle</source>
       <translation>Altura do rectángulo</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4642"/>
+      <location filename="../../Draft.py" line="4659"/>
       <source>Horizontal subdivisions of this rectangle</source>
       <translation>Subdivisións horizontais deste rectángulo</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4643"/>
+      <location filename="../../Draft.py" line="4660"/>
       <source>Vertical subdivisions of this rectangle</source>
       <translation>Subdivisións verticais deste rectángulo</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6486"/>
+      <location filename="../../Draft.py" line="6540"/>
       <source>The placement of this object</source>
       <translation>A situación deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6285"/>
+      <location filename="../../Draft.py" line="6339"/>
       <source>The display length of this section plane</source>
       <translation>A lonxitude visualizada deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6286"/>
+      <location filename="../../Draft.py" line="6340"/>
       <source>The size of the arrows of this section plane</source>
       <translation>O tamaño das frechas deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5360"/>
+      <location filename="../../Draft.py" line="5382"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
+      <translation>Para modos de Cutlines e Cutefaces, esto deixa as caras no lugar de corte</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4791"/>
+      <location filename="../../Draft.py" line="4808"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>Obxecto base é o arame do que está formado a partir de 2 obxectos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4792"/>
+      <location filename="../../Draft.py" line="4809"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>Ferramenta base é o arame do que está formado a partir de 2 obxectos</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6487"/>
+      <location filename="../../Draft.py" line="6541"/>
       <source>The length of the straight segment</source>
-      <translation type="unfinished">The length of the straight segment</translation>
+      <translation>Lonxitude do segmento dereito</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6488"/>
+      <location filename="../../Draft.py" line="6542"/>
       <source>The point indicated by this label</source>
-      <translation type="unfinished">The point indicated by this label</translation>
+      <translation>Punto indicado por esta etiqueta</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6489"/>
+      <location filename="../../Draft.py" line="6543"/>
       <source>The points defining the label polyline</source>
-      <translation type="unfinished">The points defining the label polyline</translation>
+      <translation>Puntos definidos pola etiqueta poliliña</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6490"/>
+      <location filename="../../Draft.py" line="6544"/>
       <source>The direction of the straight segment</source>
-      <translation type="unfinished">The direction of the straight segment</translation>
+      <translation>Dirección do segmento dereito</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6491"/>
+      <location filename="../../Draft.py" line="6545"/>
       <source>The type of information shown by this label</source>
-      <translation type="unfinished">The type of information shown by this label</translation>
+      <translation>Tipo de información amosado na etiqueta</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6492"/>
+      <location filename="../../Draft.py" line="6546"/>
       <source>The target object of this label</source>
-      <translation type="unfinished">The target object of this label</translation>
+      <translation>Obxecto de destino desta etiqueta</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6493"/>
+      <location filename="../../Draft.py" line="6547"/>
       <source>The text to display when type is set to custom</source>
-      <translation type="unfinished">The text to display when type is set to custom</translation>
+      <translation>Texto amosado cando o tipo está definido para personalizar</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6494"/>
+      <location filename="../../Draft.py" line="6548"/>
       <source>The text displayed by this label</source>
-      <translation type="unfinished">The text displayed by this label</translation>
+      <translation>Texto amosado nesta etiqueta</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6568"/>
+      <location filename="../../Draft.py" line="6622"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>Tamaño do texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6569"/>
+      <location filename="../../Draft.py" line="6623"/>
       <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
+      <translation>Fonte do texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6570"/>
+      <location filename="../../Draft.py" line="6624"/>
       <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
+      <translation>Tamaño da frecha</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6571"/>
+      <location filename="../../Draft.py" line="6625"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>Aliñamento vertical do texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6572"/>
+      <location filename="../../Draft.py" line="6626"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>Tipo de frecha desta etiqueta</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6573"/>
+      <location filename="../../Draft.py" line="6627"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Tipo de marco que arrodea o texto deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6576"/>
+      <location filename="../../Draft.py" line="6630"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Color de texto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6577"/>
+      <location filename="../../Draft.py" line="6631"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Máximo número de caracteres en cada liña da caixa de texto</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5159"/>
+      <source>The points of the B-spline</source>
+      <translation>Puntos da BSpline</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5160"/>
+      <source>If the B-spline is closed or not</source>
+      <translation>Se a BSpline é pechada ou non</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5381"/>
+      <source>Tessellate Ellipses and B-splines into line segments</source>
+      <translation>Tessellate Elipses e BSplines en segmentos de liña</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5383"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
+      <translation>Lonxitude de segmentos de liña se se teselan elipses ou BSplines en segmentos de liña</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5384"/>
+      <source>If this is True, this object will be recomputed only if it is visible</source>
+      <translation>Se é Certo, este obxecto pode ser recalculado só se está visible</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5830"/>
+      <source>The objects included in this clone</source>
+      <translation>Os obxectos incluídos neste clon</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5831"/>
+      <source>The scale factor of this clone</source>
+      <translation>Factor de escala deste clon</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5832"/>
+      <source>If this clones several objects, this specifies if the result is a fusion or a compound</source>
+      <translation>Se este clon e de varios obxectos, específicase o resultado é unha fusión ou un composto</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../DraftTools.py" line="5127"/>
+      <location filename="../../DraftTools.py" line="5133"/>
       <source>Slope</source>
       <translation>Pendente</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5133"/>
-      <source>Slope to give toselected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
-      <translation>Pendente para dar aos Arames/Liñas seleccionados: 0 = horizontal, 1 = 45 graos cara arriba, -1 = 45 graos cara abaixo</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="95"/>
@@ -688,97 +693,115 @@ Mire as instrucións completas en
 http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2223"/>
+      <location filename="../../DraftGui.py" line="2239"/>
       <source>Scale</source>
       <translation>Escala</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6325"/>
+      <location filename="../../Draft.py" line="6379"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Escribir posición da cámara</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6342"/>
+      <location filename="../../Draft.py" line="6396"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Escribir estado de obxectos amosar/agochar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2224"/>
+      <location filename="../../DraftGui.py" line="2240"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Factor X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2225"/>
+      <location filename="../../DraftGui.py" line="2241"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Factor Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2226"/>
+      <location filename="../../DraftGui.py" line="2242"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Factor Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2227"/>
+      <location filename="../../DraftGui.py" line="2243"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Escalada uniforme</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2228"/>
+      <location filename="../../DraftGui.py" line="2244"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Orientación do plano de traballo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2229"/>
+      <location filename="../../DraftGui.py" line="2245"/>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Resultado</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2230"/>
+      <location filename="../../DraftGui.py" line="2246"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Crear un clon</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2231"/>
+      <location filename="../../DraftGui.py" line="2247"/>
       <source>Modify original</source>
-      <translation type="unfinished">Modify original</translation>
+      <translation>Modificar orixinal</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2232"/>
+      <location filename="../../DraftGui.py" line="2248"/>
       <source>Create a copy</source>
-      <translation type="unfinished">Create a copy</translation>
+      <translation>Crear unha copia</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="91"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>Fallou baixar librarías dxf.
+Por favor instalar manualmente as librarías dxf addon
+dende menú de Ferramentas -&gt; Xestión Addon</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5139"/>
+      <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
+      <translation>Inclinación para dar aos arames/liñas escolmados: 0=horizontal, 1=45grad para abaixo</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_AddConstruction</name>
+    <message>
+      <location filename="../../DraftTools.py" line="5375"/>
+      <source>Add to Construction group</source>
+      <translation>Engade a grupo de Construción</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5376"/>
+      <source>Adds the selected objects to the Construction group</source>
+      <translation>Engade obxectos escolmados ao grupo de construción</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4465"/>
+      <location filename="../../DraftTools.py" line="4471"/>
       <source>Add Point</source>
       <translation>Engadir punto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4466"/>
-      <source>Adds a point to an existing wire/bspline</source>
-      <translation>Engade un punto a un arame/bspline existente</translation>
+      <location filename="../../DraftTools.py" line="4472"/>
+      <source>Adds a point to an existing Wire or B-spline</source>
+      <translation>Engade un punto a un arame ou BSpline existente</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4418"/>
+      <location filename="../../DraftTools.py" line="4424"/>
       <source>Move to group...</source>
       <translation>Mover ó grupo...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4419"/>
+      <location filename="../../DraftTools.py" line="4425"/>
       <source>Moves the selected object(s) to an existing group</source>
       <translation>Move o(s) obxecto(s) seleccionado(s) para un grupo existente</translation>
     </message>
@@ -786,12 +809,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="../../DraftTools.py" line="2423"/>
+      <location filename="../../DraftTools.py" line="2429"/>
       <source>Apply Current Style</source>
       <translation>Aplicar Estilo Actual</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2424"/>
+      <location filename="../../DraftTools.py" line="2430"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>Aplica a largura de liña e cor actuais os obxectos seleccionados</translation>
     </message>
@@ -799,12 +822,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="../../DraftTools.py" line="1128"/>
+      <location filename="../../DraftTools.py" line="1132"/>
       <source>Arc</source>
       <translation>Arco</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1129"/>
+      <location filename="../../DraftTools.py" line="1133"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
       <translation>Fai un arco. CTRL para forzar, SHIFT para restrinxir</translation>
     </message>
@@ -812,12 +835,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="../../DraftTools.py" line="4687"/>
+      <location filename="../../DraftTools.py" line="4693"/>
       <source>Array</source>
       <translation>Matriz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4688"/>
+      <location filename="../../DraftTools.py" line="4694"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>Fai unha matriz rectangular ou polar dun obxecto seleccionado</translation>
     </message>
@@ -825,12 +848,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5168"/>
+      <location filename="../../DraftTools.py" line="5174"/>
       <source>AutoGroup</source>
       <translation>Auto-agrupar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5169"/>
+      <location filename="../../DraftTools.py" line="5175"/>
       <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
       <translation>Escolmar un grupo ó que engadir automaticamente tódolos obxectos Bosquexo e Arquitectura</translation>
     </message>
@@ -838,25 +861,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="749"/>
-      <source>B-Spline</source>
-      <translation>B-Spline</translation>
+      <location filename="../../DraftTools.py" line="752"/>
+      <source>B-spline</source>
+      <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="750"/>
-      <source>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation>Fai unha B-spline de puntos múltiples. CTRL para forzar, SHIFT para restrinxir</translation>
+      <location filename="../../DraftTools.py" line="753"/>
+      <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</source>
+      <translation>Crea unha BSpline de múltiples puntos. Crtl para fozar, Maius. para constrinxir</translation>
     </message>
   </context>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../DraftTools.py" line="848"/>
+      <location filename="../../DraftTools.py" line="851"/>
       <source>BezCurve</source>
       <translation>Curva Bezier</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="849"/>
+      <location filename="../../DraftTools.py" line="852"/>
       <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
       <translation>Fai unha curva Bezier. CTRL para forzar, SHIFT para restrinxir</translation>
     </message>
@@ -864,12 +887,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1443"/>
+      <location filename="../../DraftTools.py" line="1447"/>
       <source>Circle</source>
       <translation>Círculo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1444"/>
+      <location filename="../../DraftTools.py" line="1448"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Fai un círculo. CTRL para forzar, ALT para seleccionar obxectos tanxentes</translation>
     </message>
@@ -877,12 +900,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="../../DraftTools.py" line="4844"/>
+      <location filename="../../DraftTools.py" line="4850"/>
       <source>Clone</source>
       <translation>Clonar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4845"/>
+      <location filename="../../DraftTools.py" line="4851"/>
       <source>Clones the selected object(s)</source>
       <translation>Clona os obxectos seleccionados</translation>
     </message>
@@ -890,12 +913,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="974"/>
+      <location filename="../../DraftTools.py" line="978"/>
       <source>Close Line</source>
       <translation>Pechar liña</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="975"/>
+      <location filename="../../DraftTools.py" line="979"/>
       <source>Closes the line being drawn</source>
       <translation>Pecha a liña que se está a debuxar</translation>
     </message>
@@ -903,25 +926,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4490"/>
+      <location filename="../../DraftTools.py" line="4496"/>
       <source>Remove Point</source>
       <translation>Desbotar punto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4491"/>
-      <source>Removes a point from an existing wire or bspline</source>
-      <translation>Desbota un punto dun arame ou bspline existente</translation>
+      <location filename="../../DraftTools.py" line="4497"/>
+      <source>Removes a point from an existing Wire or B-spline</source>
+      <translation>Remove un punto dende un arame existente ou BSpline</translation>
     </message>
   </context>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="1835"/>
+      <location filename="../../DraftTools.py" line="1841"/>
       <source>Dimension</source>
       <translation>Acoutamento</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1836"/>
+      <location filename="../../DraftTools.py" line="1842"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Fai un acoutamento. CTRL para forzar, SHIFT para restrinxir, ALT para seleccionar un segmento</translation>
     </message>
@@ -929,12 +952,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3129"/>
+      <location filename="../../DraftTools.py" line="3135"/>
       <source>Downgrade</source>
       <translation>Degradar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3130"/>
+      <location filename="../../DraftTools.py" line="3136"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
       <translation>Estoupa os obxectos seleccionados en obxectos máis simples, ou detrae caras</translation>
     </message>
@@ -942,12 +965,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="../../DraftTools.py" line="4629"/>
+      <location filename="../../DraftTools.py" line="4635"/>
       <source>Draft to Sketch</source>
       <translation>Bosquexo para Esbozo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4630"/>
+      <location filename="../../DraftTools.py" line="4636"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>Converter de xeito bidireccional entre obxectos de Bosquexo e de Esbozo</translation>
     </message>
@@ -955,25 +978,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="../../DraftTools.py" line="3710"/>
+      <location filename="../../DraftTools.py" line="3716"/>
       <source>Drawing</source>
       <translation>Debuxo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3711"/>
-      <source>Puts the selected objects on a Drawing sheet.</source>
-      <translation>Pór os obxectos seleccionados nunha folla de Debuxo.</translation>
+      <location filename="../../DraftTools.py" line="3717"/>
+      <source>Puts the selected objects on a Drawing sheet</source>
+      <translation>Coloca os obxectos escolmados nunha folla de cálculo</translation>
     </message>
   </context>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="../../DraftTools.py" line="3815"/>
+      <location filename="../../DraftTools.py" line="3821"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3816"/>
+      <location filename="../../DraftTools.py" line="3822"/>
       <source>Edits the active object</source>
       <translation>Edita o obxecto activado</translation>
     </message>
@@ -981,12 +1004,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../DraftTools.py" line="1638"/>
+      <location filename="../../DraftTools.py" line="1642"/>
       <source>Ellipse</source>
       <translation>Elipse</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1639"/>
+      <location filename="../../DraftTools.py" line="1643"/>
       <source>Creates an ellipse. CTRL to snap</source>
       <translation>Fai unha elipse. CTRL para forzar</translation>
     </message>
@@ -994,12 +1017,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="../../DraftTools.py" line="4921"/>
+      <location filename="../../DraftTools.py" line="4927"/>
       <source>Facebinder</source>
       <translation>Xuntacaras</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4922"/>
+      <location filename="../../DraftTools.py" line="4928"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation>Fai un obxecto Xuntacaras a partir de caras seleccionadas</translation>
     </message>
@@ -1007,12 +1030,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="954"/>
+      <location filename="../../DraftTools.py" line="958"/>
       <source>Finish line</source>
       <translation>Rematar liña</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="955"/>
+      <location filename="../../DraftTools.py" line="959"/>
       <source>Finishes a line without closing it</source>
       <translation>Remata unha liña sen pechala</translation>
     </message>
@@ -1020,12 +1043,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="4950"/>
+      <location filename="../../DraftTools.py" line="4956"/>
       <source>Flip Dimension</source>
       <translation>Inverter acoutamento</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4951"/>
+      <location filename="../../DraftTools.py" line="4957"/>
       <source>Flip the normal direction of a dimension</source>
       <translation>Inverter a dirección de escritura dun acoutamento</translation>
     </message>
@@ -1033,12 +1056,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="../../DraftTools.py" line="4902"/>
+      <location filename="../../DraftTools.py" line="4908"/>
       <source>Heal</source>
       <translation>Arranxar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4903"/>
+      <location filename="../../DraftTools.py" line="4909"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
       <translation>Arranxa obxectos defectuosos de Bosquexo (Draft), gardados por unha versión anterior do FreeCAD</translation>
     </message>
@@ -1046,14 +1069,14 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Label</name>
     <message>
-      <location filename="../../DraftTools.py" line="5236"/>
+      <location filename="../../DraftTools.py" line="5242"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5237"/>
+      <location filename="../../DraftTools.py" line="5243"/>
       <source>Creates a label, optionally attached to a selected object or element</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or element</translation>
+      <translation>Crea unha etiqueta, opcionalmente ligada á obxectos seleccionados ou elemento</translation>
     </message>
   </context>
   <context>
@@ -1072,12 +1095,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../DraftTools.py" line="4991"/>
+      <location filename="../../DraftTools.py" line="4997"/>
       <source>Mirror</source>
       <translation>Simetría</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4992"/>
+      <location filename="../../DraftTools.py" line="4998"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
       <translation>Reflicte os obxectos seleccionados ao longo dunha liña definida por dos puntos</translation>
     </message>
@@ -1085,12 +1108,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../DraftTools.py" line="2299"/>
+      <location filename="../../DraftTools.py" line="2305"/>
       <source>Move</source>
       <translation>Mover</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2300"/>
+      <location filename="../../DraftTools.py" line="2306"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Move os obxectos seleccionados entre 2 puntos. CTRL para forzar, SHIFT para restrinxir, ALT para copiar</translation>
     </message>
@@ -1098,12 +1121,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../DraftTools.py" line="2645"/>
+      <location filename="../../DraftTools.py" line="2651"/>
       <source>Offset</source>
       <translation>Separación</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2646"/>
+      <location filename="../../DraftTools.py" line="2652"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Fai un desprazamento do obxecto activo. CTRL para forzar, SHIFT para restrinxir, ALT para copiar</translation>
     </message>
@@ -1111,12 +1134,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4717"/>
+      <location filename="../../DraftTools.py" line="4723"/>
       <source>PathArray</source>
       <translation>Copia múltiple por camiño</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4718"/>
+      <location filename="../../DraftTools.py" line="4724"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation>Fai copias dun obxecto preseleccionado ó longo dun camiño marcado.</translation>
     </message>
@@ -1124,12 +1147,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../DraftTools.py" line="4753"/>
+      <location filename="../../DraftTools.py" line="4759"/>
       <source>Point</source>
       <translation>Punto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4754"/>
+      <location filename="../../DraftTools.py" line="4760"/>
       <source>Creates a point object</source>
       <translation>Fai un obxecto punto</translation>
     </message>
@@ -1137,12 +1160,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="../../DraftTools.py" line="1453"/>
+      <location filename="../../DraftTools.py" line="1457"/>
       <source>Polygon</source>
       <translation>Polígono</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1454"/>
+      <location filename="../../DraftTools.py" line="1458"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Fai un polígono regular. CTRL para forzar, SHIFT para restrinxir</translation>
     </message>
@@ -1150,12 +1173,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1010"/>
+      <location filename="../../DraftTools.py" line="1014"/>
       <source>Rectangle</source>
       <translation>Rectángulo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1011"/>
+      <location filename="../../DraftTools.py" line="1015"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
       <translation>Fai un rectángulo dado por 2 puntos. CTRL para forzar</translation>
     </message>
@@ -1163,12 +1186,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="../../DraftTools.py" line="2461"/>
+      <location filename="../../DraftTools.py" line="2467"/>
       <source>Rotate</source>
       <translation>Xirar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2462"/>
+      <location filename="../../DraftTools.py" line="2468"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Xira os obxectos seleccionados. CTRL para forzar, SHIFT para restrinxir, ALT para copiar</translation>
     </message>
@@ -1176,12 +1199,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="../../DraftTools.py" line="3580"/>
+      <location filename="../../DraftTools.py" line="3586"/>
       <source>Scale</source>
       <translation>Escala</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3581"/>
+      <location filename="../../DraftTools.py" line="3587"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Escala os obxectos seleccionados partindo dun punto base. CTRL para forzar, SHIFT para restrinxir, ALT para copiar</translation>
     </message>
@@ -1189,12 +1212,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4557"/>
+      <location filename="../../DraftTools.py" line="4563"/>
       <source>Select group</source>
       <translation>Seleccionar grupo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4558"/>
+      <location filename="../../DraftTools.py" line="4564"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>Selecciona tódolos obxectos cos mesmos pais que este grupo</translation>
     </message>
@@ -1215,25 +1238,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
     <message>
-      <location filename="../../DraftTools.py" line="5212"/>
-      <source>Create WP Proxy</source>
-      <translation>Crear WP Proxy</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5213"/>
+      <location filename="../../DraftTools.py" line="5219"/>
       <source>Creates a proxy object from the current working plane</source>
       <translation>Crea un obxecto proxy a partir do plano de traballo actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5218"/>
+      <source>Create Working Plane Proxy</source>
+      <translation>Crear proxy do plano de traballo</translation>
     </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../DraftTools.py" line="4589"/>
+      <location filename="../../DraftTools.py" line="4595"/>
       <source>Shape 2D view</source>
       <translation>Visualización 2D dunha forma</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4590"/>
+      <location filename="../../DraftTools.py" line="4596"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>Xera vistas 2D dos obxectos seleccionados</translation>
     </message>
@@ -1241,12 +1264,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="../../DraftTools.py" line="2176"/>
+      <location filename="../../DraftTools.py" line="2182"/>
       <source>Shape from text...</source>
       <translation>Forma dende texto...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2177"/>
+      <location filename="../../DraftTools.py" line="2183"/>
       <source>Creates text string in shapes.</source>
       <translation>Fai cadeas de texto con formas.</translation>
     </message>
@@ -1254,12 +1277,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="../../DraftTools.py" line="4830"/>
+      <location filename="../../DraftTools.py" line="4836"/>
       <source>Show Snap Bar</source>
       <translation>Amosar ferramentas de forzar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4831"/>
+      <location filename="../../DraftTools.py" line="4837"/>
       <source>Shows Draft snap toolbar</source>
       <translation>Amosar ferramentas de forzar do Bosquexo</translation>
     </message>
@@ -1267,25 +1290,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../DraftTools.py" line="5113"/>
-      <source>Set slope</source>
+      <location filename="../../DraftTools.py" line="5119"/>
+      <source>Set Slope</source>
       <translation>Estabelecer pendente</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5114"/>
-      <source>Sets the slope of a selected line or wire</source>
-      <translation>Estabelece a pendente dos arames ou liñas escolmados</translation>
+      <location filename="../../DraftTools.py" line="5120"/>
+      <source>Sets the slope of a selected Line or Wire</source>
+      <translation>Axusta a pendente dunha liña ou arame escolmado</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="../../DraftTools.py" line="5455"/>
+      <location filename="../../DraftTools.py" line="5492"/>
       <source>Angles</source>
       <translation>Ángulos</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5456"/>
+      <location filename="../../DraftTools.py" line="5493"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation>Forza puntos a 45 e 90 graos en arcos e círculos</translation>
     </message>
@@ -1293,12 +1316,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="../../DraftTools.py" line="5467"/>
+      <location filename="../../DraftTools.py" line="5504"/>
       <source>Center</source>
       <translation>Centro</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5468"/>
+      <location filename="../../DraftTools.py" line="5505"/>
       <source>Snaps to center of circles and arcs</source>
       <translation>Forza ó centro de círculos e arcos</translation>
     </message>
@@ -1306,12 +1329,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="../../DraftTools.py" line="5527"/>
+      <location filename="../../DraftTools.py" line="5564"/>
       <source>Dimensions</source>
       <translation>Dimensións</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5528"/>
+      <location filename="../../DraftTools.py" line="5565"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation>Amosa as dimensións provisorias cando se forza para obxectos de Arquitectura</translation>
     </message>
@@ -1319,12 +1342,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5443"/>
+      <location filename="../../DraftTools.py" line="5480"/>
       <source>Endpoint</source>
       <translation>Punto final</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5444"/>
+      <location filename="../../DraftTools.py" line="5481"/>
       <source>Snaps to endpoints of edges</source>
       <translation>Forza a puntos finais de arestas</translation>
     </message>
@@ -1332,12 +1355,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5479"/>
+      <location filename="../../DraftTools.py" line="5516"/>
       <source>Extension</source>
       <translation>Extensión</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5480"/>
+      <location filename="../../DraftTools.py" line="5517"/>
       <source>Snaps to extension of edges</source>
       <translation>Forza como extensión de arestas</translation>
     </message>
@@ -1345,12 +1368,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5407"/>
+      <location filename="../../DraftTools.py" line="5444"/>
       <source>Grid</source>
       <translation>Grella</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5408"/>
+      <location filename="../../DraftTools.py" line="5445"/>
       <source>Snaps to grid points</source>
       <translation>Forza a puntos da grella</translation>
     </message>
@@ -1358,12 +1381,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="../../DraftTools.py" line="5419"/>
+      <location filename="../../DraftTools.py" line="5456"/>
       <source>Intersection</source>
       <translation>Intersección</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5420"/>
+      <location filename="../../DraftTools.py" line="5457"/>
       <source>Snaps to edges intersections</source>
       <translation>Forza ás interseccións de arestas</translation>
     </message>
@@ -1371,30 +1394,30 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="../../DraftTools.py" line="5373"/>
+      <location filename="../../DraftTools.py" line="5410"/>
       <source>Toggle On/Off</source>
       <translation>Alternar Prender/Apagar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5374"/>
+      <location filename="../../DraftTools.py" line="5411"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation>Activa/desactiva tódalas ferramentas de forzar a un tempo</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1195"/>
+      <location filename="../../DraftSnap.py" line="1198"/>
       <source>Lock</source>
-      <translation type="unfinished">Lock</translation>
+      <translation>Blocar</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5383"/>
+      <location filename="../../DraftTools.py" line="5420"/>
       <source>Midpoint</source>
       <translation>Punto medio</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5384"/>
+      <location filename="../../DraftTools.py" line="5421"/>
       <source>Snaps to midpoints of edges</source>
       <translation>Forzar ós puntos medios das arestas</translation>
     </message>
@@ -1402,12 +1425,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="../../DraftTools.py" line="5491"/>
+      <location filename="../../DraftTools.py" line="5528"/>
       <source>Nearest</source>
       <translation>Próximo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5492"/>
+      <location filename="../../DraftTools.py" line="5529"/>
       <source>Snaps to nearest point on edges</source>
       <translation>Forzar ó punto próximo nas arestas</translation>
     </message>
@@ -1415,12 +1438,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="../../DraftTools.py" line="5503"/>
+      <location filename="../../DraftTools.py" line="5540"/>
       <source>Ortho</source>
       <translation>Ortogonal</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5504"/>
+      <location filename="../../DraftTools.py" line="5541"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation>Forza a direccións ortogonais e mais a 45 graos</translation>
     </message>
@@ -1428,12 +1451,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="../../DraftTools.py" line="5431"/>
+      <location filename="../../DraftTools.py" line="5468"/>
       <source>Parallel</source>
       <translation>Paralela</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5432"/>
+      <location filename="../../DraftTools.py" line="5469"/>
       <source>Snaps to parallel directions of edges</source>
       <translation>Forza a direccións paralelas ás arestas</translation>
     </message>
@@ -1441,12 +1464,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="../../DraftTools.py" line="5395"/>
+      <location filename="../../DraftTools.py" line="5432"/>
       <source>Perpendicular</source>
       <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5396"/>
+      <location filename="../../DraftTools.py" line="5433"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation>Forza perpendicularmente ás arestas</translation>
     </message>
@@ -1454,12 +1477,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="../../DraftTools.py" line="5515"/>
+      <location filename="../../DraftTools.py" line="5552"/>
       <source>Special</source>
       <translation type="unfinished">Special</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5516"/>
+      <location filename="../../DraftTools.py" line="5553"/>
       <source>Snaps to special locations of objects</source>
       <translation>Forza a localizacións especiais dos obxectos</translation>
     </message>
@@ -1467,12 +1490,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="5539"/>
+      <location filename="../../DraftTools.py" line="5576"/>
       <source>Working Plane</source>
       <translation>Plano de traballo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5540"/>
+      <location filename="../../DraftTools.py" line="5577"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation>Restrinxe o forzado ó plano de traballo actual</translation>
     </message>
@@ -1480,12 +1503,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Stretch</name>
     <message>
-      <location filename="../../DraftTools.py" line="2836"/>
+      <location filename="../../DraftTools.py" line="2842"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2837"/>
+      <location filename="../../DraftTools.py" line="2843"/>
       <source>Stretches the selected objects</source>
       <translation>Estalica os obxectos escolmados</translation>
     </message>
@@ -1493,12 +1516,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="../../DraftTools.py" line="1755"/>
+      <location filename="../../DraftTools.py" line="1759"/>
       <source>Text</source>
       <translation>Texto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1756"/>
+      <location filename="../../DraftTools.py" line="1760"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Fai un apuntamento. CTRL para forzar</translation>
     </message>
@@ -1506,12 +1529,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3686"/>
+      <location filename="../../DraftTools.py" line="3692"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Alterna ó modo de construción para os obxectos seguintes.</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3684"/>
+      <location filename="../../DraftTools.py" line="3690"/>
       <source>Toggle Construction Mode</source>
       <translation>Alternar a modo de construción</translation>
     </message>
@@ -1519,12 +1542,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3697"/>
+      <location filename="../../DraftTools.py" line="3703"/>
       <source>Toggle Continue Mode</source>
       <translation>Alternar a modo continuo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3698"/>
+      <location filename="../../DraftTools.py" line="3704"/>
       <source>Toggles the Continue Mode for next commands.</source>
       <translation>Alterna ó modo continuo para os obxectos seguintes.</translation>
     </message>
@@ -1532,12 +1555,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3781"/>
+      <location filename="../../DraftTools.py" line="3787"/>
       <source>Toggle display mode</source>
       <translation>Alternar o xeito de visualización</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3782"/>
+      <location filename="../../DraftTools.py" line="3788"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Muda o xeito de visualización dos obxectos seleccionados entre modelo de arame e caras planas</translation>
     </message>
@@ -1545,30 +1568,35 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="../../DraftTools.py" line="4880"/>
+      <location filename="../../DraftTools.py" line="4886"/>
       <source>Toggle Grid</source>
       <translation>Grella</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4881"/>
+      <location filename="../../DraftTools.py" line="4887"/>
       <source>Toggles the Draft grid on/off</source>
       <translation>Activar/desactivar grella</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1186"/>
+      <location filename="../../DraftSnap.py" line="1189"/>
       <source>Grid</source>
       <translation>Grella</translation>
+    </message>
+    <message>
+      <location filename="../../DraftSnap.py" line="1190"/>
+      <source>Toggles the Draft grid On/Off</source>
+      <translation>Activa/desactiva a grella de bosquexo</translation>
     </message>
   </context>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../DraftTools.py" line="3162"/>
+      <location filename="../../DraftTools.py" line="3168"/>
       <source>Trimex</source>
       <translation>Tallex</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3163"/>
+      <location filename="../../DraftTools.py" line="3169"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
       <translation>Talla ou estende os obxectos seleccionados, ou extrúe caras simples. CTRL forza, SHIFT restrinxe ó segmento actual ou á normal, ALT invirte</translation>
     </message>
@@ -1576,12 +1604,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="994"/>
+      <location filename="../../DraftTools.py" line="998"/>
       <source>Undo last segment</source>
       <translation>Desbotar o último segmento</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="995"/>
+      <location filename="../../DraftTools.py" line="999"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
       <translation>Desbota o último segmento da liña actual</translation>
     </message>
@@ -1589,25 +1617,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3099"/>
+      <location filename="../../DraftTools.py" line="3105"/>
       <source>Upgrade</source>
       <translation>Promover</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3100"/>
+      <location filename="../../DraftTools.py" line="3106"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
-      <translation type="unfinished">Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</translation>
+      <translation>Xunta obxectos seleccionados nun, ou converte arames pechados a caras cheas, ou liga caras</translation>
     </message>
   </context>
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4965"/>
+      <location filename="../../DraftTools.py" line="4971"/>
       <source>VisGroup</source>
       <translation>VisGroup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4966"/>
+      <location filename="../../DraftTools.py" line="4972"/>
       <source>Adds a VisGroup</source>
       <translation>Engadir un VisGroup</translation>
     </message>
@@ -1615,12 +1643,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../DraftTools.py" line="709"/>
+      <location filename="../../DraftTools.py" line="712"/>
       <source>DWire</source>
       <translation>Aramado</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="710"/>
+      <location filename="../../DraftTools.py" line="713"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
       <translation>Fai un aramado con moitos puntos (DWire). CTRL para forzar, SHIFT para restrinxir</translation>
     </message>
@@ -1628,14 +1656,14 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="4515"/>
-      <source>Wire to BSpline</source>
-      <translation>Arame a BSpline</translation>
+      <location filename="../../DraftTools.py" line="4521"/>
+      <source>Wire to B-spline</source>
+      <translation>Arame para BSpline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4516"/>
-      <source>Converts between Wire and BSpline</source>
-      <translation>Converte entre arame e BSpline (curvas Bezier)</translation>
+      <location filename="../../DraftTools.py" line="4522"/>
+      <source>Converts between Wire and B-spline</source>
+      <translation>Converte entre Arame e BSpline</translation>
     </message>
   </context>
   <context>
@@ -1646,17 +1674,17 @@ from menu Tools -&gt; Addon Manager</translation>
       <translation>Configuración xeral de Bosquexo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="406"/>
+      <location filename="../ui/preferences-draft.ui" line="423"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
       <translation>Esta é a cor por defecto para obxectos namentres son deseñados no modo de construción.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="366"/>
+      <location filename="../ui/preferences-draft.ui" line="383"/>
       <source>This is the default group name for construction geometry</source>
       <translation>Este é o nome por defecto do grupo para xeometría de construción</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="369"/>
+      <location filename="../ui/preferences-draft.ui" line="386"/>
       <source>Construction</source>
       <translation>Construción</translation>
     </message>
@@ -1769,7 +1797,7 @@ such as "Arial:Bold"</source>
       <translation>Configuración xeral</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="359"/>
+      <location filename="../ui/preferences-draft.ui" line="376"/>
       <source>Construction group name</source>
       <translation>Nome do grupo de construción</translation>
     </message>
@@ -1895,17 +1923,17 @@ Values with differences below this value will be treated as same.</source>
       <translation>Nivel de precisión interna</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="313"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="318"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
       <translation>Esta é a posición dos textos dos acoutamentos cando estes son verticais. O valor predeterminado é a esquerda da liña, que é o estándar ISO.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
       <source>Left (ISO standard)</source>
       <translation>Esquerda (norma ISO)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
       <source>Right</source>
       <translation>Dereita</translation>
     </message>
@@ -2030,12 +2058,12 @@ Values with differences below this value will be treated as same.</source>
       <translation>Forzar sempre (desactiva o modo Forzar)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="351"/>
+      <location filename="../ui/preferences-draft.ui" line="368"/>
       <source>Construction geometry</source>
       <translation>Xeometría de construción</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="386"/>
+      <location filename="../ui/preferences-draft.ui" line="403"/>
       <source>Construction geometry color</source>
       <translation>Cor da xeometría de construción</translation>
     </message>
@@ -2170,7 +2198,7 @@ Values with differences below this value will be treated as same.</source>
       <translation>Frecha</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="280"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="285"/>
       <source>The default size of arrows</source>
       <translation>O tamaño das frechas por defecto</translation>
     </message>
@@ -2180,12 +2208,12 @@ Values with differences below this value will be treated as same.</source>
       <translation>O tamaño das liñas auxiliares por defecto</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="347"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="352"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>O espazo entre a liña e o texto do acoutamento</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="415"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="420"/>
       <source>Select a font file</source>
       <translation>Seleccione un ficheiro de fontes</translation>
     </message>
@@ -2240,17 +2268,12 @@ Values with differences below this value will be treated as same.</source>
       <translation>Tratar elipses e splines como poliliñas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="465"/>
-      <source>Max Spline Segment: </source>
-      <translation>Cantidade máxima de segmentos: </translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Export style</source>
       <translation>Exportar estilo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="373"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="378"/>
       <source>Show the unit suffix in dimensions</source>
       <translation>Amosar o sufixo das unidades nos acoutamentos</translation>
     </message>
@@ -2375,27 +2398,27 @@ Values with differences below this value will be treated as same.</source>
       <translation>Estilo de frechas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="273"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="278"/>
       <source>Arrows size</source>
       <translation>Tamaño das frechas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="306"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="311"/>
       <source>Text orientation</source>
       <translation>Orientación do texto</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="340"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="345"/>
       <source>Text spacing</source>
       <translation>Espazado de texto</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="394"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="399"/>
       <source>ShapeString settings</source>
       <translation>Preferencias de TextoForma</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="402"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="407"/>
       <source>Default ShapeString font file</source>
       <translation>Ficheiro de fonte por defecto para TextoForma</translation>
     </message>
@@ -2467,7 +2490,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
-      <translation type="unfinished">If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</translation>
+      <translation>Se isto está marcado, as Vistas de Debuxo serán exportadas como bloques. Isto pode fallar para patróns post-R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="536"/>
@@ -2490,7 +2513,7 @@ Values with differences below this value will be treated as same.</source>
       <translation>Actualización automática (só para o importador antigo)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="326"/>
+      <location filename="../ui/preferences-draft.ui" line="343"/>
       <source>Prefix labels of Clones with:</source>
       <translation>Etiquetas prefixo de clons con:</translation>
     </message>
@@ -2529,88 +2552,103 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
       <source>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</translation>
+      <translation>Se isto está marcado, os obxectos aparecerán enchidos por defecto. Pola contra, aparecerán como tramas de arame</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="197"/>
       <source>Shift</source>
-      <translation type="unfinished">Shift</translation>
+      <translation>Shift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="202"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="207"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="184"/>
       <source>The Alt modifier key</source>
-      <translation type="unfinished">The Alt modifier key</translation>
+      <translation>Tecla modificadora Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="447"/>
       <source>The number of horizontal or vertical lines of the grid</source>
-      <translation type="unfinished">The number of horizontal or vertical lines of the grid</translation>
+      <translation>Número de liñas horizontais ou verticais da grella</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
       <source>The default color for new objects</source>
-      <translation type="unfinished">The default color for new objects</translation>
+      <translation>Cor por defecto para novos obxectos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
       <source>The default linewidth for new objects</source>
-      <translation type="unfinished">The default linewidth for new objects</translation>
+      <translation>Ancho de liña por defecto para novos obxectos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="171"/>
       <source>The default color for snap symbols</source>
-      <translation type="unfinished">The default color for snap symbols</translation>
+      <translation>Cor por defecto para símbolos snap</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="195"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>Seleccione esta opción se desexa usar a cor/largura de liña da barra de ferramentas por defecto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="215"/>
       <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation type="unfinished">If checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
+      <translation>Se isto está marcado, aparece un widget indicando a orientación do plano de traballo actual durante as operacións de debuxo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="476"/>
       <source>An SVG linestyle definition</source>
-      <translation type="unfinished">An SVG linestyle definition</translation>
+      <translation>SVG definición de estilo de liña</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="115"/>
       <source>If this is unchecked, texts/mtexts won't be imported</source>
-      <translation type="unfinished">If this is unchecked, texts/mtexts won't be imported</translation>
+      <translation>Se isto está desmarcado, os textos/mtexts non se han importar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="144"/>
       <source>If this is checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If this is checked, paper space objects will be imported too</translation>
+      <translation>Se isto está marcado, os obxectos do espazo papel tamén serán importados</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="313"/>
       <source>If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</source>
-      <translation type="unfinished">If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</translation>
+      <translation>Se isto está marcado, FreeCAD tentará xuntar os obxectos coincidentes en arames. Ollo, isto pode tardar...</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="333"/>
       <source>If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
-      <translation type="unfinished">If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</translation>
+      <translation>Se isto está marcado, os obxectos da mesma capa hanse xuntar en Draft Blocks, tornando a visualización máis rápida, pero serán menos sinxelos de editar</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="326"/>
+      <source>When drawing lines, set focus on Length instead of X coordinate</source>
+      <translation>Cando deseña liñas, axusta o foco sobre a lonxitude cumprida da coordenada X </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="266"/>
+      <source>Tick</source>
+      <translation>Tick</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
+      <source>Max Spline Segment:</source>
+      <translation>Cantidade máxima de segmentos Spline:</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../DraftSnap.py" line="1181"/>
+      <location filename="../../DraftSnap.py" line="1184"/>
       <source>Draft Snap</source>
       <translation>Forzar de Bosquexo</translation>
     </message>
@@ -2628,637 +2666,632 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../Draft.py" line="897"/>
+      <location filename="../../Draft.py" line="900"/>
       <source>Draft.makeBSpline: not enough points
 </source>
       <translation>Draft.makeBSpline: Non hai puntos abondo
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="903"/>
+      <location filename="../../Draft.py" line="906"/>
       <source>Draft.makeBSpline: Equal endpoints forced Closed
 </source>
       <translation>Draft.makeBSpline: Cabos iguais Pechado forzado
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="905"/>
+      <location filename="../../Draft.py" line="908"/>
       <source>Draft.makeBSpline: Invalid pointslist
 </source>
       <translation>Draft.makeBSpline: Lista de puntos non válida
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2655"/>
+      <location filename="../../Draft.py" line="2659"/>
       <source>not shape found</source>
       <translation>non se atopou ningunha forma</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2660"/>
+      <location filename="../../Draft.py" line="2664"/>
       <source>All Shapes must be co-planar</source>
       <translation>Tódalas formas deben de ser co-planares</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2780"/>
+      <location filename="../../Draft.py" line="2792"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
       <translation>O obxecto collido non é planar e non se pode converter nun esbozo.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2788"/>
+      <location filename="../../Draft.py" line="2800"/>
       <source>Unable to guess the normal direction of this object</source>
       <translation>Non é posible adiviñar a dirección normal deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2793"/>
-      <source>BSplines and Bezier curves are not supported by this tool</source>
-      <translation>BSplines e curvas Bézier non son soportadas por esta ferramenta</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2996"/>
+      <location filename="../../Draft.py" line="3013"/>
       <source>No object given
 </source>
       <translation>Non se colleu ningún obxecto
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2999"/>
+      <location filename="../../Draft.py" line="3016"/>
       <source>The two points are coincident
 </source>
       <translation>Os dous puntos son coincidentes
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3376"/>
+      <location filename="../../Draft.py" line="3393"/>
       <source>Found groups: closing each open object inside
 </source>
       <translation>Grupos Atopados: Pechando cada obxecto aberto no interior
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3381"/>
+      <location filename="../../Draft.py" line="3398"/>
       <source>Found mesh(es): turning into Part shapes
 </source>
       <translation>Atopada(s) malla(s): convertíndoas en formas de Peza
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3389"/>
+      <location filename="../../Draft.py" line="3406"/>
       <source>Found 1 solidificable object: solidifying it
 </source>
       <translation>Atopado 1 obxecto solidificable: solidificándoo
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3394"/>
+      <location filename="../../Draft.py" line="3411"/>
       <source>Found 2 objects: fusing them
 </source>
       <translation>Atopados 2 obxectos: Fusionándoos
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3399"/>
+      <location filename="../../Draft.py" line="3416"/>
       <source>Found several objects: creating a shell
 </source>
       <translation>Atopados varios obxectos: facendo unha casca
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3404"/>
+      <location filename="../../Draft.py" line="3421"/>
       <source>Found several coplanar objects or faces: creating one face
 </source>
       <translation>Atopáronse varias caras ou obxectos coplanares: Facendo unha cara
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3409"/>
+      <location filename="../../Draft.py" line="3426"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
       <translation>Atopado 1 obxecto non paramétrico: parametrizándoo
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3430"/>
+      <location filename="../../Draft.py" line="3447"/>
       <source>Found 1 closed sketch object: creating a face from it
 </source>
       <translation>Atopado un obxecto pechado de esbozo: Facendo unha cara con el
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3422"/>
+      <location filename="../../Draft.py" line="3439"/>
       <source>Found 1 linear object: converting to line
 </source>
       <translation>Atopado un obxecto linear: converténdoo a liña
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3435"/>
+      <location filename="../../Draft.py" line="3452"/>
       <source>Found closed wires: creating faces
 </source>
       <translation>Atopados arames pechados: Facendo caras
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3440"/>
+      <location filename="../../Draft.py" line="3457"/>
       <source>Found 1 open wire: closing it
 </source>
       <translation>Atopado 1 arame aberto: pechándoo
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3445"/>
+      <location filename="../../Draft.py" line="3462"/>
       <source>Found several open wires: joining them
 </source>
       <translation>Atopados varios arames abertos: pechándoos
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3450"/>
+      <location filename="../../Draft.py" line="3467"/>
       <source>Found several edges: wiring them
 </source>
       <translation>Atopadas varias arestas: facendo un aramado delas
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3455"/>
+      <location filename="../../Draft.py" line="3472"/>
       <source>Found several non-treatable objects: creating compound
 </source>
       <translation>Atopados varios obxectos non tratables: Facendo un composto
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3459"/>
+      <location filename="../../Draft.py" line="3476"/>
       <source>Unable to upgrade these objects.
 </source>
       <translation>Non é posible promover estes obxectos. 
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3615"/>
+      <location filename="../../Draft.py" line="3632"/>
       <source>Found 1 block: exploding it
 </source>
       <translation>Atopado 1 bloque: estoupándoo
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3621"/>
+      <location filename="../../Draft.py" line="3638"/>
       <source>Found 1 multi-solids compound: exploding it
 </source>
       <translation>Atopado un composto de multi-sólidos: estoupándoo
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3627"/>
+      <location filename="../../Draft.py" line="3644"/>
       <source>Found 1 parametric object: breaking its dependencies
 </source>
       <translation>Atopado 1 obxecto paramétrico: rachando as súas dependencias
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3634"/>
+      <location filename="../../Draft.py" line="3651"/>
       <source>Found 2 objects: subtracting them
 </source>
       <translation>Atopados 2 obxectos: substraéndoos
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3641"/>
+      <location filename="../../Draft.py" line="3658"/>
       <source>Found several faces: splitting them
 </source>
       <translation>Atopadas varias caras: partíndoas
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3646"/>
+      <location filename="../../Draft.py" line="3663"/>
       <source>Found several objects: subtracting them from the first one
 </source>
       <translation>Atopados varios obxectos: substraéndoos do primeiro
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3651"/>
+      <location filename="../../Draft.py" line="3668"/>
       <source>Found 1 face: extracting its wires
 </source>
       <translation>Atopada 1 cara: extraendo as súas liñas
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3656"/>
+      <location filename="../../Draft.py" line="3673"/>
       <source>Found only wires: extracting their edges
 </source>
       <translation>Só se atoparon arames: extraendo as súas arestas
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3660"/>
+      <location filename="../../Draft.py" line="3677"/>
       <source>No more downgrade possible
 </source>
       <translation>Non é posible degradar máis
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5180"/>
+      <location filename="../../Draft.py" line="5202"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
       <translation>_BSpline.createGeometry: pechado co mesmo primeiro/derradeiro Punto. Xeometría non actualizada.
 </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="341"/>
+      <location filename="../../DraftGui.py" line="344"/>
       <source>Draft Command Bar</source>
       <translation>Liña de comandos de Bosquexo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="675"/>
+      <location filename="../../DraftGui.py" line="677"/>
       <source>Toggle construction mode</source>
       <translation>Alternar a modo de construción</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="676"/>
+      <location filename="../../DraftGui.py" line="678"/>
       <source>Current line color</source>
-      <translation type="unfinished">Current line color</translation>
+      <translation>Cor da liña actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="677"/>
+      <location filename="../../DraftGui.py" line="679"/>
       <source>Current face color</source>
       <translation>Cor de face actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="678"/>
+      <location filename="../../DraftGui.py" line="680"/>
       <source>Current line width</source>
       <translation>Largura de liña actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="679"/>
+      <location filename="../../DraftGui.py" line="681"/>
       <source>Current font size</source>
       <translation>Tamaño de fonte actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="680"/>
+      <location filename="../../DraftGui.py" line="682"/>
       <source>Apply to selected objects</source>
       <translation>Aplicar os obxectos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1873"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Autogroup off</source>
       <translation>Auto-agrupar desactivado</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="711"/>
       <source>active command:</source>
       <translation>comando activo:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="979"/>
+      <location filename="../../DraftGui.py" line="997"/>
       <source>None</source>
       <translation>Ningún</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="713"/>
       <source>Active Draft command</source>
       <translation>Comando activo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="714"/>
       <source>X coordinate of next point</source>
       <translation>Coordenada X do seguinte punto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="715"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="716"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Y coordinate of next point</source>
       <translation>Coordenada Y do seguinte punto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="717"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Z coordinate of next point</source>
       <translation>Coordenada Z do seguinte punto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="718"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Enter point</source>
       <translation>Inserir punto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="721"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Inserir un novo punto coas coordenadas dadas</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="720"/>
+      <location filename="../../DraftGui.py" line="722"/>
       <source>Length</source>
       <translation>Lonxitude</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="721"/>
+      <location filename="../../DraftGui.py" line="723"/>
       <source>Angle</source>
       <translation>Ángulo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="722"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Length of current segment</source>
       <translation>Lonxitude do segmento actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="723"/>
+      <location filename="../../DraftGui.py" line="725"/>
       <source>Angle of current segment</source>
       <translation>Ángulo do segmento actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="725"/>
+      <location filename="../../DraftGui.py" line="727"/>
       <source>Check this to lock the current angle (l)</source>
       <translation>Seleccione esta opción para bloquear o ángulo actual (l)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1035"/>
+      <location filename="../../DraftGui.py" line="1053"/>
       <source>Radius</source>
       <translation>Raio</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="727"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <source>Radius of Circle</source>
       <translation>Raio do círculo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="730"/>
       <source>&amp;Relative</source>
       <translation>&amp;Relativas</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="731"/>
       <source>Coordinates relative to last point or absolute (SPACE)</source>
       <translation>Coordenadas relativas ó último punto ou absolutas atinxindo á orixe (ESPAZO)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="730"/>
+      <location filename="../../DraftGui.py" line="732"/>
       <source>F&amp;illed</source>
       <translation>&amp;Enchido</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="731"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
       <translation>Seleccione esta opción se o obxecto debe aparecer enchido, pola contra, aparecerán como tramas de arame (i)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="732"/>
+      <location filename="../../DraftGui.py" line="734"/>
       <source>&amp;Finish</source>
       <translation>Rematar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="733"/>
+      <location filename="../../DraftGui.py" line="735"/>
       <source>Finishes the current drawing or editing operation (F)</source>
       <translation>Remata a operación de debuxo ou edición actual (F)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../DraftGui.py" line="736"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Se isto está marcado, non ha rematar o comando hasta que volva premer o botón do comando de novo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="735"/>
+      <location filename="../../DraftGui.py" line="737"/>
       <source>Co&amp;ntinue</source>
       <translation>S&amp;eguir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="736"/>
+      <location filename="../../DraftGui.py" line="738"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Se isto está marcado, hase facer un desprazamento de tipo OCC, no canto dun desprazamento clásico</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="737"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>&amp;OCC-style offset</source>
       <translation>Desprazamento de tipo &amp;OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="738"/>
+      <location filename="../../DraftGui.py" line="740"/>
       <source>Add points to the current object</source>
       <translation>Engade puntos o obxecto actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="739"/>
+      <location filename="../../DraftGui.py" line="741"/>
       <source>Remove points from the current object</source>
       <translation>Desbota puntos do obxecto actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="740"/>
+      <location filename="../../DraftGui.py" line="742"/>
       <source>Make Bezier node sharp</source>
       <translation>Facer nós Bezier agudos</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="741"/>
+      <location filename="../../DraftGui.py" line="743"/>
       <source>Make Bezier node tangent</source>
       <translation>Facer nós Bezier tanxentes</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="742"/>
+      <location filename="../../DraftGui.py" line="744"/>
       <source>Make Bezier node symmetric</source>
       <translation>Facer nós Bezier simétricos</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="743"/>
+      <location filename="../../DraftGui.py" line="745"/>
       <source>&amp;Undo</source>
       <translation>&amp;Desfacer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="744"/>
+      <location filename="../../DraftGui.py" line="746"/>
       <source>Undo the last segment (CTRL+Z)</source>
       <translation>Desfacer o último segmento (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="745"/>
+      <location filename="../../DraftGui.py" line="747"/>
       <source>Cl&amp;ose</source>
       <translation>&amp;Pechar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="746"/>
+      <location filename="../../DraftGui.py" line="748"/>
       <source>Finishes and closes the current line (C)</source>
       <translation>Remata e pecha a liña actual (C)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="747"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>&amp;Wipe</source>
       <translation>&amp;Limpar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="748"/>
+      <location filename="../../DraftGui.py" line="750"/>
       <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
       <translation>Limpa os segmentos existentes desta liña e principia de novo a partir do último punto (W)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="749"/>
-      <source>&amp;Set WP</source>
-      <translation type="unfinished">&amp;Set WP</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="750"/>
-      <source>Reorients the working plane on the last segment (S)</source>
-      <translation type="unfinished">Reorients the working plane on the last segment (S)</translation>
-    </message>
-    <message>
       <location filename="../../DraftGui.py" line="751"/>
+      <source>&amp;Set WP</source>
+      <translation>&amp;Definir WP</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="752"/>
+      <source>Reorients the working plane on the last segment (S)</source>
+      <translation>Reorienta o plano de traballo sobre el último segmento (S)</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="753"/>
       <source>&amp;Select edge</source>
       <translation>&amp;Seleccionar aresta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="752"/>
+      <location filename="../../DraftGui.py" line="754"/>
       <source>Selects an existing edge to be measured by this dimension (E)</source>
       <translation>Selecciona unha aresta existente a ser medida por este acoutamento (E)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="753"/>
+      <location filename="../../DraftGui.py" line="755"/>
       <source>Sides</source>
       <translation>Lados</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="754"/>
+      <location filename="../../DraftGui.py" line="756"/>
       <source>Number of sides</source>
       <translation>Número de lados</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2824"/>
+      <location filename="../../DraftTools.py" line="2830"/>
       <source>Offset</source>
       <translation>Separación</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="758"/>
       <source>XY (top)</source>
       <translation>XY (planta)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="757"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Select XY plane</source>
       <translation>Seleccionar o plano XY</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="760"/>
       <source>XZ (front)</source>
       <translation>XZ (alzado)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="759"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Select XZ plane</source>
       <translation>Seleccionar o plano XZ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="760"/>
+      <location filename="../../DraftGui.py" line="762"/>
       <source>YZ (side)</source>
       <translation>YZ (perfil)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Select YZ plane</source>
       <translation>Selecionar o Plano YZ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="762"/>
+      <location filename="../../DraftGui.py" line="764"/>
       <source>View</source>
       <translation>Vista</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="763"/>
+      <location filename="../../DraftGui.py" line="765"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>Seleccionar o plano perpendicular a vista actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="764"/>
+      <location filename="../../DraftGui.py" line="766"/>
       <source>Auto</source>
       <translation>Automático</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="765"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <source>Do not project points to a drawing plane</source>
       <translation>Non proxectar os puntos no plano de deseño</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="768"/>
       <source>C&amp;opy</source>
       <translation>C&amp;opiar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="767"/>
+      <location filename="../../DraftGui.py" line="769"/>
       <source>If checked, objects will be copied instead of moved (O)</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved (O)</translation>
+      <translation>Se isto está marcado, hanse copiar os obxectos no canto de se moveren (O)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="770"/>
       <source>Text string to draw</source>
       <translation>Cadea de texto para debuxar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="769"/>
+      <location filename="../../DraftGui.py" line="771"/>
       <source>String</source>
       <translation>Cadea de texto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="770"/>
+      <location filename="../../DraftGui.py" line="772"/>
       <source>Height of text</source>
       <translation>Altura do texto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="771"/>
+      <location filename="../../DraftGui.py" line="773"/>
       <source>Height</source>
       <translation>Altura</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="772"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>Intercharacter spacing</source>
       <translation>Espazado entre caracteres</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="773"/>
+      <location filename="../../DraftGui.py" line="775"/>
       <source>Tracking</source>
       <translation>Seguimento</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="776"/>
       <source>Full path to font file:</source>
       <translation>Ruta completa ao ficheiro fonte:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="775"/>
+      <location filename="../../DraftGui.py" line="777"/>
       <source>Open a FileChooser for font file</source>
       <translation>Abrir unha xanela de diálogo para escolmar o ficheiro fonte</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="778"/>
       <source>Grid spacing</source>
       <translation>Espazado da grella</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="777"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <source>The spacing between the grid lines</source>
       <translation>O espazado entre as liñas da grella</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="778"/>
+      <location filename="../../DraftGui.py" line="780"/>
       <source>Main line every</source>
       <translation>Liñas mestras a cada</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>The number of lines between main lines</source>
       <translation>O número de liñas entre as liñas mestras</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>Center plane on view</source>
       <translation>Centrar plano na vista</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="845"/>
+      <location filename="../../DraftGui.py" line="856"/>
       <source>Select Plane</source>
       <translation>Seleccionar plano</translation>
     </message>
@@ -3268,132 +3301,132 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
       <translation>Liña</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="737"/>
+      <location filename="../../DraftTools.py" line="740"/>
       <source>DWire</source>
       <translation>Aramado</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="916"/>
+      <location filename="../../DraftGui.py" line="927"/>
       <source>Circle</source>
       <translation>Círculo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="923"/>
+      <location filename="../../DraftGui.py" line="934"/>
       <source>Center X</source>
       <translation>Centro X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="922"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Arc</source>
       <translation>Arco</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="926"/>
+      <location filename="../../DraftGui.py" line="937"/>
       <source>Point</source>
       <translation>Punto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="944"/>
+      <location filename="../../DraftGui.py" line="962"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1028"/>
+      <location filename="../../DraftGui.py" line="1046"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1025"/>
+      <location filename="../../DraftGui.py" line="1043"/>
       <source>Trim</source>
       <translation>Tallar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1117"/>
+      <location filename="../../DraftGui.py" line="1135"/>
       <source>Pick Object</source>
       <translation>Escolmar obxecto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1122"/>
+      <location filename="../../DraftGui.py" line="1140"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1159"/>
+      <location filename="../../DraftGui.py" line="1177"/>
       <source>Global X</source>
       <translation>X global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1160"/>
+      <location filename="../../DraftGui.py" line="1178"/>
       <source>Global Y</source>
       <translation>Y global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1161"/>
+      <location filename="../../DraftGui.py" line="1179"/>
       <source>Global Z</source>
       <translation>Z global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1164"/>
+      <location filename="../../DraftGui.py" line="1182"/>
       <source>Local X</source>
       <translation>X local</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1165"/>
+      <location filename="../../DraftGui.py" line="1183"/>
       <source>Local Y</source>
       <translation>Y local</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1166"/>
+      <location filename="../../DraftGui.py" line="1184"/>
       <source>Local Z</source>
       <translation>Z local</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1397"/>
+      <location filename="../../DraftGui.py" line="1414"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Valor de tamaño non válido. Usando 200.0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1405"/>
+      <location filename="../../DraftGui.py" line="1422"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Valor de seguimento non válido. Usando 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1419"/>
+      <location filename="../../DraftGui.py" line="1436"/>
       <source>Please enter a text string.</source>
       <translation>Por favor, insira un texto.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1427"/>
+      <location filename="../../DraftGui.py" line="1444"/>
       <source>Select a Font file</source>
       <translation>Seleccione un ficheiro de fontes</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1457"/>
+      <location filename="../../DraftGui.py" line="1475"/>
       <source>Please enter a font file.</source>
       <translation>Por favor, insira un ficheiro de fonte.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1867"/>
+      <location filename="../../DraftGui.py" line="1883"/>
       <source>Autogroup: </source>
       <translation>Auto-agrupar: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2161"/>
+      <location filename="../../DraftGui.py" line="2177"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2162"/>
+      <location filename="../../DraftGui.py" line="2178"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2163"/>
+      <location filename="../../DraftGui.py" line="2179"/>
       <source>Add</source>
       <translation>Engadir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2164"/>
+      <location filename="../../DraftGui.py" line="2180"/>
       <source>Facebinder elements</source>
       <translation>Elementos de Xuntacaras</translation>
     </message>
@@ -3405,622 +3438,617 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1870"/>
+      <location filename="../../DraftTools.py" line="1876"/>
       <source>Pick first point:
 </source>
       <translation>Seleccione o primeiro punto:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="571"/>
+      <location filename="../../DraftTools.py" line="574"/>
       <source>Create Line</source>
       <translation>Facer liña</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="584"/>
+      <location filename="../../DraftTools.py" line="587"/>
       <source>Create DWire</source>
       <translation>Facer DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="623"/>
+      <location filename="../../DraftTools.py" line="626"/>
       <source>DWire has been closed
 </source>
       <translation>O DWire foi pechado
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="897"/>
+      <location filename="../../DraftTools.py" line="900"/>
       <source>Last point has been removed
 </source>
       <translation>O último punto foi desbotado
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="904"/>
+      <location filename="../../DraftTools.py" line="907"/>
       <source>Pick next point:
 </source>
       <translation>Seleccione o seguinte punto:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="907"/>
+      <location filename="../../DraftTools.py" line="910"/>
       <source>Pick next point, or Finish (shift-F) or close (o):
 </source>
       <translation>Coller o seguinte punto, ou Rematar (Shift-F) ou pechar (o):
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="727"/>
+      <location filename="../../DraftTools.py" line="730"/>
       <source>Unable to create a Wire from selected objects
 </source>
       <translation>Non é posible crear un arame dos obxectos seleccionados
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="733"/>
+      <location filename="../../DraftTools.py" line="736"/>
       <source>Convert to Wire</source>
       <translation>Converter en Arame</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="753"/>
+      <location filename="../../DraftTools.py" line="756"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="789"/>
+      <location filename="../../DraftTools.py" line="792"/>
       <source>Spline has been closed
 </source>
       <translation>A Spline foi fechada
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="828"/>
-      <source>Create BSpline</source>
-      <translation>Facer BSpline</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="852"/>
+      <location filename="../../DraftTools.py" line="855"/>
       <source>BezCurve</source>
       <translation>Curva Bezier</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="889"/>
+      <location filename="../../DraftTools.py" line="892"/>
       <source>Bezier curve has been closed
 </source>
       <translation>A curva Bezier foi fechada
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="933"/>
+      <location filename="../../DraftTools.py" line="937"/>
       <source>Create BezCurve</source>
       <translation>Facer curva Bezier</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1014"/>
+      <location filename="../../DraftTools.py" line="1018"/>
       <source>Rectangle</source>
       <translation>Rectángulo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1057"/>
+      <location filename="../../DraftTools.py" line="1061"/>
       <source>Create Plane</source>
       <translation>Facer plano</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1068"/>
+      <location filename="../../DraftTools.py" line="1072"/>
       <source>Create Rectangle</source>
       <translation>Facer rectángulo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1741"/>
+      <location filename="../../DraftTools.py" line="1745"/>
       <source>Pick opposite point:
 </source>
       <translation>Seleccione o punto oposto:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1473"/>
+      <location filename="../../DraftTools.py" line="1477"/>
       <source>Pick center point:
 </source>
       <translation>Seleccione o centro:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1612"/>
+      <location filename="../../DraftTools.py" line="1616"/>
       <source>Pick radius:
 </source>
       <translation>Seleccione o raio:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1414"/>
+      <location filename="../../DraftTools.py" line="1418"/>
       <source>Pick start angle:
 </source>
       <translation>Seleccione o ángulo de principio:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1309"/>
+      <location filename="../../DraftTools.py" line="1313"/>
       <source>Pick aperture:
 </source>
       <translation>Seleccione a abertura:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1332"/>
+      <location filename="../../DraftTools.py" line="1336"/>
       <source>Create Circle</source>
       <translation>Facer círculo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1367"/>
+      <location filename="../../DraftTools.py" line="1371"/>
       <source>Create Arc</source>
       <translation>Facer Arco</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1409"/>
+      <location filename="../../DraftTools.py" line="1413"/>
       <source>Start Angle</source>
       <translation>Ángulo de principio</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1416"/>
+      <location filename="../../DraftTools.py" line="1420"/>
       <source>Aperture</source>
       <translation>Abertura</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1425"/>
+      <location filename="../../DraftTools.py" line="1429"/>
       <source>Aperture angle:
 </source>
       <translation>Ángulo de abertura:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1457"/>
+      <location filename="../../DraftTools.py" line="1461"/>
       <source>Polygon</source>
       <translation>Polígono</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1594"/>
+      <location filename="../../DraftTools.py" line="1598"/>
       <source>Create Polygon</source>
       <translation>Facer Polígono</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1642"/>
+      <location filename="../../DraftTools.py" line="1646"/>
       <source>Ellipse</source>
       <translation>Elipse</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1699"/>
+      <location filename="../../DraftTools.py" line="1703"/>
       <source>Create Ellipse</source>
       <translation>Facer Elipse</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1759"/>
+      <location filename="../../DraftTools.py" line="1763"/>
       <source>Text</source>
       <translation>Texto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1771"/>
+      <location filename="../../DraftTools.py" line="1775"/>
       <source>Pick location point:
 </source>
       <translation>Seleccione a localización do punto:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1791"/>
+      <location filename="../../DraftTools.py" line="1797"/>
       <source>Create Text</source>
       <translation>Facer un texto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1839"/>
+      <location filename="../../DraftTools.py" line="1845"/>
       <source>Dimension</source>
       <translation>Acoutamento</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1963"/>
+      <location filename="../../DraftTools.py" line="1969"/>
       <source>Create Dimension</source>
       <translation>Facer un Acoutamento</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2123"/>
+      <location filename="../../DraftTools.py" line="2129"/>
       <source>Edges don't intersect!
 </source>
       <translation>As arestas non intersectan!
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2180"/>
+      <location filename="../../DraftTools.py" line="2186"/>
       <source>ShapeString</source>
       <translation>TextoForma</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2194"/>
+      <location filename="../../DraftTools.py" line="2200"/>
       <source>Pick ShapeString location point:
 </source>
       <translation>Seleccione o punto de localización do TextoForma:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2215"/>
+      <location filename="../../DraftTools.py" line="2221"/>
       <source>Create ShapeString</source>
       <translation>Facer un TextoForma</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2309"/>
+      <location filename="../../DraftTools.py" line="2315"/>
       <source>Select an object to move
 </source>
       <translation>Seleccione un obxecto para mover
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2331"/>
+      <location filename="../../DraftTools.py" line="2337"/>
       <source>Pick start point:
 </source>
       <translation>Seleccione o punto de principio:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3633"/>
+      <location filename="../../DraftTools.py" line="3639"/>
       <source>Copy</source>
       <translation>Copiar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2355"/>
+      <location filename="../../DraftTools.py" line="2361"/>
       <source>Move</source>
       <translation>Mover</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2408"/>
+      <location filename="../../DraftTools.py" line="2414"/>
       <source>Pick end point:
 </source>
       <translation>Seleccione o punto final:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2444"/>
+      <location filename="../../DraftTools.py" line="2450"/>
       <source>Change Style</source>
       <translation>Cambiar estilo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2471"/>
+      <location filename="../../DraftTools.py" line="2477"/>
       <source>Select an object to rotate
 </source>
       <translation>Seleccione un obxecto para xirar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2488"/>
+      <location filename="../../DraftTools.py" line="2494"/>
       <source>Pick rotation center:
 </source>
       <translation>Seleccione o centro de xiro:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2516"/>
+      <location filename="../../DraftTools.py" line="2522"/>
       <source>Rotate</source>
       <translation>Xirar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2621"/>
+      <location filename="../../DraftTools.py" line="2627"/>
       <source>Pick base angle:
 </source>
       <translation>Seleccione o ángulo de base:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2633"/>
+      <location filename="../../DraftTools.py" line="2639"/>
       <source>Pick rotation angle:
 </source>
       <translation>Seleccione o ángulo de xiro:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2657"/>
+      <location filename="../../DraftTools.py" line="2663"/>
       <source>Select an object to offset
 </source>
       <translation>Seleccione un obxecto para desprazar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2660"/>
+      <location filename="../../DraftTools.py" line="2666"/>
       <source>Offset only works on one object at a time
 </source>
       <translation>Desprazamento só traballa cun obxecto á vez
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2668"/>
+      <location filename="../../DraftTools.py" line="2674"/>
       <source>Cannot offset this object type
 </source>
       <translation>Non se pode facer un desprazamento con este tipo de obxecto
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2691"/>
+      <location filename="../../DraftTools.py" line="2697"/>
       <source>Sorry, offset of Bezier curves is currently still not supported
 </source>
       <translation>Desculpe, de momento o desprazamento de curvas Bézier non é soportado
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3247"/>
+      <location filename="../../DraftTools.py" line="3253"/>
       <source>Pick distance:
 </source>
       <translation>Seleccione a distancia:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2844"/>
+      <location filename="../../DraftTools.py" line="2850"/>
       <source>Select an object to stretch
 </source>
       <translation>Escolme un obxecto para estalicar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2862"/>
+      <location filename="../../DraftTools.py" line="2868"/>
       <source>Pick first point of selection rectangle:
 </source>
       <translation>Escolla o primeiro punto do rectángulo de escolma:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2886"/>
+      <location filename="../../DraftTools.py" line="2892"/>
       <source>Pick opposite point of selection rectangle:
 </source>
       <translation>Escolla o punto oposto do rectángulo de escolma:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2895"/>
+      <location filename="../../DraftTools.py" line="2901"/>
       <source>Pick start point of displacement:
 </source>
       <translation>Escolme o punto de principio do desprazamento:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2940"/>
+      <location filename="../../DraftTools.py" line="2946"/>
       <source>Pick end point of displacement:
 </source>
       <translation>Escolme o punto final do desprazamento:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3072"/>
+      <location filename="../../DraftTools.py" line="3078"/>
       <source>Turning one Rectangle into a WireÂ 
 </source>
       <translation>Tornar un rectángulo en aramado
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3089"/>
+      <location filename="../../DraftTools.py" line="3095"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3137"/>
+      <location filename="../../DraftTools.py" line="3143"/>
       <source>Select an object to upgrade
 </source>
       <translation>Seleccione un obxecto para promover
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3117"/>
+      <location filename="../../DraftTools.py" line="3123"/>
       <source>Upgrade</source>
       <translation>Promover</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3147"/>
+      <location filename="../../DraftTools.py" line="3153"/>
       <source>Downgrade</source>
       <translation>Degradar</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3176"/>
+      <location filename="../../DraftTools.py" line="3182"/>
       <source>Select object(s) to trim/extend
 </source>
       <translation>Seleccione obxecto(s) a tallar/estender
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3488"/>
+      <location filename="../../DraftTools.py" line="3494"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported
 </source>
       <translation>Non é posible tallar estes obxectos, só son soportados arames e arcos Bosquexo
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3491"/>
+      <location filename="../../DraftTools.py" line="3497"/>
       <source>Unable to trim these objects, too many wires
 </source>
       <translation>Non é posible tallar estes obxectos, demasiados arames
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3508"/>
+      <location filename="../../DraftTools.py" line="3514"/>
       <source>These objects don't intersect
 </source>
       <translation>Estes obxectos non intersectan
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3511"/>
+      <location filename="../../DraftTools.py" line="3517"/>
       <source>Too many intersection points
 </source>
       <translation>Demasiados puntos de intersección
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3590"/>
+      <location filename="../../DraftTools.py" line="3596"/>
       <source>Select an object to scale
 </source>
       <translation>Seleccione un obxecto para escalar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3605"/>
+      <location filename="../../DraftTools.py" line="3611"/>
       <source>Pick base point:
 </source>
       <translation>Seleccione o punto de base:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4597"/>
+      <location filename="../../DraftTools.py" line="4603"/>
       <source>Select an object to project
 </source>
       <translation>Seleccione un obxecto para proxectar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3972"/>
+      <location filename="../../DraftTools.py" line="3978"/>
       <source>This object type is not editable
 </source>
       <translation>Este tipo de obxecto non é editable
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3845"/>
+      <location filename="../../DraftTools.py" line="3851"/>
       <source>Please select only one object
 </source>
-      <translation type="unfinished">Please select only one object
+      <translation>Por favor, escolle só un obxecto
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3850"/>
+      <location filename="../../DraftTools.py" line="3856"/>
       <source>Select a Draft object to edit
 </source>
       <translation>Seleccione un obxecto Esbozo para editar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4286"/>
+      <location filename="../../DraftTools.py" line="4292"/>
       <source>Active object must have more than two points/nodes
 </source>
       <translation>O obxecto activo debe de ter máis de dous puntos/nós
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4334"/>
+      <location filename="../../DraftTools.py" line="4340"/>
       <source>Selection is not a Knot
 </source>
       <translation>A selección non é un nó
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4359"/>
+      <location filename="../../DraftTools.py" line="4365"/>
       <source>Endpoint of BezCurve can't be smoothed
 </source>
       <translation>O punto final da curva Bezier non se pode suavizar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4637"/>
+      <location filename="../../DraftTools.py" line="4643"/>
       <source>Select an object to convert
 </source>
       <translation>Seleccione un obxecto para converter
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4661"/>
+      <location filename="../../DraftTools.py" line="4667"/>
       <source>Convert to Sketch</source>
       <translation>Converter a Esbozo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4665"/>
+      <location filename="../../DraftTools.py" line="4671"/>
       <source>Convert to Draft</source>
       <translation>Converter a Bosquexo</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4677"/>
+      <location filename="../../DraftTools.py" line="4683"/>
       <source>Convert</source>
       <translation>Converter</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4695"/>
+      <location filename="../../DraftTools.py" line="4701"/>
       <source>Select an object to array
 </source>
       <translation>Seleccione un obxecto para a matriz
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4706"/>
+      <location filename="../../DraftTools.py" line="4712"/>
       <source>Array</source>
       <translation>Matriz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4725"/>
+      <location filename="../../DraftTools.py" line="4731"/>
       <source>Please select base and path objects
 </source>
       <translation>Por favor, seleccione os obxectos de base e de camiño 
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4812"/>
+      <location filename="../../DraftTools.py" line="4818"/>
       <source>Create Point</source>
       <translation>Facer Punto</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4852"/>
+      <location filename="../../DraftTools.py" line="4858"/>
       <source>Select an object to clone
 </source>
       <translation>Seleccione un obxecto para clonar
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4929"/>
+      <location filename="../../DraftTools.py" line="4935"/>
       <source>Select face(s) on existing object(s)
 </source>
       <translation>Seleccione cara(s) en obxecto(s) existente(s)
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5001"/>
+      <location filename="../../DraftTools.py" line="5007"/>
       <source>Select an object to mirror
 </source>
       <translation>Seleccione un obxecto para reflectir
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5015"/>
+      <location filename="../../DraftTools.py" line="5021"/>
       <source>Pick start point of mirror line:
 </source>
       <translation>Escolme o punto de principio da liña de simetria:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5036"/>
+      <location filename="../../DraftTools.py" line="5042"/>
       <source>Mirror</source>
       <translation>Simetría</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5099"/>
+      <location filename="../../DraftTools.py" line="5105"/>
       <source>Pick end point of mirror line:
 </source>
       <translation>Escolme o punto final da liña de simetria:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5121"/>
+      <location filename="../../DraftTools.py" line="5127"/>
       <source>This tool only works with Wires and Lines
 </source>
       <translation>Esta ferramenta só funciona con arames e liñas
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5252"/>
+      <location filename="../../DraftTools.py" line="5258"/>
       <source>Pick target point:
 </source>
-      <translation type="unfinished">Pick target point:
+      <translation>Escolle un punto de destino:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5348"/>
+      <location filename="../../DraftTools.py" line="5354"/>
       <source>Pick endpoint of leader line:
 </source>
-      <translation type="unfinished">Pick endpoint of leader line:
+      <translation>Escolle o punto final da liña líder:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5358"/>
+      <location filename="../../DraftTools.py" line="5364"/>
       <source>Pick text position:
 </source>
-      <translation type="unfinished">Pick text position:
+      <translation>Elixa a posición do texto:
 </translation>
     </message>
     <message>
@@ -4060,14 +4088,14 @@ Please either enable FreeCAD to download these libraries:
 Or install the libraries manually by installing the dxf-Library addon
 from menu Tools -&gt; Addon Manager.
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or install the libraries manually by installing the dxf-Library addon
-from menu Tools -&gt; Addon Manager.
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+      <translation>DXF importar/exportar librarías necesarias a manexar por FreeCAD
+formato DXF non atopado no sistema.
+Por favor active FreeCAD para baixar esas librarías:
+  1 - Carga banco de traballo Debuxo
+  2 - Menú Editar &gt; Preferencias &gt; Importar-Exportar &gt; DXF &gt; Activar descargas
+Ou instala manualmente as librarías a instalar as Librarías-dxf addon
+dende menú Ferramentas -&gt; Xestión Addon.
+Activar FreeCAD a baixar esas librarías, respostar Si.</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="123"/>
@@ -4085,6 +4113,18 @@ Por favor estabeleza a opción de permitir o FreeCAD descargar estas bibliotecas
  2 - Menú Editar &gt; Preferencias &gt; Importar-Exportar &gt; DXF &gt; activar descargas
 Ou baixe estas bibliotecas manualmente, conforme se explica en https://github.com/yorikvanhavre/Draft-dxf-importer
 Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6012"/>
+      <source>ShapeString: string has no wires
+</source>
+      <translation>ShapeString: o texto non contén arames
+</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="831"/>
+      <source>Create B-spline</source>
+      <translation>Facer B-spline</translation>
     </message>
   </context>
 </TS>
