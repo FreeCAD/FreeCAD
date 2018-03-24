@@ -134,6 +134,9 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
+        const char *prop_name = object->getPropertyName(prop);
+        if(prop_name == 0)
+            return;
         Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
@@ -141,7 +144,6 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
                 if (feature.hasAttr("__object__")) {
                     Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
                     Py::Tuple args(1);
-                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(0, Py::String(prop_name));
                     method.apply(args);
                 }
@@ -149,7 +151,6 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
                     Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(1, Py::String(prop_name));
                     method.apply(args);
                 }
@@ -201,6 +202,9 @@ void FeaturePythonImp::onChanged(const Property* prop)
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
+        const char *prop_name = object->getPropertyName(prop);
+        if(prop_name == 0)
+            return;
         Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
@@ -208,7 +212,6 @@ void FeaturePythonImp::onChanged(const Property* prop)
                 if (feature.hasAttr("__object__")) {
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(1);
-                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(0, Py::String(prop_name));
                     method.apply(args);
                 }
@@ -216,7 +219,6 @@ void FeaturePythonImp::onChanged(const Property* prop)
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(1, Py::String(prop_name));
                     method.apply(args);
                 }
