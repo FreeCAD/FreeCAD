@@ -2117,7 +2117,7 @@
     </message>
     <message>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Das Dokument &apos;%1&apos; existiert nicht.</translation>
     </message>
   </context>
   <context>
@@ -2569,7 +2569,7 @@
     <message>
       <location line="+241"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Das Dokument &apos;%1&apos; existiert nicht.</translation>
     </message>
     <message>
       <location line="+48"/>
@@ -2926,7 +2926,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location line="+3"/>
       <source>Enable STEP Compound merge</source>
-      <translation>Aktiviere STEP Körper Zusammenführung</translation>
+      <translation>Zusammenführung von Flächenverbünden in STEP aktivieren</translation>
     </message>
     <message>
       <location line="-142"/>

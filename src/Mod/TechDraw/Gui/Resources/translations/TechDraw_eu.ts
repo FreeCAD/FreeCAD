@@ -1056,8 +1056,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>deugging option</source>
-      <translation>arazte-aukera</translation>
+      <source>Debugging option</source>
+      <translation>Arazte-aukera</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1681,8 +1681,8 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
-      <source>Text Name: </source>
-      <translation>Testu-izena: </translation>
+      <source>Text Name:</source>
+      <translation>Testu-izena:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>

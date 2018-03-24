@@ -134,7 +134,7 @@ Version 3.0
           to specify a logging object for the 'parser.out' output.
 
 01/09/09: beazley
-          *HUGE* refactoring of the the ply.yacc() implementation.   The high-level
+          *HUGE* refactoring of the ply.yacc() implementation.   The high-level
 	  user interface is backwards compatible, but the internals are completely
           reorganized into classes.  No more global variables.    The internals
           are also more extensible.  For example, you can use the classes to 
@@ -174,7 +174,7 @@ Version 3.0
           directly.  Preparation for Python 3.0 support.
 
 11/04/08: beazley
-          Fixed a bug with referring to symbols on the the parsing stack using negative
+          Fixed a bug with referring to symbols on the parsing stack using negative
           indices.
 
 05/29/08: beazley
