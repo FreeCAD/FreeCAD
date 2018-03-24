@@ -898,15 +898,18 @@ DocumentObject *DocumentObject::resolve(const char *subname,
             if(!elementMapChecked) {
                 elementMapChecked = true;
                 const char *sub = dot==subname?dot:dot+1;
-                if(Data::ComplexGeoData::isMappedElement(sub))
+                if(Data::ComplexGeoData::isMappedElement(sub)) {
                     lastDot = dot;
+                    continue;
+                }
             }
             if(dot==subname)
                 break;
             auto sobj = getSubObject(std::string(subname,dot-subname+1).c_str());
-            if(parent) *parent = sobj;
-            if(sobj!=this)
+            if(sobj!=obj) {
+                if(parent) *parent = sobj;
                 break;
+            }
         }
     }
     if(childName && lastDot!=dot) {
