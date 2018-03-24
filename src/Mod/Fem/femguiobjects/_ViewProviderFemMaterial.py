@@ -310,6 +310,11 @@ class _TaskPanelFemMaterial:
                 material = self.material
                 material['PoissonRatio'] = unicode(value)
                 self.material = material
+        elif value == 0:
+            # PoissonRatio was set to 0.0 what is possible
+            material = self.material
+            material['PoissonRatio'] = unicode(value)
+            self.material = material
 
     def tc_changed(self, value):
         old_tc = Units.Quantity(self.material['ThermalConductivity']).getValueAs("W/m/K")
