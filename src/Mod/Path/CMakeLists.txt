@@ -102,7 +102,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
-    PathScripts/post/phillips_post.py
+    PathScripts/post/philips_post.py
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
