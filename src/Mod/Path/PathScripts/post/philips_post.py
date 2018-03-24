@@ -22,6 +22,18 @@
 #*                                                                         *
 #***************************************************************************
 
+# reload in python console:
+#   import generic_post
+#   reload(generic_post)
+
+import FreeCAD
+from FreeCAD import Units
+import argparse
+import time
+from PathScripts import PostUtils
+from PathScripts import PathUtils
+import math
+
 TOOLTIP = '''Post processor for Maho M 600E mill
 
 Machines with Philips or Heidenhain control should be very easy to adapt.
@@ -33,23 +45,10 @@ limited memory it seems sensible to reduce the number of commands and
 parameters, like e.g. suppress the units in the header and at every hop.
 '''
 
-TOOLTIP_ARGS = '''
---units_included, --no_units_included   ... output G21 command
-'''
-
-# reload in python console:
-#   import generic_post
-#   reload(generic_post)
-
-''' example post for Maho M 600E mill'''
-import FreeCAD
-import time
-from PathScripts import PathUtils
-from PathScripts import PostUtils
-import math
-
 #***************************************************************************
 # user editable stuff here
+
+COMMAND_SPACE = " "
 
 MACHINE_NAME = 'Maho 600E'
 CORNER_MIN = {'x': -51.877, 'y': 0, 'z': 0}           # use metric for internal units
@@ -205,6 +204,47 @@ SUPPRESS_ZERO_FEED = True
 # def mkHeader(selection):
 #   return ''
 
+parser = argparse.ArgumentParser(prog='philips', add_help=False)
+parser.add_argument('--header', action='store_true', help='create header output')
+parser.add_argument('--no-header', action='store_true', help='suppress header output')
+
+parser.add_argument('--comments', action='store_true', help='create comment output')
+parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
+
+parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
+parser.add_argument('--no-line-numbers', action='store_true', help='omit line number prefixes')
+
+parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output')
+parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
+
+TOOLTIP_ARGS = parser.format_help()
+
+def processArguments(argstring):
+    global OUTPUT_HEADER
+    global OUTPUT_COMMENTS
+    global OUTPUT_LINE_NUMBERS
+    global SHOW_EDITOR
+    global PRECISION
+
+    for arg in argstring.split():
+        if arg == '--header':
+            OUTPUT_HEADER = True
+        elif arg == '--no-header':
+            OUTPUT_HEADER = False
+        elif arg == '--comments':
+            OUTPUT_COMMENTS = True
+        elif arg == '--no-comments':
+            OUTPUT_COMMENTS = False
+        elif arg == '--line-numbers':
+            OUTPUT_LINE_NUMBERS = True
+        elif arg == '--no-line-numbers':
+            OUTPUT_LINE_NUMBERS = False
+        elif arg == '--show-editor':
+            SHOW_EDITOR = True
+        elif arg == '--no-show-editor':
+            SHOW_EDITOR = False
+        elif arg.split('=')[0] == '--output-precision':
+            PRECISION = arg.split('=')[1]
 
 def mkHeader(selection):
     job = PathUtils.findParentJob(selection[0])
@@ -225,10 +265,10 @@ def mkHeader(selection):
 #    header += "(Exported by FreeCAD)\n"
     header += "(Post Processor: " + __name__ + ")\n"
 #    header += "(Target machine: " + MACHINE_NAME + ")\n"
-    header += "G18\n" # Auswahl XZ-Ebene
-    header += "G90\n" # Bezugsmaß
-    header += "G51\n" # Reset Voreinstelldaten -> ggf. unnötig
-    header += "G52 (ersetze G55-G59)" # Nullpunktverschiebung
+    header += "G18\n"                 # Select XY plane
+    header += "G90\n"                 # Absolute coordinates
+    header += "G51\n"                 # Reset Zero
+    header += "G52 (ersetze G55-G59)" # set zero
     return headerNoNumber + linenumberify(header)
 
 GCODE_HEADER = ""   # do not terminate with a newline, it is inserted by linenumberify
@@ -301,33 +341,6 @@ def linenumberify(GCodeString):
                 result += s + "\n"
     return result
 
-def processArguments(argstring):
-    global OUTPUT_HEADER
-    global OUTPUT_COMMENTS
-    global OUTPUT_LINE_NUMBERS
-    global SHOW_EDITOR
-    global PRECISION
-
-    for arg in argstring.split():
-        if arg == '--header':
-            OUTPUT_HEADER = True
-        elif arg == '--no-header':
-            OUTPUT_HEADER = False
-        elif arg == '--comments':
-            OUTPUT_COMMENTS = True
-        elif arg == '--no-comments':
-            OUTPUT_COMMENTS = False
-        elif arg == '--line-numbers':
-            OUTPUT_LINE_NUMBERS = True
-        elif arg == '--no-line-numbers':
-            OUTPUT_LINE_NUMBERS = False
-        elif arg == '--show-editor':
-            SHOW_EDITOR = True
-        elif arg == '--no-show-editor':
-            SHOW_EDITOR = False
-        elif arg.split('=')[0] == '--output-precision':
-            PRECISION = arg.split('=')[1]
-
 def export(objectslist, filename, argstring):
     global UNITS
     global linenr
@@ -358,16 +371,14 @@ def export(objectslist, filename, argstring):
             else:
                 UNITS = "G20"
     if myMachine is None:
-        print("No machine found in this selection")
+        print("philips_post: No machine found in this selection")
 
     gcode = ''
     gcode += mkHeader(objectslist)
     gcode += linenumberify(GCODE_HEADER)
     if UNITS_INCLUDED:
         gcode += linenumberify(mapGCode(UNITS))
-
     lastcommand = None
-
     for obj in objectslist:
         if hasattr(obj, 'Comment'):
             gcode += linenumberify('(' + obj.Comment + ')')
@@ -487,10 +498,11 @@ def export(objectslist, filename, argstring):
                                 outstring.append(
                                     'Y' + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
                             else:
+# To Do: suppress unknown commands, if this is done here, all X parameters are suppressed
                                 # this is an unknown command, don't create GCode for it
-                                print("parameter " + param + " for command " + command + " ignored")
-#                                outstring.append(
-#                                    param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
+#                                print("parameter " + param + " for command " + command + " ignored")
+                                outstring.append(
+                                    param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
 
                             if param in MODALPARAMS:
                                 modalParamsDict[str(param)] = c.Parameters[
@@ -502,7 +514,10 @@ def export(objectslist, filename, argstring):
                         lastY = c.Parameters['Y']
                     if 'Z' in c.Parameters:
                         lastZ = c.Parameters['Z']
-                outstr = str(outstring)
+
+                outstr = ''
+                for w in outstring:
+                    outstr += w + COMMAND_SPACE
                 outstr = outstr.replace(']', '')
                 outstr = outstr.replace('[', '')
                 outstr = outstr.replace("'", '')
