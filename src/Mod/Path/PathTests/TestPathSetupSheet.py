@@ -79,12 +79,14 @@ class TestPathSetupSheet(PathTestBase):
         o2.Proxy.setFromTemplate(o1.Proxy.templateAttributes())
         self.doc.recompute()
 
+        # Need to compare the UserString's due to rounding errors depending on the
+        # user's unit settings - should have no impact on the validity
 
-        self.assertRoughly(o1.VertRapid, o2.VertRapid)
-        self.assertRoughly(o1.HorizRapid, o2.HorizRapid)
-        self.assertRoughly(o1.SafeHeightOffset, o2.SafeHeightOffset)
+        self.assertEqual(o1.VertRapid.UserString, o2.VertRapid.UserString)
+        self.assertEqual(o1.HorizRapid.UserString, o2.HorizRapid.UserString)
+        self.assertEqual(o1.SafeHeightOffset.UserString, o2.SafeHeightOffset.UserString)
         self.assertEqual(o1.SafeHeightExpression, o2.SafeHeightExpression)
-        self.assertRoughly(o1.ClearanceHeightOffset, o2.ClearanceHeightOffset)
+        self.assertEqual(o1.ClearanceHeightOffset.UserString, o2.ClearanceHeightOffset.UserString)
         self.assertEqual(o1.ClearanceHeightExpression, o2.ClearanceHeightExpression)
         self.assertEqual(o1.StartDepthExpression, o2.StartDepthExpression)
         self.assertEqual(o1.FinalDepthExpression, o2.FinalDepthExpression)
