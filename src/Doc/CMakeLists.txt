@@ -6,6 +6,7 @@ configure_file(ThirdPartyLibraries.html
 
 if(BUILD_GUI)
     FILE(GLOB QCH_FILES freecad.qch.part*)
+    list(SORT QCH_FILES)
     set (DEST_FILE ${CMAKE_CURRENT_BINARY_DIR}/freecad.qch)
     foreach(SRC_FILE ${QCH_FILES})
         if(${SRC_FILE} IS_NEWER_THAN ${DEST_FILE})
