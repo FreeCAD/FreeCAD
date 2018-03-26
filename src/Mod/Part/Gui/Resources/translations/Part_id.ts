@@ -1303,7 +1303,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1469,7 +1469,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1505,7 +1505,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1541,7 +1541,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1577,7 +1577,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1595,7 +1595,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1651,7 +1651,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1669,7 +1669,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1707,7 +1707,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1761,7 +1761,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1779,7 +1779,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -1947,7 +1947,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -2001,7 +2001,7 @@ Of course this example is not real (first for all fuel tanks cannot be placed in
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Bagian</translation>
     </message>
@@ -5101,23 +5101,23 @@ di 3D pandangan untuk menyapu jalan.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Pilihan salah</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Pilih dua bentuk.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -5142,7 +5142,7 @@ Do you want to continue?</source>
       <translation>Pilih dua bentuk atau lebih, silakan. Atau, pilih satu senyawa yang mengandung dua atau lebih bentuk yang akan disatukan.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Pilih satu bentuk atau lebih, silakan.</translation>
     </message>

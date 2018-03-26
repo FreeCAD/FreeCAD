@@ -348,5 +348,15 @@
       <source>Load an FEM 3D new solver example analysis</source>
       <translation>Otevřít nový příklad 3D MKP analýzy</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation>Klikněte zde</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation>povolit FreCADu přístup k internetu</translation>
+    </message>
   </context>
 </TS>

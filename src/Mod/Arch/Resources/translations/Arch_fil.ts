@@ -4,27 +4,27 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchAxis.py" line="169"/>
+      <location filename="../../ArchAxis.py" line="172"/>
       <source>The intervals between axes</source>
       <translation>Mga agwat sa bawat axes</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="170"/>
+      <location filename="../../ArchAxis.py" line="173"/>
       <source>The angles of each axis</source>
       <translation>Mga anggulo ng bawat axis</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="172"/>
+      <location filename="../../ArchAxis.py" line="175"/>
       <source>The length of the axes</source>
       <translation>Ang haba ng mga axes</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="223"/>
+      <location filename="../../ArchAxis.py" line="226"/>
       <source>The size of the axis bubbles</source>
       <translation>Ang sukat ng axis bubbles</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="224"/>
+      <location filename="../../ArchAxis.py" line="227"/>
       <source>The numbering style</source>
       <translation>Ang estilo sa pagnuumero</translation>
     </message>
@@ -69,7 +69,7 @@
       <translation>Pasadyang mga katangian ng IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="353"/>
+      <location filename="../../ArchComponent.py" line="356"/>
       <source>A material for this object</source>
       <translation>Materyales para sa bagay na ito</translation>
     </message>
@@ -1064,47 +1064,47 @@
       <translation>Ang offset sa pagitan ng pader na ito at pangunahing linya nito (para lamang sa kaliwa at kanang alignment)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="628"/>
+      <location filename="../../ArchWindow.py" line="634"/>
       <source>the components of this window</source>
       <translation>ang mga bahagi ng bintana na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="629"/>
+      <location filename="../../ArchWindow.py" line="635"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>Ang kalaliman ng butas na ginagawa ng window na ito sa host object nito. Panatilihin ang 0 para sa awtomatikong.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="630"/>
+      <location filename="../../ArchWindow.py" line="636"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>isang opsyonal na bagay na tumutukoy sa isang lakas ng tunog na ibawas mula sa mga pánauhin ng window na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="631"/>
+      <location filename="../../ArchWindow.py" line="637"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>Ang lawak ng bintana na ito (para sa mga preset na bintana lamang)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="632"/>
+      <location filename="../../ArchWindow.py" line="638"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>Ang tugatog ng window na ito (para sa mga preset na bintana lamang)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="633"/>
+      <location filename="../../ArchWindow.py" line="639"/>
       <source>The normal direction of this window</source>
       <translation>Ang normal na tutunguan ng window na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="635"/>
+      <location filename="../../ArchWindow.py" line="641"/>
       <source>The area of this window</source>
       <translation>Ang lugar ng bintana na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="636"/>
+      <location filename="../../ArchWindow.py" line="642"/>
       <source>the width of louvre elements</source>
       <translation>ang lawak ng mga elemento ng louvre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="637"/>
+      <location filename="../../ArchWindow.py" line="643"/>
       <source>the space between louvre elements</source>
       <translation>ang espasyo sa pagitan ng mga elemento ng louvre</translation>
     </message>
@@ -1119,7 +1119,7 @@
       <translation>Isang hindi sapilitanna karagdagang pagkakalagay upang idagdag sa profile bago extruding ito</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="638"/>
+      <location filename="../../ArchWindow.py" line="644"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>Binubuksan ang mga subcomponent na tinukoy ng bisagra</translation>
     </message>
@@ -1179,27 +1179,27 @@
       <translation>Ang overlap ng stringers sa itaas ng ibaba ng treads</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1283"/>
+      <location filename="../../ArchWindow.py" line="1327"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Ang bilang ng kawad na tumutukoy sa butas. Ang isang halaga ng 0 ay nangangahulugang awtomatiko</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="171"/>
+      <location filename="../../ArchAxis.py" line="174"/>
       <source>The label of each axis</source>
       <translation>Ang etiketa ng bawat axis</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="232"/>
+      <location filename="../../ArchAxis.py" line="235"/>
       <source>If true, show the labels</source>
       <translation>Kung tama ipakita ang etiketa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="233"/>
+      <location filename="../../ArchAxis.py" line="236"/>
       <source>A transformation to apply to each label</source>
       <translation>Isang pagbabago na ilalapat sa bawat label</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="669"/>
+      <location filename="../../ArchAxis.py" line="672"/>
       <source>The axes this system is made of</source>
       <translation>Ang mga axes na ito ay ginawa ng sistema</translation>
     </message>
@@ -1279,17 +1279,17 @@
       <translation>I-flip ang direksyon sa bubong kung pumapasok sa maling paraan</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="640"/>
+      <location filename="../../ArchWindow.py" line="646"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Ipinapakita ang mga simbolo ng pagbubukas ng plano kung magagamit</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="641"/>
+      <location filename="../../ArchWindow.py" line="647"/>
       <source>Show elevation opening symbols if available</source>
       <translation>Ipakita ang mga simbolo ng pagbubukas ng elevation kung magagamit</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="626"/>
+      <location filename="../../ArchWindow.py" line="632"/>
       <source>The objects that host this window</source>
       <translation>Ang mga bagay na nag-aanya sa mga bintanang ito</translation>
     </message>
@@ -1307,7 +1307,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1489"/>
+      <location filename="../../ArchWindow.py" line="1533"/>
       <source>Components</source>
       <translation>Mga component</translation>
     </message>
@@ -1322,32 +1322,32 @@
       <translation>Palakol</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="107"/>
+      <location filename="../../ArchAxis.py" line="110"/>
       <source>Create Axis</source>
       <translation>Gumawa ng aksis</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1483"/>
+      <location filename="../../ArchWindow.py" line="1527"/>
       <source>Remove</source>
       <translation>Ihiwalay</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1484"/>
+      <location filename="../../ArchWindow.py" line="1528"/>
       <source>Add</source>
       <translation>Magdugtong</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Axis</source>
       <translation>Aksis</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Angle</source>
       <translation>Anggulo</translation>
     </message>
@@ -1417,7 +1417,7 @@
       <translation>Mga bagay</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="938"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>closing Sketch edit</source>
       <translation>pagsasara ng bagong plano</translation>
     </message>
@@ -1492,52 +1492,52 @@
       <translation>Ang matang ito ay imbalidong solido</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="476"/>
+      <location filename="../../ArchWindow.py" line="482"/>
       <source>Create Window</source>
       <translation>Gumawa ng bintana</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1485"/>
+      <location filename="../../ArchWindow.py" line="1529"/>
       <source>Edit</source>
       <translation>I-edit</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1486"/>
+      <location filename="../../ArchWindow.py" line="1530"/>
       <source>Create/update component</source>
       <translation>Gumawa ng/bagong bahagi</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1487"/>
+      <location filename="../../ArchWindow.py" line="1531"/>
       <source>Base 2D object</source>
       <translation>Patungan ng 2D na mga bagay</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1493"/>
+      <location filename="../../ArchWindow.py" line="1537"/>
       <source>Wires</source>
       <translation>Mga kable</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1490"/>
+      <location filename="../../ArchWindow.py" line="1534"/>
       <source>Create new component</source>
       <translation>Gumawa ng mga bagong bahagi</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1491"/>
+      <location filename="../../ArchWindow.py" line="1535"/>
       <source>Name</source>
       <translation>Pangalan</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1492"/>
+      <location filename="../../ArchWindow.py" line="1536"/>
       <source>Type</source>
       <translation>Uri</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1494"/>
+      <location filename="../../ArchWindow.py" line="1538"/>
       <source>Thickness</source>
       <translation>Kapal</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1495"/>
+      <location filename="../../ArchWindow.py" line="1539"/>
       <source>Z offset</source>
       <translation>Z na tabingi</translation>
     </message>
@@ -1632,12 +1632,12 @@
       <translation>Pinagsamang Pader</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="659"/>
+      <location filename="../../ArchAxis.py" line="662"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Ang distansya ng (mm) at anggulo ay (deg) sa pagitan ng palakol</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="644"/>
+      <location filename="../../ArchComponent.py" line="647"/>
       <source>Error computing the shape of this object</source>
       <translation>Mali ang pagkakakwenta sa hugis ng mga bagay na ito</translation>
     </message>
@@ -1662,17 +1662,17 @@
       <translation>Paganahin ang puwersa ng brep na bandila sa mga bagay</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="662"/>
+      <location filename="../../ArchComponent.py" line="665"/>
       <source>has no solid</source>
       <translation>walang solido</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="669"/>
+      <location filename="../../ArchComponent.py" line="672"/>
       <source>has an invalid shape</source>
       <translation>may hugis na imbalido</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="671"/>
+      <location filename="../../ArchComponent.py" line="674"/>
       <source>has a null shape</source>
       <translation>may hugis na wala</translation>
     </message>
@@ -2178,27 +2178,27 @@ Site creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="387"/>
+      <location filename="../../ArchWindow.py" line="393"/>
       <source>Door</source>
       <translation>Pintuan</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1496"/>
+      <location filename="../../ArchWindow.py" line="1540"/>
       <source>Hinge</source>
       <translation>Bisagra</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1497"/>
+      <location filename="../../ArchWindow.py" line="1541"/>
       <source>Opening mode</source>
       <translation>Bukas na kalakaran</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1498"/>
+      <location filename="../../ArchWindow.py" line="1542"/>
       <source>Get selected edge</source>
       <translation>Kuhain ang napiling talim</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1499"/>
+      <location filename="../../ArchWindow.py" line="1543"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Pindutin para maibilaik ang mga napiling bahagi ng</translation>
     </message>
@@ -2238,112 +2238,112 @@ Site creation aborted.</source>
       <translation>Pagkakagawa sa pader...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1480"/>
+      <location filename="../../ArchWindow.py" line="1524"/>
       <source>Hole wire</source>
       <translation>Butas ng kable</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1481"/>
+      <location filename="../../ArchWindow.py" line="1525"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire</source>
       <translation>Ang bilang ng mga kable na tumutukoy sa butas sa mga bagay sa host. Ang halaga ng sero ay awtomatikong pinagtibay ang pinakamalaking kable</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1482"/>
+      <location filename="../../ArchWindow.py" line="1526"/>
       <source>Pick selected</source>
       <translation>Pumili ng napili</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="135"/>
+      <location filename="../../ArchAxis.py" line="138"/>
       <source>Create Axis System</source>
       <translation>Gumawa ng sistema axis</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="155"/>
+      <location filename="../../ArchAxis.py" line="158"/>
       <source>Create Grid</source>
       <translation>Gumawa ng Grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Label</source>
       <translation>Magtanda</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="872"/>
+      <location filename="../../ArchAxis.py" line="875"/>
       <source>Axis system components</source>
       <translation>Mga sangkap ng Axis sistema</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="910"/>
+      <location filename="../../ArchAxis.py" line="913"/>
       <source>Auto height is bigger than height</source>
       <translation>Ang kusang pag-taas ay mas malaki kaysa sa taas</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="919"/>
+      <location filename="../../ArchAxis.py" line="922"/>
       <source>Total row size is bigger than height</source>
       <translation>Ang kabuuang laki ng hilera ay mas malaki kaysa sa taas</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="941"/>
+      <location filename="../../ArchAxis.py" line="944"/>
       <source>Auto width is bigger than width</source>
       <translation>Ang kusang lapad ay mas malaki kaysa lapad</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="950"/>
+      <location filename="../../ArchAxis.py" line="953"/>
       <source>Total column size is bigger than width</source>
       <translation>Ang kabuuang laki ng hanay ay mas malaki kaysa lapad</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1161"/>
+      <location filename="../../ArchAxis.py" line="1164"/>
       <source>Grid</source>
       <translation>Grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1162"/>
+      <location filename="../../ArchAxis.py" line="1165"/>
       <source>Total width</source>
       <translation>Kabuuang lawak</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1163"/>
+      <location filename="../../ArchAxis.py" line="1166"/>
       <source>Total height</source>
       <translation>Kabuuang tugatog</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1164"/>
+      <location filename="../../ArchAxis.py" line="1167"/>
       <source>Add row</source>
       <translation>Magdagdag ng hilera</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1165"/>
+      <location filename="../../ArchAxis.py" line="1168"/>
       <source>Del row</source>
       <translation>Del hilera</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1166"/>
+      <location filename="../../ArchAxis.py" line="1169"/>
       <source>Add col</source>
       <translation>Magpuno ng col</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1167"/>
+      <location filename="../../ArchAxis.py" line="1170"/>
       <source>Del col</source>
       <translation>Del hanay</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1168"/>
+      <location filename="../../ArchAxis.py" line="1171"/>
       <source>Create span</source>
       <translation>Gumawa Dangkal</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1169"/>
+      <location filename="../../ArchAxis.py" line="1172"/>
       <source>Remove span</source>
       <translation>Alisin ang dangkal</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Rows</source>
       <translation>Mga Hanay</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Columns</source>
       <translation>Hilera</translation>
     </message>
@@ -2363,7 +2363,7 @@ Site creation aborted.</source>
       <translation>Error: Hindi ma-modify ang base bagay ng pader na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1479"/>
+      <location filename="../../ArchWindow.py" line="1523"/>
       <source>Window elements</source>
       <translation>Mga pasimulang aral ng window</translation>
     </message>
@@ -2418,12 +2418,12 @@ Site creation aborted.</source>
       <translation>Mga panauhin</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="131"/>
+      <location filename="../../ArchAxis.py" line="134"/>
       <source>Only axes must be selected</source>
       <translation type="unfinished">Only axes must be selected</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="140"/>
+      <location filename="../../ArchAxis.py" line="143"/>
       <source>Please select at least one axis</source>
       <translation type="unfinished">Please select at least one axis</translation>
     </message>
@@ -2568,12 +2568,12 @@ Site creation aborted.</source>
       <translation type="unfinished">The selected wall contains no subwall to merge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="462"/>
+      <location filename="../../ArchWindow.py" line="468"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1446"/>
+      <location filename="../../ArchWindow.py" line="1490"/>
       <source>Unable to create component</source>
       <translation type="unfinished">Unable to create component</translation>
     </message>
@@ -2760,22 +2760,22 @@ Site creation aborted.</source>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="102"/>
+      <location filename="../../ArchAxis.py" line="105"/>
       <source>Axis</source>
       <translation>Aksis</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="150"/>
+      <location filename="../../ArchAxis.py" line="153"/>
       <source>Grid</source>
       <translation>Grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="152"/>
+      <location filename="../../ArchAxis.py" line="155"/>
       <source>Creates a customizable grid object</source>
       <translation>Gumawa ng mga bagay na nababago ang parilya</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="104"/>
+      <location filename="../../ArchAxis.py" line="107"/>
       <source>Creates a set of axes</source>
       <translation>Lumilikha ng pangkat ng akses</translation>
     </message>
@@ -2783,12 +2783,12 @@ Site creation aborted.</source>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../ArchAxis.py" line="121"/>
+      <location filename="../../ArchAxis.py" line="124"/>
       <source>Axis System</source>
       <translation>Sistema ng mga aksis</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="123"/>
+      <location filename="../../ArchAxis.py" line="126"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>Lumilikha ng sistema ng aksis sa pangkat ng mga aksis</translation>
     </message>
@@ -2796,7 +2796,7 @@ Site creation aborted.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1321"/>
+      <location filename="../../ArchAxis.py" line="1324"/>
       <source>Axis tools</source>
       <translation>Mga kasangkapan na aksis</translation>
     </message>
@@ -2926,62 +2926,62 @@ Site creation aborted.</source>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="880"/>
+      <location filename="../../ArchAxis.py" line="883"/>
       <source>The number of rows</source>
       <translation>Ang bilang ng mga hanay</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="881"/>
+      <location filename="../../ArchAxis.py" line="884"/>
       <source>The number of columns</source>
       <translation>Ang bilang ng mga hilera</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="882"/>
+      <location filename="../../ArchAxis.py" line="885"/>
       <source>The sizes for rows</source>
       <translation>Ang mga sukat para sa hanay</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="883"/>
+      <location filename="../../ArchAxis.py" line="886"/>
       <source>The sizes of columns</source>
       <translation>Ang mga sukat para sa hilera</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="884"/>
+      <location filename="../../ArchAxis.py" line="887"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Ang haba ng tinatanatagal ng mga cells sa pagsasanabi na magkasama</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="885"/>
+      <location filename="../../ArchAxis.py" line="888"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Ang uri ng 3D na ito ay nagawa sa pamamagitan ng mga bagay na parilya</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="886"/>
+      <location filename="../../ArchAxis.py" line="889"/>
       <source>The total width of this grid</source>
       <translation>Ang kabuuang lapad ng parilya na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="887"/>
+      <location filename="../../ArchAxis.py" line="890"/>
       <source>The total height of this grid</source>
       <translation>Ang kabuuang taas ng parilya na ito</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="888"/>
+      <location filename="../../ArchAxis.py" line="891"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Gumawa ng hanay na awtomatikong dibisyon (itinakda sa 0 upang hindi mapagana)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="889"/>
+      <location filename="../../ArchAxis.py" line="892"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Gumawa ng hilera na awtomatikong dibisyon (itinakda sa 0 upang hindi mapagana)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="890"/>
+      <location filename="../../ArchAxis.py" line="893"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Kapag nasa gilid ng gituldok na paraan, kailangan masabihan ang mga bata na nasa kahabaan ng gilid kung normal ba o hindi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="891"/>
+      <location filename="../../ArchAxis.py" line="894"/>
       <source>The indices of faces to hide</source>
       <translation>Ang indeks ng mukha para itago ang</translation>
     </message>
@@ -3372,12 +3372,12 @@ Site creation aborted.</source>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="399"/>
+      <location filename="../../ArchWindow.py" line="405"/>
       <source>Window</source>
       <translation>Window</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="401"/>
+      <location filename="../../ArchWindow.py" line="407"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Gumawa ng isang bintana ng mga bagay na nag mula sa simula o mula sa mga bagay na pagpipilian (kable, parihaba o disenyo)</translation>
     </message>

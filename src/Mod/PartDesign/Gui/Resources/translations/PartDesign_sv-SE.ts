@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -549,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Del design</translation>
     </message>
@@ -1282,7 +1282,17 @@ Välj en eller fler kanter först.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Acceptera: Felinmatning</translation>
     </message>
@@ -1360,7 +1370,7 @@ Välj en eller fler kanter först.</translation>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -2221,7 +2231,7 @@ Välj en eller fler kanter först.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Sektionsorientering</translation>
     </message>
@@ -2312,7 +2322,7 @@ Välj en eller fler kanter först.</translation>
       <translation>Ta bort avsnitt</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Avsnittsomvandling</translation>
     </message>
@@ -3119,7 +3129,7 @@ Create the sketch on a face.</source>
       <translation>Redigera fasning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Ogiltigt val</translation>
     </message>
@@ -3186,7 +3196,7 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3198,8 +3208,8 @@ Create the sketch on a face.</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3619,7 +3629,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Redigera %1</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3654,7 +3664,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Dokumentet ”%1” du redigerar skapades med en gammal version av PartDesign workbench.</translation>
     </message>
     <message>
       <location line="+3"/>

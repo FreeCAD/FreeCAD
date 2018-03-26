@@ -1903,7 +1903,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="186"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Gustoća</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>

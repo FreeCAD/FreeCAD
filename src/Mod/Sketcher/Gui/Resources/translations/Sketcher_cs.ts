@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -315,7 +315,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation type="unfinished">Create a regular polygon in the sketcher</translation>
+      <translation>Vytvoří pravidelný mnohoúhelník v náčrtu</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1830,7 +1830,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Tato verze OCE/OCC nepodporuje uzlové operace. Potřebujete 6.9.0 nebo vyšší
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Nemožné omezení</translation>
@@ -2071,7 +2072,7 @@
     <message>
       <location line="+6"/>
       <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>Nelze přidat vazbu mezi dvě pevné geometrie! Pevné geometrie zahrnují vnější geometrii, blokovanou geometrii nebo speciální body jako jsou B-splajn uzly.</translation>
     </message>
     <message>
       <location line="+520"/>
@@ -2846,13 +2847,14 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Vyberte elementy z jednoho náčrtu.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Nebyla vybrána vazba</translation>
     </message>
@@ -2862,7 +2864,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation>Musí být vybrána alespoň jedna vazba</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation>Smazat veškerou geometrii</translation>
     </message>
@@ -2876,7 +2878,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation>Momentálně je vnitřní geometrie podporována jen pro elipsu nebo oblouk elipsy. Naposledy vybraným elementem musí být elipsa nebo oblouk elipsy.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Symetrická konstrukce vyžaduje alespoň dva geometrické elementy, poslední geometrický element je referenční pro vytvoření symetrie.</translation>
     </message>
@@ -2886,7 +2888,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation>Posdní element musí být bod nebo čára sloužící jako reference pro symetrickou konstrukci.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Kopie vyžaduje alespoň jeden vybraný geometrický element, který není vnější</translation>

@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -194,7 +194,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Criar um arco na mesa de esboços</translation>
+      <translation>Criar um arco na bancada esboço (Sketcher)</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -240,7 +240,7 @@
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketcher</source>
-      <translation>Criar um círculo na mesa de esboços</translation>
+      <translation>Criar um círculo na bancada esboço sketcher</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -268,7 +268,7 @@
     <message>
       <location line="+1"/>
       <source>Create a conic in the sketch</source>
-      <translation>Criar uma curva cónica no esboçoesboço</translation>
+      <translation>Criar uma curva cónica no esboço</translation>
     </message>
     <message>
       <location line="+105"/>
@@ -310,12 +310,12 @@
     </message>
     <message>
       <source>Create an regular polygon in the sketcher</source>
-      <translation>Criar um polígono regular no esboço</translation>
+      <translation>Criar um polígono regular na bancada esboço (sketcher)</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>Criar um polígono regular no esboço</translation>
+      <translation>Criar um polígono regular na bancada esboço (sketcher)</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -525,7 +525,7 @@
     <message>
       <location line="+1"/>
       <source>Constrain equal</source>
-      <translation>Restringir igual</translation>
+      <translation>Restringir igualdade</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -579,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Constrain lock</source>
-      <translation>Bloqueio de restrição</translation>
+      <translation>Restrição de bloqueio</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -637,7 +637,7 @@
     <message>
       <location line="+1"/>
       <source>Constrain point onto object</source>
-      <translation>Restringir o ponto ao objeto</translation>
+      <translation>Restringir um ponto sobre um objeto</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -691,7 +691,7 @@
     <message>
       <location line="+1"/>
       <source>Constrain symmetrical</source>
-      <translation>Restringir simétrico</translation>
+      <translation>Restringir simetria</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -942,7 +942,7 @@
     <message>
       <location line="+1"/>
       <source>Create a draft line in the sketch</source>
-      <translation>Criar uma linha de esboço no sketch</translation>
+      <translation>Criar uma linha no esboço</translation>
     </message>
   </context>
   <context>
@@ -1144,7 +1144,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Crie uma polilinha na mesa de esboços. Tecla 'M' alterna o comportamento</translation>
+      <translation>Criar uma polilinha no esboço. Tecla 'M' alterna o comportamento</translation>
     </message>
     <message>
       <source>Create a polyline in the sketch</source>
@@ -1197,12 +1197,12 @@
     <message>
       <location line="+1"/>
       <source>Create slot</source>
-      <translation>Criar uma ranhura</translation>
+      <translation>Criar uma ranhura (slot)</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a slot in the sketch</source>
-      <translation>Criar uma ranhura no esboço</translation>
+      <translation>Criar uma ranhura (slot) no esboço</translation>
     </message>
   </context>
   <context>
@@ -1238,7 +1238,7 @@
     <message>
       <location line="+1"/>
       <source>Create text in the sketch</source>
-      <translation>Criar Texto no Desenho</translation>
+      <translation>Criar Texto no esboço</translation>
     </message>
   </context>
   <context>
@@ -1418,7 +1418,7 @@
     <message>
       <location line="+1"/>
       <source>Map a sketch to a face</source>
-      <translation>Mapear um esboço na face</translation>
+      <translation>Mapear um esboço numa face</translation>
     </message>
     <message>
       <location line="+50"/>
@@ -1461,7 +1461,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Mirror sketch</source>
-      <translation>Espelhar o esboço (sketch)</translation>
+      <translation>Espelhar o esboço</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -1830,7 +1830,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Esta versão do OCE/Cco não suporta operações com nós. Você precisa da versão 6.9.0 ou superior
@@ -1839,7 +1839,7 @@
     <message>
       <location line="+4"/>
       <source>BSpline GeoId is out of bounds.</source>
-      <translation>BSpline GeoId está fora dos limites.</translation>
+      <translation>Geóide da BSpline está fora dos limites.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -1849,7 +1849,7 @@
     <message>
       <location line="+5"/>
       <source>The GeoId provided is not a B-spline curve.</source>
-      <translation>O GeoId fornecido não é uma curva B-spline.</translation>
+      <translation>O geóide fornecido não é uma curva B-spline.</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Restrição impossível</translation>
@@ -2147,7 +2148,7 @@
     <message>
       <location line="+956"/>
       <source>Select vertexes from the sketch.</source>
-      <translation>Selecionar vértices a partir do sketch.</translation>
+      <translation>Selecionar vértices a partir do esboço.</translation>
     </message>
     <message>
       <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
@@ -2253,7 +2254,7 @@
     <message>
       <location line="+52"/>
       <source>Constrain equal</source>
-      <translation>Restringir igual</translation>
+      <translation>Restringir igualdade</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2846,13 +2847,14 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Selecione elementos de um esboço único.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Nenhuma restrição selecionada</translation>
     </message>
@@ -2862,7 +2864,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Pelo menos uma restrição deve ser selecionada</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation>Apagar toda a geometria</translation>
     </message>
@@ -2876,7 +2878,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>Atualmente a geometria interna só é suportada para elipses ou arcos de elipse. O último elemento selecionado deve ser uma elipse ou um arco de elipse.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Uma construção simétrica requer pelo menos dois elementos geométricos, sendo o último elemento geométrico a referência para a construção da simetria.</translation>
     </message>
@@ -2886,7 +2888,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <translation>O último elemento deve ser um ponto ou uma linha, servindo como referência para a construção da simetria.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Uma cópia requer pelo menos um elemento geométrico não-externo selecionado</translation>

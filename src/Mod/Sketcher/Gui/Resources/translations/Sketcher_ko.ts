@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1830,7 +1830,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation type="unfinished">This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>불가능한 제약조건입니다.</translation>
@@ -2846,13 +2847,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>하나의 스케치에서 요소를 선택하세요.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>선택된 제약조건이 없습니다.</translation>
     </message>
@@ -2862,7 +2864,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>최소한 하나 이상의 제약조건을 선택하세요.</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation type="unfinished">Delete All Geometry</translation>
     </message>
@@ -2876,7 +2878,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>현재 내부 geometry는 타원과 타원형의 호에서만 지원합니다. 마지막에 선택된 요소는 반드시 타원 또는 타원의 호이어야 합니다.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>대칭은 최소한 두 개의 geometric 요소가 필요하며, 마지막 geometric 요소는 대칭의 기준이 됩니다.</translation>
     </message>
@@ -2886,7 +2888,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>대칭의 기준이 되는 마지막 요소는 반드시 점이나 선이어야 합니다.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>복사는 최소한 하나의 선택된 외부 geometric 요소가 필요합니다.</translation>

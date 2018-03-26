@@ -5875,7 +5875,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create part</source>
-      <translation>Créer une pièce</translation>
+      <translation>Crée une pièce</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>

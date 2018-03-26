@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>草绘</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>草绘</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>草绘</translation>
     </message>
@@ -194,7 +194,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc in the sketcher</source>
-      <translation>在草绘中添加圆弧</translation>
+      <translation>在草图中创建圆弧</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -240,7 +240,7 @@
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketcher</source>
-      <translation>草绘中添加圆</translation>
+      <translation>在草图中创建圆</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -268,7 +268,7 @@
     <message>
       <location line="+1"/>
       <source>Create a conic in the sketch</source>
-      <translation>在草绘中创建圆锥形</translation>
+      <translation>在草图中创建圆锥形</translation>
     </message>
     <message>
       <location line="+105"/>
@@ -310,7 +310,7 @@
     </message>
     <message>
       <source>Create an regular polygon in the sketcher</source>
-      <translation>在草绘中创建正多边形</translation>
+      <translation>在草图中创建正多边形</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -325,7 +325,7 @@
     <message>
       <location line="+4"/>
       <source>Square</source>
-      <translation>正方型</translation>
+      <translation>正方形</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -345,7 +345,7 @@
     <message>
       <location line="+4"/>
       <source>Octagon</source>
-      <translation>八边型</translation>
+      <translation>八边形</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -368,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>修改贝塞尔曲线选定节点的多重性</translation>
+      <translation>修改B样条曲线选定节点的多重性</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>草绘</translation>
     </message>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>草绘</translation>
     </message>
@@ -852,7 +852,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation>在草绘中创建椭圆弧</translation>
+      <translation>在草图中创建椭圆弧</translation>
     </message>
   </context>
   <context>
@@ -924,7 +924,7 @@
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketch</source>
-      <translation>在草绘中创建一个圆</translation>
+      <translation>在草图中创建一个圆</translation>
     </message>
   </context>
   <context>
@@ -960,7 +960,7 @@
     <message>
       <location line="+1"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>通过三点在草绘中创建椭圆</translation>
+      <translation>通过三点在草图中创建椭圆</translation>
     </message>
   </context>
   <context>
@@ -978,7 +978,7 @@
     <message>
       <location line="+1"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>通过中心在草绘中创建椭圆</translation>
+      <translation>通过中心在草图中创建椭圆</translation>
     </message>
   </context>
   <context>
@@ -1013,12 +1013,12 @@
     <message>
       <location line="+1"/>
       <source>Create heptagon</source>
-      <translation>创建正七边型</translation>
+      <translation>创建正七边形</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a heptagon in the sketch</source>
-      <translation>在草绘中创建正七边型</translation>
+      <translation>在草绘中创建正七边形</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1031,7 @@
     <message>
       <location line="+1"/>
       <source>Create hexagon</source>
-      <translation>创建正六边型</translation>
+      <translation>创建正六边形</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1054,7 +1054,7 @@
     <message>
       <location line="+1"/>
       <source>Create a line in the sketch</source>
-      <translation>在草图中创建一根线</translation>
+      <translation>在草图中创建一条线</translation>
     </message>
   </context>
   <context>
@@ -1072,7 +1072,7 @@
     <message>
       <location line="+1"/>
       <source>Create an octagon in the sketch</source>
-      <translation>在草绘中创建正八边型</translation>
+      <translation>在草绘中创建正八边形</translation>
     </message>
   </context>
   <context>
@@ -1090,7 +1090,7 @@
     <message>
       <location line="+1"/>
       <source>Create a pentagon in the sketch</source>
-      <translation>在草绘中创建正五边型</translation>
+      <translation>在草绘中创建正五边形</translation>
     </message>
   </context>
   <context>
@@ -1126,7 +1126,7 @@
     <message>
       <location line="+1"/>
       <source>Create a point in the sketch</source>
-      <translation>在草绘中创建一个点</translation>
+      <translation>在草图中创建一个点</translation>
     </message>
   </context>
   <context>
@@ -1166,7 +1166,7 @@
     <message>
       <location line="+1"/>
       <source>Create a rectangle in the sketch</source>
-      <translation>在草绘中创建矩形</translation>
+      <translation>在草图中创建矩形</translation>
     </message>
   </context>
   <context>
@@ -1202,7 +1202,7 @@
     <message>
       <location line="+1"/>
       <source>Create a slot in the sketch</source>
-      <translation>在草图中创建圆槽</translation>
+      <translation>在草图中创建长圆槽</translation>
     </message>
   </context>
   <context>
@@ -1220,7 +1220,7 @@
     <message>
       <location line="+1"/>
       <source>Create a square in the sketch</source>
-      <translation>在草途中绘制一个正方形</translation>
+      <translation>在草图中绘制一个正方形</translation>
     </message>
   </context>
   <context>
@@ -1238,7 +1238,7 @@
     <message>
       <location line="+1"/>
       <source>Create text in the sketch</source>
-      <translation>在草绘中创建文本</translation>
+      <translation>在草图中创建文本</translation>
     </message>
   </context>
   <context>
@@ -1395,7 +1395,7 @@
     <message>
       <location line="+1"/>
       <source>Leave sketch</source>
-      <translation>离开草绘</translation>
+      <translation>离开草图</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1413,12 +1413,12 @@
     <message>
       <location line="+1"/>
       <source>Map sketch to face...</source>
-      <translation>映射草绘至面...</translation>
+      <translation>映射草图至面...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Map a sketch to a face</source>
-      <translation>映射草绘至面</translation>
+      <translation>映射草图至面</translation>
     </message>
     <message>
       <location line="+50"/>
@@ -1484,7 +1484,7 @@
     <message>
       <location line="+1"/>
       <source>Create sketch</source>
-      <translation>创建草绘</translation>
+      <translation>创建草图</translation>
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>草绘</translation>
     </message>
@@ -1819,18 +1819,18 @@
     <message>
       <location line="+1"/>
       <source>View sketch</source>
-      <translation>查看草绘</translation>
+      <translation>查看草图</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>View sketch perpendicular to sketch plane</source>
-      <translation>垂直于草绘平面查看草绘</translation>
+      <translation>垂直于草图平面查看草图</translation>
     </message>
   </context>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>此版本的奥西/OCC 不支持节点操作。你需要6.9.0 或更高版本
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2016,13 +2017,13 @@
       <location line="-7"/>
       <location line="+8"/>
       <source>Select edge(s) from the sketch.</source>
-      <translation>从草绘选择边</translation>
+      <translation>从草图选择边</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="-5836"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
-      <translation>从草绘中选择边.</translation>
+      <translation>从草图中选择边.</translation>
     </message>
     <message>
       <location line="-213"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>不可约束</translation>
@@ -2078,12 +2079,12 @@
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
-      <translation>仅允许选择草绘及其支持面</translation>
+      <translation>仅允许选择草图及其支持面</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>One of the selected has to be on the sketch</source>
-      <translation>选择之一必须在草绘上</translation>
+      <translation>其中一个选择必须在草图上</translation>
     </message>
     <message>
       <location line="+439"/>
@@ -2134,11 +2135,11 @@
     </message>
     <message>
       <source>Select entities from the sketch.</source>
-      <translation>从草绘选择实体</translation>
+      <translation>从草图选取实体</translation>
     </message>
     <message>
       <source>Select exactly one entity from the sketch.</source>
-      <translation>仅从草绘选择一个实体</translation>
+      <translation>仅从草图选取一个实体</translation>
     </message>
     <message>
       <source>Select one vertex from the sketch.</source>
@@ -2147,7 +2148,7 @@
     <message>
       <location line="+956"/>
       <source>Select vertexes from the sketch.</source>
-      <translation>从草绘中选择顶点.</translation>
+      <translation>从草图中选取顶点.</translation>
     </message>
     <message>
       <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
@@ -2170,7 +2171,7 @@
     <message>
       <location line="+4"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation>从草绘中仅选取顶点。最后选定的顶点可能是原点。</translation>
+      <translation>从草图中仅选取顶点。最后选定的顶点可能是原点。</translation>
     </message>
     <message>
       <location line="+252"/>
@@ -2482,7 +2483,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+185"/>
       <location line="+127"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>仅从草绘选择一直线,或一点和一直线,或两点.</translation>
+      <translation>从草图仅选取一直线, 或一点和一直线, 或两点.</translation>
     </message>
     <message>
       <source>Cannot add a length constraint on an external geometry!</source>
@@ -2542,13 +2543,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+249"/>
       <source>Select two or more lines from the sketch.</source>
-      <translation>从草绘选择两条或两条以上直线.</translation>
+      <translation>从草图选择两条或两条以上直线.</translation>
     </message>
     <message>
       <location line="+13"/>
       <location line="+2405"/>
       <source>Select at least two lines from the sketch.</source>
-      <translation>至少从草绘选择两直线.</translation>
+      <translation>至少从草图选择两直线.</translation>
     </message>
     <message>
       <location line="-2391"/>
@@ -2678,7 +2679,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+308"/>
       <source>Select two edges from the sketch.</source>
-      <translation>从草绘选择两条边.</translation>
+      <translation>从草图选择两条边.</translation>
     </message>
     <message>
       <source>Select atleast two lines from the sketch.</source>
@@ -2693,7 +2694,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-612"/>
       <source>Sketch axes cannot be used in equality constraints</source>
-      <translation>草绘轴无法用于相等约束</translation>
+      <translation>草图轴无法用于相等约束</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -2846,13 +2847,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>由单一草图中选择元素。</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>没有约束被选定</translation>
     </message>
@@ -2862,7 +2864,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>至少选择一个约束</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation>删除所有几何图形</translation>
     </message>
@@ -2876,7 +2878,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>当前内部几何体仅支持椭圆或者椭圆弧。最后选定的元素必须是一个椭圆或者一个椭圆弧。</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>一个对称构造需要至少两个几何元素，最后选定的几何元素是对称构造的参照元素。</translation>
     </message>
@@ -2886,7 +2888,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>作为对称构造的参考基准，最后选定的元素必须是一个点或者一条直线。</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>复制操作需要至少一个被选定的非外部几何元素。</translation>
@@ -2925,7 +2927,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+1"/>
       <source>Can't map the sketch to selected object. %1.</source>
-      <translation>无法将草绘映射到所选对象。%1</translation>
+      <translation>无法将草图映射到所选对象。%1</translation>
     </message>
     <message>
       <source>Can't map the skecth to selected object. %1.</source>
@@ -3086,7 +3088,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+7"/>
       <source>Center sketch</source>
-      <translation>中心草图</translation>
+      <translation>将所选草图置于窗口中央</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -4429,7 +4431,7 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+19"/>
       <source>Empty sketch</source>
-      <translation>空草绘</translation>
+      <translation>空草图</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -4468,17 +4470,17 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+11"/>
       <source>Fully constrained sketch</source>
-      <translation>完全约束草绘</translation>
+      <translation>完全约束的草图</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Under-constrained sketch with 1 degree of freedom</source>
-      <translation>当前约束草绘拥有1个自由度</translation>
+      <translation>当前约束草图拥有1个自由度</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Under-constrained sketch with %1 degrees of freedom</source>
-      <translation>当前约束草绘拥有%1个自由度</translation>
+      <translation>当前约束草图拥有%1个自由度</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -4945,17 +4947,17 @@ Do you want to detach it from the support?</source>
       <location line="-317"/>
       <location line="+322"/>
       <source>DogLeg</source>
-      <translation>DogLeg</translation>
+      <translation>反转弯曲</translation>
     </message>
     <message>
       <location line="-310"/>
       <source>Type of function to apply in DogLeg for the Gauss step</source>
-      <translation>DogLeg所采用的高斯阶梯函数的类型</translation>
+      <translation>反转弯曲所采用的高斯阶梯函数的类型</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>DogLeg Gauss step:</source>
-      <translation>DogLeg 高斯阶梯函数：</translation>
+      <translation>反转弯曲高斯阶梯函数：</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -5162,7 +5164,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+1"/>
       <source>Sketcher geometries</source>
-      <translation>草绘几何体</translation>
+      <translation>草图几何体</translation>
     </message>
     <message>
       <location line="+2"/>

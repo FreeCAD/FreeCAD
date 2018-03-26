@@ -212,7 +212,7 @@
       <location line="+2"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>重心</translation>
+      <translation>质心</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -693,7 +693,7 @@
       <location line="+2"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>正常到3点</translation>
+      <translation>垂直于3点</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -737,7 +737,7 @@
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>附件被禁用。CS 可以通过编辑放置属性来移动。</translation>
+      <translation>附件被禁用。坐标系可以通过编辑位置属性来移动。</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -767,7 +767,7 @@
       <location line="+1"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>放置与链接对象的放置相等。</translation>
+      <translation>设定位置与链接对象的位置一致。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -791,7 +791,7 @@
       <location line="+1"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X、y、z 轴分别与对象的本地 x、z、-y 匹配。</translation>
+      <translation>X'、Y'、Z' 轴分别与对象的本地 Y、Z、X 匹配。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -803,19 +803,19 @@
       <location line="+1"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X "Y" 平面与平面一致。</translation>
+      <translation>X' Y' 平面与平面对齐。</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>与曲面的 XY 正切</translation>
+      <translation>与曲面的 XY 相切</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X "Y" 平面在顶点处与曲面相切。</translation>
+      <translation>X' Y' 平面在顶点处与曲面相切。</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1484,7 +1484,7 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1836,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -1890,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -2922,7 +2922,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+6"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+      <translation>如果选中此项, 则在文件读取期间不会进行复合合并 (较慢但细节更优)。</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -4986,23 +4986,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>请选择两个形状.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -5027,7 +5027,7 @@ Do you want to continue?</source>
       <translation>请选择两个或多个形状。或者, 选择一个包含两个或多个要计算公用的形状的组合。</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>请选择一个或多个形状。</translation>
     </message>

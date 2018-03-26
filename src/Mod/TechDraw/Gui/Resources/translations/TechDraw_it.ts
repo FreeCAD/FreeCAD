@@ -282,7 +282,7 @@
       <location filename="../../CommandDecorate.cpp" line="143"/>
       <location filename="../../CommandDecorate.cpp" line="144"/>
       <source>Apply geometric hatch to a Face</source>
-      <translation>Applicare un tratteggio geometrico ad una faccia</translation>
+      <translation>Applica un tratteggio geometrico ad una faccia</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
       <location filename="../../CommandDecorate.cpp" line="81"/>
       <location filename="../../CommandDecorate.cpp" line="82"/>
       <source>Hatch a Face using image file</source>
-      <translation>Riempire una faccia utilizzando un file di immagine</translation>
+      <translation>Riempie una faccia utilizzando un file di immagine</translation>
     </message>
   </context>
   <context>
@@ -805,175 +805,170 @@
       <translation>Dimensioni</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="212"/>
       <source>Arrow Style</source>
       <translation>Stile delle frecce</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="51"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
       <source>Show Units</source>
       <translation>Mostra unità</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="41"/>
       <source>Color</source>
       <translation>Colore</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="71"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="65"/>
       <source>Font Size</source>
       <translation>Dimensione carattere</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="99"/>
       <source>Diameter Symbol</source>
       <translation>Simbolo del diametro</translation>
     </message>
     <message utf8="true">
-      <location filename="../../DlgPrefsTechDraw2.ui" line="139"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="111"/>
       <source>⌀</source>
       <translation>⌀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="155"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Decimali alternativi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
       <source>Use Global Decimals</source>
       <translation>Usa i decimali globali</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="178"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="143"/>
       <source>Preferred arrowhead style</source>
       <translation>Stile della punta della freccia preferito</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="194"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="159"/>
       <source>0 - Filled Triangle</source>
       <translation>0 - Triangolo pieno</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="204"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="169"/>
       <source>1 - Open Arrowhead</source>
       <translation>1 - Freccia aperta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="179"/>
       <source>2 - Tick</source>
       <translation>2 - Tratto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="189"/>
       <source>3 - Dot</source>
       <translation>3 - Punto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="234"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="199"/>
       <source>4 - Open Circle</source>
       <translation>4 - Cerchio aperto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="247"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="92"/>
       <source>Arrow Size</source>
       <translation>Dimensione della freccia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="288"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="235"/>
+      <source>Dimension font size in units</source>
+      <translation>Dimensione del carattere, in unità</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="251"/>
+      <source>Dimension arrowhead size in units</source>
+      <translation>Dimensione della freccia, in unità</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="272"/>
       <source>Decorations</source>
       <translation>Decorazioni</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="303"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="287"/>
       <source>Round</source>
       <translation>Rotondo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="308"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="292"/>
       <source>Square</source>
       <translation>Quadrato</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="316"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="300"/>
       <source>Section Line Style</source>
       <translation>Stile della linea di sezione</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="323"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="307"/>
       <source>Center Line Style</source>
       <translation>Stile della linea di centro</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="330"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="314"/>
       <source>Matting Style</source>
       <translation>Stile del tappeto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="364"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="391"/>
       <source>NeverShow</source>
       <translation>Non mostrare</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="468"/>
       <source>Line Group</source>
       <translation>Gruppo di linee</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="517"/>
-      <source>FC 0.70mm</source>
-      <translation>FC 0,70 mm</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="374"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="417"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="358"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="401"/>
       <source>Dash</source>
       <translation>A tratti</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="379"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="363"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="406"/>
       <source>Dot</source>
       <translation>Punto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="384"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="427"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="368"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="411"/>
       <source>DashDot</source>
       <translation>Tratto punto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="389"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="432"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="373"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="416"/>
       <source>DashDotDot</source>
       <translation>Tratto punto punto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="369"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="412"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="353"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="396"/>
       <source>Solid</source>
       <translation>Solido</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="440"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="424"/>
       <source>Center Line Color</source>
       <translation>Colore della linea di centro</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="447"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="431"/>
       <source>Section Line Color</source>
       <translation>Colore della linea di sezione</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="484"/>
-      <source>Default weight for GeomHatch lines</source>
-      <translation>Spessore predefinito per le linee di GeomHatch, tratteggio geometrico</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="487"/>
-      <source>Hatch Weight</source>
-      <translation>Spessore di tratteggio</translation>
     </message>
   </context>
   <context>
@@ -1005,14 +1000,9 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="58"/>
-      <location filename="../../DlgPrefsTechDraw.ui" line="359"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="336"/>
       <source>Hidden Line</source>
       <translation>Linee nascoste</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
-      <source>Style for hidden lines</source>
-      <translation>Stile per le linee nascoste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="78"/>
@@ -1045,19 +1035,9 @@
       <translation>Tratto punto punto</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
-      <source>Perform/skip face processing</source>
-      <translation>Esegui / ignora l'elaborazione delle facce</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="114"/>
       <source>Detect Faces</source>
       <translation>Rileva facce</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>Debugging option</source>
-      <translation>Opzione di debug</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1065,132 +1045,147 @@
       <translation>Mostra i bordi delle sezioni</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
-      <source>Update Pages as scheduled or skip</source>
-      <translation>Aggiorna le pagine come programmato o ignora</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="149"/>
       <source>Keep Pages Up to Date</source>
       <translation>Mantieni aggiornate le pagine</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="165"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="617"/>
+      <source>Font for View Labels</source>
+      <translation>Carattere per le etichette della vista</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="635"/>
       <source>Template Dot Size</source>
       <translation>Dimensione del punto di modello</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="172"/>
-      <source>EditableText Dot Size in mm</source>
-      <translation>Dimensione dei punti dei testi editabili in mm</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="206"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="183"/>
       <source>Colors</source>
       <translation>Colori</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
+      <source>Style for hidden lines</source>
+      <translation>Stile per le linee nascoste</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
+      <source>Perform/skip face processing</source>
+      <translation>Esegui / ignora l'elaborazione delle facce</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
+      <source>Debugging option</source>
+      <translation>Opzione di debug</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
+      <source>Update Pages as scheduled or skip</source>
+      <translation>Aggiorna le pagine come programmato o ignora</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="191"/>
       <source>Section Hatch</source>
       <translation>Tratteggio di sezione</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="221"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="198"/>
       <source>Section Face</source>
       <translation>Faccia di sezione</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="262"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="239"/>
       <source>Normal</source>
       <translation>Normale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="352"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="329"/>
       <source>PreSelected</source>
       <translation>Preselezione</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="383"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="360"/>
       <source>Selected</source>
       <translation>Selezionato</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="384"/>
       <source>Background</source>
       <translation>Sfondo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="391"/>
       <source>Geom Hatch</source>
       <translation>Tratteggio geometrico</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="456"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="433"/>
       <source>Files</source>
       <translation>File</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="464"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="441"/>
       <source>Template Directory</source>
       <translation>Directory del modello</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="471"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="448"/>
       <source>Default Template</source>
       <translation>Modello predefinito</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="491"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="468"/>
       <source>Hatch Image</source>
       <translation>Immagine di tratteggio</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="508"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="485"/>
       <source>Location of default svg/png fill file</source>
       <translation>Posizione del file svg/png di riempimento predefinito</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="521"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="498"/>
       <source>PAT File</source>
       <translation>File PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="505"/>
       <source>Default location for PAT file</source>
       <translation>Percorso predefinito per i file PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="545"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="522"/>
       <source>Default PAT pattern</source>
       <translation>Modello PAT predefinito</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="558"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="535"/>
       <source>Pattern Name</source>
       <translation>Nome del modello</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="602"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="579"/>
       <source>Labels</source>
       <translation>Etichette</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
-      <source>Label height in millimeters</source>
-      <translation>Altezza dell'etichetta in millimetri</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="645"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="603"/>
       <source>Label Font</source>
       <translation>Carattere etichetta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="652"/>
-      <source>osifont</source>
-      <translation>osifont</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="668"/>
+      <source>View Label size in units</source>
+      <translation>Dimensioni dell'etichetta della vista, di unità</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="665"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="684"/>
+      <source>Green edit dot size in units</source>
+      <translation>Dimensione dei punti verdi, in unità</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
       <source>Label Size</source>
       <translation>Dimensioni etichetta</translation>
     </message>

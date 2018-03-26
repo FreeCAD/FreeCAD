@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -1184,7 +1184,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Regelmäßiges Polygon in der Skizze erstellen</translation>
+      <translation>Erstelle ein regelmäßiges Polygon in der Skizze</translation>
     </message>
   </context>
   <context>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -1830,7 +1830,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Diese Version von OCE/OCC unterstützt keine Knoten-Operationen. Sie benötigen 6.9.0 oder höher
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Nicht erfüllbare Bedingung</translation>
@@ -2846,13 +2847,14 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Wähle Elemente aus einer einzigen Skizze.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Keine Einschränkung ausgewählt</translation>
     </message>
@@ -2862,7 +2864,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
       <translation>Mindestens eine Einschränkung muss ausgewählt sein</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation>Gesamte Geometrie löschen</translation>
     </message>
@@ -2876,7 +2878,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
       <translation>Interne Geometrie wird derzeit nur für Ellipsen und elliptische Bögen unterstützt. Das ausgewählte Element muss eine Ellipse oder ein elliptischer Bogen sein.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Eine symmetrische Konstruktion erfordert mindestens zwei geometrische Elemente. Das letzte geometrische Element wird die Referenz für die Symmetrie.</translation>
     </message>
@@ -2886,7 +2888,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
       <translation>Das letzte Element muss ein Punkt oder eine Linie sein, die als Referenz für die Symmetrie dient.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Eine Kopie benötigt mindestens ein ausgewähltes nicht-externes geometrisches Element</translation>

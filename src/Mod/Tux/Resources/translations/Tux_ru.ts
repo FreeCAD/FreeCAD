@@ -21,42 +21,42 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="65"/>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>Сдвиг</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
-      <translation type="unfinished">Tilt</translation>
+      <translation>Вращать</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>Стиль навигации</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
-      <translation type="unfinished">Page Up or Page Down key.</translation>
+      <translation>Клавиши Page Up или Page Down.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotation focus</source>
-      <translation type="unfinished">Rotation focus</translation>
+      <translation>Центр вращения</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or key H.</source>
-      <translation type="unfinished">Middle mouse button or key H.</translation>
+      <translation>Средняя кнопка мыши или клавиша H.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation type="unfinished">Middle mouse button.</translation>
+      <translation>Средняя кнопка мыши.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Navigation style not recognized.</source>
-      <translation type="unfinished">Navigation style not recognized.</translation>
+      <translation>Стиль навигации не распознан.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation type="unfinished">Compact</translation>
+      <translation>Компактно</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Подсказка</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>

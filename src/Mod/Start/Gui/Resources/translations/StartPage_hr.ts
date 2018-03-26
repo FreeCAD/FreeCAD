@@ -271,7 +271,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Zadnje poslano</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
@@ -347,6 +347,16 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
       <source>Load an FEM 3D new solver example analysis</source>
       <translation>Učitaj jedan FEM 3D primjer analize novog alata za rješavanje</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
     </message>
   </context>
 </TS>

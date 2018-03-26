@@ -1192,7 +1192,7 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="+1982"/>
+      <location filename="../../Command.cpp" line="+1983"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1358,7 +1358,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-1021"/>
+      <location filename="../../Command.cpp" line="-1022"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1394,7 +1394,7 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location line="+1237"/>
+      <location line="+1238"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1430,7 +1430,7 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location line="-972"/>
+      <location line="-973"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1466,7 +1466,7 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location line="+1044"/>
+      <location line="+1045"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1484,7 +1484,7 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location line="-941"/>
+      <location line="-942"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1540,7 +1540,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+603"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1558,7 +1558,7 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location line="-1106"/>
+      <location line="-1107"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1596,7 +1596,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+654"/>
+      <location filename="../../Command.cpp" line="+655"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1650,7 +1650,7 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location line="-842"/>
+      <location line="-843"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1668,7 +1668,7 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location line="+414"/>
+      <location line="+415"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1836,7 +1836,7 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location line="-1465"/>
+      <location line="-1466"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -1890,7 +1890,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+881"/>
+      <location filename="../../Command.cpp" line="+882"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -2920,7 +2920,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+6"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+      <translation>Si cette case est cochée, aucune fusion ne sera faite au cours de la lecture du fichier (plus lents mais plus détaillé).</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -4346,7 +4346,7 @@ Please select a valid shape in the drop-down box first.</source>
       <location line="+3"/>
       <location filename="../../TaskAttacher.cpp" line="+302"/>
       <source>Attachment Offset:</source>
-      <translation>Offset d'attachement :</translation>
+      <translation>Compensation d'attachement :</translation>
     </message>
     <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
@@ -4419,7 +4419,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location line="+4"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Offset d'attachement (inactif - non attaché) :</translation>
+      <translation>Compensation d'attachement (inactif - non attaché) :</translation>
     </message>
     <message>
       <location line="+392"/>
@@ -4954,7 +4954,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Générateur de faces cible</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4964,7 +4964,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Générateur de faces gruyère</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4974,7 +4974,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="+506"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Générateur de faces extrusion</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -4985,23 +4985,23 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-1444"/>
+      <location filename="../../Command.cpp" line="-1445"/>
       <location line="+97"/>
       <location line="+102"/>
-      <location line="+299"/>
+      <location line="+300"/>
       <location line="+51"/>
       <location line="+1121"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location line="-1669"/>
-      <location line="+549"/>
+      <location line="-1670"/>
+      <location line="+550"/>
       <source>Select two shapes please.</source>
       <translation>Veuillez sélectionner deux formes.</translation>
     </message>
     <message>
-      <location line="-539"/>
+      <location line="-540"/>
       <location line="+102"/>
       <location line="+102"/>
       <source>Non-solids selected</source>
@@ -5027,7 +5027,7 @@ Voulez-vous continuer ?</translation>
       <translation>Sélectionnez deux formes ou plus. Ou sélectionnez un composé contenant plusieurs formes à partir desquelles calculer la fusion.</translation>
     </message>
     <message>
-      <location line="+299"/>
+      <location line="+300"/>
       <source>Select one shape or more, please.</source>
       <translation>Sélectionnez une forme, ou plus, s'il vous plaît.</translation>
     </message>

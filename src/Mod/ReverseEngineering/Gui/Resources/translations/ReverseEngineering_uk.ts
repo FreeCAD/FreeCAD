@@ -146,7 +146,7 @@
     <message>
       <location line="+9"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Загальна вага</translation>
     </message>
     <message>
       <location line="+29"/>

@@ -402,11 +402,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Knihovny</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Tento program používá open source komponenty, jejichž autorská a další vlastnická práva patří příslušným vlastníkům:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2670,7 +2670,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Nastaví oblast výběru elemenů ve 3D pohledu. Vyšší hodnota zjednoduší vybírání prvků, ale znemožní výběr některých prvků.</translation>
     </message>
   </context>
   <context>

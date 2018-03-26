@@ -4,27 +4,27 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchAxis.py" line="169"/>
+      <location filename="../../ArchAxis.py" line="172"/>
       <source>The intervals between axes</source>
       <translation>Razmaci između osi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="170"/>
+      <location filename="../../ArchAxis.py" line="173"/>
       <source>The angles of each axis</source>
       <translation>Kutevi svake osi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="172"/>
+      <location filename="../../ArchAxis.py" line="175"/>
       <source>The length of the axes</source>
       <translation>Dužina osa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="223"/>
+      <location filename="../../ArchAxis.py" line="226"/>
       <source>The size of the axis bubbles</source>
-      <translation type="unfinished">The size of the axis bubbles</translation>
+      <translation>velicina osi mjehurica</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="224"/>
+      <location filename="../../ArchAxis.py" line="227"/>
       <source>The numbering style</source>
       <translation>Stil numeriranja</translation>
     </message>
@@ -36,40 +36,40 @@
     <message>
       <location filename="../../ArchComponent.py" line="312"/>
       <source>The base object this component is built upon</source>
-      <translation type="unfinished">The base object this component is built upon</translation>
+      <translation>Osnovni objekt ove komponente je izgrađena na</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="313"/>
       <source>The object this component is cloning</source>
-      <translation type="unfinished">The object this component is cloning</translation>
+      <translation>Cilj ove komponente je kloniranje</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="322"/>
       <source>Other shapes that are appended to this object</source>
-      <translation type="unfinished">Other shapes that are appended to this object</translation>
+      <translation>Drugim oblicima koji su dodati (ovisni) na ovaj objekt</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="323"/>
       <source>Other shapes that are subtracted from this object</source>
-      <translation type="unfinished">Other shapes that are subtracted from this object</translation>
+      <translation>Drugih oblika koji se oduzimaju od ovog objekta</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="316"/>
       <source>An optional description for this component</source>
-      <translation type="unfinished">An optional description for this component</translation>
+      <translation>izaberite hocete li opisati komponentu</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="317"/>
       <source>An optional tag for this component</source>
-      <translation type="unfinished">An optional tag for this component</translation>
+      <translation>Neobavezna oznaka za ovu komponentu</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="322"/>
       <source>Custom IFC properties and attributes</source>
-      <translation type="unfinished">Custom IFC properties and attributes</translation>
+      <translation>Prilagođene IFC objekata i atributa</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="353"/>
+      <location filename="../../ArchComponent.py" line="356"/>
       <source>A material for this object</source>
       <translation>Materijal za ovaj objekt</translation>
     </message>
@@ -81,42 +81,42 @@
     <message>
       <location filename="../../ArchComponent.py" line="321"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation type="unfinished">Specifies if this object must move together when its host is moved</translation>
+      <translation>Određuje dali se objekt mora premjestiti kad se domacin premjesti</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="323"/>
       <source>The area of all vertical faces of this object</source>
-      <translation type="unfinished">The area of all vertical faces of this object</translation>
+      <translation>podrucje svih vertikalnih lica objekta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="324"/>
       <source>The area of the projection of this object onto the XY plane</source>
-      <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
+      <translation>Područje projekcije predmeta na ravnini XY</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="325"/>
       <source>The perimeter length of the horizontal area</source>
-      <translation type="unfinished">The perimeter length of the horizontal area</translation>
+      <translation>Opseg duljine vodoravnog područja</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="265"/>
       <source>The model description of this equipment</source>
-      <translation type="unfinished">The model description of this equipment</translation>
+      <translation>nacin opisa ove opreme</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="266"/>
       <source>The url of the product page of this equipment</source>
-      <translation type="unfinished">The url of the product page of this equipment</translation>
+      <translation>Url stranice proizvoda opreme</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="268"/>
       <source>Additional snap points for this equipment</source>
-      <translation type="unfinished">Additional snap points for this equipment</translation>
+      <translation>Dodatni "snap point" za opremu</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="269"/>
       <source>The electric power needed by this equipment in Watts</source>
-      <translation type="unfinished">The electric power needed by this equipment in Watts</translation>
+      <translation>Električne energije potrebna u ovoj opremi</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="115"/>
@@ -126,52 +126,52 @@
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>The computed floor area of this floor</source>
-      <translation type="unfinished">The computed floor area of this floor</translation>
+      <translation>izracun poda  i povrsine poda</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="386"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>polozaj objekta</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="99"/>
       <source>The profile used to build this frame</source>
-      <translation type="unfinished">The profile used to build this frame</translation>
+      <translation>Profil koji se koristi za izgradnju tog okvira</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="100"/>
       <source>Specifies if the profile must be aligned with the extrusion wires</source>
-      <translation type="unfinished">Specifies if the profile must be aligned with the extrusion wires</translation>
+      <translation>Određuje ako profil mora biti usklađen s ekstruzije žice</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="101"/>
       <source>An offset vector between the base sketch and the frame</source>
-      <translation type="unfinished">An offset vector between the base sketch and the frame</translation>
+      <translation>Pomak vektor između bazne skice i okvira</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="102"/>
       <source>Crossing point of the path on the profile.</source>
-      <translation type="unfinished">Crossing point of the path on the profile.</translation>
+      <translation>Točka križanja staza na profilu.</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="104"/>
       <source>The rotation of the profile around its extrusion axis</source>
-      <translation type="unfinished">The rotation of the profile around its extrusion axis</translation>
+      <translation>Zakretanja profila oko svoje osi istiskivanja (extrusion)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="403"/>
       <source>The length of this element, if not based on a profile</source>
-      <translation type="unfinished">The length of this element, if not based on a profile</translation>
+      <translation>Dužina ovog elementa, ako se ne temelji na profilu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="404"/>
       <source>The width of this element, if not based on a profile</source>
-      <translation type="unfinished">The width of this element, if not based on a profile</translation>
+      <translation>Širina ovog elementa, ako se ne temelji na profilu</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="355"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation type="unfinished">The thickness or extrusion depth of this element</translation>
+      <translation>Debljina ili dubina istiskivanja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="356"/>
@@ -181,42 +181,42 @@
     <message>
       <location filename="../../ArchPanel.py" line="357"/>
       <source>The offset between this panel and its baseline</source>
-      <translation type="unfinished">The offset between this panel and its baseline</translation>
+      <translation>Pomak između ove ploče i osnovice</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="358"/>
       <source>The length of waves for corrugated elements</source>
-      <translation type="unfinished">The length of waves for corrugated elements</translation>
+      <translation>Dužina valova za valovite elemente</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="359"/>
       <source>The height of waves for corrugated elements</source>
-      <translation type="unfinished">The height of waves for corrugated elements</translation>
+      <translation>Visina valova za valovite elemente</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="360"/>
       <source>The direction of waves for corrugated elements</source>
-      <translation type="unfinished">The direction of waves for corrugated elements</translation>
+      <translation>Smjer valova za valovite elemente</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="361"/>
       <source>The type of waves for corrugated elements</source>
-      <translation type="unfinished">The type of waves for corrugated elements</translation>
+      <translation>Vrsta valova za valovite elemente</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="362"/>
       <source>The area of this panel</source>
-      <translation type="unfinished">The area of this panel</translation>
+      <translation>Područje ove ploče</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="410"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
+      <translation>Vrsta dotjeravanja izgleda, koristi se za izgradnju profila ovog objekta</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="462"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
-      <translation type="unfinished">The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</translation>
+      <translation>Smjer normalnog istiskivanja objekta (zadrži (0,0,0) za automatsko normalno)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="596"/>
@@ -231,97 +231,97 @@
     <message>
       <location filename="../../ArchPanel.py" line="658"/>
       <source>The color of the panel outline</source>
-      <translation type="unfinished">The color of the panel outline</translation>
+      <translation>Boja vanjske linije ploče</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="967"/>
       <source>The size of the tag text</source>
-      <translation type="unfinished">The size of the tag text</translation>
+      <translation>Veličina teksta oznake</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="660"/>
       <source>The color of the tag text</source>
-      <translation type="unfinished">The color of the tag text</translation>
+      <translation>Boja oznake teksta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="661"/>
       <source>The X offset of the tag text</source>
-      <translation type="unfinished">The X offset of the tag text</translation>
+      <translation>X pomak teksta oznake</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="662"/>
       <source>The Y offset of the tag text</source>
-      <translation type="unfinished">The Y offset of the tag text</translation>
+      <translation>Y pomak teksta oznake</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="970"/>
       <source>The font of the tag text</source>
-      <translation type="unfinished">The font of the tag text</translation>
+      <translation>Pismo teksta oznake</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="736"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation type="unfinished">The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</translation>
+      <translation>Tekst za prikaz. Može biti %tag%, %label% ili %description% za prikaz oznake ploče ili natpisa</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="968"/>
       <source>The position of the tag text. Keep (0,0,0) for automatic center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for automatic center position</translation>
+      <translation>Položaj oznake teksta. Zadržati (0,0,0) za automatsko središnji položaj</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="969"/>
       <source>The rotation of the tag text</source>
-      <translation type="unfinished">The rotation of the tag text</translation>
+      <translation>Zakretanje teksta oznake</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1119"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>Margine unutar granica</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1120"/>
       <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <translation>Prebacuje prikazivanje margina na uključeno/isključeno</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="965"/>
       <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <translation>Povezani izrezi ploče (Panel cuts)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="966"/>
       <source>The tag text to display</source>
-      <translation type="unfinished">The tag text to display</translation>
+      <translation>Tekst oznake za prikaz</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="971"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>Širina lista</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="972"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>Visina lista</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="973"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>Omjer popunjavanja ovog lista</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="183"/>
       <source>The diameter of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The diameter of this pipe, if not based on a profile</translation>
+      <translation>Promjer cijevi, ako se ne temelji na profilu</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="184"/>
       <source>The length of this pipe, if not based on an edge</source>
-      <translation type="unfinished">The length of this pipe, if not based on an edge</translation>
+      <translation>Dužina cijevi, ako se ne temelji na rubu</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="185"/>
       <source>An optional closed profile to base this pipe on</source>
-      <translation type="unfinished">An optional closed profile to base this pipe on</translation>
+      <translation>Opcionalni zatvoreni profil koji će temeljiti tu cijev</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="186"/>
@@ -366,112 +366,112 @@
     <message>
       <location filename="../../ArchStructure.py" line="407"/>
       <source>The structural nodes of this element</source>
-      <translation type="unfinished">The structural nodes of this element</translation>
+      <translation>Strukturni čvorovi ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="357"/>
       <source>The size of the chamfer of this element</source>
-      <translation type="unfinished">The size of the chamfer of this element</translation>
+      <translation>Veličina skošenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="80"/>
       <source>The dent length of this element</source>
-      <translation type="unfinished">The dent length of this element</translation>
+      <translation>Dužina ulupljenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="359"/>
       <source>The dent height of this element</source>
-      <translation type="unfinished">The dent height of this element</translation>
+      <translation>Visina ulupljenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="240"/>
       <source>The dents of this element</source>
-      <translation type="unfinished">The dents of this element</translation>
+      <translation>Ulupljenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="184"/>
       <source>The chamfer length of this element</source>
-      <translation type="unfinished">The chamfer length of this element</translation>
+      <translation>Dužina žlijeba ulupljenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="185"/>
       <source>The base length of this element</source>
-      <translation type="unfinished">The base length of this element</translation>
+      <translation>Dužina baze ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="236"/>
       <source>The groove depth of this element</source>
-      <translation type="unfinished">The groove depth of this element</translation>
+      <translation>Dubina žlijeba ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="237"/>
       <source>The groove height of this element</source>
-      <translation type="unfinished">The groove height of this element</translation>
+      <translation>Visina žlijeba ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="238"/>
       <source>The spacing between the grooves of this element</source>
-      <translation type="unfinished">The spacing between the grooves of this element</translation>
+      <translation>Razmak među žlijebovima ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="239"/>
       <source>The number of grooves of this element</source>
-      <translation type="unfinished">The number of grooves of this element</translation>
+      <translation>Broj žljebova ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="358"/>
       <source>The dent width of this element</source>
-      <translation type="unfinished">The dent width of this element</translation>
+      <translation>Širina ulupljenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="452"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Vrsta ove ploče</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="453"/>
       <source>The size of the base of this element</source>
-      <translation type="unfinished">The size of the base of this element</translation>
+      <translation>Veličina baze ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="454"/>
       <source>The number of holes in this element</source>
-      <translation type="unfinished">The number of holes in this element</translation>
+      <translation>Broj rupa u ovom elementu</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="455"/>
       <source>The major radius of the holes of this element</source>
-      <translation type="unfinished">The major radius of the holes of this element</translation>
+      <translation>Glavni radijus rupa ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="456"/>
       <source>The minor radius of the holes of this element</source>
-      <translation type="unfinished">The minor radius of the holes of this element</translation>
+      <translation>Sporedni radijus rupa ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="457"/>
       <source>The spacing between the holes of this element</source>
-      <translation type="unfinished">The spacing between the holes of this element</translation>
+      <translation>Razmak između rupa ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="545"/>
       <source>The length of the down floor of this element</source>
-      <translation type="unfinished">The length of the down floor of this element</translation>
+      <translation>Duljina donjeg poda ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="546"/>
       <source>The number of risers in this element</source>
-      <translation type="unfinished">The number of risers in this element</translation>
+      <translation>Broj uspona u ovom elementu</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="547"/>
       <source>The riser height of this element</source>
-      <translation type="unfinished">The riser height of this element</translation>
+      <translation>Visina uspona ovoga elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="548"/>
       <source>The tread depth of this element</source>
-      <translation type="unfinished">The tread depth of this element</translation>
+      <translation>Dubina profila ovoga elementa</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="113"/>
@@ -496,32 +496,32 @@
     <message>
       <location filename="../../ArchProfile.py" line="136"/>
       <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <translation>Debljina mreže</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="137"/>
       <source>Thickness of the flanges</source>
-      <translation type="unfinished">Thickness of the flanges</translation>
+      <translation>Debljina prirubnica</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="188"/>
       <source>Thickness of the sides</source>
-      <translation type="unfinished">Thickness of the sides</translation>
+      <translation>Debljina od strana</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="215"/>
       <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Debljina mreža</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="216"/>
       <source>Thickness of the flange</source>
-      <translation type="unfinished">Thickness of the flange</translation>
+      <translation>Debljina prirubnice</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="155"/>
       <source>The diameter of the bar</source>
-      <translation type="unfinished">The diameter of the bar</translation>
+      <translation>Promjer šipke</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="156"/>
@@ -536,57 +536,57 @@
     <message>
       <location filename="../../ArchRebar.py" line="158"/>
       <source>The amount of bars</source>
-      <translation type="unfinished">The amount of bars</translation>
+      <translation>Količina šipki</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="159"/>
       <source>The spacing between the bars</source>
-      <translation type="unfinished">The spacing between the bars</translation>
+      <translation>Razmak između šipki</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="161"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
-      <translation type="unfinished">The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</translation>
+      <translation>Smjer kojim će se širiti šipke. Zadrži (0,0,0) za automatski smjer.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="162"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
-      <translation type="unfinished">The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</translation>
+      <translation>Obrubi za primjenu na kutu osnovnog profila. Ova vrijednost se množi sa promjerom šipke.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="171"/>
       <source>A list of angles for each roof pane</source>
-      <translation type="unfinished">A list of angles for each roof pane</translation>
+      <translation>Popis kutova za svaku krovnu ravninu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="172"/>
       <source>A list of horizontal length projections for each roof pane</source>
-      <translation type="unfinished">A list of horizontal length projections for each roof pane</translation>
+      <translation>Popis projekcija horizontalnih duljina za svaku krovnu ravninu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="173"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
-      <translation type="unfinished">A list of IDs of relative profiles for each roof pane</translation>
+      <translation>Popis ID-ova relativnih profila za svaku krovnu ravninu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="174"/>
       <source>A list of thicknesses for each roof pane</source>
-      <translation type="unfinished">A list of thicknesses for each roof pane</translation>
+      <translation>Popis debljine za svaku krovnu ravninu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="175"/>
       <source>A list of overhangs for each roof pane</source>
-      <translation type="unfinished">A list of overhangs for each roof pane</translation>
+      <translation>Popis prevjesa za svaku krovnu ravninu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="176"/>
       <source>A list of calculated heights for each roof pane</source>
-      <translation type="unfinished">A list of calculated heights for each roof pane</translation>
+      <translation>Popis izračuna visine za svaku krovnu ravninu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="177"/>
       <source>The face number of the base object used to build this roof</source>
-      <translation type="unfinished">The face number of the base object used to build this roof</translation>
+      <translation>Broj naličja osnovnog objekta korišten za izgradnju krova</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="178"/>
@@ -596,62 +596,62 @@
     <message>
       <location filename="../../ArchRoof.py" line="179"/>
       <source>The total length of borders of this roof</source>
-      <translation type="unfinished">The total length of borders of this roof</translation>
+      <translation>Sveukupna dužina ruba ovog krova</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="80"/>
       <source>The description column</source>
-      <translation type="unfinished">The description column</translation>
+      <translation>Opisni stupac</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="81"/>
       <source>The values column</source>
-      <translation type="unfinished">The values column</translation>
+      <translation>Stupac vrijednosti</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="82"/>
       <source>The units column</source>
-      <translation type="unfinished">The units column</translation>
+      <translation>Stupac mjernih jedinica</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="83"/>
       <source>The objects column</source>
-      <translation type="unfinished">The objects column</translation>
+      <translation>Stupac objekata</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="84"/>
       <source>The filter column</source>
-      <translation type="unfinished">The filter column</translation>
+      <translation>Stupac filtera</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="85"/>
       <source>The spreadsheet to print the results to</source>
-      <translation type="unfinished">The spreadsheet to print the results to</translation>
+      <translation>Proračunska tablica za ispis rezultata na</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="388"/>
       <source>The objects that must be considered by this section plane. Empty means all document</source>
-      <translation type="unfinished">The objects that must be considered by this section plane. Empty means all document</translation>
+      <translation>Objekti koji se razmatraju po dijelu ravni. Prazno znači čitav dokument</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="389"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation type="unfinished">If false, non-solids will be cut too, with possible wrong results.</translation>
+      <translation>Ako je netočno, ne krute tvari će se rezati također, s moguće lošim rezultatom.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="429"/>
       <source>The display length of this section plane</source>
-      <translation type="unfinished">The display length of this section plane</translation>
+      <translation>Dužina prikaza ovog djela ravni</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="430"/>
       <source>The display height of this section plane</source>
-      <translation type="unfinished">The display height of this section plane</translation>
+      <translation>Visina prikaza ovog djela ravni</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="431"/>
       <source>The size of the arrows of this section plane</source>
-      <translation type="unfinished">The size of the arrows of this section plane</translation>
+      <translation>Veličina strelica ovog dijela ravni</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="435"/>
@@ -666,87 +666,87 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="600"/>
       <source>If cut geometry is shown or not</source>
-      <translation type="unfinished">If cut geometry is shown or not</translation>
+      <translation>Da li je geometrija rezanja prikazana ili ne</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="602"/>
       <source>If cut geometry is filled or not</source>
-      <translation type="unfinished">If cut geometry is filled or not</translation>
+      <translation>Da li je geometrija rezanja ispunjena ili ne</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="606"/>
       <source>The size of the texts inside this object</source>
-      <translation type="unfinished">The size of the texts inside this object</translation>
+      <translation>Veličina tekstova unutar ovog objekta</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="608"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
+      <translation>Ako je označeno, izvorni objekti prikazuju se bez obzira jesu li vidljivi u 3D modelu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="312"/>
       <source>The base terrain of this site</source>
-      <translation type="unfinished">The base terrain of this site</translation>
+      <translation>Osnovni teren ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="313"/>
       <source>The street and housenumber of this site</source>
-      <translation type="unfinished">The street and housenumber of this site</translation>
+      <translation>Ulica i kućni broj ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="314"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>Poštansku adresu ili poštanski broj ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="315"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>Grad ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="316"/>
       <source>The country of this site</source>
-      <translation type="unfinished">The country of this site</translation>
+      <translation>Zemlje ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="318"/>
       <source>The latitude of this site</source>
-      <translation type="unfinished">The latitude of this site</translation>
+      <translation>Zemljopisna širina ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="319"/>
       <source>Angle between the true North and the North direction in this document</source>
-      <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
+      <translation>Kut između zemljopisnog sjevera i smjera sjever u ovom dokumentu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="320"/>
       <source>The elevation of level 0 of this site</source>
-      <translation type="unfinished">The elevation of level 0 of this site</translation>
+      <translation>Nadmorska visina ovog mjesta</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="321"/>
       <source>An url that shows this site in a mapping website</source>
-      <translation type="unfinished">An url that shows this site in a mapping website</translation>
+      <translation>Url koji pokazuje ovo mjesto na mapiranoj web-stranici</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="325"/>
       <source>The perimeter length of this terrain</source>
-      <translation type="unfinished">The perimeter length of this terrain</translation>
+      <translation>Opseg ovog terena</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="326"/>
       <source>The volume of earth to be added to this terrain</source>
-      <translation type="unfinished">The volume of earth to be added to this terrain</translation>
+      <translation>Volumen zemlje koja će biti dodana ovom terenu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="327"/>
       <source>The volume of earth to be removed from this terrain</source>
-      <translation type="unfinished">The volume of earth to be removed from this terrain</translation>
+      <translation>Volumen zemlje koja će biti uklonjena sa ovog terena</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="328"/>
       <source>An extrusion vector to use when performing boolean operations</source>
-      <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
+      <translation>Vektor ekstrudiranja koji se koristi kod booleovih operacija</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="329"/>
@@ -756,97 +756,97 @@
     <message>
       <location filename="../../ArchSite.py" line="462"/>
       <source>Show solar diagram or not</source>
-      <translation type="unfinished">Show solar diagram or not</translation>
+      <translation>Prikaži ili nemoj prikazati solarni diagram</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="463"/>
       <source>The scale of the solar diagram</source>
-      <translation type="unfinished">The scale of the solar diagram</translation>
+      <translation>Skala solarnog diagrama</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="464"/>
       <source>The position of the solar diagram</source>
-      <translation type="unfinished">The position of the solar diagram</translation>
+      <translation>Pozicija solarnog diagrama</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="465"/>
       <source>The color of the solar diagram</source>
-      <translation type="unfinished">The color of the solar diagram</translation>
+      <translation>Boja solarnog diagrama</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="251"/>
       <source>The objects that make the boundaries of this space object</source>
-      <translation type="unfinished">The objects that make the boundaries of this space object</translation>
+      <translation>Predmeti koji čine granice ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="252"/>
       <source>The computed floor area of this space</source>
-      <translation type="unfinished">The computed floor area of this space</translation>
+      <translation>Izračunata podna površina ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="253"/>
       <source>The finishing of the floor of this space</source>
-      <translation type="unfinished">The finishing of the floor of this space</translation>
+      <translation>Završna obrada poda ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="254"/>
       <source>The finishing of the walls of this space</source>
-      <translation type="unfinished">The finishing of the walls of this space</translation>
+      <translation>Završna obrada zidova ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="255"/>
       <source>The finishing of the ceiling of this space</source>
-      <translation type="unfinished">The finishing of the ceiling of this space</translation>
+      <translation>Završna obrada stropa ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="256"/>
       <source>Objects that are included inside this space, such as furniture</source>
-      <translation type="unfinished">Objects that are included inside this space, such as furniture</translation>
+      <translation>Objekti koji su uključeni u ovaj prostor, kao što su namještaj</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="257"/>
       <source>The type of this space</source>
-      <translation type="unfinished">The type of this space</translation>
+      <translation>Tip ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="258"/>
       <source>The thickness of the floor finish</source>
-      <translation type="unfinished">The thickness of the floor finish</translation>
+      <translation>Debljina završne obrade poda</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="259"/>
       <source>A zone this space is part of</source>
-      <translation type="unfinished">A zone this space is part of</translation>
+      <translation>Zona ovog prostora je dio</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="260"/>
       <source>The number of people who typically occupy this space</source>
-      <translation type="unfinished">The number of people who typically occupy this space</translation>
+      <translation>Broj ljudi koji obično koristi ovaj prostor</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="261"/>
       <source>The electric power needed to light this space in Watts</source>
-      <translation type="unfinished">The electric power needed to light this space in Watts</translation>
+      <translation>Električna energija potrebna za osvijetljene ovog prostora u vatima (Watts)</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="262"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
-      <translation type="unfinished">The electric power needed by the equipment of this space in Watts</translation>
+      <translation>Električna energija potrebna za opremu ovog prostora u vatima (Watts)</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="263"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation type="unfinished">If True, Equipment Power will be automatically filled by the equipment included in this space</translation>
+      <translation>Ako je istina, snaga opreme biti će automatski ispunjena za opremu uključenu u ovaj prostor</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="264"/>
       <source>The type of air conditioning of this space</source>
-      <translation type="unfinished">The type of air conditioning of this space</translation>
+      <translation>Tip klima uređaja ovog prostora</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="422"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>Tekst za prikaz. Koristi $area, $label, $tag, $floor, $walls, $ceiling za umetanje odgovarajućih podataka</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="423"/>
@@ -866,37 +866,37 @@
     <message>
       <location filename="../../ArchSpace.py" line="426"/>
       <source>The size of the first line of text</source>
-      <translation type="unfinished">The size of the first line of text</translation>
+      <translation>Veličina prvog reda teksta</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="427"/>
       <source>The space between the lines of text</source>
-      <translation type="unfinished">The space between the lines of text</translation>
+      <translation>Razmak između redaka teksta</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="428"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
-      <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
+      <translation>Položaj teksta. Ostavite (0,0,0) za automatsku poziciju</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="429"/>
       <source>The justification of the text</source>
-      <translation type="unfinished">The justification of the text</translation>
+      <translation>Poravnavanje teksta</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="430"/>
       <source>The number of decimals to use for calculated texts</source>
-      <translation type="unfinished">The number of decimals to use for calculated texts</translation>
+      <translation>Broj decimala koji se koristi kod teksta proračuna</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="431"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Pokaži dodatak mjerne jedinice (unit suffix)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="111"/>
       <source>The length of these stairs, if no baseline is defined</source>
-      <translation type="unfinished">The length of these stairs, if no baseline is defined</translation>
+      <translation>Dužina ove stepenice, ako osnovica nije definirana</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="112"/>
@@ -911,7 +911,7 @@
     <message>
       <location filename="../../ArchStairs.py" line="114"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
-      <translation type="unfinished">The alignment of these stairs on their baseline, if applicable</translation>
+      <translation>Poravnavanje ovih stepenica na njihov osnovni pravac, ako je primjenljivo</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="117"/>
@@ -921,7 +921,7 @@
     <message>
       <location filename="../../ArchStairs.py" line="118"/>
       <source>The depth of the treads of these stairs</source>
-      <translation type="unfinished">The depth of the treads of these stairs</translation>
+      <translation>Dubina gazišta stepenica</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="119"/>
@@ -976,7 +976,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="402"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>Opcionalni put izguravanja (extrusion) za ovaj element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="405"/>
@@ -986,7 +986,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="408"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>Opis standardnog profila ovog elementa temelji se na</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="409"/>
@@ -1001,27 +1001,27 @@
     <message>
       <location filename="../../ArchStructure.py" line="617"/>
       <source>The width of the nodes line</source>
-      <translation type="unfinished">The width of the nodes line</translation>
+      <translation>Širina linije čvorova</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="618"/>
       <source>The size of the node points</source>
-      <translation type="unfinished">The size of the node points</translation>
+      <translation>Veličina točke čvora</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="619"/>
       <source>The color of the nodes line</source>
-      <translation type="unfinished">The color of the nodes line</translation>
+      <translation>Boja linije čvorova</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="620"/>
       <source>The type of structural node</source>
-      <translation type="unfinished">The type of structural node</translation>
+      <translation>Vrsta strukturnog čvora</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="882"/>
       <source>Axes systems this structure is built on</source>
-      <translation type="unfinished">Axes systems this structure is built on</translation>
+      <translation>Sustavi osi na kojima se gradi ova struktura</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="883"/>
@@ -1064,47 +1064,47 @@
       <translation type="unfinished">The offset between this wall and its baseline (only for left and right alignments)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="628"/>
+      <location filename="../../ArchWindow.py" line="634"/>
       <source>the components of this window</source>
       <translation type="unfinished">the components of this window</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="629"/>
+      <location filename="../../ArchWindow.py" line="635"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation type="unfinished">The depth of the hole that this window makes in its host object. Keep 0 for automatic.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="630"/>
+      <location filename="../../ArchWindow.py" line="636"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation type="unfinished">an optional object that defines a volume to be subtracted from hosts of this window</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="631"/>
+      <location filename="../../ArchWindow.py" line="637"/>
       <source>The width of this window (for preset windows only)</source>
       <translation type="unfinished">The width of this window (for preset windows only)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="632"/>
+      <location filename="../../ArchWindow.py" line="638"/>
       <source>The height of this window (for preset windows only)</source>
       <translation type="unfinished">The height of this window (for preset windows only)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="633"/>
+      <location filename="../../ArchWindow.py" line="639"/>
       <source>The normal direction of this window</source>
       <translation>Normalan smjer ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="635"/>
+      <location filename="../../ArchWindow.py" line="641"/>
       <source>The area of this window</source>
       <translation>Područje ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="636"/>
+      <location filename="../../ArchWindow.py" line="642"/>
       <source>the width of louvre elements</source>
       <translation>širina elemenata Louvre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="637"/>
+      <location filename="../../ArchWindow.py" line="643"/>
       <source>the space between louvre elements</source>
       <translation>prostor između Louvreu elemenata</translation>
     </message>
@@ -1119,7 +1119,7 @@
       <translation type="unfinished">An optional additional placement to add to the profile before extruding it</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="638"/>
+      <location filename="../../ArchWindow.py" line="644"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
     </message>
@@ -1146,27 +1146,27 @@
     <message>
       <location filename="../../ArchMaterial.py" line="186"/>
       <source>The color of this material</source>
-      <translation type="unfinished">The color of this material</translation>
+      <translation>Boja ovog materijala</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="466"/>
       <source>The list of layer names</source>
-      <translation type="unfinished">The list of layer names</translation>
+      <translation>Lista imena slojeva</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="467"/>
       <source>The list of layer materials</source>
-      <translation type="unfinished">The list of layer materials</translation>
+      <translation>Lista materijala sloja</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="468"/>
       <source>The list of layer thicknesses</source>
-      <translation type="unfinished">The list of layer thicknesses</translation>
+      <translation>Lista debljina slojeva</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="624"/>
       <source>The line color of the projected objects</source>
-      <translation type="unfinished">The line color of the projected objects</translation>
+      <translation>Boja linije projiciranih objekata</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="628"/>
@@ -1179,27 +1179,27 @@
       <translation type="unfinished">The overlap of the stringers above the bottom of the treads</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1283"/>
+      <location filename="../../ArchWindow.py" line="1327"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="171"/>
+      <location filename="../../ArchAxis.py" line="174"/>
       <source>The label of each axis</source>
       <translation>Oznaka svake osi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="232"/>
+      <location filename="../../ArchAxis.py" line="235"/>
       <source>If true, show the labels</source>
       <translation>Ako je to istina, Pokaži oznake</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="233"/>
+      <location filename="../../ArchAxis.py" line="236"/>
       <source>A transformation to apply to each label</source>
       <translation>Transformacije primijeniti na svaku oznaku</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="669"/>
+      <location filename="../../ArchAxis.py" line="672"/>
       <source>The axes this system is made of</source>
       <translation>Ovaj sistem se sastoji od osi</translation>
     </message>
@@ -1221,7 +1221,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="974"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
+      <translation>Ako je istina, objekt će biti iscrtan kao naličje, ako je moguće.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="742"/>
@@ -1279,17 +1279,17 @@
       <translation type="unfinished">Flip the roof direction if going the wrong way</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="640"/>
+      <location filename="../../ArchWindow.py" line="646"/>
       <source>Shows plan opening symbols if available</source>
       <translation type="unfinished">Shows plan opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="641"/>
+      <location filename="../../ArchWindow.py" line="647"/>
       <source>Show elevation opening symbols if available</source>
       <translation type="unfinished">Show elevation opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="626"/>
+      <location filename="../../ArchWindow.py" line="632"/>
       <source>The objects that host this window</source>
       <translation type="unfinished">The objects that host this window</translation>
     </message>
@@ -1307,7 +1307,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1489"/>
+      <location filename="../../ArchWindow.py" line="1533"/>
       <source>Components</source>
       <translation>Komponente</translation>
     </message>
@@ -1322,32 +1322,32 @@
       <translation>Osi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="107"/>
+      <location filename="../../ArchAxis.py" line="110"/>
       <source>Create Axis</source>
       <translation>Kreiraj os</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1483"/>
+      <location filename="../../ArchWindow.py" line="1527"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1484"/>
+      <location filename="../../ArchWindow.py" line="1528"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Axis</source>
       <translation>Osi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Distance</source>
       <translation>Udaljenost</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Angle</source>
       <translation>Kut</translation>
     </message>
@@ -1417,7 +1417,7 @@
       <translation>Objekti</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="938"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>closing Sketch edit</source>
       <translation>Zatvaranje uređivanja skice</translation>
     </message>
@@ -1492,52 +1492,52 @@
       <translation>Ova mreža nije ispravno tijelo</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="476"/>
+      <location filename="../../ArchWindow.py" line="482"/>
       <source>Create Window</source>
       <translation>Napravi prozor</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1485"/>
+      <location filename="../../ArchWindow.py" line="1529"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1486"/>
+      <location filename="../../ArchWindow.py" line="1530"/>
       <source>Create/update component</source>
       <translation>Kreiraj/osvježi komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1487"/>
+      <location filename="../../ArchWindow.py" line="1531"/>
       <source>Base 2D object</source>
       <translation>Temeljni 2D objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1493"/>
+      <location filename="../../ArchWindow.py" line="1537"/>
       <source>Wires</source>
       <translation>Žice</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1490"/>
+      <location filename="../../ArchWindow.py" line="1534"/>
       <source>Create new component</source>
       <translation>Kreiraj novu komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1491"/>
+      <location filename="../../ArchWindow.py" line="1535"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1492"/>
+      <location filename="../../ArchWindow.py" line="1536"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1494"/>
+      <location filename="../../ArchWindow.py" line="1538"/>
       <source>Thickness</source>
       <translation>Debljina</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1495"/>
+      <location filename="../../ArchWindow.py" line="1539"/>
       <source>Z offset</source>
       <translation>Z odmak</translation>
     </message>
@@ -1574,17 +1574,17 @@
     <message>
       <location filename="../../ArchComponent.py" line="305"/>
       <source>Fixtures</source>
-      <translation type="unfinished">Fixtures</translation>
+      <translation>Armatura</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="54"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Okvir</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="85"/>
       <source>Create Frame</source>
-      <translation type="unfinished">Create Frame</translation>
+      <translation>Stvoriti okvir</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="134"/>
@@ -1632,12 +1632,12 @@
       <translation type="unfinished">Merge Walls</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="659"/>
+      <location filename="../../ArchAxis.py" line="662"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="644"/>
+      <location filename="../../ArchComponent.py" line="647"/>
       <source>Error computing the shape of this object</source>
       <translation type="unfinished">Error computing the shape of this object</translation>
     </message>
@@ -1662,39 +1662,39 @@
       <translation type="unfinished">Enabling Brep force flag of object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="662"/>
+      <location filename="../../ArchComponent.py" line="665"/>
       <source>has no solid</source>
       <translation type="unfinished">has no solid</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="669"/>
+      <location filename="../../ArchComponent.py" line="672"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>ima jedan neispravan oblik</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="671"/>
+      <location filename="../../ArchComponent.py" line="674"/>
       <source>has a null shape</source>
       <translation type="unfinished">has a null shape</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="114"/>
       <source>Cutting</source>
-      <translation type="unfinished">Cutting</translation>
+      <translation>Rezanje</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="200"/>
       <source>Create Equipment</source>
-      <translation type="unfinished">Create Equipment</translation>
+      <translation>Stvaranje opreme</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="230"/>
       <source>You must select exactly one base object</source>
-      <translation type="unfinished">You must select exactly one base object</translation>
+      <translation>Morate odabrati točno jedan osnovni objekt</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="234"/>
       <source>The selected object must be a mesh</source>
-      <translation type="unfinished">The selected object must be a mesh</translation>
+      <translation>Odabrani objekt mora da bude mreža</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="238"/>
@@ -1824,7 +1824,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="105"/>
       <source>Create material</source>
-      <translation type="unfinished">Create material</translation>
+      <translation>Stvori materijal</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="70"/>
@@ -1849,7 +1849,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchCommands.py" line="1546"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Ključ</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1548"/>
@@ -2186,27 +2186,27 @@ Site creation aborted.</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="387"/>
+      <location filename="../../ArchWindow.py" line="393"/>
       <source>Door</source>
       <translation type="unfinished">Door</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1496"/>
+      <location filename="../../ArchWindow.py" line="1540"/>
       <source>Hinge</source>
       <translation type="unfinished">Hinge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1497"/>
+      <location filename="../../ArchWindow.py" line="1541"/>
       <source>Opening mode</source>
       <translation type="unfinished">Opening mode</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1498"/>
+      <location filename="../../ArchWindow.py" line="1542"/>
       <source>Get selected edge</source>
       <translation type="unfinished">Get selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1499"/>
+      <location filename="../../ArchWindow.py" line="1543"/>
       <source>Press to retrieve the selected edge</source>
       <translation type="unfinished">Press to retrieve the selected edge</translation>
     </message>
@@ -2246,112 +2246,112 @@ Site creation aborted.</translation>
       <translation type="unfinished">Wall Presets...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1480"/>
+      <location filename="../../ArchWindow.py" line="1524"/>
       <source>Hole wire</source>
       <translation type="unfinished">Hole wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1481"/>
+      <location filename="../../ArchWindow.py" line="1525"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire</source>
       <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1482"/>
+      <location filename="../../ArchWindow.py" line="1526"/>
       <source>Pick selected</source>
       <translation type="unfinished">Pick selected</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="135"/>
+      <location filename="../../ArchAxis.py" line="138"/>
       <source>Create Axis System</source>
       <translation type="unfinished">Create Axis System</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="155"/>
+      <location filename="../../ArchAxis.py" line="158"/>
       <source>Create Grid</source>
       <translation type="unfinished">Create Grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Label</source>
       <translation>Oznaka</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="872"/>
+      <location filename="../../ArchAxis.py" line="875"/>
       <source>Axis system components</source>
       <translation type="unfinished">Axis system components</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="910"/>
+      <location filename="../../ArchAxis.py" line="913"/>
       <source>Auto height is bigger than height</source>
       <translation type="unfinished">Auto height is bigger than height</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="919"/>
+      <location filename="../../ArchAxis.py" line="922"/>
       <source>Total row size is bigger than height</source>
       <translation type="unfinished">Total row size is bigger than height</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="941"/>
+      <location filename="../../ArchAxis.py" line="944"/>
       <source>Auto width is bigger than width</source>
       <translation type="unfinished">Auto width is bigger than width</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="950"/>
+      <location filename="../../ArchAxis.py" line="953"/>
       <source>Total column size is bigger than width</source>
       <translation type="unfinished">Total column size is bigger than width</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1161"/>
+      <location filename="../../ArchAxis.py" line="1164"/>
       <source>Grid</source>
       <translation type="unfinished">Grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1162"/>
+      <location filename="../../ArchAxis.py" line="1165"/>
       <source>Total width</source>
       <translation>Ukupna širina</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1163"/>
+      <location filename="../../ArchAxis.py" line="1166"/>
       <source>Total height</source>
       <translation>Ukupna visina</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1164"/>
+      <location filename="../../ArchAxis.py" line="1167"/>
       <source>Add row</source>
       <translation>Dodaj red</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1165"/>
+      <location filename="../../ArchAxis.py" line="1168"/>
       <source>Del row</source>
       <translation>Ukloni red</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1166"/>
+      <location filename="../../ArchAxis.py" line="1169"/>
       <source>Add col</source>
       <translation type="unfinished">Add col</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1167"/>
+      <location filename="../../ArchAxis.py" line="1170"/>
       <source>Del col</source>
       <translation type="unfinished">Del col</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1168"/>
+      <location filename="../../ArchAxis.py" line="1171"/>
       <source>Create span</source>
       <translation type="unfinished">Create span</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1169"/>
+      <location filename="../../ArchAxis.py" line="1172"/>
       <source>Remove span</source>
       <translation type="unfinished">Remove span</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Rows</source>
       <translation>Redovi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Columns</source>
       <translation>Stupci</translation>
     </message>
@@ -2371,7 +2371,7 @@ Site creation aborted.</translation>
       <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1479"/>
+      <location filename="../../ArchWindow.py" line="1523"/>
       <source>Window elements</source>
       <translation type="unfinished">Window elements</translation>
     </message>
@@ -2426,12 +2426,12 @@ Site creation aborted.</translation>
       <translation>Domaćini</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="131"/>
+      <location filename="../../ArchAxis.py" line="134"/>
       <source>Only axes must be selected</source>
       <translation type="unfinished">Only axes must be selected</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="140"/>
+      <location filename="../../ArchAxis.py" line="143"/>
       <source>Please select at least one axis</source>
       <translation type="unfinished">Please select at least one axis</translation>
     </message>
@@ -2468,42 +2468,42 @@ Site creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="195"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Nije moguće izgraditi osnovnu stazu</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="211"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Nije moguće izgraditi profil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="223"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Nije moguće izgraditi cijev</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="236"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Osnovni objekt nije jedan dio</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="239"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Previše žica u baznom obliku</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="242"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Bazna žica je zatvorena</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="256"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Profil nije 2D dio</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="259"/>
       <source>Too many wires in the profile</source>
-      <translation type="unfinished">Too many wires in the profile</translation>
+      <translation>Previše žica u profilu</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="262"/>
@@ -2576,12 +2576,12 @@ Site creation aborted.</translation>
       <translation type="unfinished">The selected wall contains no subwall to merge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="462"/>
+      <location filename="../../ArchWindow.py" line="468"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1446"/>
+      <location filename="../../ArchWindow.py" line="1490"/>
       <source>Unable to create component</source>
       <translation type="unfinished">Unable to create component</translation>
     </message>
@@ -2701,7 +2701,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="121"/>
       <source>The color of this material</source>
-      <translation type="unfinished">The color of this material</translation>
+      <translation>Boja ovog materijala</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="135"/>
@@ -2768,22 +2768,22 @@ Site creation aborted.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="102"/>
+      <location filename="../../ArchAxis.py" line="105"/>
       <source>Axis</source>
       <translation>Osi</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="150"/>
+      <location filename="../../ArchAxis.py" line="153"/>
       <source>Grid</source>
       <translation type="unfinished">Grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="152"/>
+      <location filename="../../ArchAxis.py" line="155"/>
       <source>Creates a customizable grid object</source>
       <translation type="unfinished">Creates a customizable grid object</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="104"/>
+      <location filename="../../ArchAxis.py" line="107"/>
       <source>Creates a set of axes</source>
       <translation type="unfinished">Creates a set of axes</translation>
     </message>
@@ -2791,12 +2791,12 @@ Site creation aborted.</translation>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../ArchAxis.py" line="121"/>
+      <location filename="../../ArchAxis.py" line="124"/>
       <source>Axis System</source>
       <translation type="unfinished">Axis System</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="123"/>
+      <location filename="../../ArchAxis.py" line="126"/>
       <source>Creates an axis system from a set of axes</source>
       <translation type="unfinished">Creates an axis system from a set of axes</translation>
     </message>
@@ -2804,7 +2804,7 @@ Site creation aborted.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1321"/>
+      <location filename="../../ArchAxis.py" line="1324"/>
       <source>Axis tools</source>
       <translation type="unfinished">Axis tools</translation>
     </message>
@@ -2923,7 +2923,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="75"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Okvir</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="77"/>
@@ -2934,62 +2934,62 @@ Site creation aborted.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="880"/>
+      <location filename="../../ArchAxis.py" line="883"/>
       <source>The number of rows</source>
       <translation>Broj redova</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="881"/>
+      <location filename="../../ArchAxis.py" line="884"/>
       <source>The number of columns</source>
       <translation>Broj stupaca</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="882"/>
+      <location filename="../../ArchAxis.py" line="885"/>
       <source>The sizes for rows</source>
       <translation>Veličine redova</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="883"/>
+      <location filename="../../ArchAxis.py" line="886"/>
       <source>The sizes of columns</source>
       <translation>Veličine stupaca</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="884"/>
+      <location filename="../../ArchAxis.py" line="887"/>
       <source>The span ranges of cells that are merged together</source>
       <translation type="unfinished">The span ranges of cells that are merged together</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="885"/>
+      <location filename="../../ArchAxis.py" line="888"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation type="unfinished">The type of 3D points produced by this grid object</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="886"/>
+      <location filename="../../ArchAxis.py" line="889"/>
       <source>The total width of this grid</source>
       <translation type="unfinished">The total width of this grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="887"/>
+      <location filename="../../ArchAxis.py" line="890"/>
       <source>The total height of this grid</source>
       <translation type="unfinished">The total height of this grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="888"/>
+      <location filename="../../ArchAxis.py" line="891"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="889"/>
+      <location filename="../../ArchAxis.py" line="892"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="890"/>
+      <location filename="../../ArchAxis.py" line="893"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="891"/>
+      <location filename="../../ArchAxis.py" line="894"/>
       <source>The indices of faces to hide</source>
       <translation type="unfinished">The indices of faces to hide</translation>
     </message>
@@ -3380,12 +3380,12 @@ Site creation aborted.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="399"/>
+      <location filename="../../ArchWindow.py" line="405"/>
       <source>Window</source>
       <translation>Prozor</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="401"/>
+      <location filename="../../ArchWindow.py" line="407"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Kreira prozor od selektiranog objekta (žica, pravokutnik ili skica)</translation>
     </message>
@@ -3440,7 +3440,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
       <source>Download</source>
-      <translation>Preuzimanje</translation>
+      <translation>Preuzimanje datoteka</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="115"/>

@@ -402,7 +402,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Biblioteki</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
@@ -1400,17 +1400,17 @@ This file already exists.</source>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Podaj nową nazwę:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1'
+ już istnieje.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Zmiana nazwy nie powiodła się</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.

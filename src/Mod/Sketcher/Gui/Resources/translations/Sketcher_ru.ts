@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline degree</source>
-      <translation type="unfinished">Show/Hide B-spline degree</translation>
+      <translation>Показать/скрыть степень B-сплайна</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>Переключение между показом и скрытием степени для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -65,7 +65,7 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline control polygon</source>
-      <translation type="unfinished">Show/Hide B-spline control polygon</translation>
+      <translation>Показать/скрыть полигон управления B-сплайном</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>Эскизирование</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>Эскизирование</translation>
     </message>
@@ -143,12 +143,12 @@
     <message>
       <location line="+69"/>
       <source>Show/Hide B-spline degree</source>
-      <translation type="unfinished">Show/Hide B-spline degree</translation>
+      <translation>Показать/скрыть степень B-сплайна</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Show/Hide B-spline control polygon</source>
-      <translation type="unfinished">Show/Hide B-spline control polygon</translation>
+      <translation>Показать/скрыть полигон управления B-сплайном</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>Эскизирование</translation>
     </message>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>Эскизирование</translation>
     </message>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>Эскизирование</translation>
     </message>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>Эскизирование</translation>
     </message>
@@ -1830,7 +1830,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation type="unfinished">This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Ограничение невозможно</translation>
@@ -2125,7 +2126,7 @@
     <message>
       <location line="-51"/>
       <source>The selected edge has already a horizontral constraint!</source>
-      <translation type="unfinished">The selected edge has already a horizontral constraint!</translation>
+      <translation>Выбранная линия уже имеет ограничение горизонтальности!</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2165,12 +2166,12 @@
     <message>
       <location line="-1406"/>
       <source>Select one vertex from the sketch other than the origin.</source>
-      <translation type="unfinished">Select one vertex from the sketch other than the origin.</translation>
+      <translation>Выберите одну вершину из эскиза, кроме начальной.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation type="unfinished">Select only vertices from the sketch. The last selected vertex may be the origin.</translation>
+      <translation>Выберите только вершины из эскиза. Последняя выбранная вершина может быть начальной.</translation>
     </message>
     <message>
       <location line="+252"/>
@@ -2185,12 +2186,12 @@
     <message>
       <location line="+15"/>
       <source>Select one edge from the sketch.</source>
-      <translation type="unfinished">Select one edge from the sketch.</translation>
+      <translation>Выберите одну линию из эскиза.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only edges from the sketch.</source>
-      <translation type="unfinished">Select only edges from the sketch.</translation>
+      <translation>Выберите линии из эскиза.</translation>
     </message>
     <message>
       <location line="+355"/>
@@ -2846,13 +2847,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Выделите элементы из одного эскиза.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Не выделено ограничений</translation>
     </message>
@@ -2862,7 +2864,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Должно быть выделено хотя бы одно ограничение.</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation>Удалить всю геометрию</translation>
     </message>
@@ -2876,7 +2878,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Внутренняя геометрия доступна только для эллипсов и дуг эллипса. Эллипс/дуга эллипса должна быть выделена в последнюю очередь.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation type="unfinished">A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</translation>
     </message>
@@ -2886,7 +2888,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">The last element must be a point or a line serving as reference for the symmetry construction.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation type="unfinished">A copy requires at least one selected non-external geometric element</translation>
@@ -2910,7 +2912,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-5"/>
       <source>Face is non-planar</source>
-      <translation type="unfinished">Face is non-planar</translation>
+      <translation>Поверхность не плоская</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -2969,12 +2971,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-118"/>
       <source>CAD Kernel Error</source>
-      <translation type="unfinished">CAD Kernel Error</translation>
+      <translation>Ошибка ядра CAD</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Input Error</source>
-      <translation type="unfinished">Input Error</translation>
+      <translation>Ошибка ввода</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -3086,7 +3088,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+7"/>
       <source>Center sketch</source>
-      <translation type="unfinished">Center sketch</translation>
+      <translation>Центр эскиза</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3101,7 +3103,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+88"/>
       <source>Unnamed constraint</source>
-      <translation type="unfinished">Unnamed constraint</translation>
+      <translation>Неименованные ограничения</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3373,7 +3375,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Нормальная геометрия</translation>
     </message>
     <message>
       <location line="-10"/>
@@ -3387,7 +3389,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+5"/>
       <location line="+5"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Внешняя геометрия</translation>
     </message>
   </context>
   <context>
@@ -3400,7 +3402,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+8"/>
       <source>Number of Sides:</source>
-      <translation type="unfinished">Number of Sides:</translation>
+      <translation>Количество сторон:</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3496,17 +3498,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Hide all objects that depend on the sketch</source>
-      <translation type="unfinished">Hide all objects that depend on the sketch</translation>
+      <translation>Скрыть все объекты, которые зависят от эскиза</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>When opening sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening sketch, show sources for external geometry links.</translation>
+      <translation>При открытии эскиза, показать источники для ссылок внешней геометрии.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Show objects used for external geometry</source>
-      <translation type="unfinished">Show objects used for external geometry</translation>
+      <translation>Показать объекты, используемые для внешней геометрии</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3526,7 +3528,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Restore camera position after editing</source>
-      <translation type="unfinished">Restore camera position after editing</translation>
+      <translation>Восстановить позицию камеры после редактирования</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -3546,7 +3548,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+37"/>
       <source>Notifications</source>
-      <translation type="unfinished">Notifications</translation>
+      <translation>Уведомления</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -4515,7 +4517,7 @@ Use the sketch validation tool.</source>
       <location line="-554"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>Переключение между показом и скрытием степени для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -4709,7 +4711,7 @@ Use the sketch validation tool.</source>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation type="unfinished">Create a regular polygon by its center and by one corner</translation>
+      <translation>Создать правильный многоугольник по центру и одному углу</translation>
     </message>
   </context>
   <context>
@@ -4752,13 +4754,13 @@ Use the sketch validation tool.</source>
     <message>
       <location line="-2613"/>
       <source>Periodic B-spline by control points</source>
-      <translation type="unfinished">Periodic B-spline by control points</translation>
+      <translation>Периодический B-сплайн по контрольным точкам</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation type="unfinished">Create a periodic B-spline by control points</translation>
+      <translation>Создать периодический B-сплайн по контрольным точкам</translation>
     </message>
   </context>
   <context>
@@ -4766,22 +4768,22 @@ Use the sketch validation tool.</source>
     <message>
       <location filename="../../Command.cpp" line="-56"/>
       <source>No sketch found</source>
-      <translation type="unfinished">No sketch found</translation>
+      <translation>Эскиз не найден</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The document doesn't have a sketch</source>
-      <translation type="unfinished">The document doesn't have a sketch</translation>
+      <translation>В документе отсутствует эскиз</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Select sketch</source>
-      <translation type="unfinished">Select sketch</translation>
+      <translation>Выберите эскиз</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a sketch from the list</source>
-      <translation type="unfinished">Select a sketch from the list</translation>
+      <translation>Выберите эскиз из списка</translation>
     </message>
     <message>
       <location line="+53"/>
@@ -4791,7 +4793,7 @@ Use the sketch validation tool.</source>
     <message>
       <location line="+2"/>
       <source> (current)</source>
-      <translation type="unfinished"> (current)</translation>
+      <translation> (текущий)</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -5025,7 +5027,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+3"/>
       <source>QR Algorithm:</source>
-      <translation type="unfinished">QR Algorithm:</translation>
+      <translation>QR алгоритм:</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -5139,7 +5141,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+12"/>
       <source>Solve</source>
-      <translation type="unfinished">Solve</translation>
+      <translation>Решить</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -5172,7 +5174,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+1"/>
       <source>Sketcher virtual space</source>
-      <translation type="unfinished">Sketcher virtual space</translation>
+      <translation>Виртуальное пространство эскиза</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>

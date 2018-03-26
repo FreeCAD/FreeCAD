@@ -785,7 +785,7 @@
     <message>
       <location line="+14"/>
       <source>Cluster: 0</source>
-      <translation>Fürt: 0</translation>
+      <translation>Klaszter: 0</translation>
     </message>
     <message>
       <location line="+11"/>

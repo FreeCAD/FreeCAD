@@ -496,7 +496,7 @@
     <message>
       <location filename="InitGui.py" line="85"/>
       <source>Project Setup</source>
-      <translation type="unfinished">Project Setup</translation>
+      <translation>Projekt - Podešavanje</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="97"/>
@@ -509,7 +509,7 @@
       <translation>Nove Operacije</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation type="unfinished">Didn't find job %s</translation>
     </message>
@@ -531,22 +531,22 @@
     <message>
       <location filename="InitGui.py" line="86"/>
       <source>Partial Commands</source>
-      <translation type="unfinished">Partial Commands</translation>
+      <translation>Parcijalne Naredbe</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Nove Operacije</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
       <translation type="unfinished">Path Modification</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="396"/>
       <source>Create a Contour</source>
-      <translation type="unfinished">Create a Contour</translation>
+      <translation>Stvoriti ocrtavanje objekta</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="148"/>
@@ -949,7 +949,7 @@
     <message>
       <location filename="PathOpGui.py" line="545"/>
       <source>Depths</source>
-      <translation type="unfinished">Depths</translation>
+      <translation>Dubine</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="616"/>
@@ -1011,7 +1011,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="627"/>
       <source>Depths</source>
-      <translation type="unfinished">Depths</translation>
+      <translation>Dubine</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="753"/>
@@ -1034,7 +1034,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
       <source>3D Pocket</source>
-      <translation type="unfinished">3D Pocket</translation>
+      <translation>3D džep</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
@@ -1773,7 +1773,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJob.py" line="184"/>
       <source>Job</source>
-      <translation type="unfinished">Job</translation>
+      <translation>Posao</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="186"/>
@@ -1793,7 +1793,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJob.py" line="223"/>
       <source>Edit Job</source>
-      <translation type="unfinished">Edit Job</translation>
+      <translation>Uredi posao</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -1818,7 +1818,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="109"/>
       <source>Job</source>
-      <translation type="unfinished">Job</translation>
+      <translation>Posao</translation>
     </message>
   </context>
   <context>
@@ -1834,7 +1834,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPlane.py" line="114"/>
       <source>Selection Plane</source>
-      <translation type="unfinished">Selection Plane</translation>
+      <translation>Ravnina odabira</translation>
     </message>
     <message>
       <location filename="PathPlane.py" line="122"/>
@@ -2008,7 +2008,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Jednostavno kopiranje</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="47"/>
@@ -2025,7 +2025,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="65"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Jednostavno kopiranje</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="42"/>
@@ -2392,7 +2392,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="TooltableEditor.py" line="430"/>
       <source>Corner radius</source>
-      <translation type="unfinished">Corner radius</translation>
+      <translation>Polumjer ugla</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="432"/>
@@ -2478,12 +2478,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAM Simulator</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation type="unfinished">Simulate Path G-Code on stock</translation>
     </message>

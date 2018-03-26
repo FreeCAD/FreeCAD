@@ -66,12 +66,12 @@
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="59"/>
       <source>Calculate roll-on to path</source>
-      <translation type="unfinished">Calculate roll-on to path</translation>
+      <translation>Calcula a aproximação à trajetória</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="60"/>
       <source>Calculate roll-off from path</source>
-      <translation type="unfinished">Calculate roll-off from path</translation>
+      <translation>Calcula o afastamento à trajetória</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="61"/>
@@ -509,7 +509,7 @@
       <translation>Novas Operações</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>Trabalho %s não encontrado</translation>
     </message>
@@ -534,12 +534,12 @@
       <translation>Comandos parciais</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Novas Operações</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
       <translation>Modificação de trajetória</translation>
     </message>
@@ -584,7 +584,7 @@
     <message>
       <location filename="PathDressupTagGui.py" line="73"/>
       <source>Edit HoldingTags Dress-up</source>
-      <translation type="unfinished">Edit HoldingTags Dress-up</translation>
+      <translation>Edita as etiquetas de fixação da Mascara</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="714"/>
@@ -609,28 +609,28 @@
     <message>
       <location filename="PathDressupHoldingTags.py" line="718"/>
       <source>Radius of the fillet for the tag.</source>
-      <translation type="unfinished">Radius of the fillet for the tag.</translation>
+      <translation>Raio do Boleado (fillet) para a etiqueta.</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="719"/>
       <source>Locations of insterted holding tags</source>
-      <translation type="unfinished">Locations of insterted holding tags</translation>
+      <translation>Localização das etiquetas de fixação inseridas</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="720"/>
       <source>Ids of disabled holding tags</source>
-      <translation type="unfinished">Ids of disabled holding tags</translation>
+      <translation>Identificações das etiquetas de fixação desativadas</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="721"/>
       <source>Factor determining the # segments used to approximate rounded tags.</source>
-      <translation type="unfinished">Factor determining the # segments used to approximate rounded tags.</translation>
+      <translation>Factor determinando os segmentos # usados para aproximar etiquetas arredondadas.</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="921"/>
       <source>Cannot insert holding tags for this path - please select a Profile path
 </source>
-      <translation type="unfinished">Cannot insert holding tags for this path - please select a Profile path
+      <translation>Não pode inserir etiquetas de fixação para este caminho - por favor selecione uma trajetória de perfil
 </translation>
     </message>
   </context>
@@ -657,7 +657,7 @@
     <message>
       <location filename="PathEngraveGui.py" line="67"/>
       <source>Creates an Engraving Path around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving Path around a Draft ShapeString</translation>
+      <translation>Cria uma trajetória de entalhe em torno de um ShapeString</translation>
     </message>
   </context>
   <context>
@@ -1023,52 +1023,52 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketBaseGui.py" line="64"/>
       <source>Pass Extension</source>
-      <translation type="unfinished">Pass Extension</translation>
+      <translation>Extensão da passada</translation>
     </message>
     <message>
       <location filename="PathPocketBaseGui.py" line="65"/>
       <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation type="unfinished">The distance the facing operation will extend beyond the boundary shape.</translation>
+      <translation>A distância que a operação de faciamento se prolongará para além do contorno da forma.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
       <source>3D Pocket</source>
-      <translation type="unfinished">3D Pocket</translation>
+      <translation>vazio (bolso) 3D</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
       <source>Creates a Path 3D Pocket object from a face or faces</source>
-      <translation type="unfinished">Creates a Path 3D Pocket object from a face or faces</translation>
+      <translation>Cria uma trajetória de vazio (bolso) 3D de uma face ou faces</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="94"/>
       <source>Pocket does not support shape %s.%s</source>
-      <translation type="unfinished">Pocket does not support shape %s.%s</translation>
+      <translation>Vazio (bolso) não suporta a forma %s.%s</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="103"/>
       <source>Vertical faces do not form a loop - ignoring</source>
-      <translation type="unfinished">Vertical faces do not form a loop - ignoring</translation>
+      <translation>Faces verticais não formam uma sequência - ignorando</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBaseGui.py" line="68"/>
       <source>Pass Extension</source>
-      <translation type="unfinished">Pass Extension</translation>
+      <translation>Extensão da passada</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBaseGui.py" line="69"/>
       <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation type="unfinished">The distance the facing operation will extend beyond the boundary shape.</translation>
+      <translation>A distância que a operação de faciamento se prolongará para além do contorno da forma.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
       <source>Pocket Shape</source>
-      <translation type="unfinished">Pocket Shape</translation>
+      <translation>Forma Vazio (bolso)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
       <source>Creates a Path Pocket object from a face or faces</source>
-      <translation type="unfinished">Creates a Path Pocket object from a face or faces</translation>
+      <translation>Cria uma trajetória de vazio (bolso) de uma face ou faces</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="177"/>
@@ -1416,12 +1416,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="187"/>
       <source>Issue determine drillability: {}</source>
-      <translation type="unfinished">Issue determine drillability: {}</translation>
+      <translation>Problema para determinar perfurabilidade: {}</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="195"/>
       <source>Issue determine drillability: {}</source>
-      <translation type="unfinished">Issue determine drillability: {}</translation>
+      <translation>Problema para determinar perfurabilidade: {}</translation>
     </message>
   </context>
   <context>
@@ -1565,7 +1565,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="381"/>
       <source>The style of bones</source>
-      <translation type="unfinished">The style of bones</translation>
+      <translation>O estilo de ossos</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="384"/>
@@ -1618,12 +1618,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="469"/>
       <source>DragKnife Dress-up</source>
-      <translation type="unfinished">DragKnife Dress-up</translation>
+      <translation>Mascarar DragKnife</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>Modifies a path to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
+      <translation>Modifica um trajetória para adicionar ações de canto dragknife</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="484"/>
@@ -1655,17 +1655,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="64"/>
       <source>The Style of LeadIn the Path</source>
-      <translation type="unfinished">The Style of LeadIn the Path</translation>
+      <translation>O estilo de Aproximação à trajetória</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="66"/>
       <source>The Style of LeadOut the Path</source>
-      <translation type="unfinished">The Style of LeadOut the Path</translation>
+      <translation>O estilo do Saída da trajetória</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="68"/>
       <source>The Mode of Point Radiusoffset or Center</source>
-      <translation type="unfinished">The Mode of Point Radiusoffset or Center</translation>
+      <translation>O modo de deslocamento do Raio do ponto ou centro</translation>
     </message>
   </context>
   <context>
@@ -1869,12 +1869,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPreferencesPathDressup.py" line="42"/>
       <source>Dressups</source>
-      <translation type="unfinished">Dressups</translation>
+      <translation>Mascaradas</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPreferencesPathDressup.py" line="42"/>
       <source>Dressups</source>
-      <translation type="unfinished">Dressups</translation>
+      <translation>Mascaradas</translation>
     </message>
   </context>
   <context>
@@ -1893,21 +1893,21 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathSanity.py" line="93"/>
       <source>Please select a path Project to check
 </source>
-      <translation type="unfinished">Please select a path Project to check
+      <translation>Por favor, selecione um projeto para verificar
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="96"/>
       <source>Please select a path project to check
 </source>
-      <translation type="unfinished">Please select a path project to check
+      <translation>Por favor, selecione um projeto para verificar
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="151"/>
       <source>The Job has no selected Base object.
 </source>
-      <translation type="unfinished">The Job has no selected Base object.
+      <translation>O trabalho não tem nenhum objeto Base selecionado.
 </translation>
     </message>
     <message>
@@ -1923,59 +1923,59 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="64"/>
       <source>The Job has no selected Base object.</source>
-      <translation type="unfinished">The Job has no selected Base object.</translation>
+      <translation>O trabalho não tem nenhum objeto Base selecionado.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="69"/>
       <source>A Postprocessor has not been selected.
 </source>
-      <translation type="unfinished">A Postprocessor has not been selected.
+      <translation>Um pós-processador não foi selecionado.
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="72"/>
       <source>No output file is named. You'll be prompted during postprocessing.
 </source>
-      <translation type="unfinished">No output file is named. You'll be prompted during postprocessing.
+      <translation>Nenhum ficheiro de saída foi nomeado. Será solicitado durante o pós-processamento.
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="76"/>
       <source>A Postprocessor has not been selected.</source>
-      <translation type="unfinished">A Postprocessor has not been selected.</translation>
+      <translation>Um pós-processador não foi selecionado.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="80"/>
       <source>No output file is named. You'll be prompted during postprocessing.</source>
-      <translation type="unfinished">No output file is named. You'll be prompted during postprocessing.</translation>
+      <translation>Nenhum ficheiro de saída foi nomeado. Será solicitado durante o pós-processamento.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="132"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.
 </source>
-      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.
+      <translation>Não foi encontrado um controlador de ferramenta. Valores predefinidos são usados o que é perigoso.  Por favor, adicione um controlador de ferramenta.
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="136"/>
       <source>No active operations was found. Post processing will not result in any tooling.</source>
-      <translation type="unfinished">No active operations was found. Post processing will not result in any tooling.</translation>
+      <translation>Não foram encontradas operações ativas. O pós-processamento não resultará em qualquer trabalho feito com ferramentas.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</source>
-      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</translation>
+      <translation>Não foi encontrado um controlador de ferramenta. Valores predefinidos são usados o que é perigoso.  Por favor, adicione um controlador de ferramenta.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
       <source>No issues detected, {} has passed basic sanity check.</source>
-      <translation type="unfinished">No issues detected, {} has passed basic sanity check.</translation>
+      <translation>Sem problemas detectados, {} passou o teste de sanidade básica.</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="50"/>
       <source>It appears the machine limits haven't been set.  Not able to check path extents.
 </source>
-      <translation type="unfinished">It appears the machine limits haven't been set.  Not able to check path extents.
+      <translation>Parece que os limites da máquina ainda não foram definidos.  Não é possivel verificar a extensão da trajetória.
 </translation>
     </message>
   </context>
@@ -1984,22 +1984,22 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathCommands.py" line="44"/>
       <source>Finish Selecting Loop</source>
-      <translation type="unfinished">Finish Selecting Loop</translation>
+      <translation>Terminar a seleção de sequência</translation>
     </message>
     <message>
       <location filename="PathCommands.py" line="45"/>
       <source>Complete loop selection from two edges</source>
-      <translation type="unfinished">Complete loop selection from two edges</translation>
+      <translation>Seleção de sequência completa das duas arestas</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="58"/>
       <source>Finish Selecting Loop</source>
-      <translation type="unfinished">Finish Selecting Loop</translation>
+      <translation>Terminar a seleção de sequência</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="60"/>
       <source>Complete loop selection from two edges</source>
-      <translation type="unfinished">Complete loop selection from two edges</translation>
+      <translation>Seleção de sequência completa das duas arestas</translation>
     </message>
   </context>
   <context>
@@ -2068,14 +2068,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathSurface.py" line="272"/>
       <source>Hold on.  This might take a minute.
 </source>
-      <translation type="unfinished">Hold on.  This might take a minute.
+      <translation>Aguarde.  Isto pode demorar um minuto.
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="100"/>
       <source>This operation requires OpenCamLib to be installed.
 </source>
-      <translation type="unfinished">This operation requires OpenCamLib to be installed.
+      <translation>Esta operação requer a instalação do OpenCamLib.
 </translation>
     </message>
   </context>
@@ -2089,12 +2089,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
-      <translation type="unfinished">Add Tool Controller to the Job</translation>
+      <translation>Adicionar controlador de ferramenta para o trabalho</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="257"/>
       <source>Add Tool Controller to the Job</source>
-      <translation type="unfinished">Add Tool Controller to the Job</translation>
+      <translation>Adicionar controlador de ferramenta para o trabalho</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="258"/>
@@ -2477,12 +2477,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>Simulador de CAM</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Simular uma trajetória G-Code no estoque</translation>
     </message>
@@ -2564,12 +2564,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupDragknife.py" line="474"/>
       <source>DragKnife Dress-up</source>
-      <translation type="unfinished">DragKnife Dress-up</translation>
+      <translation>Mascarar DragKnife</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="475"/>
       <source>Modifies a path to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
+      <translation>Modifica um trajetória para adicionar ações de canto dragknife</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="489"/>
@@ -2601,7 +2601,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTagPreferences.py" line="78"/>
       <source>Holding Tag</source>
-      <translation type="unfinished">Holding Tag</translation>
+      <translation>Etiqueta de fixação</translation>
     </message>
   </context>
   <context>
@@ -2624,7 +2624,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupRampEntry.py" line="582"/>
       <source>Creates a Ramp Entry Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Ramp Entry Dress-up object from a selected path</translation>
+      <translation>Cria uma mascara de rampa de entrada de uma trajetória selecionada</translation>
     </message>
   </context>
   <context>
@@ -2652,22 +2652,22 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTag.py" line="119"/>
       <source>Radius of the fillet for the tag.</source>
-      <translation type="unfinished">Radius of the fillet for the tag.</translation>
+      <translation>Raio do Boleado (fillet) para a etiqueta.</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="120"/>
       <source>Locations of insterted holding tags</source>
-      <translation type="unfinished">Locations of insterted holding tags</translation>
+      <translation>Localização das etiquetas de fixação inseridas</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="121"/>
       <source>Ids of disabled holding tags</source>
-      <translation type="unfinished">Ids of disabled holding tags</translation>
+      <translation>Identificações das etiquetas de fixação desativadas</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="122"/>
       <source>Factor determining the # segments used to approximate rounded tags.</source>
-      <translation type="unfinished">Factor determining the # segments used to approximate rounded tags.</translation>
+      <translation>Factor determinando os segmentos # usados para aproximar etiquetas arredondadas.</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="144"/>
@@ -2682,7 +2682,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTag.py" line="150"/>
       <source>Base doesn't have a Path to dress-up.</source>
-      <translation type="unfinished">Base doesn't have a Path to dress-up.</translation>
+      <translation>Base não tem uma trajetória para mascarar.</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="153"/>
@@ -2704,17 +2704,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTagGui.py" line="620"/>
       <source>Create a Tag dressup</source>
-      <translation type="unfinished">Create a Tag dressup</translation>
+      <translation>Criar uma etiqueta de mascara</translation>
     </message>
     <message>
       <location filename="PathDressupTagGui.py" line="631"/>
       <source>Tag Dress-up</source>
-      <translation type="unfinished">Tag Dress-up</translation>
+      <translation>Etiqueta de mascara</translation>
     </message>
     <message>
       <location filename="PathDressupTagGui.py" line="632"/>
       <source>Creates a Tag Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Tag Dress-up object from a selected path</translation>
+      <translation>Cria um objeto etiqueta de mascara de uma trajetória selecionada</translation>
     </message>
     <message>
       <location filename="PathDressupTagGui.py" line="645"/>
@@ -2726,7 +2726,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTagGui.py" line="650"/>
       <source>Create Tag Dress-up</source>
-      <translation type="unfinished">Create Tag Dress-up</translation>
+      <translation>Criar etiqueta de mascara</translation>
     </message>
   </context>
   <context>
@@ -2771,7 +2771,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressup.py" line="114"/>
       <source>Creates a Path Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Dress-up object from a selected path</translation>
+      <translation>Cria uma mascara de trajetória a partir de uma trajetória selecionada</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="116"/>
@@ -2810,7 +2810,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="271"/>
       <source>Safe distance above the top of the hole to which to retract the tool</source>
-      <translation type="unfinished">Safe distance above the top of the hole to which to retract the tool</translation>
+      <translation>Distância de segurança acima da parte superior do furo para qual retrair a ferramenta</translation>
     </message>
   </context>
   <context>
@@ -2862,7 +2862,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="251"/>
       <source>Selected features for the drill operation</source>
-      <translation type="unfinished">Selected features for the drill operation</translation>
+      <translation>Recursos selecionados para a operação da furação</translation>
     </message>
   </context>
   <context>
@@ -2870,7 +2870,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="281"/>
       <source>Final Depth of Tool - lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool - lowest value in Z</translation>
+      <translation>Profundidade final da ferramenta - menor valor em Z</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="63"/>
@@ -2930,7 +2930,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathMillFace.py" line="297"/>
       <source>The selected settings did not produce a valid path.
 </source>
-      <translation type="unfinished">The selected settings did not produce a valid path.
+      <translation>As configurações selecionadas não produziram uma trajetória válida.
 </translation>
     </message>
   </context>
@@ -2939,7 +2939,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPreferencesPathDressup.py" line="50"/>
       <source>Dressups</source>
-      <translation type="unfinished">Dressups</translation>
+      <translation>Mascaradas</translation>
     </message>
   </context>
   <context>
@@ -2948,28 +2948,28 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathSurface.py" line="257"/>
       <source>Hold on.  This might take a minute.
 </source>
-      <translation type="unfinished">Hold on.  This might take a minute.
+      <translation>Aguarde.  Isto pode demorar um minuto.
 </translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="311"/>
       <source>This operation requires OpenCamLib to be installed.
 </source>
-      <translation type="unfinished">This operation requires OpenCamLib to be installed.
+      <translation>Esta operação requer a instalação do OpenCamLib.
 </translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="499"/>
       <source>Please select a single solid object from the project tree
 </source>
-      <translation type="unfinished">Please select a single solid object from the project tree
+      <translation>Por favor, selecione um único objeto sólido na árvore de recursos do projeto
 </translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="516"/>
       <source>Cannot work with this object
 </source>
-      <translation type="unfinished">Cannot work with this object
+      <translation>Não é possível trabalhar com este objeto
 </translation>
     </message>
   </context>
@@ -2996,7 +2996,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathContour.py" line="308"/>
       <source>Add Holding Tag</source>
-      <translation type="unfinished">Add Holding Tag</translation>
+      <translation>Adicionar etiqueta de fixação</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="344"/>
@@ -3032,25 +3032,25 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathEngrave.py" line="272"/>
       <source>ShapeString Engrave</source>
-      <translation type="unfinished">ShapeString Engrave</translation>
+      <translation>Entalhar shapestring</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="273"/>
       <source>Creates an Engraving Path around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving Path around a Draft ShapeString</translation>
+      <translation>Cria uma trajetória de entalhe em torno de um ShapeString</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="352"/>
       <source>Please select engraveable geometry
 </source>
-      <translation type="unfinished">Please select engraveable geometry
+      <translation>Por favor selecione a geometria a entalhar
 </translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="356"/>
       <source>Please select valid geometry
 </source>
-      <translation type="unfinished">Please select valid geometry
+      <translation>Por favor selecione uma geometria válida
 </translation>
     </message>
   </context>
@@ -3152,7 +3152,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfileEdges.py" line="342"/>
       <source>Add Holding Tag</source>
-      <translation type="unfinished">Add Holding Tag</translation>
+      <translation>Adicionar etiqueta de fixação</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="378"/>
@@ -3185,7 +3185,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="403"/>
       <source>Create Surface</source>
-      <translation type="unfinished">Create Surface</translation>
+      <translation>Criar superfície</translation>
     </message>
   </context>
   <context>
@@ -3206,7 +3206,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="277"/>
       <source>Starting Depth of Tool - first cut depth in Z</source>
-      <translation type="unfinished">Starting Depth of Tool - first cut depth in Z</translation>
+      <translation>Profundidade inicial da ferramenta - primeira profundidade de corte em Z</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="62"/>
@@ -3227,7 +3227,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="283"/>
       <source>Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</source>
-      <translation type="unfinished">Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</translation>
+      <translation>Adicione essa profundidade de corte adicional para furos em aberto. Usado somente se UseFinalDepth é Falso</translation>
     </message>
   </context>
   <context>
@@ -3235,7 +3235,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="279"/>
       <source>Set to True to manually specify a final depth</source>
-      <translation type="unfinished">Set to True to manually specify a final depth</translation>
+      <translation>Defina como True para especificar manualmente uma profundidade final</translation>
     </message>
   </context>
   <context>
@@ -3243,7 +3243,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="275"/>
       <source>Set to True to manually specify a start depth</source>
-      <translation type="unfinished">Set to True to manually specify a start depth</translation>
+      <translation>Defina como True para especificar manualmente uma profundidade de início</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="61"/>

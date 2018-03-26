@@ -6,12 +6,12 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>制图编辑工具</translation>
+      <translation>图表编辑工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation>制图</translation>
+      <translation>图表</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation>在选定图面上显示/隐藏网格</translation>
+      <translation>在选定图表上显示/隐藏网格</translation>
     </message>
   </context>
   <context>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation>在选定绘图上显示/隐藏图例</translation>
+      <translation>在选定图表上显示/隐藏图例</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation>保存制图</translation>
+      <translation>保存图表</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation>保存绘图到图像文件</translation>
+      <translation>保存图表到图像文件</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="231"/>
       <source>Add new axes to the plot</source>
-      <translation>向绘图添加新轴</translation>
+      <translation>向图表添加新坐标轴</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="236"/>
@@ -218,17 +218,17 @@
     <message>
       <location filename="../../Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation>未找到matplotlib,因此绘图模块未能加载</translation>
+      <translation>未找到matplotlib, 因此图表模块未能加载</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation>未找到matplotlib,绘图模块将被禁用</translation>
+      <translation>未找到matplotlib, 图表模块将被禁用</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation>必须选中绘图文档以保存</translation>
+      <translation>必须选中图表文档以保存</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="340"/>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation>网格必须于绘图文档顶层激活</translation>
+      <translation>网格必须于图表文档顶层激活</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation>图例必须于绘图文档顶层激活</translation>
+      <translation>图例必须于图表文档顶层激活</translation>
     </message>
   </context>
   <context>

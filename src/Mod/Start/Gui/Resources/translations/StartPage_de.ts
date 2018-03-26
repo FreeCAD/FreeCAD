@@ -348,5 +348,15 @@
       <source>Load an FEM 3D new solver example analysis</source>
       <translation>FEM-3D-Neue-Solver-Beispiel-Analyse laden</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation>Hier klicken</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation>um FreeCAD den Zugriff auf das Internet zu erlauben</translation>
+    </message>
   </context>
 </TS>

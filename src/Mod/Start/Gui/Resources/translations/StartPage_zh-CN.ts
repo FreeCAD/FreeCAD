@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Example projects</source>
-      <translation>项目范例</translation>
+      <translation>示例项目</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -41,17 +41,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Load a PartDesign example</source>
-      <translation>加载零件设计范例</translation>
+      <translation>加载零件设计示例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Load a Drawing extraction</source>
-      <translation>加载图纸生成范例</translation>
+      <translation>加载图纸生成示例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Load a Robot simulation example</source>
-      <translation>加载机器人模拟范例</translation>
+      <translation>加载机器人模拟示例</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
       <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>来自 &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCAD 信息频道&lt;/a&gt;</translation>
+      <translation>来自 &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCAD 新闻频道&lt;/a&gt;</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>&lt;b&gt;开发中的版本&lt;/b&gt; 是由的社区成员不时和通常包含最新的更改，但更有可能包含 bug 提供。</translation>
+      <translation>&lt;b&gt;开发中的版本&lt;/b&gt; 是由社区成员不时提供，通常包含最新的更改，但更有可能包含错误。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
@@ -347,6 +347,16 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
       <source>Load an FEM 3D new solver example analysis</source>
       <translation>加载有限元3D新求解实例分析</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation>点击此处</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation>允许 FreeCAD 访问互联网</translation>
     </message>
   </context>
 </TS>

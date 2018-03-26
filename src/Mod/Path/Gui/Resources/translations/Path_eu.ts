@@ -509,7 +509,7 @@
       <translation>Eragiketa berriak</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>Ez da %s lana aurkitu</translation>
     </message>
@@ -534,12 +534,12 @@
       <translation>Komando partzialak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Eragiketa berriak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
       <translation>Bidearen aldaketa</translation>
     </message>
@@ -2477,12 +2477,12 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAM simulatzailea</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Simulatu G-Code bidea pieza gordinean</translation>
     </message>

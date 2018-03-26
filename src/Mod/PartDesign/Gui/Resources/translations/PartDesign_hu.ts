@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>A kiválasztott profilt görbék közti létrehozott tárggyá alakít más profil beállításcsoporton keresztül</translation>
+      <translation>A kiválasztott profilt kihúzható tárggyá alakít más profil beállításcsoporton keresztül</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -549,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
@@ -567,19 +567,19 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>Kivonandó, ívek közti test</translation>
+      <translation>Kihúzható testté</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Kiválasztott tárgy testté alakítása más kiválasztott profil szakaszokon keresztül és annak eltávolítása a testből</translation>
+      <translation>Kiválasztott profil kihúzható testté alakítása más kiválasztott profil szakaszokon keresztül és annak eltávolítása a testből</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -823,7 +823,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
       <source>Involute parameter</source>
-      <translation>Fogaskerék paraméterei</translation>
+      <translation>Evolvens paraméter</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -1281,7 +1281,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Logikai: Fogadja el: beviteli hiba</translation>
     </message>
@@ -1359,7 +1369,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1802,7 +1812,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation>Létrehozott tárgy paraméterei</translation>
+      <translation>Kihúzott tárgy paraméterei</translation>
     </message>
   </context>
   <context>
@@ -2220,7 +2230,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Szakasz tájolás</translation>
     </message>
@@ -2311,7 +2321,7 @@ Please check one or more edge entities first.</source>
       <translation>Szakasz eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Szakasz átalakítás</translation>
     </message>
@@ -2544,7 +2554,7 @@ Please check one or more edge entities first.</source>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Z axis</source>
-      <translation>Bázis Z tengely</translation>
+      <translation>Alap Z tengely</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2662,7 +2672,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation>Referencia alakzat pareméterek</translation>
+      <translation>Referencia alakzat paraméterek</translation>
     </message>
   </context>
   <context>
@@ -2793,7 +2803,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Base Z axis</source>
-      <translation>Bázis Z tengely</translation>
+      <translation>Alap Z tengely</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3118,7 +3128,7 @@ Create the sketch on a face.</source>
       <translation>Letörés szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Érvénytelen kijelölés</translation>
     </message>
@@ -3185,7 +3195,7 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3197,8 +3207,8 @@ Create the sketch on a face.</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3613,7 +3623,7 @@ Ha van egy örökölt dokumentum AlkatrészTervezés objektummal Test nélkül, 
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation>KoordinátaRendszer</translation>
+      <translation>Koordinátarendszer</translation>
     </message>
     <message>
       <source>Edit datum </source>
@@ -3640,7 +3650,7 @@ Ez a funkció sérült, és nem szerkeszthető.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation>Létrehozott tárgy szerkesztése</translation>
+      <translation>Kihúzott tárgy szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
@@ -3681,7 +3691,7 @@ Ez a funkció sérült, és nem szerkeszthető.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Megjegyzés: Ha úgy dönt, hogy áttelepít, nem lesz képes egy régi FreeCAD változattal szerkeszteni. 
+      <translation>Megjegyzés: Ha úgy dönt, hogy áttelepít, nem lesz képes egy régebbi FreeCAD változattal szerkeszteni. 
 Ha ön visszautasítja az áttelepítést nem fogja tudni használni az új AlkatrészTervező funkciókat, mint a Testek és a Alkatrészek. Ennek eredményeként nem tudja használni az alkatrészeket az összeállítás munkafelületen.
 Azonban bármikor képes lesz áttelepíteni itt: 'Alkatrész Tervező-&gt;Áttelepítés...'.</translation>
     </message>
