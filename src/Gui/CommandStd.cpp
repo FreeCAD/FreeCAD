@@ -204,9 +204,13 @@ Action * StdCmdAbout::createAction(void)
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
     pcAction->setShortcut(QString::fromLatin1(sAccel));
-    //Prevent Qt from using AboutRole -- fixes issue #0001485
+#if QT_VERSION > 0x050000
+    // Needs to have AboutRole set to avoid duplicates if adding the about action more than once on macOS
+    pcAction->setMenuRole(QAction::AboutRole);
+#else
+    // With Qt 4.8, having AboutRole set causes it to disappear when readding it: issue #0001485
     pcAction->setMenuRole(QAction::ApplicationSpecificRole);
-
+#endif
     return pcAction;
 }
 
