@@ -162,6 +162,7 @@
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <BRepOffsetAPI_MakeFilling.hxx>
 
+#include <array>
 #include <deque>
 #include <boost/algorithm/string/predicate.hpp>
 #include <Base/Exception.h>
