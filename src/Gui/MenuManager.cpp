@@ -192,7 +192,7 @@ void MenuManager::setup(MenuItem* menuItems) const
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
 
-#ifdef FC_OS_MACOSX
+#if defined(FC_OS_MACOSX) && QT_VERSION >= 0x050900
     // Unknown Qt macOS bug observed with Qt >= 5.9.4 causes random crashes when viewing reused top level menus.
     menuBar->clear();
 #endif
