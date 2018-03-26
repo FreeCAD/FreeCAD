@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QProcess>
 # include <QTextStream>
+# include <QCoreApplication>
 #endif
 
 #include "Assistant.h"
@@ -86,14 +87,12 @@ bool Assistant::startAssistant()
         QString app;
         app = QDir::toNativeSeparators(QString::fromUtf8
             (App::GetApplication().getHomePath()) + QLatin1String("bin/"));
+#elif defined(Q_OS_MAC)
+        QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
 #endif 
-#if !defined(Q_OS_MAC)
         app += QLatin1String("assistant");
-#else
-        app += QLatin1String("Assistant.app/Contents/MacOS/Assistant");
-#endif
 
         // get the name of the executable and the doc path
         QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
