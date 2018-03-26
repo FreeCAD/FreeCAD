@@ -98,7 +98,8 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern)
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern, 
+        App::DocumentObject **topParent, std::string *subname)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
@@ -107,7 +108,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
         bool singleBodyDocument = activeView->getAppDocument()->
             countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
         if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
-            activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+            activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
             if (!activeBody && singleBodyDocument && autoActivate &&
                 activeView->getAppDocument()->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1)
@@ -115,7 +116,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 Gui::Command::doCommand( Gui::Command::Gui,
                     "Gui.activeView().setActiveObject('%s',App.ActiveDocument.findObjects('PartDesign::Body')[0])",
                     PDBODYKEY);
-                activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+                activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
                 return activeBody;
             }
             if (!activeBody && messageIfNot) {
@@ -160,12 +161,13 @@ PartDesign::Body * makeBody(App::Document *doc)
 }
 
 PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
-                             bool autoActivate, bool assertModern)
+                             bool autoActivate, bool assertModern,
+                             App::DocumentObject **topParent, std::string *subname)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern);
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern, topParent, subname);
     if (rv && rv->hasObject(obj))
         return rv;
 
