@@ -342,12 +342,12 @@ PyObject* ViewProviderDocumentObject::getPyObject()
     return pyViewObject;
 }
 
-bool ViewProviderDocumentObject::canDropObjectEx(
-        App::DocumentObject* obj, App::DocumentObject *owner, const char *subname) const
+bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname))
+        if(ext->extensionCanDropObjectEx(obj,owner,subname,elements))
             return true;
     }
     if(obj && obj->getDocument()!=getObject()->getDocument())

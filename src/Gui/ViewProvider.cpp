@@ -658,22 +658,24 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
-bool ViewProvider::canDropObjectEx(
-        App::DocumentObject* obj, App::DocumentObject *owner, const char *subname) const
+bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname))
+        if(ext->extensionCanDropObjectEx(obj,owner,subname, elements))
             return true;
     }
     return canDropObject(obj);
 }
 
-void ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, const char *subname) {
+void ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements) 
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDropObjectEx(obj, owner, subname)) {
-            ext->extensionDropObjectEx(obj, owner, subname);
+        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements)) {
+            ext->extensionDropObjectEx(obj, owner, subname, elements);
             return;
         }
     }

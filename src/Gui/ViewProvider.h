@@ -241,9 +241,12 @@ public:
      * dropping, and calls canDropObject(obj) for the rest. Override this
      * function to enable cross document linking.
      * */
-    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *subname) const;
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) const;
+
     /** Add an object with full quanlified name to the view provider by drag and drop */
-    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *subname);
+    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements);
     //@}
 
     /** Tell the tree view if this object should apear there */

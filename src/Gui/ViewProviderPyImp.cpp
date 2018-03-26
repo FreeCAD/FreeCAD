@@ -174,8 +174,9 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args)
 {
     PyObject *obj = Py_None;
     PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = 0;
-    if (!PyArg_ParseTuple(args, "|OOs", &obj,&owner,&subname))
+    if (!PyArg_ParseTuple(args, "|OOsO", &obj,&owner,&subname,&pyElements))
         return NULL;
     PY_TRY {
         bool ret;
@@ -194,7 +195,16 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args)
             }
             pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
         }
-        ret = getViewProviderPtr()->canDropObjectEx(pcObject,pcOwner,subname);
+        App::PropertyStringList elements;
+        if(pyElements!=Py_None) {
+            try {
+                elements.setPyObject(pyElements);
+            }catch(...) {
+                PyErr_SetString(PyExc_TypeError, "exepcting the forth argument to be of type sequence of strings");
+                return 0;
+            }
+        }
+        ret = getViewProviderPtr()->canDropObjectEx(pcObject,pcOwner,subname,elements.getValues());
         return Py::new_reference_to(Py::Boolean(ret));
     } PY_CATCH;
 }
@@ -215,8 +225,9 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args)
 {
     PyObject *obj;
     PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = 0;
-    if (!PyArg_ParseTuple(args, "O!|Os", &App::DocumentObjectPy::Type,&obj,&owner,&subname))
+    if (!PyArg_ParseTuple(args, "O!|OsO", &App::DocumentObjectPy::Type,&obj,&owner,&subname,&pyElements))
         return NULL;
     PY_TRY {
         App::DocumentObject *pcOwner = 0;
@@ -227,8 +238,17 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args)
             }
             pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
         }
-        getViewProviderPtr()->dropObjectEx(
-            static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr(),pcOwner,subname);
+        App::PropertyStringList elements;
+        if(pyElements!=Py_None) {
+            try {
+                elements.setPyObject(pyElements);
+            }catch(...) {
+                PyErr_SetString(PyExc_TypeError, "exepcting the forth argument to be of type sequence of strings");
+                return 0;
+            }
+        }
+        getViewProviderPtr()->dropObjectEx(static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr(),
+                pcOwner, subname,elements.getValues());
         Py_Return;
     } PY_CATCH;
 }

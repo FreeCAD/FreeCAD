@@ -711,27 +711,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             auto subname = str.str();
 
             auto obj = item->object()->getObject();
-            if(item->mySubs.empty())
-                item->mySubs.insert("");
-            bool canDrop = false;
-            for(auto &sub : item->mySubs) {
-                auto sobj = obj;
-                if(sub.find('.')!=std::string::npos) {
-                    sobj = obj->getSubObject(sub.c_str());
-                    if(!sobj) {
-                        TREE_ERR("invalid trailing subname " << sub << " of object " <<
-                                obj->getNameInDocument());
-                        continue;
-                    }
-                }
-                // let the view provider decide to accept the object or ignore it
-                if (!vp->canDropObjectEx(sobj,owner,(subname+sub).c_str())) {
-                    event->ignore();
-                    return;
-                }
-                canDrop = true;
-            }
-            if(!canDrop) {
+            // let the view provider decide to accept the object or ignore it
+            if (!vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
                 event->ignore();
                 return;
             }
@@ -743,19 +724,19 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 }
 
 struct ItemInfo {
-    App::Document *doc=0;
+    std::string doc;
     std::string obj;
-    App::Document *parentDoc=0;
+    std::string parentDoc;
     std::string parent;
-    App::Document *ownerDoc=0;
+    std::string ownerDoc;
     std::string owner;
     std::string subname;
     std::vector<std::string> subs;
 };
 struct ItemInfo2 {
-    App::Document *doc;
+    std::string doc;
     std::string obj;
-    App::Document *parentDoc;
+    std::string parentDoc;
     std::string parent;
 };
 
@@ -837,8 +818,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     selObj->getNameInDocument());
         }
         std::vector<ItemInfo> infos;
-        // Only keep text names here, because you never when doing drag and
-        // drop some object may delete other objects.
+        // Only keep text names here, because you never know when doing drag
+        // and drop some object may delete other objects.
         infos.reserve(items.size());
         for(auto &v : items) {
             infos.emplace_back();
@@ -849,17 +830,17 @@ void TreeWidget::dropEvent(QDropEvent *event)
             std::ostringstream str;
             auto owner = item->getRelativeParent(str,targetItemObj);
             info.subname = str.str();
-            info.doc = obj->getDocument();
+            info.doc = obj->getDocument()->getName();
             info.obj = obj->getNameInDocument();
             if(owner) {
-                info.ownerDoc = owner->getDocument();
+                info.ownerDoc = owner->getDocument()->getName();
                 info.owner = owner->getNameInDocument();
             }
             QTreeWidgetItem* parent = item->parent();
             if (parent && parent->type() == TreeWidget::ObjectType) {
                 auto vpp = static_cast<DocumentObjectItem *>(parent)->object();
                 info.parent = vpp->getObject()->getNameInDocument();
-                info.parentDoc = vpp->getObject()->getDocument();
+                info.parentDoc = vpp->getObject()->getDocument()->getName();
             }
             info.subs.swap(v.second);
         }
@@ -881,7 +862,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     break;
                 }
 
-                auto obj = info.doc->getObject(info.obj.c_str());
+                auto doc = App::GetApplication().getDocument(info.doc.c_str());
+                if(!doc) {
+                    FC_WARN("Cannot find document " << info.doc);
+                    continue;
+                }
+                auto obj = doc->getObject(info.obj.c_str());
                 auto vpc = dynamic_cast<ViewProviderDocumentObject*>(
                         Application::Instance->getViewProvider(obj));
                 if(!vpc) {
@@ -890,10 +876,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
 
                 ViewProviderDocumentObject *vpp = 0;
-                if(info.parentDoc) {
-                    auto parent = info.parentDoc->getObject(info.parent.c_str());
-                    vpp = dynamic_cast<ViewProviderDocumentObject*>(
-                            Application::Instance->getViewProvider(parent));
+                if(info.parentDoc.size()) {
+                    auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
+                    if(parentDoc) {
+                        auto parent = parentDoc->getObject(info.parent.c_str());
+                        vpp = dynamic_cast<ViewProviderDocumentObject*>(
+                                Application::Instance->getViewProvider(parent));
+                    }
                     if(!vpp) {
                         FC_WARN("Cannot find dragging object's parent " << info.parent);
                         continue;
@@ -901,29 +890,22 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
 
                 App::DocumentObject *owner = 0;
-                if(info.ownerDoc) {
-                    owner = info.ownerDoc->getObject(info.owner.c_str());
+                if(info.ownerDoc.size()) {
+                    auto ownerDoc = App::GetApplication().getDocument(info.ownerDoc.c_str());
+                    if(ownerDoc) 
+                        owner = ownerDoc->getObject(info.owner.c_str());
                     if(!owner) {
                         FC_WARN("Cannot find dragging object's top parent " << info.owner);
                         continue;
                     }
                 }
+
                 if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
                     vpp->dragObject(obj);
                     owner = 0;
                     subname.clear();
                 }
-                if(info.subs.empty())
-                    info.subs.push_back("");
-                for(auto &sub : info.subs) {
-                    auto sobj = obj;
-                    if(sub.find('.')!=std::string::npos) {
-                        sobj = obj->getSubObject(sub.c_str());
-                        if(!sobj) continue;
-                    }
-                    // now add the object to the target object
-                    vp->dropObjectEx(sobj,owner,(subname+sub).c_str());
-                }
+                vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
             }
         } catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
@@ -955,10 +937,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
             infos.emplace_back();
             auto &info = infos.back();
             auto obj = item->object()->getObject();
-            info.doc = obj->getDocument();
+            info.doc = obj->getDocument()->getName();
             info.obj = obj->getNameInDocument();
             auto parent = parentItem->object()->getObject();
-            info.parentDoc = parent->getDocument();
+            info.parentDoc = parent->getDocument()->getName();
             info.parent = parent->getNameInDocument();
         }
         // Because the existence of subname, we must de-select the drag the
@@ -971,7 +953,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
         gui->openCommand("Move object");
         try {
             for (auto &info : infos) {
-                auto obj = info.doc->getObject(info.obj.c_str());
+                auto doc = App::GetApplication().getDocument(info.doc.c_str());
+                if(!doc) continue;
+                auto obj = doc->getObject(info.obj.c_str());
                 auto vpc = dynamic_cast<ViewProviderDocumentObject*>(
                         Application::Instance->getViewProvider(obj));
                 if(!vpc) {
@@ -979,7 +963,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     continue;
                 }
 
-                auto parent = info.parentDoc->getObject(info.parent.c_str());
+                auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
+                if(!parentDoc) {
+                    FC_WARN("Canont find document " << info.parentDoc);
+                    continue;
+                }
+                auto parent = parentDoc->getObject(info.parent.c_str());
                 auto vpp = dynamic_cast<ViewProviderDocumentObject*>(
                         Application::Instance->getViewProvider(parent));
                 if(!vpp) {
@@ -2229,7 +2218,8 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         nextsub = dot+1;
     else {
         item->selected+=2;
-        item->mySubs.insert(subname);
+        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
+            item->mySubs.push_back(subname);
         return;
     }
 
@@ -2240,7 +2230,8 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         if(!subObj)
             TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
         item->selected += 2;
-        item->mySubs.insert(subname);
+        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
+            item->mySubs.push_back(subname);
         return;
     }
 
@@ -2281,7 +2272,8 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         // Select the current object instead.
         TREE_TRACE("element " << subname << " not found");
         item->selected+=2;
-        item->mySubs.insert(subname);
+        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
+            item->mySubs.push_back(subname);
     }
 }
 

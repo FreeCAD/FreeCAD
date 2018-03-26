@@ -330,7 +330,7 @@ public:
 private:
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
-    std::set<std::string> mySubs;
+    std::vector<std::string> mySubs;
     int previousStatus;
     int selected;
     bool populated;

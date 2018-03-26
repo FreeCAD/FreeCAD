@@ -74,7 +74,8 @@ public:
     /// Show the object in the view
     virtual void show(void);
 
-    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, const char *) const override;
+    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
+            const char *, const std::vector<std::string> &) const override;
 
     virtual bool showInTree() const;
 

@@ -1884,7 +1884,7 @@ bool ViewProviderLink::canDropObjects() const {
 }
 
 bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj, 
-        App::DocumentObject *owner, const char *subname) const
+        App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
 {
     auto ext = getLinkExtension();
     if(isGroup(ext))
@@ -1894,7 +1894,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
     if(!hasSubName && linkView->isLinked()) {
         auto linked = getLinkedView(false,ext);
         if(linked)
-            return linked->canDropObjectEx(obj,owner,subname);
+            return linked->canDropObjectEx(obj,owner,subname,elements);
     }
     if(obj->getDocument() != getObject()->getDocument() && 
        !dynamic_cast<App::PropertyXLink*>(ext->getLinkedObjectValue()))
@@ -1904,7 +1904,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
 }
 
 void ViewProviderLink::dropObjectEx(App::DocumentObject* obj, 
-        App::DocumentObject *owner, const char *subname) 
+        App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) 
 {
     auto ext = getLinkExtension();
     if(isGroup(ext)) {
@@ -1920,7 +1920,7 @@ void ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
     if(!hasSubName) {
         auto linked = getLinkedView(false,ext);
         if(linked) {
-            linked->dropObjectEx(obj,owner,subname);
+            linked->dropObjectEx(obj,owner,subname,elements);
             return;
         }
     }

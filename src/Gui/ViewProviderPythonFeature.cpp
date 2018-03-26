@@ -1256,7 +1256,7 @@ ViewProviderPythonFeatureImp::canDragAndDropObject(App::DocumentObject *obj) con
 
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
-        App::DocumentObject *owner, const char *subname) const
+        App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
 {
     Base::PyGILStateLocker lock;
     try {
@@ -1265,10 +1265,15 @@ ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("canDropObjectEx"))) {
                 Py::Callable method(vp.getAttr(std::string("canDropObjectEx")));
-                Py::Tuple args(3);
+                Py::Tuple args(4);
                 args.setItem(0, Py::Object(obj->getPyObject(), true));
                 args.setItem(1, owner?Py::Object(owner->getPyObject(), true):Py::None());
                 args.setItem(2, Py::String(subname?subname:""));
+                Py::Tuple tuple(elements.size());
+                int i=0;
+                for(auto &element : elements)
+                    tuple.setItem(i++,Py::String(element));
+                args.setItem(3, tuple);
                 Py::Boolean ok(method.apply(args));
                 return static_cast<bool>(ok) ? Accepted : Rejected;
             }
@@ -1286,8 +1291,8 @@ ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
 }
 
 ViewProviderPythonFeatureImp::ValueT
-ViewProviderPythonFeatureImp::dropObjectEx(
-        App::DocumentObject* obj, App::DocumentObject *owner, const char *element)
+ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements)
 {
     Base::PyGILStateLocker lock;
     try {
@@ -1295,12 +1300,16 @@ ViewProviderPythonFeatureImp::dropObjectEx(
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("dropObjectEx"))) {
+                Py::Tuple tuple(elements.size());
+                int i=0;
+                for(auto &element : elements)
+                    tuple.setItem(i++,Py::String(element));
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
                     Py::TupleN args(
                             Py::Object(obj->getPyObject(),true),
                             owner?Py::Object(owner->getPyObject(),true):Py::Object(),
-                            Py::String(element?element:""));
+                            Py::String(subname?subname:""),tuple);
                     method.apply(args);
                     return Accepted;
                 }
@@ -1310,7 +1319,7 @@ ViewProviderPythonFeatureImp::dropObjectEx(
                             Py::Object(object->getPyObject(),true),
                             Py::Object(obj->getPyObject(),true),
                             owner?Py::Object(owner->getPyObject(),true):Py::Object(),
-                            Py::String(element?element:""));
+                            Py::String(subname?subname:""),tuple);
                     method.apply(args);
                     return Accepted;
                 }

@@ -105,9 +105,11 @@ public:
     /** Return false to force drop only operation for a give object*/
     ValueT canDragAndDropObject(App::DocumentObject*) const;
     /** Query object dropping with full quanlified name */
-    ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, const char *) const;
+    ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
+            const char *,const std::vector<std::string> &elements) const;
     /** Add an object with full quanlified name to the view provider by drag and drop */
-    ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *, const char *);
+    ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
+            const char *, const std::vector<std::string> &elements);
     //@}
 
 private:
@@ -302,23 +304,24 @@ public:
             return ViewProviderT::canDragAndDropObject(obj);
         }
     }
-    virtual bool canDropObjectEx(
-            App::DocumentObject *obj, App::DocumentObject *owner, const char *subname) const override
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) const override
     {
-        switch (imp->canDropObjectEx(obj,owner,subname)) {
+        switch (imp->canDropObjectEx(obj,owner,subname,elements)) {
         case ViewProviderPythonFeatureImp::Accepted:
             return true;
         case ViewProviderPythonFeatureImp::Rejected:
             return false;
         default:
-            return ViewProviderT::canDropObjectEx(obj,owner,subname);
+            return ViewProviderT::canDropObjectEx(obj,owner,subname,elements);
         }
     }
     /** Add an object with full quanlified name to the view provider by drag and drop */
-    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, const char *element) {
-        switch (imp->dropObjectEx(obj,owner,element)) {
+    virtual void dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) {
+        switch (imp->dropObjectEx(obj,owner,subname,elements)) {
         case ViewProviderPythonFeatureImp::NotImplemented:
-            ViewProviderT::dropObjectEx(obj,owner,element);
+            ViewProviderT::dropObjectEx(obj,owner,subname,elements);
             break;
         default:
             break;
