@@ -365,6 +365,51 @@ public:
     App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0, 
         std::string *childName=0, const char **subElement=0) const;
 
+    /** Resolve a link reference that is relative to this object reference
+     *
+     * @param subname: on input, this is the subname reference to the object
+     * that is to be assigned a link. On output, the reference may be offseted
+     * to be rid off any common parent.
+     * @param link: on input, this is the top parent of the link reference. On
+     * output, it may be altered to one of its child to be rid off any common
+     * parent.
+     * @param linkSub: on input, this the subname of the link reference. On
+     * output, it may be offseted to be rid off any common parent.
+     *
+     * @return The corrected top parent of the object that is to be assigned the
+     * link. 
+     *
+     * To avoid any cyclic reference, an object must not be assign a link to any
+     * of the object in its parent. This function can be used to resolve any
+     * common parents of an object and its link target.
+     *
+     * For example, with the following object hierarchy
+     *
+     * Group
+     *   |--Fuse
+     *   |   |--Box
+     *   |   |--Cylinder
+     *   |--Cut
+     *       |--Box001
+     *       |--Cylinder001
+     *
+     * If you want add a link of Group.Cut.Box001 to Group.Fuse, you can call
+     *      std::string subname("Fuse.");
+     *      auto link = Group;
+     *      std::string linkSub("Cut.Box001.");
+     *      parent = Group.resolveRelativeLink(subname,link,linkSub);
+     *
+     * The resolving result is as follow:
+     *      parent  -> Fuse
+     *      subname -> ""
+     *      link    -> Cut
+     *      linkSub -> "Box001."
+     *
+     * The common parent 'Group' is removed.
+     */
+    App::DocumentObject *resolveRelativeLink(std::string &subname, 
+            App::DocumentObject *&link, std::string &linkSub) const;
+
     virtual void onUpdateElementReference(const Property *) {}
 
 protected:

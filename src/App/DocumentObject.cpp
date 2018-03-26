@@ -924,3 +924,55 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     return obj;
 }
 
+DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
+        DocumentObject *&link, std::string &linkSub) const
+{
+    if(!link || !link->getNameInDocument() || !getNameInDocument())
+        return 0;
+    auto ret = const_cast<DocumentObject*>(this);
+    if(link != ret) {
+        auto sub = subname.c_str();
+        auto nextsub = sub;
+        for(auto dot=strchr(nextsub,'.');dot;nextsub=dot+1,dot=strchr(nextsub,'.')) {
+            std::string subcheck(sub,nextsub-sub);
+            subcheck += link->getNameInDocument();
+            subcheck += '.';
+            if(getSubObject(subcheck.c_str())==link) {
+                ret = getSubObject(std::string(sub,dot+1-sub).c_str());
+                if(!ret) 
+                    return 0;
+                subname = std::string(dot+1);
+                break;
+            }
+        }
+        return ret;
+    }
+
+    auto target = link;
+    size_t pos=0,linkPos=0;
+    while(1) {
+        pos = subname.find('.',pos);
+        if(pos == std::string::npos)
+            return 0;
+        ++pos;
+        auto ssub = subname.substr(0,pos);
+        linkPos = linkSub.find('.',linkPos);
+        if(linkPos == std::string::npos)
+            return 0;
+        ++linkPos;
+        auto linkssub = linkSub.substr(0,linkPos);
+        if(linkssub==ssub)
+            continue;
+        ret = getSubObject(ssub.c_str());
+        if(!ret)
+            return 0;
+        target = link->getSubObject(linkssub.c_str());
+        if(!target)
+            return 0;
+        subname = ssub;
+        link = target;
+        linkSub = linkssub;
+        return ret;
+    }
+}
+
