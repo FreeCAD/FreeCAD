@@ -57,6 +57,9 @@ if(BUILD_QT5)
   string(STRIP ${XCODE_PATH} XCODE_PATH)
 
   set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/Current")
+
+  # add qt assistant to bundle
+  install(PROGRAMS "${Qt5Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant" DESTINATION ${CMAKE_INSTALL_PREFIX}/MacOS)
 endif(BUILD_QT5)
 
 # Ensure the actual plugin files are installed instead of symlinks.
