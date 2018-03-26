@@ -46,22 +46,22 @@
     <message>
       <location filename="PathHop.py" line="46"/>
       <source>The object to be reached by this hop</source>
-      <translation type="unfinished">The object to be reached by this hop</translation>
+      <translation>このホップによって到達するオブジェクト</translation>
     </message>
     <message>
       <location filename="PathHop.py" line="47"/>
       <source>The Z height of the hop</source>
-      <translation type="unfinished">The Z height of the hop</translation>
+      <translation>ホップのZ高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="39"/>
       <source>The object to be reached by this hop</source>
-      <translation type="unfinished">The object to be reached by this hop</translation>
+      <translation>このホップによって到達するオブジェクト</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="40"/>
       <source>The Z height of the hop</source>
-      <translation type="unfinished">The Z height of the hop</translation>
+      <translation>ホップのZ高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="59"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="PathDrilling.py" line="57"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation type="unfinished">Incremental Drill depth before retracting to clear chips</translation>
+      <translation>チップのクリアのための後退前に増やすドリル深さ</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="80"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="PathDrilling.py" line="88"/>
       <source>Height to clear top of material</source>
-      <translation type="unfinished">Height to clear top of material</translation>
+      <translation>マテリアルのクリアトップまでの高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="53"/>
@@ -176,12 +176,12 @@
     <message>
       <location filename="PathProfileEdges.py" line="56"/>
       <source>The base geometry of this toolpath</source>
-      <translation type="unfinished">The base geometry of this toolpath</translation>
+      <translation>このツールパスのベースジオメトリー</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="91"/>
       <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
+      <translation>ツールが切断するエッジ両端</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="93"/>
@@ -246,7 +246,7 @@
     <message>
       <location filename="PathStop.py" line="43"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>プログラムにオプションまたは強制的な停止を追加</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="43"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="PathJob.py" line="63"/>
       <source>Name of the Machine that will use the CNC program</source>
-      <translation type="unfinished">Name of the Machine that will use the CNC program</translation>
+      <translation>CNCプログラムを使用するマシンの名前</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="65"/>
@@ -509,7 +509,7 @@
       <translation>新しい工程</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>ジョブ %s が見つかりませんでした。</translation>
     </message>
@@ -534,14 +534,14 @@
       <translation>部分コマンド</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>新しい工程</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
-      <translation type="unfinished">Path Modification</translation>
+      <translation>パス変更</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="396"/>
@@ -614,12 +614,12 @@
     <message>
       <location filename="PathDressupHoldingTags.py" line="719"/>
       <source>Locations of insterted holding tags</source>
-      <translation type="unfinished">Locations of insterted holding tags</translation>
+      <translation>挿入された保持タグの位置</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="720"/>
       <source>Ids of disabled holding tags</source>
-      <translation type="unfinished">Ids of disabled holding tags</translation>
+      <translation>無効化された保持タグのID</translation>
     </message>
     <message>
       <location filename="PathDressupHoldingTags.py" line="721"/>
@@ -657,7 +657,7 @@
     <message>
       <location filename="PathEngraveGui.py" line="67"/>
       <source>Creates an Engraving Path around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving Path around a Draft ShapeString</translation>
+      <translation>ドラフト ShapeString 周りの彫刻パスを作成</translation>
     </message>
   </context>
   <context>
@@ -700,12 +700,12 @@
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="164"/>
       <source>isVertical(%s) not supported</source>
-      <translation type="unfinished">isVertical(%s) not supported</translation>
+      <translation>isVertical (%s) はサポートされていません</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="188"/>
       <source>isHorizontal(%s) not supported</source>
-      <translation type="unfinished">isHorizontal(%s) not supported</translation>
+      <translation>isHorizontal (%s) はサポートされていません</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="151"/>
@@ -720,12 +720,12 @@
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="164"/>
       <source>isVertical(%s) not supported</source>
-      <translation type="unfinished">isVertical(%s) not supported</translation>
+      <translation>isVertical (%s) はサポートされていません</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="188"/>
       <source>isHorizontal(%s) not supported</source>
-      <translation type="unfinished">isHorizontal(%s) not supported</translation>
+      <translation>isHorizontal (%s) はサポートされていません</translation>
     </message>
   </context>
   <context>
@@ -743,22 +743,22 @@
     <message>
       <location filename="PathHelix.py" line="52"/>
       <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</translation>
+      <translation>円形切削の方向。時計回り(CW)または反時計回り(CCW)。</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
-      <translation type="unfinished">Start cutting from the inside or outside</translation>
+      <translation>内側または外側から切削を開始</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="58"/>
       <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation type="unfinished">Radius increment (must be smaller than tool diameter)</translation>
+      <translation>半径の増分 (工具直径よりも小さくなければなりません)</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="449"/>
       <source>PathHelix</source>
-      <translation type="unfinished">PathHelix</translation>
+      <translation>PathHelix</translation>
     </message>
   </context>
   <context>
@@ -781,17 +781,17 @@
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="286"/>
       <source>Stock not from Base bound box!</source>
-      <translation type="unfinished">Stock not from Base bound box!</translation>
+      <translation>ストックが基本バウンディングボックスから開始していません!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="356"/>
       <source>Stock not a box!</source>
-      <translation type="unfinished">Stock not a box!</translation>
+      <translation>ストックがボックスではありません!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
       <source>Stock not a cylinder!</source>
-      <translation type="unfinished">Stock not a cylinder!</translation>
+      <translation>ストックが円筒ではありません!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
@@ -831,7 +831,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="244"/>
       <source>Unsupported PathJob template version %s</source>
-      <translation type="unfinished">Unsupported PathJob template version %s</translation>
+      <translation>サポートされていないPathJobテンプレートのバージョン %s</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="149"/>
@@ -856,17 +856,17 @@
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="286"/>
       <source>Stock not from Base bound box!</source>
-      <translation type="unfinished">Stock not from Base bound box!</translation>
+      <translation>ストックが基本バウンディングボックスから開始していません!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="356"/>
       <source>Stock not a box!</source>
-      <translation type="unfinished">Stock not a box!</translation>
+      <translation>ストックがボックスではありません!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
       <source>Stock not a cylinder!</source>
-      <translation type="unfinished">Stock not a cylinder!</translation>
+      <translation>ストックが円筒ではありません!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
@@ -904,17 +904,17 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="101"/>
       <source>Holds the calculated value for the StartDepth</source>
-      <translation type="unfinished">Holds the calculated value for the StartDepth</translation>
+      <translation>StartDepthの計算値を保持</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="104"/>
       <source>Holds the calculated value for the FinalDepth</source>
-      <translation type="unfinished">Holds the calculated value for the FinalDepth</translation>
+      <translation>FinalDepthの計算値を保持</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="107"/>
       <source>Holds the diameter of the tool</source>
-      <translation type="unfinished">Holds the diameter of the tool</translation>
+      <translation>ツールの直径を保持</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="113"/>
@@ -964,17 +964,17 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="101"/>
       <source>Holds the calculated value for the StartDepth</source>
-      <translation type="unfinished">Holds the calculated value for the StartDepth</translation>
+      <translation>StartDepthの計算値を保持</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="104"/>
       <source>Holds the calculated value for the FinalDepth</source>
-      <translation type="unfinished">Holds the calculated value for the FinalDepth</translation>
+      <translation>FinalDepthの計算値を保持</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="107"/>
       <source>Holds the diameter of the tool</source>
-      <translation type="unfinished">Holds the diameter of the tool</translation>
+      <translation>ツールの直径を保持</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="115"/>
@@ -1220,7 +1220,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocket.py" line="88"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
+      <translation>ツールの最終深さ - Z方向の最小値</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="89"/>
@@ -1268,12 +1268,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="140"/>
       <source>Height of this stock box</source>
-      <translation type="unfinished">Height of this stock box</translation>
+      <translation>このストックボックスの高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="173"/>
       <source>Radius of this stock cylinder</source>
-      <translation type="unfinished">Radius of this stock cylinder</translation>
+      <translation>このストック円筒の半径</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="326"/>
@@ -1308,27 +1308,27 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="138"/>
       <source>Length of this stock box</source>
-      <translation type="unfinished">Length of this stock box</translation>
+      <translation>このストックボックスの長さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="139"/>
       <source>Width of this stock box</source>
-      <translation type="unfinished">Width of this stock box</translation>
+      <translation>このストックボックスの幅</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="140"/>
       <source>Height of this stock box</source>
-      <translation type="unfinished">Height of this stock box</translation>
+      <translation>このストックボックスの高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="173"/>
       <source>Radius of this stock cylinder</source>
-      <translation type="unfinished">Radius of this stock cylinder</translation>
+      <translation>このストック円筒の半径</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="174"/>
       <source>Height of this stock cylinder</source>
-      <translation type="unfinished">Height of this stock cylinder</translation>
+      <translation>このストック円筒の高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="202"/>
@@ -1538,7 +1538,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathCustom.py" line="70"/>
       <source>Creates a path object based on custom G-code</source>
-      <translation>カスタムG コードに基づいてパスオブジェクトを作成</translation>
+      <translation>カスタムGコードに基づいてパスオブジェクトを作成</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathCustom.py" line="64"/>
@@ -1548,7 +1548,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathCustom.py" line="65"/>
       <source>Creates a path object based on custom G-code</source>
-      <translation>カスタムG コードに基づいてパスオブジェクトを作成</translation>
+      <translation>カスタムGコードに基づいてパスオブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -1601,12 +1601,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1051"/>
       <source>Please select one path object</source>
-      <translation type="unfinished">Please select one path object</translation>
+      <translation>パスオブジェクトをひとつ選択してください</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1055"/>
       <source>The selected object is not a path</source>
-      <translation type="unfinished">The selected object is not a path</translation>
+      <translation>選択されたオブジェクトはパスではありません</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1059"/>
@@ -1741,12 +1741,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathInspect.py" line="135"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</translation>
+      <translation>&lt;b&gt;注意&lt;/b&gt;: OKを押すとオブジェクトに対する上記の変更が確定されます。ただしオブジェクトがパラメトリックな場合にはこれは変更は再計算によって取り消しできます。</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="168"/>
       <source>Inspect G-code</source>
-      <translation>G コードを検査</translation>
+      <translation>Gコードを検査</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="169"/>
@@ -1894,21 +1894,21 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathSanity.py" line="93"/>
       <source>Please select a path Project to check
 </source>
-      <translation type="unfinished">Please select a path Project to check
+      <translation>検証するパスのプロジェクトを選択してください
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="96"/>
       <source>Please select a path project to check
 </source>
-      <translation type="unfinished">Please select a path project to check
+      <translation>検証するパスのプロジェクトを選択してください
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="151"/>
       <source>The Job has no selected Base object.
 </source>
-      <translation type="unfinished">The Job has no selected Base object.
+      <translation>ジョブに選択されたベース オブジェクトがありません。
 </translation>
     </message>
     <message>
@@ -1924,13 +1924,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="64"/>
       <source>The Job has no selected Base object.</source>
-      <translation type="unfinished">The Job has no selected Base object.</translation>
+      <translation>ジョブに選択されたベース オブジェクトがありません。</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="69"/>
       <source>A Postprocessor has not been selected.
 </source>
-      <translation type="unfinished">A Postprocessor has not been selected.
+      <translation>ポストプロセッサーが選択されていません。
 </translation>
     </message>
     <message>
@@ -1943,7 +1943,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="76"/>
       <source>A Postprocessor has not been selected.</source>
-      <translation type="unfinished">A Postprocessor has not been selected.</translation>
+      <translation>ポストプロセッサーが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="80"/>
@@ -1985,22 +1985,22 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathCommands.py" line="44"/>
       <source>Finish Selecting Loop</source>
-      <translation type="unfinished">Finish Selecting Loop</translation>
+      <translation>ループ選択を終了</translation>
     </message>
     <message>
       <location filename="PathCommands.py" line="45"/>
       <source>Complete loop selection from two edges</source>
-      <translation type="unfinished">Complete loop selection from two edges</translation>
+      <translation>2つのエッジからのループ選択を完了</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="58"/>
       <source>Finish Selecting Loop</source>
-      <translation type="unfinished">Finish Selecting Loop</translation>
+      <translation>ループ選択を終了</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="60"/>
       <source>Complete loop selection from two edges</source>
-      <translation type="unfinished">Complete loop selection from two edges</translation>
+      <translation>2つのエッジからのループ選択を完了</translation>
     </message>
   </context>
   <context>
@@ -2050,7 +2050,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathStop.py" line="122"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>プログラムにオプションまたは強制的な停止を追加</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStop.py" line="107"/>
@@ -2060,7 +2060,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathStop.py" line="118"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>プログラムにオプションまたは強制的な停止を追加</translation>
     </message>
   </context>
   <context>
@@ -2090,17 +2090,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
-      <translation type="unfinished">Add Tool Controller to the Job</translation>
+      <translation>ジョブにツールコントローラーを追加</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="257"/>
       <source>Add Tool Controller to the Job</source>
-      <translation type="unfinished">Add Tool Controller to the Job</translation>
+      <translation>ジョブにツールコントローラーを追加</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="258"/>
       <source>Add Tool Controller</source>
-      <translation type="unfinished">Add Tool Controller</translation>
+      <translation>ツールコントローラーを追加</translation>
     </message>
   </context>
   <context>
@@ -2108,7 +2108,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolLenOffset.py" line="126"/>
       <source>Tool Length Offset</source>
-      <translation type="unfinished">Tool Length Offset</translation>
+      <translation>ツール長さオフセット</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="128"/>
@@ -2123,7 +2123,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathToolLenOffset.py" line="123"/>
       <source>Tool Length Offset</source>
-      <translation type="unfinished">Tool Length Offset</translation>
+      <translation>ツール長さオフセット</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLenOffset.py" line="124"/>
@@ -2397,7 +2397,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="TooltableEditor.py" line="432"/>
       <source>Cutting edge angle</source>
-      <translation>刃先角度</translation>
+      <translation>切れ刃角</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="433"/>
@@ -2478,14 +2478,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAMシミュレーター</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
-      <translation type="unfinished">Simulate Path G-Code on stock</translation>
+      <translation>ストック上のパスのGコードをシミュレート</translation>
     </message>
   </context>
   <context>
@@ -2658,12 +2658,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTag.py" line="120"/>
       <source>Locations of insterted holding tags</source>
-      <translation type="unfinished">Locations of insterted holding tags</translation>
+      <translation>挿入された保持タグの位置</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="121"/>
       <source>Ids of disabled holding tags</source>
-      <translation type="unfinished">Ids of disabled holding tags</translation>
+      <translation>無効化された保持タグのID</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="122"/>
@@ -2735,12 +2735,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathGui.py" line="56"/>
       <source>%s has no property %s (%s))</source>
-      <translation type="unfinished">%s has no property %s (%s))</translation>
+      <translation>%s にはプロパティー %s (%s) がありません</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGui.py" line="115"/>
       <source>Cannot find property %s of %s</source>
-      <translation type="unfinished">Cannot find property %s of %s</translation>
+      <translation>プロパティー %s （%s）を見つけることができません</translation>
     </message>
   </context>
   <context>
@@ -2772,7 +2772,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressup.py" line="114"/>
       <source>Creates a Path Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Dress-up object from a selected path</translation>
+      <translation>選択したパスからパス・ドレスアップ・オブジェクトを作成</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="116"/>
@@ -2798,7 +2798,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="253"/>
       <source>Set to False to disable code generation</source>
-      <translation type="unfinished">Set to False to disable code generation</translation>
+      <translation>コード生成を無効にする場合は False を設定</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="51"/>
@@ -2819,7 +2819,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="255"/>
       <source>An optional comment for this profile, will appear in G-Code</source>
-      <translation type="unfinished">An optional comment for this profile, will appear in G-Code</translation>
+      <translation>このプロファイルのオプションコメント。Gコードに表示されます。</translation>
     </message>
     <message>
       <location filename="PathComment.py" line="41"/>
@@ -2837,7 +2837,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="267"/>
       <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation type="unfinished">Radius increment (must be smaller than tool diameter)</translation>
+      <translation>半径の増分 (工具直径よりも小さくなければなりません)</translation>
     </message>
   </context>
   <context>
@@ -2845,12 +2845,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="259"/>
       <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</translation>
+      <translation>円形切削の方向。時計回り(CW)または反時計回り(CCW)。</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="263"/>
       <source>Start cutting from the inside or outside</source>
-      <translation type="unfinished">Start cutting from the inside or outside</translation>
+      <translation>内側または外側から切削を開始</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="86"/>
@@ -2871,12 +2871,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="281"/>
       <source>Final Depth of Tool - lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool - lowest value in Z</translation>
+      <translation>ツールの最終深さ - Z方向の最小値</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="63"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation type="unfinished">Final Depth of Tool- lowest value in Z</translation>
+      <translation>ツールの最終深さ - Z方向の最小値</translation>
     </message>
   </context>
   <context>
@@ -2905,7 +2905,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathInspect.py" line="131"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</translation>
+      <translation>&lt;b&gt;注意&lt;/b&gt;: OKを押すとオブジェクトに対する上記の変更が確定されます。ただしオブジェクトがパラメトリックな場合にはこれは変更は再計算によって取り消しできます。</translation>
     </message>
   </context>
   <context>
@@ -2931,7 +2931,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathMillFace.py" line="297"/>
       <source>The selected settings did not produce a valid path.
 </source>
-      <translation type="unfinished">The selected settings did not produce a valid path.
+      <translation>選択した設定は有効なパスを生成しませんでした。
 </translation>
     </message>
   </context>
@@ -3033,12 +3033,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathEngrave.py" line="272"/>
       <source>ShapeString Engrave</source>
-      <translation type="unfinished">ShapeString Engrave</translation>
+      <translation>ShapeString彫刻</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="273"/>
       <source>Creates an Engraving Path around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving Path around a Draft ShapeString</translation>
+      <translation>ドラフト ShapeString 周りの彫刻パスを作成</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="352"/>
@@ -3207,7 +3207,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="277"/>
       <source>Starting Depth of Tool - first cut depth in Z</source>
-      <translation type="unfinished">Starting Depth of Tool - first cut depth in Z</translation>
+      <translation>ツールの開始深さ - Z方向の初回の切り込み量</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="62"/>
@@ -3228,7 +3228,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="283"/>
       <source>Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</source>
-      <translation type="unfinished">Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False</translation>
+      <translation>終端開口にこの切削深さ量を追加。UseFinalDepthがFalseの場合にのみ使用されます。</translation>
     </message>
   </context>
   <context>
@@ -3236,7 +3236,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="279"/>
       <source>Set to True to manually specify a final depth</source>
-      <translation type="unfinished">Set to True to manually specify a final depth</translation>
+      <translation>最終深さを手動で指定する場合はTrueに設定</translation>
     </message>
   </context>
   <context>
@@ -3244,7 +3244,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="275"/>
       <source>Set to True to manually specify a start depth</source>
-      <translation type="unfinished">Set to True to manually specify a start depth</translation>
+      <translation>開始深さを手動で指定する場合はTrueに設定</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="61"/>
@@ -3302,7 +3302,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathKurve.py" line="81"/>
       <source>The name of the end point of this path</source>
-      <translation type="unfinished">The name of the end point of this path</translation>
+      <translation>このパスの終了点の名前</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="81"/>
@@ -3400,7 +3400,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="45"/>
       <source>The base geometry of this toolpath</source>
-      <translation type="unfinished">The base geometry of this toolpath</translation>
+      <translation>このツールパスのベースジオメトリー</translation>
     </message>
   </context>
   <context>
@@ -3447,12 +3447,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressup.py" line="45"/>
       <source>The position of this dressup in the base path</source>
-      <translation type="unfinished">The position of this dressup in the base path</translation>
+      <translation>ベースパス内でのこのドレスアップの位置</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="46"/>
       <source>The modification to be added</source>
-      <translation type="unfinished">The modification to be added</translation>
+      <translation>追加される変更</translation>
     </message>
   </context>
   <context>
@@ -3460,12 +3460,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHop.py" line="44"/>
       <source>The object to be reached by this hop</source>
-      <translation type="unfinished">The object to be reached by this hop</translation>
+      <translation>このホップによって到達するオブジェクト</translation>
     </message>
     <message>
       <location filename="PathHop.py" line="45"/>
       <source>The Z height of the hop</source>
-      <translation type="unfinished">The Z height of the hop</translation>
+      <translation>ホップのZ高さ</translation>
     </message>
   </context>
   <context>
@@ -3491,17 +3491,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathMachine.py" line="44"/>
       <source>Name of the Machine that will use the CNC program</source>
-      <translation type="unfinished">Name of the Machine that will use the CNC program</translation>
+      <translation>CNCプログラムを使用するマシンの名前</translation>
     </message>
     <message>
       <location filename="PathMachine.py" line="46"/>
       <source>Select the Post Processor file for this machine</source>
-      <translation type="unfinished">Select the Post Processor file for this machine</translation>
+      <translation>このマシン用のポストプロセッサファイルを選択</translation>
     </message>
     <message>
       <location filename="PathMachine.py" line="48"/>
       <source>Units that the machine works in, ie Metric or Inch</source>
-      <translation type="unfinished">Units that the machine works in, ie Metric or Inch</translation>
+      <translation>マシンが作業時に使用する単位。メートルまたはインチ。</translation>
     </message>
     <message>
       <location filename="PathMachine.py" line="51"/>
@@ -3511,12 +3511,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathMachine.py" line="55"/>
       <source>The Maximum distance in X the machine can travel</source>
-      <translation type="unfinished">The Maximum distance in X the machine can travel</translation>
+      <translation>マシンが移動できるX方向の最大距離</translation>
     </message>
     <message>
       <location filename="PathMachine.py" line="59"/>
       <source>The Minimum distance in X the machine can travel</source>
-      <translation type="unfinished">The Minimum distance in X the machine can travel</translation>
+      <translation>マシンが移動できるX方向の最小距離</translation>
     </message>
     <message>
       <location filename="PathMachine.py" line="61"/>
@@ -3619,7 +3619,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDrilling.py" line="54"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation type="unfinished">Incremental Drill depth before retracting to clear chips</translation>
+      <translation>チップのクリアのための後退前に増やすドリル深さ</translation>
     </message>
   </context>
   <context>
@@ -3627,7 +3627,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathStop.py" line="41"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>プログラムにオプションまたは強制的な停止を追加</translation>
     </message>
   </context>
   <context>
@@ -3635,7 +3635,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDrilling.py" line="58"/>
       <source>The height where feed starts and height during retract tool when path is finished</source>
-      <translation type="unfinished">The height where feed starts and height during retract tool when path is finished</translation>
+      <translation>フィード開始位置の高さとパス終了時のツール後退中の高さ</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="64"/>
@@ -3648,7 +3648,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="89"/>
       <source>Radius at start and end</source>
-      <translation type="unfinished">Radius at start and end</translation>
+      <translation>始点、終点での半径</translation>
     </message>
   </context>
   <context>
@@ -3656,7 +3656,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="91"/>
       <source>Tesselation  value for tool paths made from beziers, bsplines, and ellipses</source>
-      <translation type="unfinished">Tesselation  value for tool paths made from beziers, bsplines, and ellipses</translation>
+      <translation>ベジエ曲線、B-スプライン、楕円からのツールパス作成のためのテッセレーション値</translation>
     </message>
   </context>
   <context>
@@ -3680,7 +3680,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathMachine.py" line="112"/>
       <source>Switch the machine max and minimum travel bounding box on/off</source>
-      <translation type="unfinished">Switch the machine max and minimum travel bounding box on/off</translation>
+      <translation>マシンの最大最小移動バウンディングボックスの有効/無効を切り替え</translation>
     </message>
   </context>
   <context>
@@ -3688,7 +3688,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="84"/>
       <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
+      <translation>ツールが切断するエッジ両端</translation>
     </message>
   </context>
   <context>
@@ -3801,7 +3801,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="79"/>
       <source>extra length of tool path after end of part edge</source>
-      <translation type="unfinished">extra length of tool path after end of part edge</translation>
+      <translation>パートエッジ終端の後のツールパスの余長</translation>
     </message>
   </context>
   <context>
@@ -3809,7 +3809,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="74"/>
       <source>extra length of tool path before start of part edge</source>
-      <translation type="unfinished">extra length of tool path before start of part edge</translation>
+      <translation>パートエッジ始端の前のツールパスの余長</translation>
     </message>
   </context>
   <context>
@@ -3817,7 +3817,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="75"/>
       <source>length of straight segment of toolpath that comes in at angle to first part edge</source>
-      <translation type="unfinished">length of straight segment of toolpath that comes in at angle to first part edge</translation>
+      <translation>最初のパートエッジの角に現れるツールパスの直線セグメントの長さ</translation>
     </message>
   </context>
   <context>
@@ -3825,7 +3825,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="80"/>
       <source>length of straight segment of toolpath that comes in at angle to last part edge</source>
-      <translation type="unfinished">length of straight segment of toolpath that comes in at angle to last part edge</translation>
+      <translation>最後のパートエッジの角に現れるツールパスの直線セグメントの長さ</translation>
     </message>
   </context>
   <context>
@@ -3883,7 +3883,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
       <source>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</source>
-      <translation type="unfinished">If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</translation>
+      <translation>このオプションが有効な場合、新しいパスは必要に応じて作成されるアクティブなプロジェクトに自動的に配置されます。</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="37"/>
@@ -3956,7 +3956,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="162"/>
       <source>Machine extents color</source>
-      <translation type="unfinished">Machine extents color</translation>
+      <translation>マシンの拡張色</translation>
     </message>
   </context>
   <context>

@@ -4051,7 +4051,7 @@ Como pretende continuar?</translation>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Data</source>
@@ -5392,7 +5392,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Panels</source>
@@ -5742,7 +5742,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -6227,7 +6227,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Status bar</source>
@@ -6358,7 +6358,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
@@ -6403,7 +6403,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -6448,7 +6448,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Dock views</source>
@@ -6834,7 +6834,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Workbench</source>
@@ -7177,7 +7177,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>View</source>
-      <translation>Vista atual</translation>
+      <translation>Vista</translation>
     </message>
     <message>
       <source>Special Ops</source>

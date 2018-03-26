@@ -4,14 +4,14 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation>Zu addierender Loft</translation>
+      <translation>Zu addierende Ausformung</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -20,7 +20,7 @@
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Erzeugen eines Objekts zwischen einer Kurve aus einer Skizze und einer anderen Kurve über einem bestimmten Pfad</translation>
+      <translation>Erzeugen eines Objekts durch das Führen einer geschlossenen Skizze entlang eines Pfades zu einer optionalen zweiten Skizze</translation>
     </message>
   </context>
   <context>
@@ -38,7 +38,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Erzeugen eines Objekts zwischen einer Kurve aus einer Skizze und einer anderen Kurve über einem bestimmten Pfad</translation>
+      <translation>Erzeugen eines Objekts durch das Führen einer geschlossenen Skizze entlang eines Pfades zu einer optionalen zweiten Skizze</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -203,7 +203,7 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation>Loch</translation>
+      <translation>Bohrung</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
@@ -549,32 +549,32 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation>Form-Mappe erstellen</translation>
+      <translation>Bezugsobjekt erstellen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation>Erstellen einer neuen Form-Mappe</translation>
+      <translation>Erstelle ein neues Bezugsobjekt</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Teile-Konstruktion</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>Abziehbarer Loft</translation>
+      <translation>Abziehbare Ausformung</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -583,7 +583,7 @@
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Erzeugen eines Objekts zwischen einer Kurve aus einer Skizze und einer anderen Kurve über einem bestimmten Pfad und Abzug des Objekts von einem bestimmten Körper</translation>
+      <translation>Erzeugen eines Objekts durch das Führen einer geschlossenen Skizze entlang eines Pfades zu einer optionalen zweiten Skizze und Abzug vom bestehenden Körper</translation>
     </message>
   </context>
   <context>
@@ -601,7 +601,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Erzeugen eines Objekts zwischen einer Kurve aus einer Skizze und einer anderen Kurve über einem bestimmten Pfad und Abzug des Objekts von einem bestimmten Körper</translation>
+      <translation>Erzeugen eines Objekts durch das Führen einer geschlossenen Skizze entlang eines Pfades zu einer optionalen zweiten Skizze und Abzug vom bestehenden Körper</translation>
     </message>
   </context>
   <context>
@@ -1282,7 +1282,17 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation>Leere Körperliste</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation>Die Körperliste darf nicht leer sein</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Akzeptieren: Eingabefehler</translation>
     </message>
@@ -1360,7 +1370,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -1653,7 +1663,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+48"/>
       <source>Hole parameters</source>
-      <translation>Bohrungparameter</translation>
+      <translation>Bohrungsparameter</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -1803,7 +1813,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation>Loft-Parameter</translation>
+      <translation>Ausformungs-Parameter</translation>
     </message>
   </context>
   <context>
@@ -2066,7 +2076,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
-      <translation>Parameter der Aufposterung</translation>
+      <translation>Parameter der Aufpolsterung</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2221,7 +2231,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Schnittorientierung</translation>
     </message>
@@ -2312,7 +2322,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>Schnitt entfernen</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Abschnitt Transformation</translation>
     </message>
@@ -3120,7 +3130,7 @@ Erstelle die Skizze auf der Fläche.</translation>
       <translation>Fase bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Ungültige Auswahl</translation>
     </message>
@@ -3187,7 +3197,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3199,8 +3209,8 @@ Erstelle die Skizze auf der Fläche.</translation>
       <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3642,7 +3652,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation>Loft bearbeiten</translation>
+      <translation>Ausformung bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
@@ -3652,7 +3662,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation>Form-Mappe bearbeiten</translation>
+      <translation>Bezugsobjekt bearbeiten</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
@@ -3763,12 +3773,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation>Konische Senkung</translation>
+      <translation>Kegelsenkung</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation>Zylindrische Senkung</translation>
+      <translation>Flachsenkung</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -3821,12 +3831,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+44"/>
       <source>Counterbore/sink dia</source>
-      <translation>Durchmesser einer zylindrischen Senkung</translation>
+      <translation>Durchmesser einer Flachsenkung</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Counterbore depth</source>
-      <translation>Tiefe einer zylindrischen Senkung</translation>
+      <translation>Tiefe einer Flachsenkung</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -3844,7 +3854,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation>Bohrungparameter</translation>
+      <translation>Bohrungsparameter</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3887,7 +3897,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation>Passen</translation>
+      <translation>Passung</translation>
     </message>
     <message>
       <location line="+40"/>

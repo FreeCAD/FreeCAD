@@ -170,7 +170,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="241"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation>Spunta per applicare le trasformazioni a tutti gli assi</translation>
+      <translation>Spuntare per applicare le trasformazioni a tutti gli assi</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="246"/>

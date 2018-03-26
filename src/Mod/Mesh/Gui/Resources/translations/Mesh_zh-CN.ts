@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>评估和修复网格...</translation>
     </message>
   </context>
   <context>

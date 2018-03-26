@@ -128,7 +128,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
       <source>Sketchfab exporter</source>
-      <translation type="unfinished">Sketchfab exporter</translation>
+      <translation>Sketchfab экспортер</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
       <source>OBJ (standard Mesh exporter)</source>
-      <translation type="unfinished">OBJ (standard Mesh exporter)</translation>
+      <translation>OBJ (стандартный экспортер полигональной сетки)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Загрузить</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>

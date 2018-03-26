@@ -77,7 +77,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="37"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation>Erstellt einen Analysecontainer mit dem Standardsolver CalculiX</translation>
+      <translation>Erstellt einen Analysecontainer mit Standardsolver CalculiX</translation>
     </message>
   </context>
   <context>
@@ -481,7 +481,7 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>Erstellt einen FEM-Löser Z88</translation>
+      <translation>Erstellt einen FEM-Solver Z88</translation>
     </message>
   </context>
   <context>
@@ -654,7 +654,7 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation>Erstellt einen FEM Träger-Querschnitt</translation>
+      <translation>Erstellt einen FEM-Träger-Querschnitt</translation>
     </message>
   </context>
   <context>
@@ -781,7 +781,7 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>Erstellt eine FEM-Netz-Bereich</translation>
+      <translation>Erstellt ein FEM-Netz-Bereich</translation>
     </message>
   </context>
   <context>
@@ -884,7 +884,7 @@
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation>Erstellt FEM-Solver CalculiX</translation>
+      <translation>Erstellt einen FEM-Solver CalculiX</translation>
     </message>
   </context>
   <context>

@@ -402,11 +402,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Bibliotecas</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Este software utiliza componentes de código abierto, cuyos derechos de autor y otros derechos de propiedad pertenecen a sus respectivos propietarios:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2676,7 +2676,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Establece la zona de confusión para elegir elementos en vista 3D. Un mayor valor hace que sea más fácil elegir cosas, pero hará imposible seleccionar algunas características pequeñas.</translation>
     </message>
   </context>
   <context>

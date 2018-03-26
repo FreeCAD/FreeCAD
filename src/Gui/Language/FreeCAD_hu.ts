@@ -402,11 +402,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Könyvtárak</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Ez a szoftver nyílt forráskódú összetevőket tartalmaz, melyeknek a szerzői jogai és egyéb szabadalmi jogai a saját jogtulajdonosaié:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2675,7 +2675,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Beállítja a tűrés határt a kiválasztott elemekre a 3D-s nézetben. Nagyobb érték egyszerűbbé teszi a dolgot kiválasztását, de néhány kisebb elem elérhetőségét lehetetlenné teszi.</translation>
     </message>
   </context>
   <context>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -266,7 +266,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Migrar documentos al flujo de trabajo PartDesign moderno</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -549,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Diseño de piezas</translation>
     </message>
@@ -691,7 +691,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Crear una primitiva sustractiva</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -1280,7 +1280,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation>Lista de cuerpos vacía</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation>La lista de cuerpos no puede estar vacía</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Booleano: Aceptar: error de entrada</translation>
     </message>
@@ -1358,7 +1368,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Error de entrada</translation>
     </message>
@@ -2219,7 +2229,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Orientación de la sección</translation>
     </message>
@@ -2310,7 +2320,7 @@ Please check one or more edge entities first.</source>
       <translation>Eliminar sección</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Transformación de la sección</translation>
     </message>
@@ -2920,42 +2930,42 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Crear una caja sustractiva por su anchura, altura y longitud</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Crear un cilindro sustractivo por su radio, altura y ángulo</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Crear una esfera sustractiva por su radio y varios ángulos</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Crear un cono sustractivo</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Crear un elipsoide sustractivo</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Crear un toro sustractivo</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Crear un prisma sustractivo</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Crear una cuña sustractiva</translation>
     </message>
   </context>
   <context>
@@ -3117,7 +3127,7 @@ Create the sketch on a face.</source>
       <translation>Editar chaflán</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Selección inválida</translation>
     </message>
@@ -3184,7 +3194,7 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3196,8 +3206,8 @@ Create the sketch on a face.</source>
       <translation>Un diálogo ya está abierto en el panel de tareas</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>Referansları eklemek için bunları 3D görünümde seçin ve "Ekle"ye tıklayın.</translation>
     </message>
   </context>
   <context>
@@ -427,7 +427,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="592"/>
       <source>Solver CalculiX (experimental)</source>
-      <translation type="unfinished">Solver CalculiX (experimental)</translation>
+      <translation>Çözücü CalculiX (Deneysel)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="594"/>

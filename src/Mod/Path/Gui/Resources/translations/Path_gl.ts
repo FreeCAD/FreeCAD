@@ -509,7 +509,7 @@
       <translation>Operacións novas</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>Non atopo chollo %s</translation>
     </message>
@@ -534,12 +534,12 @@
       <translation>Comandos parciais</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Operacións novas</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
       <translation>Modificación da traxectoria</translation>
     </message>
@@ -2478,12 +2478,12 @@ Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opc
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAM Simulador</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Simular Ruta G-Code en stock</translation>
     </message>

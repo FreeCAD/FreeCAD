@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -315,7 +315,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation type="unfinished">Create a regular polygon in the sketcher</translation>
+      <translation>Créer un polygone régulier dans l'esquisse</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -384,7 +384,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -760,7 +760,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -1550,7 +1550,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -1830,7 +1830,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Cette version d'OCE/OCC ne supporte pas l’opération de nœud. Vous avez besoin de la version 6.9.0 ou supérieure
@@ -2002,7 +2002,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2058,7 +2059,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Contrainte impossible</translation>
@@ -2071,7 +2072,7 @@
     <message>
       <location line="+6"/>
       <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>Impossible d’ajouter une contrainte entre deux géométries fixes ! Les géométries fixes comprennent les géométries externes, les géométries bloquées ou les points spéciaux comme les nœuds de contrôle des B-splines.</translation>
     </message>
     <message>
       <location line="+520"/>
@@ -2846,13 +2847,14 @@ Combinaisons acceptés : deux courbes; un point d'extrémité et une courbe; deu
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Sélectionner des éléments d'une seule esquisse.</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Aucune contrainte sélectionnée</translation>
     </message>
@@ -2862,7 +2864,7 @@ Combinaisons acceptés : deux courbes; un point d'extrémité et une courbe; deu
       <translation>Au moins une contrainte doit être sélectionnée</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
       <translation>Supprimer tous les éléments de géométrie</translation>
     </message>
@@ -2876,7 +2878,7 @@ Combinaisons acceptés : deux courbes; un point d'extrémité et une courbe; deu
       <translation>Actuellement la géométrie interne est uniquement prise en charge pour les ellipses et les arcs d'ellipse. Le dernier élément sélectionné doit être une ellipse ou un arc d'ellipse.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Une construction symétrique nécessite au moins deux éléments géométriques, le dernier élément géométrique étant la référence pour la construction de la symétrie.</translation>
     </message>
@@ -2886,7 +2888,7 @@ Combinaisons acceptés : deux courbes; un point d'extrémité et une courbe; deu
       <translation>Le dernier élément doit être un point ou une ligne servant de référence pour la construction de la symétrie.</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Une copie nécessite la sélection d'au moins un élément géométrique non externe</translation>
@@ -4047,7 +4049,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: sélection multiple&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: basculer vers le type valide suivant type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: sélection multiple&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: basculer vers le type valide suivant&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="+68"/>
@@ -4332,7 +4334,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location line="+13"/>
       <source>Swap endpoints in constraints</source>
-      <translation>Inverser les extrémités de contraintes</translation>
+      <translation>Inverser les points d'extrémité de contraintes</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -4618,7 +4620,7 @@ Utilisez l'outil de validation d'esquisse.</translation>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create an arc of hyperbola by its center, major radius, endpoints</source>
-      <translation>Créer un arc d’hyperbole par centre, grand rayon, points d'extrémités</translation>
+      <translation>Créer un arc d’hyperbole par son centre, le grand rayon, les points d'extrémités</translation>
     </message>
   </context>
   <context>
@@ -4627,7 +4629,7 @@ Utilisez l'outil de validation d'esquisse.</translation>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create an arc of parabola by its focus, vertex, endpoints</source>
-      <translation>Créer un arc de parabole par foyer, sommet, points d'extrémités</translation>
+      <translation>Créer un arc de parabole par son foyer, son sommet, ses points d'extrémités</translation>
     </message>
   </context>
   <context>
@@ -4643,13 +4645,13 @@ Utilisez l'outil de validation d'esquisse.</translation>
     <message>
       <location line="+594"/>
       <source>B-spline by control points</source>
-      <translation>Courbe par contrôle de points</translation>
+      <translation>Courbe par points de contrôle</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a B-spline by control points</source>
-      <translation>Créer une courbe par contrôle de points</translation>
+      <translation>Créer une courbe par points de contrôle</translation>
     </message>
   </context>
   <context>
@@ -4766,7 +4768,7 @@ Utilisez l'outil de validation d'esquisse.</translation>
     <message>
       <location filename="../../Command.cpp" line="-56"/>
       <source>No sketch found</source>
-      <translation>Aucun esquisse trouvé</translation>
+      <translation>Aucune esquisse trouvée</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4791,7 +4793,7 @@ Utilisez l'outil de validation d'esquisse.</translation>
     <message>
       <location line="+2"/>
       <source> (current)</source>
-      <translation> (actuel)</translation>
+      <translation> (courant)</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -5085,7 +5087,7 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
       <location line="+3"/>
       <source>Red. Convergence</source>
-      <translation>Redondance de convergence</translation>
+      <translation>Convergence redondante</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -5110,12 +5112,12 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
       <location line="+24"/>
       <source>Degree of verbosity of the debug output to the console</source>
-      <translation>Degrés de verbosité de la sortie de débogage vers la console</translation>
+      <translation>Verbosité du débogage vers la console</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Console Debug mode:</source>
-      <translation>Console de débugage</translation>
+      <translation>Débogage sur la console:</translation>
     </message>
     <message>
       <source>Console  Debug mode:</source>

@@ -482,7 +482,7 @@ Do you want to continue?</source>
     <message>
       <location line="+13"/>
       <source>+W: </source>
-      <translation>+ SZ: </translation>
+      <translation>+SZ: </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -492,7 +492,7 @@ Do you want to continue?</source>
     <message>
       <location line="+19"/>
       <source> +H : </source>
-      <translation> + M: </translation>
+      <translation> +M: </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -507,7 +507,7 @@ Do you want to continue?</source>
     <message>
       <location line="+7"/>
       <source>The path to the luxrender (or luxconsole) executable</source>
-      <translation>A futtatható luxrender (vagy luxconsole) elérési útja</translation>
+      <translation>A futtatható luxrender (vagy luxkonzol) elérési útja</translation>
     </message>
     <message>
       <location line="+38"/>

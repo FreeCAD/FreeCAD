@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -261,7 +261,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Migrirati</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -549,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Oblikovanje tijela</translation>
     </message>
@@ -696,27 +696,27 @@
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Oduzimajući Kvadar</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Oduzimajući Valjak</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Oduzimajuća Kugla</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Oduzimajući Stožac</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Oduzimajući Elipsoid</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1280,7 +1280,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation type="unfinished">Boolean: Accept: Input error</translation>
     </message>
@@ -1358,7 +1368,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -2219,7 +2229,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation type="unfinished">Section orientation</translation>
     </message>
@@ -2310,7 +2320,7 @@ Please check one or more edge entities first.</source>
       <translation>Ukloni sekciju</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation type="unfinished">Section transformation</translation>
     </message>
@@ -2531,19 +2541,19 @@ Please check one or more edge entities first.</source>
       <location line="-15"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+181"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Baza X osi</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Baza Y osi</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Baza Z osi</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2651,12 +2661,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+26"/>
       <source>Add Geometry</source>
-      <translation type="unfinished">Add Geometry</translation>
+      <translation>Dodaj Geometriju</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Geometry</source>
-      <translation type="unfinished">Remove Geometry</translation>
+      <translation>Ukloni Geometriju</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
@@ -2782,17 +2792,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="-22"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Baza X osi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Baza Y osi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Baza Z osi</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3117,7 +3127,7 @@ Create the sketch on a face.</source>
       <translation>Uredi zarub</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation type="unfinished">Invalid selection</translation>
     </message>
@@ -3184,7 +3194,7 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3196,8 +3206,8 @@ Create the sketch on a face.</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>

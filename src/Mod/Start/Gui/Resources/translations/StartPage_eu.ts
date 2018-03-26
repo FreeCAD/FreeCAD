@@ -348,5 +348,15 @@
       <source>Load an FEM 3D new solver example analysis</source>
       <translation>Kargatu FEM 3D ebazle berriaren analisi-adibide bat</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
+      <source>Click here</source>
+      <translation type="unfinished">Click here</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <source>to allow FreeCAD to access the internet</source>
+      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
+    </message>
   </context>
 </TS>

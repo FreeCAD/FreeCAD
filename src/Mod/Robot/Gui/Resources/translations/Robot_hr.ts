@@ -29,7 +29,7 @@
     <message>
       <location line="+1"/>
       <source>Place robot...</source>
-      <translation>Mjesto robota ...</translation>
+      <translation>Postavi robota...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -228,7 +228,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Move to home</source>
-      <translation>Premjesti u kući</translation>
+      <translation>Pomakni na početak (home)</translation>
     </message>
   </context>
   <context>

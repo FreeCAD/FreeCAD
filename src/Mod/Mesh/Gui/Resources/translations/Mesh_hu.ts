@@ -764,7 +764,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>%1 folds on surface</source>
-      <translation>%1 hajlítás a felületen</translation>
+      <translation>%1 összecsukás a felületen</translation>
     </message>
     <message>
       <source>Folds</source>
@@ -912,7 +912,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Meghatározza a mozaik háló testre vonatkozó maximum eltérését. Minél kisebb az érték, annál lasúbb a renderelés sebessége és szebb a végeredmény.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Hálózófaktor&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Meghatározza a mozaik háló testre vonatkozó maximum eltérését. Minél kisebb az érték, annál lassabb a renderelés sebessége és szebb a végeredmény.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
@@ -1079,7 +1079,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
-      <translation>&lt;nézd mint</translation>
+      <translation>&lt;felületek mint</translation>
     </message>
     <message>
       <source>Region</source>
@@ -1103,7 +1103,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>&gt;nézd mint</translation>
+      <translation>&gt;felületek mint</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1111,7 +1111,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnybern</translation>
+      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <source>Respect only visible triangles</source>
@@ -1185,7 +1185,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnybern</translation>
+      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <source>Use a brush tool to select the area</source>
@@ -1257,7 +1257,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation>Szilárde test háló</translation>
+      <translation>Szilárd test háló</translation>
     </message>
     <message>
       <source>Boundings</source>
@@ -1265,11 +1265,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Fill holes</source>
-      <translation>Lyukak kitöltése</translation>
+      <translation>Furatok kitöltése</translation>
     </message>
     <message>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Töltse ki a lyukakat maximális számú élekkel:</translation>
+      <translation>Töltse ki a furatokat maximális számú élekkel:</translation>
     </message>
     <message>
       <source>Binary STL (*.stl)</source>
@@ -1381,7 +1381,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Clear selected faces</source>
-      <translation>Kijelölt felületek törlése</translation>
+      <translation>Felületek kiválasztásának törlése</translation>
     </message>
     <message>
       <source>Annotation</source>

@@ -311,7 +311,7 @@
     <message>
       <location filename="PathJob.py" line="58"/>
       <source>Select the Post Processor</source>
-      <translation>Válassza ki az utó végrehajtót</translation>
+      <translation>Válassza ki az utólagos végrehajtót</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="61"/>
@@ -331,7 +331,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="99"/>
       <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <translation>Egy lehetséges leírás ehhez a feladathoz</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="79"/>
@@ -509,7 +509,7 @@
       <translation>Új művelet</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>Nem találja a %s feladatot</translation>
     </message>
@@ -534,14 +534,14 @@
       <translation>Kiegészítő parancsok</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Új művelet</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
-      <translation type="unfinished">Path Modification</translation>
+      <translation>Szerszámpálya módosítása</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="396"/>
@@ -710,7 +710,7 @@
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="151"/>
       <source>face %s not handled, assuming not vertical</source>
-      <translation type="unfinished">face %s not handled, assuming not vertical</translation>
+      <translation>%s felületet nem kezeli, feltételezve, hogy nem függőleges</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="162"/>
@@ -743,7 +743,7 @@
     <message>
       <location filename="PathHelix.py" line="52"/>
       <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával elentétes irányban (CCW)</translation>
+      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával ellentétes irányban (CCW)</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="55"/>
@@ -753,7 +753,7 @@
     <message>
       <location filename="PathHelix.py" line="58"/>
       <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation>Radius-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
+      <translation>Rádiusz-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="449"/>
@@ -1601,12 +1601,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1051"/>
       <source>Please select one path object</source>
-      <translation type="unfinished">Please select one path object</translation>
+      <translation>Kérem jelöljön ki egy pálya objektumot</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1055"/>
       <source>The selected object is not a path</source>
-      <translation type="unfinished">The selected object is not a path</translation>
+      <translation>A kijelölt objektum nem pálya útvonal</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1059"/>
@@ -1697,7 +1697,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathHop.py" line="106"/>
       <source>Creates a Path Hop object</source>
-      <translation>Gyorsmenet biztonsági visszahúzási távolság beszúrása</translation>
+      <translation>Gyorsmenet beszúrása a visszahúzási síkra</translation>
     </message>
     <message>
       <location filename="PathHop.py" line="116"/>
@@ -1726,7 +1726,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="97"/>
       <source>Creates a Path Hop object</source>
-      <translation>Gyorsmenet biztonsági visszahúzási távolság beszúrása</translation>
+      <translation>Gyorsmenet beszúrása a visszahúzási síkra</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
@@ -1847,22 +1847,22 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathPost.py" line="45"/>
       <source>Post Process</source>
-      <translation>Posztprocesszor</translation>
+      <translation>Utómunka eljárások</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="155"/>
       <source>Post Process the selected Job</source>
-      <translation>Kijelölt feladat futó eljárása</translation>
+      <translation>Kijelölt feladat utómunka eljárásai</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="53"/>
       <source>Post Process the Selected path(s)</source>
-      <translation>Posztprocesszor a kiválasztott szerszámút(ak)hoz</translation>
+      <translation>Utómunka eljárások a kiválasztott szerszámút(ak) hoz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPost.py" line="200"/>
       <source>Post Process the Selected path(s)</source>
-      <translation>Posztprocesszor a kiválasztott szerszámút(ak)hoz</translation>
+      <translation>Utómunka eljárások a kiválasztott szerszámút(ak) hoz</translation>
     </message>
   </context>
   <context>
@@ -1894,14 +1894,14 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathSanity.py" line="93"/>
       <source>Please select a path Project to check
 </source>
-      <translation type="unfinished">Please select a path Project to check
+      <translation>Kérem válasszon ki egy szerszámpálya projektet ellenőrzésre
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="96"/>
       <source>Please select a path project to check
 </source>
-      <translation type="unfinished">Please select a path project to check
+      <translation>Kérem válasszon ki egy szerszámpálya projektet ellenőrzésre
 </translation>
     </message>
     <message>
@@ -1924,7 +1924,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="64"/>
       <source>The Job has no selected Base object.</source>
-      <translation type="unfinished">The Job has no selected Base object.</translation>
+      <translation>A feladatnak nincs kijelölt alap objektuma.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="69"/>
@@ -1943,12 +1943,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="76"/>
       <source>A Postprocessor has not been selected.</source>
-      <translation type="unfinished">A Postprocessor has not been selected.</translation>
+      <translation>Az utófeldolgozót nem választották ki.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="80"/>
       <source>No output file is named. You'll be prompted during postprocessing.</source>
-      <translation type="unfinished">No output file is named. You'll be prompted during postprocessing.</translation>
+      <translation>Kimeneti fájl nem lett megnevezve. Felszólítást fog kapni, utófeldolgozás során.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="132"/>
@@ -1965,7 +1965,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</source>
-      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</translation>
+      <translation>Egy eszköz vezérlő nem található. Alapértelmezett értékeket használnak, amely veszélyes. Kérjük, adjon hozzá eszköz vezérlőt.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
@@ -2312,12 +2312,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="TooltableEditor.py" line="411"/>
       <source>Chamfer Mill</source>
-      <translation>Élmaró</translation>
+      <translation>Élletörő</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="412"/>
       <source>Corner Round</source>
-      <translation>Sarokrádiusz maró</translation>
+      <translation>Sarokádiusz maró</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="413"/>
@@ -2478,12 +2478,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAM szimulátor</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Szimulálni G-kód állomány útvonalát</translation>
     </message>
@@ -2811,7 +2811,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathHelix.py" line="271"/>
       <source>Safe distance above the top of the hole to which to retract the tool</source>
-      <translation>A furatok feletti biztonsági távolság, melyre visszíhúzza az eszközt</translation>
+      <translation>A furatok feletti biztonsági távolság, melyre visszahúzza az eszközt</translation>
     </message>
   </context>
   <context>
@@ -2837,7 +2837,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathHelix.py" line="267"/>
       <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation>Radius-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
+      <translation>Rádiusz-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
     </message>
   </context>
   <context>
@@ -2845,7 +2845,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathHelix.py" line="259"/>
       <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával elentétes irányban (CCW)</translation>
+      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával ellentétes irányban (CCW)</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="263"/>
@@ -2863,7 +2863,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathHelix.py" line="251"/>
       <source>Selected features for the drill operation</source>
-      <translation>Kiválasztot jellemzők a fúró-művelethez</translation>
+      <translation>Kiválasztott jellemzők a fúró-művelethez</translation>
     </message>
   </context>
   <context>
@@ -2997,7 +2997,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathContour.py" line="308"/>
       <source>Add Holding Tag</source>
-      <translation>Tartó címke hozzáadás</translation>
+      <translation>Tartás címke hozzáadás</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="344"/>
@@ -3153,7 +3153,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathProfileEdges.py" line="342"/>
       <source>Add Holding Tag</source>
-      <translation>Tartó címke hozzáadás</translation>
+      <translation>Tartás címke hozzáadás</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="378"/>
@@ -3526,7 +3526,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathMachine.py" line="62"/>
       <source>Home position of machine, in Y (mainly for visualization)</source>
-      <translation>Gép kiinduló helyzet, y irány (főként virtualizációhoz)</translation>
+      <translation>Gép kiinduló helyzet, Y irány (főként virtualizációhoz)</translation>
     </message>
     <message>
       <location filename="PathMachine.py" line="63"/>

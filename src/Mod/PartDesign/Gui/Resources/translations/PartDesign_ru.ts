@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -266,7 +266,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Перенести документ в современный рабочий процесс Partdesign</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -549,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
@@ -691,7 +691,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Создать субтрактивный примитив</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -1281,7 +1281,17 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation type="unfinished">Empty body list</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation type="unfinished">The body list cannot be empty</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Логическое значение: Принять: Ошибка ввода</translation>
     </message>
@@ -1359,7 +1369,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -2220,7 +2230,7 @@ Please check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Ориентация секции</translation>
     </message>
@@ -2311,7 +2321,7 @@ Please check one or more edge entities first.</source>
       <translation>Удалить сечение</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Параметры трансформации сечения</translation>
     </message>
@@ -2921,42 +2931,42 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Создать субтрактивный параллелепипед, указав его ширину, высоту и длину</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Создать субтрактивный цилиндр, указав его радиус, высоту и угол</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Создать субтрактивную сферу, указав её радиус и различные углы</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Создать субтрактивный конус</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Создать субтрактивный эллипсоид</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Создать субтрактивный тор</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Создать субтрактивную призму</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Создать субтрактивный клин</translation>
     </message>
   </context>
   <context>
@@ -3119,7 +3129,7 @@ Create the sketch on a face.</source>
       <translation>Редактировать фаску</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Неверный выбор</translation>
     </message>
@@ -3186,7 +3196,7 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3198,8 +3208,8 @@ Create the sketch on a face.</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3815,7 +3825,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+44"/>
       <source>Counterbore/sink dia</source>
-      <translation type="unfinished">Counterbore/sink dia</translation>
+      <translation>Цековка/зенковка диаметр</translation>
     </message>
     <message>
       <location line="+18"/>

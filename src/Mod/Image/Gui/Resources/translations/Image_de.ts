@@ -191,7 +191,7 @@
       <location line="-54"/>
       <location line="+47"/>
       <source>Images</source>
-      <translation>Grafiken</translation>
+      <translation>Bilder</translation>
     </message>
     <message>
       <location line="-42"/>

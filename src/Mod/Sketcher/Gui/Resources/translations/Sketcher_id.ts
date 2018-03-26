@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1228"/>
+      <location line="-1234"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -318,7 +318,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation type="unfinished">Create a regular polygon in the sketcher</translation>
+      <translation>Membuat poligon beraturan di sketcher</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -353,7 +353,7 @@
     <message>
       <location line="+4"/>
       <source>Regular Polygon</source>
-      <translation type="unfinished">Regular Polygon</translation>
+      <translation>Poligon beraturan</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -430,12 +430,12 @@
     <message>
       <location line="+1"/>
       <source>Constrain Block</source>
-      <translation type="unfinished">Constrain Block</translation>
+      <translation>Membatasi Block</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a Block constraint on the selected item</source>
-      <translation type="unfinished">Create a Block constraint on the selected item</translation>
+      <translation>Membuat batasan Block pada item terpilih</translation>
     </message>
   </context>
   <context>
@@ -763,7 +763,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1080"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1187,7 +1187,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation type="unfinished">Create a regular polygon in the sketch</translation>
+      <translation>Membuat poligon beraturan di sketch</translation>
     </message>
   </context>
   <context>
@@ -1290,12 +1290,12 @@
     <message>
       <location line="+1"/>
       <source>Delete All Geometry</source>
-      <translation type="unfinished">Delete All Geometry</translation>
+      <translation>Menghapus semua geometri</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Deletes all the geometry and constraints but external geometry</source>
-      <translation type="unfinished">Deletes all the geometry and constraints but external geometry</translation>
+      <translation>Menghapus semua geometri dan batasan kecuali eksternal geometri</translation>
     </message>
   </context>
   <context>
@@ -1553,7 +1553,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1697,7 +1697,7 @@
     <message>
       <location line="+1"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation type="unfinished">Switches the selected constraints or the view to the other virtual space</translation>
+      <translation>Mengalihkan batasan terpilih atau tampilan ke ruang virtual lain</translation>
     </message>
   </context>
   <context>
@@ -1833,7 +1833,7 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4230"/>
+      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Versi ICE / OCC ini tidak mendukung operasi simpul. Anda membutuhkan 6.9.0 atau lebih tinggi
@@ -2005,7 +2005,8 @@
       <location line="+106"/>
       <location line="+6"/>
       <location line="+218"/>
-      <location line="+64"/>
+      <location line="+8"/>
+      <location line="+62"/>
       <location line="+392"/>
       <location line="+8"/>
       <location line="+62"/>
@@ -2061,7 +2062,7 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
       <location line="+99"/>
       <source>Impossible constraint</source>
       <translation>Kendala yang tidak mungkin</translation>
@@ -2074,7 +2075,7 @@
     <message>
       <location line="+6"/>
       <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>Tidak dapat menambah batasan di antara dua geometri tetap! Geometri tetap melibatkan geometri eksternal, geometri terblokir, atau titik-titik khusus sebagai titik simpul B-spline.</translation>
     </message>
     <message>
       <location line="+520"/>
@@ -2112,7 +2113,7 @@
       <location line="+416"/>
       <location line="+50"/>
       <source>The selected edge has already a Block constraint!</source>
-      <translation type="unfinished">The selected edge has already a Block constraint!</translation>
+      <translation>Tepi terpilih sudah memiliki batasan Block!</translation>
     </message>
     <message>
       <location line="-787"/>
@@ -2843,13 +2844,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+98"/>
       <location line="+8"/>
       <location line="+330"/>
-      <location line="+456"/>
+      <location line="+8"/>
+      <location line="+454"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Pilih elemen dari satu sketsa .</translation>
     </message>
     <message>
-      <location line="-935"/>
+      <location line="-941"/>
       <source>No constraint selected</source>
       <translation>Tidak ada batasan yang  dipilih</translation>
     </message>
@@ -2859,9 +2861,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Setidaknya satu kendala harus dipilih</translation>
     </message>
     <message>
-      <location line="+1059"/>
+      <location line="+1065"/>
       <source>Delete All Geometry</source>
-      <translation type="unfinished">Delete All Geometry</translation>
+      <translation>Menghapus semua geometri</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2873,7 +2875,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Saat ini geometri internal hanya didukung elips dan busur elips. Elemen pilihan terakhir harus berupa elips atau busur elips.</translation>
     </message>
     <message>
-      <location line="-814"/>
+      <location line="-820"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Konstruksi simetris membutuhkan setidaknya dua elemen geometris, elemen geometris terakhir menjadi referensi untuk konstruksi simetri .</translation>
     </message>
@@ -2883,7 +2885,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Unsur terakhir harus menjadi titik atau garis yang berfungsi sebagai acuan untuk konstruksi simetri .</translation>
     </message>
     <message>
-      <location line="+282"/>
+      <location line="+288"/>
       <location line="+462"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Salinan memerlukan setidaknya satu elemen geometrik non-eksternal yang dipilih</translation>

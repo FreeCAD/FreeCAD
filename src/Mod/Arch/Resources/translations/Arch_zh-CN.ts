@@ -4,27 +4,27 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchAxis.py" line="169"/>
+      <location filename="../../ArchAxis.py" line="172"/>
       <source>The intervals between axes</source>
       <translation>轴之间的间隔</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="170"/>
+      <location filename="../../ArchAxis.py" line="173"/>
       <source>The angles of each axis</source>
       <translation>每个轴的角度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="172"/>
+      <location filename="../../ArchAxis.py" line="175"/>
       <source>The length of the axes</source>
       <translation>轴的长度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="223"/>
+      <location filename="../../ArchAxis.py" line="226"/>
       <source>The size of the axis bubbles</source>
       <translation>轴气泡的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="224"/>
+      <location filename="../../ArchAxis.py" line="227"/>
       <source>The numbering style</source>
       <translation>编号样式</translation>
     </message>
@@ -69,7 +69,7 @@
       <translation>自定义 IFC 特性和属性</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="353"/>
+      <location filename="../../ArchComponent.py" line="356"/>
       <source>A material for this object</source>
       <translation>此对象的材料</translation>
     </message>
@@ -1064,47 +1064,47 @@
       <translation>此墙与其基准线之间的偏移量 (仅用于左右对齐)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="628"/>
+      <location filename="../../ArchWindow.py" line="634"/>
       <source>the components of this window</source>
       <translation>此窗口的组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="629"/>
+      <location filename="../../ArchWindow.py" line="635"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>此窗口在其宿主对象中所做的孔的深度。自动保持为0。</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="630"/>
+      <location filename="../../ArchWindow.py" line="636"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>一个定义了要从该窗口宿主的缩减量的可选对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="631"/>
+      <location filename="../../ArchWindow.py" line="637"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>此窗口的宽度 (仅用于预设窗口)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="632"/>
+      <location filename="../../ArchWindow.py" line="638"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>此窗口的高度 (仅用于预设窗口)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="633"/>
+      <location filename="../../ArchWindow.py" line="639"/>
       <source>The normal direction of this window</source>
       <translation>此窗口的正常方向</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="635"/>
+      <location filename="../../ArchWindow.py" line="641"/>
       <source>The area of this window</source>
       <translation>此面板的面积</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="636"/>
+      <location filename="../../ArchWindow.py" line="642"/>
       <source>the width of louvre elements</source>
       <translation>百叶窗组件的宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="637"/>
+      <location filename="../../ArchWindow.py" line="643"/>
       <source>the space between louvre elements</source>
       <translation>百叶窗组件之间的空间</translation>
     </message>
@@ -1119,7 +1119,7 @@
       <translation>在挤压之前添加到配置文件中的可选附加位置</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="638"/>
+      <location filename="../../ArchWindow.py" line="644"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>打开具有铰链的子组件</translation>
     </message>
@@ -1179,27 +1179,27 @@
       <translation>在线底部上的侧桁重叠部分</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1283"/>
+      <location filename="../../ArchWindow.py" line="1327"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>定义孔的线数。值0表示自动</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="171"/>
+      <location filename="../../ArchAxis.py" line="174"/>
       <source>The label of each axis</source>
       <translation>每个坐标轴的标签</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="232"/>
+      <location filename="../../ArchAxis.py" line="235"/>
       <source>If true, show the labels</source>
       <translation>如果是对的, 显示标签</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="233"/>
+      <location filename="../../ArchAxis.py" line="236"/>
       <source>A transformation to apply to each label</source>
       <translation>应用于每个标签的转换</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="669"/>
+      <location filename="../../ArchAxis.py" line="672"/>
       <source>The axes this system is made of</source>
       <translation>这个系统的轴是由</translation>
     </message>
@@ -1279,17 +1279,17 @@
       <translation>如果方向错了，翻转屋顶方向</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="640"/>
+      <location filename="../../ArchWindow.py" line="646"/>
       <source>Shows plan opening symbols if available</source>
       <translation>如果有的话，显示计划开放符号</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="641"/>
+      <location filename="../../ArchWindow.py" line="647"/>
       <source>Show elevation opening symbols if available</source>
       <translation>如果有的话，显示仰角开放符号</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="626"/>
+      <location filename="../../ArchWindow.py" line="632"/>
       <source>The objects that host this window</source>
       <translation>承载此窗口的对象</translation>
     </message>
@@ -1307,7 +1307,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1489"/>
+      <location filename="../../ArchWindow.py" line="1533"/>
       <source>Components</source>
       <translation>组件</translation>
     </message>
@@ -1322,32 +1322,32 @@
       <translation>轴线</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="107"/>
+      <location filename="../../ArchAxis.py" line="110"/>
       <source>Create Axis</source>
       <translation>创建轴线</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1483"/>
+      <location filename="../../ArchWindow.py" line="1527"/>
       <source>Remove</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1484"/>
+      <location filename="../../ArchWindow.py" line="1528"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Axis</source>
       <translation>轴线</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -1417,7 +1417,7 @@
       <translation>对象</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="938"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>closing Sketch edit</source>
       <translation>关闭草绘编辑</translation>
     </message>
@@ -1492,52 +1492,52 @@
       <translation>该网格是无效实体</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="476"/>
+      <location filename="../../ArchWindow.py" line="482"/>
       <source>Create Window</source>
       <translation>创建窗</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1485"/>
+      <location filename="../../ArchWindow.py" line="1529"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1486"/>
+      <location filename="../../ArchWindow.py" line="1530"/>
       <source>Create/update component</source>
       <translation>创建/更新组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1487"/>
+      <location filename="../../ArchWindow.py" line="1531"/>
       <source>Base 2D object</source>
       <translation>二维基对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1493"/>
+      <location filename="../../ArchWindow.py" line="1537"/>
       <source>Wires</source>
       <translation>线框</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1490"/>
+      <location filename="../../ArchWindow.py" line="1534"/>
       <source>Create new component</source>
       <translation>创建新组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1491"/>
+      <location filename="../../ArchWindow.py" line="1535"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1492"/>
+      <location filename="../../ArchWindow.py" line="1536"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1494"/>
+      <location filename="../../ArchWindow.py" line="1538"/>
       <source>Thickness</source>
       <translation>厚度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1495"/>
+      <location filename="../../ArchWindow.py" line="1539"/>
       <source>Z offset</source>
       <translation>Z偏移量</translation>
     </message>
@@ -1632,12 +1632,12 @@
       <translation>合并壁</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="659"/>
+      <location filename="../../ArchAxis.py" line="662"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>轴之间的距离 (mm) 和角度 (°)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="644"/>
+      <location filename="../../ArchComponent.py" line="647"/>
       <source>Error computing the shape of this object</source>
       <translation>计算此对象形状时出的错</translation>
     </message>
@@ -1662,17 +1662,17 @@
       <translation>启用 Brep 对象的强制标志</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="662"/>
+      <location filename="../../ArchComponent.py" line="665"/>
       <source>has no solid</source>
       <translation>没有固体</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="669"/>
+      <location filename="../../ArchComponent.py" line="672"/>
       <source>has an invalid shape</source>
       <translation>形状无效</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="671"/>
+      <location filename="../../ArchComponent.py" line="674"/>
       <source>has a null shape</source>
       <translation>形状无效</translation>
     </message>
@@ -1844,7 +1844,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="../../ArchCommands.py" line="1545"/>
       <source>Category</source>
-      <translation>类别</translation>
+      <translation>分类</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1546"/>
@@ -2182,27 +2182,27 @@ Site creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="387"/>
+      <location filename="../../ArchWindow.py" line="393"/>
       <source>Door</source>
       <translation>门</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1496"/>
+      <location filename="../../ArchWindow.py" line="1540"/>
       <source>Hinge</source>
       <translation>铰链</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1497"/>
+      <location filename="../../ArchWindow.py" line="1541"/>
       <source>Opening mode</source>
       <translation>打开模式</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1498"/>
+      <location filename="../../ArchWindow.py" line="1542"/>
       <source>Get selected edge</source>
       <translation>获取所选边缘</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1499"/>
+      <location filename="../../ArchWindow.py" line="1543"/>
       <source>Press to retrieve the selected edge</source>
       <translation>按下去来检索选定的边缘</translation>
     </message>
@@ -2242,112 +2242,112 @@ Site creation aborted.</source>
       <translation>墙壁预设..。</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1480"/>
+      <location filename="../../ArchWindow.py" line="1524"/>
       <source>Hole wire</source>
       <translation>孔线</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1481"/>
+      <location filename="../../ArchWindow.py" line="1525"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will adopt automatically the biggest wire</source>
       <translation>在主机对象中定义一个孔的线数目。零值将自动采用最大线</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1482"/>
+      <location filename="../../ArchWindow.py" line="1526"/>
       <source>Pick selected</source>
       <translation>选取选定的</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="135"/>
+      <location filename="../../ArchAxis.py" line="138"/>
       <source>Create Axis System</source>
       <translation>创建轴系统</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="155"/>
+      <location filename="../../ArchAxis.py" line="158"/>
       <source>Create Grid</source>
       <translation>创建网格</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="660"/>
+      <location filename="../../ArchAxis.py" line="663"/>
       <source>Label</source>
       <translation>标签</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="872"/>
+      <location filename="../../ArchAxis.py" line="875"/>
       <source>Axis system components</source>
       <translation>轴系统组件</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="910"/>
+      <location filename="../../ArchAxis.py" line="913"/>
       <source>Auto height is bigger than height</source>
       <translation>自动高度大于高度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="919"/>
+      <location filename="../../ArchAxis.py" line="922"/>
       <source>Total row size is bigger than height</source>
       <translation>总行大小大于高度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="941"/>
+      <location filename="../../ArchAxis.py" line="944"/>
       <source>Auto width is bigger than width</source>
       <translation>自动宽度大于宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="950"/>
+      <location filename="../../ArchAxis.py" line="953"/>
       <source>Total column size is bigger than width</source>
       <translation>总列大小大于宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1161"/>
+      <location filename="../../ArchAxis.py" line="1164"/>
       <source>Grid</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1162"/>
+      <location filename="../../ArchAxis.py" line="1165"/>
       <source>Total width</source>
       <translation>总宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1163"/>
+      <location filename="../../ArchAxis.py" line="1166"/>
       <source>Total height</source>
       <translation>总高度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1164"/>
+      <location filename="../../ArchAxis.py" line="1167"/>
       <source>Add row</source>
       <translation>添加行</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1165"/>
+      <location filename="../../ArchAxis.py" line="1168"/>
       <source>Del row</source>
       <translation>删除行</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1166"/>
+      <location filename="../../ArchAxis.py" line="1169"/>
       <source>Add col</source>
       <translation>添加列</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1167"/>
+      <location filename="../../ArchAxis.py" line="1170"/>
       <source>Del col</source>
       <translation>删除列</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1168"/>
+      <location filename="../../ArchAxis.py" line="1171"/>
       <source>Create span</source>
       <translation>创建跨度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1169"/>
+      <location filename="../../ArchAxis.py" line="1172"/>
       <source>Remove span</source>
       <translation>删除跨度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Rows</source>
       <translation>行</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1170"/>
+      <location filename="../../ArchAxis.py" line="1173"/>
       <source>Columns</source>
       <translation>列</translation>
     </message>
@@ -2367,7 +2367,7 @@ Site creation aborted.</source>
       <translation>错误: 无法修改此墙的基础对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1479"/>
+      <location filename="../../ArchWindow.py" line="1523"/>
       <source>Window elements</source>
       <translation>窗口构件</translation>
     </message>
@@ -2422,12 +2422,12 @@ Site creation aborted.</source>
       <translation>主机</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="131"/>
+      <location filename="../../ArchAxis.py" line="134"/>
       <source>Only axes must be selected</source>
       <translation>必须仅选择坐标轴</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="140"/>
+      <location filename="../../ArchAxis.py" line="143"/>
       <source>Please select at least one axis</source>
       <translation>请至少选择一个坐标轴</translation>
     </message>
@@ -2464,17 +2464,17 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchPipe.py" line="195"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>无法生成基路径</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="211"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>无法生成轮廓</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="223"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>无法生成管道</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="236"/>
@@ -2484,17 +2484,17 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchPipe.py" line="239"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>基地形状中的线太多</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="242"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>基线已关闭</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="256"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>此外形不是2D零件</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="259"/>
@@ -2534,7 +2534,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="100"/>
       <source>No spreadsheet attached to this schedule</source>
-      <translation type="unfinished">No spreadsheet attached to this schedule</translation>
+      <translation>没有附加到此计划的电子表格</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="814"/>
@@ -2554,30 +2554,30 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="825"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>其中一个对象有超过2节点</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="832"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>无法找到合适的交点</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="835"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>找到交集</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="439"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation type="unfinished">The selected wall contains no subwall to merge</translation>
+      <translation>在所选的墙上包含没有次墙来合并</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="462"/>
+      <location filename="../../ArchWindow.py" line="468"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+      <translation>在现有对象上选取一个面或选择一个预设</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1446"/>
+      <location filename="../../ArchWindow.py" line="1490"/>
       <source>Unable to create component</source>
       <translation>无法创建组件</translation>
     </message>
@@ -2589,37 +2589,37 @@ Site creation aborted.</source>
     <message>
       <location filename="../../importGBXML.py" line="51"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>此导出器目前只能导出一个站点对象</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="92"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
-      <translation type="unfinished">Error: Space '%s' has no Zone. Aborting.</translation>
+      <translation>错误: 空间 "%s" 没有区域。正在中止.</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="115"/>
       <source>Couldn't locate IfcOpenShell</source>
-      <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
+      <translation>无法找到IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="392"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
+      <translation>IfcOpenShell 未找到或禁用, 回退到内部分析器。</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="398"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>未找到 ifc 架构, ifc 导入已禁用。</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="945"/>
       <source>Error: IfcOpenShell is not installed</source>
-      <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
+      <translation>错误: 未安装 IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="952"/>
       <source>Error: your IfcOpenShell version is too old</source>
-      <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
+      <translation>错误: 您的 IfcOpenShell 版本太旧</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="214"/>
@@ -2629,7 +2629,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../importOBJ.py" line="71"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>找到一个包含曲线的形状, 正在变成三角.</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="292"/>
@@ -2764,22 +2764,22 @@ Site creation aborted.</source>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="102"/>
+      <location filename="../../ArchAxis.py" line="105"/>
       <source>Axis</source>
       <translation>轴线</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="150"/>
+      <location filename="../../ArchAxis.py" line="153"/>
       <source>Grid</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="152"/>
+      <location filename="../../ArchAxis.py" line="155"/>
       <source>Creates a customizable grid object</source>
       <translation>创建可自定义的网格对象</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="104"/>
+      <location filename="../../ArchAxis.py" line="107"/>
       <source>Creates a set of axes</source>
       <translation>创建一组坐标轴</translation>
     </message>
@@ -2787,12 +2787,12 @@ Site creation aborted.</source>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../ArchAxis.py" line="121"/>
+      <location filename="../../ArchAxis.py" line="124"/>
       <source>Axis System</source>
       <translation>轴线系统</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="123"/>
+      <location filename="../../ArchAxis.py" line="126"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>从一组坐标轴创建轴系统</translation>
     </message>
@@ -2800,7 +2800,7 @@ Site creation aborted.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1321"/>
+      <location filename="../../ArchAxis.py" line="1324"/>
       <source>Axis tools</source>
       <translation>轴工具</translation>
     </message>
@@ -2833,7 +2833,7 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1447"/>
       <source>Explore the contents of an IFC file</source>
-      <translation type="unfinished">Explore the contents of an IFC file</translation>
+      <translation>浏览 IFC 文件的内容</translation>
     </message>
   </context>
   <context>
@@ -2930,62 +2930,62 @@ Site creation aborted.</source>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="880"/>
+      <location filename="../../ArchAxis.py" line="883"/>
       <source>The number of rows</source>
       <translation>行数</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="881"/>
+      <location filename="../../ArchAxis.py" line="884"/>
       <source>The number of columns</source>
       <translation>列数</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="882"/>
+      <location filename="../../ArchAxis.py" line="885"/>
       <source>The sizes for rows</source>
       <translation>行的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="883"/>
+      <location filename="../../ArchAxis.py" line="886"/>
       <source>The sizes of columns</source>
       <translation>列的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="884"/>
+      <location filename="../../ArchAxis.py" line="887"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>合并在一起的单元格跨度范围</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="885"/>
+      <location filename="../../ArchAxis.py" line="888"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>此网格对象生成的3D 点的类型</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="886"/>
+      <location filename="../../ArchAxis.py" line="889"/>
       <source>The total width of this grid</source>
       <translation>此网格的总宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="887"/>
+      <location filename="../../ArchAxis.py" line="890"/>
       <source>The total height of this grid</source>
       <translation>此网格的总高度</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="888"/>
+      <location filename="../../ArchAxis.py" line="891"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>创建自动列划分 (集为0以禁用)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="889"/>
+      <location filename="../../ArchAxis.py" line="892"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>创建自动列划分 (集为0以禁用)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="890"/>
+      <location filename="../../ArchAxis.py" line="893"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>当处于边缘中点模式时, 如果此网格必须沿边缘法线重新定向其子项, 或不</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="891"/>
+      <location filename="../../ArchAxis.py" line="894"/>
       <source>The indices of faces to hide</source>
       <translation>隐藏的面索引</translation>
     </message>
@@ -3376,12 +3376,12 @@ Site creation aborted.</source>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="399"/>
+      <location filename="../../ArchWindow.py" line="405"/>
       <source>Window</source>
       <translation>窗</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="401"/>
+      <location filename="../../ArchWindow.py" line="407"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>从所选对象创建窗对象(线框、矩形或草绘)</translation>
     </message>

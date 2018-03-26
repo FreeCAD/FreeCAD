@@ -403,11 +403,11 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Kütüphaneler</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Bu yazılım telif hakkı ve diğer fikri mülkiyet hakları ilgili sahiplerine ait açık kaynak bileşenleri kullanır:</translation>
     </message>
     <message>
       <source>License</source>
@@ -2675,7 +2675,7 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>3D görünümünde öğeleri seçmek için karışıklık alanını ayarlar. Bu değerin arttırılması öğelerin seçimini kolaylaştırır, fakat diğer taraftan bazı küçük unsurların seçimini imkansız hale getirir.</translation>
     </message>
   </context>
   <context>

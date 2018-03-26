@@ -331,7 +331,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="99"/>
       <source>An optional description for this job</source>
-      <translation type="unfinished">An optional description for this job</translation>
+      <translation>Una descripción opcional para este trabajo</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="79"/>
@@ -509,7 +509,7 @@
       <translation>Nuevas Operaciones</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>No encontro el trabajo %s</translation>
     </message>
@@ -534,14 +534,14 @@
       <translation>Comandos Parciales</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Nuevas Operaciones</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
-      <translation type="unfinished">Path Modification</translation>
+      <translation>Modificación de ruta</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="396"/>
@@ -710,7 +710,7 @@
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="151"/>
       <source>face %s not handled, assuming not vertical</source>
-      <translation type="unfinished">face %s not handled, assuming not vertical</translation>
+      <translation>arista %s que no se maneja, asumiendo no vertical</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="162"/>
@@ -1600,12 +1600,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1051"/>
       <source>Please select one path object</source>
-      <translation type="unfinished">Please select one path object</translation>
+      <translation>Por favor seleccione un objeto de trayectoria</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1055"/>
       <source>The selected object is not a path</source>
-      <translation type="unfinished">The selected object is not a path</translation>
+      <translation>El objeto seleccionado no es una trayectoria</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1059"/>
@@ -1893,14 +1893,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathSanity.py" line="93"/>
       <source>Please select a path Project to check
 </source>
-      <translation type="unfinished">Please select a path Project to check
+      <translation>Por favor seleccione un proyecto de trayectoria para verificar
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="96"/>
       <source>Please select a path project to check
 </source>
-      <translation type="unfinished">Please select a path project to check
+      <translation>Por favor seleccione un proyecto de trayectoria para verificar
 </translation>
     </message>
     <message>
@@ -1923,7 +1923,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="64"/>
       <source>The Job has no selected Base object.</source>
-      <translation type="unfinished">The Job has no selected Base object.</translation>
+      <translation>El trabajo no tiene objeto base seleccionado.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="69"/>
@@ -1942,12 +1942,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="76"/>
       <source>A Postprocessor has not been selected.</source>
-      <translation type="unfinished">A Postprocessor has not been selected.</translation>
+      <translation>No se ha seleccionado un post-procesador.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="80"/>
       <source>No output file is named. You'll be prompted during postprocessing.</source>
-      <translation type="unfinished">No output file is named. You'll be prompted during postprocessing.</translation>
+      <translation>Ningún archivo de salida nombrado. Se le pedirá durante el post-procesado.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="132"/>
@@ -1964,7 +1964,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</source>
-      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</translation>
+      <translation>No se encontró un controlador de herramienta. Se usan valores por defecto, lo cual es peligroso.  Por favor, añada un controlador de herramienta.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
@@ -2477,12 +2477,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAM Simulador</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Simular la trayectoria G-Code en stock</translation>
     </message>

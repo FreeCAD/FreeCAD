@@ -329,7 +329,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Sélectionner un plan pour ajuster le maillage.</translation>
+      <translation>Veuillez sélectionner un plan à partir duquel ajuster le maillage.</translation>
     </message>
   </context>
   <context>
