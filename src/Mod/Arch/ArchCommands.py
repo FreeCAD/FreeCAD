@@ -103,7 +103,13 @@ def addComponents(objectsList,host):
             x = host.Axes
         for o in objectsList:
             if o.isDerivedFrom("Part::Feature"):
-                if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
+                if Draft.getType(o) == "Window":
+                    if hasattr(o,"Hosts"):
+                        if not host in o.Hosts:
+                            g = o.Hosts
+                            g.append(host)
+                            o.Hosts = g
+                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
                     if o.Support == host:
                         o.Support = None
                     host.Tool = o
@@ -146,7 +152,13 @@ def removeComponents(objectsList,host=None):
                         objectsList.remove(o)
             s = host.Subtractions
             for o in objectsList:
-                if not o in s:
+                if Draft.getType(o) == "Window":
+                    if hasattr(o,"Hosts"):
+                        if not host in o.Hosts:
+                            g = o.Hosts
+                            g.append(host)
+                            o.Hosts = g
+                elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
