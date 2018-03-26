@@ -71,6 +71,8 @@
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
 #include "ui_DlgReference.h"
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true);
+
 using namespace std;
 using namespace Attacher;
 
@@ -322,42 +324,102 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    PartDesign::SubShapeBinder *obj = 0;
-    std::vector<std::pair<App::DocumentObject*,std::string> > subs;
-    for(auto &sel : Gui::Selection().getSelection("",false)) {
+    PartDesign::SubShapeBinder *binder = 0;
+    App::DocumentObject *binderParent = 0;
+    std::string binderSub;
+    Base::Matrix4D mat;
+    App::DocumentObject *obj = 0;
+    std::vector<std::string> subs;
+    for(auto &sel : Gui::Selection().getSelection("",0)) {
         if(!sel.pObject) continue;
-        if(!obj) {
+        if(!binder) {
             const char *dot = sel.SubName?strrchr(sel.SubName,'.'):0;
             if(!dot || dot[1]==0) {
-                auto sobj = sel.pObject->getSubObject(sel.SubName);
+                Base::Matrix4D subMat;
+                auto sobj = sel.pObject->getSubObject(sel.SubName,0,&subMat);
                 if(!sobj) continue;
-                obj = dynamic_cast<PartDesign::SubShapeBinder*>(sobj->getLinkedObject(true));
-                if(obj) continue;
+                binder = dynamic_cast<PartDesign::SubShapeBinder*>(sobj->getLinkedObject(true));
+                if(binder) {
+                    binderParent = sel.pObject;
+                    if(sel.SubName)
+                        binderSub = sel.SubName;
+                    mat = subMat;
+                    continue;
+                }
             }
         }
-        subs.push_back(std::make_pair(sel.pObject,std::string(sel.SubName?sel.SubName:"")));
+        if(!obj)
+            obj = sel.pObject;
+        else if(obj!=sel.pObject) {
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
+                    QObject::tr("Cannot link to more than on object"));
+            return;
+        }
+        subs.push_back(std::string(sel.SubName?sel.SubName:""));
     }
-    
+    if(!obj) {
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
+                QObject::tr("No object can be linked"));
+        return;
+    }
+
+    PartDesign::Body *pcActiveBody = 0;
+    std::string FeatName;
+    if(!binder) {
+        pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
+        FeatName = getUniqueObjectName("Binder",pcActiveBody);
+    }else if(subs.empty()) {
+        auto vp = Gui::Application::Instance->getViewProvider(binder);
+        vp->doubleClicked();
+        return;
+    }
+    if(binderParent && binderParent!=binder) {
+        App::DocumentObject *sobj = 0;
+        App::DocumentObject *parent = 0;
+        std::string parentSub = binderSub;
+        for(auto &sub : subs) {
+            auto link = obj;
+            auto linkSub = binderSub;
+            auto res = binderParent->resolveRelativeLink(linkSub,link,sub);
+            if(!res) {
+                QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
+                        QObject::tr("Cannot resolve parent"));
+                return;
+            }
+            if(!sobj) {
+                sobj = link;
+                parent = res;
+                parentSub = linkSub;
+            }else if(sobj!=link || parent!=res) {
+                QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
+                        QObject::tr("Cannot link to more than one object"));
+                return;
+            }
+        }
+        obj = sobj;
+        binderParent = parent;
+        binderSub = parentSub;
+        binderParent->getSubObject(binderSub.c_str(),0,&mat);
+    }
+        
     try {
-        if (obj) 
+        if (binder)
             openCommand("Change SubShapeBinder");
         else {
-            PartDesign::Body *pcActiveBody = PartDesignGui::getBody(false);
-            std::string FeatName = getUniqueObjectName("Binder",pcActiveBody);
-
             openCommand("Create SubShapeBinder");
             if(pcActiveBody) {
                 FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
-            }else
-                doCommand(Command::Doc,"App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
-            if(pcActiveBody)
-                obj = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
-            else
-                obj = dynamic_cast<PartDesign::SubShapeBinder*>(
+                binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
+            } else {
+                doCommand(Command::Doc,
+                        "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
+                binder = dynamic_cast<PartDesign::SubShapeBinder*>(
                         App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
-            if(!obj) return;
+            }
+            if(!binder) return;
         }
-        obj->setLinks(subs,true);
+        binder->setLinks(obj,subs,true);
+        binder->updatePlacement(mat);
         updateActive();
         commitCommand();
     }catch(Base::Exception &e) {
@@ -366,10 +428,25 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     }
 }
 
-bool CmdPartDesignSubShapeBinder::isActive(void)
-{
-    return hasActiveDocument();
+bool CmdPartDesignSubShapeBinder::isActive(void) {
+    if(!hasActiveDocument())
+        return false;
+    const auto &sels = Gui::Selection().getSelectionEx("",App::DocumentObject::getClassTypeId(),0);
+    if(sels.empty() || sels.size()>2)
+        return false;
+    if(sels.size()==1)
+        return true;
+    else {
+        const auto &sels = Gui::Selection().getSelectionEx("",App::DocumentObject::getClassTypeId(),1);
+        for(auto &sel : sels) {
+            if(sel.getSubNames().empty() && 
+               dynamic_cast<const PartDesign::SubShapeBinder*>(sel.getObject()))
+                return true;
+        }
+        return false;
+    }
 }
+
 //===========================================================================
 // PartDesign_Clone
 //===========================================================================

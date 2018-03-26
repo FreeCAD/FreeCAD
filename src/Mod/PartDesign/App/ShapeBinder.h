@@ -62,7 +62,7 @@ protected:
     virtual App::DocumentObjectExecReturn* execute(void);
 };
 
-class PartDesignExport SubShapeBinder : public ShapeBinder {
+class PartDesignExport SubShapeBinder : public Part::Feature {
     PROPERTY_HEADER(PartDesign::SubShapeBinder);
 public:
     SubShapeBinder();
@@ -70,9 +70,9 @@ public:
         return "PartDesignGui::ViewProviderSubShapeBinder";
     }
 
-    void setLinks(const std::vector<std::pair<App::DocumentObject*,std::string> > &subs,
-                  bool reset=false);
+    void setLinks(App::DocumentObject *obj, const std::vector<std::string> &subs, bool reset=false);
 
+    App::PropertyLinkSubGlobal Support;
     App::PropertyBool ClaimChildren;
     App::PropertyBool Relative;
     App::PropertyBool Fuse;
@@ -80,6 +80,7 @@ public:
     App::PropertyEnumeration BindMode;
 
     void update();
+    void updatePlacement(const Base::Matrix4D &mat);
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;

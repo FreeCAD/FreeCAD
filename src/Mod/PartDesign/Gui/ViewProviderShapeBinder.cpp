@@ -42,6 +42,8 @@
 #include "ViewProviderShapeBinder.h"
 #include "TaskShapeBinder.h"
 
+FC_LOG_LEVEL_INIT("ShapeBinder",true,true);
+
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderShapeBinder,PartGui::ViewProviderPart)
@@ -189,14 +191,38 @@ void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, c
 
 //=====================================================================================
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartDesignGui::ViewProviderShapeBinder)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartGui::ViewProviderPart)
 
 ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     sPixmap = "PartDesign_SubShapeBinder.svg";
+
+    //make the viewprovider more datum like
+    AngularDeflection.setStatus(App::Property::Hidden, true);
+    Deviation.setStatus(App::Property::Hidden, true);
+    DrawStyle.setStatus(App::Property::Hidden, true);
+    Lighting.setStatus(App::Property::Hidden, true);
+    LineColor.setStatus(App::Property::Hidden, true);
+    LineWidth.setStatus(App::Property::Hidden, true);
+    PointColor.setStatus(App::Property::Hidden, true);
+    PointSize.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
+
+    //get the datum coloring sheme
+    // set default color for datums (golden yellow with 60% transparency)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
+            "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
+    App::Color col ( (uint32_t) shcol );
+    
+    ShapeColor.setValue(col);
+    LineColor.setValue(col);
+    PointColor.setValue(col);
+    Transparency.setValue(60);
+    LineWidth.setValue(1);
 }
 
-bool ViewProviderSubShapeBinder::canDropObjectEx(
-        App::DocumentObject *obj, App::DocumentObject *owner, const char *) const
+bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *obj, 
+        App::DocumentObject *owner, const char *, const std::vector<std::string> &) const
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
     if(!self) return false;
@@ -209,40 +235,89 @@ bool ViewProviderSubShapeBinder::canDropObjectEx(
         return obj->getDocument()==doc;
 }
 
-void ViewProviderSubShapeBinder::dropObjectEx(
-        App::DocumentObject *obj, App::DocumentObject *owner, const char *subname)
+void ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
+        const char *subname, const std::vector<std::string> &elements)
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-    if(self) {
-        std::vector<std::pair<App::DocumentObject*,std::string> > subs;
-        subs.push_back(std::make_pair(owner?owner:obj,std::string(subname?subname:"")));
-
-        static int last_tid;
-        int tid = 0;
-        bool reset = false;
-        if(App::GetApplication().getActiveTransaction(&tid) && tid!=last_tid) {
-            last_tid = tid;
-            reset = QApplication::keyboardModifiers()==Qt::ControlModifier;
-        }
-        self->setLinks(subs,reset);
+    if(!self) return;
+    if(!subname) subname = "";
+    std::vector<std::string> subs;
+    if(elements.size()) {
+        subs.reserve(elements.size());
+        std::string sub(subname);
+        for(auto &element : elements)
+            subs.push_back(sub+element);
     }
+
+    self->setLinks(owner?owner:obj,subs,QApplication::keyboardModifiers()==Qt::ControlModifier);
+    if(self->Relative.getValue())
+        updatePlacement(false);
 }
 
 
-void ViewProviderSubShapeBinder::setupContextMenu(QMenu *, QObject*, const char*){
+bool ViewProviderSubShapeBinder::doubleClicked() {
+    updatePlacement(true);
+    return true;
 }
 
-bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
-    return ViewProviderPart::setEdit(ModNum);
+void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(!self || !self->Support.getValue())
+        return;
+
+    Base::Matrix4D mat;
+    bool relative = self->Relative.getValue();
+    if(relative) {
+        const auto &sel = Gui::Selection().getSelection("",0);
+        if(sel.empty() || !sel[0].pObject) {
+            FC_LOG("invalid selection");
+            return;
+        }
+        auto link = self->Support.getValue();
+        std::string subname(sel[0].SubName?sel[0].SubName:"");
+        std::string linkSub;
+        auto obj = sel[0].pObject->resolveRelativeLink(subname,link,linkSub);
+        if(!obj) {
+            FC_ERR("cannot resolve relative link");
+            return;
+        }
+        auto sobj = obj->getSubObject(subname.c_str(),0,&mat);
+        if(sobj!=self) {
+            FC_ERR("invalid selection " << subname);
+            return;
+        }
+    }
+    if(!transaction) {
+        if(relative)
+            self->updatePlacement(mat);
+        self->update();
+        return;
+    }
+
+    App::GetApplication().setActiveTransaction("Refresh SubShapeBinder");
+    try{
+        if(relative)
+            self->updatePlacement(mat);
+        self->update();
+        App::GetApplication().closeActiveTransaction();
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }catch(Standard_Failure &e) {
+        std::ostringstream str;
+        Standard_CString msg = e.GetMessageString();
+        str << typeid(e).name() << " ";
+        if (msg) {str << msg;}
+        else     {str << "No OCCT Exception Message";}
+        FC_ERR(str.str());
+    }
+    App::GetApplication().closeActiveTransaction(true);
 }
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
     std::vector<App::DocumentObject *> ret;
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-    if(self && self->ClaimChildren.getValue()) {
-        for(auto &info : self->Support.getSubListValues())
-            ret.push_back(info.first);
-    }
+    if(self && self->ClaimChildren.getValue() && self->Support.getValue())
+        ret.push_back(self->Support.getValue());
     return ret;
 }
 

@@ -171,16 +171,13 @@ void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char 
 
 // ============================================================================
 
-namespace Part {
-PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
-}
-
-// ============================================================================
-
-PROPERTY_SOURCE(PartDesign::SubShapeBinder, PartDesign::ShapeBinder)
+PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
+    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_Hidden|App::Prop_None),
+            "Support of the geometry");
+    Support.setStatus(App::Property::Immutable,true);
     ADD_PROPERTY_TYPE(Fuse, (true), "Base",App::Prop_None,"Fused linked solid shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
@@ -188,30 +185,34 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
     static const char *BindModeEnum[] = {"Syncrhonized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
-    Placement.setStatus(App::Property::Hidden, false);
+    Placement.setStatus(App::Property::Immutable, true);
+    Placement.setStatus(App::Property::ReadOnly, true);
+}
+
+void SubShapeBinder::updatePlacement(const Base::Matrix4D &mat) {
+    auto placement = Placement.getValue()*Base::Placement(mat).inverse();
+    Placement.setValue(placement);
 }
 
 void SubShapeBinder::update() {
     Part::TopoShape result;
     result.Tag = getID();
 
-    auto subset = Support.getSubListValues();
+    auto obj = Support.getValue();
+    if(!obj || !obj->getNameInDocument())
+        return;
     std::vector<Part::TopoShape> shapes;
-    for(auto &info : subset) {
-        auto obj = info.first;
-        if(!obj || !obj->getNameInDocument())
-            continue;
-        static std::string none("");
-        std::set<std::string> subs(info.second.begin(),info.second.end());
-        if(subs.empty())
-            subs.insert(none);
-        else if(subs.size()>1)
-            subs.erase(none);
-        for(const auto &sub : subs) {
-            const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
-            if(!shape.isNull())
-                shapes.push_back(shape);
-        }
+    const auto &subvals = Support.getSubValues();
+    std::set<std::string> subs(subvals.begin(),subvals.end());
+    static std::string none("");
+    if(subs.empty())
+        subs.insert(none);
+    else if(subs.size()>1)
+        subs.erase(none);
+    for(const auto &sub : subs) {
+        const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
+        if(!shape.isNull())
+            shapes.push_back(shape);
     }
     if(shapes.empty())
         return;
@@ -224,8 +225,8 @@ void SubShapeBinder::update() {
         // shapes
         auto solids = result.getSubTopoShapes(TopAbs_SOLID);
         if(solids.size()) {
-            result = Part::TopoShape(getID(),getDocument()->Hasher).makEShape(
-                    TOPOP_FUSE,solids,TOPOP_SHAPEBINDER "_U");
+            result = Part::TopoShape(getID(),getDocument()->getStringHasher()).makEShape(
+                    TOPOP_FUSE,solids,TOPOP_SHAPEBINDER "_U").makERefine();
             fused = true;
         }
     } 
@@ -235,11 +236,10 @@ void SubShapeBinder::update() {
        TopExp_Explorer(result.getShape(), TopAbs_EDGE).More())
     {
         result = Part::TopoShape(getID()).makEWires(result);
-        Part::TopoShape face(getID());
+        Part::TopoShape face(getID(),getDocument()->getStringHasher());
         try {
-            face.makEFace(result,TOPOP_SHAPEBINDER "_F");
-            if(!face.isNull()) 
-                result = face;
+            result = Part::TopoShape(getID(),getDocument()->getStringHasher()).makEFace(
+                        result, TOPOP_SHAPEBINDER "_F");
         }catch(...){}
     }
 
@@ -265,68 +265,74 @@ App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
 void SubShapeBinder::onChanged(const App::Property *prop) {
     if(!isRestoring()) {
         if(prop == &Support) {
-           update(); 
-           if(BindMode.getValue() == 2)
-               Support.setValue(0,0);
+            if(Support.getValue()) {
+                update(); 
+                if(BindMode.getValue() == 2)
+                    Support.setValue(0);
+            }
         }else if(prop == &BindMode) {
            if(BindMode.getValue() == 2)
-               Support.setValue(0,0);
+               Support.setValue(0);
            else if(BindMode.getValue() == 0)
                update();
         }
     }
-    ShapeBinder::onChanged(prop);
+    if(prop == &Shape) {
+        // bypass Part::Feature logic, and do not change Placement with shape.
+        DocumentObject::onChanged(prop);
+        return;
+    }
+    Part::Feature::onChanged(prop);
 }
 
-void SubShapeBinder::setLinks(
-        const std::vector<std::pair<App::DocumentObject*,std::string> > &subs,
-        bool reset)
+void SubShapeBinder::setLinks(App::DocumentObject *obj, 
+        const std::vector<std::string> &_subs, bool reset)
 {
-    std::map<App::DocumentObject*, std::set<std::string> > values;
-    if(!reset) {
-        const auto &objs = Support.getValues();
-        const auto &subs = Support.getSubValues();
-        for(size_t i=0;i<objs.size();++i) {
-            auto obj = objs[i];
-            if(!obj || !obj->getNameInDocument())
-                continue;
-            values[obj].insert(subs[i]);
-        }
+    if(!obj) {
+        Support.setValue(0);
+        return;
     }
-    for(auto &info : subs) {
-        auto obj = info.first;
-        if(!obj || !obj->getNameInDocument())
-            continue;
-        if(obj->getDocument()!=getDocument()) 
-            throw Base::RuntimeError("Direct external linking is not allowed");
-        if(Relative.getValue()) 
-            values[obj].insert(info.second);
-        else {
-            auto &sub = info.second;
-            auto idx = sub.rfind('.');
-            if(idx == std::string::npos) {
-                values[obj].insert(sub);
-                continue;
-            }
-            auto sobj = obj->getSubObject(sub.c_str());
-            if(!sobj) 
+    if(!obj->getNameInDocument())
+        throw Base::RuntimeError("Invalid object link");
+    if(Support.getValue() && Support.getValue()!=obj)
+        reset = true;
+
+    std::set<std::string> subs(_subs.begin(),_subs.end());
+    if(!reset) {
+        if(subs.empty())
+            return;
+        const auto &oldSubs = Support.getSubValues();
+        subs.insert(oldSubs.begin(),oldSubs.end());
+    }
+    if(subs.empty())
+        subs.insert("");
+    else if(subs.size()>1)
+        subs.erase("");
+
+    if(Relative.getValue() && obj->getDocument()!=getDocument()) 
+        throw Base::RuntimeError("Direct external linking is not allowed");
+
+    std::vector<std::string> subvals;
+    if(Relative.getValue())
+        subvals.insert(subvals.end(),subs.begin(),subs.end());
+    else {
+        App::DocumentObject *sobj = obj;
+        for(auto &sub : subs) {
+            const char *element = 0;
+            auto subobj = obj->resolve(sub.c_str(),0,0,&element);
+            if(!subobj) 
                 throw Base::RuntimeError("Cannot find sub object");
-            if(sobj->getDocument()!=getDocument())
-                values[obj].insert(info.second);
-            else
-                values[sobj].insert(sub.c_str()+idx+1);
+            if(!sobj)
+                sobj = subobj;
+            else if(sobj!=subobj)
+                throw Base::RuntimeError("Cannot link to different sub-object");
+            subvals.push_back(element);
         }
+        obj = sobj;
     }
     auto inSet = getInListEx(true);
     inSet.insert(this);
-    std::vector<App::PropertyLinkSubList::SubSet> newValues;
-    for(auto &value : values) {
-        newValues.emplace_back();
-        auto &newSub = newValues.back();
-        newSub.first = value.first;
-        if(inSet.find(value.first)!=inSet.end())
-            throw Base::RuntimeError("Cyclic dependency");
-        newSub.second.insert(newSub.second.end(),value.second.begin(),value.second.end());
-    }
-    Support.setSubListValues(newValues);
+    if(inSet.find(obj)!=inSet.end())
+        throw Base::RuntimeError("Cyclic dependency");
+    Support.setValue(obj,subvals);
 }

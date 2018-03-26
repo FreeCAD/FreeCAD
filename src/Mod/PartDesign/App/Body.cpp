@@ -244,7 +244,8 @@ bool Body::isAllowed(const App::DocumentObject* f)
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+            f->getTypeId().isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
             //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
