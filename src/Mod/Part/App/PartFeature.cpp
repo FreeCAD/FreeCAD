@@ -253,6 +253,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             visible = owner->isElementVisible(name.c_str());
         if(visible==0)
             continue;
+        if(name[name.size()-1]!='.')
+            name += '.';
         DocumentObject *subObj = 0;
         auto shape = getTopoShape(owner,name.c_str(),needSubElement,0,&subObj,false,false,noElementMap);
         if(visible<0 && subObj && !subObj->Visibility.getValue())
