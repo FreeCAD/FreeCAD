@@ -274,7 +274,7 @@
     <Attribute Name="AxisCount" ReadOnly="true">
       <Documentation>
         <UserDocu>
-          return the the number of construction lines in the sketch which can be used as axes
+          Return the number of construction lines in the sketch which can be used as axes
         </UserDocu>
       </Documentation>
       <Parameter Name="AxisCount" Type="Long"/>

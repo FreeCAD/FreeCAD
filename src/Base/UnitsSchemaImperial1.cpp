@@ -235,15 +235,23 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         // feet
         if (feet > 0) {
             output << feet << "'";
-            if ( (inches > 0) || (fraction > 0.0625) )
-                output << " ";
+            if ( (inches > 0) || (fraction > 0.0625) ) {
+                if (quant.getValue() < 0)
+                    output << " -";
+                else
+                    output << " ";
+            }
         }
 
         // inches
         if (inches > 0) {
             output << inches;
-            if (fraction > 0.0625)
-                output << "+";
+            if (fraction > 0.0625) {
+                if (quant.getValue() < 0)
+                    output << "-";
+                else
+                    output << "+";
+            }
             else
                 output << "\"";
         }

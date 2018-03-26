@@ -70,6 +70,7 @@ ${EndIf}
 function .onInit
 	setShellVarContext all
 	!insertmacro VerifyUserIsAdmin
+	Call unSelectInstallOptions
 functionEnd
 
 section "install"
@@ -82,13 +83,10 @@ section "install"
 	setOutPath $INSTDIR\doc
 	file /r "..\..\doc\"
 	setOutPath $INSTDIR\data
-    file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
+	file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
 	setOutPath $INSTDIR
-    file  "vcredist_x86.exe"
+	file  "vcredist_x86.exe"
 	
-	# Install the Visual Studio redistributable 
-    ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'  
- 
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	writeUninstaller "$INSTDIR\uninstall.exe"
  
@@ -117,7 +115,24 @@ section "install"
 	# Set PYTHONPATH for FreeCAD
 	#WriteRegStr HKLM "Software\Python\PythonCore\2.7\PythonPath\${FULLNAME}" "" "$INSTDIR\bin"
 sectionEnd
- 
+
+section "Install redistributable" VCRedistSection
+	# Install the Visual Studio redistributable
+	ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'
+sectionEnd
+
+# http://forums.winamp.com/showthread.php?t=255747
+function unSelectInstallOptions
+	!insertmacro UnselectSection ${VCRedistSection}
+functionEnd
+
+LangString DESC_VCRedistSection ${LANG_ENGLISH} "Install the Visual Studio redistributable."
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${VCRedistSection} $(DESC_VCRedistSection)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
+
 # Uninstaller
  
 function un.onInit

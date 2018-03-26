@@ -31,7 +31,7 @@ import FreeCAD
 FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
 
 FreeCAD.addImportType("FEM mesh formats (*.unv *.med *.dat *.bdf)", "Fem")
-FreeCAD.addExportType("FEM mesh formats (*.unv *.med *.dat *.inp)", "Fem")
+FreeCAD.addExportType("FEM mesh formats (*.unv *.med *.stl *.dat *.inp *.vtk *.vtu)", "Fem")
 
 FreeCAD.addImportType("FEM mesh CalculiX/Abaqus (*.inp)", "feminout.importInpMesh")
 FreeCAD.addImportType("FEM result CalculiX (*.frd)", "feminout.importCcxFrdResults")
@@ -45,8 +45,5 @@ FreeCAD.addExportType("FEM mesh Z88 (*i1.txt)", "feminout.importZ88Mesh")
 FreeCAD.addImportType("FEM result Z88 displacements (*o2.txt)", "feminout.importZ88O2Results")
 
 if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
-    FreeCAD.addImportType("FEM mesh VTK Unstructure format (*.vtk *.vtu)", "Fem")
-    FreeCAD.addExportType("FEM mesh VTK Unstructure format (*.vtk *.vtu)", "Fem")
-
-    FreeCAD.addImportType("FEM result VTK Unstructure format (*.vtk *.vtu)", "importVTKResults")
-    FreeCAD.addExportType("FEM result VTK Unstructure format (*.vtk *.vtu)", "importVTKResults")
+    FreeCAD.addImportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
+    FreeCAD.addExportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")

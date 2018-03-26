@@ -113,7 +113,7 @@ def list_install_names(path_macho):
     lines = output.split("\t")
     libs = []
 
-    #first line is the the filename, and if it is a library, the second line
+    #first line is the filename, and if it is a library, the second line
     #is the install name of it
     if path_macho.endswith(os.path.basename(lines[1].split(" (")[0])):
         lines = lines[2:]

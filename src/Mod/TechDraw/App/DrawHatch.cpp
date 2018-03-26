@@ -66,7 +66,7 @@ DrawHatch::DrawHatch(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
     QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {

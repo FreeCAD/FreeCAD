@@ -756,7 +756,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     std::set<int> result;
 
     Bnd_Box box;
-    BRepBndLib::Add(face, box);
+    BRepBndLib::Add(face, box, Standard_False);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70#p221591
     // limit where the mesh node belongs to the face:
     double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
@@ -1570,21 +1570,26 @@ void FemMesh::write(const char *FileName) const
     Base::FileInfo File(FileName);
 
     if (File.hasExtension("unv") ) {
-        // read UNV file
-         myMesh->ExportUNV(File.filePath().c_str());
+        Base::Console().Message("The selected FEM mesh object will be exported to unv format.\n");
+        // write UNV file
+        myMesh->ExportUNV(File.filePath().c_str());
     }
     else if (File.hasExtension("med") ) {
-         myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
+        Base::Console().Message("The selected FEM mesh object will be exported to med format.\n");
+        myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
     }
     else if (File.hasExtension("stl") ) {
-        // read brep-file
+        Base::Console().Message("The selected FEM mesh object will be exported to stl format.\n");
+        // export to stl file
         myMesh->ExportSTL(File.filePath().c_str(),false);
     }
     else if (File.hasExtension("dat") ) {
-        // read brep-file
+        Base::Console().Message("The selected FEM mesh object will be exported to dat format.\n");
+        // export to dat file
         myMesh->ExportDAT(File.filePath().c_str());
     }
     else if (File.hasExtension("inp") ) {
+        Base::Console().Message("The selected FEM mesh object will be exported to inp format.\n");
         // get Abaqus inp prefs
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
         int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
@@ -1594,12 +1599,13 @@ void FemMesh::write(const char *FileName) const
     }
 #ifdef FC_USE_VTK
     else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
+        Base::Console().Message("The selected FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
     }
 #endif
     else{
-        throw Base::Exception("Unknown extension");
+        throw Base::Exception("An unknown file extension was added!");
     }
 }
 

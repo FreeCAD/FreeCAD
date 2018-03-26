@@ -34,6 +34,8 @@ DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
+    plsb_FontSize->setUnit(Base::Unit::Length);
+    plsb_ArrowSize->setUnit(Base::Unit::Length);
 }
 
 DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
@@ -44,7 +46,7 @@ DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
 void DlgPrefsTechDraw2Imp::saveSettings()
 {
     cbShowUnits->onSave();
-    dsbFontSize->onSave();
+    plsb_FontSize->onSave();
     colDimColor->onSave();
     leDiameter->onSave();
     pcbMatting->onSave();
@@ -55,14 +57,14 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     pcbArrow->onSave();
     cbGlobalDecimals->onSave();
     sbAltDecimals->onSave();
-    dsbArrowSize->onSave();
+    plsb_ArrowSize->onSave();
     leLineGroup->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
 {
     cbShowUnits->onRestore();
-    dsbFontSize->onRestore();
+    plsb_FontSize->onRestore();
     colDimColor->onRestore();
     leDiameter->onRestore();
     pcbMatting->onRestore();
@@ -73,7 +75,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     pcbArrow->onRestore();
     cbGlobalDecimals->onRestore();
     sbAltDecimals->onRestore();
-    dsbArrowSize->onRestore();
+    plsb_ArrowSize->onRestore();
     leLineGroup->onRestore();
 }
 
@@ -83,7 +85,9 @@ void DlgPrefsTechDraw2Imp::loadSettings()
 void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        saveSettings();
         retranslateUi(this);
+        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

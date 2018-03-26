@@ -90,7 +90,7 @@ QPainterPath QGIArrow::makeFilledTriangle(double length, double width, bool flip
     if (!flipped) {
         length *= -1;
     }
-    
+
     QPainterPath path;
     path.moveTo(QPointF(0.,0.));
     path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
@@ -106,7 +106,7 @@ QPainterPath QGIArrow::makeOpenArrow(double length, double width, bool flipped)
     if (!flipped) {
         length *= -1;
     }
-    
+
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
     path.lineTo(QPointF(0.,0.));
@@ -163,7 +163,7 @@ double QGIArrow::getPrefArrowSize()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double style = hGrp->GetFloat("ArrowSize", 5.0);
+    double style = hGrp->GetFloat("ArrowSize", 3.5);
     return style;
 }
 

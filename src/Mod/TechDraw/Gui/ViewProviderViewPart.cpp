@@ -94,6 +94,12 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 void ViewProviderViewPart::updateData(const App::Property* prop)
 {
+    if (prop == &(getViewObject()->Scale) ) {   //shouldn't Scale cause DVP::execute & request paint??
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
 
     ViewProviderDrawingView::updateData(prop);
 }

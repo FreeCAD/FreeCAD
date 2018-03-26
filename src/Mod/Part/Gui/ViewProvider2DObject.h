@@ -68,6 +68,7 @@ protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     virtual void Restore(Base::XMLReader &reader);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 
     SoSeparator  *GridRoot;
 

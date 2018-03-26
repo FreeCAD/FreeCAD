@@ -61,7 +61,10 @@ def makeAxis(num=5,size=1000,name="Axes"):
         dist = []
         angles = []
         for i in range(num):
-            dist.append(float(size))
+            if i == 0:
+                dist.append(0)
+            else:
+                dist.append(float(size))
             angles.append(float(0))
         obj.Distances = dist
         obj.Angles = angles

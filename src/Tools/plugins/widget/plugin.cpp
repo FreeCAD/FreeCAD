@@ -619,6 +619,54 @@ public:
     }
 };
 
+class PrefUnitSpinBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    PrefUnitSpinBoxPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::PrefUnitSpinBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Preference Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( quantityspinbox_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/PrefWidgets.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Quantity Spin Box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Quantity Spin box widget.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefUnitSpinBox\" name=\"unitSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::PrefUnitSpinBox");
+    }
+};
+
 /* XPM */
 static const char *iconview_pixmap[]={
 "22 22 10 1",
@@ -1375,35 +1423,37 @@ public:
 
 /* XPM */
 static const char *fontbox_pixmap[]={
-"22 22 6 1",
+"22 22 8 1",
 "a c #000000",
 "# c #000080",
-"b c #008080",
-"c c #808080",
-"d c #c0c0c0",
+"e c #008080",
+"f c #800000",
+"b c #808080",
+"c c #c0c0c0",
+"d c #ff0000",
 ". c #ffffff",
-"...#aaaaaaaaaaaaaa#...",
-".baccccccccccccccccab.",
-".acccddddddddddddddca.",
-"#ccd.................a",
-"acc..................a",
-"acd..................a",
-"acd..................a",
-"acd. ................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"acd..................a",
-"#cd..................#",
-".ac................da.",
-".badd............dda#.",
-"...#aaaaaaaaaaaaaa#..."};
+".#aaaaaaaaaaaaaaaaaa#.",
+"#bbccccccccccccccccdd#",
+"accee#########e.addfaa",
+"#c..............a.fa.#",
+"e#aaaaaaaaaaaaaaaaaa#e",
+"....#c...............#",
+"....ac...............a",
+"....ac.ccbbbbbbbbeb..a",
+"....ac.bbbeeeeeee##c.a",
+"....ac.bee########ac.a",
+"....ac..cccccccccccc.a",
+"....ac.ccccccccccbec.a",
+"....ac.cccccccccbbec.a",
+"....ac.bcbbbbbbbbbec.a",
+"....ac..cccccccccccc.a",
+"....ac.cbbeeeeeee#bc.a",
+"....ac.bee########ac.a",
+"....ab.b##aaaaaaaaacca",
+"....#bc.ccccccccccccc#",
+".....ab............ca.",
+".....eacc.........ca#.",
+".......#aaaaaaaaaa#..."};
 
 class PrefFontBoxPlugin : public QDesignerCustomWidgetInterface
 {
@@ -1514,6 +1564,7 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new PrefLineEditPlugin);
     cw.append(new PrefDoubleSpinBoxPlugin);
     cw.append(new PrefFontBoxPlugin);
+    cw.append(new PrefUnitSpinBoxPlugin);
     return cw;
 }
 
@@ -1538,4 +1589,6 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
 //                         "</widget>\n");
 //}
 
+#if QT_VERSION < 0x050000
 Q_EXPORT_PLUGIN2(containerextension, CustomWidgetPlugin)
+#endif

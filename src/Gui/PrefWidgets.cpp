@@ -457,6 +457,39 @@ void PrefColorButton::savePreferences()
 
 // --------------------------------------------------------------------
 
+PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
+  : QuantitySpinBox(parent), PrefWidget()
+{
+}
+
+PrefUnitSpinBox::~PrefUnitSpinBox()
+{
+}
+
+void PrefUnitSpinBox::restorePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        Console().Warning("Cannot restore!\n");
+        return;
+    }
+
+    double fVal = (double)getWindowParameter()->GetFloat( entryName() ,rawValue() );
+    setValue(fVal);
+}
+
+void PrefUnitSpinBox::savePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        Console().Warning("Cannot save!\n");
+        return;
+    }
+
+    double q = rawValue();
+    getWindowParameter()->SetFloat( entryName(), q );
+}
+
+// --------------------------------------------------------------------
+
 namespace Gui {
 class PrefQuantitySpinBoxPrivate
 {

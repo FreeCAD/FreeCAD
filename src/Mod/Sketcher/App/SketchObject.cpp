@@ -799,6 +799,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         }
     }
 
+    solvedSketch.resetInitMove(); // reset solver point moving mechanism
+
     return lastSolverStatus;
 }
 
@@ -4712,12 +4714,63 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     
     int nextgeoid = vals.size();
     
+    int nextextgeoid = getExternalGeometryCount();
+    
     int nextcid = cvals.size();
     
     const std::vector< Part::Geometry * > &svals = psObj->getInternalGeometry();
     
     const std::vector< Sketcher::Constraint * > &scvals = psObj->Constraints.getValues();
-    
+
+    if(psObj->ExternalGeometry.getSize()>0) { 
+        std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+        std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+
+        const std::vector<DocumentObject*> originalObjects = Objects;
+        const std::vector<std::string>     originalSubElements = SubElements;
+
+        std::vector<DocumentObject*> sObjects     = psObj->ExternalGeometry.getValues();
+        std::vector<std::string>     sSubElements = psObj->ExternalGeometry.getSubValues();
+
+        if (Objects.size() != SubElements.size() || sObjects.size() != sSubElements.size()) {
+            assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+            Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
+            return -1;
+        }
+
+        int si=0;
+        for (auto & sobj : sObjects) {
+            int i=0;
+            for (auto & obj : Objects){
+                if (obj == sobj && SubElements[i] == sSubElements[si]){
+                    Base::Console().Error("Link to %s already exists in this sketch. Delete the link and try again\n",sSubElements[si].c_str());
+                    return -1;
+                }
+
+                i++;
+            }
+
+            Objects.push_back(sobj);
+            SubElements.push_back(sSubElements[si]);
+
+            si++;
+        }
+
+        ExternalGeometry.setValues(Objects,SubElements);
+
+        try {
+            rebuildExternalGeometry();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            // revert to original values
+            ExternalGeometry.setValues(originalObjects,originalSubElements);
+            return -1;
+        }
+
+        solverNeedsUpdate=true;
+    }
+
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
         Part::Geometry *geoNew = (*it)->copy();
         GEN_ID(geoNew);
@@ -4726,7 +4779,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         }
         newVals.push_back(geoNew);
     }
-    
+
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it) {
         Sketcher::Constraint *newConstr = (*it)->copy();
         if( (*it)->First>=0 )
@@ -4736,9 +4789,16 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         if( (*it)->Third>=0 )
             newConstr->Third += nextgeoid;
 
+        if( (*it)->First<-2 && (*it)->First != Constraint::GeoUndef )
+            newConstr->First -= (nextextgeoid-2);
+        if( (*it)->Second<-2 && (*it)->Second != Constraint::GeoUndef)
+            newConstr->Second -= (nextextgeoid-2);
+        if( (*it)->Third<-2 && (*it)->Third != Constraint::GeoUndef)
+            newConstr->Third -= (nextextgeoid-2);
+
         newcVals.push_back(newConstr);
     }
-    
+
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();

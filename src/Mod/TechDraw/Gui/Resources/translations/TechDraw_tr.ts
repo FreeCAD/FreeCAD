@@ -1056,8 +1056,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>deugging option</source>
-      <translation>hata ayıklama seçeneği</translation>
+      <source>Debugging option</source>
+      <translation>Hata ayıklama seçeneği</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1680,8 +1680,8 @@ Devam etmek istiyor musun?</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
-      <source>Text Name: </source>
-      <translation>Yazı İsmi: </translation>
+      <source>Text Name:</source>
+      <translation>Yazı İsmi:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>

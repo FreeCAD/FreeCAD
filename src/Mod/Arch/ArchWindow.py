@@ -73,7 +73,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     _Window(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
-        obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
+        #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
     if width:
         obj.Width = width
     if height:
@@ -98,8 +98,14 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
+        from DraftGui import todo
+        todo.delay(recolorize,obj)
     return obj
 
+def recolorize(obj):
+    if obj.ViewObject:
+        if obj.ViewObject.Proxy:
+            obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
@@ -650,20 +656,24 @@ class _Window(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop == "Hosts":
-            if hasattr(obj,"Hosts"):
-                for host in obj.Hosts:
-                    # mark host to recompute so it can detect this object
-                    host.touch()
         if not "Restore" in obj.State:
-            if prop in ["Base","WindowParts"]:
-                self.execute(obj)
-                self.onChanged(obj,"Hosts")
-            elif prop in ["HoleDepth"]:
-                for o in obj.InList:
-                    if Draft.getType(o) in AllowedHosts:
-                        o.Proxy.execute(o)
-                self.onChanged(obj,"Hosts")
+            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
+                # anti-recursive loops, bc the base sketch will touch the Placement all the time
+                ok = True
+                if prop == "Placement":
+                    if hasattr(self,"Placement"):
+                        if self.Placement == obj.Placement:
+                            ok = False
+                    self.Placement = FreeCAD.Placement(obj.Placement)
+                elif prop == "Hosts":
+                    if hasattr(self,"Hosts"):
+                        if self.Hosts == obj.Hosts:
+                            ok = False
+                    self.Hosts = obj.Hosts
+                if ok and hasattr(obj,"Hosts"):
+                    for host in obj.Hosts:
+                        # mark host to recompute so it can detect this object
+                        host.touch()
             if prop in ["Width","Height"]:
                 if obj.Preset != 0:
                     if obj.Base:
@@ -684,7 +694,6 @@ class _Window(ArchComponent.Component):
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
                             pass
-                self.onChanged(obj,"Hosts")
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -1026,6 +1035,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                         if len(obj.Base.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
                             obj.ViewObject.update()
+            self.colorize(obj)
         elif prop == "CloneOf":
             if obj.CloneOf:
                 mat = None
@@ -1037,10 +1047,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
-        if (prop in ["WindowParts","Shape"]):
-            if obj.Shape:
-                if not obj.Shape.isNull():
-                    self.colorize(obj)
 
     def onDelete(self,vobj,subelements):
         for o in vobj.Object.Hosts:
@@ -1048,13 +1054,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def onChanged(self,vobj,prop):
-        if (prop == "DiffuseColor") and vobj.Object:
-            if vobj.Object.Base:
-                if not vobj.Object.Base.Shape.Solids:
-                    if len(vobj.DiffuseColor) < 2:
-                        if vobj.Object.Shape:
-                            if not vobj.Object.Shape.isNull():
-                                self.colorize(vobj.Object)
+        if (prop in ["DiffuseColor","Transparency"]) and vobj.Object:
+            self.colorize(vobj.Object)
+        elif prop == "ShapeColor":
+            self.colorize(vobj.Object,force=True)
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
@@ -1078,9 +1081,17 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         FreeCADGui.Control.closeDialog()
         return
 
-    def colorize(self,obj):
+    def colorize(self,obj,force=False):
         "setting different part colors"
+        if obj.CloneOf:
+            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
+                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+            return
         if not obj.WindowParts:
+            return
+        if not obj.Shape:
+            return
+        if not obj.Shape.Solids:
             return
         solids = obj.Shape.copy().Solids
         #print("Colorizing ", solids)
@@ -1116,10 +1127,16 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 ccol = base
             colors.extend([ccol for f in solids[i].Faces])
         #print("colors: ",colors)
-        if colors:
-            if colors != obj.ViewObject.DiffuseColor:
-                if obj.Material and (len(colors) > 1):
-                    obj.ViewObject.DiffuseColor = colors
+        if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
+            obj.ViewObject.DiffuseColor = colors
+
+    def areDifferentColors(self,a,b):
+        if len(a) != len(b):
+            return True
+        for i in range(len(a)):
+            if abs(sum(a[i]) - sum(b[i])) > 0.00001:
+                return True
+        return False
 
 class _ArchWindowTaskPanel:
     '''The TaskPanel for Arch Windows'''

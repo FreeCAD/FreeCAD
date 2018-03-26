@@ -1155,8 +1155,14 @@ void SketcherCopy::activate(bool clone)
     }
 
     // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
 
     getSelection().clearSelection();
 

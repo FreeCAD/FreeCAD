@@ -828,7 +828,9 @@ bool CmdPartDesignNewSketch::isActive(void)
 //===========================================================================
 
 void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
-       App::DocumentObject* prevSolidFeature = nullptr, const bool hidePrevSolid = true)
+                   App::DocumentObject* prevSolidFeature = nullptr,
+                   const bool hidePrevSolid = true,
+                   const bool updateDocument = true)
 {
     PartDesign::Body *pcActiveBody;
 
@@ -841,7 +843,9 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
         FCMD_OBJ_HIDE(prevSolidFeature);
 
-    cmd->updateActive();
+    if (updateDocument)
+        cmd->updateActive();
+
     // #0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
     PartDesignGui::setEdit(Feat,pcActiveBody);
@@ -2326,6 +2330,9 @@ void CmdPartDesignBoolean::activated(int iMsg)
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
     
+    // If we don't add an object to the boolean group then don't update the body
+    // as otherwise this will fail and it will be marked as invalid
+    bool updateDocument = false;
     if (BodyFilter.match() && !BodyFilter.Result.empty()) {
         std::vector<App::DocumentObject*> bodies;
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
@@ -2335,11 +2342,14 @@ void CmdPartDesignBoolean::activated(int iMsg)
                     bodies.push_back(j->getObject());
             }
         }
-        std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
-        FCMD_OBJ_CMD(Feat,"addObjects("<<bodyString<<")");
+        if (!bodies.empty()) {
+            updateDocument = true;
+            std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
+            FCMD_OBJ_CMD(Feat,"addObjects("<<bodyString<<")");
+        }
     }
 
-    finishFeature(this, Feat, nullptr, false);
+    finishFeature(this, Feat, nullptr, false, updateDocument);
 }
 
 bool CmdPartDesignBoolean::isActive(void)
