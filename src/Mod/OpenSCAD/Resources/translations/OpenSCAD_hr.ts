@@ -116,7 +116,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>Putanja do OpenSCAD izvršne datoteke</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>Minkowski</source>
-      <translation type="unfinished">Minkowski</translation>
+      <translation>Minkowski</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="447"/>

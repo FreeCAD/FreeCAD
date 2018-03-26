@@ -805,175 +805,170 @@
       <translation>Mga dimensyon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="212"/>
       <source>Arrow Style</source>
       <translation>Estillo ng pana</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="51"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
       <source>Show Units</source>
       <translation>Ipakita ang Mga Yunit</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="41"/>
       <source>Color</source>
       <translation>Kolor</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="71"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="65"/>
       <source>Font Size</source>
       <translation>Sukat ng harapan</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="99"/>
       <source>Diameter Symbol</source>
       <translation>Simbolo ng diyametro</translation>
     </message>
     <message utf8="true">
-      <location filename="../../DlgPrefsTechDraw2.ui" line="139"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="111"/>
       <source>⌀</source>
       <translation>⌀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="155"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Kahaliling Desimal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
       <source>Use Global Decimals</source>
       <translation>Gumamit ng Global Decimals</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="178"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="143"/>
       <source>Preferred arrowhead style</source>
       <translation>Ginustong estilo ng arrowhead</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="194"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="159"/>
       <source>0 - Filled Triangle</source>
       <translation>0 - Puno na Triangulo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="204"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="169"/>
       <source>1 - Open Arrowhead</source>
       <translation>1 - Buksan ang arrowhead</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="179"/>
       <source>2 - Tick</source>
       <translation>2 - Tumiktak</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="189"/>
       <source>3 - Dot</source>
       <translation>3 - Dot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="234"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="199"/>
       <source>4 - Open Circle</source>
       <translation>4 - Buksan ang bilog</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="247"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="92"/>
       <source>Arrow Size</source>
       <translation>Laki ng palaso</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="288"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="235"/>
+      <source>Dimension font size in units</source>
+      <translation type="unfinished">Dimension font size in units</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="251"/>
+      <source>Dimension arrowhead size in units</source>
+      <translation type="unfinished">Dimension arrowhead size in units</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="272"/>
       <source>Decorations</source>
       <translation>Mga dekorasyon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="303"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="287"/>
       <source>Round</source>
       <translation>Bilugan</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="308"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="292"/>
       <source>Square</source>
       <translation>Kuwadrado</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="316"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="300"/>
       <source>Section Line Style</source>
       <translation>Estilo ng linya ng seksyon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="323"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="307"/>
       <source>Center Line Style</source>
       <translation>Estilo ng linya ng sentro</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="330"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="314"/>
       <source>Matting Style</source>
       <translation>Estilo ng matting</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="364"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="391"/>
       <source>NeverShow</source>
       <translation>HwagIpakita</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="468"/>
       <source>Line Group</source>
       <translation>Grupo ng Linya</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="517"/>
-      <source>FC 0.70mm</source>
-      <translation>FC 0.70milimetro</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="374"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="417"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="358"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="401"/>
       <source>Dash</source>
       <translation>Dash</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="379"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="363"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="406"/>
       <source>Dot</source>
       <translation>Dot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="384"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="427"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="368"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="411"/>
       <source>DashDot</source>
       <translation>DashDot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="389"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="432"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="373"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="416"/>
       <source>DashDotDot</source>
       <translation>DashDotDot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="369"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="412"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="353"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="396"/>
       <source>Solid</source>
       <translation>Solid</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="440"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="424"/>
       <source>Center Line Color</source>
       <translation>Kulay ng linya ng sentro</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="447"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="431"/>
       <source>Section Line Color</source>
       <translation>Kulay ng linya ng seksyon</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="484"/>
-      <source>Default weight for GeomHatch lines</source>
-      <translation>Default na timbang para sa mga linya ng GeomHatch</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="487"/>
-      <source>Hatch Weight</source>
-      <translation>Timbang ng Hatch</translation>
     </message>
   </context>
   <context>
@@ -1005,14 +1000,9 @@
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="58"/>
-      <location filename="../../DlgPrefsTechDraw.ui" line="359"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="336"/>
       <source>Hidden Line</source>
       <translation>Nakatagong linya</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
-      <source>Style for hidden lines</source>
-      <translation>Estilo para sa mga linyang nakatago</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="78"/>
@@ -1045,19 +1035,9 @@
       <translation>DashDotDot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
-      <source>Perform/skip face processing</source>
-      <translation>Magsagawa / laktawan ang pagproseso ng mukha</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="114"/>
       <source>Detect Faces</source>
       <translation>I-detect ang mga mukha</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>Debugging option</source>
-      <translation>Pinagpipilian sa pag-debug</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1065,132 +1045,147 @@
       <translation>Ipakita ang mga gilid ng seksyon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
-      <source>Update Pages as scheduled or skip</source>
-      <translation>I-update ang Mga Pahina bilang naka-iskedyul o laktawan</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="149"/>
       <source>Keep Pages Up to Date</source>
       <translation>Pinapanatili ang mga pahina na napapanahon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="165"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="617"/>
+      <source>Font for View Labels</source>
+      <translation type="unfinished">Font for View Labels</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="635"/>
       <source>Template Dot Size</source>
       <translation>Laki ng Template dot</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="172"/>
-      <source>EditableText Dot Size in mm</source>
-      <translation>Sukat ng EditableText Dot sa milimetro</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="206"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="183"/>
       <source>Colors</source>
       <translation>Mga kulay</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
+      <source>Style for hidden lines</source>
+      <translation>Estilo para sa mga linyang nakatago</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
+      <source>Perform/skip face processing</source>
+      <translation>Magsagawa / laktawan ang pagproseso ng mukha</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
+      <source>Debugging option</source>
+      <translation type="unfinished">Debugging option</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
+      <source>Update Pages as scheduled or skip</source>
+      <translation>I-update ang Mga Pahina bilang naka-iskedyul o laktawan</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="191"/>
       <source>Section Hatch</source>
       <translation>Hatch ng Seksyon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="221"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="198"/>
       <source>Section Face</source>
       <translation>Mukha ng seksyon</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="262"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="239"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="352"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="329"/>
       <source>PreSelected</source>
       <translation>PreSelected</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="383"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="360"/>
       <source>Selected</source>
       <translation>Napili</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="384"/>
       <source>Background</source>
       <translation>Background</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="391"/>
       <source>Geom Hatch</source>
       <translation>Hatch ng Geom</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="456"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="433"/>
       <source>Files</source>
       <translation>Mga File</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="464"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="441"/>
       <source>Template Directory</source>
       <translation>Direktoryo ng template</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="471"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="448"/>
       <source>Default Template</source>
       <translation>Default na Template</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="491"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="468"/>
       <source>Hatch Image</source>
       <translation>Imahe ng Hatch</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="508"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="485"/>
       <source>Location of default svg/png fill file</source>
       <translation>Lokasyon ng default svg/png fill file</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="521"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="498"/>
       <source>PAT File</source>
       <translation>File ng PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="505"/>
       <source>Default location for PAT file</source>
       <translation>Default na lokasyon para sa PAT file</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="545"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="522"/>
       <source>Default PAT pattern</source>
       <translation>Default na pattern ng PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="558"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="535"/>
       <source>Pattern Name</source>
       <translation>Pangalan ng Pattern</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="602"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="579"/>
       <source>Labels</source>
       <translation>Mga Label</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
-      <source>Label height in millimeters</source>
-      <translation>Haba ng Tatak sa mga milimetro</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="645"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="603"/>
       <source>Label Font</source>
       <translation>Font ng Label</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="652"/>
-      <source>osifont</source>
-      <translation>osifont</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="668"/>
+      <source>View Label size in units</source>
+      <translation type="unfinished">View Label size in units</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="665"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="684"/>
+      <source>Green edit dot size in units</source>
+      <translation type="unfinished">Green edit dot size in units</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
       <source>Label Size</source>
       <translation>Laki ng Label</translation>
     </message>
@@ -1682,7 +1677,7 @@ Gusto mong magpatuloy?</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
       <source>Text Name:</source>
-      <translation>Pangalan ng teksto:</translation>
+      <translation type="unfinished">Text Name:</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>

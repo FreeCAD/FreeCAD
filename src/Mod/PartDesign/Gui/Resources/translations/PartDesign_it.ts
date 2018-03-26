@@ -4,7 +4,7 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="+1345"/>
+      <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -106,7 +106,7 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location line="-1268"/>
+      <location line="-1272"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -124,7 +124,7 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location line="+1293"/>
+      <location line="+1297"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -214,7 +214,7 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location line="-887"/>
+      <location line="-891"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -232,7 +232,7 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location line="+1695"/>
+      <location line="+1699"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -323,7 +323,7 @@
     <message>
       <location line="+1"/>
       <source>Move object after other object</source>
-      <translation>Sposta l'oggetto dopo altro oggetto</translation>
+      <translation>Sposta dopo altro oggetto</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -341,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation>Metti in cima</translation>
+      <translation>Usa come entità finale</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation>Sposta la cima del corpo</translation>
+      <translation>Sposta la cima, ultima lavorazione, del corpo</translation>
     </message>
   </context>
   <context>
@@ -378,7 +378,7 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location line="-1703"/>
+      <location line="-1707"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -396,7 +396,7 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location line="+616"/>
+      <location line="+620"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -429,7 +429,7 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location line="-817"/>
+      <location line="-821"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -447,7 +447,7 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location line="+864"/>
+      <location line="+868"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -469,7 +469,7 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location line="-812"/>
+      <location line="-816"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -487,7 +487,7 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location line="+1733"/>
+      <location line="+1737"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -549,7 +549,7 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location line="-1772"/>
+      <location line="-1776"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location line="+1147"/>
+      <location line="+1151"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
@@ -797,7 +797,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>La funzione si trova dopo la funzione di cima</translation>
+      <translation>La funzione si trova dopo la funzione indicata come ultima lavorazione</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1031,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+160"/>
       <source>Pitch:</source>
-      <translation>Passo:</translation>
+      <translation>Beccheggio:</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -1282,7 +1282,17 @@ Selezionare prima una o più entità spigolo.</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
+      <source>Empty body list</source>
+      <translation>La lista dei corpi è vuota</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>The body list cannot be empty</source>
+      <translation>La lista dei corpi non può essere vuota</translation>
+    </message>
+    <message>
+      <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Booleana: Accettare: errore di Input</translation>
     </message>
@@ -1360,7 +1370,7 @@ Selezionare prima una o più entità spigolo.</translation>
   <context>
     <name>PartDesignGui::TaskDlgPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+796"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+798"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
@@ -1541,7 +1551,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation>La funzione si trova dopo la funzione di cima</translation>
+      <translation>La funzione si trova dopo la funzione indicata come ultima lavorazione</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1605,11 +1615,11 @@ Selezionare prima una o più entità spigolo.</translation>
     </message>
     <message>
       <source>Symmetric to plane</source>
-      <translation>Simmetrico al piano</translation>
+      <translation>Simmetrica al piano</translation>
     </message>
     <message>
       <source>Reversed</source>
-      <translation>Invertito</translation>
+      <translation>Invertita</translation>
     </message>
     <message>
       <source>Update view</source>
@@ -1747,7 +1757,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <source>Select an edge or a face</source>
@@ -1798,7 +1808,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+35"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
@@ -1864,7 +1874,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <source>Select a plane</source>
@@ -1918,7 +1928,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+17"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="+75"/>
@@ -1996,7 +2006,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+15"/>
       <source>Symmetric to plane</source>
-      <translation>Simmetrico al piano</translation>
+      <translation>Simmetrica al piano</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -2013,7 +2023,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+19"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -2037,7 +2047,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+52"/>
       <source>Reversed</source>
-      <translation>Invertito</translation>
+      <translation>Invertita</translation>
     </message>
     <message>
       <source>Display mode:</source>
@@ -2203,7 +2213,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+22"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation>Impostare il vettore binormale costante da usare per calcolare l'orientamento dei profili</translation>
+      <translation>Imposta il vettore binormale costante da usare per calcolare l'orientamento dei profili</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2221,7 +2231,7 @@ Selezionare prima una o più entità spigolo.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="-503"/>
+      <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
       <translation>Orientamento della sezione</translation>
     </message>
@@ -2312,7 +2322,7 @@ Selezionare prima una o più entità spigolo.</translation>
       <translation>Rimuovi sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="+464"/>
+      <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
       <translation>Trasformazione della sezione</translation>
     </message>
@@ -2348,12 +2358,12 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+15"/>
       <source>Symmetric to plane</source>
-      <translation>Simmetrico al piano</translation>
+      <translation>Simmetrica al piano</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Reversed</source>
-      <translation>Invertito</translation>
+      <translation>Invertita</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -2370,7 +2380,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+19"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <location line="-86"/>
@@ -2490,7 +2500,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <source>Select an edge</source>
@@ -2556,17 +2566,17 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+43"/>
       <source>Symmetric to plane</source>
-      <translation>Simmetrico al piano</translation>
+      <translation>Simmetrica al piano</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Reversed</source>
-      <translation>Invertito</translation>
+      <translation>Invertita</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -2630,7 +2640,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Aggiorna vista</translation>
+      <translation>Aggiorna la vista</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="+97"/>
@@ -3120,7 +3130,7 @@ Creare lo schizzo su una faccia.</translation>
       <translation>Modifica smusso</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-1649"/>
+      <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
       <translation>Selezione non valida</translation>
     </message>
@@ -3187,7 +3197,7 @@ Creare lo schizzo su una faccia.</translation>
     </message>
     <message>
       <location line="+13"/>
-      <location line="+279"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+106"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+84"/>
@@ -3199,8 +3209,8 @@ Creare lo schizzo su una faccia.</translation>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
-      <location line="-1120"/>
-      <location line="+279"/>
+      <location line="-1124"/>
+      <location line="+283"/>
       <location line="+842"/>
       <location filename="../../ViewProvider.cpp" line="+1"/>
       <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
@@ -3754,12 +3764,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation>Svasatura</translation>
+      <translation>Svasato</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation>Lamatura</translation>
+      <translation>Lamato</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -3878,7 +3888,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation>Adatta</translation>
+      <translation>Accoppiamento</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -3948,12 +3958,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation>Adattamento standard</translation>
+      <translation>Standard</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation>Chiudi adattamento</translation>
+      <translation>A tenuta</translation>
     </message>
     <message>
       <location line="+11"/>

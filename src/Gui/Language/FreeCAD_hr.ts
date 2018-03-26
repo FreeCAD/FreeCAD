@@ -60,11 +60,11 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation type="unfinished">The displayed size of the origin</translation>
+      <translation>Prikazane veličine podrijetla</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation type="unfinished">Visual size of the feature</translation>
+      <translation>vizualna velicina oznake</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
@@ -402,11 +402,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Knjižnice</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Ovaj softver koristi open source komponenti čija autorska i druga vlasnička prava pripadaju njihovih vlasnika:</translation>
     </message>
     <message>
       <source>License</source>
@@ -452,7 +452,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation type="unfinished">Clipping custom direction</translation>
+      <translation>Rezanje prilagođeni smjeru</translation>
     </message>
     <message>
       <source>View</source>
@@ -460,7 +460,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation type="unfinished">Adjust to view direction</translation>
+      <translation>Prilagodite prikaz smjera</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -1122,7 +1122,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Shiny plastic</source>
-      <translation type="unfinished">Shiny plastic</translation>
+      <translation>Sjajna plastika</translation>
     </message>
     <message>
       <source>Silver</source>
@@ -1344,7 +1344,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation type="unfinished">User macros location:</translation>
+      <translation>Lokacija korisnika makronaredbe:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -1397,7 +1397,7 @@ Ova datoteka već postoji.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Preimenovanje makronaredbi datoteka</translation>
     </message>
     <message>
       <source>Enter new name:</source>
@@ -1406,18 +1406,16 @@ Ova datoteka već postoji.</translation>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1' već postoji.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Preimenovanje nije uspjelo</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Nije moguće preimenovati u '%1'. Možda je greška dopuštenja datoteke?</translation>
     </message>
   </context>
   <context>
@@ -1479,7 +1477,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+      <translation>Nemate dozvolu za pisanje u direktorij. Molimo odaberite drugi direktorij.</translation>
     </message>
   </context>
   <context>
@@ -1626,15 +1624,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation type="unfinished">Clear user settings</translation>
+      <translation>Brisanje korisničkih postavki</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation type="unfinished">Do you want to clear all your user settings?</translation>
+      <translation>Želite li obrisati sve vaše korisničke postavke?</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+      <translation>Ako se slažete sve vaše postavke će biti izbrisane.</translation>
     </message>
   </context>
   <context>
@@ -1689,7 +1687,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>License information:</source>
-      <translation type="unfinished">License information:</translation>
+      <translation>Informacije o licenci:</translation>
     </message>
     <message>
       <source>License URL</source>
@@ -1960,7 +1958,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Anti-Aliasing</source>
-      <translation type="unfinished">Anti-Aliasing</translation>
+      <translation>Anti-Aliasing</translation>
     </message>
     <message>
       <source>None</source>
@@ -1968,7 +1966,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Line Smoothing</source>
-      <translation type="unfinished">Line Smoothing</translation>
+      <translation>Zaglađivanje linije</translation>
     </message>
     <message>
       <source>MSAA 2x</source>
@@ -1984,26 +1982,26 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation type="unfinished">Or&amp;thographic rendering</translation>
+      <translation>Or&amp;tografsko iscrtavanje</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation type="unfinished">Perspective renderin&amp;g</translation>
+      <translation>Perspektivna iscrtavanja</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <translation>Pomoću OpenGL Vertex Buffer objekta (eksperimentalno)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>Anti-aliasing</source>
-      <translation type="unfinished">Anti-aliasing</translation>
+      <translation>Izglađivanje</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation type="unfinished">Open a new viewer or restart %1 to apply anti-aliasing changes.</translation>
+      <translation>Otvori novi preglednik ili ponovno pokreni %1 za dodavanje promjena izglađivanja.</translation>
     </message>
   </context>
   <context>
@@ -2149,7 +2147,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
+      <translation>Maksimalan broj sigurnosnih kopija koji se čuva kad ponovno spremite dokument</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2177,11 +2175,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Naziv korišten za stvaranje dokumenta.&lt;/p&gt;&lt;p&gt;Zadrži prazno za anonimno.&lt;/p&gt;&lt;p&gt;Možete koristiti obrazac:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation type="unfinished">If this is checked, the "Last modified by" field will be set when saving the file</translation>
+      <translation>Ako je to označeno, "Zadnja izmijena od" polje će se postaviti prilikom spremanja datoteke</translation>
     </message>
     <message>
       <source>Set on save</source>
@@ -2205,39 +2203,39 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>CreativeCommons Attribution</source>
-      <translation type="unfinished">CreativeCommons Attribution</translation>
+      <translation>CreativeCommons imenovanje</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
+      <translation>CreativeCommons Imenovanje-Dijeli pod istim uvjetima</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
+      <translation>CreativeCommons imenovanje-Bez promjena</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
+      <translation>CreativeCommons Imenovanje-Nekomercijalno</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>CreativeCommons Imenovanje-Nekomercijalno-Dijeli pod istim uvjetima</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>CreativeCommons Imenovanje-Nekomercijalno-Bez promjena</translation>
     </message>
     <message>
       <source>Public Domain</source>
-      <translation type="unfinished">Public Domain</translation>
+      <translation>Javne domene</translation>
     </message>
     <message>
       <source>FreeArt</source>
-      <translation type="unfinished">FreeArt</translation>
+      <translation>FreeArt</translation>
     </message>
     <message>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Drugo</translation>
     </message>
     <message>
       <source>License URL</source>
@@ -2245,15 +2243,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>The default company to use for new files</source>
-      <translation type="unfinished">The default company to use for new files</translation>
+      <translation>Zadano ime poduzeća za nove datoteke</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
-      <translation type="unfinished">Run AutoRecovery at startup</translation>
+      <translation>Pokreni samo oporavak tijekom pokretanja</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation type="unfinished">Save AutoRecovery information every</translation>
+      <translation>Spremiti informacije samo oporavka svakih</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
@@ -2672,7 +2670,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Postavlja područje za odabir elemenata u 3D prikazu. Veće vrijednosti, lakše ćete odabrati predmete, ali će te učiniti da neke male predmete nije moguće odabrati.</translation>
     </message>
   </context>
   <context>
@@ -5032,7 +5030,7 @@ Pazite jer točke odabira utječu.</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Izvornik</translation>
     </message>
     <message>
       <source> %1.%2.%3 </source>
@@ -6475,7 +6473,7 @@ Pazite jer točke odabira utječu.</translation>
     </message>
     <message>
       <source>Set to axonometric view</source>
-      <translation type="unfinished">Set to axonometric view</translation>
+      <translation>Postavlja pogled na aksonometrijski</translation>
     </message>
   </context>
   <context>
@@ -6595,7 +6593,7 @@ Pazite jer točke odabira utječu.</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Postavlja pogled od gore</translation>
+      <translation>Postavlja pogled sprijeda</translation>
     </message>
   </context>
   <context>

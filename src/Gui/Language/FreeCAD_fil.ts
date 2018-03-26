@@ -403,7 +403,7 @@ habang lumilikha ng isang kaliwa o kanan pindutin at ilipat ang mouse pataas o p
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Aklatan</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>

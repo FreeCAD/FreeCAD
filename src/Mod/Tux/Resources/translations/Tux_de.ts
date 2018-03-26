@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Zoomen</translation>
+      <translation>Vergrößern</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>

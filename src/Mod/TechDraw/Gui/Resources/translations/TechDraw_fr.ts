@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="562"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="563"/>
@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="564"/>
       <location filename="../../Command.cpp" line="566"/>
       <source>Inserts an Annotation in the active drawing</source>
-      <translation>Insère une Annotation dans le dessin actif</translation>
+      <translation>Insère une annotation dans le dessin actif</translation>
     </message>
   </context>
   <context>
@@ -25,18 +25,18 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="909"/>
       <source>Insert an ArchView</source>
-      <translation>Insérer un vue d'architecture</translation>
+      <translation>Insérer une vue d'architecture</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="910"/>
       <location filename="../../Command.cpp" line="912"/>
       <source>Inserts a view of an Arch Section Plane into the active drawing</source>
-      <translation>Insérer une vue d'un plan de coupe de l'architecture active</translation>
+      <translation>Insérer une vue d'un plan de coupe Arch dans le dessin actif</translation>
     </message>
   </context>
   <context>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="604"/>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../Command.cpp" line="730"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
       <source>&amp;ClipMinus</source>
-      <translation type="unfinished">&amp;ClipMinus</translation>
+      <translation>&amp;ClipMinus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="732"/>
@@ -82,12 +82,12 @@
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
       <source>&amp;ClipPlus</source>
-      <translation type="unfinished">&amp;ClipPlus</translation>
+      <translation>&amp;ClipPlus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="644"/>
@@ -105,12 +105,12 @@
     <message>
       <location filename="../../Command.cpp" line="855"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
       <source>Insert a DraftView</source>
-      <translation>Insérer une vue 2D</translation>
+      <translation>Insérer une vue Draft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="857"/>
@@ -143,12 +143,12 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="212"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="213"/>
       <source>Insert bitmap image</source>
-      <translation>Insérer une image bitmap</translation>
+      <translation>Insérer une image matricielle</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="214"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="233"/>
       <source>Select an Image File</source>
-      <translation>Sélectionner une fichier image</translation>
+      <translation>Sélectionner un fichier image</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="235"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="822"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="823"/>
@@ -186,17 +186,17 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="733"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="734"/>
       <source>Insert a new angle dimension into the drawing</source>
-      <translation>Insérer une nouvelle dimension angulaire dans le dessin</translation>
+      <translation>Insérer une nouvelle cote angulaire dans le dessin</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="735"/>
       <source>Insert a new angle dimension</source>
-      <translation>Insérer une nouvelle dimension angulaire</translation>
+      <translation>Insérer une nouvelle cote angulaire</translation>
     </message>
   </context>
   <context>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="323"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="324"/>
       <source>Insert a new diameter dimension into the drawing</source>
-      <translation>Insérer une nouvelle dimension de diamètre dans le dessin</translation>
+      <translation>Insérer une nouvelle cote de diamètre dans le dessin</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="325"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="110"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="111"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="518"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="519"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="626"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="627"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="142"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="143"/>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="80"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="81"/>
@@ -304,12 +304,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
       <source>Insert a new length dimension into the drawing</source>
-      <translation>Insérer une nouvelle cote lineaire dans le dessin</translation>
+      <translation>Insérer une nouvelle cote linéaire dans le dessin</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="412"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="92"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="93"/>
@@ -360,7 +360,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="236"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="237"/>
@@ -378,7 +378,7 @@
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
@@ -396,7 +396,7 @@
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="372"/>
@@ -414,17 +414,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Insert section view in drawing</source>
-      <translation>Insérer une vue de section dans le dessin</translation>
+      <translation>Insérer une vue en coupe dans le dessin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="304"/>
       <source>Insert a new Section View of a Part in the active drawing</source>
-      <translation>Insérer une nouvelle vue de section d’une pièce dans le dessin actif</translation>
+      <translation>Insérer une nouvelle vue en coupe d’une pièce dans le dessin actif</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="312"/>
@@ -464,12 +464,12 @@
     <message>
       <location filename="../../Command.cpp" line="965"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="966"/>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Insérer une feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="967"/>
@@ -483,7 +483,7 @@
     <message>
       <location filename="../../Command.cpp" line="805"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="806"/>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="264"/>
       <source>TechDraw</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
@@ -601,7 +601,7 @@
     <message>
       <location filename="../../Command.cpp" line="979"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Merci de sélectionner un seul objet Spreadsheet</translation>
+      <translation>Sélectionner un seul objet Spreadsheet.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1048"/>
@@ -701,7 +701,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="368"/>
       <source>No TechDraw object in selection</source>
-      <translation>Aucun vue dans la sélection</translation>
+      <translation>Aucun objet TechDraw dans la sélection</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="375"/>
@@ -784,7 +784,7 @@
     <message>
       <location filename="../../ViewProviderPage.cpp" line="183"/>
       <source>Toggle KeepUpdated</source>
-      <translation type="unfinished">Toggle KeepUpdated</translation>
+      <translation>Activer/désactiver garder à jour</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="44"/>
@@ -805,175 +805,170 @@
       <translation>Dimensions</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="212"/>
       <source>Arrow Style</source>
       <translation>Style de flèches</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="51"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
       <source>Show Units</source>
       <translation>Afficher les unités</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="41"/>
       <source>Color</source>
       <translation>Couleur</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="71"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="65"/>
       <source>Font Size</source>
       <translation>Taille de police</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="99"/>
       <source>Diameter Symbol</source>
       <translation>Symbole de diamètre</translation>
     </message>
     <message utf8="true">
-      <location filename="../../DlgPrefsTechDraw2.ui" line="139"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="111"/>
       <source>⌀</source>
       <translation>⌀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="155"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Décimales alternatives</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
       <source>Use Global Decimals</source>
-      <translation>Séparer les décimales par une virgule</translation>
+      <translation>Utiliser les paramètres système pour les décimales</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="178"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="143"/>
       <source>Preferred arrowhead style</source>
       <translation>Style préféré de tête de flèche</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="194"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="159"/>
       <source>0 - Filled Triangle</source>
       <translation>0 - Triangle rempli</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="204"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="169"/>
       <source>1 - Open Arrowhead</source>
       <translation>1 - Tête de flèche ouverte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="179"/>
       <source>2 - Tick</source>
-      <translation type="unfinished">2 - Tick</translation>
+      <translation>2 - marquer</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="189"/>
       <source>3 - Dot</source>
       <translation>3 - Point</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="234"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="199"/>
       <source>4 - Open Circle</source>
       <translation>4 - Cercle ouvert</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="247"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="92"/>
       <source>Arrow Size</source>
       <translation>Taille de la flèche</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="288"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="235"/>
+      <source>Dimension font size in units</source>
+      <translation>Taille de police des dimensions, avec unité</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="251"/>
+      <source>Dimension arrowhead size in units</source>
+      <translation>Taille de flèche des dimensions, avec unité</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="272"/>
       <source>Decorations</source>
       <translation>Décorations</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="303"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="287"/>
       <source>Round</source>
       <translation>Arrondi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="308"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="292"/>
       <source>Square</source>
       <translation>Carré</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="316"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="300"/>
       <source>Section Line Style</source>
       <translation>Sélectionner le style de la ligne</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="323"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="307"/>
       <source>Center Line Style</source>
       <translation>Style de la ligne centrale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="330"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="314"/>
       <source>Matting Style</source>
-      <translation type="unfinished">Matting Style</translation>
+      <translation>Style des vue détaillées</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="364"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="391"/>
       <source>NeverShow</source>
       <translation>ToujoursCacher</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="468"/>
       <source>Line Group</source>
       <translation>Groupe de lignes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="517"/>
-      <source>FC 0.70mm</source>
-      <translation>FC 0,70 mm</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="374"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="417"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="358"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="401"/>
       <source>Dash</source>
       <translation>Tiret</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="379"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="363"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="406"/>
       <source>Dot</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="384"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="427"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="368"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="411"/>
       <source>DashDot</source>
       <translation>Trait d'axe</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="389"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="432"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="373"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="416"/>
       <source>DashDotDot</source>
       <translation>Tiret point point</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="369"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="412"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="353"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="396"/>
       <source>Solid</source>
       <translation>Solide</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="440"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="424"/>
       <source>Center Line Color</source>
       <translation>Couleur de la ligne de centre</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="447"/>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="431"/>
       <source>Section Line Color</source>
       <translation>Couleur de la ligne de section</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="484"/>
-      <source>Default weight for GeomHatch lines</source>
-      <translation>Épaisseur par défaut pour les lignes GeomHatch</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="487"/>
-      <source>Hatch Weight</source>
-      <translation>Épaisseur des hachures</translation>
     </message>
   </context>
   <context>
@@ -981,7 +976,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
       <source>TechDraw 1</source>
-      <translation>Mise en plan</translation>
+      <translation>TechDraw 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
@@ -996,23 +991,18 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="45"/>
       <source>First</source>
-      <translation>Premier</translation>
+      <translation>Européenne</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="50"/>
       <source>Third</source>
-      <translation>Troisième</translation>
+      <translation>Américaine</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="58"/>
-      <location filename="../../DlgPrefsTechDraw.ui" line="359"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="336"/>
       <source>Hidden Line</source>
       <translation>Ligne cachée</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
-      <source>Style for hidden lines</source>
-      <translation>Style pour les lignes cachées</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="78"/>
@@ -1045,19 +1035,9 @@
       <translation>Tiret point point</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
-      <source>Perform/skip face processing</source>
-      <translation>Effectuer/Passer le traitement des faces</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="114"/>
       <source>Detect Faces</source>
       <translation>Détecter les faces</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>Debugging option</source>
-      <translation>Option de débogage</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
@@ -1065,132 +1045,147 @@
       <translation>Voir les bords de sections</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
-      <source>Update Pages as scheduled or skip</source>
-      <translation>Mettre à jour les Pages comme prévu ou passer</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="149"/>
       <source>Keep Pages Up to Date</source>
       <translation>Garder les pages à jour</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="165"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="617"/>
+      <source>Font for View Labels</source>
+      <translation>Police des étiquettes de vues</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="635"/>
       <source>Template Dot Size</source>
       <translation>Taille du point du modèle</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="172"/>
-      <source>EditableText Dot Size in mm</source>
-      <translation>Taille du point du texte éditable en mm</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="206"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="183"/>
       <source>Colors</source>
       <translation>Couleurs</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
+      <source>Style for hidden lines</source>
+      <translation>Style pour les lignes cachées</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
+      <source>Perform/skip face processing</source>
+      <translation>Effectuer/Passer le traitement des faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
+      <source>Debugging option</source>
+      <translation>Option de débogage</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
+      <source>Update Pages as scheduled or skip</source>
+      <translation>Mettre à jour les Pages comme prévu ou passer</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="191"/>
       <source>Section Hatch</source>
       <translation>Hachure de section</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="221"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="198"/>
       <source>Section Face</source>
       <translation>Face de section</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="262"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="239"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="352"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="329"/>
       <source>PreSelected</source>
       <translation>Présélectionnés</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="383"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="360"/>
       <source>Selected</source>
       <translation>Sélectionné</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="384"/>
       <source>Background</source>
       <translation>Arrière-plan</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="391"/>
       <source>Geom Hatch</source>
       <translation>Geom Hatch</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="456"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="433"/>
       <source>Files</source>
       <translation>Fichiers</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="464"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="441"/>
       <source>Template Directory</source>
       <translation>Répertoire des gabarits</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="471"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="448"/>
       <source>Default Template</source>
       <translation>Gabarit par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="491"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="468"/>
       <source>Hatch Image</source>
       <translation>Image de hachures</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="508"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="485"/>
       <source>Location of default svg/png fill file</source>
       <translation>Emplacement du fichier de remplissage svg/png par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="521"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="498"/>
       <source>PAT File</source>
       <translation>Fichier PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="505"/>
       <source>Default location for PAT file</source>
       <translation>Emplacement par défaut pour le fichier PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="545"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="522"/>
       <source>Default PAT pattern</source>
       <translation>Motif PAT par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="558"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="535"/>
       <source>Pattern Name</source>
       <translation>Nom du motif</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="602"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="579"/>
       <source>Labels</source>
       <translation>Étiquettes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
-      <source>Label height in millimeters</source>
-      <translation>Hauteur d’étiquette en millimètres</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="645"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="603"/>
       <source>Label Font</source>
       <translation>Police de l’étiquette</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="652"/>
-      <source>osifont</source>
-      <translation>osifont</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="668"/>
+      <source>View Label size in units</source>
+      <translation>Taille d’étiquette de vues, avec unité</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="665"/>
+      <location filename="../../DlgPrefsTechDraw.ui" line="684"/>
+      <source>Green edit dot size in units</source>
+      <translation>Taille des points verts d'édition, avec unité</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
       <source>Label Size</source>
       <translation>Taille de l’étiquette</translation>
     </message>
@@ -1406,7 +1401,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="61"/>
       <source>First or Third Angle</source>
-      <translation>Premier ou troisième angle</translation>
+      <translation>Européenne ou américaine</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="68"/>
@@ -1680,7 +1675,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="45"/>
       <source>Text Name:</source>
-      <translation>Nom du texte:</translation>
+      <translation>Nom du texte :</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>

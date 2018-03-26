@@ -509,7 +509,7 @@
       <translation>Bagong mga Operasyon</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>Hindi nakahanap ng job %s</translation>
     </message>
@@ -534,12 +534,12 @@
       <translation>Bahagyang mga Command</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Bagong mga Operasyon</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
       <translation type="unfinished">Path Modification</translation>
     </message>
@@ -2478,12 +2478,12 @@ Kung kinakailangan ng mano-manong pagtakda ng FinalDepth mangyaring pumili ng ib
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>Paggaya ng CAM</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Gayahin ang Landas na G-Code sa stock</translation>
     </message>

@@ -56,7 +56,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
-      <translation>dimensione del frammento massimo</translation>
+      <translation>Dimensione del frammento massimo</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="208"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
-      <translation>convessità</translation>
+      <translation>Convessità</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="341"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Increase Tolerance Feature</source>
-      <translation>Aumenta la caratteristica tolleranza</translation>
+      <translation>Aumenta la tolleranza</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="190"/>

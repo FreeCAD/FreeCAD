@@ -83,12 +83,12 @@
     <message>
       <location line="+1"/>
       <source>Kuka compact subroutine...</source>
-      <translation>库卡压缩子例程...</translation>
+      <translation>库卡精简子程式...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>导出轨迹为压缩 KRL 子例程.</translation>
+      <translation>以精简KRL子程式导出轨迹</translation>
     </message>
   </context>
   <context>
@@ -332,7 +332,7 @@
     <message>
       <location line="+1"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>创建覆盖某些方面轨迹的装饰对象</translation>
+      <translation>创建覆盖轨迹部分设定的修饰对象</translation>
     </message>
     <message>
       <source>Dress up trajectory...</source>
@@ -381,7 +381,7 @@
     <message>
       <location line="-177"/>
       <source>Select one Robot to set home position</source>
-      <translation>选择一个机器人设置主位置</translation>
+      <translation>选择一个机器人来设置初始位置</translation>
     </message>
     <message>
       <location line="+149"/>
@@ -445,7 +445,7 @@
     </message>
     <message>
       <source>Select one Robot to set home postion</source>
-      <translation>选择置于中心的机器人</translation>
+      <translation>选择一个机器人来设置初始位置</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-106"/>

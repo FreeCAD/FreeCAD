@@ -106,7 +106,7 @@
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>清除标注</translation>
+      <translation>清除测量</translation>
     </message>
   </context>
   <context>
@@ -725,7 +725,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
       <source>Category</source>
-      <translation>类别</translation>
+      <translation>分类</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -848,7 +848,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; 改动将在你下一次加载工作台时生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; 改动将在您下一次加载工作台时生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -916,7 +916,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Duplicated name</source>
-      <translation>重复命名</translation>
+      <translation>名称重复</translation>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
@@ -1020,7 +1020,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>绘制模式:</translation>
+      <translation>图表模式:</translation>
     </message>
     <message>
       <source/>
@@ -1040,7 +1040,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>颜色出图:</translation>
+      <translation>彩色图表:</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -1494,7 +1494,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>漫射颜色:</translation>
+      <translation>散射颜色:</translation>
     </message>
     <message>
       <source>Specular color:</source>
@@ -4305,7 +4305,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>绘制模式:</translation>
+      <translation>图表模式:</translation>
     </message>
     <message>
       <source>Point size:</source>

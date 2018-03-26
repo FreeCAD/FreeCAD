@@ -346,7 +346,7 @@
     <message>
       <location filename="PathOp.py" line="101"/>
       <source>The base geometry for this operation</source>
-      <translation>Die Basis-Geometrie diese Operation</translation>
+      <translation>Die Basis-Geometrie für diese Operation</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="104"/>
@@ -508,7 +508,7 @@
       <translation>Neue Befehle</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="504"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
       <source>Didn't find job %s</source>
       <translation>Job %s nicht gefunden</translation>
     </message>
@@ -533,12 +533,12 @@
       <translation>Partielle Befehle</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>New Operations</source>
       <translation>Neue Befehle</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="134"/>
+      <location filename="../../../InitGui.py" line="133"/>
       <source>Path Modification</source>
       <translation>Pfad Änderung</translation>
     </message>
@@ -898,7 +898,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="97"/>
       <source>The base geometry for this operation</source>
-      <translation>Die Basis-Geometrie diese Operation</translation>
+      <translation>Die Basis-Geometrie für diese Operation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="101"/>
@@ -958,7 +958,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="97"/>
       <source>The base geometry for this operation</source>
-      <translation>Die Basis-Geometrie diese Operation</translation>
+      <translation>Die Basis-Geometrie für diese Operation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="101"/>
@@ -1426,7 +1426,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="PathArray.py" line="106"/>
       <source>Array</source>
-      <translation>Anordnung</translation>
+      <translation>Array</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="107"/>
@@ -1442,7 +1442,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="241"/>
       <source>Array</source>
-      <translation>Anordnung</translation>
+      <translation>Array</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="242"/>
@@ -1613,7 +1613,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="469"/>
       <source>DragKnife Dress-up</source>
-      <translation>Schneidmesser "Dress-Up"</translation>
+      <translation>Zugmesser DressUp</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
@@ -1660,7 +1660,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="68"/>
       <source>The Mode of Point Radiusoffset or Center</source>
-      <translation type="unfinished">The Mode of Point Radiusoffset or Center</translation>
+      <translation>Radius Offset oder Center-Modus</translation>
     </message>
   </context>
   <context>
@@ -2463,12 +2463,12 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
   <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="536"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
       <source>CAM Simulator</source>
       <translation>CAM Simulator</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="538"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Simuliere Bewegungsbahn G-Code auf Grundkörper</translation>
     </message>
@@ -2550,7 +2550,7 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, wählen Sie b
     <message>
       <location filename="PathDressupDragknife.py" line="474"/>
       <source>DragKnife Dress-up</source>
-      <translation>Schneidmesser "Dress-Up"</translation>
+      <translation>Zugmesser DressUp</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="475"/>

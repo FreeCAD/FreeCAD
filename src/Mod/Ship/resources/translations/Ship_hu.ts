@@ -215,7 +215,7 @@
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="127"/>
       <source>Any valid ship section found</source>
-      <translation>Bármely megtalálható érvényes hajó rész</translation>
+      <translation>Ennyi érvényes hajó részt talált</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="132"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="143"/>
       <source>A tank instance must be selected before using this tool (no valid tank found at the selected objects)</source>
-      <translation>Egy tartáj példányt kell kijelölni, mielőtt használja ezt az eszközt (nem található érvényes tartáj a kijelölt objektumokon)</translation>
+      <translation>Egy tartály példányt kell kijelölni, mielőtt használja ezt az eszközt (nem található érvényes tartáj a kijelölt objektumokon)</translation>
     </message>
     <message>
       <location filename="../../TankInstance.py" line="128"/>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation>ZeroDivisionError: Üres területet tslált a fő keret terület együttható számítása során!</translation>
+      <translation>ZeroDivisionError: Üres területet talált a fő keret terület együttható számítása során!</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="274"/>
       <source>Plot hydrostatics</source>
-      <translation>Vízszilárdság / hidrostatika nyomtatása</translation>
+      <translation>Vízszilárdság / hidrosztatika nyomtatása</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="278"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation>Példa hajó betüöltése</translation>
+      <translation>Példa hajó betöltése</translation>
     </message>
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="110"/>

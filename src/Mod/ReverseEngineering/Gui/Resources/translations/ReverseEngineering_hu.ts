@@ -46,7 +46,7 @@
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>Hozzávetőleges B-Spline felület</translation>
+      <translation>Hozzávetőleges B-görbe felület</translation>
     </message>
   </context>
   <context>
@@ -64,7 +64,7 @@
     <message>
       <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson felszín újrapítése</translation>
+      <translation>Poisson felszín újraépítése</translation>
     </message>
   </context>
   <context>
@@ -94,12 +94,12 @@
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <source>Fit B-Spline surface</source>
-      <translation>B-görbe felület ilesztése</translation>
+      <translation>B-görbe felület illesztése</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation>B-görbe felület ilesztése</translation>
+      <translation>B-görbe felület illesztése</translation>
     </message>
     <message>
       <location line="+6"/>

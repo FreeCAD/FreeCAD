@@ -4,7 +4,7 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+191"/>
+      <location filename="../../Command.cpp" line="+187"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -17,13 +17,13 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Convert to points</source>
-      <translation>将转换为点</translation>
+      <translation>转换为点</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location line="-82"/>
+      <location line="-80"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -42,7 +42,7 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location line="-53"/>
+      <location line="-51"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -61,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+249"/>
+      <location line="+245"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
@@ -267,19 +267,23 @@
       <translation>Ascii 点(*.asc),所有文件 (*.*）</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-80"/>
-      <location line="+51"/>
       <source>Ascii Points</source>
       <translation>Ascii 点</translation>
     </message>
     <message>
-      <location line="-51"/>
-      <location line="+51"/>
+      <location filename="../../Command.cpp" line="-76"/>
+      <location line="+50"/>
       <source>All Files</source>
       <translation>所有文件</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="-50"/>
+      <location line="+50"/>
+      <source>Point formats</source>
+      <translation>点格式</translation>
+    </message>
+    <message>
+      <location line="+71"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>

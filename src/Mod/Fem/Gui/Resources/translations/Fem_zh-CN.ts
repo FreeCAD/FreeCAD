@@ -98,7 +98,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="77"/>
       <source>Constraint Potential</source>
-      <translation type="unfinished">Constraint Potential</translation>
+      <translation>电位约束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="80"/>
@@ -145,12 +145,12 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation>1D 流流体剖面</translation>
+      <translation>一维流体截面</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>创建用于1D 流的有限元流体剖面</translation>
+      <translation>创建用于一维流的有限元流体截面</translation>
     </message>
   </context>
   <context>
@@ -194,12 +194,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="200"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>梁旋转</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>创建有限元梁旋转</translation>
     </message>
   </context>
   <context>
@@ -590,12 +590,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation>1D 流流体剖面</translation>
+      <translation>一维流体截面</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>创建用于1D 流的有限元流体剖面</translation>
+      <translation>创建用于一维流的有限元流体截面</translation>
     </message>
   </context>
   <context>
@@ -1123,12 +1123,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation>创建有限元滑动约束</translation>
+      <translation>创建有限元带轮约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation>建立FEM滑轮约束</translation>
+      <translation>建立有限元带轮约束</translation>
     </message>
   </context>
   <context>
@@ -1681,7 +1681,7 @@
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="94"/>
       <source>Pulley diameter</source>
-      <translation>滑轮直径</translation>
+      <translation>带轮直径</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
@@ -2288,7 +2288,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley dia</source>
-      <translation>其他滑轮直径</translation>
+      <translation>其他带轮直径</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
@@ -2308,7 +2308,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
       <source>Driven pulley</source>
-      <translation>驱动轮</translation>
+      <translation>驱动带轮</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
