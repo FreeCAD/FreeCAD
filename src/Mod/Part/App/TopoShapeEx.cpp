@@ -1512,7 +1512,7 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     _Shape.Nullify();
     resetElementMap();
 
-    if(!maker) maker = "FaceMakerBullseye";
+    if(!maker || !maker[0]) maker = "Part::FaceMakerBullseye";
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
