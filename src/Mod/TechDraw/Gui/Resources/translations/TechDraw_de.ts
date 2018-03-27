@@ -191,7 +191,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="734"/>
       <source>Insert a new angle dimension into the drawing</source>
-      <translation>Neue Winkel Bemaßung in die Zeichnung einfügen</translation>
+      <translation>Neue Winkel-Bemaßung in die Zeichnung einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="735"/>
@@ -882,12 +882,12 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="235"/>
       <source>Dimension font size in units</source>
-      <translation>Schriftgrösse in der Masseinheit</translation>
+      <translation>Schriftgröße in der Maßeinheit</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="251"/>
       <source>Dimension arrowhead size in units</source>
-      <translation>Grösse der Pfeilspitze in der Masseinheit</translation>
+      <translation>Größe der Pfeilspitze in der Maßeinheit</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="272"/>
@@ -1057,7 +1057,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="635"/>
       <source>Template Dot Size</source>
-      <translation>Feldgrösse im Zeichnungsrahmen</translation>
+      <translation>Feldgröße im Zeichnungsrahmen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="183"/>
@@ -1177,12 +1177,12 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="668"/>
       <source>View Label size in units</source>
-      <translation>Beschriftungsgrösse in der Masseinheit</translation>
+      <translation>Beschriftungsgröße in der Maßeinheit</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="684"/>
       <source>Green edit dot size in units</source>
-      <translation>Grösse der grünen Feldmarkierung im Zeichnungsrahmen</translation>
+      <translation>Größe der grünen Feldmarkierung im Zeichnungsrahmen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="610"/>

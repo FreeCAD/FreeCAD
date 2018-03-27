@@ -280,7 +280,7 @@
       <location line="-50"/>
       <location line="+50"/>
       <source>Point formats</source>
-      <translation>Punkt Formate</translation>
+      <translation>Punkt-Formate</translation>
     </message>
     <message>
       <location line="+71"/>
