@@ -900,7 +900,10 @@ DocumentObject *DocumentObject::resolve(const char *subname,
                 const char *sub = dot==subname?dot:dot+1;
                 if(Data::ComplexGeoData::isMappedElement(sub)) {
                     lastDot = dot;
-                    continue;
+                    if(dot==subname) 
+                        break;
+                    else
+                        continue;
                 }
             }
             if(dot==subname)
