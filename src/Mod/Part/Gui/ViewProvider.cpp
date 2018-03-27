@@ -114,10 +114,20 @@ void ViewProviderPart::applyTransparency(const float& transparency,
         }
     }
 }
+
+//=============
+extern void printBacktrace(size_t skip=0);
+//=============
+
 void ViewProviderPart::updateViewColorAndTransparency() {
 	Part::Feature* objPart = static_cast<Part::Feature*>(getObject());
 	App::Color shapeColor = ShapeColor.getValue();
 	const float curTrans = Transparency.getValue();
+	
+	//=============
+	printf("void ViewProviderPart::updateData(const App::Property* prop) objet : %s\n", objPart->Label.getValue());
+	printBacktrace();
+	//=============
 	
 	if (!objPart  || !objPart->isDerivedPart() || usePartColors()) {
 		App::Color nColor = shapeColor;

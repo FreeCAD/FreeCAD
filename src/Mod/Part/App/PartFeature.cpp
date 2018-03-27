@@ -447,22 +447,19 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
 void Feature::childrenPartChanged(const Feature * child, ObjectChanges what) {
 	// report the change to the parents
 	// does not report if a calculation is already planned (ie they are already told)
-	// TODO
+	//TODO
+	//if (rebuild()) return; // everything is already planned
+	
 	ObjectChanges w = what;
 	if (what == PositionChange) w = GeometryChange; 
 	// in general change the position of one component changes the geometry.
-	// TODO sets the attributes for rebuilding
-	
-	/* TODO
-	if (isDerivedPart()) {
-		// do not tell if the color does not change even if changed due to a children
-		Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-		if (activeGui) {
-			Gui::ViewProviderPart* vp = (Gui::ViewProviderPart*)activeGui->getViewProvider(&this));
-		}
-		if (what == ColorChange && vp->usePartColors()) return;
+	if (w == GeometryChange) {
+		touch();
+	//} else {
+	//	if (!needChildrenColors()) return;
+	//	// TODO set rebuild colors
 	}
-	*/
+	
 	tellChangesToParentParts(w);
 }
 
