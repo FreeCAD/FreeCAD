@@ -804,22 +804,68 @@ int SketchObject::deleteAllGeometry()
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= int(vals.size()))
+
+    if (-GeoId > static_cast<int>(ExternalGeo.size()) || 
+        GeoId >= int(vals.size()) || 
+        GeoId == Sketcher::GeoEnum::HAxis || 
+        GeoId == Sketcher::GeoEnum::VAxis)
         return -1;
-    
-    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
-        return -1;
 
-    std::vector< Part::Geometry * > newVals(vals);
+    if (GeoId < 0) { // external geometry
 
-    Part::Geometry *geoNew = newVals[GeoId]->clone();
-    geoNew->Construction = !geoNew->Construction;
-    newVals[GeoId]=geoNew;
+        std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+        std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+        std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
 
-    this->Geometry.setValues(newVals);
-    //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
-    solverNeedsUpdate=true;
-    return 0;
+        const std::vector<DocumentObject*> originalObjects = Objects;
+        const std::vector<std::string>     originalSubElements = SubElements;
+        const std::vector<bool>            originalDefiningVals = DefiningVals;
+
+        if (Objects.size() != SubElements.size()) {
+            assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+            Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
+            return -1;
+        }
+
+        if (Objects.size() != DefiningVals.size()) {
+            assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+            Base::Console().Error("Internal error: counts of objects and boolean elements in external geometry links do not match\n");
+            return -1;
+        }
+
+        DefiningVals[-GeoId-3]=!DefiningVals[-GeoId-3];
+
+        // set the Link list.
+        ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
+        try {
+            rebuildExternalGeometry();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            // revert to original values
+            ExternalGeometry.setValues(originalObjects,originalSubElements,originalDefiningVals);
+            return -1;
+        }
+
+        solverNeedsUpdate=true;
+ 
+        return 0;
+    }
+    else {
+        if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
+            return -1;
+
+        std::vector< Part::Geometry * > newVals(vals);
+
+        Part::Geometry *geoNew = newVals[GeoId]->clone();
+        geoNew->Construction = !geoNew->Construction;
+        newVals[GeoId]=geoNew;
+
+        this->Geometry.setValues(newVals);
+        //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
+        solverNeedsUpdate=true;
+        return 0;
+    }
 }
 
 int SketchObject::setConstruction(int GeoId, bool on)
