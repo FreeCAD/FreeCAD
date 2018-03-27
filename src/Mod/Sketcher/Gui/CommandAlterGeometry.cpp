@@ -141,6 +141,12 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
                 // issue the actual commands to toggle
                 doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
             }
+            else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
+                int GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(it->substr(12,4000).c_str());
+                // issue the actual commands to toggle
+                doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
+            }
+
         }
         // finish the transaction and update
         commitCommand();
