@@ -618,10 +618,11 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             FC_LOG("missing edge link: " << base->getNameInDocument() << "." << ref);
             
             auto names = baseShape.getElementNamesWithPrefix((ref+edge.modPostfix()).c_str());
+            
             if(names.empty()) {
                 auto pos = ref.rfind(edge.modPostfix());
-                if(pos!=std::string::npos)
-                    names = baseShape.getElementNamesWithPrefix(ref.substr(0,pos+1).c_str());
+                if(pos!=std::string::npos && pos!=0)
+                    names = baseShape.getElementNamesWithPrefix(ref.substr(0,pos).c_str());
             }
             for(auto &name : names) {
                 int idx=0;
