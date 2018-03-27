@@ -2194,6 +2194,8 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
         return false;
     }
     
+    SketchObject * psObj = static_cast<SketchObject *>(pObj);
+    
     // Sketches outside of the Document are NOT allowed
     if (this->getDocument() != pDoc){
         if (rsn)
@@ -2222,10 +2224,17 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
         if (body_this != NULL) {
-            if ((body_this != body_obj) && !this->allowOtherBody) {
-                if (rsn)
-                    *rsn = rlOtherBody;
-                return false;
+            if (body_this != body_obj) {
+                if (!this->allowOtherBody) {
+                    if (rsn)
+                        *rsn = rlOtherBody;
+                    return false;
+                }
+                else if (psObj->getExternalGeometryCount()>2){ // if the original sketch has external geometry AND it is not in this body prevent link
+                    if (rsn)
+                        *rsn = rlOtherBodyWithLinks;
+                    return false;
+                }
             }
         }
     } else {
@@ -2235,7 +2244,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
         return false;
     }
     
-    SketchObject * psObj = static_cast<SketchObject *>(pObj);
+    
     
     const Rotation & srot = psObj->Placement.getValue().getRotation();
     const Rotation & lrot = this->Placement.getValue().getRotation();
