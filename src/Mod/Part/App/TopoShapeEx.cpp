@@ -375,14 +375,10 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx) const {
 }
 
 std::string TopoShape::getElementMapVersion() const{
-    static std::string ver;
-    if(ver.empty()) {
-        std::ostringstream ss;
-        ss << TOPOP_VERSION << '.' << std::hex << OCC_VERSION_HEX 
-            << '.' << Data::ComplexGeoData::getElementMapVersion();
-        ver = ss.str();
-    }
-    return ver;
+    std::ostringstream ss;
+    ss << TOPOP_VERSION << '.' << std::hex << OCC_VERSION_HEX 
+        << '.' << Data::ComplexGeoData::getElementMapVersion();
+    return ss.str();
 }
 
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const std::vector<TopoShape> &shapes, 
