@@ -220,7 +220,7 @@ const char *ComplexGeoData::getElementName(const char *name, bool reverse,
         auto it = _ElementMap->right.find(name);
         if(it == _ElementMap->right.end())
             return name;
-        if(sid) *sid = it->info;
+        if(sid) sid->insert(sid->end(),it->info.begin(),it->info.end());
         return it->second.c_str();
     }
     const char *txt = isMappedElement(name);
@@ -236,7 +236,7 @@ const char *ComplexGeoData::getElementName(const char *name, bool reverse,
     auto it = _ElementMap->left.find(txt);
     if(it == _ElementMap->left.end())
         return name;
-    if(sid) *sid = it->info;
+    if(sid) sid->insert(sid->end(),it->info.begin(),it->info.end());
     return it->second.c_str();
 }
 
@@ -292,65 +292,23 @@ void ComplexGeoData::copyElementMap(const ComplexGeoData &data, const char *pref
     if(postfix && !postfix[0])
         postfix = 0;
 
-    // Use the other hasher (may be the same as ours), prevent double hashing
-    // the name.
-    if(data.Hasher)
-        Hasher.reset();
+    if(!Hasher)
+        Hasher = data.Hasher;
+
     for(const auto &v : data._ElementMap->left) {
         if(v.info.size()) {
-            setElementName(v.second.c_str(), v.first.c_str(), prefix, postfix, &v.info);
-            continue;
-        }
-        // if having hasher, try to preserve existing prefix and postfix
-        std::string _prefix,_postfix;
-        auto name = v.first.c_str();
-        auto pre = prefix;
-        auto post = postfix;
-        std::vector<App::StringIDRef> sid;
-        if(Hasher) {
-            std::string _name = v.first;
-            if(!pre) {
-                auto pos = _name.find('_');
-                if(pos!=std::string::npos) {
-                    ++pos;
-                    _prefix = _name.substr(0,pos);
-                    _name = _name.substr(pos);
-                    pre = _prefix.c_str();
-                }
-            }
-            if(!post) {
-                auto pos = _name.rfind(elementMapPrefix());
-                if(pos!=std::string::npos) {
-                    size_t i;
-                    // try to hash the text after the first non-alpha-numerical
-                    // character in postfix
-                    for(i=pos+1;i<_name.size();++i)
-                        if(!std::isalnum(_name[i]))
-                            break;
-                    _postfix = _name.substr(pos,i-pos);
-                    if(i<_name.size()) {
-                        sid.push_back(Hasher->getID(_name.c_str()+i));
-                        _postfix += '#';
-                        _postfix += v.second[0];
-                        _postfix += std::to_string(sid.back()->value());
-                        // To hash the postfix as well as the main name, we will
-                        // be keeping two stringIDRef
-                        _name = _name.substr(0,pos);
-                        sid.push_back(Hasher->getID(_name.c_str()));
-                        _name = '#';
-                        _name += v.second[0];
-                        _name += std::to_string(sid.back()->value());
-                    }else
-                        _name = _name.substr(0,pos);
-                    post = _postfix.c_str();
-                }
-            }
-            name = _name.c_str();
-        }
-        setElementName(v.second.c_str(), name, pre, post,&sid);
+            if(Hasher!=data.Hasher){
+                // different hasher, do not double hash by merging the name into prefix
+                std::string name;
+                if(prefix)
+                    name = prefix;
+                name += v.first;
+                setElementName(v.second.c_str(), "", name.c_str(), postfix);
+            }else
+                setElementName(v.second.c_str(), v.first.c_str(), prefix, postfix, &v.info);
+        }else
+            setElementName(v.second.c_str(), v.first.c_str(), prefix, postfix);
     }
-    if(data.Hasher)
-        Hasher = data.Hasher;
 }
 
 const char *ComplexGeoData::setElementName(const char *element, const char *name, 
@@ -422,6 +380,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
         ss << "duplicate element mapping '" << name << "->" << element << '/' << ret.first->second;
         throw Base::ValueError(ss.str().c_str());
     }
+    FC_TRACE(element << " -> " << name);
     return ret.first->first.c_str();
 }
 
@@ -436,7 +395,7 @@ void ComplexGeoData::Save(Base::Writer &writer) const {
             writer.Stream() << "<Element key=\"" <<  
                 v.first <<"\" value=\"" << v.second;
             if(v.info.size()) {
-                writer.Stream() << "\"sid=\"" << v.info.front()->value();
+                writer.Stream() << "\" sid=\"" << v.info.front()->value();
                 for(size_t i=1;i<v.info.size();++i)
                     writer.Stream() << '.' << v.info[i]->value();
             }

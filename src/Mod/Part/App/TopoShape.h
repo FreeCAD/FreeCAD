@@ -31,7 +31,6 @@
 #include <TopTools_ListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <App/ComplexGeoData.h>
-#include <App/StringHasher.h>
 
 class BRepBuilderAPI_MakeShape;
 class BRepBuilderAPI_Sewing;
@@ -290,13 +289,13 @@ public:
     TopoShape &makEWires(const std::vector<TopoShape> &shapes, const char *op=0, bool fix=false, double tol=0.0);
     TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
     TopoShape makEWires(const char *op=0, bool fix=false, double tol=0.0) const {
-        return TopoShape(Tag).makEWires(*this,op,fix,tol);
+        return TopoShape(Tag,Hasher).makEWires(*this,op,fix,tol);
     }
 
     TopoShape &makEFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
     TopoShape &makEFace(const TopoShape &shape, const char *op=0, const char *maker=0);
     TopoShape makEFace(const char *op=0, const char *maker=0) const {
-        return TopoShape(Tag).makEFace(*this,op,maker);
+        return TopoShape(Tag,Hasher).makEFace(*this,op,maker);
     }
 
     TopoShape &makEFilledFace(const std::vector<TopoShape> &shapes, const TopoShape &surface,
@@ -304,7 +303,7 @@ public:
 
     TopoShape &makESolid(const TopoShape &shape, const char *op=0, bool appendTag=false);
     TopoShape makESolid(const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makESolid(*this,op,appendTag);
+        return TopoShape(Tag,Hasher).makESolid(*this,op,appendTag);
     }
 
     TopoShape &makEShape(BRepBuilderAPI_MakeShape &mkShape, 
@@ -312,7 +311,7 @@ public:
     TopoShape &makEShape(BRepBuilderAPI_MakeShape &mkShape, 
             const TopoShape &source, const char *op=0, bool appendTag=false);
     TopoShape makEShape(BRepBuilderAPI_MakeShape &mkShape, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEShape(mkShape,*this,op,appendTag);
+        return TopoShape(Tag,Hasher).makEShape(mkShape,*this,op,appendTag);
     }
 
     TopoShape &makEShape(BRepBuilderAPI_Sewing &mkShape, 
@@ -320,7 +319,7 @@ public:
     TopoShape &makEShape(BRepBuilderAPI_Sewing &mkShape, 
             const TopoShape &source, const char *op=0, bool appendTag=true);
     TopoShape makEShape(BRepBuilderAPI_Sewing &mkShape, const char *op=0, bool appendTag=true) const {
-        return TopoShape(Tag).makEShape(mkShape,*this,op,appendTag);
+        return TopoShape(Tag,Hasher).makEShape(mkShape,*this,op,appendTag);
     }
 
     TopoShape &makEShape(BRepOffsetAPI_ThruSections &mkShape, 
@@ -328,7 +327,7 @@ public:
     TopoShape &makEShape(BRepOffsetAPI_ThruSections &mkShape, 
             const TopoShape &source, const char *op=0, bool appendTag=true);
     TopoShape makEShape(BRepOffsetAPI_ThruSections &mkShape, const char *op=0, bool appendTag=true) const {
-        return TopoShape(Tag).makEShape(mkShape,*this,op,appendTag);
+        return TopoShape(Tag,Hasher).makEShape(mkShape,*this,op,appendTag);
     }
 
     struct Mapper {
@@ -347,7 +346,7 @@ public:
     TopoShape &makEShape(const char *maker, const TopoShape &shape, const char *op=0, 
             bool appendTag=false, double tol = 0.0);
     TopoShape makEShape(const char *maker, const char *op=0, bool appendTag=false, double tol = 0.0) const {
-        return TopoShape(Tag).makEShape(maker,*this,op,appendTag,tol);
+        return TopoShape(Tag,Hasher).makEShape(maker,*this,op,appendTag,tol);
     }
 
     TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat, const char *op=0,
@@ -358,27 +357,27 @@ public:
     }
     TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0,
             bool appendTag=false, bool checkScale=false) const {
-        return TopoShape(Tag).makETransform(*this,mat,op,appendTag,checkScale);
+        return TopoShape(Tag,Hasher).makETransform(*this,mat,op,appendTag,checkScale);
     }
     TopoShape makETransform(const gp_Trsf &mat, const char *op=0,
             bool appendTag=false, bool checkScale=false) const {
-        return TopoShape(Tag).makETransform(*this,mat,op,appendTag,checkScale);
+        return TopoShape(Tag,Hasher).makETransform(*this,mat,op,appendTag,checkScale);
     }
 
     TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, 
             const char *op=0, bool appendTag=false);
     TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEGTransform(*this,mat,op,appendTag);
+        return TopoShape(Tag,Hasher).makEGTransform(*this,mat,op,appendTag);
     }
 
     TopoShape &makECopy(const TopoShape &shape, const char *op=0, bool appendTag=true);
     TopoShape makECopy(const char *op=0, bool appendTag=true) const {
-        return TopoShape(Tag).makECopy(*this,op,appendTag);
+        return TopoShape(Tag,Hasher).makECopy(*this,op,appendTag);
     }
 
     TopoShape &makERefine(const TopoShape &shape, const char *op=0, bool no_fail=true);
     TopoShape makERefine(const char *op=0, bool no_fail=true) const {
-        return TopoShape(Tag).makERefine(*this,op,no_fail);
+        return TopoShape(Tag,Hasher).makERefine(*this,op,no_fail);
     }
 
     TopoShape &makEThickSolid(const TopoShape &shape, const std::vector<TopoShape> &faces, 
@@ -387,7 +386,7 @@ public:
     TopoShape makEThickSolid(const std::vector<TopoShape> &faces, 
             double offset, double tol, bool intersection = false, bool selfInter = false,
             short offsetMode = 0, short join = 0, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEThickSolid(*this,faces,offset,tol,intersection,selfInter,
+        return TopoShape(Tag,Hasher).makEThickSolid(*this,faces,offset,tol,intersection,selfInter,
                 offsetMode,join,op,appendTag);
     }
 
@@ -395,12 +394,12 @@ public:
             const char *face_maker=0, const char *op=0, bool appendTag=false);
     TopoShape makERevolve(const gp_Ax1& axis, double d, 
             const char *face_maker=0, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makERevolve(*this,axis,d,face_maker,op,appendTag);
+        return TopoShape(Tag,Hasher).makERevolve(*this,axis,d,face_maker,op,appendTag);
     }
 
     TopoShape &makEPrism(const TopoShape &base, const gp_Vec& vec, const char *op=0, bool appendTag=false);
     TopoShape makEPrism(const gp_Vec& vec, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEPrism(*this,vec,op,appendTag);
+        return TopoShape(Tag,Hasher).makEPrism(*this,vec,op,appendTag);
     }
 
     TopoShape &makEOffset(const TopoShape &shape, double offset, double tol,
@@ -408,7 +407,7 @@ public:
             short join = 0, bool fill = false, const char *op=0, bool appendTag=false);
     TopoShape makEOffset(double offset, double tol, bool intersection = false, bool selfInter = false, 
             short offsetMode=0, short join=0, bool fill=false, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEOffset(*this,offset,tol,intersection,selfInter,
+        return TopoShape(Tag,Hasher).makEOffset(*this,offset,tol,intersection,selfInter,
                 offsetMode,join,fill,op,appendTag);
     }
 
@@ -416,7 +415,7 @@ public:
             bool allowOpenResult=false, bool intersection=false, const char *op=0, bool appendTag=false);
     TopoShape makEOffset2D(double offset, short joinType=0, bool fill=false, bool allowOpenResult=false, 
             bool intersection=false, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEOffset2D(*this,offset,joinType,fill,allowOpenResult,intersection,
+        return TopoShape(Tag,Hasher).makEOffset2D(*this,offset,joinType,fill,allowOpenResult,intersection,
                 op,appendTag);
     }
 
@@ -432,41 +431,41 @@ public:
 
     TopoShape &makEMirror(const TopoShape &shape, const gp_Ax2&, const char *op=0, bool appendTag=false);
     TopoShape makEMirror(const gp_Ax2& ax, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEMirror(*this,ax,op,appendTag);
+        return TopoShape(Tag,Hasher).makEMirror(*this,ax,op,appendTag);
     }
 
     TopoShape &makESlice(const TopoShape &shape, const Base::Vector3d&, double, const char *op=0);
     TopoShape makESlice(const Base::Vector3d& dir, double d, const char *op=0) const {
-        return TopoShape(Tag).makESlice(*this,dir,d,op);
+        return TopoShape(Tag,Hasher).makESlice(*this,dir,d,op);
     }
     TopoShape &makESlice(const TopoShape &shape, const Base::Vector3d&, 
             const std::vector<double>&, const char *op=0);
     TopoShape makESlice(const Base::Vector3d &dir, const std::vector<double> &d, const char *op=0) const {
-        return TopoShape(Tag).makESlice(*this,dir,d,op);
+        return TopoShape(Tag,Hasher).makESlice(*this,dir,d,op);
     }
 
     TopoShape &makEFillet(const TopoShape &shape, const std::vector<TopoShape> &edges, 
             double radius1, double radius2, const char *op=0, bool appendTag=false);
     TopoShape makEFillet(const std::vector<TopoShape> &edges, 
             double radius1, double radius2, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEFillet(*this,edges,radius1,radius2,op,appendTag);
+        return TopoShape(Tag,Hasher).makEFillet(*this,edges,radius1,radius2,op,appendTag);
     }
 
     TopoShape &makEChamfer(const TopoShape &shape, const std::vector<TopoShape> &edges, 
             double radius1, double radius2, const char *op=0, bool appendTag=false);
     TopoShape makEChamfer(const std::vector<TopoShape> &edges, 
             double radius1, double radius2, const char *op=0, bool appendTag=false) const {
-        return TopoShape(Tag).makEChamfer(*this,edges,radius1,radius2,op,appendTag);
+        return TopoShape(Tag,Hasher).makEChamfer(*this,edges,radius1,radius2,op,appendTag);
     }
 
     TopoShape &replacEShape(const TopoShape &shape, const std::vector<std::pair<TopoShape,TopoShape> > &s);
     TopoShape replacEShape(const std::vector<std::pair<TopoShape,TopoShape> > &s) const {
-        return TopoShape(Tag).replacEShape(*this,s);
+        return TopoShape(Tag,Hasher).replacEShape(*this,s);
     }
         
     TopoShape &removEShape(const TopoShape &shape, const std::vector<TopoShape>& s);
     TopoShape removEShape(const std::vector<TopoShape>& s) const {
-        return TopoShape(Tag).removEShape(*this,s);
+        return TopoShape(Tag,Hasher).removEShape(*this,s);
     }
 
     TopoShape &makEGeneralFuse(const std::vector<TopoShape> &shapes, 
