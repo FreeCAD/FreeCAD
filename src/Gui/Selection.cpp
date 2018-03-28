@@ -818,45 +818,14 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     }
 
     _SelObj temp;
-
-    temp.pDoc = getDocument(pDocName);
-    if(!temp.pDoc) {
-        // neither an existing nor active document available
-        // this can often happen when importing .iv files
-        FC_ERR("Cannot add to selection: no document found");
+    int ret = checkSelection(pDocName,pObjectName,pSubName,0,temp);
+    if(ret!=0)
         return false;
-    }
 
-    if(pObjectName)
-        temp.pObject = temp.pDoc->getObject(pObjectName);
-    else
-        temp.pObject = 0;
-
-    if (!temp.pObject) {
-        FC_ERR("Cannot add to selection: object not found");
-        return false;
-    }
-    // already in ?
-    if (isSelected(pDocName, pObjectName, pSubName))
-        return true;
-
-
-    temp.DocName  = pDocName;
-    temp.FeatName = pObjectName ? pObjectName : "";
-    temp.SubName  = pSubName ? pSubName : "";
     temp.x        = x;
     temp.y        = y;
     temp.z        = z;
 
-    temp.TypeName = temp.pObject->getTypeId().getName();
-
-    const char *element = 0;
-    temp.pResolvedObject = App::GeoFeature::resolveElement(temp.pObject,
-            pSubName,temp.elementName,false,App::GeoFeature::Normal,0,&element);
-    if(temp.elementName.first.size()) {
-        // make sure the selected sub name is a new style if available
-        temp.SubName = std::string(pSubName,element-pSubName) + temp.elementName.first;
-    }
     // check for a Selection Gate
     if (ActiveGate) {
         const char *subelement = 0;
@@ -882,7 +851,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     _SelList.push_back(temp);
 
     SelectionChanges Chng(SelectionChanges::AddSelection,
-            pDocName,pObjectName,pSubName,temp.TypeName.c_str(), x,y,z);
+            temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
 
     FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName
             << " (" << x << ", " << y << ", " << z << ')');
@@ -898,7 +867,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     return true;
 }
 
-bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
+bool SelectionSingleton::addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
 {
     if(_PickedList.size()) {
         _PickedList.clear();
@@ -907,50 +876,34 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         signalSelectionChanged(Chng);
     }
 
-    _SelObj temp;
+    bool update = false;
+    for(std::vector<std::string>::const_iterator it = pSubNames.begin(); it != pSubNames.end(); ++it) {
+        _SelObj temp;
+        int ret = checkSelection(pDocName,pObjectName,it->c_str(),0,temp);
+        if(ret!=0)
+            continue;
 
-    temp.pDoc = getDocument(pDocName);
+        temp.x        = 0;
+        temp.y        = 0;
+        temp.z        = 0;
 
-    if (temp.pDoc) {
-        if(pObjectName)
-            temp.pObject = temp.pDoc->getObject(pObjectName);
-        else
-            temp.pObject = 0;
-
-        if (temp.pObject)
-            temp.TypeName = temp.pObject->getTypeId().getName();
-
-        temp.DocName  = pDocName;
-        temp.FeatName = pObjectName ? pObjectName : "";
-        for (std::vector<std::string>::const_iterator it = pSubNames.begin(); it != pSubNames.end(); ++it) {
-            temp.SubName  = it->c_str();
-            temp.x        = 0;
-            temp.y        = 0;
-            temp.z        = 0;
-
-            _SelList.push_back(temp);
-        }
+        _SelList.push_back(temp);
 
         SelectionChanges Chng(SelectionChanges::AddSelection,
-                pDocName,pObjectName,0,temp.TypeName.c_str());
+                temp.DocName,temp.FeatName,temp.SubName,temp.TypeName);
 
-        FC_TRACE("notifying add selection");
+        FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
+
         Notify(Chng);
         FC_TRACE("signaling add selection");
         signalSelectionChanged(Chng);
         FC_TRACE("done signaling add selection");
+        update = true;
+    }
 
+    if(update)
         getMainWindow()->updateActions();
-
-        // allow selection
-        return true;
-    }
-    else {
-        // neither an existing nor active document available 
-        // this can often happen when importing .iv files
-        Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
-        return false;
-    }
+    return true;
 }
 
 bool SelectionSingleton::updateSelection(bool show, const char* pDocName, 
@@ -965,12 +918,12 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
         Notify(Chng);
         signalSelectionChanged(Chng);
     }
-    if (!isSelected(pDocName, pObjectName, pSubName))
-        return false;
     auto pDoc = getDocument(pDocName);
     if(!pDoc) return false;
     auto pObject = pDoc->getObject(pObjectName);
     if(!pObject) return false;
+    if (!isSelected(pObject, pSubName,0))
+        return false;
 
     SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
             pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
@@ -1240,58 +1193,82 @@ void SelectionSingleton::clearCompleteSelection()
 bool SelectionSingleton::isSelected(const char* pDocName, 
         const char* pObjectName, const char* pSubName, int resolve) const
 {
-    if(!pObjectName) return false;
-    auto pDoc = getDocument(pDocName);
-    if(!pDoc) 
-        return false;
-    if(!pSubName) pSubName = "";
-    return isSelected(pDoc->getObject(pObjectName),pSubName,resolve);
+    _SelObj sel;
+    return checkSelection(pDocName,pObjectName,pSubName,resolve,sel)>0;
 }
 
 bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, int resolve) const
 {
     if(!pObject || !pObject->getNameInDocument() || !pObject->getDocument()) 
         return false;
-    const char *pDocName = pObject->getDocument()->getName();
-    const char *pObjectName = pObject->getNameInDocument();
+    _SelObj sel;
+    return checkSelection(pObject->getDocument()->getName(),
+            pObject->getNameInDocument(),pSubName,resolve,sel)>0;
+}
+
+int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, 
+        const char *pSubName, int resolve, _SelObj &sel) const
+{
+    sel.pDoc = getDocument(pDocName);
+    if(!sel.pDoc) {
+        FC_ERR("Cannot find document");
+        return -1;
+    }
+    pDocName = sel.pDoc->getName();
+    sel.DocName = pDocName;
+
+    if(pObjectName) {
+        sel.FeatName = pObjectName;
+        sel.pObject = sel.pDoc->getObject(pObjectName);
+    } else
+        sel.pObject = 0;
+    if (!sel.pObject) {
+        FC_ERR("Object not found");
+        return -1;
+    }
+    sel.TypeName = sel.pObject->getTypeId().getName();
+    if(pSubName)
+       sel.SubName = pSubName;
     const char *element = 0;
-    std::pair<std::string,std::string> elementName;
-    auto pResolvedObject = App::GeoFeature::resolveElement(pObject,
-            pSubName,elementName,false,App::GeoFeature::Normal,0,&element);
-    if(!pResolvedObject) 
-        return false;
+    sel.pResolvedObject = App::GeoFeature::resolveElement(sel.pObject,
+            pSubName,sel.elementName,false,App::GeoFeature::Normal,0,&element);
+    if(!sel.pResolvedObject) {
+        FC_ERR("Sub-object not found");
+        return -1;
+    }
     std::string subname;
     std::string prefix;
     if(pSubName && element) {
         prefix = std::string(pSubName, element-pSubName);
-        if(elementName.first.size()) {
+        if(sel.elementName.first.size()) {
             // make sure the selected sub name is a new style if available
-            subname = prefix + elementName.first;
+            subname = prefix + sel.elementName.first;
             pSubName = subname.c_str();
+            sel.SubName = subname;
         }
     }
-    for (auto &sel : _SelList) {
-        if (sel.DocName==pDocName && sel.FeatName==pObjectName) {
-            if(!pSubName || sel.SubName==pSubName)
-                return true;
-            if(resolve>1 && boost::starts_with(sel.SubName,prefix))
-                return true;
+    for (auto &s : _SelList) {
+        if (s.DocName==pDocName && s.FeatName==pObjectName) {
+            if(!pSubName || s.SubName==pSubName)
+                return 1;
+            if(resolve>1 && boost::starts_with(s.SubName,prefix))
+                return 1;
         }
     }
     if(resolve==1) {
-        for(auto &sel : _SelList) {
-            if(sel.pResolvedObject != pResolvedObject)
+        for(auto &s : _SelList) {
+            if(s.pResolvedObject != sel.pResolvedObject)
                 continue;
             if(!pSubName) 
-                return true;
-            if(elementName.first.size()) {
-                if(sel.SubName == elementName.first)
-                    return true;
-            }else if(sel.SubName == elementName.second)
-                return true;
+                return 1;
+            if(s.elementName.first.size()) {
+                if(s.elementName.first == sel.elementName.first)
+                    return 1;
+            }else if(s.SubName == sel.elementName.second)
+                return 1;
         }
     }
-    return false;
+    return 0;
 }
 
 const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, const char* pSubName) const 

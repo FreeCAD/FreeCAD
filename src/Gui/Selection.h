@@ -293,7 +293,7 @@ public:
     bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0);
     /// Add to selection with several sub-elements
-    bool addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
+    bool addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
     /// Update a selection 
     bool updateSelection(bool show, const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
     /// Remove from selection (for internal use)
@@ -491,6 +491,9 @@ protected:
 
     mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
+
+    int checkSelection(const char *pDocName, const char *pObjectName, 
+            const char *pSubName,int resolve, _SelObj &sel) const;
 
     std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, std::list<_SelObj> &objs, int resolve, bool single=false) const;
 
