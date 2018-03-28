@@ -976,6 +976,13 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
 
     TopoShape res(Tag,Hasher);
     res.makEShape(mkOffset,shape,op,appendTag);
+    if(shape.hasSubShape(TopAbs_SOLID) && !res.hasSubShape(TopAbs_SOLID)) {
+        try {
+            res = res.makESolid();
+        }catch (Standard_Failure &e) {
+            FC_WARN("failed to make solid: " << e.GetMessageString());
+        }
+    }
     if (!fill) {
         *this = res;
         return *this;
@@ -983,7 +990,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
 
     //get perimeter wire of original shape.
     //Wires returned seem to have edges in connection order.
-    ShapeAnalysis_FreeBoundsProperties freeCheck(res.getShape());
+    ShapeAnalysis_FreeBoundsProperties freeCheck(shape.getShape());
     freeCheck.Perform();
     if (freeCheck.NbClosedFreeBounds() < 1)
     {
