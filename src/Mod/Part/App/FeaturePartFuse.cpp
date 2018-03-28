@@ -39,6 +39,9 @@
 #include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <Base/Console.h>
+
+FC_LOG_LEVEL_INIT("Part",true,true);
 
 using namespace Part;
 
@@ -231,6 +234,12 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         TopoShape sh = Feature::getTopoShape(obj);
         if(sh.isNull())
             return new App::DocumentObjectExecReturn("Input shape is null");
+        if(!sh.hasSubShape(TopAbs_SOLID)) {
+            if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("fusion of non solid: " << obj->getNameInDocument());
+            else
+                FC_MSG("fusion of non solid: " << obj->getNameInDocument());
+        }
         shapes.push_back(sh);
     }
 
