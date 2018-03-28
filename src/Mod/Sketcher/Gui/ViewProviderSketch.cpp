@@ -136,6 +136,7 @@ SbColor ViewProviderSketch::VertexColor                 (1.0f,0.149f,0.0f);   //
 SbColor ViewProviderSketch::CurveColor                  (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
 SbColor ViewProviderSketch::CurveDraftColor             (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
 SbColor ViewProviderSketch::CurveExternalColor          (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
+SbColor ViewProviderSketch::CurveDefiningExternalColor  (1.0f,0.78f,1.0f);    // #FFC8FF -> (255, 200,255)
 SbColor ViewProviderSketch::CrossColorH                 (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
 SbColor ViewProviderSketch::CrossColorV                 (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
 SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
@@ -2573,8 +2574,15 @@ void ViewProviderSketch::updateColor(void)
                 verts[j] = SbVec3f(x,y,zHighLine);
             }
         }
-        else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
+        else if (GeoId <= Sketcher::GeoEnum::RefExt && getSketchObject()->getGeometry(GeoId)->Construction) {  // external Geometry
             color[i] = CurveExternalColor;
+            for (int k=j; j<k+indexes; j++) {
+                verts[j].getValue(x,y,z);
+                verts[j] = SbVec3f(x,y,zExtLine);
+            }
+        }
+        else if (GeoId <= Sketcher::GeoEnum::RefExt && !getSketchObject()->getGeometry(GeoId)->Construction) {  // defining external Geometry
+            color[i] = CurveDefiningExternalColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zExtLine);
@@ -5377,6 +5385,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveExternalColor.getPackedValue());
     color = hGrp->GetUnsigned("ExternalColor", color);
     CurveExternalColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(CurveDefiningExternalColor.getPackedValue());
+    color = hGrp->GetUnsigned("DefiningExternalColor", color);
+    CurveDefiningExternalColor.setPackedValue((uint32_t)color, transparency);
 
     // set the highlight color
     unsigned long highlight = (unsigned long)(PreselectColor.getPackedValue());
