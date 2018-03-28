@@ -271,6 +271,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         NULL, NULL, NULL, NULL, NULL
     };
     PyObject* pBaseModule = PyModule_Create(&BaseModuleDef);
+    _PyImport_FixupBuiltin(pBaseModule, "__FreeCADBase__");
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
 #endif
