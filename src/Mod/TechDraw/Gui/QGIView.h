@@ -76,6 +76,8 @@ public:
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);
+    void makeMark(double x, double y);
+
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */

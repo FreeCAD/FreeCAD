@@ -75,6 +75,8 @@ class TechDrawExport DrawUtil {
                                         Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
         static Base::Vector3d closestBasis(Base::Vector3d v);
         static double getDefaultLineWeight(std::string s);
+        static Base::Vector3d vector23(const Base::Vector2d& v2) { return Base::Vector3d(v2.x,v2.y,0.0); }
+        static Base::Vector2d vector32(const Base::Vector3d& v3) { return Base::Vector2d(v3.x,v3.y); }
 
 
 

@@ -192,7 +192,10 @@ class TechDrawExport Generic: public BaseGeom
         Generic();
         ~Generic() = default;
 
-       std::vector<Base::Vector2d> points;
+        Base::Vector2d asVector(void);
+        double slope(void);
+        Base::Vector2d apparentInter(Generic* g);
+        std::vector<Base::Vector2d> points;
 };
 
 
