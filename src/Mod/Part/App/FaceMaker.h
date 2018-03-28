@@ -55,7 +55,7 @@ public:
 
     void addTopoShape(const TopoShape &s);
     void useTopoCompound(const TopoShape &comp);
-    const TopoShape &getTopoShape() const {return myTopoShape;}
+    const TopoShape &getTopoShape() const;
     const TopoShape &TopoFace() const;
 
     virtual void addWire(const TopoDS_Wire& w);
@@ -111,6 +111,7 @@ protected:
      * whole Build().
      */
     virtual void Build_Essence() = 0;
+    void postBuild();
 
     static void throwNotImplemented();
 };

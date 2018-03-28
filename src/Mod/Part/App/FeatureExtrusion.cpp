@@ -526,7 +526,7 @@ void FaceMakerExtrusion::Build()
         //}
     }
 
-    this->Done();
+    this->postBuild();
 
 }
 

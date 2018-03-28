@@ -100,6 +100,12 @@ const Part::TopoShape &Part::FaceMaker::TopoFace() const{
     return this->myTopoShape;
 }
 
+const Part::TopoShape &Part::FaceMaker::getTopoShape() const{
+    if(this->myTopoShape.isNull())
+        throw Base::Exception("Part::FaceMaker: result shape is null.");
+    return this->myTopoShape;
+}
+
 void Part::FaceMaker::Build()
 {
     this->NotDone();
@@ -144,6 +150,10 @@ void Part::FaceMaker::Build()
         this->myShape = cmp_res;
     }
 
+    postBuild();
+}
+
+void Part::FaceMaker::postBuild() {
     int tagCount = 0;
     long tag = 0;
     for(auto &sh : mySourceShapes) {
