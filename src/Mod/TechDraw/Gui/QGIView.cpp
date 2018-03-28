@@ -50,6 +50,7 @@
 
 
 #include "Rez.h"
+#include "ZVALUE.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIView.h"
@@ -61,6 +62,7 @@
 #include "QGIViewClip.h"
 #include "ViewProviderDrawingView.h"
 #include "MDIViewPage.h"
+#include "QGICMark.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -558,3 +560,14 @@ void QGIView::dumpRect(char* text, QRectF r) {
     Base::Console().Message("DUMP - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
                             r.left(),r.top(),r.right(),r.bottom());
 }
+
+void QGIView::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+
