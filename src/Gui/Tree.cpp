@@ -1136,7 +1136,6 @@ void TreeWidget::onPreSelectTimer() {
     if(!item || item->type()!=TreeWidget::ObjectType) 
         return;
 
-    FC_LOG("preselect timer");
     preselectTime.restart();
     DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
     auto vp = objItem->object();
