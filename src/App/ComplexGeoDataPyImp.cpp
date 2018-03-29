@@ -154,6 +154,22 @@ void ComplexGeoDataPy::setElementMap(Py::Dict dict) {
     getComplexGeoDataPtr()->setElementMap(map);
 }
 
+Py::Dict ComplexGeoDataPy::getElementReverseMap() const {
+    Py::Dict ret;
+    for(auto &v : getComplexGeoDataPtr()->getElementMap()) {
+        auto value = ret[Py::String(v.second)];
+        if(Py::Object(value).isNone())
+            value = Py::String(v.first);
+        else {
+            Py::List item;
+            item.append(Py::Object(value));
+            item.append(Py::String(v.first));
+            value = item;
+        }
+    }
+    return ret;
+}
+
 Py::Int ComplexGeoDataPy::getElementMapSize() const {
     return Py::Int((long)getComplexGeoDataPtr()->getElementMapSize());
 }

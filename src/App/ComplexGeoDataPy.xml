@@ -77,6 +77,12 @@ to one element
 		  </Documentation>
 		  <Parameter Name="ElementMap" Type="Dict" />
 	  </Attribute>
+      <Attribute Name="ElementReverseMap" ReadOnly="true">
+		  <Documentation>
+              <UserDocu>Get a dict of element reverse mapping</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ElementReverseMap" Type="Dict" />
+	  </Attribute>
       <Attribute Name="ElementTypes" ReadOnly="true">
 		  <Documentation>
               <UserDocu>A list of support element types</UserDocu>
