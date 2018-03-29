@@ -298,7 +298,8 @@ public:
     /// Checks if support is valid
     bool evaluateSupport(void);
     /// validate External Links (remove invalid external links)
-    void validateExternalLinks(void);
+    /// returns true if a rebuild was necessary, so if external geo and vertex were rebuilt and the sketch is solved
+    bool validateExternalLinks(void);
     
     /// gets DoF of last solver execution
     inline int getLastDoF() const {return lastDoF;}

@@ -4824,7 +4824,7 @@ bool SketchObject::evaluateSupport(void)
     return true;
 }
 
-void SketchObject::validateExternalLinks(void)
+bool SketchObject::validateExternalLinks(void)
 {
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
@@ -4887,6 +4887,8 @@ void SketchObject::validateExternalLinks(void)
         rebuildVertexIndex();
         solve(true); // we have to update this sketch and everything depending on it.
     }
+    
+    return rebuild;
 }
 
 void SketchObject::rebuildExternalGeometry(void)
@@ -5872,9 +5874,10 @@ void SketchObject::onChanged(const App::Property* prop)
 void SketchObject::onDocumentRestored()
 {
     try {
-        validateExternalLinks();
-        rebuildExternalGeometry();
-        Constraints.acceptGeometry(getCompleteGeometry());
+        if(!validateExternalLinks()) {
+            rebuildExternalGeometry();
+            Constraints.acceptGeometry(getCompleteGeometry());
+        }
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
