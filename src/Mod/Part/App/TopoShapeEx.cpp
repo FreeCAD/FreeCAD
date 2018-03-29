@@ -265,37 +265,39 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
             Hasher = other.Hasher;
     }
     const char *shapetype = shapeName(type).c_str();
-    std::ostringstream str;
+    std::ostringstream ss;
     for(int i=1;i<=otherMap.Extent();++i) {
         auto shape = otherMap.FindKey(i);
         int idx = shapeMap.FindIndex(shape);
         if(!idx) continue;
-        str.str("");
-        str << shapetype << i;
-        std::string element = str.str();
-        std::vector<App::StringIDRef> sids;
-        std::string name = other.getElementName(str.str().c_str(),true,&sids);
-        if(sids.size() && !other.Hasher) 
-            throw Base::RuntimeError("missing hasher");
-        std::string prefix;
-        if(appendTag && other.Tag && other.Tag!=Tag) {
-            str.str("");
-            str << (op?op:TOPOP_TAG) << other.Tag << '_';
-            prefix = str.str();
-        }else if(op) {
-            prefix = op;
-            prefix += '_';
-        }else
-            prefix.swap(name);
-        if(Hasher && name.size()) {
-            sids.push_back(Hasher->getID(name.c_str()));
-            name = '#';
-            name += shapetype[0];
-            name += std::to_string(sids.back()->value());
+        ss.str("");
+        ss << shapetype << idx;
+        std::string element = ss.str();
+        ss.str("");
+        ss << shapetype << i;
+        for(auto &v : other.getElementMappedNames(ss.str().c_str(),true)) {
+            auto &name = v.first;
+            auto &sids = v.second;
+            if(sids.size() && !other.Hasher) 
+                throw Base::RuntimeError("missing hasher");
+            std::string prefix;
+            if(appendTag && other.Tag && other.Tag!=Tag) {
+                ss.str("");
+                ss << (op?op:TOPOP_TAG) << other.Tag << '_';
+                prefix = ss.str();
+            }else if(op) {
+                prefix = op;
+                prefix += '_';
+            }else
+                prefix.swap(name);
+            if(Hasher && name.size()) {
+                sids.push_back(Hasher->getID(name.c_str()));
+                name = '#';
+                name += shapetype[0];
+                name += std::to_string(sids.back()->value());
+            }
+            setElementName(element.c_str(),name.c_str(),prefix.c_str(),0,&sids);
         }
-        str.str("");
-        str << shapetype << idx;
-        setElementName(str.str().c_str(),name.c_str(),prefix.c_str(),0,&sids);
     }
     if(mapAll) {
         if(type == TopAbs_FACE)
@@ -1736,8 +1738,22 @@ TopoShape &TopoShape::makEShape(BRepBuilderAPI_MakeShape &mkShape,
     prefix = ss.str();\
 }while(0)
 
-struct NameInfo {
+struct NameKey {
+    std::string name;
     long tag;
+
+    NameKey(const char *n, long t=0)
+        :name(n),tag(t)
+    {}
+    NameKey(const std::string &n, long t=0)
+        :name(n),tag(t)
+    {}
+    bool operator<(const NameKey &other) const {
+        return tag<other.tag || (tag==other.tag && name<other.name);
+    }
+};
+
+struct NameInfo {
     int index;
     std::vector<App::StringIDRef> sids;
 };
@@ -1777,7 +1793,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
     std::ostringstream ss;
     std::string prefix,postfix,newName;
 
-    std::map<std::string,std::map<std::string,NameInfo> > newNames;
+    std::map<std::string,std::map<NameKey,NameInfo> > newNames;
 
     // First, collect names from other shapes that generates or modifies the
     // new shape
@@ -1833,9 +1849,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     if(newShape.ShapeType() == info.type)
                         ss << ' '; // make sure the same type shape appears first
                     ss << name;
-                    auto &info = newNames[element][ss.str()];
+                    auto &info = newNames[element][NameKey(ss.str(),other.Tag)];
                     info.sids = sids;
-                    info.tag = other.Tag;
                     info.index = k;
                 }
 
@@ -1870,9 +1885,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         }
                         ss.str("");
                         ss << newInfo.shapetype << j;
-                        auto &info = newNames[ss.str()][name];
+                        auto &info = newNames[ss.str()][NameKey(name,other.Tag)];
                         info.sids = sids;
-                        info.tag = other.Tag;
                         info.index = -k;
                     }
                 }
@@ -1894,13 +1908,12 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
 
         auto &element = v.first;
         auto &names = v.second;
-        const auto &first = names.begin()->first;
+        const auto &first_key = names.begin()->first;
         auto &first_info = names.begin()->second;
         int name_type = first_info.index>0?1:2; // index>0 means modified, or else generated
-        std::string first_name(first[0]==' '?first.c_str()+1:first.c_str());
+        std::string first_name(first_key.name[0]==' '?first_key.name.c_str()+1:first_key.name.c_str());
 
         std::vector<App::StringIDRef> sids(first_info.sids);
-        GEN_NAME(first_name,element[0],first_info.tag);
 
         postfix.clear();
         if(names.size()>1) {
@@ -1913,13 +1926,14 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     first = false;
                 else
                     ss << ',';
+                auto &other_key = it->first;
                 auto &other_info = it->second;
-                if(appendTag && other_info.tag && other_info.tag!=Tag)
-                    ss << other_info.tag << '_';
-                if(it->first[0] == ' ')
-                    ss << it->first.c_str()+1;
+                if(appendTag && other_key.tag && other_key.tag!=Tag)
+                    ss << other_key.tag << '_';
+                if(other_key.name[0] == ' ')
+                    ss << other_key.name.c_str()+1;
                 else
-                    ss << it->first;
+                    ss << other_key.name;
                 if(other_info.index!=1)
                     ss << ':' <<  other_info.index;
                 if((name_type==1 && other_info.index<0) || 
@@ -1949,7 +1963,10 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         if(abs(first_info.index)>1)
            ss << abs(first_info.index);
         ss << postfix;
-        setElementName(element.c_str(),newName.c_str(),prefix.c_str(), ss.str().c_str(), &sids);
+        postfix = ss.str();
+
+        GEN_NAME(first_name,element[0],first_key.tag);
+        setElementName(element.c_str(),newName.c_str(),prefix.c_str(),postfix.c_str(),&sids);
     }
 
     // Now, the reverse pass. Starting from the highest level element, i.e.
@@ -1986,7 +2003,6 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 if(getElementName(element.c_str(),true) != element.c_str())
                     continue;
                 auto &info = newNames[element][mapped];
-                info.tag = 0;
                 info.index = n++;
                 info.sids = sids;
             }
@@ -1996,12 +2012,14 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             for(auto &name : v.second) {
                 auto &info = name.second;
                 auto &sids = info.sids;
-                GEN_NAME(name.first,v.first[0],0);
                 ss.str("");
                 ss << elementMapPrefix() << 'U';
                 if(info.index>1)
                     ss << info.index;
-                setElementName(v.first.c_str(),newName.c_str(),prefix.c_str(),ss.str().c_str(),&info.sids);
+                postfix = ss.str();
+                GEN_NAME(name.first.name,v.first[0],0);
+                setElementName(v.first.c_str(),newName.c_str(),
+                        prefix.c_str(),postfix.c_str(),&info.sids);
             }
         }
     }
