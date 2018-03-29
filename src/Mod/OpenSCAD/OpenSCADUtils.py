@@ -85,7 +85,10 @@ def searchforopenscadexe():
     else: #unix
         p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
         if p1.wait() == 0:
-            opath=p1.stdout.read().split('\n')[0]
+            output = p1.stdout.read()
+            if sys.version_info.major >= 3:
+                output = output.decode("utf-8")
+            opath = output.split('\n')[0]
             return opath
 
 def workaroundforissue128needed():
