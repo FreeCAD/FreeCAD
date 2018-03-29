@@ -151,13 +151,14 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     }
 
     // setup and diagnose the sketch
-    try {
-        rebuildExternalGeometry();
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
-        // we cannot trust the constraints of external geometries, so remove them
-        delConstraintsToExternal();
+    // Notes by abdullah: 
+    // 1. There is no need to systematically rebuildExternalGeometry here. 
+    // 2. ValidateExternalLinks:
+    // 2a. Checks the links.
+    // 2b. Eliminates bad links.
+    // 2c. Rebuilds external geometry if and only if bad links exist
+    if(validateExternalLinks()) {
+        Base::Console().Error("Some of the external geometry links were invalid and were removed. The defining state of external geometry of this sketch will be lost.\n");
     }
 
     // This includes a regular solve including full geometry update, except when an error
