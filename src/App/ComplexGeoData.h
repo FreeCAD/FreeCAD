@@ -195,10 +195,14 @@ public:
     /** Get mapped element names
      *
      * @param element: original element name with \c Type + \c Index
+     * @param needUnmapped: if true, return the original element name if no
+     * mapping is found
      *
-     * @return a list of mapped names of the give element
+     * @return a list of mapped names of the give element along with their
+     * associated string ID references
      */
-    std::vector<std::string> getElementMappedNames(const char *element) const;
+    std::vector<std::pair<std::string, std::vector<App::StringIDRef> > >
+       getElementMappedNames(const char *element, bool needUnmapped=false) const;
 
     /** Add a sub-element name mapping.
      *

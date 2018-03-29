@@ -43,8 +43,8 @@ using namespace Data;
 
 namespace Data {
 typedef boost::bimap<
-            boost::bimaps::multiset_of<std::string>,
             boost::bimaps::set_of<std::string>,
+            boost::bimaps::multiset_of<std::string>,
             boost::bimaps::with_info<std::vector<App::StringIDRef> > > ElementMapBase;
 class ElementMap: public ElementMapBase {};
 }
@@ -240,13 +240,23 @@ const char *ComplexGeoData::getElementName(const char *name, bool reverse,
     return it->second.c_str();
 }
 
-std::vector<std::string> ComplexGeoData::getElementMappedNames(const char *element) const {
-    std::vector<std::string> names;
+std::vector<std::pair<std::string, std::vector<App::StringIDRef> > >
+ComplexGeoData::getElementMappedNames(const char *element, bool needUnmapped) const {
+    std::vector<std::pair<std::string, std::vector<App::StringIDRef> > > names;
     if(_ElementMap) {
         auto ret = _ElementMap->right.equal_range(element);
+        size_t count=0;
         for(auto it=ret.first;it!=ret.second;++it)
-            names.push_back(it->second.c_str());
+            ++count;
+        if(count) {
+            names.reserve(count);
+            for(auto it=ret.first;it!=ret.second;++it)
+                names.emplace_back(it->second,it->info);
+            return names;
+        }
     }
+    if(needUnmapped)
+        names.emplace_back(element,std::vector<App::StringIDRef>());
     return names;
 }
 
@@ -347,7 +357,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
 }
 
 const char *ComplexGeoData::setElementName(const char *element, const char *name, 
-        const std::vector<App::StringIDRef> *_sid, bool overwrite)
+        const std::vector<App::StringIDRef> *sid, bool overwrite)
 {
     if(!element || !element[0])
         throw Base::ValueError("Invalid input");
@@ -355,30 +365,31 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
         _ElementMap->right.erase(element);
         return element;
     }
-    std::vector<App::StringIDRef> sid;
-    if(_sid)
-        sid.insert(sid.end(),_sid->begin(),_sid->end());
+    std::vector<App::StringIDRef> _sid;
     const char *mapped = isMappedElement(name);
     if(mapped)
         name = mapped;
     if(!_ElementMap) _ElementMap = std::make_shared<ElementMap>();
-    if(overwrite)
-        _ElementMap->left.erase(name);
     std::string _name;
-    if(sid.empty() && Hasher) {
-        sid.push_back(Hasher->getID(name));
+    if((!sid||sid->empty()) && Hasher) {
+        sid = &_sid;
+        _sid.push_back(Hasher->getID(name));
         _name = '#';
         _name += element[0];
-        _name += std::to_string(sid.back()->value());
+        _name += std::to_string(_sid.back()->value());
         name = _name.c_str();
-        if(overwrite)
-            _ElementMap->left.erase(name);
-    }
-    auto ret = _ElementMap->left.insert(ElementMap::left_map::value_type(name,element,sid));
+    }else if(!sid)
+        sid = &_sid;
+    auto ret = _ElementMap->left.insert(ElementMap::left_map::value_type(name,element,*sid));
     if(!ret.second && ret.first->second!=element) {
-        std::ostringstream ss;
-        ss << "duplicate element mapping '" << name << "->" << element << '/' << ret.first->second;
-        throw Base::ValueError(ss.str().c_str());
+        if(overwrite) {
+            _ElementMap->left.erase(ret.first);
+            ret = _ElementMap->left.insert(ElementMap::left_map::value_type(name,element,*sid));
+        }else {
+            std::ostringstream ss;
+            ss << "duplicate element mapping '" << name << "->" << element << '/' << ret.first->second;
+            throw Base::ValueError(ss.str().c_str());
+        }
     }
     FC_TRACE(element << " -> " << name);
     return ret.first->first.c_str();
