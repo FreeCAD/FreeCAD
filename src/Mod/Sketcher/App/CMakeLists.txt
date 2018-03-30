@@ -43,6 +43,8 @@ generate_from_xml(SketchPy)
 SET(Properties_SRCS
     PropertyConstraintList.cpp
     PropertyConstraintList.h
+    PropertyExternalGeometryList.cpp
+    PropertyExternalGeometryList.h
 )
 SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 
