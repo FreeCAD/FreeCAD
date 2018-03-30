@@ -339,6 +339,7 @@ public:
         rlCircularReference,
         rlOtherPart,
         rlOtherBody,
+        rlOtherBodyWithLinks,   // for carbon copy
         rlNotASketch,           // for carbon copy
         rlNonParallel,          // for carbon copy
         rlAxesMisaligned,       // for carbon copy
