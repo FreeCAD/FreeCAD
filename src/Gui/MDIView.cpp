@@ -95,6 +95,7 @@ void MDIView::deleteSelf()
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
         // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
+        getMainWindow()->removeWindow(this);
         parent->close();
     }
     else {
