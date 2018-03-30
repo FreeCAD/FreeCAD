@@ -137,19 +137,19 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     const char *element = 0;
     if(!obj || !obj->getNameInDocument())
         return 0;
-    obj = obj->resolve(subname,0,0,&element);
+    auto ret= obj->resolve(subname,0,0,&element);
     if(_element) *_element = element;
-    if(!obj)
+    if(!ret)
         return 0;
-    obj = obj->getLinkedObject(true);
+    obj = ret->getLinkedObject(true);
     if(!obj || (filter && obj!=filter))
         return 0;
     if(!element || !element[0])
-        return obj;
+        return ret;
 
     auto geo = dynamic_cast<GeoFeature*>(obj);
     if(!geo)
-        return obj;
+        return ret;
     if(!append) 
         elementName = geo->getElementName(element,type);
     else{
@@ -160,7 +160,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
             elementName.second = prefix + names.second;
         }
     }
-    return obj;
+    return ret;
 }
 
 std::string GeoFeature::getElementMapVersion() const {
