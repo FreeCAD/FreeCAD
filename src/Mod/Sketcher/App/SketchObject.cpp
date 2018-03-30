@@ -158,7 +158,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     // 2b. Eliminates bad links.
     // 2c. Rebuilds external geometry if and only if bad links exist
     if(validateExternalLinks()) {
-        Base::Console().Error("Some of the external geometry links were invalid and were removed. The defining state of external geometry of this sketch will be lost.\n");
+        Base::Console().Error("Some of the external geometry links were invalid and were removed\n");
     }
 
     // This includes a regular solve including full geometry update, except when an error
@@ -192,7 +192,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
 }
 
 int SketchObject::hasConflicts(void) const
-{    
+{
     if (lastDoF < 0) // over-constrained sketch
         return -2;
     if (solvedSketch.hasConflicts()) // conflicting constraints
@@ -4431,16 +4431,25 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     if(psObj->ExternalGeometry.getSize()>0) { 
         std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
         std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+        std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
 
         const std::vector<DocumentObject*> originalObjects = Objects;
         const std::vector<std::string>     originalSubElements = SubElements;
+        const std::vector<bool>            originalDefiningVals   = DefiningVals;
 
         std::vector<DocumentObject*> sObjects     = psObj->ExternalGeometry.getValues();
         std::vector<std::string>     sSubElements = psObj->ExternalGeometry.getSubValues();
+        std::vector<bool>            sDefiningVals   = psObj->ExternalGeometry.getBoolValues();
 
         if (Objects.size() != SubElements.size() || sObjects.size() != sSubElements.size()) {
             assert(0 /*counts of objects and subelements in external geometry links do not match*/);
             Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
+            return -1;
+        }
+
+        if (Objects.size() != DefiningVals.size()) {
+            assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+            Base::Console().Error("Internal error: counts of objects and boolean elements in external geometry links do not match\n");
             return -1;
         }
 
@@ -4458,11 +4467,12 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
             Objects.push_back(sobj);
             SubElements.push_back(sSubElements[si]);
+            DefiningVals.push_back( (sDefiningVals[si] && !construction)?true:false); // only defining if it is defining in the source sketch and constr=false
 
             si++;
         }
 
-        ExternalGeometry.setValues(Objects,SubElements);
+        ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
 
         try {
             rebuildExternalGeometry();
@@ -4470,7 +4480,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
             // revert to original values
-            ExternalGeometry.setValues(originalObjects,originalSubElements);
+            ExternalGeometry.setValues(originalObjects,originalSubElements,originalDefiningVals);
             return -1;
         }
 
@@ -4583,13 +4593,21 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
 
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string>     originalSubElements = SubElements;
+    const std::vector<bool>            originalDefiningVals = DefiningVals;
 
     if (Objects.size() != SubElements.size()) {
         assert(0 /*counts of objects and subelements in external geometry links do not match*/);
         Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
+        return -1;
+    }
+    
+    if (Objects.size() != DefiningVals.size()) {
+        assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+        Base::Console().Error("Internal error: counts of objects and boolean elements in external geometry links do not match\n");
         return -1;
     }
 
@@ -4603,16 +4621,17 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
     // add the new ones
     Objects.push_back(Obj);
     SubElements.push_back(std::string(SubName));
+    DefiningVals.push_back(false); // when adding an external geometry it is never defining (it is always construction)
 
     // set the Link list.
-    ExternalGeometry.setValues(Objects,SubElements);
+    ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
     try {
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
         // revert to original values
-        ExternalGeometry.setValues(originalObjects,originalSubElements);
+        ExternalGeometry.setValues(originalObjects,originalSubElements,originalDefiningVals);
         return -1;
     }
 
@@ -4625,17 +4644,32 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 int SketchObject::delExternal(int ExtGeoId)
 {
     // get the actual lists of the externals
-    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
-    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    std::vector<DocumentObject*> Objects        = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements    = ExternalGeometry.getSubValues();
+    std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
 
     if (ExtGeoId < 0 || ExtGeoId >= int(SubElements.size()))
         return -1;
 
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string>     originalSubElements = SubElements;
+    const std::vector<bool>            originalDefiningVals = DefiningVals;
+
+    if (Objects.size() != SubElements.size()) {
+        assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+        Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
+        return -1;
+    }
+
+    if (Objects.size() != DefiningVals.size()) {
+        assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+        Base::Console().Error("Internal error: counts of objects and boolean elements in external geometry links do not match\n");
+        return -1;
+    }
 
     Objects.erase(Objects.begin()+ExtGeoId);
     SubElements.erase(SubElements.begin()+ExtGeoId);
+    DefiningVals.erase(DefiningVals.begin()+ExtGeoId);
 
     const std::vector< Constraint * > &constraints = Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
@@ -4658,14 +4692,14 @@ int SketchObject::delExternal(int ExtGeoId)
         }
     }
 
-    ExternalGeometry.setValues(Objects,SubElements);
+    ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
     try {
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
         // revert to original values
-        ExternalGeometry.setValues(originalObjects,originalSubElements);
+        ExternalGeometry.setValues(originalObjects,originalSubElements,originalDefiningVals);
         for (Constraint* it : newConstraints)
             delete it;
         return -1;
@@ -4685,14 +4719,18 @@ int SketchObject::delAllExternal()
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
-        
+    std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
+
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string>     originalSubElements = SubElements;
-       
+    const std::vector<bool>            originalDefiningVals = DefiningVals;
+
     Objects.clear();
-    
-    SubElements.clear();    
-        
+
+    SubElements.clear();
+
+    DefiningVals.clear();
+
     const std::vector< Constraint * > &constraints = Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
 
@@ -4701,24 +4739,24 @@ int SketchObject::delAllExternal()
             ((*it)->Second > GeoEnum::RefExt || (*it)->Second == Constraint::GeoUndef ) &&
             ((*it)->Third > GeoEnum::RefExt || (*it)->Third == Constraint::GeoUndef) ) {
             Constraint *copiedConstr = (*it)->clone();
-            
+
             newConstraints.push_back(copiedConstr);
         }
     }
 
-    ExternalGeometry.setValues(Objects,SubElements);
+    ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
     try {
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
         // revert to original values
-        ExternalGeometry.setValues(originalObjects,originalSubElements);
+        ExternalGeometry.setValues(originalObjects,originalSubElements,originalDefiningVals);
         for (Constraint* it : newConstraints)
             delete it;
         return -1;
     }
-    
+
     solverNeedsUpdate=true;
     Constraints.setValues(newConstraints);
     for (Constraint* it : newConstraints)
@@ -4800,18 +4838,15 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
     if (Base::Distance(p1,p2) < Precision::Confusion()) {
         Base::Vector3d p = (p1 + p2) / 2;
         Part::GeomPoint* point = new Part::GeomPoint(p);
-        point->Construction = true;
         return point;
     }
     else if (!infinite) {
         Part::GeomLineSegment* line = new Part::GeomLineSegment();
         line->setPoints(p1,p2);
-        line->Construction = true;
         return line;
     } else {
         Part::GeomLine* line = new Part::GeomLine();
         line->setLine(p1, p2 - p1);
-        line->Construction = true;
         return line;
     }
 }
@@ -4827,8 +4862,9 @@ bool SketchObject::evaluateSupport(void)
 
 bool SketchObject::validateExternalLinks(void)
 {
-    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
-    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    std::vector<DocumentObject*> Objects        = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements    = ExternalGeometry.getSubValues();
+    std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
 
     bool rebuild = false;
     
@@ -4852,6 +4888,7 @@ bool SketchObject::validateExternalLinks(void)
             rebuild = true ;
             Objects.erase(Objects.begin()+i);
             SubElements.erase(SubElements.begin()+i);
+            DefiningVals.erase(DefiningVals.begin()+i);
 
             const std::vector< Constraint * > &constraints = Constraints.getValues();
             std::vector< Constraint * > newConstraints(0);
@@ -4882,7 +4919,7 @@ bool SketchObject::validateExternalLinks(void)
     }
     
     if (rebuild) {
-        ExternalGeometry.setValues(Objects,SubElements);
+        ExternalGeometry.setValues(Objects,SubElements,DefiningVals);
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
         rebuildVertexIndex();
@@ -4895,8 +4932,9 @@ bool SketchObject::validateExternalLinks(void)
 void SketchObject::rebuildExternalGeometry(void)
 {
     // get the actual lists of the externals
-    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
-    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    std::vector<DocumentObject*> Objects        = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements    = ExternalGeometry.getSubValues();
+    std::vector<bool>            DefiningVals   = ExternalGeometry.getBoolValues();
 
     Base::Placement Plm = Placement.getValue();
     Base::Vector3d Pos = Plm.getPosition();
@@ -4939,7 +4977,8 @@ void SketchObject::rebuildExternalGeometry(void)
     ExternalGeo.push_back(VLine);
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
-        const std::string SubElement=SubElements[i];        
+        const std::string SubElement=SubElements[i];
+        const bool DefiningVal=DefiningVals[i];
 
         TopoDS_Shape refSubShape;
 
@@ -4994,7 +5033,9 @@ void SketchObject::rebuildExternalGeometry(void)
                             const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
                             BRepAdaptor_Curve curve(edge);
                             if (curve.GetType() == GeomAbs_Line) {
-                                ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
+                                Part::Geometry* projectedline = projectLine(curve, gPlane, invPlm);
+                                projectedline->Construction = !DefiningVal;
+                                ExternalGeo.push_back(projectedline);
                             }
                         }
 
@@ -5011,7 +5052,9 @@ void SketchObject::rebuildExternalGeometry(void)
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
                 BRepAdaptor_Curve curve(edge);
                 if (curve.GetType() == GeomAbs_Line) {
-                    ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
+                    Part::Geometry* projectedline = projectLine(curve, gPlane, invPlm);
+                    projectedline->Construction = !DefiningVal;
+                    ExternalGeo.push_back(projectedline);
                 }
                 else if (curve.GetType() == GeomAbs_Circle) {
                     gp_Dir vec1 = sketchPlane.Axis().Direction();
@@ -5033,7 +5076,7 @@ void SketchObject::rebuildExternalGeometry(void)
                             gCircle->setRadius(circle.Radius());
                             gCircle->setCenter(Base::Vector3d(cnt.X(),cnt.Y(),cnt.Z()));
 
-                            gCircle->Construction = true;
+                            gCircle->Construction = !DefiningVal;
                             ExternalGeo.push_back(gCircle);
                         }
                         else {
@@ -5042,7 +5085,7 @@ void SketchObject::rebuildExternalGeometry(void)
                             Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, curve.FirstParameter(),
                                                                                     curve.LastParameter());
                             gArc->setHandle(tCurve);
-                            gArc->Construction = true;
+                            gArc->Construction = !DefiningVal;
                             ExternalGeo.push_back(gArc);
                         }
                     }
@@ -5073,13 +5116,13 @@ void SketchObject::rebuildExternalGeometry(void)
                                     if (Base::Distance(p1,p2) < Precision::Confusion()) {
                                         Base::Vector3d p = (p1 + p2) / 2;
                                         Part::GeomPoint* point = new Part::GeomPoint(p);
-                                        point->Construction = true;
+                                        point->Construction = !DefiningVal;
                                         ExternalGeo.push_back(point);
                                     }
                                     else {
                                         Part::GeomLineSegment* line = new Part::GeomLineSegment();
                                         line->setPoints(p1,p2);
-                                        line->Construction = true;
+                                        line->Construction = !DefiningVal;
                                         ExternalGeo.push_back(line);
                                     }
                                 }
@@ -5094,7 +5137,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         circle->setRadius(c.Radius());
                                         circle->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
 
-                                        circle->Construction = true;
+                                        circle->Construction = !DefiningVal;
                                         ExternalGeo.push_back(circle);
                                     }
                                     else {
@@ -5103,7 +5146,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         arc->setHandle(tCurve);
-                                        arc->Construction = true;
+                                        arc->Construction = !DefiningVal;
                                         ExternalGeo.push_back(arc);
                                     }
                                 } else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
@@ -5125,11 +5168,11 @@ void SketchObject::rebuildExternalGeometry(void)
                                         gp_Pnt center = circ->Axis().Location();
                                         circle->setCenter(Base::Vector3d(center.X(), center.Y(), center.Z()));
 
-                                        circle->Construction = true;
+                                        circle->Construction = !DefiningVal;
                                         ExternalGeo.push_back(circle);
                                     } else {
                                         Part::GeomBSplineCurve* bspline = new Part::GeomBSplineCurve(projCurve.BSpline());
-                                        bspline->Construction = true;
+                                        bspline->Construction = !DefiningVal;
                                         ExternalGeo.push_back(bspline);
                                     }
                                 } else if (projCurve.GetType() == GeomAbs_Hyperbola) {
@@ -5148,7 +5191,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         hyperbola->setMinorRadius(e.MinorRadius());
                                         hyperbola->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
                                         hyperbola->setAngleXU(-xdir.AngleWithRef(xdirref.XDirection(),normal));
-                                        hyperbola->Construction = true;
+                                        hyperbola->Construction = !DefiningVal;
                                         ExternalGeo.push_back(hyperbola);
                                     }
                                     else {
@@ -5157,7 +5200,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         aoh->setHandle(tCurve);
-                                        aoh->Construction = true;
+                                        aoh->Construction = !DefiningVal;
                                         ExternalGeo.push_back(aoh);
                                     }
                                 } else if (projCurve.GetType() == GeomAbs_Parabola) {
@@ -5175,7 +5218,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         parabola->setFocal(e.Focal());
                                         parabola->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
                                         parabola->setAngleXU(-xdir.AngleWithRef(xdirref.XDirection(),normal));
-                                        parabola->Construction = true;
+                                        parabola->Construction = !DefiningVal;
                                         ExternalGeo.push_back(parabola);
                                     }
                                     else {
@@ -5184,7 +5227,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         aop->setHandle(tCurve);
-                                        aop->Construction = true;
+                                        aop->Construction = !DefiningVal;
                                         ExternalGeo.push_back(aop);
                                     }
                                 }
@@ -5202,7 +5245,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Part::GeomEllipse* ellipse = new Part::GeomEllipse();
                                         Handle(Geom_Ellipse) curve = new Geom_Ellipse(e);
                                         ellipse->setHandle(curve);
-                                        ellipse->Construction = true;
+                                        ellipse->Construction = !DefiningVal;
                                         ExternalGeo.push_back(ellipse);
                                     }
                                     else {
@@ -5211,10 +5254,10 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
                                                                                                 projCurve.LastParameter());
                                         aoe->setHandle(tCurve);
-                                        aoe->Construction = true;
+                                        aoe->Construction = !DefiningVal;
                                         ExternalGeo.push_back(aoe);
                                     }
-                                }                                
+                                }
                                 else {
                                     throw Base::Exception("Not yet supported geometry for external geometry");
                                 }
@@ -5237,7 +5280,7 @@ void SketchObject::rebuildExternalGeometry(void)
                 invPlm.multVec(p,p);
 
                 Part::GeomPoint* point = new Part::GeomPoint(p);
-                point->Construction = true;
+                point->Construction = !DefiningVal;
                 ExternalGeo.push_back(point);
             }
             break;
