@@ -786,6 +786,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
 /// @cond DOXERR
 void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 {
+    if(!getDocument())
+        return;
+
     SelectionChanges Reason(_Reason);
 
     if(Reason.pDocName && *Reason.pDocName && 
