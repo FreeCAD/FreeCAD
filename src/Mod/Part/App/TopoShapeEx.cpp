@@ -290,12 +290,8 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
                 prefix += '_';
             }else
                 prefix.swap(name);
-            if(Hasher && name.size()) {
-                sids.push_back(Hasher->getID(name.c_str()));
-                name = '#';
-                name += shapetype[0];
-                name += std::to_string(sids.back()->value());
-            }
+            if(Hasher && name.size())
+                name = hashElementName(shapetype[0],name.c_str(),sids);
             setElementName(element.c_str(),name.c_str(),prefix.c_str(),0,&sids);
         }
     }
@@ -1729,12 +1725,8 @@ TopoShape &TopoShape::makEShape(BRepBuilderAPI_MakeShape &mkShape,
         newName = std::string(_name.c_str()+_op.size());\
     }else\
         newName = _name;\
-    if(Hasher && newName.size()) {\
-        sids.push_back(Hasher->getID(newName.c_str()));\
-        newName = '#';\
-        newName += _shapetype;\
-        newName += std::to_string(sids.back()->value());\
-    }\
+    if(Hasher && newName.size())\
+        newName = hashElementName(_shapetype,newName.c_str(),sids);\
     prefix = ss.str();\
 }while(0)
 
@@ -1947,7 +1939,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             if(Hasher) {
                 sids.push_back(Hasher->getID(ss.str().c_str()));
                 ss.str("");
-                ss << '#' << element[0] << sids.back()->value();
+                ss << '#' << sids.back()->value();
             }
             postfix = ss.str();
         }
