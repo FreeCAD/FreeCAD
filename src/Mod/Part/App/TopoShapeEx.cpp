@@ -191,13 +191,17 @@ namespace Part {
             std::deque<int> *hashes);
 }
 
-#define _HANDLE_NULL_SHAPE(msg) do {\
-    FC_ERR(msg);\
-    Standard_Failure::Raise(msg);\
+#define _HANDLE_NULL_SHAPE(_msg,_throw) do {\
+    if(_throw) {\
+        FC_ERR(_msg);\
+        Standard_Failure::Raise(_msg);\
+    }\
+    FC_WARN(_msg);\
 }while(0)
 
-#define HANDLE_NULL_SHAPE _HANDLE_NULL_SHAPE("Null shape")
-#define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape")
+#define HANDLE_NULL_SHAPE _HANDLE_NULL_SHAPE("Null shape",true)
+#define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
+#define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
 
 static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) {
     if(shape.isNull())
@@ -419,8 +423,10 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes,
     builder.MakeCompound(comp);
     int count = 0;
     for(auto &s : shapes) {
-        if(s.isNull())
-            HANDLE_NULL_INPUT;
+        if(s.isNull()) {
+            WARN_NULL_INPUT;
+            continue;
+        }
         builder.Add(comp,s.getShape());
         ++count; 
     }
