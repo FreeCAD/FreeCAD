@@ -43,6 +43,11 @@
         <UserDocu>set construction mode of a geometry on or off</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getConstruction">
+        <Documentation>
+            <UserDocu>get construction mode of a geometry. For external geometry, Geoid=-(N+2) corresponds to ExternalEdgeN. Geoid=-1,-2 are reserved.</UserDocu>
+        </Documentation>
+    </Methode>    
     <Methode Name="addConstraint">
       <Documentation>
         <UserDocu>add a constraint to the sketch</UserDocu>

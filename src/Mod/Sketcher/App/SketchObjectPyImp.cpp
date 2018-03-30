@@ -246,6 +246,22 @@ PyObject* SketchObjectPy::toggleConstruction(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::getConstruction(PyObject *args)
+{
+    int geoid;
+    bool construction;
+
+    if (!PyArg_ParseTuple(args, "i", &geoid))
+        return 0;
+
+    if (this->getSketchObjectPtr()->getConstruction(geoid, construction)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geoid");
+        return 0;
+    }
+
+    return Py::new_reference_to(Py::Boolean(construction));
+}
+
 PyObject* SketchObjectPy::setConstruction(PyObject *args)
 {
     int Index;
