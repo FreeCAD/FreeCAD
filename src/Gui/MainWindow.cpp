@@ -1032,7 +1032,12 @@ void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
     if (App::Application::Config()["RunMode"] == "Internal") {
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        try {
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
         return;
     }
 
