@@ -32,6 +32,7 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
+#include <Mod/Sketcher/App/PropertyExternalGeometryList.h>
 
 #include "Sketch.h"
 
@@ -57,7 +58,7 @@ public:
     /// Property
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
-    App     ::PropertyLinkSubList    ExternalGeometry;
+    Sketcher::PropertyExternalGeometryList    ExternalGeometry;
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
@@ -368,6 +369,9 @@ protected:
      \retval list - the supported geometry list
      */
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
+
+    /// handle change of type of properties
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
