@@ -299,6 +299,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             if(!press){
                 SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                 if(!ret){
+                    this->interactiveCountDec();
                     Base::Console().Warning(
                         "No object under cursor! Can't set new center of rotation.\n");
                 }
@@ -416,6 +417,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     // if not PANNING then look at point
                     SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                     if(!ret){
+                        this->interactiveCountDec();
                         Base::Console().Warning(
                             "No object under cursor! Can't set new center of rotation.\n");
                     }
