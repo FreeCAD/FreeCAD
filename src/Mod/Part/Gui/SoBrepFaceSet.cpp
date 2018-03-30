@@ -724,11 +724,11 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
             // trans_size = 1;
         }
 
-        auto selColor = ctx->highlightIndex==INT_MAX?ctx->highlightColor:ctx->selectionColor;
-
         if(!ctx2 && ctx && 
            (ctx->isHighlightAll() || (ctx->highlightIndex<0 && ctx->isSelectAll()))) 
         {
+            auto selColor = ctx->highlightIndex==INT_MAX?ctx->highlightColor:ctx->selectionColor;
+
             //optimization for full selection/highlight without partial rendering
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
             SoOverrideElement::setMaterialBindingOverride(state, this, true);
@@ -742,6 +742,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
         matIndex.reserve(partIndex.getNum());
 
         if(ctx && (ctx->isSelectAll() || ctx->isHighlightAll())) {
+            auto selColor = ctx->highlightIndex==INT_MAX?ctx->highlightColor:ctx->selectionColor;
             matIndex.resize(partIndex.getNum(),0);
             if(!ctx2)
                 packedColors.push_back(selColor.getPackedValue(trans0));
