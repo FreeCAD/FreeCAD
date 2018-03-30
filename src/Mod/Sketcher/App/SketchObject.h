@@ -184,6 +184,9 @@ public:
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
     int setConstruction(int GeoId, bool on);
+    /// getConstruction for GeoId, working for external and normal geometry
+    /// in case of external geometry it indicates whether the external geometry is defining or not
+    int getConstruction(int GeoId, bool &isconstruction);
 
     /// create a fillet
     int fillet(int geoId, PointPos pos, double radius, bool trim=true);
