@@ -330,7 +330,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     return App::DocumentObject::execute();
 }
 
-std::string  DrawViewDimension::getFormatedValue()
+std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 {
     std::string result;
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
@@ -340,9 +340,13 @@ std::string  DrawViewDimension::getFormatedValue()
     qVal.setValue(val);
     if (Type.isValue("Angle")) {
         qVal.setUnit(Base::Unit::Angle);
+        if (obtuse) {
+            qVal.setValue(fabs(360.0 - val));
+        }
     } else {
         qVal.setUnit(Base::Unit::Length);
     }
+
     QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
                                                                       //but won't give more than Global_Decimals precision
                                                                       //really should be able to ask units for value in appropriate UoM!!
