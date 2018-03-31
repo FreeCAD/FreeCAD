@@ -108,7 +108,7 @@ public Q_SLOTS:
     void datumLabelDragFinished(void);
     void select(bool state);
     void hover(bool state);
-    void updateDim(void);
+    void updateDim(bool obtuse = false);
 
 protected:
     void draw() override;

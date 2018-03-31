@@ -259,7 +259,7 @@ void QGIViewDimension::updateView(bool update)
     draw();
 }
 
-void QGIViewDimension::updateDim()
+void QGIViewDimension::updateDim(bool obtuse)
 {
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
     if( dim == nullptr ) {
@@ -270,7 +270,7 @@ void QGIViewDimension::updateDim()
         return;
     }
 
-    QString labelText = QString::fromUtf8(dim->getFormatedValue().data(),dim->getFormatedValue().size());
+    QString labelText = QString::fromUtf8(dim->getFormatedValue(obtuse).data(),dim->getFormatedValue().size());
     QFont font = datumLabel->font();
     font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -1005,18 +1005,20 @@ void QGIViewDimension::draw()
 
         QRectF arcRect(p0.x - length, p0.y - length, 2. * length, 2. * length);
         path.arcMoveTo(arcRect, endangle * 180 / M_PI);
+        double innerAngle = fabs(endangle - startangle) * 180.0/M_PI;
+        double outerAngle = 360.0 - innerAngle;
         if(isOutside) {
+            updateDim(true);
             if(labelangle > endangle)
             {
-                path.arcTo(arcRect, endangle * 180 / M_PI, (labelangle  - endangle) * 180 / M_PI);  //CCW from endangle
-                path.arcMoveTo(arcRect,startangle * 180 / M_PI);
-                path.arcTo(arcRect, startangle * 180 / M_PI, -10);   //cw10 from start
+                path.arcMoveTo(arcRect, endangle * 180 / M_PI);
+                path.arcTo(arcRect, endangle * 180 / M_PI, - outerAngle);
             } else {
-                path.arcTo(arcRect, endangle * 180 / M_PI, 10); // chosen a nominal value for 10 degrees
-                path.arcMoveTo(arcRect,startangle * 180 / M_PI);
-                path.arcTo(arcRect, startangle * 180 / M_PI, (labelangle - startangle) * 180 / M_PI);   //unknown dir
+                path.arcMoveTo(arcRect, startangle * 180 / M_PI);
+                path.arcTo(arcRect, startangle * 180 / M_PI, outerAngle);  
             }
         } else {
+            updateDim(false);
             path.arcTo(arcRect, endangle * 180 / M_PI, -range * 180 / M_PI);
         }
 
