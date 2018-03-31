@@ -194,16 +194,17 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
     mb.sendFirst(); // make sure we have the correct material
 
     int id = ctx->highlightIndex;
-    if(id == INT_MAX) {
-        const SbVec3f * coords3d = coords->getArrayPtr3();
-        for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
-            glVertex3fv((const GLfloat*) (coords3d + idx));
-    }else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
-        SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
-    }
-    else {
-        const SbVec3f * coords3d = coords->getArrayPtr3();
-        if(coords3d) {
+    const SbVec3f * coords3d = coords->getArrayPtr3();
+    if(coords3d) {
+        if(id == INT_MAX) {
+            glBegin(GL_POINTS);
+            for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
+                glVertex3fv((const GLfloat*) (coords3d + idx));
+            glEnd();
+        }else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
+            SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
+        }
+        else {
             glBegin(GL_POINTS);
             glVertex3fv((const GLfloat*) (coords3d + id));
             glEnd();
