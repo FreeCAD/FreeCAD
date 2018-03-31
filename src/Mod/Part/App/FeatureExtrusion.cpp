@@ -255,7 +255,7 @@ TopoShape Extrusion::extrudeShape(const TopoShape &source, Extrusion::ExtrusionP
         TopoShape myShape(source.makECopy());
 
         std::vector<TopoShape> drafts;
-        makeDraft(params, myShape, drafts,op);
+        makeDraft(params, myShape, drafts, hasher, op);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }else
@@ -317,7 +317,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 }
 
 void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape, 
-        std::vector<TopoShape>& drafts, const char *op)
+        std::vector<TopoShape>& drafts, App::StringHasherRef hasher, const char *op)
 {
     double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;
     double distanceRev = tan(params.taperAngleRev)*params.lengthRev;
@@ -350,7 +350,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
     }
     else if (shape.ShapeType() == TopAbs_COMPOUND) {
         for(auto &s : _shape.getSubTopoShapes()) {
-            makeDraft(params, s, drafts,op);
+            makeDraft(params, s, drafts, hasher, op);
         }
     }
     else {
@@ -449,7 +449,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
             Base::SignalException se;
 #endif
             mkGenerator.Build();
-            drafts.push_back(TopoShape().makEShape(mkGenerator,list_of_sections,op,false));
+            drafts.push_back(TopoShape(0,hasher).makEShape(mkGenerator,list_of_sections,op,false));
         }
         catch (Standard_Failure &){
             throw;

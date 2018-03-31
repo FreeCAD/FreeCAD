@@ -123,7 +123,8 @@ public: //mode enumerations
     static const char* eDirModeStrings[];
 
 protected:
-    static void makeDraft(ExtrusionParameters params, const TopoShape&, std::vector<TopoShape>&, const char *);
+    static void makeDraft(ExtrusionParameters params, const TopoShape&, std::vector<TopoShape>&, 
+            App::StringHasherRef hasher, const char *);
 
 
 protected:
