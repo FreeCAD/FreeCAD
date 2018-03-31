@@ -158,13 +158,17 @@ Py::Dict ComplexGeoDataPy::getElementReverseMap() const {
     Py::Dict ret;
     for(auto &v : getComplexGeoDataPtr()->getElementMap()) {
         auto value = ret[Py::String(v.second)];
-        if(Py::Object(value).isNone())
+        Py::Object item(value);
+        if(item.isNone())
             value = Py::String(v.first);
-        else {
-            Py::List item;
-            item.append(Py::Object(value));
-            item.append(Py::String(v.first));
-            value = item;
+        else if(item.isList()) {
+            Py::List list(item);
+            list.append(Py::String(v.first));
+        } else {
+            Py::List list;
+            list.append(item);
+            list.append(Py::String(v.first));
+            value = list;
         }
     }
     return ret;
