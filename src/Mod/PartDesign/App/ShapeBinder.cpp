@@ -253,6 +253,7 @@ void SubShapeBinder::update() {
         result.setElementName("Edge1",0);
     else if(count==0 && (count=result.countSubShapes("Vertex"))==1)
         result.setElementName("Vertex1",0);
+    result.setTransform(Placement.getValue().toMatrix());
     Shape.setValue(result);
 }
 
@@ -276,11 +277,6 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
            else if(BindMode.getValue() == 0)
                update();
         }
-    }
-    if(prop == &Shape) {
-        // bypass Part::Feature logic, and do not change Placement with shape.
-        DocumentObject::onChanged(prop);
-        return;
     }
     Part::Feature::onChanged(prop);
 }
