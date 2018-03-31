@@ -3709,6 +3709,7 @@ def makeWorkingPlaneProxy(placement):
             obj.ViewObject.Proxy.writeCamera()
             obj.ViewObject.Proxy.writeState()
         obj.Placement = placement
+        return obj
 
 
 #---------------------------------------------------------------------------
