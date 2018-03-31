@@ -349,6 +349,9 @@ public:
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
     
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
+    
+    // handle change of type of properties
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 
 protected:
     /// get called by the container when a property has changed

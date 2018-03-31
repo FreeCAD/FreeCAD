@@ -6125,6 +6125,20 @@ void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::share
         solve();
 }
 
+void SketchObject::handleChangedPropertyType( Base::XMLReader &reader,
+                                              const char * TypeName,
+                                              App::Property * prop)
+{
+    // forward compatibility to v0.18
+    if (prop == &ExternalGeometry && strcmp(TypeName, "Sketcher::PropertyExternalGeometryList") == 0) {
+        App::PropertyLinkSubList v;
+        v.setContainer(this);
+        v.Restore(reader);
+        
+        ExternalGeometry.setValues(v.getValues(),v.getSubValues());
+    }
+}
+
 
 // Python Sketcher feature ---------------------------------------------------------
 
