@@ -140,6 +140,8 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 
     if (edge_obj.size() == edge_sub.size()) {
+        // BRepFill_Filling crashes if the boundary edges are not added in a consecutive order.
+        // these edges are first added to a test wire to check that they can be securely added to the Filling algo
         BRepBuilderAPI_MakeWire testWire;
         for (std::size_t index = 0; index < edge_obj.size(); index++) {
             // get the part object
@@ -159,15 +161,17 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                     // edge doesn't have set an adjacent face
                     if (subFace.empty()) {
                         if (!bnd) {
+                            // not a boundary edge: safe to add it directly
                             builder.Add(TopoDS::Edge(edge), cont, bnd);
                         }
                         else {
+                            // boundary edge: try to add it to the test wire first
                             testWire.Add(TopoDS::Edge(edge));
                             if (testWire.IsDone()) {
                                 builder.Add(TopoDS::Edge(edge), cont, bnd);
                             }
                             else {
-                                Standard_Failure::Raise("Boundary edges are not ordered");
+                                Standard_Failure::Raise("Boundary edges must be added in a consecutive order");
                             }
                         }
                     }
@@ -175,15 +179,17 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                         TopoDS_Shape face = shape.getSubShape(subFace.c_str());
                         if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
                             if (!bnd) {
+                                // not a boundary edge: safe to add it directly
                                 builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
                             }
                             else {
+                                // boundary edge: try to add it to the test wire first
                                 testWire.Add(TopoDS::Edge(edge));
                                 if (testWire.IsDone()) {
                                     builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
                                 }
                                 else {
-                                    Standard_Failure::Raise("Boundary edges are not ordered");
+                                    Standard_Failure::Raise("Boundary edges must be added in a consecutive order");
                                 }
                             }
                         }
