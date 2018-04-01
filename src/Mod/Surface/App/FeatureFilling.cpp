@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepFill_Filling.hxx>
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
@@ -139,6 +140,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 
     if (edge_obj.size() == edge_sub.size()) {
+        BRepBuilderAPI_MakeWire testWire;
         for (std::size_t index = 0; index < edge_obj.size(); index++) {
             // get the part object
             App::DocumentObject* obj = edge_obj[index];
@@ -156,12 +158,34 @@ void Filling::addConstraints(BRepFill_Filling& builder,
 
                     // edge doesn't have set an adjacent face
                     if (subFace.empty()) {
-                        builder.Add(TopoDS::Edge(edge), cont, bnd);
+                        if (!bnd) {
+                            builder.Add(TopoDS::Edge(edge), cont, bnd);
+                        }
+                        else {
+                            testWire.Add(TopoDS::Edge(edge));
+                            if (testWire.IsDone()) {
+                                builder.Add(TopoDS::Edge(edge), cont, bnd);
+                            }
+                            else {
+                                Standard_Failure::Raise("Boundary edges are not ordered");
+                            }
+                        }
                     }
                     else {
                         TopoDS_Shape face = shape.getSubShape(subFace.c_str());
                         if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
-                            builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                            if (!bnd) {
+                                builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                            }
+                            else {
+                                testWire.Add(TopoDS::Edge(edge));
+                                if (testWire.IsDone()) {
+                                    builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
+                                }
+                                else {
+                                    Standard_Failure::Raise("Boundary edges are not ordered");
+                                }
+                            }
                         }
                         else {
                             Standard_Failure::Raise("Sub-shape is not a face");
