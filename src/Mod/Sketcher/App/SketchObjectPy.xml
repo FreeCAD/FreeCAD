@@ -33,6 +33,21 @@
             <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="toggleExternalDefining">
+        <Documentation>
+            <UserDocu>switch an external geometry from/to profile defining state</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setExternalDefining">
+        <Documentation>
+            <UserDocu>set an external geometry profile defining state on or off</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getExternalDefining">
+        <Documentation>
+            <UserDocu>get the profile defining state of an external geometry.</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="toggleConstruction">
       <Documentation>
         <UserDocu>switch a geometry to a construction line</UserDocu>
