@@ -2582,7 +2582,7 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else if (GeoId <= Sketcher::GeoEnum::RefExt && !getSketchObject()->getGeometry(GeoId)->Construction) {  // defining external Geometry
-            color[i] = CurveDefiningExternalColor;
+            color[i] = (edit->FullyConstrained?FullyConstrainedColor:CurveDefiningExternalColor);
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zExtLine);
