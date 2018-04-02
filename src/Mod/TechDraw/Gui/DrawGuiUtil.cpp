@@ -75,18 +75,8 @@ using namespace TechDrawGui;
 //find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = nullptr;
+    TechDraw::DrawPage* page;
     bool warn = true;
-
-    //default to currently displayed DrawPage is there is one
-    Gui::MainWindow* w = Gui::getMainWindow();
-    Gui::MDIView* mv = w->activeWindow();
-    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
-    if (mvp) {
-        QString windowTitle = mvp->windowTitle();
-        QGVPage* qp = mvp->getQGVPage();
-        page = qp->getDrawPage();
-    }
 
     //check Selection and/or Document for a DrawPage
     std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
@@ -112,6 +102,18 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
         warn = false;
     } else {                                                           //use only page in selection
         page = static_cast<TechDraw::DrawPage*>(selPages.front());
+    }
+
+    //default to currently displayed DrawPage is there is one         //code moved Coverity CID 174668
+    if (page == nullptr) {
+        Gui::MainWindow* w = Gui::getMainWindow();
+        Gui::MDIView* mv = w->activeWindow();
+        MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+        if (mvp) {
+            QString windowTitle = mvp->windowTitle();
+            QGVPage* qp = mvp->getQGVPage();
+            page = qp->getDrawPage();
+        }
     }
 
     if ((page == nullptr) && 
