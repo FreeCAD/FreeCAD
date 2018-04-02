@@ -177,7 +177,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
             result += tab+"geom.vertices.push(v"+str(i)+");\n"
         # adding facets data
         for f in fcmesh[1]:
-            result += tab+"geom.faces.push( new THREE.Face3"+str(f)+" );\n"
+            result += tab+"geom.faces.push( new THREE.Face3"+str(f).replace("L","")+" );\n"
         for f in obj.Shape.Faces:
             for w in f.Wires:
                 wo = Part.Wire(Part.__sortEdges__(w.Edges))
@@ -197,7 +197,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
         # adding facets data
         for f in mesh.Facets:
             pointIndices = tuple([ int(i) for i in f.PointIndices ])
-            result += tab+"geom.faces.push( new THREE.Face3"+str(pointIndices)+" );\n"
+            result += tab+"geom.faces.push( new THREE.Face3"+str(pointIndices).replace("L","")+" );\n"
             
     if result:
         # adding a base material
