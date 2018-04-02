@@ -142,9 +142,10 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
                 doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
             }
             else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
-                int GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(it->substr(12,4000).c_str());
+                int GeoId = std::atoi(it->substr(12,4000).c_str()) -1;
+                //int GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(it->substr(12,4000).c_str());
                 // issue the actual commands to toggle
-                doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
+                doCommand(Doc,"App.ActiveDocument.%s.toggleExternalDefining(%d) ",selection[0].getFeatName(),GeoId);
             }
 
         }
