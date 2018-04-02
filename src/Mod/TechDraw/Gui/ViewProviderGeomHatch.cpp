@@ -194,6 +194,7 @@ void ViewProviderGeomHatch::getParameters(void)
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
+    delete lg;                                                    //Coverity CID 174667
     WeightPattern.setValue(weight);
 }
 
