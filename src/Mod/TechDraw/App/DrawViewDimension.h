@@ -75,6 +75,7 @@ public:
     App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
     App::PropertyString            FormatSpec;
+    App::PropertyBool              Arbitrary;
 
     short mustExecute() const;
     bool has2DReferences(void) const;
@@ -137,6 +138,7 @@ private:
     pointPair   m_linearPoints;
     arcPoints   m_arcPoints;
     anglePoints m_anglePoints;
+    bool        m_hasGeometry;
 };
 
 } //namespace TechDraw

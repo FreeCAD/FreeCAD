@@ -96,6 +96,7 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
                   "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
+    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value specified by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -118,9 +119,24 @@ DrawViewDimension::DrawViewDimension(void)
     measurement = new Measure::Measurement();
     //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured? 
 
-    //start/end point for linear measures 
+    //initialize the descriptive geometry. 
+    //TODO: should this be more like DVP with a "geometry object"?
     m_linearPoints.first  = Base::Vector3d(0,0,0);
     m_linearPoints.second = Base::Vector3d(0,0,0);
+
+    m_anglePoints.ends.first = Base::Vector3d(0,0,0);
+    m_anglePoints.ends.second = Base::Vector3d(0,0,0);
+    m_anglePoints.vertex = Base::Vector3d(0,0,0);
+
+    m_arcPoints.isArc = false;
+    m_arcPoints.center = Base::Vector3d(0,0,0);
+    m_arcPoints.onCurve.first = Base::Vector3d(0,0,0);
+    m_arcPoints.onCurve.second = Base::Vector3d(0,0,0);
+    m_arcPoints.arcEnds.first = Base::Vector3d(0,0,0);
+    m_arcPoints.arcEnds.second = Base::Vector3d(0,0,0);
+    m_arcPoints.midArc = Base::Vector3d(0,0,0);
+    m_arcPoints.arcCW = false;
+    m_hasGeometry = false;
 }
 
 DrawViewDimension::~DrawViewDimension()
@@ -146,6 +162,11 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 if (MeasureType.isValue("True")) {                                 //empty 3dRefs, but True
                     MeasureType.touch();                                          //run MeasureType logic for this case
                 }
+            }
+        }
+        if (prop == &Arbitrary) {
+            if (!Arbitrary.getValue()) {
+                FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a useable FormatSpec
             }
         }
 
@@ -221,6 +242,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         } else if (getRefType() == vertexEdge) {
             m_linearPoints = getPointsEdgeVert();
         }  //else tarfu
+        m_hasGeometry = true;
     } else if(Type.isValue("Radius")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
         TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
@@ -249,6 +271,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             return App::DocumentObject::StdReturn;
         }
         m_arcPoints = pts;
+        m_hasGeometry = true;
     } else if(Type.isValue("Diameter")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
         TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
@@ -278,6 +301,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             return App::DocumentObject::StdReturn;
         }
         m_arcPoints = pts;
+        m_hasGeometry = true;
     } else if(Type.isValue("Angle")){
         //TODO: do we need to distinguish inner vs outer angle? -wf
         if (getRefType() != twoEdge) {
@@ -322,6 +346,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         pts.ends.second = extPoint1;
         pts.vertex = apex;
         m_anglePoints = pts;
+        m_hasGeometry = true;
     }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
@@ -333,6 +358,10 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 std::string  DrawViewDimension::getFormatedValue(bool obtuse)
 {
     std::string result;
+    if (Arbitrary.getValue()) {
+        return FormatSpec.getStrValue();
+    }
+
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());    //internal units!
 
