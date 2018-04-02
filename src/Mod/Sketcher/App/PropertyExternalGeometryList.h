@@ -26,7 +26,6 @@
 
 #include <App/PropertyLinks.h>
 
-
 namespace Base {
 class Writer;
 }
@@ -44,6 +43,7 @@ namespace Sketcher
         TYPESYSTEM_HEADER();
 
     public:
+        typedef std::tuple<App::DocumentObject*, std::vector<std::string>, std::vector<bool> > SubSet;
         /**
          * A constructor.
          * A more elaborate description of the constructor.
@@ -84,6 +84,12 @@ namespace Sketcher
          * together with its sub-elements and returns the number of entries removed.
          */
         int removeValue(App::DocumentObject *lValue);
+
+        void setSubListValues(const std::vector<PropertyExternalGeometryList::SubSet>&);
+        std::vector<PropertyExternalGeometryList::SubSet> getSubListValues() const;
+
+        virtual PyObject *getPyObject(void);
+        virtual void setPyObject(PyObject *);
 
         virtual void Save (Base::Writer &writer) const;
         virtual void Restore(Base::XMLReader &reader);

@@ -304,6 +304,162 @@ int PropertyExternalGeometryList::removeValue(App::DocumentObject *lValue)
     return static_cast<int>(num);
 }
 
+void PropertyExternalGeometryList::setSubListValues(const std::vector<PropertyExternalGeometryList::SubSet>& values)
+{
+    std::vector<DocumentObject*> links;
+    std::vector<std::string> subs;
+    std::vector<bool> bools;
+
+    for (std::vector<PropertyExternalGeometryList::SubSet>::const_iterator it = values.begin(); it != values.end(); ++it) {
+
+        if(std::get<1>(*it).size() != std::get<2>(*it).size())
+            throw Base::ValueError("PropertyExternalGeometryList::setSubListValues: size of boolean list != size of SubList list");
+
+        std::vector<std::string>::const_iterator jt = std::get<1>(*it).begin();
+        std::vector<bool>::const_iterator kt = std::get<2>(*it).begin();
+
+        for (; jt != std::get<1>(*it).end(); ++jt,++kt) {
+            links.push_back(std::get<0>(*it));
+            subs.push_back(*jt);
+            bools.push_back(*kt);
+        }
+    }
+
+    setValues(links, subs,bools);
+}
+
+std::vector<PropertyExternalGeometryList::SubSet> PropertyExternalGeometryList::getSubListValues() const
+{
+    std::vector<PropertyExternalGeometryList::SubSet> values;
+    if (_lValueList.size() != _lSubList.size())
+        throw Base::ValueError("PropertyExternalGeometryList::getSubListValues: size of subelements list != size of objects list");
+
+    if(_lboolList.size() != _lValueList.size())
+        throw Base::ValueError("PropertyExternalGeometryList::getSubListValues: size of boolean list != size of objects list");
+
+    std::map<App::DocumentObject*, std::vector<std::string> > tmp;
+    std::map<App::DocumentObject*, std::vector<bool> > tmp2;
+    std::vector<App::DocumentObject*> keylinks;
+
+    for (std::size_t i = 0; i < _lValueList.size(); i++) {
+        App::DocumentObject* link = _lValueList[i];
+        std::string sub = _lSubList[i];
+        bool vbool = _lboolList[i];
+        if (tmp.find(link) == tmp.end()) {
+            // make sure to keep the same order as in '_lValueList'
+            PropertyExternalGeometryList::SubSet item;
+            keylinks.push_back(link);
+        }
+
+        tmp[link].push_back(sub);
+        tmp2[link].push_back(vbool);
+    }
+
+    for (std::vector<App::DocumentObject*>::iterator it = keylinks.begin(); it != keylinks.end(); ++it) {
+        values.push_back(std::make_tuple(*it,tmp[*it],tmp2[*it]));
+    }
+
+    return values;
+}
+
+PyObject *PropertyExternalGeometryList::getPyObject(void)
+{
+    std::vector<PropertyExternalGeometryList::SubSet> subLists = getSubListValues();
+    std::size_t count = subLists.size();
+
+    Py::List sequence(count);
+    for (std::size_t i = 0; i<count; i++) {
+        Py::Tuple tup(3);
+        tup[0] = Py::Object(std::get<0>(subLists[i])->getPyObject());
+
+        const std::vector<std::string>& sub = std::get<1>(subLists[i]);
+
+        Py::Tuple items(sub.size());
+        for (std::size_t j = 0; j < sub.size(); j++) {
+            items[j] = Py::String(sub[j]);
+        }
+
+        tup[1] = items;
+
+        const std::vector<bool>& bools = std::get<2>(subLists[i]);
+
+        Py::Tuple bitems(bools.size());
+        for (std::size_t j = 0; j < bools.size(); j++) {
+            bitems[j] = Py::Boolean(bools[j]);
+        }
+
+        tup[2] = bitems;
+
+        sequence[i] = tup;
+    }
+
+    return Py::new_reference_to(sequence);
+}
+
+void PropertyExternalGeometryList::setPyObject(PyObject *value)
+{
+    try { //try PropertyLinkSub syntax
+        PropertyLinkSub dummy;
+        dummy.setPyObject(value);
+        this->setValue(dummy.getValue(), dummy.getSubValues());
+    }
+    catch (Base::TypeError) {
+        if (PyTuple_Check(value) || PyList_Check(value)) {
+            Py::Sequence list(value);
+            Py::Sequence::size_type size = list.size();
+            
+            std::vector<DocumentObject*> values;
+            values.reserve(size);
+            std::vector<std::string>     SubNames;
+            SubNames.reserve(size);
+            for (Py::Sequence::size_type i=0; i<size; i++) {
+                Py::Object item = list[i];
+                if (item.isTuple()) {
+                    Py::Tuple tup(item);
+                    if (PyObject_TypeCheck(tup[0].ptr(), &(DocumentObjectPy::Type))){
+                        if (tup[1].isString()) {
+                            DocumentObjectPy  *pcObj;
+                            pcObj = static_cast<DocumentObjectPy*>(tup[0].ptr());
+                            values.push_back(pcObj->getDocumentObjectPtr());
+                            SubNames.push_back(Py::String(tup[1]));
+                        }
+                        else if (tup[1].isSequence()) {
+                            Py::Sequence list(tup[1]);
+                            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                                SubNames.push_back(Py::String(*it));
+                            }
+                            
+                            DocumentObjectPy  *pcObj;
+                            pcObj = static_cast<DocumentObjectPy*>(tup[0].ptr());
+                            values.insert(values.end(), list.size(), pcObj->getDocumentObjectPtr());
+                        }
+                    }
+                    else {
+                        std::string error = std::string("type of first item must be 'DocumentObject', not ");
+                        error += Py_TYPE(tup[0].ptr())->tp_name;
+                        throw Base::TypeError(error);
+                    }
+                }
+                else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
+                    DocumentObjectPy *pcObj;
+                    pcObj = static_cast<DocumentObjectPy*>(*item);
+                    values.push_back(pcObj->getDocumentObjectPtr());
+                }
+                else if (item.isString()) {
+                    SubNames.push_back(Py::String(item));
+                }
+            }
+            
+            setValues(values,SubNames);
+        }
+        else {
+            std::string error = std::string("type must be 'DocumentObject' or list of 'DocumentObject', not ");
+            error += value->ob_type->tp_name;
+            throw Base::TypeError(error);
+        }
+    }
+}
+
 void PropertyExternalGeometryList::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<LinkSubList count=\"" <<  getSize() <<"\">" << endl;
