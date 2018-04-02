@@ -76,6 +76,7 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     weight = lg->getWeight("Extra");
     ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
+    delete lg;                            //Coverity CID 174664
 
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
