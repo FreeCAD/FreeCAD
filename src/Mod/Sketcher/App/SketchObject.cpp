@@ -6136,6 +6136,8 @@ void SketchObject::handleChangedPropertyType( Base::XMLReader &reader,
         v.Restore(reader);
         
         ExternalGeometry.setValues(v.getValues(),v.getSubValues());
+        
+        Base::Console().Error("The file was saved with a new version of FreeCAD. The defining status of External Geometry will be lost.\n");
     }
 }
 
