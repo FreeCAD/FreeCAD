@@ -84,6 +84,8 @@ section "install"
 	file /r "..\..\doc\"
 	setOutPath $INSTDIR\data
 	file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
+	setOutPath $INSTDIR\Ext
+	file /r "..\..\Ext\"
 	setOutPath $INSTDIR
 	file  "vcredist_x86.exe"
 	
