@@ -47,8 +47,14 @@ public:
     Base::Vector3d getPoint();
 
     virtual TopoDS_Shape getShape() const override;
+
+    typedef Part::Datum Superclass;
+
 protected:
     virtual void onChanged(const App::Property* prop);
+    virtual void Restore(Base::XMLReader& r);
+private:
+    void makeShape();
 };
 
 } //namespace PartDesign
