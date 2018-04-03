@@ -34,6 +34,7 @@ from FreeCAD import Units
 import subprocess
 import tempfile
 from platform import system
+import sys
 
 
 class GmshTools():
@@ -220,7 +221,10 @@ class GmshTools():
             elif system() == "Linux":
                 p1 = subprocess.Popen(['which', 'gmsh'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
-                    gmsh_path = p1.stdout.read().split('\n')[0]
+                    output = p1.stdout.read()
+                    if sys.version_info.major >= 3:
+                        output = output.decode('utf-8')
+                    gmsh_path = output.split('\n')[0]
                 elif p1.wait() == 1:
                     error_message = "Gmsh binary gmsh not found in standard system binary path. Please install Gmsh or set path to binary in FEM preferences tab Gmsh.\n"
                     FreeCAD.Console.PrintError(error_message)
