@@ -40,7 +40,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         vertices to be exported. (For second order elements, we have to delete the mid element nodes.)
     """
 
-    # TODO: check for second order elements 
+    # TODO: check for second order elements
     # (reduce element order would be ok - all elements have at least the first
     # necessary nodes)
 
@@ -55,7 +55,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "Polygon": "unknown", "Polyhedron": "unknown",
         "Prism": "unknown", "Pyramid": "unknown",
     }
-    
+
     XML_Number_of_Nodes_dict = {
         "point": 1,
         "interval": 2,
@@ -102,7 +102,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
         cell_args = {}
         for (vi, ni) in enumerate(nodeindices):
-            if vi < num_verts_cell:  # XML only supports first order meshs 
+            if vi < num_verts_cell:  # XML only supports first order meshs
                 cell_args["v" + str(vi)] = str(ni - 1)
         # generate as many v entries in dict as nodes are listed in cell (works only for first order elements)
 
