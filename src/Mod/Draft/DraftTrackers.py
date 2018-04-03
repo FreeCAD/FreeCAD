@@ -83,7 +83,8 @@ class Tracker:
         '''remove self.switch from the scene graph.  As with _insertSwitch,
         must not be called during scene graph traversal).'''
         sg=Draft.get3DView().getSceneGraph()
-        sg.removeChild(switch)
+        if sg.findChild(switch) >= 0:
+            sg.removeChild(switch)
 
     def on(self):
         self.switch.whichChild = 0
