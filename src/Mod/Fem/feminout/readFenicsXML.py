@@ -232,7 +232,7 @@ def read_fenics_mesh_xml(xmlfilename):
         print("Mesh found")
         (nodes, cells_dict, cell_type, dim) = read_mesh_block(find_mesh)
         element_dict = generate_lower_dimensional_structures(nodes, cells_dict, cell_type, dim)
-        print("Show min max element dict")        
+        print("Show min max element dict")
         for (elm, numbers) in list(element_dict.items()):
             lst = sorted(list(numbers.items()), key=lambda x: x[0])
             if lst != []:
