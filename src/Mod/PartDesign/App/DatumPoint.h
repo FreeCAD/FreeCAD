@@ -46,8 +46,13 @@ public:
 
     Base::Vector3d getPoint();
 
+    typedef Part::Datum Superclass;
+
 protected:
     virtual void onChanged(const App::Property* prop);
+    virtual void Restore(Base::XMLReader& r);
+private:
+    void makeShape();
 };
 
 } //namespace PartDesign
