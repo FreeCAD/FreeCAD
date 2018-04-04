@@ -292,13 +292,11 @@ void ComplexGeoData::setElementMap(const std::map<std::string, std::string> &map
         setElementName(v.first.c_str(),v.second.c_str());
 }
 
-void ComplexGeoData::copyElementMap(const ComplexGeoData &data, const char *prefix, const char *postfix) {
+void ComplexGeoData::copyElementMap(const ComplexGeoData &data, const char *postfix) {
     _ElementMap.reset();
     if(!data._ElementMap)
         return;
 
-    if(prefix && !prefix[0])
-        prefix = 0;
     if(postfix && !postfix[0])
         postfix = 0;
 
@@ -306,45 +304,40 @@ void ComplexGeoData::copyElementMap(const ComplexGeoData &data, const char *pref
         Hasher = data.Hasher;
 
     for(const auto &v : data._ElementMap->left) {
-        if(v.info.size()) {
-            if(Hasher!=data.Hasher){
-                // different hasher, do not double hash by merging the name into prefix
-                std::string name;
-                if(prefix)
-                    name = prefix;
-                name += v.first;
-                setElementName(v.second.c_str(), "", name.c_str(), postfix);
-            }else
-                setElementName(v.second.c_str(), v.first.c_str(), prefix, postfix, &v.info);
-        }else
-            setElementName(v.second.c_str(), v.first.c_str(), prefix, postfix);
+        if(v.info.empty() || Hasher==data.Hasher)
+            setElementName(v.second.c_str(), v.first.c_str(), postfix, &v.info);
+        else if(postfix)
+            // different hasher, do not double hash by merging the name into postfix
+            setElementName(v.second.c_str(), "", (v.first+postfix).c_str());
+        else
+            setElementName(v.second.c_str(), "", v.first.c_str());
     }
 }
 
 const char *ComplexGeoData::setElementName(const char *element, const char *name, 
-        const char *prefix, const char *postfix, 
-        const std::vector<App::StringIDRef> *sid, bool overwrite)
+        const char *postfix, const std::vector<App::StringIDRef> *sid, bool overwrite)
 {
-    if(!element || !element[0] || !name || (!prefix&&!postfix))
+    if(!element || !element[0] || !name || !postfix)
         return setElementName(element,name,sid,overwrite);
 
     std::vector<App::StringIDRef> _sid;
     std::ostringstream ss;
-    if(prefix)
-        ss << prefix;
     if((!sid || sid->empty()) && Hasher) {
         sid = &_sid;
         ss << hashElementName(element[0],name,_sid);
         name = "";
     }else
         ss << name;
-    if(postfix)
+    if(postfix && postfix[0]) {
+        if(ss.tellp() && !boost::starts_with(postfix,elementMapPrefix()))
+            ss << elementMapPrefix();
         ss << postfix;
+    }
     if(!Hasher || name[0])
         return setElementName(element,ss.str().c_str(),sid,overwrite);
     else {
-        // Have hasher and name empty, meaning only prefix and/or postfix.
-        // So we temparorily swap out hasher to prevent hashing prefix/postfix.
+        // Have hasher and name empty, meaning only postfix.  So we temparorily
+        // swap out hasher to prevent hashing postfix.
         App::StringHasherRef hasher;
         hasher.swap(Hasher);
         auto ret = setElementName(element,ss.str().c_str(),sid,overwrite);
@@ -353,75 +346,53 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
     }
 }
 
+const char *ComplexGeoData::findHashableName(char type, const char *name) const{
+    (void)type;
+    if(name[0] == '#' && std::isalpha((unsigned char)name[1])) {
+        const char *n;
+        for(n=name+2; std::isdigit((unsigned char)*n); ++n);
+        if(n!=name+2)
+            return n;
+    }
+    return 0;
+}
+
 std::string ComplexGeoData::hashElementName(
         char type, const char *name, std::vector<App::StringIDRef> &sid) 
 {
     if(!name)
         throw Base::ValueError("invalid element name");
-    if(!Hasher)
+    if(!Hasher||!name[0])
         return name;
-#ifndef HASH_REDUCE
+#if 0
     sid.push_back(Hasher->getID(name));
     std::string ret("#");
     ret += type;
     ret += std::to_string(sid.back()->value());
     return ret;
-
-    // hash reduce below can reduce hash table size, but not the overall
-    // element map size.
 #else
-    std::string ret,prefix;
-    auto pos = strchr(name,'_');
-    if(pos) {
-        prefix = std::string(name,pos-name+1);
-        name = pos+1;
-    }
-    pos = strstr(name,elementMapPrefix().c_str());
-    if(pos) {
-        prefix += pos;
-        ret = std::string(name,pos-name);
-        name = ret.c_str();
-    }
-    bool hash = true;
-    if(name[0] == '#' && (name[1]=='E' || name[1]=='F' || name[1]=='V')) {
-        const char *n;
-        for(n=name+2;*n && std::isxdigit((unsigned char)*n); ++n);
+    std::string hashed;
+    const char *n = findHashableName(type,name);
+    if(n) {
+        if(*n==0) 
+            return name;
         if(*n==':') {
-            auto hex = n;
+            auto n1 = n;
             for(++n;*n && std::isxdigit((unsigned char)*n); ++n);
-            if(*n==0 && prefix.size()) {
-                prefix += hex;
-                ret = std::string(name,hex-name);
-                name = ret.c_str();
-            }
+            if(*n==0) 
+                return name;
+            n = n1;
         }
-        if(*n==0) {
-            hash = false;
-            if(name!=ret.c_str())
-                ret = name;
-            ret[1] = type;
-            name = ret.c_str();
-        }
+        hashed = std::string(name,n-name);
+        name = n;
     }
+    sid.push_back(Hasher->getID(name));
     std::ostringstream ss;
-    ss << std::hex;
-    if(hash) {
-        sid.push_back(Hasher->getID(name));
-        ss.str("");
+    if(hashed.empty())
         ss << '#' << type << sid.back()->value();
-        ret = ss.str();
-        name = ret.c_str();
-    }
-    if(prefix.size()) {
-        sid.push_back(Hasher->getID(prefix.c_str()));
-        ss.str("");
-        ss << name << ':' << sid.back()->value();
-        ret = ss.str();
-        name = ret.c_str();
-    }
-    if(name != ret.c_str())
-        ret = name;
-    return ret;
+    else
+        ss << hashed << ':' << std::hex << sid.back()->value();
+    return ss.str();
 #endif
 }
 
@@ -516,7 +487,7 @@ void ComplexGeoData::Restore(Base::XMLReader &reader) {
                     }
                 }
             }
-            setElementName(reader.getAttribute("value"),"",reader.getAttribute("key"),0,&sids);
+            setElementName(reader.getAttribute("value"),"",reader.getAttribute("key"),&sids);
         }
         reader.readEndElement("ElementMap");
     }

@@ -97,14 +97,13 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
 PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {
     const char *element;
     const char *name = 0;
-    const char *prefix = 0;
     const char *postfix = 0;
     PyObject *pySid = Py_None;
     PyObject *overwrite = Py_False;
 
-    static char *kwlist[] = {"element", "name", "prefix", "postfix", "overwrite", "sid", NULL};
+    static char *kwlist[] = {"element", "name", "postfix", "overwrite", "sid", NULL};
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|sssOO", kwlist, 
-                &element,&name,&prefix,&postfix,&overwrite,&pySid))
+                &element,&name,&postfix,&overwrite,&pySid))
         return NULL;
     std::vector<App::StringIDRef> sids;
     if(pySid != Py_None) {
@@ -124,7 +123,7 @@ PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {
     }
     PY_TRY {
         const char *ret = getComplexGeoDataPtr()->setElementName(element,name, 
-                prefix,postfix,&sids,PyObject_IsTrue(overwrite));
+                postfix,&sids,PyObject_IsTrue(overwrite));
         return Py::new_reference_to(Py::String(ret));
     }PY_CATCH
 }

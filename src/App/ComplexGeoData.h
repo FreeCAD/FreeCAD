@@ -226,9 +226,9 @@ public:
     const char *setElementName(const char *element, const char *name, 
             const std::vector<App::StringIDRef> *sid=0, bool overwrite=false);
 
-    /** Add a sub element name mapping with unhashed prefix and/or postfix */
-    const char *setElementName(const char *element, const char *name, const char *prefix,
-            const char *postfix=0, const std::vector<App::StringIDRef> *sid=0, bool overwrite=false);
+    /** Add a sub element name mapping with unhashed postfix */
+    const char *setElementName(const char *element, const char *name, 
+            const char *postfix, const std::vector<App::StringIDRef> *sid=0, bool overwrite=false);
 
     /** Convenience method to hash the main element name
      *
@@ -255,7 +255,7 @@ public:
      
 
     /** Copy the element map from another geometry data with optional unhashed prefix and/or postfix */
-    void copyElementMap(const ComplexGeoData &data, const char *prefix=0, const char *postfix=0);
+    void copyElementMap(const ComplexGeoData &data, const char *postfix=0);
 
     /** Reset/swap the element map
      *
@@ -292,6 +292,7 @@ public:
     App::StringHasherRef Hasher;
 
 protected:
+    virtual const char *findHashableName(char type,const char *name) const;
 
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
