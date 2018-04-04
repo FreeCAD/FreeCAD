@@ -476,7 +476,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
     if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         body->addObject(obj);
     }
-    else if (PartDesignGui::isFeatureMovable(obj)) {
+    else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {
         std::vector<App::DocumentObject*> move;
         move.push_back(obj);
         std::vector<App::DocumentObject*> deps = PartDesignGui::collectMovableDependencies(move);
@@ -485,9 +485,14 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         PartDesign::Body* source = PartDesign::Body::findBodyOf(obj);
         if (source)
             source->removeObjects(move);
-        body->addObjects(move);
+        try {
+            body->addObjects(move);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     }
-    else {
+    else if (body->BaseFeature.getValue() == nullptr) {
         body->BaseFeature.setValue(obj);
     }
 
