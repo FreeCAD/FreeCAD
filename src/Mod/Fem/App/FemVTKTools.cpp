@@ -855,7 +855,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             if(nPoints != field->getSize())
-                Base::Console().Error("PropertyVectorList->getSize() = %d, not equal to mesh point number \n", field->getSize());
+                Base::Console().Error("PropertyVectorList->getSize() = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             data->SetNumberOfComponents(dim);
             data->SetNumberOfTuples(vel.size());
             data->SetName(kv.second.c_str());  // kv.first may be a better name, without space
