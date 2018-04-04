@@ -35,6 +35,9 @@
 class BRepBuilderAPI_MakeShape;
 class BRepBuilderAPI_Sewing;
 class BRepOffsetAPI_ThruSections;
+class BRepFeat_MakePrism;
+class BRepOffsetAPI_MakePipeShell;
+class BRepOffsetAPI_DraftAngle;
 class gp_Ax1;
 class gp_Ax2;
 class gp_Vec;
@@ -301,6 +304,7 @@ public:
     TopoShape &makEFilledFace(const std::vector<TopoShape> &shapes, const TopoShape &surface,
             const char *op=0, bool appendTag=true);
 
+    TopoShape &makESolid(const std::vector<TopoShape> &shapes, const char *op=0, bool appendTag=false);
     TopoShape &makESolid(const TopoShape &shape, const char *op=0, bool appendTag=false);
     TopoShape makESolid(const char *op=0, bool appendTag=false) const {
         return TopoShape(Tag,Hasher).makESolid(*this,op,appendTag);
@@ -327,6 +331,15 @@ public:
     TopoShape &makEShape(BRepOffsetAPI_ThruSections &mkShape, 
             const TopoShape &source, const char *op=0, bool appendTag=true);
     TopoShape makEShape(BRepOffsetAPI_ThruSections &mkShape, const char *op=0, bool appendTag=true) const {
+        return TopoShape(Tag,Hasher).makEShape(mkShape,*this,op,appendTag);
+    }
+
+    TopoShape &makEShape(BRepOffsetAPI_MakePipeShell &mkShape, 
+            const std::vector<TopoShape> &source, const char *op=0, bool appendTag=true);
+
+    TopoShape &makEShape(BRepFeat_MakePrism &mkShape, const TopoShape &source,
+            const char *op=0, bool appendTag=true);
+    TopoShape makEShape(BRepFeat_MakePrism &mkShape,const char *op=0, bool appendTag=true) const {
         return TopoShape(Tag,Hasher).makEShape(mkShape,*this,op,appendTag);
     }
 
@@ -458,6 +471,15 @@ public:
         return TopoShape(Tag,Hasher).makEChamfer(*this,edges,radius1,radius2,op,appendTag);
     }
 
+    TopoShape &makEDraft(const TopoShape &shape, const std::vector<TopoShape> &faces, 
+           const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+           bool retry=true, const char *op=0, bool appendTag=false);
+    TopoShape makEDraft(const std::vector<TopoShape> &faces, 
+           const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+           bool retry=true, const char *op=0, bool appendTag=false) const {
+        return TopoShape(Tag,Hasher).makEDraft(*this,faces,pullDirection,angle,neutralPlane,retry,op,appendTag);
+    }
+
     TopoShape &replacEShape(const TopoShape &shape, const std::vector<std::pair<TopoShape,TopoShape> > &s);
     TopoShape replacEShape(const std::vector<std::pair<TopoShape,TopoShape> > &s) const {
         return TopoShape(Tag,Hasher).replacEShape(*this,s);
@@ -470,6 +492,16 @@ public:
 
     TopoShape &makEGeneralFuse(const std::vector<TopoShape> &shapes, 
             std::vector<std::vector<TopoShape> > &modified, double tol=0, const char *op=0, bool appendTag=true);
+
+    TopoShape &makEFuse(const std::vector<TopoShape> &shapes, const char *op=0, bool appendTag=true, double tol=0);
+    TopoShape makEFuse(const TopoShape &shape, const char *op=0, bool appendTag=true, double tol=0) const {
+        return TopoShape(Tag,Hasher).makEFuse({*this,shape},op,appendTag,tol);
+    }
+
+    TopoShape &makECut(const std::vector<TopoShape> &shapes, const char *op=0, bool appendTag=true, double tol=0);
+    TopoShape makECut(const TopoShape &shape, const char *op=0, bool appendTag=true, double tol=0) const {
+        return TopoShape(Tag,Hasher).makECut({*this,shape},op,appendTag,tol);
+    }
 
     static const std::string &modPostfix();
     //@}
@@ -503,8 +535,10 @@ public:
     virtual std::string getElementMapVersion() const override;
     //@}
 
-    static TopAbs_ShapeEnum shapeEnum(const char *type);
+    static TopAbs_ShapeEnum shapeType(const char *type);
+    TopAbs_ShapeEnum shapeType() const;
     static const std::string &shapeName(TopAbs_ShapeEnum type);
+    const std::string &shapeName() const;
 
 public:
     /** Shape tag 

@@ -64,5 +64,9 @@
 #define TOPOP_SKETCH    "SKT"
 #define TOPOP_SKETCH_EXPORT "SKE"
 #define TOPOP_SHAPEBINDER "BND"
+#define TOPOP_THRU_SECTIONS "TRU"
+#define TOPOP_SEWING    "SEW"
+#define TOPOP_PRISM     "PSM"
+#define TOPOP_DRAFT     "DFT"
 
 #endif

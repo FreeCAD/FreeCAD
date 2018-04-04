@@ -308,7 +308,7 @@ static void initShapeNameMap() {
     }
 }
 
-TopAbs_ShapeEnum TopoShape::shapeEnum(const char *type) {
+TopAbs_ShapeEnum TopoShape::shapeType(const char *type) {
     if(type) {
         initShapeNameMap();
         for(auto &v : _ShapeNameMap) {
@@ -320,6 +320,10 @@ TopAbs_ShapeEnum TopoShape::shapeEnum(const char *type) {
     return TopAbs_SHAPE;
 }
 
+TopAbs_ShapeEnum TopoShape::shapeType() const {
+    return getShape().ShapeType();
+}
+
 const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type) {
     initShapeNameMap();
     auto it = _ShapeNameMap.find(type);
@@ -328,6 +332,10 @@ const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type) {
     Standard_Failure::Raise("invalid shape type");
     static std::string ret("");
     return ret;
+}
+
+const std::string &TopoShape::shapeName() const {
+    return shapeName(shapeType());
 }
 
 unsigned long TopoShape::countSubShapes(TopAbs_ShapeEnum type) const {
@@ -341,7 +349,7 @@ unsigned long TopoShape::countSubShapes(TopAbs_ShapeEnum type) const {
 }
 
 unsigned long TopoShape::countSubShapes(const char* Type) const {
-    return countSubShapes(shapeEnum(getElementName(Type)));
+    return countSubShapes(shapeType(getElementName(Type)));
 }
 
 bool TopoShape::hasSubShape(TopAbs_ShapeEnum type) const {
@@ -355,7 +363,7 @@ bool TopoShape::hasSubShape(const char *Type) const
     if(isNull()) return false;
     try {
         Type = getElementName(Type);
-        auto type = shapeEnum(Type);
+        auto type = shapeType(Type);
         const auto &typeName = shapeName(type);
         if(Type[typeName.size()] == 0) {
             TopExp_Explorer xp(_Shape,type);
@@ -365,7 +373,7 @@ bool TopoShape::hasSubShape(const char *Type) const
         if(index<=0) 
             return false;
         TopTools_IndexedMapOfShape anIndices;
-        TopExp::MapShapes(this->_Shape, shapeEnum(Type), anIndices);
+        TopExp::MapShapes(this->_Shape, shapeType(Type), anIndices);
         return index<=anIndices.Extent();
     }catch(...){}
     return false;

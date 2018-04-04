@@ -156,6 +156,7 @@
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis.hxx>
 # include <BRepFill.hxx>
+# include <BRepOffsetAPI_DraftAngle.hxx>
 #endif
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
@@ -180,7 +181,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 4
+#define TOPOP_VERSION 5
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -351,7 +352,7 @@ std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const 
 
 TopoShape TopoShape::getSubTopoShape(const char *Type) const {
     Type = getElementName(Type);
-    auto type = shapeEnum(Type);
+    auto type = shapeType(Type);
     int idx = std::atoi(Type+shapeName(type).size());
     return getSubTopoShape(type,idx);
 }
@@ -370,6 +371,8 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx) const {
     TopoShape ret(Tag,Hasher,anIndices.FindKey(idx));
     if(type == TopAbs_VERTEX || type == TopAbs_EDGE || type == TopAbs_FACE)
         ret.mapSubElement(type,*this,anIndices);
+    else if(anIndices.Extent()==1) 
+        ret.resetElementMap(_ElementMap);
     else
         ret.mapSubElement(TopAbs_FACE,*this);
     return ret;
@@ -811,12 +814,14 @@ struct MapperThruSections: MapperMaker {
 TopoShape &TopoShape::makEShape(BRepOffsetAPI_ThruSections &mk, const TopoShape &source,
         const char *op, bool appendTag)
 {
+    if(!op) op = TOPOP_THRU_SECTIONS;
     return makEShape(mk,std::vector<TopoShape>(1,source),op,appendTag);
 }
 
 TopoShape &TopoShape::makEShape(BRepOffsetAPI_ThruSections &mk, const std::vector<TopoShape> &sources,
         const char *op, bool appendTag)
 {
+    if(!op) op = TOPOP_THRU_SECTIONS;
     return makESHAPE(mk.Shape(),MapperThruSections(mk,sources),sources,op,appendTag);
 }
 
@@ -945,12 +950,14 @@ struct MapperSewing: Part::TopoShape::Mapper {
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_Sewing &mk, const std::vector<TopoShape> &shapes,
         const char *op, bool appendTag)
 {
+    if(!op) op = TOPOP_SEWING;
     return makESHAPE(mk.SewedShape(),MapperSewing(mk),shapes,op,appendTag);
 }
 
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_Sewing &mkShape,
             const TopoShape &source, const char *op, bool appendTag)
 {
+    if(!op) op = TOPOP_SEWING;
     return makEShape(mkShape,std::vector<TopoShape>(1,source),op,appendTag);
 }
 
@@ -2150,6 +2157,10 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
     return makEShape(maker,_shapes,op,appendTag);
 }
 
+TopoShape &TopoShape::makESolid(const std::vector<TopoShape> &shapes, const char *op, bool appendTag) {
+    return makESolid(TopoShape().makECompound(shapes,appendTag),op,appendTag);
+}
+
 TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op, bool appendTag) {
     if(!op && appendTag) op = TOPOP_SOLID;
     _Shape.Nullify();
@@ -2334,4 +2345,71 @@ TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
         mapSubElementsTo(TopAbs_FACE,mod);
     }
     return *this;
+}
+
+TopoShape &TopoShape::makEFuse(const std::vector<TopoShape> &shapes, 
+        const char *op, bool appendTag, double tol)
+{
+    return makEShape(TOPOP_FUSE,shapes,op,appendTag,tol);
+}
+
+TopoShape &TopoShape::makECut(const std::vector<TopoShape> &shapes, 
+        const char *op, bool appendTag, double tol)
+{
+    return makEShape(TOPOP_CUT,shapes,op,appendTag,tol);
+}
+
+
+TopoShape &TopoShape::makEShape(BRepOffsetAPI_MakePipeShell &mkShape, 
+        const std::vector<TopoShape> &source, const char *op, bool appendTag)
+{
+    if(!op) op = TOPOP_PIPE_SHELL;
+    return makEShape(mkShape,source,op,appendTag);
+}
+
+TopoShape &TopoShape::makEShape(BRepFeat_MakePrism &mkShape, 
+        const TopoShape &source, const char *op, bool appendTag) 
+{
+    if(!op) op = TOPOP_PRISM;
+    return makEShape(mkShape,source,op,appendTag);
+}
+
+TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoShape> &_faces,
+        const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+        bool retry, const char *op, bool appendTag)
+{
+    if(!op) op = TOPOP_DRAFT;
+
+    resetElementMap();
+    _Shape.Nullify();
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+
+    std::vector<TopoShape> faces(_faces);
+    bool done = true;
+    BRepOffsetAPI_DraftAngle mkDraft;
+    do {
+        if(faces.empty())
+            HANDLE_NULL_INPUT;
+
+        mkDraft.Init(shape.getShape());
+        for(auto it=faces.begin();it!=faces.end();++it) {
+            // TODO: What is the flag for?
+            mkDraft.Add(TopoDS::Face(it->getShape()), pullDirection, angle, neutralPlane);
+            if (!mkDraft.AddDone()) {
+                // Note: the function ProblematicShape returns the face on which the error occurred
+                // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
+                //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                //       The only solution is to discard mkDraft and start over without the current face
+                // mkDraft.Remove(face);
+                FC_ERR("Failed to add some face for drafting, skip");
+                done = false;
+                faces.erase(it);
+                break;
+            }
+        }
+    }while(retry && !done);
+
+    mkDraft.Build();
+    return makEShape(mkDraft,shape,op,appendTag);
 }
