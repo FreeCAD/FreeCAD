@@ -2037,14 +2037,15 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             if(name != element.c_str()) 
                 continue;
             std::vector<App::StringIDRef> sids;
-            std::set<std::string> names;
+            std::map<std::string,std::string> names;
             for(TopExp_Explorer xp(info.shapeMap(i),prev.type);xp.More();xp.Next()) {
                 int j = prev.shapeMap.FindIndex(xp.Current());
                 assert(j);
                 ss.str("");
                 ss << prev.shapetype << j;
                 std::string element = ss.str();
-                name = getElementName(element.c_str(),true,&sids);
+                std::vector<App::StringIDRef> sid;
+                name = getElementName(element.c_str(),true,&sid);
                 if(name == element.c_str()) {
                     // only assign name if all lower elements are named
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -2052,26 +2053,28 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     names.clear();
                     break;
                 }
-                bool res;
-                if(boost::starts_with(name,_op))
-                    res = names.insert(name+_op.size()).second;
-                else
-                    res = names.insert(name).second;
-                if(!res) 
-                    FC_WARN("lower element " << element << " has duplicated name " 
-                            << name << " for " << info.shapetype << i);
+                auto res = boost::starts_with(name,_op)?
+                            names.emplace(name+_op.size(),element):names.emplace(name,element);
+                if(res.second)
+                    sids.insert(sids.end(),sid.begin(),sid.end());
+                else if(element!=res.first->second) {
+                    // The seam edge will appear twice, which is normal
+                    FC_WARN("lower element " << element << " and " <<
+                            res.first->second << " has duplicated name " << name 
+                            << " for " << info.shapetype << i );
+                }
             }
             if(names.empty())
                 continue;
             ss.str("");
             ss << '(';
             bool first = true;
-            for(auto &name : names) {
+            for(auto &v : names) {
                 if(first)
                     first = false;
                 else
                     ss << ',';
-                ss << name;
+                ss << v.first;
             }
             ss << ')';
             newName = ss.str();
