@@ -514,6 +514,26 @@ const std::vector<std::string>& PropertyLinkSub::getSubValues(void) const
     return _cSubList;
 }
 
+std::vector<std::string> PropertyLinkSub::getSubValues(bool newStyle) const {
+    std::vector<std::string> ret;
+    ret.reserve(_cSubList.size());
+    int i=-1;
+    for(auto &shadow : _ShadowSubList) {
+        ++i;
+        if(newStyle) {
+            if(shadow.second.size()) {
+                ret.push_back(shadow.second);
+                continue;
+            }
+        }else if(shadow.first.size()) {
+            ret.push_back(shadow.first);
+            continue;
+        }
+        ret.push_back(_cSubList[i]);
+    }
+    return ret;
+}
+
 std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* starter) const
 {
     std::vector<std::string> temp;

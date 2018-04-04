@@ -278,6 +278,8 @@ public:
         return _ShadowSubList;
     }
 
+    std::vector<std::string> getSubValues(bool newStyle) const;
+
     /// return the list of sub elements starts with a special string 
     std::vector<std::string> getSubValuesStartsWith(const char*) const;
 
