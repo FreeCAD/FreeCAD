@@ -135,6 +135,9 @@ section "FreeCAD (Required)"
 sectionEnd
 
 section "Add to PYTHONPATH" PythonPathSection
+	# Access the right location for 64-bit applications
+	SetRegView 64
+
 	# Set PYTHONPATH for FreeCAD
 	WriteRegStr HKLM "Software\Python\PythonCore\2.7\PythonPath\${FULLNAME}" "" "$INSTDIR\bin"
 sectionEnd
@@ -185,6 +188,7 @@ section "Uninstall"
 	RMDir /r "$INSTDIR\lib"
 	RMDir /r "$INSTDIR\doc"
 	RMDir /r "$INSTDIR\data"
+	RMDir /r "$INSTDIR\Ext"
 	RMDir /r "$INSTDIR\Mod"
 
 	# Always delete uninstaller as the last action
