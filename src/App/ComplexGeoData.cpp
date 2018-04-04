@@ -184,7 +184,7 @@ const char *ComplexGeoData::isMappedElement(const char *name) {
 
 std::string ComplexGeoData::getElementMapVersion() const {
     std::ostringstream ss;
-    ss << 2;
+    ss << 3;
     if(Hasher) 
         ss << '.' << (Hasher->getThreshold()>0?Hasher->getThreshold():0);
     return ss.str();
@@ -446,19 +446,28 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
         name = _name.c_str();
     }else if(!sid)
         sid = &_sid;
-    auto ret = _ElementMap->left.insert(ElementMap::left_map::value_type(name,element,*sid));
-    if(!ret.second && ret.first->second!=element) {
-        if(overwrite) {
-            _ElementMap->left.erase(ret.first);
-            ret = _ElementMap->left.insert(ElementMap::left_map::value_type(name,element,*sid));
-        }else {
-            std::ostringstream ss;
-            ss << "duplicate element mapping '" << name << "->" << element << '/' << ret.first->second;
-            throw Base::ValueError(ss.str().c_str());
+    int retry=1;
+    mapped = name;
+    std::ostringstream ss;
+    std::string retry_name;
+    while(1) {
+        auto ret = _ElementMap->left.insert(ElementMap::left_map::value_type(mapped,element,*sid));
+        if(ret.second || ret.first->second==element) {
+            FC_TRACE(element << " -> " << name);
+            return ret.first->first.c_str();
         }
+        if(overwrite) {
+            overwrite = false;
+            _ElementMap->left.erase(ret.first);
+            continue;
+        }
+        ss.str("");
+        ss << name << elementMapPrefix() << 'D' << (retry++);
+        retry_name = ss.str();
+        mapped = retry_name.c_str();
+        FC_WARN("duplicate element mapping '" << name << " -> " << mapped << ' ' 
+                << element << '/' << ret.first->second);
     }
-    FC_TRACE(element << " -> " << name);
-    return ret.first->first.c_str();
 }
 
 void ComplexGeoData::Save(Base::Writer &writer) const {
