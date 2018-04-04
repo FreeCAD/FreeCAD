@@ -232,26 +232,24 @@ void SubShapeBinder::update() {
     } 
     
     if(!fused && MakeFace.getValue() && 
-       !TopExp_Explorer(result.getShape(), TopAbs_FACE).More() &&
-       TopExp_Explorer(result.getShape(), TopAbs_EDGE).More())
+       !result.hasSubShape(TopAbs_FACE) &&
+       result.hasSubShape(TopAbs_EDGE))
     {
-        result = Part::TopoShape(getID()).makEWires(result);
-        Part::TopoShape face(getID(),getDocument()->getStringHasher());
+        result = result.makEWires();
         try {
-            result = Part::TopoShape(getID(),getDocument()->getStringHasher()).makEFace(
-                        result, TOPOP_SHAPEBINDER "_F");
+            result = result.makEFace(TOPOP_SHAPEBINDER "_F");
         }catch(...){}
     }
 
     // Remove single element naming, so that other user of SubShapeBinder can
     // identify the element using SubShapeBinder's object id.
 
-    auto count = result.countSubShapes("Face");
+    auto count = result.countSubShapes(TopAbs_FACE);
     if(count == 1)
         result.setElementName("Face1",0);
-    else if(count==0 && (count=result.countSubShapes("Edge"))==1)
+    else if(count==0 && (count=result.countSubShapes(TopAbs_EDGE))==1)
         result.setElementName("Edge1",0);
-    else if(count==0 && (count=result.countSubShapes("Vertex"))==1)
+    else if(count==0 && (count=result.countSubShapes(TopAbs_VERTEX))==1)
         result.setElementName("Vertex1",0);
     result.setTransform(Placement.getValue().toMatrix());
     Shape.setValue(result);

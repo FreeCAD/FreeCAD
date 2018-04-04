@@ -39,6 +39,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 using namespace PartDesign;
 
@@ -68,27 +69,21 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     // Get the operation type
     std::string type = Type.getValueAsString();
    
-    // Check the parameters
-    const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
-
-    if (!baseFeature && type == "Cut") {
-        return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
-    }
-
     std::vector<App::DocumentObject*> tools = Group.getValues();
     if (tools.empty())
         return App::DocumentObject::StdReturn;
 
     // Get the base shape to operate on
-    Part::TopoShape baseTopShape;
-    if(baseFeature)
-        baseTopShape = baseFeature->Shape.getShape();
-    else {
+    TopoShape baseTopShape;
+    try {
+        baseTopShape = getBaseShape();
+    } catch (const Base::Exception&) {
+        if (type == "Cut")
+            return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
+    }
+    if(baseTopShape.isNull()) {
         auto feature = tools.back();
-        if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
-        
-        baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        baseTopShape = getTopoShape(feature);
         tools.pop_back();
     }
         
@@ -101,48 +96,39 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     if(!baseBody)
          return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
 
-    TopoDS_Shape result = baseTopShape.getShape();
-
+    TopoShape result(getID(),getDocument()->getStringHasher());
     for (auto tool : tools)
     {
-        if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
-
-        TopoDS_Shape shape = static_cast<Part::Feature*>(tool)->Shape.getValue();
-        TopoDS_Shape boolOp;
-
+        auto shape = getTopoShape(tool);
         // Must not pass null shapes to the boolean operations
-        if (result.IsNull())
+        if (baseTopShape.isNull())
             return new App::DocumentObjectExecReturn("Base shape is null");
-
-        if (shape.IsNull())
+        if (shape.isNull())
             return new App::DocumentObjectExecReturn("Tool shape is null");
 
-        if (type == "Fuse") {
-            BRepAlgoAPI_Fuse mkFuse(result, shape);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Fusion of tools failed");
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(mkFuse.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-        } else if (type == "Cut") {
-            BRepAlgoAPI_Cut mkCut(result, shape);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Cut out failed");
-            boolOp = mkCut.Shape();
-        } else if (type == "Common") {
-            BRepAlgoAPI_Common mkCommon(result, shape);
-            if (!mkCommon.IsDone())
-                return new App::DocumentObjectExecReturn("Common operation failed");
-            boolOp = mkCommon.Shape();
-        }
+        const char *op = 0;
+        if (type == "Fuse")
+            op = TOPOP_FUSE;
+        else if(type == "Cut")
+            op = TOPOP_CUT;
+        else if(type == "Common")
+            op = TOPOP_COMMON;
+        else
+            continue;
 
-        result = boolOp; // Use result of this operation for fuse/cut of next body
+        try {
+            result.makEShape(op,{baseTopShape,shape});
+        }catch (Standard_Failure&) {
+            return new App::DocumentObjectExecReturn((type + " of tools failed").c_str());
+        }
+        result = this->getSolid(result);
+            // lets check if the result is a solid
+        if (result.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+        baseTopShape = result; // Use result of this operation for fuse/cut of next body
     }
 
-    this->Shape.setValue(getSolid(result));
+    this->Shape.setValue(result);
     return App::DocumentObject::StdReturn;
 }
 

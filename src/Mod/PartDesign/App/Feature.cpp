@@ -45,6 +45,7 @@
 #include "Mod/Part/App/DatumFeature.h"
 
 #include <Base/Console.h>
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 
 namespace PartDesign {
@@ -66,17 +67,16 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
+TopoShape Feature::_getSolid(const char *file, int line, const TopoShape& shape)
 {
-    if (shape.IsNull())
-        Standard_Failure::Raise("Shape is null");
-    TopExp_Explorer xp;
-    xp.Init(shape,TopAbs_SOLID);
-    if (xp.More()) {
-        return xp.Current();
-    }
-
-    return TopoDS_Shape();
+    if (shape.isNull())
+        Standard_Failure::Raise("Shape is null");
+    int count = shape.countSubShapes(TopAbs_SOLID);
+    if(count>1) 
+        _FC_WARN(file,line,"found more than one solid");
+    if(count)
+        return shape.getSubTopoShape(TopAbs_SOLID,1);
+    return TopoShape();
 }
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
@@ -118,37 +118,22 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
     return BaseObject;
 }
 
-const TopoDS_Shape& Feature::getBaseShape() const {
+TopoShape Feature::getBaseShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
     if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
-        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
+        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
 
-    const TopoDS_Shape& result = BaseObject->Shape.getValue();
-    if (result.IsNull())
+    auto shape = getTopoShape(BaseObject);
+    if(shape.isNull())
         throw Base::Exception("Base feature's shape is invalid");
-    TopExp_Explorer xp (result, TopAbs_SOLID);
-    if (!xp.More())
+    if(!shape.hasSubShape(TopAbs_SOLID))
         throw Base::Exception("Base feature's shape is not a solid");
 
-    return result;
-}
-
-const Part::TopoShape Feature::getBaseTopoShape() const {
-    const Part::Feature* BaseObject = getBaseObject();
-
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
-        throw Base::ValueError("Base shape of shape binder cannot be used");
-    }
-
-    const Part::TopoShape& result = BaseObject->Shape.getShape();
-    if (result.getShape().IsNull())
-        throw Base::Exception("Base feature's TopoShape is invalid");
-
-    return result;
+    return shape;
 }
 
 PyObject* Feature::getPyObject()

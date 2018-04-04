@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <App/Document.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureChamfer.h"
@@ -70,56 +71,37 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 {
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
     // The only difference is that the Base property also stores the edges that are to be chamfered
-    Part::TopoShape TopShape;
+    Part::TopoShape baseShape;
     try {
-        TopShape = getBaseShape();
+        baseShape = getBaseShape();
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+    baseShape.setTransform(Base::Matrix4D());
 
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    getContiniusEdges(TopShape, SubNames);
+    auto edges = getContiniusEdges(baseShape);
 
-    if (SubNames.size() == 0)
+    if (edges.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
 
     double size = Size.getValue();
 
     this->positionByBaseFeature();
-    // create an untransformed copy of the basefeature shape
-    Part::TopoShape baseShape(TopShape);
-    baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeChamfer mkChamfer(baseShape.getShape());
-
-        TopTools_IndexedMapOfShape mapOfEdges;
-        TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
-        TopExp::MapShapesAndAncestors(baseShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-        TopExp::MapShapes(baseShape.getShape(), TopAbs_EDGE, mapOfEdges);
-
-        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
-            const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-            mkChamfer.Add(size, edge, face);
-        }
-
-        mkChamfer.Build();
-        if (!mkChamfer.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create chamfer");
-
-        TopoDS_Shape shape = mkChamfer.Shape();
-        if (shape.IsNull())
+        TopoShape shape(getID(),getDocument()->getStringHasher());
+        shape.makEChamfer(baseShape,edges,size,size);
+        if (shape.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(shape, Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
-            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape);
+            aSFT.LimitTolerance(shape.getShape(), Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
+            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape.getShape());
             aSfs->Perform();
-            shape = aSfs->Shape();
-            if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+            shape.setShape(aSfs->Shape(),false);
+            if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }

@@ -98,7 +98,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn("Second length of pad too small");
 
     Part::Feature* obj = 0;
-    TopoDS_Shape sketchshape;
+    TopoShape sketchshape;
     try {
         obj = getVerifiedObject();
         sketchshape = getVerifiedFace();
@@ -107,11 +107,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     }
 
     // if the Base property has a valid shape, fuse the prism into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
-        base = TopoDS_Shape();
     }
 
 
@@ -122,17 +121,18 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     try {
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        auto invTrsf = invObjLoc.Transformation();
 
-        base.Move(invObjLoc);
+        base = base.makETransform(invTrsf);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
-        dir.Transform(invObjLoc.Transformation());
+        dir.Transform(invTrsf);
 
-        if (sketchshape.IsNull())
+        if (sketchshape.isNull())
             return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
-        sketchshape.Move(invObjLoc);
+        sketchshape = sketchshape.makETransform(invTrsf);
 
-        TopoDS_Shape prism;
+        TopoShape prism(getID(),getDocument()->getStringHasher());
         std::string method(Type.getValueAsString());                
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
               // Note: This will return an unlimited planar face if support is a datum plane
@@ -148,10 +148,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
+            getUpToFace(upToFace, TopoDS::Face(base.getShape()), supportface, 
+                    TopoDS::Face(sketchshape.getShape()), method, dir, Offset.getValue());
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
-            if (base.IsNull()) {
+            if (base.isNull()) {
                 // Workaround because BRepFeat_MakePrism requires the base face located on a solid to be able to extrude up to a face
                 // Handle special case of extruding up to a face or plane parallel to the base face
                 BRepAdaptor_Surface adapt(upToFace);
@@ -175,7 +176,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 // Direction (the distance is always positive)
                 gp_Pnt prjP = prj.NearestPoint();
                 dir = gp_Dir(gp_Vec(basePoint, prjP));
-                dir.Transform(invObjLoc.Transformation());
+                dir.Transform(invTrsf);
 
                 generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
             } else {
@@ -192,38 +193,39 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 if (!Ex.More())
                     supportface = TopoDS_Face();
                 BRepFeat_MakePrism PrismMaker;
-                PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
+                PrismMaker.Init(base.getShape(), sketchshape.getShape(), supportface, dir, 2, 1);
                 PrismMaker.Perform(upToFace);
 
                 if (!PrismMaker.IsDone())
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
-                prism = PrismMaker.Shape();
+                prism.makEShape(PrismMaker,{base,sketchshape});
             }
         } else {
             generatePrism(prism, sketchshape, method, dir, L, L2,
                           Midplane.getValue(), Reversed.getValue());
         }
 
-        if (prism.IsNull())
+        if (prism.isNull())
             return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
 
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);
 
-        if (!base.IsNull()) {
+        if (!base.isNull()) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
 //             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Fuse mkFuse(base, prism);
-            // Let's check if the fusion has been successful
-            if (!mkFuse.IsDone())
+            TopoShape result(getID(),getDocument()->getStringHasher());
+            try {
+                result.makEFuse({base,prism});
+            }catch(Standard_Failure &){
                 return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
-            TopoDS_Shape result = mkFuse.Shape();
+            }
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape solRes = this->getSolid(result);
+            auto solRes = this->getSolid(result);
             // lets check if the result is a solid
-            if (solRes.IsNull())
+            if (solRes.isNull())
                 return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));

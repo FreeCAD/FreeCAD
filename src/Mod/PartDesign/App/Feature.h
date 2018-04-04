@@ -35,6 +35,8 @@ class gp_Pln;
 namespace PartDesign
 {
 
+typedef Part::TopoShape TopoShape;
+
 class Body;
 
  /** PartDesign feature
@@ -67,9 +69,7 @@ public:
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
     /// Returns the BaseFeature property's shape (if any)
-    virtual const TopoDS_Shape& getBaseShape() const;
-    /// Returns the BaseFeature property's TopoShape (if any)
-    const Part::TopoShape getBaseTopoShape() const;
+    virtual TopoShape getBaseShape() const;
 
     virtual PyObject* getPyObject(void);
 
@@ -82,7 +82,8 @@ protected:
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);    
+    static TopoShape _getSolid(const char *file, int line, const TopoShape&);    
+#define getSolid(_s) _getSolid(__FILE__,__LINE__,_s)
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    

@@ -70,36 +70,30 @@ FeaturePrimitive::FeaturePrimitive()
     Part::AttachExtension::initExtension(this);
 }
 
-TopoDS_Shape FeaturePrimitive::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+TopoShape FeaturePrimitive::refineShapeIfActive(const TopoShape& oldShape) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    if (hGrp->GetBool("RefineModel", false)) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            return resShape;
-        }
-        catch (Standard_Failure) {
-            return oldShape;
-        }
-    }
+    if (hGrp->GetBool("RefineModel", false))
+        return oldShape.makERefine();
 
     return oldShape;
 }
 
-App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitiveShape)
+App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitive)
 {
     try {
         //transform the primitive in the correct coordinance
         FeatureAddSub::execute();
+
+        TopoShape primitiveShape(getID());
+        primitiveShape.setShape(primitive);
         
         //if we have no base we just add the standard primitive shape
-        TopoDS_Shape base;
+        TopoShape base;
         try{
              //if we have a base shape we need to make sure that it does not get our transformation to
-             BRepBuilderAPI_Transform trsf(getBaseShape(), getLocation().Transformation().Inverted(), true);
-             base = trsf.Shape();
+            base = getBaseShape().makETransform(getLocation().Inverted().Transformation());
         }
         catch(const Base::Exception&) {
 
@@ -114,15 +108,18 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
              return  App::DocumentObject::StdReturn;
         }
          
+        TopoShape boolOp(getID(),getDocument()->getStringHasher());
+
         if(getAddSubType() == FeatureAddSub::Additive) {
-            
-            BRepAlgoAPI_Fuse mkFuse(base, primitiveShape);
-            if (!mkFuse.IsDone())
+            try {
+                boolOp.makEFuse({base,primitiveShape});
+            }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Adding the primitive failed");
+            }
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+            boolOp = this->getSolid(boolOp);
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
@@ -130,14 +127,15 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             AddSubShape.setValue(primitiveShape);
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
-            
-            BRepAlgoAPI_Cut mkCut(base, primitiveShape);
-            if (!mkCut.IsDone())
+            try {
+                boolOp.makECut({base,primitiveShape});
+            }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
+            }
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+            boolOp = this->getSolid(boolOp);
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);

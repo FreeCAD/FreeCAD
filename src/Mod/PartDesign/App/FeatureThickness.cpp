@@ -68,11 +68,10 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopTools_ListOfShape closingFaces;
-    const std::vector<std::string>& subStrings = Base.getSubValues();
+    std::vector<TopoShape> closingFaces;
+    const std::vector<std::string>& subStrings = Base.getSubValues(true);
     for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
-        TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(it->c_str()));
-        closingFaces.Append(face);
+        closingFaces.push_back(TopShape.getSubShape(it->c_str()));
     }
 
     bool reversed = Reversed.getValue();
@@ -84,9 +83,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     if(join == 1)
         join = 2;
 
-    if (fabs(thickness) > 2*tol)
-        this->Shape.setValue(getSolid(TopShape.makeThickSolid(closingFaces, thickness, tol, false, false, mode, join)));
-    else
-        this->Shape.setValue(getSolid(TopShape.getShape()));
+    this->Shape.setValue(getSolid(TopShape.makEThickSolid(
+                    closingFaces, thickness, tol, false, false, mode, join)));
     return App::DocumentObject::StdReturn;
 }

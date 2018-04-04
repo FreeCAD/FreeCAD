@@ -39,6 +39,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <App/Document.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureFillet.h"
@@ -67,16 +68,16 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute(void)
 {
-    Part::TopoShape TopShape;
+    Part::TopoShape baseShape;
     try {
-        TopShape = getBaseShape();
+        baseShape = getBaseShape();
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    getContiniusEdges(TopShape, SubNames);
+    baseShape.setTransform(Base::Matrix4D());
 
-    if (SubNames.size() == 0)
+    auto edges = getContiniusEdges(baseShape);
+    if (edges.size() == 0)
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
     
     double radius = Radius.getValue();
@@ -86,34 +87,21 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
     this->positionByBaseFeature();
 
-    // create an untransformed copy of the base shape
-    Part::TopoShape baseShape(TopShape);
-    baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
-
-        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
-            mkFillet.Add(radius, edge);
-        }
-
-        mkFillet.Build();
-        if (!mkFillet.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create fillet");
-
-        TopoDS_Shape shape = mkFillet.Shape();
-        if (shape.IsNull())
+        TopoShape shape(getID(),getDocument()->getStringHasher());
+        shape.makEFillet(baseShape,edges,radius,radius);
+        if (shape.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(shape, Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
-            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape);
+            aSFT.LimitTolerance(shape.getShape(), Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
+            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape.getShape());
             aSfs->Perform();
-            shape = aSfs->Shape();
-            if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+            shape.setShape(aSfs->Shape(),false);
+            if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }

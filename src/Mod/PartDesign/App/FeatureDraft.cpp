@@ -50,6 +50,7 @@
 #include <App/OriginFeature.h>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <App/Document.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
@@ -91,17 +92,17 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 {
     // Get parameters
     // Base shape
-    Part::TopoShape TopShape;
+    Part::TopoShape baseShape;
     try {
-        TopShape = getBaseShape();
+        baseShape = getBaseShape();
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+    baseShape.setTransform(Base::Matrix4D());
 
     // Faces where draft should be applied
-    // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug, see below
-    std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
-    if (SubVals.size() == 0)
+    auto faces = getFaces(baseShape);
+    if (faces.size() == 0)
         return new App::DocumentObjectExecReturn("No faces specified");
 
     // Draft angle
@@ -116,7 +117,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                     Base::Vector3d d = line->getDirection();
                     pullDirection = gp_Dir(d.x, d.y, d.z);
         } else if (refDirection->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            std::vector<std::string> subStrings = PullDirection.getSubValues();
+            std::vector<std::string> subStrings = PullDirection.getSubValues(true);
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::Exception("No pull direction reference specified");
 
@@ -150,7 +151,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     if (refPlane == NULL) {
         // Try to guess a neutral plane from the first selected face
         // Get edges of first selected face
-        TopoDS_Shape face = TopShape.getSubShape(SubVals[0].c_str());
+        TopoDS_Shape face = TopoDS::Face(faces[0].getShape());
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(face, TopAbs_EDGE, mapOfEdges);
         bool found = false;
@@ -201,7 +202,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         } else if (refPlane->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
         } else if (refPlane->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            std::vector<std::string> subStrings = NeutralPlane.getSubValues();
+            std::vector<std::string> subStrings = NeutralPlane.getSubValues(true);
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::Exception("No neutral plane reference specified");
 
@@ -256,11 +257,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         angle *= -1.0;
 
     this->positionByBaseFeature();
-    // create an untransformed copy of the base shape
-    Part::TopoShape baseShape(TopShape);
-    baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepOffsetAPI_DraftAngle mkDraft;
         // Note:
         // LocOpe_SplitDrafts can split a face with a wire and apply draft to both parts
         //       Not clear though whether the face must have free boundaries
@@ -268,40 +265,14 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         //       wire, though.
         // BRepFeat_MakeDPrism requires a support for the operation but will probably support multiple
         //       wires in the sketch
-
-        bool success;
-
-        do {
-            success = true;
-            mkDraft.Init(baseShape.getShape());
-
-            for (std::vector<std::string>::iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
-                TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(it->c_str()));
-                // TODO: What is the flag for?
-                mkDraft.Add(face, pullDirection, angle, neutralPlane);
-                if (!mkDraft.AddDone()) {
-                    // Note: the function ProblematicShape returns the face on which the error occurred
-                    // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
-                    //       The only solution is to discard mkDraft and start over without the current face
-                    // mkDraft.Remove(face);
-                    Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());
-                    success = false;
-                    SubVals.erase(it);
-                    break;
-                }
-            }
-        }
-        while (!success);
-
-        mkDraft.Build();
-        if (!mkDraft.IsDone())
+        TopoShape shape(getID(),getDocument()->getStringHasher());
+        try {
+            shape.makEDraft(baseShape,faces,pullDirection,angle,neutralPlane);
+        }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Failed to create draft");
-
-        TopoDS_Shape shape = mkDraft.Shape();
-        if (shape.IsNull())
+        }
+        if (shape.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
-
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }

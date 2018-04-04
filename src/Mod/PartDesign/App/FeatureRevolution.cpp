@@ -41,6 +41,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <App/Document.h>
 
 #include "FeatureRevolution.h"
 
@@ -87,7 +88,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    TopoDS_Shape sketchshape;
+    TopoShape sketchshape;
     try {
         sketchshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
@@ -95,12 +96,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
 
     // if the Base property has a valid shape, fuse the AddShape into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        base = TopoDS_Shape();
     }
 
     // update Axis from ReferenceAxis
@@ -117,55 +117,52 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
-        if (sketchshape.IsNull())
+        if (sketchshape.isNull())
             return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
         // Rotate the face by half the angle to get Revolution symmetric to sketch plane
         if (Midplane.getValue()) {
             gp_Trsf mov;
             mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
-            TopLoc_Location loc(mov);
-            sketchshape.Move(loc);
+            sketchshape = sketchshape.makETransform(mov);
         }
 
         this->positionByPrevious();
-        TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        pnt.Transform(invObjLoc.Transformation());
-        dir.Transform(invObjLoc.Transformation());
-        base.Move(invObjLoc);
-        sketchshape.Move(invObjLoc);
+        auto invObjLoc = this->getLocation().Inverted().Transformation();
+        pnt.Transform(invObjLoc);
+        dir.Transform(invObjLoc);
+        base = base.makETransform(invObjLoc);
+        sketchshape = sketchshape.makETransform(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
         TopExp_Explorer xp;
-        xp.Init(sketchshape, TopAbs_FACE);
+        xp.Init(sketchshape.getShape(), TopAbs_FACE);
         for (;xp.More(); xp.Next()) {
             if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
                 return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
         }        
 
         // revolve the face to a solid
-        BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
+        TopoShape result(getID(),getDocument()->getStringHasher());
+        try {
+            result.makERevolve(sketchshape, gp_Ax1(pnt, dir), angle);
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
+        }
 
-        if (RevolMaker.IsDone()) {
-            TopoDS_Shape result = RevolMaker.Shape();
-            result = refineShapeIfActive(result);
-            // set the additive shape property for later usage in e.g. pattern
-            this->AddSubShape.setValue(result);            
+        // set the additive shape property for later usage in e.g. pattern
+        this->AddSubShape.setValue(result);            
 
-            if (!base.IsNull()) {
+        if (!base.isNull()) {
+            try {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(base, result);
-                // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone())
-                    throw Base::Exception("Fusion with base feature failed");
-                result = mkFuse.Shape();
-                result = refineShapeIfActive(result);
+                result = result.makEFuse({base,result});
+            }catch(Standard_Failure &) {
+                throw Base::Exception("Fusion with base feature failed");
             }
-
+            result = refineShapeIfActive(result);
             this->Shape.setValue(getSolid(result));
         }
-        else
-            return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
 
         return App::DocumentObject::StdReturn;
     }

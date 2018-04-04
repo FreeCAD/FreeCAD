@@ -93,10 +93,12 @@ public:
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
-    TopoDS_Shape getVerifiedFace(bool silent = false) const;
+    TopoShape getVerifiedFace(bool silent = false) const;
     
     /// Returns the wires the sketch is composed of
-    std::vector<TopoDS_Wire> getProfileWires() const;
+    std::vector<TopoShape> getProfileWires() const;
+
+    TopoShape getProfileShape() const;
     
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
@@ -113,7 +115,7 @@ public:
     
 protected:
     void remapSupportShape(const TopoDS_Shape&);
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
+    TopoShape refineShapeIfActive(const TopoShape&) const;
 
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
@@ -131,8 +133,8 @@ protected:
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
       */
-    static void generatePrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
+    static void generatePrism(TopoShape& prism,
+                              TopoShape sketchshape,
                               const std::string& method,
                               const gp_Dir& direction,
                               const double L,

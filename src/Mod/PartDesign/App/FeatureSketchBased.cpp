@@ -82,6 +82,8 @@
 #include "DatumPlane.h"
 #include "DatumLine.h"
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true);
+
 using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::ProfileBased, PartDesign::FeatureAddSub)
@@ -179,91 +181,58 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
     return static_cast<Part::Feature*>(result);
 }
 
-TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
-
-    App::DocumentObject* result = Profile.getValue();
-    const char* err = nullptr;
-
-    if (!result) {
-        err = "No profile linked";
-    } else {
-        if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            
-            auto wires = getProfileWires();
-            return Part::FaceMakerCheese::makeFace(wires);
+TopoShape ProfileBased::getVerifiedFace(bool silent) const {
+    try {
+        auto shape = getTopoShape(Profile.getValue());
+        if(!shape.hasSubShape(TopAbs_FACE)) {
+            if(!shape.hasSubShape(TopAbs_WIRE))
+                shape = shape.makEWires();
+            if(shape.hasSubShape(TopAbs_WIRE))
+                return shape.makEFace();
         }
-        else if(result->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            if(Profile.getSubValues().empty())
-                err = "Linked object has no subshape specified";
-            else {
-                
-                const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
-                TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
-                if(sub.ShapeType() == TopAbs_FACE) 
-                    return TopoDS::Face(sub);
-                else if(sub.ShapeType() == TopAbs_WIRE) {
-                
-                    auto wire = TopoDS::Wire(sub);
-                    if(!wire.Closed())
-                        err = "Linked wire is not closed";
-                    else {
-                        BRepBuilderAPI_MakeFace mk(wire);
-                        mk.Build();
-                        return TopoDS::Face(mk.Shape());
-                    }                        
-                }
-                else 
-                    err = "Linked Subshape cannot be used";
-            }
+        int count = shape.countSubShapes(TopAbs_FACE);
+        if(!count) {
+            if(silent)
+                return TopoShape();
+            throw Base::Exception("Cannot make face from profile");
         }
-        else 
-            err = "Linked object is neither Sketch, Part2DObject or Part::Feature";
+        if(count>1)
+            FC_WARN("Found more than one face from profile");
+        return shape.getSubTopoShape(TopAbs_FACE,1);
+    }catch (Standard_Failure &) {
+        if(silent)
+            return TopoShape();
+        throw;
     }
-
-    if (!silent && err) {
-        throw Base::Exception (err);
-    }
-
-    return TopoDS_Face();
 }
 
-
-std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
-    std::vector<TopoDS_Wire> result;
-
-    if(!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::Exception("No valid profile linked");
-    
-    TopoDS_Shape shape;
-    if(Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
-    else {
-        if(Profile.getSubValues().empty()) 
-            throw Base::Exception("No valid subelement linked in Part::Feature");
-
-        shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
+TopoShape ProfileBased::getProfileShape() const {
+    auto shape = getTopoShape(Profile.getValue());
+    if(!shape.isNull() && Profile.getSubValues().size()) {
+        std::vector<TopoShape> shapes;
+        for(auto &sub : Profile.getSubValues(true))
+            shapes.push_back(shape.getSubTopoShape(sub.c_str()));
+        shape = TopoShape(shape.Tag).makECompound(shapes);
     }
-    
-    if (shape.IsNull())
+    if(shape.isNull())
         throw Base::Exception("Linked shape object is empty");
+    return shape;
+}
 
-    // this is a workaround for an obscure OCC bug which leads to empty tessellations
-    // for some faces. Making an explicit copy of the linked shape seems to fix it.
-    // The error almost happens when re-computing the shape but sometimes also for the
-    // first time
-    BRepBuilderAPI_Copy copy(shape);
-    shape = copy.Shape();
-    if (shape.IsNull())
-        throw Base::Exception("Linked shape object is empty");
+std::vector<TopoShape> ProfileBased::getProfileWires() const {
+    // shape copy is a workaround for an obscure OCC bug which leads to empty
+    // tessellations for some faces. Making an explicit copy of the linked
+    // shape seems to fix it.  The error almost happens when re-computing the
+    // shape but sometimes also for the first time
+    auto shape = getProfileShape().makECopy();
 
-    TopExp_Explorer ex;
-    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-        result.push_back(TopoDS::Wire(ex.Current()));
-    }
-    if (result.empty()) // there can be several wires
+    if(shape.hasSubShape(TopAbs_WIRE))
+        return shape.getSubTopoShapes(TopAbs_WIRE);
+
+    auto wires = shape.makEWires().getSubTopoShapes(TopAbs_WIRE);
+    if(wires.empty())
         throw Base::Exception("Linked shape object is not a wire");
-
-    return result;
+    return wires;
 }
 
 // Note: We cannot return a reference, because it will become Null.
@@ -506,8 +475,8 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     }
 }
 
-void ProfileBased::generatePrism(TopoDS_Shape& prism,
-                                const TopoDS_Shape& sketchshape,
+void ProfileBased::generatePrism(TopoShape& prism,
+                                TopoShape sketchTopoShape,
                                 const std::string& method,
                                 const gp_Dir& dir,
                                 const double L,
@@ -515,6 +484,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
                                 const bool midplane,
                                 const bool reversed)
 {
+    auto sketchShape = sketchTopoShape.getShape();
     if (method == "Length" || method == "TwoLengths" || method == "ThroughAll") {
         double Ltotal = L;
         double Loffset = 0.;
@@ -531,21 +501,20 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
         } else if (midplane)
             Loffset = -Ltotal/2;
 
-        TopoDS_Shape from = sketchshape;
         if (method == "TwoLengths" || midplane) {
             gp_Trsf mov;
             mov.SetTranslation(Loffset * gp_Vec(dir));
-            TopLoc_Location loc(mov);
-            from = sketchshape.Moved(loc);
+            sketchTopoShape = sketchTopoShape.makETransform(mov);
         } else if (reversed)
             Ltotal *= -1.0;
 
         // Its better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
-        if (!PrismMaker.IsDone())
+        try {
+            prism.makEPrism(sketchTopoShape, Ltotal*gp_Vec(dir)); // finite prism
+        }catch(Standard_Failure &) {
             throw Base::Exception("SketchBased: Length: Could not extrude the sketch!");
-        prism = PrismMaker.Shape();
+        }
     } else {
         throw Base::Exception("SketchBased: Internal error: Unknown method for generatePrism()");
     }
@@ -722,7 +691,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
     Part::TopoShape shape = this->Shape.getValue();
     TopoDS_Shape sh = shape.getShape();
     sh.Location(TopLoc_Location());
-    shape.setShape(sh);
+    shape.setShape(sh,false);
 
     std::vector<App::DocumentObject*> refs = this->getInList();
     for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
@@ -912,11 +881,11 @@ double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vecto
 {
     try {
         Part::Feature* obj = getVerifiedObject();
-        TopoDS_Shape sketchshape = getVerifiedFace();
+        TopoShape sketchshape = getVerifiedFace();
 
         // get centre of gravity of the sketch face
         GProp_GProps props;
-        BRepGProp::SurfaceProperties(sketchshape, props);
+        BRepGProp::SurfaceProperties(sketchshape.getShape(), props);
         gp_Pnt cog = props.CentreOfMass();
         Base::Vector3d p_cog(cog.X(), cog.Y(), cog.Z());
         // get direction to cog from its projection on the revolve axis
@@ -1044,19 +1013,10 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
     throw Base::Exception("Rotation axis reference is invalid");
 }
 
-TopoDS_Shape ProfileBased::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+TopoShape ProfileBased::refineShapeIfActive(const TopoShape& oldShape) const
 {
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            return resShape;
-        }
-        catch (Standard_Failure) {
-            return oldShape;
-        }
-    }
-
+    if (this->Refine.getValue()) 
+        return oldShape.makERefine();
     return oldShape;
 }
 
@@ -1074,19 +1034,19 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         SketchOrientation.multVec(SketchVector,SketchVector);
     }
     else {
-        TopoDS_Shape shape = getVerifiedFace(true);
-        if (shape == TopoDS_Shape())
+        TopoShape shape = getVerifiedFace(true);
+        if (shape.isNull())
             return SketchVector;
 
-        if (shape.ShapeType() == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+        if (shape.getShape().ShapeType() == TopAbs_FACE) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(shape.getShape()));
             double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
             double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
             BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
             if(prop.IsNormalDefined()) {
                 gp_Pnt pnt; gp_Vec vec;
                 // handles the orientation state of the shape
-                BRepGProp_Face(TopoDS::Face(shape)).Normal(u,v,pnt,vec);
+                BRepGProp_Face(TopoDS::Face(shape.getShape())).Normal(u,v,pnt,vec);
                 SketchVector = Base::Vector3d(vec.X(), vec.Y(), vec.Z());
             }
         }

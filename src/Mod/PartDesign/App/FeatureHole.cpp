@@ -936,16 +936,16 @@ static gp_Pnt toPnt(gp_Vec dir)
 App::DocumentObjectExecReturn *Hole::execute(void)
 {
     Part::Feature* profile = 0;
-    TopoDS_Shape profileshape;
+    TopoShape profileshape;
     try {
         profile = getVerifiedObject();
-        profileshape = getVerifiedFace();
+        profileshape = getProfileShape();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     // Find the base shape
-    TopoDS_Shape base;
+    TopoShape base;
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
@@ -957,13 +957,13 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         double length = 0.0;
 
         this->positionByPrevious();
-        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        auto invTrsf = this->getLocation().Inverted().Transformation();
 
-        base.Move(invObjLoc);
+        base = base.makETransform(invTrsf);
 
-        if (profileshape.IsNull())
+        if (profileshape.isNull())
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
-        profileshape.Move(invObjLoc);
+        profileshape = profileshape.makETransform(invTrsf);
 
         /* Build the prototype hole */
 
@@ -972,7 +972,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         // Define this as zDir
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
-        zDir.Transform(invObjLoc.Transformation());
+        zDir.Transform(invTrsf);
 
         // Define xDir
         gp_Vec xDir;
@@ -1197,12 +1197,12 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         }
 #endif
 
-        BRep_Builder builder;
-        TopoDS_Compound holes;
-        builder.MakeCompound(holes);
+        std::vector<TopoShape> holes;
+
+        TopoShape result(getID(),getDocument()->getStringHasher());
 
         TopTools_IndexedMapOfShape edgeMap;
-        TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
+        TopExp::MapShapes(profileshape.getShape(), TopAbs_EDGE, edgeMap);
         for ( int i=1 ; i<=edgeMap.Extent() ; i++ ) {
             Standard_Real c_start;
             Standard_Real c_end;
@@ -1232,30 +1232,35 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
                                                       gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
-            TopoDS_Shape copy = protoHole;
-            BRepBuilderAPI_Transform transformer(copy, localSketchTransformation );
+            std::string name("Edge");
+            name += std::to_string(i);
+            const char *mapped = profileshape.getElementName(name.c_str(),true);
+            if(mapped != name.c_str())
+                name = std::string(mapped) + '.' + name;
 
-            copy = transformer.Shape();
-            BRepAlgoAPI_Cut mkCut( base, copy );
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Hole: Cut out of base feature failed");
+            TopoShape hole = TopoShape(protoHole).makECopy(mapped);
+            hole = hole.makETransform(localSketchTransformation);
+            holes.push_back(hole);
 
-            TopoDS_Shape result = mkCut.Shape();
-
-            // We have to get the solids (fuse sometimes creates compounds)
+            try {
+                result.makECut({base,hole});
+            }catch(Standard_Failure &) {
+                std::string msg("Hole: Cut failed on profile edge ");
+                msg += name;
+                return new App::DocumentObjectExecReturn(msg.c_str());
+            }
             base = getSolid(result);
-            if (base.IsNull())
-                return new App::DocumentObjectExecReturn("Hole: Resulting shape is not a solid");
-
-            builder.Add(holes, transformer.Shape() );
+            if (base.isNull()) {
+                std::string msg("Hole: Cut produced non-solid on profile edge ");
+                msg += name;
+                return new App::DocumentObjectExecReturn(msg.c_str());
+            }
         }
 
-        holes.Move( this->getLocation().Inverted() );
-
         // set the subtractive shape property for later usage in e.g. pattern
-        this->AddSubShape.setValue( holes );
+        this->AddSubShape.setValue(TopoShape().makECompound(holes,false).makETransform(invTrsf));
 
-        remapSupportShape(base);
+        remapSupportShape(base.getShape());
         this->Shape.setValue(base);
 
         return App::DocumentObject::StdReturn;

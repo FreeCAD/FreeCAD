@@ -25,8 +25,10 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 
 #include "FeatureDressUp.h"
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
@@ -34,6 +36,9 @@
 #include <TopoDS.hxx>
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopExp_Explorer.hxx>
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 
 using namespace PartDesign;
@@ -90,25 +95,28 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
     return rv;
 }
 
-void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
-
-    TopTools_IndexedMapOfShape mapOfEdges;
+std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
+    std::vector<TopoShape> ret;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
-    TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-    TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
+    TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
 
-    unsigned int i = 0;
-    while(i < SubNames.size())
-    {
-        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+    for(auto &ref : Base.getSubValues(true)) {
+        TopoDS_Shape subshape;
+        try {
+            subshape = shape.getSubShape(ref.c_str());
+        }catch(...){}
+        if(subshape.IsNull()) {
+            FC_ERR(getNameInDocument() << ": invalid edge link '" << ref << "'");
+            throw Base::Exception("Invalid edge link");
+        }
 
-        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
-            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
+        if (subshape.ShapeType() == TopAbs_EDGE) {
+            TopoDS_Edge edge = TopoDS::Edge(subshape);
             const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
 
-            if(los.Extent() != 2)
-            {
-                SubNames.erase(SubNames.begin()+i);
+            if(los.Extent() != 2) {
+                FC_WARN(getNameInDocument() << ": skip edge '" 
+                        << ref << "' with less two attaching faces");
                 continue;
             }
 
@@ -118,43 +126,50 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
                                                        TopoDS::Face(face1),
                                                        TopoDS::Face(face2));
             if (cont != GeomAbs_C0) {
-                SubNames.erase(SubNames.begin()+i);
+                FC_WARN(getNameInDocument() << ": skip edge '"
+                       << ref << "' that is not C0 continuous");
                 continue;
             }
+            ret.push_back(subshape);
 
-            i++;
-        }
-        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
-            TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
-
-            TopTools_IndexedMapOfShape mapOfFaces;
-            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaces);
-
-            for(int j = 1; j <= mapOfFaces.Extent(); ++j) {
-                TopoDS_Edge edge = TopoDS::Edge(mapOfFaces.FindKey(j));
-
-                int id = mapOfEdges.FindIndex(edge);
-
-                std::stringstream buf;
-                buf << "Edge";
-                buf << id;
-
-                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
-                {
-                    SubNames.push_back(buf.str());
-                }
-
-            }
-
-            SubNames.erase(SubNames.begin()+i);
-        }
-        // empty name or any other sub-element
-        else {
-            SubNames.erase(SubNames.begin()+i);
-        }
+        } else if(subshape.ShapeType() == TopAbs_FACE) {
+            for(TopExp_Explorer exp(subshape,TopAbs_EDGE);exp.More();exp.Next())
+                ret.push_back(exp.Current());
+        } else
+            FC_WARN(getNameInDocument() << ": skip invalid shape '"
+                    << ref << "' with type " << TopoShape::shapeName(subshape.ShapeType()));
     }
+    return ret;
 }
 
+std::vector<TopoShape> DressUp::getFaces(const TopoShape &shape) {
+    std::vector<TopoShape> ret;
+    const auto &vals = Base.getSubValues();
+    const auto &subs = Base.getShadowSubs();
+    size_t i=0;
+    for(auto &val : vals) {
+        if(!boost::starts_with(val,"Face"))
+            continue;
+        auto &sub = subs[i++];
+        auto &ref = sub.first.size()?sub.first:val;
+        TopoShape subshape;
+        try {
+            subshape = shape.getSubTopoShape(ref.c_str());
+        }catch(...){}
+        if(subshape.isNull()) {
+            FC_ERR(getNameInDocument() << ": invalid face reference '" << ref << "'");
+            throw Base::Exception("Invalid Invalid face link");
+        }
+
+        if(subshape.shapeType() != TopAbs_FACE) {
+            FC_WARN(getNameInDocument() << ": skip invalid shape '"
+                    << ref << "' with type " << subshape.shapeName());
+            continue;
+        }
+        ret.push_back(subshape);
+    }
+    return ret;
+}
 
 void DressUp::onChanged(const App::Property* prop)
 {

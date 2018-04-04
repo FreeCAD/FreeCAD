@@ -51,6 +51,7 @@
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Mod/Part/App/modelRefine.h>
 
 using namespace PartDesign;
@@ -226,26 +227,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
 
     // Get the support
-    Part::Feature* supportFeature;
-
-    try {
-        supportFeature = getBaseObject();
-    } catch (Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
-
-    const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
-    if (supportTopShape.getShape().IsNull())
+    auto support = getBaseShape();
+    if (support.isNull())
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
     // create an untransformed copy of the support shape
-    Part::TopoShape supportShape(supportTopShape);
-    supportShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape support = supportShape.getShape();
+    support.setTransform(Base::Matrix4D());
+    if(!support.Hasher)
+        support.Hasher = getDocument()->getStringHasher();
 
     typedef std::set<std::vector<gp_Trsf>::const_iterator> trsf_it;
     typedef std::map<App::DocumentObject*,  trsf_it> rej_it_map;
     rej_it_map nointersect_trsfms;
+    std::ostringstream ss;
 
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
@@ -255,13 +249,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); ++o)
     {
         // Extract the original shape and determine whether to cut or to fuse
-        TopoDS_Shape shape;
+        TopoShape shape;
         bool fuse;
 
         if ((*o)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
-            shape = feature->AddSubShape.getShape().getShape();
-            if (shape.IsNull())
+            shape = feature->AddSubShape.getShape();
+            if (shape.isNull())
                 return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
             
             fuse = (feature->getAddSubType() == FeatureAddSub::Additive) ? true : false;
@@ -277,22 +271,28 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
         ++t; // Skip first transformation, which is always the identity transformation
-        for (; t != transformations.end(); ++t) {
+        for (int idx=1; t != transformations.end(); ++t,++idx) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
-            BRepBuilderAPI_Copy copy(shape);
-            shape = copy.Shape();
-            if (shape.IsNull())
+            if(idx!=1) {
+                ss.str("");
+                ss << 'T' << idx;
+                shape = shape.makECopy(ss.str().c_str());
+            }else
+                shape = shape.makECopy();
+            if (shape.isNull())
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
-            BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
-            if (!mkTrf.IsDone())
+            try {
+                shape = shape.makETransform(*t);
+            }catch(Standard_Failure &) {
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
+            }
 
             // Check for intersection with support
             try {
 
-                if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
+                if (!Part::checkIntersection(support.getShape(), shape.getShape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
                     Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
 #endif
@@ -320,16 +320,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     
                     // Fuse/Cut the compounded transformed shapes with the support
                     //TopoDS_Shape result;
-                    TopoDS_Shape current = support;
                     
                     if (fuse) {
-                        BRepAlgoAPI_Fuse mkFuse(current, mkTrf.Shape());
-                        if (!mkFuse.IsDone())
-                            return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
+                        support = support.makEFuse(shape);
                         // we have to get the solids (fuse sometimes creates compounds)
-                        current = this->getSolid(mkFuse.Shape());
+                        support = this->getSolid(support);
                         // lets check if the result is a solid
-                        if (current.IsNull())
+                        if (support.isNull())
                             return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
@@ -344,10 +341,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
                         }*/
                     } else {
-                        BRepAlgoAPI_Cut mkCut(current, mkTrf.Shape());
-                        if (!mkCut.IsDone())
-                            return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
-                        current = mkCut.Shape();
+                        support = support.makECut(shape);
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
                         {
@@ -359,7 +353,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
                         }*/
                     }
-                    support = current; // Use result of this operation for fuse/cut of next original
                 }
             } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
@@ -387,19 +380,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+TopoShape Transformed::refineShapeIfActive(const TopoShape& oldShape) const
 {
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            return resShape;
-        }
-        catch (Standard_Failure) {
-            return oldShape;
-        }
-    }
-
+    if (this->Refine.getValue()) 
+        return oldShape.makERefine();
     return oldShape;
 }
 
