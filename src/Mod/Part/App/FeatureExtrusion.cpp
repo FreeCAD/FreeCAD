@@ -236,11 +236,9 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
 }
 
-TopoShape Extrusion::extrudeShape(const TopoShape &source, Extrusion::ExtrusionParameters params,
-        App::StringHasherRef hasher, const char *op)
+void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, 
+        Extrusion::ExtrusionParameters params)
 {
-    if(!op) op = TOPOP_EXTRUDE;
-    TopoShape result;
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd+params.lengthRev);//total vector of extrusion
 
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
@@ -255,11 +253,11 @@ TopoShape Extrusion::extrudeShape(const TopoShape &source, Extrusion::ExtrusionP
         TopoShape myShape(source.makECopy());
 
         std::vector<TopoShape> drafts;
-        makeDraft(params, myShape, drafts, hasher, op);
+        makeDraft(params, myShape, drafts, result.Hasher);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }else
-            result = TopoShape(source.Tag).makECompound(drafts,true,op,false);
+            result.makECompound(drafts,true,0,false);
     }
     else {
         //Regular (non-tapered) extrusion!
@@ -273,8 +271,7 @@ TopoShape Extrusion::extrudeShape(const TopoShape &source, Extrusion::ExtrusionP
         if (fabs(params.lengthRev)>Precision::Confusion() ){
             gp_Trsf mov;
             mov.SetTranslation(gp_Vec(params.dir)*(-params.lengthRev));
-            TopLoc_Location loc(mov);
-            myShape.setShape(myShape.getShape().Moved(loc),false);
+            myShape = myShape.makETransform(mov);
         }
 
         //make faces from wires
@@ -289,13 +286,11 @@ TopoShape Extrusion::extrudeShape(const TopoShape &source, Extrusion::ExtrusionP
         }
 
         //extrude!
-        BRepPrimAPI_MakePrism mkPrism(myShape.getShape(), vec);
-        result = TopoShape(source.Tag,hasher).makEShape(mkPrism,myShape,op,false);
+        result.makEPrism(myShape,vec);
     }
 
     if (result.isNull())
         throw Base::Exception("Result of extrusion is null shape.");
-    return result;
 }
 
 App::DocumentObjectExecReturn *Extrusion::execute(void)
@@ -306,8 +301,8 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
     try {
         Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(Feature::getTopoShape(link),params,
-                getDocument()->getStringHasher());
+        TopoShape result(getID(),getDocument()->getStringHasher());
+        extrudeShape(result,Feature::getTopoShape(link),params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
@@ -317,7 +312,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 }
 
 void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape, 
-        std::vector<TopoShape>& drafts, App::StringHasherRef hasher, const char *op)
+        std::vector<TopoShape>& drafts, App::StringHasherRef hasher)
 {
     double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;
     double distanceRev = tan(params.taperAngleRev)*params.lengthRev;
@@ -346,11 +341,11 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
         TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
         sourceWire.setShape(outerWire);
         sourceWire.Tag = _shape.Tag;
-        sourceWire.mapSubElement(TopAbs_EDGE,_shape,0,false);
+        sourceWire.mapSubElement(TopAbs_EDGE,_shape);
     }
     else if (shape.ShapeType() == TopAbs_COMPOUND) {
         for(auto &s : _shape.getSubTopoShapes()) {
-            makeDraft(params, s, drafts, hasher, op);
+            makeDraft(params, s, drafts, hasher);
         }
     }
     else {
@@ -380,7 +375,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
                 mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
                 mkOffset.Perform(offset);
 
-                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET,false);
+                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET);
             }
 
             if (offsetShape.isNull())
@@ -422,7 +417,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
                 mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
                 mkOffset.Perform(offset);
 
-                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET,false);
+                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET);
             }
 
             if (offsetShape.isNull())
@@ -449,7 +444,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape,
             Base::SignalException se;
 #endif
             mkGenerator.Build();
-            drafts.push_back(TopoShape(0,hasher).makEShape(mkGenerator,list_of_sections,op,false));
+            drafts.push_back(TopoShape(0,hasher).makEShape(mkGenerator,list_of_sections));
         }
         catch (Standard_Failure &){
             throw;

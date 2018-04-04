@@ -3063,6 +3063,29 @@ void TopoShapePy::setTag(Py::Int tag) {
     getTopoShapePtr()->Tag = tag;
 }
 
+PyObject *TopoShapePy::getElementHistory(PyObject *args) {
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return 0;
+
+    PY_TRY {
+        std::string original;
+        std::vector<std::string> history;
+        name = getTopoShapePtr()->getElementName(name,true);
+        long tag = getTopoShapePtr()->getElementHistory(name,&original,&history);
+        if(!tag)
+            Py_Return;
+        Py::Tuple ret(3);
+        ret.setItem(0,Py::Int(tag));
+        ret.setItem(1,Py::String(original));
+        Py::List pyHistory;
+        for(auto &h : history)
+            pyHistory.append(Py::String(h));
+        ret.setItem(2,pyHistory);
+        return Py::new_reference_to(ret);
+    }PY_CATCH_OCC
+}
+
 PyObject *TopoShapePy::mapSubElement(PyObject *args) {
     const char *type;
     const char *op = 0;

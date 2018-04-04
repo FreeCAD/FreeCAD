@@ -638,6 +638,18 @@ mapAll: whether to map all lower level sub-element types
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getElementHistory" Const="true">
+      <Documentation>
+        <UserDocu>
+getElementHistory(name) - returns the element mapped name history
+
+name: mapped element name belonging to this shape
+
+Returns tuple(sourceShapeTag, sourceName, [intermediateNames...]),
+or None if no history.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getTolerance" Const="true">
       <Documentation>
         <UserDocu>

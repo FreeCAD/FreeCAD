@@ -324,7 +324,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
     std::ostringstream ss;
     if((!sid || sid->empty()) && Hasher) {
         sid = &_sid;
-        ss << hashElementName(element[0],name,_sid);
+        ss << hashElementName(name,_sid);
         name = "";
     }else
         ss << name;
@@ -346,54 +346,50 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
     }
 }
 
-const char *ComplexGeoData::findHashableName(char type, const char *name) const{
-    (void)type;
-    if(name[0] == '#' && std::isalpha((unsigned char)name[1])) {
-        const char *n;
-        for(n=name+2; std::isdigit((unsigned char)*n); ++n);
-        if(n!=name+2)
-            return n;
-    }
-    return 0;
-}
-
 std::string ComplexGeoData::hashElementName(
-        char type, const char *name, std::vector<App::StringIDRef> &sid) 
+        const char *name, std::vector<App::StringIDRef> &sid) 
 {
     if(!name)
         throw Base::ValueError("invalid element name");
     if(!Hasher||!name[0])
         return name;
-#if 0
-    sid.push_back(Hasher->getID(name));
-    std::string ret("#");
-    ret += type;
-    ret += std::to_string(sid.back()->value());
-    return ret;
-#else
-    std::string hashed;
-    const char *n = findHashableName(type,name);
-    if(n) {
-        if(*n==0) 
-            return name;
-        if(*n==':') {
-            auto n1 = n;
-            for(++n;*n && std::isxdigit((unsigned char)*n); ++n);
-            if(*n==0) 
-                return name;
-            n = n1;
-        }
-        hashed = std::string(name,n-name);
-        name = n;
-    }
+    std::string prefix;
+    auto pos = strstr(name,elementMapPrefix().c_str());
+    if(!pos)
+        return name;
     sid.push_back(Hasher->getID(name));
     std::ostringstream ss;
-    if(hashed.empty())
-        ss << '#' << type << sid.back()->value();
-    else
-        ss << hashed << ':' << std::hex << sid.back()->value();
+    ss << '#' << std::hex << sid.back()->value();
     return ss.str();
-#endif
+}
+
+std::string ComplexGeoData::dehashElementName(const char *name) const {
+    std::string ret;
+    if(!name || !Hasher)
+        return ret;
+    if(boost::starts_with(name,elementMapPrefix()))
+        name += elementMapPrefix().size();
+    std::istringstream iss(name);
+    char sep = 0;
+    long id = -1;
+    iss >> sep >> std::hex >> id;
+    if(!iss.eof() || sep!='#')
+        return name;
+    auto sid = Hasher->getID(id);
+    if(!sid) {
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("failed to find hash id " << id);
+        else
+            FC_LOG("failed to find hash id " << id);
+        return ret;
+    }
+    if(sid->isHashed()) {
+        FC_LOG("cannot dehash id " << id);
+        return ret;
+    }
+    ret = sid->dataToText();
+    FC_TRACE("dehash " << name << " -> " << ret);
+    return ret;
 }
 
 const char *ComplexGeoData::setElementName(const char *element, const char *name, 
@@ -413,7 +409,7 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
     std::string _name;
     if((!sid||sid->empty()) && Hasher) {
         sid = &_sid;
-        _name = hashElementName(element[0],name,_sid);
+        _name = hashElementName(name,_sid);
         name = _name.c_str();
     }else if(!sid)
         sid = &_sid;

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include "PartFeature.h"
 
 // inclusion of the generated files (generated out of PartFeaturePy.xml)
@@ -35,6 +36,52 @@ using namespace Part;
 std::string PartFeaturePy::representation(void) const
 {
     return std::string("<Part::PartFeature>");
+}
+
+PyObject *PartFeaturePy::getElementHistory(PyObject *args) {
+    const char *name;
+    PyObject *recursive = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O", &name,&recursive))
+        return 0;
+
+    PY_TRY {
+        auto feature = getFeaturePtr();
+        std::string mapped = feature->Shape.getShape().getElementName(name,true);
+        Py::List list;
+        std::string original;
+        bool recursve = PyObject_IsTrue(recursive);
+        do {
+            std::vector<std::string> history;
+            long tag = feature->Shape.getShape().getElementHistory(mapped.c_str(),&original,&history);
+            if(!tag) 
+                break;
+            Py::Tuple ret(3);
+            auto obj = feature->getDocument()->getObjectByID(tag);
+            if(obj && obj->getNameInDocument()) 
+                ret.setItem(0,Py::String(obj->getNameInDocument()));
+            else {
+                obj = 0;
+                ret.setItem(0,Py::Int(tag));
+            }
+            ret.setItem(1,Py::String(original));
+            Py::List pyHistory;
+            for(auto &h : history)
+                pyHistory.append(Py::String(h));
+            ret.setItem(2,pyHistory);
+            if(!recursve)
+                return Py::new_reference_to(ret);
+            list.append(ret);
+            mapped = original;
+
+            if(!obj) 
+                break;
+            feature = dynamic_cast<Feature*>(obj->getLinkedObject(true));
+        }while(feature);
+
+        if(!list.size())
+            Py_Return;
+        return Py::new_reference_to(list);
+    }PY_CATCH
 }
 
 PyObject *PartFeaturePy::getCustomAttributes(const char* ) const

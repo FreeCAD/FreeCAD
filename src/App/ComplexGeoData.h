@@ -232,28 +232,15 @@ public:
 
     /** Convenience method to hash the main element name
      *
-     * @param type: the first character of the element type
      * @param name: main element name
      * @param sid: store any output string ID references
      * @return the hashed element name;
-     *
-     * As mentioned in setElementName(), an element name can have unhashed
-     * prefix and/or postfix. The purpose of this function is to explore this
-     * fact, and reduce poentially large hash table size, by checking for
-     * prefix and postfix inside a hashable main part of the element name,
-     * which most likely come from previous modeling step. For exmaple, if the
-     * input name is XTR_#E123;M(bla,bla) This function will only hash the
-     * prefix and postfix, i.e. XTR_;M(bla,bla), and output a string as
-     * #E123:125, where 125 is string ID value of the prefix+postfix.
-     *
-     * Note that the above optimization may not be active during complication,
-     * and should be considered as theComplexGeoData's internal implementation.
-     * All that can be assumed is that this function is used to hash the main
-     * element name.
      */
-    std::string hashElementName(char type, const char *name, std::vector<App::StringIDRef> &sid);
-     
+    std::string hashElementName(const char *name, std::vector<App::StringIDRef> &sid);
 
+    /// Reverse hashElementName()
+    std::string dehashElementName(const char *name) const;
+     
     /** Copy the element map from another geometry data with optional unhashed prefix and/or postfix */
     void copyElementMap(const ComplexGeoData &data, const char *postfix=0);
 
@@ -292,8 +279,6 @@ public:
     App::StringHasherRef Hasher;
 
 protected:
-    virtual const char *findHashableName(char type,const char *name) const;
-
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
     {
