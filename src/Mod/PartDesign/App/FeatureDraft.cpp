@@ -304,6 +304,11 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
+        int solidCount = countSolids(shape);
+        if (solidCount > 1) {
+            return new App::DocumentObjectExecReturn("Fuse: Result has multiple solids. Check parameters.");
+        }
+
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
