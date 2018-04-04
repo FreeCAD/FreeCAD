@@ -142,6 +142,11 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         result = boolOp; // Use result of this operation for fuse/cut of next body
     }
 
+    int solidCount = countSolids(result);
+    if (solidCount > 1) {
+        return new App::DocumentObjectExecReturn("Boolean: Result has multiple solids. Check parameters.");
+    }
+
     this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
 }

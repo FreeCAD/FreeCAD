@@ -43,6 +43,7 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Document.h>
@@ -181,6 +182,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(result);
+
+            int prismCount = countSolids(prism);
+            if (prismCount > 1) {
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. Check parameters.");
+            }
+
             this->Shape.setValue(getSolid(prism));
         } else {
             TopoDS_Shape prism;
@@ -203,6 +210,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+
+            int solidCount = countSolids(result);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. Check parameters.");
+
+            }
             solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes);
             this->Shape.setValue(getSolid(solRes));

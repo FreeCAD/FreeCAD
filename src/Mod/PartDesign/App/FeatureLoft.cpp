@@ -193,6 +193,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
+            int solidCount = countSolids(boolOp);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Loft: Result has multiple solids. Check parameters.");
+            }
             
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
@@ -207,6 +211,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
+            int solidCount = countSolids(boolOp);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Loft: Result has multiple solids. Check parameters.");
+            }
             
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
