@@ -58,12 +58,100 @@ using namespace std;
 
 //**************************************************************************
 //**************************************************************************
+// PropertyLinkBase
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkBase , App::Property)
+
+void PropertyLinkBase::breakLinks(App::DocumentObject *link, 
+        const std::vector<App::DocumentObject*> &objs, bool clear) 
+{
+    std::vector<Property*> props;
+    for(auto obj : objs) {
+        props.clear();
+        obj->getPropertyList(props);
+        for(auto prop : props) {
+            auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+            if(linkProp) 
+                linkProp->breakLink(link,clear);
+        }
+    }
+}
+
+void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
+    assert(feature);
+    std::vector<Property*> props;
+    for(auto doc : GetApplication().getDocuments()) {
+        for(auto obj : doc->getObjects()) {
+            props.clear();
+            obj->getPropertyList(props);
+            for(auto prop : props) {
+                auto link = dynamic_cast<PropertyLinkBase*>(prop);
+                if(link) {
+                    // We don't use inList so that we can update even the
+                    // hidden links that don't register their dependencies
+                    // updateElementReference below will only update reference
+                    // if it is pointing to the given 'feature'
+                    link->updateElementReference(feature,reverse);
+                }
+            }
+        }
+    }
+}
+
+bool PropertyLinkBase::_updateElementReference(
+        DocumentObject *owner, DocumentObject *feature,
+        App::DocumentObject *obj, std::string &sub,
+        std::pair<std::string,std::string> &shadow, bool reverse)
+{
+    if(!obj || !obj->getNameInDocument()) return false;
+    std::pair<std::string,std::string> elementName;
+    const char *subname = reverse?shadow.second.c_str():shadow.first.c_str();
+    if(!subname[0])
+        subname = sub.c_str();
+    auto ret = GeoFeature::resolveElement(obj,subname, elementName,true,
+                GeoFeature::ElementNameType::Export,feature);
+    if(!ret)
+        return false;
+    if(elementName.first.empty() || shadow==elementName)
+        return false;
+    FC_LOG((owner?owner->getNameInDocument():"") 
+            << " element reference shadow update " << ret->getNameInDocument() 
+            << shadow.first << " -> " << elementName.first);
+    shadow.swap(elementName);
+    auto pos2 = shadow.first.rfind('.');
+    if(pos2 == std::string::npos)
+        return true;
+    ++pos2;
+    auto pos = sub.rfind('.');
+    if(pos == std::string::npos)
+        pos = 0;
+    else
+        ++pos;
+    if(sub.compare(pos,sub.size()-pos,&shadow.first[pos2])!=0) {
+        FC_LOG("element reference update " << sub << " -> " << shadow.first);
+        sub.replace(pos,sub.size()-pos,&shadow.first[pos2]);
+    }
+    return true;
+}
+
+
+//**************************************************************************
+//**************************************************************************
+// PropertyLinkListBase
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkListBase , App::PropertyLinkBase)
+
+//**************************************************************************
+//**************************************************************************
 // PropertyLink
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLink , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLink , App::PropertyLinkBase)
 TYPESYSTEM_SOURCE(App::PropertyLinkChild , App::PropertyLink)
 TYPESYSTEM_SOURCE(App::PropertyLinkGlobal , App::PropertyLink)
+TYPESYSTEM_SOURCE(App::PropertyLinkHidden , App::PropertyLink)
 
 //**************************************************************************
 // Construction/Destruction
@@ -88,7 +176,11 @@ void PropertyLink::resetLink() {
     //in case this property gets dynamically removed
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
-    if (_pcLink && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (_pcScope!=LinkScope::Hidden && 
+        _pcLink && 
+        getContainer() && 
+        getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+    {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -106,7 +198,10 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (_pcScope!=LinkScope::Hidden && 
+        getContainer() && 
+        getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+    {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -211,13 +306,28 @@ void PropertyLink::Paste(const Property &from)
     setValue(static_cast<const PropertyLink&>(from)._pcLink);
 }
 
+void PropertyLink::getLinks(std::vector<App::DocumentObject *> &objs, 
+        bool all, std::vector<std::string> *subs, bool newStyle) const
+{
+    (void)newStyle;
+    (void)subs;
+    if((all||_pcScope!=LinkScope::Hidden) && _pcLink && _pcLink->getNameInDocument())
+        objs.push_back(_pcLink);
+}
+
+void PropertyLink::breakLink(App::DocumentObject *obj, bool clear) {
+    if(_pcLink == obj || (clear && getContainer()==obj))
+        setValue(0);
+}
+
 //**************************************************************************
 // PropertyLinkList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLinkListBase)
 TYPESYSTEM_SOURCE(App::PropertyLinkListChild , App::PropertyLinkList)
 TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal , App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListHidden , App::PropertyLinkList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -233,7 +343,11 @@ PropertyLinkList::~PropertyLinkList()
     //in case this property gety dynamically removed
 #ifndef USE_OLD_DAG   
     //maintain the back link in the DocumentObject class
-    if (!_lValueList.empty() && getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (_pcScope!=LinkScope::Hidden && 
+        !_lValueList.empty() && 
+        getContainer() && 
+        getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+    {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -254,7 +368,8 @@ void PropertyLinkList::setSize(int newSize)
             continue;
         _nameMap.erase(obj->getNameInDocument());
 #ifndef USE_OLD_DAG
-        obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+        if (_pcScope!=LinkScope::Hidden)
+            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
 #endif
     }
     _lValueList.resize(newSize);
@@ -284,7 +399,7 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const &value, bool tou
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             if(obj) 
                 obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
             if(value)
@@ -315,7 +430,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             for(auto obj : _lValueList)
                 if(obj) obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
             for(auto obj : lValue)
@@ -444,13 +559,43 @@ DocumentObject *PropertyLinkList::find(const char *name, int *pindex) const {
     return _lValueList[it->second];
 }
 
+void PropertyLinkList::getLinks(std::vector<App::DocumentObject *> &objs, 
+        bool all, std::vector<std::string> *subs, bool newStyle) const
+{
+    (void)subs;
+    (void)newStyle;
+    if(all||_pcScope!=LinkScope::Hidden) {
+        objs.reserve(objs.size()+_lValueList.size());
+        for(auto obj : _lValueList) {
+            if(obj && obj->getNameInDocument())
+                objs.push_back(obj);
+        }
+    }
+}
+
+void PropertyLinkList::breakLink(App::DocumentObject *obj, bool clear) {
+    if(clear && getContainer()==obj) {
+        setValues({});
+        return;
+    }
+    std::vector<App::DocumentObject*> values;
+    values.reserve(_lValueList.size());
+    for(auto o : _lValueList) {
+        if(o != obj)
+            values.push_back(o);
+    }
+    if(values.size()!=_lValueList.size())
+        setValues(values);
+}
+
 //**************************************************************************
 // PropertyLinkSub
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::PropertyLinkBase)
 TYPESYSTEM_SOURCE(App::PropertyLinkSubChild , App::PropertyLinkSub)
 TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal , App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden , App::PropertyLinkSub)
 
 //**************************************************************************
 // Construction/Destruction
@@ -471,7 +616,7 @@ PropertyLinkSub::~PropertyLinkSub()
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             if (_pcLinkSub)
                 _pcLinkSub->_removeBackLink(parent);
         }
@@ -490,7 +635,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             if (_pcLinkSub)
                 _pcLinkSub->_removeBackLink(parent);
             if (lValue)
@@ -520,7 +665,7 @@ std::vector<std::string> PropertyLinkSub::getSubValues(bool newStyle) const {
     int i=-1;
     for(auto &shadow : _ShadowSubList) {
         ++i;
-        if(newStyle) {
+        if(!newStyle) {
             if(shadow.second.size()) {
                 ret.push_back(shadow.second);
                 continue;
@@ -611,61 +756,6 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
 }
 
-void PropertyLinkSub::updateElementReferences(DocumentObject *feature, DocumentObject *obj, bool reverse) {
-    std::vector<Property*> props;
-    obj->getPropertyList(props);
-    for(auto prop : props) {
-        auto linksub = dynamic_cast<PropertyLinkSub*>(prop);
-        if(linksub) {
-            linksub->updateElementReference(feature,reverse);
-            continue;
-        }
-        auto linksubs = dynamic_cast<PropertyLinkSubList*>(prop);
-        if(linksubs) {
-            linksubs->updateElementReference(feature,reverse);
-            continue;
-        }
-        auto xlink = dynamic_cast<PropertyXLink*>(prop);
-        if(xlink) {
-            xlink->updateElementReference(feature,reverse);
-            continue;
-        }
-    }
-}
-
-bool PropertyLinkSub::updateElementReference(DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub,
-        std::pair<std::string,std::string> &shadow, bool reverse)
-{
-    if(!obj || !obj->getNameInDocument()) return false;
-    std::pair<std::string,std::string> elementName;
-    const char *subname = reverse?shadow.second.c_str():shadow.first.c_str();
-    if(!subname[0])
-        subname = sub.c_str();
-    if(!GeoFeature::resolveElement(obj,subname, elementName,true,
-                GeoFeature::ElementNameType::Export,feature))
-        return false;
-    if(elementName.first.empty())
-        return false;
-    FC_TRACE("element reference cache " << shadow.first << " -> " << elementName.first);
-    shadow.swap(elementName);
-    auto pos2 = shadow.first.rfind('.');
-    if(pos2 == std::string::npos)
-        return false;
-    ++pos2;
-    auto pos = sub.rfind('.');
-    if(pos == std::string::npos)
-        pos = 0;
-    else
-        ++pos;
-    if(sub.compare(pos,sub.size()-pos,&shadow.first[pos2])!=0) {
-        FC_LOG("element reference update " << sub << " -> " << shadow.first);
-        sub.replace(pos,sub.size()-pos,&shadow.first[pos2]);
-        return true;
-    }
-    return false;
-}
-
 void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse) {
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_cSubList.size());
@@ -673,22 +763,20 @@ void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool rever
         return;
     int i=0;
     bool touched = false;
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
     for(auto &sub : _cSubList) {
-        if(updateElementReference(feature,_pcLinkSub,sub,_ShadowSubList[i++],reverse))
+        if(_updateElementReference(owner,feature,_pcLinkSub,sub,_ShadowSubList[i++],reverse))
             touched = true;
     }
+    if(!touched)
+        return;
     for(int idx : _mapped) {
-        if(idx<(int)_cSubList.size() && _ShadowSubList[idx].first.size()) {
+        if(idx<(int)_cSubList.size() && _ShadowSubList[idx].first.size())
             _cSubList[idx] = _ShadowSubList[idx].first;
-            touched = true;
-        }
     }
     _mapped.clear();
-    if(touched) {
-        touch();
-        auto owner = dynamic_cast<DocumentObject*>(getContainer());
-        if(owner) owner->onUpdateElementReference(this);
-    }
+    touch();
+    if(owner) owner->onUpdateElementReference(this);
 }
 
 bool PropertyLinkSub::referenceChanged() const {
@@ -895,13 +983,33 @@ void PropertyLinkSub::Paste(const Property &from)
     setValue(dynamic_cast<const PropertyLinkSub&>(from)._pcLinkSub, dynamic_cast<const PropertyLinkSub&>(from)._cSubList);
 }
 
+void PropertyLinkSub::getLinks(std::vector<App::DocumentObject *> &objs, 
+        bool all, std::vector<std::string> *subs, bool newStyle) const
+{
+    if(all||_pcScope!=LinkScope::Hidden) {
+        if(_pcLinkSub && _pcLinkSub->getNameInDocument()) {
+            objs.push_back(_pcLinkSub);
+            if(subs) {
+                auto _subs = getSubValues(newStyle);
+                subs->insert(subs->end(),_subs.begin(),_subs.end());
+            }
+        }
+    }
+}
+
+void PropertyLinkSub::breakLink(App::DocumentObject *obj, bool clear) {
+    if(obj == _pcLinkSub || (clear && getContainer()==obj))
+        setValue(0);
+}
+
 //**************************************************************************
 // PropertyLinkSubList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLinkBase)
 TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild , App::PropertyLinkSubList)
 TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal , App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListHidden , App::PropertyLinkSubList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -921,7 +1029,7 @@ PropertyLinkSubList::~PropertyLinkSubList()
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             for(auto *obj : _lValueList)
                 obj->_removeBackLink(parent);
         }
@@ -949,7 +1057,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             for(auto *obj : _lValueList)
                 obj->_removeBackLink(parent);
             if (lValue)
@@ -985,7 +1093,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
             for(auto *obj : _lValueList)
@@ -1020,7 +1128,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
             for(auto *obj : _lValueList)
@@ -1049,7 +1157,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy)) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
             //_lValueList can contain items multiple times, but we trust the document
             //object to ensure that this works
             for(auto *obj : _lValueList)
@@ -1303,23 +1411,28 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
     _ShadowSubList.resize(_lSubList.size());
     int i=0;
     bool touched = false;
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
     for(auto &sub : _lSubList) {
         auto obj = _lValueList[i];
-        if(PropertyLinkSub::updateElementReference(feature,obj,sub,_ShadowSubList[i++],reverse))
+        if(_updateElementReference(owner,feature,obj,sub,_ShadowSubList[i++],reverse))
             touched = true;
     }
+    if(!touched) 
+        return;
+
+    std::vector<int> mapped;
+    mapped.reserve(_mapped.size());
     for(int idx : _mapped) {
-        if(idx<(int)_lSubList.size() && _ShadowSubList[idx].first.size()) {
-            _lSubList[idx] = _ShadowSubList[idx].first;
-            touched = true;
+        if(idx<(int)_lSubList.size()) {
+            if(_ShadowSubList[idx].first.size())
+                _lSubList[idx] = _ShadowSubList[idx].first;
+            else
+                mapped.push_back(idx);
         }
     }
-    _mapped.clear();
-    if(touched) {
-        touch();
-        auto owner = dynamic_cast<DocumentObject*>(getContainer());
-        if(owner) owner->onUpdateElementReference(this);
-    }
+    _mapped.swap(mapped);
+    touch();
+    if(owner) owner->onUpdateElementReference(this);
 }
 
 bool PropertyLinkSubList::referenceChanged() const{
@@ -1464,6 +1577,69 @@ unsigned int PropertyLinkSubList::getMemSize (void) const
 
    return size;
 }
+
+std::vector<std::string> PropertyLinkSubList::getSubValues(bool newStyle) const {
+    std::vector<std::string> ret;
+    ret.reserve(_lSubList.size());
+    int i=-1;
+    for(auto &shadow : _ShadowSubList) {
+        ++i;
+        if(!newStyle) {
+            if(shadow.second.size()) {
+                ret.push_back(shadow.second);
+                continue;
+            }
+        }else if(shadow.first.size()) {
+            ret.push_back(shadow.first);
+            continue;
+        }
+        ret.push_back(_lSubList[i]);
+    }
+    return ret;
+}
+
+void PropertyLinkSubList::getLinks(std::vector<App::DocumentObject *> &objs, 
+        bool all, std::vector<std::string> *subs, bool newStyle) const
+{
+    if(all||_pcScope!=LinkScope::Hidden) {
+        objs.reserve(objs.size()+_lValueList.size());
+        for(auto obj : _lValueList) {
+            if(obj && obj->getNameInDocument())
+                objs.push_back(obj);
+        }
+        if(subs) {
+            auto _subs = getSubValues(newStyle);
+            subs->reserve(subs->size()+_subs.size());
+            subs->insert(subs->end(),_subs.begin(),_subs.end());
+        }
+    }
+}
+
+void PropertyLinkSubList::breakLink(App::DocumentObject *obj, bool clear) {
+    std::vector<DocumentObject*> values;
+    std::vector<std::string> subs;
+
+    if(clear && getContainer()==obj) {
+        setValues(values,subs);
+        return;
+    }
+    assert(_lValueList.size()==_lSubList.size());
+
+    values.reserve(_lValueList.size());
+    subs.reserve(_lSubList.size());
+
+    int i=-1;
+    for(auto o : _lValueList) {
+        ++i;
+        if(o==obj) 
+            continue;
+        values.push_back(o);
+        subs.push_back(_lSubList[i]);
+    }
+    if(values.size()!=_lValueList.size())
+        setValues(values,subs);
+}
+
 //**************************************************************************
 // PropertyXLink::DocInfo
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1908,7 +2084,7 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname, 
 
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if (!owner->testStatus(ObjectStatus::Destroy)) {
+    if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
         if(_pcLink)
             _pcLink->_removeBackLink(owner);
         if(lValue)
@@ -1951,7 +2127,7 @@ void PropertyXLink::setValue(
     }
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if (_pcLink && !owner->testStatus(ObjectStatus::Destroy))
+    if (_pcLink && !owner->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) 
         _pcLink->_removeBackLink(owner);
 #endif
     _pcLink = 0;
@@ -1987,17 +2163,14 @@ void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse)
         shadowSub.first.clear();
         shadowSub.second.clear();
     }
-    bool touched = PropertyLinkSub::updateElementReference(feature,_pcLink,subName,shadowSub,reverse);
-    if(_mapped && shadowSub.first.size()) {
-        touched = true;
+    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    if(!_updateElementReference(owner,feature,_pcLink,subName,shadowSub,reverse))
+        return;
+    if(_mapped && shadowSub.first.size())
         subName = shadowSub.first;
-    }
     _mapped = false;
-    if(touched) {
-        touch();
-        auto owner = dynamic_cast<DocumentObject*>(getContainer());
-        if(owner) owner->onUpdateElementReference(this);
-    }
+    touch();
+    if(owner) owner->onUpdateElementReference(this);
 }
 
 bool PropertyXLink::referenceChanged() const{
@@ -2268,4 +2441,24 @@ void PropertyXLink::setPyObject(PyObject *value) {
     }
 }
 
+const char *PropertyXLink::getSubName(bool newStyle) const {
+    if(newStyle) {
+        if(shadowSub.first.size())
+            return shadowSub.first.c_str();
+    }else if(shadowSub.second.size())
+        return shadowSub.second.c_str();
+    return subName.c_str();
+}
 
+void PropertyXLink::getLinks(std::vector<App::DocumentObject *> &objs, 
+        bool all, std::vector<std::string> *subs, bool newStyle) const
+{
+    if((all||_pcScope!=LinkScope::Hidden) && _pcLink && _pcLink->getNameInDocument()) {
+        objs.push_back(_pcLink);
+        if(subs && subName.size()) {
+            auto sub = getSubName(newStyle);
+            if(sub && sub[0])
+                subs->push_back(sub);
+        }
+    }
+}

@@ -101,6 +101,8 @@ public:
 
     void getDocumentObjectDeps(std::vector<DocumentObject*> & docObjs) const;
 
+    void breakDependency(const std::vector<DocumentObject*> &);
+
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
     bool depsAreTouched() const;

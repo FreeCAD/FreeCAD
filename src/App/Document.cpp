@@ -3352,80 +3352,8 @@ void Document::_removeObject(DocumentObject* pcObject)
 void Document::breakDependency(DocumentObject* pcObject, bool clear)
 {
     // Nullify all dependent objects
-    std::vector<DocumentObject *> docObjs;
-    pcObject->ExpressionEngine.getDocumentObjectDeps(docObjs);
-
-    for (std::map<std::string,DocumentObject*>::iterator it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
-        std::map<std::string,App::Property*> Map;
-        it->second->getPropertyMap(Map);
-        // search for all properties that could have a link to the object
-        for (std::map<std::string,App::Property*>::iterator pt = Map.begin(); pt != Map.end(); ++pt) {
-            if (pt->second->getTypeId().isDerivedFrom(PropertyLink::getClassTypeId())) {
-                PropertyLink* link = static_cast<PropertyLink*>(pt->second);
-                if (link->getValue() == pcObject)
-                    link->setValue(0);
-                else if (link->getContainer() == pcObject && clear)
-                    link->setValue(0);
-            }
-            else if (pt->second->getTypeId().isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
-                PropertyLinkSub* link = static_cast<PropertyLinkSub*>(pt->second);
-                if (link->getValue() == pcObject)
-                    link->setValue(0);
-                else if (link->getContainer() == pcObject && clear)
-                    link->setValue(0);
-            }
-            else if (pt->second->getTypeId().isDerivedFrom(PropertyLinkList::getClassTypeId())) {
-                PropertyLinkList* link = static_cast<PropertyLinkList*>(pt->second);
-                if (link->getContainer() == pcObject && clear) {
-                    link->setValues(std::vector<DocumentObject*>());
-                }
-                else {
-                    const auto &links = link->getValues();
-                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
-                        std::vector<DocumentObject*> newLinks;
-                        for(auto obj : links) {
-                            if (obj != pcObject)
-                                newLinks.push_back(obj);
-                        }
-                        link->setValues(newLinks);
-                    }
-                }
-            }
-            else if (pt->second->getTypeId().isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
-                PropertyLinkSubList* link = static_cast<PropertyLinkSubList*>(pt->second);
-                if (link->getContainer() == pcObject && clear) {
-                    link->setValues(std::vector<DocumentObject*>(), std::vector<std::string>());
-                }
-                else {
-                    const std::vector<DocumentObject*>& links = link->getValues();
-                    const std::vector<std::string>& sub = link->getSubValues();
-                    std::vector<DocumentObject*> newLinks;
-                    std::vector<std::string> newSub;
-
-                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
-                        std::vector<DocumentObject*>::const_iterator jt;
-                        std::vector<std::string>::const_iterator kt;
-                        for (jt = links.begin(),kt = sub.begin(); jt != links.end() && kt != sub.end(); ++jt, ++kt) {
-                            if (*jt != pcObject) {
-                                newLinks.push_back(*jt);
-                                newSub.push_back(*kt);
-                            }
-                        }
-
-                        link->setValues(newLinks, newSub);
-                    }
-                }
-            }
-        }
-
-        if (std::find(docObjs.begin(), docObjs.end(), it->second) != docObjs.end()) {
-            std::vector<App::ObjectIdentifier> paths;
-            pcObject->ExpressionEngine.getPathsToDocumentObject(it->second, paths);
-            for (std::vector<App::ObjectIdentifier>::iterator jt = paths.begin(); jt != paths.end(); ++jt) {
-                pcObject->ExpressionEngine.setValue(*jt, nullptr);
-            }
-        }
-    }
+    pcObject->ExpressionEngine.breakDependency(d->objectArray);
+    PropertyLinkBase::breakLinks(pcObject,d->objectArray,clear);
 }
 
 std::vector<DocumentObject*> Document::copyObject(

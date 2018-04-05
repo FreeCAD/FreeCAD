@@ -192,32 +192,9 @@ std::vector<DocumentObject*> DocumentObject::getOutList(bool noExpression) const
         std::vector<Property*> props;
         getPropertyList(props);
         for(auto prop : props) {
-            auto links = dynamic_cast<PropertyLinkList*>(prop);
-            if(links) {
-                for(auto obj : links->getValues())
-                    if(obj && obj->getNameInDocument())
-                        ret.push_back(obj);
-                continue;
-            }
-            auto link = dynamic_cast<PropertyLink*>(prop);
+            auto link = dynamic_cast<PropertyLinkBase*>(prop);
             if(link) {
-                auto obj = link->getValue();
-                if(obj && obj->getNameInDocument())
-                    ret.push_back(obj);
-                continue;
-            }
-            auto linksub = dynamic_cast<PropertyLinkSub*>(prop);
-            if(linksub) {
-                auto obj = linksub->getValue();
-                if(obj && obj->getNameInDocument())
-                    ret.push_back(obj);
-                continue;
-            }
-            auto linksubs = dynamic_cast<PropertyLinkSubList*>(prop);
-            if(linksubs) {
-                for(auto obj : linksubs->getValues())
-                    if(obj && obj->getNameInDocument())
-                        ret.push_back(obj);
+                link->getLinks(ret);
                 continue;
             }
         }
@@ -238,31 +215,13 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
     if (!prop || prop->getContainer() != this)
         return ret;
 
-    if (prop->isDerivedFrom(PropertyLinkList::getClassTypeId())) {
-        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkList*>(prop)->getValues();
-        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-            if (*It2)
-                ret.push_back(*It2);
-        }
-    }
-    else if (prop->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
-        const std::vector<DocumentObject*> &OutList = static_cast<PropertyLinkSubList*>(prop)->getValues();
-        for (std::vector<DocumentObject*>::const_iterator It2 = OutList.begin();It2 != OutList.end(); ++It2) {
-            if (*It2)
-                ret.push_back(*It2);
-        }
-    }
-    else if (prop->isDerivedFrom(PropertyLink::getClassTypeId())) {
-        if (static_cast<PropertyLink*>(prop)->getValue())
-            ret.push_back(static_cast<PropertyLink*>(prop)->getValue());
-    }
-    else if (prop->isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
-        if (static_cast<PropertyLinkSub*>(prop)->getValue())
-            ret.push_back(static_cast<PropertyLinkSub*>(prop)->getValue());
-    }
-    else if (prop == &ExpressionEngine) {
+    if (prop == &ExpressionEngine) {
         // Get document objects that this document object relies on
         ExpressionEngine.getDocumentObjectDeps(ret);
+    }else{
+        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        if(link)
+            link->getLinks(ret);
     }
 
     return ret;
@@ -561,11 +520,7 @@ void DocumentObject::onChanged(const Property* prop)
     // if (_pDoc)
     //     _pDoc->onChangedProperty(this,prop);
 
-    if(prop->isDerivedFrom(PropertyLink::getClassTypeId()) ||
-       prop->isDerivedFrom(PropertyLinkSub::getClassTypeId()) ||
-       prop->isDerivedFrom(PropertyLinkList::getClassTypeId()) ||
-       prop->isDerivedFrom(PropertyLinkSubList::getClassTypeId())) 
-    {
+    if(dynamic_cast<const PropertyLinkBase*>(prop)) {
         _outList.clear();
         _outListMap.clear();
         _outListCached = false;

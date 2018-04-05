@@ -577,15 +577,7 @@ const Document* DocumentModel::getDocument(const QModelIndex& index) const
 
 bool DocumentModel::isPropertyLink(const App::Property& prop) const
 {
-    if (prop.isDerivedFrom(App::PropertyLink::getClassTypeId()))
-        return true;
-    if (prop.isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
-        return true;
-    if (prop.isDerivedFrom(App::PropertyLinkList::getClassTypeId()))
-        return true;
-    if (prop.isDerivedFrom(App::PropertyLinkSubList::getClassTypeId()))
-        return true;
-    return false;
+    return prop.isDerivedFrom(App::PropertyLinkBase::getClassTypeId());
 }
 
 std::vector<ViewProviderDocumentObject*>

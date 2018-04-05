@@ -191,8 +191,7 @@ void GeoFeature::updateElementReference() {
     }
     if(reset || _elementMapCache!=elementMap) {
         _elementMapCache.swap(elementMap);
-        for(auto obj : getInListEx(true))
-            PropertyLinkSub::updateElementReferences(this,obj,reset);
+        PropertyLinkBase::updateElementReferences(this,reset);
     }
 }
 

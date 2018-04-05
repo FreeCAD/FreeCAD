@@ -157,12 +157,10 @@ void Property::Paste(const Property& /*from*/)
 
 //**************************************************************************
 //**************************************************************************
-// PropertyLists
+// PropertyListsBase
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property);
-
-void PropertyLists::setPyObject(PyObject *value) {
+void PropertyListsBase::_setPyObject(PyObject *value) {
     std::vector<PyObject *> vals;
     std::vector<int> indices;
     if (PyDict_Check(value)) {
@@ -196,3 +194,11 @@ void PropertyLists::setPyObject(PyObject *value) {
         vals.push_back(value);
     setPyValues(vals,indices);
 }
+
+//**************************************************************************
+//**************************************************************************
+// PropertyLists
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property);
+

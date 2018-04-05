@@ -899,3 +899,17 @@ void PropertyExpressionEngine::setPyObject(PyObject *)
 {
     throw Base::RuntimeError("Property is read-only");
 }
+
+void PropertyExpressionEngine::breakDependency(const std::vector<DocumentObject*> &objs) {
+    std::vector<DocumentObject*> deps;
+    getDocumentObjectDeps(deps);
+    std::set<DocumentObject*> depSet(deps.begin(),deps.end());
+    for (auto obj : objs) {
+        if (depSet.find(obj)!=depSet.end()) {
+            std::vector<App::ObjectIdentifier> paths;
+            getPathsToDocumentObject(obj, paths);
+            for(auto &id : paths)
+                setValue(id,nullptr);
+        }
+    }
+}

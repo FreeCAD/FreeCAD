@@ -48,11 +48,13 @@ class Document;
  * Local:    links are valid only within the same GeoFeatureGroup as the linkowner is in or in none. 
  * Child:    links are valid within the same or any sub GeoFeatureGroup
  * Global:   all possible links are valid
+ * Hidden:   links are not included in dependency calculation
  */
 enum class LinkScope {
     Local,
     Child,
-    Global
+    Global,
+    Hidden,
 };
 
 /**
@@ -90,6 +92,65 @@ protected:
     LinkScope _pcScope = LinkScope::Local;
 };
 
+class AppExport PropertyLinkBase : public Property, public ScopedLink
+{
+    TYPESYSTEM_HEADER();
+public:
+
+    static void updateElementReferences(DocumentObject *feature, bool reverse=false);
+    static bool _updateElementReference(DocumentObject *owner, DocumentObject *feature,
+        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
+
+    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) {
+        (void)feature;
+        (void)reverse;
+    }
+
+    virtual bool referenceChanged() const {
+        return false;
+    }
+
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const = 0;
+
+    static void breakLinks(App::DocumentObject *link, const std::vector<App::DocumentObject*> &objs, bool clear);
+
+    virtual void breakLink(App::DocumentObject *obj, bool clear) = 0;
+
+    std::vector<App::DocumentObject *> linkedObjects(bool all=false) const {
+        std::vector<App::DocumentObject*> ret;
+        getLinks(ret,all);
+        return ret;
+    }
+
+    template<class T>
+    void getLinkedObjects(T &inserter, bool all=false) const {
+        std::vector<App::DocumentObject*> ret;
+        getLinks(ret,all);
+        std::copy(ret.begin(),ret.end(),inserter);
+    }
+
+    void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements, 
+            bool newStyle=true, bool all=true) const 
+    {
+        std::vector<App::DocumentObject*> ret;
+        std::vector<std::string> subs;
+        getLinks(ret,all,&subs,newStyle);
+        assert(ret.size()==subs.size());
+        int i=0;
+        for(auto obj : ret)
+            elements[obj].push_back(subs[i++]);
+    }
+
+    std::map<App::DocumentObject*, std::vector<std::string> > 
+        linkedElements(bool newStyle=true, bool all=true) const 
+    {
+        std::map<App::DocumentObject*, std::vector<std::string> > ret;
+        getLinkedElements(ret,newStyle,all);
+        return ret;
+    }
+};
+
 /** The general Link Property
  *  Main Purpose of this property is to Link Objects and Features in a document. Like all links this 
  *  property is scope aware, meaning it does define which objects are allowed to be linked depending 
@@ -98,7 +159,7 @@ protected:
  *  @note Links that are invalid in respect to the scope of this property is set to are not rejected. 
  *        They are only detected to be invalid and prevent the feature from recomputing.
  */
-class AppExport PropertyLink : public Property, public ScopedLink
+class AppExport PropertyLink : public PropertyLinkBase
 {
     TYPESYSTEM_HEADER();
 
@@ -151,6 +212,11 @@ public:
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+
 protected:
     App::DocumentObject *_pcLink;
 };
@@ -173,10 +239,30 @@ public:
     PropertyLinkGlobal() {_pcScope = LinkScope::Global;};
 };
 
-class AppExport PropertyLinkList : public PropertyListsT<DocumentObject*>, public ScopedLink
+/** The general Link Property that are hidden from dependency checking
+ */
+class AppExport PropertyLinkHidden : public PropertyLink
 {
     TYPESYSTEM_HEADER();
-    typedef PropertyListsT<DocumentObject*> inherited;
+public:
+    PropertyLinkHidden() {_pcScope = LinkScope::Hidden;};
+};
+
+
+class AppExport PropertyLinkListBase: public PropertyLinkBase, public PropertyListsBase
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual void setPyObject(PyObject *obj) override {
+        _setPyObject(obj);
+    }
+};
+
+class AppExport PropertyLinkList : 
+    public PropertyListsT<DocumentObject*,std::vector<DocumentObject*>, PropertyLinkListBase>
+{
+    TYPESYSTEM_HEADER();
+    typedef PropertyListsT<DocumentObject*,std::vector<DocumentObject*>,PropertyLinkListBase> inherited;
 
 public:
     /**
@@ -212,6 +298,11 @@ public:
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+
     DocumentObject *find(const char *, int *pindex=0) const;
 
 protected:
@@ -239,13 +330,23 @@ public:
     PropertyLinkListGlobal() {_pcScope = LinkScope::Global;};
 };
 
+/** The general Link Property that are hidden from dependency checking
+ */
+class AppExport PropertyLinkListHidden : public PropertyLinkList
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkListHidden() {_pcScope = LinkScope::Hidden;};
+};
+
+
 /** the Link Poperty with sub elements
  *  This property links an object and a defined sequence of
  *  sub elements. These subelements (like Edges of a Shape)
  *  are stored as names, which can be resolved by the 
  *  ComplexGeoDataType interface to concrete sub objects.
  */
-class AppExport PropertyLinkSub: public Property, public ScopedLink
+class AppExport PropertyLinkSub: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER();
 
@@ -310,18 +411,21 @@ public:
         return sizeof(App::DocumentObject *);
     }
 
-    static void updateElementReferences(DocumentObject *feature, DocumentObject *obj, bool reverse=false);
-    static bool updateElementReference(DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
+    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
 
-    void updateElementReference(DocumentObject *feature,bool reverse=false);
-    bool referenceChanged() const;
+    virtual bool referenceChanged() const override;
+
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
     std::vector<std::pair<std::string,std::string> > _ShadowSubList;
     std::vector<int> _mapped;
+    bool _hidden;
 };
 
 /** The general Link Property with Child scope
@@ -342,7 +446,16 @@ public:
     PropertyLinkSubGlobal() {_pcScope = LinkScope::Global;};
 };
 
-class AppExport PropertyLinkSubList: public PropertyLists, public ScopedLink
+/** The general Link Property that are hidden from dependency checking
+ */
+class AppExport PropertyLinkSubHidden : public PropertyLinkSub
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkSubHidden() {_pcScope = LinkScope::Hidden;};
+};
+
+class AppExport PropertyLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER();
 
@@ -394,6 +507,8 @@ public:
         return _lSubList;
     }
 
+    std::vector<std::string> getSubValues(bool newStyle) const;
+
     const std::vector<std::pair<std::string,std::string> > &getShadowSubs() const {
         return _ShadowSubList;
     }
@@ -421,9 +536,14 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-    void updateElementReference(DocumentObject *feature,bool reverse=false);
-    bool referenceChanged() const;
+    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
 
+    virtual bool referenceChanged() const override;
+
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
@@ -450,6 +570,15 @@ public:
     PropertyLinkSubListGlobal() {_pcScope = LinkScope::Global;};
 };
 
+/** The general Link Property that are hidden from dependency checking
+ */
+class AppExport PropertyLinkSubListHidden : public PropertyLinkSubList
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyLinkSubListHidden() {_pcScope = LinkScope::Hidden;};
+};
+
 /** Link to an (sub)object in the same or different document
  */
 class AppExport PropertyXLink : public PropertyLinkGlobal
@@ -467,8 +596,7 @@ public:
     void setValue(App::DocumentObject *) override;
     void setValue(App::DocumentObject *, const char *subname, bool relative);
     void setValue(const char *filePath, const char *objectName, const char *subname, bool relative);
-    const char *getSubName() const {return subName.c_str();}
-    const std::pair<std::string,std::string> &getShadowSubName() const {return shadowSub;}
+    const char *getSubName(bool newStyle=true) const;
     void setSubName(const char *subname, bool transaction=true);
     bool hasSubName() const {return !subName.empty();}
 
@@ -497,8 +625,11 @@ public:
     static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
 
-    void updateElementReference(DocumentObject *feature,bool reverse=false);
-    bool referenceChanged() const;
+    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
+    virtual bool referenceChanged() const override;
+
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
 protected:
     void unlink();

@@ -194,15 +194,14 @@ private:
 };
 
 
-/** Base class of all property lists.
- * The PropertyLists class is the base class for properties which can contain
- * multiple values, not only a single value. 
- * All property types which may contain more than one value inherits this class.
+/** Helper class to construct list like properties
+ *
+ * This class is not derived from Property so that we can have more that one
+ * base class for list like properties, e.g. see PropertyList, and
+ * PropertyLinkListBase
  */
-class AppExport PropertyLists : public Property
+class AppExport PropertyListsBase
 {
-    TYPESYSTEM_HEADER();
-
 public:
     virtual void setSize(int newSize)=0;   
     virtual int getSize(void) const =0;   
@@ -215,8 +214,6 @@ public:
         _touchList.clear();
     }
 
-    virtual void setPyObject(PyObject *) override;
-
 protected:
     virtual void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) {
         (void)vals;
@@ -224,20 +221,35 @@ protected:
         throw Base::NotImplementedError("not implemented");
     }
 
+    void _setPyObject(PyObject *);
+
 protected:
     std::set<int> _touchList;
 };
 
+/** Base class of all property lists.
+ * The PropertyLists class is the base class for properties which can contain
+ * multiple values, not only a single value. 
+ * All property types which may contain more than one value inherits this class.
+ */
+class AppExport PropertyLists : public Property, public PropertyListsBase
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual void setPyObject(PyObject *obj) override {
+        _setPyObject(obj);
+    }
+};
+
+
 /** Helper class to implement PropertyLists */
-template<class T, class ListT = std::vector<T> >
-class PropertyListsT: public PropertyLists
+template<class T, class ListT = std::vector<T>, class ParentT = PropertyLists >
+class PropertyListsT: public ParentT
 {
 public:
     typedef typename ListT::const_reference const_reference;
     typedef ListT list_type;
-
-    // To make it possible to call ADD_PROPERTY_XXX macros without default value
-    void setValue (void){}
+    typedef ParentT parent_type;
 
     virtual void setSize(int newSize, const_reference def) {
         _lValueList.resize(newSize,def);
@@ -257,14 +269,14 @@ public:
         setValues(vals);
     }
 
-    virtual void setValues(const ListT &newValues) {
-        aboutToSetValue();
-        _touchList.clear();
-        _lValueList = newValues;
-        hasSetValue();
+    virtual void setValues(const ListT &newValues = ListT()) {
+        this->aboutToSetValue();
+        this->_touchList.clear();
+        this->_lValueList = newValues;
+        this->hasSetValue();
     }
 
-    void setValue(const ListT &newValues) {
+    void setValue(const ListT &newValues = ListT()) {
         setValues(newValues);
     }
 
@@ -280,7 +292,7 @@ public:
             setValue(getPyValue(value));
             return;
         }catch(...){}
-        PropertyLists::setPyObject(value);
+        parent_type::setPyObject(value);
     }
 
 protected:
@@ -297,16 +309,16 @@ protected:
         if(index<-1 || index>size)
             throw Base::RuntimeError("index out of bound");
         if(touch)
-            aboutToSetValue();
+            this->aboutToSetValue();
         if(index==-1 || index == size) {
             index = size;
             setSize(index+1,value);
         }else
             _lValueList[index] = value;
-        _touchList.insert(index);
+        this->_touchList.insert(index);
         if(touch) {
-            hasSetValue();
-            _touchList.clear();
+            this->hasSetValue();
+            this->_touchList.clear();
         }
     }
 
