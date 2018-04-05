@@ -440,22 +440,30 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
     Base::Console().Message("Start: VTK mesh builder ======================\n");
     SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(mesh->getSMesh());
     SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
-    const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
 
-    //start with the nodes
+    // nodes
+    Base::Console().Message("  Start: VTK mesh builder nodes.\n");
+
     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
     SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
 
-    points->SetNumberOfPoints(info.NbNodes());
-    for(; aNodeIter->more(); ) {
+    while (aNodeIter->more()) {
         const SMDS_MeshNode* node = aNodeIter->next();  // why float, not double?
         double coords[3] = {double(node->X()*scale), double(node->Y()*scale), double(node->Z()*scale)};
-        points->SetPoint(node->GetID()-1, coords);
+        points->InsertPoint(node->GetID()-1, coords);  // memory is allocated by VTK points size = max node id, points will be insterted in SMESH point gaps too
     }
     grid->SetPoints(points);
+    // nodes debugging
+    const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
+    Base::Console().Message("    Size of nodes in SMESH grid: %i.\n", info.NbNodes());
+    const vtkIdType nNodes = grid->GetNumberOfPoints();
+    Base::Console().Message("    Size of nodes in VTK grid: %i.\n", nNodes);
+    Base::Console().Message("  End: VTK mesh builder nodes.\n");
+
     // faces
     SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
     exportFemMeshFaces(grid, aFaceIter);
+
     // volumes
     SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
     exportFemMeshCells(grid, aVolIter);
@@ -473,6 +481,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid);
     //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
+    Base::Console().Message("Start: writeing mesh data ======================\n");
     if(f.hasExtension("vtu")){
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
     }
@@ -846,7 +855,7 @@ void _exportResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             if(nPoints != field->getSize())
-                Base::Console().Error("PropertyVectorList->getSize() = %d, not equal to mesh point number \n", field->getSize());
+                Base::Console().Error("PropertyVectorList->getSize() = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             data->SetNumberOfComponents(dim);
             data->SetNumberOfTuples(vel.size());
             data->SetName(kv.second.c_str());  // kv.first may be a better name, without space
