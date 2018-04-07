@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QButtonGroup>
+#endif
 
 #include <Interface_Static.hxx>
 
