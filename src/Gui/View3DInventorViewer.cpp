@@ -675,6 +675,8 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         if(index >= 0) {
             SoSelectionElementAction action(SoSelectionElementAction::None,true);
             action.apply(it->second);
+            SoHighlightElementAction haction;
+            haction.apply(it->second);
             pcGroup->removeChild(index);
         }
         FC_LOG("remove annoation " << Reason.Type << " " << key);

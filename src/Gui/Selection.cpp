@@ -913,10 +913,13 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
         return false;
     if(!pSubName)
         pSubName = "";
-    if(show && DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
-        SelectionChanges Chng(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
+        if(show) {
+            SelectionChanges Chng(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName);
+            Notify(Chng);
+            signalSelectionChanged(Chng);
+        }else
+            rmvPreselect();
     }
     auto pDoc = getDocument(pDocName);
     if(!pDoc) return false;
