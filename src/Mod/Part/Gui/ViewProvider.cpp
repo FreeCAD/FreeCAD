@@ -126,7 +126,7 @@ void ViewProviderPart::updateViewColorAndTransparency() {
 	
 	//=============
 	printf("void ViewProviderPart::updateData(const App::Property* prop) objet : %s\n", objPart->Label.getValue());
-	printBacktrace();
+	// printBacktrace();
 	//=============
 	
 	if (!objPart  || !objPart->isDerivedPart() || usePartColors()) {
