@@ -529,7 +529,7 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel,
     const char *subname = sel.SubName.c_str();
     if(resolve) {
         obj = sel.pResolvedObject;
-        if(resolve>1)
+        if(resolve>1 && sel.elementName.first.size())
             subname = sel.elementName.first.c_str();
         else
             subname = sel.elementName.second.c_str();
