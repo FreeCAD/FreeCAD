@@ -163,7 +163,7 @@ bool ViewProviderBody::doubleClicked(void)
         auto* part = App::Part::getPartOfObject ( getObject() );
         if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
             Gui::Command::doCommand(Gui::Command::Gui,
-                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s','%s')",
+                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
                     PARTKEY, Gui::Command::getObjectCmd(part).c_str());
         }
 
