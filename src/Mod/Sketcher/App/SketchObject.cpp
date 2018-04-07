@@ -5124,12 +5124,13 @@ void SketchObject::validateExternalLinks(void)
 {
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    const auto &shadows = ExternalGeometry.getShadowSubs();
 
     bool rebuild = false;
     
-    for (int i=0; i < int(Objects.size()); i++) {
+    for (int i=0,j=0; i < int(Objects.size()); i++,j++) {
         const App::DocumentObject *Obj=Objects[i];
-        const std::string SubElement=SubElements[i];
+        const std::string &SubElement=shadows[j].first.size()?shadows[j].first:SubElements[i];
 
         TopoDS_Shape refSubShape;
         try {
@@ -5190,6 +5191,7 @@ void SketchObject::rebuildExternalGeometry(void)
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    const auto &shadows = ExternalGeometry.getShadowSubs();
 
     Base::Placement Plm = Placement.getValue();
     Base::Vector3d Pos = Plm.getPosition();
@@ -5241,7 +5243,7 @@ void SketchObject::rebuildExternalGeometry(void)
 
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
-        const std::string SubElement=SubElements[i];        
+        const std::string &SubElement=shadows[i].first.size()?shadows[i].first:SubElements[i];        
 
         TopoDS_Shape refSubShape;
 
