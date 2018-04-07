@@ -30,6 +30,7 @@
 # include <Geom_Plane.hxx>
 # include <Precision.hxx>
 # include <QMessageBox>
+# include <QAction>
 # include <QRegExp>
 # include <QTextStream>
 # include <TopoDS.hxx>
