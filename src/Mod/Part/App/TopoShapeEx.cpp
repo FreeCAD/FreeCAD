@@ -223,10 +223,11 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
 void TopoShape::mapSubElement(TopAbs_ShapeEnum type, const TopoShape &other,
         const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll, bool appendTag)
 {
-    if(!otherMap.Extent() || !canMapElement(other)) 
+    if(!canMapElement(other)) 
         return;
     TopTools_IndexedMapOfShape shapeMap;
-    TopExp::MapShapes(_Shape, type, shapeMap);
+    if(otherMap.Extent())
+        TopExp::MapShapes(_Shape, type, shapeMap);
     mapSubElement(type,shapeMap,other,otherMap,op,mapAll,appendTag);
 }
 
@@ -234,10 +235,11 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
         const TopTools_IndexedMapOfShape &shapeMap, 
         const TopoShape &other, const char *op, bool mapAll,bool appendTag)
 {
-    if(!shapeMap.Extent() || !canMapElement(other)) 
+    if(!canMapElement(other)) 
         return;
     TopTools_IndexedMapOfShape otherMap;
-    TopExp::MapShapes(other._Shape, type, otherMap);
+    if(shapeMap.Extent())
+        TopExp::MapShapes(other._Shape, type, otherMap);
     mapSubElement(type,shapeMap,other,otherMap,op,mapAll,appendTag);
 }
 
@@ -245,44 +247,45 @@ void TopoShape::mapSubElement(TopAbs_ShapeEnum type,
         const TopTools_IndexedMapOfShape &shapeMap, const TopoShape &other, 
         const TopTools_IndexedMapOfShape &otherMap, const char *op, bool mapAll, bool appendTag)
 {
-    if(!shapeMap.Extent() || !otherMap.Extent() || !canMapElement(other)) 
+    if(!canMapElement(other))
         return;
-
-    switch(type) {
-    case TopAbs_EDGE:
-    case TopAbs_VERTEX:
-    case TopAbs_FACE:
-        break;
-    default:
-        Standard_Failure::Raise("invlaid shape type");
-        return;
-    }
-    if(other.Hasher) {
-        if(Hasher) {
-            if(other.Hasher!=Hasher)
-                throw Base::RuntimeError("hasher mismatch");
-        }else
-            Hasher = other.Hasher;
-    }
-    const char *shapetype = shapeName(type).c_str();
-    std::ostringstream ss;
-    for(int i=1;i<=otherMap.Extent();++i) {
-        auto shape = otherMap.FindKey(i);
-        int idx = shapeMap.FindIndex(shape);
-        if(!idx) continue;
-        ss.str("");
-        ss << shapetype << idx;
-        std::string element = ss.str();
-        ss.str("");
-        ss << shapetype << i;
-        for(auto &v : other.getElementMappedNames(ss.str().c_str(),true)) {
-            auto &name = v.first;
-            auto &sids = v.second;
-            if(sids.size() && !other.Hasher) 
-                throw Base::RuntimeError("missing hasher");
+    if(shapeMap.Extent() && otherMap.Extent()) {
+        switch(type) {
+        case TopAbs_EDGE:
+        case TopAbs_VERTEX:
+        case TopAbs_FACE:
+            break;
+        default:
+            Standard_Failure::Raise("invlaid shape type");
+            return;
+        }
+        if(other.Hasher) {
+            if(Hasher) {
+                if(other.Hasher!=Hasher)
+                    throw Base::RuntimeError("hasher mismatch");
+            }else
+                Hasher = other.Hasher;
+        }
+        const char *shapetype = shapeName(type).c_str();
+        std::ostringstream ss;
+        for(int i=1;i<=otherMap.Extent();++i) {
+            auto shape = otherMap.FindKey(i);
+            int idx = shapeMap.FindIndex(shape);
+            if(!idx) continue;
             ss.str("");
-            processName(name,ss,sids,op,appendTag,other.Tag,true);
-            setElementName(element.c_str(),name.c_str(),ss.str().c_str(),&sids);
+            ss << shapetype << idx;
+            std::string element = ss.str();
+            ss.str("");
+            ss << shapetype << i;
+            for(auto &v : other.getElementMappedNames(ss.str().c_str(),true)) {
+                auto &name = v.first;
+                auto &sids = v.second;
+                if(sids.size() && !other.Hasher) 
+                    throw Base::RuntimeError("missing hasher");
+                ss.str("");
+                processName(name,ss,sids,op,appendTag,other.Tag,true);
+                setElementName(element.c_str(),name.c_str(),ss.str().c_str(),&sids);
+            }
         }
     }
     if(mapAll) {
