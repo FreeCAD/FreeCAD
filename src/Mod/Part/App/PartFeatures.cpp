@@ -698,7 +698,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         return new App::DocumentObjectExecReturn("Invalid source shape");
     if(base.countSubShapes(TopAbs_SOLID)!=1)
         return new App::DocumentObjectExecReturn("Source shape is not single solid.");
-    for(auto &sub : Faces.getSubValues()) {
+    for(auto &sub : Faces.getSubValues(true)) {
         shapes.push_back(base.getSubTopoShape(sub.c_str()));
         if(shapes.back().getShape().ShapeType()!=TopAbs_FACE)
             return new App::DocumentObjectExecReturn("Invalid face selection");
