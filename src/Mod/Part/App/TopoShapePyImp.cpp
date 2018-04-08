@@ -3125,20 +3125,8 @@ PyObject *TopoShapePy::mapSubElement(PyObject *args) {
 PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
 {
     if (!attr) return 0;
-    std::string name;
-    if(!boost::starts_with(attr,"__"))
-        name = attr;
-    else{
-        std::string _name(attr);
-        boost::replace_all(_name,"__H","_#");
-        boost::replace_all(_name,"__",Data::ComplexGeoData::elementMapPrefix());
-        auto *mapped = getTopoShapePtr()->getElementName(_name.c_str());
-        if(mapped==_name.c_str())
-            return 0;
-        name = mapped;
-    }
     try {
-        return getTopoShapePtr()->getPySubShape(name.c_str());
+        return getTopoShapePtr()->getPySubShape(attr);
     }catch(...){}
     return 0;
 }
