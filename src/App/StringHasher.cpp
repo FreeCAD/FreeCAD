@@ -55,6 +55,12 @@ std::string StringID::toString() const {
     return ss.str();
 }
 
+std::string StringID::dataToText() const {
+    if(isHashed() || isBinary())
+        return _data.toBase64().constData();
+    return _data.constData();
+}
+
 ///////////////////////////////////////////////////////////
 //
 namespace boost {
@@ -167,7 +173,7 @@ void StringHasher::Save(Base::Writer &writer) const {
             else if(v.info->isBinary())
                 writer.Stream() <<"<Item data=\""<< v.second.toBase64().constData();
             else
-                writer.Stream() <<"<Item text=\""<< encodeAttribute(v.info->data().constData());
+                writer.Stream() <<"<Item text=\""<< encodeAttribute(v.second.constData());
             writer.Stream() << "\" id=\""<<v.first<<"\"/>" << std::endl;
         }
     }

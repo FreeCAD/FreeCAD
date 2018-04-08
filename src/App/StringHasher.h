@@ -44,6 +44,7 @@ public:
     bool isHashed() const {return _hashed;}
     virtual PyObject *getPyObject() override;
     std::string toString() const;
+    std::string dataToText() const;
 private:
     long _id;
     QByteArray _data;
