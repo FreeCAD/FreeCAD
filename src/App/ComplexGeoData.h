@@ -179,14 +179,16 @@ public:
     /** Get element name
      *
      * @param name: the input name
-     * @param reverse: if false (default), the function try to map the name
-     * to the original \c Type + \c Index. If true, then the function map the
-     * other way round.
+     * @param direction: if 0 (default), the function try to map the name
+     * to the original \c Type + \c Index. If 1, then the function map the
+     * other way round but demands the name starts with elementMapPrefix(). 
+     * If 2, then same as 1 except the name can either start with
+     * elementMapPrefix() or not.
      *
      * @return Returns the found mapping, or else return the original input. The
      * return pointer maybe invalidated when new element mapping is added.
      */
-    const char *getElementName(const char *name, bool reverse=false, 
+    const char *getElementName(const char *name, int direction=0, 
             std::vector<App::StringIDRef> *sid=0) const;
 
     /** Get mapped element names with a given prefix */

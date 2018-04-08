@@ -210,13 +210,13 @@ size_t ComplexGeoData::getElementMapSize() const {
     return _ElementMap?_ElementMap->size():0;
 }
 
-const char *ComplexGeoData::getElementName(const char *name, bool reverse, 
+const char *ComplexGeoData::getElementName(const char *name, int direction, 
         std::vector<App::StringIDRef> *sid) const 
 {
     if(!name || !_ElementMap) 
         return name;
 
-    if(reverse) {
+    if(direction==1) {
         auto it = _ElementMap->right.find(name);
         if(it == _ElementMap->right.end())
             return name;
@@ -224,8 +224,11 @@ const char *ComplexGeoData::getElementName(const char *name, bool reverse,
         return it->second.c_str();
     }
     const char *txt = isMappedElement(name);
-    if(!txt) 
-        return name;
+    if(!txt) {
+        if(direction==0)
+            return name;
+        txt = name;
+    }
     std::string _txt;
     // Strip out the trailing '.XXXX' if any
     const char *dot = strchr(txt,'.');

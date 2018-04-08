@@ -87,10 +87,10 @@ PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
 PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
 {
     char* input;
-    PyObject *reverse = Py_False;
-    if (!PyArg_ParseTuple(args, "s|O", &input,&reverse))
+    int direction = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &input,&direction))
         return NULL;
-    const char *ret = getComplexGeoDataPtr()->getElementName(input,PyObject_IsTrue(reverse));
+    const char *ret = getComplexGeoDataPtr()->getElementName(input,direction);
     return Py::new_reference_to(Py::String(ret));
 }
 

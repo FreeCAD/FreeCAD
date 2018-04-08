@@ -37,7 +37,7 @@ to one element
     </Methode>
     <Methode Name="getElementName" Const="true">
       <Documentation>
-          <UserDocu>getElementName(name,reverse=False) - Return a mapped element name or reverse</UserDocu>
+          <UserDocu>getElementName(name,direction=0) - Return a mapped element name or reverse</UserDocu>
       </Documentation>
     </Methode>
       <Attribute Name="BoundBox" ReadOnly="true">
