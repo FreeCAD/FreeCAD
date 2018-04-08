@@ -187,11 +187,6 @@ FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
 using namespace Part;
 
-namespace Part {
-    PartExport std::list<TopoDS_Edge> sort_Edges2(double tol3d, std::list<TopoDS_Edge>& edges,
-            std::deque<int> *hashes);
-}
-
 #define _HANDLE_NULL_SHAPE(_msg,_throw) do {\
     if(_throw) {\
         FC_ERR(_msg);\
@@ -1450,42 +1445,56 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
     return makECompound(wires,false,op,false);
 #else
     (void)fix;
-    std::list<TopoDS_Edge> edgeList;
-    std::map<int,std::string> refMap;
-
-    std::map<int,TopoShape> edgeMap;
-    for(auto &edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
-        edgeList.push_back(TopoDS::Edge(edge.getShape()));
-        edgeMap[edge.getShape().HashCode(INT_MAX)] = edge;
-    }
-
-    if(edgeList.empty())
-        HANDLE_NULL_SHAPE;
-
+    std::vector<TopoShape> edges;
+    std::list<TopoShape> edge_list;
     std::vector<TopoShape> wires;
-    std::vector<TopoShape> sourceEdges;
-    std::deque<int> hashes;
-    while(edgeList.size()) {
+
+    for(auto &e : shape.getSubTopoShapes(TopAbs_EDGE))
+        edge_list.push_back(e);
+
+    edges.reserve(edge_list.size());
+    wires.reserve(edge_list.size());
+
+    // sort them together to wires
+    while (edge_list.size() > 0) {
         BRepBuilderAPI_MakeWire mkWire;
-        hashes.clear();
-        auto edges = Part::sort_Edges2(tol,edgeList,&hashes);
-        auto hit = hashes.begin();
-        sourceEdges.clear();
-        sourceEdges.reserve(edges.size());
-        for(auto &edge : edges){
-            mkWire.Add(edge);
-            auto e = mkWire.Edge();
-            auto hash = *hit++;
-            auto it = edgeMap.find(hash);
-            assert(it!=edgeMap.end());
-            // sort_Edge2 may rebuild the edge to reverse the orientation, we
-            // swap the edge to save the need for name remapping
-            it->second._Shape = e;
-            sourceEdges.push_back(it->second);
-        }
-        wires.push_back(TopoShape(mkWire.Wire()));
-        auto &wire = wires.back();
-        wire.mapSubElement(TopAbs_EDGE,sourceEdges,op,true,false);
+        // add and erase first edge
+        edges.push_back(edge_list.front());
+        edge_list.pop_front();
+        mkWire.Add(TopoDS::Edge(edges.back().getShape()));
+        edges.back().setShape(mkWire.Edge(),false);
+
+        TopoDS_Wire new_wire = mkWire.Wire(); // current new wire
+
+        // try to connect each edge to the wire, the wire is complete if no more edges are connectible
+        bool found = false;
+        do {
+            found = false;
+            for (auto it=edge_list.begin();it!=edge_list.end();++it) {
+                mkWire.Add(TopoDS::Edge(it->getShape()));
+                if (mkWire.Error() != BRepBuilderAPI_DisconnectedWire) {
+                    // edge added ==> remove it from list
+                    found = true;
+                    edges.push_back(*it);
+                    edges.back().setShape(mkWire.Edge(),false);
+                    edge_list.erase(it);
+                    new_wire = mkWire.Wire();
+                    break;
+                }
+            }
+        } while (found);
+
+        wires.push_back(new_wire);
+        wires.back().mapSubElement(TopAbs_EDGE,edges,op);
+
+        // Fix any topological issues of the wire
+        ShapeFix_Wire aFix;
+        aFix.SetPrecision(tol);
+        aFix.Load(new_wire);
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        wires.back().setShape(aFix.Wire(),false);
     }
     return makECompound(wires,false,0,false);
 #endif
