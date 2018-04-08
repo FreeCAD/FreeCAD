@@ -33,6 +33,7 @@
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <map>
+#include <Mod/Part/App/PartFeature.h>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -90,6 +91,11 @@ public:
     // Faces (Gui::ViewProviderGeometryObject::ShapeColor and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
     App::PropertyColorList DiffuseColor;    
 
+    App::PropertyColorList MappedColors;    
+    App::PropertyBool MapFaceColor;    
+    App::PropertyBool MapLineColor;    
+    App::PropertyBool MapPointColor;    
+
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
@@ -98,6 +104,8 @@ public:
     void reload();
 
     virtual void updateData(const App::Property*);
+
+    virtual PyObject *getPyObject() override;
 
     /** @name Selection handling
      * This group of methods do the selection handling.
@@ -126,6 +134,8 @@ public:
     void unsetHighlightedEdges();
     void setHighlightedPoints(const std::vector<App::Color>& colors);
     void unsetHighlightedPoints();
+    void setElementColors(const std::map<std::string,App::Color> &colors);
+    std::map<std::string,App::Color> getElementColors() const;
     //@}
 
     virtual bool isUpdateForced() const override {
@@ -136,6 +146,7 @@ public:
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
+    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
@@ -148,6 +159,8 @@ protected:
     void updateVisual(const TopoDS_Shape &);
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
                     TColgp_Array1OfDir& theNormals);
+
+    void updateColors(Part::Feature *feature);
 
     // nodes for the data representation
     SoMaterialBinding * pcFaceBind;
@@ -168,6 +181,9 @@ protected:
 
     bool VisualTouched;
     bool NormalsFromUV;
+
+private:
+    App::Color getElementColor(App::Color color, int type, long tag, const char *original) const;
 
 private:
     // settings stuff

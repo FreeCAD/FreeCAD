@@ -97,6 +97,8 @@
 # include <QMenu>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -106,22 +108,26 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
+#include <Gui/Application.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
 #include <Gui/Control.h>
+#include <Gui/ViewProviderLink.h>
 
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
+#include "TaskElementColors.h"
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
+#include "ViewProviderPartExtPy.h"
 
 using namespace PartGui;
 
@@ -269,6 +275,13 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(DrawStyle,((long int)0));
     DrawStyle.setEnums(DrawStyleEnums);
 
+    ADD_PROPERTY_TYPE(MappedColors,(),"",
+            (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly),"");
+
+    ADD_PROPERTY(MapFaceColor,(hPart->GetBool("MapFaceColor",true)));
+    ADD_PROPERTY(MapLineColor,(hPart->GetBool("MapLineColor",false)));
+    ADD_PROPERTY(MapPointColor,(hPart->GetBool("MapPointColor",false)));
+
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
@@ -342,6 +355,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
+    if (prop == &MappedColors) {
+        if(!prop->testStatus(App::Property::User3))
+            updateColors(feature);
+        ViewProviderGeometryObject::onChanged(prop);
+        return;
+    }
     if (prop == &Deviation) {
         if((isUpdateForced()||Visibility.getValue()) && feature && !feature->Shape.getValue().IsNull()) 
             updateVisual(feature->Shape.getValue());
@@ -454,7 +473,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
             updateVisual(feature->Shape.getValue());
             // The material has to be checked again (#0001736)
-            onChanged(&DiffuseColor);
+            // onChanged(&DiffuseColor);
         }
     }
 
@@ -724,6 +743,49 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
     }
 }
 
+std::map<std::string,App::Color> ViewProviderPartExt::getElementColors() const {
+    std::map<std::string,App::Color> ret;
+    auto obj = dynamic_cast<Part::Feature*>(getObject());
+    if(!obj)
+        return ret;
+    const auto &subs = obj->ColoredElements.getSubValues();
+    const auto &colors = MappedColors.getValues();
+    if(subs.size()!=colors.size())
+        return ret;
+    for(size_t i=0;i<subs.size();++i)
+        ret.emplace(subs[i],colors[i]);
+    return ret;
+}
+
+void ViewProviderPartExt::setElementColors(
+        const std::map<std::string,App::Color> &info) 
+{
+    auto obj = dynamic_cast<Part::Feature*>(getObject());
+    if(!obj)
+        return;
+    std::vector<App::Color> colors;
+    std::vector<std::string> subs;
+    colors.reserve(info.size());
+    subs.reserve(info.size());
+    for(auto &v : info) {
+        subs.push_back(v.first);
+        colors.push_back(v.second);
+    }
+    bool touched = false;
+    if(colors!=MappedColors.getValues()) {
+        touched = true;
+        MappedColors.setStatus(App::Property::User3,true);
+        MappedColors.setValues(colors);
+        MappedColors.setStatus(App::Property::User3,false);
+    }
+    if(subs.empty())
+        obj->ColoredElements.setValue(0);
+    else if(subs!=obj->ColoredElements.getSubValues())
+        obj->ColoredElements.setValue(obj,subs);
+    else if(touched)
+        updateColors(obj);
+}
+
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
     DiffuseColor.touch();
@@ -769,7 +831,7 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
 {
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-#ifdef FC_DEBUG
+#if 0
         int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
         if (numPoints != size) {
             SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
@@ -822,8 +884,191 @@ void ViewProviderPartExt::reload()
     }
 }
 
+struct ColorInfo {
+    TopAbs_ShapeEnum type;
+    App::PropertyColorList *prop;
+    App::Color defaultColor;
+    std::map<int,App::Color> colors;
+    bool mapColor;
+
+    void init(TopAbs_ShapeEnum t, ViewProviderPartExt *vp) {
+        type = t;
+        switch(type) {
+        case TopAbs_VERTEX:
+            defaultColor = vp->PointColor.getValue();
+            prop = &vp->PointColorArray;
+            mapColor = vp->MapPointColor.getValue();
+            break;
+        case TopAbs_EDGE:
+            defaultColor = vp->LineColor.getValue();
+            prop = &vp->LineColorArray;
+            mapColor = vp->MapLineColor.getValue();
+            break;
+        case TopAbs_FACE:
+            defaultColor = vp->ShapeColor.getValue();
+            prop = &vp->DiffuseColor;
+            mapColor = vp->MapFaceColor.getValue();
+            break;
+        default:
+            assert(0);
+        }
+    }
+};
+
+App::Color ViewProviderPartExt::getElementColor(App::Color color, 
+        int type, long tag, const char *original) const
+{
+    auto obj = getObject()->getDocument()->getObjectByID(tag);
+    if(!obj)
+        return color;
+    for(int depth=0;;++depth) {
+        auto linked = obj->getLinkedObject(false,0,false,depth);
+        if(!linked || linked==obj)
+            break;
+        auto vp = dynamic_cast<Gui::ViewProviderLink*>(
+                Gui::Application::Instance->getViewProvider(linked));
+        if(vp && vp->OverrideMaterial.getValue())
+            return vp->ShapeMaterial.getValue().diffuseColor;
+        obj = linked;
+    }
+    auto vp = dynamic_cast<ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(obj));
+    if(!vp)
+        return color;
+    auto prop = &vp->DiffuseColor;
+    if(type == TopAbs_VERTEX) {
+        prop = &vp->PointColorArray;
+        color = vp->PointColor.getValue();
+    }else if(type == TopAbs_EDGE){
+        prop = &vp->LineColorArray;
+        color = vp->LineColor.getValue();
+    }else
+        color = vp->ShapeColor.getValue();
+    if(prop->getSize()==1)
+        return prop->getValue()[0];
+    else if(prop->getSize()==0)
+        return color;
+
+    if(!original || !original[0])
+        return color;
+
+    auto feature = dynamic_cast<App::GeoFeature*>(vp->getObject());
+    if(feature && feature->getPropertyOfGeometry()) {
+        auto geo = feature->getPropertyOfGeometry()->getComplexData();
+        if(geo) {
+            auto element = geo->getElementName(original,2);
+            auto idx = Part::TopoShape::shapeTypeAndIndex(element);
+            if(idx.first==type && idx.second > 0 && idx.second<=prop->getSize())
+                color = prop->getValues()[idx.second-1];
+        }
+    }
+    return color;
+}
+
+void ViewProviderPartExt::updateColors(Part::Feature *feature) {
+    if(!feature || feature->ColoredElements.getSubValues().size()!=(size_t)MappedColors.getSize())
+        return;
+
+    auto subs = feature->ColoredElements.getShadowSubs();
+    auto shape = feature->Shape.getShape();
+    if(shape.isNull())
+        return;
+
+    std::map<TopAbs_ShapeEnum,ColorInfo> infos;
+    infos[TopAbs_VERTEX].init(TopAbs_VERTEX,this);
+    infos[TopAbs_EDGE].init(TopAbs_EDGE,this);
+    infos[TopAbs_FACE].init(TopAbs_FACE,this);
+
+    std::set<std::string> subMap;
+    for(auto &v : subs) {
+        if(v.first.size())
+            subMap.insert(v.first);
+    }
+    int i=-1;
+    for(auto &v : subs) {
+        ++i;
+        auto &sub = v.first.size()?v.first:v.second;
+        auto element = v.first.size()?shape.getElementName(sub.c_str()):v.second.c_str();
+        auto idx = shape.shapeTypeAndIndex(element);
+        if(idx.second) {
+            infos[idx.first].colors[idx.second-1] = MappedColors[i];
+            continue;
+        }else if(v.first.empty())
+            continue;
+
+        auto type = shape.shapeType(v.second.c_str());
+        auto typeName = shape.shapeName(type);
+        for(auto &names : shape.getElementNamesWithPrefix((sub+shape.modPostfix()).c_str())) {
+            if(!boost::starts_with(names.second,typeName) || subMap.find(names.first)!=subMap.end())
+                continue;
+            auto idx = atoi(names.second.c_str()+typeName.size());
+            if(idx>0)
+                infos[type].colors[idx-1] = MappedColors[i];
+        }
+    }
+    for(auto &v : infos) {
+        auto &info = v.second;
+        if(!info.mapColor) {
+            if(info.colors.empty())
+                info.prop->setValue(info.defaultColor);
+            else {
+                std::vector<App::Color> colors(
+                    shape.countSubShapes(info.type),info.defaultColor);
+                for(auto &v : info.colors) {
+                    if(v.first>=(int)colors.size())
+                        break;
+                    colors[v.first] = v.second;
+                }
+                info.prop->setValue(colors);
+            }
+            continue;
+        }
+        int count = shape.countSubShapes(info.type);
+        bool touched = false;
+        std::vector<App::Color> colors(count,info.defaultColor);
+        auto it = info.colors.begin();
+        auto typeName = shape.shapeName(info.type);
+        for(int i=0;i<count;++i) {
+            if(it!=info.colors.end() && i==it->first) {
+                if(colors[i]!=it->second) {
+                    touched = true;
+                    colors[i] = it->second;
+                }
+                ++it;
+                continue;
+            }
+            std::string element(typeName);
+            element += std::to_string(i+1);
+            auto mapped = shape.getElementName(element.c_str(),true);
+            if(mapped == element.c_str())
+                continue;
+            std::string original;
+            long tag = shape.getElementHistory(mapped,&original);
+            if(!tag)
+                continue;
+            auto color = getElementColor(info.defaultColor,info.type,tag,original.c_str());
+            if(color != colors[i]) {
+                touched = true;
+                colors[i] = color;
+            }
+        }
+        if(!touched) {
+            colors.clear();
+            colors.push_back(info.defaultColor);
+        }
+        info.prop->setValue(colors);
+    }
+}
+
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
+    auto feature = dynamic_cast<Part::Feature*>(getObject());
+    if(feature) {
+        if(!isRestoring() && prop==&feature->ColoredElements) {
+            updateColors(feature);
+            return;
+        }
+    }
+
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         // get the shape to show
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
@@ -831,8 +1076,10 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         // calculate the visual only if visible
         if (isUpdateForced()||Visibility.getValue())
             updateVisual(cShape);
-        else
+        else {
             VisualTouched = true;
+            updateColors(feature);
+        }
 
         if (!VisualTouched) {
             if (this->faceset->partIndex.getNum() > 
@@ -851,6 +1098,13 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
+void ViewProviderPartExt::setEditViewer(Gui::View3DInventorViewer *viewer, int ModNum) {
+    if (ModNum == ViewProvider::Color)
+        Gui::Control().showDialog(new TaskElementColors(this));
+    else
+        Gui::ViewProviderGeometryObject::setEditViewer(viewer,ModNum);
+}
+
 bool ViewProviderPartExt::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
@@ -864,7 +1118,11 @@ bool ViewProviderPartExt::setEdit(int ModNum)
         }
 
         Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskFaceColors(this));
+
+        // TaskFaceColors is replaced by TaskElementColors, and is inited in 
+        // setEditViewer() in order to handle editing context
+        //
+        // Gui::Control().showDialog(new TaskFaceColors(this));
         return true;
     }
     else {
@@ -1226,6 +1484,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   endif
     VisualTouched = false;
+    updateColors(dynamic_cast<Part::Feature*>(getObject()));
 }
 
 void ViewProviderPartExt::forceUpdate(bool enable) {
@@ -1236,5 +1495,14 @@ void ViewProviderPartExt::forceUpdate(bool enable) {
         }
     }else if(forceUpdateCount)
         --forceUpdateCount;
+}
+
+
+PyObject* ViewProviderPartExt::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderPartExtPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 

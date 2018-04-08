@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="ViewProviderDocumentObjectPy"
+    Name="ViewProviderPartExtPy"
+    Twin="ViewProviderPartExt"
+    TwinPointer="ViewProviderPartExt"
+    Include="Mod/Part/Gui/ViewProviderExt.h"
+    Namespace="PartGui"
+    FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+    FatherNamespace="Gui">
+    <Documentation>
+      <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+      <UserDocu>This is the father of all Part ViewProvider classes</UserDocu>
+    </Documentation>
+    <Attribute Name="ElementColors">
+        <Documentation>
+            <UserDocu>Set/get element colors as a dict(name:color)</UserDocu>
+        </Documentation>
+		<Parameter Name="ElementColors" Type="Dict" />
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

@@ -74,6 +74,10 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature(void) 
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
+    ADD_PROPERTY(ColoredElements, (0));
+    ColoredElements.setStatus(App::Property::Hidden,true);
+    ColoredElements.setStatus(App::Property::Immutable,true);
+    ColoredElements.setStatus(App::Property::Output,true);
 }
 
 Feature::~Feature()
