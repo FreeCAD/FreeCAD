@@ -2499,3 +2499,13 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
     mkDraft.Build();
     return makEShape(mkDraft,shape,op,appendTag);
 }
+
+std::vector<std::pair<std::string,std::string> > TopoShape::getRelatedElements(const std::string &name, bool both) const {
+    auto res = getElementNamesWithPrefix((name+Part::TopoShape::modPostfix()).c_str());
+    if(res.empty() && both) {
+        auto pos = name.rfind(Part::TopoShape::modPostfix());
+        if(pos!=std::string::npos)
+            res = getElementNamesWithPrefix(name.substr(0,pos).c_str());
+    }
+    return res;
+}

@@ -537,6 +537,9 @@ public:
         return !isNull() && other.canMapElement();
     }
 
+    std::vector<std::pair<std::string,std::string> > getRelatedElements(
+            const std::string &name, bool both=true) const;
+
     long getElementHistory(const std::string &name, 
             std::string *original=0, std::vector<std::string> *history=0) const;
 
