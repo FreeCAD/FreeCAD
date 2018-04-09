@@ -374,16 +374,8 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
 {
     // get all the DrawViews for this page, including the second level ones
     // if we ever have collections of collections, we'll need to revisit this
-    std::vector<App::DocumentObject*> pChildren  = m_vpPage->getDrawPage()->Views.getValues();
-    std::vector<App::DocumentObject*> appendChildren;
-    for (auto& pc: pChildren) {
-        if(pc->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-            TechDraw::DrawViewCollection *collect = dynamic_cast<TechDraw::DrawViewCollection *>(pc);
-            std::vector<App::DocumentObject*> cChildren = collect->Views.getValues();
-            appendChildren.insert(std::end(appendChildren), std::begin(cChildren), std::end(cChildren));
-        }
-    }
-    pChildren.insert(std::end(pChildren),std::begin(appendChildren),std::end(appendChildren));
+    DrawPage* thisPage = m_vpPage->getDrawPage();
+    std::vector<App::DocumentObject*> pChildren  = thisPage->getAllViews();
 
     // if dv doesn't have a graphic, make one
     for (auto& dv: pChildren) {
@@ -396,13 +388,18 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
         }
     }
     
-    // if qView doesn't have a Feature, delete it
+    // if qView doesn't have a Feature on this Page, delete it
     std::vector<QGIView*> qvs = m_view->getViews();
     App::Document* doc = getAppDocument();
     for (auto& qv: qvs) {
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
         if (obj == nullptr) {
             m_view->removeQView(qv);
+        } else {
+            DrawPage* pp = qv->getViewObject()->findParentPage(); 
+            if (thisPage != pp) {
+               m_view->removeQView(qv);
+            }
         }
     }
     
