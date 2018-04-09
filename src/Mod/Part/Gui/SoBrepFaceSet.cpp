@@ -760,13 +760,12 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
                 matIndex[ctx->highlightIndex] = packedColors.size()-1;
             }
         }else{
-            auto diffuseColor = ctx->highlightIndex==INT_MAX?ctx->highlightColor:diffuse[0];
-
+            auto diffuseColor = (ctx&&ctx->highlightIndex==INT_MAX)?ctx->highlightColor:diffuse[0];
             if(ctx2) {// for partial rendering
                 packedColors.push_back(diffuseColor.getPackedValue(1.0));
                 matIndex.resize(partIndex.getNum(),0);
 
-                if(mb == SoMaterialBindingElement::OVERALL || ctx->highlightIndex==INT_MAX) {
+                if(mb == SoMaterialBindingElement::OVERALL || (ctx&&ctx->highlightIndex==INT_MAX)) {
                     packedColors.push_back(diffuseColor.getPackedValue(trans0));
                     for(auto idx : ctx2->selectionIndex) {
                         if(idx>=0 && idx<partIndex.getNum())
@@ -782,7 +781,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
                         }
                     }
                 }
-            }else if(mb == SoMaterialBindingElement::OVERALL || ctx->highlightIndex==INT_MAX) {
+            }else if(mb == SoMaterialBindingElement::OVERALL || (ctx&&ctx->highlightIndex==INT_MAX)) {
                 packedColors.push_back(diffuseColor.getPackedValue(trans0));
                 matIndex.resize(partIndex.getNum(),0);
             }else{
