@@ -673,10 +673,13 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             return;
         int index = pcGroup->findChild(it->second);
         if(index >= 0) {
-            SoSelectionElementAction action(SoSelectionElementAction::None,true);
-            action.apply(it->second);
-            SoHighlightElementAction haction;
-            haction.apply(it->second);
+            if(Reason.Type==SelectionChanges::RmvSelection) {
+                SoSelectionElementAction action(SoSelectionElementAction::None,true);
+                action.apply(it->second);
+            } else {
+                SoHighlightElementAction haction;
+                haction.apply(it->second);
+            }
             pcGroup->removeChild(index);
         }
         FC_LOG("remove annoation " << Reason.Type << " " << key);
@@ -709,9 +712,11 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    if(Reason.Type == SelectionChanges::SetPreselect)
-        onTop = 2;
-    else if(!(onTop=svp->OnTopWhenSelected.getValue()))
+    if(Reason.Type == SelectionChanges::SetPreselect) {
+        onTop = svp->OnTopWhenSelected.getValue();
+        if(!onTop)
+            onTop = 2;
+    }else if(!(onTop=svp->OnTopWhenSelected.getValue()))
         return;
     if(onTop==2 || onTop==3) {
         if(subname && *subname) {
@@ -773,6 +778,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             SoTempPath tmpPath(path->getLength()+2);
             tmpPath.ref();
             tmpPath.append(pcGroupOnTop);
+            tmpPath.append(pcGroup);
             tmpPath.append(node);
             tmpPath.append(path);
             action.apply(&tmpPath);
