@@ -90,10 +90,6 @@ if (FREECAD_USE_PYBIND11)
 	MeshFlatteningNurbs.cpp
 	MeshFlatteningLscmRelax.h
 	MeshFlatteningLscmRelax.cpp
-    )
-
-    SET(FLATMESH_SRCS
-	${FLATMESH_SRCS}
 	MeshFlatteningPy.cpp
     )
 
