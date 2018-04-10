@@ -139,7 +139,7 @@ public:
         if(i>=0 && i<(int)colors.size())
             color = colors[i];
         else {
-            auto indexed_name = strrchr(sub,'.');
+            const char *indexed_name = strrchr(sub,'.');
             if(indexed_name)
                 ++indexed_name;
             else
