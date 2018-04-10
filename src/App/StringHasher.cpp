@@ -81,7 +81,7 @@ class StringHasher::HashMap: public HashMapBase
 {
 public:
     bool SaveAll = false;
-    int Threshold = 40;
+    int Threshold = 0;
 };
 
 ///////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ StringIDRef StringHasher::getID(const char *text, int len) {
 
 StringIDRef StringHasher::getID(QByteArray data, bool binary) {
     QByteArray hash;
-    bool hashed = _hashes->Threshold>=0 && (int)data.size()>_hashes->Threshold;
+    bool hashed = _hashes->Threshold>0 && (int)data.size()>_hashes->Threshold;
     if(hashed) {
         QCryptographicHash hasher(QCryptographicHash::Sha1);
         hasher.addData(data);
