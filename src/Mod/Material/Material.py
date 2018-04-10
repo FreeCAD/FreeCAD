@@ -56,7 +56,7 @@ def importFCMat(fileName):
     except ImportError:
         import configparser
 
-    Config = configparser.ConfigParser()
+    Config = configparser.RawConfigParser()
     Config.optionxform = str
     Config.read(fileName)
     dict1 = {}
@@ -75,7 +75,7 @@ def exportFCMat(fileName,matDict):
     except ImportError:
         import configparser
     import string
-    Config = configparser.ConfigParser()
+    Config = configparser.RawConfigParser()
 
     # create groups
     for x in matDict.keys():
