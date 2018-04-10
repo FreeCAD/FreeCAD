@@ -966,19 +966,21 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
 
     if(!pDocName) return;
 
-    size_t len = pSubName?std::strlen(pSubName):0;
+    _SelObj temp;
+    int ret = checkSelection(pDocName,pObjectName,pSubName,0,temp);
+    if(ret<0)
+        return;
 
     std::vector<SelectionChanges> changes;
     for(auto It=_SelList.begin(),ItNext=It;It!=_SelList.end();It=ItNext) {
         ++ItNext;
-        if(It->DocName != pDocName) continue;
-        // if no object name is specified, remove all objects
-        if(pObjectName && *pObjectName && It->FeatName!=pObjectName) continue;
+        if(It->DocName!=temp.DocName || It->FeatName!=temp.FeatName) 
+            continue;
         // if no subname is specified, remove all subobjects of the matching object
-        if(len) {
+        if(temp.SubName.size()) {
             // otherwise, match subojects with common prefix, separated by '.'
-            if(std::strncmp(It->SubName.c_str(),pSubName,len)!=0 ||
-               (It->SubName.length()!=len && It->SubName[len-1]!='.'))
+            if(!boost::starts_with(It->SubName,temp.SubName) ||
+               (It->SubName.length()!=temp.SubName.length() && It->SubName[temp.SubName.length()]!='.'))
                 continue;
         }
 
