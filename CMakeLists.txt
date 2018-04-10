@@ -589,6 +589,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_PCL)
     
 # -------------------------------- PyBind11 -----------------------------
+# necessary for flat-mesh feature
 OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
 if (FREECAD_USE_PYBIND11)
     find_package(pybind11 REQUIRED)
