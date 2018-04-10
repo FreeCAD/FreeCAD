@@ -74,10 +74,8 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature(void) 
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
-    ADD_PROPERTY(ColoredElements, (0));
-    ColoredElements.setStatus(App::Property::Hidden,true);
-    ColoredElements.setStatus(App::Property::Immutable,true);
-    ColoredElements.setStatus(App::Property::Output,true);
+    ADD_PROPERTY_TYPE(ColoredElements, (0), "",
+            (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_Output),"");
 }
 
 Feature::~Feature()
@@ -201,6 +199,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     Base::Matrix4D mat;
     if(pmat) mat = *pmat;
     App::DocumentObject *owner;
+    App::DocumentObject *originalOwner = 0;
 
     if(needSubElement || !subname || !*subname) 
         owner = obj->getSubObject(subname,&pyobj,&mat,transform);
@@ -218,8 +217,10 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(powner) {
         if(owner && resolveLink) {
             auto linked = owner->getLinkedObject(true,&mat,false);
-            if(linked)
+            if(linked) {
+                originalOwner = owner;
                 owner = linked;
+            }
         }
         *powner = owner;
     }
@@ -232,7 +233,12 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         // TODO: owner tag is not a reliable identifier because the object
         // hierarchy may cross document boundary. Need to find a way to
         // accumulate sub-object ID along the hierarchy
-        shape.Tag = owner?owner->getID():obj->getID();
+        if(originalOwner)
+            shape.Tag = originalOwner->getID();
+        else if(owner)
+            shape.Tag = owner->getID();
+        else
+            shape.Tag = obj->getID();
         return shape;
     }
 
@@ -270,7 +276,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         return TopoShape();
     TopoShape ts;
     if(!noElementMap)
-        ts.Tag = owner->getID();
+        ts.Tag = originalOwner?originalOwner->getID():owner->getID();
     ts.makECompound(shapes);
     ts.transformShape(mat,false,true);
     return ts;
