@@ -108,17 +108,21 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
                 if (feature.hasAttr("__object__")) {
                     Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
                     Py::Tuple args(1);
-                    std::string prop_name = object->getPropertyName(prop);
-                    args.setItem(0, Py::String(prop_name));
-                    method.apply(args);
+                    const char* prop_name = object->getPropertyName(prop);
+                    if (prop_name) {
+                        args.setItem(0, Py::String(prop_name));
+                        method.apply(args);
+                    }
                 }
                 else {
                     Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    std::string prop_name = object->getPropertyName(prop);
-                    args.setItem(1, Py::String(prop_name));
-                    method.apply(args);
+                    const char* prop_name = object->getPropertyName(prop);
+                    if (prop_name) {
+                        args.setItem(1, Py::String(prop_name));
+                        method.apply(args);
+                    }
                 }
             }
         }
@@ -141,17 +145,21 @@ void FeaturePythonImp::onChanged(const Property* prop)
                 if (feature.hasAttr("__object__")) {
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(1);
-                    std::string prop_name = object->getPropertyName(prop);
-                    args.setItem(0, Py::String(prop_name));
-                    method.apply(args);
+                    const char* prop_name = object->getPropertyName(prop);
+                    if (prop_name) {
+                        args.setItem(0, Py::String(prop_name));
+                        method.apply(args);
+                    }
                 }
                 else {
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    std::string prop_name = object->getPropertyName(prop);
-                    args.setItem(1, Py::String(prop_name));
-                    method.apply(args);
+                    const char* prop_name = object->getPropertyName(prop);
+                    if (prop_name) {
+                        args.setItem(1, Py::String(prop_name));
+                        method.apply(args);
+                    }
                 }
             }
         }
