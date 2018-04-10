@@ -24,7 +24,7 @@
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui
-import Tools
+from . import Tools
 
 
 READ_ONLY_FOREGROUND = (0.5, 0.5, 0.5)

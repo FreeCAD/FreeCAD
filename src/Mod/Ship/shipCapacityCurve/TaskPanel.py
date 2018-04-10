@@ -24,10 +24,10 @@
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 from PySide import QtGui, QtCore
-import Tools
-import PlotAux
+from . import Tools
+from . import PlotAux
 import TankInstance as Instance
 from shipUtils import Paths
 import shipUtils.Units as USys

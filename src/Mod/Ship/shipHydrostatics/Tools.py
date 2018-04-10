@@ -25,7 +25,7 @@ import math
 import random
 from FreeCAD import Vector, Rotation, Matrix, Placement
 import Part
-import Units
+from FreeCAD import Units
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui, QtCore
