@@ -26,7 +26,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Vector, Matrix, Placement
 import Part
-import Units
+from FreeCAD import Units
 import Instance as ShipInstance
 import WeightInstance
 import TankInstance

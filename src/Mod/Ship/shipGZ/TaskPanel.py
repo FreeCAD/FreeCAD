@@ -24,10 +24,10 @@
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 from PySide import QtGui, QtCore
-import PlotAux
-import Tools
+from . import PlotAux
+from . import Tools
 from shipUtils import Paths
 import shipUtils.Units as USys
 import shipUtils.Locale as Locale
