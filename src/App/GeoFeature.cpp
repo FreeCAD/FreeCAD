@@ -114,8 +114,12 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
             if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                 FC_WARN("element mapped name not found " << name);
             ret.first = name;
-            if(dot)
-                ret.second = dot+1;
+            if(dot) {
+                // deliberately mangle the old style element name to signal a
+                // missing reference
+                ret.second = '?';
+                ret.second += dot+1;
+            }
         }
         return ret;
     }
