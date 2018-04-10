@@ -26,8 +26,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
-import Preview
-import PlotAux
+from . import Preview
+from . import PlotAux
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys

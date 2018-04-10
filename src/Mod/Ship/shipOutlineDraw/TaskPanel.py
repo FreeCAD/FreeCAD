@@ -24,10 +24,10 @@
 import FreeCAD as App
 from FreeCAD import Base, Vector
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 import Part
 from PySide import QtGui, QtCore
-import Preview
+from . import Preview
 import Instance
 from shipUtils import Paths
 import shipUtils.Locale as Locale

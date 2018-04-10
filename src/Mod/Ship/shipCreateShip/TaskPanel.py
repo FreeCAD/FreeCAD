@@ -23,11 +23,11 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 from PySide import QtGui, QtCore
-import Preview
-import Tools
-import Instance
+from . import Preview
+from . import Tools
+import Instance  # from ship
 from shipUtils import Paths
 import shipUtils.Units as USys
 import shipUtils.Locale as Locale
