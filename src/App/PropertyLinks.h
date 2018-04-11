@@ -350,21 +350,21 @@ public:
     /** Sets the property.
      * setValue(0, whatever) clears the property
      */
-    void setValue(DocumentObject*,const char*);
-    void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
-    void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
+    virtual void setValue(DocumentObject*,const char*);
+    virtual void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
+    virtual void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
 
     /**
      * @brief setValue: PropertyLinkSub-compatible overload
      * @param SubList
      */
-    void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
+    virtual void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
 
     const std::vector<DocumentObject*> &getValues(void) const {
         return _lValueList;
     }
 
-    const std::string getPyReprString() const;
+    virtual const std::string getPyReprString() const;
 
     /**
      * @brief getValue emulates the action of a single-object link.
@@ -382,9 +382,9 @@ public:
      * @brief Removes all occurrences of \a lValue in the property
      * together with its sub-elements and returns the number of entries removed.
      */
-    int removeValue(App::DocumentObject *lValue);
+    virtual int removeValue(App::DocumentObject *lValue);
 
-    void setSubListValues(const std::vector<SubSet>&);
+    virtual void setSubListValues(const std::vector<SubSet>&);
     std::vector<SubSet> getSubListValues() const;
 
     virtual PyObject *getPyObject(void);
