@@ -194,16 +194,16 @@ void PropertyExternalGeometryList::setValues(const std::vector<DocumentObject*>&
     hasSetValue();
 }
 
-void PropertyExternalGeometryList::setValue(DocumentObject* lValue, const std::vector<string> &SubList, const std::vector<bool> &vbool)
+void PropertyExternalGeometryList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
-    std::vector<bool> lvbool(vbool);
-
-    if(lvbool.size() == 0)
-        lvbool.resize(SubList.size(),false);
-
-    if(lvbool.size() != SubList.size())
-        throw Base::ValueError("PropertyExternalGeometryList::setValue: size of boolean list != size of SubList list");
-
+     // PropertyLinkSubList interface
+  if(this->_lboolList.size() == SubList.size()) { // same number of elements
+      PropertyLinkSubList::setValue(lValue, SubList);
+  }
+  else {
+    if(this->_lboolList.size() != 0) 
+      throw Base::ValueError("PropertyExternalGeometryList::setValue: PropertyLinkSubList interface disregards previous defining state"); 
+    
     #ifndef USE_OLD_DAG
     //maintain backlinks.
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -233,15 +233,61 @@ void PropertyExternalGeometryList::setValue(DocumentObject* lValue, const std::v
         if (lValue) {
             this->_lValueList.push_back(lValue);
             this->_lSubList.push_back(std::string());
-            this->_lboolList = lvbool;
+            this->_lboolList.push_back(false);
         }
     }
     else {
         this->_lSubList = SubList;
         this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
-        this->_lboolList = lvbool;
+        this->_lboolList.insert(this->_lboolList.begin(), size, false);
     }
     hasSetValue();
+  }
+}
+
+void PropertyExternalGeometryList::setValue(App::DocumentObject* lValue,const char* SubList)
+{
+  // PropertyLinkSubList interface
+
+  if(this->_lboolList.size() == 1) { // retain boolean state
+    PropertyLinkSubList::setValue(lValue, SubList);
+  }
+  else {
+    
+    if(this->_lboolList.size() != 0)
+      throw Base::ValueError("PropertyExternalGeometryList::setValue: PropertyLinkSubList interface disregards previous defining state");
+    
+    setValue(lValue, SubList, false); 
+  }
+   
+}
+
+void PropertyExternalGeometryList::setValues(const std::vector<App::DocumentObject*>& lValue,const std::vector<const char*>& SubList)
+{
+   // PropertyLinkSubList interface
+  if(this->_lboolList.size() == lValue.size()) { // same number of elements
+      PropertyLinkSubList::setValues(lValue, SubList);
+  }
+  else {
+    if(this->_lboolList.size() != 0) 
+      throw Base::ValueError("PropertyExternalGeometryList::setValue: PropertyLinkSubList interface disregards previous defining state");      
+      
+    setValues(lValue, SubList, std::vector<bool>(lValue.size(),false));
+  }
+}
+
+void PropertyExternalGeometryList::setValues(const std::vector<App::DocumentObject*>& lValue,const std::vector<std::string>& SubList)
+{
+   // PropertyLinkSubList interface
+  if(this->_lboolList.size() == lValue.size()) { // same number of elements
+      PropertyLinkSubList::setValues(lValue, SubList);
+  }
+  else {
+    if(this->_lboolList.size() != 0) 
+      throw Base::ValueError("PropertyExternalGeometryList::setValue: PropertyLinkSubList interface disregards previous defining state");      
+      
+    setValues(lValue, SubList, std::vector<bool>(lValue.size(),false));
+  }
 }
 
 const string PropertyExternalGeometryList::getPyReprString() const
@@ -326,6 +372,30 @@ void PropertyExternalGeometryList::setSubListValues(const std::vector<PropertyEx
     }
 
     setValues(links, subs,bools);
+}
+
+void PropertyExternalGeometryList::setSubListValues(const std::vector<PropertyLinkSubList::SubSet>& values)
+{
+  // PropertyLinkSubList interface
+  if(this->_lboolList.size() == values.size()) { // same number of elements
+      PropertyLinkSubList::setSubListValues(values);
+  }
+  else {
+    if(this->_lboolList.size() != 0) 
+      throw Base::ValueError("PropertyExternalGeometryList::setValue: PropertyLinkSubList interface disregards previous defining state");      
+    
+    std::vector<PropertyExternalGeometryList::SubSet> ess;
+    
+    // typedef std::tuple<App::DocumentObject*, std::vector<std::string>, std::vector<bool> > SubSet;
+    // typedef std::pair<DocumentObject*, std::vector<std::string> > SubSet;
+    
+    for(auto &el : values) {
+      ess.push_back(std::make_tuple(el.first,el.second,std::vector<bool>(el.second.size(),false)));
+    }
+    
+    
+    setSubListValues(ess);
+  }
 }
 
 std::vector<PropertyExternalGeometryList::SubSet> PropertyExternalGeometryList::getSubListValues() const
