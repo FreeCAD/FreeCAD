@@ -87,7 +87,7 @@ def getTeighaConverter():
         if os.path.exists(teigha):
             return teigha
     from DraftTools import translate
-    FreeCAD.Console.PrintMessage(translate("draft","Teigha File Converter not found, DWG support is disabled.\n"))
+    FreeCAD.Console.PrintMessage(translate("draft","Teigha File Converter not found, DWG support is disabled")+"\n")
     return None
     
 def convertToDxf(dwgfilename):

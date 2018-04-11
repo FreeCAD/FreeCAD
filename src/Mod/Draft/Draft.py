@@ -2906,7 +2906,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
             def delObj(obj):
                 if obj.InList:
                     FreeCAD.Console.PrintWarning(translate("draft",
-                        "Cannot delete object {} with dependency\n".format(obj.Label)))
+                        "Cannot delete object {} with dependency".format(obj.Label))+"\n")
                 else:
                     doc.removeObject(obj.Name)
             try:
@@ -2920,7 +2920,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                     delObj(obj)
             except Exception as ex:
                 FreeCAD.Console.PrintWarning(translate("draft",
-                    "Failed to delete object {}: {}\n".format(obj.Label,ex)))
+                    "Failed to delete object {}: {}".format(obj.Label,ex))+"\n")
     if rotation:
         nobj.Placement.Rotation = rotation
     else:
@@ -3053,10 +3053,10 @@ def mirror(objlist,p1,p2):
     along an axis that passes through the two vectors p1 and p2.'''
 
     if not objlist:
-        FreeCAD.Console.PrintError(translate("draft","No object given\n"))
+        FreeCAD.Console.PrintError(translate("draft","No object given")+"\n")
         return
     if p1 == p2:
-        FreeCAD.Console.PrintError(translate("draft","The two points are coincident\n"))
+        FreeCAD.Console.PrintError(translate("draft","The two points are coincident")+"\n")
         return
     if not isinstance(objlist,list):
         objlist = [objlist]
