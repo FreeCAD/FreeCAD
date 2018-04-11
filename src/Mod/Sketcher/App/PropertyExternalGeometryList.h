@@ -63,17 +63,20 @@ namespace Sketcher
          * 
          * The default value for boolean makes it compatible with the interface of PropertyLinkSubList
          */
-        void setValue(App::DocumentObject*,const char*, bool vbool = false);
-        void setValues(const std::vector<App::DocumentObject*>&,const std::vector<const char*>&,const std::vector<bool> &vbool=std::vector<bool>());
-        void setValues(const std::vector<App::DocumentObject*>&,const std::vector<std::string>&,const std::vector<bool> &vbool=std::vector<bool>());
+        void setValue(App::DocumentObject*,const char*, bool vbool);
+        void setValues(const std::vector<App::DocumentObject*>&,const std::vector<const char*>&,const std::vector<bool> &vbool);
+        void setValues(const std::vector<App::DocumentObject*>&,const std::vector<std::string>&,const std::vector<bool> &vbool);
+        virtual void setValue(App::DocumentObject*,const char*);
+        virtual void setValues(const std::vector<App::DocumentObject*>&,const std::vector<const char*>&);
+        virtual void setValues(const std::vector<App::DocumentObject*>&,const std::vector<std::string>&);	
 
         /**
          * @brief setValue: PropertyLinkSub-compatible overload
          * @param SubList
          */
-        void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>(), const std::vector<bool> &vbool=std::vector<bool>());
+	virtual void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
 
-        const std::string getPyReprString() const;
+        virtual const std::string getPyReprString() const;
 
         const std::vector<bool> &getBoolValues(void) const {
             return _lboolList;
@@ -83,9 +86,11 @@ namespace Sketcher
          * @brief Removes all occurrences of \a lValue in the property
          * together with its sub-elements and returns the number of entries removed.
          */
-        int removeValue(App::DocumentObject *lValue);
+        virtual int removeValue(App::DocumentObject *lValue);
 
         void setSubListValues(const std::vector<PropertyExternalGeometryList::SubSet>&);
+	virtual void setSubListValues(const std::vector<PropertyLinkSubList::SubSet>&);
+	
         std::vector<PropertyExternalGeometryList::SubSet> getSubListValues() const;
 
         virtual PyObject *getPyObject(void);
