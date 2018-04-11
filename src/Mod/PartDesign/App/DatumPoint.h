@@ -50,9 +50,11 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    virtual void Restore(Base::XMLReader& r);
+    virtual void onDocumentRestored() override;
+
 private:
     void makeShape();
+
 };
 
 } //namespace PartDesign
