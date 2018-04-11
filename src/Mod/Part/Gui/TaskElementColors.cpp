@@ -145,6 +145,7 @@ public:
             else
                 indexed_name = sub;
             color = vp->ShapeColor.getValue();
+            color.a = vp->Transparency.getValue()/100.0;
             try {
                 switch(Part::TopoShape::shapeType(indexed_name)) {
                 case TopAbs_EDGE:
@@ -183,7 +184,7 @@ public:
             }
             auto element = shape.getElementName(sub.c_str());
             QColor c;
-            c.setRgbF(color.r,color.g,color.b);
+            c.setRgbF(color.r,color.g,color.b,1.0-color.a);
             px.fill(c);
             QListWidgetItem* item = new QListWidgetItem(QIcon(px),
                     QString::fromLatin1(element), ui->elementList);
@@ -201,7 +202,7 @@ public:
             auto item = ui->elementList->item(i);
             auto color = item->data(Qt::UserRole).value<QColor>();
             info.emplace(qPrintable(item->text()),
-                    App::Color(color.redF(),color.greenF(),color.blueF()));
+                    App::Color(color.redF(),color.greenF(),color.blueF(),1.0-color.alphaF()));
         }
         vp->setElementColors(info);
     }
@@ -226,6 +227,7 @@ public:
     void editItem(QWidget *parent, QListWidgetItem *item) {
         auto color = item->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, parent);
+        cd.setOption(QColorDialog::ShowAlphaChannel);
         if (cd.exec()!=QDialog::Accepted || color==cd.selectedColor())
             return;
         color = cd.selectedColor();

@@ -63,17 +63,15 @@ void ViewProviderPartExtPy::setElementColors(Py::Dict dict) {
         const auto &value = *it;
         if(!value.first.isString())
             throw Py::TypeError("expect the key to be string");
-        if(!value.second.isTuple() ||
-           Py::Tuple(value.second).size()!=3 || 
-           !PyFloat_Check(Py::Tuple(value.second)[0].ptr()) ||
-           !PyFloat_Check(Py::Tuple(value.second)[1].ptr()) ||
-           !PyFloat_Check(Py::Tuple(value.second)[2].ptr()))
-            throw Py::TypeError("expect the value to be tuple of three floats");
-        Py::Tuple tuple(value.second);
-        info.emplace(Py::String(value.first).as_string(),
-                App::Color((double)Py::Float(tuple[0]),
-                           (double)Py::Float(tuple[1]),
-                           (double)Py::Float(tuple[2])));
+        App::PropertyColor prop;
+        try {
+            prop.setPyObject(value.second.ptr());
+        }catch(Base::Exception &e) {
+            if(dynamic_cast<Base::TypeError*>(&e))
+                throw Py::TypeError(e.what());
+            throw Py::Exception(e.what());
+        }
+        info.emplace(Py::String(value.first).as_string(),prop.getValue());
     }
     vp->setElementColors(info);
 }

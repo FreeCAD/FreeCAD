@@ -683,9 +683,15 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     int diffuse_size = element->getNumDiffuse();
 
     const float *trans = element->getTransparencyPointer();
-    if(!trans) return false;
-    // int trans_size = element->getNumTransparencies();
-    float trans0 = trans[0];
+    int trans_size = element->getNumTransparencies();
+    if(!trans || !trans_size) return false;
+    float trans0=0.0;
+    for(int i=0;i<trans_size;++i) {
+        if(trans[i]!=0.0) {
+            trans0 = trans[i]>0.5?0.5:trans[i];
+            break;
+        }
+    }
 
     // Override material binding to PER_PART_INDEXED so that we can reuse coin
     // rendering for both selection, preselection and partial rendering. The
@@ -775,8 +781,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
                     assert(diffuse_size >= partIndex.getNum());
                     for(auto idx : ctx2->selectionIndex) {
                         if(idx>=0 && idx<partIndex.getNum()) {
-                            // Force uniform transparency for simplicity
-                            packedColors.push_back(diffuse[idx].getPackedValue(trans0));
+                            auto t = idx<trans_size?trans[idx]:trans0;
+                            packedColors.push_back(diffuse[idx].getPackedValue(t));
                             matIndex[idx] = packedColors.size()-1;
                         }
                     }
@@ -788,8 +794,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
                 assert(diffuse_size >= partIndex.getNum());
                 packedColors.reserve(diffuse_size+3);
                 for(int i=0;i<diffuse_size;++i) {
-                    // Force uniform transparency for simplicity
-                    packedColors.push_back(diffuse[i].getPackedValue(trans0));
+                    auto t = i<trans_size?trans[i]:trans0;
+                    packedColors.push_back(diffuse[i].getPackedValue(t));
                     matIndex.push_back(i);
                 }
             }
