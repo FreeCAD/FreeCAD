@@ -58,7 +58,6 @@ NOGIT = False # for debugging purposes, set this to True to always use http down
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
 
 
-
 # Qt tanslation handling
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -67,6 +66,13 @@ try:
 except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
+
+if sys.version_info.major < 3:
+    import StringIO as io
+    _stringio = io.StringIO
+else:
+    import io
+    _stringio = io.BytesIO
 
 
 def symlink(source, link_name):
@@ -302,10 +308,13 @@ class AddonsInstaller(QtGui.QDialog):
                 return
             macroname = "Macro_"+macro[0]+".FCMacro"
             macroname = macroname.replace(" ","_")
-            macrofilename = os.path.join(macropath,macroname)
-            macrofile = open(macrofilename,"wb")
-            macrofile.write(macro[3])
-            macrofile.close()
+            macrofilename = os.path.join(macropath, macroname)
+            mode = "w"
+            if sys.version_info.major < 3:
+                # in python2 the code is a bytes object
+                mode = "wb"
+            with open(macrofilename, mode) as macrofile:
+                macrofile.write(macro[3])
             self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
         self.update_status()
 
@@ -722,8 +731,9 @@ class InstallWorker(QtCore.QThread):
         git = None
         try:
             import git
-        except:
+        except Exception as e:
             self.info_label.emit("GitPython not found.")
+            print(e)
             FreeCAD.Console.PrintWarning(translate("AddonsInstaller","GitPython not found. Using standard download instead.")+"\n")
             try:
                 import zipfile
@@ -860,10 +870,6 @@ class InstallWorker(QtCore.QThread):
     def download(self,giturl,clonedir):
         "downloads and unzip from github"
         import zipfile
-        try:
-            import StringIO as io
-        except ImportError: # StringIO is not available with python3
-            import io
         bakdir = None
         if os.path.exists(clonedir):
             bakdir = clonedir+".bak"
@@ -880,7 +886,7 @@ class InstallWorker(QtCore.QThread):
                 u = urllib2.urlopen(zipurl)
         except:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
-        zfile = io.StringIO()
+        zfile = _stringio()
         zfile.write(u.read())
         zfile = zipfile.ZipFile(zfile)
         master = zfile.namelist()[0] # github will put everything in a subfolder
